@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        var storedTheme = localStorage.getItem('theme')
+        if (storedTheme === 'dark') {
+          document.documentElement.setAttribute('data-color-theme', 'dark')
+        }
+      })()
+    </script>
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/limitless/template/assets/fonts/inter/inter.css" />
+    <link rel="stylesheet" href="/limitless/template/assets/icons/phosphor/styles.min.css" />
+    <link id="stylesheet" rel="stylesheet" href="/limitless/layout_1/full/assets/css/ltr/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Mob State - Admin</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="/limitless/template/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/src/main.tsx"></script>
+    <script src="/limitless/layout_1/full/assets/js/app.js"></script>
+  </body>
+</html>

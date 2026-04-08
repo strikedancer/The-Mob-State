@@ -1,0 +1,35 @@
+{
+  "hubs": ["germany", "turkey", "usa", "china", "united_arab_emirates"],
+  "directRoutes": {
+    "netherlands": ["belgium", "germany", "uk", "france"],
+    "belgium": ["netherlands", "france", "germany", "uk", "turkey"],
+    "germany": ["netherlands", "belgium", "france", "switzerland", "italy", "turkey", "uk"],
+    "france": ["netherlands", "belgium", "germany", "spain", "italy", "switzerland", "uk"],
+    "spain": ["france", "italy"],
+    "italy": ["france", "germany", "switzerland", "spain", "turkey"],
+    "uk": ["netherlands", "belgium", "germany", "france"],
+    "switzerland": ["germany", "france", "italy"],
+    "turkey": ["germany", "italy", "russia", "china", "united_arab_emirates"],
+    "usa": ["mexico", "brazil", "argentina", "colombia"],
+    "mexico": ["usa", "colombia"],
+    "colombia": ["usa", "mexico", "brazil"],
+    "brazil": ["usa", "colombia", "argentina"],
+    "argentina": ["usa", "brazil"],
+    "japan": ["china", "russia"],
+    "china": ["turkey", "russia", "japan", "australia"],
+    "russia": ["turkey", "china", "japan"],
+    "united_arab_emirates": ["turkey", "south_africa"],
+    "south_africa": ["united_arab_emirates"],
+    "australia": ["china"]
+  },
+  "routeCosts": {
+    "direct": 1.0,
+    "oneStop": 1.5,
+    "twoStops": 2.0
+  },
+  "routeTimes": {
+    "direct": 0,
+    "oneStop": 30,
+    "twoStops": 60
+  }
+}

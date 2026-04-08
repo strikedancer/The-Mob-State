@@ -1,0 +1,344 @@
+/**
+ * Trial Routes - Sentencing & Judge Bribery
+ */
+
+import { Router, Response } from 'express';
+import { authenticate } from '../middleware/authenticate';
+import { AuthRequest } from '../middleware/authenticate';
+import { checkCooldown } from '../middleware/checkCooldown';
+import * as judgeService from '../services/judgeService';
+import { worldEventService } from '../services/worldEventService';
+import * as cooldownService from '../services/cooldownService';
+
+const router = Router();
+
+/**
+ * GET /trial/current-sentence
+ * Get current jail sentence details (if player is in jail)
+ */
+router.get('/current-sentence', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player?.id;
+
+    if (!playerId) {
+      return res.status(401).json({
+        event: 'error.unauthorized',
+        params: {},
+      });
+    }
+
+    const player = await judgeService.getCurrentSentence(playerId);
+
+    if (!player || !player.sentence) {
+      return res.json({
+        sentence: null,
+      });
+    }
+
+    return res.json({
+      sentence: player.sentence,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * POST /trial/sentence
+ * Get sentence for a crime (simulates going to trial)
+ */
+router.post('/sentence', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player?.id;
+    const { crimeId } = req.body;
+
+    if (!playerId) {
+      return res.status(401).json({
+        event: 'error.unauthorized',
+        params: {},
+      });
+    }
+
+    if (!crimeId) {
+      return res.status(400).json({
+        event: 'error.missing_crime_id',
+        params: {},
+      });
+    }
+
+    const sentence = await judgeService.calculateSentence(playerId, crimeId);
+
+    if (!sentence) {
+      return res.status(404).json({
+        event: 'error.invalid_crime_id',
+        params: {},
+      });
+    }
+
+    await worldEventService.createEvent('trial.sentenced', {
+      playerId,
+      crimeId: sentence.crimeId,
+      jailTime: sentence.jailTime,
+      fine: sentence.fine,
+      modifiers: sentence.modifiers,
+    });
+
+    return res.json({
+      event: 'trial.sentenced',
+      params: {
+        crimeId: sentence.crimeId,
+        jailTime: sentence.jailTime,
+        fine: sentence.fine,
+        modifiers: sentence.modifiers,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'PLAYER_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.player_not_found',
+          params: {},
+        });
+      }
+    }
+
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * POST /trial/bribe
+ * Attempt to bribe a judge to reduce sentence
+ */
+router.post('/bribe', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player?.id;
+    const { crimeAttemptId, amount } = req.body;
+
+    if (!playerId) {
+      return res.status(401).json({
+        event: 'error.unauthorized',
+        params: {},
+      });
+    }
+
+    if (!crimeAttemptId || !amount) {
+      return res.status(400).json({
+        event: 'error.missing_parameters',
+        params: {},
+      });
+    }
+
+    const attemptId = parseInt(crimeAttemptId, 10);
+    const bribeAmount = parseInt(amount, 10);
+    
+    if (isNaN(attemptId) || isNaN(bribeAmount) || bribeAmount <= 0) {
+      return res.status(400).json({
+        event: 'error.invalid_parameters',
+        params: {},
+      });
+    }
+
+    const result = await judgeService.bribeJudgeForAttempt(playerId, attemptId, bribeAmount);
+
+    return res.json({
+      success: result.success,
+      newBalance: result.newBalance,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'CRIME_ATTEMPT_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.crime_attempt_not_found',
+          params: {},
+        });
+      }
+
+      if (error.message === 'NOT_YOUR_CRIME') {
+        return res.status(403).json({
+          event: 'error.not_your_crime',
+          params: {},
+        });
+      }
+
+      if (error.message === 'PLAYER_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.player_not_found',
+          params: {},
+        });
+      }
+
+      if (error.message === 'INSUFFICIENT_MONEY') {
+        return res.status(400).json({
+          event: 'error.insufficient_money',
+          params: {},
+        });
+      }
+    }
+
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * GET /trial/record
+ * Get player's criminal record
+ */
+router.get('/record', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player?.id;
+
+    if (!playerId) {
+      return res.status(401).json({
+        event: 'error.unauthorized',
+        params: {},
+      });
+    }
+
+    const record = await judgeService.getCriminalRecord(playerId);
+
+    return res.json({
+      event: 'trial.criminal_record',
+      params: {
+        totalConvictions: record.totalConvictions,
+        recentCrimes: record.recentCrimes,
+      },
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+/**
+ * POST /trial/appeal
+ * Appeal a sentence (can only be done once per crime attempt)
+ */
+router.post('/appeal', authenticate, checkCooldown('appeal'), async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player?.id;
+    const { crimeAttemptId } = req.body;
+
+    if (!playerId) {
+      return res.status(401).json({
+        event: 'error.unauthorized',
+        params: {},
+      });
+    }
+
+    if (!crimeAttemptId) {
+      return res.status(400).json({
+        event: 'error.missing_crime_attempt_id',
+        params: {},
+      });
+    }
+
+    const attemptId = parseInt(crimeAttemptId, 10);
+    if (isNaN(attemptId)) {
+      return res.status(400).json({
+        event: 'error.invalid_crime_attempt_id',
+        params: {},
+      });
+    }
+
+    const result = await judgeService.appealSentence(playerId, attemptId);
+    
+    // Set cooldown after appeal attempt
+    await cooldownService.setCooldown(playerId, 'appeal');
+
+    if (result.success) {
+      await worldEventService.createEvent('trial.appeal_granted', {
+        playerId,
+        crimeAttemptId: attemptId,
+        originalSentence: result.originalSentence,
+        newSentence: result.newSentence,
+        cost: result.cost,
+      });
+
+      return res.json({
+        event: 'trial.appeal_granted',
+        params: {
+          success: true,
+          originalSentence: result.originalSentence,
+          newSentence: result.newSentence,
+          newBalance: result.newBalance,
+          reduction: result.originalSentence - (result.newSentence || 0),
+          cost: result.cost,
+          reason: result.reason,
+        },
+      });
+    } else {
+      await worldEventService.createEvent('trial.appeal_denied', {
+        playerId,
+        crimeAttemptId: attemptId,
+        cost: result.cost,
+      });
+
+      return res.json({
+        event: 'trial.appeal_denied',
+        params: {
+          success: false,
+          originalSentence: result.originalSentence,
+          newBalance: result.newBalance,
+          cost: result.cost,
+          reason: result.reason,
+        },
+      });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'CRIME_ATTEMPT_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.crime_attempt_not_found',
+          params: {},
+        });
+      }
+
+      if (error.message === 'NOT_YOUR_CRIME') {
+        return res.status(403).json({
+          event: 'error.not_your_crime',
+          params: {},
+        });
+      }
+
+      if (error.message === 'ALREADY_APPEALED') {
+        return res.status(400).json({
+          event: 'error.already_appealed',
+          params: {},
+        });
+      }
+
+      if (error.message === 'PLAYER_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.player_not_found',
+          params: {},
+        });
+      }
+
+      if (error.message === 'INSUFFICIENT_MONEY') {
+        return res.status(400).json({
+          event: 'error.insufficient_money',
+          params: {},
+        });
+      }
+    }
+
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+export default router;

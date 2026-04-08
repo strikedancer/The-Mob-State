@@ -1,0 +1,208 @@
+{
+  "sentencingGuidelines": [
+    {
+      "crimeId": "pickpocket",
+      "minSentence": 5,
+      "maxSentence": 15,
+      "baseFine": 100
+    },
+    {
+      "crimeId": "shoplift",
+      "minSentence": 10,
+      "maxSentence": 20,
+      "baseFine": 200
+    },
+    {
+      "crimeId": "steal_bike",
+      "minSentence": 8,
+      "maxSentence": 18,
+      "baseFine": 150
+    },
+    {
+      "crimeId": "car_theft",
+      "minSentence": 30,
+      "maxSentence": 60,
+      "baseFine": 1000
+    },
+    {
+      "crimeId": "burglary",
+      "minSentence": 45,
+      "maxSentence": 90,
+      "baseFine": 2000
+    },
+    {
+      "crimeId": "rob_store",
+      "minSentence": 60,
+      "maxSentence": 120,
+      "baseFine": 3000
+    },
+    {
+      "crimeId": "mug_person",
+      "minSentence": 20,
+      "maxSentence": 40,
+      "baseFine": 500
+    },
+    {
+      "crimeId": "steal_car_parts",
+      "minSentence": 25,
+      "maxSentence": 50,
+      "baseFine": 800
+    },
+    {
+      "crimeId": "hijack_truck",
+      "minSentence": 90,
+      "maxSentence": 180,
+      "baseFine": 5000
+    },
+    {
+      "crimeId": "atm_theft",
+      "minSentence": 75,
+      "maxSentence": 150,
+      "baseFine": 4000
+    },
+    {
+      "crimeId": "jewelry_heist",
+      "minSentence": 120,
+      "maxSentence": 240,
+      "baseFine": 10000
+    },
+    {
+      "crimeId": "vandalism",
+      "minSentence": 5,
+      "maxSentence": 10,
+      "baseFine": 50
+    },
+    {
+      "crimeId": "graffiti",
+      "minSentence": 3,
+      "maxSentence": 8,
+      "baseFine": 30
+    },
+    {
+      "crimeId": "drug_deal_small",
+      "minSentence": 30,
+      "maxSentence": 60,
+      "baseFine": 1500
+    },
+    {
+      "crimeId": "drug_deal_large",
+      "minSentence": 100,
+      "maxSentence": 200,
+      "baseFine": 8000
+    },
+    {
+      "crimeId": "extortion",
+      "minSentence": 50,
+      "maxSentence": 100,
+      "baseFine": 3000
+    },
+    {
+      "crimeId": "kidnapping",
+      "minSentence": 180,
+      "maxSentence": 360,
+      "baseFine": 20000,
+      "isFederal": true
+    },
+    {
+      "crimeId": "arson",
+      "minSentence": 110,
+      "maxSentence": 220,
+      "baseFine": 8000
+    },
+    {
+      "crimeId": "smuggling",
+      "minSentence": 95,
+      "maxSentence": 190,
+      "baseFine": 6000
+    },
+    {
+      "crimeId": "assassination",
+      "minSentence": 240,
+      "maxSentence": 480,
+      "baseFine": 30000
+    },
+    {
+      "crimeId": "hack_account",
+      "minSentence": 100,
+      "maxSentence": 200,
+      "baseFine": 7000
+    },
+    {
+      "crimeId": "counterfeit_money",
+      "minSentence": 130,
+      "maxSentence": 260,
+      "baseFine": 12000,
+      "isFederal": true
+    },
+    {
+      "crimeId": "identity_theft",
+      "minSentence": 140,
+      "maxSentence": 280,
+      "baseFine": 15000,
+      "isFederal": true
+    },
+    {
+      "crimeId": "rob_armored_truck",
+      "minSentence": 200,
+      "maxSentence": 400,
+      "baseFine": 25000,
+      "isFederal": true
+    },
+    {
+      "crimeId": "art_theft",
+      "minSentence": 170,
+      "maxSentence": 340,
+      "baseFine": 18000
+    },
+    {
+      "crimeId": "protection_racket",
+      "minSentence": 65,
+      "maxSentence": 130,
+      "baseFine": 4000
+    },
+    {
+      "crimeId": "casino_heist",
+      "minSentence": 300,
+      "maxSentence": 600,
+      "baseFine": 50000,
+      "isFederal": true
+    },
+    {
+      "crimeId": "bank_robbery",
+      "minSentence": 280,
+      "maxSentence": 560,
+      "baseFine": 45000,
+      "isFederal": true
+    },
+    {
+      "crimeId": "steal_yacht",
+      "minSentence": 190,
+      "maxSentence": 380,
+      "baseFine": 22000
+    },
+    {
+      "crimeId": "corrupt_official",
+      "minSentence": 125,
+      "maxSentence": 250,
+      "baseFine": 10000
+    }
+  ],
+  "sentenceModifiers": {
+    "firstOffense": 0.5,
+    "repeatOffender": 1.5,
+    "highWantedLevel": 1.3,
+    "highFbiHeat": 1.5,
+    "cooperateWithAuthorities": 0.7
+  },
+  "bribery": {
+    "baseSuccessChance": 0.3,
+    "costMultiplier": 5,
+    "minBribeAmount": 5000,
+    "sentenceReduction": 0.5,
+    "failurePenalty": {
+      "additionalTime": 60,
+      "fineMultiplier": 2,
+      "wantedLevelIncrease": 10
+    }
+  }
+}

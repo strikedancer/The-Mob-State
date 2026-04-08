@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `crew_members` ADD COLUMN `trustScore` INTEGER NOT NULL DEFAULT 50;

@@ -1,0 +1,157 @@
+{
+  "behaviors": {
+    "MATIG": {
+      "name": "Matige Speler",
+      "description": "Een speler die af en toe online komt, weinig actief",
+      "crimesPerHour": {
+        "min": 1,
+        "max": 2
+      },
+      "jobsPerHour": {
+        "min": 0.5,
+        "max": 1
+      },
+      "activityPatterns": {
+        "morningActive": 0.2,
+        "afternoonActive": 0.3,
+        "eveningActive": 0.5,
+        "nightActive": 0.1
+      },
+      "crimePreferences": {
+        "pickpocket": 0.4,
+        "shoplift": 0.3,
+        "steal_bike": 0.2,
+        "vandalism": 0.1
+      },
+      "jobPreferences": {
+        "cleaner": 0.5,
+        "delivery_driver": 0.3,
+        "warehouse_worker": 0.2
+      },
+      "levelUpSpeed": "slow",
+      "moneyManagement": {
+        "savingsRate": 0.6,
+        "spendOnVehicles": 0.2,
+        "spendOnWeapons": 0.1,
+        "spendOnProperty": 0.1
+      },
+      "crewParticipation": 0.1,
+      "heistParticipation": 0.05
+    },
+    "GEMIDDELD": {
+      "name": "Gemiddelde Speler",
+      "description": "Een speler die regelmatig online is, normaal actief",
+      "crimesPerHour": {
+        "min": 3,
+        "max": 5
+      },
+      "jobsPerHour": {
+        "min": 1,
+        "max": 2
+      },
+      "activityPatterns": {
+        "morningActive": 0.3,
+        "afternoonActive": 0.4,
+        "eveningActive": 0.7,
+        "nightActive": 0.2
+      },
+      "crimePreferences": {
+        "pickpocket": 0.2,
+        "shoplift": 0.15,
+        "steal_bike": 0.15,
+        "burglary": 0.15,
+        "car_theft": 0.15,
+        "drug_deal_small": 0.1,
+        "vandalism": 0.1
+      },
+      "jobPreferences": {
+        "delivery_driver": 0.3,
+        "warehouse_worker": 0.2,
+        "construction_worker": 0.2,
+        "office_clerk": 0.15,
+        "salesperson": 0.15
+      },
+      "levelUpSpeed": "normal",
+      "moneyManagement": {
+        "savingsRate": 0.4,
+        "spendOnVehicles": 0.3,
+        "spendOnWeapons": 0.15,
+        "spendOnProperty": 0.15
+      },
+      "crewParticipation": 0.4,
+      "heistParticipation": 0.2
+    },
+    "CONTINU": {
+      "name": "Continue Speler",
+      "description": "Een zeer actieve speler die bijna altijd online is",
+      "crimesPerHour": {
+        "min": 10,
+        "max": 20
+      },
+      "jobsPerHour": {
+        "min": 3,
+        "max": 5
+      },
+      "activityPatterns": {
+        "morningActive": 0.7,
+        "afternoonActive": 0.8,
+        "eveningActive": 0.9,
+        "nightActive": 0.6
+      },
+      "crimePreferences": {
+        "pickpocket": 0.05,
+        "shoplift": 0.05,
+        "steal_bike": 0.05,
+        "burglary": 0.15,
+        "car_theft": 0.2,
+        "rob_store": 0.15,
+        "drug_deal_small": 0.1,
+        "drug_deal_large": 0.1,
+        "mug_person": 0.1,
+        "hijack_truck": 0.05
+      },
+      "jobPreferences": {
+        "office_clerk": 0.15,
+        "salesperson": 0.15,
+        "programmer": 0.2,
+        "accountant": 0.15,
+        "manager": 0.15,
+        "engineer": 0.1,
+        "lawyer": 0.05,
+        "doctor": 0.05
+      },
+      "levelUpSpeed": "fast",
+      "moneyManagement": {
+        "savingsRate": 0.2,
+        "spendOnVehicles": 0.3,
+        "spendOnWeapons": 0.25,
+        "spendOnProperty": 0.25
+      },
+      "crewParticipation": 0.8,
+      "heistParticipation": 0.6
+    }
+  },
+  "initialStats": {
+    "MATIG": {
+      "startingMoney": 5000,
+      "startingRank": 1,
+      "startingXP": 0
+    },
+    "GEMIDDELD": {
+      "startingMoney": 10000,
+      "startingRank": 3,
+      "startingXP": 500
+    },
+    "CONTINU": {
+      "startingMoney": 25000,
+      "startingRank": 5,
+      "startingXP": 2000
+    }
+  },
+  "simulationSettings": {
+    "tickIntervalMinutes": 5,
+    "maxActivitiesPerTick": 3,
+    "arrestChanceMultiplier": 0.5,
+    "successChanceMultiplier": 1.0
+  }
+}

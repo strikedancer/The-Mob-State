@@ -1,0 +1,174 @@
+{
+  "tools": [
+    {
+      "id": "bolt_cutter",
+      "name": "Betonschaar",
+      "type": "BOLT_CUTTER",
+      "basePrice": 250,
+      "maxDurability": 100,
+      "loseChance": 0.15,
+      "wearPerUse": 25,
+      "requiredFor": ["steal_bike"]
+    },
+    {
+      "id": "burglary_kit",
+      "name": "Inbrekersset",
+      "type": "BURGLARY_KIT",
+      "basePrice": 1500,
+      "maxDurability": 100,
+      "loseChance": 0.20,
+      "wearPerUse": 10,
+      "requiredFor": ["burglary"]
+    },
+    {
+      "id": "car_theft_tools",
+      "name": "Auto Diefstal Gereedschap",
+      "type": "CAR_TOOLS",
+      "basePrice": 800,
+      "maxDurability": 100,
+      "loseChance": 0.10,
+      "wearPerUse": 15,
+      "requiredFor": ["car_theft", "steal_yacht"]
+    },
+    {
+      "id": "jerry_can",
+      "name": "Jerrycan (20L)",
+      "type": "JERRY_CAN",
+      "basePrice": 50,
+      "maxDurability": 1,
+      "loseChance": 1.0,
+      "wearPerUse": 100,
+      "requiredFor": ["arson"]
+    },
+    {
+      "id": "spray_paint",
+      "name": "Spuitbus Verf",
+      "type": "SPRAY_PAINT",
+      "basePrice": 25,
+      "maxDurability": 10,
+      "loseChance": 1.0,
+      "wearPerUse": 100,
+      "requiredFor": ["graffiti", "vandalism"]
+    },
+    {
+      "id": "crowbar",
+      "name": "Koevoet",
+      "type": "CROWBAR",
+      "basePrice": 150,
+      "maxDurability": 100,
+      "loseChance": 0.15,
+      "wearPerUse": 20,
+      "requiredFor": ["atm_theft"]
+    },
+    {
+      "id": "glass_cutter",
+      "name": "Glassnijder",
+      "type": "GLASS_CUTTER",
+      "basePrice": 400,
+      "maxDurability": 100,
+      "loseChance": 0.10,
+      "wearPerUse": 10,
+      "requiredFor": ["jewelry_heist", "art_theft", "museum_heist"]
+    },
+    {
+      "id": "hacking_laptop",
+      "name": "Hacking Laptop",
+      "type": "LAPTOP",
+      "basePrice": 2500,
+      "maxDurability": 100,
+      "loseChance": 0.05,
+      "wearPerUse": 5,
+      "requiredFor": ["hack_account", "identity_theft"]
+    },
+    {
+      "id": "counterfeiting_kit",
+      "name": "Vervalsingsspullen",
+      "type": "COUNTERFEITING",
+      "basePrice": 5000,
+      "maxDurability": 100,
+      "loseChance": 0.10,
+      "wearPerUse": 8,
+      "requiredFor": ["counterfeit_money"]
+    },
+    {
+      "id": "toolbox",
+      "name": "Gereedschapskist",
+      "type": "TOOLBOX",
+      "basePrice": 300,
+      "maxDurability": 100,
+      "loseChance": 0.10,
+      "wearPerUse": 10,
+      "requiredFor": ["steal_car_parts"]
+    },
+    {
+      "id": "rope",
+      "name": "Nylon Touw (50m)",
+      "type": "ROPE",
+      "basePrice": 30,
+      "maxDurability": 1,
+      "loseChance": 1.0,
+      "wearPerUse": 100,
+      "requiredFor": ["kidnapping"]
+    },
+    {
+      "id": "silencer",
+      "name": "Geluiddemper",
+      "type": "SILENCER",
+      "basePrice": 1200,
+      "maxDurability": 100,
+      "loseChance": 0.20,
+      "wearPerUse": 15,
+      "requiredFor": ["assassination", "eliminate_witness", "boss_assassination"]
+    },
+    {
+      "id": "fake_documents",
+      "name": "Valse Documenten",
+      "type": "FAKE_DOCS",
+      "basePrice": 800,
+      "maxDurability": 1,
+      "loseChance": 1.0,
+      "wearPerUse": 100,
+      "requiredFor": ["smuggling"]
+    },
+    {
+      "id": "night_vision",
+      "name": "Nachtkijker",
+      "type": "NIGHT_VISION",
+      "basePrice": 750,
+      "maxDurability": 100,
+      "loseChance": 0.12,
+      "wearPerUse": 8,
+      "requiredFor": ["evidence_room_heist"]
+    },
+    {
+      "id": "burner_phone",
+      "name": "Wegwerptelefoon",
+      "type": "BURNER_PHONE",
+      "basePrice": 20,
+      "maxDurability": 1,
+      "loseChance": 1.0,
+      "wearPerUse": 100,
+      "requiredFor": ["diamond_heist"]
+    },
+    {
+      "id": "gps_jammer",
+      "name": "GPS Jammer",
+      "type": "GPS_JAMMER",
+      "basePrice": 1200,
+      "maxDurability": 100,
+      "loseChance": 0.18,
+      "wearPerUse": 12,
+      "requiredFor": ["rob_armored_truck"]
+    },
+    {
+      "id": "thermal_drill",
+      "name": "Thermische Boor",
+      "type": "THERMAL_DRILL",
+      "basePrice": 8500,
+      "maxDurability": 100,
+      "loseChance": 0.22,
+      "wearPerUse": 15,
+      "requiredFor": ["bank_robbery", "casino_heist"]
+    }
+  ]
+}

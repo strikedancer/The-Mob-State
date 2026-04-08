@@ -1,0 +1,5284 @@
+{
+  "filesChecked": 879,
+  "forceRecut": true,
+  "ok": 0,
+  "fixed": 879,
+  "failed": 0,
+  "missing": 0,
+  "results": [
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_4c_street_2_damaged.png",
+      "status": "fixed",
+      "before": 988114,
+      "after": 1018191
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_4c_street_2_dirty.png",
+      "status": "fixed",
+      "before": 984384,
+      "after": 1006437
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_4c_street_2_new.png",
+      "status": "fixed",
+      "before": 941215,
+      "after": 989455
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_4c_street_damaged.png",
+      "status": "fixed",
+      "before": 1045663,
+      "after": 1047378
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_4c_street_dirty.png",
+      "status": "fixed",
+      "before": 992085,
+      "after": 1000707
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_4c_street_new.png",
+      "status": "fixed",
+      "before": 977143,
+      "after": 1006908
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1005403,
+      "after": 1035546
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_2_dirty.png",
+      "status": "fixed",
+      "before": 984556,
+      "after": 1021358
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_2_new.png",
+      "status": "fixed",
+      "before": 955959,
+      "after": 1048248
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_3_damaged.png",
+      "status": "fixed",
+      "before": 994536,
+      "after": 1028176
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_3_dirty.png",
+      "status": "fixed",
+      "before": 999167,
+      "after": 1016715
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_3_new.png",
+      "status": "fixed",
+      "before": 953869,
+      "after": 1003121
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_damaged.png",
+      "status": "fixed",
+      "before": 1015814,
+      "after": 1040989
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_dirty.png",
+      "status": "fixed",
+      "before": 975933,
+      "after": 1023968
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_giulia_qv_track_new.png",
+      "status": "fixed",
+      "before": 957960,
+      "after": 1014065
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_stelvio_street_2_damaged.png",
+      "status": "fixed",
+      "before": 982555,
+      "after": 1023073
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_stelvio_street_2_dirty.png",
+      "status": "fixed",
+      "before": 988681,
+      "after": 1026705
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_stelvio_street_2_new.png",
+      "status": "fixed",
+      "before": 1020841,
+      "after": 1031338
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_stelvio_street_damaged.png",
+      "status": "fixed",
+      "before": 972482,
+      "after": 1047955
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_stelvio_street_dirty.png",
+      "status": "fixed",
+      "before": 1043965,
+      "after": 1048287
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_stelvio_street_new.png",
+      "status": "fixed",
+      "before": 1004552,
+      "after": 1034396
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_tonale_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1006632,
+      "after": 1035195
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_tonale_track_2_dirty.png",
+      "status": "fixed",
+      "before": 947772,
+      "after": 1008480
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_tonale_track_2_new.png",
+      "status": "fixed",
+      "before": 984520,
+      "after": 1017397
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_tonale_track_damaged.png",
+      "status": "fixed",
+      "before": 1018270,
+      "after": 1037663
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_tonale_track_dirty.png",
+      "status": "fixed",
+      "before": 958848,
+      "after": 1003971
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\alfa_romeo_tonale_track_new.png",
+      "status": "fixed",
+      "before": 998155,
+      "after": 1013786
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\armored_suv_damaged.png",
+      "status": "fixed",
+      "before": 1044973,
+      "after": 1047935
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\armored_suv_dirty.png",
+      "status": "fixed",
+      "before": 1005740,
+      "after": 1035479
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\armored_suv_new.png",
+      "status": "fixed",
+      "before": 1008267,
+      "after": 1045898
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\aston_valkyrie_damaged.png",
+      "status": "fixed",
+      "before": 1031331,
+      "after": 1042367
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\aston_valkyrie_dirty.png",
+      "status": "fixed",
+      "before": 1043203,
+      "after": 1046301
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\aston_valkyrie_new.png",
+      "status": "fixed",
+      "before": 1042257,
+      "after": 1045628
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_r8_v10_damaged.png",
+      "status": "fixed",
+      "before": 969207,
+      "after": 1024645
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_r8_v10_dirty.png",
+      "status": "fixed",
+      "before": 961396,
+      "after": 998787
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_r8_v10_new.png",
+      "status": "fixed",
+      "before": 981369,
+      "after": 1047304
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs5_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1016156,
+      "after": 1043951
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs5_track_2_dirty.png",
+      "status": "fixed",
+      "before": 996260,
+      "after": 1033587
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs5_track_2_new.png",
+      "status": "fixed",
+      "before": 969795,
+      "after": 995436
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs5_track_damaged.png",
+      "status": "fixed",
+      "before": 961798,
+      "after": 1000498
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs5_track_dirty.png",
+      "status": "fixed",
+      "before": 999816,
+      "after": 1019658
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs5_track_new.png",
+      "status": "fixed",
+      "before": 980204,
+      "after": 1001706
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs7_street_2_damaged.png",
+      "status": "fixed",
+      "before": 983769,
+      "after": 1010023
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs7_street_2_dirty.png",
+      "status": "fixed",
+      "before": 975612,
+      "after": 1013111
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs7_street_2_new.png",
+      "status": "fixed",
+      "before": 995149,
+      "after": 1031146
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs7_street_damaged.png",
+      "status": "fixed",
+      "before": 960124,
+      "after": 1023685
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs7_street_dirty.png",
+      "status": "fixed",
+      "before": 1010423,
+      "after": 1039179
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_rs7_street_new.png",
+      "status": "fixed",
+      "before": 1047475,
+      "after": 1048335
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1013389,
+      "after": 1046403
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1045100,
+      "after": 1047925
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_2_new.png",
+      "status": "fixed",
+      "before": 961871,
+      "after": 1015338
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_3_damaged.png",
+      "status": "fixed",
+      "before": 999415,
+      "after": 1035818
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_3_dirty.png",
+      "status": "fixed",
+      "before": 980494,
+      "after": 1015048
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_3_new.png",
+      "status": "fixed",
+      "before": 987039,
+      "after": 1003334
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_damaged.png",
+      "status": "fixed",
+      "before": 1005959,
+      "after": 1039314
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_dirty.png",
+      "status": "fixed",
+      "before": 1003259,
+      "after": 1027324
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s3_track_new.png",
+      "status": "fixed",
+      "before": 1005223,
+      "after": 1025425
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s5_street_2_damaged.png",
+      "status": "fixed",
+      "before": 978547,
+      "after": 1026617
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s5_street_2_dirty.png",
+      "status": "fixed",
+      "before": 980029,
+      "after": 1021435
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s5_street_2_new.png",
+      "status": "fixed",
+      "before": 977806,
+      "after": 1034687
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s5_street_damaged.png",
+      "status": "fixed",
+      "before": 983229,
+      "after": 1027669
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s5_street_dirty.png",
+      "status": "fixed",
+      "before": 965001,
+      "after": 1005286
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\audi_s5_street_new.png",
+      "status": "fixed",
+      "before": 1005508,
+      "after": 1022596
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\barge_damaged.png",
+      "status": "fixed",
+      "before": 1039252,
+      "after": 1042332
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\barge_dirty.png",
+      "status": "fixed",
+      "before": 1047082,
+      "after": 1047790
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\barge_new.png",
+      "status": "fixed",
+      "before": 1047968,
+      "after": 1048173
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_batur_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_batur_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_batur_carbon_2_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_batur_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_batur_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_batur_carbon_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_bentayga_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 941196,
+      "after": 1029235
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_bentayga_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 964459,
+      "after": 996162
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_bentayga_sport_2_new.png",
+      "status": "fixed",
+      "before": 989600,
+      "after": 1036866
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_bentayga_sport_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_bentayga_sport_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_bentayga_sport_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_continental_gt_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 944766,
+      "after": 1012664
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_continental_gt_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 973390,
+      "after": 1011060
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_continental_gt_sport_2_new.png",
+      "status": "fixed",
+      "before": 973741,
+      "after": 1010741
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_continental_gt_sport_damaged.png",
+      "status": "fixed",
+      "before": 991054,
+      "after": 1034978
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_continental_gt_sport_dirty.png",
+      "status": "fixed",
+      "before": 977218,
+      "after": 1012568
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_continental_gt_sport_new.png",
+      "status": "fixed",
+      "before": 1046196,
+      "after": 1048059
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_flying_spur_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1003204,
+      "after": 1023834
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_flying_spur_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 992331,
+      "after": 1028040
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_flying_spur_carbon_2_new.png",
+      "status": "fixed",
+      "before": 975387,
+      "after": 1040402
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_flying_spur_carbon_damaged.png",
+      "status": "fixed",
+      "before": 988966,
+      "after": 1020703
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_flying_spur_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1026063,
+      "after": 1046695
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bentley_flying_spur_carbon_new.png",
+      "status": "fixed",
+      "before": 1020375,
+      "after": 1048161
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 1005238,
+      "after": 1023581
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 995801,
+      "after": 1031055
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_2_new.png",
+      "status": "fixed",
+      "before": 977116,
+      "after": 1014459
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_3_damaged.png",
+      "status": "fixed",
+      "before": 972671,
+      "after": 1000420
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_3_dirty.png",
+      "status": "fixed",
+      "before": 1022832,
+      "after": 1026211
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_3_new.png",
+      "status": "fixed",
+      "before": 1006574,
+      "after": 1029907
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_damaged.png",
+      "status": "fixed",
+      "before": 1044385,
+      "after": 1047611
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_dirty.png",
+      "status": "fixed",
+      "before": 1023217,
+      "after": 1035022
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m2_executive_new.png",
+      "status": "fixed",
+      "before": 983474,
+      "after": 1000394
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m3_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1012704,
+      "after": 1031577
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m3_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 978982,
+      "after": 1024195
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m3_s_line_2_new.png",
+      "status": "fixed",
+      "before": 985829,
+      "after": 1036584
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m3_s_line_damaged.png",
+      "status": "fixed",
+      "before": 991654,
+      "after": 1028141
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m3_s_line_dirty.png",
+      "status": "fixed",
+      "before": 986182,
+      "after": 1026010
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m3_s_line_new.png",
+      "status": "fixed",
+      "before": 1044733,
+      "after": 1048319
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m5_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 931526,
+      "after": 1024660
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m5_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1018632,
+      "after": 1031984
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m5_executive_2_new.png",
+      "status": "fixed",
+      "before": 995559,
+      "after": 1027465
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m5_executive_damaged.png",
+      "status": "fixed",
+      "before": 1045560,
+      "after": 1048209
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m5_executive_dirty.png",
+      "status": "fixed",
+      "before": 983919,
+      "after": 1022426
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_m5_executive_new.png",
+      "status": "fixed",
+      "before": 1005551,
+      "after": 1028275
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_x5_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 950154,
+      "after": 1010474
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_x5_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 983703,
+      "after": 1003184
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_x5_s_line_2_new.png",
+      "status": "fixed",
+      "before": 1043884,
+      "after": 1048314
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_x5_s_line_damaged.png",
+      "status": "fixed",
+      "before": 1021505,
+      "after": 1041288
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_x5_s_line_dirty.png",
+      "status": "fixed",
+      "before": 1000589,
+      "after": 1044453
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bmw_x5_s_line_new.png",
+      "status": "fixed",
+      "before": 1044448,
+      "after": 1048039
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_aegean_cruiser_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047670,
+      "after": 1048390
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_aegean_cruiser_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047765,
+      "after": 1048270
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_aegean_cruiser_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047414,
+      "after": 1048198
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_aegean_cruiser_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047670,
+      "after": 1048390
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_aegean_cruiser_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047765,
+      "after": 1048270
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_aegean_cruiser_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047414,
+      "after": 1048198
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_atlantic_smuggler_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047670,
+      "after": 1048390
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_atlantic_smuggler_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047765,
+      "after": 1048270
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_atlantic_smuggler_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047414,
+      "after": 1048198
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_atlantic_smuggler_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_atlantic_smuggler_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_atlantic_smuggler_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_bluefin_cargo_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_bluefin_cargo_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_bluefin_cargo_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_bluefin_cargo_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_bluefin_cargo_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_bluefin_cargo_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_coast_cutter_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_coast_cutter_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_coast_cutter_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_coast_cutter_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_coast_cutter_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_coast_cutter_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_harbor_runner_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_harbor_runner_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_harbor_runner_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_harbor_runner_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_harbor_runner_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_harbor_runner_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_monaco_sport_yacht_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_monaco_sport_yacht_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_monaco_sport_yacht_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_monaco_sport_yacht_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_monaco_sport_yacht_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_monaco_sport_yacht_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_nordic_patrol_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_nordic_patrol_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_nordic_patrol_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_nordic_patrol_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_nordic_patrol_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_nordic_patrol_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_titan_offshore_mk_1_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_titan_offshore_mk_1_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_titan_offshore_mk_1_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_titan_offshore_mk_2_damaged.png",
+      "status": "fixed",
+      "before": 1047670,
+      "after": 1048390
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_titan_offshore_mk_2_dirty.png",
+      "status": "fixed",
+      "before": 1047765,
+      "after": 1048270
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\boat_titan_offshore_mk_2_new.png",
+      "status": "fixed",
+      "before": 1047414,
+      "after": 1048198
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_bolide_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_bolide_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_bolide_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_bolide_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_bolide_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_bolide_black_edition_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_sport_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_sport_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_sport_midnight_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_sport_midnight_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_sport_midnight_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_chiron_sport_midnight_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_la_voiture_noire_damaged.png",
+      "status": "fixed",
+      "before": 1036600,
+      "after": 1047180
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_la_voiture_noire_dirty.png",
+      "status": "fixed",
+      "before": 1023019,
+      "after": 1032141
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_la_voiture_noire_new.png",
+      "status": "fixed",
+      "before": 1015750,
+      "after": 1028801
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_mistral_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_mistral_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_mistral_midnight_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_mistral_midnight_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_mistral_midnight_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_mistral_midnight_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_veyron_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_veyron_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_veyron_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_veyron_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_veyron_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\bugatti_veyron_black_edition_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\catamaran_cruiser_damaged.png",
+      "status": "fixed",
+      "before": 1033357,
+      "after": 1039147
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\catamaran_cruiser_dirty.png",
+      "status": "fixed",
+      "before": 1048205,
+      "after": 1048288
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\catamaran_cruiser_new.png",
+      "status": "fixed",
+      "before": 1047402,
+      "after": 1047995
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 982659,
+      "after": 1047862
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1010443,
+      "after": 1037896
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_2_new.png",
+      "status": "fixed",
+      "before": 1014363,
+      "after": 1031228
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_3_damaged.png",
+      "status": "fixed",
+      "before": 971639,
+      "after": 1017561
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_3_dirty.png",
+      "status": "fixed",
+      "before": 1019795,
+      "after": 1039307
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_3_new.png",
+      "status": "fixed",
+      "before": 1040765,
+      "after": 1046967
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_damaged.png",
+      "status": "fixed",
+      "before": 972354,
+      "after": 1033544
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_dirty.png",
+      "status": "fixed",
+      "before": 1009941,
+      "after": 1032689
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_camaro_ss_executive_new.png",
+      "status": "fixed",
+      "before": 978777,
+      "after": 1014076
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_corvette_c8_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1044049,
+      "after": 1047469
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_corvette_c8_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 1045993,
+      "after": 1047813
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_corvette_c8_s_line_2_new.png",
+      "status": "fixed",
+      "before": 1000209,
+      "after": 1032452
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_corvette_c8_s_line_damaged.png",
+      "status": "fixed",
+      "before": 1046316,
+      "after": 1047711
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_corvette_c8_s_line_dirty.png",
+      "status": "fixed",
+      "before": 999670,
+      "after": 1019820
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_corvette_c8_s_line_new.png",
+      "status": "fixed",
+      "before": 1020632,
+      "after": 1031362
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_silverado_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1024707,
+      "after": 1040214
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_silverado_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 1034409,
+      "after": 1048048
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_silverado_s_line_2_new.png",
+      "status": "fixed",
+      "before": 1035135,
+      "after": 1044397
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_silverado_s_line_damaged.png",
+      "status": "fixed",
+      "before": 1028343,
+      "after": 1045839
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_silverado_s_line_dirty.png",
+      "status": "fixed",
+      "before": 1043270,
+      "after": 1047519
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_silverado_s_line_new.png",
+      "status": "fixed",
+      "before": 1035377,
+      "after": 1047541
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_tahoe_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 1016098,
+      "after": 1042134
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_tahoe_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1016452,
+      "after": 1045468
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_tahoe_executive_2_new.png",
+      "status": "fixed",
+      "before": 1022658,
+      "after": 1044742
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_tahoe_executive_damaged.png",
+      "status": "fixed",
+      "before": 998910,
+      "after": 1030034
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_tahoe_executive_dirty.png",
+      "status": "fixed",
+      "before": 1011891,
+      "after": 1041227
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\chevrolet_tahoe_executive_new.png",
+      "status": "fixed",
+      "before": 1010755,
+      "after": 1037417
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\cigarette_boat_damaged.png",
+      "status": "fixed",
+      "before": 1047311,
+      "after": 1048226
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\cigarette_boat_dirty.png",
+      "status": "fixed",
+      "before": 1048120,
+      "after": 1048243
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\cigarette_boat_new.png",
+      "status": "fixed",
+      "before": 1047981,
+      "after": 1048161
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_challenger_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 1044709,
+      "after": 1048079
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_challenger_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 954715,
+      "after": 1048115
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_challenger_midnight_2_new.png",
+      "status": "fixed",
+      "before": 1017758,
+      "after": 1040664
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_challenger_midnight_damaged.png",
+      "status": "fixed",
+      "before": 1009760,
+      "after": 1037110
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_challenger_midnight_dirty.png",
+      "status": "fixed",
+      "before": 949109,
+      "after": 1024208
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_challenger_midnight_new.png",
+      "status": "fixed",
+      "before": 1005693,
+      "after": 1035230
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 939456,
+      "after": 1001101
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 1015686,
+      "after": 1041676
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1002106,
+      "after": 1026920
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_3_damaged.png",
+      "status": "fixed",
+      "before": 1043487,
+      "after": 1048180
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_3_dirty.png",
+      "status": "fixed",
+      "before": 996043,
+      "after": 1028334
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_3_new.png",
+      "status": "fixed",
+      "before": 1045533,
+      "after": 1048401
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 958462,
+      "after": 1014619
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 998259,
+      "after": 1032383
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_charger_black_edition_new.png",
+      "status": "fixed",
+      "before": 992957,
+      "after": 1025597
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_durango_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 960215,
+      "after": 1012899
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_durango_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 1044991,
+      "after": 1048200
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_durango_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 980685,
+      "after": 1030834
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_durango_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 998280,
+      "after": 1026977
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_durango_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 986624,
+      "after": 1030747
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_durango_black_edition_new.png",
+      "status": "fixed",
+      "before": 998396,
+      "after": 1040686
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_ram_1500_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 980577,
+      "after": 1035216
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_ram_1500_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 1003169,
+      "after": 1037125
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_ram_1500_midnight_2_new.png",
+      "status": "fixed",
+      "before": 1005972,
+      "after": 1042608
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_ram_1500_midnight_damaged.png",
+      "status": "fixed",
+      "before": 1002947,
+      "after": 1043715
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_ram_1500_midnight_dirty.png",
+      "status": "fixed",
+      "before": 988478,
+      "after": 1042356
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\dodge_ram_1500_midnight_new.png",
+      "status": "fixed",
+      "before": 1044760,
+      "after": 1048082
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\eclipse_yacht_damaged.png",
+      "status": "fixed",
+      "before": 1046183,
+      "after": 1048136
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\eclipse_yacht_dirty.png",
+      "status": "fixed",
+      "before": 1046572,
+      "after": 1048055
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\eclipse_yacht_new.png",
+      "status": "fixed",
+      "before": 1042240,
+      "after": 1047100
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_interceptor_damaged.png",
+      "status": "fixed",
+      "before": 988386,
+      "after": 1025908
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_interceptor_dirty.png",
+      "status": "fixed",
+      "before": 1026823,
+      "after": 1040350
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_interceptor_new.png",
+      "status": "fixed",
+      "before": 1032435,
+      "after": 1046896
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_motor_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_motor_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_motor_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_patrouilleboot_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_patrouilleboot_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\event_politie_patrouilleboot_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\explorer_yacht_damaged.png",
+      "status": "fixed",
+      "before": 1045587,
+      "after": 1048252
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\explorer_yacht_dirty.png",
+      "status": "fixed",
+      "before": 1046505,
+      "after": 1048120
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\explorer_yacht_new.png",
+      "status": "fixed",
+      "before": 1046925,
+      "after": 1048296
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_296_gtb_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_296_gtb_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_296_gtb_executive_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_296_gtb_executive_damaged.png",
+      "status": "fixed",
+      "before": 1031848,
+      "after": 1039977
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_296_gtb_executive_dirty.png",
+      "status": "fixed",
+      "before": 1006779,
+      "after": 1025840
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_296_gtb_executive_new.png",
+      "status": "fixed",
+      "before": 1001222,
+      "after": 1039845
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_812_damaged.png",
+      "status": "fixed",
+      "before": 1043417,
+      "after": 1046548
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_812_dirty.png",
+      "status": "fixed",
+      "before": 1026798,
+      "after": 1038031
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_812_new.png",
+      "status": "fixed",
+      "before": 1034537,
+      "after": 1041273
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_damaged.png",
+      "status": "fixed",
+      "before": 1027032,
+      "after": 1039014
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_dirty.png",
+      "status": "fixed",
+      "before": 956096,
+      "after": 981872
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_f8_damaged.png",
+      "status": "fixed",
+      "before": 1023824,
+      "after": 1037445
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_f8_dirty.png",
+      "status": "fixed",
+      "before": 992046,
+      "after": 1047664
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_f8_new.png",
+      "status": "fixed",
+      "before": 994068,
+      "after": 1048150
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_new.png",
+      "status": "fixed",
+      "before": 963287,
+      "after": 973129
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_purosangue_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1023564,
+      "after": 1043114
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_purosangue_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 1046184,
+      "after": 1048279
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_purosangue_s_line_2_new.png",
+      "status": "fixed",
+      "before": 962998,
+      "after": 1026465
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_purosangue_s_line_damaged.png",
+      "status": "fixed",
+      "before": 1004397,
+      "after": 1022582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_purosangue_s_line_dirty.png",
+      "status": "fixed",
+      "before": 971732,
+      "after": 1007282
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_purosangue_s_line_new.png",
+      "status": "fixed",
+      "before": 1022400,
+      "after": 1032483
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_roma_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_roma_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_roma_s_line_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_roma_s_line_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_roma_s_line_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_roma_s_line_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_sf90_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_sf90_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_sf90_executive_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_sf90_executive_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_sf90_executive_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ferrari_sf90_executive_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\fishing_boat_damaged.png",
+      "status": "fixed",
+      "before": 1045116,
+      "after": 1047936
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\fishing_boat_dirty.png",
+      "status": "fixed",
+      "before": 1042772,
+      "after": 1043530
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\fishing_boat_new.png",
+      "status": "fixed",
+      "before": 1046421,
+      "after": 1047704
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_explorer_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1026342,
+      "after": 1045470
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_explorer_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 955282,
+      "after": 1040943
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_explorer_carbon_2_new.png",
+      "status": "fixed",
+      "before": 989387,
+      "after": 1037352
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_explorer_carbon_damaged.png",
+      "status": "fixed",
+      "before": 938107,
+      "after": 1029192
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_explorer_carbon_dirty.png",
+      "status": "fixed",
+      "before": 995337,
+      "after": 1035075
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_explorer_carbon_new.png",
+      "status": "fixed",
+      "before": 958965,
+      "after": 1030570
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_focus_st_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 992865,
+      "after": 1021569
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_focus_st_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 962931,
+      "after": 1022573
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_focus_st_carbon_2_new.png",
+      "status": "fixed",
+      "before": 1006831,
+      "after": 1031405
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_focus_st_carbon_damaged.png",
+      "status": "fixed",
+      "before": 955808,
+      "after": 1023382
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_focus_st_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1001911,
+      "after": 1038275
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_focus_st_carbon_new.png",
+      "status": "fixed",
+      "before": 1003148,
+      "after": 1031890
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 985230,
+      "after": 1022811
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 1020141,
+      "after": 1038292
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_2_new.png",
+      "status": "fixed",
+      "before": 1017197,
+      "after": 1032570
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_3_damaged.png",
+      "status": "fixed",
+      "before": 1022929,
+      "after": 1039783
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_3_dirty.png",
+      "status": "fixed",
+      "before": 1046047,
+      "after": 1048224
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_3_new.png",
+      "status": "fixed",
+      "before": 994886,
+      "after": 1020637
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_damaged.png",
+      "status": "fixed",
+      "before": 1013755,
+      "after": 1040074
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_dirty.png",
+      "status": "fixed",
+      "before": 1008833,
+      "after": 1030314
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_mustang_gt_sport_new.png",
+      "status": "fixed",
+      "before": 1003148,
+      "after": 1027990
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_ranger_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 980010,
+      "after": 1023028
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_ranger_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 1010268,
+      "after": 1048339
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_ranger_sport_2_new.png",
+      "status": "fixed",
+      "before": 969716,
+      "after": 1023253
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_ranger_sport_damaged.png",
+      "status": "fixed",
+      "before": 1020858,
+      "after": 1040222
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_ranger_sport_dirty.png",
+      "status": "fixed",
+      "before": 997002,
+      "after": 1022117
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\ford_ranger_sport_new.png",
+      "status": "fixed",
+      "before": 1011175,
+      "after": 1039530
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_accord_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1027962,
+      "after": 1042617
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_accord_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1011362,
+      "after": 1039807
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_accord_track_2_new.png",
+      "status": "fixed",
+      "before": 986569,
+      "after": 1023461
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_accord_track_damaged.png",
+      "status": "fixed",
+      "before": 950707,
+      "after": 1013050
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_accord_track_dirty.png",
+      "status": "fixed",
+      "before": 1019262,
+      "after": 1045332
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_accord_track_new.png",
+      "status": "fixed",
+      "before": 1009024,
+      "after": 1022573
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_2_damaged.png",
+      "status": "fixed",
+      "before": 992946,
+      "after": 1033236
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_2_dirty.png",
+      "status": "fixed",
+      "before": 999119,
+      "after": 1027838
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_2_new.png",
+      "status": "fixed",
+      "before": 1016214,
+      "after": 1044123
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_3_damaged.png",
+      "status": "fixed",
+      "before": 1017875,
+      "after": 1032874
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_3_dirty.png",
+      "status": "fixed",
+      "before": 1002959,
+      "after": 1021749
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_3_new.png",
+      "status": "fixed",
+      "before": 1007294,
+      "after": 1025944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_damaged.png",
+      "status": "fixed",
+      "before": 987261,
+      "after": 1033156
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_dirty.png",
+      "status": "fixed",
+      "before": 1004294,
+      "after": 1015083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_civic_type_r_street_new.png",
+      "status": "fixed",
+      "before": 961151,
+      "after": 1024666
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_cr_v_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1044860,
+      "after": 1048216
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_cr_v_track_2_dirty.png",
+      "status": "fixed",
+      "before": 997894,
+      "after": 1039675
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_cr_v_track_2_new.png",
+      "status": "fixed",
+      "before": 1012410,
+      "after": 1022105
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_cr_v_track_damaged.png",
+      "status": "fixed",
+      "before": 1042991,
+      "after": 1047653
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_cr_v_track_dirty.png",
+      "status": "fixed",
+      "before": 965675,
+      "after": 1015572
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_cr_v_track_new.png",
+      "status": "fixed",
+      "before": 983339,
+      "after": 1033446
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_nsx_street_2_damaged.png",
+      "status": "fixed",
+      "before": 958408,
+      "after": 1002732
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_nsx_street_2_dirty.png",
+      "status": "fixed",
+      "before": 1045677,
+      "after": 1048015
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_nsx_street_2_new.png",
+      "status": "fixed",
+      "before": 991125,
+      "after": 1019775
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_nsx_street_damaged.png",
+      "status": "fixed",
+      "before": 1008789,
+      "after": 1032273
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_nsx_street_dirty.png",
+      "status": "fixed",
+      "before": 998073,
+      "after": 1012813
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\honda_nsx_street_new.png",
+      "status": "fixed",
+      "before": 1010946,
+      "after": 1039577
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\huracan_performante_damaged.png",
+      "status": "fixed",
+      "before": 1033534,
+      "after": 1047549
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\huracan_performante_dirty.png",
+      "status": "fixed",
+      "before": 1045489,
+      "after": 1048088
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\huracan_performante_new.png",
+      "status": "fixed",
+      "before": 986285,
+      "after": 1004030
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\inflatable_rib_damaged.png",
+      "status": "fixed",
+      "before": 1045519,
+      "after": 1047723
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\inflatable_rib_dirty.png",
+      "status": "fixed",
+      "before": 1047173,
+      "after": 1047881
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\inflatable_rib_new.png",
+      "status": "fixed",
+      "before": 1043859,
+      "after": 1045937
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\koenigsegg_agera_damaged.png",
+      "status": "fixed",
+      "before": 1034318,
+      "after": 1043066
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\koenigsegg_agera_dirty.png",
+      "status": "fixed",
+      "before": 1038154,
+      "after": 1044295
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\koenigsegg_agera_new.png",
+      "status": "fixed",
+      "before": 1035295,
+      "after": 1044439
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\laferrari_aperta_damaged.png",
+      "status": "fixed",
+      "before": 1044787,
+      "after": 1047106
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\laferrari_aperta_dirty.png",
+      "status": "fixed",
+      "before": 1036049,
+      "after": 1040316
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\laferrari_aperta_new.png",
+      "status": "fixed",
+      "before": 1038379,
+      "after": 1042714
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_aventador_damaged.png",
+      "status": "fixed",
+      "before": 1045242,
+      "after": 1046928
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_aventador_dirty.png",
+      "status": "fixed",
+      "before": 1031386,
+      "after": 1038427
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_aventador_new.png",
+      "status": "fixed",
+      "before": 1039111,
+      "after": 1042548
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_centenario_damaged.png",
+      "status": "fixed",
+      "before": 1043747,
+      "after": 1045695
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_centenario_dirty.png",
+      "status": "fixed",
+      "before": 1046268,
+      "after": 1047023
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_centenario_new.png",
+      "status": "fixed",
+      "before": 1044864,
+      "after": 1046025
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_huracan_evo_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_huracan_evo_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_huracan_evo_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_huracan_evo_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_huracan_evo_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_huracan_evo_black_edition_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_revuelto_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_revuelto_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_revuelto_midnight_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_revuelto_midnight_damaged.png",
+      "status": "fixed",
+      "before": 923661,
+      "after": 996956
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_revuelto_midnight_dirty.png",
+      "status": "fixed",
+      "before": 993444,
+      "after": 1017798
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_revuelto_midnight_new.png",
+      "status": "fixed",
+      "before": 1016368,
+      "after": 1048148
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_temerario_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 928837,
+      "after": 1011469
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_temerario_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 939025,
+      "after": 999302
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_temerario_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1044765,
+      "after": 1047886
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_temerario_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_temerario_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_temerario_black_edition_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_urus_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_urus_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_urus_midnight_2_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_urus_midnight_damaged.png",
+      "status": "fixed",
+      "before": 1044328,
+      "after": 1047606
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_urus_midnight_dirty.png",
+      "status": "fixed",
+      "before": 1015859,
+      "after": 1045783
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lamborghini_urus_midnight_new.png",
+      "status": "fixed",
+      "before": 963461,
+      "after": 1046074
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1009148,
+      "after": 1038847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 1015270,
+      "after": 1023218
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_2_new.png",
+      "status": "fixed",
+      "before": 1000309,
+      "after": 1047449
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_3_damaged.png",
+      "status": "fixed",
+      "before": 999849,
+      "after": 1034377
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_3_dirty.png",
+      "status": "fixed",
+      "before": 985300,
+      "after": 1047867
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_3_new.png",
+      "status": "fixed",
+      "before": 1031678,
+      "after": 1041333
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_damaged.png",
+      "status": "fixed",
+      "before": 979489,
+      "after": 1037185
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_dirty.png",
+      "status": "fixed",
+      "before": 996375,
+      "after": 1019054
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_is500_s_line_new.png",
+      "status": "fixed",
+      "before": 999426,
+      "after": 1013047
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_ls500_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1044974,
+      "after": 1048081
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_ls500_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 963199,
+      "after": 1011865
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_ls500_s_line_2_new.png",
+      "status": "fixed",
+      "before": 968613,
+      "after": 1020208
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_ls500_s_line_damaged.png",
+      "status": "fixed",
+      "before": 988950,
+      "after": 1034264
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_ls500_s_line_dirty.png",
+      "status": "fixed",
+      "before": 1002286,
+      "after": 1033078
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_ls500_s_line_new.png",
+      "status": "fixed",
+      "before": 1002772,
+      "after": 1023051
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rc_f_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 985335,
+      "after": 1034143
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rc_f_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1002619,
+      "after": 1016104
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rc_f_executive_2_new.png",
+      "status": "fixed",
+      "before": 985984,
+      "after": 1019233
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rc_f_executive_damaged.png",
+      "status": "fixed",
+      "before": 954792,
+      "after": 1002163
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rc_f_executive_dirty.png",
+      "status": "fixed",
+      "before": 985739,
+      "after": 1018884
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rc_f_executive_new.png",
+      "status": "fixed",
+      "before": 963414,
+      "after": 1010943
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rx500h_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 968149,
+      "after": 1024848
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rx500h_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1004420,
+      "after": 1031725
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rx500h_executive_2_new.png",
+      "status": "fixed",
+      "before": 940794,
+      "after": 1018876
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rx500h_executive_damaged.png",
+      "status": "fixed",
+      "before": 989571,
+      "after": 1028643
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rx500h_executive_dirty.png",
+      "status": "fixed",
+      "before": 981309,
+      "after": 1019390
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\lexus_rx500h_executive_new.png",
+      "status": "fixed",
+      "before": 1007788,
+      "after": 1039885
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\luxury_sedan_damaged.png",
+      "status": "fixed",
+      "before": 1044407,
+      "after": 1047304
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\luxury_sedan_dirty.png",
+      "status": "fixed",
+      "before": 1021645,
+      "after": 1040444
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\luxury_sedan_new.png",
+      "status": "fixed",
+      "before": 1004254,
+      "after": 1036052
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_ghibli_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 988221,
+      "after": 1011750
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_ghibli_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 1013637,
+      "after": 1036051
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_ghibli_carbon_2_new.png",
+      "status": "fixed",
+      "before": 982261,
+      "after": 1048198
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_ghibli_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1001731,
+      "after": 1027649
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_ghibli_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1016862,
+      "after": 1042391
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_ghibli_carbon_new.png",
+      "status": "fixed",
+      "before": 977701,
+      "after": 1020277
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_levante_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 965779,
+      "after": 1008986
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_levante_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 992973,
+      "after": 1023211
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_levante_sport_2_new.png",
+      "status": "fixed",
+      "before": 999461,
+      "after": 1036712
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_levante_sport_damaged.png",
+      "status": "fixed",
+      "before": 1000114,
+      "after": 1038186
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_levante_sport_dirty.png",
+      "status": "fixed",
+      "before": 989253,
+      "after": 1026770
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_levante_sport_new.png",
+      "status": "fixed",
+      "before": 966111,
+      "after": 1020570
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_mc20_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1044388,
+      "after": 1047723
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_mc20_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 932170,
+      "after": 976193
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_mc20_carbon_2_new.png",
+      "status": "fixed",
+      "before": 949391,
+      "after": 980347
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_mc20_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_mc20_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_mc20_carbon_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_quattroporte_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 973393,
+      "after": 1024058
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_quattroporte_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 997766,
+      "after": 1023801
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_quattroporte_sport_2_new.png",
+      "status": "fixed",
+      "before": 955639,
+      "after": 992627
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_quattroporte_sport_damaged.png",
+      "status": "fixed",
+      "before": 964784,
+      "after": 1014580
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_quattroporte_sport_dirty.png",
+      "status": "fixed",
+      "before": 979708,
+      "after": 1028307
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\maserati_quattroporte_sport_new.png",
+      "status": "fixed",
+      "before": 947326,
+      "after": 1027510
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_570s_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_570s_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_570s_track_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_570s_track_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_570s_track_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_570s_track_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_720s_damaged.png",
+      "status": "fixed",
+      "before": 1019504,
+      "after": 1039782
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_720s_dirty.png",
+      "status": "fixed",
+      "before": 1000110,
+      "after": 1032865
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_720s_new.png",
+      "status": "fixed",
+      "before": 996766,
+      "after": 1048316
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_750s_street_2_damaged.png",
+      "status": "fixed",
+      "before": 990870,
+      "after": 1047794
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_750s_street_2_dirty.png",
+      "status": "fixed",
+      "before": 1039448,
+      "after": 1043975
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_750s_street_2_new.png",
+      "status": "fixed",
+      "before": 961381,
+      "after": 972288
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_750s_street_damaged.png",
+      "status": "fixed",
+      "before": 984905,
+      "after": 1012790
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_750s_street_dirty.png",
+      "status": "fixed",
+      "before": 989757,
+      "after": 1005992
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_750s_street_new.png",
+      "status": "fixed",
+      "before": 979992,
+      "after": 995165
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_765lt_damaged.png",
+      "status": "fixed",
+      "before": 1042453,
+      "after": 1047630
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_765lt_dirty.png",
+      "status": "fixed",
+      "before": 1019329,
+      "after": 1029714
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_765lt_new.png",
+      "status": "fixed",
+      "before": 1034053,
+      "after": 1039861
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_artura_street_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_artura_street_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_artura_street_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_artura_street_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_artura_street_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_artura_street_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_gt_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_gt_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_gt_track_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_gt_track_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_gt_track_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_gt_track_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_p1_damaged.png",
+      "status": "fixed",
+      "before": 1043596,
+      "after": 1046104
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_p1_dirty.png",
+      "status": "fixed",
+      "before": 1041604,
+      "after": 1044791
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mclaren_p1_new.png",
+      "status": "fixed",
+      "before": 1043304,
+      "after": 1044969
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mega_yacht_120ft_damaged.png",
+      "status": "fixed",
+      "before": 1047539,
+      "after": 1048506
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mega_yacht_120ft_dirty.png",
+      "status": "fixed",
+      "before": 1047428,
+      "after": 1048118
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mega_yacht_120ft_new.png",
+      "status": "fixed",
+      "before": 1046151,
+      "after": 1047053
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 944610,
+      "after": 1007280
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 1001371,
+      "after": 1033930
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1005744,
+      "after": 1029898
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_3_damaged.png",
+      "status": "fixed",
+      "before": 1044813,
+      "after": 1047814
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_3_dirty.png",
+      "status": "fixed",
+      "before": 1046789,
+      "after": 1048470
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_3_new.png",
+      "status": "fixed",
+      "before": 1013893,
+      "after": 1035446
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 963249,
+      "after": 1034521
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 1017298,
+      "after": 1043110
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_a45_black_edition_new.png",
+      "status": "fixed",
+      "before": 985528,
+      "after": 1027609
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_amg_one_damaged.png",
+      "status": "fixed",
+      "before": 1045732,
+      "after": 1046945
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_amg_one_dirty.png",
+      "status": "fixed",
+      "before": 1038732,
+      "after": 1042332
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_amg_one_new.png",
+      "status": "fixed",
+      "before": 1043822,
+      "after": 1045128
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_c63_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 999361,
+      "after": 1038327
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_c63_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 970936,
+      "after": 1020454
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_c63_midnight_2_new.png",
+      "status": "fixed",
+      "before": 999437,
+      "after": 1043755
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_c63_midnight_damaged.png",
+      "status": "fixed",
+      "before": 991943,
+      "after": 1036093
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_c63_midnight_dirty.png",
+      "status": "fixed",
+      "before": 964920,
+      "after": 1017869
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_c63_midnight_new.png",
+      "status": "fixed",
+      "before": 1018189,
+      "after": 1038408
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_e63_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 1018128,
+      "after": 1043901
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_e63_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 1021322,
+      "after": 1047346
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_e63_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1020968,
+      "after": 1042313
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_e63_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 999425,
+      "after": 1034908
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_e63_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 1000681,
+      "after": 1021183
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_e63_black_edition_new.png",
+      "status": "fixed",
+      "before": 1017204,
+      "after": 1045332
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_gle63_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 963106,
+      "after": 1019726
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_gle63_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 998924,
+      "after": 1043694
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_gle63_midnight_2_new.png",
+      "status": "fixed",
+      "before": 960752,
+      "after": 1012183
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_gle63_midnight_damaged.png",
+      "status": "fixed",
+      "before": 979375,
+      "after": 1023250
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_gle63_midnight_dirty.png",
+      "status": "fixed",
+      "before": 964686,
+      "after": 1031112
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\mercedes_gle63_midnight_new.png",
+      "status": "fixed",
+      "before": 998286,
+      "after": 1044302
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rs660_stealth_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rs660_stealth_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rs660_stealth_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rsv4_interceptor_2_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rsv4_interceptor_2_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rsv4_interceptor_2_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rsv4_interceptor_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rsv4_interceptor_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_rsv4_interceptor_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuareg_street_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuareg_street_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuareg_street_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuono_v4_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuono_v4_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuono_v4_carbon_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuono_v4_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuono_v4_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_aprilia_tuono_v4_carbon_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_f900xr_stealth_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_f900xr_stealth_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_f900xr_stealth_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_m1000r_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_m1000r_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_m1000r_carbon_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_r1250gs_interceptor_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_r1250gs_interceptor_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_r1250gs_interceptor_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_r1250gs_interceptor_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_r1250gs_interceptor_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_r1250gs_interceptor_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_s1000rr_street_2_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_s1000rr_street_2_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_s1000rr_street_2_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_s1000rr_street_damaged.png",
+      "status": "fixed",
+      "before": 1027673,
+      "after": 1035160
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_s1000rr_street_dirty.png",
+      "status": "fixed",
+      "before": 1025541,
+      "after": 1031758
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_bmw_s1000rr_street_new.png",
+      "status": "fixed",
+      "before": 1022485,
+      "after": 1038345
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_diavel_urban_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_diavel_urban_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_diavel_urban_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_monster_raid_2_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_monster_raid_2_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_monster_raid_2_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_monster_raid_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_monster_raid_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_monster_raid_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_multistrada_track_damaged.png",
+      "status": "fixed",
+      "before": 1027673,
+      "after": 1035160
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_multistrada_track_dirty.png",
+      "status": "fixed",
+      "before": 1025541,
+      "after": 1031758
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_multistrada_track_new.png",
+      "status": "fixed",
+      "before": 1022485,
+      "after": 1038345
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_panigale_v4_ghost_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_panigale_v4_ghost_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_panigale_v4_ghost_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_panigale_v4_ghost_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_panigale_v4_ghost_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ducati_panigale_v4_ghost_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_low_rider_s_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_low_rider_s_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_low_rider_s_carbon_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_low_rider_s_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_low_rider_s_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_low_rider_s_carbon_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_road_king_interceptor_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_road_king_interceptor_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_road_king_interceptor_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_sportster_s_street_damaged.png",
+      "status": "fixed",
+      "before": 1041142,
+      "after": 1043942
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_sportster_s_street_dirty.png",
+      "status": "fixed",
+      "before": 1012619,
+      "after": 1023704
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_sportster_s_street_new.png",
+      "status": "fixed",
+      "before": 1046043,
+      "after": 1047313
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_street_glide_stealth_2_damaged.png",
+      "status": "fixed",
+      "before": 1027673,
+      "after": 1035160
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_street_glide_stealth_2_dirty.png",
+      "status": "fixed",
+      "before": 1025541,
+      "after": 1031758
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_street_glide_stealth_2_new.png",
+      "status": "fixed",
+      "before": 1022485,
+      "after": 1038345
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_street_glide_stealth_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_street_glide_stealth_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_harley_davidson_street_glide_stealth_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_africa_twin_stealth_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_africa_twin_stealth_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_africa_twin_stealth_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_africa_twin_stealth_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_africa_twin_stealth_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_africa_twin_stealth_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cb650r_street_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cb650r_street_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cb650r_street_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cbr1000rr_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cbr1000rr_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cbr1000rr_carbon_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cbr1000rr_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cbr1000rr_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_cbr1000rr_carbon_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_fireblade_interceptor_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_fireblade_interceptor_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_honda_fireblade_interceptor_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_h2_urban_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_h2_urban_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_h2_urban_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_ninja_zx_10r_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_ninja_zx_10r_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_ninja_zx_10r_track_2_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_ninja_zx_10r_track_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_ninja_zx_10r_track_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_ninja_zx_10r_track_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_versys_raid_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_versys_raid_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_versys_raid_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_z900_ghost_2_damaged.png",
+      "status": "fixed",
+      "before": 1041142,
+      "after": 1043942
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_z900_ghost_2_dirty.png",
+      "status": "fixed",
+      "before": 1012619,
+      "after": 1023704
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_z900_ghost_2_new.png",
+      "status": "fixed",
+      "before": 1046043,
+      "after": 1047313
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_z900_ghost_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_z900_ghost_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_kawasaki_z900_ghost_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_1290_super_duke_urban_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_1290_super_duke_urban_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_1290_super_duke_urban_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_1290_super_duke_urban_damaged.png",
+      "status": "fixed",
+      "before": 1027673,
+      "after": 1035160
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_1290_super_duke_urban_dirty.png",
+      "status": "fixed",
+      "before": 1025541,
+      "after": 1031758
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_1290_super_duke_urban_new.png",
+      "status": "fixed",
+      "before": 1022485,
+      "after": 1038345
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_890_duke_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1027673,
+      "after": 1035160
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_890_duke_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1025541,
+      "after": 1031758
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_890_duke_track_2_new.png",
+      "status": "fixed",
+      "before": 1022485,
+      "after": 1038345
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_890_duke_track_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_890_duke_track_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_890_duke_track_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_adventure_ghost_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_adventure_ghost_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_adventure_ghost_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_rc_8c_raid_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_rc_8c_raid_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_ktm_rc_8c_raid_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_gsx_r1000_stealth_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_gsx_r1000_stealth_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_gsx_r1000_stealth_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_gsx_r1000_stealth_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_gsx_r1000_stealth_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_gsx_r1000_stealth_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_hayabusa_street_2_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_hayabusa_street_2_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_hayabusa_street_2_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_hayabusa_street_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_hayabusa_street_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_hayabusa_street_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_katana_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_katana_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_katana_carbon_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_v_strom_interceptor_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_v_strom_interceptor_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_suzuki_v_strom_interceptor_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_rocket_3_ghost_damaged.png",
+      "status": "fixed",
+      "before": 1027673,
+      "after": 1035160
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_rocket_3_ghost_dirty.png",
+      "status": "fixed",
+      "before": 1025541,
+      "after": 1031758
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_rocket_3_ghost_new.png",
+      "status": "fixed",
+      "before": 1022485,
+      "after": 1038345
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_speed_twin_urban_2_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_speed_twin_urban_2_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_speed_twin_urban_2_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_speed_twin_urban_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_speed_twin_urban_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_speed_twin_urban_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_street_triple_raid_2_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_street_triple_raid_2_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_street_triple_raid_2_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_street_triple_raid_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_street_triple_raid_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_street_triple_raid_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_tiger_900_track_damaged.png",
+      "status": "fixed",
+      "before": 1044283,
+      "after": 1047847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_tiger_900_track_dirty.png",
+      "status": "fixed",
+      "before": 1039331,
+      "after": 1043032
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_triumph_tiger_900_track_new.png",
+      "status": "fixed",
+      "before": 1031717,
+      "after": 1038582
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_mt_09_urban_2_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_mt_09_urban_2_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_mt_09_urban_2_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_mt_09_urban_damaged.png",
+      "status": "fixed",
+      "before": 1041142,
+      "after": 1043942
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_mt_09_urban_dirty.png",
+      "status": "fixed",
+      "before": 1012619,
+      "after": 1023704
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_mt_09_urban_new.png",
+      "status": "fixed",
+      "before": 1046043,
+      "after": 1047313
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_r1_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1041142,
+      "after": 1043942
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_r1_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1012619,
+      "after": 1023704
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_r1_track_2_new.png",
+      "status": "fixed",
+      "before": 1046043,
+      "after": 1047313
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_r1_track_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_r1_track_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_r1_track_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_tracer_9_ghost_damaged.png",
+      "status": "fixed",
+      "before": 1040647,
+      "after": 1047509
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_tracer_9_ghost_dirty.png",
+      "status": "fixed",
+      "before": 1025603,
+      "after": 1035187
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_tracer_9_ghost_new.png",
+      "status": "fixed",
+      "before": 1015829,
+      "after": 1038083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_xsr900_raid_damaged.png",
+      "status": "fixed",
+      "before": 1027673,
+      "after": 1035160
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_xsr900_raid_dirty.png",
+      "status": "fixed",
+      "before": 1025541,
+      "after": 1031758
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\moto_yamaha_xsr900_raid_new.png",
+      "status": "fixed",
+      "before": 1022485,
+      "after": 1038345
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\motor_yacht_80ft_damaged.png",
+      "status": "fixed",
+      "before": 1048107,
+      "after": 1048455
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\motor_yacht_80ft_dirty.png",
+      "status": "fixed",
+      "before": 1047975,
+      "after": 1048295
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\motor_yacht_80ft_new.png",
+      "status": "fixed",
+      "before": 1048065,
+      "after": 1048413
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\muscle_car_damaged.png",
+      "status": "fixed",
+      "before": 996035,
+      "after": 1032645
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\muscle_car_dirty.png",
+      "status": "fixed",
+      "before": 1006973,
+      "after": 1028608
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\muscle_car_new.png",
+      "status": "fixed",
+      "before": 953533,
+      "after": 1028787
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 983545,
+      "after": 1040009
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 979091,
+      "after": 1014565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_2_new.png",
+      "status": "fixed",
+      "before": 1006082,
+      "after": 1032332
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_3_damaged.png",
+      "status": "fixed",
+      "before": 971724,
+      "after": 1037210
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_3_dirty.png",
+      "status": "fixed",
+      "before": 1006507,
+      "after": 1031824
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_3_new.png",
+      "status": "fixed",
+      "before": 1024993,
+      "after": 1034625
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_damaged.png",
+      "status": "fixed",
+      "before": 911201,
+      "after": 1004981
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_dirty.png",
+      "status": "fixed",
+      "before": 995939,
+      "after": 1019952
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_370z_midnight_new.png",
+      "status": "fixed",
+      "before": 988727,
+      "after": 1017656
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_gt_r_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 969113,
+      "after": 1009600
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_gt_r_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 997459,
+      "after": 1019149
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_gt_r_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 1002318,
+      "after": 1034593
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_gt_r_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 1009412,
+      "after": 1048050
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_gt_r_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 954650,
+      "after": 1013943
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_gt_r_black_edition_new.png",
+      "status": "fixed",
+      "before": 955916,
+      "after": 1019599
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_patrol_black_edition_2_damaged.png",
+      "status": "fixed",
+      "before": 932946,
+      "after": 1024006
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_patrol_black_edition_2_dirty.png",
+      "status": "fixed",
+      "before": 985178,
+      "after": 1035756
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_patrol_black_edition_2_new.png",
+      "status": "fixed",
+      "before": 978221,
+      "after": 1041896
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_patrol_black_edition_damaged.png",
+      "status": "fixed",
+      "before": 998994,
+      "after": 1038889
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_patrol_black_edition_dirty.png",
+      "status": "fixed",
+      "before": 1003015,
+      "after": 1046562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_patrol_black_edition_new.png",
+      "status": "fixed",
+      "before": 1042772,
+      "after": 1048044
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_qashqai_midnight_2_damaged.png",
+      "status": "fixed",
+      "before": 949758,
+      "after": 995443
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_qashqai_midnight_2_dirty.png",
+      "status": "fixed",
+      "before": 983020,
+      "after": 1022928
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_qashqai_midnight_2_new.png",
+      "status": "fixed",
+      "before": 952594,
+      "after": 1004144
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_qashqai_midnight_damaged.png",
+      "status": "fixed",
+      "before": 949863,
+      "after": 1003237
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_qashqai_midnight_dirty.png",
+      "status": "fixed",
+      "before": 935108,
+      "after": 1010454
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\nissan_qashqai_midnight_new.png",
+      "status": "fixed",
+      "before": 983206,
+      "after": 1018258
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\old_car_damaged.png",
+      "status": "fixed",
+      "before": 979823,
+      "after": 1013919
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\old_car_dirty.png",
+      "status": "fixed",
+      "before": 991733,
+      "after": 1022709
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\old_car_new.png",
+      "status": "fixed",
+      "before": 988464,
+      "after": 1014771
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pagani_huayra_damaged.png",
+      "status": "fixed",
+      "before": 1045226,
+      "after": 1047833
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pagani_huayra_dirty.png",
+      "status": "fixed",
+      "before": 1034871,
+      "after": 1045158
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pagani_huayra_new.png",
+      "status": "fixed",
+      "before": 1041180,
+      "after": 1045274
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pagani_zonda_hp_damaged.png",
+      "status": "fixed",
+      "before": 1047356,
+      "after": 1048507
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pagani_zonda_hp_dirty.png",
+      "status": "fixed",
+      "before": 1042578,
+      "after": 1045292
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pagani_zonda_hp_new.png",
+      "status": "fixed",
+      "before": 1043366,
+      "after": 1045739
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pickup_damaged.png",
+      "status": "fixed",
+      "before": 997344,
+      "after": 1032973
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pickup_dirty.png",
+      "status": "fixed",
+      "before": 1014088,
+      "after": 1028389
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\pickup_new.png",
+      "status": "fixed",
+      "before": 1010625,
+      "after": 1040056
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 1003038,
+      "after": 1024821
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 990923,
+      "after": 1048087
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_2_new.png",
+      "status": "fixed",
+      "before": 982842,
+      "after": 1029260
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_3_damaged.png",
+      "status": "fixed",
+      "before": 1046729,
+      "after": 1048416
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_3_dirty.png",
+      "status": "fixed",
+      "before": 990393,
+      "after": 1014402
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_3_new.png",
+      "status": "fixed",
+      "before": 994512,
+      "after": 1023939
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_damaged.png",
+      "status": "fixed",
+      "before": 996419,
+      "after": 1014498
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1022607,
+      "after": 1035158
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_carrera_carbon_new.png",
+      "status": "fixed",
+      "before": 971847,
+      "after": 999855
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_turbo_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 983233,
+      "after": 1047836
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_turbo_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 1004433,
+      "after": 1033083
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_turbo_sport_2_new.png",
+      "status": "fixed",
+      "before": 979378,
+      "after": 1014296
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_turbo_sport_damaged.png",
+      "status": "fixed",
+      "before": 1045696,
+      "after": 1048103
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_turbo_sport_dirty.png",
+      "status": "fixed",
+      "before": 1004719,
+      "after": 1031824
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_911_turbo_sport_new.png",
+      "status": "fixed",
+      "before": 995062,
+      "after": 1035210
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_918_damaged.png",
+      "status": "fixed",
+      "before": 1046524,
+      "after": 1048099
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_918_dirty.png",
+      "status": "fixed",
+      "before": 1016137,
+      "after": 1028477
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_918_new.png",
+      "status": "fixed",
+      "before": 1024042,
+      "after": 1034081
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_panamera_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 1012969,
+      "after": 1035038
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_panamera_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 991529,
+      "after": 1016973
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_panamera_sport_2_new.png",
+      "status": "fixed",
+      "before": 1024319,
+      "after": 1038328
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_panamera_sport_damaged.png",
+      "status": "fixed",
+      "before": 972122,
+      "after": 1024255
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_panamera_sport_dirty.png",
+      "status": "fixed",
+      "before": 999823,
+      "after": 1030867
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_panamera_sport_new.png",
+      "status": "fixed",
+      "before": 1002500,
+      "after": 1048090
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_taycan_turbo_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 988697,
+      "after": 1023962
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_taycan_turbo_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 1039156,
+      "after": 1048041
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_taycan_turbo_carbon_2_new.png",
+      "status": "fixed",
+      "before": 1005912,
+      "after": 1014775
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_taycan_turbo_carbon_damaged.png",
+      "status": "fixed",
+      "before": 1009628,
+      "after": 1031667
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_taycan_turbo_carbon_dirty.png",
+      "status": "fixed",
+      "before": 1016189,
+      "after": 1048155
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\porsche_taycan_turbo_carbon_new.png",
+      "status": "fixed",
+      "before": 1014026,
+      "after": 1035391
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_cullinan_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_cullinan_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_cullinan_executive_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_cullinan_executive_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_cullinan_executive_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_cullinan_executive_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_ghost_executive_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_ghost_executive_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_ghost_executive_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_ghost_executive_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_ghost_executive_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_ghost_executive_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_spectre_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_spectre_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_spectre_s_line_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_spectre_s_line_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_spectre_s_line_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_spectre_s_line_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_sweptail_damaged.png",
+      "status": "fixed",
+      "before": 1036469,
+      "after": 1046805
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_sweptail_dirty.png",
+      "status": "fixed",
+      "before": 1029977,
+      "after": 1037255
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_sweptail_new.png",
+      "status": "fixed",
+      "before": 1037590,
+      "after": 1041718
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_wraith_s_line_2_damaged.png",
+      "status": "fixed",
+      "before": 1036171,
+      "after": 1047629
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_wraith_s_line_2_dirty.png",
+      "status": "fixed",
+      "before": 1045731,
+      "after": 1046736
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_wraith_s_line_2_new.png",
+      "status": "fixed",
+      "before": 1035517,
+      "after": 1040671
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_wraith_s_line_damaged.png",
+      "status": "fixed",
+      "before": 1046275,
+      "after": 1047562
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_wraith_s_line_dirty.png",
+      "status": "fixed",
+      "before": 1039271,
+      "after": 1045178
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\rolls_royce_wraith_s_line_new.png",
+      "status": "fixed",
+      "before": 1041008,
+      "after": 1046944
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\speedboat_damaged.png",
+      "status": "fixed",
+      "before": 1046609,
+      "after": 1048427
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\speedboat_dirty.png",
+      "status": "fixed",
+      "before": 1027105,
+      "after": 1040426
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\speedboat_new.png",
+      "status": "fixed",
+      "before": 1027634,
+      "after": 1047930
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\sport_fishing_boat_damaged.png",
+      "status": "fixed",
+      "before": 1045447,
+      "after": 1047636
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\sport_fishing_boat_dirty.png",
+      "status": "fixed",
+      "before": 1045934,
+      "after": 1048040
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\sport_fishing_boat_new.png",
+      "status": "fixed",
+      "before": 1047094,
+      "after": 1048271
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\sport_yacht_50ft_damaged.png",
+      "status": "fixed",
+      "before": 1047670,
+      "after": 1048390
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\sport_yacht_50ft_dirty.png",
+      "status": "fixed",
+      "before": 1047765,
+      "after": 1048270
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\sport_yacht_50ft_new.png",
+      "status": "fixed",
+      "before": 1047414,
+      "after": 1048198
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\superyacht_200ft_damaged.png",
+      "status": "fixed",
+      "before": 1047631,
+      "after": 1048564
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\superyacht_200ft_dirty.png",
+      "status": "fixed",
+      "before": 1047657,
+      "after": 1048565
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\superyacht_200ft_new.png",
+      "status": "fixed",
+      "before": 1047505,
+      "after": 1048576
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_camry_street_2_damaged.png",
+      "status": "fixed",
+      "before": 980382,
+      "after": 1028385
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_camry_street_2_dirty.png",
+      "status": "fixed",
+      "before": 992026,
+      "after": 1031672
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_camry_street_2_new.png",
+      "status": "fixed",
+      "before": 999545,
+      "after": 1026639
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_camry_street_damaged.png",
+      "status": "fixed",
+      "before": 1012575,
+      "after": 1038763
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_camry_street_dirty.png",
+      "status": "fixed",
+      "before": 993373,
+      "after": 1028762
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_camry_street_new.png",
+      "status": "fixed",
+      "before": 1011942,
+      "after": 1043362
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_damaged.png",
+      "status": "fixed",
+      "before": 1046651,
+      "after": 1048254
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_dirty.png",
+      "status": "fixed",
+      "before": 934510,
+      "after": 967079
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_new.png",
+      "status": "fixed",
+      "before": 974425,
+      "after": 1005847
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_track_2_damaged.png",
+      "status": "fixed",
+      "before": 997197,
+      "after": 1039553
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1000083,
+      "after": 1025390
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_track_2_new.png",
+      "status": "fixed",
+      "before": 977157,
+      "after": 1016818
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_track_damaged.png",
+      "status": "fixed",
+      "before": 985162,
+      "after": 1023149
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_track_dirty.png",
+      "status": "fixed",
+      "before": 994257,
+      "after": 1007690
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_corolla_track_new.png",
+      "status": "fixed",
+      "before": 973565,
+      "after": 995968
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_supra_track_2_damaged.png",
+      "status": "fixed",
+      "before": 1014483,
+      "after": 1029612
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_supra_track_2_dirty.png",
+      "status": "fixed",
+      "before": 1023229,
+      "after": 1032171
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_supra_track_2_new.png",
+      "status": "fixed",
+      "before": 975168,
+      "after": 994256
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_supra_track_damaged.png",
+      "status": "fixed",
+      "before": 1003731,
+      "after": 1033465
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_supra_track_dirty.png",
+      "status": "fixed",
+      "before": 1012741,
+      "after": 1034893
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_supra_track_new.png",
+      "status": "fixed",
+      "before": 999747,
+      "after": 1018765
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_2_damaged.png",
+      "status": "fixed",
+      "before": 986562,
+      "after": 1025901
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_2_dirty.png",
+      "status": "fixed",
+      "before": 945113,
+      "after": 985080
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_2_new.png",
+      "status": "fixed",
+      "before": 992822,
+      "after": 1011912
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_3_damaged.png",
+      "status": "fixed",
+      "before": 958466,
+      "after": 1047363
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_3_dirty.png",
+      "status": "fixed",
+      "before": 935558,
+      "after": 985608
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_3_new.png",
+      "status": "fixed",
+      "before": 979556,
+      "after": 1002451
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_damaged.png",
+      "status": "fixed",
+      "before": 959792,
+      "after": 1018173
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_dirty.png",
+      "status": "fixed",
+      "before": 983200,
+      "after": 1004991
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\toyota_yaris_street_new.png",
+      "status": "fixed",
+      "before": 992310,
+      "after": 1012162
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\van_damaged.png",
+      "status": "fixed",
+      "before": 920936,
+      "after": 984859
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\van_dirty.png",
+      "status": "fixed",
+      "before": 1042761,
+      "after": 1046873
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\van_new.png",
+      "status": "fixed",
+      "before": 965443,
+      "after": 990858
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_arteon_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 1044867,
+      "after": 1047790
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_arteon_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 1003293,
+      "after": 1018436
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_arteon_sport_2_new.png",
+      "status": "fixed",
+      "before": 1014632,
+      "after": 1028159
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_arteon_sport_damaged.png",
+      "status": "fixed",
+      "before": 989309,
+      "after": 1033526
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_arteon_sport_dirty.png",
+      "status": "fixed",
+      "before": 983435,
+      "after": 1019291
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_arteon_sport_new.png",
+      "status": "fixed",
+      "before": 1000856,
+      "after": 1019301
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_2_damaged.png",
+      "status": "fixed",
+      "before": 957926,
+      "after": 1014710
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_2_dirty.png",
+      "status": "fixed",
+      "before": 975790,
+      "after": 1003413
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_2_new.png",
+      "status": "fixed",
+      "before": 990078,
+      "after": 1018911
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_3_damaged.png",
+      "status": "fixed",
+      "before": 984867,
+      "after": 1026109
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_3_dirty.png",
+      "status": "fixed",
+      "before": 1003333,
+      "after": 1041379
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_3_new.png",
+      "status": "fixed",
+      "before": 1027359,
+      "after": 1036204
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_damaged.png",
+      "status": "fixed",
+      "before": 984727,
+      "after": 1018922
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_dirty.png",
+      "status": "fixed",
+      "before": 968013,
+      "after": 995258
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_golf_sport_new.png",
+      "status": "fixed",
+      "before": 998923,
+      "after": 1019523
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_passat_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 992916,
+      "after": 1039506
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_passat_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 980761,
+      "after": 1033132
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_passat_carbon_2_new.png",
+      "status": "fixed",
+      "before": 961622,
+      "after": 1022513
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_passat_carbon_damaged.png",
+      "status": "fixed",
+      "before": 996217,
+      "after": 1023424
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_passat_carbon_dirty.png",
+      "status": "fixed",
+      "before": 972914,
+      "after": 1034288
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_passat_carbon_new.png",
+      "status": "fixed",
+      "before": 1013084,
+      "after": 1045769
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_polo_carbon_2_damaged.png",
+      "status": "fixed",
+      "before": 963667,
+      "after": 1003858
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_polo_carbon_2_dirty.png",
+      "status": "fixed",
+      "before": 989873,
+      "after": 1028179
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_polo_carbon_2_new.png",
+      "status": "fixed",
+      "before": 999918,
+      "after": 1032756
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_polo_carbon_damaged.png",
+      "status": "fixed",
+      "before": 973864,
+      "after": 1020702
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_polo_carbon_dirty.png",
+      "status": "fixed",
+      "before": 981179,
+      "after": 1015632
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\volkswagen_polo_carbon_new.png",
+      "status": "fixed",
+      "before": 1009144,
+      "after": 1032366
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\yacht_damaged.png",
+      "status": "fixed",
+      "before": 1047745,
+      "after": 1048359
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\yacht_dirty.png",
+      "status": "fixed",
+      "before": 1047091,
+      "after": 1048268
+    },
+    {
+      "file": "C:\\xampp\\htdocs\\mafia_game\\client\\assets\\images\\vehicles\\yacht_new.png",
+      "status": "fixed",
+      "before": 1045662,
+      "after": 1047998
+    }
+  ]
+}

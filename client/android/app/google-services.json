@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "572351438540",
+    "project_id": "the-mob-state",
+    "storage_bucket": "the-mob-state.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572351438540:android:66b3a56204cf43a380ec69",
+        "android_client_info": {
+          "package_name": "com.mobstate.mafia_game_client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM8t-Ovx830WWIJl5_taggac6g1PlksuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

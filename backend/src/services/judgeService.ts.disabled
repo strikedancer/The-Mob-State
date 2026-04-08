@@ -1,0 +1,590 @@
+/**
+ * Judge Service - Sentencing & Trial System
+ * Determines sentences based on guidelines, handles bribes
+ */
+
+import prisma from '../lib/prisma';
+import sentencingData from '../../content/sentencing.json';
+import { playerService } from './playerService';
+import config from '../config';
+
+interface SentencingGuideline {
+  crimeId: string;
+  minSentence: number;
+  maxSentence: number;
+  baseFine: number;
+  isFederal?: boolean;
+}
+
+interface Sentence {
+  jailTime: number;
+  fine: number;
+  crimeId: string;
+  modifiers: string[];
+}
+
+export interface BriberyResult {
+  success: boolean;
+  originalSentence: number;
+  newSentence?: number;
+  fine?: number;
+  consequences?: {
+    additionalTime?: number;
+    additionalFine?: number;
+    wantedLevelIncrease?: number;
+  };
+}
+
+export interface AppealResult {
+  success: boolean;
+  originalSentence: number;
+  newSentence?: number;
+  newBalance: number;
+  cost: number;
+  reason: string;
+  xpLost?: number;
+}
+
+/**
+ * Get sentencing guideline for a crime
+ */
+export function getSentencingGuideline(crimeId: string): SentencingGuideline | undefined {
+  return sentencingData.sentencingGuidelines.find((g) => g.crimeId === crimeId);
+}
+
+/**
+ * Calculate sentence for a crime based on player history and circumstances
+ */
+export async function calculateSentence(
+  playerId: number,
+  crimeId: string
+): Promise<Sentence | null> {
+  const guideline = getSentencingGuideline(crimeId);
+  if (!guideline) {
+    return null;
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: {
+      id: true,
+      wantedLevel: true,
+      fbiHeat: true,
+    },
+  });
+
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  // Get player's criminal history (count of past crimes)
+  const priorCrimes = await prisma.crimeAttempt.count({
+    where: {
+      playerId,
+      jailed: true,
+    },
+  });
+
+  // Start with base sentence (random between min and max)
+  const baseSentence =
+    guideline.minSentence +
+    Math.floor(Math.random() * (guideline.maxSentence - guideline.minSentence + 1));
+
+  let finalSentence = baseSentence;
+  let finalFine = guideline.baseFine;
+  const modifiers: string[] = [];
+
+  // Apply modifiers
+  if (priorCrimes === 0) {
+    // First offense - 50% reduction
+    finalSentence = Math.floor(finalSentence * sentencingData.sentenceModifiers.firstOffense);
+    modifiers.push('first_offense');
+  } else if (priorCrimes >= 3) {
+    // Repeat offender - 50% increase
+    finalSentence = Math.floor(finalSentence * sentencingData.sentenceModifiers.repeatOffender);
+    finalFine = Math.floor(finalFine * sentencingData.sentenceModifiers.repeatOffender);
+    modifiers.push('repeat_offender');
+  }
+
+  // High wanted level modifier
+  if (player.wantedLevel >= 50) {
+    finalSentence = Math.floor(finalSentence * sentencingData.sentenceModifiers.highWantedLevel);
+    finalFine = Math.floor(finalFine * sentencingData.sentenceModifiers.highWantedLevel);
+    modifiers.push('high_wanted_level');
+  }
+
+  // High FBI heat modifier
+  if (player.fbiHeat >= 20) {
+    finalSentence = Math.floor(finalSentence * sentencingData.sentenceModifiers.highFbiHeat);
+    finalFine = Math.floor(finalFine * sentencingData.sentenceModifiers.highFbiHeat);
+    modifiers.push('high_fbi_heat');
+  }
+
+  return {
+    jailTime: Math.max(finalSentence, guideline.minSentence), // Never below minimum
+    fine: finalFine,
+    crimeId,
+    modifiers,
+  };
+}
+
+/**
+ * Attempt to bribe a judge to reduce sentence
+ * Success chance decreases with higher wanted/FBI heat
+ * Failure has serious consequences
+ */
+export async function attemptBribery(
+  playerId: number,
+  crimeId: string,
+  bribeAmount: number
+): Promise<BriberyResult> {
+  const sentence = await calculateSentence(playerId, crimeId);
+  if (!sentence) {
+    throw new Error('INVALID_CRIME_ID');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: {
+      id: true,
+      money: true,
+      wantedLevel: true,
+      fbiHeat: true,
+    },
+  });
+
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  // Check minimum bribe amount
+  if (bribeAmount < sentencingData.bribery.minBribeAmount) {
+    throw new Error('BRIBE_TOO_LOW');
+  }
+
+  // Check player has enough money
+  if (player.money < bribeAmount) {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  // Calculate success chance
+  // Base 30%, reduced by wanted level and FBI heat
+  let successChance = sentencingData.bribery.baseSuccessChance;
+
+  // Higher wanted level = harder to bribe (judges are more careful)
+  if (player.wantedLevel > 0) {
+    successChance -= player.wantedLevel * 0.005; // -0.5% per wanted level
+  }
+
+  // FBI heat makes judges even more cautious
+  if (player.fbiHeat > 0) {
+    successChance -= player.fbiHeat * 0.01; // -1% per FBI heat
+  }
+
+  // Higher bribe increases success chance
+  const bribeBonus = Math.min(bribeAmount / 100000, 0.2); // Max +20% for €100k+
+  successChance += bribeBonus;
+
+  // Cap between 5% and 80%
+  successChance = Math.max(0.05, Math.min(0.8, successChance));
+
+  // Roll for success
+  const roll = Math.random();
+  const success = roll < successChance;
+
+  // Deduct bribe money regardless of outcome
+  await prisma.player.update({
+    where: { id: playerId },
+    data: {
+      money: { decrement: bribeAmount },
+    },
+  });
+
+  if (success) {
+    // Bribe succeeded - reduce sentence by 50%
+    const newSentence = Math.floor(sentence.jailTime * sentencingData.bribery.sentenceReduction);
+
+    return {
+      success: true,
+      originalSentence: sentence.jailTime,
+      newSentence,
+      fine: sentence.fine,
+    };
+  } else {
+    // Bribe failed - serious consequences
+    const additionalTime = sentencingData.bribery.failurePenalty.additionalTime;
+    const additionalFine = Math.floor(
+      sentence.fine * sentencingData.bribery.failurePenalty.fineMultiplier
+    );
+
+    // Increase wanted level for attempted bribery
+    await prisma.player.update({
+      where: { id: playerId },
+      data: {
+        wantedLevel: {
+          increment: sentencingData.bribery.failurePenalty.wantedLevelIncrease,
+        },
+      },
+    });
+
+    return {
+      success: false,
+      originalSentence: sentence.jailTime,
+      fine: sentence.fine + additionalFine,
+      consequences: {
+        additionalTime,
+        additionalFine,
+        wantedLevelIncrease: sentencingData.bribery.failurePenalty.wantedLevelIncrease,
+      },
+    };
+  }
+}
+
+/**
+ * Get player's criminal record (past convictions)
+ */
+export async function getCriminalRecord(playerId: number): Promise<{
+  totalConvictions: number;
+  recentCrimes: Array<{
+    crimeId: string;
+    jailTime: number;
+    createdAt: Date;
+  }>;
+}> {
+  const convictions = await prisma.crimeAttempt.findMany({
+    where: {
+      playerId,
+      jailed: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 10,
+    select: {
+      crimeId: true,
+      jailTime: true,
+      createdAt: true,
+    },
+  });
+
+  return {
+    totalConvictions: convictions.length,
+    recentCrimes: convictions,
+  };
+}
+
+/**
+ * Appeal a sentence (can only be done once per crime attempt)
+ * Costs money, has chance of success/failure
+ */
+export async function appealSentence(
+  playerId: number,
+  crimeAttemptId: number
+): Promise<AppealResult> {
+  // Get the crime attempt
+  const crimeAttempt = await prisma.crimeAttempt.findUnique({
+    where: { id: crimeAttemptId },
+    select: {
+      id: true,
+      playerId: true,
+      crimeId: true,
+      jailTime: true,
+      appealedAt: true,
+    },
+  });
+
+  if (!crimeAttempt) {
+    throw new Error('CRIME_ATTEMPT_NOT_FOUND');
+  }
+
+  if (crimeAttempt.playerId !== playerId) {
+    throw new Error('NOT_YOUR_CRIME');
+  }
+
+  if (crimeAttempt.appealedAt) {
+    throw new Error('ALREADY_APPEALED');
+  }
+
+  // Get player
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: {
+      id: true,
+      money: true,
+      wantedLevel: true,
+      fbiHeat: true,
+    },
+  });
+
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  // Calculate appeal cost (based on original sentence)
+  // Cost = jailTime * €100 (minimum €2,000, maximum €50,000)
+  const appealCost = Math.min(Math.max(crimeAttempt.jailTime * 100, 2000), 50000);
+
+  if (player.money < appealCost) {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  // Calculate appeal success chance
+  // Base: 40% chance of success
+  let successChance = 0.4;
+
+  // First-time offenders have better chance
+  const priorCrimes = await prisma.crimeAttempt.count({
+    where: {
+      playerId,
+      jailed: true,
+      id: { not: crimeAttemptId },
+    },
+  });
+
+  if (priorCrimes === 0) {
+    successChance += 0.2; // +20% for first offense
+  } else if (priorCrimes >= 5) {
+    successChance -= 0.2; // -20% for repeat offenders
+  }
+
+  // High wanted/FBI heat reduces chance
+  if (player.wantedLevel > 20) {
+    successChance -= 0.1;
+  }
+  if (player.fbiHeat > 10) {
+    successChance -= 0.15;
+  }
+
+  // Cap between 10% and 70%
+  successChance = Math.max(0.1, Math.min(0.7, successChance));
+
+  // Roll for success
+  const success = Math.random() < successChance;
+
+  // Deduct appeal cost
+  const updatedPlayer = await prisma.player.update({
+    where: { id: playerId },
+    data: {
+      money: { decrement: appealCost },
+    },
+  });
+
+  // Mark as appealed
+  await prisma.crimeAttempt.update({
+    where: { id: crimeAttemptId },
+    data: {
+      appealedAt: new Date(),
+    },
+  });
+
+  if (success) {
+    // Appeal succeeded - reduce sentence by 20-40%
+    const reductionPercent = 0.2 + Math.random() * 0.2; // 20-40%
+    const newSentence = Math.floor(crimeAttempt.jailTime * (1 - reductionPercent));
+    const reduction = crimeAttempt.jailTime - newSentence;
+
+    // Update the jail time in both crime attempt and player
+    await prisma.crimeAttempt.update({
+      where: { id: crimeAttemptId },
+      data: {
+        jailTime: newSentence,
+      },
+    });
+
+    await prisma.player.update({
+      where: { id: playerId },
+      data: {
+        jailTime: newSentence,
+      },
+    });
+
+    return {
+      success: true,
+      originalSentence: crimeAttempt.jailTime,
+      newSentence,
+      newBalance: updatedPlayer.money,
+      cost: appealCost,
+      reason: `Appeal granted. Sentence reduced by ${reduction} minutes (${Math.round(reductionPercent * 100)}%).`,
+    };
+  } else {
+    // Appeal denied - Apply XP penalties
+    let totalXPLost = 0;
+    
+    // Get current player XP for calculations
+    const currentPlayer = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { xp: true },
+    });
+    
+    if (currentPlayer) {
+      // 1. Conviction penalty: 1-3% of total XP
+      const convictionPercent = 
+        config.xpLoss.judgeConvicted.min + 
+        Math.random() * (config.xpLoss.judgeConvicted.max - config.xpLoss.judgeConvicted.min);
+      const convictionXPLoss = Math.floor(currentPlayer.xp * convictionPercent);
+      
+      if (convictionXPLoss > 0) {
+        const convictionResult = await playerService.loseXP(playerId, convictionXPLoss);
+        totalXPLost += convictionResult.xpLost;
+      }
+      
+      // 2. Harsh sentence penalty: 50-100 XP for sentences > 120 minutes (2 hours)
+      if (crimeAttempt.jailTime > 120) {
+        const harshXPLoss = Math.floor(
+          config.xpLoss.judgeHarshSentence.min + 
+          Math.random() * (config.xpLoss.judgeHarshSentence.max - config.xpLoss.judgeHarshSentence.min)
+        );
+        
+        if (harshXPLoss > 0) {
+          const harshResult = await playerService.loseXP(playerId, harshXPLoss);
+          totalXPLost += harshResult.xpLost;
+        }
+      }
+      
+      // 3. Repeat offender penalty: 5% of total XP for 3+ prior convictions
+      if (priorCrimes >= 3) {
+        const repeatOffenderXPLoss = Math.floor(currentPlayer.xp * config.xpLoss.judgeRepeatOffender);
+        
+        if (repeatOffenderXPLoss > 0) {
+          const repeatResult = await playerService.loseXP(playerId, repeatOffenderXPLoss);
+          totalXPLost += repeatResult.xpLost;
+        }
+      }
+    }
+    
+    return {
+      success: false,
+      originalSentence: crimeAttempt.jailTime,
+      newBalance: updatedPlayer.money,
+      cost: appealCost,
+      reason: 'Appeal denied. Original sentence upheld.',
+      xpLost: totalXPLost,
+    };
+  }
+}
+
+/**
+ * Get current sentence details for a player
+ */
+export async function getCurrentSentence(playerId: number) {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: {
+      id: true,
+      jailTime: true,
+    },
+  });
+
+  if (!player || player.jailTime <= 0) {
+    return null;
+  }
+
+  // Find the most recent crime attempt that led to jail
+  const crimeAttempt = await prisma.crimeAttempt.findFirst({
+    where: {
+      playerId,
+      jailed: true,
+    },
+    orderBy: {
+      attemptedAt: 'desc',
+    },
+    include: {
+      crime: true,
+    },
+  });
+
+  if (!crimeAttempt) {
+    return null;
+  }
+
+  // Get judge info (random for now, could be stored in DB)
+  const judges = [
+    { id: 1, name: 'Rechter van der Berg', corruptibility: 35, specialty: 'Geweldsmisdrijven', appointedYear: 2015 },
+    { id: 2, name: 'Rechter Jansen', corruptibility: 65, specialty: 'Financiële Delicten', appointedYear: 2018 },
+    { id: 3, name: 'Rechter de Vries', corruptibility: 20, specialty: 'Drugsgerelateerde Zaken', appointedYear: 2010 },
+    { id: 4, name: 'Rechter Bakker', corruptibility: 80, specialty: 'Witte Boordencriminaliteit', appointedYear: 2020 },
+    { id: 5, name: 'Rechter Visser', corruptibility: 45, specialty: 'Georganiseerde Misdaad', appointedYear: 2012 },
+  ];
+
+  // Assign random judge based on crime attempt ID
+  const judge = judges[crimeAttempt.id % judges.length];
+
+  return {
+    sentence: {
+      crimeAttemptId: crimeAttempt.id,
+      crime: crimeAttempt.crime.name,
+      sentenceMinutes: crimeAttempt.jailTime,
+      remainingMinutes: player.jailTime,
+      judge,
+      arrestedAt: crimeAttempt.attemptedAt.toISOString(),
+    },
+  };
+}
+
+/**
+ * Bribe judge for a specific crime attempt
+ */
+export async function bribeJudgeForAttempt(
+  playerId: number,
+  crimeAttemptId: number,
+  bribeAmount: number
+): Promise<{ success: boolean; newBalance: number }> {
+  const crimeAttempt = await prisma.crimeAttempt.findUnique({
+    where: { id: crimeAttemptId },
+    include: { crime: true },
+  });
+
+  if (!crimeAttempt) {
+    throw new Error('CRIME_ATTEMPT_NOT_FOUND');
+  }
+
+  if (crimeAttempt.playerId !== playerId) {
+    throw new Error('NOT_YOUR_CRIME');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+  });
+
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  if (player.money < bribeAmount) {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  // Get judge corruptibility
+  const judges = [
+    { id: 1, corruptibility: 35 },
+    { id: 2, corruptibility: 65 },
+    { id: 3, corruptibility: 20 },
+    { id: 4, corruptibility: 80 },
+    { id: 5, corruptibility: 45 },
+  ];
+  const judge = judges[crimeAttemptId % judges.length];
+
+  // Calculate success chance based on bribe amount and judge corruptibility
+  const baseChance = judge.corruptibility;
+  const bribeBonus = ((bribeAmount - 50000) / 150000) * 40; // 0-40% bonus
+  const totalChance = Math.min(90, baseChance + bribeBonus);
+
+  const success = Math.random() * 100 < totalChance;
+
+  // Deduct bribe money (regardless of success)
+  const newBalance = player.money - bribeAmount;
+  await prisma.player.update({
+    where: { id: playerId },
+    data: { money: newBalance },
+  });
+
+  if (success) {
+    // Clear jail time
+    await prisma.player.update({
+      where: { id: playerId },
+      data: { jailTime: 0 },
+    });
+  }
+
+  return { success, newBalance };
+}

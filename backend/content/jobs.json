@@ -1,0 +1,242 @@
+[
+  {
+    "id": "newspaper_delivery",
+    "name": "Krant Bezorgen",
+    "description": "Rij vroeg in de ochtend met je scooter door de stilte steden. De kranten moeten om 6 uur op elke stoep liggen.",
+    "minLevel": 1,
+    "minEarnings": 50,
+    "maxEarnings": 100,
+    "xpReward": 5,
+    "cooldownMinutes": 30
+  },
+  {
+    "id": "car_wash",
+    "name": "Auto Wassen",
+    "description": "Was de vieze auto's schoon voor de locals. Ze zitten vol modder van hun last nights.",
+    "minLevel": 1,
+    "minEarnings": 80,
+    "maxEarnings": 150,
+    "xpReward": 8,
+    "cooldownMinutes": 45
+  },
+  {
+    "id": "grocery_bagger",
+    "name": "Vakkenvuller",
+    "description": "Zet boodschappen netjes in de schappen van de supermarkt. Weinig poen maar snel geld.",
+    "minLevel": 1,
+    "minEarnings": 100,
+    "maxEarnings": 200,
+    "xpReward": 10,
+    "cooldownMinutes": 60
+  },
+  {
+    "id": "dishwasher",
+    "name": "Afwasser",
+    "description": "Was duizenden borden en pannen in een druk restaurant. De chef schreeuwt veel.",
+    "minLevel": 1,
+    "minEarnings": 120,
+    "maxEarnings": 220,
+    "xpReward": 12,
+    "cooldownMinutes": 60
+  },
+  {
+    "id": "street_sweeper",
+    "name": "Straatveger",
+    "description": "Veeg de straten schoon met je bezem. Niemand ziet je, maar het geld rolt binnen.",
+    "minLevel": 1,
+    "minEarnings": 90,
+    "maxEarnings": 180,
+    "xpReward": 9,
+    "cooldownMinutes": 50
+  },
+  {
+    "id": "pizza_delivery",
+    "name": "Pizza Bezorger",
+    "description": "Rij met pizzabodem vol stoom naar de hongerige stadsbewoners. Fooi is deel van de deal.",
+    "minLevel": 2,
+    "minEarnings": 150,
+    "maxEarnings": 300,
+    "xpReward": 15,
+    "cooldownMinutes": 45
+  },
+  {
+    "id": "taxi_driver",
+    "name": "Taxichauffeur",
+    "description": "Klets met drankenlappen en uitschuitsers in je taxi. De nachten zijn het spannendst.",
+    "minLevel": 3,
+    "minEarnings": 200,
+    "maxEarnings": 400,
+    "xpReward": 20,
+    "cooldownMinutes": 60
+  },
+  {
+    "id": "warehouse_worker",
+    "name": "Magazijnmedewerker",
+    "description": "Sleep zware dozen en pallets door een gigantisch magazijn. Repetitief maar loonswaardig.",
+    "minLevel": 2,
+    "minEarnings": 180,
+    "maxEarnings": 320,
+    "xpReward": 18,
+    "cooldownMinutes": 90
+  },
+  {
+    "id": "construction_worker",
+    "name": "Bouwvakker",
+    "description": "Zet de steigers op en til zware materialen. De zon brandt, maar het geld is echt.",
+    "minLevel": 3,
+    "minEarnings": 250,
+    "maxEarnings": 450,
+    "xpReward": 25,
+    "cooldownMinutes": 120
+  },
+  {
+    "id": "bartender",
+    "name": "Barkeeper",
+    "description": "Mix cocktails, schenk bier en luister naar verhalen in de drukste bar van de stad.",
+    "minLevel": 4,
+    "minEarnings": 200,
+    "maxEarnings": 400,
+    "xpReward": 22,
+    "cooldownMinutes": 90
+  },
+  {
+    "id": "security_guard",
+    "name": "Beveiliger",
+    "description": "Sta je nacht door in een pak met koptelefoon. Niets gebeurt ooit, maar je verdient goed.",
+    "minLevel": 5,
+    "minEarnings": 300,
+    "maxEarnings": 500,
+    "xpReward": 30,
+    "cooldownMinutes": 120
+  },
+  {
+    "id": "truck_driver",
+    "name": "Vrachtwagenchauffeur",
+    "description": "Rij duizend kilometer door nacht en dag. Het beloonde is er goed voor al die uren op weg.",
+    "minLevel": 6,
+    "minEarnings": 400,
+    "maxEarnings": 700,
+    "xpReward": 40,
+    "cooldownMinutes": 180
+  },
+  {
+    "id": "mechanic",
+    "name": "Monteur",
+    "description": "Repareer gebroken auto's in je garage. Je handen worden altijd zwart, maar je portemonnee niet.",
+    "minLevel": 7,
+    "minEarnings": 350,
+    "maxEarnings": 650,
+    "xpReward": 35,
+    "cooldownMinutes": 120
+  },
+  {
+    "id": "electrician",
+    "name": "Elektricien",
+    "description": "Installeer elektra in nieuwbouw. Pas op voor kortsluiting, anders valt alles uit.",
+    "minLevel": 8,
+    "minEarnings": 450,
+    "maxEarnings": 800,
+    "xpReward": 45,
+    "cooldownMinutes": 150
+  },
+  {
+    "id": "plumber",
+    "name": "Loodgieter",
+    "description": "Repareer leidingen en sanitair in huizen. Het werk is vies maar de centen rollen binnen.",
+    "minLevel": 7,
+    "minEarnings": 400,
+    "maxEarnings": 750,
+    "xpReward": 40,
+    "cooldownMinutes": 150
+  },
+  {
+    "id": "chef",
+    "name": "Kok",
+    "description": "Kook duizend gerichten in een drukke restaurant. Precisie en snelheid zijn je wapens.",
+    "minLevel": 9,
+    "minEarnings": 500,
+    "maxEarnings": 900,
+    "xpReward": 50,
+    "cooldownMinutes": 180
+  },
+  {
+    "id": "paramedic",
+    "name": "Ambulanceverpleegkundige",
+    "description": "Rij met sirenes door nacht naar noodsituaties. Het reddende werk en fatsoen betalen zich uit.",
+    "minLevel": 10,
+    "minEarnings": 600,
+    "maxEarnings": 1000,
+    "xpReward": 60,
+    "cooldownMinutes": 180
+  },
+  {
+    "id": "programmer",
+    "name": "Programmeur",
+    "description": "Zit achter je scherm en code hele servers vol. Veel geld voor weinig zweet.",
+    "minLevel": 12,
+    "minEarnings": 800,
+    "maxEarnings": 1400,
+    "xpReward": 80,
+    "cooldownMinutes": 240
+  },
+  {
+    "id": "accountant",
+    "name": "Accountant",
+    "description": "Beheer miljoenen euro's voor gigabedrijven. Elke fout kost je je baan.",
+    "minLevel": 11,
+    "minEarnings": 700,
+    "maxEarnings": 1200,
+    "xpReward": 70,
+    "cooldownMinutes": 240
+  },
+  {
+    "id": "lawyer",
+    "name": "Advocaat",
+    "description": "Verdedig criminelen en wetgebreken in rechtszalen. Elke zaak wint slecht je duurder auto.",
+    "minLevel": 15,
+    "minEarnings": 1000,
+    "maxEarnings": 2000,
+    "xpReward": 100,
+    "cooldownMinutes": 300
+  },
+  {
+    "id": "real_estate_agent",
+    "name": "Makelaar",
+    "description": "Verkoop penthouse en villa's aan de rijke elite. Commissie per miljoen.",
+    "minLevel": 13,
+    "minEarnings": 900,
+    "maxEarnings": 1600,
+    "xpReward": 90,
+    "cooldownMinutes": 240
+  },
+  {
+    "id": "stockbroker",
+    "name": "Effectenmakelaar",
+    "description": "Speel op de beurs met miljarden. Winnen of verliezen, je commissie is altijd veilig.",
+    "minLevel": 18,
+    "minEarnings": 1500,
+    "maxEarnings": 3000,
+    "xpReward": 150,
+    "cooldownMinutes": 360
+  },
+  {
+    "id": "doctor",
+    "name": "Dokter",
+    "description": "Behandel zieken en zwakkelen in het ziekenhuis. Witte jas, groen geld.",
+    "minLevel": 20,
+    "minEarnings": 2000,
+    "maxEarnings": 4000,
+    "xpReward": 200,
+    "cooldownMinutes": 360
+  },
+  {
+    "id": "airline_pilot",
+    "name": "Piloot",
+    "description": "Vlieg private jets vol sterren en miljardairs. Premium salaris en bonuskilometers.",
+    "minLevel": 25,
+    "minEarnings": 3000,
+    "maxEarnings": 6000,
+    "xpReward": 300,
+    "cooldownMinutes": 480
+  }
+]

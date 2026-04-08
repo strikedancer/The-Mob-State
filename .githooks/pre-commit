@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+set -e
+
+if command -v node >/dev/null 2>&1; then
+  node tools/doc_sync_guard.js
+else
+  echo "[doc-sync] Node.js is required for doc sync guard."
+  exit 2
+fi

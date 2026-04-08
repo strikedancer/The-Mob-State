@@ -1,0 +1,30 @@
+[
+  {
+    "id": "light_armor",
+    "name": "Licht Pantser",
+    "price": 5000,
+    "armor": 20,
+    "description": "Basis bescherming tegen kogels"
+  },
+  {
+    "id": "heavy_armor",
+    "name": "Zwaar Pantser",
+    "price": 20000,
+    "armor": 50,
+    "description": "Sterke bescherming tegen kogels"
+  },
+  {
+    "id": "bulletproof_vest",
+    "name": "Kogelvrij Vest",
+    "price": 50000,
+    "armor": 100,
+    "description": "Professionele kogelvrije bescherming"
+  },
+  {
+    "id": "tactical_suit",
+    "name": "Tactisch Pak",
+    "price": 75000,
+    "armor": 150,
+    "description": "Militair-grade bescherming"
+  }
+]

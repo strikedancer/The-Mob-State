@@ -1,0 +1,96 @@
+{
+  "properties": [
+    {
+      "id": "warehouse",
+      "name": "Magazijn",
+      "description": "Groot magazijn voor opslag en handel",
+      "image": "warehouse.png",
+      "type": "limited_per_country",
+      "maxOwners": 5,
+      "basePrice": 150000,
+      "baseIncome": 2000,
+      "incomeInterval": 90,
+      "minLevel": 12,
+      "storageCapacity": [100, 200, 350, 500],
+      "features": ["storage", "trade_bonus"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 30000, "incomeBonus": 800 },
+        { "level": 3, "cost": 60000, "incomeBonus": 1200 },
+        { "level": 4, "cost": 120000, "incomeBonus": 2000 }
+      ]
+    },
+    {
+      "id": "nightclub",
+      "name": "Nachtclub",
+      "description": "Populaire club met goede omzet",
+      "image": "nightclub.png",
+      "type": "limited_per_country",
+      "maxOwners": 3,
+      "basePrice": 300000,
+      "baseIncome": 3000,
+      "incomeInterval": 100,
+      "minLevel": 15,
+      "storageCapacity": [0, 0, 0, 0],
+      "features": ["events", "reputation"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 60000, "incomeBonus": 1200 },
+        { "level": 3, "cost": 120000, "incomeBonus": 1800 },
+        { "level": 4, "cost": 240000, "incomeBonus": 3000 }
+      ]
+    },
+    {
+      "id": "house",
+      "name": "Huis",
+      "description": "Een comfortabel huis om in te wonen",
+      "image": "house.png",
+      "type": "unlimited",
+      "basePrice": 50000,
+      "baseIncome": 0,
+      "incomeInterval": 60,
+      "minLevel": 8,
+      "storageCapacity": [10, 20, 35, 50],
+      "features": ["residential"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 10000, "incomeBonus": 0 },
+        { "level": 3, "cost": 20000, "incomeBonus": 0 },
+        { "level": 4, "cost": 40000, "incomeBonus": 0 }
+      ]
+    },
+    {
+      "id": "apartment",
+      "name": "Appartement",
+      "description": "Modern appartement in het centrum om in te wonen",
+      "image": "apartment.png",
+      "type": "unlimited",
+      "basePrice": 100000,
+      "baseIncome": 0,
+      "incomeInterval": 75,
+      "minLevel": 5,
+      "storageCapacity": [5, 10, 15, 20],
+      "features": ["residential"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 20000, "incomeBonus": 0 },
+        { "level": 3, "cost": 40000, "incomeBonus": 0 },
+        { "level": 4, "cost": 80000, "incomeBonus": 0 }
+      ]
+    },
+    {
+      "id": "shop",
+      "name": "Winkel",
+      "description": "Kleine winkel in een drukke straat",
+      "image": "shop.png",
+      "type": "unlimited",
+      "basePrice": 120000,
+      "baseIncome": 1200,
+      "incomeInterval": 80,
+      "minLevel": 10,
+      "storageCapacity": [0, 0, 0, 0],
+      "features": ["passive_income"],
+      "upgradeOptions": [
+        { "level": 2, "cost": 25000, "incomeBonus": 500 },
+        { "level": 3, "cost": 50000, "incomeBonus": 700 },
+        { "level": 4, "cost": 100000, "incomeBonus": 1200 }
+      ]
+    }
+  ]
+}

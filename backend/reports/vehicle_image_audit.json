@@ -1,0 +1,7066 @@
+{
+  "summary": {
+    "vehicles": 293,
+    "variants": 879,
+    "missing_base": 0,
+    "missing_responsive": 0,
+    "fully_ok_vehicles": 293,
+    "categories": {
+      "car": {
+        "vehicles": 201,
+        "variants": 603,
+        "missing_base": 0,
+        "missing_responsive": 0,
+        "fully_ok_vehicles": 201
+      },
+      "boat": {
+        "vehicles": 31,
+        "variants": 93,
+        "missing_base": 0,
+        "missing_responsive": 0,
+        "fully_ok_vehicles": 31
+      },
+      "motorcycle": {
+        "vehicles": 61,
+        "variants": 183,
+        "missing_base": 0,
+        "missing_responsive": 0,
+        "fully_ok_vehicles": 61
+      }
+    }
+  },
+  "vehicles": [
+    {
+      "id": "old_sedan",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_corolla",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_corolla_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_mustang_gt_sport_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_corolla_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_patrol_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_gt_r_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_370z_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_supra_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "delivery_van",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_durango_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_camry_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_camaro_ss_executive_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_nsx_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "pickup_truck",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_corvette_c8_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_supra_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_passat_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_ram_1500_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_qashqai_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_rc_f_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "muscle_car",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_civic_type_r_street_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_polo_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_mustang_gt_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_yaris_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_yaris_street_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_rs5_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_arteon_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_ram_1500_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_golf_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_yaris_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_is500_s_line_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_passat_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_polo_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_golf_sport_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "toyota_camry_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_4c_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_challenger_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_arteon_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_gt_r_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_silverado_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_x5_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_patrol_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_mustang_gt_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_explorer_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "volkswagen_golf_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_focus_st_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_tonale_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_a45_black_edition_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_x5_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_370z_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_charger_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_charger_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_m3_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_911_turbo_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_370z_midnight_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_s3_track_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_accord_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "luxury_sedan",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_nsx_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_camaro_ss_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_levante_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_m2_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_explorer_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_focus_st_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_rs7_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_s5_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_ls500_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_stelvio_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_m5_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_tahoe_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_ranger_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_quattroporte_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ford_ranger_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_silverado_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_challenger_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_giulia_qv_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_charger_black_edition_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_is500_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_cr_v_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_cr_v_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_stelvio_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_is500_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_accord_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_gle63_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_911_carrera_carbon_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_camaro_ss_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_gle63_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_taycan_turbo_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_s3_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_corvette_c8_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "dodge_durango_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "nissan_qashqai_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_rx500h_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_a45_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_rx500h_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_civic_type_r_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_rc_f_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lexus_ls500_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "honda_civic_type_r_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_4c_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_giulia_qv_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_m5_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "chevrolet_tahoe_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_m2_executive_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_panamera_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_rs7_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_tonale_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "alfa_romeo_giulia_qv_track_3",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_911_turbo_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_m2_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_e63_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_s3_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_flying_spur_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_e63_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bmw_m3_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_750s_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_s5_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_rs5_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_quattroporte_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "sports_car",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_c63_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_ghibli_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_296_gtb_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_purosangue_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_mc20_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_c63_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_a45_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_911_carrera_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_750s_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_ghibli_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "event_politie_interceptor",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_purosangue_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_revuelto_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_urus_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_bentayga_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "audi_r8_v10_plus",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_911_carrera_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_flying_spur_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_levante_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_huracan_performante",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_continental_gt_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_taycan_turbo_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_f8_tributo",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_panamera_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_continental_gt_sport_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_720s",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_temerario_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_batur_carbon_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "maserati_mc20_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_spectre_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_812_superfast",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_urus_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_765lt",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "armored_suv",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_wraith_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_aventador_svj",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_batur_carbon",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_huracan_evo_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mercedes_amg_one",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_gt_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_artura_street",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bentley_bentayga_sport",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_570s_track",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "aston_martin_valkyrie",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_ghost_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "porsche_918_spyder",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_temerario_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_roma_s_line",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_wraith_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_296_gtb_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_sf90_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_roma_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_570s_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_revuelto_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_gt_track_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_spectre_s_line_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_artura_street_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_cullinan_executive_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "ferrari_sf90_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_cullinan_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_veyron_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_huracan_evo_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_bolide_black_edition",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_ghost_executive",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_chiron_sport_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "lamborghini_centenario",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mclaren_p1",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "koenigsegg_agera_rs",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "pagani_huayra_bc",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_mistral_midnight_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "laferrari_aperta",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_chiron",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_veyron_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_mistral_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_chiron_sport_midnight",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_bolide_black_edition_2",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "rolls_royce_sweptail",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "pagani_zonda_hp_barchetta",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "bugatti_la_voiture_noire",
+      "category": "car",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "fishing_boat",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "inflatable_rib",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "speedboat",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "sport_fishing_boat",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "cargo_barge",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_atlantic_smuggler_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "cigarette_boat",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "catamaran_cruiser",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_aegean_cruiser_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_titan_offshore_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "yacht",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "event_politie_patrouilleboot",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_aegean_cruiser_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "sport_yacht_50ft",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_harbor_runner_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_nordic_patrol_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_bluefin_cargo_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_bluefin_cargo_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_monaco_sport_yacht_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "motor_yacht_80ft",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_coast_cutter_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_harbor_runner_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_monaco_sport_yacht_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "explorer_yacht",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_titan_offshore_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_atlantic_smuggler_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_nordic_patrol_mk_1",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "boat_coast_cutter_mk_2",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "mega_yacht_120ft",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "superyacht_200ft",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "eclipse_yacht",
+      "category": "boat",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_kawasaki_z900_ghost_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_yamaha_r1_track_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_harley_davidson_sportster_s_street",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_yamaha_mt_09_urban",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_bmw_s1000rr_street",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_yamaha_xsr900_raid",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ktm_1290_super_duke_urban",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_harley_davidson_street_glide_stealth_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ducati_multistrada_track",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ktm_890_duke_track_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_triumph_rocket_3_ghost",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_kawasaki_ninja_zx_10r_track_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_bmw_f900xr_stealth",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_kawasaki_z900_ghost",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ducati_monster_raid_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_triumph_street_triple_raid_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_yamaha_tracer_9_ghost",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_honda_cb650r_street",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_aprilia_rs660_stealth",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_aprilia_tuono_v4_carbon",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_kawasaki_ninja_zx_10r_track",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_aprilia_rsv4_interceptor_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_bmw_s1000rr_street_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_honda_africa_twin_stealth",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ktm_rc_8c_raid",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_kawasaki_versys_raid",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "event_politie_motor",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_suzuki_hayabusa_street_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_yamaha_r1_track",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ducati_panigale_v4_ghost",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ducati_diavel_urban",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_bmw_r1250gs_interceptor",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_aprilia_rsv4_interceptor",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_yamaha_mt_09_urban_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_aprilia_tuareg_street",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_suzuki_hayabusa_street",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_harley_davidson_street_glide_stealth",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_bmw_r1250gs_interceptor_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_triumph_speed_twin_urban_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_suzuki_gsx_r1000_stealth",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_honda_fireblade_interceptor",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_kawasaki_h2_urban",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_aprilia_tuono_v4_carbon_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ktm_1290_super_duke_urban_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ducati_panigale_v4_ghost_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ktm_890_duke_track",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_triumph_tiger_900_track",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_honda_cbr1000rr_carbon_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_triumph_street_triple_raid",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_suzuki_v_strom_interceptor",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_harley_davidson_road_king_interceptor",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ducati_monster_raid",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_ktm_adventure_ghost",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_honda_cbr1000rr_carbon",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_bmw_m1000r_carbon",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_honda_africa_twin_stealth_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_suzuki_gsx_r1000_stealth_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_harley_davidson_low_rider_s_carbon_2",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_suzuki_katana_carbon",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_triumph_speed_twin_urban",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    },
+    {
+      "id": "moto_harley_davidson_low_rider_s_carbon",
+      "category": "motorcycle",
+      "variants": [
+        {
+          "state": "new",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "dirty",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        },
+        {
+          "state": "damaged",
+          "base_ok": true,
+          "responsive_ok": true,
+          "missing_files": []
+        }
+      ]
+    }
+  ]
+}

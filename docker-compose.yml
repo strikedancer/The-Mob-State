@@ -1,0 +1,60 @@
+services:
+  mysql:
+    image: mariadb:11
+    container_name: mafia-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: mafia_game
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  redis:
+    image: redis:7-alpine
+    container_name: mafia-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: mafia-phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ""
+      UPLOAD_LIMIT: 100M
+    depends_on:
+      - mysql
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: mafia-backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: "mysql://root@mysql:3306/mafia_game"
+      REDIS_URL: "redis://redis:6379"
+      TS_NODE_DEV_POLL: "true"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./client/images:/client/images:ro
+    depends_on:
+      - redis
+      - mysql
+
+volumes:
+  mysql-data:
+  redis-data:

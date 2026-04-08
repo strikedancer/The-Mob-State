@@ -1,0 +1,61 @@
+{
+  "tracks": [
+    {
+      "id": "aviation",
+      "name": "Aviation",
+      "description": "Flight theory, navigation, and aircraft operation.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "flight_basic", "name": "Basic Flight License", "requiredLevel": 2 },
+        { "id": "flight_commercial", "name": "Commercial Flight License", "requiredLevel": 4 }
+      ]
+    },
+    {
+      "id": "law",
+      "name": "Law",
+      "description": "Criminal law, procedure, and courtroom practice.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "bar_exam", "name": "Bar Certification", "requiredLevel": 4 }
+      ]
+    },
+    {
+      "id": "medicine",
+      "name": "Medicine",
+      "description": "Emergency response, diagnostics, and medical practice.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "paramedic_cert", "name": "Paramedic Certification", "requiredLevel": 3 },
+        { "id": "medical_license", "name": "Medical License", "requiredLevel": 5 }
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Finance & Business",
+      "description": "Accounting, investment, and business operations.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "financial_analyst", "name": "Financial Analyst Certification", "requiredLevel": 3 },
+        { "id": "casino_management", "name": "Casino Management Certification", "requiredLevel": 4 }
+      ]
+    },
+    {
+      "id": "engineering",
+      "name": "Engineering",
+      "description": "Mechanical systems, industrial safety, and manufacturing.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "industrial_safety", "name": "Industrial Safety Certification", "requiredLevel": 3 }
+      ]
+    },
+    {
+      "id": "it",
+      "name": "IT",
+      "description": "Software development, systems, and network operations.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "software_engineer", "name": "Software Engineering Certification", "requiredLevel": 3 }
+      ]
+    }
+  ]
+}

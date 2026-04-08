@@ -1,0 +1,1986 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id                              Int                              @id @default(autoincrement())
+  username                        String                           @unique @db.VarChar(50)
+  passwordHash                    String                           @db.VarChar(255)
+  money                           Int                              @default(0)
+  health                          Int                              @default(100)
+  hunger                          Float                            @default(100)
+  thirst                          Float                            @default(100)
+  rank                            Int                              @default(1)
+  xp                              Int                              @default(0)
+  createdAt                       DateTime                         @default(now())
+  updatedAt                       DateTime                         @updatedAt
+  lastTickAt                      DateTime                         @default(now())
+  currentCountry                  String                           @default("netherlands") @db.VarChar(50)
+  fbiHeat                         Int                              @default(0)
+  wantedLevel                     Int                              @default(0)
+  travelingTo                     String?                          @db.VarChar(50)
+  travelRoute                     String?                          @db.LongText
+  currentTravelLeg                Int                              @default(0)
+  travelStartedAt                 DateTime?
+  killCount                       Int                              @default(0)
+  isHunted                        Boolean                          @default(false)
+  hitCount                        Int                              @default(0)
+  allowMessages                   Boolean                          @default(true)
+  avatar                          String?                          @default("default_1") @db.VarChar(100)
+  banReason                       String?                          @db.Text
+  bannedUntil                     DateTime?
+  email                           String?                          @db.VarChar(255)
+  emailFriendAccepted             Boolean                          @default(true)
+  emailFriendRequest              Boolean                          @default(true)
+  emailVerified                   Boolean                          @default(false)
+  stripeCustomerId                String?                          @db.VarChar(255)
+  intensiveCareUntil              DateTime?
+  inventory_slots_used            Int                              @default(0)
+  isBanned                        Boolean                          @default(false)
+  isVip                           Boolean                          @default(false)
+  jailRelease                     DateTime?
+  lastAmmoPurchaseAt              DateTime?
+  lastAvatarChange                DateTime?
+  lastHospitalVisit               DateTime?
+  lastUsernameChange              DateTime?
+  max_inventory_slots             Int                              @default(5)
+  notifyFriendAccepted            Boolean                          @default(true)
+  notifyFriendRequest             Boolean                          @default(true)
+  preferredLanguage               String                           @default("nl") @db.VarChar(5)
+  reputation                      Int                              @default(0)
+  resetPasswordToken              String?                          @db.VarChar(255)
+  resetPasswordTokenExpiry        DateTime?
+  verificationToken               String?                          @db.VarChar(255)
+  verificationTokenExpiry         DateTime?
+  vipExpiresAt                    DateTime?
+  lastProstituteRecruitment       DateTime?
+  drugHeat                        Int                              @default(0)
+  autoCollectDrugs                Boolean                          @default(false)
+  lastDrugActionAt                DateTime?                        @db.DateTime(0)
+  aircraft                        Aircraft[]
+  ammoFactories                   AmmoFactory[]
+  ammoInventory                   AmmoInventory[]
+  aviationLicense                 AviationLicense?
+  bankAccount                     BankAccount?
+  casinoOwnerships                CasinoOwnership[]
+  crewJoinRequests                CrewJoinRequest[]
+  crewMembership                  CrewMember?
+  crewMessages                    CrewMessage[]
+  crimeAttempts                   CrimeAttempt[]
+  crypto_holdings                 crypto_holdings[]
+  crypto_leaderboard_rewards      crypto_leaderboard_rewards[]
+  crypto_mission_progress         crypto_mission_progress[]
+  crypto_orders                   crypto_orders[]
+  crypto_transactions             crypto_transactions[]
+  receivedMessages                DirectMessage[]                  @relation("ReceivedMessages")
+  sentMessages                    DirectMessage[]                  @relation("SentMessages")
+  drugProductions                 DrugProduction[]
+  eventParticipations             EventParticipation[]
+  friendRequestsReceived          Friendship[]                     @relation("FriendReceived")
+  friendRequestsSent              Friendship[]                     @relation("FriendRequests")
+  gameEventProgress               GameEventParticipantProgress[]
+  gameEventRewardClaims           GameEventRewardClaim[]
+  garages                         Garage[]
+  gymStats                        GymStats?
+  hitsCompleted                   HitList[]                        @relation("HitKiller")
+  hitsPlaced                      HitList[]                        @relation("HitPlacer")
+  hitsTarget                      HitList[]                        @relation("HitTarget")
+  inventory                       Inventory[]
+  inventoryUpgrades               InventoryUpgrades[]
+  jobAttempts                     JobAttempt[]
+  marinas                         Marina[]
+  nightclubAssignments            NightclubProstituteAssignment[]
+  nightclubSeasonRewards          NightclubSeasonReward[]
+  nightclubs                      NightclubVenue[]
+  activities                      PlayerActivity[]
+  playerBackpack                  PlayerBackpack?
+  devices                         PlayerDevice[]
+  player_notification_preferences player_notification_preferences?
+  premiumPopupSeen                PlayerPremiumPopupSeen[]
+  security                        PlayerSecurity?
+  selectedVehicle                 PlayerSelectedVehicle?
+  playerTools                     PlayerTools[]
+  productionMaterials             ProductionMaterial[]
+  properties                      Property[]
+  prostitutes                     Prostitute[]
+  prostitutionAchievements        ProstitutionAchievement[]
+  leaderboardEntries              ProstitutionLeaderboard[]
+  prostitutionProtectionInsurance ProstitutionProtectionInsurance?
+  rivalriesAsPlayer               ProstitutionRivalry[]            @relation("RivalriesAsPlayer")
+  rivalriesAsRival                ProstitutionRivalry[]            @relation("RivalriesAsRival")
+  ownedRedLightDistricts          RedLightDistrict[]
+  sabotageAsAttacker              SabotageAction[]                 @relation("SabotageAttacker")
+  sabotageAsVictim                SabotageAction[]                 @relation("SabotageVictim")
+  shootingStats                   ShootingRangeStats?
+  toolLoadouts                    ToolLoadouts[]
+  toolTransfers                   ToolTransfers[]
+  vehicleInventory                VehicleInventory[]
+  vehicles                        Vehicle[]
+  weaponInventory                 WeaponInventory[]
+
+  @@index([username])
+  @@map("players")
+}
+
+model PlayerBackpack {
+  id          Int      @id @default(autoincrement())
+  playerId    Int      @unique
+  backpackId  String   @db.VarChar(50)
+  purchasedAt DateTime @default(now())
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@map("player_backpacks")
+}
+
+model WorldEvent {
+  id        Int      @id @default(autoincrement())
+  eventKey  String   @db.VarChar(100)
+  params    String   @db.LongText
+  playerId  Int?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("world_events")
+}
+
+model GameEventTemplate {
+  id                 Int                 @id @default(autoincrement())
+  key                String              @unique @db.VarChar(100)
+  category           String              @db.VarChar(50)
+  eventType          String              @db.VarChar(50)
+  titleNl            String              @db.VarChar(255)
+  titleEn            String              @db.VarChar(255)
+  shortDescriptionNl String?             @db.VarChar(255)
+  shortDescriptionEn String?             @db.VarChar(255)
+  descriptionNl      String?             @db.Text
+  descriptionEn      String?             @db.Text
+  icon               String?             @db.VarChar(100)
+  bannerImage        String?             @db.VarChar(255)
+  configSchemaJson   String?             @db.LongText
+  uiSchemaJson       String?             @db.LongText
+  isActive           Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @default(now()) @updatedAt
+  schedules          GameEventSchedule[]
+  liveEvents         GameLiveEvent[]
+
+  @@index([category, eventType, isActive])
+  @@map("game_event_templates")
+}
+
+model GameEventSchedule {
+  id              Int               @id @default(autoincrement())
+  templateId      Int
+  scheduleType    String            @db.VarChar(50)
+  intervalMinutes Int?
+  durationMinutes Int?
+  cronExpression  String?           @db.VarChar(100)
+  startWindowUtc  String?           @db.VarChar(20)
+  endWindowUtc    String?           @db.VarChar(20)
+  cooldownMinutes Int?
+  enabled         Boolean           @default(true)
+  weight          Int               @default(1)
+  lastTriggeredAt DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  template        GameEventTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade, map: "ges_template_fk")
+
+  @@index([templateId, enabled])
+  @@index([scheduleType, enabled])
+  @@map("game_event_schedules")
+}
+
+model GameLiveEvent {
+  id                   Int                            @id @default(autoincrement())
+  templateId           Int
+  status               String                         @default("draft") @db.VarChar(30)
+  startedAt            DateTime?
+  endsAt               DateTime?
+  resolvedAt           DateTime?
+  configJson           String?                        @db.LongText
+  stateJson            String?                        @db.LongText
+  announcementJson     String?                        @db.LongText
+  scopeJson            String?                        @db.LongText
+  createdByAdminId     Int?
+  createdAt            DateTime                       @default(now())
+  updatedAt            DateTime                       @default(now()) @updatedAt
+  leaderboardSnapshots GameEventLeaderboardSnapshot[]
+  participants         GameEventParticipantProgress[]
+  rewardClaims         GameEventRewardClaim[]
+  rewardRules          GameEventRewardRule[]
+  modifiers            GameLiveEventModifier[]
+  createdByAdmin       Admin?                         @relation("AdminCreatedGameEvents", fields: [createdByAdminId], references: [id], map: "gle_admin_fk")
+  template             GameEventTemplate              @relation(fields: [templateId], references: [id], onDelete: Cascade, map: "gle_template_fk")
+
+  @@index([templateId, status])
+  @@index([status, startedAt, endsAt])
+  @@index([createdByAdminId])
+  @@map("game_live_events")
+}
+
+model GameLiveEventModifier {
+  id             Int           @id @default(autoincrement())
+  liveEventId    Int
+  targetSystem   String        @db.VarChar(50)
+  modifierKey    String        @db.VarChar(100)
+  operation      String        @db.VarChar(30)
+  valueJson      String?       @db.LongText
+  conditionsJson String?       @db.LongText
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  liveEvent      GameLiveEvent @relation(fields: [liveEventId], references: [id], onDelete: Cascade, map: "glem_live_fk")
+
+  @@index([liveEventId, targetSystem])
+  @@map("game_live_event_modifiers")
+}
+
+model GameEventParticipantProgress {
+  id                 Int           @id @default(autoincrement())
+  liveEventId        Int
+  playerId           Int?
+  subjectType        String        @default("player") @db.VarChar(30)
+  subjectKey         String        @db.VarChar(100)
+  progressJson       String?       @db.LongText
+  score              Float         @default(0)
+  rank               Int?
+  qualified          Boolean       @default(false)
+  lastContributionAt DateTime?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now()) @updatedAt
+  liveEvent          GameLiveEvent @relation(fields: [liveEventId], references: [id], onDelete: Cascade, map: "gepp_live_fk")
+  player             Player?       @relation(fields: [playerId], references: [id], map: "gepp_player_fk")
+
+  @@unique([liveEventId, subjectType, subjectKey], map: "gepp_live_subject_key_uq")
+  @@index([liveEventId, rank], map: "gepp_live_rank_idx")
+  @@index([liveEventId, score], map: "gepp_live_score_idx")
+  @@index([playerId], map: "gepp_player_idx")
+  @@map("game_event_participant_progress")
+}
+
+model GameEventLeaderboardSnapshot {
+  id          Int           @id @default(autoincrement())
+  liveEventId Int
+  boardType   String        @db.VarChar(50)
+  snapshotAt  DateTime      @default(now())
+  entriesJson String        @db.LongText
+  createdAt   DateTime      @default(now())
+  liveEvent   GameLiveEvent @relation(fields: [liveEventId], references: [id], onDelete: Cascade, map: "gels_live_fk")
+
+  @@index([liveEventId, boardType, snapshotAt], map: "gels_live_board_snap_idx")
+  @@map("game_event_leaderboard_snapshots")
+}
+
+model GameEventRewardRule {
+  id                Int                    @id @default(autoincrement())
+  liveEventId       Int
+  triggerType       String                 @db.VarChar(50)
+  triggerConfigJson String?                @db.LongText
+  rewardsJson       String                 @db.LongText
+  sortOrder         Int                    @default(0)
+  isActive          Boolean                @default(true)
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @default(now()) @updatedAt
+  claims            GameEventRewardClaim[]
+  liveEvent         GameLiveEvent          @relation(fields: [liveEventId], references: [id], onDelete: Cascade, map: "gerr_live_fk")
+
+  @@index([liveEventId, isActive, sortOrder], map: "gerr_live_active_sort_idx")
+  @@map("game_event_reward_rules")
+}
+
+model GameEventRewardClaim {
+  id                 Int                  @id @default(autoincrement())
+  liveEventId        Int
+  rewardRuleId       Int?
+  playerId           Int
+  grantedRewardsJson String               @db.LongText
+  claimedAt          DateTime?
+  deliveryStatus     String               @default("pending") @db.VarChar(30)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now()) @updatedAt
+  liveEvent          GameLiveEvent        @relation(fields: [liveEventId], references: [id], onDelete: Cascade, map: "gerc_live_fk")
+  player             Player               @relation(fields: [playerId], references: [id], onDelete: Cascade, map: "gerc_player_fk")
+  rewardRule         GameEventRewardRule? @relation(fields: [rewardRuleId], references: [id], map: "gerc_rule_fk")
+
+  @@index([liveEventId, playerId], map: "gerc_live_player_idx")
+  @@index([playerId, deliveryStatus], map: "gerc_player_delivery_idx")
+  @@index([rewardRuleId], map: "gerc_rule_fk")
+  @@map("game_event_reward_claims")
+}
+
+model Vehicle {
+  id                    Int                    @id @default(autoincrement())
+  playerId              Int
+  vehicleType           String                 @db.VarChar(50)
+  fuel                  Int                    @default(100)
+  maxFuel               Int                    @default(100)
+  createdAt             DateTime               @default(now())
+  isBroken              Boolean                @default(false)
+  armor                 Int                    @default(50)
+  cargo                 Int                    @default(50)
+  condition             Float                  @default(100)
+  speed                 Int                    @default(50)
+  stealth               Int                    @default(50)
+  updatedAt             DateTime               @updatedAt
+  playerSelectedVehicle PlayerSelectedVehicle?
+  player                Player                 @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@map("vehicles")
+}
+
+model PlayerSelectedVehicle {
+  id          Int      @id @default(autoincrement())
+  playerId    Int      @unique
+  vehicleId   Int      @unique
+  selectedFor String   @default("robbery") @db.VarChar(50)
+  selectedAt  DateTime @default(now())
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([vehicleId])
+  @@map("player_selected_vehicles")
+}
+
+model CrimeAttempt {
+  id                   Int       @id @default(autoincrement())
+  playerId             Int
+  crimeId              String    @db.VarChar(50)
+  success              Boolean
+  reward               Int       @default(0)
+  xpGained             Int       @default(0)
+  jailed               Boolean   @default(false)
+  jailTime             Int       @default(0)
+  vehicleId            Int?
+  createdAt            DateTime  @default(now())
+  appealedAt           DateTime?
+  cargoUsed            Int       @default(0)
+  lootStolen           Int       @default(0)
+  outcome              String    @default("success") @db.VarChar(50)
+  outcomeFail          String?   @db.Text
+  toolConditionBefore  Int?
+  toolDamageSustained  Int       @default(0)
+  usedToolId           String?   @db.VarChar(50)
+  vehicleCargoBonus    Float     @default(1)
+  vehicleConditionUsed Float?
+  vehicleSpeedBonus    Float     @default(1)
+  vehicleStealthBonus  Float     @default(1)
+  player               Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([createdAt])
+  @@map("crime_attempts")
+}
+
+model JobAttempt {
+  id          Int      @id @default(autoincrement())
+  playerId    Int
+  jobId       String   @db.VarChar(50)
+  earnings    Int
+  xpGained    Int
+  completedAt DateTime @default(now())
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([playerId, jobId])
+  @@index([completedAt])
+  @@map("job_attempts")
+}
+
+model Property {
+  id              Int                   @id @default(autoincrement())
+  playerId        Int?
+  propertyType    String                @db.VarChar(50)
+  purchasePrice   Int
+  upgradeLevel    Int                   @default(1)
+  lastIncomeAt    DateTime              @default(now())
+  purchasedAt     DateTime              @default(now())
+  countryId       String                @db.VarChar(50)
+  propertyId      String                @unique @db.VarChar(100)
+  drugProductions DrugProduction[]
+  nightclub       NightclubVenue?
+  player          Player?               @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  drugStorage     PropertyDrugStorage[]
+
+  @@index([playerId])
+  @@index([propertyType])
+  @@index([countryId])
+  @@map("properties")
+}
+
+model PropertyDrugStorage {
+  id         Int      @id @default(autoincrement())
+  propertyId Int
+  drugType   String   @db.VarChar(50)
+  quantity   Int      @default(0)
+  storedAt   DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, drugType])
+  @@index([propertyId])
+  @@map("property_drug_storage")
+}
+
+model Crew {
+  id                    Int                        @id @default(autoincrement())
+  stripeSubscriptionId  String?                    @db.VarChar(255)
+  name                  String                     @unique @db.VarChar(50)
+  bankBalance           Int                        @default(0)
+  createdAt             DateTime                   @default(now())
+  isVip                 Boolean                    @default(false)
+  vipExpiresAt          DateTime?
+  ammoInventory         CrewAmmoInventory[]
+  ammoStorageBuilding   CrewAmmoStorageBuilding?
+  boatInventory         CrewBoatInventory[]
+  boatStorageBuilding   CrewBoatStorageBuilding?
+  carInventory          CrewCarInventory[]
+  carStorageBuilding    CrewCarStorageBuilding?
+  cashStorageBuilding   CrewCashStorageBuilding?
+  drugInventory         CrewDrugInventory[]
+  drugStorageBuilding   CrewDrugStorageBuilding?
+  heistAttempts         CrewHeistAttempt[]
+  hqBuilding            CrewHqBuilding?
+  joinRequests          CrewJoinRequest[]
+  members               CrewMember[]
+  messages              CrewMessage[]
+  weaponInventory       CrewWeaponInventory[]
+  weaponStorageBuilding CrewWeaponStorageBuilding?
+
+  @@index([name])
+  @@map("crews")
+}
+
+model CrewMember {
+  id         Int      @id @default(autoincrement())
+  crewId     Int
+  playerId   Int      @unique
+  role       String   @db.VarChar(20)
+  joinedAt   DateTime @default(now())
+  trustScore Int      @default(50)
+  crew       Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  player     Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, playerId])
+  @@index([playerId])
+  @@index([crewId])
+  @@map("crew_members")
+}
+
+model Friendship {
+  id          Int      @id @default(autoincrement())
+  requesterId Int
+  addresseeId Int
+  status      String   @db.VarChar(20)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  addressee   Player   @relation("FriendReceived", fields: [addresseeId], references: [id], onDelete: Cascade)
+  requester   Player   @relation("FriendRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+  @@index([requesterId])
+  @@index([addresseeId])
+  @@index([status])
+  @@map("friendships")
+}
+
+model DirectMessage {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  message    String   @db.Text
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  receiver   Player   @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  sender     Player   @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([read])
+  @@index([createdAt])
+  @@map("direct_messages")
+}
+
+model CrewMessage {
+  id        Int      @id @default(autoincrement())
+  crewId    Int
+  playerId  Int
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+  crew      Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([crewId])
+  @@index([playerId])
+  @@index([createdAt])
+  @@map("crew_messages")
+}
+
+model CrewJoinRequest {
+  id        Int      @id @default(autoincrement())
+  crewId    Int
+  playerId  Int
+  status    String   @db.VarChar(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  crew      Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, playerId])
+  @@index([crewId])
+  @@index([playerId])
+  @@index([status])
+  @@map("crew_join_requests")
+}
+
+model CrewHeistAttempt {
+  id        Int      @id @default(autoincrement())
+  crewId    Int
+  heistId   String   @db.VarChar(50)
+  success   Boolean
+  createdAt DateTime @default(now())
+  crew      Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@index([crewId])
+  @@index([heistId])
+  @@index([createdAt])
+  @@map("crew_heist_attempts")
+}
+
+model CrewHqBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_hq_buildings")
+}
+
+model CrewCarStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_car_storage_buildings")
+}
+
+model CrewBoatStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_boat_storage_buildings")
+}
+
+model CrewWeaponStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_weapon_storage_buildings")
+}
+
+model CrewAmmoStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_ammo_storage_buildings")
+}
+
+model CrewDrugStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_drug_storage_buildings")
+}
+
+model CrewCashStorageBuilding {
+  id        Int               @id @default(autoincrement())
+  crewId    Int               @unique
+  style     CrewBuildingStyle @default(camping)
+  level     Int               @default(0)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  crew      Crew              @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@map("crew_cash_storage_buildings")
+}
+
+model CrewCarInventory {
+  id              Int      @id @default(autoincrement())
+  crewId          Int
+  vehicleId       String   @db.VarChar(100)
+  condition       Int      @default(100)
+  fuelLevel       Int      @default(100)
+  stolenInCountry String?  @db.VarChar(50)
+  addedByPlayerId Int
+  addedAt         DateTime @default(now())
+  crew            Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@index([crewId])
+  @@map("crew_car_inventory")
+}
+
+model CrewBoatInventory {
+  id              Int      @id @default(autoincrement())
+  crewId          Int
+  vehicleId       String   @db.VarChar(100)
+  condition       Int      @default(100)
+  fuelLevel       Int      @default(100)
+  stolenInCountry String?  @db.VarChar(50)
+  addedByPlayerId Int
+  addedAt         DateTime @default(now())
+  crew            Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@index([crewId])
+  @@map("crew_boat_inventory")
+}
+
+model CrewWeaponInventory {
+  id               Int      @id @default(autoincrement())
+  crewId           Int
+  weaponId         String   @db.VarChar(50)
+  quantity         Int      @default(1)
+  averageCondition Int      @default(100)
+  updatedAt        DateTime @updatedAt
+  crew             Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, weaponId])
+  @@index([crewId])
+  @@map("crew_weapon_inventory")
+}
+
+model CrewAmmoInventory {
+  id        Int      @id @default(autoincrement())
+  crewId    Int
+  ammoType  String   @db.VarChar(50)
+  quantity  Int      @default(0)
+  updatedAt DateTime @updatedAt
+  crew      Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, ammoType])
+  @@index([crewId])
+  @@map("crew_ammo_inventory")
+}
+
+model CrewDrugInventory {
+  id                   Int      @id @default(autoincrement())
+  crewId               Int
+  goodType             String   @db.VarChar(50)
+  quantity             Int      @default(0)
+  averagePurchasePrice Int      @default(0)
+  averageCondition     Int      @default(100)
+  updatedAt            DateTime @updatedAt
+  crew                 Crew     @relation(fields: [crewId], references: [id], onDelete: Cascade)
+
+  @@unique([crewId, goodType])
+  @@index([crewId])
+  @@map("crew_drug_inventory")
+}
+
+model BankAccount {
+  id           Int      @id @default(autoincrement())
+  playerId     Int      @unique
+  balance      Int      @default(0)
+  interestRate Float    @default(0.05)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  player       Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@map("bank_accounts")
+}
+
+model Inventory {
+  id            Int      @id @default(autoincrement())
+  playerId      Int
+  goodType      String   @db.VarChar(50)
+  quantity      Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  condition     Int      @default(100)
+  purchasePrice Int      @default(0)
+  purchasedAt   DateTime @default(now())
+  player        Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, goodType])
+  @@index([playerId])
+  @@map("inventory")
+}
+
+model AviationLicense {
+  id            Int      @id @default(autoincrement())
+  playerId      Int      @unique
+  licenseType   String   @default("basic") @db.VarChar(50)
+  purchasePrice Int
+  issuedAt      DateTime @default(now())
+  player        Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@map("aviation_licenses")
+}
+
+model Aircraft {
+  id            Int      @id @default(autoincrement())
+  playerId      Int
+  aircraftType  String   @db.VarChar(50)
+  fuel          Int      @default(0)
+  maxFuel       Int
+  isBroken      Boolean  @default(false)
+  totalFlights  Int      @default(0)
+  purchasePrice Int
+  purchasedAt   DateTime @default(now())
+  player        Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([aircraftType])
+  @@map("aircraft")
+}
+
+model ActionCooldown {
+  id         Int      @id @default(autoincrement())
+  playerId   Int
+  actionType String   @db.VarChar(50)
+  lastUsedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([playerId, actionType])
+  @@index([playerId])
+  @@index([actionType])
+  @@map("action_cooldowns")
+}
+
+model CasinoOwnership {
+  id                         Int       @id @default(autoincrement())
+  casinoId                   String    @unique @db.VarChar(100)
+  ownerId                    Int
+  purchasePrice              Int
+  bankroll                   Int       @default(0)
+  totalReceived              Int       @default(0)
+  totalPaidOut               Int       @default(0)
+  lastLowBalanceNotification DateTime?
+  purchasedAt                DateTime  @default(now())
+  updatedAt                  DateTime  @default(now()) @updatedAt
+  owner                      Player    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
+  @@map("casino_ownerships")
+}
+
+model CasinoTransaction {
+  id        Int      @id @default(autoincrement())
+  playerId  Int
+  casinoId  String   @db.VarChar(100)
+  ownerId   Int
+  gameType  String   @db.VarChar(50)
+  betAmount Int
+  payout    Int      @default(0)
+  ownerCut  Int      @default(0)
+  result    String   @db.LongText
+  rngSeed   String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  @@index([playerId])
+  @@index([casinoId])
+  @@index([ownerId])
+  @@index([createdAt])
+  @@map("casino_transactions")
+}
+
+model StripePaymentFulfillment {
+  id              Int      @id @default(autoincrement())
+  stripeSessionId String   @unique(map: "mollie_payment_fulfillments_molliePaymentId_key") @db.VarChar(64)
+  playerId        Int
+  productKey      String   @db.VarChar(64)
+  payload         String?  @db.LongText
+  fulfilledAt     DateTime @default(now())
+
+  @@index([playerId], map: "mollie_payment_fulfillments_playerId_idx")
+  @@map("stripe_payment_fulfillments")
+}
+
+model WeaponInventory {
+  id          Int      @id @default(autoincrement())
+  playerId    Int
+  weaponId    String   @db.VarChar(50)
+  quantity    Int      @default(1)
+  condition   Int      @default(100)
+  purchasedAt DateTime @default(now())
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, weaponId])
+  @@index([playerId])
+  @@map("weapon_inventory")
+}
+
+model AmmoInventory {
+  id       Int    @id @default(autoincrement())
+  playerId Int
+  ammoType String @db.VarChar(50)
+  quantity Int    @default(0)
+  quality  Float  @default(1)
+  player   Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, ammoType])
+  @@index([playerId])
+  @@map("ammo_inventory")
+}
+
+model AmmoFactory {
+  id             Int       @id @default(autoincrement())
+  countryId      String    @unique @db.VarChar(50)
+  ownerId        Int?
+  level          Int       @default(1)
+  qualityLevel   Int       @default(1)
+  lastProducedAt DateTime?
+  lastActiveAt   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  owner          Player?   @relation(fields: [ownerId], references: [id])
+
+  @@index([ownerId])
+  @@map("ammo_factories")
+}
+
+model AmmoMarketStock {
+  id        Int      @id @default(autoincrement())
+  countryId String   @db.VarChar(50)
+  ammoType  String   @db.VarChar(50)
+  quantity  Int      @default(0)
+  quality   Float    @default(1)
+  updatedAt DateTime @updatedAt
+
+  @@unique([countryId, ammoType])
+  @@index([countryId])
+  @@map("ammo_market_stock")
+}
+
+model ShootingRangeStats {
+  id                Int       @id @default(autoincrement())
+  playerId          Int       @unique
+  sessionsCompleted Int       @default(0)
+  accuracyBonus     Float     @default(0)
+  lastTrainedAt     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  player            Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@map("shooting_range_stats")
+}
+
+model GymStats {
+  id                Int       @id @default(autoincrement())
+  playerId          Int       @unique
+  sessionsCompleted Int       @default(0)
+  strengthBonus     Float     @default(0)
+  lastTrainedAt     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  player            Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@map("gym_stats")
+}
+
+model Garage {
+  id        Int             @id @default(autoincrement())
+  playerId  Int
+  capacity  Int             @default(5)
+  location  String          @db.VarChar(50)
+  createdAt DateTime        @default(now())
+  upgrades  GarageUpgrade[]
+  player    Player          @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, location])
+  @@index([playerId])
+  @@map("garages")
+}
+
+model GarageUpgrade {
+  id            Int      @id @default(autoincrement())
+  garageId      Int
+  upgradeLevel  Int      @default(1)
+  capacityBonus Int      @default(5)
+  upgradeCost   Int
+  upgradedAt    DateTime @default(now())
+  garage        Garage   @relation(fields: [garageId], references: [id], onDelete: Cascade)
+
+  @@index([garageId])
+  @@map("garage_upgrades")
+}
+
+model Marina {
+  id        Int             @id @default(autoincrement())
+  playerId  Int
+  capacity  Int             @default(3)
+  location  String          @db.VarChar(50)
+  createdAt DateTime        @default(now())
+  upgrades  MarinaUpgrade[]
+  player    Player          @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, location])
+  @@index([playerId])
+  @@map("marinas")
+}
+
+model MarinaUpgrade {
+  id            Int      @id @default(autoincrement())
+  marinaId      Int
+  upgradeLevel  Int      @default(1)
+  capacityBonus Int      @default(3)
+  upgradeCost   Int
+  upgradedAt    DateTime @default(now())
+  marina        Marina   @relation(fields: [marinaId], references: [id], onDelete: Cascade)
+
+  @@index([marinaId])
+  @@map("marina_upgrades")
+}
+
+model VehicleInventory {
+  id                   Int       @id @default(autoincrement())
+  playerId             Int
+  vehicleType          String    @db.VarChar(20)
+  vehicleId            String    @db.VarChar(100)
+  stolenInCountry      String    @db.VarChar(50)
+  currentLocation      String    @db.VarChar(50)
+  condition            Int       @default(100)
+  fuelLevel            Int       @default(100)
+  marketListing        Boolean   @default(false)
+  askingPrice          Int?
+  stolenAt             DateTime  @default(now())
+  transportStatus      String?   @db.VarChar(20)
+  transportArrivalTime DateTime?
+  transportDestination String?   @db.VarChar(50)
+  player               Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([vehicleType])
+  @@index([currentLocation])
+  @@index([marketListing])
+  @@map("vehicle_inventory")
+}
+
+model PremiumOneTimeOffer {
+  id              Int                      @id @default(autoincrement())
+  key             String                   @unique @db.VarChar(64)
+  titleNl         String                   @db.VarChar(120)
+  titleEn         String                   @db.VarChar(120)
+  priceEurCents   Int
+  rewardType      PremiumOfferRewardType
+  moneyAmount     Int?
+  ammoType        String?                  @db.VarChar(50)
+  ammoQuantity    Int?
+  isActive        Boolean                  @default(true)
+  sortOrder       Int                      @default(0)
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+  imageUrl        String?                  @db.VarChar(500)
+  showPopupOnOpen Boolean                  @default(false)
+  popupViews      PlayerPremiumPopupSeen[]
+
+  @@index([isActive, sortOrder])
+  @@map("premium_one_time_offers")
+}
+
+model PlayerPremiumPopupSeen {
+  id       Int                 @id @default(autoincrement())
+  playerId Int
+  offerId  Int
+  seenAt   DateTime            @default(now())
+  offer    PremiumOneTimeOffer @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  player   Player              @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, offerId])
+  @@index([playerId, seenAt])
+  @@index([offerId], map: "player_premium_popup_seen_offerId_fkey")
+  @@map("player_premium_popup_seen")
+}
+
+model Admin {
+  id                Int             @id @default(autoincrement())
+  username          String          @unique @db.VarChar(50)
+  passwordHash      String          @db.VarChar(255)
+  role              AdminRole       @default(VIEWER)
+  isActive          Boolean         @default(true)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  lastLoginAt       DateTime?
+  auditLogs         AuditLog[]
+  createdGameEvents GameLiveEvent[] @relation("AdminCreatedGameEvents")
+
+  @@map("admins")
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  adminId    Int
+  action     String   @db.VarChar(100)
+  targetType String?  @db.VarChar(50)
+  targetId   String?  @db.VarChar(100)
+  details    String?  @db.Text
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.VarChar(255)
+  createdAt  DateTime @default(now())
+  admin      Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model PlayerDevice {
+  id          Int        @id @default(autoincrement())
+  playerId    Int
+  deviceToken String     @unique(length: 255) @db.VarChar(500)
+  deviceType  DeviceType
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  player      Player     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId], map: "player_devices_playerId_fkey")
+  @@map("player_devices")
+}
+
+model PlayerActivity {
+  id           Int      @id @default(autoincrement())
+  playerId     Int
+  activityType String   @db.VarChar(50)
+  description  String   @db.VarChar(255)
+  details      String   @db.LongText
+  isPublic     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  player       Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, createdAt])
+  @@map("player_activities")
+}
+
+model CrimeTool {
+  id            String        @id @db.VarChar(50)
+  name          String        @db.VarChar(100)
+  type          String        @db.VarChar(50)
+  basePrice     Int
+  maxDurability Int
+  loseChance    Float
+  wearPerUse    Int
+  requiredFor   String        @db.LongText
+  playerTools   PlayerTools[]
+
+  @@map("crime_tools")
+}
+
+model PlayerTools {
+  id         Int       @id @default(autoincrement())
+  playerId   Int
+  toolId     String    @db.VarChar(50)
+  durability Int
+  location   String    @default("carried") @db.VarChar(50)
+  quantity   Int       @default(1)
+  createdAt  DateTime  @default(now())
+  player     Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  tool       CrimeTool @relation(fields: [toolId], references: [id])
+
+  @@index([playerId])
+  @@index([playerId, location])
+  @@index([toolId], map: "player_tools_toolId_fkey")
+  @@map("player_tools")
+}
+
+model NPCPlayer {
+  id                   Int              @id @default(autoincrement())
+  playerId             Int              @unique
+  npcType              NPCType
+  isActive             Boolean          @default(true)
+  lastActivityAt       DateTime         @default(now())
+  createdAt            DateTime         @default(now())
+  totalCrimes          Int              @default(0)
+  totalJobs            Int              @default(0)
+  totalMoneyEarned     BigInt           @default(0)
+  totalXpEarned        Int              @default(0)
+  totalArrests         Int              @default(0)
+  totalJailTime        Int              @default(0)
+  crimesPerHour        Float            @default(0)
+  jobsPerHour          Float            @default(0)
+  simulatedOnlineHours Float            @default(0)
+  activityLogs         NPCActivityLog[]
+
+  @@map("npc_players")
+}
+
+model NPCActivityLog {
+  id           Int       @id @default(autoincrement())
+  npcId        Int
+  activityType String    @db.VarChar(50)
+  details      String    @db.LongText
+  success      Boolean
+  moneyEarned  Int       @default(0)
+  xpEarned     Int       @default(0)
+  timestamp    DateTime  @default(now())
+  npc          NPCPlayer @relation(fields: [npcId], references: [id], onDelete: Cascade)
+
+  @@index([npcId, timestamp])
+  @@map("npc_activity_logs")
+}
+
+model PropertyStorageCapacity {
+  id           Int      @id @default(autoincrement())
+  propertyType String   @unique @map("property_type") @db.VarChar(50)
+  maxSlots     Int      @map("max_slots")
+  description  String?  @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("property_storage_capacity")
+}
+
+model ToolLoadouts {
+  id          Int            @id @default(autoincrement())
+  playerId    Int            @map("player_id")
+  name        String         @db.VarChar(100)
+  description String?        @db.Text
+  isActive    Boolean        @default(false) @map("is_active")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  tools       LoadoutTools[]
+  player      Player         @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([playerId, isActive])
+  @@map("tool_loadouts")
+}
+
+model LoadoutTools {
+  id           Int          @id @default(autoincrement())
+  loadoutId    Int          @map("loadout_id")
+  toolId       String       @map("tool_id") @db.VarChar(50)
+  slotPosition Int          @default(0) @map("slot_position")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  loadout      ToolLoadouts @relation(fields: [loadoutId], references: [id], onDelete: Cascade)
+
+  @@unique([loadoutId, toolId])
+  @@index([loadoutId])
+  @@map("loadout_tools")
+}
+
+model InventoryUpgrades {
+  id          Int      @id @default(autoincrement())
+  playerId    Int      @map("player_id")
+  upgradeType String   @map("upgrade_type") @db.VarChar(50)
+  bonusSlots  Int      @map("bonus_slots")
+  purchasedAt DateTime @default(now()) @map("purchased_at")
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, upgradeType])
+  @@index([playerId])
+  @@map("inventory_upgrades")
+}
+
+model ToolTransfers {
+  id            Int      @id @default(autoincrement())
+  playerId      Int      @map("player_id")
+  toolId        String   @map("tool_id") @db.VarChar(50)
+  fromLocation  String   @map("from_location") @db.VarChar(50)
+  toLocation    String   @map("to_location") @db.VarChar(50)
+  quantity      Int      @default(1)
+  durability    Int?
+  transferredAt DateTime @default(now()) @map("transferred_at")
+  player        Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([transferredAt])
+  @@map("tool_transfers")
+}
+
+model DrugProduction {
+  id                Int       @id @default(autoincrement())
+  playerId          Int
+  propertyId        Int?
+  drugType          String    @db.VarChar(50)
+  quantity          Int
+  startedAt         DateTime  @default(now())
+  finishesAt        DateTime
+  completed         Boolean   @default(false)
+  collected         Boolean   @default(false)
+  facilityId        Int?
+  quality           String    @default("C") @db.VarChar(2)
+  qualityMultiplier Float     @default(1)
+  player            Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  property          Property? @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  facility          DrugFacility? @relation(fields: [facilityId], references: [id], onDelete: SetNull)
+
+  @@index([playerId])
+  @@index([finishesAt])
+  @@index([completed])
+  @@index([facilityId])
+  @@index([propertyId], map: "drug_production_propertyId_fkey")
+  @@map("drug_production")
+}
+
+model DrugInventory {
+  id       Int    @id @default(autoincrement())
+  playerId Int
+  drugType String @db.VarChar(50)
+  quantity Int    @default(0)
+  quality  String @default("C") @db.VarChar(2)
+
+  @@unique([playerId, drugType, quality])
+  @@index([playerId])
+  @@map("drug_inventory")
+}
+
+model ProductionMaterial {
+  id         Int    @id @default(autoincrement())
+  playerId   Int
+  materialId String @db.VarChar(50)
+  quantity   Int    @default(0)
+  player     Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, materialId])
+  @@index([playerId])
+  @@map("production_materials")
+}
+
+model DrugFacility {
+  id           Int       @id @default(autoincrement())
+  playerId     Int
+  country      String?   @default("netherlands") @db.VarChar(50)
+  facilityType String    @db.VarChar(30)
+  slots        Int       @default(1)
+  purchasedAt  DateTime? @default(now())
+  upgrades     DrugFacilityUpgrade[]
+  productions  DrugProduction[]
+
+  @@unique([playerId, country, facilityType])
+  @@index([playerId])
+  @@index([country], map: "idx_facilities_country")
+  @@map("drug_facilities")
+}
+
+model DrugFacilityUpgrade {
+  id          Int          @id @default(autoincrement())
+  facilityId  Int
+  upgradeType String       @db.VarChar(50)
+  level       Int          @default(1)
+  upgradedAt  DateTime     @default(now())
+  facility    DrugFacility @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+
+  @@unique([facilityId, upgradeType])
+  @@index([facilityId])
+  @@map("drug_facility_upgrades")
+}
+
+model HitList {
+  id            Int       @id @default(autoincrement())
+  targetId      Int
+  placedById    Int
+  bounty        Int
+  counterBounty Int?
+  status        String    @default("ACTIVE") @db.VarChar(20)
+  createdAt     DateTime  @default(now())
+  completedAt   DateTime?
+  completedBy   Int?
+  killer        Player?   @relation("HitKiller", fields: [completedBy], references: [id])
+  placedBy      Player    @relation("HitPlacer", fields: [placedById], references: [id], onDelete: Cascade)
+  target        Player    @relation("HitTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@index([targetId])
+  @@index([placedById])
+  @@index([status])
+  @@index([completedBy], map: "hit_list_completedBy_fkey")
+  @@map("hit_list")
+}
+
+model PlayerSecurity {
+  id         Int     @id @default(autoincrement())
+  playerId   Int     @unique
+  bodyguards Int     @default(0)
+  armor      Int     @default(0)
+  armorType  String? @db.VarChar(50)
+  player     Player  @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@map("player_security")
+}
+
+model Prostitute {
+  id                   Int                             @id @default(autoincrement())
+  playerId             Int
+  name                 String                          @db.VarChar(100)
+  variant              Int                             @default(1)
+  recruitedAt          DateTime                        @default(now())
+  lastEarningsAt       DateTime                        @default(now())
+  location             String                          @default("street") @db.VarChar(20)
+  redLightRoomId       Int?                            @unique
+  experience           Int                             @default(0)
+  level                Int                             @default(1)
+  isBusted             Boolean                         @default(false)
+  bustedUntil          DateTime?
+  housingTier          Int                             @default(1)
+  housingRentPerDay    Int                             @default(35)
+  housingPaidUntil     DateTime?                       @db.DateTime(0)
+  lastWorkedAt         DateTime?                       @db.DateTime(0)
+  nightclubVenueId     Int?
+  nightclubAssignedAt  DateTime?                       @db.DateTime(0)
+  eventParticipations  EventParticipation[]
+  nightclubAssignments NightclubProstituteAssignment[]
+  nightclubVenue       NightclubVenue?                 @relation(fields: [nightclubVenueId], references: [id], onUpdate: Restrict, map: "fk_prostitutes_nightclubVenueId")
+  player               Player                          @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  redLightRoom         RedLightRoom?                   @relation(fields: [redLightRoomId], references: [id])
+
+  @@index([playerId])
+  @@index([location])
+  @@index([nightclubVenueId], map: "idx_prostitutes_nightclubVenueId")
+  @@map("prostitutes")
+}
+
+model RedLightDistrict {
+  id            Int            @id @default(autoincrement())
+  countryCode   String         @unique @db.VarChar(50)
+  ownerId       Int?
+  purchasePrice Int            @default(500000)
+  purchasedAt   DateTime?
+  roomCount     Int            @default(8)
+  tier          Int            @default(1)
+  securityLevel Int            @default(0)
+  owner         Player?        @relation(fields: [ownerId], references: [id])
+  rooms         RedLightRoom[]
+
+  @@index([countryCode])
+  @@index([ownerId])
+  @@map("red_light_districts")
+}
+
+model RedLightRoom {
+  id                 Int              @id @default(autoincrement())
+  redLightDistrictId Int
+  roomNumber         Int
+  occupied           Boolean          @default(false)
+  lastEarningsAt     DateTime         @default(now())
+  tier               Int              @default(1)
+  prostitute         Prostitute?
+  redLightDistrict   RedLightDistrict @relation(fields: [redLightDistrictId], references: [id], onDelete: Cascade)
+
+  @@unique([redLightDistrictId, roomNumber])
+  @@index([redLightDistrictId])
+  @@map("red_light_rooms")
+}
+
+model VipEvent {
+  id                  Int                  @id @default(autoincrement())
+  title               String               @db.VarChar(255)
+  description         String?              @db.Text
+  eventType           String               @db.VarChar(50)
+  countryCode         String               @db.VarChar(2)
+  startTime           DateTime
+  endTime             DateTime
+  bonusMultiplier     Float                @default(2)
+  minLevelRequired    Int                  @default(1)
+  maxParticipants     Int                  @default(50)
+  currentParticipants Int                  @default(0)
+  createdAt           DateTime             @default(now())
+  participations      EventParticipation[]
+
+  @@index([countryCode, startTime, endTime])
+  @@index([eventType])
+  @@map("vip_events")
+}
+
+model EventParticipation {
+  id             Int        @id @default(autoincrement())
+  eventId        Int
+  playerId       Int
+  prostituteId   Int
+  earnings       Float      @default(0)
+  status         String     @default("active") @db.VarChar(20)
+  participatedAt DateTime   @default(now())
+  completedAt    DateTime?
+  event          VipEvent   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  player         Player     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  prostitute     Prostitute @relation(fields: [prostituteId], references: [id], onDelete: Cascade)
+
+  @@unique([prostituteId, eventId])
+  @@index([playerId, eventId])
+  @@index([status])
+  @@index([eventId], map: "event_participations_eventId_fkey")
+  @@map("event_participations")
+}
+
+model ProstitutionLeaderboard {
+  id               Int      @id @default(autoincrement())
+  playerId         Int
+  period           String   @db.VarChar(20)
+  periodStart      DateTime @db.Date
+  totalEarnings    Float    @default(0)
+  totalProstitutes Int      @default(0)
+  totalDistricts   Int      @default(0)
+  highestLevel     Int      @default(1)
+  rankPosition     Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  player           Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, period, periodStart])
+  @@index([period, periodStart, rankPosition])
+  @@index([period, periodStart, totalEarnings])
+  @@map("prostitution_leaderboards")
+}
+
+model ProstitutionAchievement {
+  id              Int      @id @default(autoincrement())
+  playerId        Int
+  achievementType String   @db.VarChar(50)
+  achievementData String?  @db.LongText
+  unlockedAt      DateTime @default(now())
+  player          Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, achievementType])
+  @@index([playerId, unlockedAt])
+  @@map("prostitution_achievements")
+}
+
+model ProstitutionRivalry {
+  id            Int       @id @default(autoincrement())
+  playerId      Int
+  rivalPlayerId Int
+  rivalryScore  Int       @default(0)
+  startedAt     DateTime  @default(now())
+  lastAttackAt  DateTime?
+  player        Player    @relation("RivalriesAsPlayer", fields: [playerId], references: [id], onDelete: Cascade)
+  rivalPlayer   Player    @relation("RivalriesAsRival", fields: [rivalPlayerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, rivalPlayerId])
+  @@index([playerId])
+  @@index([rivalPlayerId])
+  @@map("prostitution_rivalries")
+}
+
+model SabotageAction {
+  id                Int      @id @default(autoincrement())
+  attackerId        Int
+  victimId          Int
+  actionType        String   @db.VarChar(50)
+  success           Boolean  @default(false)
+  cost              Float
+  impactDescription String?  @db.Text
+  createdAt         DateTime @default(now())
+  attacker          Player   @relation("SabotageAttacker", fields: [attackerId], references: [id], onDelete: Cascade)
+  victim            Player   @relation("SabotageVictim", fields: [victimId], references: [id], onDelete: Cascade)
+
+  @@index([attackerId, createdAt])
+  @@index([victimId, createdAt])
+  @@index([actionType])
+  @@map("sabotage_actions")
+}
+
+model ProstitutionProtectionInsurance {
+  id              Int      @id @default(autoincrement())
+  playerId        Int      @unique
+  weeklyCost      Int      @default(25000)
+  damageReduction Float    @default(0.3)
+  activeUntil     DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  player          Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([activeUntil])
+  @@map("prostitution_protection_insurance")
+}
+
+model NightclubVenue {
+  id                    Int                             @id @default(autoincrement())
+  propertyId            Int                             @unique(map: "propertyId")
+  playerId              Int
+  country               String                          @db.VarChar(50)
+  currentDJId           Int?                            @unique(map: "currentDJId")
+  djContractStartsAt    DateTime?                       @db.DateTime(0)
+  djContractEndsAt      DateTime?                       @db.DateTime(0)
+  crowdSize             Int?                            @default(0)
+  crowdVibe             String?                         @default("chill") @db.VarChar(30)
+  lastUpdateAt          DateTime?                       @default(now()) @db.DateTime(0)
+  totalRevenueAllTime   BigInt?                         @default(0)
+  totalRevenuePeriod    Int?                            @default(0)
+  lastRevenueCalc       DateTime?                       @default(now()) @db.DateTime(0)
+  marketingSpend        Int?                            @default(0)
+  isOpen                Boolean?                        @default(true)
+  createdAt             DateTime?                       @default(now()) @db.DateTime(0)
+  updatedAt             DateTime?                       @default(now()) @updatedAt @db.DateTime(0)
+  djShifts              NightclubDJShift[]
+  inventory             NightclubDrugInventory[]
+  events                NightclubEvent[]
+  prostituteAssignments NightclubProstituteAssignment[]
+  sales                 NightclubSale[]
+  seasonRewards         NightclubSeasonReward[]
+  securityShifts        NightclubSecurityShift[]
+  thefts                NightclubTheft[]
+  property              Property                        @relation(fields: [propertyId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_venues_ibfk_1")
+  player                Player                          @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_venues_ibfk_2")
+  currentDJ             NightclubDJ?                    @relation(fields: [currentDJId], references: [id], onUpdate: Restrict, map: "nightclub_venues_ibfk_3")
+  prostitutes           Prostitute[]
+
+  @@index([country], map: "country")
+  @@index([currentDJId], map: "currentDJId_2")
+  @@index([playerId], map: "playerId")
+  @@map("nightclub_venues")
+}
+
+model NightclubProstituteAssignment {
+  id           Int            @id @default(autoincrement())
+  playerId     Int
+  venueId      Int
+  prostituteId Int
+  assignedAt   DateTime       @default(now()) @db.DateTime(0)
+  releasedAt   DateTime?      @db.DateTime(0)
+  isActive     Boolean        @default(true)
+  player       Player         @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_npa_player")
+  prostitute   Prostitute     @relation(fields: [prostituteId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_npa_prostitute")
+  venue        NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_npa_venue")
+
+  @@index([playerId, venueId], map: "idx_npa_player_venue")
+  @@index([prostituteId], map: "idx_npa_prostitute")
+  @@index([venueId, isActive], map: "idx_npa_venue_active")
+  @@map("nightclub_prostitute_assignments")
+}
+
+model NightclubDJ {
+  id              Int                @id @default(autoincrement())
+  djName          String             @db.VarChar(100)
+  skillLevel      Int?               @default(1)
+  baseCostPerHour Int?               @default(5000)
+  reputation      Float?             @default(0.5) @db.Float
+  isAvailable     Boolean?           @default(true)
+  profileImage    String?            @db.VarChar(255)
+  specialty       String?            @db.VarChar(50)
+  shifts          NightclubDJShift[]
+  currentVenue    NightclubVenue?
+
+  @@index([skillLevel, isAvailable], map: "skillLevel")
+  @@map("nightclub_djs")
+}
+
+model NightclubDJShift {
+  id           Int            @id @default(autoincrement())
+  venueId      Int
+  djId         Int
+  shiftStartAt DateTime       @db.DateTime(0)
+  shiftEndAt   DateTime       @db.DateTime(0)
+  costPaid     Int
+  crowdBoost   Float?         @default(1) @db.Float
+  vibeBoost    String?        @db.VarChar(20)
+  venue        NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_dj_shifts_ibfk_1")
+  dj           NightclubDJ    @relation(fields: [djId], references: [id], onUpdate: Restrict, map: "nightclub_dj_shifts_ibfk_2")
+
+  @@index([djId], map: "djId")
+  @@index([venueId, shiftStartAt], map: "venueId")
+  @@map("nightclub_dj_shifts")
+}
+
+model NightclubSecurity {
+  id              Int                      @id @default(autoincrement())
+  guardName       String                   @db.VarChar(100)
+  skillLevel      Int?                     @default(1)
+  baseCostPerHour Int?                     @default(3000)
+  reputation      Float?                   @default(0.5) @db.Float
+  isAvailable     Boolean?                 @default(true)
+  profileImage    String?                  @db.VarChar(255)
+  specialty       String?                  @db.VarChar(50)
+  shifts          NightclubSecurityShift[]
+
+  @@index([skillLevel, isAvailable], map: "skillLevel")
+  @@map("nightclub_security_guards")
+}
+
+model NightclubSecurityShift {
+  id             Int               @id @default(autoincrement())
+  venueId        Int
+  guardId        Int
+  shiftStartAt   DateTime          @db.DateTime(0)
+  shiftEndAt     DateTime          @db.DateTime(0)
+  costPaid       Int
+  theftReduction Float?            @default(0.2) @db.Float
+  incidentCount  Int?              @default(0)
+  venue          NightclubVenue    @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_security_shifts_ibfk_1")
+  guard          NightclubSecurity @relation(fields: [guardId], references: [id], onUpdate: Restrict, map: "nightclub_security_shifts_ibfk_2")
+
+  @@index([guardId], map: "guardId")
+  @@index([venueId, shiftStartAt], map: "venueId")
+  @@map("nightclub_security_shifts")
+}
+
+model NightclubDrugInventory {
+  id        Int            @id @default(autoincrement())
+  venueId   Int
+  drugType  String         @db.VarChar(50)
+  quality   String?        @default("C") @db.VarChar(2)
+  quantity  Int?           @default(0)
+  basePrice Int
+  storedAt  DateTime?      @default(now()) @db.DateTime(0)
+  updatedAt DateTime?      @default(now()) @updatedAt @db.DateTime(0)
+  venue     NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_drug_inventory_ibfk_1")
+
+  @@unique([venueId, drugType, quality], map: "venueId")
+  @@index([venueId], map: "venueId_2")
+  @@map("nightclub_drug_inventory")
+}
+
+model NightclubSale {
+  id           Int            @id @default(autoincrement())
+  venueId      Int
+  drugType     String         @db.VarChar(50)
+  quality      String         @db.VarChar(2)
+  quantitySold Int
+  unitPrice    Int
+  totalRevenue Int
+  crowdSize    Int
+  crowdVibe    String         @db.VarChar(30)
+  saleTime     DateTime?      @default(now()) @db.DateTime(0)
+  venue        NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_sales_ibfk_1")
+
+  @@index([crowdVibe], map: "crowdVibe")
+  @@index([venueId, saleTime], map: "venueId")
+  @@map("nightclub_sales")
+}
+
+model NightclubTheft {
+  id               Int            @id @default(autoincrement())
+  venueId          Int
+  theftType        String         @db.VarChar(30)
+  drugType         String         @db.VarChar(50)
+  quality          String         @db.VarChar(2)
+  quantityStolen   Int
+  valueLost        Int
+  preventionChance Float?         @default(0) @db.Float
+  occurredAt       DateTime?      @default(now()) @db.DateTime(0)
+  venue            NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_thefts_ibfk_1")
+
+  @@index([theftType], map: "theftType")
+  @@index([venueId, occurredAt], map: "venueId")
+  @@map("nightclub_thefts")
+}
+
+model NightclubEvent {
+  id               Int            @id @default(autoincrement())
+  venueId          Int
+  eventType        String         @db.VarChar(50)
+  eventName        String         @db.VarChar(100)
+  startsAt         DateTime       @db.DateTime(0)
+  endsAt           DateTime       @db.DateTime(0)
+  expectedVisitors Int?           @default(0)
+  investment       Int?           @default(0)
+  actualVisitors   Int?
+  eventSuccess     Boolean?
+  revenue          Int?           @default(0)
+  venue            NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "nightclub_events_ibfk_1")
+
+  @@index([venueId, startsAt], map: "venueId")
+  @@map("nightclub_events")
+}
+
+model NightclubSeasonState {
+  id              Int      @id @default(autoincrement())
+  seasonKey       String   @unique(map: "seasonKey") @db.VarChar(40)
+  seasonStartAt   DateTime @db.DateTime(0)
+  seasonEndAt     DateTime @db.DateTime(0)
+  lastProcessedAt DateTime @default(now()) @db.DateTime(0)
+  createdAt       DateTime @default(now()) @db.DateTime(0)
+  updatedAt       DateTime @default(now()) @updatedAt @db.DateTime(0)
+
+  @@map("nightclub_season_state")
+}
+
+model NightclubSeasonReward {
+  id              Int            @id @default(autoincrement())
+  seasonKey       String         @db.VarChar(40)
+  weekStartAt     DateTime       @db.DateTime(0)
+  weekEndAt       DateTime       @db.DateTime(0)
+  rank            Int
+  venueId         Int
+  playerId        Int
+  rewardAmount    Int
+  score           BigInt         @default(0)
+  weeklyRevenue   BigInt         @default(0)
+  weeklyTheftLoss BigInt         @default(0)
+  paidAt          DateTime       @default(now()) @db.DateTime(0)
+  player          Player         @relation(fields: [playerId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_nightclub_season_rewards_player")
+  venue           NightclubVenue @relation(fields: [venueId], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_nightclub_season_rewards_venue")
+
+  @@unique([weekStartAt, rank], map: "uq_nightclub_season_rank")
+  @@index([venueId], map: "fk_nightclub_season_rewards_venue")
+  @@index([seasonKey, weekStartAt], map: "idx_nightclub_season_key_week")
+  @@index([playerId, paidAt], map: "idx_nightclub_season_player_paid")
+  @@map("nightclub_season_rewards")
+}
+
+model crypto_assets {
+  id            Int      @id @default(autoincrement())
+  symbol        String   @unique(map: "symbol") @db.VarChar(12)
+  name          String   @db.VarChar(80)
+  base_price    Decimal  @db.Decimal(24, 8)
+  current_price Decimal  @db.Decimal(24, 8)
+  volatility    Decimal  @db.Decimal(10, 4)
+  trend_bias    Decimal  @default(0.0000) @db.Decimal(10, 4)
+  icon_key      String   @db.VarChar(50)
+  created_at    DateTime @default(now()) @db.DateTime(0)
+  updated_at    DateTime @default(now()) @db.DateTime(0)
+
+  @@index([symbol], map: "idx_crypto_assets_symbol")
+  @@index([updated_at], map: "idx_crypto_assets_updated_at")
+}
+
+model crypto_holdings {
+  id            Int      @id @default(autoincrement())
+  player_id     Int
+  asset_symbol  String   @db.VarChar(12)
+  quantity      Decimal  @default(0.00000000) @db.Decimal(24, 8)
+  avg_buy_price Decimal  @default(0.00000000) @db.Decimal(24, 8)
+  created_at    DateTime @default(now()) @db.DateTime(0)
+  updated_at    DateTime @default(now()) @db.DateTime(0)
+  players       Player   @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_crypto_holdings_player")
+
+  @@unique([player_id, asset_symbol], map: "uniq_crypto_holdings_player_asset")
+  @@index([player_id], map: "idx_crypto_holdings_player")
+  @@index([asset_symbol], map: "idx_crypto_holdings_symbol")
+}
+
+model crypto_leaderboard_rewards {
+  id              Int      @id @default(autoincrement())
+  week_start_at   DateTime @db.DateTime(0)
+  week_end_at     DateTime @db.DateTime(0)
+  rank            Int
+  player_id       Int
+  reward_money    Decimal  @db.Decimal(24, 2)
+  realized_profit Decimal  @db.Decimal(24, 2)
+  traded_volume   Decimal  @db.Decimal(24, 2)
+  trade_count     Int
+  paid_at         DateTime @default(now()) @db.DateTime(0)
+  players         Player   @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_crypto_lb_rewards_player")
+
+  @@unique([week_start_at, player_id], map: "uniq_crypto_lb_week_player")
+  @@unique([week_start_at, rank], map: "uniq_crypto_lb_week_rank")
+  @@index([player_id, paid_at], map: "idx_crypto_lb_rewards_player")
+}
+
+model crypto_leaderboard_state {
+  id                Int      @id @db.TinyInt
+  week_start_at     DateTime @db.DateTime(0)
+  week_end_at       DateTime @db.DateTime(0)
+  last_processed_at DateTime @default(now()) @db.DateTime(0)
+  updated_at        DateTime @default(now()) @db.DateTime(0)
+}
+
+model crypto_market_state {
+  id                    Int       @id @db.TinyInt
+  current_regime        String    @default("SIDEWAYS") @db.VarChar(12)
+  last_regime_change_at DateTime? @db.DateTime(0)
+  last_news_at          DateTime? @db.DateTime(0)
+  updated_at            DateTime  @default(now()) @db.DateTime(0)
+}
+
+model crypto_mission_progress {
+  id             Int       @id @default(autoincrement())
+  player_id      Int
+  mission_key    String    @db.VarChar(80)
+  mission_type   String    @db.VarChar(16)
+  period_key     String    @db.VarChar(20)
+  progress_value Decimal   @default(0.00000000) @db.Decimal(24, 8)
+  target_value   Decimal   @db.Decimal(24, 8)
+  reward_money   Decimal   @default(0.00) @db.Decimal(24, 2)
+  completed_at   DateTime? @db.DateTime(0)
+  created_at     DateTime  @default(now()) @db.DateTime(0)
+  updated_at     DateTime  @default(now()) @db.DateTime(0)
+  players        Player    @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_crypto_mission_player")
+
+  @@unique([player_id, mission_key, period_key], map: "uniq_crypto_mission_player_key_period")
+  @@index([player_id, period_key], map: "idx_crypto_mission_player_period")
+}
+
+model crypto_orders {
+  id             Int      @id @default(autoincrement())
+  player_id      Int
+  asset_symbol   String   @db.VarChar(12)
+  order_type     String   @db.VarChar(20)
+  side           String   @db.VarChar(10)
+  quantity       Decimal  @db.Decimal(24, 8)
+  target_price   Decimal  @db.Decimal(24, 8)
+  status         String   @default("OPEN") @db.VarChar(20)
+  filled_price   Decimal? @db.Decimal(24, 8)
+  failure_reason String?  @db.VarChar(120)
+  created_at     DateTime @default(now()) @db.DateTime(0)
+  updated_at     DateTime @default(now()) @db.DateTime(0)
+  players        Player   @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_crypto_orders_player")
+
+  @@index([status, asset_symbol], map: "idx_crypto_orders_open")
+  @@index([player_id], map: "idx_crypto_orders_player")
+  @@index([asset_symbol], map: "idx_crypto_orders_symbol")
+}
+
+model crypto_price_history {
+  id           Int      @id @default(autoincrement())
+  asset_symbol String   @db.VarChar(12)
+  price        Decimal  @db.Decimal(24, 8)
+  created_at   DateTime @default(now()) @db.DateTime(0)
+
+  @@index([asset_symbol, created_at], map: "idx_crypto_price_history_symbol_time")
+}
+
+model crypto_transactions {
+  id              Int      @id @default(autoincrement())
+  player_id       Int
+  asset_symbol    String   @db.VarChar(12)
+  side            String   @db.VarChar(8)
+  quantity        Decimal  @db.Decimal(24, 8)
+  price           Decimal  @db.Decimal(24, 8)
+  total_value     Decimal  @db.Decimal(24, 8)
+  realized_profit Decimal  @default(0.00000000) @db.Decimal(24, 8)
+  created_at      DateTime @default(now()) @db.DateTime(0)
+  players         Player   @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_crypto_transactions_player")
+
+  @@index([created_at], map: "idx_crypto_transactions_created_at")
+  @@index([player_id], map: "idx_crypto_transactions_player")
+  @@index([asset_symbol], map: "idx_crypto_transactions_symbol")
+}
+
+model player_notification_preferences {
+  player_id                Int      @id
+  push_crypto_trade        Boolean  @default(true)
+  push_crypto_price_alert  Boolean  @default(true)
+  push_crypto_order        Boolean  @default(true)
+  push_crypto_mission      Boolean  @default(true)
+  inapp_crypto_trade       Boolean  @default(true)
+  inapp_crypto_price_alert Boolean  @default(true)
+  inapp_crypto_order       Boolean  @default(true)
+  inapp_crypto_mission     Boolean  @default(true)
+  created_at               DateTime @default(now()) @db.DateTime(0)
+  updated_at               DateTime @default(now()) @db.DateTime(0)
+  push_crypto_leaderboard  Boolean  @default(true)
+  inapp_crypto_leaderboard Boolean  @default(true)
+  players                  Player   @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_notification_preferences_player")
+}
+
+model player_vehicle_parts {
+  player_id        Int      @id
+  car_parts        Int      @default(0)
+  motorcycle_parts Int      @default(0)
+  boat_parts       Int      @default(0)
+  updated_at       DateTime @default(now()) @db.DateTime(0)
+}
+
+model smuggling_shipments {
+  id                  Int       @id @default(autoincrement())
+  player_id           Int
+  category            String    @db.VarChar(20)
+  item_key            String    @db.VarChar(100)
+  item_label          String    @db.VarChar(120)
+  quantity            Int
+  unit_tag            String    @default("unit") @db.VarChar(20)
+  origin_country      String    @db.VarChar(50)
+  destination_country String    @db.VarChar(50)
+  status              String    @default("in_transit") @db.VarChar(20)
+  metadata_json       String?   @db.LongText
+  seizure_chance      Decimal   @default(0.0500) @db.Decimal(6, 4)
+  shipping_fee        Int       @default(0)
+  eta_at              DateTime  @db.DateTime(0)
+  created_at          DateTime  @default(now()) @db.DateTime(0)
+  delivered_at        DateTime? @db.DateTime(0)
+  claimed_at          DateTime? @db.DateTime(0)
+  crew_id             Int?
+  channel             String    @default("package") @db.VarChar(20)
+  network_scope       String    @default("personal") @db.VarChar(20)
+
+  @@index([player_id, category], map: "idx_smuggling_player_category")
+  @@index([player_id, eta_at], map: "idx_smuggling_player_eta")
+  @@index([player_id, status, destination_country], map: "idx_smuggling_player_status_country")
+}
+
+model vehicle_repair_jobs {
+  id                   Int       @id @default(autoincrement())
+  player_id            Int
+  vehicle_inventory_id Int
+  repair_cost          Int
+  from_condition       Int
+  target_condition     Int       @default(100)
+  status               String    @default("in_progress") @db.VarChar(20)
+  started_at           DateTime  @default(now()) @db.DateTime(0)
+  completes_at         DateTime  @db.DateTime(0)
+  completed_at         DateTime? @db.DateTime(0)
+
+  @@index([player_id, status], map: "idx_vehicle_repair_jobs_player_status")
+  @@index([vehicle_inventory_id, status], map: "idx_vehicle_repair_jobs_vehicle_status")
+}
+
+model vehicle_tuning_upgrades {
+  id                   Int       @id @default(autoincrement())
+  player_id            Int
+  vehicle_inventory_id Int       @unique(map: "uq_vehicle_tuning_vehicle")
+  speed_level          Int       @default(0)
+  stealth_level        Int       @default(0)
+  armor_level          Int       @default(0)
+  created_at           DateTime  @default(now()) @db.DateTime(0)
+  updated_at           DateTime  @default(now()) @db.DateTime(0)
+  tune_cooldown_until  DateTime? @db.DateTime(0)
+
+  @@index([player_id], map: "idx_vehicle_tuning_player")
+}
+
+enum CrewBuildingStyle {
+  camping
+  rural
+  city
+  villa
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  MODERATOR
+  VIEWER
+}
+
+enum PremiumOfferRewardType {
+  money
+  ammo
+}
+
+enum DeviceType {
+  android
+  ios
+  web
+}
+
+enum NPCType {
+  MATIG
+  GEMIDDELD
+  CONTINU
+}

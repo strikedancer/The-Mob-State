@@ -1,0 +1,8 @@
+node_modules
+dist
+*.config.js
+*.config.ts
+prisma/migrations
+*.test.js
+test-*.js
+setup-*.js

@@ -1,0 +1,46 @@
+{
+  "ammo": [
+    {
+      "type": "9mm",
+      "name": "9mm Patronen",
+      "pricePerRound": 1,
+      "boxSize": 50,
+      "maxInventory": 1000
+    },
+    {
+      "type": "45acp",
+      "name": ".45 ACP Patronen",
+      "pricePerRound": 2,
+      "boxSize": 40,
+      "maxInventory": 800
+    },
+    {
+      "type": "12gauge",
+      "name": "12 Gauge Shotgun Shells",
+      "pricePerRound": 2,
+      "boxSize": 25,
+      "maxInventory": 500
+    },
+    {
+      "type": "556mm",
+      "name": "5.56mm Patronen",
+      "pricePerRound": 3,
+      "boxSize": 60,
+      "maxInventory": 800
+    },
+    {
+      "type": "762mm",
+      "name": "7.62mm Patronen",
+      "pricePerRound": 3,
+      "boxSize": 100,
+      "maxInventory": 1000
+    },
+    {
+      "type": "308",
+      "name": ".308 Winchester",
+      "pricePerRound": 5,
+      "boxSize": 20,
+      "maxInventory": 500
+    }
+  ]
+}

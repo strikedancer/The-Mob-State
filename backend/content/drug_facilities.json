@@ -1,0 +1,297 @@
+{
+  "facilities": {
+    "greenhouse": {
+      "id": "greenhouse",
+      "name": "Weed Greenhouse",
+      "displayName": "Wietkwekerij (Kas)",
+      "description": "Een professionele kas voor het kweken van cannabis. Vereist voor alle wietproductie.",
+      "forDrugTypes": ["white_widow", "amnesia_haze", "og_kush", "hash"],
+      "purchasePrice": 250000,
+      "requiredRank": 5,
+      "icon": "greenhouse",
+      "slotUpgrades": [
+        { "slots": 1, "price": 0,       "requiredRank": 5,  "description": "1 kweekplek (standaard)" },
+        { "slots": 2, "price": 150000,  "requiredRank": 8,  "description": "2 kweekplekken" },
+        { "slots": 3, "price": 350000,  "requiredRank": 12, "description": "3 kweekplekken" },
+        { "slots": 4, "price": 700000,  "requiredRank": 16, "description": "4 kweekplekken" },
+        { "slots": 5, "price": 1200000, "requiredRank": 20, "description": "5 kweekplekken (max)" }
+      ],
+      "equipmentUpgrades": [
+        {
+          "id": "lighting",
+          "name": "Verlichting",
+          "icon": "lightbulb",
+          "description": "Betere verlichting verhoogt de kwaliteit van je wiet",
+          "affectsQuality": true,
+          "levels": [
+            { "level": 1, "name": "Standaard TL-buizen",      "price": 0,      "qualityBonus": 0.00, "description": "Basisverlichting — kwaliteit: C-klasse" },
+            { "level": 2, "name": "LED-groeilampen",          "price": 75000,  "qualityBonus": 0.20, "description": "+20% kwaliteitskans — bereikt B-klasse" },
+            { "level": 3, "name": "Professionele HPS-lampen", "price": 200000, "qualityBonus": 0.45, "description": "+45% kwaliteitskans — bereikt A-klasse" },
+            { "level": 4, "name": "Elite LED COB-systeem",    "price": 500000, "qualityBonus": 0.75, "description": "+75% kwaliteitskans — S-klasse mogelijk" }
+          ]
+        },
+        {
+          "id": "substrate",
+          "name": "Groeimedium",
+          "icon": "soil",
+          "description": "Beter groeimedium vergroot de opbrengst per batch",
+          "affectsYield": true,
+          "levels": [
+            { "level": 1, "name": "Standaard potaarde",      "price": 0,      "yieldBonus": 0.00, "description": "Standaard opbrengst" },
+            { "level": 2, "name": "Verrijkte compost",       "price": 50000,  "yieldBonus": 0.20, "description": "+20% opbrengst per batch" },
+            { "level": 3, "name": "Premium substraat",       "price": 150000, "yieldBonus": 0.45, "description": "+45% opbrengst per batch" },
+            { "level": 4, "name": "Aeroponisch systeem",     "price": 400000, "yieldBonus": 0.80, "description": "+80% opbrengst per batch" }
+          ]
+        },
+        {
+          "id": "climate_control",
+          "name": "Klimaatbeheersing",
+          "icon": "thermostat",
+          "description": "Betere klimaatbeheersing versnelt de kweekduur",
+          "affectsSpeed": true,
+          "levels": [
+            { "level": 1, "name": "Geen klimaatbeheersing",    "price": 0,      "speedBonus": 0.00, "description": "Standaard groeiduur" },
+            { "level": 2, "name": "Basisventilatie + CO₂",     "price": 60000,  "speedBonus": 0.15, "description": "15% sneller klaar" },
+            { "level": 3, "name": "Automatisch CO₂-systeem",   "price": 180000, "speedBonus": 0.30, "description": "30% sneller klaar" },
+            { "level": 4, "name": "Volledig geavanceerd HVAC", "price": 450000, "speedBonus": 0.50, "description": "50% sneller klaar" }
+          ]
+        }
+      ]
+    },
+    "drug_lab": {
+      "id": "drug_lab",
+      "name": "Drug Lab",
+      "displayName": "Drugslab",
+      "description": "Een clandestien lab voor de productie van harddrugs. Vereist voor cocaïne, speed, heroïne en XTC.",
+      "forDrugTypes": ["cocaine", "speed", "heroin", "xtc"],
+      "purchasePrice": 500000,
+      "requiredRank": 15,
+      "icon": "science",
+      "slotUpgrades": [
+        { "slots": 1, "price": 0,        "requiredRank": 15, "description": "1 productieplaats (standaard)" },
+        { "slots": 2, "price": 300000,   "requiredRank": 18, "description": "2 productieplekken (2 ketels)" },
+        { "slots": 3, "price": 700000,   "requiredRank": 22, "description": "3 productieplekken" },
+        { "slots": 4, "price": 1500000,  "requiredRank": 26, "description": "4 productieplekken (max)" }
+      ],
+      "equipmentUpgrades": [
+        {
+          "id": "extraction_equipment",
+          "name": "Extractieapparatuur",
+          "icon": "biotech",
+          "description": "Betere extractieapparatuur verhoogt de zuiverheid (kwaliteit)",
+          "affectsQuality": true,
+          "levels": [
+            { "level": 1, "name": "Primitieve ketel",             "price": 0,      "qualityBonus": 0.00, "description": "Ruwe extractie — C-klasse kwaliteit" },
+            { "level": 2, "name": "Professionele destilleerketel","price": 150000, "qualityBonus": 0.20, "description": "+20% kwaliteit — B-klasse bereikbaar" },
+            { "level": 3, "name": "Industriële destillatie-unit", "price": 400000, "qualityBonus": 0.45, "description": "+45% kwaliteit — A-klasse bereikbaar" },
+            { "level": 4, "name": "Farmaceutische zuiveringsunit","price": 900000, "qualityBonus": 0.75, "description": "+75% kwaliteit — S-klasse mogelijk" }
+          ]
+        },
+        {
+          "id": "pill_press",
+          "name": "Pillenpers / Verpakking",
+          "icon": "medication",
+          "description": "Betere pillenpers verhoogt de opbrengst, vooral voor XTC en Speed",
+          "affectsYield": true,
+          "levels": [
+            { "level": 1, "name": "Handmatige pers",              "price": 0,      "yieldBonus": 0.00, "description": "Standaard opbrengst" },
+            { "level": 2, "name": "Halfautomatische pers",        "price": 100000, "yieldBonus": 0.25, "description": "+25% opbrengst" },
+            { "level": 3, "name": "Automatische industriepers",   "price": 280000, "yieldBonus": 0.55, "description": "+55% opbrengst" },
+            { "level": 4, "name": "Industriële high-speed pers",  "price": 650000, "yieldBonus": 0.90, "description": "+90% opbrengst" }
+          ]
+        },
+        {
+          "id": "lab_chemistry",
+          "name": "Precursor Chemicaliën",
+          "icon": "science",
+          "description": "Zuiverdere precursors versnellen de productie en verbeteren de kwaliteit",
+          "affectsSpeed": true,
+          "levels": [
+            { "level": 1, "name": "Standaard straatoplosmiddelen",  "price": 0,      "speedBonus": 0.00, "description": "Normale productieduur" },
+            { "level": 2, "name": "Gezuiverde precursors",          "price": 120000, "speedBonus": 0.20, "description": "20% snellere productie" },
+            { "level": 3, "name": "Hoge-zuiverheid precursors",     "price": 320000, "speedBonus": 0.38, "description": "38% snellere productie" },
+            { "level": 4, "name": "Pure farmaceutische precursors", "price": 800000, "speedBonus": 0.55, "description": "55% snellere productie" }
+          ]
+        }
+      ]
+    },
+    "mushroom_farm": {
+      "id": "mushroom_farm",
+      "name": "Mushroom Farm",
+      "displayName": "Paddenstoelenkwekerij",
+      "description": "Een geheime kweekruimte voor psilocybine paddenstoelen. Lage drempel, unieke markt.",
+      "forDrugTypes": ["magic_mushrooms"],
+      "purchasePrice": 180000,
+      "requiredRank": 8,
+      "icon": "eco",
+      "slotUpgrades": [
+        { "slots": 1, "price": 0,       "requiredRank": 8,  "description": "1 kweekplek (standaard)" },
+        { "slots": 2, "price": 100000,  "requiredRank": 11, "description": "2 kweekplekken" },
+        { "slots": 3, "price": 250000,  "requiredRank": 14, "description": "3 kweekplekken" },
+        { "slots": 4, "price": 500000,  "requiredRank": 18, "description": "4 kweekplekken (max)" }
+      ],
+      "equipmentUpgrades": [
+        {
+          "id": "humidity_control",
+          "name": "Luchtvochtigheidsbeheer",
+          "icon": "water_drop",
+          "description": "Optimale vochtigheid verhoogt de potentie (kwaliteit)",
+          "affectsQuality": true,
+          "levels": [
+            { "level": 1, "name": "Geen controle",              "price": 0,      "qualityBonus": 0.00, "description": "Standaard groei — C-klasse kwaliteit" },
+            { "level": 2, "name": "Handmatige besproeier",      "price": 40000,  "qualityBonus": 0.20, "description": "+20% kwaliteitskans — B-klasse bereikbaar" },
+            { "level": 3, "name": "Automatisch druppelsysteem", "price": 120000, "qualityBonus": 0.45, "description": "+45% kwaliteitskans — A-klasse bereikbaar" },
+            { "level": 4, "name": "Professioneel klimaatkamer", "price": 300000, "qualityBonus": 0.75, "description": "+75% kwaliteitskans — S-klasse mogelijk" }
+          ]
+        },
+        {
+          "id": "substrate_mix",
+          "name": "Substraatmix",
+          "icon": "compost",
+          "description": "Rijker substraat vergroot de oogstopbrengst per batch",
+          "affectsYield": true,
+          "levels": [
+            { "level": 1, "name": "Standaard rijststro",    "price": 0,      "yieldBonus": 0.00, "description": "Standaard opbrengst" },
+            { "level": 2, "name": "Gerijpt zaagsel",        "price": 30000,  "yieldBonus": 0.25, "description": "+25% opbrengst per batch" },
+            { "level": 3, "name": "Premium compostmix",     "price": 90000,  "yieldBonus": 0.55, "description": "+55% opbrengst per batch" },
+            { "level": 4, "name": "Nutrient-verrijkte agar","price": 220000, "yieldBonus": 0.90, "description": "+90% opbrengst per batch" }
+          ]
+        },
+        {
+          "id": "temperature_control",
+          "name": "Temperatuurregeling",
+          "icon": "thermostat",
+          "description": "Stabielere temperatuur versnelt de groei",
+          "affectsSpeed": true,
+          "levels": [
+            { "level": 1, "name": "Geen temperatuurregeling",   "price": 0,      "speedBonus": 0.00, "description": "Standaard groeiduur" },
+            { "level": 2, "name": "Eenvoudige verwarming",      "price": 35000,  "speedBonus": 0.15, "description": "15% sneller klaar" },
+            { "level": 3, "name": "Gecontroleerd klimaatkamer", "price": 100000, "speedBonus": 0.32, "description": "32% sneller klaar" },
+            { "level": 4, "name": "Volledig geautomatiseerd",   "price": 260000, "speedBonus": 0.50, "description": "50% sneller klaar" }
+          ]
+        }
+      ]
+    },
+    "crack_kitchen": {
+      "id": "crack_kitchen",
+      "name": "Crack Kitchen",
+      "displayName": "Crack Kitchen",
+      "description": "Een snelle clandestiene kookruimte voor zware synthetische productie zoals crystal meth en fentanyl.",
+      "forDrugTypes": ["crystal_meth", "fentanyl"],
+      "purchasePrice": 900000,
+      "requiredRank": 20,
+      "icon": "local_fire_department",
+      "slotUpgrades": [
+        { "slots": 1, "price": 0,        "requiredRank": 20, "description": "1 kookstation (standaard)" },
+        { "slots": 2, "price": 450000,   "requiredRank": 23, "description": "2 kookstations" },
+        { "slots": 3, "price": 1000000,  "requiredRank": 27, "description": "3 kookstations" },
+        { "slots": 4, "price": 2100000,  "requiredRank": 31, "description": "4 kookstations (max)" }
+      ],
+      "equipmentUpgrades": [
+        {
+          "id": "reactor_control",
+          "name": "Reactorkern",
+          "icon": "science",
+          "description": "Betere reactorkernen verhogen de chemische zuiverheid",
+          "affectsQuality": true,
+          "levels": [
+            { "level": 1, "name": "DIY reactor",                "price": 0,       "qualityBonus": 0.00, "description": "Ruwe output" },
+            { "level": 2, "name": "Gestabiliseerde reactor",    "price": 180000,  "qualityBonus": 0.22, "description": "+22% kwaliteitskans" },
+            { "level": 3, "name": "Industriële reactorkern",    "price": 480000,  "qualityBonus": 0.48, "description": "+48% kwaliteitskans" },
+            { "level": 4, "name": "Gesloten pharma-reactor",    "price": 1150000, "qualityBonus": 0.78, "description": "+78% kwaliteitskans" }
+          ]
+        },
+        {
+          "id": "batch_tanks",
+          "name": "Batchtanks",
+          "icon": "inventory_2",
+          "description": "Grotere en betere tanks verhogen de output per run",
+          "affectsYield": true,
+          "levels": [
+            { "level": 1, "name": "Kleine ketels",              "price": 0,      "yieldBonus": 0.00, "description": "Standaard opbrengst" },
+            { "level": 2, "name": "Dubbele ketelopstelling",    "price": 140000, "yieldBonus": 0.25, "description": "+25% opbrengst" },
+            { "level": 3, "name": "Hogedruk batchtanks",        "price": 360000, "yieldBonus": 0.55, "description": "+55% opbrengst" },
+            { "level": 4, "name": "Continue flow reactor",      "price": 890000, "yieldBonus": 0.90, "description": "+90% opbrengst" }
+          ]
+        },
+        {
+          "id": "cookline_automation",
+          "name": "Cookline automatisering",
+          "icon": "speed",
+          "description": "Automatisering verlaagt handmatige stappen en versnelt de productie",
+          "affectsSpeed": true,
+          "levels": [
+            { "level": 1, "name": "Handmatige workflow",        "price": 0,      "speedBonus": 0.00, "description": "Normale snelheid" },
+            { "level": 2, "name": "Semi-automatische lijn",     "price": 160000, "speedBonus": 0.18, "description": "18% sneller klaar" },
+            { "level": 3, "name": "PLC-gestuurde lijn",         "price": 420000, "speedBonus": 0.36, "description": "36% sneller klaar" },
+            { "level": 4, "name": "Volledig geautomatiseerd",   "price": 980000, "speedBonus": 0.55, "description": "55% sneller klaar" }
+          ]
+        }
+      ]
+    },
+    "darkweb_storefront": {
+      "id": "darkweb_storefront",
+      "name": "Darkweb Storefront",
+      "displayName": "Darkweb Storefront",
+      "description": "Een verborgen online verkoop- en verpakkingshub voor specialistische ladingen zoals LSD.",
+      "forDrugTypes": ["lsd"],
+      "purchasePrice": 650000,
+      "requiredRank": 18,
+      "icon": "public",
+      "slotUpgrades": [
+        { "slots": 1, "price": 0,       "requiredRank": 18, "description": "1 verkoopslot (standaard)" },
+        { "slots": 2, "price": 300000,  "requiredRank": 21, "description": "2 verkoopslots" },
+        { "slots": 3, "price": 700000,  "requiredRank": 25, "description": "3 verkoopslots" },
+        { "slots": 4, "price": 1400000, "requiredRank": 29, "description": "4 verkoopslots (max)" }
+      ],
+      "equipmentUpgrades": [
+        {
+          "id": "opsec_stack",
+          "name": "OpSec Stack",
+          "icon": "security",
+          "description": "Betere operationele beveiliging verhoogt productkwaliteit en betrouwbaarheid",
+          "affectsQuality": true,
+          "levels": [
+            { "level": 1, "name": "Basis OPSEC",               "price": 0,      "qualityBonus": 0.00, "description": "Standaard kwaliteit" },
+            { "level": 2, "name": "Versleutelde workflow",     "price": 120000, "qualityBonus": 0.20, "description": "+20% kwaliteitskans" },
+            { "level": 3, "name": "Redundante nodes",          "price": 320000, "qualityBonus": 0.44, "description": "+44% kwaliteitskans" },
+            { "level": 4, "name": "Volledige stealth-stack",   "price": 760000, "qualityBonus": 0.72, "description": "+72% kwaliteitskans" }
+          ]
+        },
+        {
+          "id": "order_router",
+          "name": "Order Router",
+          "icon": "route",
+          "description": "Slimmere orderroutering verhoogt throughput",
+          "affectsYield": true,
+          "levels": [
+            { "level": 1, "name": "Handmatige afhandeling",    "price": 0,      "yieldBonus": 0.00, "description": "Standaard throughput" },
+            { "level": 2, "name": "Batch orderrouter",         "price": 100000, "yieldBonus": 0.24, "description": "+24% throughput" },
+            { "level": 3, "name": "Multi-node router",         "price": 260000, "yieldBonus": 0.50, "description": "+50% throughput" },
+            { "level": 4, "name": "Adaptive routing mesh",     "price": 620000, "yieldBonus": 0.85, "description": "+85% throughput" }
+          ]
+        },
+        {
+          "id": "crypto_settlement",
+          "name": "Crypto Settlement",
+          "icon": "currency_bitcoin",
+          "description": "Snellere betalingsafhandeling versnelt de hele supply-loop",
+          "affectsSpeed": true,
+          "levels": [
+            { "level": 1, "name": "Langzame settlement",       "price": 0,      "speedBonus": 0.00, "description": "Normale snelheid" },
+            { "level": 2, "name": "Automatische escrow",       "price": 90000,  "speedBonus": 0.16, "description": "16% sneller" },
+            { "level": 3, "name": "Snelle mixers",             "price": 230000, "speedBonus": 0.34, "description": "34% sneller" },
+            { "level": 4, "name": "Instant settlement-net",    "price": 560000, "speedBonus": 0.52, "description": "52% sneller" }
+          ]
+        }
+      ]
+    }
+  },
+  "qualityTiers": {
+    "D": { "label": "D — Rommel",    "priceMultiplier": 0.55, "color": "#9E9E9E", "description": "Slechte kwaliteit — weinig waard" },
+    "C": { "label": "C — Normaal",   "priceMultiplier": 1.00, "color": "#4CAF50", "description": "Gemiddelde marktkwaliteit" },
+    "B": { "label": "B — Goed",      "priceMultiplier": 1.35, "color": "#2196F3", "description": "Goede kwaliteit, hogere prijs" },
+    "A": { "label": "A — Premium",   "priceMultiplier": 1.75, "color": "#9C27B0", "description": "Premium kwaliteit — veel waard" },
+    "S": { "label": "S — Zeldzaam",  "priceMultiplier": 2.60, "color": "#FF9800", "description": "Uitzonderlijke kwaliteit — topprijs" }
+  }
+}

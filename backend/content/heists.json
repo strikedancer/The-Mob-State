@@ -1,0 +1,93 @@
+[
+  {
+    "id": "corner_store_heist",
+    "name": "Hoek Winkel Overval",
+    "description": "Een kleine overval op een hoekwinkel. Laag risico, lage beloning.",
+    "requiredMembers": 2,
+    "minCrewLevel": 1,
+    "basePayout": 5000,
+    "xpReward": 50,
+    "duration": 10,
+    "successRate": 80,
+    "jailTimeOnFailure": 30,
+    "difficulty": "easy"
+  },
+  {
+    "id": "jewelry_store_heist",
+    "name": "Juwelier Overval",
+    "description": "Steel diamanten uit een juwelierszaak. Gemiddeld risico en beloning.",
+    "requiredMembers": 3,
+    "minCrewLevel": 5,
+    "basePayout": 25000,
+    "xpReward": 150,
+    "duration": 20,
+    "successRate": 60,
+    "jailTimeOnFailure": 90,
+    "difficulty": "medium"
+  },
+  {
+    "id": "armored_truck_heist",
+    "name": "Geldtransport Overval",
+    "description": "Val een geldtransport aan. Hoog risico, hoge beloning.",
+    "requiredMembers": 4,
+    "minCrewLevel": 10,
+    "basePayout": 75000,
+    "xpReward": 300,
+    "duration": 30,
+    "successRate": 50,
+    "jailTimeOnFailure": 180,
+    "difficulty": "hard"
+  },
+  {
+    "id": "bank_heist",
+    "name": "Bank Overval",
+    "description": "De klassieke bank overval. Zeer hoog risico, zeer hoge beloning.",
+    "requiredMembers": 5,
+    "minCrewLevel": 15,
+    "basePayout": 150000,
+    "xpReward": 500,
+    "duration": 45,
+    "successRate": 40,
+    "jailTimeOnFailure": 300,
+    "difficulty": "very_hard"
+  },
+  {
+    "id": "casino_heist",
+    "name": "Casino Overval",
+    "description": "Steel de jackpot uit een casino. Extreem moeilijk.",
+    "requiredMembers": 6,
+    "minCrewLevel": 20,
+    "basePayout": 300000,
+    "xpReward": 800,
+    "duration": 60,
+    "successRate": 30,
+    "jailTimeOnFailure": 480,
+    "difficulty": "extreme"
+  },
+  {
+    "id": "airport_heist",
+    "name": "Luchthaven Overval",
+    "description": "Steel vracht van de luchthaven. Zeer complex en gevaarlijk.",
+    "requiredMembers": 7,
+    "minCrewLevel": 22,
+    "basePayout": 400000,
+    "xpReward": 1000,
+    "duration": 75,
+    "successRate": 25,
+    "jailTimeOnFailure": 600,
+    "difficulty": "extreme"
+  },
+  {
+    "id": "federal_reserve_heist",
+    "name": "Nationale Bank Overval",
+    "description": "De moeder aller overvallen. Enorm risico, enorme beloning.",
+    "requiredMembers": 8,
+    "minCrewLevel": 25,
+    "basePayout": 1000000,
+    "xpReward": 2000,
+    "duration": 90,
+    "successRate": 20,
+    "jailTimeOnFailure": 1440,
+    "difficulty": "legendary"
+  }
+]

@@ -1,0 +1,134 @@
+{
+  "styles": ["camping", "rural", "city", "villa", "vip"],
+  "buildings": {
+    "hq": {
+      "label": "Crew HQ",
+      "levels": [
+        { "level": 0, "upgradeCost": 0, "memberCap": 5 },
+        { "level": 1, "upgradeCost": 75000, "memberCap": 10 },
+        { "level": 2, "upgradeCost": 250000, "memberCap": 16 },
+        { "level": 3, "upgradeCost": 900000, "memberCap": 24, "requiresVip": false }
+      ]
+    },
+    "car_storage": {
+      "label": "Car Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 50000, "capacity": 2 },
+        { "level": 1, "upgradeCost": 150000, "capacity": 5 },
+        { "level": 2, "upgradeCost": 450000, "capacity": 10 },
+        { "level": 3, "upgradeCost": 1200000, "capacity": 18 },
+        { "level": 4, "upgradeCost": 3200000, "capacity": 28 },
+        { "level": 5, "upgradeCost": 8000000, "capacity": 40 },
+        { "level": 6, "upgradeCost": 18000000, "capacity": 55 },
+        { "level": 7, "upgradeCost": 38000000, "capacity": 72 },
+        { "level": 8, "upgradeCost": 75000000, "capacity": 92 },
+        { "level": 9, "upgradeCost": 140000000, "capacity": 115 },
+        { "level": 10, "upgradeCost": 250000000, "capacity": 145, "requiresVip": true },
+        { "level": 11, "upgradeCost": 450000000, "capacity": 180, "requiresVip": true },
+        { "level": 12, "upgradeCost": 800000000, "capacity": 220, "requiresVip": true },
+        { "level": 13, "upgradeCost": 1400000000, "capacity": 265, "requiresVip": true },
+        { "level": 14, "upgradeCost": 2400000000, "capacity": 315, "requiresVip": true }
+      ]
+    },
+    "boat_storage": {
+      "label": "Boat Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 60000, "capacity": 1 },
+        { "level": 1, "upgradeCost": 180000, "capacity": 3 },
+        { "level": 2, "upgradeCost": 520000, "capacity": 6 },
+        { "level": 3, "upgradeCost": 1400000, "capacity": 10 },
+        { "level": 4, "upgradeCost": 3600000, "capacity": 15 },
+        { "level": 5, "upgradeCost": 9000000, "capacity": 21 },
+        { "level": 6, "upgradeCost": 20000000, "capacity": 28 },
+        { "level": 7, "upgradeCost": 42000000, "capacity": 36 },
+        { "level": 8, "upgradeCost": 82000000, "capacity": 46 },
+        { "level": 9, "upgradeCost": 155000000, "capacity": 58 },
+        { "level": 10, "upgradeCost": 280000000, "capacity": 72, "requiresVip": true },
+        { "level": 11, "upgradeCost": 500000000, "capacity": 88, "requiresVip": true },
+        { "level": 12, "upgradeCost": 900000000, "capacity": 106, "requiresVip": true },
+        { "level": 13, "upgradeCost": 1600000000, "capacity": 126, "requiresVip": true },
+        { "level": 14, "upgradeCost": 2800000000, "capacity": 150, "requiresVip": true }
+      ]
+    },
+    "weapon_storage": {
+      "label": "Weapon Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 45000, "capacity": 10 },
+        { "level": 1, "upgradeCost": 130000, "capacity": 25 },
+        { "level": 2, "upgradeCost": 350000, "capacity": 55 },
+        { "level": 3, "upgradeCost": 950000, "capacity": 110 },
+        { "level": 4, "upgradeCost": 2500000, "capacity": 180 },
+        { "level": 5, "upgradeCost": 6250000, "capacity": 280 },
+        { "level": 6, "upgradeCost": 14000000, "capacity": 420 },
+        { "level": 7, "upgradeCost": 30000000, "capacity": 600 },
+        { "level": 8, "upgradeCost": 60000000, "capacity": 850 },
+        { "level": 9, "upgradeCost": 115000000, "capacity": 1200 },
+        { "level": 10, "upgradeCost": 200000000, "capacity": 1650, "requiresVip": true },
+        { "level": 11, "upgradeCost": 360000000, "capacity": 2200, "requiresVip": true },
+        { "level": 12, "upgradeCost": 650000000, "capacity": 2850, "requiresVip": true },
+        { "level": 13, "upgradeCost": 1200000000, "capacity": 3600, "requiresVip": true },
+        { "level": 14, "upgradeCost": 2100000000, "capacity": 4500, "requiresVip": true }
+      ]
+    },
+    "ammo_storage": {
+      "label": "Ammo Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 40000, "capacity": 500 },
+        { "level": 1, "upgradeCost": 120000, "capacity": 1500 },
+        { "level": 2, "upgradeCost": 320000, "capacity": 3500 },
+        { "level": 3, "upgradeCost": 900000, "capacity": 7000 },
+        { "level": 4, "upgradeCost": 2300000, "capacity": 12000 },
+        { "level": 5, "upgradeCost": 5700000, "capacity": 20000 },
+        { "level": 6, "upgradeCost": 12800000, "capacity": 32000 },
+        { "level": 7, "upgradeCost": 27000000, "capacity": 50000 },
+        { "level": 8, "upgradeCost": 54000000, "capacity": 75000 },
+        { "level": 9, "upgradeCost": 103000000, "capacity": 110000 },
+        { "level": 10, "upgradeCost": 180000000, "capacity": 160000, "requiresVip": true },
+        { "level": 11, "upgradeCost": 325000000, "capacity": 230000, "requiresVip": true },
+        { "level": 12, "upgradeCost": 585000000, "capacity": 320000, "requiresVip": true },
+        { "level": 13, "upgradeCost": 1050000000, "capacity": 450000, "requiresVip": true },
+        { "level": 14, "upgradeCost": 1850000000, "capacity": 620000, "requiresVip": true }
+      ]
+    },
+    "drug_storage": {
+      "label": "Drug Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 55000, "capacity": 50 },
+        { "level": 1, "upgradeCost": 160000, "capacity": 140 },
+        { "level": 2, "upgradeCost": 420000, "capacity": 300 },
+        { "level": 3, "upgradeCost": 1100000, "capacity": 650 },
+        { "level": 4, "upgradeCost": 2800000, "capacity": 1200 },
+        { "level": 5, "upgradeCost": 7000000, "capacity": 2200 },
+        { "level": 6, "upgradeCost": 15600000, "capacity": 3800 },
+        { "level": 7, "upgradeCost": 33000000, "capacity": 6500 },
+        { "level": 8, "upgradeCost": 66000000, "capacity": 10000 },
+        { "level": 9, "upgradeCost": 126000000, "capacity": 15000 },
+        { "level": 10, "upgradeCost": 220000000, "capacity": 22000, "requiresVip": true },
+        { "level": 11, "upgradeCost": 395000000, "capacity": 31000, "requiresVip": true },
+        { "level": 12, "upgradeCost": 710000000, "capacity": 43000, "requiresVip": true },
+        { "level": 13, "upgradeCost": 1280000000, "capacity": 58000, "requiresVip": true },
+        { "level": 14, "upgradeCost": 2250000000, "capacity": 77000, "requiresVip": true }
+      ]
+    },
+    "cash_storage": {
+      "label": "Cash Storage",
+      "levels": [
+        { "level": 0, "upgradeCost": 75000, "capacity": 100000 },
+        { "level": 1, "upgradeCost": 250000, "capacity": 600000 },
+        { "level": 2, "upgradeCost": 800000, "capacity": 2500000 },
+        { "level": 3, "upgradeCost": 2000000, "capacity": 10000000 },
+        { "level": 4, "upgradeCost": 5000000, "capacity": 35000000 },
+        { "level": 5, "upgradeCost": 12500000, "capacity": 100000000 },
+        { "level": 6, "upgradeCost": 28000000, "capacity": 250000000 },
+        { "level": 7, "upgradeCost": 60000000, "capacity": 600000000 },
+        { "level": 8, "upgradeCost": 120000000, "capacity": 1200000000 },
+        { "level": 9, "upgradeCost": 230000000, "capacity": 2200000000 },
+        { "level": 10, "upgradeCost": 400000000, "capacity": 4000000000, "requiresVip": true },
+        { "level": 11, "upgradeCost": 720000000, "capacity": 7000000000, "requiresVip": true },
+        { "level": 12, "upgradeCost": 1300000000, "capacity": 12000000000, "requiresVip": true },
+        { "level": 13, "upgradeCost": 2300000000, "capacity": 20000000000, "requiresVip": true },
+        { "level": 14, "upgradeCost": 4000000000, "capacity": 35000000000, "requiresVip": true }
+      ]
+    }
+  }
+}

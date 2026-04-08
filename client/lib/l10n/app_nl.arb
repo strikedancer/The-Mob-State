@@ -1,0 +1,1963 @@
+{
+  "@@locale": "nl",
+  "appTitle": "Mafia Spel",
+  "login": "Inloggen",
+  "register": "Registreren",
+  "username": "Gebruikersnaam",
+  "password": "Wachtwoord",
+  "usernameLabel": "GEBRUIKERSNAAM",
+  "passwordLabel": "WACHTWOORD",
+  "usernamePlaceholder": "Gebruikersnaam",
+  "passwordPlaceholder": "Wachtwoord",
+  "loginButton": "INLOGGEN",
+  "registerButton": "REGISTREREN",
+  "forgotPassword": "Wachtwoord vergeten?",
+  "usernameRequired": "Voer een gebruikersnaam in",
+  "passwordRequired": "Voer een wachtwoord in",
+  "passwordTooShort": "Wachtwoord moet minimaal 6 tekens zijn",
+  "invalidCredentials": "Onjuiste gebruikersnaam of wachtwoord",
+  "loginSuccessful": "Succesvol ingelogd!",
+  "registrationSuccessful": "Registratie gelukt!",
+  "loginFailed": "Inloggen mislukt",
+  "emailLabel": "E-MAIL",
+  "emailPlaceholder": "E-mailadres",
+  "emailRequired": "Voer een e-mailadres in",
+  "emailInvalid": "Voer een geldig e-mailadres in",
+  "forgotPasswordTitle": "Wachtwoord Herstellen",
+  "forgotPasswordDescription": "Voer uw e-mailadres in en we sturen u een link om uw wachtwoord te herstellen.",
+  "resetPasswordButton": "VERSTUUR HERSTELLINK",
+  "emailSent": "Herstellink verzonden! Controleer uw e-mail.",
+  "backToLogin": "Terug naar Inloggen",
+  "welcome": "Welkom, {username}!",
+  "dashboardTimeouts": "Timeouts",
+  "dashboardTimeoutCrime": "Misdaad",
+  "dashboardTimeoutJob": "Werk",
+  "dashboardTimeoutTravel": "Reizen",
+  "dashboardTimeoutVehicleTheft": "Auto stelen",
+  "dashboardTimeoutBoatTheft": "Boot stelen",
+  "dashboardTimeoutNightclubSeason": "Nachtclub seizoen",
+  "dashboardTimeoutAmmo": "Kogels kopen",
+  "dashboardTimeoutShootingRange": "Schietschool",
+  "dashboardTimeoutGym": "Sportschool",
+  "dashboardInfoDrugsGrams": "Drugs (gram)",
+  "dashboardInfoNightclubs": "Nachtclubs",
+  "dashboardInfoNightclubRevenue": "Nachtclub omzet",
+  "dashboard": "Dashboard",
+  "crimes": "Misdaden",
+  "errorLoadingCrimes": "Fout bij laden misdaden",
+  "connectionError": "Verbindingsfout: {error}",
+  "payRange": "Opbrengst: €{min} - €{max}",
+  "requiresRank": "Vereist rang {rank}",
+  "requiresVehicle": "Voertuig vereist",
+  "federalCrimeWarning": "⚠️ Federale misdaad - FBI Heat",
+  "crimePickpocketName": "Zakkenrollen",
+  "crimePickpocketDesc": "Steel portemonnees van voorbijgangers",
+  "crimeShopliftName": "Winkeldiefstal",
+  "crimeShopliftDesc": "Steel goederen uit een winkel",
+  "crimeStealBikeName": "Fiets Stelen",
+  "crimeStealBikeDesc": "Steel een fiets van een rek",
+  "crimeCarTheftName": "Auto Diefstal",
+  "crimeCarTheftDesc": "Steel een geparkeerde auto",
+  "crimeBurglaryName": "Inbraak",
+  "crimeBurglaryDesc": "Breek in bij een woning",
+  "crimeRobStoreName": "Winkel Overvallen",
+  "crimeRobStoreDesc": "Overval een kleine winkel",
+  "crimeMugPersonName": "Beroving",
+  "crimeMugPersonDesc": "Beroof iemand op straat",
+  "crimeStealCarPartsName": "Autoonderdelen Stelen",
+  "crimeStealCarPartsDesc": "Steel onderdelen van geparkeerde auto's",
+  "crimeHijackTruckName": "Vrachtwagen Kapen",
+  "crimeHijackTruckDesc": "Kaap een vrachtwagen met goederen",
+  "crimeAtmTheftName": "Geldautomaat Kraken",
+  "crimeAtmTheftDesc": "Kraak een geldautomaat",
+  "crimeJewelryHeistName": "Juwelier Overval",
+  "crimeJewelryHeistDesc": "Overval een juwelier",
+  "crimeVandalismName": "Vandalisme",
+  "crimeVandalismDesc": "Vernietig eigendommen voor geld",
+  "crimeGraffitiName": "Graffiti Spuiten",
+  "crimeGraffitiDesc": "Spuit graffiti voor lokale gangs",
+  "crimeDrugDealSmallName": "Kleine Drugsdeal",
+  "crimeDrugDealSmallDesc": "Verkoop kleine hoeveelheid drugs",
+  "crimeDrugDealLargeName": "Grote Drugsdeal",
+  "crimeDrugDealLargeDesc": "Verkoop grote hoeveelheid drugs",
+  "crimeExtortionName": "Afpersing",
+  "crimeExtortionDesc": "Pers geld af van lokale ondernemers",
+  "crimeKidnappingName": "Ontvoering",
+  "crimeKidnappingDesc": "Ontvoer iemand voor losgeld",
+  "crimeArsonName": "Brandstichting",
+  "crimeArsonDesc": "Steek een gebouw in brand",
+  "crimeSmugglingName": "Smokkel",
+  "crimeSmugglingDesc": "Smokkel goederen over de grens",
+  "crimeAssassinationName": "Huurmoord",
+  "crimeAssassinationDesc": "Voer een huurmoord uit",
+  "crimeHackAccountName": "Account Hacken",
+  "crimeHackAccountDesc": "Hack een bankrekening",
+  "crimeCounterfeitMoneyName": "Geld Vervalsen",
+  "crimeCounterfeitMoneyDesc": "Maak vals geld",
+  "crimeIdentityTheftName": "Identiteitsdiefstal",
+  "crimeIdentityTheftDesc": "Steel iemands identiteit voor fraude",
+  "crimeRobArmoredTruckName": "Geldwagen Overvallen",
+  "crimeRobArmoredTruckDesc": "Overval een geldtransport",
+  "crimeArtTheftName": "Kunstdiefstal",
+  "crimeArtTheftDesc": "Steel waardevolle kunstwerken",
+  "crimeProtectionRacketName": "Beschermingsgeld",
+  "crimeProtectionRacketDesc": "Laat ondernemers beschermingsgeld betalen",
+  "crimeCasinoHeistName": "Casino Overval",
+  "crimeCasinoHeistDesc": "Overval een casino",
+  "crimeBankRobberyName": "Bankoverval",
+  "crimeBankRobberyDesc": "Overval een bank",
+  "crimeStealYachtName": "Jacht Stelen",
+  "crimeStealYachtDesc": "Steel een luxe jacht",
+  "crimeCorruptOfficialName": "Ambtenaar Omkopen",
+  "crimeCorruptOfficialDesc": "Koop een ambtenaar om voor gunsten",
+  "tooltipCrimeRequiresTools": "Gereedschap vereist",
+  "tooltipCrimeRequiresVehicle": "Voertuig vereist",
+  "tooltipCrimeRequiresDrugs": "Drugs vereist",
+  "tooltipCrimeHighValue": "Hoge prioriteit operatie",
+  "tooltipCrimeRequiresViolence": "Geweld vereist",
+  "crimeErrorDrugsRequired": "Je hebt minimaal {quantity}x nodig van: {drugs}",
+  "@crimeErrorDrugsRequired": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "drugs": {
+        "type": "String"
+      }
+    }
+  },
+  "jobs": "Banen",
+  "errorLoadingJobs": "Fout bij laden jobs",
+  "jobNewspaperDeliveryName": "Krant Bezorgen",
+  "jobNewspaperDeliveryDesc": "Bezorg kranten in de vroege ochtend",
+  "jobCarWashName": "Auto Wassen",
+  "jobCarWashDesc": "Was auto's bij de wasstraat",
+  "jobGroceryBaggerName": "Vakkenvuller",
+  "jobGroceryBaggerDesc": "Vul schappen in de supermarkt",
+  "jobDishwasherName": "Afwasser",
+  "jobDishwasherDesc": "Was af in een restaurant",
+  "jobStreetSweeperName": "Straatveger",
+  "jobStreetSweeperDesc": "Veeg straten schoon",
+  "jobPizzaDeliveryName": "Pizza Bezorger",
+  "jobPizzaDeliveryDesc": "Bezorg pizza's in de stad",
+  "jobTaxiDriverName": "Taxichauffeur",
+  "jobTaxiDriverDesc": "Rij taxi door de stad",
+  "jobWarehouseWorkerName": "Magazijnmedewerker",
+  "jobWarehouseWorkerDesc": "Werk in een magazijn",
+  "jobConstructionWorkerName": "Bouwvakker",
+  "jobConstructionWorkerDesc": "Werk op de bouw",
+  "jobBartenderName": "Barkeeper",
+  "jobBartenderDesc": "Tap bier en mix cocktails",
+  "jobSecurityGuardName": "Beveiliger",
+  "jobSecurityGuardDesc": "Bewaak een gebouw",
+  "jobTruckDriverName": "Vrachtwagenchauffeur",
+  "jobTruckDriverDesc": "Rij vrachtwagen over lange afstanden",
+  "jobMechanicName": "Monteur",
+  "jobMechanicDesc": "Repareer auto's in een garage",
+  "jobElectricianName": "Elektricien",
+  "jobElectricianDesc": "Installeer en repareer elektrische systemen",
+  "jobPlumberName": "Loodgieter",
+  "jobPlumberDesc": "Repareer leidingen en sanitair",
+  "jobChefName": "Kok",
+  "jobChefDesc": "Kook in een restaurant",
+  "jobParamedicName": "Ambulanceverpleegkundige",
+  "jobParamedicDesc": "Help mensen in nood",
+  "jobProgrammerName": "Programmeur",
+  "jobProgrammerDesc": "Schrijf software voor bedrijven",
+  "jobAccountantName": "Accountant",
+  "jobAccountantDesc": "Beheer financien voor bedrijven",
+  "jobLawyerName": "Advocaat",
+  "jobLawyerDesc": "Verdedig clienten in rechtszaken",
+  "jobRealEstateAgentName": "Makelaar",
+  "jobRealEstateAgentDesc": "Verkoop huizen en gebouwen",
+  "jobStockbrokerName": "Effectenmakelaar",
+  "jobStockbrokerDesc": "Handel in aandelen",
+  "jobDoctorName": "Dokter",
+  "jobDoctorDesc": "Behandel patienten in het ziekenhuis",
+  "jobAirlinePilotName": "Piloot",
+  "jobAirlinePilotDesc": "Vlieg passagiersvliegtuigen",
+  "travel": "Reizen",
+  "errorLoadingCountries": "Fout bij laden landen",
+  "currentLocation": "Huidige locatie",
+  "current": "Huidig",
+  "travelTo": "Reis",
+  "travelCost": "Kosten: €{amount}",
+  "travelJourneyTitle": "Reis starten?",
+  "travelRouteLabel": "Route:",
+  "travelLegsLabel": "Etappes: {count}",
+  "travelCostPerLeg": "Kosten per etappe: €{amount}",
+  "travelTotalCost": "Totale kosten: €{amount}",
+  "travelCooldownPerLeg": "Cooldown: {minutes} min per etappe",
+  "travelRiskPerLeg": "Risico: per etappe (je kunt gepakt worden en alles kwijt raken)",
+  "travelStart": "Start",
+  "travelInTransitTo": "Onderweg naar {country}",
+  "travelLegProgress": "Etappe {current}/{total}",
+  "travelNextStop": "Volgende stop: {country}",
+  "travelContinue": "Verder",
+  "travelCancelJourney": "Reis annuleren",
+  "travelJourneyCanceled": "Reis geannuleerd",
+  "travelDirect": "Direct",
+  "travelVia": "via {countries}",
+  "travelLegsCount": "{count} etappes",
+  "jailRemainingMinutes": "Je zit nog {minutes} minuten in de cel",
+  "travelSuccessTo": "Gereisd naar {country}!",
+  "travelConfiscated": "🚨 {quantity} items {item} in beslag genomen!",
+  "travelDamaged": "⚠️ {item} beschadigd ({percent}% waardeverlies)!",
+  "countryNetherlands": "Nederland",
+  "countryBelgium": "België",
+  "countryGermany": "Duitsland",
+  "countryFrance": "Frankrijk",
+  "countrySpain": "Spanje",
+  "countryItaly": "Italië",
+  "countryUk": "Verenigd Koninkrijk",
+  "countrySwitzerland": "Zwitserland",
+  "crew": "Crew",
+  "profile": "Profiel",
+  "logout": "Uitloggen",
+  "money": "€{amount}",
+  "health": "Gezondheid",
+  "rank": "Rang",
+  "xp": "XP",
+  "settings": "Instellingen",
+  "avatar": "Avatar",
+  "avatarUpdated": "Avatar bijgewerkt!",
+  "error": "Fout: {error}",
+  "changeLanguage": "Taal / Language",
+  "languageChanged": "Taal gewijzigd naar Nederlands",
+  "languageChangeFailed": "Taal wijzigen mislukt ({code})",
+  "chooseLanguage": "Taal Kiezen / Choose Language",
+  "dutch": "Nederlands",
+  "english": "English",
+  "cancel": "Annuleren",
+  "changeUsername": "Gebruikersnaam Wijzigen",
+  "usernameHint": "3-20 karakters",
+  "change": "Wijzigen",
+  "minChars": "Minimaal 3 karakters",
+  "usernameUpdated": "Gebruikersnaam bijgewerkt!",
+  "usernameTaken": "Gebruikersnaam al in gebruik",
+  "oncePerMonth": "1x per maand wijzigen",
+  "privacy": "Privacy",
+  "allowMessages": "Berichten toestaan",
+  "allowMessagesDesc": "Andere spelers kunnen je berichten sturen",
+  "settingsSaved": "Instellingen opgeslagen",
+  "vipStatus": "VIP Status",
+  "activeUntil": "Actief tot {date}",
+  "unknown": "Onbekend",
+  "chooseAvatar": "Kies een Avatar",
+  "freeAvatars": "Gratis Avatars",
+  "vipAvatars": "VIP Avatars",
+  "vip": "VIP",
+  "notLoggedIn": "Niet ingelogd",
+  "refresh": "Vernieuwen",
+  "foodAndDrink": "Eten & Drinken",
+  "invalidItem": "Dit item bestaat niet",
+  "foodBroodje": "Broodje",
+  "foodPizza": "Pizza",
+  "foodBurger": "Burger",
+  "foodSteak": "Steak",
+  "drinkWater": "Water",
+  "drinkSoda": "Frisdrank",
+  "drinkCoffee": "Koffie",
+  "drinkBeer": "Bier",
+  "foodInfo3": "• Koop eten en drinken om je stats op peil te houden",
+  "friends": "Vrienden",
+  "friendActivity": "Vriend Activiteit",
+  "properties": "Eigendommen",
+  "propertiesAvailable": "Beschikbaar",
+  "myProperties": "Mijn Eigendommen",
+  "errorLoadingMyProperties": "Fout bij laden mijn eigendommen",
+  "errorBuyingProperty": "Fout bij kopen",
+  "errorCollectingIncome": "Fout bij verzamelen",
+  "noAvailableProperties": "Geen beschikbare eigendommen",
+  "noOwnedProperties": "Je hebt nog geen eigendommen",
+  "buyFirstPropertyHint": "Koop je eerste eigendom in de \"Beschikbaar\" tab",
+  "buyPropertyConfirm": "Wil je {name} kopen voor €{price}?",
+  "propertyPrice": "Prijs",
+  "propertyMinLevel": "Vereist level",
+  "propertyIncomePerHour": "Inkomen/uur",
+  "propertyMaxLevel": "Max Level",
+  "propertyUniquePerCountry": "⚠️ Uniek - 1 per land",
+  "propertyIncomeReady": "✅ Inkomen klaar om te verzamelen!",
+  "propertyNextIncome": "⏱️ Volgende inkomen over {duration}",
+  "propertyBuyAction": "Koop Eigendom",
+  "propertyCollectAction": "Verzamel",
+  "propertyUpgradeAction": "Upgrade",
+  "propertyMax": "MAX",
+  "propertyLevel": "Level {level}",
+  "durationHoursMinutes": "{hours}u {minutes}m",
+  "durationMinutes": "{minutes}m",
+  "propertyTypeHouse": "Huis",
+  "propertyTypeWarehouse": "Magazijn",
+  "propertyTypeCasino": "Casino",
+  "propertyTypeHotel": "Hotel",
+  "propertyTypeFactory": "Fabriek",
+  "propertyTypeBusiness": "Bedrijf",
+  "propertyCasinoName": "Casino",
+  "propertyWarehouseName": "Magazijn",
+  "propertyNightclubName": "Nachtclub",
+  "propertyHouseName": "Huis",
+  "propertyApartmentName": "Appartement",
+  "propertyShopName": "Winkel",
+  "blackMarket": "Zwarte Markt",
+  "garage": "Garage",
+  "garageCapacity": "Garage Capaciteit",
+  "garageVehiclesCount": "{current} / {total} voertuigen",
+  "@garageVehiclesCount": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "garageUpgradeWithCost": "Upgrade (€{cost})",
+  "@garageUpgradeWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "garageMaxLevel": "Max Level",
+  "garageLevelRemaining": "Level {level} | {spots} plekken over",
+  "@garageLevelRemaining": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "spots": {
+        "type": "String"
+      }
+    }
+  },
+  "noCarsInGarage": "Geen auto's in je garage",
+  "stealCarsToStart": "Steel wat auto's om te beginnen!",
+  "stealFailed": "Stelen mislukt",
+  "garageUpgradeFailed": "Upgrade garage mislukt",
+  "saleFailed": "Verkoop mislukt",
+  "vehicleTransported": "Voertuig succesvol getransporteerd!",
+  "vehicleTransportFailed": "Transport mislukt",
+  "listOnMarket": "Plaats op markt",
+  "marketValue": "Marktwaarde: €{amount}",
+  "@marketValue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "askingPrice": "Vraagprijs (€)",
+  "enterPrice": "Voer prijs in",
+  "list": "Plaats",
+  "invalidPrice": "Ongeldige prijs",
+  "vehicleListed": "Voertuig op de markt gezet!",
+  "listVehicleFailed": "Plaatsen mislukt",
+  "marina": "Jachthaven",
+  "hospital": "Ziekenhuis",
+  "court": "Rechtbank",
+  "casino": "Casino",
+  "errorLoadingCasinoStatus": "Kon casino status niet controleren",
+  "errorLoadingCasinoGames": "Kon casino spellen niet laden",
+  "casinoPrice": "Prijs: €{amount}",
+  "@casinoPrice": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "startingCapital": "Startkapitaal",
+  "bankrollHelper": "Dit wordt de casino kas",
+  "casinoOwnershipInfoTitle": "Over casino eigendom:",
+  "casinoClosedTitle": "CASINO GESLOTEN",
+  "casinoOwnedByLabel": "Dit casino is eigendom van:",
+  "casinoNoOwner": "Dit casino heeft nog geen eigenaar",
+  "casinoPurchasePriceLabel": "Aankoopprijs:",
+  "casinoOwnerInfo": "Als eigenaar beheer je de casino bankroll en verdien je geld wanneer spelers verliezen!",
+  "casinoGameSlotsName": "Gokautomaat",
+  "casinoGameSlotsDesc": "Draai de rollen en win tot 100x je inzet!",
+  "casinoGameBlackjackName": "Blackjack",
+  "casinoGameBlackjackDesc": "Versla de dealer en win tot 2x je inzet!",
+  "casinoGameRouletteName": "Roulette",
+  "casinoGameRouletteDesc": "Kies je nummer en win tot 35x je inzet!",
+  "casinoGameDiceName": "Dobbelstenen",
+  "casinoGameDiceDesc": "Gooi de dobbelstenen en win tot 6x je inzet!",
+  "profit": "Winst",
+  "loss": "Verlies",
+  "difficultyEasy": "MAKKELIJK",
+  "difficultyMedium": "GEMIDDELD",
+  "difficultyHard": "MOEILIJK",
+  "casinoDepositTitle": "Geld Storten",
+  "casinoWithdrawTitle": "Geld Opnemen",
+  "amount": "Bedrag",
+  "deposit": "Storten",
+  "withdraw": "Opnemen",
+  "casinoDepositSuccess": "€{amount} gestort in casino kas",
+  "@casinoDepositSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoWithdrawSuccess": "€{amount} opgenomen uit casino kas",
+  "@casinoWithdrawSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoDepositError": "Fout bij storten",
+  "casinoWithdrawError": "Fout bij opnemen",
+  "casinoMinBankroll": "Minimaal €10.000 moet in de kas blijven",
+  "casinoMaxWithdraw": "Maximaal: €{amount}",
+  "@casinoMaxWithdraw": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoManagementTitle": "Casino Beheer",
+  "casinoBankruptWarning": "WAARSCHUWING: Casino kas te laag!\nStort minimaal €{amount} om faillissement te voorkomen.",
+  "@casinoBankruptWarning": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoBankroll": "Casino Kas",
+  "casinoStatsTitle": "Statistieken",
+  "casinoTotalReceived": "Totaal Ontvangen:",
+  "casinoTotalPaidOut": "Totaal Uitbetaald:",
+  "casinoNetProfit": "Netto Winst:",
+  "casinoProfitMargin": "Winstmarge: {percent}%",
+  "@casinoProfitMargin": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoManagementInfoTitle": "Casino Beheer Info",
+  "casinoManagementInfo5": "• Je kunt op elk moment geld storten of opnemen",
+  "retry": "Opnieuw proberen",
+  "doAction": "Doe",
+  "pay": "Betaling",
+  "success": "Succes",
+  "jail": "Gevangenis",
+  "wantedLevel": "Gezocht Niveau",
+  "cooldown": "Cooldown",
+  "requiredRank": "Vereiste speler rank",
+  "playerRankLabel": "Speler rank",
+  "loading": "Laden...",
+  "trade": "Handel",
+  "buy": "Kopen",
+  "sell": "Verkopen",
+  "quantity": "Aantal",
+  "price": "Prijs",
+  "total": "Totaal",
+  "available": "Beschikbaar: {count}",
+  "notEnoughMoney": "Je hebt niet genoeg geld!",
+  "confirm": "Bevestigen",
+  "close": "Sluiten",
+  "unexpectedResponse": "Onverwachte API response",
+  "errorLoadingMenu": "Fout bij laden menu",
+  "unknownError": "Onbekende fout",
+  "food": "Eten",
+  "drink": "Drinken",
+  "work": "Werk",
+  "cooldownMinutes": "Cooldown: {minutes} min",
+  "xpReward": "XP: +{amount}",
+  "fly": "Vliegen",
+  "purchased": "Gekocht!",
+  "sold": "Verkocht!",
+  "errorBuying": "Fout bij kopen",
+  "errorSelling": "Fout bij verkopen",
+  "goods": "Goederen",
+  "marketplace": "Marktplaats",
+  "myListings": "Mijn Advertenties",
+  "inventory": "Inventaris",
+  "vehicles": "Voertuigen",
+  "backpacks": "Rugzakken",
+  "materials": "Materialen",
+  "production": "Productie",
+  "stock": "Voorraad",
+  "retryAgain": "Opnieuw proberen",
+  "noVehiclesAvailable": "Geen voertuigen beschikbaar",
+  "noListings": "Geen advertenties",
+  "condition": "Conditie",
+  "yourHealth": "Je Gezondheid",
+  "criticalHealthWarning": "⚠️ KRITIEK! Je moet direct naar het ziekenhuis!",
+  "lowHealthWarning": "⚠️ Lage gezondheid! Wees voorzichtig.",
+  "free": "GRATIS",
+  "information": "Informatie",
+  "contrabandFlowersName": "Bloemen",
+  "contrabandFlowersDesc": "Nederlandse tulpen en andere bloemen voor internationale handel",
+  "contrabandElectronicsName": "Elektronica",
+  "contrabandElectronicsDesc": "Geavanceerde elektronica en computeronderdelen",
+  "contrabandDiamondsName": "Diamanten",
+  "contrabandDiamondsDesc": "Onbewerkte en geslepen diamanten",
+  "contrabandWeaponsName": "Wapens",
+  "contrabandWeaponsDesc": "Illegale wapens en munitie",
+  "contrabandPharmaceuticalsName": "Farmaceutica",
+  "contrabandPharmaceuticalsDesc": "Zeldzame farmaceutische producten",
+  "multiplier": "Multiplier",
+  "sellPrice": "Verkoopprijs",
+  "boughtFor": "Gekocht voor",
+  "ownedQuantity": "In bezit: {quantity}",
+  "spoilsInHours": "⚠️ Bederft over {hours}u",
+  "spoiledWorthless": "💀 BEDORVEN - Waardeloos",
+  "vehicleBought": "Voertuig succesvol gekocht!",
+  "purchaseFailed": "Aankoop mislukt",
+  "listingRemoved": "Advertentie verwijderd",
+  "noItemsInInventory": "Geen items in inventaris",
+  "buyItemsInBuyTab": "Koop items in het Kopen-tabblad",
+  "errorLoadingMarketData": "Fout bij laden marktgegevens: {error}",
+  "appeal": "Hoger Beroep",
+  "submitAppeal": "Beroep indienen",
+  "bribeJudge": "Rechter omkopen",
+  "bribe": "Omkopen",
+  "treated": "Behandeld!",
+  "healthRestored": "+{hp} HP voor €{cost}",
+  "treatmentOptions": "Behandelopties",
+  "youAreDead": "Je bent dood! Game over.",
+  "emergencyOnly": "Spoedeisende hulp is alleen beschikbaar bij <10 HP",
+  "emergencyTreatment": "Spoedeisende hulp! Gratis +{hp} HP",
+  "byValue": "Op Waarde",
+  "byCondition": "Op Conditie",
+  "byFuel": "Op Brandstof",
+  "byName": "Op Naam",
+  "stealCar": "Steel Auto",
+  "stealBoat": "Steel Boot",
+  "sellVehicle": "Voertuig Verkopen",
+  "sellBoat": "Boot Verkopen",
+  "confirmSellVehicle": "Weet je zeker dat je dit voertuig wilt verkopen?",
+  "confirmSellBoat": "Weet je zeker dat je deze boot wilt verkopen?",
+  "carStolen": "Auto succesvol gestolen!",
+  "boatStolen": "Boot succesvol gestolen!",
+  "vehicleTypeCar": "Auto",
+  "vehicleTypeBoat": "Boot",
+  "stolenVehicleTitle": "{vehicleType} gestolen!",
+  "@stolenVehicleTitle": {
+    "placeholders": {
+      "vehicleType": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownVehicleType": "Onbekende {vehicleType}",
+  "@unknownVehicleType": {
+    "placeholders": {
+      "vehicleType": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleStatSpeed": "Snelheid",
+  "vehicleStatFuel": "Brandstof",
+  "vehicleStatCargo": "Lading",
+  "vehicleStatStealth": "Stealth",
+  "continueAction": "Verder",
+  "vehicleSold": "Voertuig succesvol verkocht!",
+  "boatSold": "Boot succesvol verkocht!",
+  "garageUpgraded": "Garage geüpgraded!",
+  "marinaUpgraded": "Haven succesvol geüpgraded!",
+  "marinaCapacity": "Marina Capaciteit",
+  "marinaBoatsCount": "{current} / {total} boten",
+  "@marinaBoatsCount": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "marinaUpgradeWithCost": "Upgrade (€{cost})",
+  "@marinaUpgradeWithCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "marinaMaxLevel": "Max Level",
+  "marinaLevelRemaining": "Level {level} | {remaining} plekken over",
+  "@marinaLevelRemaining": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "noBoatsInMarina": "Geen boten in je marina",
+  "stealBoatsToStart": "Steel wat boten om te beginnen!",
+  "marinaUpgradeFailed": "Haven upgraden mislukt",
+  "boatShipped": "Boot succesvol verscheept!",
+  "boatShipFailed": "Boot verschepen mislukt",
+  "buyProperty": "Eigendom Kopen",
+  "propertyBought": "{name} gekocht!",
+  "propertyUpgraded": "Eigendom geüpgraded naar level {level}!",
+  "errorLoadingProperties": "Fout bij laden eigenschappen",
+  "errorUpgrading": "Fout bij upgraden",
+  "networkError": "Netwerkfout: {error}",
+  "unknownResponse": "Onbekende response",
+  "incomeCollected": "€{amount} verzameld!",
+  "buyCasino": "Casino Kopen",
+  "manageCasino": "Beheer Casino",
+  "casinoBought": "Casino succesvol gekocht! 🎰",
+  "errorBuyCasino": "Er is een fout opgetreden bij het kopen van het casino",
+  "minimumDeposit": "Minimale storting is €{amount}",
+  "casinoInfo1": "Spelers wedden tegen de casino kas",
+  "casinoInfo2": "Winsten worden uit de kas betaald",
+  "casinoInfo3": "Je kunt geld storten en opnemen",
+  "casinoInfo4": "Minimaal €10.000 in kas vereist",
+  "casinoInfo5": "Bij lagere kas: faillissement",
+  "members": "Leden",
+  "location": "Locatie",
+  "level": "Level",
+  "alreadyFullHealth": "Je bent al op volle gezondheid!",
+  "errorTreatment": "Fout bij behandeling",
+  "waitMinutes": "Je moet nog {minutes} minuten wachten voor de volgende behandeling!",
+  "emergencyHelp": "Spoedeisende Hulp",
+  "onlyNeedHp": "(Je hebt maar {hp} HP nodig)",
+  "emergencyInfo": "• 🊘 Spoedeisende Hulp is GRATIS bij <10 HP (+20 HP)",
+  "hospitalInfo1": "• Gezondheid daalt bij het plegen van misdaden",
+  "hospitalInfo2": "• Bij 0 HP kun je geen misdaden meer plegen",
+  "hospitalInfo3": "• De behandeling kost €{cost} per keer",
+  "hospitalInfo4": "• Je kunt maximaal {amount} HP herstellen per behandeling",
+  "hospitalInfo5": "• ⏱️ 1 uur cooldown tussen behandelingen",
+  "hospitalInfo6": "• 💚 Passief herstel: +5 HP per 5 minuten (als HP > 0)",
+  "medicalTreatment": "Medische Behandeling",
+  "restoreCritical": "Herstel +20 HP (kritieke toestand)",
+  "restoreUp": "Herstel tot {amount} HP",
+  "cost": "Kosten",
+  "crimeErrorToolRequired": "⚒️ Je hebt {tools} nodig voor deze misdaad",
+  "@crimeErrorToolRequired": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeErrorToolInStorage": "⚒️ Je hebt wel {tools}, maar die ligt thuis! Ga naar Inventaris → Transfer",
+  "@crimeErrorToolInStorage": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeErrorVehicleRequired": "🚗 Deze misdaad vereist een voertuig",
+  "crimeErrorVehicleNotFound": "🚗 Voertuig niet gevonden",
+  "crimeErrorNotVehicleOwner": "🚗 Je bezit dit voertuig niet",
+  "crimeErrorVehicleBroken": "🚗 Je voertuig is kapot en moet gerepareerd worden",
+  "crimeErrorNoFuel": "⛽ Je voertuig heeft geen brandstof meer",
+  "crimeErrorLevelTooLow": "⭐ Je level is te laag voor deze misdaad",
+  "crimeErrorInvalidCrimeId": "❌ Ongeldige misdaad",
+  "crimeErrorWeaponRequired": "🔫 Je hebt een wapen nodig voor deze misdaad",
+  "crimeErrorWeaponBroken": "🔫 Je wapen is kapot en moet gerepareerd worden",
+  "crimeErrorNoAmmo": "🔫 Je hebt geen munitie meer",
+  "crimeErrorGeneric": "❌ Er is iets misgegaan bij deze misdaad",
+  "inventoryFull": "🎒 Je inventaris is vol! Sla gereedschap op in een property",
+  "storageFull": "📦 Property opslag is vol",
+  "transferSuccess": "✅ {tool} verplaatst naar {location}",
+  "@transferSuccess": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      },
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "carried": "Bij je",
+  "storage": "Opslag",
+  "property": "Property",
+  "inventorySlots": "{used} / {max} slots",
+  "@inventorySlots": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "loadouts": "Loadouts",
+  "createLoadout": "Maak Loadout",
+  "equipLoadout": "Uitrusten",
+  "loadoutEquipped": "✅ Loadout uitgerust",
+  "loadoutMaxReached": "❌ Maximum loadouts bereikt (5)",
+  "loadoutMissingTools": "❌ Missende tools: {tools}",
+  "@loadoutMissingTools": {
+    "placeholders": {
+      "tools": {
+        "type": "String"
+      }
+    }
+  },
+  "backpackUpgrade": "Rugzak Upgrade",
+  "backpackBasic": "Basis Rugzak (+5 slots)",
+  "backpackTactical": "Tactische Vest (+10 slots)",
+  "backpackCargo": "Cargo Broek (+3 slots)",
+  "upgradeInventory": "Upgrade Inventaris",
+  "noToolsCarried": "Geen gereedschap bij je",
+  "visitShopToBuyTools": "Bezoek de winkel om gereedschap te kopen",
+  "noProperties": "Geen properties",
+  "buyPropertyForStorage": "Koop een property om gereedschap op te slaan",
+  "noToolsInStorage": "Geen gereedschap in opslag",
+  "selectProperty": "Selecteer property",
+  "slotsRemaining": "slots over",
+  "tools": "gereedschap",
+  "noLoadouts": "Geen loadouts",
+  "createLoadoutToStart": "Maak een loadout om te beginnen",
+  "deleteLoadout": "Verwijder Loadout",
+  "confirmDeleteLoadout": "Weet je zeker dat je deze loadout wilt verwijderen?",
+  "loadoutDeleted": "Loadout verwijderd",
+  "edit": "Bewerk",
+  "delete": "Verwijder",
+  "active": "Actief",
+  "durability": "Duurzaamheid",
+  "slotSize": "Slot grootte",
+  "repairCost": "Reparatie kosten",
+  "wearPerUse": "Slijtage per gebruik",
+  "loseChance": "Kans om te verliezen",
+  "requiredFor": "Vereist voor",
+  "lowDurability": "Lage duurzaamheid",
+  "transfer": "Verplaats",
+  "toolDetails": "Gereedschap Details",
+  "transferTool": "Verplaats Gereedschap",
+  "selectQuantity": "Selecteer aantal",
+  "destination": "Bestemming",
+  "from": "Van",
+  "to": "Naar",
+  "editLoadout": "Bewerk Loadout",
+  "loadoutName": "Loadout Naam",
+  "description": "Beschrijving",
+  "optional": "optioneel",
+  "selectedTools": "Geselecteerd gereedschap",
+  "noToolsAvailable": "Geen gereedschap beschikbaar",
+  "create": "Aanmaken",
+  "save": "Opslaan",
+  "pleaseEnterName": "Voer een naam in",
+  "pleaseSelectTools": "Selecteer minimaal 1 gereedschap",
+  "loadoutCreated": "Loadout aangemaakt",
+  "loadoutUpdated": "Loadout bijgewerkt",
+  "goToInventory": "Naar Inventaris",
+  "slots": "slots",
+  "backpackShop": "Rugzak Shop",
+  "yourBackpack": "Je rugzak",
+  "availableUpgrades": "Upgrades beschikbaar",
+  "otherBackpacks": "Andere rugzakken",
+  "youHaveBestBackpack": "Je hebt de beste rugzak!",
+  "backpackPurchased": "Rugzak gekocht!",
+  "backpackUpgraded": "Rugzak geupgrade!",
+  "buyBackpack": "Kopen",
+  "upgradeBackpack": "Upgraden",
+  "backpackPrice": "Prijs",
+  "extraSlots": "Extra slots",
+  "totalSlots": "Totaal slots",
+  "vipOnly": "Alleen VIP",
+  "tradeInValue": "Inruilwaarde",
+  "upgradeCost": "Upgrade kosten",
+  "rankRequired": "Rank {rank} vereist",
+  "insufficientFunds": "Je hebt €{needed} nodig. Je hebt €{have}",
+  "alreadyHasBackpack": "Je hebt al een rugzak",
+  "backpackNotFound": "Rugzak niet gevonden",
+  "playerNotFound": "Speler niet gevonden",
+  "notAnUpgrade": "Dit is geen upgrade",
+  "backpackPurchasedEvent": "Je hebt {name} gekocht! +{slots} slots.",
+  "backpackUpgradedEvent": "Geupgrade naar {newName}! +{upgradeSlots} extra slots.",
+  "backpackPurchaseFailedNotFound": "Rugzak niet gevonden",
+  "backpackPurchaseFailedAlready": "Je hebt al een rugzak. Je kunt maar één tegelijk gebruiken.",
+  "backpackPurchaseFailedRank": "Je hebt rank {required} nodig (je bent rank {current})",
+  "backpackPurchaseFailedFunds": "Je hebt €{needed} nodig. Je hebt €{have}",
+  "backpackPurchaseFailedVip": "Deze rugzak is alleen voor VIP leden",
+  "backpackUpgradeFailedNo": "Je hebt geen rugzak om te upgraden",
+  "backpackUpgradeFailedNotUpgrade": "Dit is geen upgrade. Kies een grotere rugzak.",
+  "backpackUpgradeFailedRank": "Je hebt rank {required} nodig (je bent rank {current})",
+  "backpackUpgradeFailedFunds": "Je hebt €{needed} nodig. Je hebt €{have}",
+  "backpackUpgradeFailedVip": "Deze rugzak is alleen voor VIP leden",
+  "arrested": "Gearresteerd!",
+  "jailMessage": "Je bent gearresteerd tijdens je reis en alle goederen zijn in beslag genomen!",
+  "confirmAction": "Weet je het zeker?",
+  "yes": "Ja",
+  "no": "Nee",
+  "ok": "OK",
+  "travelContinueConfirmTitle": "Doorgaan naar de volgende etappe?",
+  "travelContinueConfirmBody": "Grenscontroles zijn actief. Wil je doorgaan?",
+  "travelJourneyCompleteTitle": "Reis voltooid",
+  "travelJourneyCompleteBody": "Je bent veilig op je bestemming aangekomen.",
+  "hitlist": "Moordlijst",
+  "hitlistLoadError": "Fout bij laden van moordlijst: {error}",
+  "noActiveHits": "Geen actieve moorden geplaatst",
+  "selectTarget": "Selecteer doelwit",
+  "searchPlayer": "Zoek speler...",
+  "placeHitTitle": "Moord plaatsen",
+  "minimumBounty": "Minimale bounty: €50.000",
+  "bountyAmount": "Bounty bedrag",
+  "place": "Plaatsen",
+  "hitPlaced": "Moord geplaatst voor €{amount}",
+  "hitError": "Fout: {error}",
+  "hitDifferentCountry": "Je moet in hetzelfde land zijn als het doelwit",
+  "counterBountyTitle": "Tegen-bod plaatsen",
+  "minimumAmount": "Minimaal bedrag: €{amount}",
+  "counterBountyAmount": "Tegen-bod bedrag",
+  "counterBountyPlaced": "Tegen-bod van €{amount} geplaatst",
+  "cancelHitConfirmTitle": "Moord annuleren?",
+  "cancelHitConfirmBody": "Je bounty zal worden terugbetaald.",
+  "hitCancelled": "Moord geannuleerd",
+  "target": "Doelwit",
+  "placer": "Plaatser",
+  "bounty": "Bounty",
+  "counterBid": "Tegen-bod",
+  "counterBidPlaced": "Tegen-bod geplaatst! Het contract is omgekeerd.",
+  "attemptHit": "Moord uitvoeren",
+  "selectWeapon": "Selecteer het wapen en munitie voor deze moord",
+  "youAreTargeted": "Je bent op de moordlijst",
+  "security": "Veiligheid",
+  "currentDefense": "Huidige Verdediging",
+  "totalDefense": "Totale Verdediging",
+  "currentArmor": "Huidige Armor",
+  "bodyguards": "Lijfwachten",
+  "buyBodyguards": "Koop Lijfwachten",
+  "bodyguardPrice": "Prijs per Lijfwacht",
+  "armor": "Armor",
+  "protectorsFollow": "Beschermers die je volgen",
+  "eachGivesDefense": "Elk geeft +10 verdediging",
+  "lightArmor": "Lichte Armor",
+  "basicProtection": "Basis bescherming",
+  "heavyArmor": "Zware Armor",
+  "strongProtection": "Sterke bescherming",
+  "bulletproofVest": "Kogelvrij Vest",
+  "veryStrongProtection": "Zeer sterke bescherming",
+  "tacticalSuit": "Tactische Outfit",
+  "premiumProtection": "Premium bescherming",
+  "defense": "Verdediging",
+  "defenseIncrease": "{armor} gekocht! +{defense} verdediging",
+  "worn": "Gedragen",
+  "hit": "MOORD",
+  "counterBidLabel": "TEGEN-BOD",
+  "daysAgo": "{count} dag{plural} geleden",
+  "hoursAgo": "{count} uur geleden",
+  "minutesAgo": "{count} minuten geleden",
+  "justPlaced": "Net geplaatst",
+  "youAreTheTarget": "Je bent het doelwit",
+  "youAreThePlacer": "Je bent de plaatser",
+  "onlyTargetCanCounterBid": "Alleen het doelwit kan een tegen-bod plaatsen",
+  "executeHit": "Moord uitvoeren",
+  "moneyNotEnough": "Je hebt niet genoeg geld",
+  "securityScreen": "Veiligheid",
+  "currentDefenseStatus": "Huidige Verdedigingsstatus",
+  "noWeapons": "Je hebt geen wapens in je inventaris",
+  "ammoQuantity": "Munitie Hoeveelheid",
+  "@available": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "noAmmoRequired": "Geen munitie vereist voor dit wapen",
+  "weaponStats": "Wapen Statistieken",
+  "damage": "Schade",
+  "intimidation": "Intimidatie",
+  "execute": "Uitvoeren",
+  "hitExecuted": "Moord succesvol uitgevoerd!",
+  "invalidAmmo": "Vul alstublieft een geldige munitiehoeveelheid in",
+  "weaponsMarket": "Wapenmarkt",
+  "ammoMarket": "Munitiemarkt",
+  "shootingRange": "Schietbaan",
+  "ammoFactory": "Munitiefabriek",
+  "weaponShop": "Wapenwinkel",
+  "myWeapons": "Mijn Wapens",
+  "weaponPurchased": "Wapen gekocht",
+  "weaponRankRequired": "Rang vereist: {rank}",
+  "@weaponRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "buyWeapon": "Kopen",
+  "ammoShop": "Munitiemarkt",
+  "myAmmo": "Mijn Munitie",
+  "ammoPurchased": "Munitie gekocht",
+  "purchaseCooldown": "Je moet wachten voordat je opnieuw kunt kopen",
+  "insufficientStock": "Niet genoeg voorraad beschikbaar",
+  "maxInventoryReached": "Maximale inventaris capaciteit bereikt",
+  "invalidQuantity": "Ongeldige hoeveelheid",
+  "nextAmmoPurchase": "Volgende aankoop beschikbaar over",
+  "ammoBoxes": "Aantal dozen",
+  "ammoRoundsPerBox": "{rounds} kogels per doos",
+  "@ammoRoundsPerBox": {
+    "placeholders": {
+      "rounds": {
+        "type": "String"
+      }
+    }
+  },
+  "ammoYouWillReceive": "Je krijgt: {rounds} kogels",
+  "@ammoYouWillReceive": {
+    "placeholders": {
+      "rounds": {
+        "type": "String"
+      }
+    }
+  },
+  "ammoTotalCost": "Totale kosten: €{cost}",
+  "@ammoTotalCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "ammoRounds": "kogels",
+  "ammoBoxesUnit": "dozen",
+  "ammoStock": "Voorraad",
+  "ammoQuality": "Kwaliteit",
+  "factoryBought": "Fabriek gekocht",
+  "factoryProduced": "Productie bijgewerkt",
+  "factorySessionStarted": "Productie gestart: 8 uur actief, elke 5 minuten nieuwe munitie",
+  "ammoFactoryTitle": "Munitiefabriek",
+  "ammoFactoryIntro": "Produceert automatisch elke 5 minuten. Je kunt tot 8 uur achterstallige productie innen.",
+  "ammoFactoryWhatYouCanDo": "Wat je kunt doen:",
+  "ammoFactoryActionBuy": "Koop een fabriek in je huidige land",
+  "ammoFactoryActionProduce": "Incasseer productie (interval: 5 minuten, max backlog: 8 uur)",
+  "ammoFactoryActionOutput": "Upgrade output tot level 5 (max ±3200 per 8u / ±400 per uur)",
+  "ammoFactoryActionQuality": "Upgrade kwaliteit voor sterkere marktprijzen",
+  "factoryUpgradeOutputSuccess": "Output geupgrade",
+  "factoryUpgradeQualitySuccess": "Kwaliteit geupgrade",
+  "myFactory": "Mijn Fabriek",
+  "noFactoryOwned": "Je bezit geen fabriek",
+  "factoryCountry": "Land",
+  "factoryOutputLevel": "Output niveau",
+  "factoryQualityLevel": "Kwaliteit niveau",
+  "factoryLastProduced": "Laatst geproduceerd",
+  "factoryProduceStatusLabel": "Produce status",
+  "factoryProduceStatusReady": "Klaar",
+  "factoryProduceStatusCooldown": "Cooldown",
+  "factorySessionActive": "Productie venster: actief (5 min interval)",
+  "factorySessionStopped": "Productie venster: gestopt (klik Produce om opnieuw 8 uur te starten)",
+  "factorySessionEndsIn": "Venster eindigt over: {duration}",
+  "factoryNextProductionReady": "Volgende productie: nu beschikbaar (druk op Produce om te innen)",
+  "factoryNextProductionIn": "Volgende productie over: {duration}",
+  "@factorySessionEndsIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "@factoryNextProductionIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "factoryProduce": "Produceren",
+  "factoryUpgradeOutput": "Upgrade Output",
+  "factoryUpgradeQuality": "Upgrade Kwaliteit",
+  "factoryList": "Fabrieken per land",
+  "factoryUnowned": "Beschikbaar",
+  "factoryOwnedBy": "Eigenaar: {owner}",
+  "@factoryOwnedBy": {
+    "placeholders": {
+      "owner": {
+        "type": "String"
+      }
+    }
+  },
+  "factoryBuy": "Kopen",
+  "shootingTrainSuccess": "Training voltooid",
+  "shootingSessions": "Sessies: {count}/100",
+  "@shootingSessions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingAccuracyBonus": "Accuracy bonus: {bonus}%",
+  "@shootingAccuracyBonus": {
+    "placeholders": {
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingCooldown": "Volgende sessie om {time}",
+  "@shootingCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingTrain": "Trainen",
+  "gym": "Sportschool",
+  "gymTrainSuccess": "Training voltooid",
+  "gymSessions": "Sessies: {count}/100",
+  "@gymSessions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "gymStrengthBonus": "Kracht bonus: {bonus}%",
+  "@gymStrengthBonus": {
+    "placeholders": {
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "gymCooldown": "Volgende sessie om {time}",
+  "@gymCooldown": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gymTrain": "Trainen",
+  "buyAmmo": "Munitie Kopen",
+  "factoryPurchaseCost": "Aankoopkosten: €{cost}",
+  "@factoryPurchaseCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "factoryProductionOutput": "Output per cyclus: {amount} units",
+  "@factoryProductionOutput": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "factoryQualityMultiplier": "Kwaliteit Multiplier: {multiplier}x",
+  "@factoryQualityMultiplier": {
+    "placeholders": {
+      "multiplier": {
+        "type": "String"
+      }
+    }
+  },
+  "upgradeOutputCost": "Upgrade Output - Kosten: €{cost}, Volgende Output: {nextAmount}",
+  "@upgradeOutputCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "nextAmount": {
+        "type": "String"
+      }
+    }
+  },
+  "upgradeQualityCost": "Upgrade Kwaliteit - Kosten: €{cost}, Volgende Kwaliteit: {nextQuality}x",
+  "@upgradeQualityCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "nextQuality": {
+        "type": "String"
+      }
+    }
+  },
+  "factoryCostLabel": "Kosten",
+  "factoryCurrentOutput": "Huidige Output",
+  "factoryNextOutput": "Volgende Output",
+  "factoryCurrentQuality": "Huidige Kwaliteit",
+  "factoryNextQuality": "Volgende Kwaliteit",
+  "factoryUnitsPerCycle": "units/8u max",
+  "factoryUnitsPerHour": "units/uur",
+  "factoryUpgradeMaxLevel": "Fabriek bereikt maximale niveau",
+  "countryUsa": "USA",
+  "countryMexico": "Mexico",
+  "countryColombia": "Colombia",
+  "countryBrazil": "Brazilië",
+  "countryArgentina": "Argentinië",
+  "countryJapan": "Japan",
+  "countryChina": "China",
+  "countryRussia": "Rusland",
+  "countryIndia": "India",
+  "countryAustralia": "Australië",
+  "countrySouthAfrica": "Zuid-Afrika",
+  "countryCanada": "Canada",
+  "toolBoltCutter": "Betonschaar",
+  "toolCarTheftTools": "Auto Diefstalpakket",
+  "toolBurglaryKit": "Inbraak Kit",
+  "toolToolbox": "Gereedschapskist",
+  "toolCrowbar": "Koevoet",
+  "toolGlassCutter": "Glassnijder",
+  "toolSprayPaint": "Spuiten",
+  "toolJerryCan": "Jerrycan",
+  "toolFakeDocuments": "Vervalste Documenten",
+  "toolHackingLaptop": "Hacking Laptop",
+  "toolCounterfeitingKit": "Vervalsings Kit",
+  "toolRope": "Touw",
+  "toolSilencer": "Geluiddemper",
+  "toolNightVision": "Nachtbril",
+  "toolGpsJammer": "GPS Jammer",
+  "toolBurnerPhone": "Wegwerp Telefoon",
+  "crimeOutcomeSuccess": "Misdaad geslaagd!",
+  "crimeOutcomeCaught": "Gepakt door de politie",
+  "crimeOutcomeVehicleBreakdownBefore": "Je auto is kapot gegaan voordat je de locatie bereikte",
+  "crimeOutcomeVehicleBreakdownDuring": "Auto kapot tijdens vlucht - meeste buit achtergelaten",
+  "crimeOutcomeOutOfFuel": "Brandstof opgeraakt tijdens vlucht - te voet gevlucht, buit en auto verloren",
+  "crimeOutcomeToolBroke": "Je gereedschap brak tijdens de misdaad en liet bewijs achter",
+  "crimeOutcomeFledNoLoot": "Gevlucht zonder buit",
+  "vehicleCondition": "Conditie",
+  "vehicleFuel": "Brandstof",
+  "vehicleSpeed": "Snelheid",
+  "vehicleArmor": "Pantser",
+  "vehicleStealth": "Stealth",
+  "vehicleCargo": "Lading",
+  "vehicleRepair": "Repareren",
+  "vehicleRefuel": "Tanken",
+  "selectCrimeVehicle": "Selecteer Voertuig voor Misdaden",
+  "noVehicleSelected": "Geen voertuig geselecteerd",
+  "selectedVehicle": "Misdaad Voertuig",
+  "changeVehicle": "Voertuig Wijzigen",
+  "selectVehicle": "Voertuig Selecteren",
+  "vehicleConditionLow": "Voertuig Conditie Laag",
+  "vehicleFuelLow": "Voertuig Brandstof Laag",
+  "vehicleSelectedForCrimes": "Voertuig geselecteerd voor misdaden!",
+  "vehicleDeselectedForCrimes": "Voertuig gedeselecteerd voor misdaden!",
+  "vehicleWrongCountry": "Voertuig moet in hetzelfde land zijn als jij",
+  "failedSelectVehicle": "Fout bij selecteren voertuig",
+  "failedDeselectVehicle": "Fout bij deselecteren voertuig",
+  "selectedForCrimesBadge": "Geselecteerd voor misdaden",
+  "selectedButton": "Geselecteerd",
+  "selectButton": "Selecteer",
+  "deselectButton": "Deselecteer",
+  "prostitutionTitle": "Prostitutie",
+  "prostitutionTotal": "Totaal",
+  "prostitutionStreet": "Op Straat",
+  "prostitutionRedLight": "Red Light",
+  "prostitutionPotentialEarnings": "Inkomsten",
+  "prostitutionCollect": "Ophalen",
+  "prostitutionRecruit": "Werven",
+  "prostitutionMyProstitutes": "Mijn Prostituees",
+  "prostitutionRedLightDistricts": "Red Light Districts",
+  "prostitutionNoProstitutes": "Nog geen prostituees geworven",
+  "prostitutionLocation": "Locatie",
+  "prostitutionMoveToRedLight": "Verplaats naar Red Light",
+  "prostitutionMoveToRldShort": "Naar RLD",
+  "prostitutionMoveToStreet": "Verplaats naar Straat",
+  "prostitutionViewDistricts": "Bekijk Districts",
+  "prostitutionAvailable": "Beschikbaar",
+  "prostitutionMyDistricts": "Mijn Districts",
+  "prostitutionCurrentRLD": "Huidig RLD",
+  "prostitutionMyRLDs": "Mijn RLD's",
+  "prostitutionNoAvailableDistricts": "Geen districts beschikbaar",
+  "prostitutionNoOwnedDistricts": "Je bezit nog geen districts",
+  "prostitutionRooms": "kamers",
+  "prostitutionOccupancy": "Bezetting",
+  "prostitutionIncome": "Inkomsten",
+  "prostitutionTenants": "Huurders",
+  "prostitutionBuy": "Kopen",
+  "prostitutionManage": "Beheren",
+  "prostitutionPurchaseConfirmTitle": "District Kopen",
+  "prostitutionPurchaseConfirmMessage": "Weet je zeker dat je het Red Light District in {country} wilt kopen voor €{price}?",
+  "@prostitutionPurchaseConfirmMessage": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionPurchase": "Kopen",
+  "prostitutionPurchaseSuccess": "District succesvol gekocht!",
+  "prostitutionPurchaseFailed": "Aankoop mislukt",
+  "prostitutionDistrictManagement": "District Beheer",
+  "prostitutionDistrictNotFound": "District niet gevonden",
+  "back": "Terug",
+  "prostitutionMoveToStreetConfirm": "Weet je zeker dat je {name} van het Red Light District naar de straat wilt verplaatsen?",
+  "@prostitutionMoveToStreetConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionMoveSuccess": "Succesvol verplaatst",
+  "prostitutionMoveFailed": "Verplaatsing mislukt",
+  "prostitutionNoStreetProstitutes": "Geen prostituees op straat beschikbaar",
+  "prostitutionSelectProstitute": "Selecteer Prostituee",
+  "prostitutionOnStreet": "Op straat",
+  "prostitutionRoom": "Kamer",
+  "prostitutionInRedLight": "In Red Light District",
+  "prostitutionEarnings": "Inkomsten",
+  "prostitutionRent": "Huur",
+  "prostitutionNetIncome": "Netto Inkomsten",
+  "prostitutionLevel": "Level",
+  "prostitutionXpToNext": "XP tot volgend level",
+  "prostitutionBusted": "GEPAKT",
+  "prostitutionBustedCount": "Aantal keer gepakt",
+  "prostitutionLevelBonus": "Level bonus",
+  "prostitutionVipBonus": "VIP bonus: +50% inkomsten",
+  "prostitutionUpgradeTier": "Tier Upgraden",
+  "prostitutionUpgradeSecurity": "Beveiliging Upgraden",
+  "prostitutionTier": "Tier",
+  "prostitutionSecurity": "Beveiliging",
+  "prostitutionTierBasic": "Basic",
+  "prostitutionTierLuxury": "Luxury",
+  "prostitutionTierVip": "VIP",
+  "prostitutionSecurityLevel": "Security Level",
+  "prostitutionRaidChance": "Raid Kans",
+  "prostitutionMaxTier": "Max tier bereikt",
+  "prostitutionMaxSecurity": "Max beveiliging bereikt",
+  "prostitutionUpgradeSuccess": "Upgrade succesvol!",
+  "prostitutionUpgradeFailed": "Upgrade mislukt",
+  "vipEventsTitle": "VIP Events",
+  "vipEventsTabTitle": "VIP Events",
+  "vipEventsDescription": "Wijs prostituees toe aan VIP events voor bonus inkomsten!",
+  "vipEventsActive": "Actieve Events",
+  "vipEventsUpcoming": "Aankomende Events",
+  "vipEventsMyParticipations": "Mijn Actieve Deelnames",
+  "vipEventTypeTitle": "VIP Event",
+  "vipEventCelebrity": "Celebrity Bezoek",
+  "vipEventBachelor": "Vrijgezellenfeest",
+  "vipEventConvention": "Conferentie",
+  "vipEventFestival": "Festival",
+  "vipEventBonus": "BONUS",
+  "vipEventSpots": "plekken",
+  "vipEventParticipants": "Deelnemers",
+  "vipEventFull": "EVENT VOL",
+  "vipEventRequires": "Vereist",
+  "vipEventLevel": "Level",
+  "vipEventLocation": "Locatie",
+  "vipEventEndsIn": "Eindigt over",
+  "vipEventStartsIn": "Begint over",
+  "vipEventNoActive": "Geen actieve events op dit moment",
+  "vipEventNoUpcoming": "Geen aankomende events",
+  "vipEventAssignProstitute": "Wijs Prostituee Toe",
+  "vipEventAssignDialogTitle": "Wijs toe aan",
+  "vipEventNoEligible": "Geen geschikte prostituees. Vereist level {level}+ in {country}",
+  "@vipEventNoEligible": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "vipEventJoinSuccess": "Deelgenomen aan event!",
+  "vipEventJoinFailed": "Deelname mislukt",
+  "vipEventLeave": "Event Verlaten",
+  "vipEventLeaveSuccess": "Event verlaten",
+  "vipEventLeaveFailed": "Kon event niet verlaten",
+  "vipEventAssigned": "Toegewezen",
+  "vipEventPerHour": "/uur",
+  "vipEventEarnings": "Verdiensten",
+  "prostitutionLeaderboardTitle": "Prostitutie Leaderboard",
+  "prostitutionLeaderboardWeekly": "Wekelijks",
+  "prostitutionLeaderboardMonthly": "Maandelijks",
+  "prostitutionLeaderboardAllTime": "All-Time",
+  "prostitutionLeaderboardYourRank": "Jouw Wekelijkse Rang",
+  "prostitutionLeaderboardUnranked": "Niet gerankt",
+  "prostitutionLeaderboardNoData": "Nog geen leaderboard data",
+  "prostitutionLeaderboardButton": "Leaderboard",
+  "prostitutionRivalryButton": "Rivaliteit",
+  "prostitutionLeaderboardAchievements": "Prestaties",
+  "prostitutionLeaderboardLoadFailed": "Kon leaderboard niet laden",
+  "achievementsTitle": "Prestaties",
+  "achievementsProgress": "{unlocked} van {total} ontgrendeld",
+  "@achievementsProgress": {
+    "placeholders": {
+      "unlocked": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsCategoryAll": "Alle",
+  "achievementsCategoryProgression": "Vooruitgang",
+  "achievementsCategoryWealth": "Rijkdom",
+  "achievementsCategoryPower": "Macht",
+  "achievementsCategorySocial": "Sociaal",
+  "achievementsCategoryMastery": "Meesterschap",
+  "achievementLocked": "Vergrendeld",
+  "achievementReward": "Beloning",
+  "achievementUnlocked": "Ontgrendeld",
+  "achievementNoData": "Geen prestaties gevonden",
+  "achievementLoadFailed": "Kon prestaties niet laden",
+  "achievementsMoney": "€{amount}",
+  "@achievementsMoney": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "achievementsXp": "{xp} XP",
+  "@achievementsXp": {
+    "placeholders": {
+      "xp": {
+        "type": "String"
+      }
+    }
+  },
+  "achievementsUnlockedDate": "Ontgrendeld op {date}",
+  "@achievementsUnlockedDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "achievementsDetailProgress": "Voortgang: {current}/{required}",
+  "@achievementsDetailProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsNoRewardConfigured": "Nog geen reward ingesteld",
+  "achievementsRewardOnUnlock": "Je ontvangt deze reward zodra de achievement is ontgrendeld.",
+  "achievementsDateToday": "Vandaag",
+  "achievementsDateYesterday": "Gisteren",
+  "achievementsDateDaysAgo": "{days} dagen geleden",
+  "@achievementsDateDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsDetails": "Details",
+  "achievementsCategory": "Categorie",
+  "achievementJobItSpecialistTitle": "IT Specialist",
+  "achievementJobItSpecialistDescription": "Voltooi je eerste shift als Programmeur",
+  "achievementJobLawyerTitle": "Straatadvocaat",
+  "achievementJobLawyerDescription": "Voltooi je eerste shift als Advocaat",
+  "achievementJobDoctorTitle": "Ondergrondse Dokter",
+  "achievementJobDoctorDescription": "Voltooi je eerste shift als Dokter",
+  "achievementSchoolCertifiedTitle": "Gecertificeerde Student",
+  "achievementSchoolCertifiedDescription": "Behaal 3 schoolcertificaten",
+  "achievementSchoolMultiCertifiedTitle": "Multi-Gecertificeerd",
+  "achievementSchoolMultiCertifiedDescription": "Behaal 6 schoolcertificaten",
+  "achievementSchoolTrackSpecialistTitle": "Track Specialist",
+  "achievementSchoolTrackSpecialistDescription": "Max 3 school-tracks",
+  "schoolMenuLabel": "School",
+  "schoolMenuSubtitle": "Level je opleidingen en certificaten",
+  "schoolTitle": "School & Opleiding",
+  "schoolIntro": "Ontgrendel jobs en assets via levels en certificaten.",
+  "schoolTracksTitle": "Beschikbare opleidingen",
+  "schoolUnlockableContentTitle": "Vergrendelde opleidingen",
+  "schoolOverallLevelLabel": "Schoolniveau: {level}",
+  "@schoolOverallLevelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolLoadError": "Kon schoolgegevens niet laden: {error}",
+  "@schoolLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "schoolTrackLevelLabel": "Lv {current}/{max}",
+  "@schoolTrackLevelLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolXpLabel": "XP: {xp}",
+  "@schoolXpLabel": {
+    "placeholders": {
+      "xp": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolCertificationRequiredLevel": "{name} (Lv {level})",
+  "@schoolCertificationRequiredLevel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolGateStatusOpen": "OPEN",
+  "schoolGateStatusLocked": "LOCKED",
+  "schoolGateRankProgress": "Speler rank: {current}/{required}",
+  "@schoolGateRankProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolGateTrackLevelProgress": "{track} level: {current}/{required}",
+  "@schoolGateTrackLevelProgress": {
+    "placeholders": {
+      "track": {
+        "type": "String"
+      },
+      "current": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolGateJobTarget": "Job: {target}",
+  "@schoolGateJobTarget": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "schoolGateAssetCasinoPurchase": "Asset: Casino aankoop",
+  "schoolGateAssetAmmoFactoryPurchase": "Asset: Munitiefabriek aankoop",
+  "schoolGateAssetAmmoOutputUpgrade": "Asset: Munitiefabriek output upgrade",
+  "schoolGateAssetAmmoQualityUpgrade": "Asset: Munitiefabriek quality upgrade",
+  "schoolGateAssetGeneric": "Asset: {target}",
+  "@schoolGateAssetGeneric": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "schoolGateSystemGeneric": "{type}: {target}",
+  "@schoolGateSystemGeneric": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "educationDialogDefaultTitle": "🔒 Opleiding vereist",
+  "educationDialogFallbackMessage": "Vereisten niet gehaald. Voltooi opleidingseisen om verder te gaan.",
+  "educationDialogClose": "Sluiten",
+  "educationLockedJobsSectionTitle": "🔒 Vergrendelde jobs (opleiding vereist)",
+  "educationAmmoOutputUpgradeLockedTitle": "🔒 Output upgrade vergrendeld",
+  "educationAmmoQualityUpgradeLockedTitle": "🔒 Kwaliteit upgrade vergrendeld",
+  "educationAmmoFactoryPurchaseLockedTitle": "🔒 Fabriek aankoop vergrendeld",
+  "educationRequirementRankProgress": "Nodig: speler rank {requiredRank} · Huidig: speler rank {currentRank}",
+  "@educationRequirementRankProgress": {
+    "placeholders": {
+      "requiredRank": {
+        "type": "int"
+      },
+      "currentRank": {
+        "type": "int"
+      }
+    }
+  },
+  "educationRequirementTrackLevelTitle": "Opleidingsniveau",
+  "educationRequirementTrackLevelProgress": "{trackName} level {requiredLevel} vereist · Huidig {currentLevel}",
+  "@educationRequirementTrackLevelProgress": {
+    "placeholders": {
+      "trackName": {
+        "type": "String"
+      },
+      "requiredLevel": {
+        "type": "int"
+      },
+      "currentLevel": {
+        "type": "int"
+      }
+    }
+  },
+  "educationRequirementCertificationTitle": "Certificaat vereist",
+  "educationRequirementGenericTitle": "Voorwaarde",
+  "educationRequirementUnknown": "Onbekende vereiste",
+  "educationTrackNameAviation": "Luchtvaart",
+  "educationTrackNameLaw": "Rechten",
+  "educationTrackNameMedicine": "Geneeskunde",
+  "educationTrackNameFinance": "Finance",
+  "educationTrackNameEngineering": "Techniek",
+  "educationTrackNameIt": "IT",
+  "schoolTrackDescriptionAviation": "Vliegtheorie, navigatie en vliegtuigbediening.",
+  "schoolTrackDescriptionLaw": "Strafrecht, procedures en praktijk in de rechtszaal.",
+  "schoolTrackDescriptionMedicine": "Spoedzorg, diagnostiek en medische praktijk.",
+  "schoolTrackDescriptionFinance": "Boekhouding, investeringen en bedrijfsvoering.",
+  "schoolTrackDescriptionEngineering": "Mechanische systemen, industriële veiligheid en productie.",
+  "schoolTrackDescriptionIt": "Softwareontwikkeling, systemen en netwerkbeheer.",
+  "schoolTrackCooldownActive": "Cooldown actief: nog {seconds}s",
+  "@schoolTrackCooldownActive": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "schoolTrackMaxLevelReached": "Track is al max level",
+  "schoolTrackStartFailed": "Opleiding starten mislukt",
+  "educationCertSoftwareEngineer": "Software Engineer Certificaat",
+  "educationCertBarExam": "Advocatenexamen",
+  "educationCertMedicalLicense": "Medische Licentie",
+  "educationCertFlightCommercial": "Commerciële Vlieglicentie",
+  "educationCertFlightBasic": "Basis Vlieglicentie",
+  "educationCertIndustrialSafety": "Industrieveiligheid Certificaat",
+  "educationCertFinancialAnalyst": "Financieel Analist Certificaat",
+  "educationCertCasinoManagement": "Casino Management Certificaat",
+  "educationCertParamedic": "Paramedic Certificaat",
+  "prostitutionLeaderboardProstitutesUnit": "prostituees",
+  "prostitutionLeaderboardDistrictsUnit": "districten",
+  "rivalryTitle": "Rivaliteit",
+  "rivalryChallengeTitle": "Daag speler uit",
+  "rivalryChallengeHint": "Voer een speler-ID in om een rivaliteit te starten.",
+  "rivalryPlayerIdHint": "Speler-ID",
+  "rivalryStartButton": "Start",
+  "rivalryNoActive": "Nog geen actieve rivaliteiten.",
+  "rivalryActiveTitle": "Actieve rivalen",
+  "rivalryScoreLabel": "Rivaliteitsscore",
+  "rivalryRecentActivity": "Recente activiteit",
+  "rivalryNoActivity": "Nog geen sabotage-activiteit",
+  "rivalryCooldownReady": "Sabotage beschikbaar",
+  "rivalryCooldownIn": "Cooldown: {duration}",
+  "@rivalryCooldownIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "rivalryActionTipPolice": "Tip politie (€5k)",
+  "rivalryActionStealCustomer": "Steel klant (€3k)",
+  "rivalryActionDamageReputation": "Schade reputatie (€10k)",
+  "rivalryActionBribeEmployee": "Omkopen medewerker (€8k)",
+  "rivalryUpdateMessage": "Rivaliteit bijgewerkt",
+  "rivalrySabotageExecuted": "Sabotage uitgevoerd",
+  "rivalryConfirmTitle": "Bevestig sabotage",
+  "rivalryConfirmTarget": "Doelwit: {username}",
+  "@rivalryConfirmTarget": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "rivalryConfirmAction": "Actie: {action}",
+  "@rivalryConfirmAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "rivalryConfirmCost": "Kosten: €{amount}",
+  "@rivalryConfirmCost": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "rivalryConfirmEffect": "Effect: {effect}",
+  "@rivalryConfirmEffect": {
+    "placeholders": {
+      "effect": {
+        "type": "String"
+      }
+    }
+  },
+  "rivalryConfirmWarning": "Succes is niet gegarandeerd en je kunt geld verliezen.",
+  "rivalryExecuteButton": "Uitvoeren",
+  "rivalryEffectTipPolice": "Verhoog politiedruk op rivaal",
+  "rivalryEffectStealCustomer": "Steel een deel van rivaliserende inkomsten",
+  "rivalryEffectDamageReputation": "Verlaag voortgang van rivaliserende prostituees",
+  "rivalryEffectBribeEmployee": "Zet één rivaliserende prostituee op busted",
+  "prostitutionUnderAttackTitle": "Je imperium ligt onder aanval",
+  "prostitutionUnderAttackBody": "{attacker} gebruikte {action} tegen jou in de afgelopen 24u.",
+  "@prostitutionUnderAttackBody": {
+    "placeholders": {
+      "attacker": {
+        "type": "String"
+      },
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionUnderAttackAction": "Open rivaliteit",
+  "rivalryProtectionTitle": "Beschermingsverzekering",
+  "rivalryProtectionDescription": "Vermindert inkomende sabotage-impact met 30% voor 7 dagen.",
+  "rivalryProtectionInactive": "Geen actieve bescherming",
+  "rivalryProtectionActive": "Actief tot: {date}",
+  "@rivalryProtectionActive": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "rivalryProtectionBuy": "Koop bescherming (€25k/week)",
+  "rivalryProtectionActivated": "Beschermingsverzekering geactiveerd",
+  "achievementTitle_first_steps": "Eerste Stappen",
+  "achievementDescription_first_steps": "Recruit je eerste hoer",
+  "achievementTitle_growing_empire": "Groeiend Imperium",
+  "achievementDescription_growing_empire": "Recruit 5 hoeren",
+  "achievementTitle_first_district": "Eerste District",
+  "achievementDescription_first_district": "Koop je eerste red light district",
+  "achievementTitle_empire_builder": "Imperiumbouwer",
+  "achievementDescription_empire_builder": "Bezitt 5 red light districts",
+  "achievementTitle_district_master": "District Meester",
+  "achievementDescription_district_master": "Bezitt 10 red light districts",
+  "achievementTitle_leveling_master": "Level Meester",
+  "achievementDescription_leveling_master": "Breng een hoer naar level 10",
+  "achievementTitle_untouchable": "Onaantastbaar",
+  "achievementDescription_untouchable": "Word 7 dagen op rij niet busted",
+  "achievementTitle_millionaire": "Miljonair",
+  "achievementDescription_millionaire": "Verdien in totaal €1.000.000",
+  "achievementTitle_high_roller": "High Roller",
+  "achievementDescription_high_roller": "Verdien in totaal €5.000.000",
+  "achievementTitle_vip_service": "VIP Service",
+  "achievementDescription_vip_service": "Voltooi 10 VIP-events",
+  "achievementTitle_event_enthusiast": "Event Enthousiast",
+  "achievementDescription_event_enthusiast": "Voltooi 25 VIP-events",
+  "achievementTitle_security_expert": "Beveiligingsexpert",
+  "achievementDescription_security_expert": "Maximaliseer security op al je districten",
+  "achievementTitle_luxury_provider": "Luxe Aanbieder",
+  "achievementDescription_luxury_provider": "Upgrade 3 districten naar VIP-tier",
+  "achievementTitle_rivalry_victor": "Rivaliteit Overwinnaar",
+  "achievementDescription_rivalry_victor": "Saboteer rivalen 10 keer succesvol",
+  "achievementTitle_untouchable_rival": "Onaantastbare Rivaal",
+  "achievementDescription_untouchable_rival": "Verdedig 20 sabotagepogingen",
+  "achievementTitle_crime_first_blood": "Eerste Bloed",
+  "achievementDescription_crime_first_blood": "Voltooi je eerste misdaad succesvol",
+  "achievementTitle_crime_hustler": "Misdaad Hustler",
+  "achievementDescription_crime_hustler": "Voltooi 5 misdaden succesvol",
+  "achievementTitle_crime_novice": "Misdaad Beginner",
+  "achievementDescription_crime_novice": "Voltooi 10 misdaden succesvol",
+  "achievementTitle_crime_operator": "Misdaad Operator",
+  "achievementDescription_crime_operator": "Voltooi 25 misdaden succesvol",
+  "achievementTitle_crime_wave": "Misdaadgolf",
+  "achievementDescription_crime_wave": "Voltooi 50 misdaden succesvol",
+  "achievementTitle_crime_mastermind": "Misdaad Mastermind",
+  "achievementDescription_crime_mastermind": "Voltooi 100 misdaden succesvol",
+  "achievementTitle_the_godfather": "The Godfather",
+  "achievementDescription_the_godfather": "Voltooi 250 misdaden succesvol",
+  "achievementTitle_crime_emperor": "Misdaad Keizer",
+  "achievementDescription_crime_emperor": "Voltooi 500 misdaden succesvol",
+  "achievementTitle_crime_legend": "Misdaad Legende",
+  "achievementDescription_crime_legend": "Voltooi 1000 misdaden succesvol",
+  "achievementTitle_crime_getaway_driver": "Vluchtauto Chauffeur",
+  "achievementDescription_crime_getaway_driver": "Voltooi je eerste misdaad met voertuig",
+  "achievementTitle_crime_armed_and_ready": "Gewapend en Klaar",
+  "achievementDescription_crime_armed_and_ready": "Voltooi je eerste misdaad met wapenvereiste",
+  "achievementTitle_crime_full_loadout": "Volledige Uitrusting",
+  "achievementDescription_crime_full_loadout": "Voltooi een misdaad met voertuig, wapen en tools",
+  "achievementTitle_crime_completionist": "Misdaad Completionist",
+  "achievementDescription_crime_completionist": "Voltooi elk misdaadtype minstens één keer",
+  "achievementTitle_job_first_shift": "Eerste Shift",
+  "achievementDescription_job_first_shift": "Voltooi je eerste job succesvol",
+  "achievementTitle_job_hustler": "Werk Hustler",
+  "achievementDescription_job_hustler": "Voltooi 5 jobs succesvol",
+  "achievementTitle_job_starter": "Werk Starter",
+  "achievementDescription_job_starter": "Voltooi 10 jobs succesvol",
+  "achievementTitle_job_operator": "Werk Operator",
+  "achievementDescription_job_operator": "Voltooi 25 jobs succesvol",
+  "achievementTitle_job_grinder": "Werk Grinder",
+  "achievementDescription_job_grinder": "Voltooi 50 jobs succesvol",
+  "achievementTitle_job_master": "Werk Master",
+  "achievementDescription_job_master": "Voltooi 100 jobs succesvol",
+  "achievementTitle_job_expert": "Werk Expert",
+  "achievementDescription_job_expert": "Voltooi 250 jobs succesvol",
+  "achievementTitle_job_elite": "Werk Elite",
+  "achievementDescription_job_elite": "Voltooi 500 jobs succesvol",
+  "achievementTitle_job_legend": "Werk Legende",
+  "achievementDescription_job_legend": "Voltooi 1000 jobs succesvol",
+  "achievementTitle_job_completionist": "Werk Completionist",
+  "achievementDescription_job_completionist": "Voltooi elk jobtype minstens één keer",
+  "achievementTitle_job_educated_worker": "Opgeleide Werker",
+  "achievementDescription_job_educated_worker": "Voltooi 1 job met opleidingseisen",
+  "achievementTitle_job_certified_hustler": "Gecertificeerde Hustler",
+  "achievementDescription_job_certified_hustler": "Voltooi 25 jobs met opleidingseisen",
+  "achievementTitle_job_education_completionist": "Educatie Job Completionist",
+  "achievementDescription_job_education_completionist": "Voltooi elk education-gated jobtype minstens één keer",
+  "achievementTitle_job_it_specialist": "IT Specialist",
+  "achievementDescription_job_it_specialist": "Voltooi je eerste shift als Programmeur",
+  "achievementTitle_job_lawyer": "Straatadvocaat",
+  "achievementDescription_job_lawyer": "Voltooi je eerste shift als Advocaat",
+  "achievementTitle_job_doctor": "Ondergrondse Dokter",
+  "achievementDescription_job_doctor": "Voltooi je eerste shift als Dokter",
+  "achievementTitle_school_certified": "Gecertificeerde Student",
+  "achievementDescription_school_certified": "Behaal 3 schoolcertificaten",
+  "achievementTitle_school_multi_certified": "Multi-Gecertificeerd",
+  "achievementDescription_school_multi_certified": "Behaal 6 schoolcertificaten",
+  "achievementTitle_school_track_specialist": "Track Specialist",
+  "achievementDescription_school_track_specialist": "Max 3 school-tracks",
+  "achievementTitle_school_freshman": "School Freshman",
+  "achievementDescription_school_freshman": "Bereik schoollevel 1",
+  "achievementTitle_school_scholar": "School Scholar",
+  "achievementDescription_school_scholar": "Bereik schoollevel 3",
+  "achievementTitle_school_graduate": "School Graduate",
+  "achievementDescription_school_graduate": "Bereik schoollevel 5",
+  "achievementTitle_school_mastermind": "Academische Mastermind",
+  "achievementDescription_school_mastermind": "Bereik schoollevel 10",
+  "achievementTitle_school_doctorate": "Straatdoctoraat",
+  "achievementDescription_school_doctorate": "Bereik schoollevel 20",
+  "achievementTitle_road_bandit": "Weg Bandiet",
+  "achievementDescription_road_bandit": "Steel 5 auto's",
+  "achievementTitle_grand_theft_fleet": "Grand Theft Fleet",
+  "achievementDescription_grand_theft_fleet": "Steel 25 auto's",
+  "achievementTitle_sea_raider": "Zee Rover",
+  "achievementDescription_sea_raider": "Steel 3 boten",
+  "achievementTitle_captain_of_smugglers": "Kapitein van Smokkelaars",
+  "achievementDescription_captain_of_smugglers": "Steel 12 boten",
+  "achievementTitle_globe_trotter": "Wereldreiziger",
+  "achievementDescription_globe_trotter": "Voltooi 5 reizen",
+  "achievementTitle_jet_setter": "Jet Setter",
+  "achievementDescription_jet_setter": "Voltooi 25 reizen",
+  "achievementTitle_chemist_apprentice": "Chemie Leerling",
+  "achievementDescription_chemist_apprentice": "Voltooi 10 drugsproducties",
+  "achievementTitle_narco_chemist": "Narco Chemicus",
+  "achievementDescription_narco_chemist": "Voltooi 100 drugsproducties",
+  "achievementTitle_street_merchant": "Straathandelaar",
+  "achievementDescription_street_merchant": "Voltooi 25 trades",
+  "achievementTitle_trade_tycoon": "Handel Tycoon",
+  "achievementDescription_trade_tycoon": "Voltooi 150 trades",
+  "achievementTitle_prostitute_lineup": "Opgesteld",
+  "achievementDescription_prostitute_lineup": "Recruit 10 hoeren",
+  "achievementTitle_prostitute_network": "Straat Netwerk",
+  "achievementDescription_prostitute_network": "Recruit 25 hoeren",
+  "achievementTitle_prostitute_syndicate": "Syndicaat",
+  "achievementDescription_prostitute_syndicate": "Recruit 50 hoeren",
+  "achievementTitle_prostitute_dynasty": "Dynastie",
+  "achievementDescription_prostitute_dynasty": "Recruit 100 hoeren",
+  "achievementTitle_prostitute_empire_250": "Imperium 250",
+  "achievementDescription_prostitute_empire_250": "Recruit 250 hoeren",
+  "achievementTitle_prostitute_cartel_500": "Cartel 500",
+  "achievementDescription_prostitute_cartel_500": "Recruit 500 hoeren",
+  "achievementTitle_prostitute_legend_1000": "Legende 1000",
+  "achievementDescription_prostitute_legend_1000": "Recruit 1000 hoeren",
+  "achievementTitle_vip_prostitute_level_10": "VIP Beginner",
+  "achievementDescription_vip_prostitute_level_10": "Bereik level 3 met een VIP-hoer",
+  "achievementTitle_vip_prostitute_level_25": "VIP Headliner",
+  "achievementDescription_vip_prostitute_level_25": "Bereik level 5 met een VIP-hoer",
+  "achievementTitle_vip_prostitute_level_50": "VIP Icoon",
+  "achievementDescription_vip_prostitute_level_50": "Bereik level 7 met een VIP-hoer",
+  "achievementTitle_vip_prostitute_level_100": "VIP Legende",
+  "achievementDescription_vip_prostitute_level_100": "Bereik level 10 met een VIP-hoer",
+  "achievementTitle_nightclub_opening_night": "Openingsnacht",
+  "achievementDescription_nightclub_opening_night": "Open je eerste nightclub venue",
+  "achievementTitle_nightclub_headliner": "Headliner Booker",
+  "achievementDescription_nightclub_headliner": "Boek 10 DJ-shifts voor je nightclub-imperium",
+  "achievementTitle_nightclub_full_house": "Vol Huis",
+  "achievementDescription_nightclub_full_house": "Breng een nightclub crowd naar 90% capaciteit",
+  "achievementTitle_nightclub_cash_machine": "Cash Machine",
+  "achievementDescription_nightclub_cash_machine": "Verdien in totaal €250.000 nightclub-omzet",
+  "achievementTitle_nightclub_empire": "Nightlife Imperium",
+  "achievementDescription_nightclub_empire": "Verdien in totaal €1.000.000 nightclub-omzet",
+  "achievementTitle_nightclub_staffing_boss": "Staffing Boss",
+  "achievementDescription_nightclub_staffing_boss": "Laat 3 actieve nightclub-crewmembers tegelijk draaien",
+  "achievementTitle_nightclub_vip_room": "VIP Room",
+  "achievementDescription_nightclub_vip_room": "Wijs 2 VIP-crewmembers toe aan je nightclub",
+  "achievementTitle_nightclub_head_of_security": "Hoofd Beveiliging",
+  "achievementDescription_nightclub_head_of_security": "Huur 10 beveiligingsshifts voor je nightclub",
+  "achievementTitle_nightclub_podium_finish": "Podiumplek",
+  "achievementDescription_nightclub_podium_finish": "Eindig in de top 3 van een wekelijkse nightclub-season",
+  "achievementTitle_nightclub_season_champion": "Season Kampioen",
+  "achievementDescription_nightclub_season_champion": "Win een wekelijkse nightclub-season",
+  "nightclubManagementTitle": "Nachtclub Beheer",
+  "nightclubRealtimeStatus": "Realtime status actief",
+  "nightclubRefresh": "Vernieuwen",
+  "nightclubEmptyTitle": "Nog geen nachtclub gevonden",
+  "nightclubEmptyBody": "Koop eerst een nachtclub in Eigendommen om dit systeem te activeren.",
+  "nightclubLocationTitle": "Nachtclub Locatie",
+  "nightclubSelectVenue": "Selecteer venue",
+  "nightclubLiveStatistics": "Live Statistieken",
+  "nightclubKpiCrowd": "Crowd",
+  "nightclubKpiVibe": "Vibe",
+  "nightclubKpiToday": "Vandaag",
+  "nightclubKpiAllTime": "All-time",
+  "nightclubKpiStock": "Voorraad",
+  "nightclubKpiDj": "DJ",
+  "nightclubKpiThefts": "Diefstallen",
+  "nightclubKpiStaff": "Staff",
+  "nightclubKpiSalesBoost": "Sales boost",
+  "nightclubKpiPriceBoost": "Price boost",
+  "nightclubKpiVipBonus": "VIP bonus",
+  "nightclubStatusActive": "Actief",
+  "nightclubStatusOff": "Uit",
+  "nightclubStatusActiveLower": "actief",
+  "nightclubRevenueTrend": "Omzet Trend (live)",
+  "nightclubLeaderboardTitle": "Top Nightclubs",
+  "nightclubLeaderboardCountry": "Land",
+  "nightclubLeaderboardGlobal": "Wereld",
+  "nightclubLeaderboardEmpty": "Nog geen leaderboard data",
+  "nightclubLeaderboardRevenue24h": "24h omzet",
+  "nightclubSeasonProcessing": "wordt verwerkt...",
+  "nightclubSeasonTitle": "Weekly Season Ranking",
+  "nightclubSeasonResetIn": "Reset over",
+  "nightclubSeasonYourRewards": "Jouw season rewards",
+  "nightclubSeasonCurrentTop5": "Huidige week top 5",
+  "nightclubSeasonEmpty": "Nog geen season data",
+  "nightclubSeasonWeekRevenue": "Week omzet",
+  "nightclubSeasonScore": "Score",
+  "nightclubSeasonRecentPayouts": "Recente payouts",
+  "nightclubSeasonNoPayouts": "Nog geen payouts",
+  "nightclubSalesTitle": "Recente Verkopen",
+  "nightclubSalesEmpty": "Nog geen verkoopdata",
+  "nightclubTheftTitle": "Diefstal Log",
+  "nightclubTheftEmpty": "Geen diefstallen geregistreerd",
+  "nightclubTheftLoss": "Verlies",
+  "nightclubStaffTitle": "Pimp Crew in Club",
+  "nightclubStaffVipExtraActive": " (VIP +2 actief)",
+  "nightclubStaffCapacity": "Capaciteit: {assigned}/{cap}{vipSuffix}",
+  "@nightclubStaffCapacity": {
+    "placeholders": {
+      "assigned": {
+        "type": "String"
+      },
+      "cap": {
+        "type": "String"
+      },
+      "vipSuffix": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubStaffBoostMix": "Boost mix: sales x{sales} | prijs x{price} | vibe x{vibe} | security x{security} | vip speler x{vipPlayer} | vip dames x{vipStaff} ({vipAssigned})",
+  "@nightclubStaffBoostMix": {
+    "placeholders": {
+      "sales": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "vibe": {
+        "type": "String"
+      },
+      "security": {
+        "type": "String"
+      },
+      "vipPlayer": {
+        "type": "String"
+      },
+      "vipStaff": {
+        "type": "String"
+      },
+      "vipAssigned": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubSelectCrewMember": "Selecteer crewlid",
+  "nightclubAssignShift": "Zet in nightclub shift",
+  "nightclubTabActive": "Actief",
+  "nightclubTabHistory": "Historie",
+  "nightclubNoCrewAssigned": "Nog geen crew toegewezen",
+  "nightclubCrewBoostDescription": "Verhoogt vraag en marge in je club",
+  "nightclubRemove": "Verwijder",
+  "nightclubNoStaffHistory": "Nog geen staffing historie",
+  "nightclubFrom": "Van",
+  "nightclubTo": "Tot",
+  "nightclubRevenueImpact": "Omzet impact",
+  "nightclubSalesCountLabel": "verkopen",
+  "nightclubDjTitle": "DJ Inhuren",
+  "nightclubChooseDj": "Kies DJ",
+  "nightclubShiftLength": "Duur shift",
+  "nightclubHireDj": "Huur DJ",
+  "nightclubSecurityTitle": "Beveiliging",
+  "nightclubChooseSecurity": "Kies beveiliging",
+  "nightclubHireSecurity": "Huur beveiliging",
+  "nightclubStoreTitle": "Drugs Opslaan",
+  "nightclubChooseStock": "Kies voorraad",
+  "nightclubAmountGrams": "Aantal gram",
+  "nightclubStoreButton": "Opslaan in nightclub",
+  "nightclubHireDjSuccess": "DJ ingehuurd",
+  "nightclubHireSecuritySuccess": "Beveiliging ingehuurd",
+  "nightclubAssignCrewSuccess": "Crewlid toegewezen",
+  "nightclubRemoveCrewSuccess": "Crewlid verwijderd",
+  "nightclubStoreDrugsSuccess": "Drugs opgeslagen",
+  "nightclubSeasonPayoutDialogTitle": "Season-uitbetaling ontvangen",
+  "nightclubSeasonPayoutDialogBody": "Je nightclub eindigde deze week op plek #{rank}.",
+  "@nightclubSeasonPayoutDialogBody": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubSeasonPayoutDialogReward": "Beloning: {amount}",
+  "@nightclubSeasonPayoutDialogReward": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubSeasonPayoutDialogRevenue": "Weekomzet: {amount}",
+  "@nightclubSeasonPayoutDialogRevenue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubSeasonPayoutDialogLoss": "Diefstalverlies: {amount}",
+  "@nightclubSeasonPayoutDialogLoss": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nightclubSeasonPayoutDialogAction": "Sluiten",
+  "nightclubVibeChill": "Chill",
+  "nightclubVibeNormal": "Normaal",
+  "nightclubVibeWild": "Wild",
+  "nightclubVibeRaging": "Raging",
+  "nightclubTheftTypeCustomer": "Klantdiefstal",
+  "nightclubTheftTypeEmployee": "Medewerker-heist",
+  "nightclubTheftTypeRival": "Rivaal-sabotage"
+}

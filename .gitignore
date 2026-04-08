@@ -1,0 +1,57 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+admin/dist/
+client/build/
+client/.dart_tool/
+client/.packages
+client/.flutter-plugins
+client/.flutter-plugins-dependencies
+client/.pub-cache/
+client/.pub/
+client/coverage/
+
+# Flutter / Android / iOS generated
+client/android/.gradle/
+client/android/local.properties
+client/ios/Pods/
+client/ios/.symlinks/
+client/macos/Pods/
+
+# Logs / temp
+*.log
+backend-log.txt
+output.log
+gen.log
+flux_*.log
+badge_generation*.log
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Runtime files
+*.pid
+*.seed
+*.tmp

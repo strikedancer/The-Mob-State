@@ -1,0 +1,59 @@
+{
+  "backpacks": [
+    {
+      "id": "small_backpack",
+      "name": "Kleine Rugzak",
+      "description": "Een simpele rugzak voor beginners. Geeft +5 slots extra draagcapaciteit.",
+      "type": "SMALL",
+      "slots": 5,
+      "price": 500,
+      "requiredRank": 1,
+      "vipOnly": false,
+      "icon": "🎒"
+    },
+    {
+      "id": "medium_backpack",
+      "name": "Middelgrote Rugzak",
+      "description": "Stevig en ruim. Perfecte balans tussen prijs en capaciteit.",
+      "type": "MEDIUM",
+      "slots": 10,
+      "price": 2500,
+      "requiredRank": 5,
+      "vipOnly": false,
+      "icon": "🎒"
+    },
+    {
+      "id": "large_backpack",
+      "name": "Grote Rugzak",
+      "description": "Voor de serieuze crimineel. Veel ruimte voor je spullen.",
+      "type": "LARGE",
+      "slots": 20,
+      "price": 10000,
+      "requiredRank": 10,
+      "vipOnly": false,
+      "icon": "🎒"
+    },
+    {
+      "id": "military_backpack",
+      "name": "Militaire Rugzak",
+      "description": "Tactische rugzak met enorme capaciteit. Gemaakt voor zware operaties.",
+      "type": "MILITARY",
+      "slots": 35,
+      "price": 50000,
+      "requiredRank": 20,
+      "vipOnly": false,
+      "icon": "🎖️"
+    },
+    {
+      "id": "vip_tactical_backpack",
+      "name": "VIP Tactische Rugzak",
+      "description": "Exclusieve gouden rugzak alleen voor VIP leden. Maximum capaciteit!",
+      "type": "VIP_TACTICAL",
+      "slots": 50,
+      "price": 100000,
+      "requiredRank": 25,
+      "vipOnly": true,
+      "icon": "👑"
+    }
+  ]
+}

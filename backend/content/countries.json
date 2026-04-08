@@ -1,0 +1,263 @@
+[
+  {
+    "id": "netherlands",
+    "name": "Nederland",
+    "travelCost": 250,
+    "tradeBonuses": {
+      "contraband_flowers": 1.2,
+      "contraband_electronics": 1.0,
+      "contraband_diamonds": 0.8,
+      "contraband_weapons": 0.9,
+      "contraband_pharmaceuticals": 1.1
+    },
+    "description": "Bloemenland met gemiddelde prijzen."
+  },
+  {
+    "id": "belgium",
+    "name": "België",
+    "travelCost": 500,
+    "tradeBonuses": {
+      "contraband_flowers": 1.0,
+      "contraband_electronics": 1.1,
+      "contraband_diamonds": 1.3,
+      "contraband_weapons": 0.8,
+      "contraband_pharmaceuticals": 1.0
+    },
+    "description": "Buurland met goede diamantmarkt. Lage reiskosten."
+  },
+  {
+    "id": "germany",
+    "name": "Duitsland",
+    "travelCost": 750,
+    "tradeBonuses": {
+      "contraband_flowers": 0.9,
+      "contraband_electronics": 1.3,
+      "contraband_diamonds": 0.9,
+      "contraband_weapons": 1.1,
+      "contraband_pharmaceuticals": 1.0
+    },
+    "description": "Industrieel centrum. Hoge vraag naar electronica."
+  },
+  {
+    "id": "france",
+    "name": "Frankrijk",
+    "travelCost": 1000,
+    "tradeBonuses": {
+      "contraband_flowers": 1.1,
+      "contraband_electronics": 0.9,
+      "contraband_diamonds": 1.0,
+      "contraband_weapons": 0.7,
+      "contraband_pharmaceuticals": 1.4
+    },
+    "description": "Luxe goederen en farmaceutica zijn waardevol."
+  },
+  {
+    "id": "spain",
+    "name": "Spanje",
+    "travelCost": 1500,
+    "tradeBonuses": {
+      "contraband_flowers": 0.8,
+      "contraband_electronics": 1.0,
+      "contraband_diamonds": 1.1,
+      "contraband_diamonds": 1.2,
+      "contraband_weapons": 1.3,
+      "contraband_pharmaceuticals": 0.9
+    },
+    "description": "Smokkelroute. Goede wapenmarkt."
+  },
+  {
+    "id": "italy",
+    "name": "Italië",
+    "travelCost": 1750,
+    "tradeBonuses": {
+      "contraband_flowers": 1.0,
+      "contraband_electronics": 1.1,
+      "contraband_diamonds": 1.4,
+      "contraband_weapons": 1.2,
+      "contraband_pharmaceuticals": 1.0
+    },
+    "description": "Maffia connecties. Hoge diamant en wapen prijzen."
+  },
+  {
+    "id": "uk",
+    "name": "Verenigd Koninkrijk",
+    "travelCost": 1250,
+    "tradeBonuses": {
+      "contraband_flowers": 1.3,
+      "contraband_electronics": 1.2,
+      "contraband_diamonds": 1.1,
+      "contraband_weapons": 0.6,
+      "contraband_pharmaceuticals": 1.3
+    },
+    "description": "Strenge wapenwetten, hoge prijzen voor andere goederen."
+  },
+  {
+    "id": "switzerland",
+    "name": "Zwitserland",
+    "travelCost": 2000,
+    "tradeBonuses": {
+      "contraband_flowers": 0.9,
+      "contraband_electronics": 1.4,
+      "contraband_diamonds": 1.5,
+      "contraband_weapons": 0.9,
+      "contraband_pharmaceuticals": 1.2
+    },
+    "description": "Bankgeheim. Beste prijzen voor diamanten en electronica."
+  },
+  {
+    "id": "usa",
+    "name": "Verenigde Staten",
+    "travelCost": 3500,
+    "tradeBonuses": {
+      "contraband_flowers": 0.9,
+      "contraband_electronics": 1.3,
+      "contraband_diamonds": 1.2,
+      "contraband_weapons": 1.4,
+      "contraband_pharmaceuticals": 1.1
+    },
+    "description": "Grote markt met hoge prijzen en strenge controles."
+  },
+  {
+    "id": "mexico",
+    "name": "Mexico",
+    "travelCost": 2800,
+    "tradeBonuses": {
+      "contraband_flowers": 0.7,
+      "contraband_electronics": 0.9,
+      "contraband_diamonds": 0.8,
+      "contraband_weapons": 1.5,
+      "contraband_pharmaceuticals": 0.9
+    },
+    "description": "Smokkelroutes en hoge vraag naar wapens."
+  },
+  {
+    "id": "colombia",
+    "name": "Colombia",
+    "travelCost": 3200,
+    "tradeBonuses": {
+      "contraband_flowers": 0.8,
+      "contraband_electronics": 0.9,
+      "contraband_diamonds": 0.9,
+      "contraband_weapons": 1.3,
+      "contraband_pharmaceuticals": 0.8
+    },
+    "description": "Risicovolle markt met hoge marges."
+  },
+  {
+    "id": "brazil",
+    "name": "Brazilië",
+    "travelCost": 3600,
+    "tradeBonuses": {
+      "contraband_flowers": 0.8,
+      "contraband_electronics": 1.1,
+      "contraband_diamonds": 1.0,
+      "contraband_weapons": 1.2,
+      "contraband_pharmaceuticals": 0.9
+    },
+    "description": "Grote afzetmarkt met variabele prijzen."
+  },
+  {
+    "id": "argentina",
+    "name": "Argentinië",
+    "travelCost": 3400,
+    "tradeBonuses": {
+      "contraband_flowers": 0.9,
+      "contraband_electronics": 1.0,
+      "contraband_diamonds": 1.1,
+      "contraband_weapons": 1.1,
+      "contraband_pharmaceuticals": 0.9
+    },
+    "description": "Gemiddelde markt met kansen voor winst."
+  },
+  {
+    "id": "japan",
+    "name": "Japan",
+    "travelCost": 5000,
+    "tradeBonuses": {
+      "contraband_flowers": 1.1,
+      "contraband_electronics": 1.5,
+      "contraband_diamonds": 1.2,
+      "contraband_weapons": 0.6,
+      "contraband_pharmaceuticals": 1.4
+    },
+    "description": "Topmarkt voor elektronica en farmaceutica."
+  },
+  {
+    "id": "china",
+    "name": "China",
+    "travelCost": 4800,
+    "tradeBonuses": {
+      "contraband_flowers": 0.8,
+      "contraband_electronics": 1.4,
+      "contraband_diamonds": 1.1,
+      "contraband_weapons": 0.9,
+      "contraband_pharmaceuticals": 1.2
+    },
+    "description": "Hoge vraag naar elektronica en luxe goederen."
+  },
+  {
+    "id": "russia",
+    "name": "Rusland",
+    "travelCost": 4500,
+    "tradeBonuses": {
+      "contraband_flowers": 0.7,
+      "contraband_electronics": 1.0,
+      "contraband_diamonds": 1.2,
+      "contraband_weapons": 1.4,
+      "contraband_pharmaceuticals": 0.8
+    },
+    "description": "Ruwe markt met hoge wapenprijzen."
+  },
+  {
+    "id": "turkey",
+    "name": "Turkije",
+    "travelCost": 3000,
+    "tradeBonuses": {
+      "contraband_flowers": 0.9,
+      "contraband_electronics": 1.1,
+      "contraband_diamonds": 1.0,
+      "contraband_weapons": 1.2,
+      "contraband_pharmaceuticals": 1.0
+    },
+    "description": "Kruispunt van handel en smokkelroutes."
+  },
+  {
+    "id": "united_arab_emirates",
+    "name": "Verenigde Arabische Emiraten",
+    "travelCost": 5200,
+    "tradeBonuses": {
+      "contraband_flowers": 1.0,
+      "contraband_electronics": 1.2,
+      "contraband_diamonds": 1.5,
+      "contraband_weapons": 0.8,
+      "contraband_pharmaceuticals": 1.3
+    },
+    "description": "Luxe markt met hoge prijzen voor diamanten."
+  },
+  {
+    "id": "south_africa",
+    "name": "Zuid-Afrika",
+    "travelCost": 4200,
+    "tradeBonuses": {
+      "contraband_flowers": 0.8,
+      "contraband_electronics": 1.0,
+      "contraband_diamonds": 1.3,
+      "contraband_weapons": 1.1,
+      "contraband_pharmaceuticals": 0.9
+    },
+    "description": "Mijnbouw en handel met goede marges."
+  },
+  {
+    "id": "australia",
+    "name": "Australië",
+    "travelCost": 6000,
+    "tradeBonuses": {
+      "contraband_flowers": 1.0,
+      "contraband_electronics": 1.2,
+      "contraband_diamonds": 1.1,
+      "contraband_weapons": 0.7,
+      "contraband_pharmaceuticals": 1.3
+    },
+    "description": "Afgelegen markt met hoge prijzen en lange reistijd."
+  }
+]

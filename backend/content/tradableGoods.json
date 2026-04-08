@@ -1,0 +1,51 @@
+[
+  {
+    "id": "contraband_flowers",
+    "name": "Bloemen",
+    "description": "Nederlandse tulpen en andere bloemen voor internationale handel",
+    "basePrice": 100,
+    "maxInventory": 1000,
+    "weight": 1,
+    "spoilageHours": 48,
+    "priceVolatility": 0.05
+  },
+  {
+    "id": "contraband_electronics",
+    "name": "Elektronica",
+    "description": "Geavanceerde elektronica en computeronderdelen",
+    "basePrice": 500,
+    "maxInventory": 500,
+    "weight": 2,
+    "damageChancePerTrip": 0.15,
+    "priceVolatility": 0.10
+  },
+  {
+    "id": "contraband_diamonds",
+    "name": "Diamanten",
+    "description": "Onbewerkte en geslepen diamanten",
+    "basePrice": 2000,
+    "maxInventory": 100,
+    "weight": 1,
+    "priceVolatility": 0.25
+  },
+  {
+    "id": "contraband_weapons",
+    "name": "Wapens",
+    "description": "Illegale wapens en munitie",
+    "basePrice": 1500,
+    "maxInventory": 200,
+    "weight": 5,
+    "confiscationChance": 0.20,
+    "priceVolatility": 0.08
+  },
+  {
+    "id": "contraband_pharmaceuticals",
+    "name": "Farmaceutica",
+    "description": "Zeldzame farmaceutische producten",
+    "basePrice": 800,
+    "maxInventory": 300,
+    "weight": 1,
+    "confiscationChance": 0.15,
+    "priceVolatility": 0.12
+  }
+]
