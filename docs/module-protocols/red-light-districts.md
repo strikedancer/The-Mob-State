@@ -23,6 +23,7 @@ District ownership, country-level expansion and prostitution territory progressi
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- District data integrity: country districts must always exist (idempotent seed/repair on read paths) so RLD purchase flow cannot dead-end after an empty DB state.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -35,6 +36,7 @@ District ownership, country-level expansion and prostitution territory progressi
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify `/red-light-districts/country/{currentCountry}` returns a district after fresh/empty database startup (no persistent 404 due to missing seed rows).
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

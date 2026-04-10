@@ -1,0 +1,152 @@
+# Release Checklist
+
+Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy uit te rollen.
+
+## Status
+- Release mode: **Batched deploy**
+- Laatste update: 2026-04-10
+
+## Pending Changes (nog NIET live)
+
+### Backend
+- [ ] Crypto buy/sell fix: `world_events.params` nu als JSON-string opgeslagen zodat trade world events de transactie niet meer rollbacken bij kopen/verkopen
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Crypto transaction history fix: `/crypto/transactions` summary gebruikt nu geldige JS aggregatie i.p.v. Dart-achtige `.where().fold()` zodat coin-popup details niet meer 500'en
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Vehicle theft uitgebreid: reputatie bij auto/motor/boot diefstal (success/fail/arrest) + response bevat `reputation`; daarnaast motor-diefstal achievements toegevoegd en unlocked feedback in theft response
+  - Bestanden: `backend/src/services/vehicleService.ts`, `backend/src/routes/vehicles.ts`, `backend/src/services/achievementService.ts`, `backend/src/utils/rankSystem.ts`
+- [ ] Profiel API uitgebreid met gevraagde zichtbare velden: crewnaam, rank, reputatie, status (levend/dood), online-status + tijd sinds laatst gezien, startdatum, VIP, likes, contant geld, bankgeld, aantal hoeren en aantal woningen
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Reputatie uitgebreid over modules: crimes + FBI arrest, heists, trade sell-profit, crew join/kick, hitlist claim en police raids; centrale `reputationService` toegevoegd
+  - Bestanden: `backend/src/routes/crimes.ts`, `backend/src/routes/heists.ts`, `backend/src/routes/trade.ts`, `backend/src/routes/crews.ts`, `backend/src/routes/hitlist.ts`, `backend/src/services/policeRaidService.ts`, `backend/src/services/reputationService.ts`, `backend/src/utils/rankSystem.ts`
+- [ ] Achievement rewards uitgebreid met reputatie-toekenning + NL/EN inboxregel
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Reputatie-systeem activeren: `calculateReputationChange()` aangeroepen na each crime (gepakt=-10, clean success=+5, failed-niet-gepakt=-2), DB-update via `GREATEST(0, reputation+delta)`, nieuw `reputation` veld in crime-response
+  - Bestand: `backend/src/routes/crimes.ts`
+- [ ] Profiel API privacy hardening: geen `currentCountry` lekken in publiek profiel + like-statistiek velden toegevoegd (`likesCount`, `viewerHasLiked`)
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Profiel endpoint hardening: geldige `playerId` check, 404 bij niet-bestaande speler i.p.v. 500, likes-fallback bij queryfout
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Nieuw endpoint: `POST /player/:playerId/profile/like` met 1x-like per spelerpaar
+  - Bestanden: `backend/src/routes/player.ts`, `backend/prisma/schema.prisma`, `backend/add-profile-likes.sql`
+- [ ] Fix `untouchable` achievement logica (7 dagen niet busted)
+  - Bestand: `backend/src/services/achievementService.ts
+- [ ] Achievement unlocks loggen als speleractie in admin-overzicht
+  - Bestanden: `backend/src/services/achievementService.ts`, `backend/src/services/activityService.ts`
+- [ ] Achievement unlocks sturen inbox-bericht met beloning via system-thread
+  - Bestanden: `backend/src/services/achievementService.ts`, `backend/src/services/directMessageService.ts`, `backend/src/routes/messages.ts`
+- [ ] Register flow: geen auto-login/token meer bij e-mail registratie (verificatie vereist)
+  - Bestanden: `backend/src/services/authService.ts`, `backend/src/routes/auth.ts`
+- [ ] Login blokkeren voor accounts met onbevestigde e-mail
+  - Bestanden: `backend/src/services/authService.ts`, `backend/src/routes/auth.ts`
+- [ ] E-mail links via env-config i.p.v. `localhost` (`API_BASE_URL` / `APP_BASE_URL`)
+  - Bestanden: `backend/src/services/emailService.ts`, `backend/src/config/index.ts`, `backend/.env.example`
+- [ ] Fix tool aankoop 500 (FK `player_tools.toolId`): sync `tools.json` tool naar `crime_tools` vóór aankoop
+  - Bestanden: `backend/src/services/toolService.ts`, `backend/src/routes/tools.ts`
+- [ ] Startup safeguard: synchroniseer alle tools uit `tools.json` naar `crime_tools` bij service-start
+  - Bestand: `backend/src/services/toolService.ts`
+- [ ] Jobs endpoint hardening: laat jobs niet falen door nevenfouten (world events/activity/achievement side-effects) + extra route logging
+  - Bestanden: `backend/src/services/jobService.ts`, `backend/src/routes/jobs.ts`
+- [ ] Systeemfout logging: automatische persistente `system.error` logs via `console.error`/process handlers voor admin inzage
+  - Bestanden: `backend/src/services/systemLogService.ts`, `backend/src/index.ts`
+- [ ] Admin API: nieuwe endpoints voor system logs en admin account beheer (list/create/update)
+  - Bestand: `backend/src/routes/admin.ts`
+- [ ] Achievement jobs tellen alleen succesvolle jobs (geen failures) voor unlock criteria
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Achievement inboxbericht taal consistent gemaakt (geen ENG/NL mix)
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Onterecht vrijgespeelde job achievements automatisch opschonen op basis van actuele success-only criteria
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Berichten unread endpoint gestandaardiseerd (`count` + `unreadCount`) voor consistente client badges
+  - Bestand: `backend/src/routes/messages.ts`
+- [ ] Push notificaties ook voor systeem-thread/inbox berichten
+  - Bestand: `backend/src/services/directMessageService.ts`
+- [ ] Single-session login enforced: nieuwe login maakt oudere JWT sessies ongeldig
+  - Bestanden: `backend/src/services/authService.ts`, `backend/src/middleware/authenticate.ts`
+- [ ] Red Light District herstel: idempotente auto-seed toegevoegd voor alle actieve landen zodat lege/missende `red_light_districts` data automatisch wordt aangevuld bij district reads/purchase
+  - Bestand: `backend/src/services/redLightDistrictService.ts`
+
+### Client (game)
+- [ ] Achievements crashfix: `achievementData` parser accepteert nu zowel Map als String payload (incl. single-quote varianten) om TypeError te voorkomen
+  - Bestand: `client/lib/models/achievement.dart`
+- [ ] Motor-achievement badges genereren via Leonardo API: two_wheel_bandit en bike_cartel (transparante PNG, 1024 source voor mobile/tablet/desktop scherpte)
+  - Bestanden: `client/assets/images/achievements/badges/vehicles/two_wheel_bandit.png`, `client/assets/images/achievements/badges/vehicles/bike_cartel.png`, `backend/scripts/generate_motor_achievement_badges_leonardo.py`
+- [ ] Spelerprofiel UI toont volledige overzichtsvelden (crew, rank, reputatie, status, online, startdatum, VIP, likes, cash, bank, hoeren, woningen)
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] Spelerprofiel UI heringedeeld in compacte secties `Identiteit` en `Economie` voor snellere scanbaarheid in embedded bottom sheet
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] Profiel UI herbouwd naar compacte game-stijl met embedded modus voor contextschermen
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] Hitlist profielopen werkt als embedded bottom sheet i.p.v. fullpage navigatie
+  - Bestand: `client/lib/screens/hitlist_screen.dart`
+- [ ] Profiel bevat 1x-like actie voor andere spelers met live tellerweergave
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] 6 crypto shield badges genereren en valideren via Leonardo.ai API flow (transparante PNG + alpha QA)
+  - Bestanden: `generate_crypto_badges_leonardo.py`, `LEONARDO_IMAGE_GENERATION_PROTOCOL.md`
+- [ ] Achievement badge asset pad gefixt naar `assets/images/...`
+  - Bestand: `client/lib/screens/achievements_screen.dart`
+- [ ] Unlock notificaties tonen badge-afbeeldingen met fallback
+  - Bestand: `client/lib/utils/achievement_notifier.dart`
+- [ ] Registratieflow aangepast voor “verificatie vereist” zonder dashboard redirect
+  - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`, `client/lib/screens/login_screen.dart`
+- [ ] Inbox system-thread zichtbaar in berichten en niet beantwoordbaar
+  - Bestand: `client/lib/screens/chat_screen.dart`
+- [ ] Inbox system-thread krijgt visuele achievement/systeem-markering in lijst en chat-header
+  - Bestanden: `client/lib/widgets/conversation_card.dart`, `client/lib/screens/chat_screen.dart`
+- [ ] Berichten unread badge op avatar toegevoegd (web + mobile topbar)
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Dashboard unread teller gebruikt dedicated `/messages/unread` endpoint (sneller/stabieler)
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Auth-state logout propagatie verbeterd bij 401/403 (forced logout na sessie-vervanging)
+  - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`
+- [ ] Admin UI: tab “System Logs” toegevoegd voor runtime backend fouten
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+- [ ] Admin UI: “System Logs” uitgebreid met filters op bron + zoekveld (melding/details)
+  - Bestand: `admin/src/App.tsx`
+- [ ] Admin UI: “System Logs” uitgebreid met datumfilter (24u/7d/30d/all)
+  - Bestand: `admin/src/App.tsx`
+- [ ] Admin UI: tab “Admins” toegevoegd voor admin aanmaken/rol wijzigen/activeren-deactiveren
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+
+## Deploy Plan (wanneer we live gaan)
+
+### 1) API deploy
+1. Upload gewijzigde backend bestanden naar productie.
+2. SSH naar API root.
+3. Run: `npm run build`
+4. Restart API (Plesk Node / PM2 / Docker)
+
+### 2) Client deploy
+1. Lokaal run: `flutter build web --release --dart-define=WEB_API_BASE_URL=https://api.themobstate.com`
+2. Upload inhoud van `client/build/web` naar game `httpdocs`
+
+### 3) Post-deploy checks
+- [ ] Hard refresh / service worker cache refresh
+- [ ] Nieuwe speler test: `untouchable` mag niet direct unlocken
+- [ ] Achievement scherm toont custom badges (geen emoji fallback)
+- [ ] Achievement unlock popup toont badge image
+- [ ] Register met e-mail: géén auto-login, melding om e-mail te verifiëren
+- [ ] Verify-link in mail wijst naar `https://api.themobstate.com/auth/verify-email?...`
+- [ ] Login vóór verificatie geeft correcte blokkade/melding
+- [ ] Tool shop test: `POST /tools/buy/bolt_cutter` geeft geen 500 meer en aankoop slaagt
+- [ ] Achievement unlock verschijnt in admin bij “Recente handelingen” met type `ACHIEVEMENT`
+- [ ] Achievement unlock maakt inbox-bericht aan met titel/beloning
+- [ ] System-thread in berichten is leesbaar maar niet replybaar
+- [ ] System-thread toont trophy/system styling in inboxlijst en detailvenster
+- [ ] Achievement inbox-bericht start met duidelijke titelregel `🏆 Achievement Unlocked`
+- [ ] Jobs test: `POST /jobs/:jobId/work` geeft geen 500 meer door side-effect fouten en retourneert consistente `job.completed` / `job.failed`
+- [ ] Admin test: in “System Logs” verschijnen backend fouten met bron/melding/timestamp
+- [ ] Admin test: in “System Logs” werken source filter en tekstzoeker op melding/details
+- [ ] Admin test: in “System Logs” werkt datumfilter correct voor 24u/7d/30d/all
+- [ ] Admin test: als SUPER_ADMIN kan je admin aanmaken, rol wijzigen en account activeren/deactiveren
+- [ ] Achievement test: 5-job achievement unlockt niet meer op mislukte jobs
+- [ ] Achievement inbox test: bericht bevat consistente taal (geen gemixte labels)
+- [ ] Berichtentest: nieuw bericht toont direct unread badge bij menu-item + avatar badge (web en mobile)
+- [ ] Push test: nieuw systeem- of direct bericht triggert push notificatie op geregistreerd device
+- [ ] Single-session test: inloggen op mobiel terwijl laptop actief is => laptop sessie wordt bij eerstvolgende API-call uitgelogd (`SESSION_REPLACED`)
+- [ ] RLD test: `/red-light-districts/country/{currentCountry}` geeft district terug (geen 404 bij verse/lege DB)
+- [ ] RLD test: in RLD-scherm verschijnt weer koopoptie voor niet-gekocht district in huidig land
+
+## Notes
+- Bestaande foutief ontgrendelde achievements in DB blijven bestaan totdat handmatig opgeschoond.
+- Voeg vanaf nu elke nieuwe wijziging toe onder “Pending Changes”.

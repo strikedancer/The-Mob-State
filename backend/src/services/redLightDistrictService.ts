@@ -17,11 +17,58 @@ const TIER_CONFIG = {
   3: { name: 'VIP', gross: 150, rent: 50 }
 };
 
+const DEFAULT_RED_LIGHT_DISTRICTS = [
+  { countryCode: 'netherlands', purchasePrice: 750000, roomCount: 10 },
+  { countryCode: 'belgium', purchasePrice: 650000, roomCount: 8 },
+  { countryCode: 'germany', purchasePrice: 800000, roomCount: 10 },
+  { countryCode: 'france', purchasePrice: 850000, roomCount: 10 },
+  { countryCode: 'spain', purchasePrice: 700000, roomCount: 8 },
+  { countryCode: 'italy', purchasePrice: 750000, roomCount: 8 },
+  { countryCode: 'uk', purchasePrice: 900000, roomCount: 10 },
+  { countryCode: 'switzerland', purchasePrice: 1150000, roomCount: 12 },
+  { countryCode: 'usa', purchasePrice: 1000000, roomCount: 12 },
+  { countryCode: 'mexico', purchasePrice: 600000, roomCount: 8 },
+  { countryCode: 'colombia', purchasePrice: 650000, roomCount: 8 },
+  { countryCode: 'brazil', purchasePrice: 700000, roomCount: 10 },
+  { countryCode: 'argentina', purchasePrice: 650000, roomCount: 8 },
+  { countryCode: 'japan', purchasePrice: 950000, roomCount: 10 },
+  { countryCode: 'china', purchasePrice: 900000, roomCount: 10 },
+  { countryCode: 'russia', purchasePrice: 750000, roomCount: 10 },
+  { countryCode: 'turkey', purchasePrice: 600000, roomCount: 8 },
+  { countryCode: 'united_arab_emirates', purchasePrice: 1200000, roomCount: 12 },
+  { countryCode: 'south_africa', purchasePrice: 600000, roomCount: 8 },
+  { countryCode: 'australia', purchasePrice: 850000, roomCount: 8 }
+];
+
+let districtSeedPromise: Promise<void> | null = null;
+
+async function ensureDistrictSeedData() {
+  if (districtSeedPromise) {
+    await districtSeedPromise;
+    return;
+  }
+
+  districtSeedPromise = (async () => {
+    await prisma.redLightDistrict.createMany({
+      data: DEFAULT_RED_LIGHT_DISTRICTS,
+      skipDuplicates: true
+    });
+  })();
+
+  try {
+    await districtSeedPromise;
+  } finally {
+    districtSeedPromise = null;
+  }
+}
+
 export const redLightDistrictService = {
   /**
    * Get red light district for a country
    */
   async getByCountry(countryCode: string) {
+    await ensureDistrictSeedData();
+
     const district = await prisma.redLightDistrict.findUnique({
       where: { countryCode },
       include: {
@@ -120,6 +167,8 @@ export const redLightDistrictService = {
     playerId: number,
     countryCode: string
   ): Promise<{ success: boolean; message: string; district?: any; newlyUnlockedAchievements?: any[] }> {
+    await ensureDistrictSeedData();
+
     const district = await prisma.redLightDistrict.findUnique({
       where: { countryCode }
     });
@@ -303,6 +352,8 @@ export const redLightDistrictService = {
    * Get all available districts (not owned)
    */
   async getAvailableDistricts() {
+    await ensureDistrictSeedData();
+
     const districts = await prisma.redLightDistrict.findMany({
       where: { ownerId: null },
       orderBy: { purchasePrice: 'asc' }
