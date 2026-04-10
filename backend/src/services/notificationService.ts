@@ -12,6 +12,20 @@ export class NotificationService {
 
   private constructor() {}
 
+  private async createInAppWorldEvent(
+    playerId: number,
+    eventKey: string,
+    params: Record<string, unknown>
+  ): Promise<void> {
+    await prisma.worldEvent.create({
+      data: {
+        playerId,
+        eventKey,
+        params: JSON.stringify(params),
+      },
+    });
+  }
+
   private async resolveLanguageForPlayer(playerId: number, language?: Language): Promise<Language> {
     if (language) {
       return language;
@@ -429,16 +443,10 @@ export class NotificationService {
     };
 
     if (preferences.inAppCryptoPriceAlert) {
-      await prisma.worldEvent.create({
-        data: {
-          playerId,
-          eventKey: 'crypto.alert.price',
-          params: {
-            symbol,
-            currentPrice,
-            changePct,
-          },
-        },
+      await this.createInAppWorldEvent(playerId, 'crypto.alert.price', {
+        symbol,
+        currentPrice,
+        changePct,
       });
     }
 
@@ -473,15 +481,9 @@ export class NotificationService {
     const t = translationService.getTranslations(resolvedLanguage);
 
     if (preferences.inAppCryptoPriceAlert) {
-      await prisma.worldEvent.create({
-        data: {
-          playerId,
-          eventKey: 'crypto.market.regime',
-          params: {
-            regime,
-            marketMovePct,
-          },
-        },
+      await this.createInAppWorldEvent(playerId, 'crypto.market.regime', {
+        regime,
+        marketMovePct,
       });
     }
 
@@ -520,16 +522,10 @@ export class NotificationService {
     const compactHeadline = headline.length > 180 ? `${headline.slice(0, 177)}...` : headline;
 
     if (preferences.inAppCryptoPriceAlert) {
-      await prisma.worldEvent.create({
-        data: {
-          playerId,
-          eventKey: 'crypto.market.news',
-          params: {
-            headline: compactHeadline,
-            impact,
-            symbols,
-          },
-        },
+      await this.createInAppWorldEvent(playerId, 'crypto.market.news', {
+        headline: compactHeadline,
+        impact,
+        symbols,
       });
     }
 
@@ -569,18 +565,12 @@ export class NotificationService {
     const t = translationService.getTranslations(resolvedLanguage);
 
     if (preferences.inAppCryptoOrder) {
-      await prisma.worldEvent.create({
-        data: {
-          playerId,
-          eventKey: 'crypto.order.filled',
-          params: {
-            symbol,
-            orderType,
-            side,
-            quantity,
-            fillPrice,
-          },
-        },
+      await this.createInAppWorldEvent(playerId, 'crypto.order.filled', {
+        symbol,
+        orderType,
+        side,
+        quantity,
+        fillPrice,
       });
     }
 
@@ -626,16 +616,10 @@ export class NotificationService {
     const t = translationService.getTranslations(resolvedLanguage);
 
     if (preferences.inAppCryptoOrder) {
-      await prisma.worldEvent.create({
-        data: {
-          playerId,
-          eventKey: 'crypto.order.triggered',
-          params: {
-            symbol,
-            triggerType,
-            triggerPrice,
-          },
-        },
+      await this.createInAppWorldEvent(playerId, 'crypto.order.triggered', {
+        symbol,
+        triggerType,
+        triggerPrice,
       });
     }
 
@@ -680,17 +664,11 @@ export class NotificationService {
     const missionTitle = resolvedLanguage === 'nl' ? missionTitleNl : missionTitleEn;
 
     if (preferences.inAppCryptoMission) {
-      await prisma.worldEvent.create({
-        data: {
-          playerId,
-          eventKey: 'crypto.mission.completed',
-          params: {
-            missionType,
-            missionKey,
-            missionTitle,
-            rewardMoney,
-          },
-        },
+      await this.createInAppWorldEvent(playerId, 'crypto.mission.completed', {
+        missionType,
+        missionKey,
+        missionTitle,
+        rewardMoney,
       });
     }
 
@@ -732,17 +710,11 @@ export class NotificationService {
     const periodLabel = resolvedLanguage === 'nl' ? 'de wekelijkse crypto ranking' : 'the weekly crypto ranking';
 
     if (preferences.inAppCryptoLeaderboard) {
-      await prisma.worldEvent.create({
-        data: {
-          playerId,
-          eventKey: 'crypto.leaderboard.reward',
-          params: {
-            rank,
-            rewardMoney,
-            weekStartAt: weekStartAtIso,
-            weekEndAt: weekEndAtIso,
-          },
-        },
+      await this.createInAppWorldEvent(playerId, 'crypto.leaderboard.reward', {
+        rank,
+        rewardMoney,
+        weekStartAt: weekStartAtIso,
+        weekEndAt: weekEndAtIso,
       });
     }
 

@@ -389,6 +389,14 @@ function parseNumber(input: unknown, fallback = 0): number {
   return Number.isFinite(value) ? value : fallback;
 }
 
+function serializeWorldEventParams(value: Record<string, unknown>): string {
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return '{}';
+  }
+}
+
 function downsampleHistoryPoints(points: CryptoHistoryPoint[], limit: number): CryptoHistoryPoint[] {
   if (points.length <= limit) {
     return points;
@@ -405,25 +413,28 @@ function downsampleHistoryPoints(points: CryptoHistoryPoint[], limit: number): C
   return sampled;
 }
 
-function clampPrice(value: number): number {
+function clampPrice(value: number, basePrice: number): number {
   const MIN_PRICE = 0.000001;
   // Matches DECIMAL(24,8): max 16 digits before decimal.
   const MAX_PRICE = 9999999999999999.99999999;
+  const safeBasePrice = Math.max(basePrice, MIN_PRICE);
+  const boundedMinPrice = Math.max(MIN_PRICE, Number((safeBasePrice * 0.05).toFixed(8)));
+  const boundedMaxPrice = Math.min(MAX_PRICE, Number((safeBasePrice * 250).toFixed(8)));
 
   if (!Number.isFinite(value)) {
-    return MIN_PRICE;
+    return boundedMinPrice;
   }
 
   const normalized = Number(value.toFixed(8));
   if (!Number.isFinite(normalized)) {
-    return MIN_PRICE;
+    return boundedMinPrice;
   }
 
-  if (normalized > MAX_PRICE) {
-    return MAX_PRICE;
+  if (normalized > boundedMaxPrice) {
+    return boundedMaxPrice;
   }
 
-  return Math.max(MIN_PRICE, normalized);
+  return Math.max(boundedMinPrice, normalized);
 }
 
 function toUtcDateKey(date: Date): string {
@@ -1176,6 +1187,7 @@ async function updatePricesIfNeeded(): Promise<void> {
 
   type AssetRow = {
     symbol: string;
+    base_price: string | number;
     current_price: string | number;
     volatility: string | number;
     trend_bias: string | number;
@@ -1183,13 +1195,14 @@ async function updatePricesIfNeeded(): Promise<void> {
   };
 
   const rows = await prisma.$queryRawUnsafe<AssetRow[]>(
-    'SELECT symbol, current_price, volatility, trend_bias, updated_at FROM crypto_assets'
+    'SELECT symbol, base_price, current_price, volatility, trend_bias, updated_at FROM crypto_assets'
   );
 
   const now = Date.now();
 
   for (const row of rows) {
-    const currentPrice = parseNumber(row.current_price, 0);
+    const basePrice = Math.max(parseNumber(row.base_price, 0), 0.000001);
+    const currentPrice = clampPrice(parseNumber(row.current_price, basePrice), basePrice);
     const volatility = parseNumber(row.volatility, 0);
     const trendBias = parseNumber(row.trend_bias, 0);
     const updatedAtMs = new Date(row.updated_at).getTime();
@@ -1204,9 +1217,11 @@ async function updatePricesIfNeeded(): Promise<void> {
     let nextPrice = currentPrice;
     for (let i = 0; i < steps; i += 1) {
       const randomPulse = (Math.random() * 2 - 1) * volatility;
-      const momentum = trendBias + Math.sin((now / 600000) + i) * (volatility * 0.1);
-      const pctMove = (randomPulse + momentum) / 100;
-      nextPrice = clampPrice(nextPrice * (1 + pctMove));
+      const cyclicalDrift = Math.sin((now / 600000) + i) * (volatility * 0.1);
+      const deviationRatio = (nextPrice - basePrice) / basePrice;
+      const meanReversion = Math.max(-12, Math.min(12, deviationRatio * -0.35));
+      const pctMove = (randomPulse + trendBias + cyclicalDrift + meanReversion) / 100;
+      nextPrice = clampPrice(nextPrice * (1 + pctMove), basePrice);
     }
 
     await prisma.$executeRawUnsafe(
@@ -1849,11 +1864,11 @@ export async function getTransactionHistory(playerId: number, symbol: string, li
   };
 
   const totalBuySpent = transactions
-      .where((item) => item.side === 'BUY')
-      .fold(0, (sum, item) => sum + item.totalValue);
+    .filter((item) => item.side === 'BUY')
+    .reduce((sum, item) => sum + item.totalValue, 0);
   const totalSellValue = transactions
-      .where((item) => item.side === 'SELL')
-      .fold(0, (sum, item) => sum + item.totalValue);
+    .filter((item) => item.side === 'SELL')
+    .reduce((sum, item) => sum + item.totalValue, 0);
 
   return {
     symbol: normalizedSymbol,
@@ -1960,12 +1975,12 @@ export async function buyCrypto(playerId: number, symbol: string, quantityInput:
         data: {
           playerId,
           eventKey: 'crypto.buy',
-          params: {
+          params: serializeWorldEventParams({
             symbol: normalizedSymbol,
             quantity: Number(quantity.toFixed(8)),
             price,
             totalCost,
-          },
+          }),
         },
       });
     }
@@ -2121,13 +2136,13 @@ export async function sellCrypto(playerId: number, symbol: string, quantityInput
         data: {
           playerId,
           eventKey: 'crypto.sell',
-          params: {
+          params: serializeWorldEventParams({
             symbol: normalizedSymbol,
             quantity: Number(quantity.toFixed(8)),
             price,
             totalValue,
             realizedProfit,
-          },
+          }),
         },
       });
     }

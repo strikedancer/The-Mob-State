@@ -35,6 +35,7 @@ Coin market, portfolio, orders, charts, missions, rewards and notifications.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify scheduled price updates keep `current_price` within sane asset bounds and backend logs stay free of overflow/`Out of range` errors.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

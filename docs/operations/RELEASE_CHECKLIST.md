@@ -9,6 +9,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Crypto prijs-cron hardening: scheduled price updates gebruiken nu asset-bounds + mean reversion zodat `crypto_assets.current_price` niet meer uit `DECIMAL(24,8)` kan lopen en ontspoorde dev-prijzen automatisch terug binnen bandbreedte worden gezet
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Crypto notificatie hardening: in-app crypto world events serialiseren `params` nu als JSON-string zodat price/regime/news/order/mission/leaderboard notificaties geen Prisma schemafouten meer geven
+  - Bestand: `backend/src/services/notificationService.ts`
 - [ ] Register flow fix: `auth.session.login` world event schrijft `params` nu als JSON-string zodat nieuwe spelerregistratie niet meer 500't na succesvolle player-create
   - Bestand: `backend/src/services/authService.ts`
 - [ ] Rechtbank backend geactiveerd: nieuwe `/trial` endpoints voor huidige straf, strafblad, hoger beroep en omkoping, plus compatibele `judgeService` op huidige `crime_attempts`/`jailRelease` model
@@ -156,6 +160,9 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] RLD test: in RLD-scherm verschijnt weer koopoptie voor niet-gekocht district in huidig land
 - [ ] Drugs productie test: bij `Ophalen/Collect` verdwijnt alleen de juiste productiecard direct, zonder globale spinner/volledige content reload
 - [ ] Register test: `POST /auth/register` geeft token + player terug en maakt geen backend 500 meer na player-create
+- [ ] Crypto test: scheduled prijsupdate verwerkt alle assets zonder `Out of range value for column 'current_price'` in backend logs
+- [ ] Crypto test: ontspoorde `current_price` waarden worden teruggebracht binnen geloofwaardige asset-bandbreedte en marktdata blijft bruikbaar in crypto-scherm
+- [ ] Crypto test: in-app crypto notificaties schrijven geen `Expected String, provided Object` fouten meer naar `world_events.params`
 - [ ] Rechtbank test: `/trial/current-sentence` geeft actieve straf terug (of `sentence: null`) zonder 500
 - [ ] Rechtbank test: `/trial/record` toont veroordelingenhistorie in UI (ook wanneer speler niet vastzit)
 - [ ] Rechtbank test: hoger beroep verwerkt kosten + cooldown en past resterende straf alleen aan bij succes
