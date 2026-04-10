@@ -490,6 +490,9 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
     if (mounted) {
       if (result['success'] == true) {
+        _applyCollectedProductionLocally(production);
+        unawaited(_syncProductionContextAfterCollect());
+
         showTopRightFromSnackBar(
           context,
           SnackBar(
@@ -497,7 +500,6 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
             backgroundColor: Colors.green,
           ),
         );
-        _loadData();
       } else {
         showTopRightFromSnackBar(
           context,
@@ -509,6 +511,60 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
           ),
         );
       }
+    }
+  }
+
+  void _applyCollectedProductionLocally(DrugProduction production) {
+    setState(() {
+      _activeProductions = _activeProductions
+          .where((p) => p.id != production.id)
+          .toList();
+
+      final facilityId = production.facilityId;
+      if (facilityId != null) {
+        _facilities = _facilities.map((facility) {
+          if (facility.id != facilityId) return facility;
+
+          final nextActive = facility.activeProductions > 0
+              ? facility.activeProductions - 1
+              : 0;
+
+          return DrugFacilityInfo(
+            id: facility.id,
+            facilityType: facility.facilityType,
+            displayName: facility.displayName,
+            slots: facility.slots,
+            activeProductions: nextActive,
+            purchasedAt: facility.purchasedAt,
+            upgrades: facility.upgrades,
+            qualityBonus: facility.qualityBonus,
+            yieldBonus: facility.yieldBonus,
+            speedBonus: facility.speedBonus,
+            nextSlotCost: facility.nextSlotCost,
+            isMaxSlots: facility.isMaxSlots,
+          );
+        }).toList();
+      }
+    });
+  }
+
+  Future<void> _syncProductionContextAfterCollect() async {
+    try {
+      final results = await Future.wait([
+        _drugService.getActiveProductions(),
+        _drugService.getMyFacilities(),
+        _drugService.getDrugStats(),
+      ]);
+
+      if (!mounted) return;
+
+      setState(() {
+        _activeProductions = results[0] as List<DrugProduction>;
+        _facilities = results[1] as List<DrugFacilityInfo>;
+        _stats = results[2] as DrugStats?;
+      });
+    } catch (_) {
+      // Local optimistic state already applied; ignore sync failures.
     }
   }
 

@@ -24,6 +24,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Visibility of current productions in both Production flow and Facility context when players expect that summary.
+- Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
 
 ## Backend Contract Guardrails (Drugs)
 - If drugs services use Prisma nested `include` (example: production -> facility -> upgrades), relation fields must exist in `schema.prisma`.
@@ -49,6 +50,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Verify active productions remain visible after starting a batch and navigating back to facilities.
 - Verify owned facilities remain visible and upgrade options stay available after travel or refresh.
 - Verify no Prisma validation errors appear in backend logs while loading drugs screens.
+- Verify collect action removes only the collected production card without showing global loading spinner or reloading unrelated content blocks.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

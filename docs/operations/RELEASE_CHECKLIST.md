@@ -67,6 +67,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Drugs productie UX-optimalisatie: bij succesvol ophalen wordt alleen de betreffende actieve productie-card lokaal verwijderd en facility/productie counters op de achtergrond gesynchroniseerd (geen full-screen reload)
+  - Bestand: `client/lib/screens/drug_production_screen.dart`
 - [ ] Achievements crashfix: `achievementData` parser accepteert nu zowel Map als String payload (incl. single-quote varianten) om TypeError te voorkomen
   - Bestand: `client/lib/models/achievement.dart`
 - [ ] Motor-achievement badges genereren via Leonardo API: two_wheel_bandit en bike_cartel (transparante PNG, 1024 source voor mobile/tablet/desktop scherpte)
@@ -146,6 +148,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] Single-session test: inloggen op mobiel terwijl laptop actief is => laptop sessie wordt bij eerstvolgende API-call uitgelogd (`SESSION_REPLACED`)
 - [ ] RLD test: `/red-light-districts/country/{currentCountry}` geeft district terug (geen 404 bij verse/lege DB)
 - [ ] RLD test: in RLD-scherm verschijnt weer koopoptie voor niet-gekocht district in huidig land
+- [ ] Drugs productie test: bij `Ophalen/Collect` verdwijnt alleen de juiste productiecard direct, zonder globale spinner/volledige content reload
 
 ## Notes
 - Bestaande foutief ontgrendelde achievements in DB blijven bestaan totdat handmatig opgeschoond.
