@@ -6,6 +6,19 @@ Judicial recovery, sentence handling and legal consequence flows.
 ## Primary Frontend Entry
 - client/lib/screens/court_screen.dart
 
+## Active Backend Endpoints
+- GET `/trial/current-sentence`
+- GET `/trial/record`
+- POST `/trial/appeal`
+- POST `/trial/bribe`
+
+## Current System Contract
+- Court screen must load sentence and criminal record independently and remain usable when one part is empty.
+- Active sentence state must show: crime, total sentence, remaining time, judge profile and action buttons.
+- Appeal can be submitted once per crime attempt and follows appeal cooldown rules.
+- Bribe always deducts offered money and can either release player immediately or fail without release.
+- Criminal record must remain visible both while jailed and while free.
+
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
 - Keep Dutch and English copy in sync for any user-visible change.
@@ -35,6 +48,9 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify `/trial/current-sentence` and `/trial/record` both return stable payloads and client handles `sentence: null`.
+- Verify `POST /trial/appeal` returns cooldown block on rapid retry and updates remaining sentence on success.
+- Verify `POST /trial/bribe` deducts balance in both success and failure paths.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

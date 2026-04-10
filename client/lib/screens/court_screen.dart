@@ -20,6 +20,8 @@ class _CourtScreenState extends State<CourtScreen> {
   
   bool _isLoading = true;
   JailSentence? _currentSentence;
+  int _totalConvictions = 0;
+  List<Map<String, dynamic>> _recentCrimes = [];
   String? _error;
   bool _isProcessing = false;
 
@@ -29,55 +31,35 @@ class _CourtScreenState extends State<CourtScreen> {
   @override
   void initState() {
     super.initState();
-    _loadCurrentSentence();
+    _loadCourtData();
   }
 
-  Future<void> _loadCurrentSentence() async {
+  Future<void> _loadCourtData() async {
     setState(() {
       _isLoading = true;
       _error = null;
     });
 
     try {
-      // Check player's jail status
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final player = authProvider.currentPlayer;
-      
-      if (player == null) {
-        setState(() {
-          _error = 'Niet ingelogd';
-          _isLoading = false;
-        });
-        return;
-      }
+      final responses = await Future.wait([
+        _apiClient.get('/trial/current-sentence'),
+        _apiClient.get('/trial/record'),
+      ]);
 
-      // Get current jail sentence (if any)
-      final response = await _apiClient.get('/player/status');
-      final data = jsonDecode(response.body);
-      
-      if (data['jailTime'] != null && data['jailTime'] > 0) {
-        // Player is in jail - for now just show message
-        setState(() {
-          _isLoading = false;
-        });
-        
-        if (mounted) {
-          showTopRightFromSnackBar(context, 
-            const SnackBar(
-              content: Text(
-                'Rechtbank systeem is nog niet volledig geïmplementeerd. '
-                'Je kunt nu alleen wachten tot je vrijkomt.',
-              ),
-              backgroundColor: Colors.orange,
-              duration: Duration(seconds: 3),
-            ),
-          );
-        }
-        return;
-      }
+      final sentenceData = jsonDecode(responses[0].body) as Map<String, dynamic>;
+      final recordData = jsonDecode(responses[1].body) as Map<String, dynamic>;
+      final recordParams = (recordData['params'] as Map<String, dynamic>?) ?? {};
+
+      final sentenceJson = sentenceData['sentence'] as Map<String, dynamic>?;
+      final sentence = sentenceJson == null ? null : JailSentence.fromJson(sentenceJson);
+      final recentCrimesRaw = (recordParams['recentCrimes'] as List?) ?? const [];
 
       setState(() {
-        _currentSentence = null;
+        _currentSentence = sentence;
+        _totalConvictions = (recordParams['totalConvictions'] as num?)?.toInt() ?? 0;
+        _recentCrimes = recentCrimesRaw
+            .whereType<Map<String, dynamic>>()
+            .toList();
         _isLoading = false;
       });
     } catch (e) {
@@ -202,7 +184,7 @@ class _CourtScreenState extends State<CourtScreen> {
           );
           
           // Reload to get updated jail time
-          await _loadCurrentSentence();
+          await _loadCourtData();
         } else {
           // Money still deducted on failure
           final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -258,7 +240,7 @@ class _CourtScreenState extends State<CourtScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Omkoopsom: €${bribeAmount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}',
+                'Omkoopsom: €${_formatMoney(bribeAmount)}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -341,8 +323,7 @@ class _CourtScreenState extends State<CourtScreen> {
             money: data['newBalance'] as int?,
           );
           
-          // Return to dashboard
-          Navigator.pop(context);
+          await _loadCourtData();
         } else {
           // Money still deducted even on failure
           final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -387,6 +368,183 @@ class _CourtScreenState extends State<CourtScreen> {
     return Colors.green;
   }
 
+  String _formatMoney(int amount) {
+    return amount.toString().replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (m) => '${m[1]},',
+    );
+  }
+
+  Widget _buildCurrentSentenceCard() {
+    if (_currentSentence == null) {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.green[50],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.green[200]!),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _tr('Geen actieve straf', 'No active sentence'),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.green[800],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _tr(
+                'Je zit momenteel niet vast. Bekijk hieronder je strafblad.',
+                'You are not jailed right now. Review your criminal record below.',
+              ),
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.orange[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.orange[200]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.gavel, color: Colors.orange[800]),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  _tr('Actieve veroordeling', 'Active sentence'),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange[900],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text('${_tr('Delict', 'Crime')}: ${_currentSentence!.crime}'),
+          Text('${_tr('Totale straf', 'Total sentence')}: ${_currentSentence!.sentenceMinutes} ${_tr('minuten', 'minutes')}'),
+          Text(
+            '${_tr('Resterend', 'Remaining')}: ${_currentSentence!.remainingMinutes} ${_tr('minuten', 'minutes')}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text('${_tr('Rechter', 'Judge')}: ${_currentSentence!.judge.name}'),
+          Text(
+            '${_tr('Corruptibiliteit', 'Corruptibility')}: ${_currentSentence!.judge.corruptibility}%',
+            style: TextStyle(color: _currentSentence!.judge.corruptibilityColor),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            children: [
+              ElevatedButton.icon(
+                onPressed: _isProcessing ? null : _appealSentence,
+                icon: const Icon(Icons.rule),
+                label: Text(_tr('Hoger beroep', 'Appeal')),
+              ),
+              ElevatedButton.icon(
+                onPressed: _isProcessing ? null : _bribeJudge,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
+                icon: const Icon(Icons.payments),
+                label: Text(_tr('Rechter omkopen', 'Bribe judge')),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecordCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blueGrey[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blueGrey[200]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _tr('Strafblad', 'Criminal record'),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.blueGrey[900],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _tr('Totaal aantal veroordelingen: $_totalConvictions', 'Total convictions: $_totalConvictions'),
+          ),
+          const SizedBox(height: 12),
+          if (_recentCrimes.isEmpty)
+            Text(
+              _tr('Nog geen veroordelingen geregistreerd.', 'No convictions recorded yet.'),
+              style: TextStyle(color: Colors.grey[700]),
+            )
+          else
+            ..._recentCrimes.take(8).map((crime) {
+              final crimeName = crime['crimeName'] as String? ?? (crime['crimeId'] as String? ?? 'Onbekend');
+              final jailTime = (crime['jailTime'] as num?)?.toInt() ?? 0;
+              final appealed = crime['appealed'] as bool? ?? false;
+              final createdAtRaw = crime['createdAt'] as String?;
+              final createdAt = createdAtRaw == null ? null : DateTime.tryParse(createdAtRaw)?.toLocal();
+
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blueGrey[100]!),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(crimeName, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    Text('${_tr('Straf', 'Sentence')}: $jailTime ${_tr('minuten', 'minutes')}'),
+                    if (createdAt != null)
+                      Text(
+                        '${_tr('Datum', 'Date')}: ${createdAt.day.toString().padLeft(2, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.year} ${createdAt.hour.toString().padLeft(2, '0')}:${createdAt.minute.toString().padLeft(2, '0')}',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                      ),
+                    if (appealed)
+                      Text(
+                        _tr('Beroep ingediend', 'Appeal submitted'),
+                        style: const TextStyle(fontSize: 12, color: Colors.blue),
+                      ),
+                  ],
+                ),
+              );
+            }),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -395,74 +553,33 @@ class _CourtScreenState extends State<CourtScreen> {
         backgroundColor: Colors.brown[700],
         foregroundColor: Colors.white,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.gavel,
-                size: 100,
-                color: Colors.brown[300],
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Rechtbank Systeem',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Binnenkort beschikbaar',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 12),
+      body: RefreshIndicator(
+        onRefresh: _loadCourtData,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          children: [
+            if (_isLoading)
+              const Padding(
+                padding: EdgeInsets.only(top: 120),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else if (_error != null)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue[200]!),
+                  color: Colors.red[50],
+                  border: Border.all(color: Colors.red[200]!),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.info, color: Colors.blue[700], size: 20),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Geplande Features',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '• Hoger beroep indienen tegen je veroordeling\n'
-                      '• Rechters omkopen voor strafvermindering\n'
-                      '• Bekijk je criminele geschiedenis\n'
-                      '• Verlaag je straf met slimme advocaten',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                child: Text(_error!, style: TextStyle(color: Colors.red[700])),
+              )
+            else ...[
+              _buildCurrentSentenceCard(),
+              const SizedBox(height: 12),
+              _buildRecordCard(),
             ],
-          ),
+          ],
         ),
       ),
     );

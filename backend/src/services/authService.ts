@@ -120,9 +120,9 @@ export const authService = {
       data: {
         eventKey: 'auth.session.login',
         playerId: player.id,
-        params: {
+        params: JSON.stringify({
           username: player.username,
-        },
+        }),
       },
     });
 

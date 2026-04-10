@@ -9,6 +9,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Register flow fix: `auth.session.login` world event schrijft `params` nu als JSON-string zodat nieuwe spelerregistratie niet meer 500't na succesvolle player-create
+  - Bestand: `backend/src/services/authService.ts`
+- [ ] Rechtbank backend geactiveerd: nieuwe `/trial` endpoints voor huidige straf, strafblad, hoger beroep en omkoping, plus compatibele `judgeService` op huidige `crime_attempts`/`jailRelease` model
+  - Bestanden: `backend/src/routes/trial.ts`, `backend/src/services/judgeService.ts`, `backend/src/app.ts`
 - [ ] Crypto buy/sell fix: `world_events.params` nu als JSON-string opgeslagen zodat trade world events de transactie niet meer rollbacken bij kopen/verkopen
   - Bestand: `backend/src/services/cryptoService.ts`
 - [ ] Crypto transaction history fix: `/crypto/transactions` summary gebruikt nu geldige JS aggregatie i.p.v. Dart-achtige `.where().fold()` zodat coin-popup details niet meer 500'en
@@ -67,6 +71,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Rechtbank UI compleet gemaakt: echte sentence/record data uit `/trial/*` met acties voor hoger beroep en omkoping, inclusief pull-to-refresh en foutstatussen
+  - Bestand: `client/lib/screens/court_screen.dart`
 - [ ] Drugs productie UX-optimalisatie: bij succesvol ophalen wordt alleen de betreffende actieve productie-card lokaal verwijderd en facility/productie counters op de achtergrond gesynchroniseerd (geen full-screen reload)
   - Bestand: `client/lib/screens/drug_production_screen.dart`
 - [ ] Achievements crashfix: `achievementData` parser accepteert nu zowel Map als String payload (incl. single-quote varianten) om TypeError te voorkomen
@@ -149,6 +155,11 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] RLD test: `/red-light-districts/country/{currentCountry}` geeft district terug (geen 404 bij verse/lege DB)
 - [ ] RLD test: in RLD-scherm verschijnt weer koopoptie voor niet-gekocht district in huidig land
 - [ ] Drugs productie test: bij `Ophalen/Collect` verdwijnt alleen de juiste productiecard direct, zonder globale spinner/volledige content reload
+- [ ] Register test: `POST /auth/register` geeft token + player terug en maakt geen backend 500 meer na player-create
+- [ ] Rechtbank test: `/trial/current-sentence` geeft actieve straf terug (of `sentence: null`) zonder 500
+- [ ] Rechtbank test: `/trial/record` toont veroordelingenhistorie in UI (ook wanneer speler niet vastzit)
+- [ ] Rechtbank test: hoger beroep verwerkt kosten + cooldown en past resterende straf alleen aan bij succes
+- [ ] Rechtbank test: omkoping trekt bedrag altijd af en laat speler alleen bij succes direct vrij
 
 ## Notes
 - Bestaande foutief ontgrendelde achievements in DB blijven bestaan totdat handmatig opgeschoond.

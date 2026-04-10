@@ -20,7 +20,7 @@ import activitiesRouter from './routes/activities';
 import heistsRouter from './routes/heists';
 import policeRouter from './routes/police';
 import fbiRouter from './routes/fbi';
-// import trialRouter from './routes/trial'; // Temporarily disabled due to schema issues
+import trialRouter from './routes/trial';
 import bankRouter from './routes/bank';
 import travelRouter from './routes/travel';
 import tradeRouter from './routes/trade';
@@ -131,7 +131,7 @@ app.use('/heists', heistsRouter);
 app.use('/police', policeRouter);
 app.use('/fbi', fbiRouter);
 app.use('/notifications', notificationsRouter);
-// app.use('/trial', trialRouter); // Temporarily disabled due to schema issues
+app.use('/trial', trialRouter);
 app.use('/bank', bankRouter);
 app.use('/travel', travelRouter);
 app.use('/trade', tradeRouter);
