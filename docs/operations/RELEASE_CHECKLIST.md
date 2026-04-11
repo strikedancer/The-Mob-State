@@ -4,7 +4,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 
 ## Status
 - Release mode: **Batched deploy**
-- Laatste update: 2026-04-10
+- Laatste update: 2026-04-11
 
 ## Pending Changes (nog NIET live)
 
@@ -77,6 +77,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Client (game)
 - [ ] Rechtbank UI compleet gemaakt: echte sentence/record data uit `/trial/*` met acties voor hoger beroep en omkoping, inclusief pull-to-refresh en foutstatussen
   - Bestand: `client/lib/screens/court_screen.dart`
+- [ ] Rechtbank UI polish: professionele, beter leesbare layout met cinematic achtergrond (landscape + mobile portrait), contrast-overlay, responsive max-width, partial API rendering en backend-consistente beroep-copy (dynamische kosten + 20-40% reductie)
+  - Bestanden: `client/lib/screens/court_screen.dart`, `client/assets/images/backgrounds/courtroom_background.png`, `client/assets/images/backgrounds/courtroom_background_mobile.png`
+- [ ] Rechtbank help-content gesynchroniseerd met actuele gameplay (hoger beroep + omkoping, NL/EN parity)
+  - Bestand: `client/lib/data/help_content.dart`
 - [ ] Drugs productie UX-optimalisatie: bij succesvol ophalen wordt alleen de betreffende actieve productie-card lokaal verwijderd en facility/productie counters op de achtergrond gesynchroniseerd (geen full-screen reload)
   - Bestand: `client/lib/screens/drug_production_screen.dart`
 - [ ] Achievements crashfix: `achievementData` parser accepteert nu zowel Map als String payload (incl. single-quote varianten) om TypeError te voorkomen
@@ -167,7 +171,15 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] Rechtbank test: `/trial/record` toont veroordelingenhistorie in UI (ook wanneer speler niet vastzit)
 - [ ] Rechtbank test: hoger beroep verwerkt kosten + cooldown en past resterende straf alleen aan bij succes
 - [ ] Rechtbank test: omkoping trekt bedrag altijd af en laat speler alleen bij succes direct vrij
+- [ ] Rechtbank UI test: nieuwe background + overlay blijft goed leesbaar op mobile en desktop
+- [ ] Rechtbank UI test: portrait/landscape wissel kiest automatisch juiste background variant zonder layout regressie
 
 ## Notes
 - Bestaande foutief ontgrendelde achievements in DB blijven bestaan totdat handmatig opgeschoond.
 - Voeg vanaf nu elke nieuwe wijziging toe onder “Pending Changes”.
+- Lokale QA uitgevoerd op 2026-04-11 (dev):
+  - `/trial/current-sentence` gaf zowel `sentence: null` (niet vast) als actieve sentence zonder 500.
+  - `/trial/record` gaf stabiele payload met historiekvelden.
+  - `POST /trial/appeal` verwerkte kosten en gaf cooldown blokkade op directe retry (`429`).
+  - `POST /trial/bribe` gaf zowel success- als failure-uitkomst en saldo daalde in beide paden.
+  - Web build validatie: beide courtroom backgrounds gebundeld in output (`courtroom_background.png` + `courtroom_background_mobile.png`).

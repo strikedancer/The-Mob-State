@@ -36,6 +36,8 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Background styling must not reduce readability of critical sentence, action and balance information.
+- If orientation-specific backgrounds are used, include a safe fallback image path to avoid blank renders.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -51,6 +53,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Verify `/trial/current-sentence` and `/trial/record` both return stable payloads and client handles `sentence: null`.
 - Verify `POST /trial/appeal` returns cooldown block on rapid retry and updates remaining sentence on success.
 - Verify `POST /trial/bribe` deducts balance in both success and failure paths.
+- Verify portrait/landscape switch keeps the courtroom background visible and text/cards readable.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
