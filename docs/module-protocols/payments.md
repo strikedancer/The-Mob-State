@@ -37,6 +37,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Webhook-code moet status server-side ophalen bij Mollie; vertrouw nooit alleen request-body.
 - Gebruik unieke provider payment-id opslag voor idempotente fulfillment.
 - Redemptions die gameplay-data aanpassen moeten ownership en actieve state valideren.
+- Bij meldingen zoals `Unknown column players.mollieCustomerId` eerst migration drift oplossen (latest Prisma migrations deployen) vóór verdere code-debugging.
 
 ## Frontend Loading Guardrails
 - Premium catalogus, VIP-status en credits-overzicht moeten los kunnen falen zonder het hele premiumblok leeg te trekken.
