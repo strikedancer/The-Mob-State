@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final canonicalWebAsset = isPortrait
       ? 'assets/assets/images/backgrounds/login_background_mobile.png'
       : 'assets/assets/images/backgrounds/login_background.png';
-    final legacyAsset = isPortrait
+    final staticWebFallback = isPortrait
         ? 'images/backgrounds/login_background_mobile.png'
         : 'images/backgrounds/login_background.png';
     final directPath = isPortrait
@@ -92,8 +92,8 @@ class _LoginScreenState extends State<LoginScreen> {
           fit: BoxFit.cover,
           alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
           errorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              legacyAsset,
+            return Image.network(
+              WebAssetHelper.toPublicUrl(staticWebFallback),
               fit: BoxFit.cover,
               alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
               errorBuilder: (context, error, stackTrace) {

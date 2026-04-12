@@ -85,6 +85,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Login background web hardening v3: static public fallback toegevoegd via `web/images/backgrounds/*` en login fallback gebruikt nu expliciete network-load van `images/backgrounds/*` wanneer Flutter asset-resolving faalt
+  - Bestanden: `client/lib/screens/login_screen.dart`, `client/web/images/backgrounds/login_background.png`, `client/web/images/backgrounds/login_background_mobile.png`
 - [ ] Login background web hardening v2: canonical Flutter web pad (`assets/assets/images/...`) toegevoegd in fallback-keten en WebAssetHelper resolve't `assets/images/...` nu naar de echte web-outputlocatie
   - Bestanden: `client/lib/utils/web_asset_helper.dart`, `client/lib/screens/login_screen.dart`
 - [ ] Web subpath fix login background: `WebAssetHelper.toPublicUrl()` gebruikt nu base-relative paden i.p.v. root-absolute (`/assets/...`), zodat login background fallback ook werkt wanneer de app niet op domein-root draait
