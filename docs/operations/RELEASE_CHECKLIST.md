@@ -85,6 +85,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Client (game)
 - [ ] Premium kaart voorbereid op Mollie-fase 1: player VIP prijs naar €4,99/mnd en cataloguslabels tonen nu ook credits/event boosts
   - Bestand: `client/lib/screens/crew_screen.dart`
+- [ ] Plesk Docker productie-stack toegevoegd: backend, client, admin, MariaDB en Redis draaien via `docker-compose.plesk.yml` met Plesk als reverse proxy/SSL-laag
+  - Bestanden: `docker-compose.plesk.yml`, `.env.docker.example`, `backend/Dockerfile`, `client/Dockerfile`, `admin/Dockerfile`
 - [ ] Rechtbank UI compleet gemaakt: echte sentence/record data uit `/trial/*` met acties voor hoger beroep en omkoping, inclusief pull-to-refresh en foutstatussen
   - Bestand: `client/lib/screens/court_screen.dart`
 - [ ] Rechtbank UI polish: professionele, beter leesbare layout met cinematic achtergrond (landscape + mobile portrait), contrast-overlay, responsive max-width, partial API rendering en backend-consistente beroep-copy (dynamische kosten + 20-40% reductie)
@@ -137,14 +139,15 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Deploy Plan (wanneer we live gaan)
 
 ### 1) API deploy
-1. Upload gewijzigde backend bestanden naar productie.
-2. SSH naar API root.
-3. Run: `npm run build`
-4. Restart API (Plesk Node / PM2 / Docker)
+1. Push wijzigingen naar GitHub.
+2. SSH naar VPS, ga naar repo-root en run: `git pull`
+3. Maak `.env` aan op basis van `.env.docker.example` en vul productie-waarden in.
+4. Run: `docker compose -f docker-compose.plesk.yml up -d --build`
+5. Run: `docker compose -f docker-compose.plesk.yml exec backend npx prisma migrate deploy`
 
 ### 2) Client deploy
-1. Lokaal run: `flutter build web --release --dart-define=WEB_API_BASE_URL=https://api.themobstate.com`
-2. Upload inhoud van `client/build/web` naar game `httpdocs`
+1. Geen lokale build of FTP meer nodig; client en admin bouwen mee in `docker compose -f docker-compose.plesk.yml up -d --build`.
+2. Zet in Plesk reverse proxy targets naar `127.0.0.1:8080` voor `themobstate.com`, `127.0.0.1:3000` voor `api.themobstate.com` en `127.0.0.1:8081` voor `admin.themobstate.com`.
 
 ### 3) Post-deploy checks
 - [ ] Hard refresh / service worker cache refresh
@@ -198,3 +201,4 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - `npx prisma validate` en `npx prisma generate` succesvol na Mollie/credits schema-uitbreiding.
   - `npm run build` succesvol voor backend na vervanging van Stripe-route door Mollie-route.
   - Runtime payment-flow nog niet end-to-end geverifieerd tegen Mollie webhook omdat dit een geldige `MOLLIE_API_KEY` en publiek bereikbare `MOLLIE_WEBHOOK_URL` vereist.
+- Deployment basis voorbereid voor Plesk + Docker zonder FTP-workflow; domeinen kunnen nu via Plesk reverse proxy naar localhost-containers wijzen.

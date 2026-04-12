@@ -1,0 +1,89 @@
+services:
+  mariadb:
+    image: mariadb:11
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: mafia_game
+      MYSQL_USER: mafia_user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: mysql://mafia_user:${MYSQL_PASSWORD}@mariadb:3306/mafia_game
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      APP_BASE_URL: ${APP_BASE_URL}
+      API_BASE_URL: ${API_BASE_URL}
+      APP_URL: ${APP_URL}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      FIREBASE_SERVICE_ACCOUNT_PATH: firebase-service-account.json
+      TICK_INTERVAL_MINUTES: ${TICK_INTERVAL_MINUTES:-0.5}
+      HUNGER_TICK_AMOUNT: ${HUNGER_TICK_AMOUNT:-0.1157}
+      THIRST_TICK_AMOUNT: ${THIRST_TICK_AMOUNT:-0.1157}
+      HOSPITAL_HEAL_COST: ${HOSPITAL_HEAL_COST:-1000}
+      HOSPITAL_HEAL_AMOUNT: ${HOSPITAL_HEAL_AMOUNT:-50}
+      POLICE_RATIO: ${POLICE_RATIO:-10}
+      MAX_FLIGHTS_PER_DAY: ${MAX_FLIGHTS_PER_DAY:-100}
+      MOLLIE_API_KEY: ${MOLLIE_API_KEY}
+      MOLLIE_WEBHOOK_URL: ${MOLLIE_WEBHOOK_URL}
+      MOLLIE_PLAYER_VIP_PRICE_EUR: ${MOLLIE_PLAYER_VIP_PRICE_EUR:-4.99}
+      MOLLIE_CREW_VIP_PRICE_EUR: ${MOLLIE_CREW_VIP_PRICE_EUR:-9.99}
+    ports:
+      - 127.0.0.1:${BACKEND_PORT:-3000}:3000
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        WEB_API_BASE_URL: ${API_BASE_URL}
+    ports:
+      - 127.0.0.1:${CLIENT_PORT:-8080}:80
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+      args:
+        VITE_ADMIN_API_URL: ${API_BASE_URL}
+    ports:
+      - 127.0.0.1:${ADMIN_PORT:-8081}:80
+    restart: unless-stopped
+
+volumes:
+  mariadb_data:
+  redis_data:
