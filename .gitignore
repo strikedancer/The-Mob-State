@@ -50,6 +50,7 @@ badge_generation*.log
 .env
 .env.*
 !.env.example
+!.env.docker.example
 
 # Runtime files
 *.pid
