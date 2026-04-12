@@ -10,6 +10,7 @@ import '../providers/auth_provider.dart';
 import '../providers/event_provider.dart';
 import '../services/auth_service.dart';
 import '../services/dashboard_service.dart';
+import '../utils/avatar_helper.dart';
 import '../utils/country_helper.dart';
 import '../utils/formatters.dart';
 import '../widgets/event_feed.dart';
