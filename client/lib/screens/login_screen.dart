@@ -72,6 +72,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final preferredAsset = isPortrait
         ? 'assets/images/backgrounds/login_background_mobile.png'
         : 'assets/images/backgrounds/login_background.png';
+    final canonicalWebAsset = isPortrait
+      ? 'assets/assets/images/backgrounds/login_background_mobile.png'
+      : 'assets/assets/images/backgrounds/login_background.png';
     final legacyAsset = isPortrait
         ? 'images/backgrounds/login_background_mobile.png'
         : 'images/backgrounds/login_background.png';
@@ -84,17 +87,24 @@ class _LoginScreenState extends State<LoginScreen> {
       fit: BoxFit.cover,
       alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
       errorBuilder: (context, error, stackTrace) {
-        return Image.asset(
-          legacyAsset,
+        return Image.network(
+          WebAssetHelper.toPublicUrl(canonicalWebAsset),
           fit: BoxFit.cover,
           alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
           errorBuilder: (context, error, stackTrace) {
-            return Image.network(
-              directPath,
+            return Image.asset(
+              legacyAsset,
               fit: BoxFit.cover,
               alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
               errorBuilder: (context, error, stackTrace) {
-                return _buildBackgroundFallback();
+                return Image.network(
+                  directPath,
+                  fit: BoxFit.cover,
+                  alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+                  errorBuilder: (context, error, stackTrace) {
+                    return _buildBackgroundFallback();
+                  },
+                );
               },
             );
           },

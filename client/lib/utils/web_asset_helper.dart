@@ -11,7 +11,8 @@ class WebAssetHelper {
 
     String publicPath;
     if (normalized.startsWith('assets/images/')) {
-      publicPath = 'assets/images/${normalized.substring('assets/images/'.length)}';
+      // Flutter web emits assets declared under assets/images/* at assets/assets/images/*.
+      publicPath = 'assets/assets/images/${normalized.substring('assets/images/'.length)}';
     } else if (normalized.startsWith('images/')) {
       publicPath = 'images/${normalized.substring('images/'.length)}';
     } else if (normalized.startsWith('assets/')) {

@@ -99,6 +99,7 @@ Implementatievoorkeur:
 ## Flutter Web Asset Pad Conventie (Verplicht)
 
 - Voor runtime `Image.asset(...)` in Flutter web gebruik standaard keys onder `assets/images/...` (dit matcht de bestaande bundle-layout).
+- Let op web output-pad: assets onder `assets/images/...` worden in `build/web` fysiek onder `assets/assets/images/...` geplaatst; directe URL-fallbacks moeten daarom dit canonical pad ondersteunen.
 - Vermijd nieuwe `images/...` keys in gameplay-schermen; die leiden in productie snel tot 404-routes op `/assets/images/*`.
 - Login/landing/rechtbank backgrounds vallen ook onder deze regel; gebruik dus `assets/images/backgrounds/...` in `Image.asset(...)`.
 - Voor kritieke visuals (zoals login achtergrond) implementeer altijd een fallback-keten: primaire asset key -> legacy key -> directe `/assets/images/...` URL -> visuele fallback.
