@@ -87,6 +87,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/crew_screen.dart`
 - [ ] Plesk Docker productie-stack toegevoegd: backend, client, admin, MariaDB en Redis draaien via `docker-compose.plesk.yml` met Plesk als reverse proxy/SSL-laag
   - Bestanden: `docker-compose.plesk.yml`, `.env.docker.example`, `backend/Dockerfile`, `client/Dockerfile`, `admin/Dockerfile`
+  - Docker fix: backend image verwacht geen gecommit `firebase-service-account.json` meer; Firebase initialisatie blijft optioneel via env/path op runtime.
 - [ ] Rechtbank UI compleet gemaakt: echte sentence/record data uit `/trial/*` met acties voor hoger beroep en omkoping, inclusief pull-to-refresh en foutstatussen
   - Bestand: `client/lib/screens/court_screen.dart`
 - [ ] Rechtbank UI polish: professionele, beter leesbare layout met cinematic achtergrond (landscape + mobile portrait), contrast-overlay, responsive max-width, partial API rendering en backend-consistente beroep-copy (dynamische kosten + 20-40% reductie)
