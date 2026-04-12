@@ -67,6 +67,7 @@ Als een wijziging meerdere modules raakt, gelden alle relevante bullets tegelijk
 
 - Controleer Prisma relaties bij nested includes.
 - Controleer dat alle queryvelden echt in schema staan.
+- Log interne fouten met context op kritieke auth-routes (`/auth/register`, `/auth/login`) zodat productie-500's direct herleidbaar zijn.
 - Draai Prisma checks:
   - `npx prisma validate`
   - `npx prisma generate`
@@ -99,6 +100,7 @@ Implementatievoorkeur:
 
 - Voor nieuwe scherm-assets (zoals backgrounds) gebruik in code standaard keys onder `images/...`.
 - Vermijd voor nieuwe code `assets/images/...` keys om dubbele web-prefix issues (`assets/assets/...`) en 404's te voorkomen.
+- Login/landing backgrounds vallen ook onder deze regel; gebruik dus `images/backgrounds/...` in `Image.asset(...)`.
 - Bij AI-gegenereerde assets: sla primaire runtime-bestanden op onder `client/images/...` en houd optional bronkopieën onder `client/assets/images/...` alleen als dat expliciet nodig is.
 
 ## Minimale QA Checklist (Altijd Draaien)

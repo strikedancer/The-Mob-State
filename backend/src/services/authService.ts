@@ -49,6 +49,10 @@ export const authService = {
       throw new Error('PASSWORD_TOO_SHORT');
     }
 
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+      throw new Error('EMAIL_INVALID');
+    }
+
     // Validate and normalize language (only 'en' or 'nl' allowed)
     const normalizedLanguage = preferredLanguage === 'nl' ? 'nl' : 'en';
     console.log(`[AuthService] Registration - received language: ${preferredLanguage}, normalized: ${normalizedLanguage}`);
@@ -79,19 +83,25 @@ export const authService = {
     }
 
     // Create player with optional email and verification token
-    const player = await prisma.player.create({
-      data: {
-        username,
-        passwordHash,
-        preferredLanguage: normalizedLanguage,
-        currentCountry: randomCountry.id,
-        ...(email && { 
-          email,
-          verificationToken,
-          verificationTokenExpiry,
-        }),
-      },
-    });
+    let player;
+    try {
+      player = await prisma.player.create({
+        data: {
+          username,
+          passwordHash,
+          preferredLanguage: normalizedLanguage,
+          currentCountry: randomCountry.id,
+          ...(email && {
+            email,
+            verificationToken,
+            verificationTokenExpiry,
+          }),
+        },
+      });
+    } catch (error) {
+      console.error('[AuthService] Failed to create player during register:', error);
+      throw error;
+    }
 
     // Send verification email if email provided
     if (email && verificationToken) {

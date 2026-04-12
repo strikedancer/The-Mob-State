@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Register endpoint hardening: expliciete server logging toegevoegd voor `/auth/register` failures + inputvalidatie voor e-mailformat
+  - Bestanden: `backend/src/routes/auth.ts`, `backend/src/services/authService.ts`
 - [ ] Subscriptions route opgeschoond: dubbele legacy Stripe-tail verwijderd uit Mollie-routebestand om duplicate exports/declarations te voorkomen
   - Bestand: `backend/src/routes/subscriptions.ts`
 - [ ] Mollie premium foundation: Stripe checkout-route vervangen door Mollie player/crew VIP + one-time checkout, webhook-fulfillment, payment transaction logging, credits-overview en credit redemption endpoints
@@ -83,6 +85,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Login background path gestandaardiseerd naar `images/...` om web asset-resolutieproblemen te voorkomen
+  - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] Premium kaart voorbereid op Mollie-fase 1: player VIP prijs naar €4,99/mnd en cataloguslabels tonen nu ook credits/event boosts
   - Bestand: `client/lib/screens/crew_screen.dart`
 - [ ] Plesk Docker productie-stack toegevoegd: backend, client, admin, MariaDB en Redis draaien via `docker-compose.plesk.yml` met Plesk als reverse proxy/SSL-laag

@@ -28,6 +28,8 @@ router.post('/register', async (req: Request, res: Response) => {
       player: result.player,
     });
   } catch (error) {
+    console.error('[AUTH] Register error:', error);
+
     if (error instanceof Error) {
       if (error.message === 'USERNAME_TAKEN') {
         return res.status(400).json({
@@ -47,6 +49,13 @@ router.post('/register', async (req: Request, res: Response) => {
         return res.status(400).json({
           event: 'auth.error',
           params: { reason: 'PASSWORD_TOO_SHORT' },
+        });
+      }
+
+      if (error.message === 'EMAIL_INVALID') {
+        return res.status(400).json({
+          event: 'auth.error',
+          params: { reason: 'EMAIL_INVALID' },
         });
       }
     }
