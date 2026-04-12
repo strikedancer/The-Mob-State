@@ -85,6 +85,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Jobs image fail-safe: job cards (open + locked) gebruiken nu web-safe image loader met visuele fallback zodat ontbrekende job-assets geen broken image meer tonen op productie
+  - Bestanden: `client/lib/widgets/job_card.dart`, `client/lib/screens/jobs_screen.dart`
 - [ ] Web image routing centralisatie: `WebAssetHelper` routeert gameplay-assets nu via stabiele `/images/*` URL en client-nginx mapt `/images/*` naar Flutter bundle (`/assets/assets/images/*`) zodat crimes/jobs/avatars/badges consistent laden online
   - Bestanden: `client/lib/utils/web_asset_helper.dart`, `client/docker/nginx.conf`
 - [ ] Login background web hardening v3: static public fallback toegevoegd via `web/images/backgrounds/*` en login fallback gebruikt nu expliciete network-load van `images/backgrounds/*` wanneer Flutter asset-resolving faalt

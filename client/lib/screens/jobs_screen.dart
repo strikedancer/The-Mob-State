@@ -12,6 +12,7 @@ import '../widgets/cooldown_overlay.dart';
 import '../widgets/job_card.dart';
 import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 class JobsScreen extends StatefulWidget {
   const JobsScreen({super.key});
@@ -167,13 +168,28 @@ class _JobsScreenState extends State<JobsScreen> {
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(10),
                       ),
-                      image: DecorationImage(
-                        image: AssetImage(imageAsset),
+                      color: Colors.grey[850],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(10),
+                      ),
+                      child: WebAssetHelper.image(
+                        imageAsset,
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
-                        onError: (exception, stackTrace) {},
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey[850],
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.work_outline,
+                              color: Colors.white54,
+                              size: 26,
+                            ),
+                          );
+                        },
                       ),
-                      color: Colors.grey[850],
                     ),
                   ),
                   Container(

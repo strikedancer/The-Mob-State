@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/job.dart';
+import '../utils/web_asset_helper.dart';
 
 class JobCard extends StatefulWidget {
   final Job job;
@@ -76,13 +77,28 @@ class _JobCardState extends State<JobCard> {
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(10),
                           ),
-                          image: DecorationImage(
-                            image: AssetImage(imageAsset),
+                          color: Colors.grey[850],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(10),
+                          ),
+                          child: WebAssetHelper.image(
+                            imageAsset,
                             fit: BoxFit.cover,
                             alignment: Alignment.center,
-                            onError: (exception, stackTrace) {},
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.grey[850],
+                                alignment: Alignment.center,
+                                child: const Icon(
+                                  Icons.work_outline,
+                                  color: Colors.white54,
+                                  size: 26,
+                                ),
+                              );
+                            },
                           ),
-                          color: Colors.grey[850],
                         ),
                       ),
                       Container(
