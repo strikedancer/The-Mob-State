@@ -61,6 +61,7 @@ export interface AchievementDefinition {
   requirementFacilityType?: string;
   rewardMoney?: number;
   rewardXp?: number;
+  rewardReputation?: number;
   icon: string;
 }
 
@@ -73,6 +74,7 @@ export interface ClientAchievementPayload {
   requirementValue: number;
   rewardMoney?: number;
   rewardXp?: number;
+  rewardReputation?: number;
   icon: string;
 }
 
@@ -934,6 +936,30 @@ export const ACHIEVEMENT_DEFINITIONS: Record<string, AchievementDefinition> = {
     rewardMoney: 220000,
     rewardXp: 3200,
     icon: '🛥️',
+  },
+
+  two_wheel_bandit: {
+    id: 'two_wheel_bandit',
+    title: 'Two-Wheel Bandit',
+    description: 'Steal 5 motorcycles',
+    category: 'vehicles',
+    requirementType: 'motorcycles_stolen_count',
+    requirementValue: 5,
+    rewardMoney: 50000,
+    rewardXp: 700,
+    icon: '🏍️',
+  },
+
+  bike_cartel: {
+    id: 'bike_cartel',
+    title: 'Bike Cartel',
+    description: 'Steal 25 motorcycles',
+    category: 'vehicles',
+    requirementType: 'motorcycles_stolen_count',
+    requirementValue: 25,
+    rewardMoney: 240000,
+    rewardXp: 3000,
+    icon: '⚙️',
   },
 
   globe_trotter: {
@@ -1843,6 +1869,7 @@ export function serializeAchievementForClient(
     requirementValue: achievement.requirementValue,
     rewardMoney: achievement.rewardMoney,
     rewardXp: achievement.rewardXp,
+    rewardReputation: achievement.rewardReputation,
     icon: achievement.icon,
   };
 }
@@ -1860,6 +1887,7 @@ interface AchievementSnapshot {
   jobCount: number;
   carsStolenCount: number;
   boatsStolenCount: number;
+  motorcyclesStolenCount: number;
   journeysCompletedCount: number;
   drugsProducedCount: number;
   tradesCompletedCount: number;
@@ -1952,6 +1980,7 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     jobCount,
     carsStolenCount,
     boatsStolenCount,
+    motorcyclesStolenCount,
     journeysCompletedCount,
     drugsProducedCount,
     tradesCompletedCount,
@@ -2041,6 +2070,11 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     safeCount('boatsStolenCount', () =>
       prisma.vehicleInventory.count({
         where: { playerId, vehicleType: 'boat' },
+      })
+    ),
+    safeCount('motorcyclesStolenCount', () =>
+      prisma.vehicleInventory.count({
+        where: { playerId, vehicleType: 'motorcycle' },
       })
     ),
     safeCount('journeysCompletedCount', () =>
@@ -2368,6 +2402,7 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     jobCount,
     carsStolenCount,
     boatsStolenCount,
+    motorcyclesStolenCount,
     journeysCompletedCount,
     drugsProducedCount,
     tradesCompletedCount,
@@ -2550,6 +2585,11 @@ function evaluateAchievement(
     case 'boats_stolen_count':
       currentValue = snapshot.boatsStolenCount;
       data = { boatsStolenCount: currentValue };
+      break;
+
+    case 'motorcycles_stolen_count':
+      currentValue = snapshot.motorcyclesStolenCount;
+      data = { motorcyclesStolenCount: currentValue };
       break;
 
     case 'journeys_completed_count':
@@ -2802,13 +2842,17 @@ export async function checkAndUnlockAchievements(
           const achievement = ACHIEVEMENT_DEFINITIONS[type];
           const rewardMoney = achievement.rewardMoney ?? 0;
           const rewardXp = achievement.rewardXp ?? 0;
+          const rewardReputation =
+            achievement.rewardReputation ??
+            (rewardXp > 0 ? Math.max(1, Math.min(50, Math.floor(rewardXp / 500))) : 0);
 
-          if (achievement.rewardMoney || achievement.rewardXp) {
+          if (rewardMoney > 0 || rewardXp > 0 || rewardReputation > 0) {
             await prisma.player.update({
               where: { id: playerId },
               data: {
                 money: { increment: rewardMoney },
                 xp: { increment: rewardXp },
+                reputation: { increment: rewardReputation },
               },
             });
           }
@@ -2824,6 +2868,7 @@ export async function checkAndUnlockAchievements(
               achievementTitle: achievement.title,
               reward: rewardMoney,
               xpGained: rewardXp,
+              reputationGained: rewardReputation,
               language,
             },
             true
@@ -2839,6 +2884,7 @@ export async function checkAndUnlockAchievements(
                   'Beloning:',
                   `• Geld: €${rewardMoney.toLocaleString(numberLocale)}`,
                   `• XP: ${rewardXp.toLocaleString(numberLocale)}`,
+                  `• Reputatie: +${rewardReputation.toLocaleString(numberLocale)}`,
                   '',
                   `🎖 Badge: ${achievement.icon} ${achievement.title}`,
                   `[[achievement:${achievement.category}/${achievement.id}]]`,
@@ -2851,6 +2897,7 @@ export async function checkAndUnlockAchievements(
                   'Reward:',
                   `• Money: €${rewardMoney.toLocaleString(numberLocale)}`,
                   `• XP: ${rewardXp.toLocaleString(numberLocale)}`,
+                  `• Reputation: +${rewardReputation.toLocaleString(numberLocale)}`,
                   '',
                   `🎖 Badge: ${achievement.icon} ${achievement.title}`,
                   `[[achievement:${achievement.category}/${achievement.id}]]`,

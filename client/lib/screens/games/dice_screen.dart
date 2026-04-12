@@ -131,7 +131,7 @@ class _DiceScreenState extends State<DiceScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              won ? 'images/casino/win_effect.png' : 'images/casino/lose_effect.png',
+              won ? 'assets/images/casino/win_effect.png' : 'assets/images/casino/lose_effect.png',
               width: 200,
               height: 150,
               fit: BoxFit.contain,
@@ -198,7 +198,7 @@ class _DiceScreenState extends State<DiceScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'images/casino/bankrupt.png',
+              'assets/images/casino/bankrupt.png',
               width: 300,
               height: 200,
               fit: BoxFit.contain,
@@ -377,7 +377,7 @@ class _DiceScreenState extends State<DiceScreen> {
       width: 100,
       height: 100,
       child: Image.asset(
-        'images/casino/dice/dice_$value.png',
+        'assets/images/casino/dice/dice_$value.png',
         width: 100,
         height: 100,
         fit: BoxFit.contain,

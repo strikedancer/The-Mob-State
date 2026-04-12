@@ -9,6 +9,14 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Subscriptions route opgeschoond: dubbele legacy Stripe-tail verwijderd uit Mollie-routebestand om duplicate exports/declarations te voorkomen
+  - Bestand: `backend/src/routes/subscriptions.ts`
+- [ ] Mollie premium foundation: Stripe checkout-route vervangen door Mollie player/crew VIP + one-time checkout, webhook-fulfillment, payment transaction logging, credits-overview en credit redemption endpoints
+  - Bestanden: `backend/src/routes/subscriptions.ts`, `backend/src/services/premiumCreditsService.ts`, `backend/src/app.ts`, `backend/package.json`
+- [ ] Premium schema uitgebreid voor Mollie + credits-wallet + entitlements + credit catalogus
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/add-mollie-premium-foundation.sql`
+- [ ] Hitlist respecteert premium moordbescherming via `hitProtectionExpiresAt`
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`
 - [ ] Crypto prijs-cron hardening: scheduled price updates gebruiken nu asset-bounds + mean reversion zodat `crypto_assets.current_price` niet meer uit `DECIMAL(24,8)` kan lopen en ontspoorde dev-prijzen automatisch terug binnen bandbreedte worden gezet
   - Bestand: `backend/src/services/cryptoService.ts`
 - [ ] Crypto notificatie hardening: in-app crypto world events serialiseren `params` nu als JSON-string zodat price/regime/news/order/mission/leaderboard notificaties geen Prisma schemafouten meer geven
@@ -75,6 +83,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Premium kaart voorbereid op Mollie-fase 1: player VIP prijs naar €4,99/mnd en cataloguslabels tonen nu ook credits/event boosts
+  - Bestand: `client/lib/screens/crew_screen.dart`
 - [ ] Rechtbank UI compleet gemaakt: echte sentence/record data uit `/trial/*` met acties voor hoger beroep en omkoping, inclusief pull-to-refresh en foutstatussen
   - Bestand: `client/lib/screens/court_screen.dart`
 - [ ] Rechtbank UI polish: professionele, beter leesbare layout met cinematic achtergrond (landscape + mobile portrait), contrast-overlay, responsive max-width, partial API rendering en backend-consistente beroep-copy (dynamische kosten + 20-40% reductie)
@@ -177,9 +187,14 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Notes
 - Bestaande foutief ontgrendelde achievements in DB blijven bestaan totdat handmatig opgeschoond.
 - Voeg vanaf nu elke nieuwe wijziging toe onder “Pending Changes”.
+- Protocol bootstrap uitgevoerd voor nieuw betaalsysteem: `docs/module-protocols/payments.md` toegevoegd en index/master geüpdatet.
 - Lokale QA uitgevoerd op 2026-04-11 (dev):
   - `/trial/current-sentence` gaf zowel `sentence: null` (niet vast) als actieve sentence zonder 500.
   - `/trial/record` gaf stabiele payload met historiekvelden.
   - `POST /trial/appeal` verwerkte kosten en gaf cooldown blokkade op directe retry (`429`).
   - `POST /trial/bribe` gaf zowel success- als failure-uitkomst en saldo daalde in beide paden.
   - Web build validatie: beide courtroom backgrounds gebundeld in output (`courtroom_background.png` + `courtroom_background_mobile.png`).
+- Lokale QA uitgevoerd op 2026-04-11 (payments foundation):
+  - `npx prisma validate` en `npx prisma generate` succesvol na Mollie/credits schema-uitbreiding.
+  - `npm run build` succesvol voor backend na vervanging van Stripe-route door Mollie-route.
+  - Runtime payment-flow nog niet end-to-end geverifieerd tegen Mollie webhook omdat dit een geldige `MOLLIE_API_KEY` en publiek bereikbare `MOLLIE_WEBHOOK_URL` vereist.

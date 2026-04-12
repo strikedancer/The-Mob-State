@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Achievement {
   final String id;
   final String title;
@@ -7,6 +9,7 @@ class Achievement {
   final int requirementValue;
   final int? rewardMoney;
   final int? rewardXp;
+  final int? rewardReputation;
   final String icon;
   final bool unlocked;
   final DateTime? unlockedAt;
@@ -23,6 +26,7 @@ class Achievement {
     required this.requirementValue,
     this.rewardMoney,
     this.rewardXp,
+    this.rewardReputation,
     required this.icon,
     this.unlocked = false,
     this.unlockedAt,
@@ -41,15 +45,63 @@ class Achievement {
       requirementValue: (json['requirementValue'] as num?)?.toInt() ?? 0,
       rewardMoney: (json['rewardMoney'] as num?)?.toInt(),
       rewardXp: (json['rewardXp'] as num?)?.toInt(),
+      rewardReputation: (json['rewardReputation'] as num?)?.toInt(),
       icon: json['icon'] as String,
       unlocked: json['unlocked'] as bool? ?? false,
       unlockedAt: json['unlockedAt'] != null
           ? DateTime.parse(json['unlockedAt'] as String)
           : null,
-      achievementData: json['achievementData'] as Map<String, dynamic>?,
+      achievementData: _parseAchievementData(json['achievementData']),
       currentValue: (json['currentValue'] as num?)?.toInt() ?? 0,
       progressPercent: (json['progressPercent'] as num?)?.toInt() ?? 0,
     );
+  }
+
+  static Map<String, dynamic>? _parseAchievementData(dynamic raw) {
+    if (raw == null) {
+      return null;
+    }
+
+    if (raw is Map<String, dynamic>) {
+      return raw;
+    }
+
+    if (raw is Map) {
+      return raw.map((key, value) => MapEntry(key.toString(), value));
+    }
+
+    if (raw is String) {
+      final text = raw.trim();
+      if (text.isEmpty) {
+        return null;
+      }
+
+      try {
+        final decoded = jsonDecode(text);
+        if (decoded is Map<String, dynamic>) {
+          return decoded;
+        }
+        if (decoded is Map) {
+          return decoded.map((key, value) => MapEntry(key.toString(), value));
+        }
+      } catch (_) {
+        // Fallback for stringified map-like payloads using single quotes.
+        try {
+          final normalized = text.replaceAll("'", '"');
+          final decoded = jsonDecode(normalized);
+          if (decoded is Map<String, dynamic>) {
+            return decoded;
+          }
+          if (decoded is Map) {
+            return decoded.map((key, value) => MapEntry(key.toString(), value));
+          }
+        } catch (_) {
+          return {'raw': text};
+        }
+      }
+    }
+
+    return {'raw': raw.toString()};
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +114,7 @@ class Achievement {
       'requirementValue': requirementValue,
       'rewardMoney': rewardMoney,
       'rewardXp': rewardXp,
+      'rewardReputation': rewardReputation,
       'icon': icon,
       'unlocked': unlocked,
       'unlockedAt': unlockedAt?.toIso8601String(),

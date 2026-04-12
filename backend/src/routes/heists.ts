@@ -5,6 +5,7 @@ import * as heistService from '../services/heistService';
 import * as crewService from '../services/crewService';
 import * as policeService from '../services/policeService';
 import * as cooldownService from '../services/cooldownService';
+import { applyReputationAction } from '../services/reputationService';
 
 const router = Router();
 
@@ -111,6 +112,12 @@ router.post(
       // Set cooldown after heist attempt
       await cooldownService.setCooldown(playerId, 'heist');
 
+      const newReputation = await applyReputationAction(
+        playerId,
+        result.success ? 'heist_success' : 'heist_failed',
+        result.success,
+      );
+
       if (result.success) {
         return res.json({
           event: result.sabotaged ? 'heist.success_sabotaged' : 'heist.success',
@@ -119,6 +126,7 @@ router.post(
             xpGained: result.xpGained,
             sabotaged: result.sabotaged,
             sabotagedBy: result.sabotagedBy,
+            reputation: newReputation,
           },
         });
       } else {
@@ -128,6 +136,7 @@ router.post(
             jailTime: result.jailTime,
             sabotaged: result.sabotaged,
             sabotagedBy: result.sabotagedBy,
+            reputation: newReputation,
           },
         });
       }

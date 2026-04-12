@@ -6,9 +6,7 @@ import '../l10n/app_localizations.dart';
 import '../models/prostitute.dart';
 import '../models/achievement.dart';
 import '../services/prostitution_service.dart';
-import '../services/user_preferences_service.dart';
 import '../utils/achievement_notifier.dart';
-import '../widgets/vehicle_steal_video_overlay.dart';
 import '../widgets/jail_screen.dart';
 import 'prostitution_leaderboard_screen.dart';
 import 'prostitution_rivalry_screen.dart';
@@ -26,10 +24,6 @@ class ProstitutionScreen extends StatefulWidget {
 class _ProstitutionScreenState extends State<ProstitutionScreen>
     with SingleTickerProviderStateMixin {
   final ProstitutionService _service = ProstitutionService();
-  static const String _normalRecruitVideoPath =
-      'assets/videos/prostitution/recruitment_sequence_master.mp4';
-  static const String _vipRecruitVideoPath =
-      'assets/videos/prostitution/recruitment_sequence_vip.mp4';
 
   List<Prostitute> _prostitutes = [];
   ProstituteHousingSummary? _housingSummary;
@@ -41,9 +35,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   bool _isLoading = true;
   bool _isRecruiting = false;
-  String? _recruitVideoPath;
-  String? _recruitVideoMessage;
-  List<Achievement> _pendingRecruitAchievements = [];
   int? _cooldownSeconds;
   int? _jailSeconds;
   int? _wantedLevel;
@@ -317,9 +308,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       final result = await _service.recruitProstitute();
 
       if (result['success'] == true) {
-        final recruitedProstitute = result['prostitute'] as Prostitute?;
-        final isVipRecruit = recruitedProstitute?.isVipProstitute ?? false;
-
         final newAchievements = result['newAchievements'] as List?;
         final achievements =
             newAchievements != null && newAchievements.isNotEmpty
@@ -331,22 +319,11 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
         if (!mounted) return;
 
-        final showVideos = await UserPreferencesService.getShowVideosEnabled();
         final recruitMessage = result['message']?.toString() ?? 'Geworven!';
 
         if (!mounted) return;
 
-        if (showVideos) {
-          setState(() {
-            _recruitVideoPath = isVipRecruit
-                ? _vipRecruitVideoPath
-                : _normalRecruitVideoPath;
-            _recruitVideoMessage = recruitMessage;
-            _pendingRecruitAchievements = achievements;
-          });
-        } else {
-          _finishRecruitPresentation(recruitMessage, achievements);
-        }
+        _finishRecruitPresentation(recruitMessage, achievements);
       } else if (mounted) {
         final jailRemaining = result['jailRemaining'] as int?;
         if (jailRemaining != null && jailRemaining > 0) {
@@ -503,28 +480,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.prostitutionTitle)),
-      body: _recruitVideoPath != null
-          ? VehicleStealVideoOverlay(
-              videoPath: _recruitVideoPath!,
-              durationSeconds: 5,
-              onComplete: () {
-                if (!mounted) return;
-
-                final message = _recruitVideoMessage;
-                final achievements = List<Achievement>.from(
-                  _pendingRecruitAchievements,
-                );
-
-                setState(() {
-                  _recruitVideoPath = null;
-                  _recruitVideoMessage = null;
-                  _pendingRecruitAchievements = [];
-                });
-
-                _finishRecruitPresentation(message, achievements);
-              },
-            )
-          : _jailSeconds != null && _jailSeconds! > 0
+      body: _jailSeconds != null && _jailSeconds! > 0
           ? JailOverlay(
               embedded: true,
               remainingSeconds: _jailSeconds!,

@@ -633,7 +633,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('images/backgrounds/ammo_factory_bg.png'),
+          image: const AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
           fit: BoxFit.cover,
           opacity: 0.4,
         ),

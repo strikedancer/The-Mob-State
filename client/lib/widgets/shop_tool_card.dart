@@ -25,7 +25,7 @@ class _ShopToolCardState extends State<ShopToolCard> {
   @override
   Widget build(BuildContext context) {
     // final l10n = AppLocalizations.of(context)!;  // Unused
-    final imageAsset = 'images/tools/${widget.tool.id}_tool.png';
+    final imageAsset = 'assets/images/tools/${widget.tool.id}_tool.png';
     final canBuy = widget.canAfford && !widget.inventoryFull;
 
     return MouseRegion(

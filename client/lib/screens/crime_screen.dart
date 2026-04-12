@@ -248,7 +248,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
               content: Row(
                 children: [
                   Image.asset(
-                    'images/cooldown_jail.png',
+                    'assets/images/cooldown_jail.png',
                     width: 28,
                     height: 28,
                     fit: BoxFit.cover,
@@ -361,7 +361,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                 content: Row(
                   children: [
                     Image.asset(
-                      'images/cooldown_jail.png',
+                      'assets/images/cooldown_jail.png',
                       width: 28,
                       height: 28,
                       fit: BoxFit.cover,
@@ -675,7 +675,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                      'images/backgrounds/crime_background.png',
+                      'assets/images/backgrounds/crime_background.png',
                     ),
                     fit: BoxFit.cover,
                     opacity: 0.3,

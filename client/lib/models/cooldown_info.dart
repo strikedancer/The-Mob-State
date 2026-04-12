@@ -25,15 +25,15 @@ class CooldownInfo {
   /// Get the cartoon image path for this action type
   String getImagePath() {
     final images = {
-      'crime': 'assets/images/cooldowns/crime_wait.png',
-      'job': 'assets/images/cooldowns/job_rest.png',
-      'travel': 'assets/images/cooldowns/travel_airport.png',
-      'heist': 'assets/images/cooldowns/heist_planning.png',
-      'appeal': 'assets/images/cooldowns/appeal_waiting.png',
-      'school': 'assets/images/cooldowns/school_study.png',
+      'crime': 'assets/images/cooldown_crimes.png',
+      'job': 'assets/images/cooldown_jobs.png',
+      'travel': 'assets/images/cooldown_airfield.png',
+      'heist': 'assets/images/cooldown_crimes.png',
+      'appeal': 'assets/images/cooldown_jail.png',
+      'school': 'assets/images/cooldown_school.png',
     };
     // Default to crime image if action type not found
-    return images[actionType] ?? 'assets/images/cooldowns/crime_wait.png';
+    return images[actionType] ?? 'assets/images/cooldown_crimes.png';
   }
 
   /// Get the icon for this action type

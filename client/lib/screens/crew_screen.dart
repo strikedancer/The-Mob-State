@@ -7,6 +7,7 @@ import '../services/auth_service.dart';
 import '../models/crew.dart';
 import '../models/crew_join_request.dart';
 import '../widgets/crew_chat_widget.dart';
+import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
 
 class CrewScreen extends StatefulWidget {
@@ -36,6 +37,15 @@ class _CrewScreenState extends State<CrewScreen>
   Map<String, dynamic>? _crewStorage;
   bool _loading = true;
 
+  void _openPlayerProfile(int playerId, String username) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            PlayerProfileScreen(playerId: playerId, username: username),
+      ),
+    );
+  }
+
   static const Map<String, Map<String, String>> _crewI18n = {
     'app.crews': {'nl': 'Crews', 'en': 'Crews'},
     'tab.myCrew': {'nl': 'Mijn Crew', 'en': 'My Crew'},
@@ -49,9 +59,18 @@ class _CrewScreenState extends State<CrewScreen>
     'tab.cashStorage': {'nl': 'Cash opslag', 'en': 'Cash Storage'},
     'tab.allCrews': {'nl': 'Alle Crews', 'en': 'All Crews'},
     'tab.chat': {'nl': 'Chat', 'en': 'Chat'},
-    'action.createCrewShort': {'nl': 'Crew Maken (€50k)', 'en': 'Create Crew (€50k)'},
-    'state.notInCrewYet': {'nl': 'Je zit nog niet in een crew', 'en': 'You are not in a crew yet'},
-    'action.createCrew': {'nl': 'Crew Maken (€50,000)', 'en': 'Create Crew (€50,000)'},
+    'action.createCrewShort': {
+      'nl': 'Crew Maken (€50k)',
+      'en': 'Create Crew (€50k)',
+    },
+    'state.notInCrewYet': {
+      'nl': 'Je zit nog niet in een crew',
+      'en': 'You are not in a crew yet',
+    },
+    'action.createCrew': {
+      'nl': 'Crew Maken (€50,000)',
+      'en': 'Create Crew (€50,000)',
+    },
     'label.crewBank': {'nl': 'Crew Bank:', 'en': 'Crew Bank:'},
     'label.deposit': {'nl': 'Storten', 'en': 'Deposit'},
     'label.withdraw': {'nl': 'Opnemen', 'en': 'Withdraw'},
@@ -62,32 +81,50 @@ class _CrewScreenState extends State<CrewScreen>
     'section.buildings': {'nl': 'Crew HQ & Opslag', 'en': 'Crew HQ & Storage'},
     'hint.buildingsTabs': {
       'nl': 'Open Crew HQ en de opslag-tabs om te bekijken en upgraden.',
-      'en': 'Open Crew HQ and the storage tabs to view and upgrade.'
+      'en': 'Open Crew HQ and the storage tabs to view and upgrade.',
     },
     'section.crewStorage': {'nl': 'Crew Opslag', 'en': 'Crew Storage'},
-    'state.noStorageData': {'nl': 'Geen opslagdata geladen', 'en': 'No storage data loaded'},
+    'state.noStorageData': {
+      'nl': 'Geen opslagdata geladen',
+      'en': 'No storage data loaded',
+    },
     'action.addCar': {'nl': 'Auto toevoegen', 'en': 'Add car'},
     'action.addBoat': {'nl': 'Boot toevoegen', 'en': 'Add boat'},
     'action.addWeapon': {'nl': 'Wapen toevoegen', 'en': 'Add weapon'},
     'action.addAmmo': {'nl': 'Munitie toevoegen', 'en': 'Add ammo'},
     'action.addDrugs': {'nl': 'Drugs toevoegen', 'en': 'Add drugs'},
-    'section.membersOverview': {'nl': 'Leden overzicht', 'en': 'Members overview'},
+    'section.membersOverview': {
+      'nl': 'Leden overzicht',
+      'en': 'Members overview',
+    },
     'hint.membersTab': {
       'nl': 'Open de tab Leden bovenaan voor de ledenlijst en join requests.',
-      'en': 'Open the Members tab above for member list and join requests.'
+      'en': 'Open the Members tab above for member list and join requests.',
     },
     'action.goToMembers': {'nl': 'Ga naar Leden', 'en': 'Go to Members'},
     'label.crewHq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
     'action.goToCrewHq': {'nl': 'Ga naar Crew HQ', 'en': 'Go to Crew HQ'},
-    'state.joinCrewFirst': {'nl': 'Maak of join eerst een crew', 'en': 'Create or join a crew first'},
+    'state.joinCrewFirst': {
+      'nl': 'Maak of join eerst een crew',
+      'en': 'Create or join a crew first',
+    },
     'state.joinRequests': {'nl': 'Join Requests', 'en': 'Join Requests'},
-    'state.noJoinRequests': {'nl': 'Geen open verzoeken', 'en': 'No pending requests'},
+    'state.noJoinRequests': {
+      'nl': 'Geen open verzoeken',
+      'en': 'No pending requests',
+    },
     'state.noCrewsFound': {'nl': 'Geen crews gevonden', 'en': 'No crews found'},
     'label.memberCount': {'nl': 'Leden', 'en': 'Members'},
     'badge.myCrew': {'nl': 'Mijn Crew', 'en': 'My Crew'},
     'action.join': {'nl': 'Joinen', 'en': 'Join'},
-    'state.notInCrew': {'nl': 'Je zit niet in een crew', 'en': 'You are not in a crew'},
-    'hint.chatJoinCrew': {'nl': 'Maak of join een crew om te chatten!', 'en': 'Create or join a crew to chat!'},
+    'state.notInCrew': {
+      'nl': 'Je zit niet in een crew',
+      'en': 'You are not in a crew',
+    },
+    'hint.chatJoinCrew': {
+      'nl': 'Maak of join een crew om te chatten!',
+      'en': 'Create or join a crew to chat!',
+    },
     'status.notOwned': {'nl': 'Niet gekocht', 'en': 'Not owned'},
     'label.level': {'nl': 'Level', 'en': 'Level'},
     'label.capacity': {'nl': 'Capaciteit', 'en': 'Capacity'},
@@ -106,22 +143,226 @@ class _CrewScreenState extends State<CrewScreen>
 
   static const Map<String, List<int>> _buildingCapacityByLevel = {
     'hq': [5, 10, 16, 24],
-    'car_storage': [2, 5, 10, 18, 28, 40, 55, 72, 92, 115, 145, 180, 220, 265, 315, 504],
-    'boat_storage': [1, 3, 6, 10, 15, 21, 28, 36, 46, 58, 72, 88, 106, 126, 150, 240],
-    'weapon_storage': [10, 25, 55, 110, 180, 280, 420, 600, 850, 1200, 1650, 2200, 2850, 3600, 4500, 7200],
-    'ammo_storage': [500, 1500, 3500, 7000, 12000, 20000, 32000, 50000, 75000, 110000, 160000, 230000, 320000, 450000, 620000, 1054000],
-    'drug_storage': [50, 140, 300, 650, 1200, 2200, 3800, 6500, 10000, 15000, 22000, 31000, 43000, 58000, 77000, 123200],
-    'cash_storage': [100000, 600000, 2500000, 10000000, 35000000, 100000000, 250000000, 600000000, 1200000000, 2200000000, 4000000000, 7000000000, 12000000000, 20000000000, 35000000000, 66500000000],
+    'car_storage': [
+      2,
+      5,
+      10,
+      18,
+      28,
+      40,
+      55,
+      72,
+      92,
+      115,
+      145,
+      180,
+      220,
+      265,
+      315,
+      504,
+    ],
+    'boat_storage': [
+      1,
+      3,
+      6,
+      10,
+      15,
+      21,
+      28,
+      36,
+      46,
+      58,
+      72,
+      88,
+      106,
+      126,
+      150,
+      240,
+    ],
+    'weapon_storage': [
+      10,
+      25,
+      55,
+      110,
+      180,
+      280,
+      420,
+      600,
+      850,
+      1200,
+      1650,
+      2200,
+      2850,
+      3600,
+      4500,
+      7200,
+    ],
+    'ammo_storage': [
+      500,
+      1500,
+      3500,
+      7000,
+      12000,
+      20000,
+      32000,
+      50000,
+      75000,
+      110000,
+      160000,
+      230000,
+      320000,
+      450000,
+      620000,
+      1054000,
+    ],
+    'drug_storage': [
+      50,
+      140,
+      300,
+      650,
+      1200,
+      2200,
+      3800,
+      6500,
+      10000,
+      15000,
+      22000,
+      31000,
+      43000,
+      58000,
+      77000,
+      123200,
+    ],
+    'cash_storage': [
+      100000,
+      600000,
+      2500000,
+      10000000,
+      35000000,
+      100000000,
+      250000000,
+      600000000,
+      1200000000,
+      2200000000,
+      4000000000,
+      7000000000,
+      12000000000,
+      20000000000,
+      35000000000,
+      66500000000,
+    ],
   };
 
   static const Map<String, List<int>> _buildingCostByLevel = {
     'hq': [0, 75000, 250000, 900000],
-    'car_storage': [50000, 150000, 450000, 1200000, 3200000, 8000000, 18000000, 38000000, 75000000, 140000000, 250000000, 450000000, 800000000, 1400000000, 2400000000, 3720000000],
-    'boat_storage': [60000, 180000, 520000, 1400000, 3600000, 9000000, 20000000, 42000000, 82000000, 155000000, 280000000, 500000000, 900000000, 1600000000, 2800000000, 4340000000],
-    'weapon_storage': [45000, 130000, 350000, 950000, 2500000, 6250000, 14000000, 30000000, 60000000, 115000000, 200000000, 360000000, 650000000, 1200000000, 2100000000, 3255000000],
-    'ammo_storage': [40000, 120000, 320000, 900000, 2300000, 5700000, 12800000, 27000000, 54000000, 103000000, 180000000, 325000000, 585000000, 1050000000, 1850000000, 2867500000],
-    'drug_storage': [55000, 160000, 420000, 1100000, 2800000, 7000000, 15600000, 33000000, 66000000, 126000000, 220000000, 395000000, 710000000, 1280000000, 2250000000, 3487500000],
-    'cash_storage': [75000, 250000, 800000, 2000000, 5000000, 12500000, 28000000, 60000000, 120000000, 230000000, 400000000, 720000000, 1300000000, 2300000000, 4000000000, 6200000000],
+    'car_storage': [
+      50000,
+      150000,
+      450000,
+      1200000,
+      3200000,
+      8000000,
+      18000000,
+      38000000,
+      75000000,
+      140000000,
+      250000000,
+      450000000,
+      800000000,
+      1400000000,
+      2400000000,
+      3720000000,
+    ],
+    'boat_storage': [
+      60000,
+      180000,
+      520000,
+      1400000,
+      3600000,
+      9000000,
+      20000000,
+      42000000,
+      82000000,
+      155000000,
+      280000000,
+      500000000,
+      900000000,
+      1600000000,
+      2800000000,
+      4340000000,
+    ],
+    'weapon_storage': [
+      45000,
+      130000,
+      350000,
+      950000,
+      2500000,
+      6250000,
+      14000000,
+      30000000,
+      60000000,
+      115000000,
+      200000000,
+      360000000,
+      650000000,
+      1200000000,
+      2100000000,
+      3255000000,
+    ],
+    'ammo_storage': [
+      40000,
+      120000,
+      320000,
+      900000,
+      2300000,
+      5700000,
+      12800000,
+      27000000,
+      54000000,
+      103000000,
+      180000000,
+      325000000,
+      585000000,
+      1050000000,
+      1850000000,
+      2867500000,
+    ],
+    'drug_storage': [
+      55000,
+      160000,
+      420000,
+      1100000,
+      2800000,
+      7000000,
+      15600000,
+      33000000,
+      66000000,
+      126000000,
+      220000000,
+      395000000,
+      710000000,
+      1280000000,
+      2250000000,
+      3487500000,
+    ],
+    'cash_storage': [
+      75000,
+      250000,
+      800000,
+      2000000,
+      5000000,
+      12500000,
+      28000000,
+      60000000,
+      120000000,
+      230000000,
+      400000000,
+      720000000,
+      1300000000,
+      2300000000,
+      4000000000,
+      6200000000,
+    ],
   };
 
   String _t(String locale, String key) {
@@ -192,7 +433,10 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  List<String> _getMissingSideBuildingsForHqUpgrade(int requiredLevel, String locale) {
+  List<String> _getMissingSideBuildingsForHqUpgrade(
+    int requiredLevel,
+    String locale,
+  ) {
     const sideTypes = [
       'car_storage',
       'boat_storage',
@@ -206,10 +450,7 @@ class _CrewScreenState extends State<CrewScreen>
     for (final sideType in sideTypes) {
       final sideBuilding = _crewBuildings.firstWhere(
         (b) => (b['type'] as String?) == sideType,
-        orElse: () => {
-          'type': sideType,
-          'level': null,
-        },
+        orElse: () => {'type': sideType, 'level': null},
       );
       final sideLevel = sideBuilding['level'] as int?;
       if ((sideLevel ?? -1) < requiredLevel) {
@@ -247,13 +488,17 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  Future<void> _showBuildingCapsDialog(String locale, String buildingType, String buildingLabel) async {
+  Future<void> _showBuildingCapsDialog(
+    String locale,
+    String buildingType,
+    String buildingLabel,
+  ) async {
     final caps = buildingType == 'hq'
-      ? _getHqCapsByGlobalLevel()
-      : _buildingCapacityByLevel[buildingType];
+        ? _getHqCapsByGlobalLevel()
+        : _buildingCapacityByLevel[buildingType];
     final costs = buildingType == 'hq'
-      ? _getHqCostsByGlobalLevel()
-      : _buildingCostByLevel[buildingType];
+        ? _getHqCostsByGlobalLevel()
+        : _buildingCostByLevel[buildingType];
     if (caps == null || caps.isEmpty) return;
 
     String shortNum(int n) {
@@ -264,8 +509,8 @@ class _CrewScreenState extends State<CrewScreen>
     }
 
     final capLabel = buildingType == 'hq'
-      ? _t(locale, 'label.memberCap')
-      : _t(locale, 'help.capacity');
+        ? _t(locale, 'label.memberCap')
+        : _t(locale, 'help.capacity');
 
     const headerStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 12);
     const dataStyle = TextStyle(fontSize: 12);
@@ -279,24 +524,60 @@ class _CrewScreenState extends State<CrewScreen>
           child: ListView(
             shrinkWrap: true,
             children: [
-              Row(children: [
-                SizedBox(width: 36, child: Text(_t(locale, 'help.level'), style: headerStyle)),
-                Expanded(child: Text(capLabel, style: headerStyle, textAlign: TextAlign.center)),
-                Expanded(child: Text(_t(locale, 'help.upgradeCost'), style: headerStyle, textAlign: TextAlign.right)),
-              ]),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 36,
+                    child: Text(_t(locale, 'help.level'), style: headerStyle),
+                  ),
+                  Expanded(
+                    child: Text(
+                      capLabel,
+                      style: headerStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _t(locale, 'help.upgradeCost'),
+                      style: headerStyle,
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ],
+              ),
               const Divider(height: 8),
               ...List.generate(caps.length, (index) {
-                final costStr = (costs != null && index < costs.length) ? shortNum(costs[index]) : '-';
+                final costStr = (costs != null && index < costs.length)
+                    ? shortNum(costs[index])
+                    : '-';
                 final levelLabel = buildingType == 'hq'
                     ? 'L$index (${_localizedHqStyleLabel(locale, _hqStyleOrder[index ~/ 4])})'
                     : 'L$index';
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
-                  child: Row(children: [
-                    SizedBox(width: 90, child: Text(levelLabel, style: dataStyle)),
-                    Expanded(child: Text(shortNum(caps[index]), style: dataStyle, textAlign: TextAlign.center)),
-                    Expanded(child: Text(costStr, style: dataStyle, textAlign: TextAlign.right)),
-                  ]),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 90,
+                        child: Text(levelLabel, style: dataStyle),
+                      ),
+                      Expanded(
+                        child: Text(
+                          shortNum(caps[index]),
+                          style: dataStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          costStr,
+                          style: dataStyle,
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }),
             ],
@@ -323,9 +604,17 @@ class _CrewScreenState extends State<CrewScreen>
           'Upgrade your current HQ style to max level to unlock the next style',
         );
       case 'error.hq_style_max':
-        return _tr(locale, 'Laatste HQ-stijl bereikt', 'Final HQ style reached');
+        return _tr(
+          locale,
+          'Laatste HQ-stijl bereikt',
+          'Final HQ style reached',
+        );
       case 'error.hq_vip_required':
-        return _tr(locale, 'VIP HQ vereist voor level 11-15', 'VIP HQ required for level 11-15');
+        return _tr(
+          locale,
+          'VIP HQ vereist voor level 11-15',
+          'VIP HQ required for level 11-15',
+        );
       case 'error.hq_side_buildings_incomplete':
         return _tr(
           locale,
@@ -335,7 +624,11 @@ class _CrewScreenState extends State<CrewScreen>
       case 'error.building_already_owned':
         return _tr(locale, 'Gebouw al gekocht', 'Building already owned');
       case 'error.insufficient_crew_funds':
-        return _tr(locale, 'Onvoldoende saldo in crew bank', 'Insufficient crew bank funds');
+        return _tr(
+          locale,
+          'Onvoldoende saldo in crew bank',
+          'Insufficient crew bank funds',
+        );
       case 'error.hq_level_too_low':
         return _tr(
           locale,
@@ -343,7 +636,11 @@ class _CrewScreenState extends State<CrewScreen>
           'HQ progression is too low for this upgrade',
         );
       case 'error.building_vip_required':
-        return _tr(locale, 'Crew VIP vereist voor level 11+', 'Crew VIP required for level 11+');
+        return _tr(
+          locale,
+          'Crew VIP vereist voor level 11+',
+          'Crew VIP required for level 11+',
+        );
       default:
         return _tr(locale, 'Actie mislukt', 'Action failed');
     }
@@ -392,7 +689,9 @@ class _CrewScreenState extends State<CrewScreen>
   Future<void> _loadOneTimeProducts() async {
     try {
       final apiClient = AuthService().apiClient;
-      final response = await apiClient.get('/subscriptions/checkout/one-time/catalog');
+      final response = await apiClient.get(
+        '/subscriptions/checkout/one-time/catalog',
+      );
 
       if (response.statusCode != 200) return;
 
@@ -584,7 +883,8 @@ class _CrewScreenState extends State<CrewScreen>
 
         if (response.statusCode == 201) {
           if (mounted) {
-            showTopRightFromSnackBar(context, 
+            showTopRightFromSnackBar(
+              context,
               SnackBar(
                 content: Text(
                   Localizations.localeOf(context).languageCode == 'nl'
@@ -599,8 +899,12 @@ class _CrewScreenState extends State<CrewScreen>
         }
       } catch (e) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
-            SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text('Er is een fout opgetreden'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }
@@ -614,7 +918,8 @@ class _CrewScreenState extends State<CrewScreen>
 
       if (response.statusCode == 200) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 Localizations.localeOf(context).languageCode == 'nl'
@@ -652,14 +957,19 @@ class _CrewScreenState extends State<CrewScreen>
           // Keep fallback message
         }
 
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(content: Text(message), backgroundColor: Colors.red),
         );
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -690,13 +1000,18 @@ class _CrewScreenState extends State<CrewScreen>
                 const SizedBox(width: 8),
                 Text(
                   isNl ? 'VIP Abonnementen' : 'VIP Subscriptions',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 4),
             Text(
-              isNl ? 'Echte betalingen · maandelijks opzegbaar' : 'Real payments · cancel anytime',
+              isNl
+                  ? 'Echte betalingen · maandelijks opzegbaar'
+                  : 'Real payments · cancel anytime',
               style: TextStyle(fontSize: 11, color: Colors.grey[500]),
             ),
             const Divider(height: 20),
@@ -708,20 +1023,33 @@ class _CrewScreenState extends State<CrewScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        const Icon(Icons.groups, size: 18, color: Colors.purple),
-                        const SizedBox(width: 6),
-                        Text(_tr(locale, 'Crew VIP', 'Crew VIP'),
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
-                        if (crewVip) ...[const SizedBox(width: 6), _vipBadge()],
-                      ]),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.groups,
+                            size: 18,
+                            color: Colors.purple,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            _tr(locale, 'Crew VIP', 'Crew VIP'),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          if (crewVip) ...[
+                            const SizedBox(width: 6),
+                            _vipBadge(),
+                          ],
+                        ],
+                      ),
                       const SizedBox(height: 2),
                       Text(
                         crewVip
-                            ? (isNl ? 'Actief tot: $crewExpiry' : 'Active until: $crewExpiry')
+                            ? (isNl
+                                  ? 'Actief tot: $crewExpiry'
+                                  : 'Active until: $crewExpiry')
                             : (isNl
-                                ? 'Bijgebouwen lvl 11-15 + speler VIP inbegrepen'
-                                : 'Side buildings lvl 11-15 + player VIP included'),
+                                  ? 'Bijgebouwen lvl 11-15 + speler VIP inbegrepen'
+                                  : 'Side buildings lvl 11-15 + player VIP included'),
                         style: TextStyle(fontSize: 11, color: Colors.grey[600]),
                       ),
                     ],
@@ -731,20 +1059,30 @@ class _CrewScreenState extends State<CrewScreen>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(_tr(locale, '€9,99/mnd', '€9.99/mo'),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.purple[700], fontSize: 13)),
+                    Text(
+                      _tr(locale, '€9,99/mnd', '€9.99/mo'),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.purple[700],
+                        fontSize: 13,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     ElevatedButton(
                       onPressed: () => _startCheckout('crew_vip'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
-                        crewVip ? (isNl ? 'Verlengen' : 'Extend') : (isNl ? 'Activeren' : 'Activate'),
+                        crewVip
+                            ? (isNl ? 'Verlengen' : 'Extend')
+                            : (isNl ? 'Activeren' : 'Activate'),
                         style: const TextStyle(fontSize: 12),
                       ),
                     ),
@@ -761,12 +1099,20 @@ class _CrewScreenState extends State<CrewScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(children: [
-                        const Icon(Icons.person, size: 18, color: Colors.amber),
-                        const SizedBox(width: 6),
-                        Text(isNl ? 'Speler VIP' : 'Player VIP',
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
-                      ]),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.person,
+                            size: 18,
+                            color: Colors.amber,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            isNl ? 'Speler VIP' : 'Player VIP',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 2),
                       Text(
                         isNl
@@ -781,20 +1127,30 @@ class _CrewScreenState extends State<CrewScreen>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(_tr(locale, '€6,99/mnd', '€6.99/mo'),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.amber[700], fontSize: 13)),
+                    Text(
+                      _tr(locale, '€4,99/mnd', '€4.99/mo'),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber[700],
+                        fontSize: 13,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     ElevatedButton(
                       onPressed: () => _startCheckout('player_vip'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.amber[700],
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: Text(isNl ? 'Abonneren' : 'Subscribe',
-                          style: const TextStyle(fontSize: 12)),
+                      child: Text(
+                        isNl ? 'Abonneren' : 'Subscribe',
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ),
                   ],
                 ),
@@ -818,6 +1174,9 @@ class _CrewScreenState extends State<CrewScreen>
                 final price = (product['priceEur'] ?? '0.00').toString();
 
                 String rewardLabel = '';
+                final rewardSummary = locale == 'nl'
+                    ? (product['rewardSummaryNl'] ?? '').toString()
+                    : (product['rewardSummaryEn'] ?? '').toString();
                 final reward = product['reward'];
                 if (reward is Map<String, dynamic>) {
                   final type = (reward['type'] ?? '').toString();
@@ -828,11 +1187,22 @@ class _CrewScreenState extends State<CrewScreen>
                     final ammoType = (reward['ammoType'] ?? '').toString();
                     final quantity = (reward['quantity'] ?? 0);
                     rewardLabel = '$ammoType x$quantity';
+                  } else if (type == 'credits') {
+                    final amount = (reward['amount'] ?? 0);
+                    rewardLabel = '+$amount credits';
+                  } else if (type == 'event_boost') {
+                    rewardLabel = rewardSummary;
                   }
                 }
 
+                if (rewardLabel.isEmpty && rewardSummary.isNotEmpty) {
+                  rewardLabel = rewardSummary;
+                }
+
                 return OutlinedButton(
-                  onPressed: key.isEmpty ? null : () => _startCheckout('one_time', productKey: key),
+                  onPressed: key.isEmpty
+                      ? null
+                      : () => _startCheckout('one_time', productKey: key),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -843,11 +1213,14 @@ class _CrewScreenState extends State<CrewScreen>
                             imageUrl,
                             width: 18,
                             height: 18,
-                            errorBuilder: (_, __, ___) => const Icon(Icons.image_not_supported, size: 16),
+                            errorBuilder: (_, _, _) =>
+                                const Icon(Icons.image_not_supported, size: 16),
                           ),
                         ),
                       Flexible(
-                        child: Text('€$price · $title${rewardLabel.isNotEmpty ? ' · $rewardLabel' : ''}'),
+                        child: Text(
+                          '€$price · $title${rewardLabel.isNotEmpty ? ' · $rewardLabel' : ''}',
+                        ),
                       ),
                     ],
                   ),
@@ -861,11 +1234,20 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Widget _vipBadge() => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-        decoration: BoxDecoration(color: Colors.purple, borderRadius: BorderRadius.circular(6)),
-        child: const Text('VIP',
-            style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold)),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+    decoration: BoxDecoration(
+      color: Colors.purple,
+      borderRadius: BorderRadius.circular(6),
+    ),
+    child: const Text(
+      'VIP',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 9,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
 
   Future<void> _startCheckout(String type, {String? productKey}) async {
     final locale = Localizations.localeOf(context).languageCode;
@@ -900,14 +1282,18 @@ class _CrewScreenState extends State<CrewScreen>
         }
       } else {
         final errData = response.statusCode != 200 && response.body.isNotEmpty
-          ? jsonDecode(response.body) as Map<String, dynamic>?
-          : null;
+            ? jsonDecode(response.body) as Map<String, dynamic>?
+            : null;
         final code = errData?['event'] as String? ?? 'unknown';
         final message = code == 'error.not_crew_leader'
-          ? _tr(locale, 'Alleen de leider kan crew VIP kopen', 'Only the leader can buy crew VIP')
-          : code == 'error.invalid_product_key'
-          ? _tr(locale, 'Ongeldig product', 'Invalid product')
-          : _tr(locale, 'Actie mislukt', 'Action failed');
+            ? _tr(
+                locale,
+                'Alleen de leider kan crew VIP kopen',
+                'Only the leader can buy crew VIP',
+              )
+            : code == 'error.invalid_product_key'
+            ? _tr(locale, 'Ongeldig product', 'Invalid product')
+            : _tr(locale, 'Actie mislukt', 'Action failed');
         showTopRightFromSnackBar(
           context,
           SnackBar(content: Text(message), backgroundColor: Colors.red),
@@ -918,7 +1304,13 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_tr(locale, 'Fout bij openen betaalpagina', 'Error opening payment page')),
+            content: Text(
+              _tr(
+                locale,
+                'Fout bij openen betaalpagina',
+                'Error opening payment page',
+              ),
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -970,11 +1362,10 @@ class _CrewScreenState extends State<CrewScreen>
 
         if (response.statusCode == 200) {
           if (mounted) {
-            showTopRightFromSnackBar(context, 
+            showTopRightFromSnackBar(
+              context,
               SnackBar(
-                content: Text(
-                  _tr(locale, 'Crew verlaten', 'Left crew'),
-                ),
+                content: Text(_tr(locale, 'Crew verlaten', 'Left crew')),
                 backgroundColor: Colors.orange,
               ),
             );
@@ -984,8 +1375,12 @@ class _CrewScreenState extends State<CrewScreen>
         }
       } catch (e) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
-            SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text('Er is een fout opgetreden'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }
@@ -1004,7 +1399,8 @@ class _CrewScreenState extends State<CrewScreen>
       if (response.statusCode == 200) {
         if (mounted) {
           final locale = Localizations.localeOf(context).languageCode;
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl' ? 'Verzoek geaccepteerd' : 'Request approved',
@@ -1017,8 +1413,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1036,7 +1436,8 @@ class _CrewScreenState extends State<CrewScreen>
       if (response.statusCode == 200) {
         if (mounted) {
           final locale = Localizations.localeOf(context).languageCode;
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl' ? 'Verzoek geweigerd' : 'Request rejected',
@@ -1049,8 +1450,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1068,7 +1473,8 @@ class _CrewScreenState extends State<CrewScreen>
       if (response.statusCode == 200) {
         if (mounted) {
           final locale = Localizations.localeOf(context).languageCode;
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl' ? 'Lid verwijderd' : 'Member kicked',
@@ -1081,8 +1487,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1100,7 +1510,8 @@ class _CrewScreenState extends State<CrewScreen>
       if (response.statusCode == 200) {
         if (mounted) {
           final locale = Localizations.localeOf(context).languageCode;
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl' ? 'Lid gepromoveerd' : 'Member promoted',
@@ -1113,8 +1524,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1132,7 +1547,8 @@ class _CrewScreenState extends State<CrewScreen>
       if (response.statusCode == 200) {
         if (mounted) {
           final locale = Localizations.localeOf(context).languageCode;
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl' ? 'Lid gedegradeerd' : 'Member demoted',
@@ -1145,8 +1561,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1155,7 +1575,8 @@ class _CrewScreenState extends State<CrewScreen>
   Future<void> _handleBankAction({required bool deposit}) async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
-    final cashStorageCapacity = _crewStorage?['capacities']?['cash'] as int? ?? 0;
+    final cashStorageCapacity =
+        _crewStorage?['capacities']?['cash'] as int? ?? 0;
     if (cashStorageCapacity <= 0) {
       if (mounted) {
         showTopRightFromSnackBar(
@@ -1184,7 +1605,11 @@ class _CrewScreenState extends State<CrewScreen>
             Text(
               deposit
                   ? _tr(locale, 'Storten in crew bank', 'Deposit to crew bank')
-                  : _tr(locale, 'Opnemen uit crew bank', 'Withdraw from crew bank'),
+                  : _tr(
+                      locale,
+                      'Opnemen uit crew bank',
+                      'Withdraw from crew bank',
+                    ),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
@@ -1217,7 +1642,8 @@ class _CrewScreenState extends State<CrewScreen>
     final amount = int.tryParse(controller.text);
     if (amount == null || amount <= 0) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               locale == 'nl' ? 'Ongeldig bedrag' : 'Invalid amount',
@@ -1238,7 +1664,8 @@ class _CrewScreenState extends State<CrewScreen>
 
       if (response.statusCode == 200) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 deposit
@@ -1257,8 +1684,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1307,7 +1738,8 @@ class _CrewScreenState extends State<CrewScreen>
       final apiClient = AuthService().apiClient;
       final response = await apiClient.delete('/crews/${_myCrew!.id}');
       if (response.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(locale == 'nl' ? 'Crew verwijderd' : 'Crew deleted'),
             backgroundColor: Colors.green,
@@ -1322,8 +1754,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1332,7 +1768,6 @@ class _CrewScreenState extends State<CrewScreen>
   Future<void> _purchaseBuilding(String type) async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
-    final styles = ['camping', 'rural', 'city', 'villa', 'vip'];
     final isHq = type == 'hq';
     final localizedLabel = _getBuildingLabel(type, locale);
     final purchaseLevel = isHq ? 0 : 1;
@@ -1342,7 +1777,8 @@ class _CrewScreenState extends State<CrewScreen>
       final nextStyle = _getNextHqStyle();
       if (nextStyle == null) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl'
@@ -1400,7 +1836,7 @@ class _CrewScreenState extends State<CrewScreen>
                   decoration: InputDecoration(
                     labelText: locale == 'nl' ? 'Stijl' : 'Style',
                   ),
-                )
+                ),
             ],
           ),
           actions: [
@@ -1426,7 +1862,8 @@ class _CrewScreenState extends State<CrewScreen>
         {'style': selectedStyle},
       );
       if (response.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               locale == 'nl' ? 'Gebouw gekocht' : 'Building purchased',
@@ -1458,14 +1895,19 @@ class _CrewScreenState extends State<CrewScreen>
           // Keep fallback message
         }
 
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(content: Text(message), backgroundColor: color),
         );
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1519,7 +1961,8 @@ class _CrewScreenState extends State<CrewScreen>
         {},
       );
       if (response.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               locale == 'nl' ? 'Gebouw geupgrade' : 'Building upgraded',
@@ -1544,8 +1987,13 @@ class _CrewScreenState extends State<CrewScreen>
           } else if (event == 'error.building_not_owned') {
             message = _tr(locale, 'Gebouw niet gekocht', 'Building not owned');
           } else if (event == 'error.insufficient_crew_funds') {
-            message = _tr(locale, 'Onvoldoende saldo in crew bank', 'Insufficient crew bank funds');
-          } else if (event == 'error.hq_level_too_low' || event == 'error.hq_vip_required') {
+            message = _tr(
+              locale,
+              'Onvoldoende saldo in crew bank',
+              'Insufficient crew bank funds',
+            );
+          } else if (event == 'error.hq_level_too_low' ||
+              event == 'error.hq_vip_required') {
             message = _buildingActionErrorMessage(locale, event);
             color = Colors.orange;
           } else if (event == 'error.hq_side_buildings_incomplete') {
@@ -1559,14 +2007,19 @@ class _CrewScreenState extends State<CrewScreen>
           // Keep fallback message
         }
 
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(content: Text(message), backgroundColor: color),
         );
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1587,7 +2040,8 @@ class _CrewScreenState extends State<CrewScreen>
 
       if (filtered.isEmpty) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl'
@@ -1657,7 +2111,8 @@ class _CrewScreenState extends State<CrewScreen>
       });
 
       if (depositResponse.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               locale == 'nl' ? 'Toegevoegd aan crew' : 'Added to crew',
@@ -1669,8 +2124,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1688,7 +2147,8 @@ class _CrewScreenState extends State<CrewScreen>
 
       if (weapons.isEmpty) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl'
@@ -1767,7 +2227,8 @@ class _CrewScreenState extends State<CrewScreen>
       );
 
       if (depositResponse.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               locale == 'nl' ? 'Toegevoegd aan crew' : 'Added to crew',
@@ -1779,8 +2240,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1798,7 +2263,8 @@ class _CrewScreenState extends State<CrewScreen>
 
       if (ammoList.isEmpty) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl'
@@ -1877,7 +2343,8 @@ class _CrewScreenState extends State<CrewScreen>
       );
 
       if (depositResponse.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               locale == 'nl' ? 'Toegevoegd aan crew' : 'Added to crew',
@@ -1889,8 +2356,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -1908,7 +2379,8 @@ class _CrewScreenState extends State<CrewScreen>
 
       if (goods.isEmpty) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 locale == 'nl'
@@ -1987,7 +2459,8 @@ class _CrewScreenState extends State<CrewScreen>
       );
 
       if (depositResponse.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               locale == 'nl' ? 'Toegevoegd aan crew' : 'Added to crew',
@@ -1999,8 +2472,12 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Er is een fout opgetreden'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('Er is een fout opgetreden'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -2011,7 +2488,7 @@ class _CrewScreenState extends State<CrewScreen>
       print('🏢 HQ image path is null: style=$style, level=$level');
       return null;
     }
-    final path = 'images/crew_hq/$style/hq_l$level.png';
+    final path = 'assets/images/crew_hq/$style/hq_l$level.png';
     print('🏢 HQ image path: $path');
     return path;
   }
@@ -2020,10 +2497,8 @@ class _CrewScreenState extends State<CrewScreen>
     if (type == null || style == null || level == null) return null;
     if (type == 'hq') return _getCrewHqImagePath(style, level);
 
-    final normalizedType = type
-        .replaceAll('_storage', '')
-        .replaceAll('_', '_');
-    return 'images/crew_buildings/$normalizedType/$style/lvl_$level.png';
+    final normalizedType = type.replaceAll('_storage', '').replaceAll('_', '_');
+    return 'assets/images/crew_buildings/$normalizedType/$style/lvl_$level.png';
   }
 
   IconData _getCrewBuildingIcon(String? type) {
@@ -2124,10 +2599,7 @@ class _CrewScreenState extends State<CrewScreen>
             Tab(text: _t(locale, 'tab.drugStorage')),
             Tab(text: _t(locale, 'tab.cashStorage')),
             Tab(text: _t(locale, 'tab.allCrews')),
-            Tab(
-              icon: const Icon(Icons.chat),
-              text: _t(locale, 'tab.chat'),
-            ),
+            Tab(icon: const Icon(Icons.chat), text: _t(locale, 'tab.chat')),
           ],
         ),
       ),
@@ -2153,9 +2625,7 @@ class _CrewScreenState extends State<CrewScreen>
           ? FloatingActionButton.extended(
               onPressed: _createCrew,
               icon: const Icon(Icons.add),
-              label: Text(
-                _t(locale, 'action.createCrewShort'),
-              ),
+              label: Text(_t(locale, 'action.createCrewShort')),
             )
           : null,
     );
@@ -2170,7 +2640,10 @@ class _CrewScreenState extends State<CrewScreen>
             const Icon(Icons.group_off, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
-              _t(Localizations.localeOf(context).languageCode, 'state.notInCrewYet'),
+              _t(
+                Localizations.localeOf(context).languageCode,
+                'state.notInCrewYet',
+              ),
               style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
             const SizedBox(height: 24),
@@ -2178,7 +2651,10 @@ class _CrewScreenState extends State<CrewScreen>
               onPressed: _createCrew,
               icon: const Icon(Icons.add),
               label: Text(
-                _t(Localizations.localeOf(context).languageCode, 'action.createCrew'),
+                _t(
+                  Localizations.localeOf(context).languageCode,
+                  'action.createCrew',
+                ),
               ),
             ),
           ],
@@ -2195,7 +2671,8 @@ class _CrewScreenState extends State<CrewScreen>
     final isLeader = myMembership.isLeader;
     final screenWidth = MediaQuery.of(context).size.width;
     final isCompactMobile = screenWidth < 420;
-    final storageCapacities = _crewStorage?['capacities'] as Map<String, dynamic>?;
+    final storageCapacities =
+        _crewStorage?['capacities'] as Map<String, dynamic>?;
     final carStorageOwned = (storageCapacities?['cars'] as int? ?? 0) > 0;
     final boatStorageOwned = (storageCapacities?['boats'] as int? ?? 0) > 0;
     final weaponStorageOwned = (storageCapacities?['weapons'] as int? ?? 0) > 0;
@@ -2216,337 +2693,330 @@ class _CrewScreenState extends State<CrewScreen>
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1100),
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Crew Info Card
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Crew Info Card
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.group, size: 32),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          children: [
+                            const Icon(Icons.group, size: 32),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _myCrew!.name,
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    locale == 'nl'
+                                        ? '${_myCrew!.memberCount} leden'
+                                        : '${_myCrew!.memberCount} members',
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Card(
+                          child: ListTile(
+                            leading: const Icon(Icons.business),
+                            title: Text(_t(locale, 'label.crewHq')),
+                            subtitle: Text(
+                              _myCrew!.hqStyle != null &&
+                                      _myCrew!.hqLevel != null
+                                  ? '${(_myCrew!.hqStyle ?? 'camping').toUpperCase()}  •  ${_t(locale, 'label.level')} ${_myCrew!.hqLevel}'
+                                  : _t(locale, 'status.notOwned'),
+                            ),
+                            trailing: TextButton(
+                              onPressed: () => _tabController.animateTo(1),
+                              child: Text(_t(locale, 'action.goToCrewHq')),
+                            ),
+                          ),
+                        ),
+                        const Divider(height: 24),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.account_balance_wallet,
+                              color: Colors.green,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              _t(locale, 'label.crewBank'),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '€${_myCrew!.bankBalance.toLocaleString()}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          cashStorageOwned
+                              ? (locale == 'nl'
+                                    ? 'Opslagcapaciteit: €${(_crewStorage?['capacities']?['cash'] ?? 0).toString()}'
+                                    : 'Storage capacity: €${(_crewStorage?['capacities']?['cash'] ?? 0).toString()}')
+                              : (locale == 'nl'
+                                    ? 'Koop eerst geldopslag om de crew bank te gebruiken'
+                                    : 'Purchase cash storage first to use the crew bank'),
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: cashStorageOwned
+                                    ? () => _handleBankAction(deposit: true)
+                                    : null,
+                                icon: const Icon(Icons.savings),
+                                label: Text(_t(locale, 'label.deposit')),
+                              ),
+                            ),
+                            if (isLeader) ...[
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: cashStorageOwned
+                                      ? () => _handleBankAction(deposit: false)
+                                      : null,
+                                  icon: const Icon(Icons.payments_outlined),
+                                  label: Text(_t(locale, 'label.withdraw')),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            const Icon(Icons.security, color: Colors.blue),
+                            const SizedBox(width: 8),
+                            Text(
+                              _t(locale, 'label.myTrustScore'),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${myMembership.trustScore}/100',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: _getTrustColor(myMembership.trustScore),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (isLeader) ...[
+                          const SizedBox(height: 12),
+                          OutlinedButton.icon(
+                            onPressed: _deleteCrew,
+                            icon: const Icon(
+                              Icons.delete_forever,
+                              color: Colors.red,
+                            ),
+                            label: Text(
+                              _t(locale, 'action.deleteCrew'),
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                        if (_crewStats != null) ...[
+                          const SizedBox(height: 12),
+                          Row(
                             children: [
+                              const Icon(Icons.analytics, color: Colors.orange),
+                              const SizedBox(width: 8),
                               Text(
-                                _myCrew!.name,
+                                _t(locale, 'label.crewStats'),
                                 style: const TextStyle(
-                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(
-                                locale == 'nl'
-                                    ? '${_myCrew!.memberCount} leden'
-                                    : '${_myCrew!.memberCount} members',
-                                style: const TextStyle(color: Colors.grey),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            locale == 'nl'
+                                ? 'Misdaden: ${_crewStats!['totalCrimes']} | Heists: ${_crewStats!['heistsCompleted']} / ${_crewStats!['heistsAttempted']}'
+                                : 'Crimes: ${_crewStats!['totalCrimes']} | Heists: ${_crewStats!['heistsCompleted']} / ${_crewStats!['heistsAttempted']}',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                        if (!isLeader) ...[
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton.icon(
+                              onPressed: _leaveCrew,
+                              icon: const Icon(Icons.exit_to_app),
+                              label: Text(_t(locale, 'action.leaveCrew')),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.red,
+                                side: const BorderSide(color: Colors.red),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (isLeader) ...[
+                          const SizedBox(height: 16),
+                          _buildVipStatusCard(locale),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Buildings section with navigation
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.warehouse),
+                    title: Text(_t(locale, 'section.buildings')),
+                    subtitle: Text(_t(locale, 'hint.buildingsTabs')),
+                    trailing: const Icon(Icons.arrow_forward),
+                    onTap: () => _tabController.animateTo(1),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Crew Storage
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _t(locale, 'section.crewStorage'),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        if (_crewStorage == null)
+                          Text(
+                            _t(locale, 'state.noStorageData'),
+                            style: const TextStyle(color: Colors.grey),
+                          )
+                        else ...[
+                          Text(
+                            locale == 'nl'
+                                ? 'Autos: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}'
+                                : 'Cars: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}',
+                          ),
+                          Text(
+                            locale == 'nl'
+                                ? 'Boten: ${_crewStorage!['totals']['boats']} / ${_crewStorage!['capacities']['boats']}'
+                                : 'Boats: ${_crewStorage!['totals']['boats']} / ${_crewStorage!['capacities']['boats']}',
+                          ),
+                          Text(
+                            locale == 'nl'
+                                ? 'Wapens: ${_crewStorage!['totals']['weapons']} / ${_crewStorage!['capacities']['weapons']}'
+                                : 'Weapons: ${_crewStorage!['totals']['weapons']} / ${_crewStorage!['capacities']['weapons']}',
+                          ),
+                          Text(
+                            locale == 'nl'
+                                ? 'Munitie: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}'
+                                : 'Ammo: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}',
+                          ),
+                          Text(
+                            locale == 'nl'
+                                ? 'Geldopslag: €${_crewStorage!['totals']['cash']} / €${_crewStorage!['capacities']['cash']}'
+                                : 'Cash storage: €${_crewStorage!['totals']['cash']} / €${_crewStorage!['capacities']['cash']}',
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            locale == 'nl'
+                                ? 'Stortacties zijn alleen beschikbaar als de juiste opslag is gekocht.'
+                                : 'Deposit actions are only available once the matching storage is purchased.',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(height: 12),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              OutlinedButton(
+                                onPressed: carStorageOwned
+                                    ? () => _depositVehicle(vehicleType: 'car')
+                                    : null,
+                                child: Text(_t(locale, 'action.addCar')),
+                              ),
+                              OutlinedButton(
+                                onPressed: boatStorageOwned
+                                    ? () => _depositVehicle(vehicleType: 'boat')
+                                    : null,
+                                child: Text(_t(locale, 'action.addBoat')),
+                              ),
+                              OutlinedButton(
+                                onPressed: weaponStorageOwned
+                                    ? _depositWeapon
+                                    : null,
+                                child: Text(_t(locale, 'action.addWeapon')),
+                              ),
+                              OutlinedButton(
+                                onPressed: ammoStorageOwned
+                                    ? _depositAmmo
+                                    : null,
+                                child: Text(_t(locale, 'action.addAmmo')),
+                              ),
+                              OutlinedButton(
+                                onPressed: drugStorageOwned
+                                    ? _depositDrugs
+                                    : null,
+                                child: Text(_t(locale, 'action.addDrugs')),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.business),
-                        title: Text(_t(locale, 'label.crewHq')),
-                        subtitle: Text(
-                          _myCrew!.hqStyle != null && _myCrew!.hqLevel != null
-                              ? '${(_myCrew!.hqStyle ?? 'camping').toUpperCase()}  •  ${_t(locale, 'label.level')} ${_myCrew!.hqLevel}'
-                              : _t(locale, 'status.notOwned'),
-                        ),
-                        trailing: TextButton(
-                          onPressed: () => _tabController.animateTo(1),
-                          child: Text(_t(locale, 'action.goToCrewHq')),
-                        ),
-                      ),
-                    ),
-                    const Divider(height: 24),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.account_balance_wallet,
-                          color: Colors.green,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          _t(locale, 'label.crewBank'),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '€${_myCrew!.bankBalance.toLocaleString()}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      cashStorageOwned
-                          ? (locale == 'nl'
-                                ? 'Opslagcapaciteit: €${(_crewStorage?['capacities']?['cash'] ?? 0).toString()}'
-                                : 'Storage capacity: €${(_crewStorage?['capacities']?['cash'] ?? 0).toString()}')
-                          : (locale == 'nl'
-                                ? 'Koop eerst geldopslag om de crew bank te gebruiken'
-                                : 'Purchase cash storage first to use the crew bank'),
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: cashStorageOwned
-                                ? () => _handleBankAction(deposit: true)
-                                : null,
-                            icon: const Icon(Icons.savings),
-                            label: Text(_t(locale, 'label.deposit')),
-                          ),
-                        ),
-                        if (isLeader) ...[
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: cashStorageOwned
-                                  ? () => _handleBankAction(deposit: false)
-                                  : null,
-                              icon: const Icon(Icons.payments_outlined),
-                              label: Text(_t(locale, 'label.withdraw')),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(Icons.security, color: Colors.blue),
-                        const SizedBox(width: 8),
-                        Text(
-                          _t(locale, 'label.myTrustScore'),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${myMembership.trustScore}/100',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: _getTrustColor(myMembership.trustScore),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (isLeader) ...[
-                      const SizedBox(height: 12),
-                      OutlinedButton.icon(
-                        onPressed: _deleteCrew,
-                        icon: const Icon(
-                          Icons.delete_forever,
-                          color: Colors.red,
-                        ),
-                        label: Text(
-                          _t(locale, 'action.deleteCrew'),
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                    if (_crewStats != null) ...[
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          const Icon(Icons.analytics, color: Colors.orange),
-                          const SizedBox(width: 8),
                           Text(
-                            _t(locale, 'label.crewStats'),
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            locale == 'nl'
+                                ? 'Drugs: ${_crewStorage!['totals']['drugs']} / ${_crewStorage!['capacities']['drugs']}'
+                                : 'Drugs: ${_crewStorage!['totals']['drugs']} / ${_crewStorage!['capacities']['drugs']}',
                           ),
                         ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        locale == 'nl'
-                            ? 'Misdaden: ${_crewStats!['totalCrimes']} | Heists: ${_crewStats!['heistsCompleted']} / ${_crewStats!['heistsAttempted']}'
-                            : 'Crimes: ${_crewStats!['totalCrimes']} | Heists: ${_crewStats!['heistsCompleted']} / ${_crewStats!['heistsAttempted']}',
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                    if (!isLeader) ...[
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: _leaveCrew,
-                          icon: const Icon(Icons.exit_to_app),
-                          label: Text(
-                            _t(locale, 'action.leaveCrew'),
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.red,
-                            side: const BorderSide(color: Colors.red),
-                          ),
-                        ),
-                      ),
-                    ],
-                    if (isLeader) ...[
-                      const SizedBox(height: 16),
-                      _buildVipStatusCard(locale),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Buildings section with navigation
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.warehouse),
-                title: Text(
-                  _t(locale, 'section.buildings'),
-                ),
-                subtitle: Text(
-                  _t(locale, 'hint.buildingsTabs'),
-                ),
-                trailing: const Icon(Icons.arrow_forward),
-                onTap: () => _tabController.animateTo(1),
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Crew Storage
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _t(locale, 'section.crewStorage'),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    if (_crewStorage == null)
-                      Text(
-                        _t(locale, 'state.noStorageData'),
-                        style: const TextStyle(color: Colors.grey),
-                      )
-                    else ...[
-                      Text(
-                        locale == 'nl'
-                            ? 'Autos: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}'
-                            : 'Cars: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}',
-                      ),
-                      Text(
-                        locale == 'nl'
-                            ? 'Boten: ${_crewStorage!['totals']['boats']} / ${_crewStorage!['capacities']['boats']}'
-                            : 'Boats: ${_crewStorage!['totals']['boats']} / ${_crewStorage!['capacities']['boats']}',
-                      ),
-                      Text(
-                        locale == 'nl'
-                            ? 'Wapens: ${_crewStorage!['totals']['weapons']} / ${_crewStorage!['capacities']['weapons']}'
-                            : 'Weapons: ${_crewStorage!['totals']['weapons']} / ${_crewStorage!['capacities']['weapons']}',
-                      ),
-                      Text(
-                        locale == 'nl'
-                            ? 'Munitie: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}'
-                            : 'Ammo: ${_crewStorage!['totals']['ammo']} / ${_crewStorage!['capacities']['ammo']}',
-                      ),
-                      Text(
-                        locale == 'nl'
-                            ? 'Geldopslag: €${_crewStorage!['totals']['cash']} / €${_crewStorage!['capacities']['cash']}'
-                            : 'Cash storage: €${_crewStorage!['totals']['cash']} / €${_crewStorage!['capacities']['cash']}',
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        locale == 'nl'
-                            ? 'Stortacties zijn alleen beschikbaar als de juiste opslag is gekocht.'
-                            : 'Deposit actions are only available once the matching storage is purchased.',
-                        style: const TextStyle(color: Colors.grey),
-                      ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          OutlinedButton(
-                            onPressed: carStorageOwned
-                                ? () => _depositVehicle(vehicleType: 'car')
-                                : null,
-                            child: Text(
-                              _t(locale, 'action.addCar'),
-                            ),
-                          ),
-                          OutlinedButton(
-                            onPressed: boatStorageOwned
-                                ? () => _depositVehicle(vehicleType: 'boat')
-                                : null,
-                            child: Text(
-                              _t(locale, 'action.addBoat'),
-                            ),
-                          ),
-                          OutlinedButton(
-                            onPressed: weaponStorageOwned ? _depositWeapon : null,
-                            child: Text(
-                              _t(locale, 'action.addWeapon'),
-                            ),
-                          ),
-                          OutlinedButton(
-                            onPressed: ammoStorageOwned ? _depositAmmo : null,
-                            child: Text(
-                              _t(locale, 'action.addAmmo'),
-                            ),
-                          ),
-                          OutlinedButton(
-                            onPressed: drugStorageOwned ? _depositDrugs : null,
-                            child: Text(
-                              _t(locale, 'action.addDrugs'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        locale == 'nl'
-                            ? 'Drugs: ${_crewStorage!['totals']['drugs']} / ${_crewStorage!['capacities']['drugs']}'
-                            : 'Drugs: ${_crewStorage!['totals']['drugs']} / ${_crewStorage!['capacities']['drugs']}',
-                      ),
-                    ],
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.groups),
+                    title: Text(_t(locale, 'section.membersOverview')),
+                    subtitle: Text(_t(locale, 'hint.membersTab')),
+                    trailing: TextButton(
+                      onPressed: () => _tabController.animateTo(2),
+                      child: Text(_t(locale, 'action.goToMembers')),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.groups),
-                title: Text(
-                  _t(locale, 'section.membersOverview'),
-                ),
-                subtitle: Text(
-                  _t(locale, 'hint.membersTab'),
-                ),
-                trailing: TextButton(
-                  onPressed: () => _tabController.animateTo(2),
-                  child: Text(_t(locale, 'action.goToMembers')),
-                ),
-              ),
-            ),
-          ],
-        ),
           ),
         ),
       ),
@@ -2626,23 +3096,35 @@ class _CrewScreenState extends State<CrewScreen>
                   .map(
                     (member) => Card(
                       child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: member.isLeader
-                              ? Colors.amber
-                              : (member.role == 'co_leader'
-                                    ? Colors.deepPurple
-                                    : Colors.blue),
-                          child: Icon(
-                            member.isLeader ? Icons.star : Icons.person,
-                            color: Colors.white,
+                        leading: GestureDetector(
+                          onTap: () => _openPlayerProfile(
+                            member.playerId,
+                            member.playerInfo?.username ?? 'Unknown',
+                          ),
+                          child: CircleAvatar(
+                            backgroundColor: member.isLeader
+                                ? Colors.amber
+                                : (member.role == 'co_leader'
+                                      ? Colors.deepPurple
+                                      : Colors.blue),
+                            child: Icon(
+                              member.isLeader ? Icons.star : Icons.person,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                        title: Text(
-                          member.playerInfo?.username ?? 'Unknown',
-                          style: TextStyle(
-                            fontWeight: member.isLeader
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                        title: GestureDetector(
+                          onTap: () => _openPlayerProfile(
+                            member.playerId,
+                            member.playerInfo?.username ?? 'Unknown',
+                          ),
+                          child: Text(
+                            member.playerInfo?.username ?? 'Unknown',
+                            style: TextStyle(
+                              fontWeight: member.isLeader
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
                           ),
                         ),
                         subtitle: Text(
@@ -2757,8 +3239,20 @@ class _CrewScreenState extends State<CrewScreen>
                       .map(
                         (request) => Card(
                           child: ListTile(
-                            leading: const Icon(Icons.person_add),
-                            title: Text(request.player.username),
+                            leading: GestureDetector(
+                              onTap: () => _openPlayerProfile(
+                                request.player.id,
+                                request.player.username,
+                              ),
+                              child: const Icon(Icons.person_add),
+                            ),
+                            title: GestureDetector(
+                              onTap: () => _openPlayerProfile(
+                                request.player.id,
+                                request.player.username,
+                              ),
+                              child: Text(request.player.username),
+                            ),
                             subtitle: Text(
                               '${locale == 'nl' ? 'Rank' : 'Rank'}: ${request.player.rank}',
                             ),
@@ -2795,7 +3289,11 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  Widget _buildSingleBuildingCard(String buildingType, String locale, bool isLeader) {
+  Widget _buildSingleBuildingCard(
+    String buildingType,
+    String locale,
+    bool isLeader,
+  ) {
     final building = _crewBuildings.firstWhere(
       (b) => (b['type'] as String?) == buildingType,
       orElse: () => {
@@ -2822,13 +3320,16 @@ class _CrewScreenState extends State<CrewScreen>
     final nextCost = building['nextUpgradeCost'] as int?;
     final crewVip = building['crewVip'] as bool? ?? false;
     final allowedLevelByHq = building['allowedLevelByHq'] as int? ?? 0;
-    
+
     final status = level == null
-      ? _t(locale, 'status.notOwned')
-      : '${_t(locale, 'label.level')} $level/$maxLevel';
+        ? _t(locale, 'status.notOwned')
+        : '${_t(locale, 'label.level')} $level/$maxLevel';
 
     if (type == 'hq') {
-      final displayLevel = _getHqGlobalLevel(building['style'] as String?, level);
+      final displayLevel = _getHqGlobalLevel(
+        building['style'] as String?,
+        level,
+      );
       final displayCap = memberCap ?? 0;
       final requiredSideLevel = _requiredSideBuildingLevelForHqUpgrade(
         building['style'] as String?,
@@ -2836,8 +3337,8 @@ class _CrewScreenState extends State<CrewScreen>
       );
       final missingSideBuildings =
           (level != null && level < maxLevel && nextCost != null)
-              ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, locale)
-              : <String>[];
+          ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, locale)
+          : <String>[];
       final hqUpgradeBlockedBySideBuildings = missingSideBuildings.isNotEmpty;
 
       return LayoutBuilder(
@@ -2846,8 +3347,8 @@ class _CrewScreenState extends State<CrewScreen>
           final imageWidth = width < 600
               ? width
               : width < 1000
-                ? 380.0
-                : 420.0;
+              ? 380.0
+              : 420.0;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2914,7 +3415,10 @@ class _CrewScreenState extends State<CrewScreen>
                             top: 12,
                             left: 12,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.55),
                                 borderRadius: BorderRadius.circular(20),
@@ -2922,7 +3426,11 @@ class _CrewScreenState extends State<CrewScreen>
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.star, color: Colors.amber.shade400, size: 18),
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.amber.shade400,
+                                    size: 18,
+                                  ),
                                   const SizedBox(width: 6),
                                   Text(
                                     '$displayLevel',
@@ -2939,7 +3447,10 @@ class _CrewScreenState extends State<CrewScreen>
                             top: 12,
                             right: 12,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.55),
                                 borderRadius: BorderRadius.circular(20),
@@ -2947,7 +3458,11 @@ class _CrewScreenState extends State<CrewScreen>
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(Icons.group, color: Colors.white, size: 18),
+                                  const Icon(
+                                    Icons.group,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
                                   const SizedBox(width: 6),
                                   Text(
                                     '$displayCap',
@@ -2972,34 +3487,42 @@ class _CrewScreenState extends State<CrewScreen>
                   Expanded(
                     child: ElevatedButton(
                       onPressed: (level == null)
-                        ? (isLeader ? () => _purchaseBuilding(type ?? '') : null)
+                          ? (isLeader
+                                ? () => _purchaseBuilding(type ?? '')
+                                : null)
                           : (level < maxLevel && nextCost != null)
-                              ? (isLeader && !hqUpgradeBlockedBySideBuildings
-                            ? () => _upgradeBuilding(type ?? '')
-                                  : null)
-                              : null,
+                          ? (isLeader && !hqUpgradeBlockedBySideBuildings
+                                ? () => _upgradeBuilding(type ?? '')
+                                : null)
+                          : null,
                       child: Text(
                         (level == null)
                             ? _t(locale, 'action.purchase')
                             : (level < maxLevel && nextCost != null)
-                                ? '${_t(locale, 'action.upgrade')} (€${nextCost.toString()})'
-                                : status,
+                            ? '${_t(locale, 'action.upgrade')} (€${nextCost.toString()})'
+                            : status,
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   IconButton(
                     tooltip: _t(locale, 'help.showCaps'),
-                    onPressed: () => _showBuildingCapsDialog(locale, type ?? '', label),
+                    onPressed: () =>
+                        _showBuildingCapsDialog(locale, type ?? '', label),
                     icon: const Icon(Icons.info_outline),
                   ),
                 ],
               ),
-              if (!isLeader && ((level == null) || (level < maxLevel && nextCost != null)))
+              if (!isLeader &&
+                  ((level == null) || (level < maxLevel && nextCost != null)))
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    _tr(locale, 'Alleen de leader kan kopen of upgraden', 'Only the leader can purchase or upgrade'),
+                    _tr(
+                      locale,
+                      'Alleen de leader kan kopen of upgraden',
+                      'Only the leader can purchase or upgrade',
+                    ),
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -3037,11 +3560,18 @@ class _CrewScreenState extends State<CrewScreen>
                           style: const TextStyle(color: Colors.orange),
                         ),
                 ),
-              if (isLeader && level != null && level < maxLevel && nextCost == null)
+              if (isLeader &&
+                  level != null &&
+                  level < maxLevel &&
+                  nextCost == null)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    _tr(locale, 'Volgende upgrade nog niet beschikbaar', 'Next upgrade not available yet'),
+                    _tr(
+                      locale,
+                      'Volgende upgrade nog niet beschikbaar',
+                      'Next upgrade not available yet',
+                    ),
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -3131,7 +3661,10 @@ class _CrewScreenState extends State<CrewScreen>
                           top: 12,
                           left: 12,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.55),
                               borderRadius: BorderRadius.circular(20),
@@ -3139,7 +3672,11 @@ class _CrewScreenState extends State<CrewScreen>
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.star, color: Colors.amber.shade400, size: 18),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber.shade400,
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 6),
                                 Text(
                                   '$displayLevel',
@@ -3156,7 +3693,10 @@ class _CrewScreenState extends State<CrewScreen>
                           top: 12,
                           right: 12,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.55),
                               borderRadius: BorderRadius.circular(20),
@@ -3164,7 +3704,11 @@ class _CrewScreenState extends State<CrewScreen>
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(displayCapIcon, color: Colors.white, size: 18),
+                                Icon(
+                                  displayCapIcon,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 6),
                                 Text(
                                   '$displayCapValue',
@@ -3189,32 +3733,40 @@ class _CrewScreenState extends State<CrewScreen>
                 Expanded(
                   child: ElevatedButton(
                     onPressed: (level == null)
-                        ? (isLeader ? () => _purchaseBuilding(type ?? '') : null)
+                        ? (isLeader
+                              ? () => _purchaseBuilding(type ?? '')
+                              : null)
                         : (level < maxLevel && nextCost != null)
-                            ? (isLeader ? () => _upgradeBuilding(type ?? '') : null)
-                            : null,
+                        ? (isLeader ? () => _upgradeBuilding(type ?? '') : null)
+                        : null,
                     child: Text(
                       (level == null)
                           ? _t(locale, 'action.purchase')
                           : (level < maxLevel && nextCost != null)
-                              ? '${_t(locale, 'action.upgrade')} (€${nextCost.toString()})'
-                              : status,
+                          ? '${_t(locale, 'action.upgrade')} (€${nextCost.toString()})'
+                          : status,
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
                   tooltip: _t(locale, 'help.showCaps'),
-                  onPressed: () => _showBuildingCapsDialog(locale, type ?? '', label),
+                  onPressed: () =>
+                      _showBuildingCapsDialog(locale, type ?? '', label),
                   icon: const Icon(Icons.info_outline),
                 ),
               ],
             ),
-            if (!isLeader && ((level == null) || (level < maxLevel && nextCost != null)))
+            if (!isLeader &&
+                ((level == null) || (level < maxLevel && nextCost != null)))
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  _tr(locale, 'Alleen de leader kan kopen of upgraden', 'Only the leader can purchase or upgrade'),
+                  _tr(
+                    locale,
+                    'Alleen de leader kan kopen of upgraden',
+                    'Only the leader can purchase or upgrade',
+                  ),
                   style: const TextStyle(color: Colors.grey),
                 ),
               ),
@@ -3222,17 +3774,32 @@ class _CrewScreenState extends State<CrewScreen>
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  _tr(locale, 'HQ progression te laag', 'HQ progression too low'),
+                  _tr(
+                    locale,
+                    'HQ progression te laag',
+                    'HQ progression too low',
+                  ),
                   style: const TextStyle(color: Colors.orange),
                 ),
               ),
-            if (isLeader && level != null && level < maxLevel && nextCost == null)
+            if (isLeader &&
+                level != null &&
+                level < maxLevel &&
+                nextCost == null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   level >= 10 && crewVip && hqStyle != 'vip'
-                      ? _tr(locale, 'VIP HQ vereist voor level 11-15', 'VIP HQ required for level 11-15')
-                      : _tr(locale, 'HQ-level te laag voor volgende upgrade', 'HQ level too low for next upgrade'),
+                      ? _tr(
+                          locale,
+                          'VIP HQ vereist voor level 11-15',
+                          'VIP HQ required for level 11-15',
+                        )
+                      : _tr(
+                          locale,
+                          'HQ-level te laag voor volgende upgrade',
+                          'HQ level too low for next upgrade',
+                        ),
                   style: const TextStyle(color: Colors.grey),
                 ),
               ),
@@ -3293,6 +3860,23 @@ class _CrewScreenState extends State<CrewScreen>
                   Text(
                     '${locale == 'nl' ? 'Leader' : 'Leader'}: ${crew.leader?.playerInfo?.username ?? 'Unknown'}',
                   ),
+                  if (crew.leader?.playerInfo != null)
+                    GestureDetector(
+                      onTap: () => _openPlayerProfile(
+                        crew.leader!.playerId,
+                        crew.leader!.playerInfo!.username,
+                      ),
+                      child: Text(
+                        locale == 'nl'
+                            ? 'Open leiderprofiel'
+                            : 'Open leader profile',
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          fontSize: 12,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
                 ],
               ),
               trailing: isMyCrew

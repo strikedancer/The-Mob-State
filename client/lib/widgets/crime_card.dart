@@ -195,7 +195,7 @@ class _CrimeCardState extends State<CrimeCard> {
     final requirementIcons = _getRequirementIcons();
     final defaultIcon = _getDefaultIcon();
     final imageAsset = 'assets/images/crimes/${widget.crime.id}_crime.png';
-    final legacyImageAsset = 'images/crimes/${widget.crime.id}_crime.png';
+    final legacyImageAsset = 'assets/images/crimes/${widget.crime.id}_crime.png';
 
     // Use player-specific calculated success chance, or fall back to base chance
     final successChance =

@@ -601,7 +601,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ClipRRect(
               borderRadius: BorderRadius.circular(7),
               child: Image.asset(
-                'images/avatars/$avatar.png',
+                'assets/images/avatars/$avatar.png',
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   // Fallback to letter if image not found

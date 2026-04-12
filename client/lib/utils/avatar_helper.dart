@@ -4,11 +4,11 @@ class AvatarHelper {
   /// Returns the path to the local avatar image
   static String getAvatarPath(String? avatar) {
     if (avatar == null || avatar.isEmpty) {
-      return 'images/avatars/default_1.png';
+      return 'assets/images/avatars/default_1.png';
     }
 
     // If it's a valid avatar name, return the asset path
-    return 'images/avatars/$avatar.png';
+    return 'assets/images/avatars/$avatar.png';
   }
 
   /// Check if an avatar exists (has a non-empty name)

@@ -5,8 +5,8 @@
  */
 
 import prisma from '../lib/prisma';
-import { getCountryById } from './travelService';
 import { ammoFactoryService } from './ammoFactoryService';
+import weaponService from './weaponService';
 
 interface HitListItem {
   id: number;
@@ -148,6 +148,7 @@ export async function getActiveHits(pageSize = 20, offset = 0): Promise<any[]> {
           id: true,
           username: true,
           rank: true,
+          avatar: true,
           currentCountry: true,
         },
       },
@@ -156,6 +157,7 @@ export async function getActiveHits(pageSize = 20, offset = 0): Promise<any[]> {
           id: true,
           username: true,
           rank: true,
+          avatar: true,
         },
       },
     },
@@ -178,7 +180,6 @@ export async function attemptHit(
   weaponId: string,
   ammoQuantity: number
 ): Promise<any> {
-  // Get hit
   const hit = await prisma.hitList.findUnique({
     where: { id: hitId },
   });
@@ -191,20 +192,18 @@ export async function attemptHit(
     throw new Error('HIT_NOT_ACTIVE');
   }
 
-  // Get attacker
   const attacker = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { weapon: true, currentCountry: true },
+    select: { currentCountry: true, money: true },
   });
 
   if (!attacker) {
     throw new Error('PLAYER_NOT_FOUND');
   }
 
-  // Get target
   const target = await prisma.player.findUnique({
     where: { id: hit.targetId },
-    select: { health: true, weapon: true, currentCountry: true },
+    select: { weapon: true, currentCountry: true, hitProtectionExpiresAt: true },
   });
 
   if (!target) {
@@ -215,27 +214,49 @@ export async function attemptHit(
     throw new Error('DIFFERENT_COUNTRY');
   }
 
-  // Get weapon data
-  // Weapons.json content file not available - use default weapon
-  const weaponData = null;
+  if (target.hitProtectionExpiresAt && target.hitProtectionExpiresAt > new Date()) {
+    throw new Error('TARGET_UNDER_HIT_PROTECTION');
+  }
 
+  const weaponData = weaponService.getWeaponDefinition(String(weaponId));
   if (!weaponData) {
     throw new Error('WEAPON_NOT_FOUND');
   }
 
+  const ownedWeapon = await prisma.weaponInventory.findUnique({
+    where: {
+      playerId_weaponId: {
+        playerId,
+        weaponId: String(weaponId),
+      },
+    },
+  });
+
+  if (!ownedWeapon || ownedWeapon.quantity <= 0 || ownedWeapon.condition <= 0) {
+    throw new Error('WEAPON_NOT_OWNED');
+  }
+
   const requiresAmmo = weaponData.requiresAmmo !== false;
-  const ammoUsed = requiresAmmo ? Number(ammoQuantity) : 1;
-  if (requiresAmmo && (!ammoUsed || ammoUsed <= 0)) {
+  const ammoUsed = requiresAmmo ? Number(ammoQuantity) : 0;
+  if (requiresAmmo && (!Number.isFinite(ammoUsed) || ammoUsed <= 0)) {
     throw new Error('INVALID_AMMO');
   }
 
   let ammoQuality = 1.0;
+  let ammoInventoryId: number | null = null;
+  let ammoRemaining = 0;
+
   if (requiresAmmo) {
+    const ammoType = weaponData.ammoType;
+    if (!ammoType) {
+      throw new Error('WEAPON_NOT_FOUND');
+    }
+
     const ammoInventory = await prisma.ammoInventory.findUnique({
       where: {
         playerId_ammoType: {
           playerId,
-          ammoType: weaponData.ammoType,
+          ammoType,
         },
       },
     });
@@ -244,24 +265,15 @@ export async function attemptHit(
       throw new Error('INSUFFICIENT_AMMO');
     }
 
+    ammoInventoryId = ammoInventory.id;
+    ammoRemaining = ammoInventory.quantity - ammoUsed;
     ammoQuality = ammoInventory.quality || 1.0;
-
-    await prisma.ammoInventory.update({
-      where: { id: ammoInventory.id },
-      data: { quantity: ammoInventory.quantity - ammoUsed },
-    });
   }
-
-  // Get security
-  const attackerSecurity = await prisma.playerSecurity.findUnique({
-    where: { playerId },
-  });
 
   const targetSecurity = await prisma.playerSecurity.findUnique({
     where: { playerId: hit.targetId },
   });
 
-  // Combat calculation
   const shootingStats = await prisma.shootingRangeStats.findUnique({
     where: { playerId },
   });
@@ -270,81 +282,67 @@ export async function attemptHit(
   const hitRoll = Math.random();
   const hitMultiplier = hitRoll <= accuracy ? 1 : 0.2;
   const ammoQualityMultiplier = 1 + (ammoQuality - 1) * 0.5;
-  const attackerPower = weaponData.damage * ammoUsed * hitMultiplier * ammoQualityMultiplier;
+  const conditionMultiplier = Math.max(0.2, ownedWeapon.condition / 100);
+  const attackVolume = requiresAmmo ? ammoUsed : 1;
+  const attackerPower =
+    weaponData.damage *
+    attackVolume *
+    hitMultiplier *
+    ammoQualityMultiplier *
+    conditionMultiplier;
 
-  // Weapons.json content file not available - use placeholder
-  const targetWeapon = null;
+  const targetWeapon = target.weapon
+    ? weaponService.getWeaponDefinition(String(target.weapon))
+    : undefined;
   const targetWeaponDamage = targetWeapon?.damage || 0;
-  const targetDefense =
-    (targetSecurity?.armor || 0) + ((targetSecurity?.bodyguards || 0) * 10);
-  const targetPower = targetWeaponDamage * 5 + targetDefense; // Assume 5 ammo
+  const targetDefense = (targetSecurity?.armor || 0) + ((targetSecurity?.bodyguards || 0) * 10);
+  const targetPower = targetWeaponDamage * 5 + targetDefense;
 
-  // Win chance
-  const winChance = attackerPower / (attackerPower + targetPower);
-  const roll = Math.random();
-  const attackerWins = roll < winChance;
+  const rawWinChance = attackerPower / Math.max(1, attackerPower + targetPower);
+  const winChance = Math.min(0.95, Math.max(0.05, rawWinChance));
+  const attackerWins = Math.random() < winChance;
 
-  // Determine bounty payout
-  const bounty = hit.counterBounty && hit.counterBounty > hit.bounty
-    ? hit.counterBounty
-    : hit.bounty;
+  const bounty =
+    hit.counterBounty && hit.counterBounty > hit.bounty
+      ? hit.counterBounty
+      : hit.bounty;
+  const isCounterReversal = !!(hit.counterBounty && hit.counterBounty > hit.bounty);
+
+  const originalPlacer = await prisma.player.findUnique({
+    where: { id: hit.placedById },
+    select: { money: true },
+  });
 
   if (attackerWins) {
-    // Attacker wins
-    // Get attacker money
-    const attackerPlayer = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: { money: true },
-    });
+    await prisma.$transaction(async (tx) => {
+      if (ammoInventoryId != null) {
+        await tx.ammoInventory.update({
+          where: { id: ammoInventoryId },
+          data: { quantity: ammoRemaining },
+        });
+      }
 
-    const originalPlacer = await prisma.player.findUnique({
-      where: { id: hit.placedById },
-      select: { money: true },
-    });
-
-    // If counter-bounty and exceeds original: reverse (kill the placer instead)
-    if (hit.counterBounty && hit.counterBounty > hit.bounty) {
-      // Attacker gets paid, placer loses money
-      await prisma.player.update({
+      await tx.player.update({
         where: { id: playerId },
-        data: { money: (attackerPlayer?.money || 0) + bounty, killCount: { increment: 1 } },
-      });
-
-      await prisma.player.update({
-        where: { id: hit.placedById },
-        data: { health: 0, isHunted: true },
-      });
-
-      await ammoFactoryService.revokeFactoriesForPlayer(hit.placedById);
-
-      // Complete hit (kill the placer)
-      await prisma.hitList.update({
-        where: { id: hitId },
         data: {
-          status: 'COMPLETED',
-          completedBy: playerId,
-          completedAt: new Date(),
-        },
-      });
-    } else {
-      // Normal hit: target dies, attacker gets bounty
-      await prisma.player.update({
-        where: { id: playerId },
-        data: { 
-          money: (attackerPlayer?.money || 0) + bounty,
+          money: attacker.money + bounty,
           killCount: { increment: 1 },
         },
       });
 
-      await prisma.player.update({
-        where: { id: hit.targetId },
-        data: { health: 0, isHunted: false, hitCount: { increment: 1 } },
-      });
+      if (isCounterReversal) {
+        await tx.player.update({
+          where: { id: hit.placedById },
+          data: { health: 0, isHunted: true },
+        });
+      } else {
+        await tx.player.update({
+          where: { id: hit.targetId },
+          data: { health: 0, isHunted: false, hitCount: { increment: 1 } },
+        });
+      }
 
-      await ammoFactoryService.revokeFactoriesForPlayer(hit.targetId);
-
-      // Complete hit
-      await prisma.hitList.update({
+      await tx.hitList.update({
         where: { id: hitId },
         data: {
           status: 'COMPLETED',
@@ -352,7 +350,11 @@ export async function attemptHit(
           completedAt: new Date(),
         },
       });
-    }
+    });
+
+    await ammoFactoryService.revokeFactoriesForPlayer(
+      isCounterReversal ? hit.placedById : hit.targetId
+    );
 
     return {
       success: true,
@@ -360,28 +362,117 @@ export async function attemptHit(
       bountyPaid: bounty,
       message: `Hit completed! ${playerId} won €${bounty}`,
     };
-  } else {
-    // Target/defender wins
-    // Refund bounty to original placer
-    if (!hit.counterBounty || hit.counterBounty <= hit.bounty) {
-      await prisma.player.update({
+  }
+
+  await prisma.$transaction(async (tx) => {
+    if (ammoInventoryId != null) {
+      await tx.ammoInventory.update({
+        where: { id: ammoInventoryId },
+        data: { quantity: ammoRemaining },
+      });
+    }
+
+    if (!isCounterReversal) {
+      await tx.player.update({
         where: { id: hit.placedById },
         data: { money: (originalPlacer?.money || 0) + hit.bounty },
       });
 
-      // Cancel hit
-      await prisma.hitList.update({
+      await tx.hitList.update({
         where: { id: hitId },
         data: { status: 'CANCELLED' },
       });
     }
+  });
 
-    return {
-      success: false,
-      winner: hit.targetId,
-      message: `Hit failed! Target defended successfully`,
-    };
+  return {
+    success: false,
+    winner: hit.targetId,
+    message: 'Hit failed! Target defended successfully',
+  };
+}
+
+type InvestigationTier = 'quick' | 'standard' | 'deep';
+
+export async function investigateHit(
+  playerId: number,
+  hitId: number,
+  tier: InvestigationTier
+): Promise<{
+  success: true;
+  report: {
+    targetId: number;
+    country: string | null;
+    bodyguards: number;
+    armor: number;
+    validUntil: string;
+    tier: InvestigationTier;
+    cost: number;
+  };
+}> {
+  const hit = await prisma.hitList.findUnique({
+    where: { id: hitId },
+  });
+
+  if (!hit) {
+    throw new Error('HIT_NOT_FOUND');
   }
+
+  if (hit.status !== 'ACTIVE') {
+    throw new Error('HIT_NOT_ACTIVE');
+  }
+
+  const tierCost: Record<InvestigationTier, number> = {
+    quick: 100000,
+    standard: 50000,
+    deep: 25000,
+  };
+
+  const cost = tierCost[tier];
+  if (!cost) {
+    throw new Error('INVALID_INVESTIGATION_TIER');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { money: true },
+  });
+
+  if (!player || player.money < cost) {
+    throw new Error('INSUFFICIENT_MONEY');
+  }
+
+  const target = await prisma.player.findUnique({
+    where: { id: hit.targetId },
+    select: { currentCountry: true },
+  });
+
+  if (!target) {
+    throw new Error('TARGET_NOT_FOUND');
+  }
+
+  const targetSecurity = await prisma.playerSecurity.findUnique({
+    where: { playerId: hit.targetId },
+    select: { bodyguards: true, armor: true },
+  });
+
+  await prisma.player.update({
+    where: { id: playerId },
+    data: { money: player.money - cost },
+  });
+
+  return {
+    success: true,
+    report: {
+      targetId: hit.targetId,
+      country: target.currentCountry,
+      bodyguards: targetSecurity?.bodyguards || 0,
+      armor: targetSecurity?.armor || 0,
+      validUntil: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
+      tier,
+      cost,
+    },
+  };
 }
 
 export async function cancelHit(playerId: number, hitId: number): Promise<any> {

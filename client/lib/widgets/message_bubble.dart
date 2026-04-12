@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/direct_message.dart';
 import '../models/crew_message.dart';
 import '../utils/avatar_helper.dart';
+import '../screens/player_profile_screen.dart';
 
 /// WhatsApp-style message bubble widget
 class MessageBubble extends StatelessWidget {
@@ -10,6 +11,7 @@ class MessageBubble extends StatelessWidget {
   final String time;
   final bool isMe;
   final String? senderName;
+  final int? senderId;
   final int? senderRank;
   final String? senderAvatar;
   final VoidCallback? onLongPress;
@@ -22,6 +24,7 @@ class MessageBubble extends StatelessWidget {
     required this.time,
     required this.isMe,
     this.senderName,
+    this.senderId,
     this.senderRank,
     this.senderAvatar,
     this.onLongPress,
@@ -42,6 +45,7 @@ class MessageBubble extends StatelessWidget {
       time: message.formattedDateTime,
       isMe: isMe,
       senderName: message.senderInfo?.username,
+      senderId: message.senderInfo?.id,
       senderRank: message.senderInfo?.rank,
       senderAvatar: isMe ? null : (message.senderInfo?.avatar ?? friendAvatar),
       onLongPress: onLongPress,
@@ -62,6 +66,7 @@ class MessageBubble extends StatelessWidget {
       time: message.formattedTime,
       isMe: isMe,
       senderName: message.sender?.username,
+      senderId: message.sender?.id,
       senderRank: message.sender?.rank,
       onLongPress: onLongPress,
       showSenderInfo: true,
@@ -74,6 +79,19 @@ class MessageBubble extends StatelessWidget {
     final cleanedMessage = _stripAchievementMeta(message);
     final isAchievementMessage = achievementMeta != null;
 
+    void openSenderProfile() {
+      if (isMe || senderId == null || senderName == null) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PlayerProfileScreen(
+            playerId: senderId!,
+            username: senderName!,
+          ),
+        ),
+      );
+    }
+
     return GestureDetector(
       onLongPress: onLongPress,
       child: Padding(
@@ -84,16 +102,19 @@ class MessageBubble extends StatelessWidget {
           children: [
             // Avatar for received messages (left side)
             if (!isMe && senderAvatar != null) ...[
-              Container(
-                width: 32,
-                height: 32,
-                margin: const EdgeInsets.only(right: 8, bottom: 4),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[800],
-                  image: DecorationImage(
-                    image: AssetImage(AvatarHelper.getAvatarPath(senderAvatar)),
-                    fit: BoxFit.cover,
+              GestureDetector(
+                onTap: senderId != null ? openSenderProfile : null,
+                child: Container(
+                  width: 32,
+                  height: 32,
+                  margin: const EdgeInsets.only(right: 8, bottom: 4),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey[800],
+                    image: DecorationImage(
+                      image: AssetImage(AvatarHelper.getAvatarPath(senderAvatar)),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -149,12 +170,15 @@ class MessageBubble extends StatelessWidget {
                     if (showSenderInfo && !isMe && senderName != null) ...[
                       Row(
                         children: [
-                          Text(
-                            senderName!,
-                            style: TextStyle(
-                              color: _getColorForName(senderName!),
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: senderId != null ? openSenderProfile : null,
+                            child: Text(
+                              senderName!,
+                              style: TextStyle(
+                                color: _getColorForName(senderName!),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           if (senderRank != null) ...[

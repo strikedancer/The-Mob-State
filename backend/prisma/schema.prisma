@@ -39,6 +39,8 @@ model Player {
   emailFriendAccepted             Boolean                          @default(true)
   emailFriendRequest              Boolean                          @default(true)
   emailVerified                   Boolean                          @default(false)
+  mollieCustomerId                String?                          @db.VarChar(255)
+  mollieSubscriptionId            String?                          @db.VarChar(255)
   stripeCustomerId                String?                          @db.VarChar(255)
   intensiveCareUntil              DateTime?
   inventory_slots_used            Int                              @default(0)
@@ -52,10 +54,12 @@ model Player {
   max_inventory_slots             Int                              @default(5)
   notifyFriendAccepted            Boolean                          @default(true)
   notifyFriendRequest             Boolean                          @default(true)
+  premiumCredits                  Int                              @default(0)
   preferredLanguage               String                           @default("nl") @db.VarChar(5)
   reputation                      Int                              @default(0)
   resetPasswordToken              String?                          @db.VarChar(255)
   resetPasswordTokenExpiry        DateTime?
+  hitProtectionExpiresAt          DateTime?
   verificationToken               String?                          @db.VarChar(255)
   verificationTokenExpiry         DateTime?
   vipExpiresAt                    DateTime?
@@ -73,6 +77,8 @@ model Player {
   crewMembership                  CrewMember?
   crewMessages                    CrewMessage[]
   crimeAttempts                   CrimeAttempt[]
+  creditEntitlements              PlayerCreditEntitlement[]
+  creditTransactions              PlayerCreditTransaction[]
   crypto_holdings                 crypto_holdings[]
   crypto_leaderboard_rewards      crypto_leaderboard_rewards[]
   crypto_mission_progress         crypto_mission_progress[]
@@ -99,6 +105,7 @@ model Player {
   nightclubSeasonRewards          NightclubSeasonReward[]
   nightclubs                      NightclubVenue[]
   activities                      PlayerActivity[]
+  paymentTransactions             PaymentTransaction[]
   playerBackpack                  PlayerBackpack?
   devices                         PlayerDevice[]
   player_notification_preferences player_notification_preferences?
@@ -106,6 +113,8 @@ model Player {
   security                        PlayerSecurity?
   selectedVehicle                 PlayerSelectedVehicle?
   playerTools                     PlayerTools[]
+  profileLikesGiven               ProfileLike[]                    @relation("ProfileLikesGiven")
+  profileLikesReceived            ProfileLike[]                    @relation("ProfileLikesReceived")
   productionMaterials             ProductionMaterial[]
   properties                      Property[]
   prostitutes                     Prostitute[]
@@ -431,6 +440,7 @@ model PropertyDrugStorage {
 
 model Crew {
   id                    Int                        @id @default(autoincrement())
+  mollieSubscriptionId  String?                    @db.VarChar(255)
   stripeSubscriptionId  String?                    @db.VarChar(255)
   name                  String                     @unique @db.VarChar(50)
   bankBalance           Int                        @default(0)
@@ -832,6 +842,88 @@ model StripePaymentFulfillment {
   @@map("stripe_payment_fulfillments")
 }
 
+model PaymentTransaction {
+  id                     Int                      @id @default(autoincrement())
+  playerId               Int
+  productKey             String?                  @db.VarChar(64)
+  checkoutType           PaymentCheckoutType
+  provider               PaymentProvider          @default(MOLLIE)
+  status                 PaymentTransactionStatus @default(OPEN)
+  providerPaymentId      String?                  @unique @db.VarChar(64)
+  providerCustomerId     String?                  @db.VarChar(64)
+  providerSubscriptionId String?                  @db.VarChar(64)
+  amountCurrency         String                   @default("EUR") @db.VarChar(10)
+  amountValue            String                   @db.VarChar(16)
+  description            String?                  @db.VarChar(255)
+  metadataJson           String?                  @db.LongText
+  paidAt                 DateTime?
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  player                 Player                   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, checkoutType, status])
+  @@index([productKey, status])
+  @@map("premium_payment_transactions")
+}
+
+model PlayerCreditTransaction {
+  id          Int                     @id @default(autoincrement())
+  playerId    Int
+  delta       Int
+  balanceAfter Int
+  reasonType  CreditTransactionReason
+  reasonKey   String?                 @db.VarChar(64)
+  metadataJson String?                @db.LongText
+  createdAt   DateTime                @default(now())
+  player      Player                  @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, createdAt])
+  @@index([reasonType, createdAt])
+  @@map("player_credit_transactions")
+}
+
+model CreditShopItem {
+  id            Int                  @id @default(autoincrement())
+  key           String               @unique @db.VarChar(64)
+  titleNl       String               @db.VarChar(120)
+  titleEn       String               @db.VarChar(120)
+  descriptionNl String?              @db.Text
+  descriptionEn String?              @db.Text
+  creditCost    Int
+  effectType    CreditShopEffectType
+  moneyAmount   Int?
+  durationHours Int?
+  actionType    String?              @db.VarChar(50)
+  metadataJson  String?              @db.LongText
+  isActive      Boolean              @default(true)
+  sortOrder     Int                  @default(0)
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  entitlements  PlayerCreditEntitlement[]
+
+  @@index([isActive, sortOrder])
+  @@map("credit_shop_items")
+}
+
+model PlayerCreditEntitlement {
+  id            Int                   @id @default(autoincrement())
+  playerId      Int
+  catalogItemId Int?
+  key           String                @db.VarChar(64)
+  effectType    CreditShopEffectType
+  status        CreditEntitlementStatus @default(ACTIVE)
+  durationHours Int?
+  startedAt     DateTime              @default(now())
+  expiresAt     DateTime?
+  metadataJson  String?               @db.LongText
+  catalogItem   CreditShopItem?       @relation(fields: [catalogItemId], references: [id], onDelete: SetNull)
+  player        Player                @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, status, expiresAt])
+  @@index([catalogItemId], map: "player_credit_entitlements_catalogItemId_fkey")
+  @@map("player_credit_entitlements")
+}
+
 model WeaponInventory {
   id          Int      @id @default(autoincrement())
   playerId    Int
@@ -999,11 +1091,18 @@ model PremiumOneTimeOffer {
   key             String                   @unique @db.VarChar(64)
   titleNl         String                   @db.VarChar(120)
   titleEn         String                   @db.VarChar(120)
+  descriptionNl   String?                  @db.Text
+  descriptionEn   String?                  @db.Text
   priceEurCents   Int
   rewardType      PremiumOfferRewardType
   moneyAmount     Int?
   ammoType        String?                  @db.VarChar(50)
   ammoQuantity    Int?
+  creditAmount    Int?
+  rewardKey       String?                  @db.VarChar(64)
+  durationHours   Int?
+  rewardValue     Int?
+  metadataJson    String?                  @db.LongText
   isActive        Boolean                  @default(true)
   sortOrder       Int                      @default(0)
   createdAt       DateTime                 @default(now())
@@ -1520,6 +1619,20 @@ model ProstitutionProtectionInsurance {
   @@map("prostitution_protection_insurance")
 }
 
+model ProfileLike {
+  id             Int      @id @default(autoincrement())
+  sourcePlayerId Int
+  targetPlayerId Int
+  createdAt      DateTime @default(now())
+  sourcePlayer   Player   @relation("ProfileLikesGiven", fields: [sourcePlayerId], references: [id], onDelete: Cascade)
+  targetPlayer   Player   @relation("ProfileLikesReceived", fields: [targetPlayerId], references: [id], onDelete: Cascade)
+
+  @@unique([sourcePlayerId, targetPlayerId])
+  @@index([targetPlayerId])
+  @@index([sourcePlayerId])
+  @@map("profile_likes")
+}
+
 model NightclubVenue {
   id                    Int                             @id @default(autoincrement())
   propertyId            Int                             @unique(map: "propertyId")
@@ -1971,6 +2084,49 @@ enum AdminRole {
 enum PremiumOfferRewardType {
   money
   ammo
+  credits
+  event_boost
+}
+
+enum PaymentProvider {
+  MOLLIE
+}
+
+enum PaymentCheckoutType {
+  PLAYER_VIP
+  CREW_VIP
+  ONE_TIME
+}
+
+enum PaymentTransactionStatus {
+  OPEN
+  PENDING
+  PAID
+  CANCELED
+  EXPIRED
+  FAILED
+}
+
+enum CreditTransactionReason {
+  PURCHASE
+  REDEEM
+  REFUND
+  ADMIN_ADJUSTMENT
+}
+
+enum CreditShopEffectType {
+  CASH_BUNDLE
+  HIT_PROTECTION
+  VEHICLE_REPAIR_FINISH
+  VEHICLE_TUNE_RESET
+  ACTION_COOLDOWN_RESET
+  EVENT_BOOST
+}
+
+enum CreditEntitlementStatus {
+  ACTIVE
+  CONSUMED
+  EXPIRED
 }
 
 enum DeviceType {

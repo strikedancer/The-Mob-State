@@ -139,7 +139,7 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              won ? 'images/casino/win_effect.png' : 'images/casino/lose_effect.png',
+              won ? 'assets/images/casino/win_effect.png' : 'assets/images/casino/lose_effect.png',
               width: 200,
               height: 150,
               fit: BoxFit.contain,
@@ -206,7 +206,7 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'images/casino/bankrupt.png',
+              'assets/images/casino/bankrupt.png',
               width: 300,
               height: 200,
               fit: BoxFit.contain,
@@ -278,7 +278,7 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
                       );
                     },
                     child: Image.asset(
-                      'images/casino/roulette_wheel.png',
+                      'assets/images/casino/roulette_wheel.png',
                       width: 300,
                       height: 300,
                       fit: BoxFit.contain,
@@ -300,7 +300,7 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'images/casino/roulette_ball.png',
+                              'assets/images/casino/roulette_ball.png',
                               width: 30,
                               height: 30,
                             ),

@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 /// Example:
 /// ```dart
 /// OverlayImage(
-///   base: 'images/vehicles/toyota_corolla.png',
-///   overlays: ['images/overlays/vehicles/damaged.png'],
+///   base: 'assets/images/vehicles/toyota_corolla.png',
+///   overlays: ['assets/images/overlays/vehicles/damaged.png'],
 ///   width: 200,
 ///   height: 150,
 /// )
@@ -113,16 +113,16 @@ class OverlayImage extends StatelessWidget {
 /// Extension to easily add common vehicle overlays
 extension VehicleOverlays on String {
   /// Returns the path with damaged overlay
-  static String damaged = 'images/overlays/vehicles/damaged.png';
+  static String damaged = 'assets/images/overlays/vehicles/damaged.png';
   
   /// Returns the path with locked overlay
-  static String locked = 'images/overlays/vehicles/locked.png';
+  static String locked = 'assets/images/overlays/vehicles/locked.png';
   
   /// Returns the path with upgraded overlay
-  static String upgraded = 'images/overlays/vehicles/upgraded.png';
+  static String upgraded = 'assets/images/overlays/vehicles/upgraded.png';
   
   /// Returns the path with in-transit overlay
-  static String inTransit = 'images/overlays/vehicles/in_transit.png';
+  static String inTransit = 'assets/images/overlays/vehicles/in_transit.png';
 }
 
 /// Helper class for building overlay image configurations

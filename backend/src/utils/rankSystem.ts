@@ -48,6 +48,8 @@ export function calculateReputationChange(action: string, success: boolean): num
   const reputationChanges: Record<string, { success: number; failure: number }> = {
     crime_success: { success: 5, failure: -2 },
     crime_caught: { success: 0, failure: -10 },
+    fbi_arrest: { success: 0, failure: -25 },
+    fbi_raid: { success: 0, failure: -8 },
     heist_success: { success: 25, failure: -5 },
     heist_failed: { success: 0, failure: -15 },
     trade_profit: { success: 2, failure: 0 },
@@ -55,6 +57,10 @@ export function calculateReputationChange(action: string, success: boolean): num
     crew_kicked: { success: 0, failure: -20 },
     player_helped: { success: 15, failure: 0 },
     player_betrayed: { success: 0, failure: -30 },
+    hit_claim_success: { success: 15, failure: 0 },
+    achievement_unlock: { success: 5, failure: 0 },
+    vehicle_theft: { success: 4, failure: -2 },
+    vehicle_theft_arrest: { success: 0, failure: -8 },
   };
 
   const change = reputationChanges[action];

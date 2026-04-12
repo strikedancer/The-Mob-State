@@ -121,7 +121,7 @@ class VehicleCard extends StatelessWidget {
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: OverlayImageBuilder()
-                                  .base('images/vehicles/$selectedImage')
+                                  .base('assets/images/vehicles/$selectedImage')
                                   .inTransit(
                                     when: vehicle.transportStatus != null,
                                   )

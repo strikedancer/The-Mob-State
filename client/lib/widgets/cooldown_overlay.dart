@@ -83,13 +83,13 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     // Determine which background image to use
     String? backgroundImagePath;
     if (widget.actionType == 'crime') {
-      backgroundImagePath = 'images/cooldown_crimes.png';
+      backgroundImagePath = 'assets/images/cooldown_crimes.png';
     } else if (widget.actionType == 'job') {
-      backgroundImagePath = 'images/cooldown_jobs.png';
+      backgroundImagePath = 'assets/images/cooldown_jobs.png';
     } else if (widget.actionType == 'travel') {
-      backgroundImagePath = 'images/cooldown_airfield.png';
+      backgroundImagePath = 'assets/images/cooldown_airfield.png';
     } else if (widget.actionType == 'school') {
-      backgroundImagePath = 'images/cooldown_school.png';
+      backgroundImagePath = 'assets/images/cooldown_school.png';
     }
 
     final overlayCard = Card(

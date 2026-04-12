@@ -33,7 +33,23 @@ ROOT = Path(__file__).resolve().parents[2]
 VEHICLES_JSON = ROOT / "backend" / "content" / "vehicles.json"
 ASSET_DIR = ROOT / "client" / "assets" / "images" / "vehicles"
 
-API_KEY = os.getenv("LEONARDO_API_KEY", "")
+LOCAL_ENV_PATH = ROOT / "backend" / ".env.local"
+
+
+def _load_local_env_value(key: str) -> str:
+    if not LOCAL_ENV_PATH.exists():
+        return ""
+    for raw_line in LOCAL_ENV_PATH.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        name, value = line.split("=", 1)
+        if name.strip() != key:
+            continue
+        return value.strip().strip('"').strip("'")
+    return ""
+
+API_KEY = os.getenv("LEONARDO_API_KEY", "") or _load_local_env_value("LEONARDO_API_KEY")
 GENERATE_URL_V2 = "https://cloud.leonardo.ai/api/rest/v2/generations"
 STATUS_URL_V1 = "https://cloud.leonardo.ai/api/rest/v1/generations"
 DEFAULT_MODEL = "gpt-image-1.5"

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/avatar_helper.dart';
 
 class HitCard extends StatelessWidget {
   final dynamic hit;
   final VoidCallback onAttemptHit;
+  final VoidCallback? onInvestigate;
+  final void Function(int playerId, String? username)? onOpenPlayerProfile;
   final VoidCallback onPlaceCounterBounty;
   final VoidCallback onCancelHit;
 
@@ -12,9 +15,16 @@ class HitCard extends StatelessWidget {
     super.key,
     required this.hit,
     required this.onAttemptHit,
+    this.onInvestigate,
+    this.onOpenPlayerProfile,
     required this.onPlaceCounterBounty,
     required this.onCancelHit,
   });
+
+  String _t(BuildContext context, String nl, String en) {
+    final code = Localizations.localeOf(context).languageCode;
+    return code == 'nl' ? nl : en;
+  }
 
   String _formatMoney(dynamic amount) {
     if (amount == null) return '€0';
@@ -22,28 +32,25 @@ class HitCard extends StatelessWidget {
     return '€$formatted';
   }
 
-  String _getTimeAgo(DateTime dateTime, AppLocalizations? l10n) {
+  String _getTimeAgo(DateTime dateTime, AppLocalizations l10n) {
     final now = DateTime.now();
     final difference = now.difference(dateTime);
 
     if (difference.inDays > 0) {
       final plural = difference.inDays > 1 ? 'en' : '';
-      return l10n?.daysAgo((difference.inDays.toString()), plural) ?? 
-        '${difference.inDays} days ago';
+      return l10n.daysAgo((difference.inDays.toString()), plural);
     } else if (difference.inHours > 0) {
-      return l10n?.hoursAgo(difference.inHours.toString()) ?? 
-        '${difference.inHours} hours ago';
+      return l10n.hoursAgo(difference.inHours.toString());
     } else if (difference.inMinutes > 0) {
-      return l10n?.minutesAgo(difference.inMinutes.toString()) ?? 
-        '${difference.inMinutes} minutes ago';
+      return l10n.minutesAgo(difference.inMinutes.toString());
     } else {
-      return l10n?.justPlaced ?? 'Just placed';
+      return l10n.justPlaced;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final target = hit['target'];
     final placer = hit['placedBy'];
     final bounty = hit['bounty'] ?? 0;
@@ -73,11 +80,62 @@ class HitCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
-                    target?['username'] ?? 'Unknown',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap:
+                        (target?['id'] != null && onOpenPlayerProfile != null)
+                        ? () => onOpenPlayerProfile!(
+                            target!['id'] as int,
+                            target['username']?.toString(),
+                          )
+                        : null,
+                    borderRadius: BorderRadius.circular(14),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 2,
+                        vertical: 2,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            radius: 14,
+                            backgroundImage: AssetImage(
+                              AvatarHelper.getAvatarPath(
+                                target?['avatar']?.toString(),
+                              ),
+                            ),
+                            child:
+                                (target?['avatar'] == null ||
+                                    target?['avatar']?.toString().isEmpty ==
+                                        true)
+                                ? Text(
+                                    (target?['username']
+                                                ?.toString()
+                                                .isNotEmpty ==
+                                            true)
+                                        ? target['username']
+                                              .toString()[0]
+                                              .toUpperCase()
+                                        : '?',
+                                    style: const TextStyle(fontSize: 11),
+                                  )
+                                : null,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            target?['username'] ?? l10n.unknown,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  (target?['id'] != null &&
+                                      onOpenPlayerProfile != null)
+                                  ? Colors.lightBlue
+                                  : null,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -91,9 +149,7 @@ class HitCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    isCounterBounty 
-                      ? (l10n?.counterBid ?? 'COUNTER-BID')
-                      : (l10n?.hit ?? 'HIT'),
+                    isCounterBounty ? l10n.counterBid : l10n.hit,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 10,
@@ -106,11 +162,7 @@ class HitCard extends StatelessWidget {
             const SizedBox(height: 4),
             Row(
               children: [
-                Icon(
-                  Icons.monetization_on,
-                  color: Colors.amber,
-                  size: 14,
-                ),
+                Icon(Icons.monetization_on, color: Colors.amber, size: 14),
                 const SizedBox(width: 4),
                 Text(
                   _formatMoney(isCounterBounty ? counterBounty : bounty),
@@ -123,10 +175,7 @@ class HitCard extends StatelessWidget {
                 const Spacer(),
                 Text(
                   _getTimeAgo(createdAt, l10n),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
             ),
@@ -140,28 +189,30 @@ class HitCard extends StatelessWidget {
               children: [
                 // Hit Details
                 _buildDetailRow(
-                  l10n?.target ?? 'Target',
-                  target?['username'] ?? 'Unknown',
+                  l10n.target,
+                  target?['username'] ?? l10n.unknown,
                   Icons.person,
                   context,
                 ),
                 const Divider(),
                 _buildDetailRow(
-                  l10n?.level ?? 'Level',
+                  l10n.level,
                   '${target?['level'] ?? 0}',
                   Icons.show_chart,
                   context,
                 ),
                 const Divider(),
-                _buildDetailRow(
-                  l10n?.placer ?? 'Placer',
-                  placer?['username'] ?? 'Unknown',
-                  Icons.person_add,
-                  context,
+                _buildPlayerDetailRow(
+                  label: l10n.placer,
+                  playerId: placer?['id'] as int?,
+                  username: placer?['username']?.toString(),
+                  avatar: placer?['avatar']?.toString(),
+                  icon: Icons.person_add,
+                  context: context,
                 ),
                 const Divider(),
                 _buildDetailRow(
-                  l10n?.bounty ?? 'Bounty',
+                  l10n.bounty,
                   _formatMoney(bounty),
                   Icons.monetization_on,
                   context,
@@ -170,7 +221,7 @@ class HitCard extends StatelessWidget {
                 if (counterBounty != null && counterBounty > 0) ...[
                   const Divider(),
                   _buildDetailRow(
-                    l10n?.counterBid ?? 'Counter-bid',
+                    l10n.counterBid,
                     _formatMoney(counterBounty),
                     Icons.swap_horiz,
                     context,
@@ -190,7 +241,7 @@ class HitCard extends StatelessWidget {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            l10n?.counterBidPlaced ?? 'Counter-bid placed! The contract has been reversed.',
+                            l10n.counterBidPlaced,
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.orange,
@@ -210,7 +261,7 @@ class HitCard extends StatelessWidget {
                       ElevatedButton.icon(
                         onPressed: onPlaceCounterBounty,
                         icon: const Icon(Icons.swap_horiz),
-                        label: Text(l10n?.counterBountyTitle ?? 'Place Counter-Bounty'),
+                        label: Text(l10n.counterBountyTitle),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,
                           foregroundColor: Colors.white,
@@ -223,20 +274,39 @@ class HitCard extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: onCancelHit,
                     icon: const Icon(Icons.close),
-                    label: Text(l10n?.cancel ?? 'Cancel'),
+                    label: Text(l10n.cancel),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,
                     ),
                   )
                 else
-                  ElevatedButton.icon(
-                    onPressed: onAttemptHit,
-                    icon: const Icon(Icons.local_police),
-                    label: Text(l10n?.executeHit ?? 'Execute Hit'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (onInvestigate != null) ...[
+                        OutlinedButton.icon(
+                          onPressed: onInvestigate,
+                          icon: const Icon(Icons.search),
+                          label: Text(
+                            _t(
+                              context,
+                              'Onderzoek opties',
+                              'Investigation options',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                      ElevatedButton.icon(
+                        onPressed: onAttemptHit,
+                        icon: const Icon(Icons.local_police),
+                        label: Text(l10n.executeHit),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
               ],
             ),
@@ -257,16 +327,69 @@ class HitCard extends StatelessWidget {
       children: [
         Icon(icon, size: 18, color: Colors.grey),
         const SizedBox(width: 12),
-        Expanded(
-          child: Text(label),
-        ),
+        Expanded(child: Text(label)),
         Text(
           value,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: valueColor,
+          style: TextStyle(fontWeight: FontWeight.bold, color: valueColor),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPlayerDetailRow({
+    required String label,
+    required int? playerId,
+    required String? username,
+    required String? avatar,
+    required IconData icon,
+    required BuildContext context,
+  }) {
+    final displayName = (username != null && username.isNotEmpty)
+        ? username
+        : AppLocalizations.of(context)!.unknown;
+
+    final canOpenProfile = playerId != null && onOpenPlayerProfile != null;
+
+    final playerChip = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CircleAvatar(
+          radius: 11,
+          backgroundImage: AssetImage(AvatarHelper.getAvatarPath(avatar)),
+          child: (avatar == null || avatar.isEmpty)
+              ? Text(
+                  displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
+                  style: const TextStyle(fontSize: 9),
+                )
+              : null,
+        ),
+        const SizedBox(width: 8),
+        Flexible(
+          child: Text(
+            displayName,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
+      ],
+    );
+
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: Colors.grey),
+        const SizedBox(width: 12),
+        Expanded(child: Text(label)),
+        if (canOpenProfile)
+          InkWell(
+            onTap: () => onOpenPlayerProfile!(playerId, username),
+            borderRadius: BorderRadius.circular(14),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+              child: playerChip,
+            ),
+          )
+        else
+          playerChip,
       ],
     );
   }

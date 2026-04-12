@@ -392,7 +392,7 @@ class _TradeScreenState extends State<TradeScreen>
               ),
               child: selectedImage != null
                   ? Image.asset(
-                      'images/vehicles/$selectedImage',
+                      'assets/images/vehicles/$selectedImage',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Icon(
                         vehicle.vehicleType == 'car'

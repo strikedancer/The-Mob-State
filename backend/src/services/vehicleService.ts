@@ -10,6 +10,11 @@ import vehiclesData from '../../content/vehicles.json';
 import { checkCooldown, setCooldown } from './cooldownService';
 import { checkArrest, checkIfJailed } from './policeService';
 import { activityService } from './activityService';
+import { applyReputationAction } from './reputationService';
+import {
+  checkAndUnlockAchievements,
+  serializeAchievementForClient,
+} from './achievementService';
 
 const COUNTRY_ALIASES: Record<string, string> = {
   united_kingdom: 'uk',
@@ -747,6 +752,8 @@ export const vehicleService = {
     xpGained?: number;
     newXp?: number;
     newRank?: number;
+    reputation?: number;
+    newlyUnlockedAchievements?: any[];
     arrestedAfterTheft?: boolean;
     cooldownRemainingSeconds?: number;
   }> {
@@ -1082,6 +1089,12 @@ export const vehicleService = {
       if (arrestResult.arrested) {
         await applyVehicleArrest(arrestResult.jailTime!);
 
+        const newReputation = await applyReputationAction(
+          playerId,
+          'vehicle_theft_arrest',
+          false,
+        );
+
         await logVehicleTheftActivity(
           `Mislukte voertuigdiefstal: opgepakt tijdens poging (${vehicleDef.name})`,
           {
@@ -1102,8 +1115,15 @@ export const vehicleService = {
           jailTime: arrestResult.jailTime,
           bail: arrestResult.bail,
           wantedLevel: 0,
+          reputation: newReputation,
         };
       }
+
+      const newReputation = await applyReputationAction(
+        playerId,
+        'vehicle_theft',
+        false,
+      );
 
       await logVehicleTheftActivity(
         `Mislukte voertuigdiefstal: gesnapt tijdens poging (${vehicleDef.name})`,
@@ -1122,6 +1142,7 @@ export const vehicleService = {
         message: 'Je werd gesnapt tijdens de poging! Wanted level verhoogd.',
         arrested: false,
         wantedLevel: updatedPlayer.wantedLevel,
+        reputation: newReputation,
       };
     }
 
@@ -1175,6 +1196,16 @@ export const vehicleService = {
     // Set cooldown after successful theft
     await setCooldown(playerId, cooldownType);
 
+    const newReputation = await applyReputationAction(
+      playerId,
+      'vehicle_theft',
+      true,
+    );
+
+    const newlyUnlockedAchievements = (
+      await checkAndUnlockAchievements(playerId)
+    ).map(({ achievement }) => serializeAchievementForClient(achievement));
+
     // Check if player gets arrested even after successful steal (lower chance)
     const arrestResult = await checkArrest(playerId);
     
@@ -1182,6 +1213,12 @@ export const vehicleService = {
       // Player got arrested AFTER stealing the vehicle successfully
       // Vehicle stays stolen but player goes to jail
       await applyVehicleArrest(arrestResult.jailTime!);
+
+      const postArrestReputation = await applyReputationAction(
+        playerId,
+        'vehicle_theft_arrest',
+        false,
+      );
 
       await logVehicleTheftActivity(
         `Voertuig gestolen, maar direct opgepakt (${vehicleDef.name})`,
@@ -1210,6 +1247,8 @@ export const vehicleService = {
         xpGained: theftXpGained,
         newXp: xpUpdate.xp,
         newRank,
+        reputation: postArrestReputation,
+        newlyUnlockedAchievements,
         vehicle: {
           ...stolenVehicle,
           definition: vehicleDef,
@@ -1237,6 +1276,8 @@ export const vehicleService = {
       xpGained: theftXpGained,
       newXp: xpUpdate.xp,
       newRank,
+      reputation: newReputation,
+      newlyUnlockedAchievements,
       vehicle: {
         ...stolenVehicle,
         definition: vehicleDef,

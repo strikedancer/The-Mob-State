@@ -154,7 +154,7 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              won ? 'images/casino/win_effect.png' : 'images/casino/lose_effect.png',
+              won ? 'assets/images/casino/win_effect.png' : 'assets/images/casino/lose_effect.png',
               width: 200,
               height: 150,
               fit: BoxFit.contain,
@@ -219,7 +219,7 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'images/casino/bankrupt.png',
+              'assets/images/casino/bankrupt.png',
               width: 300,
               height: 200,
               fit: BoxFit.contain,

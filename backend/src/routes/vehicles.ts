@@ -386,6 +386,7 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
           jailTime: result.jailTime ?? 0,
           bail: result.bail ?? 0,
           wantedLevel: result.wantedLevel ?? 0,
+          reputation: result.reputation ?? null,
           cooldownRemainingSeconds: result.cooldownRemainingSeconds ?? 0,
         },
       });
@@ -405,12 +406,15 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
         bail: result.bail ?? 0,
         wantedLevel: result.wantedLevel ?? 0,
         xpGained: result.xpGained ?? 0,
+        reputation: result.reputation ?? null,
       },
       player: {
         xp: result.newXp ?? null,
         rank: result.newRank ?? null,
         wantedLevel: result.wantedLevel ?? 0,
+        reputation: result.reputation ?? null,
       },
+      newlyUnlockedAchievements: result.newlyUnlockedAchievements ?? [],
       vehicle: result.vehicle,
     });
   } catch (error) {

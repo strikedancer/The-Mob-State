@@ -29,7 +29,7 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
   @override
   Widget build(BuildContext context) {
     // final l10n = AppLocalizations.of(context)!;  // Unused
-    final imageAsset = 'images/tools/${widget.tool.toolId}_tool.png';
+    final imageAsset = 'assets/images/tools/${widget.tool.toolId}_tool.png';
     final durabilityPercent = widget.tool.durabilityPercent;
     final durabilityColor = _getDurabilityColor(durabilityPercent);
     final repairCost = ((widget.tool.basePrice ?? 0) * 0.5).floor();

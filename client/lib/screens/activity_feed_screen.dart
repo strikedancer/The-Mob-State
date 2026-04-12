@@ -5,6 +5,7 @@ import '../models/player_activity.dart';
 import '../services/auth_service.dart';
 import '../providers/event_provider.dart';
 import '../utils/avatar_helper.dart';
+import 'player_profile_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
 
@@ -114,6 +115,15 @@ class _ActivityFeedScreenState extends State<ActivityFeedScreen> {
     }
   }
 
+  void _openPlayerProfile(ActivityPlayer player) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PlayerProfileScreen(playerId: player.id, username: player.username),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,16 +183,19 @@ class _ActivityFeedScreenState extends State<ActivityFeedScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Avatar
-                              Container(
-                                width: 48,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      AvatarHelper.getAvatarPath(player.avatar),
+                              GestureDetector(
+                                onTap: () => _openPlayerProfile(player),
+                                child: Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        AvatarHelper.getAvatarPath(player.avatar),
+                                      ),
+                                      fit: BoxFit.cover,
                                     ),
-                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
@@ -194,12 +207,15 @@ class _ActivityFeedScreenState extends State<ActivityFeedScreen> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text(
-                                          player.username,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                        GestureDetector(
+                                          onTap: () => _openPlayerProfile(player),
+                                          child: Text(
+                                            player.username,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(width: 8),

@@ -121,7 +121,7 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('images/backgrounds/weapon_shop_bg.png'),
+          image: const AssetImage('assets/images/backgrounds/weapon_shop_bg.png'),
           fit: BoxFit.cover,
           opacity: 0.15,
         ),

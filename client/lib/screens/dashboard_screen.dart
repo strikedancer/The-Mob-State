@@ -48,6 +48,7 @@ import 'nightclub_screen.dart';
 import 'crypto_screen.dart';
 import 'events_screen.dart';
 import 'help_screen.dart';
+import 'player_profile_screen.dart';
 
 enum _WebSection {
   dashboard,
@@ -128,6 +129,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   static const double _wideDesktopBreakpoint = 1200;
 
   int _unreadCount = 0;
+
+  void _openPlayerProfile(Player player) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PlayerProfileScreen(playerId: player.id, username: player.username),
+      ),
+    );
+  }
   StreamSubscription? _eventSubscription;
   Timer? _playerRefreshTimer;
   bool _checkedPremiumPopup = false;
@@ -513,7 +523,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         child: ClipOval(
                           child: Image.network(
-                            'images/avatars/${player.avatar ?? 'default_1'}.png',
+                            'assets/images/avatars/${player.avatar ?? 'default_1'}.png',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) => Icon(
                               Icons.account_circle,
@@ -1519,64 +1529,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Row(
                       children: [
                         // Avatar
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            CircleAvatar(
-                              radius: 32,
-                              child: ClipOval(
-                                child: Image.asset(
-                                  'images/avatars/${player.avatar ?? 'default_1'}.png',
-                                  width: 64,
-                                  height: 64,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    final avatar = player.avatar ?? 'default_1';
-                                    return Center(
-                                      child: Text(
-                                        avatar.isNotEmpty
-                                            ? avatar[0].toUpperCase()
-                                            : '?',
-                                        style: const TextStyle(fontSize: 32),
+                        GestureDetector(
+                          onTap: () => _openPlayerProfile(player),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              CircleAvatar(
+                                radius: 32,
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/images/avatars/${player.avatar ?? 'default_1'}.png',
+                                    width: 64,
+                                    height: 64,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      final avatar = player.avatar ?? 'default_1';
+                                      return Center(
+                                        child: Text(
+                                          avatar.isNotEmpty
+                                              ? avatar[0].toUpperCase()
+                                              : '?',
+                                          style: const TextStyle(fontSize: 32),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              if (_unreadCount > 0)
+                                Positioned(
+                                  right: -4,
+                                  top: -4,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: Theme.of(context).cardColor,
+                                        width: 1.5,
                                       ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            if (_unreadCount > 0)
-                              Positioned(
-                                right: -4,
-                                top: -4,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Theme.of(context).cardColor,
-                                      width: 1.5,
+                                    ),
+                                    constraints: const BoxConstraints(
+                                      minWidth: 18,
+                                      minHeight: 18,
+                                    ),
+                                    child: Text(
+                                      _unreadCount > 99 ? '99+' : '$_unreadCount',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 18,
-                                    minHeight: 18,
-                                  ),
-                                  child: Text(
-                                    _unreadCount > 99 ? '99+' : '$_unreadCount',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                         const SizedBox(width: 16),
                         // Player info

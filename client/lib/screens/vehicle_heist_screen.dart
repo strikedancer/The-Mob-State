@@ -269,7 +269,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: OverlayImageBuilder()
-                      .base('images/vehicles/$image')
+                      .base('assets/images/vehicles/$image')
                       .width(90)
                       .height(64)
                       .fit(BoxFit.contain)

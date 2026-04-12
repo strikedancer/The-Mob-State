@@ -286,7 +286,7 @@ class _CasinoManagementScreenState extends State<CasinoManagementScreen> {
                       child: Row(
                         children: [
                           Image.asset(
-                            'images/casino/bankrupt.png',
+                            'assets/images/casino/bankrupt.png',
                             width: 32,
                             height: 32,
                             errorBuilder: (context, error, stackTrace) => Icon(

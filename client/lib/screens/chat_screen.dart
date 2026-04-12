@@ -8,6 +8,7 @@ import '../providers/event_provider.dart';
 import '../models/direct_message.dart';
 import '../widgets/message_bubble.dart';
 import '../utils/avatar_helper.dart';
+import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -331,6 +332,20 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  void _openFriendProfile() {
+    if (_isSystemThread) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PlayerProfileScreen(
+          playerId: widget.friendId,
+          username: widget.friendName,
+        ),
+      ),
+    );
+  }
+
   Widget _buildThreadAvatar() {
     if (_isSystemThread) {
       return Container(
@@ -395,30 +410,36 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         title: Row(
           children: [
-            _buildThreadAvatar(),
+            GestureDetector(
+              onTap: _isSystemThread ? null : _openFriendProfile,
+              child: _buildThreadAvatar(),
+            ),
             const SizedBox(width: 12),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.friendName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+              child: GestureDetector(
+                onTap: _isSystemThread ? null : _openFriendProfile,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.friendName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    _isSystemThread
-                        ? 'Achievement- en systeemberichten'
-                        : '★ Rank ${widget.friendRank}',
-                    style: TextStyle(
-                      color: Colors.grey[400],
-                      fontSize: 12,
+                    Text(
+                      _isSystemThread
+                          ? 'Achievement- en systeemberichten'
+                          : '★ Rank ${widget.friendRank}',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

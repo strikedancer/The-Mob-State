@@ -225,7 +225,7 @@ class _TravelScreenState extends State<TravelScreen> {
           title: Row(
             children: [
               Image.asset(
-                'images/travel/journey_start.png',
+                'assets/images/travel/journey_start.png',
                 width: 32,
                 height: 32,
               ),
@@ -246,7 +246,7 @@ class _TravelScreenState extends State<TravelScreen> {
               Row(
                 children: [
                   Image.asset(
-                    'images/travel/cooldown_timer.png',
+                    'assets/images/travel/cooldown_timer.png',
                     width: 16,
                     height: 16,
                   ),
@@ -261,7 +261,7 @@ class _TravelScreenState extends State<TravelScreen> {
               Row(
                 children: [
                   Image.asset(
-                    'images/travel/wanted_indicator.png',
+                    'assets/images/travel/wanted_indicator.png',
                     width: 16,
                     height: 16,
                   ),
@@ -322,7 +322,7 @@ class _TravelScreenState extends State<TravelScreen> {
               title: Row(
                 children: [
                   Image.asset(
-                    'images/travel/police_arrest.png',
+                    'assets/images/travel/police_arrest.png',
                     width: 32,
                     height: 32,
                   ),
@@ -412,7 +412,7 @@ class _TravelScreenState extends State<TravelScreen> {
         title: Row(
           children: [
             Image.asset(
-              'images/travel/border_checkpoint.png',
+              'assets/images/travel/border_checkpoint.png',
               width: 32,
               height: 32,
             ),
@@ -476,7 +476,7 @@ class _TravelScreenState extends State<TravelScreen> {
               title: Row(
                 children: [
                   Image.asset(
-                    'images/travel/police_arrest.png',
+                    'assets/images/travel/police_arrest.png',
                     width: 32,
                     height: 32,
                   ),
@@ -580,7 +580,7 @@ class _TravelScreenState extends State<TravelScreen> {
             title: Row(
               children: [
                 Image.asset(
-                  'images/travel/safe_arrival.png',
+                  'assets/images/travel/safe_arrival.png',
                   width: 32,
                   height: 32,
                 ),
@@ -594,7 +594,7 @@ class _TravelScreenState extends State<TravelScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.asset(
-                    'images/travel/safehouse.png',
+                    'assets/images/travel/safehouse.png',
                     fit: BoxFit.cover,
                     height: 120,
                   ),
@@ -636,7 +636,7 @@ class _TravelScreenState extends State<TravelScreen> {
         title: Row(
           children: [
             Image.asset(
-              'images/travel/journey_cancelled.png',
+              'assets/images/travel/journey_cancelled.png',
               width: 32,
               height: 32,
             ),
@@ -706,7 +706,7 @@ class _TravelScreenState extends State<TravelScreen> {
             child: Opacity(
               opacity: 0.4,
               child: Image.asset(
-                'images/travel/route_map.png',
+                'assets/images/travel/route_map.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -726,7 +726,7 @@ class _TravelScreenState extends State<TravelScreen> {
             child: Row(
               children: [
                 Image.asset(
-                  'images/travel/journey_start.png',
+                  'assets/images/travel/journey_start.png',
                   width: 28,
                   height: 28,
                 ),
@@ -772,7 +772,7 @@ class _TravelScreenState extends State<TravelScreen> {
             child: Opacity(
               opacity: 0.3,
               child: Image.asset(
-                'images/travel/en_route.png',
+                'assets/images/travel/en_route.png',
                 fit: BoxFit.cover,
               ),
             ),
@@ -796,7 +796,7 @@ class _TravelScreenState extends State<TravelScreen> {
                   Row(
                     children: [
                       Image.asset(
-                        'images/travel/wanted_indicator.png',
+                        'assets/images/travel/wanted_indicator.png',
                         width: 24,
                         height: 24,
                       ),

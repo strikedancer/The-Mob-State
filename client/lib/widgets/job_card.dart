@@ -26,7 +26,7 @@ class _JobCardState extends State<JobCard> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final imageAsset = 'images/jobs/${widget.job.id}_job.png';
+    final imageAsset = 'assets/images/jobs/${widget.job.id}_job.png';
     final successChance = 85;
 
     return MouseRegion(

@@ -1,21 +1,24 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../models/vehicle.dart';
+import 'package:http/http.dart' as http;
+
 import '../config/app_config.dart';
-import '../l10n/app_localizations.dart';
-import '../utils/country_helper.dart';
+import '../models/vehicle.dart';
+import '../utils/avatar_helper.dart';
 import '../utils/top_right_notification.dart';
 
 class PlayerProfileScreen extends StatefulWidget {
   final int playerId;
   final String username;
+  final bool embedded;
 
   const PlayerProfileScreen({
     super.key,
     required this.playerId,
     required this.username,
+    this.embedded = false,
   });
 
   @override
@@ -24,12 +27,68 @@ class PlayerProfileScreen extends StatefulWidget {
 
 class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
   bool _isLoading = true;
+  bool _isLiking = false;
   Map<String, dynamic>? _playerData;
   List<VehicleInventoryItem> _playerListings = [];
   String? _error;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
+
+  int get _likesCount => (_playerData?['likesCount'] as num?)?.toInt() ?? 0;
+  bool get _viewerHasLiked => _playerData?['viewerHasLiked'] == true;
+
+  String _formatNumber(num value) {
+    final raw = value.toInt().toString();
+    return raw.replaceAllMapped(
+      RegExp(r'\B(?=(\d{3})+(?!\d))'),
+      (match) => '.',
+    );
+  }
+
+  String _formatCurrency(num value) => '€${_formatNumber(value)}';
+
+  String _formatStartDate(dynamic value) {
+    if (value == null) return '-';
+    final parsed = DateTime.tryParse(value.toString());
+    if (parsed == null) return value.toString();
+    final local = parsed.toLocal();
+    final day = local.day.toString().padLeft(2, '0');
+    final month = local.month.toString().padLeft(2, '0');
+    final year = local.year.toString();
+    return '$day-$month-$year';
+  }
+
+  String _onlineText() {
+    final isOnlineNow = _playerData?['isOnlineNow'] == true;
+    if (isOnlineNow) {
+      return _tr('Nu online', 'Online now');
+    }
+
+    final seconds =
+        (_playerData?['secondsSinceLastSeen'] as num?)?.toInt() ?? 0;
+    if (seconds < 60) {
+      return _tr('$seconds sec geleden', '$seconds sec ago');
+    }
+
+    final minutes = seconds ~/ 60;
+    if (minutes < 60) {
+      return _tr('$minutes min geleden', '$minutes min ago');
+    }
+
+    final hours = minutes ~/ 60;
+    if (hours < 24) {
+      return _tr('$hours uur geleden', '$hours h ago');
+    }
+
+    final days = hours ~/ 24;
+    return _tr('$days d geleden', '$days d ago');
+  }
+
+  String _aliveText() {
+    final isAlive = _playerData?['isAlive'] == true;
+    return isAlive ? _tr('Levend', 'Alive') : _tr('Dood', 'Dead');
+  }
 
   @override
   void initState() {
@@ -49,35 +108,30 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
       if (token == null) {
         setState(() {
-          _error = 'Niet ingelogd';
+          _error = _tr('Niet ingelogd', 'Not logged in');
           _isLoading = false;
         });
         return;
       }
 
-      // Fetch player profile
       final profileResponse = await http.get(
-        Uri.parse('${AppConfig.apiBaseUrl}/players/${widget.playerId}/profile'),
+        Uri.parse('${AppConfig.apiBaseUrl}/player/${widget.playerId}/profile'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
       if (profileResponse.statusCode == 200) {
-        final responseBody = profileResponse.body;
-        print('Profile response: $responseBody');
-        _playerData = jsonDecode(responseBody);
-        print('Parsed player data: $_playerData');
+        _playerData = jsonDecode(profileResponse.body) as Map<String, dynamic>;
       } else {
-        print('Failed to load profile: ${profileResponse.statusCode}');
-        print('Response body: ${profileResponse.body}');
         setState(() {
-          _error =
-              'Profiel kon niet worden geladen (${profileResponse.statusCode})';
+          _error = _tr(
+            'Profiel kon niet worden geladen (${profileResponse.statusCode})',
+            'Failed to load profile (${profileResponse.statusCode})',
+          );
           _isLoading = false;
         });
         return;
       }
 
-      // Fetch player's market listings (don't fail if this fails)
       try {
         final listingsResponse = await http.get(
           Uri.parse(
@@ -87,404 +141,127 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         );
 
         if (listingsResponse.statusCode == 200) {
-          final data = jsonDecode(listingsResponse.body);
-          _playerListings = (data['listings'] as List)
-              .map((json) => VehicleInventoryItem.fromJson(json))
-              .toList();
-        } else {
-          print('Failed to load listings: ${listingsResponse.statusCode}');
+          final data =
+              jsonDecode(listingsResponse.body) as Map<String, dynamic>;
+          final dynamic listings = data['listings'];
+          if (listings is List) {
+            _playerListings = listings
+                .whereType<Map<String, dynamic>>()
+                .map(VehicleInventoryItem.fromJson)
+                .toList();
+          }
         }
-      } catch (listingsError) {
-        print('Error loading listings (non-critical): $listingsError');
-        // Continue anyway - listings are optional
+      } catch (_) {
+        // Optional data; profile blijft bruikbaar.
       }
 
       setState(() {
         _isLoading = false;
       });
-    } catch (e, stackTrace) {
-      print('Error loading profile: $e');
-      print('Stack trace: $stackTrace');
+    } catch (e) {
       setState(() {
-        _error = 'Fout bij laden: $e';
+        _error = _tr('Fout bij laden: $e', 'Load error: $e');
         _isLoading = false;
       });
     }
   }
 
-  void _sendMessage() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('${_tr('Bericht naar', 'Message to')} ${widget.username}'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                labelText: _tr('Bericht', 'Message'),
-                hintText: _tr('Typ je bericht...', 'Type your message...'),
-              ),
-              maxLines: 3,
-              onChanged: (value) {
-                // Store message
-              },
+  Future<void> _likeProfile() async {
+    if (_viewerHasLiked || _isLiking) {
+      return;
+    }
+
+    setState(() => _isLiking = true);
+
+    try {
+      const storage = FlutterSecureStorage();
+      final token = await storage.read(key: 'auth_token');
+
+      if (token == null) {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(_tr('Niet ingelogd', 'Not logged in')),
+              backgroundColor: Colors.red,
             ),
-            const SizedBox(height: 16),
-            Text(
-              _tr('Berichtensysteem komt binnenkort!', 'Messaging system coming soon!'),
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 12,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-          ],
+          );
+        }
+        return;
+      }
+
+      final response = await http.post(
+        Uri.parse(
+          '${AppConfig.apiBaseUrl}/player/${widget.playerId}/profile/like',
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(_tr('Sluiten', 'Close')),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
+        final payload = jsonDecode(response.body) as Map<String, dynamic>;
+        setState(() {
+          _playerData = {
+            ...?_playerData,
+            'viewerHasLiked': true,
+            'likesCount':
+                (payload['likesCount'] as num?)?.toInt() ?? _likesCount,
+          };
+        });
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_tr('Like gegeven!', 'Like sent!')),
+            backgroundColor: Colors.green,
           ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('👤 ${widget.username}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadPlayerProfile,
-            tooltip: 'Ververs',
+        );
+      } else if (response.statusCode == 409) {
+        final payload = jsonDecode(response.body) as Map<String, dynamic>;
+        setState(() {
+          _playerData = {
+            ...?_playerData,
+            'viewerHasLiked': true,
+            'likesCount':
+                (payload['likesCount'] as num?)?.toInt() ?? _likesCount,
+          };
+        });
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                'Je hebt dit profiel al geliked.',
+                'You already liked this profile.',
+              ),
+            ),
+            backgroundColor: Colors.orange,
           ),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _error != null
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(_error!, style: const TextStyle(color: Colors.red)),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _loadPlayerProfile,
-                    child: Text(_tr('Opnieuw proberen', 'Try again')),
-                  ),
-                ],
-              ),
-            )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildPlayerHeader(),
-                  const SizedBox(height: 24),
-                  _buildPlayerStats(),
-                  const SizedBox(height: 24),
-                  _buildCrewInfo(),
-                  const SizedBox(height: 24),
-                  _buildPlayerListings(),
-                ],
-              ),
-            ),
-    );
-  }
-
-  Widget _buildPlayerHeader() {
-    final avatar = _playerData?['avatar'] ?? 'default_1';
-    final isVip = _playerData?['isVip'] ?? false;
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.blue[700],
-                  child: Text(
-                    avatar.toString().isNotEmpty
-                        ? avatar.toString()[0].toUpperCase()
-                        : '?',
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                if (isVip)
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Colors.amber, Colors.orange],
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.star,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.username,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Icon(Icons.star, size: 16, color: Colors.yellow[700]),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Reputatie: ${_playerData?['reputation'] ?? 0}',
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: _sendMessage,
-              icon: const Icon(Icons.message, size: 18),
-              label: Text(_tr('Bericht', 'Message')),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPlayerStats() {
-    final l10n = AppLocalizations.of(context);
-    final level = _playerData?['level'] ?? 0;
-    final rankTitle = _playerData?['rankTitle'] ?? 'Unknown';
-    final rankIcon = _playerData?['rankIcon'] ?? '❓';
-    final reputation = _playerData?['reputation'] ?? 0;
-    final currentCountry = _playerData?['currentCountry'] ?? 'unknown';
-    final countryName = l10n != null
-        ? CountryHelper.getLocalizedCountryName(currentCountry.toString(), l10n)
-        : currentCountry.toString();
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _tr('Speler Statistieken', 'Player Statistics'),
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            _buildStatRow('Level', level.toString()),
-            _buildStatRow(_tr('Rang', 'Rank'), '$rankIcon $rankTitle'),
-            _buildStatRow(_tr('Reputatie', 'Reputation'), reputation.toString()),
-            _buildStatRow(_tr('Land', 'Country'), countryName),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: TextStyle(color: Colors.grey[400])),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCrewInfo() {
-    final crewName = _playerData?['crewName'];
-    final crewRole = _playerData?['crewRole'];
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _tr('Crew Informatie', 'Crew Information'),
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            if (crewName != null) ...[
-              Row(
-                children: [
-                  Icon(Icons.group, color: Colors.purple[300], size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    crewName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              if (crewRole != null) ...[
-                const SizedBox(height: 4),
-                Text(
-                  '${_tr('Rol', 'Role')}: $crewRole',
-                  style: TextStyle(color: Colors.grey[400]),
-                ),
-              ],
-            ] else
-              Text(
-                _tr('Geen crew', 'No crew'),
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPlayerListings() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              _tr('Te Koop Items', 'Items for Sale'),
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.blue[700],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                '${_playerListings.length}',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        if (_playerListings.isEmpty)
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Text(
-                  _tr('Geen items te koop', 'No items for sale'),
-                  style: TextStyle(color: Colors.grey[400]),
-                ),
-              ),
-            ),
-          )
-        else
-          ..._playerListings.map((listing) => _buildListingCard(listing)),
-      ],
-    );
-  }
-
-  Widget _buildListingCard(VehicleInventoryItem vehicle) {
-    final selectedImage = vehicle.conditionImage;
-    final askingPrice = vehicle.askingPrice ?? 0;
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: selectedImage != null
-                  ? Image.asset(
-                      'images/vehicles/$selectedImage',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Icon(
-                        vehicle.vehicleType == 'car'
-                            ? Icons.directions_car
-                            : Icons.directions_boat,
-                        color: Colors.grey[600],
-                      ),
-                    )
-                  : Icon(
-                      vehicle.vehicleType == 'car'
-                          ? Icons.directions_car
-                          : Icons.directions_boat,
-                    ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    vehicle.definition?.name ?? 'Unknown',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    '€${askingPrice.toStringAsFixed(0)}',
-                    style: const TextStyle(color: Colors.green),
-                  ),
-                  Text(
-                    '${_tr('Conditie', 'Condition')}: ${vehicle.condition}%',
-                    style: TextStyle(fontSize: 12, color: Colors.grey[400]),
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => _buyVehicleFromProfile(vehicle),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-              child: Text(_tr('Koop', 'Buy')),
-            ),
-          ],
-        ),
-      ),
-    );
+        );
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_tr('Like mislukt', 'Like failed')),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_tr('Like mislukt: $e', 'Like failed: $e')),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLiking = false);
+      }
+    }
   }
 
   Future<void> _buyVehicleFromProfile(VehicleInventoryItem vehicle) async {
@@ -494,7 +271,8 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
 
       if (token == null) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(_tr('Niet ingelogd', 'Not logged in')),
               backgroundColor: Colors.red,
@@ -509,31 +287,542 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
         headers: {'Authorization': 'Bearer $token'},
       );
 
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
 
       if (response.statusCode == 200 && mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
-              content: Text(_tr('Voertuig succesvol gekocht!', 'Vehicle purchased successfully!')),
+            content: Text(
+              _tr(
+                'Voertuig succesvol gekocht!',
+                'Vehicle purchased successfully!',
+              ),
+            ),
             backgroundColor: Colors.green,
           ),
         );
-        // Refresh listings
         _loadPlayerProfile();
       } else if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
-            content: Text(data['params']?['reason'] ?? 'Aankoop mislukt'),
+            content: Text(
+              data['params']?['reason']?.toString() ??
+                  _tr('Aankoop mislukt', 'Purchase failed'),
+            ),
             backgroundColor: Colors.red,
           ),
         );
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('${_tr('Fout', 'Error')}: $e'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text('${_tr('Fout', 'Error')}: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final content = _buildContent();
+
+    if (widget.embedded) {
+      return Material(
+        color: Colors.transparent,
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            child: content,
+          ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.username),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadPlayerProfile,
+            tooltip: _tr('Ververs', 'Refresh'),
+          ),
+        ],
+      ),
+      body: content,
+    );
+  }
+
+  Widget _buildContent() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              _error!,
+              style: const TextStyle(color: Colors.redAccent),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            FilledButton(
+              onPressed: _loadPlayerProfile,
+              child: Text(_tr('Opnieuw proberen', 'Retry')),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final body = RefreshIndicator(
+      onRefresh: _loadPlayerProfile,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(12),
+        children: [
+          _buildHeroCard(),
+          const SizedBox(height: 12),
+          _buildIdentityCard(),
+          const SizedBox(height: 12),
+          _buildEconomyCard(),
+          const SizedBox(height: 12),
+          _buildListingsCard(),
+        ],
+      ),
+    );
+
+    if (widget.embedded) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: const Color(0xFF151619),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: Colors.white12),
+          ),
+          child: body,
+        ),
+      );
+    }
+
+    return body;
+  }
+
+  Widget _buildHeroCard() {
+    final avatar =
+        (_playerData?['avatar']?.toString().trim().isNotEmpty == true)
+        ? _playerData!['avatar'].toString()
+        : 'default_1';
+    final isVip = _playerData?['isVip'] == true;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.red.withOpacity(0.25),
+            Colors.orange.withOpacity(0.16),
+            Colors.black.withOpacity(0.24),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 34,
+                backgroundImage: AssetImage(AvatarHelper.getAvatarPath(avatar)),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.username,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${_playerData?['rankIcon'] ?? '❓'} ${_playerData?['rankTitle'] ?? _tr('Onbekend', 'Unknown')}',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
+              if (isVip)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(color: Colors.amber.withOpacity(0.35)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.workspace_premium,
+                        size: 16,
+                        color: Colors.amber,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        _tr('VIP', 'VIP'),
+                        style: const TextStyle(
+                          color: Colors.amber,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              _buildMetricPill(
+                icon: Icons.favorite,
+                label: _tr('Likes', 'Likes'),
+                value: _likesCount.toString(),
+                color: Colors.pinkAccent,
+              ),
+              const SizedBox(width: 8),
+              _buildMetricPill(
+                icon: Icons.verified,
+                label: _tr('Reputatie', 'Reputation'),
+                value: (_playerData?['reputation'] ?? 0).toString(),
+                color: Colors.lightBlueAccent,
+              ),
+              const Spacer(),
+              FilledButton.icon(
+                onPressed: _viewerHasLiked || _isLiking ? null : _likeProfile,
+                icon: _isLiking
+                    ? const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Icon(
+                        _viewerHasLiked
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                      ),
+                label: Text(
+                  _viewerHasLiked
+                      ? _tr('Geliked', 'Liked')
+                      : _tr('Like', 'Like'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetricPill({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.13),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: color.withOpacity(0.28)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 15, color: color),
+          const SizedBox(width: 6),
+          Text('$label: $value'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIdentityCard() {
+    final rankNumber =
+        ((_playerData?['rank'] ?? _playerData?['level'] ?? 0) as num).toInt();
+    final reputation = (_playerData?['reputation'] ?? 0).toString();
+    final rank =
+        '#$rankNumber • ${_playerData?['rankIcon'] ?? '❓'} ${_playerData?['rankTitle'] ?? _tr('Onbekend', 'Unknown')}';
+    final vip = (_playerData?['vip'] == true || _playerData?['isVip'] == true)
+        ? _tr('Ja', 'Yes')
+        : _tr('Nee', 'No');
+    final rawCrewName = _playerData?['crewName'];
+    final crewRole = _playerData?['crewRole']?.toString();
+    final crewName = ((rawCrewName?.toString().trim().isNotEmpty) ?? false)
+        ? rawCrewName.toString()
+        : _tr('Geen crew', 'No crew');
+
+    final crewDisplay = (crewRole != null && crewRole.trim().isNotEmpty)
+        ? '$crewName (${_tr('rol', 'role')}: $crewRole)'
+        : crewName;
+
+    return _sectionCard(
+      title: _tr('Identiteit', 'Identity'),
+      child: Column(
+        children: [
+          _statTile(_tr('Crew', 'Crew'), crewDisplay, Icons.group),
+          _divider(),
+          _statTile(_tr('Rank', 'Rank'), rank, Icons.military_tech),
+          _divider(),
+          _statTile(_tr('Reputatie', 'Reputation'), reputation, Icons.shield),
+          _divider(),
+          _statTile(_tr('Status', 'Status'), _aliveText(), Icons.favorite),
+          _divider(),
+          _statTile(
+            _tr('Online', 'Online'),
+            _onlineText(),
+            Icons.wifi_tethering,
+          ),
+          _divider(),
+          _statTile(
+            _tr('Start datum', 'Start date'),
+            _formatStartDate(_playerData?['startDate']),
+            Icons.calendar_month,
+          ),
+          _divider(),
+          _statTile(_tr('VIP', 'VIP'), vip, Icons.workspace_premium),
+          _divider(),
+          _statTile(
+            _tr('Aantal likes', 'Likes'),
+            _likesCount.toString(),
+            Icons.favorite_border,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEconomyCard() {
+    final cashMoney = _formatCurrency((_playerData?['cashMoney'] as num?) ?? 0);
+    final bankMoney = _formatCurrency((_playerData?['bankMoney'] as num?) ?? 0);
+    final prostitutesCount = ((_playerData?['prostitutesCount'] as num?) ?? 0)
+        .toInt()
+        .toString();
+    final propertiesCount = ((_playerData?['propertiesCount'] as num?) ?? 0)
+        .toInt()
+        .toString();
+
+    return _sectionCard(
+      title: _tr('Economie', 'Economy'),
+      child: Column(
+        children: [
+          _statTile(
+            _tr('Contant geld', 'Cash money'),
+            cashMoney,
+            Icons.payments,
+          ),
+          _divider(),
+          _statTile(
+            _tr('Geld op de bank', 'Money in bank'),
+            bankMoney,
+            Icons.account_balance,
+          ),
+          _divider(),
+          _statTile(
+            _tr('Aantal hoeren', 'Number of prostitutes'),
+            prostitutesCount,
+            Icons.person,
+          ),
+          _divider(),
+          _statTile(
+            _tr('Aantal woningen', 'Number of properties'),
+            propertiesCount,
+            Icons.home,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListingsCard() {
+    return _sectionCard(
+      title: _tr('Te koop', 'For sale'),
+      trailing: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: Colors.blueGrey.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Text('${_playerListings.length}'),
+      ),
+      child: _playerListings.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                _tr('Geen voertuigen te koop', 'No vehicles for sale'),
+                style: const TextStyle(color: Colors.white70),
+              ),
+            )
+          : Column(
+              children: _playerListings
+                  .map(
+                    (listing) => Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: _listingTile(listing),
+                    ),
+                  )
+                  .toList(),
+            ),
+    );
+  }
+
+  Widget _listingTile(VehicleInventoryItem vehicle) {
+    final selectedImage = vehicle.conditionImage;
+    final askingPrice = vehicle.askingPrice ?? 0;
+
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.black26,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 62,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.black38,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: selectedImage != null
+                ? Image.asset(
+                    'assets/images/vehicles/$selectedImage',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      vehicle.vehicleType == 'car'
+                          ? Icons.directions_car
+                          : Icons.directions_boat,
+                      color: Colors.white54,
+                    ),
+                  )
+                : Icon(
+                    vehicle.vehicleType == 'car'
+                        ? Icons.directions_car
+                        : Icons.directions_boat,
+                    color: Colors.white54,
+                  ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  vehicle.definition?.name ??
+                      _tr('Onbekend voertuig', 'Unknown vehicle'),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '€${askingPrice.toStringAsFixed(0)}',
+                  style: const TextStyle(color: Colors.greenAccent),
+                ),
+                Text(
+                  '${_tr('Conditie', 'Condition')}: ${vehicle.condition.toStringAsFixed(0)}%',
+                  style: const TextStyle(fontSize: 12, color: Colors.white70),
+                ),
+              ],
+            ),
+          ),
+          FilledButton(
+            onPressed: () => _buyVehicleFromProfile(vehicle),
+            child: Text(_tr('Koop', 'Buy')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionCard({
+    required String title,
+    required Widget child,
+    Widget? trailing,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1C20),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              const Spacer(),
+              if (trailing != null) trailing,
+            ],
+          ),
+          const SizedBox(height: 10),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _statTile(String label, String value, IconData icon) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: Colors.white70),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(label, style: const TextStyle(color: Colors.white70)),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _divider() => const Padding(
+    padding: EdgeInsets.symmetric(vertical: 8),
+    child: Divider(height: 1, color: Colors.white12),
+  );
 }

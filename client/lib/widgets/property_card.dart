@@ -151,9 +151,9 @@ class PropertyCard extends StatelessWidget {
 
   Widget _buildPropertyImage(String path) {
     // Construct full path with properties folder
-    final fullPath = path.startsWith('images/')
+    final fullPath = path.startsWith('assets/images/')
         ? path
-        : 'images/properties/$path';
+        : 'assets/images/properties/$path';
 
     return Image.asset(
       fullPath,
@@ -172,7 +172,7 @@ class PropertyCard extends StatelessWidget {
 
   List<Widget> _buildOverlays(List<String> overlayKeys) {
     return overlayKeys.map((key) {
-      final overlayPath = 'images/overlays/$key.png';
+      final overlayPath = 'assets/images/overlays/$key.png';
 
       // Position overlays based on type
       Alignment alignment;

@@ -3,6 +3,7 @@ import '../l10n/app_localizations.dart';
 import '../models/prostitute.dart';
 import '../services/prostitution_service.dart';
 import '../utils/top_right_notification.dart';
+import 'player_profile_screen.dart';
 
 class ProstitutionLeaderboardScreen extends StatefulWidget {
   const ProstitutionLeaderboardScreen({super.key});
@@ -38,6 +39,15 @@ class _ProstitutionLeaderboardScreenState
     super.dispose();
   }
 
+  void _openPlayerProfile(int playerId, String username) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            PlayerProfileScreen(playerId: playerId, username: username),
+      ),
+    );
+  }
+
   Future<void> _loadAllData() async {
     setState(() => _isLoading = true);
 
@@ -68,7 +78,8 @@ class _ProstitutionLeaderboardScreenState
       setState(() => _isLoading = false);
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text('${l10n.prostitutionLeaderboardLoadFailed}: $error'),
           ),
@@ -184,7 +195,13 @@ class _ProstitutionLeaderboardScreenState
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              title: Text(entry.username),
+              title: GestureDetector(
+                onTap: () => _openPlayerProfile(entry.playerId, entry.username),
+                child: Text(
+                  entry.username,
+                  style: const TextStyle(color: Colors.lightBlue),
+                ),
+              ),
               subtitle: Text(
                 '${entry.totalProstitutes} ${l10n.prostitutionLeaderboardProstitutesUnit} • ${entry.totalDistricts} ${l10n.prostitutionLeaderboardDistrictsUnit} • L${entry.highestLevel}',
               ),

@@ -5,6 +5,8 @@ import * as policeService from '../services/policeService';
 import * as cooldownService from '../services/cooldownService';
 import { intensiveCareService } from '../services/intensiveCareService';
 import { getWealthStatus } from '../utils/wealthSystem';
+import { calculateReputationChange } from '../utils/rankSystem';
+import { applyReputationDelta } from '../services/reputationService';
 import { getPlayerCrimeVehicle } from '../services/vehicleToolService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
 import prisma from '../lib/prisma';
@@ -227,6 +229,23 @@ router.post(
       gameEventService.recordContribution(req.player!.id, 'crime', 1).catch(() => {});
     }
 
+    // Reputation changes on crime outcomes and FBI escalation.
+    let repDelta = 0;
+    if (result.jailed) {
+      repDelta += calculateReputationChange('crime_caught', false);
+    } else {
+      repDelta += calculateReputationChange('crime_success', result.success);
+    }
+
+    if (
+      result.arrested &&
+      String(result.arrestingAuthority || '').toUpperCase() === 'FBI'
+    ) {
+      repDelta += calculateReputationChange('fbi_arrest', false);
+    }
+
+    const newReputation = await applyReputationDelta(req.player!.id, repDelta);
+
     return res.status(200).json({
       event: result.success ? 'crime.success' : 'crime.failed',
       params: {
@@ -255,6 +274,7 @@ router.post(
         fbiHeat: result.fbiHeat,
         wealthStatus: getWealthStatus(result.newMoney).title,
         wealthIcon: getWealthStatus(result.newMoney).icon,
+        reputation: newReputation,
       },
       cooldown: cooldownInfo,
     });

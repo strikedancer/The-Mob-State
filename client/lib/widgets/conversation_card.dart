@@ -6,11 +6,13 @@ import '../utils/avatar_helper.dart';
 class ConversationCard extends StatelessWidget {
   final Conversation conversation;
   final VoidCallback onTap;
+  final VoidCallback? onAvatarTap;
 
   const ConversationCard({
     super.key,
     required this.conversation,
     required this.onTap,
+    this.onAvatarTap,
   });
 
   @override
@@ -31,7 +33,7 @@ class ConversationCard extends StatelessWidget {
           child: Row(
             children: [
               // Avatar
-              _buildAvatar(),
+              _buildAvatar(isSystemThread),
               
               const SizedBox(width: 12),
               
@@ -197,40 +199,45 @@ class ConversationCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar() {
-    if (conversation.friendId == 0) {
-      return Container(
-        width: 50,
-        height: 50,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: [Color(0xFF6B4E00), Color(0xFFB8860B)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: const Icon(
-          Icons.emoji_events,
-          color: Color(0xFFFFF3C4),
-          size: 26,
-        ),
-      );
+  Widget _buildAvatar(bool isSystemThread) {
+    final avatarWidget = isSystemThread
+        ? Container(
+            width: 50,
+            height: 50,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [Color(0xFF6B4E00), Color(0xFFB8860B)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: const Icon(
+              Icons.emoji_events,
+              color: Color(0xFFFFF3C4),
+              size: 26,
+            ),
+          )
+        : Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey[800],
+              image: DecorationImage(
+                image: AssetImage(AvatarHelper.getAvatarPath(conversation.avatar)),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+
+    if (isSystemThread || onAvatarTap == null) {
+      return avatarWidget;
     }
 
-    final avatarPath = AvatarHelper.getAvatarPath(conversation.avatar);
-    
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.grey[800],
-        image: DecorationImage(
-          image: AssetImage(avatarPath),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return GestureDetector(
+      onTap: onAvatarTap,
+      child: avatarWidget,
     );
   }
 }

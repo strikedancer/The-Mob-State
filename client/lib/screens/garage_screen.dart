@@ -277,7 +277,7 @@ class _GarageScreenState extends State<GarageScreen> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/backgrounds/garage_background.png'),
+          image: AssetImage('assets/images/backgrounds/garage_background.png'),
           fit: BoxFit.cover,
           opacity: 0.3,
         ),
@@ -803,7 +803,7 @@ class _GarageScreenState extends State<GarageScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: OverlayImageBuilder()
-                          .base('images/vehicles/$image')
+                          .base('assets/images/vehicles/$image')
                           .width(double.infinity)
                           .height(imageHeight)
                           .fit(BoxFit.contain)
@@ -1656,7 +1656,7 @@ class _GarageScreenState extends State<GarageScreen> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: OverlayImageBuilder()
-                                        .base('images/vehicles/$image')
+                                        .base('assets/images/vehicles/$image')
                                         .width(90)
                                         .height(64)
                                         .fit(BoxFit.contain)

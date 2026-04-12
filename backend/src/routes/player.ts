@@ -1,4 +1,5 @@
 import { Router, Response } from 'express';
+import { Prisma } from '@prisma/client';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { playerService } from '../services/playerService';
 import * as policeService from '../services/policeService';
@@ -10,6 +11,7 @@ import { weaponService } from '../services/weaponService';
 import { vehicleService } from '../services/vehicleService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from '../services/achievementService';
+import { existsCached } from '../services/redisClient';
 
 const router = Router();
 const PROSTITUTE_RECRUITMENT_COOLDOWN_SECONDS = 5 * 60;
@@ -165,7 +167,27 @@ router.post('/pay-bail', authenticate, async (req: AuthRequest, res: Response) =
 router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = parseInt(req.params.playerId as string, 10);
-    const player = await playerService.getPlayer(playerId);
+    const viewerId = req.player!.id;
+
+    if (Number.isNaN(playerId) || playerId <= 0) {
+      return res.status(400).json({
+        event: 'error.invalid_player_id',
+        params: {},
+      });
+    }
+
+    let player;
+    try {
+      player = await playerService.getPlayer(playerId);
+    } catch (error) {
+      if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.player_not_found',
+          params: {},
+        });
+      }
+      throw error;
+    }
 
     // Get crew info if player is in a crew (via crewMembership)
     let crewName = null;
@@ -181,22 +203,158 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
       crewRole = crewMembership.role;
     }
 
+    let likesCount = 0;
+    let existingLike: { id: number } | null = null;
+    let bankBalance = 0;
+    let prostitutesCount = 0;
+    let propertiesCount = 0;
+    let isOnlineNow = false;
+    try {
+      const profileMeta = await Promise.all([
+        prisma.profileLike.count({ where: { targetPlayerId: playerId } }),
+        prisma.profileLike.findUnique({
+          where: {
+            sourcePlayerId_targetPlayerId: {
+              sourcePlayerId: viewerId,
+              targetPlayerId: playerId,
+            },
+          },
+          select: { id: true },
+        }),
+        prisma.bankAccount.findUnique({
+          where: { playerId },
+          select: { balance: true },
+        }),
+        prisma.prostitute.count({ where: { playerId } }),
+        prisma.property.count({ where: { playerId } }),
+        existsCached(`online:${playerId}`),
+      ]);
+
+      likesCount = profileMeta[0];
+      existingLike = profileMeta[1];
+      bankBalance = profileMeta[2]?.balance ?? 0;
+      prostitutesCount = profileMeta[3];
+      propertiesCount = profileMeta[4];
+      isOnlineNow = profileMeta[5];
+    } catch (metaError) {
+      console.error('⚠️ Profile meta fallback in /player/:playerId/profile:', metaError);
+    }
+
+    const nowMs = Date.now();
+    const lastSeenAt = player.lastTickAt ?? player.updatedAt ?? player.createdAt;
+    const secondsSinceLastSeen = Math.max(
+      0,
+      Math.floor((nowMs - new Date(lastSeenAt).getTime()) / 1000),
+    );
+
+    if (!isOnlineNow) {
+      isOnlineNow = secondsSinceLastSeen <= 300;
+    }
+
+    const isAlive = (player.health ?? 0) > 0;
+
     const rankInfo = getRankTitle(player.rank);
 
     return res.status(200).json({
       username: player.username,
       avatar: player.avatar || 'default_1',
       level: player.rank,
+      rank: player.rank,
       rankTitle: rankInfo.title,
       rankIcon: rankInfo.icon,
       reputation: player.reputation || 0,
-      currentCountry: player.currentCountry,
       isVip: player.isVip || false,
+      vip: player.isVip || false,
+      isAlive,
+      status: isAlive ? 'alive' : 'dead',
+      isOnlineNow,
+      secondsSinceLastSeen,
+      lastSeenAt,
+      startDate: player.createdAt,
+      cashMoney: player.money || 0,
+      bankMoney: bankBalance,
+      prostitutesCount,
+      propertiesCount,
+      likesCount,
+      viewerHasLiked: !!existingLike,
       crewName,
       crewRole,
     });
   } catch (error) {
-    console.error('❌ Error in /players/:playerId/profile:', error);
+    console.error('❌ Error in /player/:playerId/profile:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/:playerId/profile/like', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const targetPlayerId = parseInt(req.params.playerId as string, 10);
+    const sourcePlayerId = req.player!.id;
+
+    if (Number.isNaN(targetPlayerId) || targetPlayerId <= 0) {
+      return res.status(400).json({
+        event: 'error.invalid_player_id',
+        params: {},
+      });
+    }
+
+    if (sourcePlayerId === targetPlayerId) {
+      return res.status(400).json({
+        event: 'error.cannot_like_self',
+        params: {},
+      });
+    }
+
+    const targetPlayer = await prisma.player.findUnique({
+      where: { id: targetPlayerId },
+      select: { id: true },
+    });
+
+    if (!targetPlayer) {
+      return res.status(404).json({
+        event: 'error.player_not_found',
+        params: {},
+      });
+    }
+
+    await prisma.profileLike.create({
+      data: {
+        sourcePlayerId,
+        targetPlayerId,
+      },
+    });
+
+    const likesCount = await prisma.profileLike.count({
+      where: { targetPlayerId },
+    });
+
+    return res.status(200).json({
+      success: true,
+      liked: true,
+      likesCount,
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
+      const targetPlayerId = parseInt(req.params.playerId as string, 10);
+      const likesCount = await prisma.profileLike.count({
+        where: { targetPlayerId },
+      });
+
+      return res.status(409).json({
+        success: false,
+        liked: false,
+        event: 'error.profile_already_liked',
+        likesCount,
+      });
+    }
+
+    console.error('❌ Error in /player/:playerId/profile/like:', error);
     return res.status(500).json({
       event: 'error.internal',
       params: {},

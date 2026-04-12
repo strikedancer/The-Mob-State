@@ -73,8 +73,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           Positioned.fill(
             child: Image.asset(
               isPortrait
-                  ? 'images/backgrounds/login_background_mobile.png'
-                  : 'images/backgrounds/login_background.png',
+                  ? 'assets/images/backgrounds/login_background_mobile.png'
+                  : 'assets/images/backgrounds/login_background.png',
               fit: BoxFit.cover,
               alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
               errorBuilder: (context, error, stackTrace) {

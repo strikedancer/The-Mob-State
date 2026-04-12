@@ -140,7 +140,7 @@ class _JobsScreenState extends State<JobsScreen> {
 
   Widget _buildLockedJobTile(Map<String, dynamic> job) {
     final l10n = AppLocalizations.of(context)!;
-    final imageAsset = 'images/jobs/${job['id']}_job.png';
+    final imageAsset = 'assets/images/jobs/${job['id']}_job.png';
 
     return Card(
       elevation: 3,

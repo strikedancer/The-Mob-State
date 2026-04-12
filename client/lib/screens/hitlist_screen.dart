@@ -1,15 +1,16 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../services/api_client.dart';
 import '../widgets/hit_card.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import 'player_profile_screen.dart';
 
-String _resolveHitErrorMessage(dynamic data, AppLocalizations? l10n) {
+String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
   final code = data is Map ? data['error']?.toString() : null;
   if (code == 'DIFFERENT_COUNTRY') {
-    return l10n?.hitDifferentCountry ??
-        'You must be in the same country as the target';
+    return l10n.hitDifferentCountry;
   }
 
   final message = data is Map ? data['message']?.toString() : null;
@@ -17,8 +18,8 @@ String _resolveHitErrorMessage(dynamic data, AppLocalizations? l10n) {
     return message;
   }
 
-  final fallback = code ?? 'Unknown error';
-  return l10n?.hitError(fallback) ?? 'Error: $fallback';
+  final fallback = code ?? l10n.unknown;
+  return l10n.hitError(fallback);
 }
 
 class HitlistScreen extends StatefulWidget {
@@ -53,9 +54,10 @@ class _HitlistScreenState extends State<HitlistScreen> {
       }
     } catch (e) {
       if (mounted) {
-        final l10n = AppLocalizations.of(context);
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(l10n?.hitlistLoadError(e.toString()) ?? 'Error: $e')),
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.hitlistLoadError(e.toString()))),
         );
       }
     } finally {
@@ -97,16 +99,16 @@ class _HitlistScreenState extends State<HitlistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n?.hitlist ?? 'Hit List'),
+        title: Text(l10n.hitlist),
         centerTitle: true,
         actions: [
           if (_isHunted)
             Tooltip(
-              message: l10n?.youAreTargeted ?? 'You are on the hit list',
+              message: l10n.youAreTargeted,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Icon(Icons.warning, color: Colors.red[300]),
@@ -114,7 +116,7 @@ class _HitlistScreenState extends State<HitlistScreen> {
             ),
           IconButton(
             icon: const Icon(Icons.security),
-            tooltip: l10n?.security ?? 'Security',
+            tooltip: l10n.security,
             onPressed: _goToSecurity,
           ),
         ],
@@ -122,40 +124,42 @@ class _HitlistScreenState extends State<HitlistScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _activeHits.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.list_alt, size: 64, color: Colors.grey[400]),
-                      const SizedBox(height: 16),
-                      Text(l10n?.noActiveHits ?? 'No active hits'),
-                      const SizedBox(height: 32),
-                      ElevatedButton(
-                        onPressed: _checkSecurityStatus,
-                        child: Text(l10n?.refresh ?? 'Refresh'),
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.list_alt, size: 64, color: Colors.grey[400]),
+                  const SizedBox(height: 16),
+                  Text(l10n.noActiveHits),
+                  const SizedBox(height: 32),
+                  ElevatedButton(
+                    onPressed: _checkSecurityStatus,
+                    child: Text(l10n.refresh),
                   ),
-                )
-              : RefreshIndicator(
-                  onRefresh: _loadActiveHits,
-                  child: ListView.builder(
-                    itemCount: _activeHits.length,
-                    itemBuilder: (context, index) {
-                      final hit = _activeHits[index];
-                      return HitCard(
-                        hit: hit,
-                        onAttemptHit: () => _attemptHit(hit['id']),
-                        onPlaceCounterBounty: () =>
-                            _placeCounterBounty(hit['id'], hit['bounty']),
-                        onCancelHit: () => _cancelHit(hit['id']),
-                      );
-                    },
-                  ),
-                ),
+                ],
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: _loadActiveHits,
+              child: ListView.builder(
+                itemCount: _activeHits.length,
+                itemBuilder: (context, index) {
+                  final hit = _activeHits[index];
+                  return HitCard(
+                    hit: hit,
+                    onAttemptHit: () => _attemptHit(hit['id']),
+                    onInvestigate: () => _showInvestigateOptions(hit['id']),
+                    onOpenPlayerProfile: _openPlayerProfile,
+                    onPlaceCounterBounty: () =>
+                        _placeCounterBounty(hit['id'], hit['bounty']),
+                    onCancelHit: () => _cancelHit(hit['id']),
+                  );
+                },
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showPlaceHitDialog(),
-        tooltip: l10n?.placeHitTitle ?? 'Place Hit',
+        tooltip: l10n.placeHitTitle,
         child: const Icon(Icons.add),
       ),
     );
@@ -200,39 +204,52 @@ class _HitlistScreenState extends State<HitlistScreen> {
     );
   }
 
+  void _showInvestigateOptions(int hitId) {
+    showDialog(
+      context: context,
+      builder: (context) => _InvestigateHitDialog(hitId: hitId),
+    );
+  }
+
+  void _openPlayerProfile(int playerId, String? username) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => FractionallySizedBox(
+        heightFactor: 0.94,
+        child: PlayerProfileScreen(
+          playerId: playerId,
+          username: (username != null && username.isNotEmpty)
+              ? username
+              : AppLocalizations.of(context)!.unknown,
+          embedded: true,
+        ),
+      ),
+    );
+  }
+
   Future<void> _cancelHit(int hitId) async {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-        ),
+        title: Text(l10n.cancelHitConfirmTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Contract annuleren'
-                  : 'Cancel hit contract',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(l10n?.cancelHitConfirmBody ?? 'Your bounty will be refunded.'),
-          ],
+          children: [Text(l10n.cancelHitConfirmBody)],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n?.no ?? 'No'),
+            child: Text(l10n.no),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(l10n?.yes ?? 'Yes'),
+            child: Text(l10n.yes),
           ),
         ],
       ),
@@ -245,23 +262,20 @@ class _HitlistScreenState extends State<HitlistScreen> {
       final data = jsonDecode(response.body);
       if (data['success'] == true) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
-            SnackBar(content: Text(l10n?.hitCancelled ?? 'Hit cancelled')),
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(content: Text(l10n.hitCancelled)),
           );
         }
         _loadActiveHits();
       } else if (mounted) {
         final errorMsg = _resolveHitErrorMessage(data, l10n);
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
-        );
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     } catch (e) {
       if (mounted) {
-        final errorMsg = AppLocalizations.of(context)?.hitError(e.toString()) ?? 'Error: $e';
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
-        );
+        final errorMsg = AppLocalizations.of(context)!.hitError(e.toString());
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     }
   }
@@ -307,18 +321,19 @@ class _SelectTargetDialogState extends State<_SelectTargetDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final filtered = _players
-        .where((p) =>
-            p['username']
-                ?.toString()
-                .toLowerCase()
-                .contains(_searchController.text.toLowerCase()) ??
-            false)
+        .where(
+          (p) =>
+              p['username']?.toString().toLowerCase().contains(
+                _searchController.text.toLowerCase(),
+              ) ??
+              false,
+        )
         .toList();
 
     return AlertDialog(
-      title: Text(l10n?.selectTarget ?? 'Select Target'),
+      title: Text(l10n.selectTarget),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -327,7 +342,7 @@ class _SelectTargetDialogState extends State<_SelectTargetDialog> {
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: l10n?.searchPlayer ?? 'Search player...',
+                hintText: l10n.searchPlayer,
                 prefixIcon: const Icon(Icons.search),
               ),
               onChanged: (_) => setState(() {}),
@@ -341,10 +356,11 @@ class _SelectTargetDialogState extends State<_SelectTargetDialog> {
                       itemBuilder: (context, index) {
                         final player = filtered[index];
                         return ListTile(
-                          title: Text(player['username'] ?? 'Unknown'),
-                          subtitle: Text('${l10n?.level ?? 'Level'} ${player['level'] ?? 0}'),
-                          onTap: () =>
-                              widget.onTargetSelected(player['id']),
+                          title: Text(player['username'] ?? l10n.unknown),
+                          subtitle: Text(
+                            '${l10n.level} ${player['level'] ?? 0}',
+                          ),
+                          onTap: () => widget.onTargetSelected(player['id']),
                         );
                       },
                     ),
@@ -355,7 +371,7 @@ class _SelectTargetDialogState extends State<_SelectTargetDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n?.cancel ?? 'Cancel'),
+          child: Text(l10n.cancel),
         ),
       ],
     );
@@ -372,10 +388,7 @@ class _PlaceHitDialog extends StatefulWidget {
   final int targetId;
   final Function onComplete;
 
-  const _PlaceHitDialog({
-    required this.targetId,
-    required this.onComplete,
-  });
+  const _PlaceHitDialog({required this.targetId, required this.onComplete});
 
   @override
   State<_PlaceHitDialog> createState() => _PlaceHitDialogState();
@@ -387,13 +400,12 @@ class _PlaceHitDialogState extends State<_PlaceHitDialog> {
   bool _isLoading = false;
 
   Future<void> _placeHit() async {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final bounty = int.tryParse(_bountyController.text);
     if (bounty == null || bounty < 50000) {
-      showTopRightFromSnackBar(context, 
-        SnackBar(
-          content: Text(l10n?.minimumBounty ?? 'Minimum bounty is €50,000'),
-        ),
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.minimumBounty)),
       );
       return;
     }
@@ -408,24 +420,18 @@ class _PlaceHitDialogState extends State<_PlaceHitDialog> {
 
       if (data['success'] == true) {
         if (mounted) {
-          final msg = l10n?.hitPlaced(bounty.toStringAsFixed(0)) ?? 'Hit placed for €$bounty';
-          showTopRightFromSnackBar(context, 
-            SnackBar(content: Text(msg)),
-          );
+          final msg = l10n.hitPlaced(bounty.toStringAsFixed(0));
+          showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
         }
         widget.onComplete();
       } else if (mounted) {
         final errorMsg = _resolveHitErrorMessage(data, l10n);
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
-        );
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     } catch (e) {
       if (mounted) {
-        final errorMsg = AppLocalizations.of(context)?.hitError(e.toString()) ?? 'Error: $e';
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
-        );
+        final errorMsg = AppLocalizations.of(context)!.hitError(e.toString());
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     } finally {
       setState(() => _isLoading = false);
@@ -434,19 +440,19 @@ class _PlaceHitDialogState extends State<_PlaceHitDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    
+    final l10n = AppLocalizations.of(context)!;
+
     return AlertDialog(
-      title: Text(l10n?.placeHitTitle ?? 'Place Hit'),
+      title: Text(l10n.placeHitTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(l10n?.minimumBounty ?? 'Minimum bounty: €50,000'),
+          Text(l10n.minimumBounty),
           const SizedBox(height: 16),
           TextField(
             controller: _bountyController,
             decoration: InputDecoration(
-              hintText: l10n?.bountyAmount ?? 'Bounty amount',
+              hintText: l10n.bountyAmount,
               prefixText: '€',
             ),
             keyboardType: TextInputType.number,
@@ -456,7 +462,7 @@ class _PlaceHitDialogState extends State<_PlaceHitDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n?.cancel ?? 'Cancel'),
+          child: Text(l10n.cancel),
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _placeHit,
@@ -466,7 +472,7 @@ class _PlaceHitDialogState extends State<_PlaceHitDialog> {
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : Text(l10n?.place ?? 'Place'),
+              : Text(l10n.place),
         ),
       ],
     );
@@ -501,14 +507,11 @@ class _PlaceCounterBountyDialogState extends State<_PlaceCounterBountyDialog> {
   bool _isLoading = false;
 
   Future<void> _placeCounterBounty() async {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final bounty = int.tryParse(_counterBountyController.text);
     if (bounty == null || bounty <= widget.minimumBounty) {
-      final msg = l10n?.minimumAmount(widget.minimumBounty.toStringAsFixed(0)) ?? 
-        'Minimum amount: €${widget.minimumBounty}';
-      showTopRightFromSnackBar(context, 
-        SnackBar(content: Text(msg)),
-      );
+      final msg = l10n.minimumAmount(widget.minimumBounty.toStringAsFixed(0));
+      showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
       return;
     }
 
@@ -522,24 +525,18 @@ class _PlaceCounterBountyDialogState extends State<_PlaceCounterBountyDialog> {
 
       if (data['success'] == true) {
         if (mounted) {
-          final msg = l10n?.counterBountyPlaced(bounty.toStringAsFixed(0)) ?? 'Counter-bounty placed for €$bounty';
-          showTopRightFromSnackBar(context, 
-            SnackBar(content: Text(msg)),
-          );
+          final msg = l10n.counterBountyPlaced(bounty.toStringAsFixed(0));
+          showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
         }
         widget.onComplete();
       } else if (mounted) {
         final errorMsg = _resolveHitErrorMessage(data, l10n);
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
-        );
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     } catch (e) {
       if (mounted) {
-        final errorMsg = AppLocalizations.of(context)?.hitError(e.toString()) ?? 'Error: $e';
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
-        );
+        final errorMsg = AppLocalizations.of(context)!.hitError(e.toString());
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     } finally {
       setState(() => _isLoading = false);
@@ -548,19 +545,19 @@ class _PlaceCounterBountyDialogState extends State<_PlaceCounterBountyDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    
+    final l10n = AppLocalizations.of(context)!;
+
     return AlertDialog(
-      title: Text(l10n?.counterBountyTitle ?? 'Place Counter-Bounty'),
+      title: Text(l10n.counterBountyTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(l10n?.minimumAmount(widget.minimumBounty.toStringAsFixed(0)) ?? 'Minimum amount'),
+          Text(l10n.minimumAmount(widget.minimumBounty.toStringAsFixed(0))),
           const SizedBox(height: 16),
           TextField(
             controller: _counterBountyController,
             decoration: InputDecoration(
-              hintText: l10n?.counterBountyAmount ?? 'Counter-bounty amount',
+              hintText: l10n.counterBountyAmount,
               prefixText: '€',
             ),
             keyboardType: TextInputType.number,
@@ -570,7 +567,7 @@ class _PlaceCounterBountyDialogState extends State<_PlaceCounterBountyDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n?.cancel ?? 'Cancel'),
+          child: Text(l10n.cancel),
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _placeCounterBounty,
@@ -580,7 +577,7 @@ class _PlaceCounterBountyDialogState extends State<_PlaceCounterBountyDialog> {
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : Text(l10n?.place ?? 'Place'),
+              : Text(l10n.place),
         ),
       ],
     );
@@ -597,10 +594,7 @@ class _AttemptHitDialog extends StatefulWidget {
   final int hitId;
   final Function onComplete;
 
-  const _AttemptHitDialog({
-    required this.hitId,
-    required this.onComplete,
-  });
+  const _AttemptHitDialog({required this.hitId, required this.onComplete});
 
   @override
   State<_AttemptHitDialog> createState() => _AttemptHitDialogState();
@@ -621,6 +615,7 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
   }
 
   Future<void> _loadWeapons() async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       final weaponsResponse = await _apiClient.get('/weapons/inventory');
       final ammoResponse = await _apiClient.get('/ammo/inventory');
@@ -640,17 +635,19 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
         if (weapon is! Map) {
           return <String, dynamic>{
             'weaponId': 'unknown',
-            'weaponName': 'Unknown',
+            'weaponName': l10n.unknown,
             'ammoAvailable': 0,
           };
         }
         final ammoType = weapon['ammoType']?.toString();
-        final ammoAvailable =
-            ammoType != null ? (ammoByType[ammoType] ?? 0) : 0;
-        final weaponName = weapon['name'] ??
+        final ammoAvailable = ammoType != null
+            ? (ammoByType[ammoType] ?? 0)
+            : 0;
+        final weaponName =
+            weapon['name'] ??
             weapon['weaponName'] ??
             weapon['weaponId'] ??
-            'Unknown';
+            l10n.unknown;
         return {
           ...weapon,
           'weaponName': weaponName,
@@ -673,68 +670,74 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
-        final l10n = AppLocalizations.of(context);
-        showTopRightFromSnackBar(context, 
-          SnackBar(
-            content: Text(l10n?.hitlistLoadError(e.toString()) ?? 'Error: $e'),
-          ),
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.hitlistLoadError(e.toString()))),
         );
       }
     }
   }
 
   Future<void> _attemptHit() async {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final localeCode = Localizations.localeOf(context).languageCode;
+    String t(String nl, String en) => localeCode == 'nl' ? nl : en;
     if (_selectedWeaponId == null) {
-      showTopRightFromSnackBar(context, 
-        SnackBar(
-          content: Text(l10n?.selectWeapon ?? 'Please select a weapon'),
-        ),
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.selectWeapon)),
       );
       return;
     }
 
     final ammo = int.tryParse(_ammoController.text);
     if (ammo == null || ammo <= 0) {
-      showTopRightFromSnackBar(context, 
-        SnackBar(
-          content: Text(l10n?.invalidAmmo ?? 'Please enter valid ammo quantity'),
-        ),
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(l10n.invalidAmmo)),
       );
       return;
     }
 
     setState(() => _isExecuting = true);
     try {
-      final response = await _apiClient.post(
-        '/hitlist/attempt/${widget.hitId}',
-        {
-          'weaponId': _selectedWeaponId,
-          'ammoQuantity': ammo,
-        },
-      );
+      final response = await _apiClient
+          .post('/hitlist/attempt/${widget.hitId}', {
+            'weaponId': _selectedWeaponId,
+            'ammoQuantity': ammo,
+          })
+          .timeout(const Duration(seconds: 15));
       final data = jsonDecode(response.body);
 
       if (data['success'] == true) {
         if (mounted) {
-          final msg = l10n?.hitExecuted ?? 'Hit executed successfully!';
-          showTopRightFromSnackBar(context, 
-            SnackBar(content: Text(msg)),
-          );
+          final msg = l10n.hitExecuted;
+          showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
         }
         widget.onComplete();
       } else if (mounted) {
         final errorMsg = _resolveHitErrorMessage(data, l10n);
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
+      }
+    } on TimeoutException {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              t(
+                'Moordpoging timeout. Probeer opnieuw.',
+                'Hit attempt timed out. Please try again.',
+              ),
+            ),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
-        final errorMsg = AppLocalizations.of(context)?.hitError(e.toString()) ?? 'Error: $e';
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(errorMsg)),
-        );
+        final errorMsg = AppLocalizations.of(context)!.hitError(e.toString());
+        showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     } finally {
       setState(() => _isExecuting = false);
@@ -743,11 +746,11 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     if (_isLoading) {
       return AlertDialog(
-        title: Text(l10n?.executeHit ?? 'Execute Hit'),
+        title: Text(l10n.executeHit),
         content: const SizedBox(
           height: 50,
           child: Center(child: CircularProgressIndicator()),
@@ -759,12 +762,12 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
 
     if (weaponItems.isEmpty) {
       return AlertDialog(
-        title: Text(l10n?.executeHit ?? 'Execute Hit'),
-        content: Text(l10n?.noWeapons ?? 'You have no weapons in your inventory'),
+        title: Text(l10n.executeHit),
+        content: Text(l10n.noWeapons),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n?.close ?? 'Close'),
+            child: Text(l10n.close),
           ),
         ],
       );
@@ -776,14 +779,14 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     );
 
     return AlertDialog(
-      title: Text(l10n?.executeHit ?? 'Execute Hit'),
+      title: Text(l10n.executeHit),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              l10n?.selectWeapon ?? 'Select Weapon',
+              l10n.selectWeapon,
               style: Theme.of(context).textTheme.titleSmall,
             ),
             const SizedBox(height: 8),
@@ -794,7 +797,9 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
                 if (value != null) {
                   setState(() {
                     _selectedWeaponId = value;
-                    final weapon = _weapons.firstWhere((w) => w['weaponId'] == value);
+                    final weapon = _weapons.firstWhere(
+                      (w) => w['weaponId'] == value,
+                    );
                     if (weapon['ammoAvailable'] != null) {
                       _ammoController.text = weapon['ammoAvailable'].toString();
                     } else {
@@ -807,7 +812,7 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
                 return DropdownMenuItem<String>(
                   value: weapon['weaponId'],
                   child: Text(
-                    '${weapon['weaponName']} (${l10n?.condition ?? 'Condition'}: ${(weapon['condition'] ?? 100).toStringAsFixed(1)}%)',
+                    '${weapon['weaponName']} (${l10n.condition}: ${(weapon['condition'] ?? 100).toStringAsFixed(1)}%)',
                   ),
                 );
               }).toList(),
@@ -815,17 +820,18 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
             const SizedBox(height: 16),
             if (selectedWeapon['requiresAmmo'] != false) ...[
               Text(
-                l10n?.ammoQuantity ?? 'Ammo Quantity',
+                l10n.ammoQuantity,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: _ammoController,
                 decoration: InputDecoration(
-                  hintText: l10n?.ammoQuantity ?? 'Ammo quantity',
+                  hintText: l10n.ammoQuantity,
                   suffixText: '${selectedWeapon['ammoType'] ?? '?'}',
-                  helperText: l10n?.available(selectedWeapon['ammoAvailable']?.toString() ?? '0') ??
-                      'Available: ${selectedWeapon['ammoAvailable'] ?? 0}',
+                  helperText: l10n.available(
+                    selectedWeapon['ammoAvailable']?.toString() ?? '0',
+                  ),
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -833,10 +839,10 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  l10n?.noAmmoRequired ?? 'No ammunition required for this weapon',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+                  l10n.noAmmoRequired,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
                 ),
               ),
             ],
@@ -851,18 +857,22 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l10n?.weaponStats ?? 'Weapon Stats',
+                    l10n.weaponStats,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const SizedBox(height: 8),
-                  _StatRow(label: '${l10n?.damage ?? 'Damage'}:', value: '${selectedWeapon['damage'] ?? 0}'),
                   _StatRow(
-                    label: '${l10n?.intimidation ?? 'Intimidation'}:',
+                    label: '${l10n.damage}:',
+                    value: '${selectedWeapon['damage'] ?? 0}',
+                  ),
+                  _StatRow(
+                    label: '${l10n.intimidation}:',
                     value: '${selectedWeapon['intimidation'] ?? 0}',
                   ),
                   _StatRow(
-                    label: '${l10n?.condition ?? 'Condition'}:',
-                    value: '${(selectedWeapon['condition'] ?? 100).toStringAsFixed(1)}%',
+                    label: '${l10n.condition}:',
+                    value:
+                        '${(selectedWeapon['condition'] ?? 100).toStringAsFixed(1)}%',
                   ),
                 ],
               ),
@@ -873,7 +883,7 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
       actions: [
         TextButton(
           onPressed: _isExecuting ? null : () => Navigator.pop(context),
-          child: Text(l10n?.cancel ?? 'Cancel'),
+          child: Text(l10n.cancel),
         ),
         ElevatedButton(
           onPressed: _isExecuting ? null : _attemptHit,
@@ -883,7 +893,7 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : Text(l10n?.execute ?? 'Execute'),
+              : Text(l10n.execute),
         ),
       ],
     );
@@ -893,6 +903,138 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
   void dispose() {
     _ammoController.dispose();
     super.dispose();
+  }
+}
+
+class _InvestigateHitDialog extends StatefulWidget {
+  final int hitId;
+
+  const _InvestigateHitDialog({required this.hitId});
+
+  @override
+  State<_InvestigateHitDialog> createState() => _InvestigateHitDialogState();
+}
+
+class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
+  final ApiClient _apiClient = ApiClient();
+  bool _isLoading = false;
+
+  String _tr(String nl, String en) {
+    final code = Localizations.localeOf(context).languageCode;
+    return code == 'nl' ? nl : en;
+  }
+
+  Future<void> _runInvestigation(String tier) async {
+    if (_isLoading) return;
+
+    setState(() => _isLoading = true);
+    try {
+      final response = await _apiClient.post(
+        '/hitlist/investigate/${widget.hitId}',
+        {'tier': tier},
+      );
+      final data = jsonDecode(response.body);
+
+      if (!mounted) return;
+
+      if (data['success'] == true && data['report'] is Map) {
+        final report = data['report'] as Map;
+        final country =
+            report['country']?.toString() ?? _tr('Onbekend', 'Unknown');
+        final bodyguards = report['bodyguards']?.toString() ?? '0';
+        final armor = report['armor']?.toString() ?? '0';
+        final cost = report['cost']?.toString() ?? '0';
+
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                'Onderzoek klaar: land $country, bodyguards $bodyguards, armor $armor (kosten €$cost)',
+                'Investigation complete: country $country, bodyguards $bodyguards, armor $armor (cost €$cost)',
+              ),
+            ),
+          ),
+        );
+        Navigator.pop(context);
+      } else {
+        final message =
+            data['message']?.toString() ??
+            _tr('Onderzoek mislukt', 'Investigation failed');
+        showTopRightFromSnackBar(context, SnackBar(content: Text(message)));
+      }
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Onderzoek kon niet worden uitgevoerd',
+              'Investigation could not be completed',
+            ),
+          ),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(_tr('Onderzoek opties', 'Investigation options')),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(_tr('Kies snelheid en prijs:', 'Choose speed and price:')),
+          const SizedBox(height: 12),
+          ElevatedButton(
+            onPressed: _isLoading ? null : () => _runInvestigation('quick'),
+            child: Text(
+              _tr(
+                'Snel onderzoek (€100.000)',
+                'Quick investigation (€100,000)',
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: _isLoading ? null : () => _runInvestigation('standard'),
+            child: Text(
+              _tr(
+                'Standaard onderzoek (€50.000)',
+                'Standard investigation (€50,000)',
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: _isLoading ? null : () => _runInvestigation('deep'),
+            child: Text(
+              _tr(
+                'Langzaam onderzoek (€25.000)',
+                'Slow investigation (€25,000)',
+              ),
+            ),
+          ),
+          if (_isLoading) ...[
+            const SizedBox(height: 12),
+            const Center(child: CircularProgressIndicator()),
+          ],
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: _isLoading ? null : () => Navigator.pop(context),
+          child: Text(_tr('Sluiten', 'Close')),
+        ),
+      ],
+    );
   }
 }
 
@@ -908,7 +1050,12 @@ class _StatRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: Theme.of(context).textTheme.bodySmall),
-        Text(value, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }

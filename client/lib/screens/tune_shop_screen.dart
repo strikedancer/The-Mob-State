@@ -201,10 +201,10 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
       builder: (context, outerConstraints) {
         final screenWidth = outerConstraints.maxWidth;
         final bgAsset = screenWidth < 700
-            ? 'images/tuneshop/tuneshop_bg_mobile.jpg'
+            ? 'assets/images/tuneshop/tuneshop_bg_mobile.jpg'
             : screenWidth < 1100
-            ? 'images/tuneshop/tuneshop_bg_tablet.jpg'
-            : 'images/tuneshop/tuneshop_bg_desktop.jpg';
+            ? 'assets/images/tuneshop/tuneshop_bg_tablet.jpg'
+            : 'assets/images/tuneshop/tuneshop_bg_desktop.jpg';
         return _buildWithBackground(bgAsset, provider);
       },
     );
@@ -279,7 +279,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
-                  'images/tuneshop/tuneshop_emblem.png',
+                  'assets/images/tuneshop/tuneshop_emblem.png',
                   width: 48,
                   height: 48,
                   fit: BoxFit.contain,
@@ -460,7 +460,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
                   width: 68,
                   height: 44,
                   child: Image.asset(
-                    'images/vehicles/${vehicle['image'] ?? ''}',
+                    'assets/images/vehicles/${vehicle['image'] ?? ''}',
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => Container(
                       color: Colors.black54,

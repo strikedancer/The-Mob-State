@@ -50,7 +50,7 @@ class _OverlayImageDemoState extends State<OverlayImageDemo> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: OverlayImageBuilder()
-                        .base('images/vehicles/toyota_corolla.png')
+                        .base('assets/images/vehicles/toyota_corolla.png')
                         .damaged(when: _showDamaged)
                         .locked(when: _showLocked)
                         .upgraded(when: _showUpgraded)
@@ -174,7 +174,7 @@ class _OverlayImageDemoState extends State<OverlayImageDemo> {
         children: [
           Expanded(
             child: OverlayImage(
-              base: 'images/vehicles/$imagePath',
+              base: 'assets/images/vehicles/$imagePath',
               overlays: overlays,
               fit: BoxFit.cover,
               borderRadius: const BorderRadius.only(

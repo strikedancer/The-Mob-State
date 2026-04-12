@@ -50,7 +50,7 @@ class DrugDefinition {
   }
 
   String getImagePath() {
-    return 'images/drugs/$id.png';
+    return 'assets/images/drugs/$id.png';
   }
 
   int getPriceForCountry(String country) {
@@ -98,7 +98,7 @@ class MaterialDefinition {
   }
 
   String getImagePath() {
-    return 'images/materials/$id.png';
+    return 'assets/images/materials/$id.png';
   }
 }
 
@@ -131,7 +131,7 @@ class PlayerMaterial {
   }
 
   String getImagePath() {
-    return 'images/materials/$materialId.png';
+    return 'assets/images/materials/$materialId.png';
   }
 }
 
@@ -194,7 +194,7 @@ class DrugProduction {
   }
 
   String getImagePath() {
-    return 'images/drugs/$drugType.png';
+    return 'assets/images/drugs/$drugType.png';
   }
 
   String getTimeRemainingFormatted() {
@@ -262,7 +262,7 @@ class DrugInventory {
   }
 
   String getImagePath() {
-    return 'images/drugs/$drugType.png';
+    return 'assets/images/drugs/$drugType.png';
   }
 }
 

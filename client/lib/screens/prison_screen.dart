@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
+import 'player_profile_screen.dart';
 
 class PrisonScreen extends StatefulWidget {
   const PrisonScreen({super.key});
@@ -18,6 +19,16 @@ class _PrisonScreenState extends State<PrisonScreen> {
   final ApiClient _apiClient = ApiClient();
   Timer? _ticker;
   OverlayEntry? _notificationEntry;
+
+  void _openPlayerProfile(int playerId, String username) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            PlayerProfileScreen(playerId: playerId, username: username),
+      ),
+    );
+  }
+
   Timer? _notificationTimer;
 
   bool _isLoading = true;
@@ -47,10 +58,6 @@ class _PrisonScreenState extends State<PrisonScreen> {
     IconData icon = Icons.info_outline,
   }) {
     final overlay = Overlay.of(context, rootOverlay: true);
-    if (overlay == null) {
-      return;
-    }
-
     _notificationTimer?.cancel();
     _notificationEntry?.remove();
 
@@ -341,8 +348,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
             : '✅ Jailbreak succeeded! Prisoner is free.';
       case 'jailbreak.caught':
         return isDutch
-            ? '🚔 Uitbraak mislukt, je bent gepakt (${rescuerJailTime} min cel).'
-            : '🚔 Jailbreak failed, you got caught (${rescuerJailTime} min jail).';
+            ? '🚔 Uitbraak mislukt, je bent gepakt ($rescuerJailTime min cel).'
+            : '🚔 Jailbreak failed, you got caught ($rescuerJailTime min jail).';
       case 'jailbreak.failed':
         return isDutch
             ? '❌ Uitbraak mislukt. Gevangene zit nog vast.'
@@ -432,8 +439,9 @@ class _PrisonScreenState extends State<PrisonScreen> {
                       : ListView.separated(
                           padding: const EdgeInsets.all(12),
                           itemCount: _prisoners.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 10),
+                          separatorBuilder:
+                              (separatorContext, separatorIndex) =>
+                                  const SizedBox(height: 10),
                           itemBuilder: (context, index) {
                             final prisoner = _prisoners[index];
                             final playerId =
@@ -455,11 +463,22 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      username,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
+                                    GestureDetector(
+                                      onTap: playerId > 0
+                                          ? () => _openPlayerProfile(
+                                              playerId,
+                                              username,
+                                            )
+                                          : null,
+                                      child: Text(
+                                        username,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: playerId > 0
+                                              ? Colors.lightBlue
+                                              : null,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(height: 6),

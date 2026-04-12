@@ -7,6 +7,7 @@
 import express, { Response, NextFunction } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import * as hitlistService from '../services/hitlistService';
+import { applyReputationAction } from '../services/reputationService';
 
 const router = express.Router();
 
@@ -216,8 +217,13 @@ router.post(
         ammoQuantity
       );
 
+      const reputation = result.success
+        ? await applyReputationAction(playerId, 'hit_claim_success', true)
+        : undefined;
+
       return res.json({
         success: result.success,
+        reputation,
         ...result,
       });
     } catch (error: any) {
@@ -245,6 +251,14 @@ router.post(
         });
       }
 
+      if (error.message === 'WEAPON_NOT_OWNED') {
+        return res.status(400).json({
+          success: false,
+          error: 'WEAPON_NOT_OWNED',
+          message: 'Je bezit dit wapen niet of het is kapot',
+        });
+      }
+
       if (error.message === 'INSUFFICIENT_AMMO') {
         return res.status(400).json({
           success: false,
@@ -266,6 +280,76 @@ router.post(
           success: false,
           error: 'DIFFERENT_COUNTRY',
           message: 'Je moet in hetzelfde land zijn als het doelwit',
+        });
+      }
+
+      if (error.message === 'TARGET_UNDER_HIT_PROTECTION') {
+        return res.status(400).json({
+          success: false,
+          error: 'TARGET_UNDER_HIT_PROTECTION',
+          message: 'Doelwit heeft actieve moordbescherming',
+        });
+      }
+
+      return next(error);
+    }
+  }
+);
+
+/**
+ * POST /hitlist/investigate/:hitId
+ * Purchase an investigation report for an active hit target.
+ */
+router.post(
+  '/investigate/:hitId',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const hitId = parseInt(req.params.hitId);
+      const tier = String(req.body?.tier || 'standard');
+
+      if (!['quick', 'standard', 'deep'].includes(tier)) {
+        return res.status(400).json({
+          success: false,
+          error: 'INVALID_INVESTIGATION_TIER',
+          message: 'Ongeldig onderzoekstype',
+        });
+      }
+
+      const result = await hitlistService.investigateHit(
+        playerId,
+        hitId,
+        tier as 'quick' | 'standard' | 'deep'
+      );
+
+      return res.json(result);
+    } catch (error: any) {
+      if (error.message === 'HIT_NOT_FOUND') {
+        return res.status(404).json({
+          success: false,
+          error: 'HIT_NOT_FOUND',
+          message: 'Hit niet gevonden',
+        });
+      }
+
+      if (error.message === 'HIT_NOT_ACTIVE') {
+        return res.status(400).json({
+          success: false,
+          error: 'HIT_NOT_ACTIVE',
+          message: 'Hit is niet actief',
+        });
+      }
+
+      if (error.message === 'INSUFFICIENT_MONEY') {
+        return res.status(400).json({
+          success: false,
+          error: 'INSUFFICIENT_MONEY',
+          message: 'Je hebt niet genoeg geld voor dit onderzoek',
         });
       }
 

@@ -15,8 +15,8 @@ class CourtScreen extends StatefulWidget {
 }
 
 class _CourtScreenState extends State<CourtScreen> {
-  static const String _backgroundAsset = 'assets/images/backgrounds/courtroom_background.png';
-  static const String _backgroundAssetMobile = 'assets/images/backgrounds/courtroom_background_mobile.png';
+  static const String _backgroundAsset = 'images/backgrounds/courtroom_background.png';
+  static const String _backgroundAssetMobile = 'images/backgrounds/courtroom_background_mobile.png';
 
   final ApiClient _apiClient = ApiClient();
 
@@ -244,7 +244,7 @@ class _CourtScreenState extends State<CourtScreen> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: Text('💰 ${AppLocalizations.of(context)!.bribeJudge}'),
+          title: Text(AppLocalizations.of(context)!.bribeJudge),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -691,7 +691,7 @@ class _CourtScreenState extends State<CourtScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('⚖️ ${AppLocalizations.of(context)!.court}'),
+        title: Text(AppLocalizations.of(context)!.court),
         backgroundColor: const Color(0xFF2E2A24),
         foregroundColor: Colors.white,
       ),

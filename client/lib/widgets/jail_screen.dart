@@ -305,7 +305,7 @@ class _JailOverlayState extends State<JailOverlay> {
                 fit: StackFit.expand,
                 children: [
                   Image.asset(
-                    'images/cooldown_jail.png',
+                    'assets/images/cooldown_jail.png',
                     fit: BoxFit.cover,
                   ),
                   Container(

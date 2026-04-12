@@ -162,8 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned.fill(
             child: Image.asset(
               isPortrait
-                  ? 'images/backgrounds/login_background_mobile.png'
-                  : 'images/backgrounds/login_background.png',
+                  ? 'assets/images/backgrounds/login_background_mobile.png'
+                  : 'assets/images/backgrounds/login_background.png',
               fit: BoxFit.cover, // Always cover - fills entire screen
               alignment: isPortrait
                   ? Alignment.topCenter

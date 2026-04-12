@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { applyReputationAction } from './reputationService';
 
 // Raid Configuration
 const BASE_RAID_CHANCE = 0.10; // 10% base chance per hour if FBI heat > 50
@@ -42,6 +43,7 @@ export const policeRaidService = {
     prostitutesAffected: number;
     districtsRaided: string[];
     message: string;
+    reputation?: number;
   }> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
@@ -131,12 +133,17 @@ export const policeRaidService = {
       ? `Politie raid! ${prostitutesAffected} prostituee(s) gearresteerd voor ${BUST_DURATION_HOURS} uur!`
       : 'Politie raid kwam, maar niemand werd gearresteerd!';
 
+    const reputation = prostitutesAffected > 0
+      ? await applyReputationAction(playerId, 'fbi_raid', false)
+      : undefined;
+
     return {
       success: true,
       raidOccurred: true,
       prostitutesAffected,
       districtsRaided: Array.from(districtsRaided),
-      message
+      message,
+      reputation,
     };
   },
 
@@ -149,6 +156,7 @@ export const policeRaidService = {
     prostitutesAffected: number;
     districtsRaided: string[];
     message?: string;
+    reputation?: number;
   }> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
@@ -180,7 +188,8 @@ export const policeRaidService = {
         raidOccurred: result.raidOccurred,
         prostitutesAffected: result.prostitutesAffected,
         districtsRaided: result.districtsRaided,
-        message: result.message
+        message: result.message,
+        reputation: result.reputation,
       };
     }
 

@@ -13,6 +13,7 @@ import { worldEventService } from '../services/worldEventService';
 import { emailService } from '../services/emailService';
 import { notificationService } from '../services/notificationService';
 import { translationService } from '../services/translationService';
+import { applyReputationAction } from '../services/reputationService';
 import prisma from '../lib/prisma';
 import { z } from 'zod';
 
@@ -395,6 +396,10 @@ router.post(
       const crew = await crewService.approveJoinRequest(crewId, requestId);
 
       if (request) {
+        await applyReputationAction(request.player.id, 'crew_join', true);
+      }
+
+      if (request) {
         const language = translationService.getPlayerLanguage(request.player);
         if (request.player.email) {
           await emailService.sendCrewJoinApprovedEmail(
@@ -567,6 +572,7 @@ router.post(
       });
 
       await crewService.kickMember(crewId, targetPlayerId);
+      await applyReputationAction(targetPlayerId, 'crew_kicked', false);
 
       if (targetMembership) {
         const language = translationService.getPlayerLanguage(targetMembership.player);

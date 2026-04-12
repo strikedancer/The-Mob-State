@@ -59,10 +59,12 @@ class _CryptoScreenState extends State<CryptoScreen> {
   }
 
   String _backgroundAssetForWidth(double width) {
-    if (width >= 1200)
+    if (width >= 1200) {
       return 'assets/images/backgrounds/crypto_market_bg_desktop.png';
-    if (width >= 700)
+    }
+    if (width >= 700) {
       return 'assets/images/backgrounds/crypto_market_bg_tablet.png';
+    }
     return 'assets/images/backgrounds/crypto_market_bg_mobile.png';
   }
 

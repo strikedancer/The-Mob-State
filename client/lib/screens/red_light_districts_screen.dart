@@ -4,6 +4,7 @@ import '../models/achievement.dart';
 import '../services/prostitution_service.dart';
 import '../utils/achievement_notifier.dart';
 import 'red_light_district_detail_screen.dart';
+import 'player_profile_screen.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
@@ -74,6 +75,15 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
     });
   }
 
+  void _openPlayerProfile(int playerId, String username) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            PlayerProfileScreen(playerId: playerId, username: username),
+      ),
+    );
+  }
+
   Future<void> _purchaseDistrict(RedLightDistrict district) async {
     final l10n = AppLocalizations.of(context)!;
 
@@ -128,7 +138,8 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
       await _loadData();
 
       if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               result['message'] ?? l10n.prostitutionPurchaseSuccess,
@@ -151,7 +162,8 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
       }
     } else {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(result['message'] ?? l10n.prostitutionPurchaseFailed),
             backgroundColor: Colors.red,
@@ -279,7 +291,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                          'images/prostitution/buildings/rld_building_exterior.png',
+                          'assets/images/prostitution/buildings/rld_building_exterior.png',
                         ),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
@@ -344,16 +356,28 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                         ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: Text(
-                            district.owner != null
-                                ? (district.owner!['username'] as String? ??
-                                      'Onbekend')
-                                : (isAvailable ? 'Te koop' : 'Onbekend'),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                          child: GestureDetector(
+                            onTap: district.ownerId != null
+                                ? () => _openPlayerProfile(
+                                    district.ownerId!,
+                                    district.owner!['username'] as String? ??
+                                        'Onbekend',
+                                  )
+                                : null,
+                            child: Text(
+                              district.owner != null
+                                  ? (district.owner!['username'] as String? ??
+                                        'Onbekend')
+                                  : (isAvailable ? 'Te koop' : 'Onbekend'),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: district.ownerId != null
+                                    ? Colors.lightBlue
+                                    : null,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],

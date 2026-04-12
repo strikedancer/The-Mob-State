@@ -240,7 +240,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                       ? Stack(
                           children: [
                             Image.asset(
-                              'images/vehicles/$selectedImage',
+                              'assets/images/vehicles/$selectedImage',
                               fit: BoxFit.cover,
                               width: double.infinity,
                               height: double.infinity,
@@ -415,7 +415,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   ),
                   child: selectedImage != null
                       ? Image.asset(
-                          'images/vehicles/$selectedImage',
+                          'assets/images/vehicles/$selectedImage',
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Center(

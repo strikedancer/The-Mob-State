@@ -65,7 +65,7 @@ import path from 'path';
 
 const app: Application = express();
 
-// Stripe webhook — registered BEFORE express.json()
+// Payment webhook — raw JSON requests must be registered before express.json()
 app.use('/subscriptions/webhook', express.raw({ type: 'application/json' }));
 
 // Middleware

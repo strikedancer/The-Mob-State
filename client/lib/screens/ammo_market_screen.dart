@@ -278,7 +278,7 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
     // Map ammo types to file names
     final fileName = ammoType.replaceAll(RegExp(r'[^a-z0-9]'), '');
     return Image.asset(
-      'images/ammo/$fileName.png',
+      'assets/images/ammo/$fileName.png',
       width: 48,
       height: 48,
       fit: BoxFit.contain,
@@ -320,7 +320,7 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('images/backgrounds/ammo_factory_bg.png'),
+          image: const AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
           fit: BoxFit.cover,
           opacity: 0.15,
         ),

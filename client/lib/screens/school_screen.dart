@@ -430,19 +430,19 @@ class _SchoolScreenState extends State<SchoolScreen> {
   }
 
   String _trackImageAsset(String trackId) {
-    return 'images/school/tracks/${trackId}_track.png';
+    return 'assets/images/school/tracks/${trackId}_track.png';
   }
 
   String _gateImageAsset(String targetType, String targetId) {
     if (targetType == 'job') {
-      return 'images/school/gates/job_${targetId}_gate.png';
+      return 'assets/images/school/gates/job_${targetId}_gate.png';
     }
 
     if (targetType == 'asset') {
-      return 'images/school/gates/asset_${targetId}_gate.png';
+      return 'assets/images/school/gates/asset_${targetId}_gate.png';
     }
 
-    return 'images/school/gates/system_${targetType}_${targetId}_gate.png';
+    return 'assets/images/school/gates/system_${targetType}_${targetId}_gate.png';
   }
 
   String _trackFallbackEmoji(String trackId) {
@@ -1074,7 +1074,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/backgrounds/ammo_factory_bg.png'),
+          image: AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
           fit: BoxFit.cover,
           opacity: 0.25,
         ),

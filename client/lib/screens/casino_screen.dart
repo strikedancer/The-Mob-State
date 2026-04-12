@@ -418,8 +418,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final backgroundImage = isPortrait
-        ? 'images/casino/casino_background_portrait.png'
-        : 'images/casino/casino_background_landscape.png';
+        ? 'assets/images/casino/casino_background_portrait.png'
+        : 'assets/images/casino/casino_background_landscape.png';
 
     return Scaffold(
       appBar: AppBar(title: Row(children: [Text('🎰 '), Text(l10n.casino)])),
@@ -659,10 +659,10 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
     // Map game ID to image file
     final iconImageMap = {
-      'slots': 'images/casino/slot_machine.png',
-      'blackjack': 'images/casino/blackjack.png',
-      'roulette': 'images/casino/roulette.png',
-      'dice': 'images/casino/dice.png',
+      'slots': 'assets/images/casino/slot_machine.png',
+      'blackjack': 'assets/images/casino/blackjack.png',
+      'roulette': 'assets/images/casino/roulette.png',
+      'dice': 'assets/images/casino/dice.png',
     };
 
     return Card(

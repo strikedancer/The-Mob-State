@@ -9,6 +9,7 @@ import '../providers/event_provider.dart';
 import '../utils/avatar_helper.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/country_helper.dart';
+import 'player_profile_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
 
@@ -54,6 +55,15 @@ class _FriendsScreenState extends State<FriendsScreen>
         _loadActivities();
       }
     });
+  }
+
+  void _openPlayerProfile(int playerId, String username) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PlayerProfileScreen(playerId: playerId, username: username),
+      ),
+    );
   }
 
   Future<void> _loadUnreadCount() async {
@@ -588,22 +598,28 @@ class _FriendsScreenState extends State<FriendsScreen>
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage:
-                    friend.avatar != null && friend.avatar!.isNotEmpty
-                    ? (friend.avatar!.startsWith('http://') ||
-                              friend.avatar!.startsWith('https://'))
-                          ? NetworkImage(friend.avatar!)
-                          : AssetImage('images/avatars/${friend.avatar}.png')
-                                as ImageProvider
-                    : null,
-                child: friend.avatar == null || friend.avatar!.isEmpty
-                    ? Text(friend.username[0].toUpperCase())
-                    : null,
+              leading: GestureDetector(
+                onTap: () => _openPlayerProfile(friend.id, friend.username),
+                child: CircleAvatar(
+                  backgroundImage:
+                      friend.avatar != null && friend.avatar!.isNotEmpty
+                      ? (friend.avatar!.startsWith('http://') ||
+                                friend.avatar!.startsWith('https://'))
+                            ? NetworkImage(friend.avatar!)
+                            : AssetImage('assets/images/avatars/${friend.avatar}.png')
+                                  as ImageProvider
+                      : null,
+                  child: friend.avatar == null || friend.avatar!.isEmpty
+                      ? Text(friend.username[0].toUpperCase())
+                      : null,
+                ),
               ),
-              title: Text(
-                friend.username,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              title: GestureDetector(
+                onTap: () => _openPlayerProfile(friend.id, friend.username),
+                child: Text(
+                  friend.username,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -729,22 +745,28 @@ class _FriendsScreenState extends State<FriendsScreen>
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage:
-                    requester.avatar != null && requester.avatar!.isNotEmpty
-                    ? (requester.avatar!.startsWith('http://') ||
-                              requester.avatar!.startsWith('https://'))
-                          ? NetworkImage(requester.avatar!)
-                          : AssetImage('images/avatars/${requester.avatar}.png')
-                                as ImageProvider
-                    : null,
-                child: requester.avatar == null || requester.avatar!.isEmpty
-                    ? Text(requester.username[0].toUpperCase())
-                    : null,
+              leading: GestureDetector(
+                onTap: () => _openPlayerProfile(requester.id, requester.username),
+                child: CircleAvatar(
+                  backgroundImage:
+                      requester.avatar != null && requester.avatar!.isNotEmpty
+                      ? (requester.avatar!.startsWith('http://') ||
+                                requester.avatar!.startsWith('https://'))
+                            ? NetworkImage(requester.avatar!)
+                            : AssetImage('assets/images/avatars/${requester.avatar}.png')
+                                  as ImageProvider
+                      : null,
+                  child: requester.avatar == null || requester.avatar!.isEmpty
+                      ? Text(requester.username[0].toUpperCase())
+                      : null,
+                ),
               ),
-              title: Text(
-                requester.username,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              title: GestureDetector(
+                onTap: () => _openPlayerProfile(requester.id, requester.username),
+                child: Text(
+                  requester.username,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               subtitle: Text(
                 '${locale == 'nl' ? 'Rank' : 'Rank'}: ${requester.rank}',
@@ -834,24 +856,30 @@ class _FriendsScreenState extends State<FriendsScreen>
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage:
-                        result.avatar != null && result.avatar!.isNotEmpty
-                        ? (result.avatar!.startsWith('http://') ||
-                                  result.avatar!.startsWith('https://'))
-                              ? NetworkImage(result.avatar!)
-                              : AssetImage(
-                                      'images/avatars/${result.avatar}.png',
-                                    )
-                                    as ImageProvider
-                        : null,
-                    child: result.avatar == null || result.avatar!.isEmpty
-                        ? Text(result.username[0].toUpperCase())
-                        : null,
+                  leading: GestureDetector(
+                    onTap: () => _openPlayerProfile(result.id, result.username),
+                    child: CircleAvatar(
+                      backgroundImage:
+                          result.avatar != null && result.avatar!.isNotEmpty
+                          ? (result.avatar!.startsWith('http://') ||
+                                    result.avatar!.startsWith('https://'))
+                                ? NetworkImage(result.avatar!)
+                                : AssetImage(
+                                        'assets/images/avatars/${result.avatar}.png',
+                                      )
+                                      as ImageProvider
+                          : null,
+                      child: result.avatar == null || result.avatar!.isEmpty
+                          ? Text(result.username[0].toUpperCase())
+                          : null,
+                    ),
                   ),
-                  title: Text(
-                    result.username,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  title: GestureDetector(
+                    onTap: () => _openPlayerProfile(result.id, result.username),
+                    child: Text(
+                      result.username,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1016,16 +1044,19 @@ class _FriendsScreenState extends State<FriendsScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Avatar
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage(
-                                AvatarHelper.getAvatarPath(player['avatar']),
+                        GestureDetector(
+                          onTap: () => _openPlayerProfile(player['id'] as int, player['username'] as String),
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  AvatarHelper.getAvatarPath(player['avatar']),
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -1037,12 +1068,15 @@ class _FriendsScreenState extends State<FriendsScreen>
                             children: [
                               Row(
                                 children: [
-                                  Text(
-                                    player['username'],
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                  GestureDetector(
+                                    onTap: () => _openPlayerProfile(player['id'] as int, player['username'] as String),
+                                    child: Text(
+                                      player['username'],
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),

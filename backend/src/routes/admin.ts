@@ -234,12 +234,19 @@ const crimeSchema = z.object({
 const updatePremiumOfferSchema = z.object({
   titleNl: z.string().min(1).max(120),
   titleEn: z.string().min(1).max(120),
+  descriptionNl: z.string().max(5000).nullable().optional(),
+  descriptionEn: z.string().max(5000).nullable().optional(),
   imageUrl: z.string().max(500).nullable().optional(),
   priceEurCents: z.number().int().positive(),
-  rewardType: z.enum(['money', 'ammo']),
+  rewardType: z.enum(['money', 'ammo', 'credits', 'event_boost']),
   moneyAmount: z.number().int().positive().nullable().optional(),
   ammoType: z.string().min(1).max(50).nullable().optional(),
   ammoQuantity: z.number().int().positive().nullable().optional(),
+  creditAmount: z.number().int().positive().nullable().optional(),
+  rewardKey: z.string().min(1).max(64).nullable().optional(),
+  durationHours: z.number().int().positive().nullable().optional(),
+  rewardValue: z.number().int().min(0).nullable().optional(),
+  metadataJson: z.string().max(20000).nullable().optional(),
   isActive: z.boolean(),
   showPopupOnOpen: z.boolean().default(false),
   sortOrder: z.number().int().min(0),
@@ -249,17 +256,51 @@ const createPremiumOfferSchema = z.object({
   key: z.string().min(2).max(64).regex(/^[a-z0-9_\-]+$/),
   titleNl: z.string().min(1).max(120),
   titleEn: z.string().min(1).max(120),
+  descriptionNl: z.string().max(5000).nullable().optional(),
+  descriptionEn: z.string().max(5000).nullable().optional(),
   imageUrl: z.string().max(500).nullable().optional(),
   priceEurCents: z.number().int().positive(),
-  rewardType: z.enum(['money', 'ammo']),
+  rewardType: z.enum(['money', 'ammo', 'credits', 'event_boost']),
   moneyAmount: z.number().int().positive().nullable().optional(),
   ammoType: z.string().min(1).max(50).nullable().optional(),
   ammoQuantity: z.number().int().positive().nullable().optional(),
+  creditAmount: z.number().int().positive().nullable().optional(),
+  rewardKey: z.string().min(1).max(64).nullable().optional(),
+  durationHours: z.number().int().positive().nullable().optional(),
+  rewardValue: z.number().int().min(0).nullable().optional(),
+  metadataJson: z.string().max(20000).nullable().optional(),
   isActive: z.boolean().default(true),
   showPopupOnOpen: z.boolean().default(false),
   sortOrder: z.number().int().min(0).default(0),
   notifyAllPlayers: z.boolean().default(false),
 });
+
+const creditShopEffectTypeSchema = z.enum([
+  'CASH_BUNDLE',
+  'HIT_PROTECTION',
+  'VEHICLE_REPAIR_FINISH',
+  'VEHICLE_TUNE_RESET',
+  'ACTION_COOLDOWN_RESET',
+  'EVENT_BOOST',
+]);
+
+const createCreditShopItemSchema = z.object({
+  key: z.string().min(2).max(64).regex(/^[a-z0-9_\-]+$/),
+  titleNl: z.string().min(1).max(120),
+  titleEn: z.string().min(1).max(120),
+  descriptionNl: z.string().max(5000).nullable().optional(),
+  descriptionEn: z.string().max(5000).nullable().optional(),
+  creditCost: z.number().int().positive(),
+  effectType: creditShopEffectTypeSchema,
+  moneyAmount: z.number().int().positive().nullable().optional(),
+  durationHours: z.number().int().positive().nullable().optional(),
+  actionType: z.string().min(1).max(50).nullable().optional(),
+  metadataJson: z.string().max(20000).nullable().optional(),
+  isActive: z.boolean().default(true),
+  sortOrder: z.number().int().min(0).default(0),
+});
+
+const updateCreditShopItemSchema = createCreditShopItemSchema.omit({ key: true });
 
 const createAdminSchema = z.object({
   username: z.string().min(3).max(50).regex(/^[a-zA-Z0-9_\-.]+$/),
@@ -1885,12 +1926,19 @@ router.post(
         key: input.key,
         titleNl: input.titleNl,
         titleEn: input.titleEn,
+        descriptionNl: input.descriptionNl ?? null,
+        descriptionEn: input.descriptionEn ?? null,
         imageUrl: input.imageUrl ?? null,
         priceEurCents: input.priceEurCents,
         rewardType: input.rewardType,
         moneyAmount: input.rewardType === 'money' ? (input.moneyAmount ?? null) : null,
         ammoType: input.rewardType === 'ammo' ? (input.ammoType ?? null) : null,
         ammoQuantity: input.rewardType === 'ammo' ? (input.ammoQuantity ?? null) : null,
+        creditAmount: input.rewardType === 'credits' ? (input.creditAmount ?? null) : null,
+        rewardKey: input.rewardType === 'event_boost' ? (input.rewardKey ?? null) : null,
+        durationHours: input.rewardType === 'event_boost' ? (input.durationHours ?? null) : null,
+        rewardValue: input.rewardType === 'event_boost' ? (input.rewardValue ?? null) : null,
+        metadataJson: input.metadataJson ?? null,
         isActive: input.isActive,
         showPopupOnOpen: input.showPopupOnOpen,
         sortOrder: input.sortOrder,
@@ -1901,6 +1949,12 @@ router.post(
       }
       if (input.rewardType === 'ammo' && (!data.ammoType || !data.ammoQuantity)) {
         return res.status(400).json({ error: 'ammoType and ammoQuantity are required for ammo rewards' });
+      }
+      if (input.rewardType === 'credits' && !data.creditAmount) {
+        return res.status(400).json({ error: 'creditAmount is required for credit rewards' });
+      }
+      if (input.rewardType === 'event_boost' && (!data.rewardKey || !data.durationHours)) {
+        return res.status(400).json({ error: 'rewardKey and durationHours are required for event boost rewards' });
       }
 
       const offer = await prisma.premiumOneTimeOffer.create({ data });
@@ -1950,12 +2004,19 @@ router.put(
       const data = {
         titleNl: input.titleNl,
         titleEn: input.titleEn,
+        descriptionNl: input.descriptionNl ?? null,
+        descriptionEn: input.descriptionEn ?? null,
         imageUrl: input.imageUrl ?? null,
         priceEurCents: input.priceEurCents,
         rewardType: input.rewardType,
         moneyAmount: input.rewardType === 'money' ? (input.moneyAmount ?? null) : null,
         ammoType: input.rewardType === 'ammo' ? (input.ammoType ?? null) : null,
         ammoQuantity: input.rewardType === 'ammo' ? (input.ammoQuantity ?? null) : null,
+        creditAmount: input.rewardType === 'credits' ? (input.creditAmount ?? null) : null,
+        rewardKey: input.rewardType === 'event_boost' ? (input.rewardKey ?? null) : null,
+        durationHours: input.rewardType === 'event_boost' ? (input.durationHours ?? null) : null,
+        rewardValue: input.rewardType === 'event_boost' ? (input.rewardValue ?? null) : null,
+        metadataJson: input.metadataJson ?? null,
         isActive: input.isActive,
         showPopupOnOpen: input.showPopupOnOpen,
         sortOrder: input.sortOrder,
@@ -1966,6 +2027,12 @@ router.put(
       }
       if (input.rewardType === 'ammo' && (!data.ammoType || !data.ammoQuantity)) {
         return res.status(400).json({ error: 'ammoType and ammoQuantity are required for ammo rewards' });
+      }
+      if (input.rewardType === 'credits' && !data.creditAmount) {
+        return res.status(400).json({ error: 'creditAmount is required for credit rewards' });
+      }
+      if (input.rewardType === 'event_boost' && (!data.rewardKey || !data.durationHours)) {
+        return res.status(400).json({ error: 'rewardKey and durationHours are required for event boost rewards' });
       }
 
       const offer = await prisma.premiumOneTimeOffer.update({
@@ -2004,6 +2071,116 @@ router.delete(
     } catch (error) {
       console.error('Admin delete premium offer error:', error);
       return res.status(500).json({ error: 'Failed to delete premium offer' });
+    }
+  }
+);
+
+router.get('/credit-shop-items', async (_req, res) => {
+  try {
+    const items = await prisma.creditShopItem.findMany({
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+    });
+
+    return res.json({ items });
+  } catch (error) {
+    console.error('Admin get credit shop items error:', error);
+    return res.status(500).json({ error: 'Failed to fetch credit shop items' });
+  }
+});
+
+router.post(
+  '/credit-shop-items',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  auditLog({ action: 'CREATE_CREDIT_SHOP_ITEM', targetType: 'CreditShopItem' }),
+  async (req, res) => {
+    try {
+      const input = createCreditShopItemSchema.parse(req.body);
+      const item = await prisma.creditShopItem.create({
+        data: {
+          key: input.key,
+          titleNl: input.titleNl,
+          titleEn: input.titleEn,
+          descriptionNl: input.descriptionNl ?? null,
+          descriptionEn: input.descriptionEn ?? null,
+          creditCost: input.creditCost,
+          effectType: input.effectType,
+          moneyAmount: input.moneyAmount ?? null,
+          durationHours: input.durationHours ?? null,
+          actionType: input.actionType ?? null,
+          metadataJson: input.metadataJson ?? null,
+          isActive: input.isActive,
+          sortOrder: input.sortOrder,
+        },
+      });
+
+      return res.status(201).json({ message: 'Credit shop item created', item });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin create credit shop item error:', error);
+      return res.status(500).json({ error: 'Failed to create credit shop item' });
+    }
+  }
+);
+
+router.put(
+  '/credit-shop-items/:id',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  auditLog({ action: 'UPDATE_CREDIT_SHOP_ITEM', targetType: 'CreditShopItem' }),
+  async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      if (!Number.isFinite(id) || id <= 0) {
+        return res.status(400).json({ error: 'Invalid credit shop item id' });
+      }
+
+      const input = updateCreditShopItemSchema.parse(req.body);
+      const item = await prisma.creditShopItem.update({
+        where: { id },
+        data: {
+          titleNl: input.titleNl,
+          titleEn: input.titleEn,
+          descriptionNl: input.descriptionNl ?? null,
+          descriptionEn: input.descriptionEn ?? null,
+          creditCost: input.creditCost,
+          effectType: input.effectType,
+          moneyAmount: input.moneyAmount ?? null,
+          durationHours: input.durationHours ?? null,
+          actionType: input.actionType ?? null,
+          metadataJson: input.metadataJson ?? null,
+          isActive: input.isActive,
+          sortOrder: input.sortOrder,
+        },
+      });
+
+      return res.json({ message: 'Credit shop item updated', item });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin update credit shop item error:', error);
+      return res.status(500).json({ error: 'Failed to update credit shop item' });
+    }
+  }
+);
+
+router.delete(
+  '/credit-shop-items/:id',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  auditLog({ action: 'DELETE_CREDIT_SHOP_ITEM', targetType: 'CreditShopItem' }),
+  async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      if (!Number.isFinite(id) || id <= 0) {
+        return res.status(400).json({ error: 'Invalid credit shop item id' });
+      }
+
+      await prisma.creditShopItem.delete({ where: { id } });
+      return res.json({ message: 'Credit shop item deleted' });
+    } catch (error) {
+      console.error('Admin delete credit shop item error:', error);
+      return res.status(500).json({ error: 'Failed to delete credit shop item' });
     }
   }
 );

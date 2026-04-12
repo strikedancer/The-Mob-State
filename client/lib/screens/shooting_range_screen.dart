@@ -93,7 +93,7 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage('images/backgrounds/shooting_range_bg.png'),
+            image: const AssetImage('assets/images/backgrounds/shooting_range_bg.png'),
             fit: BoxFit.cover,
             opacity: 0.15,
           ),

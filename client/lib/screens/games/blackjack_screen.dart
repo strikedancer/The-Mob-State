@@ -124,7 +124,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       filename = cardValue.toString();
     }
     
-    return 'images/casino/cards/$suit/${filename}_$suit.png';
+    return 'assets/images/casino/cards/$suit/${filename}_$suit.png';
   }
 
   Widget _buildCardRow(List<int> cards, String label, int total) {
@@ -176,7 +176,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              won ? 'images/casino/win_effect.png' : 'images/casino/lose_effect.png',
+              won ? 'assets/images/casino/win_effect.png' : 'assets/images/casino/lose_effect.png',
               width: 200,
               height: 150,
               fit: BoxFit.contain,
@@ -240,7 +240,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'images/casino/bankrupt.png',
+              'assets/images/casino/bankrupt.png',
               width: 300,
               height: 200,
               fit: BoxFit.contain,

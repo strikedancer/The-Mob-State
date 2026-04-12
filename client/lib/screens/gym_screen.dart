@@ -104,7 +104,7 @@ class _GymScreenState extends State<GymScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage('images/backgrounds/gym_bg.png'),
+            image: const AssetImage('assets/images/backgrounds/gym_bg.png'),
             fit: BoxFit.cover,
             opacity: 0.15,
           ),

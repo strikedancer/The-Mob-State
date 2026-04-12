@@ -7,6 +7,7 @@ import '../providers/event_provider.dart';
 import '../models/direct_message.dart';
 import '../widgets/conversation_card.dart';
 import 'chat_screen.dart';
+import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
 
 class DirectMessagesScreen extends StatefulWidget {
@@ -209,6 +210,20 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
     _loadConversations();
   }
 
+  void _openPlayerProfile(Conversation conversation) {
+    if (conversation.friendId <= 0) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PlayerProfileScreen(
+          playerId: conversation.friendId,
+          username: conversation.username,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Show chat inline if a conversation is selected
@@ -307,6 +322,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                     return ConversationCard(
                       conversation: conversation,
                       onTap: () => _openChat(conversation),
+                      onAvatarTap: () => _openPlayerProfile(conversation),
                     );
                   },
                 ),
