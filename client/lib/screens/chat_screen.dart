@@ -375,7 +375,7 @@ class _ChatScreenState extends State<ChatScreen> {
           shape: BoxShape.circle,
           color: Colors.grey[800],
           image: DecorationImage(
-            image: AssetImage(AvatarHelper.getAvatarPath(widget.friendAvatar)),
+            image: AvatarHelper.getAvatarImageProvider(widget.friendAvatar),
             fit: BoxFit.cover,
           ),
         ),

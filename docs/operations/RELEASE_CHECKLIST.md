@@ -89,6 +89,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/login_screen.dart`, `client/lib/screens/court_screen.dart`, `client/docker/nginx.conf`
 - [ ] Login background rendering hardened: fallback-keten toegevoegd (`assets/images/...` -> `images/...` -> directe `/assets/images/...` URL -> gradient) zodat mobile login-screen niet meer zwart wordt bij asset-key drift/cache
   - Bestand: `client/lib/screens/login_screen.dart`
+- [ ] Web-safe asset loader uitgerold voor avatars en crimes: Flutter web gebruikt nu directe HTTPS asset-URLs i.p.v. breekbare `AssetImage`/verkeerde `Image.network('assets/...')` combinaties op kritieke schermen
+  - Bestanden: `client/lib/utils/web_asset_helper.dart`, `client/lib/utils/avatar_helper.dart`, `client/lib/widgets/crime_card.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/friends_screen.dart`, `client/lib/screens/chat_screen.dart`, `client/lib/screens/player_profile_screen.dart`, `client/lib/screens/activity_feed_screen.dart`, `client/lib/widgets/message_bubble.dart`, `client/lib/widgets/conversation_card.dart`, `client/lib/widgets/hit_card.dart`
 - [ ] HTTPS hardening client-nginx: CSP (`upgrade-insecure-requests; block-all-mixed-content`) + HSTS + `X-Content-Type-Options` toegevoegd om mixed-content meldingen te voorkomen
   - Bestand: `client/docker/nginx.conf`
 - [ ] Premium kaart voorbereid op Mollie-fase 1: player VIP prijs naar €4,99/mnd en cataloguslabels tonen nu ook credits/event boosts

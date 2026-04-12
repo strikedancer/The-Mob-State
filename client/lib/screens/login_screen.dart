@@ -5,6 +5,7 @@ import '../providers/auth_provider.dart';
 import '../providers/locale_provider.dart';
 import 'forgot_password_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -75,8 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ? 'images/backgrounds/login_background_mobile.png'
         : 'images/backgrounds/login_background.png';
     final directPath = isPortrait
-        ? '/assets/images/backgrounds/login_background_mobile.png'
-        : '/assets/images/backgrounds/login_background.png';
+      ? WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background_mobile.png')
+      : WebAssetHelper.toPublicUrl('assets/images/backgrounds/login_background.png');
 
     return Image.asset(
       preferredAsset,

@@ -191,9 +191,7 @@ class _ActivityFeedScreenState extends State<ActivityFeedScreen> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                        AvatarHelper.getAvatarPath(player.avatar),
-                                      ),
+                                      image: AvatarHelper.getAvatarImageProvider(player.avatar),
                                       fit: BoxFit.cover,
                                     ),
                                   ),

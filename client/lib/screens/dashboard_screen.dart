@@ -522,8 +522,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           color: Colors.grey.shade700,
                         ),
                         child: ClipOval(
-                          child: Image.network(
-                            'assets/images/avatars/${player.avatar ?? 'default_1'}.png',
+                          child: Image(
+                            image: AvatarHelper.getAvatarImageProvider(
+                              player.avatar,
+                            ),
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) => Icon(
                               Icons.account_circle,
@@ -1537,8 +1539,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               CircleAvatar(
                                 radius: 32,
                                 child: ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/avatars/${player.avatar ?? 'default_1'}.png',
+                                  child: Image(
+                                    image: AvatarHelper.getAvatarImageProvider(
+                                      player.avatar,
+                                    ),
                                     width: 64,
                                     height: 64,
                                     fit: BoxFit.cover,

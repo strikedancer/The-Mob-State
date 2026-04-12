@@ -603,11 +603,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                 child: CircleAvatar(
                   backgroundImage:
                       friend.avatar != null && friend.avatar!.isNotEmpty
-                      ? (friend.avatar!.startsWith('http://') ||
-                                friend.avatar!.startsWith('https://'))
-                            ? NetworkImage(friend.avatar!)
-                            : AssetImage('assets/images/avatars/${friend.avatar}.png')
-                                  as ImageProvider
+                        ? AvatarHelper.getAvatarImageProvider(friend.avatar)
                       : null,
                   child: friend.avatar == null || friend.avatar!.isEmpty
                       ? Text(friend.username[0].toUpperCase())
@@ -750,11 +746,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                 child: CircleAvatar(
                   backgroundImage:
                       requester.avatar != null && requester.avatar!.isNotEmpty
-                      ? (requester.avatar!.startsWith('http://') ||
-                                requester.avatar!.startsWith('https://'))
-                            ? NetworkImage(requester.avatar!)
-                            : AssetImage('assets/images/avatars/${requester.avatar}.png')
-                                  as ImageProvider
+                        ? AvatarHelper.getAvatarImageProvider(requester.avatar)
                       : null,
                   child: requester.avatar == null || requester.avatar!.isEmpty
                       ? Text(requester.username[0].toUpperCase())
@@ -861,13 +853,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                     child: CircleAvatar(
                       backgroundImage:
                           result.avatar != null && result.avatar!.isNotEmpty
-                          ? (result.avatar!.startsWith('http://') ||
-                                    result.avatar!.startsWith('https://'))
-                                ? NetworkImage(result.avatar!)
-                                : AssetImage(
-                                        'assets/images/avatars/${result.avatar}.png',
-                                      )
-                                      as ImageProvider
+                          ? AvatarHelper.getAvatarImageProvider(result.avatar)
                           : null,
                       child: result.avatar == null || result.avatar!.isEmpty
                           ? Text(result.username[0].toUpperCase())

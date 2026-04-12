@@ -112,7 +112,7 @@ class MessageBubble extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.grey[800],
                     image: DecorationImage(
-                      image: AssetImage(AvatarHelper.getAvatarPath(senderAvatar)),
+                      image: AvatarHelper.getAvatarImageProvider(senderAvatar),
                       fit: BoxFit.cover,
                     ),
                   ),

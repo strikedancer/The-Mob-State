@@ -448,7 +448,7 @@ class _PlayerProfileScreenState extends State<PlayerProfileScreen> {
             children: [
               CircleAvatar(
                 radius: 34,
-                backgroundImage: AssetImage(AvatarHelper.getAvatarPath(avatar)),
+                backgroundImage: AvatarHelper.getAvatarImageProvider(avatar),
               ),
               const SizedBox(width: 12),
               Expanded(

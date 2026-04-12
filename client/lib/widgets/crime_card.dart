@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/crime.dart';
 import '../l10n/app_localizations.dart';
+import '../utils/web_asset_helper.dart';
 
 class CrimeCard extends StatefulWidget {
   final Crime crime;
@@ -195,7 +196,6 @@ class _CrimeCardState extends State<CrimeCard> {
     final requirementIcons = _getRequirementIcons();
     final defaultIcon = _getDefaultIcon();
     final imageAsset = 'assets/images/crimes/${widget.crime.id}_crime.png';
-    final legacyImageAsset = 'assets/images/crimes/${widget.crime.id}_crime.png';
 
     // Use player-specific calculated success chance, or fall back to base chance
     final successChance =
@@ -260,26 +260,19 @@ class _CrimeCardState extends State<CrimeCard> {
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(10),
                           ),
-                          child: Image.asset(
+                          child: WebAssetHelper.image(
                             imageAsset,
                             fit: BoxFit.cover,
                             alignment: Alignment.center,
                             errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                legacyImageAsset,
-                                fit: BoxFit.cover,
+                              return Container(
+                                color: Colors.grey[850],
                                 alignment: Alignment.center,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: Colors.grey[850],
-                                    alignment: Alignment.center,
-                                    child: const Icon(
-                                      Icons.image_not_supported,
-                                      color: Colors.white54,
-                                      size: 26,
-                                    ),
-                                  );
-                                },
+                                child: const Icon(
+                                  Icons.image_not_supported,
+                                  color: Colors.white54,
+                                  size: 26,
+                                ),
                               );
                             },
                           ),
