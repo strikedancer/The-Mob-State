@@ -11,8 +11,10 @@ class WebAssetHelper {
 
     String publicPath;
     if (normalized.startsWith('assets/images/')) {
-      // Flutter web emits assets declared under assets/images/* at assets/assets/images/*.
-      publicPath = 'assets/assets/images/${normalized.substring('assets/images/'.length)}';
+      // Route image requests through /images so nginx can serve from Flutter's bundled image directory.
+      publicPath = 'images/${normalized.substring('assets/images/'.length)}';
+    } else if (normalized.startsWith('assets/assets/images/')) {
+      publicPath = 'images/${normalized.substring('assets/assets/images/'.length)}';
     } else if (normalized.startsWith('images/')) {
       publicPath = 'images/${normalized.substring('images/'.length)}';
     } else if (normalized.startsWith('assets/')) {
