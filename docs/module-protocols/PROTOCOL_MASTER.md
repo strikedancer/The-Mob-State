@@ -102,6 +102,7 @@ Implementatievoorkeur:
 - Vermijd nieuwe `images/...` keys in gameplay-schermen; die leiden in productie snel tot 404-routes op `/assets/images/*`.
 - Login/landing/rechtbank backgrounds vallen ook onder deze regel; gebruik dus `assets/images/backgrounds/...` in `Image.asset(...)`.
 - Voor kritieke visuals (zoals login achtergrond) implementeer altijd een fallback-keten: primaire asset key -> legacy key -> directe `/assets/images/...` URL -> visuele fallback.
+- Bij URL-resolving helpers voor web-assets: gebruik base-relative paden (geen root-absolute `/assets/...`), zodat deployments op subpaths ook correct assets laden.
 - Voor kritieke web-assets die structureel issues geven (avatars, crime-art, login backgrounds) gebruik bij voorkeur een gedeelde helper die op web direct naar de publieke HTTPS asset-URL resolvet in plaats van losse `AssetImage` aanroepen te verspreiden.
 - Bij helper-refactors over meerdere schermen: verifieer expliciet imports op alle aangepaste screens voordat een web build wordt gedeployed.
 - Productie-nginx mag compat-aliases bevatten voor legacy paden (`/assets/images/*` en `/assets/image/*`) zodat oude clients niet direct breken.

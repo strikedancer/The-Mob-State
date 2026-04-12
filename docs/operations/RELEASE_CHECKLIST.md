@@ -4,7 +4,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 
 ## Status
 - Release mode: **Batched deploy**
-- Laatste update: 2026-04-11
+- Laatste update: 2026-04-12
 
 ## Pending Changes (nog NIET live)
 
@@ -85,6 +85,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Web subpath fix login background: `WebAssetHelper.toPublicUrl()` gebruikt nu base-relative paden i.p.v. root-absolute (`/assets/...`), zodat login background fallback ook werkt wanneer de app niet op domein-root draait
+  - Bestand: `client/lib/utils/web_asset_helper.dart`
 - [ ] Web asset-path fix: login/rechtbank backgrounds gebruiken weer `assets/images/...` (Flutter bundle key) + nginx-compat alias toegevoegd voor legacy `/assets/images/*` en typo `/assets/image/*` routes
   - Bestanden: `client/lib/screens/login_screen.dart`, `client/lib/screens/court_screen.dart`, `client/docker/nginx.conf`
 - [ ] Login background rendering hardened: fallback-keten toegevoegd (`assets/images/...` -> `images/...` -> directe `/assets/images/...` URL -> gradient) zodat mobile login-screen niet meer zwart wordt bij asset-key drift/cache

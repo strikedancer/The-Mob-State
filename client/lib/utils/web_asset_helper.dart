@@ -5,15 +5,19 @@ class WebAssetHelper {
   static String toPublicUrl(String assetPath) {
     final normalized = assetPath.replaceAll('\\', '/');
 
+    if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
+      return normalized;
+    }
+
     String publicPath;
     if (normalized.startsWith('assets/images/')) {
-      publicPath = '/assets/images/${normalized.substring('assets/images/'.length)}';
+      publicPath = 'assets/images/${normalized.substring('assets/images/'.length)}';
     } else if (normalized.startsWith('images/')) {
-      publicPath = '/images/${normalized.substring('images/'.length)}';
+      publicPath = 'images/${normalized.substring('images/'.length)}';
     } else if (normalized.startsWith('assets/')) {
-      publicPath = '/$normalized';
+      publicPath = normalized;
     } else {
-      publicPath = '/$normalized';
+      publicPath = normalized.startsWith('/') ? normalized.substring(1) : normalized;
     }
 
     return Uri.base.resolve(publicPath).toString();
