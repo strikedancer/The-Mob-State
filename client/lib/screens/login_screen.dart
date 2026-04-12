@@ -55,6 +55,53 @@ class _LoginScreenState extends State<LoginScreen> {
     authProvider.clearError();
   }
 
+  Widget _buildBackgroundFallback() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.grey[900]!, Colors.black, Colors.grey[850]!],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginBackground(bool isPortrait) {
+    final preferredAsset = isPortrait
+        ? 'assets/images/backgrounds/login_background_mobile.png'
+        : 'assets/images/backgrounds/login_background.png';
+    final legacyAsset = isPortrait
+        ? 'images/backgrounds/login_background_mobile.png'
+        : 'images/backgrounds/login_background.png';
+    final directPath = isPortrait
+        ? '/assets/images/backgrounds/login_background_mobile.png'
+        : '/assets/images/backgrounds/login_background.png';
+
+    return Image.asset(
+      preferredAsset,
+      fit: BoxFit.cover,
+      alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+      errorBuilder: (context, error, stackTrace) {
+        return Image.asset(
+          legacyAsset,
+          fit: BoxFit.cover,
+          alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.network(
+              directPath,
+              fit: BoxFit.cover,
+              alignment: isPortrait ? Alignment.topCenter : Alignment.topLeft,
+              errorBuilder: (context, error, stackTrace) {
+                return _buildBackgroundFallback();
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -160,32 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (isMobile) Container(color: Colors.black),
           // Background image - choose based on orientation
           Positioned.fill(
-            child: Image.asset(
-              isPortrait
-                  ? 'assets/images/backgrounds/login_background_mobile.png'
-                  : 'assets/images/backgrounds/login_background.png',
-              fit: BoxFit.cover, // Always cover - fills entire screen
-              alignment: isPortrait
-                  ? Alignment.topCenter
-                  : Alignment
-                        .topLeft, // Start from top on portrait, top left on landscape
-              errorBuilder: (context, error, stackTrace) {
-                // Fallback gradient background
-                return Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colors.grey[900]!,
-                        Colors.black,
-                        Colors.grey[850]!,
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+            child: _buildLoginBackground(isPortrait),
           ),
           // Dark overlay for better text readability
           Container(color: Colors.black.withOpacity(isMobile ? 0.4 : 0.3)),

@@ -87,6 +87,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Client (game)
 - [ ] Web asset-path fix: login/rechtbank backgrounds gebruiken weer `assets/images/...` (Flutter bundle key) + nginx-compat alias toegevoegd voor legacy `/assets/images/*` en typo `/assets/image/*` routes
   - Bestanden: `client/lib/screens/login_screen.dart`, `client/lib/screens/court_screen.dart`, `client/docker/nginx.conf`
+- [ ] Login background rendering hardened: fallback-keten toegevoegd (`assets/images/...` -> `images/...` -> directe `/assets/images/...` URL -> gradient) zodat mobile login-screen niet meer zwart wordt bij asset-key drift/cache
+  - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] HTTPS hardening client-nginx: CSP (`upgrade-insecure-requests; block-all-mixed-content`) + HSTS + `X-Content-Type-Options` toegevoegd om mixed-content meldingen te voorkomen
   - Bestand: `client/docker/nginx.conf`
 - [ ] Premium kaart voorbereid op Mollie-fase 1: player VIP prijs naar €4,99/mnd en cataloguslabels tonen nu ook credits/event boosts

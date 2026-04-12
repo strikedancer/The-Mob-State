@@ -101,6 +101,7 @@ Implementatievoorkeur:
 - Voor runtime `Image.asset(...)` in Flutter web gebruik standaard keys onder `assets/images/...` (dit matcht de bestaande bundle-layout).
 - Vermijd nieuwe `images/...` keys in gameplay-schermen; die leiden in productie snel tot 404-routes op `/assets/images/*`.
 - Login/landing/rechtbank backgrounds vallen ook onder deze regel; gebruik dus `assets/images/backgrounds/...` in `Image.asset(...)`.
+- Voor kritieke visuals (zoals login achtergrond) implementeer altijd een fallback-keten: primaire asset key -> legacy key -> directe `/assets/images/...` URL -> visuele fallback.
 - Productie-nginx mag compat-aliases bevatten voor legacy paden (`/assets/images/*` en `/assets/image/*`) zodat oude clients niet direct breken.
 
 ## Minimale QA Checklist (Altijd Draaien)
