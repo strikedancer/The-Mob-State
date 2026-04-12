@@ -15,8 +15,8 @@ class CourtScreen extends StatefulWidget {
 }
 
 class _CourtScreenState extends State<CourtScreen> {
-  static const String _backgroundAsset = 'images/backgrounds/courtroom_background.png';
-  static const String _backgroundAssetMobile = 'images/backgrounds/courtroom_background_mobile.png';
+  static const String _backgroundAsset = 'assets/images/backgrounds/courtroom_background.png';
+  static const String _backgroundAssetMobile = 'assets/images/backgrounds/courtroom_background_mobile.png';
 
   final ApiClient _apiClient = ApiClient();
 

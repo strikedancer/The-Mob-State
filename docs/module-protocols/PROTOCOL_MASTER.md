@@ -98,10 +98,10 @@ Implementatievoorkeur:
 
 ## Flutter Web Asset Pad Conventie (Verplicht)
 
-- Voor nieuwe scherm-assets (zoals backgrounds) gebruik in code standaard keys onder `images/...`.
-- Vermijd voor nieuwe code `assets/images/...` keys om dubbele web-prefix issues (`assets/assets/...`) en 404's te voorkomen.
-- Login/landing backgrounds vallen ook onder deze regel; gebruik dus `images/backgrounds/...` in `Image.asset(...)`.
-- Bij AI-gegenereerde assets: sla primaire runtime-bestanden op onder `client/images/...` en houd optional bronkopieën onder `client/assets/images/...` alleen als dat expliciet nodig is.
+- Voor runtime `Image.asset(...)` in Flutter web gebruik standaard keys onder `assets/images/...` (dit matcht de bestaande bundle-layout).
+- Vermijd nieuwe `images/...` keys in gameplay-schermen; die leiden in productie snel tot 404-routes op `/assets/images/*`.
+- Login/landing/rechtbank backgrounds vallen ook onder deze regel; gebruik dus `assets/images/backgrounds/...` in `Image.asset(...)`.
+- Productie-nginx mag compat-aliases bevatten voor legacy paden (`/assets/images/*` en `/assets/image/*`) zodat oude clients niet direct breken.
 
 ## Minimale QA Checklist (Altijd Draaien)
 
