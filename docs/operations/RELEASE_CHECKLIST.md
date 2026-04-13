@@ -89,6 +89,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] External image routing hotfix (nginx): image-locaties gebruiken nu prefix `alias /mnt/external-images/` voor `/images/*`, `/assets/assets/images/*`, `/assets/images/*` en `/assets/image/*`; dit voorkomt globale 404-regressie door foutieve `try_files /mnt/external-images/...` resolutie
+  - Bestand: `client/docker/nginx.conf`
 - [ ] Client Docker build pubspec fix: wanneer `assets/images/` via `.dockerignore` is uitgesloten, maakt Dockerfile nu automatisch alle `flutter.assets` directories uit `pubspec.yaml` aan vóór `flutter build web`, zodat build niet faalt met `unable to find directory entry in pubspec.yaml`
   - Bestand: `client/Dockerfile`
 - [ ] Web image helper route-hardening v3: `WebAssetHelper.image(...)` probeert op web nu meerdere network fallback-routes (`images/...`, `assets/assets/images/...`, `assets/images/...`) na een asset-miss, zodat voertuig- en catalogusafbeeldingen blijven laden bij proxy/nginx routevariaties

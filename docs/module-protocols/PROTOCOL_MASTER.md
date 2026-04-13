@@ -134,6 +134,7 @@ Implementatievoorkeur:
 - Voor kritieke web-assets die structureel issues geven (avatars, crime-art, login backgrounds) gebruik bij voorkeur een gedeelde helper die op web direct naar de publieke HTTPS asset-URL resolvet in plaats van losse `AssetImage` aanroepen te verspreiden.
 - Bij helper-refactors over meerdere schermen: verifieer expliciet imports op alle aangepaste screens voordat een web build wordt gedeployed.
 - Productie-nginx mag compat-aliases bevatten voor legacy paden (`/assets/images/*` en `/assets/image/*`) zodat oude clients niet direct breken.
+- Voor nginx-routes naar external images (`/images/*`, `/assets/assets/images/*`, `/assets/images/*`, `/assets/image/*`): gebruik `alias /mnt/external-images/;` op prefix-locaties (`location ^~ ...`) en vermijd `try_files /mnt/external-images/...` patronen. Verkeerde `try_files` padresolutie geeft globale 404 op alle web-afbeeldingen.
 - Na elke productie client-update met image-wijzigingen: voer `git lfs pull --include="client/assets/**,client/images/**"` + `git lfs checkout` uit op de server vóór `docker compose ... --build`.
 - Post-deploy cache-eis: hard refresh verplicht; bij visuele regressies eerst Service Worker unregisteren en opnieuw laden voordat code als “stuk” wordt beschouwd.
 - Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js` en `main.dart.js` altijd met `Cache-Control: no-cache, must-revalidate` (of no-store voor service worker) zodat nieuwe releases zonder app-herinstallatie zichtbaar worden.
