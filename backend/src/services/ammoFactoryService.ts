@@ -19,6 +19,9 @@ const PRODUCTION_INTERVAL_MINUTES = 5;
 const PRODUCTION_BACKLOG_HOURS = 8;
 const INACTIVITY_HOURS = 48;
 const MAX_LEVEL = 5;
+// Minimum rounds produced per ammo type per 5-min tick at level 1.
+// Scales with outputMultiplier: level 5 → ~54 per type per tick.
+const BASE_ROUNDS_PER_TICK = 5;
 
 class AmmoFactoryService {
   private countries: CountryDef[] = [];
@@ -189,23 +192,12 @@ class AmmoFactoryService {
 
     const outputMultiplier = this.outputMultiplier(factory.level);
     const qualityMultiplier = this.qualityMultiplier(factory.qualityLevel);
-    const ticksPerWindow = this.getTicksPerBacklogWindow();
-
-    // Cumulative tick counting from session start prevents integer-division
-    // floor-to-zero when produce() is called frequently (e.g. every 5 min).
-    // Delta approach: floor(boxSize * 1/96) = 0 for every single tick at level 1.
-    // Cumulative:     floor(boxSize * n/96) - floor(boxSize * (n-1)/96) crosses
-    //                 whole-number boundaries correctly and totals identically
-    //                 over a full session.
-    const prevTicksFromStart = Math.floor(
-      (referenceProducedAt.getTime() - sessionStart.getTime()) / intervalMs
-    );
-    const newTicksFromStart = Math.min(prevTicksFromStart + ticksToProcess, ticksPerWindow);
+    // Flat rounds per tick per ammo type: guaranteed >= BASE_ROUNDS_PER_TICK at level 1,
+    // scaling with level. No boxSize division → no integer floor-to-zero problem.
+    const roundsPerTick = Math.max(1, Math.floor(BASE_ROUNDS_PER_TICK * outputMultiplier));
 
     for (const ammo of this.ammoTypes) {
-      const produced =
-        Math.floor((ammo.boxSize * outputMultiplier * newTicksFromStart) / ticksPerWindow) -
-        Math.floor((ammo.boxSize * outputMultiplier * prevTicksFromStart) / ticksPerWindow);
+      const produced = roundsPerTick * ticksToProcess;
       if (produced <= 0) {
         continue;
       }

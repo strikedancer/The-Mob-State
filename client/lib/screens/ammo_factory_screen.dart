@@ -29,9 +29,12 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
 
   // Constants from backend
   static const int maxLevel = 5;
-  static const int baseOutput = 295; // Sum of all ammo box sizes at level 1
+  static const int baseRoundsPerTickPerType = 5; // per ammo type, per 5-min tick, at level 1
+  static const int numAmmoTypes = 6;
   static const int productionIntervalMinutes = 5;
   static const int productionSessionHours = 8;
+  static const int ticksPerHour = 12; // 60 min / 5 min
+  static const int ticksPerSession = 96; // 8h × 12 ticks
 
   @override
   void initState() {
@@ -89,12 +92,14 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     return 1 + (qualityLevel - 1) * 0.05;
   }
 
+  // Total rounds per 8h session across all ammo types combined
   int _getProductionOutput(int level) {
-    return (baseOutput * _outputMultiplier(level)).toInt();
+    return (baseRoundsPerTickPerType * numAmmoTypes * ticksPerSession * _outputMultiplier(level)).toInt();
   }
 
+  // Rounds per hour across all ammo types combined
   int _getProductionPerHour(int level) {
-    return (_getProductionOutput(level) / 8).toInt();
+    return (baseRoundsPerTickPerType * numAmmoTypes * ticksPerHour * _outputMultiplier(level)).toInt();
   }
 
   Future<void> _showUpgradeDialog(String type) async {
