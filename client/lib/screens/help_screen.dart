@@ -107,21 +107,19 @@ class _HelpScreenState extends State<HelpScreen> {
           PointerDeviceKind.unknown,
         },
       ),
-      child: SingleChildScrollView(
+      child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildHeader(context),
-            const SizedBox(height: 16),
-            _buildSearchBar(context),
-            const SizedBox(height: 12),
-            _buildCategoryChips(),
-            const SizedBox(height: 16),
-            topics.isEmpty ? _buildEmptyState() : _buildCompactLayout(topics),
-            const SizedBox(height: 20),
-          ],
-        ),
+        padding: EdgeInsets.zero,
+        children: [
+          _buildHeader(context),
+          const SizedBox(height: 16),
+          _buildSearchBar(context),
+          const SizedBox(height: 12),
+          _buildCategoryChips(),
+          const SizedBox(height: 16),
+          topics.isEmpty ? _buildEmptyState() : _buildCompactLayout(topics),
+          const SizedBox(height: 20),
+        ],
       ),
     );
 

@@ -125,7 +125,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/crime_screen.dart`
 - [ ] Overlay mobile readability fix: jail/cooldown overlays gebruiken compactere spacing/typografie op kleine schermen en tonen release/cooldown feedback betrouwbaarder via top-right snackbar
   - Bestanden: `client/lib/widgets/jail_screen.dart`, `client/lib/widgets/cooldown_overlay.dart`
-- [ ] Help mobiel scroll hardening: compact lijst heeft altijd-scroll physics en topic-sheet kreeg extra veilige padding zodat content op kleinere devices beter scrollbaar blijft
+- [ ] Help mobiel scroll fix: replaced `SingleChildScrollView` met `ListView` in compacte layout zodat de screen automatisch oneindige hoogte aanneemt en correct scrolle wanneer ingebed in Expanded container (bijv. dashboard webview); `SingleChildScrollView` paste zich aan content-hoogte aan waardoor scroll werd geblokkeerd
   - Bestand: `client/lib/screens/help_screen.dart`
 - [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
   - Bestand: `client/lib/screens/login_screen.dart`
