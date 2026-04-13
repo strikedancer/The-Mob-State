@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import { timeProvider } from '../utils/timeProvider';
+import { notificationService } from './notificationService';
 
 /**
  * Cooldown Service
@@ -148,6 +149,15 @@ export async function setCooldown(
   
   // Return the cooldown period as remainingSeconds (use custom if provided)
   const cooldownPeriod = customCooldown ?? COOLDOWN_PERIODS[actionType];
+
+  // Schedule push notification when this cooldown expires
+  const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>(['crime', 'job', 'vehicle_theft', 'boat_theft']);
+  if (NOTIFY_ACTIONS.has(actionType)) {
+    setTimeout(() => {
+      notificationService.sendCooldownExpiredNotification(playerId, actionType).catch(() => {});
+    }, cooldownPeriod * 1000);
+  }
+
   return {
     remainingSeconds: cooldownPeriod,
     actionType,

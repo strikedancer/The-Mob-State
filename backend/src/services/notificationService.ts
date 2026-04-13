@@ -402,6 +402,52 @@ export class NotificationService {
     );
   }
 
+  public async sendCooldownExpiredNotification(
+    playerId: number,
+    actionType: string,
+    language?: Language
+  ): Promise<void> {
+    try {
+      const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+      const t = translationService.getTranslations(resolvedLanguage);
+      const actionNames: Record<string, Record<Language, string>> = {
+        crime: { en: 'crime', nl: 'misdaad' },
+        job: { en: 'job', nl: 'werk' },
+        vehicle_theft: { en: 'vehicle theft', nl: 'voertuig stelen' },
+        boat_theft: { en: 'boat theft', nl: 'boot stelen' },
+      };
+      const actionName = actionNames[actionType]?.[resolvedLanguage] ?? actionType;
+      await this.sendToPlayer(
+        playerId,
+        t.notification.cooldownExpired.title,
+        t.notification.cooldownExpired.body(actionName),
+        { type: 'cooldown_expired', actionType }
+      );
+    } catch {
+      // Non-critical — never throw
+    }
+  }
+
+  public async sendBankTransferReceivedNotification(
+    playerId: number,
+    senderUsername: string,
+    amount: number,
+    language?: Language
+  ): Promise<void> {
+    try {
+      const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+      const t = translationService.getTranslations(resolvedLanguage);
+      await this.sendToPlayer(
+        playerId,
+        t.notification.bankTransferReceived.title,
+        t.notification.bankTransferReceived.body(senderUsername, amount.toFixed(0)),
+        { type: 'bank_transfer_received', senderUsername, amount: amount.toString() }
+      );
+    } catch {
+      // Non-critical — never throw
+    }
+  }
+
   public async sendCryptoTradeNotification(
     playerId: number,
     side: 'buy' | 'sell',

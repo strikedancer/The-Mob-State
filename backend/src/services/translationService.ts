@@ -185,6 +185,14 @@ interface Translations {
       title: string;
       body: (casinoName: string, currentBalance: string, threshold: string) => string;
     };
+    cooldownExpired: {
+      title: string;
+      body: (actionName: string) => string;
+    };
+    bankTransferReceived: {
+      title: string;
+      body: (senderUsername: string, amount: string) => string;
+    };
   };
   common: {
     footer: string;
@@ -384,9 +392,17 @@ const translations: Record<Language, Translations> = {
         title: 'Casino Low Balance',
         body: (casinoName, currentBalance, threshold) => `${casinoName} balance: EUR ${currentBalance} (min: EUR ${threshold})`,
       },
+      cooldownExpired: {
+        title: '⏰ Ready for action!',
+        body: (actionName) => `Your ${actionName} cooldown has expired. Get back to work.`,
+      },
+      bankTransferReceived: {
+        title: '💰 Money Received',
+        body: (senderUsername, amount) => `${senderUsername} transferred €${amount} to your bank account.`,
+      },
     },
     common: {
-      footer: '© 2026 The Mob State. All rights reserved.',
+      footer: '© 2026 The Mob State. All rights reserved.'
       automatedMessage: 'This is an automated message, please do not reply.',
       appName: 'THE MOB STATE',
     },
@@ -580,6 +596,14 @@ const translations: Record<Language, Translations> = {
       casinoLowBalance: {
         title: 'Casino Laag Saldo',
         body: (casinoName, currentBalance, threshold) => `${casinoName} saldo: €${currentBalance} (min: €${threshold})`,
+      },
+      cooldownExpired: {
+        title: '⏰ Klaar voor actie!',
+        body: (actionName) => `Je ${actionName} cooldown is afgelopen. Tijd om aan de slag te gaan.`,
+      },
+      bankTransferReceived: {
+        title: '💰 Geld ontvangen',
+        body: (senderUsername, amount) => `${senderUsername} heeft €${amount} naar je bankrekening overgemaakt.`,
       },
     },
     common: {

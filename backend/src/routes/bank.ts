@@ -15,6 +15,7 @@ import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import * as bankService from '../services/bankService';
 import { worldEventService } from '../services/worldEventService';
+import { notificationService } from '../services/notificationService';
 
 const router = Router();
 
@@ -213,6 +214,12 @@ router.post('/transfer', authenticate, async (req: AuthRequest, res: Response) =
       },
       result.recipientPlayerId
     );
+
+    notificationService.sendBankTransferReceivedNotification(
+      result.recipientPlayerId,
+      req.player?.username ?? 'Unknown',
+      amount
+    ).catch(() => {});
 
     return res.json({
       event: 'bank.transfer_success',
