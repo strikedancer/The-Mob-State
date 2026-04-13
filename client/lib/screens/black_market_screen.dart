@@ -9,6 +9,7 @@ import 'materials_shop_screen.dart';
 import 'weapons_market_screen.dart';
 import 'ammo_market_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 class BlackMarketScreen extends StatefulWidget {
   const BlackMarketScreen({super.key});
@@ -239,7 +240,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   child: selectedImage != null
                       ? Stack(
                           children: [
-                            Image.asset(
+                            WebAssetHelper.image(
                               'assets/images/vehicles/$selectedImage',
                               fit: BoxFit.cover,
                               width: double.infinity,
@@ -414,7 +415,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: selectedImage != null
-                      ? Image.asset(
+                      ? WebAssetHelper.image(
                           'assets/images/vehicles/$selectedImage',
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {

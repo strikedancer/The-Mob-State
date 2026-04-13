@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/drug_models.dart';
 import '../services/drug_service.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 class DrugFacilityScreen extends StatefulWidget {
   const DrugFacilityScreen({super.key});
@@ -261,13 +262,13 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
           body: Stack(
             children: [
               Positioned.fill(
-                child: Image.asset(
+                child: WebAssetHelper.image(
                   _backgroundAsset(width),
                   fit: BoxFit.cover,
                   alignment: isMobile
                       ? Alignment.topCenter
                       : Alignment.centerRight,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                  errorBuilder: (context, error, stackTrace) => WebAssetHelper.image(
                     'assets/images/backgrounds/crime_background.png',
                     fit: BoxFit.cover,
                   ),
@@ -462,7 +463,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                     facilityType,
                   ).withOpacity(0.18),
                   child: ClipOval(
-                    child: Image.asset(
+                    child: WebAssetHelper.image(
                       _facilityImagePath(facilityType),
                       width: 44,
                       height: 44,

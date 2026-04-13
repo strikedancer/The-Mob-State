@@ -89,6 +89,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Black market + drugs web image fix: schermen gebruiken nu `WebAssetHelper.image(...)` i.p.v. directe `Image.asset(...)` voor voertuig/drug/facility visuals, zodat images ook laden wanneer `assets/images` niet in de web `AssetManifest` zitten (Docker external-images setup)
+  - Bestanden: `client/lib/screens/black_market_screen.dart`, `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/drug_production_screen.dart`, `client/lib/screens/drug_inventory_screen.dart`
 - [ ] Push permissie-flow online hersteld: Settings bevat nu expliciete "Push inschakelen" actie met browser/iPhone permission request + server token-registratie status, zodat web/homescreen gebruikers opnieuw meldingen kunnen activeren
   - Bestanden: `client/lib/screens/settings_screen.dart`, `client/lib/services/notification_service.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Dubbele web push notificatie fix: web-tokens ontvangen nu data-only FCM berichten (geen `notification` key), waardoor FCM de notificatie niet automatisch toont én de service worker hem ook niet opnieuw toont; service worker leest titel/body uit `payload.data` als fallback

@@ -4,6 +4,7 @@ import '../services/drug_service.dart';
 import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 class DrugInventoryScreen extends StatefulWidget {
   const DrugInventoryScreen({super.key});
@@ -394,13 +395,13 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
           body: Stack(
             children: [
               Positioned.fill(
-                child: Image.asset(
+                child: WebAssetHelper.image(
                   _backgroundAsset(width),
                   fit: BoxFit.cover,
                   alignment: isMobile
                       ? Alignment.topCenter
                       : Alignment.centerRight,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                  errorBuilder: (context, error, stackTrace) => WebAssetHelper.image(
                     'assets/images/backgrounds/crime_background.png',
                     fit: BoxFit.cover,
                   ),
@@ -598,7 +599,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                         radius: 20,
                                                         backgroundColor:
                                                             Colors.grey[200],
-                                                        child: Image.asset(
+                                                        child: WebAssetHelper.image(
                                                           drug.getImagePath(),
                                                           width: 26,
                                                           height: 26,

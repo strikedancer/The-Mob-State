@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'drug_facility_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/web_asset_helper.dart';
 
 class DrugProductionScreen extends StatefulWidget {
   const DrugProductionScreen({super.key});
@@ -609,13 +610,13 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
           body: Stack(
             children: [
               Positioned.fill(
-                child: Image.asset(
+                child: WebAssetHelper.image(
                   _backgroundAsset(width),
                   fit: BoxFit.cover,
                   alignment: isMobile
                       ? Alignment.topCenter
                       : Alignment.centerRight,
-                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                  errorBuilder: (context, error, stackTrace) => WebAssetHelper.image(
                     'assets/images/backgrounds/crime_background.png',
                     fit: BoxFit.cover,
                   ),
@@ -839,7 +840,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                         radius: 21,
                                                         backgroundColor:
                                                             Colors.grey[200],
-                                                        child: Image.asset(
+                                                        child: WebAssetHelper.image(
                                                           production
                                                               .getImagePath(),
                                                           width: 26,
@@ -1187,7 +1188,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                         radius: 21,
                                                         backgroundColor:
                                                             Colors.grey[200],
-                                                        child: Image.asset(
+                                                        child: WebAssetHelper.image(
                                                           drug.getImagePath(),
                                                           width: 26,
                                                           height: 26,
