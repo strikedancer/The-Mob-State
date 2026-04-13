@@ -402,7 +402,7 @@ const translations: Record<Language, Translations> = {
       },
     },
     common: {
-      footer: '© 2026 The Mob State. All rights reserved.'
+      footer: '© 2026 The Mob State. All rights reserved.',
       automatedMessage: 'This is an automated message, please do not reply.',
       appName: 'THE MOB STATE',
     },
