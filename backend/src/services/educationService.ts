@@ -266,7 +266,7 @@ class EducationService {
     }
 
     for (const event of educationEvents) {
-      const params = (event.params || {}) as any;
+      const params = (event.params ? JSON.parse(event.params) : {}) as any;
 
       if (event.eventKey === 'school.track_progress') {
         const trackId = String(params.trackId ?? '');

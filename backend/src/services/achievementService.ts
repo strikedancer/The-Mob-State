@@ -2170,7 +2170,7 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
 
       let maxSchoolLevel = 0;
       for (const event of schoolLevelEvents) {
-        const params = (event.params || {}) as any;
+        const params = (event.params ? JSON.parse(event.params) : {}) as any;
         const trackId = String(params.trackId ?? '');
         if (!trackId) {
           continue;
