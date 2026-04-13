@@ -127,6 +127,32 @@
   color: #fff;
 }
 
+.admin-reset-btn {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+.admin-reset-btn i {
+  color: #fff !important;
+}
+
+.admin-reset-btn:hover,
+.admin-reset-btn:focus,
+.admin-reset-btn:active {
+  background-color: #bb2d3b !important;
+  border-color: #b02a37 !important;
+  color: #fff !important;
+}
+
+.admin-reset-btn:disabled {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: #fff !important;
+  opacity: 0.55 !important;
+}
+
 .action-badge {
   display: inline-flex;
   align-items: center;

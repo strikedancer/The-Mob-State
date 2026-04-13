@@ -109,6 +109,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/drug_environment_screen.dart`
 - [ ] Prison UI opgeschoond: regel met beschikbaar saldo verwijderd en acties op je eigen prisoner-row uitgeschakeld; eigen row wordt gemarkeerd als `Jij/You`
   - Bestand: `client/lib/screens/prison_screen.dart`
+
+### Admin
+- [ ] Reset-knoppen altijd zichtbaar: reset speler en reset alle spelers gebruiken nu expliciete `admin-reset-btn` styling zodat tekst/icon niet meer alleen bij hover zichtbaar zijn
+  - Bestanden: `admin/src/App.tsx`, `admin/src/App.css`
 - [ ] Web/PWA scroll hardening: dashboard section-container + Help + Storage gebruiken nu expliciete `ScrollConfiguration` met brede `dragDevices` set zodat touch-scroll op mobiel web niet wordt geblokkeerd in embedded weergaven
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/storage_tab.dart`
 - [ ] Mobile scroll fix: Inventory > Storage gebruikt nu één doorlopende pagina-scroll (geen vaste header + geneste onder-scroll), zodat content op mobiele schermen volledig bereikbaar blijft; Help/Uitleg compacte layout gebruikt nu ook een single-scroll body onder de filters

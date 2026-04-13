@@ -2979,7 +2979,7 @@ function App() {
                     <i className="ph-prohibit me-1" />{l('Bulk temp ban', 'Bulk temp ban')}
                   </button>
                   <button
-                    className="btn btn-danger btn-sm"
+                    className="btn btn-danger btn-sm admin-reset-btn"
                     disabled={!canManagePlayers || isResettingAllPlayersProgress}
                     onClick={handleResetAllPlayersProgress}
                   >
@@ -3226,7 +3226,7 @@ function App() {
                         <div className="ms-auto flex-shrink-0 player-detail-back-wrap">
                           {canManagePlayers && (
                             <button
-                              className="btn btn-danger btn-sm me-2"
+                              className="btn btn-danger btn-sm me-2 admin-reset-btn"
                               onClick={handleResetPlayerProgress}
                               disabled={isResettingPlayerProgress}
                             >
