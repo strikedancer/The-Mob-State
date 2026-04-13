@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import educationTracksData from '../../content/educationTracks.json';
 import { worldEventService } from './worldEventService';
+import { activityService } from './activityService';
 import { timeProvider } from '../utils/timeProvider';
 
 type EducationTrackId =
@@ -157,6 +158,17 @@ interface TrackTrainingResult {
 }
 
 class EducationService {
+  private logEducationActivity(
+    playerId: number,
+    activityType: string,
+    description: string,
+    details: Record<string, unknown>
+  ): void {
+    void activityService.logActivity(playerId, activityType, description, details, true).catch((error) => {
+      console.warn('[education] Failed to log activity:', error);
+    });
+  }
+
   private getTrackMinPlayerRank(trackId: EducationTrackId): number {
     return TRACK_MIN_PLAYER_RANK[trackId] ?? 1;
   }
@@ -372,6 +384,20 @@ class EducationService {
       playerId
     );
 
+    this.logEducationActivity(
+      playerId,
+      'SCHOOL_TRAINING',
+      `School training afgerond: ${track.name}`,
+      {
+        trackId: track.id,
+        trackName: track.name,
+        xpGained: xpGain,
+        totalXp,
+        previousLevel,
+        newLevel,
+      }
+    );
+
     if (newLevel > previousLevel) {
       for (let level = previousLevel + 1; level <= newLevel; level += 1) {
         await worldEventService.createEvent(
@@ -382,6 +408,19 @@ class EducationService {
             educationLevel: level,
           },
           playerId
+        );
+
+        this.logEducationActivity(
+          playerId,
+          'SCHOOL_LEVEL_UP',
+          `School level omhoog: ${track.name} naar level ${level}`,
+          {
+            trackId: track.id,
+            trackName: track.name,
+            previousLevel: level - 1,
+            newLevel: level,
+            xpGained: level === newLevel ? xpGain : 0,
+          }
         );
       }
     }
@@ -398,6 +437,19 @@ class EducationService {
             certificationName: certification.name,
           },
           playerId
+        );
+
+        this.logEducationActivity(
+          playerId,
+          'SCHOOL_CERTIFICATION_EARNED',
+          `School certificaat behaald: ${certification.name}`,
+          {
+            trackId: track.id,
+            trackName: track.name,
+            certificationId: certification.id,
+            certificationName: certification.name,
+            levelAtUnlock: newLevel,
+          }
         );
       }
     }

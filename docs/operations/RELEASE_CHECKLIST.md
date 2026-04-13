@@ -9,6 +9,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] School admin activity feed fix: school trainingen, level-ups en certificaten loggen nu direct naar `player_activities` (`SCHOOL_TRAINING`, `SCHOOL_LEVEL_UP`, `SCHOOL_CERTIFICATION_EARNED`) zodat ze zichtbaar zijn in Admin Recente Handelingen
+  - Bestand: `backend/src/services/educationService.ts`
+- [ ] Crypto admin activity feed uitgebreid: order-uitvoeringen en order-fouten loggen nu ook naar `player_activities` (`CRYPTO_ORDER_FILLED`, `CRYPTO_ORDER_FAILED`) naast buy/sell/place/cancel
+  - Bestand: `backend/src/services/cryptoService.ts`
 - [ ] Admin reset-all permissie verruimd: globale spelers-reset is nu beschikbaar voor beheerrollen (viewer blijft geblokkeerd), zodat resetknop niet alleen super-admin zichtbaar/bruikbaar is
   - Bestand: `backend/src/routes/admin.ts`
 - [ ] Prostitutie work-shift limiet: 8-uurs cooldown toegevoegd op handmatige `/prostitutes/:id/work-shift`; bij overwerken (te veel shifts binnen 24 uur) kan een prostituee uitgeput raken en weglopen

@@ -1348,6 +1348,24 @@ async function executeOrder(order: CryptoOrderRow): Promise<'FILLED' | 'FAILED' 
       `,
       order.id
     );
+
+    void logCryptoActivity(
+      order.player_id,
+      'CRYPTO_ORDER_FAILED',
+      `Crypto order mislukt: ${order.side} ${order.asset_symbol}`,
+      {
+        orderId: order.id,
+        symbol: order.asset_symbol,
+        side: order.side,
+        orderType: order.order_type,
+        quantity: Number(quantity.toFixed(8)),
+        targetPrice,
+        reason: 'INVALID_ORDER_DATA',
+      },
+    ).catch((error) => {
+      console.warn('[crypto] Failed to log failed order activity:', error);
+    });
+
     return 'FAILED';
   }
 
@@ -1393,6 +1411,25 @@ async function executeOrder(order: CryptoOrderRow): Promise<'FILLED' | 'FAILED' 
         quantity,
         buyResult.price
       );
+
+      void logCryptoActivity(
+        order.player_id,
+        'CRYPTO_ORDER_FILLED',
+        `Crypto order uitgevoerd: ${order.side} ${order.asset_symbol}`,
+        {
+          orderId: order.id,
+          symbol: order.asset_symbol,
+          side: order.side,
+          orderType: order.order_type,
+          quantity: Number(quantity.toFixed(8)),
+          targetPrice,
+          filledPrice: buyResult.price,
+          fillSource: 'MARKET_BUY',
+        },
+      ).catch((error) => {
+        console.warn('[crypto] Failed to log filled order activity:', error);
+      });
+
       return 'FILLED';
     }
 
@@ -1438,6 +1475,25 @@ async function executeOrder(order: CryptoOrderRow): Promise<'FILLED' | 'FAILED' 
       quantity,
       sellResult.price
     );
+
+    void logCryptoActivity(
+      order.player_id,
+      'CRYPTO_ORDER_FILLED',
+      `Crypto order uitgevoerd: ${order.side} ${order.asset_symbol}`,
+      {
+        orderId: order.id,
+        symbol: order.asset_symbol,
+        side: order.side,
+        orderType: order.order_type,
+        quantity: Number(quantity.toFixed(8)),
+        targetPrice,
+        filledPrice: sellResult.price,
+        fillSource: 'MARKET_SELL',
+      },
+    ).catch((error) => {
+      console.warn('[crypto] Failed to log filled order activity:', error);
+    });
+
     return 'FILLED';
   } catch (error) {
     const reason = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
@@ -1451,6 +1507,24 @@ async function executeOrder(order: CryptoOrderRow): Promise<'FILLED' | 'FAILED' 
       reason.slice(0, 120),
       order.id
     );
+
+    void logCryptoActivity(
+      order.player_id,
+      'CRYPTO_ORDER_FAILED',
+      `Crypto order mislukt: ${order.side} ${order.asset_symbol}`,
+      {
+        orderId: order.id,
+        symbol: order.asset_symbol,
+        side: order.side,
+        orderType: order.order_type,
+        quantity: Number(quantity.toFixed(8)),
+        targetPrice,
+        reason: reason.slice(0, 120),
+      },
+    ).catch((logError) => {
+      console.warn('[crypto] Failed to log failed order activity:', logError);
+    });
+
     return 'FAILED';
   }
 }
