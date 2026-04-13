@@ -26,7 +26,7 @@
       "image": "nightclub.png",
       "type": "limited_per_country",
       "maxOwners": 3,
-      "basePrice": 300000,
+      "basePrice": 3000000,
       "baseIncome": 3000,
       "incomeInterval": 100,
       "minLevel": 15,
