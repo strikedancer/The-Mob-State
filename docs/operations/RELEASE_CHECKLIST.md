@@ -91,6 +91,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Web/PWA scroll hardening: dashboard section-container + Help + Storage gebruiken nu expliciete `ScrollConfiguration` met brede `dragDevices` set zodat touch-scroll op mobiel web niet wordt geblokkeerd in embedded weergaven
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/storage_tab.dart`
 - [ ] Mobile scroll fix: Inventory > Storage gebruikt nu één doorlopende pagina-scroll (geen vaste header + geneste onder-scroll), zodat content op mobiele schermen volledig bereikbaar blijft; Help/Uitleg compacte layout gebruikt nu ook een single-scroll body onder de filters
   - Bestanden: `client/lib/screens/storage_tab.dart`, `client/lib/screens/help_screen.dart`
 - [ ] Property opslag wapens hotfix (apartment/house): weapon-list in opslag detail toont nu robuust entries met fallback keys (`weaponId`/`id`/`drugType`) en withdraw gebruikt altijd een geldige weapon-id; backend verrijkt weapon-opslag met namen en ondersteunt legacy opslagkeys (`weapon:` en `weapon_`)

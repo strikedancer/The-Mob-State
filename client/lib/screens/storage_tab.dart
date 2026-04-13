@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import '../models/carried_tool.dart';
 import '../models/storage_info.dart';
@@ -310,9 +311,22 @@ class _StorageTabState extends State<StorageTab> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
+    final scrollBehavior = ScrollConfiguration.of(context).copyWith(
+      dragDevices: {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.stylus,
+        PointerDeviceKind.invertedStylus,
+        PointerDeviceKind.trackpad,
+        PointerDeviceKind.unknown,
+      },
+    );
+
     return RefreshIndicator(
       onRefresh: _loadStorage,
-      child: _isLoading
+      child: ScrollConfiguration(
+          behavior: scrollBehavior,
+          child: _isLoading
           ? const Center(child: CircularProgressIndicator(color: Colors.amber))
           : _error != null
           ? Center(
@@ -869,6 +883,7 @@ class _StorageTabState extends State<StorageTab> {
                       ),
               ],
             ),
+      ),
     );
   }
 }

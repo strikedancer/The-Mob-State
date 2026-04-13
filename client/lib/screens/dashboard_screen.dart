@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 // FontAwesome replaced with Material Icons
 import '../l10n/app_localizations.dart';
 import '../models/player.dart';
@@ -600,11 +601,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: KeyedSubtree(
-                              key: ValueKey(
-                                '${_selectedWebSection.name}-$_webSectionRefreshSeed',
+                            child: ScrollConfiguration(
+                              behavior: ScrollConfiguration.of(context).copyWith(
+                                dragDevices: {
+                                  PointerDeviceKind.touch,
+                                  PointerDeviceKind.mouse,
+                                  PointerDeviceKind.stylus,
+                                  PointerDeviceKind.invertedStylus,
+                                  PointerDeviceKind.trackpad,
+                                  PointerDeviceKind.unknown,
+                                },
                               ),
-                              child: _buildWebContent(context),
+                              child: KeyedSubtree(
+                                key: ValueKey(
+                                  '${_selectedWebSection.name}-$_webSectionRefreshSeed',
+                                ),
+                                child: _buildWebContent(context),
+                              ),
                             ),
                           ),
                         ),

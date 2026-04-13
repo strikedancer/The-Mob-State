@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 import '../data/help_content.dart';
 
@@ -95,20 +96,32 @@ class _HelpScreenState extends State<HelpScreen> {
       });
     }
 
-    final compactBody = SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildHeader(context),
-          const SizedBox(height: 16),
-          _buildSearchBar(context),
-          const SizedBox(height: 12),
-          _buildCategoryChips(),
-          const SizedBox(height: 16),
-          topics.isEmpty ? _buildEmptyState() : _buildCompactLayout(topics),
-          const SizedBox(height: 20),
-        ],
+    final compactBody = ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(
+        dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.invertedStylus,
+          PointerDeviceKind.trackpad,
+          PointerDeviceKind.unknown,
+        },
+      ),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildHeader(context),
+            const SizedBox(height: 16),
+            _buildSearchBar(context),
+            const SizedBox(height: 12),
+            _buildCategoryChips(),
+            const SizedBox(height: 16),
+            topics.isEmpty ? _buildEmptyState() : _buildCompactLayout(topics),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
 
