@@ -106,29 +106,24 @@ export class NotificationService {
         return;
       }
 
-      const tokens = devices.map((device: any) => device.deviceToken);
+      // Split tokens by platform: web tokens must receive data-only messages to
+      // prevent duplicate notifications (FCM auto-shows notification AND the
+      // service worker's onBackgroundMessage would show a second one).
+      const webTokens = devices
+        .filter((d: any) => d.deviceType === 'web')
+        .map((d: any) => d.deviceToken);
+      const nativeTokens = devices
+        .filter((d: any) => d.deviceType !== 'web')
+        .map((d: any) => d.deviceToken);
 
-      // Prepare notification payload
-      const message = {
-        notification: {
-          title,
-          body
-        },
-        data: data || {},
-        tokens
-      };
+      const invalidTokens: string[] = [];
 
-      // Send multicast message
-      const response = await admin.messaging().sendEachForMulticast(message);
-
-      console.log(`[NotificationService] Sent notification to player ${playerId}: ${response.successCount} succeeded, ${response.failureCount} failed`);
-
-      // Remove invalid tokens
-      if (response.failureCount > 0) {
-        const invalidTokens: string[] = [];
-        response.responses.forEach((resp, idx) => {
+      const collectInvalidTokens = (
+        tokens: string[],
+        responses: admin.messaging.SendResponse[]
+      ) => {
+        responses.forEach((resp, idx) => {
           if (!resp.success && resp.error) {
-            // Check if error is due to invalid registration
             const errorCode = resp.error.code;
             if (
               errorCode === 'messaging/invalid-registration-token' ||
@@ -138,15 +133,46 @@ export class NotificationService {
             }
           }
         });
+      };
 
-        if (invalidTokens.length > 0) {
-          await prisma.playerDevice.deleteMany({
-            where: {
-              deviceToken: { in: invalidTokens }
-            }
-          });
-          console.log(`[NotificationService] Removed ${invalidTokens.length} invalid device tokens`);
-        }
+      let totalSuccess = 0;
+      let totalFailure = 0;
+
+      // Web: data-only so the service worker shows exactly one notification
+      if (webTokens.length > 0) {
+        const webMessage = {
+          data: { title, body, ...(data || {}) },
+          tokens: webTokens
+        };
+        const webResponse = await admin.messaging().sendEachForMulticast(webMessage);
+        totalSuccess += webResponse.successCount;
+        totalFailure += webResponse.failureCount;
+        collectInvalidTokens(webTokens, webResponse.responses);
+      }
+
+      // Native (Android / iOS): include notification key for platform handling
+      if (nativeTokens.length > 0) {
+        const nativeMessage = {
+          notification: { title, body },
+          data: data || {},
+          tokens: nativeTokens
+        };
+        const nativeResponse = await admin.messaging().sendEachForMulticast(nativeMessage);
+        totalSuccess += nativeResponse.successCount;
+        totalFailure += nativeResponse.failureCount;
+        collectInvalidTokens(nativeTokens, nativeResponse.responses);
+      }
+
+      console.log(`[NotificationService] Sent notification to player ${playerId}: ${totalSuccess} succeeded, ${totalFailure} failed`);
+
+      // Remove invalid tokens
+      if (invalidTokens.length > 0) {
+        await prisma.playerDevice.deleteMany({
+          where: {
+            deviceToken: { in: invalidTokens }
+          }
+        });
+        console.log(`[NotificationService] Removed ${invalidTokens.length} invalid device tokens`);
       }
     } catch (error) {
       console.error('[NotificationService] Error sending notification:', error);

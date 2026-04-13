@@ -91,6 +91,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Client (game)
 - [ ] Push permissie-flow online hersteld: Settings bevat nu expliciete "Push inschakelen" actie met browser/iPhone permission request + server token-registratie status, zodat web/homescreen gebruikers opnieuw meldingen kunnen activeren
   - Bestanden: `client/lib/screens/settings_screen.dart`, `client/lib/services/notification_service.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Dubbele web push notificatie fix: web-tokens ontvangen nu data-only FCM berichten (geen `notification` key), waardoor FCM de notificatie niet automatisch toont én de service worker hem ook niet opnieuw toont; service worker leest titel/body uit `payload.data` als fallback
+  - Bestanden: `backend/src/services/notificationService.ts`, `client/web/firebase-messaging-sw.js`
 - [ ] iOS homescreen/PWA update fix: client-nginx cache-policy opgesplitst zodat app-shell/service-worker bestanden `no-cache` krijgen en assets immutable blijven; hierdoor pakt iPhone beginscherm-app nieuwe releases zonder opnieuw toevoegen
   - Bestanden: `client/docker/nginx.conf`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/DEPLOY.md`
 - [ ] Reizen UX/state fix: na reisstart wordt nu transit-status getoond (onderweg + volgende stop) i.p.v. direct "gereisd naar bestemming", en player-country wordt na start/volgende leg altijd server-authentiek ververst

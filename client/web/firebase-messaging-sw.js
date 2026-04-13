@@ -23,9 +23,11 @@ messaging.onBackgroundMessage(async (payload) => {
   console.log('[firebase-messaging-sw.js] Data payload:', payload.data);
   
   try {
-    const notificationTitle = payload.notification?.title || 'The Mob State';
+    // For web tokens the backend sends data-only messages (no notification key)
+    // to avoid FCM auto-displaying a duplicate. Fall back to data fields.
+    const notificationTitle = payload.notification?.title || payload.data?.title || 'The Mob State';
     const notificationOptions = {
-      body: payload.notification?.body || 'You have a new notification',
+      body: payload.notification?.body || payload.data?.body || 'You have a new notification',
       icon: './icons/Icon-192.png',
       badge: './icons/Icon-192.png',
       tag: payload.data?.id || payload.notification?.title || 'notification',
