@@ -36,5 +36,10 @@ Education tracks, certifications, gates, cooldowns and unlock dependencies.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 
+## Cross-Module Effects
+- **Law track → Court appeals**: each law level adds +5% appeal success chance in `judgeService.appealSentence` (max +25% at level 5). Players who invest in the law track get a tangible advantage when contesting a jail sentence.
+  - Dependency file: `backend/src/services/judgeService.ts`
+  - If the law track or its level field is ever renamed/restructured, update `judgeService.ts` accordingly.
+
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

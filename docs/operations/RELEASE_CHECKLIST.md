@@ -260,8 +260,9 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] Admin UI: “System Logs” uitgebreid met datumfilter (24u/7d/30d/all)
   - Bestand: `admin/src/App.tsx`
 - [ ] Admin UI: tab “Admins” toegevoegd voor admin aanmaken/rol wijzigen/activeren-deactiveren
-  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
-
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`- [ ] Rechtbank hoger beroep schaalbaar met rechten-niveau: `law` track level voegt +5% succeskans per level toe aan hoger beroep (max +25% bij level 5); basiskans stijgt daarmee van 35% naar max 60% vóór verdere aanpassingen (eerdere veroordelingen, wanted level, FBI heat); hard cap verhoogd van 70% naar 85%
+  - Bestand: `backend/src/services/judgeService.ts`
+  - Spelers zonder opleiding (geen `law` track) behouden 35% basiskans ongewijzigd (fallback naar 0)
 ## Deploy Plan (wanneer we live gaan)
 
 ### 1) API deploy

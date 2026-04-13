@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import crimesData from '../../content/crimes.json';
 import * as policeService from './policeService';
+import { educationService } from './educationService';
 
 interface JudgeProfile {
   id: number;
@@ -177,7 +178,7 @@ export async function appealSentence(
   playerId: number,
   crimeAttemptId: number
 ): Promise<AppealResult> {
-  const [attempt, player] = await Promise.all([
+  const [attempt, player, educationProfile] = await Promise.all([
     prisma.crimeAttempt.findUnique({
       where: { id: crimeAttemptId },
       select: {
@@ -197,6 +198,7 @@ export async function appealSentence(
         fbiHeat: true,
       },
     }),
+    educationService.getPlayerEducationProfile(playerId),
   ]);
 
   if (!attempt) {
@@ -239,7 +241,11 @@ export async function appealSentence(
     },
   });
 
-  let successChance = 0.35;
+  // Law education track: every level adds +5% appeal success chance (max +25% at level 5)
+  const lawLevel = educationProfile.tracks['law']?.level ?? 0;
+  const lawBonus = Math.min(lawLevel * 0.05, 0.25);
+
+  let successChance = 0.35 + lawBonus;
   if (priorConvictions === 0) {
     successChance += 0.2;
   } else if (priorConvictions >= 5) {
@@ -253,7 +259,7 @@ export async function appealSentence(
     successChance -= 0.15;
   }
 
-  successChance = Math.max(0.1, Math.min(0.7, successChance));
+  successChance = Math.max(0.1, Math.min(0.85, successChance));
   const success = Math.random() < successChance;
 
   const updatedPlayer = await prisma.player.update({

@@ -18,6 +18,9 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Appeal can be submitted once per crime attempt and follows appeal cooldown rules.
 - Bribe always deducts offered money and can either release player immediately or fail without release.
 - Criminal record must remain visible both while jailed and while free.
+- **Law education bonus**: the player's `law` track level (0–5) grants +5% appeal success per level (max +25% at level 5). Base appeal chance is therefore 35%–60% before prior-convictions/wanted-level/FBI-heat adjustments. Hard cap raised from 70% to 85%.
+  - Cross-dependency: `educationService.getPlayerEducationProfile` is called in parallel inside `judgeService.appealSentence`.
+  - This bonus is applied silently server-side; no UI change required in the court screen.
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.
@@ -54,6 +57,7 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Verify `POST /trial/appeal` returns cooldown block on rapid retry and updates remaining sentence on success.
 - Verify `POST /trial/bribe` deducts balance in both success and failure paths.
 - Verify portrait/landscape switch keeps the courtroom background visible and text/cards readable.
+- **Law bonus QA**: player with law level 5 must have measurably higher appeal success rate than player with level 0; confirm `educationService` call does not break appeal for players with no education records (defaults to 0).
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
