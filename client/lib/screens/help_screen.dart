@@ -234,42 +234,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _tr(
-                        'Alles over de huidige spelonderdelen, compact uitgelegd voor spelers.',
-                        'Everything about the current game modules, explained compactly for players.',
-                      ),
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
-                    ),
                   ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              _InfoPill(
-                icon: Icons.language,
-                label: _tr('Meertalig', 'Multilingual'),
-              ),
-              _InfoPill(
-                icon: Icons.smartphone,
-                label: _tr(
-                  'Mobiel, tablet en desktop',
-                  'Mobile, tablet and desktop',
-                ),
-              ),
-              _InfoPill(
-                icon: Icons.rule,
-                label: _tr(
-                  'Gebaseerd op actuele modules',
-                  'Based on current modules',
                 ),
               ),
             ],
@@ -660,33 +625,6 @@ class _DetailCard extends StatelessWidget {
                 ],
               ),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoPill extends StatelessWidget {
-  const _InfoPill({required this.icon, required this.label});
-
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.04),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white12),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: Colors.amber),
-          const SizedBox(width: 8),
-          Text(label),
         ],
       ),
     );

@@ -133,6 +133,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/help_screen.dart`
 - [ ] Help mobiel UX refactor: topic-kaartenlijst vervangen door vaste onderwerp-dropdown + inline detail-content (samenvatting + hoe-werkt-dit + tips) in dezelfde ListView, zodat de volledige help-content als één geheel scrollbaar is op mobiel
   - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Help header vereenvoudigd: in Help & Uitleg zijn subtiteltekst en badges (`Meertalig`, `Mobiel, tablet en desktop`, `Gebaseerd op actuele modules`) verwijderd; header toont nu alleen icon + titel `Spelhandleiding`
+  - Bestand: `client/lib/screens/help_screen.dart`
 - [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
   - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet
