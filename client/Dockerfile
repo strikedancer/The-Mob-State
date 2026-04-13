@@ -8,10 +8,18 @@ RUN flutter pub get
 COPY . .
 
 # assets/images/ is excluded from the build context via .dockerignore.
-# Create the stub directory so pubspec.yaml asset declarations don't fail the build.
-# Flutter web's Image.asset() still generates HTTP requests at runtime;
-# nginx serves those from the external runtime mount (/mnt/external-images).
-RUN mkdir -p assets/images
+# Recreate every directory declared under flutter.assets in pubspec.yaml,
+# otherwise flutter build fails when listed directories are missing.
+RUN awk '
+	/^  assets:/{in_assets=1; next}
+	in_assets && /^  [^ ]/{in_assets=0}
+	in_assets && /^[[:space:]]*-[[:space:]]*/ {
+		path=$0
+		sub(/^[[:space:]]*-[[:space:]]*/, "", path)
+		gsub(/[[:space:]]+$/, "", path)
+		if (path ~ /\/$/) print path
+	}
+' pubspec.yaml | xargs -r -I{} mkdir -p "{}"
 
 ARG WEB_API_BASE_URL=https://api.themobstate.com
 RUN flutter build web --release --dart-define=WEB_API_BASE_URL=${WEB_API_BASE_URL}

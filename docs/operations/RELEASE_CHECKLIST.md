@@ -89,6 +89,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Client Docker build pubspec fix: wanneer `assets/images/` via `.dockerignore` is uitgesloten, maakt Dockerfile nu automatisch alle `flutter.assets` directories uit `pubspec.yaml` aan vóór `flutter build web`, zodat build niet faalt met `unable to find directory entry in pubspec.yaml`
+  - Bestand: `client/Dockerfile`
 - [ ] Black market + drugs web image fix: schermen gebruiken nu `WebAssetHelper.image(...)` i.p.v. directe `Image.asset(...)` voor voertuig/drug/facility visuals, zodat images ook laden wanneer `assets/images` niet in de web `AssetManifest` zitten (Docker external-images setup)
   - Bestanden: `client/lib/screens/black_market_screen.dart`, `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/drug_production_screen.dart`, `client/lib/screens/drug_inventory_screen.dart`
 - [ ] Voertuig stelen + garage + marina web image fix: `OverlayImage`/`OverlayImageBuilder` gebruikt nu intern `WebAssetHelper.image(...)` zodat voertuigafbeeldingen (auto, motor, boot) en catalogi ook laden op web; garage- en marina-achtergronden omgezet van `DecorationImage(AssetImage(...))` naar `Stack+Positioned.fill+WebAssetHelper.image(...)` met network fallback
