@@ -99,6 +99,8 @@ Implementatievoorkeur:
 - Gebruik responsive/clamped hoogtes voor tabpanelen i.p.v. één vaste hoogte.
 - Voor web/iOS homescreen push: zorg altijd voor een expliciete in-app permissie-entrypoint (bijv. in Settings) die `requestPermission` triggert op user gesture; vertrouw niet alleen op login/startup-init.
 - Web push FCM payload: stuur naar web-tokens altijd een **data-only** bericht (geen `notification`-key). FCM toont anders automatisch een melding én de service worker (`onBackgroundMessage`) doet dat ook → dubbele notificatie. De service worker leest `payload.data.title` en `payload.data.body` als fallback. Native (Android/iOS) tokens blijven het `notification`-veld ontvangen.
+- Safari/iOS PWA (homescreen-app) verwijdert het `notification`-veld uit FCM-berichten voordat ze bij de service worker komen (`onBackgroundMessage` ontvangt `payload.notification === undefined`). Dit levert "you have a new notification" op als de service worker geen `payload.data.body` fallback heeft. Oplossing: verplicht `title` en `body` ook in `payload.data` meesturen — wat de data-only web-aanpak al afdwing.
+- Crypto marktmeldingen (`crypto.market.regime`, `crypto.market.news`) worden automatisch naar alle spelers gestuurd als `pushCryptoPriceAlert: true` (standaard). Dit is de bron van ongeplande meldingen bij spelers die geen crypto handelen. Overweeg de standaard op `false` te zetten voor spelers zonder crypto-portfolio.
 
 ## Flutter Web Asset Pad Conventie (Verplicht)
 
