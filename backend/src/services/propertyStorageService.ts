@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import toolService from './toolService';
+import { weaponService } from './weaponService';
 
 const PROPERTY_STORAGE_RULES: Record<string, Array<'tools' | 'drugs' | 'weapons' | 'cash'>> = {
   warehouse: ['tools'],
@@ -49,13 +50,24 @@ class PropertyStorageService {
     const rows = await prisma.propertyDrugStorage.findMany({
       where: {
         propertyId,
-        drugType: { startsWith: 'weapon:' },
+        OR: [{ drugType: { startsWith: 'weapon:' } }, { drugType: { startsWith: 'weapon_' } }],
       },
       orderBy: { drugType: 'asc' },
     });
 
+    const weaponsById = new Map(
+      weaponService.getAllWeapons().map((weapon) => [weapon.id, weapon.name]),
+    );
+
     return rows.map((row) => ({
-      weaponId: row.drugType.replace('weapon:', ''),
+      weaponId: row.drugType.startsWith('weapon:')
+        ? row.drugType.replace('weapon:', '')
+        : row.drugType.replace('weapon_', ''),
+      name: weaponsById.get(
+        row.drugType.startsWith('weapon:')
+          ? row.drugType.replace('weapon:', '')
+          : row.drugType.replace('weapon_', ''),
+      ),
       quantity: row.quantity,
     }));
   }

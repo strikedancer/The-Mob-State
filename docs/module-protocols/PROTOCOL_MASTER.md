@@ -134,6 +134,7 @@ Implementatievoorkeur:
 - Voor Properties-data contracten: lever `maxLevel` expliciet vanuit backend (of leid deze server-side af uit `upgradeOptions`) zodat client-level badges/upgrade-knoppen nooit `3/3` tonen terwijl upgrades nog mogelijk zijn.
 - Voor residentiële properties (house/apartment): bewaak economische volgorde in balans-updates; een appartement hoort niet duurder geprijsd te zijn dan een huis tenzij dit expliciet als designwijziging is vastgelegd in release-notes.
 - Voor Inventory (op zak): tools, wapens en munitie moeten in dezelfde refresh zichtbaar blijven; gebruik robuuste parse-fallbacks op weapon-inventory responses en slik API-parsefouten niet stil weg als dat hele secties leeg trekt.
+- Voor property-opslag van wapens (house/apartment): storage-detail payload moet altijd een stabiele withdraw-key bevatten (`weaponId`), en client moet fallback kunnen lezen op `id`/`drugType` voor legacy data zodat opgeslagen wapens altijd zichtbaar en opneembaar blijven.
 - Voor kritieke web-assets die structureel issues geven (avatars, crime-art, login backgrounds) gebruik bij voorkeur een gedeelde helper die op web direct naar de publieke HTTPS asset-URL resolvet in plaats van losse `AssetImage` aanroepen te verspreiden.
 - Bij helper-refactors over meerdere schermen: verifieer expliciet imports op alle aangepaste screens voordat een web build wordt gedeployed.
 - Productie-nginx mag compat-aliases bevatten voor legacy paden (`/assets/images/*` en `/assets/image/*`) zodat oude clients niet direct breken.

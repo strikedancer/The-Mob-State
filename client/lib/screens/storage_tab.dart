@@ -619,28 +619,35 @@ class _StorageTabState extends State<StorageTab> {
                                         style: const TextStyle(color: Colors.white70),
                                       ),
                                       const SizedBox(height: 6),
-                                      ...((_storageDetail?['weapons']
-                                                  as List<dynamic>? ??
-                                              [])
+                                      ...((_storageDetail?['weapons'] as List<dynamic>? ?? [])
                                           .map((entry) {
-                                            final weapon =
-                                                entry as Map<String, dynamic>;
+                                            final weapon = Map<String, dynamic>.from(
+                                              (entry as Map),
+                                            );
+
+                                            final fallbackIdFromDrugType =
+                                                (weapon['drugType']?.toString() ?? '')
+                                                    .replaceFirst('weapon:', '')
+                                                    .replaceFirst('weapon_', '');
+
                                             final weaponId =
-                                                weapon['weaponId']
-                                                    ?.toString() ??
-                                                '';
+                                                weapon['weaponId']?.toString() ??
+                                                weapon['id']?.toString() ??
+                                                fallbackIdFromDrugType;
+
                                             final name =
                                                 weapon['name']?.toString() ??
+                                                weapon['displayName']?.toString() ??
                                                 weaponId;
+
                                             final quantity =
-                                                (weapon['quantity'] as num?)
-                                                    ?.toInt() ??
-                                                0;
+                                                (weapon['quantity'] as num?)?.toInt() ?? 0;
+
                                             return ListTile(
                                               dense: true,
                                               contentPadding: EdgeInsets.zero,
                                               title: Text(
-                                                name,
+                                                name.isEmpty ? _tr('Onbekend wapen', 'Unknown weapon') : name,
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                 ),
@@ -654,16 +661,24 @@ class _StorageTabState extends State<StorageTab> {
                                               trailing: TextButton(
                                                 onPressed:
                                                     _isActionLoading ||
-                                                        quantity <= 0
+                                                        quantity <= 0 ||
+                                                        weaponId.isEmpty
                                                     ? null
-                                                    : () => _withdrawWeapon(
-                                                        weaponId,
-                                                      ),
+                                                    : () => _withdrawWeapon(weaponId),
                                                 child: Text(_tr('Neem 1', 'Take 1')),
                                               ),
                                             );
                                           })
                                           .toList()),
+                                      if (((_storageDetail?['weapons'] as List<dynamic>?) ?? [])
+                                          .isEmpty)
+                                        Text(
+                                          _tr('Geen wapens in deze opslag.', 'No weapons in this storage.'),
+                                          style: TextStyle(
+                                            color: Colors.grey.shade500,
+                                            fontSize: 12,
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 ),

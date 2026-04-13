@@ -91,6 +91,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Property opslag wapens hotfix (apartment/house): weapon-list in opslag detail toont nu robuust entries met fallback keys (`weaponId`/`id`/`drugType`) en withdraw gebruikt altijd een geldige weapon-id; backend verrijkt weapon-opslag met namen en ondersteunt legacy opslagkeys (`weapon:` en `weapon_`)
+  - Bestanden: `client/lib/screens/storage_tab.dart`, `backend/src/services/propertyStorageService.ts`
 - [ ] Inventory carried-tab hotfix: wapens op "op zak" gebruiken nu gedeelde weapon-inventory uit parent-screen + robuuste response parsing (`weapons`/`inventory`/`weaponInventory`) zodat wapens niet verdwijnen terwijl tools wel zichtbaar zijn
   - Bestanden: `client/lib/screens/inventory_screen.dart`, `client/lib/screens/carried_inventory_tab.dart`
 - [ ] External image routing hotfix (nginx): image-locaties gebruiken nu prefix `alias /mnt/external-images/` voor `/images/*`, `/assets/assets/images/*`, `/assets/images/*` en `/assets/image/*`; dit voorkomt globale 404-regressie door foutieve `try_files /mnt/external-images/...` resolutie
