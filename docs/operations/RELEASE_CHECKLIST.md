@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Properties balancing + level-cap contract fix: appartement basisprijs verlaagd naar €75.000 en huis verhoogd naar €100.000 (appartement niet langer duurder dan huis); property API levert nu expliciet correct `maxLevel` (afgeleid uit upgrade-opties) zodat client geen foutieve `3/3` meer toont terwijl upgraden nog mogelijk is
+  - Bestanden: `backend/content/properties.json`, `backend/src/routes/properties.ts`
 - [ ] Reizen fix online/local parity: `travelRoute` wordt nu consistent als JSON-string opgeslagen/geparsed (ipv impliciete array-casts op `String` kolom), inclusief leg-status validatie; start-journey response levert nu ook `newCountry/newLocation` voor eenduidige client state
   - Bestand: `backend/src/services/travelService.ts`
 - [ ] Prostitutie online/local schema-pariteit gefixt: backend startup voert nu idempotente schema-check uit voor ontbrekende `prostitutes` housing/nightclub kolommen + indexes (incl. backfill), zodat `/prostitutes` laden en `/prostitutes/recruit` niet meer 500'en bij onvolledige productie-migratie

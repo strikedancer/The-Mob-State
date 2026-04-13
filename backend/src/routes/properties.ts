@@ -6,15 +6,26 @@ import { prostituteService } from '../services/prostituteService';
 
 const router = Router();
 
+function toClientPropertyDefinition(prop: any) {
+  const derivedMaxLevel = Array.isArray(prop.upgradeOptions)
+    ? prop.upgradeOptions.length + 1
+    : 1;
+
+  return {
+    ...prop,
+    imagePath: prop.image,
+    maxLevel: Number(prop.maxLevel) > 0 ? prop.maxLevel : derivedMaxLevel,
+  };
+}
+
 /**
  * GET /properties
  * Get all property definitions
  */
 router.get('/', async (_, res: Response) => {
-  const properties = propertyService.getAllProperties().map((prop) => ({
-    ...prop,
-    imagePath: prop.image,
-  }));
+  const properties = propertyService
+    .getAllProperties()
+    .map((prop) => toClientPropertyDefinition(prop));
 
   return res.status(200).json({
     event: 'properties.list',
@@ -32,10 +43,15 @@ router.get('/available/:countryId', authenticate, async (req: AuthRequest, res: 
 
   const availableProperties = await propertyService.getAvailableProperties(String(countryId));
 
+  const properties = availableProperties.map((entry) => ({
+    ...entry,
+    property: toClientPropertyDefinition(entry.property),
+  }));
+
   return res.status(200).json({
     event: 'properties.available',
     params: { countryId },
-    properties: availableProperties,
+    properties,
   });
 });
 
