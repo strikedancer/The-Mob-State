@@ -2,6 +2,28 @@
 
 This guide covers deploying the Mafia Game to a Linux VPS (Strato) using Docker.
 
+## iOS PWA Update Consistency (Required)
+
+Voor iPhone users die de webapp op het beginscherm installeren, moet de client-nginx cache-policy strikt gescheiden zijn:
+
+- App shell / update-critical bestanden: `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `main.dart.js`, `version.json`, `AssetManifest.json`, `FontManifest.json`
+  - Header: `Cache-Control: no-cache, must-revalidate` (voor `flutter_service_worker.js`: `no-cache, no-store, must-revalidate`).
+- Gehashte/static assets onder `assets/` en image-routes mogen `public, immutable` houden.
+
+Doel:
+- Nieuwe release wordt door homescreen-app opgehaald zonder app te verwijderen en opnieuw toe te voegen.
+
+Post-deploy verificatie:
+
+```bash
+curl -I https://your-domain/index.html
+curl -I https://your-domain/flutter_bootstrap.js
+curl -I https://your-domain/flutter_service_worker.js
+curl -I https://your-domain/main.dart.js
+```
+
+Controleer dat bovenstaande bestanden `no-cache`/`must-revalidate` headers hebben.
+
 ---
 
 ## Architecture Overview

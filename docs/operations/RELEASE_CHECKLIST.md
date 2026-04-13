@@ -89,6 +89,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] iOS homescreen/PWA update fix: client-nginx cache-policy opgesplitst zodat app-shell/service-worker bestanden `no-cache` krijgen en assets immutable blijven; hierdoor pakt iPhone beginscherm-app nieuwe releases zonder opnieuw toevoegen
+  - Bestanden: `client/docker/nginx.conf`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/DEPLOY.md`
 - [ ] Reizen UX/state fix: na reisstart wordt nu transit-status getoond (onderweg + volgende stop) i.p.v. direct "gereisd naar bestemming", en player-country wordt na start/volgende leg altijd server-authentiek ververst
   - Bestand: `client/lib/screens/travel_screen.dart`
 - [ ] Deploy hardening (assets): runbook geüpdatet met verplichte Git LFS hydrate-stap op server (`git lfs pull` + `git lfs checkout`) en post-deploy service-worker/cache reset-check voor web visuals
