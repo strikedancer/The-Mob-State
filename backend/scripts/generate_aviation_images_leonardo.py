@@ -18,8 +18,12 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import requests
-from PIL import Image
-from PIL import ImageOps
+try:
+    from PIL import Image
+    from PIL import ImageOps
+except Exception:  # noqa: BLE001
+    Image = None
+    ImageOps = None
 
 try:
     from rembg import remove as rembg_remove
@@ -257,12 +261,17 @@ def _save_image(url: str, out_path: Path) -> None:
 
 
 def _reshape_to_target(path: Path, target_width: int, target_height: int) -> None:
+    if Image is None or ImageOps is None:
+        # Pillow is optional on VPS. If missing, keep original generated size.
+        return
     with Image.open(path) as im:
         fitted = ImageOps.fit(im.convert("RGBA"), (target_width, target_height), method=Image.Resampling.LANCZOS)
         fitted.save(path, format="PNG")
 
 
 def _count_transparent_pixels(path: Path) -> int:
+    if Image is None:
+        return 0
     with Image.open(path) as im:
         rgba = im.convert("RGBA")
         alpha = rgba.getchannel("A")
@@ -271,6 +280,8 @@ def _count_transparent_pixels(path: Path) -> int:
 
 
 def _ensure_transparency(path: Path) -> bool:
+    if Image is None:
+        return False
     if _count_transparent_pixels(path) >= 50:
         return True
     if rembg_remove is None:
@@ -315,6 +326,9 @@ def main() -> None:
 
     if not API_KEY:
         raise RuntimeError("LEONARDO_API_KEY is not set")
+
+    if Image is None:
+        print("warning: Pillow (PIL) is not installed. Skipping local resize/alpha validation checks.")
 
     if args.confirm_batch != "YES":
         raise RuntimeError("Safety stop: add --confirm-batch YES to run generation")
