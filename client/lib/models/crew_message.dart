@@ -27,7 +27,7 @@ class CrewMessage {
 
   String get formattedTime {
     try {
-      final dateTime = DateTime.parse(createdAt);
+      final dateTime = DateTime.parse(createdAt).toLocal();
       final now = DateTime.now();
       final difference = now.difference(dateTime);
 

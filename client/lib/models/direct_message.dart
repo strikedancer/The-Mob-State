@@ -29,7 +29,7 @@ class DirectMessage {
 
   String get formattedTime {
     try {
-      final dateTime = DateTime.parse(createdAt);
+      final dateTime = DateTime.parse(createdAt).toLocal();
       final now = DateTime.now();
       final difference = now.difference(dateTime);
 
@@ -51,7 +51,7 @@ class DirectMessage {
 
   String get formattedDateTime {
     try {
-      final dateTime = DateTime.parse(createdAt);
+      final dateTime = DateTime.parse(createdAt).toLocal();
       final now = DateTime.now();
       final difference = now.difference(dateTime);
 
@@ -116,7 +116,7 @@ class Conversation {
     if (lastMessageTime == null) return '';
     
     try {
-      final dateTime = DateTime.parse(lastMessageTime!);
+      final dateTime = DateTime.parse(lastMessageTime!).toLocal();
       final now = DateTime.now();
       final difference = now.difference(dateTime);
 

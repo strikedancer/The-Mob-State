@@ -148,6 +148,7 @@ Implementatievoorkeur:
 - Na elke productie client-update met image-wijzigingen: voer `git lfs pull --include="client/assets/**,client/images/**"` + `git lfs checkout` uit op de server vóór `docker compose ... --build`.
 - Post-deploy cache-eis: hard refresh verplicht; bij visuele regressies eerst Service Worker unregisteren en opnieuw laden voordat code als “stuk” wordt beschouwd.
 - Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js` en `main.dart.js` altijd met `Cache-Control: no-cache, must-revalidate` (of no-store voor service worker) zodat nieuwe releases zonder app-herinstallatie zichtbaar worden.
+- Voor chat/berichten UI: timestamps uit API/SSE altijd expliciet naar lokale tijd converteren (`DateTime.parse(...).toLocal()`) vóór formatting/rendering. Anders ontstaan vaste timezone-shifts (bijv. -2 uur) in gesprek- en berichtenweergave.
 
 ## Minimale QA Checklist (Altijd Draaien)
 
