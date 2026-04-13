@@ -3424,10 +3424,10 @@ function App() {
                               ? <div className="card-body text-muted">{l('Geen wapens.', 'No weapons.')}</div>
                               : <div className="table-responsive">
                                   <table className="table table-hover mb-0">
-                                    <thead><tr><th>{l('Wapen', 'Weapon')}</th><th>ID</th><th>{l('Aantal', 'Amount')}</th><th>{l('Conditie', 'Condition')}</th></tr></thead>
+                                    <thead><tr><th>{l('Wapen', 'Weapon')}</th><th>ID</th><th>{l('Aantal', 'Amount')}</th><th>{l('Conditie', 'Condition')}</th><th>{l('Locatie', 'Location')}</th></tr></thead>
                                     <tbody>
                                       {ov.assets.weapons.map((w: any) => (
-                                        <tr key={`${w.playerId}-${w.weaponId}`}><td>{w.name || w.weaponId}</td><td>{w.weaponId}</td><td>{w.quantity}</td><td>{w.condition}</td></tr>
+                                        <tr key={`${w.playerId}-${w.weaponId}-${w.location || 'inventory'}`}><td>{w.name || w.weaponId}</td><td>{w.weaponId}</td><td>{w.quantity}</td><td>{w.condition ?? '-'}</td><td>{w.location || 'inventory'}</td></tr>
                                       ))}
                                     </tbody>
                                   </table>

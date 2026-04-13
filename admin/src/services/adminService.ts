@@ -136,8 +136,9 @@ export interface PlayerOverview {
     weapons: Array<{
       weaponId: string;
       quantity: number;
-      condition: number;
+      condition: number | null;
       name?: string;
+      location?: string;
     }>;
   };
   assetSummary?: {

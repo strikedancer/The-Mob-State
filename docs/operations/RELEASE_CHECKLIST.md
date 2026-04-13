@@ -11,6 +11,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Backend
 - [ ] Admin speler-overzicht uitgebreid met combat-inventory details: `/admin/players/:playerId/overview` levert nu munitie- en wapen-namen + aantallen + totalen (`assetSummary`) zodat direct zichtbaar is welke wapens/munitie een speler heeft
   - Bestand: `backend/src/routes/admin.ts`
+- [ ] Admin speler-overzicht telt nu ook opgeslagen property-wapens mee (house/apartment/mansion/penthouse/safehouse), niet alleen `weapon_inventory`; wapens-table toont ook locatie (`inventory` of `storage:...`) zodat verschillen direct te verklaren zijn
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/App.tsx`, `admin/src/services/adminService.ts`
 - [ ] Nachtclub terug in Eigendommen: nightclub verwijderd uit hiddenPropertyIds (backend + client) zodat spelers een nachtclub kunnen kopen via het Eigendommen-scherm (max 3 per land); aankoop maakt automatisch het nightclubVenue record aan
   - Bestanden: `backend/src/services/propertyService.ts`, `client/lib/screens/property_screen.dart`
 - [ ] Properties upgrade-kosten per pand individueel: upgrade kosten schalen nu per pand op basis van aankoopvolgorde (appartement 1 = laagste upgrades, appartement 4 = duurste) i.p.v. alle panden dezelfde totaal-count multiplier

@@ -966,13 +966,51 @@ router.get('/players/:playerId/overview', async (req, res) => {
       name: ammoNameByType.get(item.ammoType) || item.ammoType,
     }));
 
-    const weaponAssets = weaponInventory.map((item) => ({
+    const propertyIds = properties.map((property) => property.id);
+    const propertyWeaponRows = propertyIds.length
+      ? await prisma.propertyDrugStorage.findMany({
+          where: {
+            propertyId: { in: propertyIds },
+            OR: [{ drugType: { startsWith: 'weapon:' } }, { drugType: { startsWith: 'weapon_' } }],
+          },
+          select: {
+            propertyId: true,
+            drugType: true,
+            quantity: true,
+          },
+        })
+      : [];
+
+    const propertyById = new Map(properties.map((property) => [property.id, property]));
+    const propertyWeaponAssets = propertyWeaponRows.map((row) => {
+      const weaponId = row.drugType.startsWith('weapon:')
+        ? row.drugType.replace('weapon:', '')
+        : row.drugType.replace('weapon_', '');
+      const property = propertyById.get(row.propertyId);
+      return {
+        playerId,
+        weaponId,
+        quantity: row.quantity,
+        condition: null,
+        purchasedAt: null,
+        location: property
+          ? `storage:${property.propertyType}:${property.countryId}:#${property.id}`
+          : `storage:#${row.propertyId}`,
+        name: weaponNameById.get(weaponId) || weaponId,
+      };
+    });
+
+    const carriedWeaponAssets = weaponInventory.map((item) => ({
       ...item,
+      location: 'inventory',
       name: weaponNameById.get(item.weaponId) || item.weaponId,
     }));
 
+    const weaponAssets = [...carriedWeaponAssets, ...propertyWeaponAssets];
+
     const ammoTotalRounds = ammoAssets.reduce((sum, item) => sum + (item.quantity || 0), 0);
     const weaponTotalUnits = weaponAssets.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    const weaponDistinctTypes = new Set(weaponAssets.map((item) => item.weaponId)).size;
 
     res.json({
       player,
@@ -1017,7 +1055,7 @@ router.get('/players/:playerId/overview', async (req, res) => {
         ammoTotalRounds,
         ammoDistinctTypes: ammoAssets.length,
         weaponTotalUnits,
-        weaponDistinctTypes: weaponAssets.length,
+        weaponDistinctTypes,
       },
       history: {
         recentActivities,
