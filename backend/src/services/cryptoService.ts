@@ -1095,12 +1095,20 @@ async function calculateMarketPulse(): Promise<MarketPulse> {
   };
 }
 
+async function getActiveCryptoPlayerIds(): Promise<number[]> {
+  const rows = await prisma.$queryRawUnsafe<Array<{ player_id: number }>>(
+    'SELECT DISTINCT player_id FROM crypto_holdings WHERE quantity > 0'
+  );
+  return rows.map((r) => r.player_id);
+}
+
 async function notifyAllPlayersMarketRegime(regime: MarketRegime, marketMovePct: number): Promise<void> {
-  const players = await prisma.player.findMany({ select: { id: true } });
+  const playerIds = await getActiveCryptoPlayerIds();
+  if (playerIds.length === 0) return;
 
   await Promise.allSettled(
-    players.map((player) =>
-      notificationService.sendCryptoMarketRegimeNotification(player.id, regime, marketMovePct)
+    playerIds.map((id) =>
+      notificationService.sendCryptoMarketRegimeNotification(id, regime, marketMovePct)
     )
   );
 }
@@ -1110,11 +1118,12 @@ async function notifyAllPlayersMarketNews(
   impact: MarketNewsImpact,
   symbols: string[]
 ): Promise<void> {
-  const players = await prisma.player.findMany({ select: { id: true } });
+  const playerIds = await getActiveCryptoPlayerIds();
+  if (playerIds.length === 0) return;
 
   await Promise.allSettled(
-    players.map((player) =>
-      notificationService.sendCryptoMarketNewsNotification(player.id, headline, impact, symbols)
+    playerIds.map((id) =>
+      notificationService.sendCryptoMarketNewsNotification(id, headline, impact, symbols)
     )
   );
 }
