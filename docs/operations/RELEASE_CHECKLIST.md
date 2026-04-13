@@ -127,6 +127,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/widgets/jail_screen.dart`, `client/lib/widgets/cooldown_overlay.dart`
 - [ ] Help mobiel scroll fix: replaced `SingleChildScrollView` met `ListView` in compacte layout zodat de screen automatisch oneindige hoogte aanneemt en correct scrolle wanneer ingebed in Expanded container (bijv. dashboard webview); `SingleChildScrollView` paste zich aan content-hoogte aan waardoor scroll werd geblokkeerd
   - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Inventory TabBarView scroll hardening: voorkomen van nested scroll conflicts door TabBarView naar Column-level te verplaatsen met `NeverScrollableScrollPhysics()` zodat elke tab (Carried/Storage/Loadouts) onafhankelijk zijn scroll afhandelt (StorageTab heeft ListView, CarriedTab kan gescrold worden)
+  - Bestand: `client/lib/screens/inventory_screen.dart`
 - [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
   - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet

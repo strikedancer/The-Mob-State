@@ -106,6 +106,7 @@ class _InventoryScreenState extends State<InventoryScreen>
       ),
       body: Column(
         children: [
+          // Weapon selector - visible above all tabs
           Container(
             margin: const EdgeInsets.fromLTRB(12, 10, 12, 8),
             padding: const EdgeInsets.all(12),
@@ -195,9 +196,11 @@ class _InventoryScreenState extends State<InventoryScreen>
               ],
             ),
           ),
+          // TabBarView without Expanded wrapper - each tab handles its own scroll
           Expanded(
             child: TabBarView(
               controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 CarriedInventoryTab(
                   playerId: authProvider.currentPlayer?.id ?? 0,
