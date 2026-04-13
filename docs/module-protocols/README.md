@@ -57,6 +57,7 @@ De master protocol zorgt ervoor dat je:
 - [Motor & Bikes](motor.md) - Motorfiets specifiek
 - [Travel & Countries](travel.md) - Internationale reizen (TRADE_RISK_MECHANICS.md)
 - [Steel Vehicle System](steel_voertuig.md) - Auto theft
+- [Aviation & Aircraft](aviation.md) - Privévliegtuigen kopen, reistijdbonus en eigen-voertuig smokkelen
 
 ### Leisure & Training
 - [Gym & Training](gym.md) - Stats improvement

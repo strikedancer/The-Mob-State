@@ -39,5 +39,31 @@ Vehicle movement between countries also belongs here when cars or boats are relo
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 
+## Eigen Voertuig Smokkelkanaal
+
+Naast het commerciële kanaal kunnen spelers eigen voertuigen inzetten voor smokkeloperaties.Zie aviation.md voor volledig cargo-slot systeem en risicowaarden.
+
+**Beschikbare eigen voertuigen:**
+
+| Voertuig-type | Cargo-slots           | Risico-reductie | Confiscatie bij mislukking |
+|---------------|-----------------------|-----------------|---------------------------|
+| Vliegtuig     | Zie aviation.md       | −10% t/m −25%  | 30% kans                  |
+| Auto          | 10 slots per voertuig | −5%             | 15% kans                  |
+| Motor         | 5 slots per voertuig  | −8%             | 15% kans                  |
+| Boot          | 30 slots per voertuig | −7%             | 25% kans                  |
+
+**Regels:**
+- Cargo-manifest validatie altijd server-side (nooit alleen client).
+- Boot kan auto's en motoren vervoeren; vliegtuig kan geen boot vervoeren.
+- Bij confiscatie: voertuig verwijderd uit bezit (PlayerAircraft / garage / marina) in dezelfde Prisma-transactie.
+- `400 CARGO_OVERFLOW` als cargo-slots worden overschreden.
+- `400 BOAT_CANNOT_FIT` als boot in vliegtuig-lading zit.
+- NL/EN confiscatie-melding altijd tonen in smokkelresultaat.
+
+## Cross-Module Dependencies
+- Smuggling → Aviation (`aviationService`, `PlayerAircraft` voor vliegtuig-smokkel)
+- Smuggling → Garage/Motor (eigen auto/motor ophalen voor smokkelkanaal)
+- Smuggling → Marina (eigen boot ophalen voor smokkelkanaal)
+
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -48,7 +48,9 @@ Acceptatie-eis:
 - Crimes/Vehicle Theft -> Garage, Prison, Security, Admin
 - Hitlist -> Crimes, Security, Crew, Dashboard, Admin
 - Payments/Premium -> Crew, Hitlist/Security, Garage, TuneShop, Events, Dashboard, Admin
-- Travel -> Properties, Drugs, Nightclub, Smuggling, Admin
+- Travel -> Properties, Drugs, Nightclub, Smuggling, Aviation, Admin
+- Smuggling -> Travel, Aviation, Garage, Motor, Marina, Admin
+- Aviation -> School (aviation track gate), Travel (reistijdbonus), Smuggling (eigen-voertuig kanaal), Garage, Motor, Marina, Admin
 - Admin -> Alle gameplay modules met logs, assets of economy-impact
 
 Als een module niet in deze lijst staat maar wel geraakt wordt, voeg die altijd toe aan de scope.

@@ -40,6 +40,9 @@ Education tracks, certifications, gates, cooldowns and unlock dependencies.
 - **Law track → Court appeals**: each law level adds +5% appeal success chance in `judgeService.appealSentence` (max +25% at level 5). Players who invest in the law track get a tangible advantage when contesting a jail sentence.
   - Dependency file: `backend/src/services/judgeService.ts`
   - If the law track or its level field is ever renamed/restructured, update `judgeService.ts` accordingly.
+- **Aviation track → Aircraft purchase (Aviation module)**: het aankopen van privévliegtuigen is vergrendeld achter aviation track levels (Cessna = level 2 + `flight_basic`, King Air = level 3, Gulfstream = level 4 + `flight_commercial`, Boeing 737 = level 5). Gates worden afgedwongen via `educationService.checkGate` in de aviation-route.
+  - Bij het herstructureren van de aviation track of certifications: update `educationService.ts → EDUCATION_GATES` en `aviation.md`.
+- **Aviation track → Airline pilot job**: de bestaande gate `gate_job_airline_pilot` vereist aviation level 4 + `flight_commercial`. Dit geldt naast de aircraft-aankoopgates.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -263,6 +263,16 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`- [ ] Rechtbank hoger beroep schaalbaar met rechten-niveau: `law` track level voegt +5% succeskans per level toe aan hoger beroep (max +25% bij level 5); basiskans stijgt daarmee van 35% naar max 60% vóór verdere aanpassingen (eerdere veroordelingen, wanted level, FBI heat); hard cap verhoogd van 70% naar 85%
   - Bestand: `backend/src/services/judgeService.ts`
   - Spelers zonder opleiding (geen `law` track) behouden 35% basiskans ongewijzigd (fallback naar 0)
+- [ ] **[ONTWERP GEREED — IMPLEMENTATIE VEREIST]** Aviatie-systeem: privévliegtuigen kopen, reistijdbonus en eigen-voertuig smokkelkanaal
+  - Vliegtuigtypes: Cessna 172 (€250k, 20 slots, −15% reistijd), King Air (€750k, 50 slots, −25%), Gulfstream G200 (€2,5M, 80 slots, −35%), Boeing 737 Cargo (€10M, 200 slots, −30%)
+  - Gating via bestaande `aviation` education track (level 2/3/4/5), server-side via `educationService.checkGate`
+  - Cargo-slot systeem: auto=10, motor=5, boot=∞ (past niet in vliegtuig), drugs/wapen/handelswaar=1-2
+  - Smokkelkanaal uitgebreid: eigen vliegtuig/auto/motor/boot als kanaalopties met risicoreductie + confiscatierisico
+  - Travel bonus zichtbaar in Travel scherm vóór vertrek
+  - Vliegtuigafbeeldingen via Leonardo.ai API, opgeslagen in externe mount `runtime/client-images/aircraft/`
+  - Nieuwe bestanden vereist: `backend/content/aircraft.json`, `backend/src/services/aviationService.ts`, `backend/src/routes/aviation.ts`, `backend/add-aviation-tables.sql`, `client/lib/screens/aviation_screen.dart`, `backend/scripts/generate_aircraft_images_leonardo.py`
+  - Prisma model `PlayerAircraft` vereist migration
+  - Protocollen bijgewerkt: `docs/module-protocols/aviation.md`, `school.md`, `smuggling.md`, `travel.md`, `README.md`, `PROTOCOL_MASTER.md`
 ## Deploy Plan (wanneer we live gaan)
 
 ### 1) API deploy

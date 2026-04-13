@@ -36,5 +36,22 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 
+## Aircraft Reistijdbonus
+
+Als een speler een privévliegtuig bezit, wordt de internationale reistijd korter:
+
+| Vliegtuig         | Reistijdbonus |
+|-------------------|---------------|
+| Cessna 172        | −15%          |
+| Beechcraft King Air | −25%        |
+| Gulfstream G200   | −35%          |
+| Boeing 737 Cargo  | −30%          |
+
+- Backend loadt het beste vliegtuig van de speler in `travelService` via `aviationService.getBestAircraftBonus(playerId)`.
+- Reistijd = `baseReistijd × (1 − bonus)`. Geen vliegtuig = geen bonus (geen regressie).
+- Bonus moet zichtbaar zijn in het Travel scherm vóór vertrek: "Eigen vliegtuig: −X% reistijd" / "Own aircraft: −X% travel time".
+- De bonus geldt voor alle luchtroutes. Waterroutes zijn niet beïnvloed door een vliegtuig.
+- Afhankelijkheid: `aviationService.ts` (nieuw bestand).
+
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
