@@ -191,8 +191,21 @@ class AmmoFactoryService {
     const qualityMultiplier = this.qualityMultiplier(factory.qualityLevel);
     const ticksPerWindow = this.getTicksPerBacklogWindow();
 
+    // Cumulative tick counting from session start prevents integer-division
+    // floor-to-zero when produce() is called frequently (e.g. every 5 min).
+    // Delta approach: floor(boxSize * 1/96) = 0 for every single tick at level 1.
+    // Cumulative:     floor(boxSize * n/96) - floor(boxSize * (n-1)/96) crosses
+    //                 whole-number boundaries correctly and totals identically
+    //                 over a full session.
+    const prevTicksFromStart = Math.floor(
+      (referenceProducedAt.getTime() - sessionStart.getTime()) / intervalMs
+    );
+    const newTicksFromStart = Math.min(prevTicksFromStart + ticksToProcess, ticksPerWindow);
+
     for (const ammo of this.ammoTypes) {
-      const produced = Math.floor((ammo.boxSize * outputMultiplier * ticksToProcess) / ticksPerWindow);
+      const produced =
+        Math.floor((ammo.boxSize * outputMultiplier * newTicksFromStart) / ticksPerWindow) -
+        Math.floor((ammo.boxSize * outputMultiplier * prevTicksFromStart) / ticksPerWindow);
       if (produced <= 0) {
         continue;
       }
