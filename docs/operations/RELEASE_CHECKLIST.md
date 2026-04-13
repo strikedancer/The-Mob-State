@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Prostitutie online/local schema-pariteit gefixt: backend startup voert nu idempotente schema-check uit voor ontbrekende `prostitutes` housing/nightclub kolommen + indexes (incl. backfill), zodat `/prostitutes` laden en `/prostitutes/recruit` niet meer 500'en bij onvolledige productie-migratie
+  - Bestanden: `backend/src/startup/ensureProstitutionSchema.ts`, `backend/src/index.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Register endpoint hardening: expliciete server logging toegevoegd voor `/auth/register` failures + inputvalidatie voor e-mailformat
   - Bestanden: `backend/src/routes/auth.ts`, `backend/src/services/authService.ts`
 - [ ] Subscriptions route opgeschoond: dubbele legacy Stripe-tail verwijderd uit Mollie-routebestand om duplicate exports/declarations te voorkomen

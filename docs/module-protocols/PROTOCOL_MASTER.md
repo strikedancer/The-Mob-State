@@ -67,6 +67,7 @@ Als een wijziging meerdere modules raakt, gelden alle relevante bullets tegelijk
 
 - Controleer Prisma relaties bij nested includes.
 - Controleer dat alle queryvelden echt in schema staan.
+- Als een module (tijdelijk) losse SQL-updates buiten Prisma migraties gebruikt, borg dan dat productie die schema-stap ook echt uitvoert (startup bootstrap of expliciete deploy-stap), anders lokaal/online drift met 500-fouten.
 - Log interne fouten met context op kritieke auth-routes (`/auth/register`, `/auth/login`) zodat productie-500's direct herleidbaar zijn.
 - Draai Prisma checks:
   - `npx prisma validate`
