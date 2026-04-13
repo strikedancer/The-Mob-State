@@ -96,32 +96,37 @@ class _HelpScreenState extends State<HelpScreen> {
       });
     }
 
-    final compactBody = ScrollConfiguration(
-      behavior: ScrollConfiguration.of(context).copyWith(
-        dragDevices: {
-          PointerDeviceKind.touch,
-          PointerDeviceKind.mouse,
-          PointerDeviceKind.stylus,
-          PointerDeviceKind.invertedStylus,
-          PointerDeviceKind.trackpad,
-          PointerDeviceKind.unknown,
-        },
-      ),
-      child: ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.zero,
-        children: [
-          _buildHeader(context),
-          const SizedBox(height: 16),
-          _buildSearchBar(context),
-          const SizedBox(height: 12),
-          _buildCategoryChips(),
-          const SizedBox(height: 16),
-          topics.isEmpty ? _buildEmptyState() : _buildCompactLayout(topics),
-          const SizedBox(height: 20),
-        ],
-      ),
+    final listViewContent = ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
+      children: [
+        _buildHeader(context),
+        const SizedBox(height: 16),
+        _buildSearchBar(context),
+        const SizedBox(height: 12),
+        _buildCategoryChips(),
+        const SizedBox(height: 16),
+        topics.isEmpty ? _buildEmptyState() : _buildCompactLayout(topics),
+        const SizedBox(height: 20),
+      ],
     );
+
+    // In embedded mode (dashboard), don't wrap with ScrollConfiguration since dashboard provides it
+    final compactBody = widget.embedded
+        ? listViewContent
+        : ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context).copyWith(
+              dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.stylus,
+                PointerDeviceKind.invertedStylus,
+                PointerDeviceKind.trackpad,
+                PointerDeviceKind.unknown,
+              },
+            ),
+            child: listViewContent,
+          );
 
     final wideBody = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

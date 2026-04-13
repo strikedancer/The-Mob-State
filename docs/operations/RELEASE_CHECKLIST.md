@@ -129,6 +129,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/help_screen.dart`
 - [ ] Inventory TabBarView scroll hardening: voorkomen van nested scroll conflicts door TabBarView naar Column-level te verplaatsen met `NeverScrollableScrollPhysics()` zodat elke tab (Carried/Storage/Loadouts) onafhankelijk zijn scroll afhandelt (StorageTab heeft ListView, CarriedTab kan gescrold worden)
   - Bestand: `client/lib/screens/inventory_screen.dart`
+- [ ] Help screen embedded scroll fix: verwijderd inner ScrollConfiguration in embedded mode (dashboard) zodat dashboard's outer ScrollConfiguration niet wordt overschreven; standalone help page behoudt eigen ScrollConfiguration
+  - Bestand: `client/lib/screens/help_screen.dart`
 - [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
   - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet
