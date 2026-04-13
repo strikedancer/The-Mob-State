@@ -93,6 +93,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/Dockerfile`
 - [ ] Web image helper route-hardening v3: `WebAssetHelper.image(...)` probeert op web nu meerdere network fallback-routes (`images/...`, `assets/assets/images/...`, `assets/images/...`) na een asset-miss, zodat voertuig- en catalogusafbeeldingen blijven laden bij proxy/nginx routevariaties
   - Bestand: `client/lib/utils/web_asset_helper.dart`
+- [ ] Web image helper path-normalisatie v4: `WebAssetHelper` normaliseert runtime image-strings nu vooraf (incl. `/assets/...`, `images/...`, `assets/assets/images/...` en dubbele segmenten zoals `vehicles/vehicles/...`) voordat asset + network fallback worden geprobeerd
+  - Bestand: `client/lib/utils/web_asset_helper.dart`
 - [ ] Black market + drugs web image fix: schermen gebruiken nu `WebAssetHelper.image(...)` i.p.v. directe `Image.asset(...)` voor voertuig/drug/facility visuals, zodat images ook laden wanneer `assets/images` niet in de web `AssetManifest` zitten (Docker external-images setup)
   - Bestanden: `client/lib/screens/black_market_screen.dart`, `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/drug_production_screen.dart`, `client/lib/screens/drug_inventory_screen.dart`
 - [ ] Voertuig stelen + garage + marina web image fix: `OverlayImage`/`OverlayImageBuilder` gebruikt nu intern `WebAssetHelper.image(...)` zodat voertuigafbeeldingen (auto, motor, boot) en catalogi ook laden op web; garage- en marina-achtergronden omgezet van `DecorationImage(AssetImage(...))` naar `Stack+Positioned.fill+WebAssetHelper.image(...)` met network fallback

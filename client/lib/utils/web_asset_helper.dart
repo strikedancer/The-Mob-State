@@ -4,6 +4,56 @@ import 'package:flutter/material.dart';
 class WebAssetHelper {
   static String _normalize(String value) => value.replaceAll('\\', '/');
 
+  static String normalizeAssetPath(String assetPath) {
+    var path = _normalize(assetPath).trim();
+    if (path.isEmpty) return path;
+
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+
+    if (path.startsWith('/')) {
+      path = path.substring(1);
+    }
+
+    if (path.contains('assets/assets/images/')) {
+      final idx = path.indexOf('assets/assets/images/');
+      final suffix = path.substring(idx + 'assets/assets/images/'.length);
+      path = 'assets/images/$suffix';
+    } else if (path.contains('assets/images/')) {
+      final idx = path.indexOf('assets/images/');
+      path = path.substring(idx);
+    } else if (path.startsWith('images/')) {
+      path = 'assets/images/${path.substring('images/'.length)}';
+    }
+
+    if (path.startsWith('assets/images/')) {
+      final suffix = path.substring('assets/images/'.length).replaceAll(
+        'assets/images/',
+        '',
+      );
+      path = 'assets/images/$suffix';
+
+      for (final dir in const [
+        'vehicles',
+        'drugs',
+        'facilities',
+        'backgrounds',
+        'avatars',
+        'jobs',
+        'weapons',
+        'tools',
+        'travel',
+      ]) {
+        while (path.contains('/$dir/$dir/')) {
+          path = path.replaceAll('/$dir/$dir/', '/$dir/');
+        }
+      }
+    }
+
+    return path;
+  }
+
   static String _trimLeadingSlash(String value) {
     if (value.startsWith('/')) {
       return value.substring(1);
@@ -12,7 +62,7 @@ class WebAssetHelper {
   }
 
   static String _stripAssetsImagesPrefix(String assetPath) {
-    final normalized = _normalize(assetPath);
+    final normalized = normalizeAssetPath(assetPath);
     if (normalized.startsWith('assets/images/')) {
       return normalized.substring('assets/images/'.length);
     }
@@ -33,7 +83,7 @@ class WebAssetHelper {
   }
 
   static List<String> _webImageUrlCandidates(String assetPath) {
-    final normalized = _normalize(assetPath);
+    final normalized = normalizeAssetPath(assetPath);
     if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
       return [normalized];
     }
@@ -47,7 +97,7 @@ class WebAssetHelper {
   }
 
   static String toPublicUrl(String assetPath) {
-    final normalized = _normalize(assetPath);
+    final normalized = normalizeAssetPath(assetPath);
 
     if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
       return normalized;
@@ -83,16 +133,18 @@ class WebAssetHelper {
     Alignment alignment = Alignment.center,
     Widget Function(BuildContext, Object, StackTrace?)? errorBuilder,
   }) {
+    final normalizedPath = normalizeAssetPath(assetPath);
+
     if (kIsWeb) {
       return Image.asset(
-        assetPath,
+        normalizedPath,
         key: key,
         width: width,
         height: height,
         fit: fit,
         alignment: alignment,
         errorBuilder: (context, error, stackTrace) {
-          final candidates = _webImageUrlCandidates(assetPath);
+          final candidates = _webImageUrlCandidates(normalizedPath);
 
           Widget buildCandidate(int index) {
             return Image.network(
@@ -120,7 +172,7 @@ class WebAssetHelper {
     }
 
     return Image.asset(
-      assetPath,
+      normalizedPath,
       key: key,
       width: width,
       height: height,
