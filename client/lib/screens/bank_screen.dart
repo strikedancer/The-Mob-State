@@ -232,9 +232,7 @@ class _BankScreenState extends State<BankScreen> {
             listen: false,
           ).refreshPlayer();
           await _refreshAll(page: 1);
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(_tr('Storting gelukt', 'Deposit successful'))));
+          showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Storting gelukt', 'Deposit successful'))));
         }
       } else {
         if (mounted) {
@@ -249,9 +247,7 @@ class _BankScreenState extends State<BankScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
+        showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
       }
     } finally {
       if (mounted) {
@@ -284,9 +280,7 @@ class _BankScreenState extends State<BankScreen> {
             listen: false,
           ).refreshPlayer();
           await _refreshAll(page: 1);
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(_tr('Opname gelukt', 'Withdrawal successful'))));
+          showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Opname gelukt', 'Withdrawal successful'))));
         }
       } else {
         if (mounted) {
@@ -301,9 +295,7 @@ class _BankScreenState extends State<BankScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
+        showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
       }
     } finally {
       if (mounted) {
@@ -356,16 +348,12 @@ class _BankScreenState extends State<BankScreen> {
         }
 
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(message)));
+          showTopRightFromSnackBar(context, SnackBar(content: Text(message)));
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
+        showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
       }
     } finally {
       if (mounted) {
