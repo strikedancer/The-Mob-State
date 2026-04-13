@@ -118,6 +118,8 @@ Implementatievoorkeur:
 - Voor brede gameplay image-loading op web: gebruik een centrale `/images/*` runtime-route (via helper + nginx alias naar Flutter bundle) zodat crimes/jobs/avatars/badges op alle omgevingen hetzelfde pad gebruiken.
 - Voor productie-deploys met veel beeldmateriaal: gebruik runtime external image storage (`/images/*` -> externe map) met bundled fallback. Zo kunnen image-updates zonder client rebuild worden uitgerold.
 - Externe `/images/*` route moet altijd fallback houden naar bundled Flutter assets om blank/broken UI te voorkomen bij ontbrekende runtime files.
+- Scope van runtime external storage is **alle** assets onder `client/assets/images/**` (niet alleen backgrounds/avatars/crimes). Houd runtime map-structuur gelijk aan de repository-structuur.
+- Zorg dat zowel `/images/*` als `/assets/assets/images/*` extern-first fallback gebruiken, zodat ook schermen met directe `Image.asset(...)` zonder rebuild image-updates kunnen oppakken.
 - Bij runtime image updates zonder rebuild: hanteer versie-bestandsnamen (`*.v2.png`) of expliciete cache-invalidering om stale image caches te voorkomen.
 - Voor kaarten/lijsten met dynamische image-bestanden (zoals jobs/crimes): implementeer altijd een visuele `errorBuilder` fallback zodat ontbrekende assets niet als lege/broken tiles eindigen.
 - In gedeelde web image helpers: hanteer `Image.asset(...)` als primaire renderpad en gebruik network-URL alleen als fallback, zodat hosting/proxy variaties minder snel alle visuals breken.

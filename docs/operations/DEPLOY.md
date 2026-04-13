@@ -38,10 +38,12 @@ Implementatie in deze repo:
 
 ```bash
 cd /var/www/vhosts/themobstate.com/apps/mafia_game
-mkdir -p runtime/client-images/backgrounds
-mkdir -p runtime/client-images/avatars
-mkdir -p runtime/client-images/crimes
+mkdir -p runtime/client-images
 ```
+
+Belangrijk:
+- Dit geldt voor **alle** afbeeldingen onder `client/assets/images/**`.
+- Je hoeft dus niet alleen `backgrounds/avatars/crimes` te gebruiken; de volledige subfolderstructuur wordt ondersteund.
 
 Controleer of `CLIENT_EXTERNAL_IMAGES_PATH` gewenst is in `.env` (optioneel):
 
@@ -56,12 +58,31 @@ git pull origin main
 docker compose -f docker-compose.plesk.yml up -d --build client
 ```
 
+Optioneel maar aanbevolen: mirror alle huidige repo-images direct naar runtime map
+
+```bash
+rsync -av --delete client/assets/images/ runtime/client-images/
+```
+
+Als `rsync` niet beschikbaar is:
+
+```bash
+cp -a client/assets/images/. runtime/client-images/
+```
+
 ### Vanaf nu images updaten zonder rebuild
 
 1. Upload files naar runtime map (voorbeeld):
 
 ```bash
 cp /tmp/login_background.png /var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images/backgrounds/login_background.png
+```
+
+Volledige update van alle images in 1x (zonder rebuild):
+
+```bash
+cd /var/www/vhosts/themobstate.com/apps/mafia_game
+rsync -av --delete client/assets/images/ runtime/client-images/
 ```
 
 2. Test direct via browser URL:
@@ -76,6 +97,12 @@ curl -I https://jouwdomein/images/backgrounds/login_background.png
 
 - Voor images die je soms overschrijft met dezelfde bestandsnaam: gebruik bij voorkeur versie-bestandsnamen, bv `login_background.v2.png`.
 - Voor nieuwe assets: update alleen de bestandsreferentie in app-code als de bestandsnaam verandert.
+
+Route-gedrag:
+- `/images/*` -> extern-first fallback
+- `/assets/assets/images/*` (Flutter `Image.asset` runtime pad) -> extern-first fallback
+
+Hierdoor geldt de externe image-opslag ook voor schermen die nog directe `Image.asset(...)` gebruiken.
 
 ### Wanneer nog wel rebuild nodig is
 
