@@ -109,61 +109,41 @@ class _HelpScreenState extends State<HelpScreen> {
         if (topics.isEmpty)
           _buildEmptyState()
         else
-          ...topics
-              .map((topic) => Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Card(
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () => _openTopicSheet(topic),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: Colors.amber.withOpacity(0.14),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Icon(topic.icon, color: Colors.amber),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      topic.title(_isNl),
-                                      style: const TextStyle(fontWeight: FontWeight.w700),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      topic.category(_isNl),
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.amber.shade200,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      topic.summary(_isNl),
-                                      style: const TextStyle(color: Colors.white70),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Icon(Icons.chevron_right),
-                            ],
-                          ),
-                        ),
-                      ),
+          ...[
+            DropdownButtonFormField<String>(
+              value: selectedTopic?.id,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1F1F1F),
+              decoration: InputDecoration(
+                labelText: _tr('Onderwerp', 'Topic'),
+                labelStyle: const TextStyle(color: Colors.white70),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.04),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              items: topics
+                  .map(
+                    (topic) => DropdownMenuItem<String>(
+                      value: topic.id,
+                      child: Text(topic.title(_isNl)),
                     ),
-                  ))
-              .toList(),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                if (value == null) return;
+                setState(() => _selectedTopicId = value);
+              },
+            ),
+            const SizedBox(height: 12),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: _buildCompactTopicDetail(selectedTopic!),
+              ),
+            ),
+          ],
         const SizedBox(height: 20),
       ],
     );
@@ -434,6 +414,65 @@ class _HelpScreenState extends State<HelpScreen> {
               ),
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCompactTopicDetail(HelpTopic topic) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.amber.withOpacity(0.14),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(topic.icon, color: Colors.amber),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    topic.title(_isNl),
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    topic.category(_isNl),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.amber.shade200,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    topic.summary(_isNl),
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        _DetailCard(
+          title: _tr('Hoe werkt dit?', 'How does this work?'),
+          icon: Icons.route,
+          bullets: topic.howItWorks(_isNl),
+        ),
+        const SizedBox(height: 12),
+        _DetailCard(
+          title: _tr('Handige tips', 'Helpful tips'),
+          icon: Icons.lightbulb,
+          bullets: topic.tips(_isNl),
         ),
       ],
     );

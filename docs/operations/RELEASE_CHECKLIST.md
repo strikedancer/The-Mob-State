@@ -131,6 +131,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/inventory_screen.dart`
 - [ ] Help screen embedded scroll fix: verwijderd inner ScrollConfiguration in embedded mode (dashboard) zodat dashboard's outer ScrollConfiguration niet wordt overschreven; standalone help page behoudt eigen ScrollConfiguration
   - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Help mobiel UX refactor: topic-kaartenlijst vervangen door vaste onderwerp-dropdown + inline detail-content (samenvatting + hoe-werkt-dit + tips) in dezelfde ListView, zodat de volledige help-content als één geheel scrollbaar is op mobiel
+  - Bestand: `client/lib/screens/help_screen.dart`
 - [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
   - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet
