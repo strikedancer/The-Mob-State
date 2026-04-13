@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Reizen fix online/local parity: `travelRoute` wordt nu consistent als JSON-string opgeslagen/geparsed (ipv impliciete array-casts op `String` kolom), inclusief leg-status validatie; start-journey response levert nu ook `newCountry/newLocation` voor eenduidige client state
+  - Bestand: `backend/src/services/travelService.ts`
 - [ ] Prostitutie online/local schema-pariteit gefixt: backend startup voert nu idempotente schema-check uit voor ontbrekende `prostitutes` housing/nightclub kolommen + indexes (incl. backfill), zodat `/prostitutes` laden en `/prostitutes/recruit` niet meer 500'en bij onvolledige productie-migratie
   - Bestanden: `backend/src/startup/ensureProstitutionSchema.ts`, `backend/src/index.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Register endpoint hardening: expliciete server logging toegevoegd voor `/auth/register` failures + inputvalidatie voor e-mailformat
@@ -87,6 +89,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Reizen UX/state fix: na reisstart wordt nu transit-status getoond (onderweg + volgende stop) i.p.v. direct "gereisd naar bestemming", en player-country wordt na start/volgende leg altijd server-authentiek ververst
+  - Bestand: `client/lib/screens/travel_screen.dart`
 - [ ] Deploy hardening (assets): runbook geüpdatet met verplichte Git LFS hydrate-stap op server (`git lfs pull` + `git lfs checkout`) en post-deploy service-worker/cache reset-check voor web visuals
   - Bestanden: `docs/operations/DEPLOY.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Web helper hardening v2: `WebAssetHelper` rendert op web nu asset-first (`Image.asset`/`AssetImage`) met network fallback, zodat volledige image-renders niet blokkeren door route/proxy afwijkingen

@@ -50,6 +50,8 @@ export interface JourneyStartResult {
   success: boolean;
   destinationCountry: string;
   route: string[];
+  newCountry: string;
+  newLocation: string;
   currentLocation: string;
   travelCost: number; // Cost for first leg
   totalJourneyCost: number; // Total cost for all legs
@@ -73,6 +75,34 @@ const LEG_COOLDOWN_MINUTES = 30;
 const BASE_ARREST_CHANCE = 0.03;
 const WANTED_LEVEL_ARREST_BONUS = 0.015;
 const MAX_ARREST_CHANCE = 0.25;
+
+function serializeRoute(route: string[]): string {
+  return JSON.stringify(route);
+}
+
+function parseStoredRoute(rawRoute: unknown): string[] {
+  if (Array.isArray(rawRoute)) {
+    return rawRoute.filter((item): item is string => typeof item === 'string');
+  }
+
+  if (typeof rawRoute !== 'string' || rawRoute.trim().length === 0) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(rawRoute);
+    if (Array.isArray(parsed)) {
+      return parsed.filter((item): item is string => typeof item === 'string');
+    }
+  } catch {
+    // Legacy fallback for previously persisted comma-separated values.
+  }
+
+  return rawRoute
+    .split(',')
+    .map((part) => part.trim())
+    .filter((part) => part.length > 0);
+}
 
 /**
  * Calculate route between two countries using BFS
@@ -262,7 +292,8 @@ export async function getJourneyStatus(playerId: number): Promise<JourneyStatus>
   }
 
   const isInTransit = player.currentTravelLeg > 0 && player.travelingTo !== null;
-  const route = isInTransit ? (JSON.parse(JSON.stringify(player.travelRoute)) as string[]) : undefined;
+  const parsedRoute = parseStoredRoute(player.travelRoute);
+  const route = isInTransit ? parsedRoute : undefined;
   const totalLegs = route ? Math.max(route.length - 1, 0) : 0;
 
   return {
@@ -392,7 +423,7 @@ export async function startJourney(playerId: number, destinationCountryId: strin
       currentCountry: route.path[1], // Move to first waypoint
       currentTravelLeg: 1,
       travelingTo: destinationCountryId,
-      travelRoute: route.path as any,
+      travelRoute: serializeRoute(route.path),
       travelStartedAt: new Date(),
       money: player.money - baseCostPerLeg,
     },
@@ -453,6 +484,10 @@ export async function startJourney(playerId: number, destinationCountryId: strin
     success: true,
     destinationCountry: destinationCountryId,
     route: route.path,
+    newCountry: updatedPlayer.currentCountry,
+    newLocation:
+      getCountryById(updatedPlayer.currentCountry)?.name ||
+      updatedPlayer.currentCountry,
     currentLocation: updatedPlayer.currentCountry,
     travelCost: baseCostPerLeg,
     totalJourneyCost: totalCost,
@@ -668,7 +703,10 @@ export async function continueJourney(playerId: number): Promise<TravelResult> {
     throw new Error('NOT_IN_TRANSIT');
   }
 
-  const route = JSON.parse(JSON.stringify(journey.travelRoute)) as string[];
+  const route = parseStoredRoute(journey.travelRoute);
+  if (route.length < 2) {
+    throw new Error('INVALID_ROUTE');
+  }
   const totalLegs = Math.max(route.length - 1, 1);
   const currentLegIndex = journey.currentTravelLeg;
 

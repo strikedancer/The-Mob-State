@@ -352,12 +352,23 @@ class _TravelScreenState extends State<TravelScreen> {
         return;
       }
 
-      final l10nCountryName = CountryHelper.getLocalizedCountryName(
-        country.id,
+        final destinationCountryId =
+          (data['destinationCountry'] as String?) ?? country.id;
+        final destinationCountryName = CountryHelper.getLocalizedCountryName(
+        destinationCountryId,
         l10n,
         fallbackName: country.name,
-      );
-      final message = l10n.travelSuccessTo(l10nCountryName);
+        );
+        final newCountryId =
+          (data['newCountry'] as String?) ?? (data['currentLocation'] as String?);
+        final isInTransitToDestination =
+          newCountryId != null && newCountryId != destinationCountryId;
+        final currentStopName = newCountryId != null
+          ? _resolveCountryName(newCountryId, l10n)
+          : l10n.currentLocation;
+        final message = isInTransitToDestination
+          ? '${l10n.travelInTransitTo(destinationCountryName)}. ${l10n.travelNextStop(currentStopName)}'
+          : l10n.travelSuccessTo(destinationCountryName);
 
       int? cooldownSeconds;
       if (data.containsKey('cooldown') && data['cooldown'] is Map) {
@@ -380,15 +391,13 @@ class _TravelScreenState extends State<TravelScreen> {
         );
 
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
-        if (data.containsKey('remainingMoney') &&
-            data.containsKey('currentLocation')) {
-          authProvider.updatePlayerStats(
-            money: data['remainingMoney'] as int?,
-            currentCountry: data['currentLocation'] as String?,
-          );
-        } else {
-          await authProvider.refreshPlayer();
-        }
+        authProvider.updatePlayerStats(
+          money: data['remainingMoney'] as int?,
+          currentCountry:
+              (data['newCountry'] as String?) ??
+              (data['currentLocation'] as String?),
+        );
+        await authProvider.refreshPlayer();
       }
     } catch (e) {
       setState(() {
@@ -567,9 +576,8 @@ class _TravelScreenState extends State<TravelScreen> {
             money: data['remainingMoney'] as int?,
             currentCountry: data['newCountry'] as String?,
           );
-        } else {
-          await authProvider.refreshPlayer();
         }
+        await authProvider.refreshPlayer();
       }
 
       if (isFinalLeg && mounted) {
