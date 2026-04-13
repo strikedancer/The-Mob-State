@@ -260,9 +260,12 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] Admin UI: “System Logs” uitgebreid met datumfilter (24u/7d/30d/all)
   - Bestand: `admin/src/App.tsx`
 - [ ] Admin UI: tab “Admins” toegevoegd voor admin aanmaken/rol wijzigen/activeren-deactiveren
-  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`- [ ] Rechtbank hoger beroep schaalbaar met rechten-niveau: `law` track level voegt +5% succeskans per level toe aan hoger beroep (max +25% bij level 5); basiskans stijgt daarmee van 35% naar max 60% vóór verdere aanpassingen (eerdere veroordelingen, wanted level, FBI heat); hard cap verhoogd van 70% naar 85%
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+- [ ] Rechtbank hoger beroep schaalbaar met rechten-niveau: `law` track level voegt +5% succeskans per level toe aan hoger beroep (max +25% bij level 5); basiskans stijgt daarmee van 35% naar max 60% vóór verdere aanpassingen (eerdere veroordelingen, wanted level, FBI heat); hard cap verhoogd van 70% naar 85%
   - Bestand: `backend/src/services/judgeService.ts`
   - Spelers zonder opleiding (geen `law` track) behouden 35% basiskans ongewijzigd (fallback naar 0)
+- [ ] Aviation image generation pipeline toegevoegd: nieuw Leonardo-script genereert aircraft cutouts (`cessna`, `king_air`, `gulfstream`, `cargo_737`) plus aviation backgrounds (`aviation_bg_desktop/tablet/mobile`) direct naar externe runtime map `runtime/client-images/*`, zodat client build klein blijft
+  - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
 - [ ] **[ONTWERP GEREED — IMPLEMENTATIE VEREIST]** Aviatie-systeem: privévliegtuigen kopen, reistijdbonus en eigen-voertuig smokkelkanaal
   - Vliegtuigtypes: Cessna 172 (€250k, 20 slots, −15% reistijd), King Air (€750k, 50 slots, −25%), Gulfstream G200 (€2,5M, 80 slots, −35%), Boeing 737 Cargo (€10M, 200 slots, −30%)
   - Gating via bestaande `aviation` education track (level 2/3/4/5), server-side via `educationService.checkGate`
