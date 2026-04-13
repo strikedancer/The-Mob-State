@@ -45,7 +45,7 @@ export async function checkArrest(playerId: number): Promise<ArrestResult> {
   if (roll < arrestChance) {
     // Player gets arrested
     const jailTime = calculateJailTime(player.wantedLevel);
-    const bail = calculateBail(player.wantedLevel);
+    const bail = calculateBail(player.wantedLevel, jailTime * 60);
 
     return {
       arrested: true,
@@ -78,9 +78,26 @@ export function calculateBail(wantedLevel: number): number {
 }
 
 /**
+ * Calculate bail while jailed.
+ * Keeps legacy wanted-level base, but scales up with remaining sentence time.
+ */
+export function calculateJailBail(
+  wantedLevel: number,
+  remainingSeconds: number
+): number {
+  const wantedBase = calculateBail(wantedLevel);
+  const remainingMinutes = Math.max(0, Math.ceil(remainingSeconds / 60));
+  const timeBase = remainingMinutes * 500;
+  return Math.max(wantedBase, timeBase);
+}
+
+/**
  * Pay bail to get out of jail
  */
-export async function payBail(playerId: number): Promise<void> {
+export async function payBail(
+  playerId: number,
+  remainingSeconds?: number
+): Promise<void> {
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { id: true, money: true, wantedLevel: true },
@@ -90,7 +107,10 @@ export async function payBail(playerId: number): Promise<void> {
     throw new Error('PLAYER_NOT_FOUND');
   }
 
-  const bail = calculateBail(player.wantedLevel);
+  const bail = calculateJailBail(
+    player.wantedLevel,
+    remainingSeconds ?? 0
+  );
 
   if (player.money < bail) {
     throw new Error('INSUFFICIENT_MONEY');
@@ -336,7 +356,10 @@ export async function getJailedPrisoners(viewerId: number): Promise<
       rank: entry.player.rank,
       wantedLevel: entry.player.wantedLevel,
       remainingSeconds: entry.remainingSeconds,
-      bailCost: calculateBail(entry.player.wantedLevel),
+      bailCost: calculateJailBail(
+        entry.player.wantedLevel,
+        entry.remainingSeconds
+      ),
     }))
     .sort((a, b) => a.remainingSeconds - b.remainingSeconds);
 }
@@ -376,7 +399,7 @@ export async function buyOutPrisoner(
     throw new Error('TARGET_NOT_FOUND');
   }
 
-  const bail = calculateBail(target.wantedLevel);
+  const bail = calculateJailBail(target.wantedLevel, remainingTime);
   if (buyer.money < bail) {
     throw new Error('INSUFFICIENT_MONEY');
   }

@@ -103,11 +103,17 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
 // Get jail status
 router.get('/jail-status', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const remainingTime = await policeService.checkIfJailed(req.player!.id);
+    const playerId = req.player!.id;
+    const remainingTime = await policeService.checkIfJailed(playerId);
+    const player = await playerService.getPlayer(playerId);
+    const bailAmount = remainingTime > 0
+      ? policeService.calculateJailBail(player.wantedLevel || 0, remainingTime)
+      : 0;
 
     return res.status(200).json({
       jailed: remainingTime > 0,
       remainingTime,
+      bailAmount,
     });
   } catch {
     return res.status(500).json({
@@ -131,24 +137,12 @@ router.post('/pay-bail', authenticate, async (req: AuthRequest, res: Response) =
       });
     }
 
-    const cooldownRemaining = await getPrisonActionCooldownRemaining(
-      playerId,
-      'prison.cooldown.bail'
-    );
-    if (cooldownRemaining > 0) {
-      return res.status(429).json({
-        event: 'error.cooldown',
-        params: {
-          actionType: 'prison_bail',
-          remainingSeconds: cooldownRemaining,
-          message: `Wait ${cooldownRemaining} seconds before paying bail again`,
-        },
-      });
-    }
-
     // Get player data for bail calculation
     const player = await playerService.getPlayer(playerId);
-    const bail = policeService.calculateBail(player.wantedLevel || 0);
+    const bail = policeService.calculateJailBail(
+      player.wantedLevel || 0,
+      jailTime,
+    );
 
     if (player.money < bail) {
       return res.status(400).json({
@@ -161,8 +155,7 @@ router.post('/pay-bail', authenticate, async (req: AuthRequest, res: Response) =
     }
 
     // Pay bail
-    await policeService.payBail(playerId);
-    await markPrisonActionCooldown(playerId, 'prison.cooldown.bail');
+    await policeService.payBail(playerId, jailTime);
 
     // Get updated player data
     const updatedPlayer = await playerService.getPlayer(playerId);

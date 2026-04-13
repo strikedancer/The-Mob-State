@@ -137,6 +137,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/help_screen.dart`
 - [ ] Chat tijdzone fix: chat- en conversatie-timestamps worden nu lokaal gerenderd via `DateTime.parse(...).toLocal()` zodat berichttijden online niet meer ~2 uur achterlopen
   - Bestanden: `client/lib/models/direct_message.dart`, `client/lib/models/crew_message.dart`
+- [ ] Jail/bail direct-refresh fix: eigen borgbetaling (`/player/pay-bail`) gebruikt geen prison cooldown meer en jail overlay forceert direct release-refresh (timer stop + player refresh), zodat geld en vrijlating meteen zichtbaar zijn
+  - Bestanden: `backend/src/routes/player.ts`, `client/lib/widgets/jail_screen.dart`
+- [ ] Dynamische borgprijs fix: borg tijdens celstraf schaalt nu met resterende jailtijd (tijd-base) naast wanted-level base, zodat lange straffen (bijv. 2 uur) duurder zijn dan korte straffen (bijv. 10 min)
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`, `client/lib/widgets/jail_screen.dart`
 - [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
   - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet

@@ -89,6 +89,13 @@ class _JailOverlayState extends State<JailOverlay> {
     });
   }
 
+  int _calculateBailAmount() {
+    final wantedBase = (widget.wantedLevel ?? 0) * 1000;
+    final remainingMinutes = (_remainingSeconds / 60).ceil();
+    final timeBase = remainingMinutes * 500;
+    return wantedBase > timeBase ? wantedBase : timeBase;
+  }
+
   String _formatTime() {
     final hours = _remainingSeconds ~/ 3600;
     final minutes = (_remainingSeconds % 3600) ~/ 60;
@@ -121,10 +128,16 @@ class _JailOverlayState extends State<JailOverlay> {
               wantedLevel: playerData['wantedLevel'] as int?,
             );
           }
+          await authProvider.refreshPlayer();
 
           final amount = data['params']?['amount'] as int? ?? 0;
           final l10n = AppLocalizations.of(context)!;
           final isDutch = l10n.localeName == 'nl';
+
+          _timer?.cancel();
+          setState(() {
+            _remainingSeconds = 0;
+          });
 
           _showTopRightNotification(
             isDutch
@@ -331,8 +344,8 @@ class _JailOverlayState extends State<JailOverlay> {
                                   : const Icon(Icons.attach_money),
                               label: Text(
                                 isDutch
-                                    ? 'Betaal Borg €${widget.wantedLevel! * 1000}'
-                                    : 'Pay Bail €${widget.wantedLevel! * 1000}',
+                                ? 'Betaal Borg €${_calculateBailAmount()}'
+                                : 'Pay Bail €${_calculateBailAmount()}',
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
