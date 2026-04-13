@@ -1950,7 +1950,7 @@ function App() {
   }
 
   const handleResetAllPlayersProgress = async () => {
-    if (adminRole !== 'SUPER_ADMIN' || isResettingAllPlayersProgress) return
+    if (!canManagePlayers || isResettingAllPlayersProgress) return
 
     const reason = window.prompt(
       l('Geef een reden voor globale reset (minimaal 5 tekens):', 'Provide a reason for global reset (minimum 5 characters):'),
@@ -2980,7 +2980,7 @@ function App() {
                   </button>
                   <button
                     className="btn btn-danger btn-sm"
-                    disabled={adminRole !== 'SUPER_ADMIN' || isResettingAllPlayersProgress}
+                    disabled={!canManagePlayers || isResettingAllPlayersProgress}
                     onClick={handleResetAllPlayersProgress}
                   >
                     {isResettingAllPlayersProgress
@@ -3224,6 +3224,17 @@ function App() {
 
                         {/* Back button */}
                         <div className="ms-auto flex-shrink-0 player-detail-back-wrap">
+                          {canManagePlayers && (
+                            <button
+                              className="btn btn-danger btn-sm me-2"
+                              onClick={handleResetPlayerProgress}
+                              disabled={isResettingPlayerProgress}
+                            >
+                              {isResettingPlayerProgress
+                                ? <><span className="spinner-border spinner-border-sm me-1" />{l('Resetten...', 'Resetting...')}</>
+                                : <><i className="ph-warning me-1" />{l('Reset speler', 'Reset player')}</>}
+                            </button>
+                          )}
                           <button className="btn btn-outline-secondary btn-sm" onClick={goBackToPlayers}>
                             <i className="ph-arrow-left me-1" />{l('Terug', 'Back')}
                           </button>

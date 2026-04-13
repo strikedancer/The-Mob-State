@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Admin reset-all permissie verruimd: globale spelers-reset is nu beschikbaar voor beheerrollen (viewer blijft geblokkeerd), zodat resetknop niet alleen super-admin zichtbaar/bruikbaar is
+  - Bestand: `backend/src/routes/admin.ts`
 - [ ] Prostitutie work-shift limiet: 8-uurs cooldown toegevoegd op handmatige `/prostitutes/:id/work-shift`; bij overwerken (te veel shifts binnen 24 uur) kan een prostituee uitgeput raken en weglopen
   - Bestand: `backend/src/services/prostituteService.ts`
 - [ ] Prison lijst fix: `/player/prisoners` bevat nu ook de ingelogde speler (niet langer weggefilterd), zodat je jezelf ziet als je vastzit
@@ -101,6 +103,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
+  - Bestand: `client/lib/screens/property_screen.dart`
 - [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`
   - Bestand: `client/lib/screens/drug_environment_screen.dart`
 - [ ] Prison UI opgeschoond: regel met beschikbaar saldo verwijderd en acties op je eigen prisoner-row uitgeschakeld; eigen row wordt gemarkeerd als `Jij/You`

@@ -1516,9 +1516,13 @@ router.post(
 router.post(
   '/players/reset-all',
   auditLog({ action: 'RESET_ALL_PLAYERS_PROGRESS', targetType: 'Player' }),
-  requireAdminRole(AdminRole.SUPER_ADMIN),
   async (req: AdminRequest, res) => {
     try {
+      const adminRole = req.admin?.role;
+      if (!adminRole || adminRole === AdminRole.VIEWER) {
+        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot reset players' });
+      }
+
       const { reason } = resetPlayerProgressSchema.parse(req.body || {});
       const players = await prisma.player.findMany({ select: { id: true, username: true } });
 

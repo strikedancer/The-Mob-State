@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/property.dart';
+import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../widgets/property_card.dart';
 import './nightclub_screen.dart';
@@ -54,14 +56,28 @@ class PropertyScreenState extends State<PropertyScreen>
     });
 
     try {
-      final response = await _apiClient.get('/properties');
+      final authProvider = context.read<AuthProvider>();
+      final country = authProvider.currentPlayer?.currentCountry ?? 'netherlands';
+      final response = await _apiClient.get('/properties/available/$country');
       final data = jsonDecode(response.body);
 
       // Backend uses event-based responses
       if (data['properties'] != null) {
         final List<dynamic> properties = data['properties'] ?? [];
+        final propertyDefinitions = properties
+            .whereType<Map>()
+            .map((entry) {
+              final mapEntry = entry.cast<String, dynamic>();
+              final nested = mapEntry['property'];
+              if (nested is Map) {
+                return nested.cast<String, dynamic>();
+              }
+              return mapEntry;
+            })
+            .toList(growable: false);
+
         setState(() {
-          _availableProperties = properties
+          _availableProperties = propertyDefinitions
               .map((json) => PropertyDefinition.fromJson(json))
               .where((property) => !_hiddenPropertyTypes.contains(property.id))
               .toList();
