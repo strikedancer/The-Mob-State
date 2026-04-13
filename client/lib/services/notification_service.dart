@@ -15,6 +15,7 @@ class NotificationService {
 
   String? _fcmToken;
   String? get fcmToken => _fcmToken;
+  bool _listenersRegistered = false;
 
   static const Set<String> _cryptoNotificationTypes = {
     'crypto_trade_buy',
@@ -112,29 +113,36 @@ class NotificationService {
         await _registerTokenWithBackend(_fcmToken!);
       }
 
-      // Listen for token refresh
-      _messaging.onTokenRefresh.listen((newToken) {
-        print('[NotificationService] Token refreshed: $newToken');
-        _fcmToken = newToken;
-        _registerTokenWithBackend(newToken);
-      });
+      if (!_listenersRegistered) {
+        // Listen for token refresh
+        _messaging.onTokenRefresh.listen((newToken) {
+          print('[NotificationService] Token refreshed: $newToken');
+          _fcmToken = newToken;
+          _registerTokenWithBackend(newToken);
+        });
 
-      // Handle foreground messages - ONLY for Android local notifications
-      // Web notifications are handled by the service worker, so skip the duplicate
-      if (!kIsWeb) {
-        FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+        // Handle foreground messages - ONLY for Android local notifications
+        // Web notifications are handled by the service worker, so skip the duplicate
+        if (!kIsWeb) {
+          FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+        }
+
+        // Handle background messages
+        FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler,
+        );
+
+        // Handle notification taps when app is in background/terminated
+        FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
+        _listenersRegistered = true;
       }
-
-      // Handle background messages
-      FirebaseMessaging.onBackgroundMessage(
-        _firebaseMessagingBackgroundHandler,
-      );
-
-      // Handle notification taps when app is in background/terminated
-      FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
     } else {
       print('[NotificationService] Permission denied');
     }
+  }
+
+  Future<NotificationSettings> getNotificationSettings() {
+    return _messaging.getNotificationSettings();
   }
 
   Future<void> registerCurrentToken() async {

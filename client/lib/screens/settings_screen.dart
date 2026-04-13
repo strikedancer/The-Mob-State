@@ -3,10 +3,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import '../config/app_config.dart';
 import '../providers/locale_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../services/user_preferences_service.dart';
+import '../services/notification_service.dart';
 import '../utils/top_right_notification.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -19,6 +21,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final NotificationService _notificationService = NotificationService();
   bool _isLoading = true;
   Map<String, dynamic>? _settings;
   List<String> _freeAvatars = [];
@@ -37,6 +40,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _inAppCryptoLeaderboard = true;
   String _selectedLanguage = 'nl';
   String? _error;
+  AuthorizationStatus? _pushAuthorizationStatus;
+  bool _pushTokenRegistered = false;
+  bool _isEnablingPush = false;
 
   bool get _isDutch => Localizations.localeOf(context).languageCode == 'nl';
 
@@ -115,6 +121,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {
         _isLoading = false;
       });
+
+      await _loadPushPermissionStatus();
     } catch (e) {
       setState(() {
         _error = e.toString();
@@ -475,6 +483,113 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  Future<void> _loadPushPermissionStatus() async {
+    try {
+      final settings = await _notificationService.getNotificationSettings();
+      if (!mounted) return;
+      setState(() {
+        _pushAuthorizationStatus = settings.authorizationStatus;
+        _pushTokenRegistered =
+            _notificationService.fcmToken != null &&
+            _notificationService.fcmToken!.isNotEmpty;
+      });
+    } catch (_) {
+      // Leave existing status untouched if the platform does not expose it.
+    }
+  }
+
+  Future<void> _enablePushNotifications() async {
+    if (_isEnablingPush) return;
+
+    setState(() {
+      _isEnablingPush = true;
+    });
+
+    try {
+      await _notificationService.initialize();
+      await _notificationService.registerCurrentToken();
+      await _loadPushPermissionStatus();
+
+      if (!mounted) return;
+
+      final status = _pushAuthorizationStatus;
+      final authorized =
+          status == AuthorizationStatus.authorized ||
+          status == AuthorizationStatus.provisional;
+
+      if (authorized) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _isDutch
+                  ? 'Pushmeldingen geactiveerd. Nieuwe meldingen worden nu ontvangen.'
+                  : 'Push notifications enabled. New notifications will now be received.',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _isDutch
+                  ? 'Push staat uit in je browser/iPhone instellingen. Zet meldingen aan voor deze app.'
+                  : 'Push is disabled in your browser/iPhone settings. Enable notifications for this app.',
+            ),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _isDutch
+                  ? 'Push activeren mislukt: $e'
+                  : 'Failed to enable push notifications: $e',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isEnablingPush = false;
+        });
+      }
+    }
+  }
+
+  String _pushStatusText() {
+    switch (_pushAuthorizationStatus) {
+      case AuthorizationStatus.authorized:
+        return _isDutch
+            ? 'Toestemming: toegestaan'
+            : 'Permission: allowed';
+      case AuthorizationStatus.provisional:
+        return _isDutch
+            ? 'Toestemming: voorlopig'
+            : 'Permission: provisional';
+      case AuthorizationStatus.denied:
+        return _isDutch
+            ? 'Toestemming: geweigerd'
+            : 'Permission: denied';
+      case AuthorizationStatus.notDetermined:
+        return _isDutch
+            ? 'Toestemming: nog niet gevraagd'
+            : 'Permission: not requested yet';
+      default:
+        return _isDutch
+            ? 'Toestemming: onbekend'
+            : 'Permission: unknown';
+    }
+  }
+
   void _showAvatarPicker() {
     final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
@@ -794,6 +909,85 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   value: _showVideos,
                   onChanged: _updateVideoSettings,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _isDutch ? 'Push Meldingen' : 'Push Notifications',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.notifications_active,
+                            color: Colors.lightBlue,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              _isDutch
+                                  ? 'Systeemmeldingen voor app'
+                                  : 'System notifications for app',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(_pushStatusText()),
+                      const SizedBox(height: 4),
+                      Text(
+                        _isDutch
+                            ? (_pushTokenRegistered
+                                  ? 'Device-token geregistreerd op server'
+                                  : 'Nog geen device-token geregistreerd')
+                            : (_pushTokenRegistered
+                                  ? 'Device token registered on server'
+                                  : 'No device token registered yet'),
+                        style: TextStyle(
+                          color: _pushTokenRegistered
+                              ? Colors.green
+                              : Colors.orange,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        _isDutch
+                            ? 'Gebruik deze knop om browser/iPhone permissie opnieuw te vragen en je push-token te registreren.'
+                            : 'Use this button to request browser/iPhone permission again and register your push token.',
+                        style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                      ),
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton.icon(
+                          onPressed: _isEnablingPush
+                              ? null
+                              : _enablePushNotifications,
+                          icon: const Icon(Icons.notifications),
+                          label: Text(
+                            _isEnablingPush
+                                ? (_isDutch ? 'Bezig...' : 'Working...')
+                                : (_isDutch
+                                      ? 'Push inschakelen'
+                                      : 'Enable push'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),

@@ -97,6 +97,7 @@ Implementatievoorkeur:
 - Bij lange beheerpagina's: groepeer secties in tabs i.p.v. eindeloze verticale stapels.
 - Gebruik waar mogelijk visuele selectiekaarten (images) voor entities zoals staff/items; altijd met icon-fallback.
 - Gebruik responsive/clamped hoogtes voor tabpanelen i.p.v. één vaste hoogte.
+- Voor web/iOS homescreen push: zorg altijd voor een expliciete in-app permissie-entrypoint (bijv. in Settings) die `requestPermission` triggert op user gesture; vertrouw niet alleen op login/startup-init.
 
 ## Flutter Web Asset Pad Conventie (Verplicht)
 
