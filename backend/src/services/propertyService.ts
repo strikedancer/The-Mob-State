@@ -414,12 +414,24 @@ class PropertyService {
       orderBy: { purchasedAt: 'desc' },
     });
 
-    const residentialCountsByCountry = properties
-      .filter((prop) => this.isScaledResidentialProperty(prop.propertyType))
-      .reduce<Record<string, number>>((acc, prop) => {
-        acc[prop.countryId] = (acc[prop.countryId] || 0) + 1;
-        return acc;
-      }, {});
+    // Build per-property purchase-order rank within each country.
+    // Apartment bought 1st → rank 1 (cheapest upgrades), 2nd → rank 2, etc.
+    const residentialByCountry: Record<string, Array<{ id: number; purchasedAt: Date }>> = {};
+    for (const prop of properties) {
+      if (this.isScaledResidentialProperty(prop.propertyType)) {
+        if (!residentialByCountry[prop.countryId]) {
+          residentialByCountry[prop.countryId] = [];
+        }
+        residentialByCountry[prop.countryId].push({ id: prop.id, purchasedAt: prop.purchasedAt });
+      }
+    }
+    const residentialRankByPropertyId: Record<number, number> = {};
+    for (const props of Object.values(residentialByCountry)) {
+      const sorted = [...props].sort((a, b) => a.purchasedAt.getTime() - b.purchasedAt.getTime());
+      sorted.forEach((p, idx) => {
+        residentialRankByPropertyId[p.id] = idx + 1;
+      });
+    }
 
     return properties
       .filter((prop) => this.isPropertyVisibleInPropertiesModule(prop.propertyType))
@@ -446,7 +458,7 @@ class PropertyService {
         );
         const baseNextCost = nextUpgrade?.cost || null;
         if (baseNextCost && this.isScaledResidentialProperty(prop.propertyType)) {
-          const ownedCountInCountry = residentialCountsByCountry[prop.countryId] || 1;
+          const ownedCountInCountry = residentialRankByPropertyId[prop.id] ?? 1;
           nextUpgradeCost = this.getScaledUpgradeCost(baseNextCost, ownedCountInCountry);
         } else {
           nextUpgradeCost = baseNextCost;
