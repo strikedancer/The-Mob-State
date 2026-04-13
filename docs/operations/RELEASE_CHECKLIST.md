@@ -268,7 +268,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
 - [ ] **[ONTWERP GEREED — IMPLEMENTATIE VEREIST]** Aviatie-systeem: privévliegtuigen kopen, reistijdbonus en eigen-voertuig smokkelkanaal
   - Vliegtuigtypes: Cessna 172 (€250k, 20 slots, −15% reistijd), King Air (€750k, 50 slots, −25%), Gulfstream G200 (€2,5M, 80 slots, −35%), Boeing 737 Cargo (€10M, 200 slots, −30%)
-  - Gating via bestaande `aviation` education track (level 2/3/4/5), server-side via `educationService.checkGate`
+  - Gating via bestaande `aviation` education track: **alle pilot-opleidingen verplicht vóór aankoop** (aviation level 5 + alle certificaten), server-side afgedwongen in `aviationService.purchaseAircraft`
   - Cargo-slot systeem: auto=10, motor=5, boot=∞ (past niet in vliegtuig), drugs/wapen/handelswaar=1-2
   - Smokkelkanaal uitgebreid: eigen vliegtuig/auto/motor/boot als kanaalopties met risicoreductie + confiscatierisico
   - Travel bonus zichtbaar in Travel scherm vóór vertrek

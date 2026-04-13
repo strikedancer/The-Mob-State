@@ -215,6 +215,15 @@ router.post(
         });
       }
 
+      if (error.message === 'PILOT_TRAINING_INCOMPLETE') {
+        return res.status(400).json({
+          success: false,
+          error: 'PILOT_TRAINING_INCOMPLETE',
+          message:
+            'Je moet eerst alle pilot-opleidingen afronden (Aviation level 5 + alle certificaten) voordat je een vliegtuig kunt kopen.',
+        });
+      }
+
       if (error.message === 'RANK_TOO_LOW') {
         return res.status(400).json({
           success: false,

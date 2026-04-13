@@ -30,22 +30,14 @@ Dit protocol omvat ook het **eigen-voertuig smokkelkanaal** voor alle vervoersty
 
 ## Pilot Education Gate (Aviation Track)
 
-De bestaande school `aviation` track (maxLevel 5) wordt de enige toegang tot vliegtuigaankopen.
+De bestaande school `aviation` track (maxLevel 5) is een **harde server-side voorwaarde** voor elke vliegtuigkoop.
 
-Vereiste education gates toe te voegen aan `educationService.ts → EDUCATION_GATES`:
+Regel:
+- Vliegtuigkoop is pas toegestaan als de speler **alle pilot-opleidingen** heeft afgerond:
+  - `aviation` level = `maxLevel` (momenteel 5)
+  - alle aviation-certificeringen behaald (`flight_basic` + `flight_commercial`)
 
-```typescript
-{ id: 'gate_asset_aircraft_cessna',   targetType: 'asset', targetId: 'aircraft_cessna',
-  requirements: { trackId: 'aviation', level: 2, certifications: ['flight_basic'] } },
-{ id: 'gate_asset_aircraft_king_air', targetType: 'asset', targetId: 'aircraft_king_air',
-  requirements: { trackId: 'aviation', level: 3 } },
-{ id: 'gate_asset_aircraft_gulfstream', targetType: 'asset', targetId: 'aircraft_gulfstream',
-  requirements: { trackId: 'aviation', level: 4, certifications: ['flight_commercial'] } },
-{ id: 'gate_asset_aircraft_737',      targetType: 'asset', targetId: 'aircraft_737',
-  requirements: { trackId: 'aviation', level: 5 } },
-```
-
-Backend valideert via `educationService.checkGate(playerId, gateId)` bij elke aankoop. Nooit alleen client-side gate.
+Deze check draait in backend tijdens `purchaseAircraft` en mag nooit alleen client-side afgedwongen worden.
 
 ## Cargo Slot Systeem
 

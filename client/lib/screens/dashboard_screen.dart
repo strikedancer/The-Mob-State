@@ -19,6 +19,7 @@ import '../widgets/icu_overlay.dart';
 import 'crime_screen.dart';
 import 'jobs_screen.dart';
 import 'travel_screen.dart';
+import 'aviation_screen.dart';
 import 'crew_screen.dart';
 import 'friends_screen.dart';
 import 'inventory_screen.dart';
@@ -61,6 +62,7 @@ enum _WebSection {
   help,
   settings,
   travel,
+  aviation,
   crew,
   friends,
   inventory,
@@ -686,6 +688,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: Icons.flight,
             label: l10n.travel,
             section: _WebSection.travel,
+            badge: 0,
+          ),
+          (
+            icon: Icons.airplanemode_active,
+            label: _tr('Luchtvaart', 'Aviation'),
+            section: _WebSection.aviation,
             badge: 0,
           ),
           (
@@ -1411,6 +1419,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const SettingsScreen(embedded: true);
       case _WebSection.travel:
         return const TravelScreen();
+      case _WebSection.aviation:
+        return const AviationScreen();
       case _WebSection.crew:
         return const CrewScreen();
       case _WebSection.friends:
@@ -1740,6 +1750,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const TravelScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
+                                  icon: Icons.airplanemode_active,
+                                  label: _tr('Luchtvaart', 'Aviation'),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const AviationScreen(),
                                     ),
                                   ),
                                 ),

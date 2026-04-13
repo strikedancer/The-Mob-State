@@ -7,6 +7,7 @@
 
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
+import { educationService } from './educationService';
 import aircraft from '../../content/aircraft.json';
 import config from '../config';
 
@@ -39,6 +40,28 @@ export interface AircraftPurchaseResult {
   aircraftName: string;
   cost: number;
   remainingMoney: number;
+}
+
+async function assertPilotTrainingCompleted(playerId: number): Promise<void> {
+  const profile = await educationService.getPlayerEducationProfile(playerId);
+  const aviationTrack = educationService.getTrack('aviation');
+
+  if (!aviationTrack) {
+    throw new Error('AVIATION_TRACK_NOT_FOUND');
+  }
+
+  const aviationProgress = profile.tracks['aviation'] ?? { level: 0, xp: 0 };
+  const earnedCertifications = new Set(profile.certifications);
+  const requiredCertificationIds = aviationTrack.certifications.map((certification) => certification.id);
+  const hasAllCertifications = requiredCertificationIds.every((certificationId) =>
+    earnedCertifications.has(certificationId)
+  );
+
+  const hasCompletedTrack = aviationProgress.level >= aviationTrack.maxLevel;
+
+  if (!hasCompletedTrack || !hasAllCertifications) {
+    throw new Error('PILOT_TRAINING_INCOMPLETE');
+  }
 }
 
 // License pricing
@@ -175,6 +198,9 @@ export async function purchaseAircraft(
   if (!aircraftDef) {
     throw new Error('INVALID_AIRCRAFT_TYPE');
   }
+
+  // Hard gate: player must complete all pilot training before buying any aircraft.
+  await assertPilotTrainingCompleted(playerId);
 
   // Check if player has license
   const license = await getLicense(playerId);
