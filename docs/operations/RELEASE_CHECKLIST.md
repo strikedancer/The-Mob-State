@@ -266,6 +266,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Spelers zonder opleiding (geen `law` track) behouden 35% basiskans ongewijzigd (fallback naar 0)
 - [ ] Aviation image generation pipeline toegevoegd: nieuw Leonardo-script genereert aircraft cutouts (`cessna`, `king_air`, `gulfstream`, `cargo_737`) plus aviation backgrounds (`aviation_bg_desktop/tablet/mobile`) direct naar externe runtime map `runtime/client-images/*`, zodat client build klein blijft
   - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
+- [ ] Prison buyout/jailbreak transactiefix: `world_events.params` in prison flows wordt nu correct als JSON-string opgeslagen (`prison.buyout_success`, `prison.jailbreak_success`, cooldown-markers) i.p.v. object payloads, zodat buyout/jailbreak transacties niet meer kunnen falen op Prisma type mismatch
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`
 - [ ] **[ONTWERP GEREED — IMPLEMENTATIE VEREIST]** Aviatie-systeem: privévliegtuigen kopen, reistijdbonus en eigen-voertuig smokkelkanaal
   - Vliegtuigtypes: Cessna 172 (€250k, 20 slots, −15% reistijd), King Air (€750k, 50 slots, −25%), Gulfstream G200 (€2,5M, 80 slots, −35%), Boeing 737 Cargo (€10M, 200 slots, −30%)
   - Gating via bestaande `aviation` education track: **alle pilot-opleidingen verplicht vóór aankoop** (aviation level 5 + alle certificaten), server-side afgedwongen in `aviationService.purchaseAircraft`

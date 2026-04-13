@@ -77,7 +77,7 @@ async function markPrisonActionCooldown(playerId: number, eventKey: string): Pro
     data: {
       playerId,
       eventKey,
-      params: {},
+      params: JSON.stringify({}),
     },
   });
 }

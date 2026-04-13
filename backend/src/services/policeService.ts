@@ -434,10 +434,10 @@ export async function buyOutPrisoner(
       data: {
         eventKey: 'prison.buyout_success',
         playerId: buyerId,
-        params: {
+        params: JSON.stringify({
           targetId,
           bail,
-        },
+        }),
       },
     });
   });
@@ -553,10 +553,10 @@ export async function attemptJailbreak(
       data: {
         eventKey: 'prison.jailbreak_success',
         playerId: rescuerId,
-        params: {
+        params: JSON.stringify({
           targetId: jailedPlayerId,
           crewId: crewId ?? null,
-        },
+        }),
       },
     });
 
