@@ -716,6 +716,36 @@ export const adminService = {
     return response.json();
   },
 
+  async resetPlayerProgress(playerId: number, reason?: string) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/players/${playerId}/reset`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ reason }),
+    });
+
+    await ensureOk(response, 'Failed to reset player progress');
+    return response.json();
+  },
+
+  async resetAllPlayersProgress(reason?: string) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/players/reset-all`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ reason }),
+    });
+
+    await ensureOk(response, 'Failed to reset all players progress');
+    return response.json();
+  },
+
   async getConfig() {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/config`, {

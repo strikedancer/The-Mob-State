@@ -424,19 +424,6 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                         childAspectRatio: isMobile ? 2.2 : (isTablet ? 1.45 : 1.18),
                         children: [
                           _DrugEntryCard(
-                            icon: Icons.precision_manufacturing,
-                            eyebrow: _tr('Pijplijn', 'Pipeline'),
-                            title: _tr('Productie', 'Production'),
-                            subtitle: _tr('Start batches, volg timers en verzamel output met kwaliteitsrollen.', 'Start batches, track timers and collect output with quality rolls.'),
-                            color: const Color(0xFF35C46A),
-                            duration: const Duration(milliseconds: 520),
-                            onTap: () => _openScreen(
-                              context,
-                              const DrugProductionScreen(),
-                              _DrugWebSubview.production,
-                            ),
-                          ),
-                          _DrugEntryCard(
                             icon: Icons.factory_outlined,
                             eyebrow: _tr('Infrastructuur', 'Infrastructure'),
                             title: _tr('Faciliteiten', 'Facilities'),
@@ -447,6 +434,19 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                               context,
                               const DrugFacilityScreen(),
                               _DrugWebSubview.facilities,
+                            ),
+                          ),
+                          _DrugEntryCard(
+                            icon: Icons.precision_manufacturing,
+                            eyebrow: _tr('Pijplijn', 'Pipeline'),
+                            title: _tr('Productie', 'Production'),
+                            subtitle: _tr('Start batches, volg timers en verzamel output met kwaliteitsrollen.', 'Start batches, track timers and collect output with quality rolls.'),
+                            color: const Color(0xFF35C46A),
+                            duration: const Duration(milliseconds: 520),
+                            onTap: () => _openScreen(
+                              context,
+                              const DrugProductionScreen(),
+                              _DrugWebSubview.production,
                             ),
                           ),
                           _DrugEntryCard(

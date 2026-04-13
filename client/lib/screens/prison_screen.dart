@@ -34,7 +34,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
   bool _isLoading = true;
   bool _isActing = false;
   String? _error;
-  int _viewerMoney = 0;
+  int _viewerId = 0;
   List<Map<String, dynamic>> _prisoners = [];
 
   @override
@@ -157,7 +157,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
             .toList();
 
         setState(() {
-          _viewerMoney = (data['viewerMoney'] as num?)?.toInt() ?? 0;
+          _viewerId = (data['viewerId'] as num?)?.toInt() ?? 0;
           _prisoners = prisoners;
         });
       } else {
@@ -412,20 +412,6 @@ class _PrisonScreenState extends State<PrisonScreen> {
             )
           : Column(
               children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  color: Colors.grey.shade900,
-                  child: Text(
-                    isDutch
-                        ? 'Beschikbaar geld: €$_viewerMoney'
-                        : 'Available money: €$_viewerMoney',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
                 Expanded(
                   child: _prisoners.isEmpty
                       ? Center(
@@ -448,6 +434,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                 (prisoner['playerId'] as num?)?.toInt() ?? 0;
                             final username =
                                 prisoner['username'] as String? ?? '-';
+                            final isCurrentViewer =
+                              _viewerId > 0 && playerId == _viewerId;
                             final rank =
                                 (prisoner['rank'] as num?)?.toInt() ?? 1;
                             final remainingSeconds =
@@ -483,7 +471,13 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
-                                      isDutch ? 'Rank: $rank' : 'Rank: $rank',
+                                      isCurrentViewer
+                                      ? (isDutch
+                                        ? 'Rank: $rank · Jij'
+                                        : 'Rank: $rank · You')
+                                      : (isDutch
+                                        ? 'Rank: $rank'
+                                        : 'Rank: $rank'),
                                     ),
                                     Text(
                                       isDutch
@@ -501,7 +495,9 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                         Expanded(
                                           child: ElevatedButton.icon(
                                             onPressed:
-                                                _isActing || playerId == 0
+                                              _isActing ||
+                                                playerId == 0 ||
+                                                isCurrentViewer
                                                 ? null
                                                 : () => _buyOut(playerId),
                                             icon: const Icon(Icons.payments),
@@ -514,7 +510,9 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                         Expanded(
                                           child: OutlinedButton.icon(
                                             onPressed:
-                                                _isActing || playerId == 0
+                                              _isActing ||
+                                                playerId == 0 ||
+                                                isCurrentViewer
                                                 ? null
                                                 : () => _attemptJailbreak(
                                                     playerId,

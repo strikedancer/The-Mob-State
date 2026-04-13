@@ -153,6 +153,69 @@ const bulkPlayerActionSchema = z.object({
   amount: z.number().int().positive().optional(),
 });
 
+const resetPlayerProgressSchema = z.object({
+  reason: z.string().min(5).max(500).optional(),
+});
+
+async function resetPlayerProgressInTransaction(tx: any, playerId: number) {
+  await tx.actionCooldown.deleteMany({ where: { playerId } });
+  await tx.crimeAttempt.deleteMany({ where: { playerId } });
+  await tx.jobAttempt.deleteMany({ where: { playerId } });
+  await tx.inventory.deleteMany({ where: { playerId } });
+  await tx.vehicleInventory.deleteMany({ where: { playerId } });
+  await tx.ammoInventory.deleteMany({ where: { playerId } });
+  await tx.weaponInventory.deleteMany({ where: { playerId } });
+  await tx.playerTools.deleteMany({ where: { playerId } });
+  await tx.property.deleteMany({ where: { playerId } });
+  await tx.prostitute.deleteMany({ where: { playerId } });
+  await tx.drugProduction.deleteMany({ where: { playerId } });
+  await tx.productionMaterial.deleteMany({ where: { playerId } });
+  await tx.playerActivity.deleteMany({ where: { playerId } });
+  await tx.worldEvent.deleteMany({ where: { playerId } });
+  await tx.crypto_orders.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_transactions.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_holdings.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_mission_progress.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_leaderboard_rewards.deleteMany({ where: { player_id: playerId } });
+  await tx.bankAccount.updateMany({ where: { playerId }, data: { balance: 0 } });
+  await tx.playerBackpack.deleteMany({ where: { playerId } }).catch(() => undefined);
+  await tx.playerSelectedVehicle.deleteMany({ where: { playerId } }).catch(() => undefined);
+
+  await tx.player.update({
+    where: { id: playerId },
+    data: {
+      money: 0,
+      health: 100,
+      hunger: 100,
+      thirst: 100,
+      rank: 1,
+      xp: 0,
+      currentCountry: 'netherlands',
+      fbiHeat: 0,
+      wantedLevel: 0,
+      travelingTo: null,
+      travelRoute: null,
+      currentTravelLeg: 0,
+      travelStartedAt: null,
+      killCount: 0,
+      isHunted: false,
+      hitCount: 0,
+      jailRelease: null,
+      intensiveCareUntil: null,
+      inventory_slots_used: 0,
+      max_inventory_slots: 5,
+      lastAmmoPurchaseAt: null,
+      lastHospitalVisit: null,
+      reputation: 0,
+      premiumCredits: 0,
+      lastProstituteRecruitment: null,
+      drugHeat: 0,
+      autoCollectDrugs: false,
+      lastDrugActionAt: null,
+    },
+  });
+}
+
 const vehicleStatsSchema = z.object({
   speed: z.number().int().min(0).max(100),
   armor: z.number().int().min(0).max(100),
@@ -1402,6 +1465,86 @@ router.post(
       res.status(500).json({ error: 'Failed to manage player' });
     }
   }
+);
+
+router.post(
+  '/players/:playerId/reset',
+  auditLog({ action: 'RESET_PLAYER_PROGRESS', targetType: 'Player' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const adminRole = req.admin?.role;
+      if (!adminRole || adminRole === AdminRole.VIEWER) {
+        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot reset players' });
+      }
+
+      const playerId = Number(req.params.playerId);
+      if (!Number.isFinite(playerId) || playerId <= 0) {
+        return res.status(400).json({ error: 'Invalid player id' });
+      }
+
+      const { reason } = resetPlayerProgressSchema.parse(req.body || {});
+      const target = await prisma.player.findUnique({ where: { id: playerId }, select: { id: true, username: true } });
+      if (!target) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+
+      await prisma.$transaction(async (tx) => {
+        await resetPlayerProgressInTransaction(tx, playerId);
+      });
+
+      res.locals.auditLogDetails = {
+        playerId,
+        username: target.username,
+        reason: reason || null,
+      };
+
+      return res.json({
+        message: 'Player progress reset completed',
+        playerId,
+        username: target.username,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin reset player error:', error);
+      return res.status(500).json({ error: 'Failed to reset player progress' });
+    }
+  },
+);
+
+router.post(
+  '/players/reset-all',
+  auditLog({ action: 'RESET_ALL_PLAYERS_PROGRESS', targetType: 'Player' }),
+  requireAdminRole(AdminRole.SUPER_ADMIN),
+  async (req: AdminRequest, res) => {
+    try {
+      const { reason } = resetPlayerProgressSchema.parse(req.body || {});
+      const players = await prisma.player.findMany({ select: { id: true, username: true } });
+
+      for (const player of players) {
+        await prisma.$transaction(async (tx) => {
+          await resetPlayerProgressInTransaction(tx, player.id);
+        });
+      }
+
+      res.locals.auditLogDetails = {
+        affectedPlayers: players.length,
+        reason: reason || null,
+      };
+
+      return res.json({
+        message: 'All player progress has been reset',
+        affectedPlayers: players.length,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin reset all players error:', error);
+      return res.status(500).json({ error: 'Failed to reset all player progress' });
+    }
+  },
 );
 
 /**

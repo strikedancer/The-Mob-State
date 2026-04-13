@@ -41,7 +41,10 @@ router.get('/', async (_, res: Response) => {
 router.get('/available/:countryId', authenticate, async (req: AuthRequest, res: Response) => {
   const { countryId } = req.params;
 
-  const availableProperties = await propertyService.getAvailableProperties(String(countryId));
+  const availableProperties = await propertyService.getAvailableProperties(
+    String(countryId),
+    req.player!.id,
+  );
 
   const properties = availableProperties.map((entry) => ({
     ...entry,

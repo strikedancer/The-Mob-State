@@ -31,6 +31,7 @@ interface PropertiesData {
 class PropertyService {
   private properties: PropertyDefinition[] = [];
   private readonly hiddenPropertyIds = new Set(['nightclub', 'shop']);
+  private readonly scaledResidentialTypes = new Set(['house', 'apartment']);
 
   constructor() {
     this.loadProperties();
@@ -54,6 +55,23 @@ class PropertyService {
     return !this.hiddenPropertyIds.has(propertyId);
   }
 
+  private isScaledResidentialProperty(propertyId: string): boolean {
+    return this.scaledResidentialTypes.has(propertyId);
+  }
+
+  private getScaledPurchasePrice(basePrice: number, existingCountInCountry: number): number {
+    const safeCount = Math.max(0, Math.floor(existingCountInCountry));
+    const multiplier = 1 + (safeCount * 0.2);
+    return Math.max(basePrice, Math.round(basePrice * multiplier));
+  }
+
+  private getScaledUpgradeCost(baseCost: number, ownedCountInCountry: number): number {
+    const safeCount = Math.max(1, Math.floor(ownedCountInCountry));
+    const extraOwned = Math.max(0, safeCount - 1);
+    const multiplier = 1 + (extraOwned * 0.12);
+    return Math.max(baseCost, Math.round(baseCost * multiplier));
+  }
+
   /**
    * Get property definition by ID
    */
@@ -65,7 +83,7 @@ class PropertyService {
    * Get available properties for a specific country
    * Returns property availability status
    */
-  async getAvailableProperties(countryId: string): Promise<
+  async getAvailableProperties(countryId: string, playerId?: number): Promise<
     Array<{
       property: PropertyDefinition;
       available: boolean;
@@ -75,6 +93,17 @@ class PropertyService {
     }>
   > {
     const result = [];
+
+    let playerResidentialCountInCountry = 0;
+    if (typeof playerId === 'number' && playerId > 0) {
+      playerResidentialCountInCountry = await prisma.property.count({
+        where: {
+          playerId,
+          countryId,
+          propertyType: { in: Array.from(this.scaledResidentialTypes) },
+        },
+      });
+    }
 
     for (const property of this.properties) {
       if (!this.isPropertyVisibleInPropertiesModule(property.id)) {
@@ -91,8 +120,15 @@ class PropertyService {
           select: { playerId: true },
         });
 
+        const adjustedProperty = this.isScaledResidentialProperty(property.id)
+          ? {
+              ...property,
+              basePrice: this.getScaledPurchasePrice(property.basePrice, playerResidentialCountInCountry),
+            }
+          : property;
+
         result.push({
-          property,
+          property: adjustedProperty,
           available: !existingOwner,
           ownedBy: existingOwner?.playerId,
         });
@@ -108,16 +144,30 @@ class PropertyService {
         const maxOwners = property.maxOwners || 1;
         const slotsAvailable = maxOwners - ownedCount;
 
+        const adjustedProperty = this.isScaledResidentialProperty(property.id)
+          ? {
+              ...property,
+              basePrice: this.getScaledPurchasePrice(property.basePrice, playerResidentialCountInCountry),
+            }
+          : property;
+
         result.push({
-          property,
+          property: adjustedProperty,
           available: slotsAvailable > 0,
           ownedCount,
           slotsAvailable,
         });
       } else {
         // Unlimited: Always available
+        const adjustedProperty = this.isScaledResidentialProperty(property.id)
+          ? {
+              ...property,
+              basePrice: this.getScaledPurchasePrice(property.basePrice, playerResidentialCountInCountry),
+            }
+          : property;
+
         result.push({
-          property,
+          property: adjustedProperty,
           available: true,
         });
       }
@@ -221,8 +271,22 @@ class PropertyService {
       return { success: false, error: 'LEVEL_TOO_LOW' };
     }
 
+    const residentialOwnedInCountry = this.isScaledResidentialProperty(propertyId)
+      ? await prisma.property.count({
+          where: {
+            playerId,
+            countryId,
+            propertyType: { in: Array.from(this.scaledResidentialTypes) },
+          },
+        })
+      : 0;
+
+    const purchasePrice = this.isScaledResidentialProperty(propertyId)
+      ? this.getScaledPurchasePrice(property.basePrice, residentialOwnedInCountry)
+      : property.basePrice;
+
     // Check if player has enough money
-    if (player.money < property.basePrice) {
+    if (player.money < purchasePrice) {
       return { success: false, error: 'INSUFFICIENT_MONEY' };
     }
 
@@ -273,7 +337,7 @@ class PropertyService {
         // Deduct money
         await tx.player.update({
           where: { id: playerId },
-          data: { money: { decrement: property.basePrice } },
+          data: { money: { decrement: purchasePrice } },
         });
 
         // Create property
@@ -283,7 +347,7 @@ class PropertyService {
             propertyId: fullPropertyId,
             countryId,
             propertyType: propertyId,
-            purchasePrice: property.basePrice,
+            purchasePrice,
             upgradeLevel: 1,
             lastIncomeAt: timeProvider.now(),
             purchasedAt: timeProvider.now(),
@@ -312,7 +376,7 @@ class PropertyService {
           propertyName: property.name,
           propertyType: propertyId,
           country: countryId,
-          price: property.basePrice,
+          price: purchasePrice,
         },
         playerId
       );
@@ -326,7 +390,7 @@ class PropertyService {
           propertyType: propertyId,
           propertyName: property.name,
           country: countryId,
-          price: property.basePrice,
+          price: purchasePrice,
           propertyDbId: result.id,
         }
       );
@@ -349,6 +413,13 @@ class PropertyService {
       where: { playerId },
       orderBy: { purchasedAt: 'desc' },
     });
+
+    const residentialCountsByCountry = properties
+      .filter((prop) => this.isScaledResidentialProperty(prop.propertyType))
+      .reduce<Record<string, number>>((acc, prop) => {
+        acc[prop.countryId] = (acc[prop.countryId] || 0) + 1;
+        return acc;
+      }, {});
 
     return properties
       .filter((prop) => this.isPropertyVisibleInPropertiesModule(prop.propertyType))
@@ -373,7 +444,13 @@ class PropertyService {
         const nextUpgrade = definition.upgradeOptions.find(
           (opt: any) => opt.level === prop.upgradeLevel + 1
         );
-        nextUpgradeCost = nextUpgrade?.cost || null;
+        const baseNextCost = nextUpgrade?.cost || null;
+        if (baseNextCost && this.isScaledResidentialProperty(prop.propertyType)) {
+          const ownedCountInCountry = residentialCountsByCountry[prop.countryId] || 1;
+          nextUpgradeCost = this.getScaledUpgradeCost(baseNextCost, ownedCountInCountry);
+        } else {
+          nextUpgradeCost = baseNextCost;
+        }
       }
       
       return {
@@ -655,7 +732,21 @@ class PropertyService {
     }
 
     // Check if player has enough money
-    if (player.money < nextUpgrade.cost) {
+    const ownedCountInCountry = this.isScaledResidentialProperty(property.propertyType)
+      ? await prisma.property.count({
+          where: {
+            playerId,
+            countryId: property.countryId,
+            propertyType: { in: Array.from(this.scaledResidentialTypes) },
+          },
+        })
+      : 1;
+
+    const upgradeCost = this.isScaledResidentialProperty(property.propertyType)
+      ? this.getScaledUpgradeCost(nextUpgrade.cost, ownedCountInCountry)
+      : nextUpgrade.cost;
+
+    if (player.money < upgradeCost) {
       return { success: false, error: 'INSUFFICIENT_MONEY' };
     }
 
@@ -674,7 +765,7 @@ class PropertyService {
     await prisma.$transaction(async (tx: any) => {
       await tx.player.update({
         where: { id: playerId },
-        data: { money: { decrement: nextUpgrade.cost } },
+        data: { money: { decrement: upgradeCost } },
       });
 
       await tx.property.update({
@@ -689,7 +780,7 @@ class PropertyService {
       {
         propertyType: property.propertyType,
         newLevel,
-        cost: nextUpgrade.cost,
+        cost: upgradeCost,
       },
       playerId
     );
@@ -697,7 +788,7 @@ class PropertyService {
     return {
       success: true,
       newLevel,
-      cost: nextUpgrade.cost,
+      cost: upgradeCost,
       newIncome: newTotalIncome,
     };
   }

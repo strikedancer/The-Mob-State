@@ -709,6 +709,8 @@ function App() {
   const [financialPremiumSort, setFinancialPremiumSort] = useState<'date_desc' | 'date_asc' | 'id_desc' | 'id_asc' | 'product_asc' | 'product_desc'>('date_desc')
   const [playerDetailLoading, setPlayerDetailLoading] = useState(false)
   const [isSavingPlayerManage, setIsSavingPlayerManage] = useState(false)
+  const [isResettingPlayerProgress, setIsResettingPlayerProgress] = useState(false)
+  const [isResettingAllPlayersProgress, setIsResettingAllPlayersProgress] = useState(false)
   const [playerManageForm, setPlayerManageForm] = useState<PlayerManageForm>({
     setMoney: '',
     setRank: '',
@@ -1909,6 +1911,85 @@ function App() {
     }
   }
 
+  const handleResetPlayerProgress = async () => {
+    if (!selectedPlayerId || !canManagePlayers || isResettingPlayerProgress) return
+
+    const reason = window.prompt(
+      l('Geef een reden voor reset (minimaal 5 tekens):', 'Provide a reason for reset (minimum 5 characters):'),
+      '',
+    )
+
+    if (!reason || reason.trim().length < 5) {
+      alert(l('Reset geannuleerd: reden te kort.', 'Reset cancelled: reason too short.'))
+      return
+    }
+
+    const confirmation = window.prompt(
+      l('Typ RESET om deze speler volledig te resetten.', 'Type RESET to fully reset this player.'),
+      'RESET',
+    )
+    if (confirmation !== 'RESET') {
+      return
+    }
+
+    try {
+      setIsResettingPlayerProgress(true)
+      await adminService.resetPlayerProgress(selectedPlayerId, reason.trim())
+      const refreshed = await adminService.getPlayerOverview(selectedPlayerId)
+      setSelectedPlayerOverview(refreshed)
+      setRecentActionsRefreshTick((tick) => tick + 1)
+      await loadPlayers()
+      await loadStats()
+      alert(l('Spelerprogress is gereset.', 'Player progress has been reset.'))
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Reset speler mislukt', 'Player reset failed')}: ${(err as Error).message}`)
+    } finally {
+      setIsResettingPlayerProgress(false)
+    }
+  }
+
+  const handleResetAllPlayersProgress = async () => {
+    if (adminRole !== 'SUPER_ADMIN' || isResettingAllPlayersProgress) return
+
+    const reason = window.prompt(
+      l('Geef een reden voor globale reset (minimaal 5 tekens):', 'Provide a reason for global reset (minimum 5 characters):'),
+      '',
+    )
+
+    if (!reason || reason.trim().length < 5) {
+      alert(l('Reset geannuleerd: reden te kort.', 'Reset cancelled: reason too short.'))
+      return
+    }
+
+    const confirmation = window.prompt(
+      l('Typ RESET ALL om ALLE spelers te resetten.', 'Type RESET ALL to reset ALL players.'),
+      'RESET ALL',
+    )
+
+    if (confirmation !== 'RESET ALL') {
+      return
+    }
+
+    try {
+      setIsResettingAllPlayersProgress(true)
+      const result = await adminService.resetAllPlayersProgress(reason.trim())
+      await loadPlayers()
+      await loadStats()
+      if (selectedPlayerId) {
+        const refreshed = await adminService.getPlayerOverview(selectedPlayerId)
+        setSelectedPlayerOverview(refreshed)
+        setRecentActionsRefreshTick((tick) => tick + 1)
+      }
+      alert(`${l('Alle spelerprogress is gereset', 'All player progress has been reset')}: ${result.affectedPlayers}`)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Reset alle spelers mislukt', 'Reset all players failed')}: ${(err as Error).message}`)
+    } finally {
+      setIsResettingAllPlayersProgress(false)
+    }
+  }
+
   const goBackToPlayers = () => {
     setActiveTab('players')
     setSelectedPlayerId(null)
@@ -2897,6 +2978,15 @@ function App() {
                   <button className="btn btn-outline-danger btn-sm" disabled={!canManagePlayers || bulkActionLoading || selectedPlayerIds.length === 0} onClick={() => executeBulkPlayerAction('ban_temp')}>
                     <i className="ph-prohibit me-1" />{l('Bulk temp ban', 'Bulk temp ban')}
                   </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    disabled={adminRole !== 'SUPER_ADMIN' || isResettingAllPlayersProgress}
+                    onClick={handleResetAllPlayersProgress}
+                  >
+                    {isResettingAllPlayersProgress
+                      ? <><span className="spinner-border spinner-border-sm me-1" />{l('Resetten...', 'Resetting...')}</>
+                      : <><i className="ph-warning-octagon me-1" />{l('Reset alle spelers', 'Reset all players')}</>}
+                  </button>
                 </div>
               </div>
             </div>
@@ -3646,6 +3736,15 @@ function App() {
                         <div className="mt-4 d-flex flex-wrap gap-2 align-items-center">
                           <button className="btn btn-warning fw-bold" onClick={handleManagePlayer} disabled={isSavingPlayerManage || !canManagePlayers}>
                             {isSavingPlayerManage ? <><span className="spinner-border spinner-border-sm me-2" />{l('Bezig...', 'Processing...')}</> : <><i className="ph-floppy-disk me-2" />{l('Opslaan alle wijzigingen', 'Save all changes')}</>}
+                          </button>
+                          <button
+                            className="btn btn-danger fw-bold"
+                            onClick={handleResetPlayerProgress}
+                            disabled={isResettingPlayerProgress || !canManagePlayers}
+                          >
+                            {isResettingPlayerProgress
+                              ? <><span className="spinner-border spinner-border-sm me-2" />{l('Resetten...', 'Resetting...')}</>
+                              : <><i className="ph-warning me-2" />{l('Reset spelerprogress', 'Reset player progress')}</>}
                           </button>
                           <small className="text-muted">{l('Slaat alle velden in dit beheerformulier op.', 'Saves all fields in this management form.')}</small>
                         </div>

@@ -10,6 +10,12 @@ const RECRUITMENT_COOLDOWN_MINUTES = 5;
 const RECRUITMENT_SUCCESS_CHANCE = 0.75; // 75% kans op succesvolle werving
 const RECRUITMENT_LOSS_ON_FAILURE_CHANCE = 0.18; // 18% kans om bij mislukking een dame te verliezen
 const STREET_EARNINGS_PER_HOUR = 40; // €40/hour on street (base)
+const WORK_SHIFT_HOURS = 8;
+const WORK_SHIFT_COOLDOWN_HOURS = 8;
+const WORK_SHIFT_FATIGUE_WINDOW_HOURS = 24;
+const WORK_SHIFT_MAX_IN_WINDOW = 3;
+const OVERWORK_BASE_RUNAWAY_CHANCE = 0.3;
+const OVERWORK_EXTRA_SHIFT_CHANCE = 0.12;
 
 // Leveling System
 const XP_PER_HOUR = 5; // XP earned per hour
@@ -295,6 +301,24 @@ function getResidentialCapacityFromProperty(definition: any, upgradeLevel: numbe
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
+}
+
+function parseActivityDetails(details: unknown): Record<string, unknown> {
+  if (!details) return {};
+  if (typeof details === 'string') {
+    try {
+      const parsed = JSON.parse(details);
+      return parsed && typeof parsed === 'object'
+        ? parsed as Record<string, unknown>
+        : {};
+    } catch {
+      return {};
+    }
+  }
+  if (typeof details === 'object') {
+    return details as Record<string, unknown>;
+  }
+  return {};
 }
 
 export const prostituteService = {
@@ -1443,6 +1467,7 @@ export const prostituteService = {
     const economyPreset = getProstitutionEconomyPreset();
     await this.processHousingUpkeep(playerId);
     const residentialStats = await this.getResidentialPortfolioStats(playerId);
+    const now = new Date();
 
     // Verify prostitute belongs to player
     const prostitute = await prisma.prostitute.findFirst({
@@ -1460,6 +1485,67 @@ export const prostituteService = {
       return { success: false, message: 'Prostituee niet gevonden' };
     }
 
+    if (prostitute.lastWorkedAt) {
+      const elapsedSeconds = Math.floor((now.getTime() - prostitute.lastWorkedAt.getTime()) / 1000);
+      const cooldownSeconds = WORK_SHIFT_COOLDOWN_HOURS * 60 * 60;
+      const remainingSeconds = cooldownSeconds - elapsedSeconds;
+      if (remainingSeconds > 0) {
+        const remainingHours = Math.floor(remainingSeconds / 3600);
+        const remainingMinutes = Math.ceil((remainingSeconds % 3600) / 60);
+        return {
+          success: false,
+          message: `Deze prostituee moet nog ${remainingHours}u ${remainingMinutes}m rusten voor de volgende shift`,
+        };
+      }
+    }
+
+    const fatigueWindowStart = new Date(now.getTime() - (WORK_SHIFT_FATIGUE_WINDOW_HOURS * 60 * 60 * 1000));
+    const recentShiftActivities = await prisma.playerActivity.findMany({
+      where: {
+        playerId,
+        activityType: 'PROSTITUTE_WORK_SHIFT',
+        createdAt: { gte: fatigueWindowStart },
+      },
+      select: { details: true },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
+
+    const recentShiftsForThisProstitute = recentShiftActivities.filter((activity) => {
+      const details = parseActivityDetails(activity.details);
+      return Number(details.prostituteId ?? 0) === prostituteId;
+    }).length;
+
+    if (recentShiftsForThisProstitute >= WORK_SHIFT_MAX_IN_WINDOW) {
+      const extraShifts = Math.max(0, recentShiftsForThisProstitute - WORK_SHIFT_MAX_IN_WINDOW);
+      const runawayChance = clamp(
+        OVERWORK_BASE_RUNAWAY_CHANCE + (extraShifts * OVERWORK_EXTRA_SHIFT_CHANCE),
+        OVERWORK_BASE_RUNAWAY_CHANCE,
+        0.9,
+      );
+
+      if (Math.random() < runawayChance) {
+        await prisma.prostitute.delete({ where: { id: prostituteId } });
+        await activityService.logActivity(
+          playerId,
+          'PROSTITUTE_RAN_AWAY',
+          `${prostitute.name} is weggelopen door oververmoeidheid na te veel shifts`,
+          {
+            prostituteId,
+            prostituteName: prostitute.name,
+            shiftsLast24h: recentShiftsForThisProstitute,
+            runawayChance,
+          },
+          true,
+        ).catch(() => {});
+
+        return {
+          success: false,
+          message: `${prostitute.name} is uitgeput geraakt en weggelopen`,
+        };
+      }
+    }
+
     // Can't work if busted
     if (prostitute.isBusted && prostitute.bustedUntil && new Date() < prostitute.bustedUntil) {
       return { success: false, message: 'Deze prostituee is gearresteerd en kan niet werken' };
@@ -1473,7 +1559,6 @@ export const prostituteService = {
     let earnings = 0;
     let rentPaid = 0;
     const housingRentPaid = prostitute.housingRentPerDay * economyPreset.housingGraceDays;
-    const SHIFT_HOURS = 8;
     const levelBonus = 1 + (prostitute.level - 1) * EARNINGS_BONUS_PER_LEVEL;
     const vipMultiplier = isVipProstitute(prostitute.variant)
       ? VIP_PROSTITUTE_EARNINGS_MULTIPLIER
@@ -1484,8 +1569,8 @@ export const prostituteService = {
       const tier = prostitute.redLightRoom.tier || 1;
       const tierConfig = TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
 
-      const grossEarnings = Math.floor(tierConfig.gross * SHIFT_HOURS * levelBonus);
-      rentPaid = Math.floor(tierConfig.rent * SHIFT_HOURS);
+      const grossEarnings = Math.floor(tierConfig.gross * WORK_SHIFT_HOURS * levelBonus);
+      rentPaid = Math.floor(tierConfig.rent * WORK_SHIFT_HOURS);
       earnings = Math.floor((grossEarnings - rentPaid) * vipMultiplier);
 
       // Pay rent to RLD owner
@@ -1497,16 +1582,16 @@ export const prostituteService = {
       }
     } else if (location === 'nightclub') {
       // Nightclub work (earnings set by nightclub owner, here we use street rate as base)
-      earnings = Math.floor(STREET_EARNINGS_PER_HOUR * SHIFT_HOURS * levelBonus * vipMultiplier);
+      earnings = Math.floor(STREET_EARNINGS_PER_HOUR * WORK_SHIFT_HOURS * levelBonus * vipMultiplier);
     } else {
       // Street
-      earnings = Math.floor(STREET_EARNINGS_PER_HOUR * SHIFT_HOURS * levelBonus * vipMultiplier);
+      earnings = Math.floor(STREET_EARNINGS_PER_HOUR * WORK_SHIFT_HOURS * levelBonus * vipMultiplier);
     }
 
     earnings = Math.max(0, earnings - housingRentPaid);
 
     // Calculate XP gained (only from explicit work shift)
-    const xpGained = Math.floor(XP_PER_HOUR * SHIFT_HOURS);
+    const xpGained = Math.floor(XP_PER_HOUR * WORK_SHIFT_HOURS);
     const newExperience = prostitute.experience + xpGained;
     const newLevel = Math.min(MAX_LEVEL, Math.floor(newExperience / XP_PER_LEVEL) + 1);
     const leveledUp = newLevel > prostitute.level;
@@ -1524,9 +1609,9 @@ export const prostituteService = {
       data: {
         experience: newExperience,
         level: newLevel,
-        lastEarningsAt: new Date(),
-        lastWorkedAt: new Date(),
-        housingPaidUntil: addDays(new Date(), economyPreset.housingGraceDays),
+        lastEarningsAt: now,
+        lastWorkedAt: now,
+        housingPaidUntil: addDays(now, economyPreset.housingGraceDays),
       }
     });
 
@@ -1539,19 +1624,21 @@ export const prostituteService = {
     }
 
     // Log activity
-    await activityService.logActivity({
+    await activityService.logActivity(
       playerId,
-      action: 'prostitute_work_shift',
-      details: {
+      'PROSTITUTE_WORK_SHIFT',
+      `${prostitute.name} werkte een shift op ${location}`,
+      {
         prostituteId,
         prostituteName: prostitute.name,
         location,
         earnedMoney: earnings,
         xpGained,
         newLevel,
-        leveledUp
-      }
-    }).catch(() => {}); // Non-blocking
+        leveledUp,
+      },
+      true,
+    ).catch(() => {}); // Non-blocking
 
     return {
       success: true,

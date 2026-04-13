@@ -495,6 +495,7 @@ router.get('/prisoners', authenticate, async (req: AuthRequest, res: Response) =
       params: {
         count: prisoners.length,
       },
+      viewerId,
       viewerMoney: viewer.money,
       prisoners,
     });

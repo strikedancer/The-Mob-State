@@ -3,6 +3,7 @@ import {
   checkAndUnlockAchievements,
   serializeAchievementForClient,
 } from './achievementService';
+import { activityService } from './activityService';
 import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
@@ -276,6 +277,21 @@ async function sendCryptoTradeInboxMessage(
 
     return lines.join('\n');
   });
+}
+
+async function logCryptoActivity(
+  playerId: number,
+  activityType: string,
+  description: string,
+  details: Record<string, unknown>
+): Promise<void> {
+  await activityService.logActivity(
+    playerId,
+    activityType,
+    description,
+    details,
+    true,
+  );
 }
 
 async function sendCryptoOrderPlacedInboxMessage(
@@ -2030,6 +2046,20 @@ export async function buyCrypto(playerId: number, symbol: string, quantityInput:
     console.warn('[crypto] Failed to send buy inbox message:', error);
   });
 
+  void logCryptoActivity(
+    playerId,
+    'CRYPTO_BUY',
+    `Crypto aankoop: ${result.symbol}`,
+    {
+      symbol: result.symbol,
+      quantity: result.quantity,
+      price: result.price,
+      totalCost: result.totalCost,
+    },
+  ).catch((error) => {
+    console.warn('[crypto] Failed to log buy activity:', error);
+  });
+
   for (const mission of completedMissions) {
     void notificationService.sendCryptoMissionCompletedNotification(
       playerId,
@@ -2195,6 +2225,21 @@ export async function sellCrypto(playerId: number, symbol: string, quantityInput
     console.warn('[crypto] Failed to send sell inbox message:', error);
   });
 
+  void logCryptoActivity(
+    playerId,
+    'CRYPTO_SELL',
+    `Crypto verkoop: ${result.symbol}`,
+    {
+      symbol: result.symbol,
+      quantity: result.quantity,
+      price: result.price,
+      totalValue: result.totalValue,
+      realizedProfit: result.realizedProfit,
+    },
+  ).catch((error) => {
+    console.warn('[crypto] Failed to log sell activity:', error);
+  });
+
   for (const mission of completedMissions) {
     void notificationService.sendCryptoMissionCompletedNotification(
       playerId,
@@ -2357,6 +2402,22 @@ export async function placeOrder(
     console.warn('[crypto] Failed to send order placed inbox message:', error);
   });
 
+  void logCryptoActivity(
+    playerId,
+    'CRYPTO_ORDER_PLACED',
+    `Crypto order geplaatst: ${placedOrder.side} ${placedOrder.asset_symbol}`,
+    {
+      orderId: placedOrder.id,
+      symbol: placedOrder.asset_symbol,
+      side: placedOrder.side,
+      orderType: placedOrder.order_type,
+      quantity: Number(parseNumber(placedOrder.quantity).toFixed(8)),
+      targetPrice: parseNumber(placedOrder.target_price),
+    },
+  ).catch((error) => {
+    console.warn('[crypto] Failed to log order placement activity:', error);
+  });
+
   return {
     id: placedOrder.id,
     symbol: placedOrder.asset_symbol,
@@ -2451,6 +2512,22 @@ export async function cancelOrder(playerId: number, orderIdInput: number) {
       parseNumber(targetOrder.target_price)
     ).catch((error) => {
       console.warn('[crypto] Failed to send order cancelled inbox message:', error);
+    });
+
+    void logCryptoActivity(
+      playerId,
+      'CRYPTO_ORDER_CANCELLED',
+      `Crypto order geannuleerd: ${targetOrder.side} ${targetOrder.asset_symbol}`,
+      {
+        orderId,
+        symbol: targetOrder.asset_symbol,
+        side: targetOrder.side,
+        orderType: targetOrder.order_type,
+        quantity: Number(parseNumber(targetOrder.quantity).toFixed(8)),
+        targetPrice: parseNumber(targetOrder.target_price),
+      },
+    ).catch((error) => {
+      console.warn('[crypto] Failed to log order cancel activity:', error);
     });
   }
 

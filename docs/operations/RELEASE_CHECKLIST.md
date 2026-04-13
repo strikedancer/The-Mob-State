@@ -9,6 +9,16 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Prostitutie work-shift limiet: 8-uurs cooldown toegevoegd op handmatige `/prostitutes/:id/work-shift`; bij overwerken (te veel shifts binnen 24 uur) kan een prostituee uitgeput raken en weglopen
+  - Bestand: `backend/src/services/prostituteService.ts`
+- [ ] Prison lijst fix: `/player/prisoners` bevat nu ook de ingelogde speler (niet langer weggefilterd), zodat je jezelf ziet als je vastzit
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`
+- [ ] Properties prijs-escalatie: house/apartment aankoopprijs schaalt nu per land mee met aantal reeds bezeten residentiële panden; upgradekosten schalen ook mee per land op basis van portfolio-grootte
+  - Bestanden: `backend/src/services/propertyService.ts`, `backend/src/routes/properties.ts`
+- [ ] Crypto admin-traceability: crypto acties loggen nu naar `player_activities` (`CRYPTO_BUY`, `CRYPTO_SELL`, `CRYPTO_ORDER_PLACED`, `CRYPTO_ORDER_CANCELLED`) zodat Recente Handelingen in admin volledig zijn
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Admin reset uitgebreid: nieuwe endpoints voor speler-reset en globale reset van spelerprogress (`POST /admin/players/:playerId/reset`, `POST /admin/players/reset-all`)
+  - Bestand: `backend/src/routes/admin.ts`
 - [ ] Properties balancing + level-cap contract fix: appartement basisprijs verlaagd naar €75.000 en huis verhoogd naar €100.000 (appartement niet langer duurder dan huis); property API levert nu expliciet correct `maxLevel` (afgeleid uit upgrade-opties) zodat client geen foutieve `3/3` meer toont terwijl upgraden nog mogelijk is
   - Bestanden: `backend/content/properties.json`, `backend/src/routes/properties.ts`
 - [ ] Reizen fix online/local parity: `travelRoute` wordt nu consistent als JSON-string opgeslagen/geparsed (ipv impliciete array-casts op `String` kolom), inclusief leg-status validatie; start-journey response levert nu ook `newCountry/newLocation` voor eenduidige client state
@@ -91,6 +101,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`
+  - Bestand: `client/lib/screens/drug_environment_screen.dart`
+- [ ] Prison UI opgeschoond: regel met beschikbaar saldo verwijderd en acties op je eigen prisoner-row uitgeschakeld; eigen row wordt gemarkeerd als `Jij/You`
+  - Bestand: `client/lib/screens/prison_screen.dart`
 - [ ] Web/PWA scroll hardening: dashboard section-container + Help + Storage gebruiken nu expliciete `ScrollConfiguration` met brede `dragDevices` set zodat touch-scroll op mobiel web niet wordt geblokkeerd in embedded weergaven
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/storage_tab.dart`
 - [ ] Mobile scroll fix: Inventory > Storage gebruikt nu één doorlopende pagina-scroll (geen vaste header + geneste onder-scroll), zodat content op mobiele schermen volledig bereikbaar blijft; Help/Uitleg compacte layout gebruikt nu ook een single-scroll body onder de filters

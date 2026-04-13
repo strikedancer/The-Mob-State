@@ -305,7 +305,7 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
   );
 }
 
-export async function getJailedPrisoners(viewerId: number): Promise<
+export async function getJailedPrisoners(_viewerId: number): Promise<
   Array<{
     playerId: number;
     username: string;
@@ -323,7 +323,7 @@ export async function getJailedPrisoners(viewerId: number): Promise<
     LIMIT 250
   `;
 
-  const uniqueIds = [...new Set(rawIds.map((row) => Number(row.playerId)).filter((id) => id !== viewerId))];
+  const uniqueIds = [...new Set(rawIds.map((row) => Number(row.playerId)))];
   if (uniqueIds.length === 0) {
     return [];
   }
