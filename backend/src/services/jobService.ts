@@ -201,11 +201,9 @@ class JobService {
       );
     }
 
-    // Check cooldown
-    const cooldownCheck = await this.checkCooldown(playerId, jobId, job.cooldownMinutes);
-    if (cooldownCheck.onCooldown) {
-      throw new Error(`ON_COOLDOWN:${cooldownCheck.secondsRemaining}`);
-    }
+    // Global job cooldown (15 min) is enforced by the route middleware (checkCooldown).
+    // Per-job cooldown is intentionally NOT enforced here — players should be able to
+    // repeat the same job once the global cooldown expires.
 
     // Jobs have 85% success rate (safer than crimes)
     const successRoll = Math.random();
