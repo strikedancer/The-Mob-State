@@ -169,6 +169,36 @@ def _aviation_assets(output_root: Path) -> List[dict]:
             ),
             "negative": NEGATIVE_CUTOUT,
         },
+        {
+            "name": "aircraft_citation_x",
+            "out": output_root / "aircraft" / "citation_x.png",
+            "width": 1024,
+            "height": 1024,
+            "target_width": 1024,
+            "target_height": 1024,
+            "transparent": True,
+            "prompt": (
+                "Ultra-realistic isolated aircraft render of Cessna Citation X business jet, "
+                "sleek swept-wing executive jet, detailed fuselage and engines, centered full aircraft, "
+                "CRITICAL: true RGBA PNG with real transparent alpha background only"
+            ),
+            "negative": NEGATIVE_CUTOUT,
+        },
+        {
+            "name": "aircraft_antonov",
+            "out": output_root / "aircraft" / "antonov.png",
+            "width": 1024,
+            "height": 1024,
+            "target_width": 1024,
+            "target_height": 1024,
+            "transparent": True,
+            "prompt": (
+                "Ultra-realistic isolated aircraft render of Antonov An-225 Mriya super heavy transport aircraft, "
+                "massive six-engine cargo plane, enormous fuselage and distinctive twin tail, centered full aircraft, "
+                "CRITICAL: true RGBA PNG with real transparent alpha background only"
+            ),
+            "negative": NEGATIVE_CUTOUT,
+        },
     ]
 
 

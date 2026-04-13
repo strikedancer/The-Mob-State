@@ -73,15 +73,17 @@ class _AviationScreenState extends State<AviationScreen> {
     }
   }
 
+  static const _aircraftImages = <String, String>{
+    'cessna_172': 'aircraft/cessna.png',
+    'king_air_350': 'aircraft/king_air.png',
+    'citation_x': 'aircraft/citation_x.png',
+    'gulfstream_g650': 'aircraft/gulfstream.png',
+    'boeing_737_cargo': 'aircraft/cargo_737.png',
+    'antonov_an_225': 'aircraft/antonov.png',
+  };
+
   String _imageForAircraftType(String aircraftType) {
-    final key = aircraftType.toLowerCase();
-    if (key.contains('cessna')) return 'aircraft/cessna.png';
-    if (key.contains('king_air') || key.contains('kingair')) return 'aircraft/king_air.png';
-    if (key.contains('gulfstream') || key.contains('citation')) return 'aircraft/gulfstream.png';
-    if (key.contains('boeing') || key.contains('737') || key.contains('cargo')) {
-      return 'aircraft/cargo_737.png';
-    }
-    return 'aircraft/cessna.png';
+    return _aircraftImages[aircraftType.toLowerCase()] ?? 'aircraft/cessna.png';
   }
 
   Future<void> _buyAircraft(Map<String, dynamic> item) async {
@@ -237,7 +239,12 @@ class _AviationScreenState extends State<AviationScreen> {
           )
         else
           ..._owned.map((item) {
-            final name = item['name']?.toString() ?? item['aircraftType']?.toString() ?? 'Aircraft';
+            final name = (_isNl
+                    ? item['name']
+                    : (item['name_en'] ?? item['name']))
+                ?.toString() ??
+                item['aircraftType']?.toString() ??
+                'Aircraft';
             final fuel = (item['fuel'] as num?)?.toInt() ?? 0;
             final maxFuel = (item['maxFuel'] as num?)?.toInt() ?? 0;
             final type = item['aircraftType']?.toString() ?? '';
@@ -266,8 +273,8 @@ class _AviationScreenState extends State<AviationScreen> {
         const SizedBox(height: 8),
         ..._aircraft.map((item) {
           final aircraftType = item['id']?.toString() ?? '';
-          final name = item['name']?.toString() ?? aircraftType;
-          final description = item['description']?.toString() ?? '';
+          final name = (_isNl ? item['name'] : (item['name_en'] ?? item['name']))?.toString() ?? aircraftType;
+          final description = (_isNl ? item['description'] : (item['description_en'] ?? item['description']))?.toString() ?? '';
           final price = (item['price'] as num?)?.toInt() ?? 0;
           final minRank = (item['minRank'] as num?)?.toInt() ?? 0;
           final speedMultiplier = (item['speedMultiplier'] as num?)?.toDouble() ?? 1.0;

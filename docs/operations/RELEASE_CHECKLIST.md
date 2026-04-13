@@ -264,7 +264,9 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] Rechtbank hoger beroep schaalbaar met rechten-niveau: `law` track level voegt +5% succeskans per level toe aan hoger beroep (max +25% bij level 5); basiskans stijgt daarmee van 35% naar max 60% vóór verdere aanpassingen (eerdere veroordelingen, wanted level, FBI heat); hard cap verhoogd van 70% naar 85%
   - Bestand: `backend/src/services/judgeService.ts`
   - Spelers zonder opleiding (geen `law` track) behouden 35% basiskans ongewijzigd (fallback naar 0)
-- [ ] Aviation image generation pipeline toegevoegd: nieuw Leonardo-script genereert aircraft cutouts (`cessna`, `king_air`, `gulfstream`, `cargo_737`) plus aviation backgrounds (`aviation_bg_desktop/tablet/mobile`) direct naar externe runtime map `runtime/client-images/*`, zodat client build klein blijft
+- [ ] Aviation image generation pipeline toegevoegd: nieuw Leonardo-script genereert aircraft cutouts (`cessna`, `king_air`, `gulfstream`, `cargo_737`, `citation_x`, `antonov`) plus aviation backgrounds (`aviation_bg_desktop/tablet/mobile`) direct naar externe runtime map `runtime/client-images/*`, zodat client build klein blijft
+- [ ] **VPS actie vereist**: script opnieuw draaien om de 2 nieuwe vliegtuigafbeeldingen te genereren (`citation_x.png` + `antonov.png`): `python3 backend/scripts/generate_aviation_images_leonardo.py --confirm-batch YES`
+- [ ] Aviation i18n: `aircraft.json` bevat nu `name_en` + `description_en` voor alle 6 vliegtuigen; client toont juiste taal op basis van locale
   - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
 - [ ] Prison buyout/jailbreak transactiefix: `world_events.params` in prison flows wordt nu correct als JSON-string opgeslagen (`prison.buyout_success`, `prison.jailbreak_success`, cooldown-markers) i.p.v. object payloads, zodat buyout/jailbreak transacties niet meer kunnen falen op Prisma type mismatch
   - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`

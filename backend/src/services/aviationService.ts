@@ -14,8 +14,10 @@ import config from '../config';
 export interface AircraftDefinition {
   id: string;
   name: string;
+  name_en?: string;
   type: string;
   description: string;
+  description_en?: string;
   price: number;
   minRank: number;
   maxRange: number;
@@ -283,6 +285,7 @@ export async function getPlayerAircraft(playerId: number) {
       id: ac.id,
       aircraftType: ac.aircraftType,
       name: def?.name || ac.aircraftType,
+      name_en: def?.name_en || def?.name || ac.aircraftType,
       fuel: ac.fuel,
       maxFuel: ac.maxFuel,
       isBroken: ac.isBroken,
