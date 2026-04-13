@@ -2,8 +2,52 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class WebAssetHelper {
+  static String _normalize(String value) => value.replaceAll('\\', '/');
+
+  static String _trimLeadingSlash(String value) {
+    if (value.startsWith('/')) {
+      return value.substring(1);
+    }
+    return value;
+  }
+
+  static String _stripAssetsImagesPrefix(String assetPath) {
+    final normalized = _normalize(assetPath);
+    if (normalized.startsWith('assets/images/')) {
+      return normalized.substring('assets/images/'.length);
+    }
+    if (normalized.startsWith('assets/assets/images/')) {
+      return normalized.substring('assets/assets/images/'.length);
+    }
+    if (normalized.startsWith('images/')) {
+      return normalized.substring('images/'.length);
+    }
+    if (normalized.startsWith('/images/')) {
+      return normalized.substring('/images/'.length);
+    }
+    return _trimLeadingSlash(normalized);
+  }
+
+  static String _resolveRelative(String path) {
+    return Uri.base.resolve(_trimLeadingSlash(path)).toString();
+  }
+
+  static List<String> _webImageUrlCandidates(String assetPath) {
+    final normalized = _normalize(assetPath);
+    if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
+      return [normalized];
+    }
+
+    final suffix = _stripAssetsImagesPrefix(assetPath);
+    return [
+      _resolveRelative('images/$suffix'),
+      _resolveRelative('assets/assets/images/$suffix'),
+      _resolveRelative('assets/images/$suffix'),
+    ];
+  }
+
   static String toPublicUrl(String assetPath) {
-    final normalized = assetPath.replaceAll('\\', '/');
+    final normalized = _normalize(assetPath);
 
     if (normalized.startsWith('http://') || normalized.startsWith('https://')) {
       return normalized;
@@ -23,7 +67,7 @@ class WebAssetHelper {
       publicPath = normalized.startsWith('/') ? normalized.substring(1) : normalized;
     }
 
-    return Uri.base.resolve(publicPath).toString();
+    return _resolveRelative(publicPath);
   }
 
   static ImageProvider<Object> provider(String assetPath) {
@@ -48,15 +92,29 @@ class WebAssetHelper {
         fit: fit,
         alignment: alignment,
         errorBuilder: (context, error, stackTrace) {
-          return Image.network(
-            toPublicUrl(assetPath),
-            key: key,
-            width: width,
-            height: height,
-            fit: fit,
-            alignment: alignment,
-            errorBuilder: errorBuilder,
-          );
+          final candidates = _webImageUrlCandidates(assetPath);
+
+          Widget buildCandidate(int index) {
+            return Image.network(
+              candidates[index],
+              key: key,
+              width: width,
+              height: height,
+              fit: fit,
+              alignment: alignment,
+              errorBuilder: (ctx, err, st) {
+                if (index + 1 < candidates.length) {
+                  return buildCandidate(index + 1);
+                }
+                if (errorBuilder != null) {
+                  return errorBuilder(ctx, err, st);
+                }
+                return const SizedBox.shrink();
+              },
+            );
+          }
+
+          return buildCandidate(0);
         },
       );
     }

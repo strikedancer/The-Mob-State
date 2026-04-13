@@ -129,6 +129,7 @@ Implementatievoorkeur:
 - Bij runtime image updates zonder rebuild: hanteer versie-bestandsnamen (`*.v2.png`) of expliciete cache-invalidering om stale image caches te voorkomen.
 - Voor kaarten/lijsten met dynamische image-bestanden (zoals jobs/crimes): implementeer altijd een visuele `errorBuilder` fallback zodat ontbrekende assets niet als lege/broken tiles eindigen.
 - In gedeelde web image helpers: hanteer `Image.asset(...)` als primaire renderpad en gebruik network-URL alleen als fallback, zodat hosting/proxy variaties minder snel alle visuals breken.
+- Voor web image helpers met network fallback: probeer meerdere compatibele URL-routes in volgorde (`images/...` -> `assets/assets/images/...` -> `assets/images/...`) voordat een icon-fallback wordt getoond, zodat reverse-proxy/nginx routeverschillen geen complete voertuig/drugs-catalogi breken.
 - Voor kritieke web-assets die structureel issues geven (avatars, crime-art, login backgrounds) gebruik bij voorkeur een gedeelde helper die op web direct naar de publieke HTTPS asset-URL resolvet in plaats van losse `AssetImage` aanroepen te verspreiden.
 - Bij helper-refactors over meerdere schermen: verifieer expliciet imports op alle aangepaste screens voordat een web build wordt gedeployed.
 - Productie-nginx mag compat-aliases bevatten voor legacy paden (`/assets/images/*` en `/assets/image/*`) zodat oude clients niet direct breken.
