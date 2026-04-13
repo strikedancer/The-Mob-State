@@ -340,6 +340,7 @@ class _GarageScreenState extends State<GarageScreen> {
               ),
         body: content,
       ),
+      ],
     );
   }
 

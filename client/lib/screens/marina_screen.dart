@@ -305,6 +305,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
               ),
         body: content,
       ),
+      ],
     );
   }
 
