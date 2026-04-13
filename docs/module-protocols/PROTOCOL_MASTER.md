@@ -98,6 +98,7 @@ Implementatievoorkeur:
 - Gebruik waar mogelijk visuele selectiekaarten (images) voor entities zoals staff/items; altijd met icon-fallback.
 - Gebruik responsive/clamped hoogtes voor tabpanelen i.p.v. één vaste hoogte.
 - Voor web/iOS homescreen push: zorg altijd voor een expliciete in-app permissie-entrypoint (bijv. in Settings) die `requestPermission` triggert op user gesture; vertrouw niet alleen op login/startup-init.
+- Web push FCM payload: stuur naar web-tokens altijd een **data-only** bericht (geen `notification`-key). FCM toont anders automatisch een melding én de service worker (`onBackgroundMessage`) doet dat ook → dubbele notificatie. De service worker leest `payload.data.title` en `payload.data.body` als fallback. Native (Android/iOS) tokens blijven het `notification`-veld ontvangen.
 
 ## Flutter Web Asset Pad Conventie (Verplicht)
 
