@@ -107,8 +107,9 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/login_screen.dart`
 - [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet
   - Bestand: `client/lib/screens/dashboard_screen.dart`
-- [ ] Runtime external image storage (alle images): client-nginx serveert zowel `/images/*` als `/assets/assets/images/*` extern-first (volume mount) met bundled fallback, zodat updates voor alle `client/assets/images/**` assets zonder client rebuild kunnen worden uitgerold
-  - Bestanden: `client/docker/nginx.conf`, `docker-compose.plesk.yml`, `docs/operations/DEPLOY.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Images volledig uit Docker-build verwijderd: Dockerfile verwijdert `build/web/assets/assets/images/` na flutter build; nginx serveert alle image-routes (`/images/*`, `/assets/assets/images/*`, `/assets/images/*`) uitsluitend uit externe runtime mount (`/mnt/external-images`) zonder bundled fallback; Docker-image daalt van ~4.3GB naar klein
+  - Bestanden: `client/Dockerfile`, `client/docker/nginx.conf`, `docs/module-protocols/PROTOCOL_MASTER.md`
+  - Vereiste server-stap vóór rebuild: `rsync -av --delete client/assets/images/ runtime/client-images/`
 - [ ] iOS homescreen/PWA update fix: client-nginx cache-policy opgesplitst zodat app-shell/service-worker bestanden `no-cache` krijgen en assets immutable blijven; hierdoor pakt iPhone beginscherm-app nieuwe releases zonder opnieuw toevoegen
   - Bestanden: `client/docker/nginx.conf`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/DEPLOY.md`
 - [ ] Reizen UX/state fix: na reisstart wordt nu transit-status getoond (onderweg + volgende stop) i.p.v. direct "gereisd naar bestemming", en player-country wordt na start/volgende leg altijd server-authentiek ververst

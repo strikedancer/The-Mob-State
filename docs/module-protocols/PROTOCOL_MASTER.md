@@ -116,10 +116,10 @@ Implementatievoorkeur:
 - Bij URL-resolving helpers voor web-assets: gebruik base-relative paden (geen root-absolute `/assets/...`), zodat deployments op subpaths ook correct assets laden.
 - Voor login/landing backgrounds op Flutter web: houd ook een static public fallback beschikbaar onder `web/images/backgrounds/*` en gebruik indien nodig een directe network fallback naar `images/backgrounds/*`.
 - Voor brede gameplay image-loading op web: gebruik een centrale `/images/*` runtime-route (via helper + nginx alias naar Flutter bundle) zodat crimes/jobs/avatars/badges op alle omgevingen hetzelfde pad gebruiken.
-- Voor productie-deploys met veel beeldmateriaal: gebruik runtime external image storage (`/images/*` -> externe map) met bundled fallback. Zo kunnen image-updates zonder client rebuild worden uitgerold.
-- Externe `/images/*` route moet altijd fallback houden naar bundled Flutter assets om blank/broken UI te voorkomen bij ontbrekende runtime files.
-- Scope van runtime external storage is **alle** assets onder `client/assets/images/**` (niet alleen backgrounds/avatars/crimes). Houd runtime map-structuur gelijk aan de repository-structuur.
-- Zorg dat zowel `/images/*` als `/assets/assets/images/*` extern-first fallback gebruiken, zodat ook schermen met directe `Image.asset(...)` zonder rebuild image-updates kunnen oppakken.
+- Voor productie-deploys met veel beeldmateriaal: images worden **niet** gebundeld in het Docker-image. De client Dockerfile verwijdert `build/web/assets/assets/images/` na de Flutter build. `AssetManifest.json` blijft intact zodat Flutter web HTTP-requests blijft maken die nginx afhandelt via de externe mount.
+- Alle image-routes (`/images/*`, `/assets/assets/images/*`, `/assets/images/*`) verwijzen uitsluitend naar de externe runtime mount (`/mnt/external-images`). Er is geen bundled fallback — ontbrekende images resulteren in een `404` die de `errorBuilder` in Flutter triggert.
+- Scope van runtime external storage is **alle** assets onder `client/assets/images/**`. Houd de runtime map-structuur gelijk aan de repository-structuur (rsync).
+- Na server-deploy: altijd `rsync -av --delete client/assets/images/ runtime/client-images/` uitvoeren voordat de container herbouwd wordt, anders zijn alle afbeeldingen leeg.
 - Bij runtime image updates zonder rebuild: hanteer versie-bestandsnamen (`*.v2.png`) of expliciete cache-invalidering om stale image caches te voorkomen.
 - Voor kaarten/lijsten met dynamische image-bestanden (zoals jobs/crimes): implementeer altijd een visuele `errorBuilder` fallback zodat ontbrekende assets niet als lege/broken tiles eindigen.
 - In gedeelde web image helpers: hanteer `Image.asset(...)` als primaire renderpad en gebruik network-URL alleen als fallback, zodat hosting/proxy variaties minder snel alle visuals breken.
