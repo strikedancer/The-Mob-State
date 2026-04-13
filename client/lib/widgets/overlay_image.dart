@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/web_asset_helper.dart';
 
 /// A widget that displays a base image with optional overlay images composited on top.
 /// 
@@ -57,7 +58,7 @@ class OverlayImage extends StatelessWidget {
     // Build list of image layers
     final List<Widget> layers = [
       // Base image
-      Image.asset(
+      WebAssetHelper.image(
         base,
         width: width,
         height: height,
@@ -80,15 +81,13 @@ class OverlayImage extends StatelessWidget {
       layers.add(
         Opacity(
           opacity: overlayOpacity,
-          child: Image.asset(
+          child: WebAssetHelper.image(
             overlay,
             width: width,
             height: height,
             fit: fit,
-            errorBuilder: (context, error, stackTrace) {
-              // If overlay fails to load, just skip it
-              return const SizedBox.shrink();
-            },
+            errorBuilder: (context, error, stackTrace) =>
+                const SizedBox.shrink(),
           ),
         ),
       );

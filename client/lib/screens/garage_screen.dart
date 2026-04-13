@@ -14,6 +14,7 @@ import '../widgets/overlay_image.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
 
 class GarageScreen extends StatefulWidget {
   const GarageScreen({
@@ -274,16 +275,20 @@ class _GarageScreenState extends State<GarageScreen> {
       ],
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/backgrounds/garage_background.png'),
-          fit: BoxFit.cover,
-          opacity: 0.3,
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned.fill(
+          child: Opacity(
+            opacity: 0.3,
+            child: WebAssetHelper.image(
+              'assets/images/backgrounds/garage_background.png',
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
+        Scaffold(
+          backgroundColor: Colors.transparent,
         appBar: widget.embedded
             ? null
             : AppBar(

@@ -14,6 +14,7 @@ import '../widgets/cooldown_overlay.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
 
 class MarinaScreen extends StatefulWidget {
   const MarinaScreen({super.key, this.embedded = false, this.titleOverride});
@@ -243,16 +244,20 @@ class _MarinaScreenState extends State<MarinaScreen> {
       ],
     );
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/backgrounds/marina_background.png'),
-          fit: BoxFit.cover,
-          opacity: 0.3,
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned.fill(
+          child: Opacity(
+            opacity: 0.3,
+            child: WebAssetHelper.image(
+              'assets/images/backgrounds/marina_background.png',
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
+        Scaffold(
+          backgroundColor: Colors.transparent,
         appBar: widget.embedded
             ? null
             : AppBar(
