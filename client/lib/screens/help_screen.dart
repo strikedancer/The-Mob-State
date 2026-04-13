@@ -95,7 +95,24 @@ class _HelpScreenState extends State<HelpScreen> {
       });
     }
 
-    final body = Column(
+    final compactBody = SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildHeader(context),
+          const SizedBox(height: 16),
+          _buildSearchBar(context),
+          const SizedBox(height: 12),
+          _buildCategoryChips(),
+          const SizedBox(height: 16),
+          topics.isEmpty ? _buildEmptyState() : _buildCompactLayout(topics),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+
+    final wideBody = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildHeader(context),
@@ -107,12 +124,12 @@ class _HelpScreenState extends State<HelpScreen> {
         Expanded(
           child: topics.isEmpty
               ? _buildEmptyState()
-              : isWide
-              ? _buildWideLayout(topics, selectedTopic!)
-              : _buildCompactLayout(topics),
+              : _buildWideLayout(topics, selectedTopic!),
         ),
       ],
     );
+
+    final body = isWide ? wideBody : compactBody;
 
     if (widget.embedded) {
       return Padding(padding: const EdgeInsets.all(16), child: body);
@@ -350,64 +367,62 @@ class _HelpScreenState extends State<HelpScreen> {
   }
 
   Widget _buildCompactLayout(List<HelpTopic> topics) {
-    return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: 20),
-      itemCount: topics.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 10),
-      itemBuilder: (context, index) {
-        final topic = topics[index];
-        return Card(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(12),
-            onTap: () => _openTopicSheet(topic),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: Colors.amber.withOpacity(0.14),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(topic.icon, color: Colors.amber),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          topic.title(_isNl),
-                          style: const TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          topic.category(_isNl),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.amber.shade200,
+    return Column(
+      children: topics
+          .map((topic) => Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Card(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => _openTopicSheet(topic),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withOpacity(0.14),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(topic.icon, color: Colors.amber),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          topic.summary(_isNl),
-                          style: const TextStyle(color: Colors.white70),
-                        ),
-                      ],
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  topic.title(_isNl),
+                                  style: const TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  topic.category(_isNl),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.amber.shade200,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  topic.summary(_isNl),
+                                  style: const TextStyle(color: Colors.white70),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.chevron_right),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.chevron_right),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+                ),
+              ))
+          .toList(),
     );
   }
 

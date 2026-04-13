@@ -358,7 +358,9 @@ class _StorageTabState extends State<StorageTab> {
                 ],
               ),
             )
-          : Column(
+          : ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
               children: [
                 // Property selector
                 Container(
@@ -501,25 +503,23 @@ class _StorageTabState extends State<StorageTab> {
                 ),
 
                 // Storage actions + tools list
-                Expanded(
-                  child: _selectedStorage == null
-                      ? const SizedBox.shrink()
-                      : !_selectedStorage!.accessibleInCurrentCountry
-                      ? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(24),
-                            child: Text(
-                              _tr('Je bent in een ander land. Je kunt deze opslag hier niet openen.', 'You are in another country. You cannot access this storage here.'),
-                              style: TextStyle(
-                                color: Colors.grey[400],
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                _selectedStorage == null
+                    ? const SizedBox.shrink()
+                    : !_selectedStorage!.accessibleInCurrentCountry
+                    ? Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Text(
+                          _tr('Je bent in een ander land. Je kunt deze opslag hier niet openen.', 'You are in another country. You cannot access this storage here.'),
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 14,
                           ),
-                        )
-                      : ListView(
-                          padding: const EdgeInsets.all(8),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
                           children: [
                             if (_selectedStorage!.allowedCategories.contains(
                               'weapons',
@@ -866,7 +866,7 @@ class _StorageTabState extends State<StorageTab> {
                               ),
                           ],
                         ),
-                ),
+                      ),
               ],
             ),
     );
