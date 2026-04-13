@@ -727,6 +727,8 @@ router.get('/players/:playerId/overview', async (req, res) => {
       casinoAsPlayerTotals,
       casinoAsOwnerTotals,
       premiumFulfillments,
+      weaponsContentRaw,
+      ammoContentRaw,
     ] = await Promise.all([
       prisma.player.findUnique({
         where: { id: playerId },
@@ -913,6 +915,8 @@ router.get('/players/:playerId/overview', async (req, res) => {
           fulfilledAt: true,
         },
       }),
+      fs.readFile(path.join(__dirname, '../../content/weapons.json'), 'utf-8'),
+      fs.readFile(path.join(__dirname, '../../content/ammo.json'), 'utf-8'),
     ]);
 
     if (!player) {
@@ -931,6 +935,44 @@ router.get('/players/:playerId/overview', async (req, res) => {
     const dailyXp = ((crimeLast7._sum.xpGained || 0) + (jobLast7._sum.xpGained || 0)) / 7;
     const nextRankXpTarget = getXPForRank(player.rank + 1);
     const xpToNextRank = Math.max(0, nextRankXpTarget - player.xp);
+
+    const weaponNameById = new Map<string, string>();
+    const ammoNameByType = new Map<string, string>();
+
+    try {
+      const weaponsPayload = JSON.parse(weaponsContentRaw) as { weapons?: Array<{ id?: string; name?: string }> };
+      for (const weapon of weaponsPayload.weapons || []) {
+        if (weapon.id && weapon.name) {
+          weaponNameById.set(weapon.id, weapon.name);
+        }
+      }
+    } catch {
+      // Keep admin overview operational even if content file parsing fails.
+    }
+
+    try {
+      const ammoPayload = JSON.parse(ammoContentRaw) as { ammo?: Array<{ type?: string; name?: string }> };
+      for (const ammo of ammoPayload.ammo || []) {
+        if (ammo.type && ammo.name) {
+          ammoNameByType.set(ammo.type, ammo.name);
+        }
+      }
+    } catch {
+      // Keep admin overview operational even if content file parsing fails.
+    }
+
+    const ammoAssets = ammoInventory.map((item) => ({
+      ...item,
+      name: ammoNameByType.get(item.ammoType) || item.ammoType,
+    }));
+
+    const weaponAssets = weaponInventory.map((item) => ({
+      ...item,
+      name: weaponNameById.get(item.weaponId) || item.weaponId,
+    }));
+
+    const ammoTotalRounds = ammoAssets.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    const weaponTotalUnits = weaponAssets.reduce((sum, item) => sum + (item.quantity || 0), 0);
 
     res.json({
       player,
@@ -968,8 +1010,14 @@ router.get('/players/:playerId/overview', async (req, res) => {
         tools: playerTools,
         inventory,
         vehicles: vehicleInventory,
-        ammo: ammoInventory,
-        weapons: weaponInventory,
+        ammo: ammoAssets,
+        weapons: weaponAssets,
+      },
+      assetSummary: {
+        ammoTotalRounds,
+        ammoDistinctTypes: ammoAssets.length,
+        weaponTotalUnits,
+        weaponDistinctTypes: weaponAssets.length,
       },
       history: {
         recentActivities,

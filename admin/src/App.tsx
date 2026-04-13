@@ -3169,6 +3169,10 @@ function App() {
               const pl = ov.player
               const healthPct = Math.max(0, Math.min(100, pl.health))
               const healthColor = healthPct > 70 ? 'bg-success' : healthPct > 30 ? 'bg-warning' : 'bg-danger'
+              const ammoTotalRounds = ov.assetSummary?.ammoTotalRounds ?? ov.assets.ammo.reduce((sum, item: any) => sum + (item.quantity || 0), 0)
+              const weaponTotalUnits = ov.assetSummary?.weaponTotalUnits ?? ov.assets.weapons.reduce((sum, item: any) => sum + (item.quantity || 0), 0)
+              const ammoDistinctTypes = ov.assetSummary?.ammoDistinctTypes ?? ov.assets.ammo.length
+              const weaponDistinctTypes = ov.assetSummary?.weaponDistinctTypes ?? ov.assets.weapons.length
               const avatarUrl = selectedPlayerAvatar
                 ? `http://localhost:3000/assets/images/avatars/${selectedPlayerAvatar}.png`
                 : null
@@ -3254,6 +3258,8 @@ function App() {
                       { icon: 'ph-handcuffs', label: l('Jail', 'Jailed'), value: ov.stats.crimes.jailed.toLocaleString(), color: 'text-warning' },
                       { icon: 'ph-star', label: l('Reputatie', 'Reputation'), value: pl.reputation.toLocaleString(), color: 'text-warning' },
                       { icon: 'ph-crosshair', label: l('Kills', 'Kills'), value: pl.killCount.toLocaleString(), color: 'text-danger' },
+                      { icon: 'ph-bullets', label: l('Munitie totaal', 'Total ammo'), value: ammoTotalRounds.toLocaleString(), color: 'text-primary' },
+                      { icon: 'ph-gun', label: l('Wapens totaal', 'Total weapons'), value: weaponTotalUnits.toLocaleString(), color: 'text-dark' },
                     ].map(({ icon, label, value, color }) => (
                       <div key={label} className="col-6 col-md-3">
                         <div className="card h-100">
@@ -3308,6 +3314,10 @@ function App() {
                               [l('Wanted level', 'Wanted level'), pl.wantedLevel],
                               [l('Kills', 'Kills'), pl.killCount],
                               [l('Hits', 'Hits'), pl.hitCount],
+                              [l('Munitie types', 'Ammo types'), ammoDistinctTypes],
+                              [l('Munitie totaal', 'Total ammo'), ammoTotalRounds.toLocaleString()],
+                              [l('Wapen types', 'Weapon types'), weaponDistinctTypes],
+                              [l('Wapens totaal', 'Total weapons'), weaponTotalUnits.toLocaleString()],
                               [l('Inventory slots', 'Inventory slots'), `${pl.inventory_slots_used}/${pl.max_inventory_slots}`],
                               [l('VIP', 'VIP'), pl.isVip ? (pl.vipExpiresAt ? `${l('Ja tot', 'Yes until')} ${new Date(pl.vipExpiresAt).toLocaleDateString()}` : l('Permanent', 'Permanent')) : l('Nee', 'No')],
                               [l('Gebanned', 'Banned'), pl.isBanned ? (pl.bannedUntil ? new Date(pl.bannedUntil).toLocaleString() : l('Permanent', 'Permanent')) : l('Nee', 'No')],
@@ -3385,15 +3395,18 @@ function App() {
                       <div className="row g-3 mb-3">
                         <div className="col-lg-6">
                           <div className="card h-100">
-                            <div className="card-header"><h5 className="mb-0"><i className="ph-bullets me-2" />{l('Ammo', 'Ammo')}</h5></div>
+                            <div className="card-header d-flex justify-content-between align-items-center">
+                              <h5 className="mb-0"><i className="ph-bullets me-2" />{l('Ammo', 'Ammo')}</h5>
+                              <span className="badge bg-secondary">{ammoTotalRounds.toLocaleString()}</span>
+                            </div>
                             {ov.assets.ammo.length === 0
                               ? <div className="card-body text-muted">{l('Geen ammo.', 'No ammo.')}</div>
                               : <div className="table-responsive">
                                   <table className="table table-hover mb-0">
-                                    <thead><tr><th>{l('Type', 'Type')}</th><th>{l('Aantal', 'Amount')}</th></tr></thead>
+                                    <thead><tr><th>{l('Naam', 'Name')}</th><th>{l('Type', 'Type')}</th><th>{l('Aantal', 'Amount')}</th></tr></thead>
                                     <tbody>
                                       {ov.assets.ammo.map((a: any) => (
-                                        <tr key={`${a.playerId}-${a.ammoType}`}><td>{a.ammoType}</td><td>{a.quantity}</td></tr>
+                                        <tr key={`${a.playerId}-${a.ammoType}`}><td>{a.name || a.ammoType}</td><td>{a.ammoType}</td><td>{a.quantity}</td></tr>
                                       ))}
                                     </tbody>
                                   </table>
@@ -3403,15 +3416,18 @@ function App() {
                         </div>
                         <div className="col-lg-6">
                           <div className="card h-100">
-                            <div className="card-header"><h5 className="mb-0"><i className="ph-gun me-2" />{l('Wapens', 'Weapons')}</h5></div>
+                            <div className="card-header d-flex justify-content-between align-items-center">
+                              <h5 className="mb-0"><i className="ph-gun me-2" />{l('Wapens', 'Weapons')}</h5>
+                              <span className="badge bg-secondary">{weaponTotalUnits.toLocaleString()}</span>
+                            </div>
                             {ov.assets.weapons.length === 0
                               ? <div className="card-body text-muted">{l('Geen wapens.', 'No weapons.')}</div>
                               : <div className="table-responsive">
                                   <table className="table table-hover mb-0">
-                                    <thead><tr><th>ID</th><th>{l('Aantal', 'Amount')}</th><th>{l('Conditie', 'Condition')}</th></tr></thead>
+                                    <thead><tr><th>{l('Wapen', 'Weapon')}</th><th>ID</th><th>{l('Aantal', 'Amount')}</th><th>{l('Conditie', 'Condition')}</th></tr></thead>
                                     <tbody>
                                       {ov.assets.weapons.map((w: any) => (
-                                        <tr key={`${w.playerId}-${w.weaponId}`}><td>{w.weaponId}</td><td>{w.quantity}</td><td>{w.condition}</td></tr>
+                                        <tr key={`${w.playerId}-${w.weaponId}`}><td>{w.name || w.weaponId}</td><td>{w.weaponId}</td><td>{w.quantity}</td><td>{w.condition}</td></tr>
                                       ))}
                                     </tbody>
                                   </table>

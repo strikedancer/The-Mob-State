@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Admin speler-overzicht uitgebreid met combat-inventory details: `/admin/players/:playerId/overview` levert nu munitie- en wapen-namen + aantallen + totalen (`assetSummary`) zodat direct zichtbaar is welke wapens/munitie een speler heeft
+  - Bestand: `backend/src/routes/admin.ts`
 - [ ] Nachtclub terug in Eigendommen: nightclub verwijderd uit hiddenPropertyIds (backend + client) zodat spelers een nachtclub kunnen kopen via het Eigendommen-scherm (max 3 per land); aankoop maakt automatisch het nightclubVenue record aan
   - Bestanden: `backend/src/services/propertyService.ts`, `client/lib/screens/property_screen.dart`
 - [ ] Properties upgrade-kosten per pand individueel: upgrade kosten schalen nu per pand op basis van aankoopvolgorde (appartement 1 = laagste upgrades, appartement 4 = duurste) i.p.v. alle panden dezelfde totaal-count multiplier
@@ -119,6 +121,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Admin spelerdetail uitgebreid: Overview toont nu expliciet munitie- en wapentotalen bovenaan, plus tabellen met leesbare naam + ID + aantallen, zodat direct zichtbaar is welke wapens/munitie een speler bezit
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
 - [ ] Reset-knoppen altijd zichtbaar: reset speler en reset alle spelers gebruiken nu expliciete `admin-reset-btn` styling zodat tekst/icon niet meer alleen bij hover zichtbaar zijn
   - Bestanden: `admin/src/App.tsx`, `admin/src/App.css`
 - [ ] Web/PWA scroll hardening: dashboard section-container + Help + Storage gebruiken nu expliciete `ScrollConfiguration` met brede `dragDevices` set zodat touch-scroll op mobiel web niet wordt geblokkeerd in embedded weergaven

@@ -127,8 +127,24 @@ export interface PlayerOverview {
     tools: any[];
     inventory: any[];
     vehicles: any[];
-    ammo: any[];
-    weapons: any[];
+    ammo: Array<{
+      ammoType: string;
+      quantity: number;
+      quality: number;
+      name?: string;
+    }>;
+    weapons: Array<{
+      weaponId: string;
+      quantity: number;
+      condition: number;
+      name?: string;
+    }>;
+  };
+  assetSummary?: {
+    ammoTotalRounds: number;
+    ammoDistinctTypes: number;
+    weaponTotalUnits: number;
+    weaponDistinctTypes: number;
   };
   history: {
     recentActivities: any[];
