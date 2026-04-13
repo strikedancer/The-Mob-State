@@ -116,6 +116,9 @@ Implementatievoorkeur:
 - Bij URL-resolving helpers voor web-assets: gebruik base-relative paden (geen root-absolute `/assets/...`), zodat deployments op subpaths ook correct assets laden.
 - Voor login/landing backgrounds op Flutter web: houd ook een static public fallback beschikbaar onder `web/images/backgrounds/*` en gebruik indien nodig een directe network fallback naar `images/backgrounds/*`.
 - Voor brede gameplay image-loading op web: gebruik een centrale `/images/*` runtime-route (via helper + nginx alias naar Flutter bundle) zodat crimes/jobs/avatars/badges op alle omgevingen hetzelfde pad gebruiken.
+- Voor productie-deploys met veel beeldmateriaal: gebruik runtime external image storage (`/images/*` -> externe map) met bundled fallback. Zo kunnen image-updates zonder client rebuild worden uitgerold.
+- Externe `/images/*` route moet altijd fallback houden naar bundled Flutter assets om blank/broken UI te voorkomen bij ontbrekende runtime files.
+- Bij runtime image updates zonder rebuild: hanteer versie-bestandsnamen (`*.v2.png`) of expliciete cache-invalidering om stale image caches te voorkomen.
 - Voor kaarten/lijsten met dynamische image-bestanden (zoals jobs/crimes): implementeer altijd een visuele `errorBuilder` fallback zodat ontbrekende assets niet als lege/broken tiles eindigen.
 - In gedeelde web image helpers: hanteer `Image.asset(...)` als primaire renderpad en gebruik network-URL alleen als fallback, zodat hosting/proxy variaties minder snel alle visuals breken.
 - Voor kritieke web-assets die structureel issues geven (avatars, crime-art, login backgrounds) gebruik bij voorkeur een gedeelde helper die op web direct naar de publieke HTTPS asset-URL resolvet in plaats van losse `AssetImage` aanroepen te verspreiden.

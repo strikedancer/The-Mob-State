@@ -24,6 +24,67 @@ curl -I https://your-domain/main.dart.js
 
 Controleer dat bovenstaande bestanden `no-cache`/`must-revalidate` headers hebben.
 
+## Runtime External Images (No Rebuild For Image Updates)
+
+Doel:
+- Gameplay afbeeldingen buiten de client build houden.
+- Nieuwe/gewijzigde images uploaden zonder `docker compose ... --build`.
+
+Implementatie in deze repo:
+- `docker-compose.plesk.yml` mount externe map in client container op `/mnt/external-images`.
+- `client/docker/nginx.conf` route `/images/*` probeert eerst `/mnt/external-images/*`, daarna bundled fallback `/usr/share/nginx/html/assets/assets/images/*`.
+
+### Eenmalig online instellen
+
+```bash
+cd /var/www/vhosts/themobstate.com/apps/mafia_game
+mkdir -p runtime/client-images/backgrounds
+mkdir -p runtime/client-images/avatars
+mkdir -p runtime/client-images/crimes
+```
+
+Controleer of `CLIENT_EXTERNAL_IMAGES_PATH` gewenst is in `.env` (optioneel):
+
+```env
+CLIENT_EXTERNAL_IMAGES_PATH=/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images
+```
+
+Daarna 1x deploy/rebuild zodat volume + nginx-regels actief zijn:
+
+```bash
+git pull origin main
+docker compose -f docker-compose.plesk.yml up -d --build client
+```
+
+### Vanaf nu images updaten zonder rebuild
+
+1. Upload files naar runtime map (voorbeeld):
+
+```bash
+cp /tmp/login_background.png /var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images/backgrounds/login_background.png
+```
+
+2. Test direct via browser URL:
+
+```bash
+curl -I https://jouwdomein/images/backgrounds/login_background.png
+```
+
+3. Eventueel client hard refresh (service worker cache kan oud bestand tonen).
+
+### Belangrijke cache-regel
+
+- Voor images die je soms overschrijft met dezelfde bestandsnaam: gebruik bij voorkeur versie-bestandsnamen, bv `login_background.v2.png`.
+- Voor nieuwe assets: update alleen de bestandsreferentie in app-code als de bestandsnaam verandert.
+
+### Wanneer nog wel rebuild nodig is
+
+- Codewijziging in Flutter/TS/Node.
+- Nginx/config wijziging.
+- Nieuwe route of helperlogica.
+
+Alleen image-bestanden in runtime map wijzigen vereist geen rebuild.
+
 ---
 
 ## Architecture Overview
