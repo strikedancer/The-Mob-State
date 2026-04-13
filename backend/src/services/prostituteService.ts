@@ -4,6 +4,7 @@ import { checkIfJailed, increaseWantedLevel, jailPlayer } from './policeService'
 import { activityService } from './activityService';
 import { propertyService } from './propertyService';
 import { increaseFBIHeat } from './fbiService';
+import { notificationService } from './notificationService';
 
 const RECRUITMENT_COOLDOWN_MINUTES = 5;
 const RECRUITMENT_SUCCESS_CHANCE = 0.75; // 75% kans op succesvolle werving
@@ -782,6 +783,11 @@ export const prostituteService = {
       where: { id: playerId },
       data: { lastProstituteRecruitment: new Date() }
     });
+
+    // Stuur pushmelding wanneer cooldown afloopt
+    setTimeout(() => {
+      notificationService.sendCooldownExpiredNotification(playerId, 'prostitute_recruit').catch(() => {});
+    }, RECRUITMENT_COOLDOWN_MINUTES * 60 * 1000);
 
     // Get player VIP status
     const player = await prisma.player.findUnique({

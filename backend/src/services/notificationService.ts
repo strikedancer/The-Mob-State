@@ -415,6 +415,7 @@ export class NotificationService {
         job: { en: 'job', nl: 'werk' },
         vehicle_theft: { en: 'vehicle theft', nl: 'voertuig stelen' },
         boat_theft: { en: 'boat theft', nl: 'boot stelen' },
+        prostitute_recruit: { en: 'prostitute recruitment', nl: 'hoeren werven' },
       };
       const actionName = actionNames[actionType]?.[resolvedLanguage] ?? actionType;
       await this.sendToPlayer(
