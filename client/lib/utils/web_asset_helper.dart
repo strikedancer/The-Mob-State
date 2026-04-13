@@ -27,10 +27,6 @@ class WebAssetHelper {
   }
 
   static ImageProvider<Object> provider(String assetPath) {
-    if (kIsWeb) {
-      return NetworkImage(toPublicUrl(assetPath));
-    }
-
     return AssetImage(assetPath);
   }
 
@@ -44,14 +40,24 @@ class WebAssetHelper {
     Widget Function(BuildContext, Object, StackTrace?)? errorBuilder,
   }) {
     if (kIsWeb) {
-      return Image.network(
-        toPublicUrl(assetPath),
+      return Image.asset(
+        assetPath,
         key: key,
         width: width,
         height: height,
         fit: fit,
         alignment: alignment,
-        errorBuilder: errorBuilder,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.network(
+            toPublicUrl(assetPath),
+            key: key,
+            width: width,
+            height: height,
+            fit: fit,
+            alignment: alignment,
+            errorBuilder: errorBuilder,
+          );
+        },
       );
     }
 
