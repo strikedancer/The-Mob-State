@@ -91,6 +91,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Inventory carried-tab hotfix: wapens op "op zak" gebruiken nu gedeelde weapon-inventory uit parent-screen + robuuste response parsing (`weapons`/`inventory`/`weaponInventory`) zodat wapens niet verdwijnen terwijl tools wel zichtbaar zijn
+  - Bestanden: `client/lib/screens/inventory_screen.dart`, `client/lib/screens/carried_inventory_tab.dart`
 - [ ] External image routing hotfix (nginx): image-locaties gebruiken nu prefix `alias /mnt/external-images/` voor `/images/*`, `/assets/assets/images/*`, `/assets/images/*` en `/assets/image/*`; dit voorkomt globale 404-regressie door foutieve `try_files /mnt/external-images/...` resolutie
   - Bestand: `client/docker/nginx.conf`
 - [ ] Client Docker build pubspec fix: wanneer `assets/images/` via `.dockerignore` is uitgesloten, maakt Dockerfile nu automatisch alle `flutter.assets` directories uit `pubspec.yaml` aan vóór `flutter build web`, zodat build niet faalt met `unable to find directory entry in pubspec.yaml`

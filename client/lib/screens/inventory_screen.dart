@@ -201,6 +201,7 @@ class _InventoryScreenState extends State<InventoryScreen>
               children: [
                 CarriedInventoryTab(
                   playerId: authProvider.currentPlayer?.id ?? 0,
+                  weaponInventory: _weaponInventory,
                 ),
                 StorageTab(playerId: authProvider.currentPlayer?.id ?? 0),
                 LoadoutsTab(playerId: authProvider.currentPlayer?.id ?? 0),

@@ -10,8 +10,13 @@ import '../l10n/app_localizations.dart';
 
 class CarriedInventoryTab extends StatefulWidget {
   final int playerId;
+  final List<Map<String, dynamic>> weaponInventory;
 
-  const CarriedInventoryTab({super.key, required this.playerId});
+  const CarriedInventoryTab({
+    super.key,
+    required this.playerId,
+    required this.weaponInventory,
+  });
 
   @override
   State<CarriedInventoryTab> createState() => _CarriedInventoryTabState();
@@ -30,7 +35,38 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
   @override
   void initState() {
     super.initState();
+    _weapons = List<Map<String, dynamic>>.from(widget.weaponInventory);
     _loadInventory();
+  }
+
+  @override
+  void didUpdateWidget(covariant CarriedInventoryTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.weaponInventory != widget.weaponInventory) {
+      setState(() {
+        _weapons = List<Map<String, dynamic>>.from(widget.weaponInventory);
+      });
+    }
+  }
+
+  List<Map<String, dynamic>> _parseWeaponInventory(String body) {
+    try {
+      final raw = (body.isEmpty
+          ? {}
+          : (jsonDecode(body) as Map<String, dynamic>));
+
+      final dynamic candidates =
+          raw['weapons'] ?? raw['inventory'] ?? raw['weaponInventory'];
+
+      final list = (candidates is List ? candidates : <dynamic>[])
+          .map((entry) => Map<String, dynamic>.from(entry as Map))
+          .where((entry) => ((entry['quantity'] as num?)?.toInt() ?? 1) > 0)
+          .toList();
+
+      return list;
+    } catch (_) {
+      return [];
+    }
   }
 
   Future<void> _loadInventory() async {
@@ -41,16 +77,18 @@ class _CarriedInventoryTabState extends State<CarriedInventoryTab> {
 
     final result = await _inventoryService.getCarriedTools();
 
-    List<Map<String, dynamic>> weapons = [];
+    List<Map<String, dynamic>> weapons = List<Map<String, dynamic>>.from(
+      widget.weaponInventory,
+    );
     List<Map<String, dynamic>> ammo = [];
 
     try {
       final weaponsResponse = await _apiClient.get('/weapons/inventory');
       if (weaponsResponse.statusCode == 200) {
-        final data = json.decode(weaponsResponse.body) as Map<String, dynamic>;
-        weapons = (data['weapons'] as List<dynamic>? ?? [])
-            .map((w) => w as Map<String, dynamic>)
-            .toList();
+        final parsed = _parseWeaponInventory(weaponsResponse.body);
+        if (parsed.isNotEmpty) {
+          weapons = parsed;
+        }
       }
     } catch (_) {}
 
