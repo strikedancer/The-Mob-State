@@ -4,7 +4,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 
 ## Status
 - Release mode: **Batched deploy**
-- Laatste update: 2026-04-12
+- Laatste update: 2026-04-13
 
 ## Pending Changes (nog NIET live)
 
@@ -85,6 +85,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Deploy hardening (assets): runbook geüpdatet met verplichte Git LFS hydrate-stap op server (`git lfs pull` + `git lfs checkout`) en post-deploy service-worker/cache reset-check voor web visuals
+  - Bestanden: `docs/operations/DEPLOY.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Web helper hardening v2: `WebAssetHelper` rendert op web nu asset-first (`Image.asset`/`AssetImage`) met network fallback, zodat volledige image-renders niet blokkeren door route/proxy afwijkingen
   - Bestand: `client/lib/utils/web_asset_helper.dart`
 - [ ] Jobs image fail-safe: job cards (open + locked) gebruiken nu web-safe image loader met visuele fallback zodat ontbrekende job-assets geen broken image meer tonen op productie

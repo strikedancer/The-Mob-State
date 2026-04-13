@@ -588,12 +588,37 @@ cd /opt/mafia_game
 # Pull latest code
 git pull
 
+# IMPORTANT: hydrate Git LFS tracked assets (images/videos) before build
+git lfs install --force
+git lfs pull --include="client/assets/**,client/images/**"
+git lfs checkout
+
 # Rebuild and restart
 docker compose -f docker-compose.prod.yml up -d --build
 
 # Run new migrations if any
 docker compose -f docker-compose.prod.yml run --rm backend npx prisma migrate deploy
 ```
+
+### Post-Deploy Web Cache & Asset Validation (Required)
+
+After each client deploy, validate image serving and clear stale browser state.
+
+```bash
+# Verify representative assets respond correctly
+curl -I https://yourdomain.com/images/crimes/pickpocket_crime.png
+curl -I https://yourdomain.com/images/avatars/default_1.png
+
+# Optional: check a known-missing file returns 404 (sanity check)
+curl -I https://yourdomain.com/images/jobs/beggar_job.png
+```
+
+Expected:
+- Existing assets return `200` with realistic image sizes (not tiny LFS pointer-sized payloads).
+- Known-missing assets return `404` and UI should show fallback icon/image.
+
+Browser step (required after client deploy):
+- Hard refresh once (`Ctrl+F5`) and, if visuals still look stale, unregister Service Worker in DevTools (`Application` -> `Service Workers` -> `Unregister`) and reload.
 
 ### Database Backup
 
@@ -712,6 +737,26 @@ docker compose -f docker-compose.monitoring.yml up -d
 ---
 
 ## Troubleshooting
+
+### Images Missing In Production But Fine Locally
+
+Most common causes are stale Service Worker cache or Git LFS pointers instead of hydrated files.
+
+```bash
+# 1) Verify LFS files are hydrated
+git lfs ls-files | head -n 20
+head -n 3 client/assets/images/crimes/pickpocket_crime.png
+
+# If first line starts with "version https://git-lfs.github.com/spec/v1",
+# run LFS pull/checkout again:
+git lfs pull --include="client/assets/**,client/images/**"
+git lfs checkout
+
+# 2) Rebuild client
+docker compose -f docker-compose.prod.yml up -d --build client
+```
+
+Then do Service Worker unregister + hard refresh in browser.
 
 ### Container Won't Start
 
