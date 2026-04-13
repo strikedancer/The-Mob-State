@@ -18,7 +18,7 @@ class PropertyScreen extends StatefulWidget {
 
 class PropertyScreenState extends State<PropertyScreen>
     with SingleTickerProviderStateMixin {
-  static const Set<String> _hiddenPropertyTypes = {'nightclub', 'shop'};
+  static const Set<String> _hiddenPropertyTypes = {'shop'};
 
   late TabController _tabController;
   final ApiClient _apiClient = ApiClient();
