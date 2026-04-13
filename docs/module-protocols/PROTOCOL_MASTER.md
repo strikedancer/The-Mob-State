@@ -57,7 +57,7 @@ Als een module niet in deze lijst staat maar wel geraakt wordt, voeg die altijd 
 
 - Dashboard: kritieke kaarten en statussen moeten zichtbaar blijven bij partial failure.
 - Drugs: actieve producties en eigendom/upgrades moeten zichtbaar blijven na refresh, navigatie en travel.
-- Properties: eigendom moet direct terugkomen in UI voor de eigenschappenstroom (house/apartment/warehouse) en mag geen nightclub/shop items tonen.
+- Properties: eigendom moet direct terugkomen in UI voor de eigenschappenstroom (house/apartment/warehouse/nightclub); shop items mogen hier niet verschijnen. Nightclub-aankoop via Properties start het nachtclub-systeem; beheer vindt daarna plaats in de Nightclub-module.
 - Nightclub: draait als eigen systeem met idempotente venue setup en mag niet afhankelijk zijn van zichtbaarheid in de algemene Properties-module.
 - Admin: player activity logging moet complete details tonen (type, bron, duur/tijd).
 

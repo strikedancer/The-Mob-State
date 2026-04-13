@@ -4,8 +4,9 @@
 Property buying, upgrading, income collection and ownership rules.
 
 Scope-afbakening:
-- Nightclub en Shop vallen buiten deze module en worden hier niet getoond of geclaimd.
-- Deze module richt zich op house/apartment/warehouse (en eventuele toekomstige property types die expliciet aan deze flow gekoppeld zijn).
+- Shop valt buiten deze module en wordt hier niet getoond of geclaimd.
+- Nightclub is wél koopbaar via deze module (aankoop start het nachtclub-systeem); beheer van de nachtclub zelf vindt echter plaats in de aparte Nightclub-module.
+- Deze module richt zich op house/apartment/warehouse/nightclub (en eventuele toekomstige property types die expliciet aan deze flow gekoppeld zijn).
 
 ## Primary Frontend Entry
 - client/lib/screens/property_screen.dart
@@ -40,7 +41,8 @@ Scope-afbakening:
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
-- Verify nightclub/shop are not returned in properties list endpoints and cannot be newly claimed via properties flow.
+- Verify shop is not returned in properties list endpoints and cannot be claimed via properties flow.
+- Verify nightclub is visible in properties list and can be purchased (creating a nightclubVenue record).
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

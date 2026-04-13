@@ -30,7 +30,7 @@ interface PropertiesData {
 
 class PropertyService {
   private properties: PropertyDefinition[] = [];
-  private readonly hiddenPropertyIds = new Set(['nightclub', 'shop']);
+  private readonly hiddenPropertyIds = new Set(['shop']);
   private readonly scaledResidentialTypes = new Set(['house', 'apartment']);
 
   constructor() {

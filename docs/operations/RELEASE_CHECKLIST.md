@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Nachtclub terug in Eigendommen: nightclub verwijderd uit hiddenPropertyIds zodat spelers een nachtclub kunnen kopen via het Eigendommen-scherm (max 3 per land); aankoop maakt automatisch het nightclubVenue record aan
+  - Bestand: `backend/src/services/propertyService.ts`
 - [ ] Properties upgrade-kosten per pand individueel: upgrade kosten schalen nu per pand op basis van aankoopvolgorde (appartement 1 = laagste upgrades, appartement 4 = duurste) i.p.v. alle panden dezelfde totaal-count multiplier
   - Bestand: `backend/src/services/propertyService.ts`
 - [ ] School admin activity feed fix: school trainingen, level-ups en certificaten loggen nu direct naar `player_activities` (`SCHOOL_TRAINING`, `SCHOOL_LEVEL_UP`, `SCHOOL_CERTIFICATION_EARNED`) zodat ze zichtbaar zijn in Admin Recente Handelingen
