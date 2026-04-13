@@ -632,8 +632,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
                 setState(() {
                   _jailTime = null;
                 });
-                // Load crimes after release
-                _loadCrimes();
+                // Re-check state after release so cooldowns are picked up too.
+                _checkJailStatusAndLoadCrimes();
               },
             )
           : _cooldownSeconds != null && _cooldownSeconds! > 0

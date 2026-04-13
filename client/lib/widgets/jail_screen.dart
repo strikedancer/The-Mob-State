@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
+import '../utils/top_right_notification.dart';
 
 /// Widget shown when player is in jail
 /// Shows a cartoon prisoner with countdown timer
@@ -55,64 +56,24 @@ class _JailOverlayState extends State<JailOverlay> {
     Color backgroundColor = const Color(0xFF323232),
     IconData icon = Icons.info_outline,
   }) {
-    final overlay = Overlay.of(context, rootOverlay: true);
-    if (overlay == null) {
+    if (!mounted) {
       return;
     }
 
-    _notificationTimer?.cancel();
-    _notificationEntry?.remove();
-
-    final entry = OverlayEntry(
-      builder: (context) {
-        final screenWidth = MediaQuery.of(context).size.width;
-        final toastWidth = screenWidth < 440 ? screenWidth - 24 : 380.0;
-
-        return Positioned(
-          top: 16,
-          right: 12,
-          child: SafeArea(
-            child: Material(
-              color: Colors.transparent,
-              child: Container(
-                width: toastWidth,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                decoration: BoxDecoration(
-                  color: backgroundColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Icon(icon, color: Colors.white, size: 20),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        message,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: 10),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: backgroundColor,
+        duration: const Duration(seconds: 3),
+      ),
     );
-
-    overlay.insert(entry);
-    _notificationEntry = entry;
-    _notificationTimer = Timer(const Duration(seconds: 3), () {
-      _notificationEntry?.remove();
-      _notificationEntry = null;
-    });
   }
 
   void _startTimer() {
@@ -223,9 +184,10 @@ class _JailOverlayState extends State<JailOverlay> {
     final l10n = AppLocalizations.of(context)!;
     final isDutch = l10n.localeName == 'nl';
     final screenSize = MediaQuery.of(context).size;
+    final compact = screenSize.width < 430;
 
     final card = Card(
-      margin: const EdgeInsets.all(24),
+      margin: EdgeInsets.all(compact ? 12 : 24),
       elevation: 12,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -234,7 +196,7 @@ class _JailOverlayState extends State<JailOverlay> {
       child: Container(
         constraints: BoxConstraints(
           maxWidth: 560,
-          maxHeight: screenSize.height - 96,
+          maxHeight: screenSize.height - (compact ? 24 : 96),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -251,22 +213,28 @@ class _JailOverlayState extends State<JailOverlay> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      const Text(
-                        '🔒',
-                        style: TextStyle(fontSize: 28),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        isDutch ? 'Je zit in de cel' : 'You are in jail',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          '🔒',
+                          style: TextStyle(fontSize: compact ? 22 : 28),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            isDutch ? 'Je zit in de cel' : 'You are in jail',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: compact ? 18 : 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -287,9 +255,9 @@ class _JailOverlayState extends State<JailOverlay> {
                         ),
                         Text(
                           _formatTime(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
+                            fontSize: compact ? 20 : 24,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'monospace',
                           ),

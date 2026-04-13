@@ -95,6 +95,18 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `backend/src/services/notificationService.ts`, `client/web/firebase-messaging-sw.js`
 - [ ] Crypto marktmeldingen gefilterd op actieve portfolio: `notifyAllPlayersMarketRegime` en `notifyAllPlayersMarketNews` sturen nu alleen naar spelers met `quantity > 0` in `crypto_holdings`; spelers zonder crypto-portfolio ontvangen geen ongeplande marktmeldingen meer
   - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Player profiel like-fix online: `profile_likes` tabel wordt nu runtime idempotent aangemaakt in player-routes zodat profiel-like niet meer faalt op productie met schema-drift
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Crime jail->cooldown flow fix: na borg-betaling wordt state opnieuw gevalideerd via jail+cooldown check, zodat scherm niet blijft hangen op jail overlay en cooldown overlay direct kan overnemen
+  - Bestand: `client/lib/screens/crime_screen.dart`
+- [ ] Overlay mobile readability fix: jail/cooldown overlays gebruiken compactere spacing/typografie op kleine schermen en tonen release/cooldown feedback betrouwbaarder via top-right snackbar
+  - Bestanden: `client/lib/widgets/jail_screen.dart`, `client/lib/widgets/cooldown_overlay.dart`
+- [ ] Help mobiel scroll hardening: compact lijst heeft altijd-scroll physics en topic-sheet kreeg extra veilige padding zodat content op kleinere devices beter scrollbaar blijft
+  - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
+  - Bestand: `client/lib/screens/login_screen.dart`
+- [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] iOS homescreen/PWA update fix: client-nginx cache-policy opgesplitst zodat app-shell/service-worker bestanden `no-cache` krijgen en assets immutable blijven; hierdoor pakt iPhone beginscherm-app nieuwe releases zonder opnieuw toevoegen
   - Bestanden: `client/docker/nginx.conf`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/DEPLOY.md`
 - [ ] Reizen UX/state fix: na reisstart wordt nu transit-status getoond (onderweg + volgende stop) i.p.v. direct "gereisd naar bestemming", en player-country wordt na start/volgende leg altijd server-authentiek ververst

@@ -66,12 +66,15 @@ class _HelpScreenState extends State<HelpScreen> {
       builder: (context) {
         return FractionallySizedBox(
           heightFactor: 0.92,
-          child: _HelpTopicDetail(
-            topic: topic,
-            isNl: _isNl,
-            titleHow: _tr('Hoe werkt dit?', 'How does this work?'),
-            titleTips: _tr('Handige tips', 'Helpful tips'),
-            closeLabel: _tr('Sluiten', 'Close'),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+            child: _HelpTopicDetail(
+              topic: topic,
+              isNl: _isNl,
+              titleHow: _tr('Hoe werkt dit?', 'How does this work?'),
+              titleTips: _tr('Handige tips', 'Helpful tips'),
+              closeLabel: _tr('Sluiten', 'Close'),
+            ),
           ),
         );
       },
@@ -348,6 +351,8 @@ class _HelpScreenState extends State<HelpScreen> {
 
   Widget _buildCompactLayout(List<HelpTopic> topics) {
     return ListView.separated(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(bottom: 20),
       itemCount: topics.length,
       separatorBuilder: (_, _) => const SizedBox(height: 10),
       itemBuilder: (context, index) {

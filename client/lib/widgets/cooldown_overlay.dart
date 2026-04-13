@@ -79,6 +79,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     final l10n = AppLocalizations.of(context)!;
     final locale = l10n.localeName;
     final screenSize = MediaQuery.of(context).size;
+    final compact = screenSize.width < 430;
 
     // Determine which background image to use
     String? backgroundImagePath;
@@ -93,14 +94,14 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     }
 
     final overlayCard = Card(
-      margin: const EdgeInsets.all(24),
+      margin: EdgeInsets.all(compact ? 12 : 24),
       elevation: 12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       clipBehavior: Clip.antiAlias,
       child: Container(
         constraints: BoxConstraints(
           maxWidth: 560,
-          maxHeight: screenSize.height - 96,
+          maxHeight: screenSize.height - (compact ? 24 : 96),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -121,15 +122,19 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                     children: [
                       Text(
                         _cooldownInfo.getIcon(),
-                        style: const TextStyle(fontSize: 28),
+                        style: TextStyle(fontSize: compact ? 22 : 28),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        '${_cooldownInfo.getActionName(locale)} Cooldown',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          '${_cooldownInfo.getActionName(locale)} Cooldown',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: compact ? 18 : 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -157,9 +162,9 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                         ),
                         Text(
                           _formatTime(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
+                            fontSize: compact ? 20 : 24,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'monospace',
                           ),
@@ -213,7 +218,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                   child: Text(
                                     widget.resultMessage!,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: compact ? 13 : 14,
                                       fontWeight: FontWeight.w600,
                                       color: widget.isSuccess == true
                                           ? Colors.green[800]

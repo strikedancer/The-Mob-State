@@ -101,6 +101,10 @@ Implementatievoorkeur:
 - Web push FCM payload: stuur naar web-tokens altijd een **data-only** bericht (geen `notification`-key). FCM toont anders automatisch een melding én de service worker (`onBackgroundMessage`) doet dat ook → dubbele notificatie. De service worker leest `payload.data.title` en `payload.data.body` als fallback. Native (Android/iOS) tokens blijven het `notification`-veld ontvangen.
 - Safari/iOS PWA (homescreen-app) verwijdert het `notification`-veld uit FCM-berichten voordat ze bij de service worker komen (`onBackgroundMessage` ontvangt `payload.notification === undefined`). Dit levert "you have a new notification" op als de service worker geen `payload.data.body` fallback heeft. Oplossing: verplicht `title` en `body` ook in `payload.data` meesturen — wat de data-only web-aanpak al afdwing.
 - Crypto marktmeldingen (`crypto.market.regime`, `crypto.market.news`) worden alleen verstuurd naar spelers met een actieve positie (`quantity > 0` in `crypto_holdings`). Stuur marktmeldingen nooit naar alle spelers tegelijk — filter altijd op actief portfolio via `getActiveCryptoPlayerIds()`.
+- Bij profiel-like functionaliteit: zorg dat `profile_likes` runtime idempotent gebootstrapt kan worden (of expliciet als deploy-stap), zodat schema-drift niet leidt tot player-facing 500-fouten op `/player/:id/profile/like`.
+- Bij jail/bail flows: na succesvolle borgbetaling altijd opnieuw jail+cooldown state ophalen (geen losse crimes-refresh), zodat overgang van jail overlay naar cooldown overlay betrouwbaar blijft.
+- Overlay UX mobile: jail/cooldown overlays moeten compacte responsive header-typografie gebruiken en feedback via zichtbare snackbar/toast tonen, zodat meldingen niet buiten viewport vallen.
+- Dashboard web-navigatie: klik op dezelfde sectie moet een expliciete remount/refresh triggeren (zelfde pagina opnieuw laden i.p.v. no-op).
 
 ## Flutter Web Asset Pad Conventie (Verplicht)
 

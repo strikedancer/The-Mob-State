@@ -143,6 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Timer? _playerRefreshTimer;
   bool _checkedPremiumPopup = false;
   _WebSection _selectedWebSection = _WebSection.dashboard;
+  int _webSectionRefreshSeed = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
@@ -153,6 +154,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() {
       _vehicleHeistTabIndex = initialTabIndex;
       _selectedWebSection = _WebSection.vehicleHeist;
+    });
+  }
+
+  void _selectWebSection(_WebSection section) {
+    setState(() {
+      if (_selectedWebSection == section) {
+        _webSectionRefreshSeed++;
+      } else {
+        _selectedWebSection = section;
+      }
     });
   }
 
@@ -405,24 +416,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   onSelected: (value) async {
                     switch (value) {
                       case 'messages':
-                        setState(
-                          () => _selectedWebSection = _WebSection.messages,
-                        );
+                        _selectWebSection(_WebSection.messages);
                         break;
                       case 'help':
                         if (kIsWeb) {
-                          setState(
-                            () => _selectedWebSection = _WebSection.help,
-                          );
+                          _selectWebSection(_WebSection.help);
                         } else if (context.mounted) {
                           Navigator.of(context).pushNamed('/help');
                         }
                         break;
                       case 'settings':
                         if (kIsWeb) {
-                          setState(
-                            () => _selectedWebSection = _WebSection.settings,
-                          );
+                          _selectWebSection(_WebSection.settings);
                         } else if (context.mounted) {
                           Navigator.of(context).pushNamed('/settings');
                         }
@@ -595,7 +600,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: _buildWebContent(context),
+                            child: KeyedSubtree(
+                              key: ValueKey(
+                                '${_selectedWebSection.name}-$_webSectionRefreshSeed',
+                              ),
+                              child: _buildWebContent(context),
+                            ),
                           ),
                         ),
                       ],
@@ -856,7 +866,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   : null,
               onTap: () {
                 onBeforeNavigate?.call();
-                setState(() => _selectedWebSection = item.section);
+                _selectWebSection(item.section);
               },
             ),
           ),

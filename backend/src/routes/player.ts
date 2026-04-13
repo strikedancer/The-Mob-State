@@ -16,6 +16,36 @@ import { existsCached } from '../services/redisClient';
 const router = Router();
 const PROSTITUTE_RECRUITMENT_COOLDOWN_SECONDS = 5 * 60;
 const PRISON_ACTION_COOLDOWN_SECONDS = 30;
+let profileLikesTableReady = false;
+let profileLikesTablePromise: Promise<void> | null = null;
+
+async function ensureProfileLikesTable(): Promise<void> {
+  if (profileLikesTableReady) {
+    return;
+  }
+
+  if (profileLikesTablePromise) {
+    return profileLikesTablePromise;
+  }
+
+  profileLikesTablePromise = prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS profile_likes (
+      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      sourcePlayerId INT NOT NULL,
+      targetPlayerId INT NOT NULL,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_profile_likes_source FOREIGN KEY (sourcePlayerId) REFERENCES players(id) ON DELETE CASCADE,
+      CONSTRAINT fk_profile_likes_target FOREIGN KEY (targetPlayerId) REFERENCES players(id) ON DELETE CASCADE,
+      UNIQUE KEY profile_likes_source_target_unique (sourcePlayerId, targetPlayerId),
+      INDEX idx_profile_likes_target (targetPlayerId),
+      INDEX idx_profile_likes_source (sourcePlayerId)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `).then(() => {
+    profileLikesTableReady = true;
+  });
+
+  return profileLikesTablePromise;
+}
 
 async function getPrisonActionCooldownRemaining(
   playerId: number,
@@ -166,6 +196,8 @@ router.post('/pay-bail', authenticate, async (req: AuthRequest, res: Response) =
 // Get player profile by ID
 router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Response) => {
   try {
+    await ensureProfileLikesTable();
+
     const playerId = parseInt(req.params.playerId as string, 10);
     const viewerId = req.player!.id;
 
@@ -291,6 +323,8 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
 
 router.post('/:playerId/profile/like', authenticate, async (req: AuthRequest, res: Response) => {
   try {
+    await ensureProfileLikesTable();
+
     const targetPlayerId = parseInt(req.params.playerId as string, 10);
     const sourcePlayerId = req.player!.id;
 
