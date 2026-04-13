@@ -7,13 +7,14 @@ RUN flutter pub get
 
 COPY . .
 
+# assets/images/ is excluded from the build context via .dockerignore.
+# Create the stub directory so pubspec.yaml asset declarations don't fail the build.
+# Flutter web's Image.asset() still generates HTTP requests at runtime;
+# nginx serves those from the external runtime mount (/mnt/external-images).
+RUN mkdir -p assets/images
+
 ARG WEB_API_BASE_URL=https://api.themobstate.com
 RUN flutter build web --release --dart-define=WEB_API_BASE_URL=${WEB_API_BASE_URL}
-
-# Strip bundled images — served from external runtime mount (runtime/client-images).
-# AssetManifest.json remains intact so Flutter web still makes HTTP requests;
-# nginx extern-first routes serve those requests from the mounted volume.
-RUN rm -rf /app/build/web/assets/assets/images
 
 FROM nginx:1.27-alpine
 
