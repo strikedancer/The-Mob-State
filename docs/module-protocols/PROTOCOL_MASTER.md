@@ -51,10 +51,18 @@ Acceptatie-eis:
 - Travel -> Properties, Drugs, Nightclub, Smuggling, Aviation, Admin
 - Smuggling -> Travel, Aviation, Garage, Motor, Marina, Admin
 - Aviation -> School (aviation track gate), Travel (reistijdbonus), Smuggling (eigen-voertuig kanaal), Garage, Motor, Marina, Admin
-- Support Tickets -> Help (embedded content, responsive), Messages (inbox), Notifications (push), Admin, Dashboard
+ - Support Tickets -> Support (dedicated screen, main menu), Help (reference only), Messages (inbox), Notifications (push), Admin, Dashboard
 - Admin -> Alle gameplay modules met logs, assets of economy-impact
 
-Als een module niet in deze lijst staat maar wel geraakt wordt, voeg die altijd toe aan de scope.
+
+## Support Tickets UI/UX Update (2026-04-14)
+
+- Support Tickets is nu een eigen scherm, direct bereikbaar via het hoofdmenu (“Support”/“Support Tickets”).
+- Niet langer embedded in het Help-scherm; verwijzing in Help alleen als uitleg of link.
+- Navigatie en protocol zijn aangepast: dedicated route, eigen menu-entry, responsive en multilanguage.
+- Cross-module checks: Dashboard, Admin, Messages, Notifications, Help (alleen als uitleg), i18n.
+
+Zorg dat alle documentatie, help-content en QA-checks deze nieuwe navigatie volgen.
 
 ## Module Richtlijnen (Ingebouwd)
 
