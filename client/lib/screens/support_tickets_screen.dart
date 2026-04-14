@@ -129,10 +129,16 @@ class _SupportTicketDetail {
         (json['ticket'] as Map<String, dynamic>? ?? const {}),
       ),
       messages: rawMessages
-          .map((item) => _SupportTicketMessage.fromJson(item as Map<String, dynamic>))
+          .map(
+            (item) =>
+                _SupportTicketMessage.fromJson(item as Map<String, dynamic>),
+          )
           .toList(),
       attachments: rawAttachments
-          .map((item) => _SupportTicketAttachment.fromJson(item as Map<String, dynamic>))
+          .map(
+            (item) =>
+                _SupportTicketAttachment.fromJson(item as Map<String, dynamic>),
+          )
           .toList(),
     );
   }
@@ -161,17 +167,37 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     _SupportModuleOption('support', 'Algemeen support', 'General support'),
     _SupportModuleOption('dashboard', 'Dashboard', 'Dashboard'),
     _SupportModuleOption('messages', 'Berichten / inbox', 'Messages / inbox'),
-    _SupportModuleOption('notifications', 'Meldingen / push', 'Notifications / push'),
-    _SupportModuleOption('payments', 'Betalingen / premium', 'Payments / premium'),
+    _SupportModuleOption(
+      'notifications',
+      'Meldingen / push',
+      'Notifications / push',
+    ),
+    _SupportModuleOption(
+      'payments',
+      'Betalingen / premium',
+      'Payments / premium',
+    ),
     _SupportModuleOption('bank', 'Bank', 'Bank'),
     _SupportModuleOption('crypto', 'Crypto', 'Crypto'),
     _SupportModuleOption('travel', 'Reizen', 'Travel'),
     _SupportModuleOption('properties', 'Eigendommen', 'Properties'),
-    _SupportModuleOption('inventory', 'Inventory / opslag', 'Inventory / storage'),
-    _SupportModuleOption('loadouts', 'Loadouts / uitrusting', 'Loadouts / equipment'),
+    _SupportModuleOption(
+      'inventory',
+      'Inventory / opslag',
+      'Inventory / storage',
+    ),
+    _SupportModuleOption(
+      'loadouts',
+      'Loadouts / uitrusting',
+      'Loadouts / equipment',
+    ),
     _SupportModuleOption('crimes', 'Misdaden', 'Crimes'),
     _SupportModuleOption('jobs', 'Werk / banen', 'Work / jobs'),
-    _SupportModuleOption('vehicles', 'Auto / motor / boot diefstal', 'Car / bike / boat theft'),
+    _SupportModuleOption(
+      'vehicles',
+      'Auto / motor / boot diefstal',
+      'Car / bike / boat theft',
+    ),
     _SupportModuleOption('garage', 'Garage', 'Garage'),
     _SupportModuleOption('marina', 'Marina', 'Marina'),
     _SupportModuleOption('aviation', 'Luchtvaart', 'Aviation'),
@@ -189,7 +215,11 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     _SupportModuleOption('achievements', 'Achievements', 'Achievements'),
     _SupportModuleOption('profile', 'Profiel', 'Profile'),
     _SupportModuleOption('settings', 'Instellingen', 'Settings'),
-    _SupportModuleOption('events', 'Events / leaderboard', 'Events / leaderboard'),
+    _SupportModuleOption(
+      'events',
+      'Events / leaderboard',
+      'Events / leaderboard',
+    ),
     _SupportModuleOption('other', 'Overig', 'Other'),
   ];
 
@@ -249,14 +279,18 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       final params = decoded['params'] as Map<String, dynamic>? ?? const {};
       final rawTickets = (params['tickets'] as List<dynamic>? ?? const []);
       final tickets = rawTickets
-          .map((item) => _SupportTicketSummary.fromJson(item as Map<String, dynamic>))
+          .map(
+            (item) =>
+                _SupportTicketSummary.fromJson(item as Map<String, dynamic>),
+          )
           .toList();
       final token = await _apiClient.getToken();
 
       int? nextSelectedId = preferredTicketId ?? _selectedTicketId;
       if (tickets.isEmpty) {
         nextSelectedId = null;
-      } else if (nextSelectedId == null || !tickets.any((ticket) => ticket.id == nextSelectedId)) {
+      } else if (nextSelectedId == null ||
+          !tickets.any((ticket) => ticket.id == nextSelectedId)) {
         nextSelectedId = tickets.first.id;
       }
 
@@ -278,7 +312,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text('${_tr('Tickets laden mislukt', 'Failed to load tickets')}: $e'),
+          content: Text(
+            '${_tr('Tickets laden mislukt', 'Failed to load tickets')}: $e',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -314,7 +350,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text('${_tr('Ticket laden mislukt', 'Failed to load ticket')}: $e'),
+          content: Text(
+            '${_tr('Ticket laden mislukt', 'Failed to load ticket')}: $e',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -492,7 +530,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text('${_tr('Reactie versturen mislukt', 'Failed to send reply')}: $e'),
+          content: Text(
+            '${_tr('Reactie versturen mislukt', 'Failed to send reply')}: $e',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -505,7 +545,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     final ticketId = _selectedTicketId;
     if (ticketId == null || _isDeletingTicket) return;
 
-    final confirmed = await showDialog<bool>(
+    final confirmed =
+        await showDialog<bool>(
           context: context,
           builder: (dialogContext) => AlertDialog(
             title: Text(_tr('Ticket verwijderen', 'Delete ticket')),
@@ -554,7 +595,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text('${_tr('Ticket verwijderen mislukt', 'Failed to delete ticket')}: $e'),
+          content: Text(
+            '${_tr('Ticket verwijderen mislukt', 'Failed to delete ticket')}: $e',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -564,7 +607,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   }
 
   Future<void> _refreshScreen() async {
-    await _loadTickets(preferredTicketId: _selectedTicketId ?? _lastCreatedTicketId);
+    await _loadTickets(
+      preferredTicketId: _selectedTicketId ?? _lastCreatedTicketId,
+    );
   }
 
   String _extractErrorMessage(String body) {
@@ -664,16 +709,24 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       return _tr('${difference.inDays}d geleden', '${difference.inDays}d ago');
     }
     if (difference.inHours >= 1) {
-      return _tr('${difference.inHours}u geleden', '${difference.inHours}h ago');
+      return _tr(
+        '${difference.inHours}u geleden',
+        '${difference.inHours}h ago',
+      );
     }
     if (difference.inMinutes >= 1) {
-      return _tr('${difference.inMinutes}m geleden', '${difference.inMinutes}m ago');
+      return _tr(
+        '${difference.inMinutes}m geleden',
+        '${difference.inMinutes}m ago',
+      );
     }
     return _tr('zojuist', 'just now');
   }
 
   String _senderLabel(String senderType) {
-    return senderType == 'admin' ? _tr('Support', 'Support') : _tr('Jij', 'You');
+    return senderType == 'admin'
+        ? _tr('Support', 'Support')
+        : _tr('Jij', 'You');
   }
 
   String _attachmentUrl(_SupportTicketAttachment attachment) {
@@ -717,7 +770,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   fit: BoxFit.contain,
                   errorBuilder: (_, __, ___) => Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Text(_tr('Afbeelding laden mislukt.', 'Failed to load image.')),
+                    child: Text(
+                      _tr('Afbeelding laden mislukt.', 'Failed to load image.'),
+                    ),
                   ),
                 ),
               ),
@@ -755,7 +810,12 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
             ),
             const SizedBox(height: 12),
             if (_isLoadingTickets && _tickets.isEmpty)
-              const Center(child: Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator()))
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: CircularProgressIndicator(),
+                ),
+              )
             else if (_tickets.isEmpty)
               Container(
                 width: double.infinity,
@@ -784,7 +844,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   return ListTile(
                     selected: selected,
                     selectedTileColor: color.withValues(alpha: 0.08),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     onTap: () => _loadTicketDetail(ticket.id),
                     title: Text('#${ticket.id} ${ticket.subject}'),
                     subtitle: Text(
@@ -795,21 +857,29 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(999),
                           ),
                           child: Text(
                             _statusLabel(ticket.status),
-                            style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                         if ((ticket.lastMessageBy ?? '').isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
-                              _tr('Laatste: ', 'Last: ') + _senderLabel(ticket.lastMessageBy!),
+                              _tr('Laatste: ', 'Last: ') +
+                                  _senderLabel(ticket.lastMessageBy!),
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
@@ -838,198 +908,275 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                 child: Center(child: CircularProgressIndicator()),
               )
             : _selectedTicketDetail == null
-                ? Text(_tr('Selecteer een ticket om het gesprek te openen.', 'Select a ticket to open the conversation.'))
-                : Column(
+            ? Text(
+                _tr(
+                  'Selecteer een ticket om het gesprek te openen.',
+                  'Select a ticket to open the conversation.',
+                ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '#${_selectedTicketDetail!.ticket.id} ${_selectedTicketDetail!.ticket.subject}',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 6),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
                               children: [
-                                Text(
-                                  '#${_selectedTicketDetail!.ticket.id} ${_selectedTicketDetail!.ticket.subject}',
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                ),
-                                const SizedBox(height: 6),
-                                Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: [
-                                    Chip(label: Text(_statusLabel(_selectedTicketDetail!.ticket.status))),
-                                    Chip(label: Text(_categoryLabel(_selectedTicketDetail!.ticket.category))),
-                                    Chip(label: Text(_priorityLabel(_selectedTicketDetail!.ticket.priority))),
-                                    if ((_selectedTicketDetail!.ticket.sourceModule ?? '').isNotEmpty)
-                                      Chip(label: Text(_moduleLabel(_selectedTicketDetail!.ticket.sourceModule!))),
-                                  ],
-                                ),
-                                if ((_selectedTicketDetail!.ticket.referenceCode ?? '').isNotEmpty) ...[
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    _tr('Referentie', 'Reference') + ': ${_selectedTicketDetail!.ticket.referenceCode}',
-                                    style: Theme.of(context).textTheme.bodyMedium,
+                                Chip(
+                                  label: Text(
+                                    _statusLabel(
+                                      _selectedTicketDetail!.ticket.status,
+                                    ),
                                   ),
-                                ],
+                                ),
+                                Chip(
+                                  label: Text(
+                                    _categoryLabel(
+                                      _selectedTicketDetail!.ticket.category,
+                                    ),
+                                  ),
+                                ),
+                                Chip(
+                                  label: Text(
+                                    _priorityLabel(
+                                      _selectedTicketDetail!.ticket.priority,
+                                    ),
+                                  ),
+                                ),
+                                if ((_selectedTicketDetail!
+                                            .ticket
+                                            .sourceModule ??
+                                        '')
+                                    .isNotEmpty)
+                                  Chip(
+                                    label: Text(
+                                      _moduleLabel(
+                                        _selectedTicketDetail!
+                                            .ticket
+                                            .sourceModule!,
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
-                          ),
-                          IconButton(
-                            onPressed: _isDeletingTicket ? null : _deleteSelectedTicket,
-                            icon: _isDeletingTicket
-                                ? const SizedBox(
-                                    width: 18,
-                                    height: 18,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
-                                  )
-                                : const Icon(Icons.delete_outline),
-                            tooltip: _tr('Ticket verwijderen', 'Delete ticket'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        _tr('Gesprek', 'Conversation'),
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      const SizedBox(height: 8),
-                      if (_selectedTicketDetail!.messages.isEmpty)
-                        Text(_tr('Nog geen berichten.', 'No messages yet.'))
-                      else
-                        ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _selectedTicketDetail!.messages.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 8),
-                          itemBuilder: (context, index) {
-                            final message = _selectedTicketDetail!.messages[index];
-                            final fromAdmin = message.senderType == 'admin';
-                            final background = fromAdmin ? Colors.blueGrey.shade50 : Colors.blue.shade50;
-                            final alignment = fromAdmin ? CrossAxisAlignment.start : CrossAxisAlignment.end;
-                            return Column(
-                              crossAxisAlignment: alignment,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: background,
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            _senderLabel(message.senderType),
-                                            style: const TextStyle(fontWeight: FontWeight.w700),
-                                          ),
-                                          const Spacer(),
-                                          Text(
-                                            _formatRelative(message.createdAt),
-                                            style: Theme.of(context).textTheme.bodySmall,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(message.message),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      if (_selectedTicketDetail!.attachments.isNotEmpty) ...[
-                        const SizedBox(height: 16),
-                        Text(
-                          _tr('Bijlagen', 'Attachments'),
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: _selectedTicketDetail!.attachments.map((attachment) {
-                            return InkWell(
-                              onTap: () => _openAttachmentPreview(attachment),
-                              borderRadius: BorderRadius.circular(12),
-                              child: SizedBox(
-                                width: 112,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.network(
-                                        _attachmentUrl(attachment),
-                                        headers: _attachmentHeaders,
-                                        width: 112,
-                                        height: 112,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (_, __, ___) => Container(
-                                          width: 112,
-                                          height: 112,
-                                          color: Colors.grey.shade200,
-                                          alignment: Alignment.center,
-                                          child: const Icon(Icons.image_not_supported_outlined),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      attachment.originalName,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ],
-                                ),
+                            if ((_selectedTicketDetail!.ticket.referenceCode ??
+                                    '')
+                                .isNotEmpty) ...[
+                              const SizedBox(height: 6),
+                              Text(
+                                _tr('Referentie', 'Reference') +
+                                    ': ${_selectedTicketDetail!.ticket.referenceCode}',
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                      const SizedBox(height: 16),
-                      Text(
-                        _tr('Reageer op dit ticket', 'Reply to this ticket'),
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _tr(
-                          'Gebruik dit veld als support meer informatie vraagt of als je een update wilt doorgeven. Inbox en push blijven alleen meldingen van nieuwe supportreacties.',
-                          'Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.',
+                            ],
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      TextField(
-                        controller: _replyController,
-                        minLines: 3,
-                        maxLines: 6,
-                        decoration: InputDecoration(
-                          labelText: _tr('Jouw reactie', 'Your reply'),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton.icon(
-                          onPressed: _isSendingReply ? null : _sendReply,
-                          icon: _isSendingReply
-                              ? const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : const Icon(Icons.reply_outlined),
-                          label: Text(_tr('Reactie versturen', 'Send reply')),
-                        ),
+                      IconButton(
+                        onPressed: _isDeletingTicket
+                            ? null
+                            : _deleteSelectedTicket,
+                        icon: _isDeletingTicket
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.delete_outline),
+                        tooltip: _tr('Ticket verwijderen', 'Delete ticket'),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 12),
+                  Text(
+                    _tr('Gesprek', 'Conversation'),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: 8),
+                  if (_selectedTicketDetail!.messages.isEmpty)
+                    Text(_tr('Nog geen berichten.', 'No messages yet.'))
+                  else
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _selectedTicketDetail!.messages.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 8),
+                      itemBuilder: (context, index) {
+                        final message = _selectedTicketDetail!.messages[index];
+                        final fromAdmin = message.senderType == 'admin';
+                        final background = fromAdmin
+                            ? const Color(0xFF2C313A)
+                            : const Color(0xFF1F4A6A);
+                        final borderColor = fromAdmin
+                            ? Colors.white.withValues(alpha: 0.08)
+                            : const Color(0xFF69B7FF).withValues(alpha: 0.28);
+                        final primaryTextColor = Colors.white.withValues(
+                          alpha: 0.96,
+                        );
+                        final secondaryTextColor = Colors.white.withValues(
+                          alpha: 0.72,
+                        );
+                        final alignment = fromAdmin
+                            ? CrossAxisAlignment.start
+                            : CrossAxisAlignment.end;
+                        return Column(
+                          crossAxisAlignment: alignment,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: background,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(color: borderColor),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        _senderLabel(message.senderType),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: primaryTextColor,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        _formatRelative(message.createdAt),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              color: secondaryTextColor,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    message.message,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: primaryTextColor,
+                                          height: 1.45,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  if (_selectedTicketDetail!.attachments.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      _tr('Bijlagen', 'Attachments'),
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: _selectedTicketDetail!.attachments.map((
+                        attachment,
+                      ) {
+                        return InkWell(
+                          onTap: () => _openAttachmentPreview(attachment),
+                          borderRadius: BorderRadius.circular(12),
+                          child: SizedBox(
+                            width: 112,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    _attachmentUrl(attachment),
+                                    headers: _attachmentHeaders,
+                                    width: 112,
+                                    height: 112,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) => Container(
+                                      width: 112,
+                                      height: 112,
+                                      color: Colors.grey.shade200,
+                                      alignment: Alignment.center,
+                                      child: const Icon(
+                                        Icons.image_not_supported_outlined,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  attachment.originalName,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  Text(
+                    _tr('Reageer op dit ticket', 'Reply to this ticket'),
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _tr(
+                      'Gebruik dit veld als support meer informatie vraagt of als je een update wilt doorgeven. Inbox en push blijven alleen meldingen van nieuwe supportreacties.',
+                      'Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: _replyController,
+                    minLines: 3,
+                    maxLines: 6,
+                    decoration: InputDecoration(
+                      labelText: _tr('Jouw reactie', 'Your reply'),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton.icon(
+                      onPressed: _isSendingReply ? null : _sendReply,
+                      icon: _isSendingReply
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.reply_outlined),
+                      label: Text(_tr('Reactie versturen', 'Send reply')),
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -1086,7 +1233,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _tr('Ticketnummer', 'Ticket number') + ': #$_lastCreatedTicketId',
+                              _tr('Ticketnummer', 'Ticket number') +
+                                  ': #$_lastCreatedTicketId',
                             ),
                             Text(
                               _tr(
@@ -1102,16 +1250,30 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                     DropdownButtonFormField<String>(
                       value: _category,
                       items: [
-                        DropdownMenuItem(value: 'bug', child: Text(_tr('Bug', 'Bug'))),
-                        DropdownMenuItem(value: 'question', child: Text(_tr('Vraag', 'Question'))),
-                        DropdownMenuItem(value: 'feedback', child: Text(_tr('Feedback', 'Feedback'))),
-                        DropdownMenuItem(value: 'other', child: Text(_tr('Overig', 'Other'))),
+                        DropdownMenuItem(
+                          value: 'bug',
+                          child: Text(_tr('Bug', 'Bug')),
+                        ),
+                        DropdownMenuItem(
+                          value: 'question',
+                          child: Text(_tr('Vraag', 'Question')),
+                        ),
+                        DropdownMenuItem(
+                          value: 'feedback',
+                          child: Text(_tr('Feedback', 'Feedback')),
+                        ),
+                        DropdownMenuItem(
+                          value: 'other',
+                          child: Text(_tr('Overig', 'Other')),
+                        ),
                       ],
                       onChanged: (value) {
                         if (value == null) return;
                         setState(() => _category = value);
                       },
-                      decoration: InputDecoration(labelText: _tr('Categorie', 'Category')),
+                      decoration: InputDecoration(
+                        labelText: _tr('Categorie', 'Category'),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
@@ -1128,25 +1290,34 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                         if (value == null) return;
                         setState(() => _sourceModule = value);
                       },
-                      decoration: InputDecoration(labelText: _tr('Onderdeel', 'Module')),
+                      decoration: InputDecoration(
+                        labelText: _tr('Onderdeel', 'Module'),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _subjectController,
-                      decoration: InputDecoration(labelText: _tr('Onderwerp', 'Subject')),
+                      decoration: InputDecoration(
+                        labelText: _tr('Onderwerp', 'Subject'),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _messageController,
                       minLines: 3,
                       maxLines: 6,
-                      decoration: InputDecoration(labelText: _tr('Bericht', 'Message')),
+                      decoration: InputDecoration(
+                        labelText: _tr('Bericht', 'Message'),
+                      ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _referenceController,
                       decoration: InputDecoration(
-                        labelText: _tr('Referentie (optioneel)', 'Reference (optional)'),
+                        labelText: _tr(
+                          'Referentie (optioneel)',
+                          'Reference (optional)',
+                        ),
                         hintText: _tr(
                           'Bijv. order-id, schermnaam, land of korte context',
                           'For example order id, screen name, country or short context',
@@ -1159,12 +1330,17 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                         OutlinedButton.icon(
                           onPressed: _isSubmitting ? null : _pickAttachment,
                           icon: const Icon(Icons.image_outlined),
-                          label: Text(_tr('Screenshot toevoegen', 'Add screenshot')),
+                          label: Text(
+                            _tr('Screenshot toevoegen', 'Add screenshot'),
+                          ),
                         ),
                         if (_attachmentName != null) ...[
                           const SizedBox(width: 8),
                           Expanded(
-                            child: Text(_attachmentName!, overflow: TextOverflow.ellipsis),
+                            child: Text(
+                              _attachmentName!,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                           IconButton(
                             onPressed: _isSubmitting

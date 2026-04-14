@@ -127,6 +127,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
 - [ ] Player support reply-flow hersteld: supportreacties blijven via inbox + push gemeld, maar de speler kan tickets, status en volledige thread weer direct in het Support-scherm zien en daar antwoorden/verwijderen; het module-keuzemenu dekt nu veel meer spelonderdelen
   - Bestand: `client/lib/screens/support_tickets_screen.dart`
+- [ ] Player support thread leesbaarheid verbeterd: gesprek-bubbels gebruiken nu expliciete contrastrijke donkere achtergronden en tekstkleuren, zodat afzender, tijd en inhoud in de donkere game-UI leesbaar blijven
+  - Bestand: `client/lib/screens/support_tickets_screen.dart`
 - [ ] Admin tickets kunnen nu verwijderd worden via de tickets-detailkaart
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
 - [ ] Support tickets uitgebreid met optionele screenshot/image upload voor spelers en attachment-weergave in admin ticketdetail
