@@ -119,6 +119,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Dashboard menu icon fix: Support heeft weer een expliciete menukaart met zichtbaar icon op mobiel, en Support/Luchtvaart gebruiken nu duidelijke iconen die consistent tonen in de dashboardnavigatie
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`
 - [ ] Support intake uitgebreid maar minimalistisch gehouden: speler kan nu context meesturen via module, referentiecode, platform/locale metadata en optionele screenshot, en krijgt na verzenden een duidelijk ticketnummer-terugkoppeling; help-content is gesynchroniseerd met de dedicated support-flow
   - Bestanden: `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Support navigatie aangepast: knop `Melding / Contact` verwijderd uit Help & Uitleg; nieuw apart menu-item `Support` staat direct onder `Help & Uitleg` en opent het player ticket center als eigen scherm

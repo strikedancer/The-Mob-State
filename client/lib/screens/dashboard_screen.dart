@@ -669,7 +669,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
-            icon: Icons.support_agent,
+            icon: Icons.headset_mic,
             label: _tr('Support', 'Support'),
             section: _WebSection.support,
             badge: 0,
@@ -699,7 +699,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
-            icon: Icons.airplanemode_active,
+            icon: Icons.local_airport,
             label: _tr('Luchtvaart', 'Aviation'),
             section: _WebSection.aviation,
             badge: 0,
@@ -1754,6 +1754,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
+                                  icon: Icons.headset_mic,
+                                  label: _tr('Support', 'Support'),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => SupportTicketsScreen(),
+                                    ),
+                                  ),
+                                ),
+                                _buildMenuTile(
+                                  context,
                                   icon: Icons.flight,
                                   label: l10n.travel,
                                   onTap: () => Navigator.push(
@@ -1765,7 +1776,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
-                                  icon: Icons.airplanemode_active,
+                                  icon: Icons.local_airport,
                                   label: _tr('Luchtvaart', 'Aviation'),
                                   onTap: () => Navigator.push(
                                     context,
