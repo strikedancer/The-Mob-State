@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-// FontAwesome replaced with Material Icons
 import '../l10n/app_localizations.dart';
 import '../models/player.dart';
 import '../providers/auth_provider.dart';
@@ -13,6 +12,7 @@ import '../services/auth_service.dart';
 import '../services/dashboard_service.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/country_helper.dart';
+import '../utils/fontawesome_icons.dart';
 import '../utils/formatters.dart';
 import '../widgets/event_feed.dart';
 import '../widgets/icu_overlay.dart';
@@ -669,7 +669,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
-            icon: Icons.headset_mic,
+            icon: FontAwesomeIcons.commentsSolid,
             label: _tr('Support', 'Support'),
             section: _WebSection.support,
             badge: 0,
@@ -699,7 +699,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
-            icon: Icons.local_airport,
+            icon: FontAwesomeIcons.planeSolid,
             label: _tr('Luchtvaart', 'Aviation'),
             section: _WebSection.aviation,
             badge: 0,
@@ -1754,7 +1754,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
-                                  icon: Icons.headset_mic,
+                                  icon: FontAwesomeIcons.commentsSolid,
                                   label: _tr('Support', 'Support'),
                                   onTap: () => Navigator.push(
                                     context,
@@ -1776,7 +1776,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
-                                  icon: Icons.local_airport,
+                                  icon: FontAwesomeIcons.planeSolid,
                                   label: _tr('Luchtvaart', 'Aviation'),
                                   onTap: () => Navigator.push(
                                     context,
