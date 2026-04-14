@@ -121,11 +121,11 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Client (game)
 - [ ] Dashboard menu icon fix: Support heeft weer een expliciete menukaart met zichtbaar icon op mobiel, en Support/Luchtvaart gebruiken nu een robuuste iconbron die consistent toont in de dashboardnavigatie, ook online
   - Bestanden: `client/lib/screens/dashboard_screen.dart`
-- [ ] Support intake uitgebreid maar minimalistisch gehouden: speler kan nu context meesturen via module, referentiecode, platform/locale metadata en optionele screenshot, en krijgt na verzenden een duidelijk ticketnummer-terugkoppeling; help-content is gesynchroniseerd met de dedicated support-flow
+- [ ] Support intake en opvolging uitgebreid: speler kan nu context meesturen via module, referentiecode, platform/locale metadata en optionele screenshot, krijgt na verzenden een duidelijk ticketnummer, ziet eigen tickets weer terug in het Support-scherm en kan daar rechtstreeks verder reageren; help-content is gesynchroniseerd met deze support-flow
   - Bestanden: `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Support navigatie aangepast: knop `Melding / Contact` verwijderd uit Help & Uitleg; nieuw apart menu-item `Support` staat direct onder `Help & Uitleg` en opent het player ticket center als eigen scherm
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
-- [ ] Player support scherm vereenvoudigd: spelers zien alleen nog het ticketformulier; reacties en eerder gestuurde tickets zijn verwijderd uit de speler-UI
+- [ ] Player support reply-flow hersteld: supportreacties blijven via inbox + push gemeld, maar de speler kan tickets, status en volledige thread weer direct in het Support-scherm zien en daar antwoorden/verwijderen; het module-keuzemenu dekt nu veel meer spelonderdelen
   - Bestand: `client/lib/screens/support_tickets_screen.dart`
 - [ ] Admin tickets kunnen nu verwijderd worden via de tickets-detailkaart
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
@@ -155,6 +155,12 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Admin ticket attachment lightbox fix: klikken op een ticketafbeelding opent de vergroting nu weer buiten tab-scope issues, omdat de attachment-modal globaal rendert en een preview/origineel fallback gebruikt
+  - Bestanden: `admin/src/App.tsx`
+- [ ] Admin support todo interaction fix: bewerken werkt nu ook vanuit de centrale todo-tab omdat de editor-modal niet langer alleen binnen de tickets-tab rendert; afvinken/heropenen geeft direct zichtbare statusfeedback en refresht daarna ticket- en todo-overzichten opnieuw
+  - Bestanden: `admin/src/App.tsx`
+- [ ] Support status/analytics follow-up fix: admin reply-templates/type-switches sturen tickets nu weer correct naar bijvoorbeeld `waiting_player`, en support analytics verversen direct na reply- of ticketstatus-updates zodat tellers niet blijven hangen op oude waarden
+  - Bestanden: `admin/src/App.tsx`, `backend/src/services/supportTicketService.ts`
 - [ ] Support operations upgrade in admin: tickets-tab toont nu analytics, priority, assignee, leeftijd en laatste actor; admins kunnen ticketinstellingen wijzigen, public replies of internal notes plaatsen met templates, en support todo's centraal beheren met priority, assignee, due date, module-link en interne comments
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
 - [ ] Admin support todo build-fix: kapotte JSX in de gekoppelde todo-tabel hersteld zodat `npm run build` weer slaagt en de Docker admin image niet meer stopt met `JSX expressions must have one parent element`

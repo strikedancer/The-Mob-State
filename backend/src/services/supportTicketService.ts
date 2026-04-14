@@ -176,7 +176,18 @@ function toSafeNumber(value: unknown): number {
     return value;
   }
   if (typeof value === 'string') {
-    return Number.parseInt(value, 10) || 0;
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  if (value && typeof value === 'object') {
+    const maybeNumber = value as { toNumber?: () => number; toString(): string };
+    if (typeof maybeNumber.toNumber === 'function') {
+      const parsed = maybeNumber.toNumber();
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    const parsed = Number.parseFloat(maybeNumber.toString());
+    return Number.isFinite(parsed) ? parsed : 0;
   }
   return 0;
 }

@@ -1232,6 +1232,7 @@ function App() {
       })
       setTicketReplyMessage('')
       setTicketReplyTemplateKey('')
+      await loadSupportAnalytics()
       await loadTickets(ticketStatusFilter)
       await loadTicketDetail(selectedTicketId)
     } catch (err) {
@@ -1249,6 +1250,7 @@ function App() {
         priority: ticketPriority,
         status: ticketReplyStatus,
       })
+      await loadSupportAnalytics()
       await loadTickets(ticketStatusFilter)
       await loadTicketDetail(selectedTicketId)
     } catch (err) {
@@ -1284,6 +1286,12 @@ function App() {
   }
 
   const handleToggleTicketTodo = async (todoId: number, status: 'open' | 'in_progress' | 'blocked' | 'done') => {
+    setSupportTodos((prev) => prev.map((todo) => (todo.id === todoId ? { ...todo, status } : todo)))
+    setSelectedTicketDetail((prev) => prev ? {
+      ...prev,
+      todos: prev.todos.map((todo) => (todo.id === todoId ? { ...todo, status } : todo)),
+    } : prev)
+
     try {
       await adminService.updateSupportTodo(todoId, { status })
       if (selectedTicketId) {
@@ -1292,6 +1300,10 @@ function App() {
       await loadTickets(ticketStatusFilter)
       await loadSupportTodos(supportTodoStatusFilter)
     } catch (err) {
+      if (selectedTicketId) {
+        await loadTicketDetail(selectedTicketId)
+      }
+      await loadSupportTodos(supportTodoStatusFilter)
       if (handleUnauthorized(err)) return
       alert(`${l('Todo bijwerken mislukt', 'Failed to update todo')}: ${(err as Error).message}`)
     }
@@ -5606,13 +5618,39 @@ function App() {
                           <div className="col-md-8">
                             <div className="row g-2 mb-2">
                               <div className="col-md-6">
-                                <select className="form-select" value={ticketReplyType} onChange={(e) => setTicketReplyType(e.target.value as 'public_reply' | 'internal_note')}>
+                                <select className="form-select" value={ticketReplyType} onChange={(e) => {
+                                  const nextType = e.target.value as 'public_reply' | 'internal_note'
+                                  setTicketReplyType(nextType)
+                                  if (nextType === 'internal_note' && selectedTicketDetail) {
+                                    setTicketReplyStatus(selectedTicketDetail.ticket.status)
+                                    return
+                                  }
+
+                                  if (ticketReplyTemplateKey) {
+                                    const template = supportReplyTemplates.find((item) => item.key === ticketReplyTemplateKey)
+                                    if (template) {
+                                      setTicketReplyStatus(template.suggestedStatus)
+                                      return
+                                    }
+                                  }
+
+                                  setTicketReplyStatus('waiting_player')
+                                }}>
                                   <option value="public_reply">{l('Spelerantwoord', 'Player reply')}</option>
                                   <option value="internal_note">{l('Interne notitie', 'Internal note')}</option>
                                 </select>
                               </div>
                               <div className="col-md-6">
-                                <select className="form-select" value={ticketReplyTemplateKey} onChange={(e) => setTicketReplyTemplateKey(e.target.value)}>
+                                <select className="form-select" value={ticketReplyTemplateKey} onChange={(e) => {
+                                  const nextTemplateKey = e.target.value
+                                  setTicketReplyTemplateKey(nextTemplateKey)
+                                  if (!nextTemplateKey || ticketReplyType === 'internal_note') return
+
+                                  const template = supportReplyTemplates.find((item) => item.key === nextTemplateKey)
+                                  if (template) {
+                                    setTicketReplyStatus(template.suggestedStatus)
+                                  }
+                                }}>
                                   <option value="">{l('Geen template', 'No template')}</option>
                                   {supportReplyTemplates.map((template) => (
                                     <option key={template.key} value={template.key}>{l(template.labelNl, template.labelEn)}</option>
@@ -6509,141 +6547,142 @@ function App() {
               </div>
             )}
 
-            {selectedTicketAttachment && (
-              <div className="modal-overlay" onClick={() => setSelectedTicketAttachment(null)}>
-                <div className="admin-modal admin-modal-large" onClick={(e) => e.stopPropagation()}>
-                  <h2>{l('Ticket bijlage', 'Ticket attachment')}</h2>
-                  <div style={{ marginBottom: '1rem' }}>
-                    <img
-                      src={selectedTicketAttachment.url}
-                      alt={selectedTicketAttachment.originalName}
-                      style={{ width: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 8, background: '#0f172a' }}
-                    />
-                  </div>
-                  <p><strong>{l('Bestand', 'File')}:</strong> {selectedTicketAttachment.originalName}</p>
-                  <p><strong>{l('Type', 'Type')}:</strong> {selectedTicketAttachment.mimeType}</p>
-                  <p><strong>{l('Grootte', 'Size')}:</strong> {Math.round(selectedTicketAttachment.fileSize / 1024)} KB</p>
-                  <div className="modal-actions">
-                    <a className="btn btn-outline-primary" href={selectedTicketAttachment.url} target="_blank" rel="noreferrer">
-                      {l('Open origineel', 'Open original')}
-                    </a>
-                    <button className="btn-small" onClick={() => setSelectedTicketAttachment(null)}>{t.close}</button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {editingSupportTodo && (
-              <div className="modal-overlay" onClick={handleCloseSupportTodoEditor}>
-                <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
-                  <h2>{l('Todo bewerken', 'Edit todo')}</h2>
-                  <div className="form-group">
-                    <label>{l('Titel', 'Title')}</label>
-                    <input value={editingSupportTodoTitle} onChange={(e) => setEditingSupportTodoTitle(e.target.value)} />
-                  </div>
-                  <div className="form-group">
-                    <label>{l('Opmerkingen', 'Notes')}</label>
-                    <textarea
-                      value={editingSupportTodoDescription}
-                      onChange={(e) => setEditingSupportTodoDescription(e.target.value)}
-                      rows={5}
-                      placeholder={l('Voeg interne opmerkingen toe...', 'Add internal notes...')}
-                      style={{ resize: 'vertical' }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>{l('Prioriteit', 'Priority')}</label>
-                    <select value={editingSupportTodoPriority} onChange={(e) => setEditingSupportTodoPriority(e.target.value as 'low' | 'normal' | 'high' | 'urgent')}>
-                      <option value="low">{l('Laag', 'Low')}</option>
-                      <option value="normal">{l('Normaal', 'Normal')}</option>
-                      <option value="high">{l('Hoog', 'High')}</option>
-                      <option value="urgent">{l('Urgent', 'Urgent')}</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>{l('Status', 'Status')}</label>
-                    <select value={editingSupportTodoStatus} onChange={(e) => setEditingSupportTodoStatus(e.target.value as 'open' | 'in_progress' | 'blocked' | 'done')}>
-                      <option value="open">{l('Open', 'Open')}</option>
-                      <option value="in_progress">{l('In behandeling', 'In progress')}</option>
-                      <option value="blocked">{l('Geblokkeerd', 'Blocked')}</option>
-                      <option value="done">{l('Afgerond', 'Done')}</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>{l('Eigenaar', 'Owner')}</label>
-                    <select value={editingSupportTodoAssignedAdminId} onChange={(e) => setEditingSupportTodoAssignedAdminId(e.target.value)}>
-                      <option value="">{l('Geen eigenaar', 'No owner')}</option>
-                      {admins.map((admin) => (
-                        <option key={admin.id} value={admin.id}>{admin.username}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label>{l('Due', 'Due')}</label>
-                    <input type="datetime-local" value={editingSupportTodoDueAt} onChange={(e) => setEditingSupportTodoDueAt(e.target.value)} />
-                  </div>
-                  <div className="form-group">
-                    <label>{l('Module', 'Module')}</label>
-                    <input value={editingSupportTodoModuleKey} onChange={(e) => setEditingSupportTodoModuleKey(e.target.value)} placeholder={l('Bijv. payments, travel of inventory', 'For example payments, travel or inventory')} />
-                  </div>
-                  {editingSupportTodo.ticketId && (
-                    <div className="form-group">
-                      <label>{l('Gekoppeld ticket', 'Linked ticket')}</label>
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => {
-                          void handleOpenTodoTicket(editingSupportTodo.ticketId)
-                          handleCloseSupportTodoEditor()
-                        }}
-                      >
-                        {l('Open ticket', 'Open ticket')} #{editingSupportTodo.ticketId}
-                      </button>
-                    </div>
-                  )}
-                  <div className="form-group">
-                    <label>{l('Todo-opmerkingen', 'Todo notes')}</label>
-                    <div style={{ maxHeight: 180, overflow: 'auto', border: '1px solid rgba(255,255,255,.1)', borderRadius: 8, padding: 10, marginBottom: 10 }}>
-                      {editingSupportTodoComments.length === 0 && (
-                        <div className="text-muted small">{l('Nog geen todo-opmerkingen.', 'No todo notes yet.')}</div>
-                      )}
-                      {editingSupportTodoComments.map((comment) => (
-                        <div key={comment.id} className="mb-2 pb-2 border-bottom">
-                          <div className="small text-muted">{comment.adminUsername || l('Admin', 'Admin')} • {new Date(comment.createdAt).toLocaleString()}</div>
-                          <div>{comment.comment}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <textarea
-                      value={newSupportTodoComment}
-                      onChange={(e) => setNewSupportTodoComment(e.target.value)}
-                      rows={3}
-                      placeholder={l('Nieuwe todo-opmerking...', 'New todo note...')}
-                      style={{ resize: 'vertical' }}
-                    />
-                    <div className="mt-2">
-                      <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => void handleCreateSupportTodoComment()}>
-                        {l('Opmerking toevoegen', 'Add note')}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="modal-actions">
-                    <button
-                      className="btn-small btn-danger"
-                      onClick={() => void handleDeleteSupportTodo(editingSupportTodo)}
-                      disabled={deletingSupportTodoId === editingSupportTodo.id}
-                    >
-                      {l('Verwijderen', 'Delete')}
-                    </button>
-                    <button className="btn-small btn-primary" onClick={() => void handleSaveSupportTodo()} disabled={savingSupportTodo}>
-                      {l('Opslaan', 'Save')}
-                    </button>
-                    <button className="btn-small" onClick={handleCloseSupportTodoEditor}>{t.cancel}</button>
-                  </div>
-                </div>
-              </div>
-            )}
           </>
+        )}
+
+        {selectedTicketAttachment && (
+          <div className="modal-overlay" onClick={() => setSelectedTicketAttachment(null)}>
+            <div className="admin-modal admin-modal-large" onClick={(e) => e.stopPropagation()}>
+              <h2>{l('Ticket bijlage', 'Ticket attachment')}</h2>
+              <div style={{ marginBottom: '1rem' }}>
+                <img
+                  src={selectedTicketAttachment.previewDataUrl || selectedTicketAttachment.url}
+                  alt={selectedTicketAttachment.originalName}
+                  style={{ width: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 8, background: '#0f172a' }}
+                />
+              </div>
+              <p><strong>{l('Bestand', 'File')}:</strong> {selectedTicketAttachment.originalName}</p>
+              <p><strong>{l('Type', 'Type')}:</strong> {selectedTicketAttachment.mimeType}</p>
+              <p><strong>{l('Grootte', 'Size')}:</strong> {Math.round(selectedTicketAttachment.fileSize / 1024)} KB</p>
+              <div className="modal-actions">
+                <a className="btn btn-outline-primary" href={selectedTicketAttachment.url} target="_blank" rel="noreferrer">
+                  {l('Open origineel', 'Open original')}
+                </a>
+                <button className="btn-small" onClick={() => setSelectedTicketAttachment(null)}>{t.close}</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {editingSupportTodo && (
+          <div className="modal-overlay" onClick={handleCloseSupportTodoEditor}>
+            <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
+              <h2>{l('Todo bewerken', 'Edit todo')}</h2>
+              <div className="form-group">
+                <label>{l('Titel', 'Title')}</label>
+                <input value={editingSupportTodoTitle} onChange={(e) => setEditingSupportTodoTitle(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>{l('Opmerkingen', 'Notes')}</label>
+                <textarea
+                  value={editingSupportTodoDescription}
+                  onChange={(e) => setEditingSupportTodoDescription(e.target.value)}
+                  rows={5}
+                  placeholder={l('Voeg interne opmerkingen toe...', 'Add internal notes...')}
+                  style={{ resize: 'vertical' }}
+                />
+              </div>
+              <div className="form-group">
+                <label>{l('Prioriteit', 'Priority')}</label>
+                <select value={editingSupportTodoPriority} onChange={(e) => setEditingSupportTodoPriority(e.target.value as 'low' | 'normal' | 'high' | 'urgent')}>
+                  <option value="low">{l('Laag', 'Low')}</option>
+                  <option value="normal">{l('Normaal', 'Normal')}</option>
+                  <option value="high">{l('Hoog', 'High')}</option>
+                  <option value="urgent">{l('Urgent', 'Urgent')}</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>{l('Status', 'Status')}</label>
+                <select value={editingSupportTodoStatus} onChange={(e) => setEditingSupportTodoStatus(e.target.value as 'open' | 'in_progress' | 'blocked' | 'done')}>
+                  <option value="open">{l('Open', 'Open')}</option>
+                  <option value="in_progress">{l('In behandeling', 'In progress')}</option>
+                  <option value="blocked">{l('Geblokkeerd', 'Blocked')}</option>
+                  <option value="done">{l('Afgerond', 'Done')}</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>{l('Eigenaar', 'Owner')}</label>
+                <select value={editingSupportTodoAssignedAdminId} onChange={(e) => setEditingSupportTodoAssignedAdminId(e.target.value)}>
+                  <option value="">{l('Geen eigenaar', 'No owner')}</option>
+                  {admins.map((admin) => (
+                    <option key={admin.id} value={admin.id}>{admin.username}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
+                <label>{l('Due', 'Due')}</label>
+                <input type="datetime-local" value={editingSupportTodoDueAt} onChange={(e) => setEditingSupportTodoDueAt(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>{l('Module', 'Module')}</label>
+                <input value={editingSupportTodoModuleKey} onChange={(e) => setEditingSupportTodoModuleKey(e.target.value)} placeholder={l('Bijv. payments, travel of inventory', 'For example payments, travel or inventory')} />
+              </div>
+              {editingSupportTodo.ticketId && (
+                <div className="form-group">
+                  <label>{l('Gekoppeld ticket', 'Linked ticket')}</label>
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => {
+                      void handleOpenTodoTicket(editingSupportTodo.ticketId)
+                      handleCloseSupportTodoEditor()
+                    }}
+                  >
+                    {l('Open ticket', 'Open ticket')} #{editingSupportTodo.ticketId}
+                  </button>
+                </div>
+              )}
+              <div className="form-group">
+                <label>{l('Todo-opmerkingen', 'Todo notes')}</label>
+                <div style={{ maxHeight: 180, overflow: 'auto', border: '1px solid rgba(255,255,255,.1)', borderRadius: 8, padding: 10, marginBottom: 10 }}>
+                  {editingSupportTodoComments.length === 0 && (
+                    <div className="text-muted small">{l('Nog geen todo-opmerkingen.', 'No todo notes yet.')}</div>
+                  )}
+                  {editingSupportTodoComments.map((comment) => (
+                    <div key={comment.id} className="mb-2 pb-2 border-bottom">
+                      <div className="small text-muted">{comment.adminUsername || l('Admin', 'Admin')} • {new Date(comment.createdAt).toLocaleString()}</div>
+                      <div>{comment.comment}</div>
+                    </div>
+                  ))}
+                </div>
+                <textarea
+                  value={newSupportTodoComment}
+                  onChange={(e) => setNewSupportTodoComment(e.target.value)}
+                  rows={3}
+                  placeholder={l('Nieuwe todo-opmerking...', 'New todo note...')}
+                  style={{ resize: 'vertical' }}
+                />
+                <div className="mt-2">
+                  <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => void handleCreateSupportTodoComment()}>
+                    {l('Opmerking toevoegen', 'Add note')}
+                  </button>
+                </div>
+              </div>
+              <div className="modal-actions">
+                <button
+                  className="btn-small btn-danger"
+                  onClick={() => void handleDeleteSupportTodo(editingSupportTodo)}
+                  disabled={deletingSupportTodoId === editingSupportTodo.id}
+                >
+                  {l('Verwijderen', 'Delete')}
+                </button>
+                <button className="btn-small btn-primary" onClick={() => void handleSaveSupportTodo()} disabled={savingSupportTodo}>
+                  {l('Opslaan', 'Save')}
+                </button>
+                <button className="btn-small" onClick={handleCloseSupportTodoEditor}>{t.cancel}</button>
+              </div>
+            </div>
+          </div>
         )}
 
         {activeTab === 'npcs' && (

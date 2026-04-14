@@ -57,8 +57,8 @@ Acceptatie-eis:
 - Support Tickets is nu een eigen scherm, direct bereikbaar via het hoofdmenu (“Support”/“Support Tickets”).
 - Niet langer embedded in het Help-scherm; verwijzing in Help alleen als uitleg of link.
 - Navigatie en protocol zijn aangepast: dedicated route, eigen menu-entry, responsive en multilanguage.
-- Player Support is vereenvoudigd: het spelerscherm toont alleen nog een formulier om een nieuw ticket aan te maken.
-- Reacties/thread-weergave en eerder verzonden tickets worden niet meer in de player UI getoond.
+- Player Support blijft compact, maar toont wel het eigen ticketoverzicht en de support-thread zodat een speler direct vanuit het Support-scherm kan reageren.
+- Inbox en push blijven notificatiekanalen voor supportreacties, maar zijn niet de enige plek waar het supportgesprek verdergaat.
 - Tickets moeten verwijderbaar zijn vanuit beheer; admin heeft daarom een expliciete delete-actie op ticketdetail.
 - Speler moet bij ticket-aanmaak optioneel een screenshot/afbeelding kunnen uploaden; admin-detail moet die bijlagen zichtbaar tonen.
 - Attachment-preview in admin moet in-context blijven: klik op een ticketafbeelding opent een vergrote preview/lightbox binnen admin, met optie om het origineel apart te openen, en mag de beheerder niet teruggooien naar het dashboard of ticketcontext verliezen.
@@ -68,7 +68,7 @@ Acceptatie-eis:
 - Cross-module checks: Dashboard, Admin, Messages, Notifications, Help (alleen als uitleg), i18n.
 
 Zorg dat alle documentatie, help-content en QA-checks deze nieuwe navigatie volgen.
-Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX minimal houden, admin delete-flow mee testen, attachment-weergave verifiëren en geen regressie op ticket-aanmaakfeedback in NL/EN.
+Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX compact houden, support-thread in het Support-scherm intact houden, admin delete-flow mee testen, attachment-weergave verifiëren en geen regressie op ticket-aanmaakfeedback in NL/EN.
 
 ## Support Workflow Maturity Guardrails (2026-04-14)
 

@@ -16,9 +16,10 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 - backend/src/services/notificationService.ts
 
 ## Change Rules
-- Keep the full round-trip intact: player report -> admin reply -> player inbox + push -> player follow-up.
+- Keep the full round-trip intact: player report -> admin reply -> player inbox + push -> player follow-up in the Support screen.
 - Never break existing direct-message inbox behavior while extending support messaging.
 - Keep ticket + todo state recoverable after refresh and navigation.
+- The Support screen remains the canonical player reply surface; inbox and push are notifications, not the only place where the conversation can continue.
 
 ## Data Contract Requirements
 - Ticket create payload must include: category, subject, message, plus optional sourceModule, referenceCode, clientPlatform and appLocale.
@@ -48,6 +49,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 ## QA Checklist
 - Player creates ticket successfully (bug/question/feedback/other).
 - Player can include optional module context, reference code and screenshot.
+- Player sees existing tickets in Support and can reopen a thread after refresh/navigation.
 - Admin sees ticket, triage metadata, attachments, assignee and priority.
 - Admin can post both public replies and internal notes.
 - Player receives public admin reply in inbox and push notification.
