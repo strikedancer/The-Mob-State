@@ -4,7 +4,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 
 ## Status
 - Release mode: **Batched deploy**
-- Laatste update: 2026-04-13
+- Laatste update: 2026-04-14
 
 ## Pending Changes (nog NIET live)
 
@@ -145,6 +145,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Admin support todo build-fix: kapotte JSX in de gekoppelde todo-tabel hersteld zodat `npm run build` weer slaagt en de Docker admin image niet meer stopt met `JSX expressions must have one parent element`
+  - Bestand: `admin/src/App.tsx`
 - [ ] Nieuw Tickets & Todo beheer in adminpanel: aparte tickets-tab met ticketlijst/filtering, thread-details, admin-reply acties en geïntegreerde todo-lijst per ticket (aanmaken + status-prioriteit updates) met NL/EN labels
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
 - [ ] Admin spelerdetail uitgebreid: Overview toont nu expliciet munitie- en wapentotalen bovenaan, plus tabellen met leesbare naam + ID + aantallen, zodat direct zichtbaar is welke wapens/munitie een speler bezit

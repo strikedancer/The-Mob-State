@@ -5412,6 +5412,7 @@ function App() {
                                       {todo.description && <small className="text-muted">{todo.description}</small>}
                                     </td>
                                     <td>{todo.status}</td>
+                                    <td>{new Date(todo.updatedAt).toLocaleString()}</td>
                                     <td>
                                       <button
                                         type="button"
@@ -5426,7 +5427,6 @@ function App() {
                               </tbody>
                             </table>
                           </div>
-                                    <td>{new Date(todo.updatedAt).toLocaleString()}</td>
                         )}
                       </div>
                     </div>
