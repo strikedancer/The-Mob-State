@@ -51,7 +51,7 @@ Acceptatie-eis:
 - Travel -> Properties, Drugs, Nightclub, Smuggling, Aviation, Admin
 - Smuggling -> Travel, Aviation, Garage, Motor, Marina, Admin
 - Aviation -> School (aviation track gate), Travel (reistijdbonus), Smuggling (eigen-voertuig kanaal), Garage, Motor, Marina, Admin
-- Support Tickets -> Help, Messages (inbox), Notifications (push), Admin, Dashboard
+- Support Tickets -> Help (embedded content, responsive), Messages (inbox), Notifications (push), Admin, Dashboard
 - Admin -> Alle gameplay modules met logs, assets of economy-impact
 
 Als een module niet in deze lijst staat maar wel geraakt wordt, voeg die altijd toe aan de scope.
