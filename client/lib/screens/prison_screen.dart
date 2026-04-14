@@ -435,7 +435,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
                             final username =
                                 prisoner['username'] as String? ?? '-';
                             final isCurrentViewer =
-                              _viewerId > 0 && playerId == _viewerId;
+                                _viewerId > 0 && playerId == _viewerId;
                             final rank =
                                 (prisoner['rank'] as num?)?.toInt() ?? 1;
                             final remainingSeconds =
@@ -472,12 +472,12 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                     const SizedBox(height: 6),
                                     Text(
                                       isCurrentViewer
-                                      ? (isDutch
-                                        ? 'Rank: $rank · Jij'
-                                        : 'Rank: $rank · You')
-                                      : (isDutch
-                                        ? 'Rank: $rank'
-                                        : 'Rank: $rank'),
+                                          ? (isDutch
+                                                ? 'Rank: $rank · Jij'
+                                                : 'Rank: $rank · You')
+                                          : (isDutch
+                                                ? 'Rank: $rank'
+                                                : 'Rank: $rank'),
                                     ),
                                     Text(
                                       isDutch
@@ -495,9 +495,9 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                         Expanded(
                                           child: ElevatedButton.icon(
                                             onPressed:
-                                              _isActing ||
-                                                playerId == 0 ||
-                                                isCurrentViewer
+                                                _isActing ||
+                                                    playerId == 0 ||
+                                                    isCurrentViewer
                                                 ? null
                                                 : () => _buyOut(playerId),
                                             icon: const Icon(Icons.payments),
@@ -510,9 +510,9 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                         Expanded(
                                           child: OutlinedButton.icon(
                                             onPressed:
-                                              _isActing ||
-                                                playerId == 0 ||
-                                                isCurrentViewer
+                                                _isActing ||
+                                                    playerId == 0 ||
+                                                    isCurrentViewer
                                                 ? null
                                                 : () => _attemptJailbreak(
                                                     playerId,

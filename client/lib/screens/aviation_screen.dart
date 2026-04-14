@@ -49,7 +49,8 @@ class _AviationScreenState extends State<AviationScreen> {
         _apiClient.get('/aviation/my-license'),
       ]);
 
-      final aircraftData = jsonDecode(responses[0].body) as Map<String, dynamic>;
+      final aircraftData =
+          jsonDecode(responses[0].body) as Map<String, dynamic>;
       final ownedData = jsonDecode(responses[1].body) as Map<String, dynamic>;
       final licenseData = jsonDecode(responses[2].body) as Map<String, dynamic>;
 
@@ -127,7 +128,9 @@ class _AviationScreenState extends State<AviationScreen> {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
       if (response.statusCode >= 400 || (data['success'] == false)) {
-        final message = data['message']?.toString() ?? _tr('Aankoop mislukt.', 'Purchase failed.');
+        final message =
+            data['message']?.toString() ??
+            _tr('Aankoop mislukt.', 'Purchase failed.');
         if (!mounted) return;
         showTopRightFromSnackBar(
           context,
@@ -138,7 +141,10 @@ class _AviationScreenState extends State<AviationScreen> {
 
       final remainingMoney = (data['remainingMoney'] as num?)?.toInt();
       if (remainingMoney != null && mounted) {
-        Provider.of<AuthProvider>(context, listen: false).updatePlayerStats(money: remainingMoney);
+        Provider.of<AuthProvider>(
+          context,
+          listen: false,
+        ).updatePlayerStats(money: remainingMoney);
       }
 
       if (mounted) {
@@ -147,7 +153,8 @@ class _AviationScreenState extends State<AviationScreen> {
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(
-              data['message']?.toString() ?? _tr('Vliegtuig gekocht.', 'Aircraft purchased.'),
+              data['message']?.toString() ??
+                  _tr('Vliegtuig gekocht.', 'Aircraft purchased.'),
             ),
           ),
         );
@@ -234,15 +241,19 @@ class _AviationScreenState extends State<AviationScreen> {
           Card(
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: Text(_tr('Je bezit nog geen vliegtuigen.', 'You do not own any aircraft yet.')),
+              child: Text(
+                _tr(
+                  'Je bezit nog geen vliegtuigen.',
+                  'You do not own any aircraft yet.',
+                ),
+              ),
             ),
           )
         else
           ..._owned.map((item) {
-            final name = (_isNl
-                    ? item['name']
-                    : (item['name_en'] ?? item['name']))
-                ?.toString() ??
+            final name =
+                (_isNl ? item['name'] : (item['name_en'] ?? item['name']))
+                    ?.toString() ??
                 item['aircraftType']?.toString() ??
                 'Aircraft';
             final fuel = (item['fuel'] as num?)?.toInt() ?? 0;
@@ -257,11 +268,14 @@ class _AviationScreenState extends State<AviationScreen> {
                   child: WebAssetHelper.image(
                     _imageForAircraftType(type),
                     fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => const Icon(Icons.flight, size: 28),
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.flight, size: 28),
                   ),
                 ),
                 title: Text(name),
-                subtitle: Text(_tr('Brandstof: $fuel / $maxFuel', 'Fuel: $fuel / $maxFuel')),
+                subtitle: Text(
+                  _tr('Brandstof: $fuel / $maxFuel', 'Fuel: $fuel / $maxFuel'),
+                ),
               ),
             );
           }),
@@ -273,11 +287,20 @@ class _AviationScreenState extends State<AviationScreen> {
         const SizedBox(height: 8),
         ..._aircraft.map((item) {
           final aircraftType = item['id']?.toString() ?? '';
-          final name = (_isNl ? item['name'] : (item['name_en'] ?? item['name']))?.toString() ?? aircraftType;
-          final description = (_isNl ? item['description'] : (item['description_en'] ?? item['description']))?.toString() ?? '';
+          final name =
+              (_isNl ? item['name'] : (item['name_en'] ?? item['name']))
+                  ?.toString() ??
+              aircraftType;
+          final description =
+              (_isNl
+                      ? item['description']
+                      : (item['description_en'] ?? item['description']))
+                  ?.toString() ??
+              '';
           final price = (item['price'] as num?)?.toInt() ?? 0;
           final minRank = (item['minRank'] as num?)?.toInt() ?? 0;
-          final speedMultiplier = (item['speedMultiplier'] as num?)?.toDouble() ?? 1.0;
+          final speedMultiplier =
+              (item['speedMultiplier'] as num?)?.toDouble() ?? 1.0;
           final cargoCapacity = (item['cargoCapacity'] as num?)?.toInt() ?? 0;
 
           return Card(
@@ -295,7 +318,8 @@ class _AviationScreenState extends State<AviationScreen> {
                         child: WebAssetHelper.image(
                           _imageForAircraftType(aircraftType),
                           fit: BoxFit.contain,
-                          errorBuilder: (_, __, ___) => const Icon(Icons.flight, size: 36),
+                          errorBuilder: (_, __, ___) =>
+                              const Icon(Icons.flight, size: 36),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -303,14 +327,37 @@ class _AviationScreenState extends State<AviationScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                            Text(
+                              name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                             const SizedBox(height: 4),
                             Text(description),
                             const SizedBox(height: 6),
-                            Text(_tr('Prijs: ${formatCurrency(price)}', 'Price: ${formatCurrency(price)}')),
-                            Text(_tr('Min rank: $minRank', 'Min rank: $minRank')),
-                            Text(_tr('Snelheid x${speedMultiplier.toStringAsFixed(1)}', 'Speed x${speedMultiplier.toStringAsFixed(1)}')),
-                            Text(_tr('Cargo: $cargoCapacity', 'Cargo: $cargoCapacity')),
+                            Text(
+                              _tr(
+                                'Prijs: ${formatCurrency(price)}',
+                                'Price: ${formatCurrency(price)}',
+                              ),
+                            ),
+                            Text(
+                              _tr('Min rank: $minRank', 'Min rank: $minRank'),
+                            ),
+                            Text(
+                              _tr(
+                                'Snelheid x${speedMultiplier.toStringAsFixed(1)}',
+                                'Speed x${speedMultiplier.toStringAsFixed(1)}',
+                              ),
+                            ),
+                            Text(
+                              _tr(
+                                'Cargo: $cargoCapacity',
+                                'Cargo: $cargoCapacity',
+                              ),
+                            ),
                           ],
                         ),
                       ),

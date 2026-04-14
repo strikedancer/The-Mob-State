@@ -54,11 +54,7 @@ class MessageSender {
   final String username;
   final int rank;
 
-  MessageSender({
-    required this.id,
-    required this.username,
-    required this.rank,
-  });
+  MessageSender({required this.id, required this.username, required this.rank});
 
   factory MessageSender.fromJson(Map<String, dynamic> json) =>
       _$MessageSenderFromJson(json);

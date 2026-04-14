@@ -29,7 +29,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
 
   // Constants from backend
   static const int maxLevel = 5;
-  static const int baseRoundsPerTickPerType = 5; // per ammo type, per 5-min tick, at level 1
+  static const int baseRoundsPerTickPerType =
+      5; // per ammo type, per 5-min tick, at level 1
   static const int numAmmoTypes = 6;
   static const int productionIntervalMinutes = 5;
   static const int productionSessionHours = 8;
@@ -94,12 +95,20 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
 
   // Total rounds per 8h session across all ammo types combined
   int _getProductionOutput(int level) {
-    return (baseRoundsPerTickPerType * numAmmoTypes * ticksPerSession * _outputMultiplier(level)).toInt();
+    return (baseRoundsPerTickPerType *
+            numAmmoTypes *
+            ticksPerSession *
+            _outputMultiplier(level))
+        .toInt();
   }
 
   // Rounds per hour across all ammo types combined
   int _getProductionPerHour(int level) {
-    return (baseRoundsPerTickPerType * numAmmoTypes * ticksPerHour * _outputMultiplier(level)).toInt();
+    return (baseRoundsPerTickPerType *
+            numAmmoTypes *
+            ticksPerHour *
+            _outputMultiplier(level))
+        .toInt();
   }
 
   Future<void> _showUpgradeDialog(String type) async {
@@ -112,7 +121,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
 
     if (currentLevel >= maxLevel) {
       if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               l10n?.factoryUpgradeMaxLevel ?? 'Factory is at max level',
@@ -204,7 +214,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
           final msg = type == 'output'
               ? (l10n?.factoryUpgradeOutputSuccess ?? 'Output upgraded')
               : (l10n?.factoryUpgradeQualitySuccess ?? 'Quality upgraded');
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(msg),
               backgroundColor: Colors.green,
@@ -236,7 +247,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         final message =
             data['message']?.toString() ??
             (l10n?.hitError(data.toString()) ?? 'Error: $data');
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(message),
             backgroundColor: Colors.red,
@@ -261,7 +273,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(l10n?.factoryBought ?? 'Factory purchased'),
               backgroundColor: Colors.green,
@@ -291,7 +304,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         final message =
             data['message']?.toString() ??
             (l10n?.hitError(data.toString()) ?? 'Error: $data');
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(message),
             backgroundColor: Colors.red,
@@ -315,7 +329,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
       if (response.statusCode == 200) {
         if (mounted) {
           final sessionStarted = data['sessionStarted'] == true;
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
                 sessionStarted
@@ -333,7 +348,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         final message =
             data['message']?.toString() ??
             (l10n?.hitError(data.toString()) ?? 'Error: $data');
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(message),
             backgroundColor: Colors.red,
@@ -373,7 +389,9 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
             TextField(
               controller: controller,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: l10n?.ammoBoxes ?? 'Boxes'),
+              decoration: InputDecoration(
+                labelText: l10n?.ammoBoxes ?? 'Boxes',
+              ),
             ),
           ],
         ),
@@ -405,7 +423,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(l10n?.ammoPurchased ?? 'Ammo purchased'),
               backgroundColor: Colors.green,
@@ -418,7 +437,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         final message =
             data['message']?.toString() ??
             (l10n?.hitError(data.toString()) ?? 'Error: $data');
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(message),
             backgroundColor: Colors.red,
@@ -638,7 +658,9 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('assets/images/backgrounds/ammo_factory_bg.png'),
+          image: const AssetImage(
+            'assets/images/backgrounds/ammo_factory_bg.png',
+          ),
           fit: BoxFit.cover,
           opacity: 0.4,
         ),

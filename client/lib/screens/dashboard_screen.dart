@@ -140,10 +140,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => PlayerProfileScreen(playerId: player.id, username: player.username),
+        builder: (_) =>
+            PlayerProfileScreen(playerId: player.id, username: player.username),
       ),
     );
   }
+
   StreamSubscription? _eventSubscription;
   Timer? _playerRefreshTimer;
   bool _checkedPremiumPopup = false;
@@ -606,16 +608,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: ScrollConfiguration(
-                              behavior: ScrollConfiguration.of(context).copyWith(
-                                dragDevices: {
-                                  PointerDeviceKind.touch,
-                                  PointerDeviceKind.mouse,
-                                  PointerDeviceKind.stylus,
-                                  PointerDeviceKind.invertedStylus,
-                                  PointerDeviceKind.trackpad,
-                                  PointerDeviceKind.unknown,
-                                },
-                              ),
+                              behavior: ScrollConfiguration.of(context)
+                                  .copyWith(
+                                    dragDevices: {
+                                      PointerDeviceKind.touch,
+                                      PointerDeviceKind.mouse,
+                                      PointerDeviceKind.stylus,
+                                      PointerDeviceKind.invertedStylus,
+                                      PointerDeviceKind.trackpad,
+                                      PointerDeviceKind.unknown,
+                                    },
+                                  ),
                               child: KeyedSubtree(
                                 key: ValueKey(
                                   '${_selectedWebSection.name}-$_webSectionRefreshSeed',
@@ -655,7 +658,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     VoidCallback? onBeforeNavigate,
   }) {
     final items =
-      <({IconData icon, String label, _WebSection section, int badge})>[
+        <({IconData icon, String label, _WebSection section, int badge})>[
           (
             icon: Icons.dashboard,
             label: l10n.dashboard,
@@ -1411,8 +1414,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildWebContent(BuildContext context) {
     switch (_selectedWebSection) {
-            case _WebSection.support:
-              return SupportTicketsScreen();
+      case _WebSection.support:
+        return SupportTicketsScreen();
       case _WebSection.dashboard:
         return const _WebDashboardHomeContent();
       case _WebSection.events:
@@ -1591,7 +1594,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     height: 64,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      final avatar = player.avatar ?? 'default_1';
+                                      final avatar =
+                                          player.avatar ?? 'default_1';
                                       return Center(
                                         child: Text(
                                           avatar.isNotEmpty
@@ -1626,7 +1630,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       minHeight: 18,
                                     ),
                                     child: Text(
-                                      _unreadCount > 99 ? '99+' : '$_unreadCount',
+                                      _unreadCount > 99
+                                          ? '99+'
+                                          : '$_unreadCount',
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 10,

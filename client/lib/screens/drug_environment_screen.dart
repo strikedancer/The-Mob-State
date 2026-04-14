@@ -42,16 +42,19 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
     return 'assets/images/backgrounds/drug_environment_desktop.png';
   }
 
-  void _openScreen(BuildContext context, Widget screen, _DrugWebSubview webSubview) {
+  void _openScreen(
+    BuildContext context,
+    Widget screen,
+    _DrugWebSubview webSubview,
+  ) {
     if (kIsWeb) {
       setState(() => _webSubview = webSubview);
       return;
     }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => screen),
-    ).then((_) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => screen)).then((
+      _,
+    ) {
       if (mounted) {
         _loadDashboardStats();
       }
@@ -187,7 +190,8 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         final titleSize = isMobile ? 28.0 : (isTablet ? 34.0 : 40.0);
         final horizontalPadding = isMobile ? 12.0 : (isTablet ? 20.0 : 28.0);
         final heroMaxWidth = isMobile ? width : 1080.0;
-        final currentCountry = authProvider.currentPlayer?.currentCountry ?? 'netherlands';
+        final currentCountry =
+            authProvider.currentPlayer?.currentCountry ?? 'netherlands';
         final inventoryValue = _inventoryValueForCountry(currentCountry);
         final usedSlots = _usedSlots();
         final totalSlots = _totalSlots();
@@ -292,9 +296,27 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                 spacing: 8,
                                 runSpacing: 8,
                                 children: [
-                                  _TopTag(label: _tr('Ondergrondse Operaties', 'Underground Operations'), color: const Color(0xFF35C46A)),
-                                  _TopTag(label: _tr('Mobiel Geoptimaliseerd', 'Mobile Optimized'), color: const Color(0xFF48B8FF)),
-                                  _TopTag(label: _tr('Kwaliteit Gedreven', 'Quality Driven'), color: const Color(0xFFF2B94B)),
+                                  _TopTag(
+                                    label: _tr(
+                                      'Ondergrondse Operaties',
+                                      'Underground Operations',
+                                    ),
+                                    color: const Color(0xFF35C46A),
+                                  ),
+                                  _TopTag(
+                                    label: _tr(
+                                      'Mobiel Geoptimaliseerd',
+                                      'Mobile Optimized',
+                                    ),
+                                    color: const Color(0xFF48B8FF),
+                                  ),
+                                  _TopTag(
+                                    label: _tr(
+                                      'Kwaliteit Gedreven',
+                                      'Quality Driven',
+                                    ),
+                                    color: const Color(0xFFF2B94B),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 14),
@@ -310,7 +332,9 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                               ),
                               const SizedBox(height: 10),
                               ConstrainedBox(
-                                constraints: const BoxConstraints(maxWidth: 760),
+                                constraints: const BoxConstraints(
+                                  maxWidth: 760,
+                                ),
                                 child: Text(
                                   _tr(
                                     'Beheer hier productie, faciliteiten en voorraad. Materialen koop je via de Zwarte Markt, de rest draait vanuit je eigen drugsomgeving.',
@@ -329,14 +353,23 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                 runSpacing: 10,
                                 children: [
                                   _StatPill(
-                                    label: _tr('Materiaalstroom', 'Material flow'),
+                                    label: _tr(
+                                      'Materiaalstroom',
+                                      'Material flow',
+                                    ),
                                     value: _tr('Zwarte Markt', 'Black Market'),
                                     icon: Icons.science,
                                     color: const Color(0xFF48B8FF),
                                   ),
                                   _StatPill(
-                                    label: _tr('Productieketen', 'Production chain'),
-                                    value: _tr('Kas + Lab + Kitchen + Darkweb', 'Greenhouse + Lab + Kitchen + Darkweb'),
+                                    label: _tr(
+                                      'Productieketen',
+                                      'Production chain',
+                                    ),
+                                    value: _tr(
+                                      'Kas + Lab + Kitchen + Darkweb',
+                                      'Greenhouse + Lab + Kitchen + Darkweb',
+                                    ),
                                     icon: Icons.factory_outlined,
                                     color: const Color(0xFF35C46A),
                                   ),
@@ -360,25 +393,37 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                   runSpacing: 12,
                                   children: [
                                     _DashboardMetricCard(
-                                      label: _tr('Actieve batches', 'Active batches'),
+                                      label: _tr(
+                                        'Actieve batches',
+                                        'Active batches',
+                                      ),
                                       value: '${_activeProductions.length}',
                                       icon: Icons.timelapse,
                                       color: const Color(0xFF35C46A),
                                     ),
                                     _DashboardMetricCard(
                                       label: _tr('Slotgebruik', 'Slot usage'),
-                                      value: totalSlots > 0 ? '$usedSlots/$totalSlots' : '0/0',
+                                      value: totalSlots > 0
+                                          ? '$usedSlots/$totalSlots'
+                                          : '0/0',
                                       icon: Icons.grid_view_rounded,
                                       color: const Color(0xFF48B8FF),
                                     ),
                                     _DashboardMetricCard(
-                                      label: _tr('Voorraadwaarde', 'Inventory value'),
-                                      value: '€${_formatCompactMoney(inventoryValue)}',
+                                      label: _tr(
+                                        'Voorraadwaarde',
+                                        'Inventory value',
+                                      ),
+                                      value:
+                                          '€${_formatCompactMoney(inventoryValue)}',
                                       icon: Icons.euro,
                                       color: const Color(0xFFF2B94B),
                                     ),
                                     _DashboardMetricCard(
-                                      label: _tr('Voorraad gram', 'Inventory grams'),
+                                      label: _tr(
+                                        'Voorraad gram',
+                                        'Inventory grams',
+                                      ),
                                       value: '$inventoryGrams g',
                                       icon: Icons.inventory_2,
                                       color: const Color(0xFFC16CFF),
@@ -391,14 +436,19 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                     ),
                                     if (_heatInfo != null)
                                       _DashboardMetricCard(
-                                        label: _tr('Politie Hitte', 'Police Heat'),
-                                        value: '${_heatInfo!.heat} – ${_heatInfo!.level}',
+                                        label: _tr(
+                                          'Politie Hitte',
+                                          'Police Heat',
+                                        ),
+                                        value:
+                                            '${_heatInfo!.heat} – ${_heatInfo!.level}',
                                         icon: Icons.local_fire_department,
                                         color: _heatInfo!.color,
                                       ),
                                   ],
                                 ),
-                              if (!_isLoadingStats && _inventory.isNotEmpty) ...[  
+                              if (!_isLoadingStats &&
+                                  _inventory.isNotEmpty) ...[
                                 const SizedBox(height: 14),
                                 _QualityDistributionSection(
                                   inventory: _inventory,
@@ -412,7 +462,10 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                       const SizedBox(height: 18),
                       _SectionLabel(
                         title: _tr('Operaties', 'Operations'),
-                        subtitle: _tr('Kies een tak van je drugsimperium', 'Choose a branch of your drug empire'),
+                        subtitle: _tr(
+                          'Kies een tak van je drugsimperium',
+                          'Choose a branch of your drug empire',
+                        ),
                       ),
                       const SizedBox(height: 12),
                       GridView.count(
@@ -421,13 +474,18 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                         crossAxisCount: crossAxisCount,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
-                        childAspectRatio: isMobile ? 2.2 : (isTablet ? 1.45 : 1.18),
+                        childAspectRatio: isMobile
+                            ? 2.2
+                            : (isTablet ? 1.45 : 1.18),
                         children: [
                           _DrugEntryCard(
                             icon: Icons.factory_outlined,
                             eyebrow: _tr('Infrastructuur', 'Infrastructure'),
                             title: _tr('Faciliteiten', 'Facilities'),
-                            subtitle: _tr('Koop en upgrade kas, drugslab, crack kitchen en darkweb storefront voor meer slots, snelheid en kwaliteit.', 'Buy and upgrade greenhouse, drug lab, crack kitchen and darkweb storefront for more slots, speed and quality.'),
+                            subtitle: _tr(
+                              'Koop en upgrade kas, drugslab, crack kitchen en darkweb storefront voor meer slots, snelheid en kwaliteit.',
+                              'Buy and upgrade greenhouse, drug lab, crack kitchen and darkweb storefront for more slots, speed and quality.',
+                            ),
                             color: const Color(0xFF48B8FF),
                             duration: const Duration(milliseconds: 680),
                             onTap: () => _openScreen(
@@ -440,7 +498,10 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                             icon: Icons.precision_manufacturing,
                             eyebrow: _tr('Pijplijn', 'Pipeline'),
                             title: _tr('Productie', 'Production'),
-                            subtitle: _tr('Start batches, volg timers en verzamel output met kwaliteitsrollen.', 'Start batches, track timers and collect output with quality rolls.'),
+                            subtitle: _tr(
+                              'Start batches, volg timers en verzamel output met kwaliteitsrollen.',
+                              'Start batches, track timers and collect output with quality rolls.',
+                            ),
                             color: const Color(0xFF35C46A),
                             duration: const Duration(milliseconds: 520),
                             onTap: () => _openScreen(
@@ -453,7 +514,10 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                             icon: Icons.inventory_2,
                             eyebrow: _tr('Distributie', 'Distribution'),
                             title: _tr('Voorraad', 'Inventory'),
-                            subtitle: _tr('Bekijk stacks per kwaliteit en verkoop op maximale marktwaarde.', 'View stacks by quality and sell at the best market value.'),
+                            subtitle: _tr(
+                              'Bekijk stacks per kwaliteit en verkoop op maximale marktwaarde.',
+                              'View stacks by quality and sell at the best market value.',
+                            ),
                             color: const Color(0xFFF2B94B),
                             duration: const Duration(milliseconds: 840),
                             onTap: () => _openScreen(
@@ -486,12 +550,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
   }
 }
 
-enum _DrugWebSubview {
-  hub,
-  production,
-  facilities,
-  inventory,
-}
+enum _DrugWebSubview { hub, production, facilities, inventory }
 
 class _TopTag extends StatelessWidget {
   final String label;
@@ -556,7 +615,10 @@ class _StatPill extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: TextStyle(color: Colors.white.withOpacity(0.55), fontSize: 11),
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.55),
+                  fontSize: 11,
+                ),
               ),
               Text(
                 value,
@@ -617,12 +679,7 @@ class _AmbientOrb extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: RadialGradient(
-            colors: [
-              color,
-              color.withOpacity(0.0),
-            ],
-          ),
+          gradient: RadialGradient(colors: [color, color.withOpacity(0.0)]),
         ),
       ),
     );
@@ -672,10 +729,7 @@ class _DrugEntryCard extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                Colors.black.withOpacity(0.52),
-                color.withOpacity(0.12),
-              ],
+              colors: [Colors.black.withOpacity(0.52), color.withOpacity(0.12)],
             ),
             border: Border.all(color: color.withOpacity(0.45), width: 1.2),
             boxShadow: [
@@ -825,7 +879,9 @@ class _QualityDistributionSection extends StatelessWidget {
     if (totalGrams == 0) return const SizedBox.shrink();
     final isNl = Localizations.localeOf(context).languageCode == 'nl';
 
-    final presentGrades = _kQualityOrder.where((g) => gramsByGrade.containsKey(g)).toList();
+    final presentGrades = _kQualityOrder
+        .where((g) => gramsByGrade.containsKey(g))
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -866,7 +922,9 @@ class _QualityDistributionSection extends StatelessWidget {
             final grams = gramsByGrade[grade]!;
             final color = _kQualityColors[grade] ?? Colors.grey;
             final labelPack = _kQualityLabels[grade];
-            final label = labelPack == null ? grade : (isNl ? labelPack.nl : labelPack.en);
+            final label = labelPack == null
+                ? grade
+                : (isNl ? labelPack.nl : labelPack.en);
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(

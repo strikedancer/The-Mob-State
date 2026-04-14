@@ -14,7 +14,7 @@ class HelpScreen extends StatefulWidget {
 }
 
 class _HelpScreenState extends State<HelpScreen> {
-    // Removed embedded support tickets logic
+  // Removed embedded support tickets logic
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
   String? _selectedCategory;
@@ -110,42 +110,41 @@ class _HelpScreenState extends State<HelpScreen> {
         const SizedBox(height: 16),
         if (topics.isEmpty)
           _buildEmptyState()
-        else
-          ...[
-            DropdownButtonFormField<String>(
-              value: selectedTopic?.id,
-              isExpanded: true,
-              dropdownColor: const Color(0xFF1F1F1F),
-              decoration: InputDecoration(
-                labelText: _tr('Onderwerp', 'Topic'),
-                labelStyle: const TextStyle(color: Colors.white70),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.04),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              items: topics
-                  .map(
-                    (topic) => DropdownMenuItem<String>(
-                      value: topic.id,
-                      child: Text(topic.title(_isNl)),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                if (value == null) return;
-                setState(() => _selectedTopicId = value);
-              },
-            ),
-            const SizedBox(height: 12),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: _buildCompactTopicDetail(selectedTopic!),
+        else ...[
+          DropdownButtonFormField<String>(
+            value: selectedTopic?.id,
+            isExpanded: true,
+            dropdownColor: const Color(0xFF1F1F1F),
+            decoration: InputDecoration(
+              labelText: _tr('Onderwerp', 'Topic'),
+              labelStyle: const TextStyle(color: Colors.white70),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.04),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
-          ],
+            items: topics
+                .map(
+                  (topic) => DropdownMenuItem<String>(
+                    value: topic.id,
+                    child: Text(topic.title(_isNl)),
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() => _selectedTopicId = value);
+            },
+          ),
+          const SizedBox(height: 12),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: _buildCompactTopicDetail(selectedTopic!),
+            ),
+          ),
+        ],
         const SizedBox(height: 20),
       ],
     );
@@ -427,7 +426,6 @@ class _HelpScreenState extends State<HelpScreen> {
       ],
     );
   }
-
 
   Widget _buildEmptyState() {
     return Center(

@@ -111,7 +111,8 @@ class _BankScreenState extends State<BankScreen> {
       } else {
         setState(() {
           _error =
-              data['params']?['reason']?.toString() ?? _tr('Bank laden mislukt', 'Failed to load bank');
+              data['params']?['reason']?.toString() ??
+              _tr('Bank laden mislukt', 'Failed to load bank');
           _isLoading = false;
         });
       }
@@ -232,14 +233,21 @@ class _BankScreenState extends State<BankScreen> {
             listen: false,
           ).refreshPlayer();
           await _refreshAll(page: 1);
-          showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Storting gelukt', 'Deposit successful'))));
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(_tr('Storting gelukt', 'Deposit successful')),
+            ),
+          );
         }
       } else {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
-                data['params']?['reason']?.toString() ?? _tr('Storting mislukt', 'Deposit failed'),
+                data['params']?['reason']?.toString() ??
+                    _tr('Storting mislukt', 'Deposit failed'),
               ),
             ),
           );
@@ -247,7 +255,10 @@ class _BankScreenState extends State<BankScreen> {
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))),
+        );
       }
     } finally {
       if (mounted) {
@@ -280,14 +291,21 @@ class _BankScreenState extends State<BankScreen> {
             listen: false,
           ).refreshPlayer();
           await _refreshAll(page: 1);
-          showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Opname gelukt', 'Withdrawal successful'))));
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(_tr('Opname gelukt', 'Withdrawal successful')),
+            ),
+          );
         }
       } else {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(
-                data['params']?['reason']?.toString() ?? _tr('Opname mislukt', 'Withdrawal failed'),
+                data['params']?['reason']?.toString() ??
+                    _tr('Opname mislukt', 'Withdrawal failed'),
               ),
             ),
           );
@@ -295,7 +313,10 @@ class _BankScreenState extends State<BankScreen> {
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))),
+        );
       }
     } finally {
       if (mounted) {
@@ -328,9 +349,15 @@ class _BankScreenState extends State<BankScreen> {
         });
         if (mounted) {
           await _refreshAll(page: 1);
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
-              content: Text(_tr('€$amount overgemaakt naar $recipientUsername', '€$amount transferred to $recipientUsername')),
+              content: Text(
+                _tr(
+                  '€$amount overgemaakt naar $recipientUsername',
+                  '€$amount transferred to $recipientUsername',
+                ),
+              ),
             ),
           );
         }
@@ -340,7 +367,10 @@ class _BankScreenState extends State<BankScreen> {
         if (event == 'error.recipient_not_found') {
           message = _tr('Speler niet gevonden', 'Player not found');
         } else if (event == 'error.cannot_transfer_to_self') {
-          message = _tr('Je kunt niet naar jezelf overmaken', 'You cannot transfer to yourself');
+          message = _tr(
+            'Je kunt niet naar jezelf overmaken',
+            'You cannot transfer to yourself',
+          );
         } else if (event == 'error.insufficient_balance') {
           message = _tr('Onvoldoende banksaldo', 'Insufficient bank balance');
         } else if (event == 'error.invalid_amount') {
@@ -353,7 +383,10 @@ class _BankScreenState extends State<BankScreen> {
       }
     } catch (e) {
       if (mounted) {
-        showTopRightFromSnackBar(context, SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))));
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))),
+        );
       }
     } finally {
       if (mounted) {
@@ -501,7 +534,10 @@ class _BankScreenState extends State<BankScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr('Bank (wereldwijd toegankelijk)', 'Bank (worldwide accessible)'),
+                      _tr(
+                        'Bank (wereldwijd toegankelijk)',
+                        'Bank (worldwide accessible)',
+                      ),
                       style: const TextStyle(
                         color: Color(0xFFD4AF37),
                         fontWeight: FontWeight.bold,
@@ -579,7 +615,10 @@ class _BankScreenState extends State<BankScreen> {
                       onChanged: _onTransferUsernameChanged,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        labelText: _tr('Gebruikersnaam ontvanger', 'Recipient username'),
+                        labelText: _tr(
+                          'Gebruikersnaam ontvanger',
+                          'Recipient username',
+                        ),
                         labelStyle: TextStyle(color: Colors.grey.shade300),
                         filled: true,
                         fillColor: Colors.grey.shade800,
@@ -716,7 +755,7 @@ class _BankScreenState extends State<BankScreen> {
                                     ),
                                 ],
                               ),
-                                  subtitle: rank != null
+                              subtitle: rank != null
                                   ? Text(
                                       'Rank $rank',
                                       style: const TextStyle(
@@ -784,7 +823,10 @@ class _BankScreenState extends State<BankScreen> {
                           ),
                         ),
                         Text(
-                          _tr('$_totalTransactions totaal', '$_totalTransactions total'),
+                          _tr(
+                            '$_totalTransactions totaal',
+                            '$_totalTransactions total',
+                          ),
                           style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 12,
@@ -807,7 +849,10 @@ class _BankScreenState extends State<BankScreen> {
                           : _transactions.isEmpty
                           ? Center(
                               child: Text(
-                                _tr('Nog geen transacties', 'No transactions yet'),
+                                _tr(
+                                  'Nog geen transacties',
+                                  'No transactions yet',
+                                ),
                                 style: const TextStyle(color: Colors.white70),
                               ),
                             )
@@ -864,8 +909,14 @@ class _BankScreenState extends State<BankScreen> {
                                                   : isWithdraw
                                                   ? _tr('Opname', 'Withdrawal')
                                                   : isTransferSent
-                                                  ? _tr('Overboeking verzonden', 'Transfer sent')
-                                                  : _tr('Overboeking ontvangen', 'Transfer received'),
+                                                  ? _tr(
+                                                      'Overboeking verzonden',
+                                                      'Transfer sent',
+                                                    )
+                                                  : _tr(
+                                                      'Overboeking ontvangen',
+                                                      'Transfer received',
+                                                    ),
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600,
@@ -968,7 +1019,10 @@ class _BankScreenState extends State<BankScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            _tr('Pagina $_currentPage van $_totalPages', 'Page $_currentPage of $_totalPages'),
+                            _tr(
+                              'Pagina $_currentPage van $_totalPages',
+                              'Page $_currentPage of $_totalPages',
+                            ),
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,

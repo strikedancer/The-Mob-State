@@ -39,7 +39,8 @@ class _JailOverlayState extends State<JailOverlay> {
   @override
   void initState() {
     super.initState();
-    _remainingSeconds = widget.remainingSeconds; // Already in seconds from backend
+    _remainingSeconds =
+        widget.remainingSeconds; // Already in seconds from backend
     _startTimer();
   }
 
@@ -120,7 +121,10 @@ class _JailOverlayState extends State<JailOverlay> {
       if (data['event'] == 'bail.paid') {
         // Update player stats
         if (mounted) {
-          final authProvider = Provider.of<AuthProvider>(context, listen: false);
+          final authProvider = Provider.of<AuthProvider>(
+            context,
+            listen: false,
+          );
           final playerData = data['player'] as Map<String, dynamic>?;
           if (playerData != null) {
             authProvider.updatePlayerStats(
@@ -155,7 +159,9 @@ class _JailOverlayState extends State<JailOverlay> {
           final l10n = AppLocalizations.of(context)!;
           final isDutch = l10n.localeName == 'nl';
           _showTopRightNotification(
-            isDutch ? 'Niet genoeg geld voor borg' : 'Not enough money for bail',
+            isDutch
+                ? 'Niet genoeg geld voor borg'
+                : 'Not enough money for bail',
             backgroundColor: Colors.red.shade700,
             icon: Icons.error_outline,
           );
@@ -165,7 +171,8 @@ class _JailOverlayState extends State<JailOverlay> {
           final l10n = AppLocalizations.of(context)!;
           final isDutch = l10n.localeName == 'nl';
           final params = data['params'] as Map<String, dynamic>?;
-          final remainingSeconds = (params?['remainingSeconds'] as num?)?.toInt() ?? 0;
+          final remainingSeconds =
+              (params?['remainingSeconds'] as num?)?.toInt() ?? 0;
           _showTopRightNotification(
             isDutch
                 ? 'Cooldown actief: wacht nog ${remainingSeconds}s'
@@ -202,9 +209,7 @@ class _JailOverlayState extends State<JailOverlay> {
     final card = Card(
       margin: EdgeInsets.all(compact ? 12 : 24),
       elevation: 12,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       clipBehavior: Clip.antiAlias,
       child: Container(
         constraints: BoxConstraints(
@@ -250,7 +255,10 @@ class _JailOverlayState extends State<JailOverlay> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.18),
                       borderRadius: BorderRadius.circular(10),
@@ -327,7 +335,8 @@ class _JailOverlayState extends State<JailOverlay> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        if (widget.wantedLevel != null && widget.wantedLevel! > 0)
+                        if (widget.wantedLevel != null &&
+                            widget.wantedLevel! > 0)
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton.icon(
@@ -344,13 +353,15 @@ class _JailOverlayState extends State<JailOverlay> {
                                   : const Icon(Icons.attach_money),
                               label: Text(
                                 isDutch
-                                ? 'Betaal Borg €${_calculateBailAmount()}'
-                                : 'Pay Bail €${_calculateBailAmount()}',
+                                    ? 'Betaal Borg €${_calculateBailAmount()}'
+                                    : 'Pay Bail €${_calculateBailAmount()}',
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -391,14 +402,10 @@ class _PrisonBarsPainter extends CustomPainter {
     // Draw vertical bars
     const barCount = 5;
     final spacing = size.width / (barCount + 1);
-    
+
     for (int i = 1; i <= barCount; i++) {
       final x = spacing * i;
-      canvas.drawLine(
-        Offset(x, 0),
-        Offset(x, size.height),
-        paint,
-      );
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
     }
   }
 
@@ -415,13 +422,9 @@ class _MafiaPrisonerPainter extends CustomPainter {
     // Lichaam (oranje gevangenis pak)
     final bodyCenter = Offset(size.width * 0.5, size.height * 0.65);
     paint.color = const Color(0xFFFF8C00); // Oranje gevangenis pak
-    
+
     final bodyRect = RRect.fromRectAndRadius(
-      Rect.fromCenter(
-        center: bodyCenter,
-        width: 80,
-        height: 90,
-      ),
+      Rect.fromCenter(center: bodyCenter, width: 80, height: 90),
       const Radius.circular(20),
     );
     canvas.drawRRect(bodyRect, paint);
@@ -456,7 +459,7 @@ class _MafiaPrisonerPainter extends CustomPainter {
       const Radius.circular(5),
     );
     canvas.drawRRect(hatBrim, paint);
-    
+
     final hatCrown = RRect.fromRectAndRadius(
       Rect.fromCenter(
         center: Offset(headCenter.dx, headCenter.dy - 52),
@@ -471,7 +474,7 @@ class _MafiaPrisonerPainter extends CustomPainter {
     paint.color = Colors.white;
     canvas.drawCircle(Offset(headCenter.dx - 12, headCenter.dy - 5), 7, paint);
     canvas.drawCircle(Offset(headCenter.dx + 12, headCenter.dy - 5), 7, paint);
-    
+
     // Pupillen (kijkend naar beneden - verslagen)
     paint.color = Colors.black;
     canvas.drawCircle(Offset(headCenter.dx - 12, headCenter.dy - 2), 4, paint);
@@ -482,20 +485,24 @@ class _MafiaPrisonerPainter extends CustomPainter {
     paint.strokeWidth = 3;
     paint.strokeCap = StrokeCap.round;
     paint.color = const Color(0xFF8B4513);
-    
+
     final leftBrow = Path()
       ..moveTo(headCenter.dx - 20, headCenter.dy - 15)
       ..quadraticBezierTo(
-        headCenter.dx - 12, headCenter.dy - 18,
-        headCenter.dx - 4, headCenter.dy - 15,
+        headCenter.dx - 12,
+        headCenter.dy - 18,
+        headCenter.dx - 4,
+        headCenter.dy - 15,
       );
     canvas.drawPath(leftBrow, paint);
-    
+
     final rightBrow = Path()
       ..moveTo(headCenter.dx + 4, headCenter.dy - 15)
       ..quadraticBezierTo(
-        headCenter.dx + 12, headCenter.dy - 18,
-        headCenter.dx + 20, headCenter.dy - 15,
+        headCenter.dx + 12,
+        headCenter.dy - 18,
+        headCenter.dx + 20,
+        headCenter.dy - 15,
       );
     canvas.drawPath(rightBrow, paint);
 
@@ -511,8 +518,10 @@ class _MafiaPrisonerPainter extends CustomPainter {
     final mouthPath = Path()
       ..moveTo(headCenter.dx - 10, headCenter.dy + 20)
       ..quadraticBezierTo(
-        headCenter.dx, headCenter.dy + 16,
-        headCenter.dx + 10, headCenter.dy + 20,
+        headCenter.dx,
+        headCenter.dy + 16,
+        headCenter.dx + 10,
+        headCenter.dy + 20,
       );
     canvas.drawPath(mouthPath, paint);
 
@@ -522,12 +531,16 @@ class _MafiaPrisonerPainter extends CustomPainter {
     final mustachePath = Path()
       ..moveTo(headCenter.dx - 15, headCenter.dy + 12)
       ..quadraticBezierTo(
-        headCenter.dx - 8, headCenter.dy + 10,
-        headCenter.dx, headCenter.dy + 11,
+        headCenter.dx - 8,
+        headCenter.dy + 10,
+        headCenter.dx,
+        headCenter.dy + 11,
       )
       ..quadraticBezierTo(
-        headCenter.dx + 8, headCenter.dy + 10,
-        headCenter.dx + 15, headCenter.dy + 12,
+        headCenter.dx + 8,
+        headCenter.dy + 10,
+        headCenter.dx + 15,
+        headCenter.dy + 12,
       );
     canvas.drawPath(mustachePath, paint);
 
@@ -537,19 +550,31 @@ class _MafiaPrisonerPainter extends CustomPainter {
     final tear = Path()
       ..moveTo(headCenter.dx - 15, headCenter.dy + 2)
       ..quadraticBezierTo(
-        headCenter.dx - 16, headCenter.dy + 8,
-        headCenter.dx - 15, headCenter.dy + 12,
+        headCenter.dx - 16,
+        headCenter.dy + 8,
+        headCenter.dx - 15,
+        headCenter.dy + 12,
       )
       ..quadraticBezierTo(
-        headCenter.dx - 14, headCenter.dy + 8,
-        headCenter.dx - 15, headCenter.dy + 2,
+        headCenter.dx - 14,
+        headCenter.dy + 8,
+        headCenter.dx - 15,
+        headCenter.dy + 2,
       );
     canvas.drawPath(tear, paint);
 
     // Armen/handen (hangend - verslagen houding)
     paint.color = const Color(0xFFFFDBB5);
-    canvas.drawCircle(Offset(bodyCenter.dx - 45, bodyCenter.dy + 10), 12, paint);
-    canvas.drawCircle(Offset(bodyCenter.dx + 45, bodyCenter.dy + 10), 12, paint);
+    canvas.drawCircle(
+      Offset(bodyCenter.dx - 45, bodyCenter.dy + 10),
+      12,
+      paint,
+    );
+    canvas.drawCircle(
+      Offset(bodyCenter.dx + 45, bodyCenter.dy + 10),
+      12,
+      paint,
+    );
 
     // Benen/voeten
     paint.color = const Color(0xFFFF8C00);
@@ -558,7 +583,7 @@ class _MafiaPrisonerPainter extends CustomPainter {
       const Radius.circular(10),
     );
     canvas.drawRRect(leftLeg, paint);
-    
+
     final rightLeg = RRect.fromRectAndRadius(
       Rect.fromLTWH(bodyCenter.dx + 10, bodyCenter.dy + 35, 20, 40),
       const Radius.circular(10),

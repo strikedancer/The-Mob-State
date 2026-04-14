@@ -28,10 +28,9 @@ class WebAssetHelper {
     }
 
     if (path.startsWith('assets/images/')) {
-      final suffix = path.substring('assets/images/'.length).replaceAll(
-        'assets/images/',
-        '',
-      );
+      final suffix = path
+          .substring('assets/images/'.length)
+          .replaceAll('assets/images/', '');
       path = 'assets/images/$suffix';
 
       for (final dir in const [
@@ -108,13 +107,16 @@ class WebAssetHelper {
       // Route image requests through /images so nginx can serve from Flutter's bundled image directory.
       publicPath = 'images/${normalized.substring('assets/images/'.length)}';
     } else if (normalized.startsWith('assets/assets/images/')) {
-      publicPath = 'images/${normalized.substring('assets/assets/images/'.length)}';
+      publicPath =
+          'images/${normalized.substring('assets/assets/images/'.length)}';
     } else if (normalized.startsWith('images/')) {
       publicPath = 'images/${normalized.substring('images/'.length)}';
     } else if (normalized.startsWith('assets/')) {
       publicPath = normalized;
     } else {
-      publicPath = normalized.startsWith('/') ? normalized.substring(1) : normalized;
+      publicPath = normalized.startsWith('/')
+          ? normalized.substring(1)
+          : normalized;
     }
 
     return _resolveRelative(publicPath);

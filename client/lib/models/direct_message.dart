@@ -114,7 +114,7 @@ class Conversation {
 
   String get formattedTime {
     if (lastMessageTime == null) return '';
-    
+
     try {
       final dateTime = DateTime.parse(lastMessageTime!).toLocal();
       final now = DateTime.now();

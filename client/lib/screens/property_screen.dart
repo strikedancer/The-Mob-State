@@ -57,7 +57,8 @@ class PropertyScreenState extends State<PropertyScreen>
 
     try {
       final authProvider = context.read<AuthProvider>();
-      final country = authProvider.currentPlayer?.currentCountry ?? 'netherlands';
+      final country =
+          authProvider.currentPlayer?.currentCountry ?? 'netherlands';
       final response = await _apiClient.get('/properties/available/$country');
       final data = jsonDecode(response.body);
 
