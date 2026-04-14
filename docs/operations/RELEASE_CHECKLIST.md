@@ -121,6 +121,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
 - [ ] Web build-fix support scherm: ontbrekende import van `SupportTicketsScreen` hersteld in dashboard zodat Flutter web rebuild niet meer faalt met `The method 'SupportTicketsScreen' isn't defined`
   - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Admin tickets schema-drift fix: support startup-bootstrap voegt nu ontbrekende kolommen en indexes ook toe aan bestaande productie-tabellen, zodat `/admin/tickets` en ticket-detail niet meer 500'en op oudere databases
+  - Bestand: `backend/src/startup/ensureSupportSchema.ts`
 - [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
   - Bestand: `client/lib/screens/property_screen.dart`
 - [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`

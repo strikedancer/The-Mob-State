@@ -1,5 +1,45 @@
 import prisma from '../lib/prisma';
 
+async function columnExists(tableName: string, columnName: string): Promise<boolean> {
+  const rows = await prisma.$queryRaw<Array<{ count: number }>>`
+    SELECT COUNT(*) AS count
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = ${tableName}
+      AND COLUMN_NAME = ${columnName}
+  `;
+
+  return Number(rows?.[0]?.count ?? 0) > 0;
+}
+
+async function indexExists(tableName: string, indexName: string): Promise<boolean> {
+  const rows = await prisma.$queryRaw<Array<{ count: number }>>`
+    SELECT COUNT(*) AS count
+    FROM information_schema.STATISTICS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = ${tableName}
+      AND INDEX_NAME = ${indexName}
+  `;
+
+  return Number(rows?.[0]?.count ?? 0) > 0;
+}
+
+async function ensureColumn(tableName: string, columnName: string, alterSql: string): Promise<void> {
+  const exists = await columnExists(tableName, columnName);
+  if (exists) return;
+
+  await prisma.$executeRawUnsafe(alterSql);
+  console.log(`[StartupSchema] Added ${tableName}.${columnName}`);
+}
+
+async function ensureIndex(tableName: string, indexName: string, createSql: string): Promise<void> {
+  const exists = await indexExists(tableName, indexName);
+  if (exists) return;
+
+  await prisma.$executeRawUnsafe(createSql);
+  console.log(`[StartupSchema] Added index ${indexName} on ${tableName}`);
+}
+
 export async function ensureSupportSchema(): Promise<void> {
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS support_tickets (
@@ -22,6 +62,43 @@ export async function ensureSupportSchema(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
+  await ensureColumn(
+    'support_tickets',
+    'closedAt',
+    'ALTER TABLE support_tickets ADD COLUMN closedAt DATETIME NULL AFTER updatedAt'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'closedByAdminId',
+    'ALTER TABLE support_tickets ADD COLUMN closedByAdminId INT NULL AFTER closedAt'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'lastPlayerMessageAt',
+    'ALTER TABLE support_tickets ADD COLUMN lastPlayerMessageAt DATETIME NULL AFTER closedByAdminId'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'lastAdminMessageAt',
+    'ALTER TABLE support_tickets ADD COLUMN lastAdminMessageAt DATETIME NULL AFTER lastPlayerMessageAt'
+  );
+
+  await ensureIndex(
+    'support_tickets',
+    'idx_support_tickets_player',
+    'CREATE INDEX idx_support_tickets_player ON support_tickets(playerId)'
+  );
+  await ensureIndex(
+    'support_tickets',
+    'idx_support_tickets_status',
+    'CREATE INDEX idx_support_tickets_status ON support_tickets(status)'
+  );
+  await ensureIndex(
+    'support_tickets',
+    'idx_support_tickets_updated',
+    'CREATE INDEX idx_support_tickets_updated ON support_tickets(updatedAt)'
+  );
+
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS support_ticket_messages (
       id INT NOT NULL AUTO_INCREMENT,
@@ -37,6 +114,28 @@ export async function ensureSupportSchema(): Promise<void> {
       INDEX idx_support_ticket_messages_created (createdAt)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
+
+  await ensureColumn(
+    'support_ticket_messages',
+    'adminId',
+    'ALTER TABLE support_ticket_messages ADD COLUMN adminId INT NULL AFTER playerId'
+  );
+  await ensureColumn(
+    'support_ticket_messages',
+    'isInternal',
+    'ALTER TABLE support_ticket_messages ADD COLUMN isInternal TINYINT(1) NOT NULL DEFAULT 0 AFTER message'
+  );
+
+  await ensureIndex(
+    'support_ticket_messages',
+    'idx_support_ticket_messages_ticket',
+    'CREATE INDEX idx_support_ticket_messages_ticket ON support_ticket_messages(ticketId)'
+  );
+  await ensureIndex(
+    'support_ticket_messages',
+    'idx_support_ticket_messages_created',
+    'CREATE INDEX idx_support_ticket_messages_created ON support_ticket_messages(createdAt)'
+  );
 
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS support_ticket_todos (
@@ -57,6 +156,43 @@ export async function ensureSupportSchema(): Promise<void> {
       INDEX idx_support_ticket_todos_updated (updatedAt)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
+
+  await ensureColumn(
+    'support_ticket_todos',
+    'assignedAdminId',
+    'ALTER TABLE support_ticket_todos ADD COLUMN assignedAdminId INT NULL AFTER createdByAdminId'
+  );
+  await ensureColumn(
+    'support_ticket_todos',
+    'resolvedByAdminId',
+    'ALTER TABLE support_ticket_todos ADD COLUMN resolvedByAdminId INT NULL AFTER assignedAdminId'
+  );
+  await ensureColumn(
+    'support_ticket_todos',
+    'updatedAt',
+    'ALTER TABLE support_ticket_todos ADD COLUMN updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER createdAt'
+  );
+  await ensureColumn(
+    'support_ticket_todos',
+    'resolvedAt',
+    'ALTER TABLE support_ticket_todos ADD COLUMN resolvedAt DATETIME NULL AFTER updatedAt'
+  );
+
+  await ensureIndex(
+    'support_ticket_todos',
+    'idx_support_ticket_todos_ticket',
+    'CREATE INDEX idx_support_ticket_todos_ticket ON support_ticket_todos(ticketId)'
+  );
+  await ensureIndex(
+    'support_ticket_todos',
+    'idx_support_ticket_todos_status',
+    'CREATE INDEX idx_support_ticket_todos_status ON support_ticket_todos(status)'
+  );
+  await ensureIndex(
+    'support_ticket_todos',
+    'idx_support_ticket_todos_updated',
+    'CREATE INDEX idx_support_ticket_todos_updated ON support_ticket_todos(updatedAt)'
+  );
 
   console.log('[StartupSchema] Support ticket schema check complete');
 }
