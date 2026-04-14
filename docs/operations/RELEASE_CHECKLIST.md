@@ -117,8 +117,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
-- [ ] Help uitgebreid met Melding/Contact flow: nieuw support ticket center met categorie/onderwerp/bericht, ticketlijst, thread-weergave en reply-mogelijkheid; inclusief NL/EN help-topic en navigatie vanaf Help-scherm
-  - Bestanden: `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
+- [ ] Support navigatie aangepast: knop `Melding / Contact` verwijderd uit Help & Uitleg; nieuw apart menu-item `Support` staat direct onder `Help & Uitleg` en opent het player ticket center als eigen scherm
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
+- [ ] Web build-fix support scherm: ontbrekende import van `SupportTicketsScreen` hersteld in dashboard zodat Flutter web rebuild niet meer faalt met `The method 'SupportTicketsScreen' isn't defined`
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
   - Bestand: `client/lib/screens/property_screen.dart`
 - [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`

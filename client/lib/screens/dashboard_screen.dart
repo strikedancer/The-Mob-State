@@ -52,9 +52,10 @@ import 'crypto_screen.dart';
 import 'events_screen.dart';
 import 'help_screen.dart';
 import 'player_profile_screen.dart';
+import 'support_tickets_screen.dart';
 
 enum _WebSection {
-    support,
+  support,
   dashboard,
   events,
   crimes,
