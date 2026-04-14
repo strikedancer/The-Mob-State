@@ -123,6 +123,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Admin tickets schema-drift fix: support startup-bootstrap voegt nu ontbrekende kolommen en indexes ook toe aan bestaande productie-tabellen, zodat `/admin/tickets` en ticket-detail niet meer 500'en op oudere databases
   - Bestand: `backend/src/startup/ensureSupportSchema.ts`
+- [ ] Ticket-systeem Prisma-keten geformaliseerd: support-tabellen staan nu ook in `schema.prisma` en hebben een idempotente Prisma migration, zodat online deploys niet alleen op startup SQL-bootstrap leunen
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260414103000_add_support_ticket_system/migration.sql`
 - [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
   - Bestand: `client/lib/screens/property_screen.dart`
 - [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`

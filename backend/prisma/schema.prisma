@@ -533,6 +533,60 @@ model CrewMessage {
   @@map("crew_messages")
 }
 
+model SupportTicket {
+  id                  Int       @id @default(autoincrement())
+  playerId            Int
+  category            String    @db.VarChar(50)
+  subject             String    @db.VarChar(255)
+  status              String    @default("open") @db.VarChar(30)
+  priority            String    @default("normal") @db.VarChar(20)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  closedAt            DateTime?
+  closedByAdminId     Int?
+  lastPlayerMessageAt DateTime?
+  lastAdminMessageAt  DateTime?
+
+  @@index([playerId], map: "idx_support_tickets_player")
+  @@index([status], map: "idx_support_tickets_status")
+  @@index([updatedAt], map: "idx_support_tickets_updated")
+  @@map("support_tickets")
+}
+
+model SupportTicketMessage {
+  id         Int      @id @default(autoincrement())
+  ticketId    Int
+  senderType  String   @db.VarChar(20)
+  playerId    Int?
+  adminId     Int?
+  message     String   @db.Text
+  isInternal  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([ticketId], map: "idx_support_ticket_messages_ticket")
+  @@index([createdAt], map: "idx_support_ticket_messages_created")
+  @@map("support_ticket_messages")
+}
+
+model SupportTicketTodo {
+  id               Int      @id @default(autoincrement())
+  ticketId         Int
+  title            String   @db.VarChar(255)
+  description      String?  @db.Text
+  status           String   @default("open") @db.VarChar(20)
+  createdByAdminId Int
+  assignedAdminId  Int?
+  resolvedByAdminId Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  resolvedAt       DateTime?
+
+  @@index([ticketId], map: "idx_support_ticket_todos_ticket")
+  @@index([status], map: "idx_support_ticket_todos_status")
+  @@index([updatedAt], map: "idx_support_ticket_todos_updated")
+  @@map("support_ticket_todos")
+}
+
 model CrewJoinRequest {
   id        Int      @id @default(autoincrement())
   crewId    Int
