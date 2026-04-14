@@ -525,29 +525,54 @@ export const supportTicketService = {
     }));
   },
 
-  async updateTodoStatus(adminId: number, todoId: number, status: 'open' | 'done') {
+  async updateTodo(adminId: number, todoId: number, updates: { title?: string; description?: string | null; status?: 'open' | 'done' }) {
+    const rows = await prisma.$queryRawUnsafe<Array<{ id: number; ticketId: number | null }>>(
+      'SELECT id, ticketId FROM support_ticket_todos WHERE id = ? LIMIT 1',
+      todoId
+    );
+
+    const existingTodo = rows[0] || null;
+    if (!existingTodo) {
+      throw new Error('TODO_NOT_FOUND');
+    }
+
+    const hasTitleUpdate = typeof updates.title === 'string';
+    const hasDescriptionUpdate = Object.prototype.hasOwnProperty.call(updates, 'description');
+    const nextStatus = updates.status ?? null;
+
     await prisma.$executeRawUnsafe(
       `
       UPDATE support_ticket_todos
-      SET status = ?,
-          resolvedByAdminId = CASE WHEN ? = 'done' THEN ? ELSE NULL END,
-          resolvedAt = CASE WHEN ? = 'done' THEN NOW() ELSE NULL END,
+      SET title = CASE WHEN ? = 1 THEN ? ELSE title END,
+          description = CASE WHEN ? = 1 THEN ? ELSE description END,
+          status = COALESCE(?, status),
+          resolvedByAdminId = CASE
+            WHEN ? = 'done' THEN ?
+            WHEN ? = 'open' THEN NULL
+            ELSE resolvedByAdminId
+          END,
+          resolvedAt = CASE
+            WHEN ? = 'done' THEN COALESCE(resolvedAt, NOW())
+            WHEN ? = 'open' THEN NULL
+            ELSE resolvedAt
+          END,
           updatedAt = NOW()
       WHERE id = ?
       `,
-      status,
-      status,
+      hasTitleUpdate ? 1 : 0,
+      updates.title ?? null,
+      hasDescriptionUpdate ? 1 : 0,
+      hasDescriptionUpdate ? (updates.description ?? null) : null,
+      nextStatus,
+      nextStatus,
       adminId,
-      status,
+      nextStatus,
+      nextStatus,
+      nextStatus,
       todoId
     );
 
-    const rows = await prisma.$queryRawUnsafe<Array<{ ticketId: number | null }>>(
-      'SELECT ticketId FROM support_ticket_todos WHERE id = ? LIMIT 1',
-      todoId
-    );
-
-    const ticketId = rows[0]?.ticketId ?? null;
+    const ticketId = existingTodo.ticketId ?? null;
     if (ticketId) {
       await prisma.$executeRawUnsafe(
         `
@@ -556,6 +581,35 @@ export const supportTicketService = {
         WHERE id = ?
         `,
         ticketId
+      );
+    }
+  },
+
+  async updateTodoStatus(adminId: number, todoId: number, status: 'open' | 'done') {
+    await this.updateTodo(adminId, todoId, { status });
+  },
+
+  async deleteTodo(todoId: number) {
+    const rows = await prisma.$queryRawUnsafe<Array<{ id: number; ticketId: number | null }>>(
+      'SELECT id, ticketId FROM support_ticket_todos WHERE id = ? LIMIT 1',
+      todoId
+    );
+
+    const existingTodo = rows[0] || null;
+    if (!existingTodo) {
+      throw new Error('TODO_NOT_FOUND');
+    }
+
+    await prisma.$executeRawUnsafe('DELETE FROM support_ticket_todos WHERE id = ?', todoId);
+
+    if (existingTodo.ticketId) {
+      await prisma.$executeRawUnsafe(
+        `
+        UPDATE support_tickets
+        SET updatedAt = NOW()
+        WHERE id = ?
+        `,
+        existingTodo.ticketId
       );
     }
   },

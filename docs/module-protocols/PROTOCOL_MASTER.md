@@ -61,7 +61,9 @@ Acceptatie-eis:
 - Reacties/thread-weergave en eerder verzonden tickets worden niet meer in de player UI getoond.
 - Tickets moeten verwijderbaar zijn vanuit beheer; admin heeft daarom een expliciete delete-actie op ticketdetail.
 - Speler moet bij ticket-aanmaak optioneel een screenshot/afbeelding kunnen uploaden; admin-detail moet die bijlagen zichtbaar tonen.
+- Attachment-preview in admin moet in-context blijven: klik op een ticketafbeelding opent een vergrote preview/lightbox binnen admin, met optie om het origineel apart te openen, en mag de beheerder niet teruggooien naar het dashboard of ticketcontext verliezen.
 - Support todo's zijn centraal beheerwerk en niet langer alleen per ticket verborgen in ticketdetail; gebruik een aparte admin todo-pagina met lijst, statusbeheer en mogelijkheid om zowel losse als ticket-gekoppelde todo's aan te maken.
+- Bestaande support todo's moeten vanuit admin direct aanklikbaar en volledig beheerbaar blijven: open/bewerk status, voeg interne opmerkingen toe, open gekoppeld ticket en verwijder todo's zonder verborgen of ontbrekende acties.
 - Admin ticketlijst moet operationeel scanbaar zijn en minimaal tonen: spelernaam, onderwerp, aantal afbeeldingen, tijd, datum en status.
 - Cross-module checks: Dashboard, Admin, Messages, Notifications, Help (alleen als uitleg), i18n.
 

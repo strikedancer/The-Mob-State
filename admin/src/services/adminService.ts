@@ -901,7 +901,7 @@ export const adminService = {
     return response.json();
   },
 
-  async updateSupportTodo(todoId: number, payload: { status: 'open' | 'done' }) {
+  async updateSupportTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'done' }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-todos/${todoId}`, {
       method: 'PATCH',
@@ -916,7 +916,7 @@ export const adminService = {
     return response.json();
   },
 
-  async updateTicketTodo(todoId: number, payload: { status: 'open' | 'done' }) {
+  async updateTicketTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'done' }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/todos/${todoId}`, {
       method: 'PATCH',
@@ -928,6 +928,19 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to update ticket todo');
+    return response.json();
+  },
+
+  async deleteSupportTodo(todoId: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-todos/${todoId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to delete support todo');
     return response.json();
   },
 

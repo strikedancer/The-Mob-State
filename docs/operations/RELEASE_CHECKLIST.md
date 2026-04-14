@@ -127,8 +127,12 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/support_tickets_screen.dart`, `client/pubspec.yaml`, `backend/src/routes/tickets.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/startup/ensureSupportSchema.ts`, `backend/prisma/schema.prisma`
 - [ ] Support todo workflow losgetrokken naar centrale admin todo-pagina; todo's kunnen los of vanuit ticket worden aangemaakt en centraal worden bijgewerkt
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/startup/ensureSupportSchema.ts`, `backend/prisma/schema.prisma`
+- [ ] Support todo beheer uitgebreid: bestaande todo's zijn nu aanklikbaar vanuit ticketdetail en centrale todo-pagina, status/opmerkingen zijn bewerkbaar en todo's kunnen verwijderd worden zonder ticketcontext te verliezen
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Admin ticketlijst verduidelijkt met spelernaam, onderwerp, aantal afbeeldingen, tijd, datum, status en directe delete-actie
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/services/supportTicketService.ts`
+- [ ] Admin attachment preview UX gefixt: klikken op ticketafbeeldingen opent nu een vergrote preview/lightbox in admin zelf, met aparte link naar het origineel, zonder terugval naar het dashboard
+  - Bestanden: `admin/src/App.tsx`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Web build-fix support scherm: ontbrekende import van `SupportTicketsScreen` hersteld in dashboard zodat Flutter web rebuild niet meer faalt met `The method 'SupportTicketsScreen' isn't defined`
   - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Admin tickets schema-drift fix: support startup-bootstrap voegt nu ontbrekende kolommen en indexes ook toe aan bestaande productie-tabellen, zodat `/admin/tickets` en ticket-detail niet meer 500'en op oudere databases

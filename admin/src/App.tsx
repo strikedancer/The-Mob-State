@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment } from './services/adminService'
 
 type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets' | 'todos'
 type Language = 'nl' | 'en'
@@ -815,6 +815,13 @@ function App() {
   const [ticketStatusFilter, setTicketStatusFilter] = useState<'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed'>('open')
   const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
   const [selectedTicketDetail, setSelectedTicketDetail] = useState<SupportTicketDetailResponse | null>(null)
+  const [selectedTicketAttachment, setSelectedTicketAttachment] = useState<SupportTicketAttachment | null>(null)
+  const [editingSupportTodo, setEditingSupportTodo] = useState<SupportTicketTodo | null>(null)
+  const [editingSupportTodoTitle, setEditingSupportTodoTitle] = useState('')
+  const [editingSupportTodoDescription, setEditingSupportTodoDescription] = useState('')
+  const [editingSupportTodoStatus, setEditingSupportTodoStatus] = useState<'open' | 'done'>('open')
+  const [savingSupportTodo, setSavingSupportTodo] = useState(false)
+  const [deletingSupportTodoId, setDeletingSupportTodoId] = useState<number | null>(null)
   const [ticketReplyMessage, setTicketReplyMessage] = useState('')
   const [ticketReplyStatus, setTicketReplyStatus] = useState<'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed'>('waiting_player')
   const [ticketTodoTitle, setTicketTodoTitle] = useState('')
@@ -1201,6 +1208,67 @@ function App() {
     } catch (err) {
       if (handleUnauthorized(err)) return
       alert(`${l('Todo bijwerken mislukt', 'Failed to update todo')}: ${(err as Error).message}`)
+    }
+  }
+
+  const handleEditSupportTodo = (todo: SupportTicketTodo) => {
+    setEditingSupportTodo(todo)
+    setEditingSupportTodoTitle(todo.title)
+    setEditingSupportTodoDescription(todo.description || '')
+    setEditingSupportTodoStatus(todo.status)
+  }
+
+  const handleCloseSupportTodoEditor = () => {
+    setEditingSupportTodo(null)
+    setEditingSupportTodoTitle('')
+    setEditingSupportTodoDescription('')
+    setEditingSupportTodoStatus('open')
+  }
+
+  const handleSaveSupportTodo = async () => {
+    if (!editingSupportTodo || !editingSupportTodoTitle.trim()) return
+
+    try {
+      setSavingSupportTodo(true)
+      await adminService.updateSupportTodo(editingSupportTodo.id, {
+        title: editingSupportTodoTitle.trim(),
+        description: editingSupportTodoDescription.trim() || null,
+        status: editingSupportTodoStatus,
+      })
+      if (selectedTicketId && editingSupportTodo.ticketId === selectedTicketId) {
+        await loadTicketDetail(selectedTicketId)
+      }
+      await loadTickets(ticketStatusFilter)
+      await loadSupportTodos(supportTodoStatusFilter)
+      handleCloseSupportTodoEditor()
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Todo opslaan mislukt', 'Failed to save todo')}: ${(err as Error).message}`)
+    } finally {
+      setSavingSupportTodo(false)
+    }
+  }
+
+  const handleDeleteSupportTodo = async (todo: SupportTicketTodo) => {
+    const confirmed = window.confirm(l('Weet je zeker dat je dit todo item wilt verwijderen?', 'Are you sure you want to delete this todo item?'))
+    if (!confirmed) return
+
+    try {
+      setDeletingSupportTodoId(todo.id)
+      await adminService.deleteSupportTodo(todo.id)
+      if (selectedTicketId && todo.ticketId === selectedTicketId) {
+        await loadTicketDetail(selectedTicketId)
+      }
+      await loadTickets(ticketStatusFilter)
+      await loadSupportTodos(supportTodoStatusFilter)
+      if (editingSupportTodo?.id === todo.id) {
+        handleCloseSupportTodoEditor()
+      }
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Todo verwijderen mislukt', 'Failed to delete todo')}: ${(err as Error).message}`)
+    } finally {
+      setDeletingSupportTodoId(null)
     }
   }
 
@@ -5300,13 +5368,12 @@ function App() {
                             <div className="fw-semibold mb-2">{l('Bijlagen', 'Attachments')}</div>
                             <div className="d-flex flex-wrap gap-2">
                               {selectedTicketDetail.attachments.map((attachment) => (
-                                <a
+                                <button
+                                  type="button"
                                   key={attachment.id}
-                                  href={attachment.url}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="border rounded p-2 text-decoration-none"
+                                  className="border rounded p-2 text-decoration-none bg-white text-start"
                                   style={{ width: 160 }}
+                                  onClick={() => setSelectedTicketAttachment(attachment)}
                                 >
                                   <img
                                     src={attachment.previewDataUrl || attachment.url}
@@ -5314,7 +5381,7 @@ function App() {
                                     style={{ width: '100%', height: 90, objectFit: 'cover', borderRadius: 6, marginBottom: 8 }}
                                   />
                                   <div className="small text-truncate">{attachment.originalName}</div>
-                                </a>
+                                </button>
                               ))}
                             </div>
                           </div>
@@ -5408,19 +5475,34 @@ function App() {
                                 {selectedTicketDetail.todos.map((todo) => (
                                   <tr key={todo.id}>
                                     <td>
-                                      <div className="fw-semibold">{todo.title}</div>
+                                      <button type="button" className="btn btn-link p-0 text-start fw-semibold" onClick={() => handleEditSupportTodo(todo)}>
+                                        {todo.title}
+                                      </button>
                                       {todo.description && <small className="text-muted">{todo.description}</small>}
                                     </td>
                                     <td>{todo.status}</td>
                                     <td>{new Date(todo.updatedAt).toLocaleString()}</td>
                                     <td>
-                                      <button
-                                        type="button"
-                                        className={`btn btn-sm ${todo.status === 'done' ? 'btn-outline-warning' : 'btn-outline-success'}`}
-                                        onClick={() => handleToggleTicketTodo(todo.id, todo.status === 'done' ? 'open' : 'done')}
-                                      >
-                                        {todo.status === 'done' ? l('Heropen', 'Reopen') : l('Afvinken', 'Mark done')}
-                                      </button>
+                                      <div className="d-flex flex-wrap gap-2">
+                                        <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => handleEditSupportTodo(todo)}>
+                                          {l('Openen', 'Open')}
+                                        </button>
+                                        <button
+                                          type="button"
+                                          className={`btn btn-sm ${todo.status === 'done' ? 'btn-outline-warning' : 'btn-outline-success'}`}
+                                          onClick={() => handleToggleTicketTodo(todo.id, todo.status === 'done' ? 'open' : 'done')}
+                                        >
+                                          {todo.status === 'done' ? l('Heropen', 'Reopen') : l('Afvinken', 'Mark done')}
+                                        </button>
+                                        <button
+                                          type="button"
+                                          className="btn btn-sm btn-outline-danger"
+                                          onClick={() => handleDeleteSupportTodo(todo)}
+                                          disabled={deletingSupportTodoId === todo.id}
+                                        >
+                                          {l('Verwijderen', 'Delete')}
+                                        </button>
+                                      </div>
                                     </td>
                                   </tr>
                                 ))}
@@ -5509,7 +5591,9 @@ function App() {
                         {supportTodos.map((todo) => (
                           <tr key={todo.id}>
                             <td>
-                              <div className="fw-semibold">{todo.title}</div>
+                              <button type="button" className="btn btn-link p-0 text-start fw-semibold" onClick={() => handleEditSupportTodo(todo)}>
+                                {todo.title}
+                              </button>
                               {todo.description && <div className="small text-muted">{todo.description}</div>}
                             </td>
                             <td>
@@ -5525,13 +5609,26 @@ function App() {
                             <td>{todo.status}</td>
                             <td>{new Date(todo.updatedAt).toLocaleString()}</td>
                             <td>
-                              <button
-                                type="button"
-                                className={`btn btn-sm ${todo.status === 'done' ? 'btn-outline-secondary' : 'btn-success'}`}
-                                onClick={() => handleToggleTicketTodo(todo.id, todo.status === 'done' ? 'open' : 'done')}
-                              >
-                                {todo.status === 'done' ? l('Heropenen', 'Reopen') : l('Afronden', 'Complete')}
-                              </button>
+                              <div className="d-flex flex-wrap gap-2">
+                                <button type="button" className="btn btn-sm btn-outline-primary" onClick={() => handleEditSupportTodo(todo)}>
+                                  {l('Bewerken', 'Edit')}
+                                </button>
+                                <button
+                                  type="button"
+                                  className={`btn btn-sm ${todo.status === 'done' ? 'btn-outline-secondary' : 'btn-success'}`}
+                                  onClick={() => handleToggleTicketTodo(todo.id, todo.status === 'done' ? 'open' : 'done')}
+                                >
+                                  {todo.status === 'done' ? l('Heropenen', 'Reopen') : l('Afronden', 'Complete')}
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-outline-danger"
+                                  onClick={() => handleDeleteSupportTodo(todo)}
+                                  disabled={deletingSupportTodoId === todo.id}
+                                >
+                                  {l('Verwijderen', 'Delete')}
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -6108,6 +6205,87 @@ function App() {
                   </p>
                   <div className="modal-actions">
                     <button className="btn-small" onClick={() => setPreviewOffer(null)}>{t.close}</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selectedTicketAttachment && (
+              <div className="modal-overlay" onClick={() => setSelectedTicketAttachment(null)}>
+                <div className="admin-modal admin-modal-large" onClick={(e) => e.stopPropagation()}>
+                  <h2>{l('Ticket bijlage', 'Ticket attachment')}</h2>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <img
+                      src={selectedTicketAttachment.url}
+                      alt={selectedTicketAttachment.originalName}
+                      style={{ width: '100%', maxHeight: '70vh', objectFit: 'contain', borderRadius: 8, background: '#0f172a' }}
+                    />
+                  </div>
+                  <p><strong>{l('Bestand', 'File')}:</strong> {selectedTicketAttachment.originalName}</p>
+                  <p><strong>{l('Type', 'Type')}:</strong> {selectedTicketAttachment.mimeType}</p>
+                  <p><strong>{l('Grootte', 'Size')}:</strong> {Math.round(selectedTicketAttachment.fileSize / 1024)} KB</p>
+                  <div className="modal-actions">
+                    <a className="btn btn-outline-primary" href={selectedTicketAttachment.url} target="_blank" rel="noreferrer">
+                      {l('Open origineel', 'Open original')}
+                    </a>
+                    <button className="btn-small" onClick={() => setSelectedTicketAttachment(null)}>{t.close}</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {editingSupportTodo && (
+              <div className="modal-overlay" onClick={handleCloseSupportTodoEditor}>
+                <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
+                  <h2>{l('Todo bewerken', 'Edit todo')}</h2>
+                  <div className="form-group">
+                    <label>{l('Titel', 'Title')}</label>
+                    <input value={editingSupportTodoTitle} onChange={(e) => setEditingSupportTodoTitle(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Opmerkingen', 'Notes')}</label>
+                    <textarea
+                      value={editingSupportTodoDescription}
+                      onChange={(e) => setEditingSupportTodoDescription(e.target.value)}
+                      rows={5}
+                      placeholder={l('Voeg interne opmerkingen toe...', 'Add internal notes...')}
+                      style={{ resize: 'vertical' }}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Status', 'Status')}</label>
+                    <select value={editingSupportTodoStatus} onChange={(e) => setEditingSupportTodoStatus(e.target.value as 'open' | 'done')}>
+                      <option value="open">{l('Open', 'Open')}</option>
+                      <option value="done">{l('Afgerond', 'Done')}</option>
+                    </select>
+                  </div>
+                  {editingSupportTodo.ticketId && (
+                    <div className="form-group">
+                      <label>{l('Gekoppeld ticket', 'Linked ticket')}</label>
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={() => {
+                          void handleOpenTodoTicket(editingSupportTodo.ticketId)
+                          handleCloseSupportTodoEditor()
+                        }}
+                      >
+                        {l('Open ticket', 'Open ticket')} #{editingSupportTodo.ticketId}
+                      </button>
+                    </div>
+                  )}
+                  <div className="modal-actions">
+                    <button
+                      className="btn-small btn-danger"
+                      onClick={() => void handleDeleteSupportTodo(editingSupportTodo)}
+                      disabled={deletingSupportTodoId === editingSupportTodo.id}
+                    >
+                      {l('Verwijderen', 'Delete')}
+                    </button>
+                    <button className="btn-small btn-primary" onClick={() => void handleSaveSupportTodo()} disabled={savingSupportTodo}>
+                      {l('Opslaan', 'Save')}
+                    </button>
+                    <button className="btn-small" onClick={handleCloseSupportTodoEditor}>{t.cancel}</button>
                   </div>
                 </div>
               </div>

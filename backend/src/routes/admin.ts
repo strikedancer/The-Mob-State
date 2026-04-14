@@ -170,7 +170,11 @@ const adminTicketTodoSchema = z.object({
 });
 
 const adminTicketTodoUpdateSchema = z.object({
-  status: z.enum(['open', 'done']),
+  title: z.string().trim().min(3).max(255).optional(),
+  description: z.string().trim().max(2000).nullable().optional(),
+  status: z.enum(['open', 'done']).optional(),
+}).refine((value) => value.title !== undefined || value.description !== undefined || value.status !== undefined, {
+  message: 'At least one todo field must be provided',
 });
 
 async function resetPlayerProgressInTransaction(tx: any, playerId: number) {
@@ -1818,11 +1822,32 @@ router.patch('/support-todos/:todoId', async (req: AdminRequest, res) => {
       return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
     }
 
-    await supportTicketService.updateTodoStatus(adminId, todoId, parsed.data.status);
+    await supportTicketService.updateTodo(adminId, todoId, parsed.data);
     return res.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.message === 'TODO_NOT_FOUND') {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
     console.error('Admin support todo update error:', error);
     return res.status(500).json({ error: 'Failed to update support todo' });
+  }
+});
+
+router.delete('/support-todos/:todoId', async (req: AdminRequest, res) => {
+  try {
+    const todoId = Number(req.params.todoId);
+    if (!Number.isFinite(todoId) || todoId <= 0) {
+      return res.status(400).json({ error: 'Invalid todo id' });
+    }
+
+    await supportTicketService.deleteTodo(todoId);
+    return res.json({ success: true });
+  } catch (error: any) {
+    if (error?.message === 'TODO_NOT_FOUND') {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+    console.error('Admin support todo delete error:', error);
+    return res.status(500).json({ error: 'Failed to delete support todo' });
   }
 });
 
@@ -1843,11 +1868,32 @@ router.patch('/tickets/todos/:todoId', async (req: AdminRequest, res) => {
       return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
     }
 
-    await supportTicketService.updateTodoStatus(adminId, todoId, parsed.data.status);
+    await supportTicketService.updateTodo(adminId, todoId, parsed.data);
     return res.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.message === 'TODO_NOT_FOUND') {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
     console.error('Admin ticket todo update error:', error);
     return res.status(500).json({ error: 'Failed to update todo' });
+  }
+});
+
+router.delete('/tickets/todos/:todoId', async (req: AdminRequest, res) => {
+  try {
+    const todoId = Number(req.params.todoId);
+    if (!Number.isFinite(todoId) || todoId <= 0) {
+      return res.status(400).json({ error: 'Invalid todo id' });
+    }
+
+    await supportTicketService.deleteTodo(todoId);
+    return res.json({ success: true });
+  } catch (error: any) {
+    if (error?.message === 'TODO_NOT_FOUND') {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+    console.error('Admin ticket todo delete error:', error);
+    return res.status(500).json({ error: 'Failed to delete todo' });
   }
 });
 
