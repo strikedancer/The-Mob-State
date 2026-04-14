@@ -9,7 +9,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
-- [ ] Support tickets + todo workflow toegevoegd: nieuwe player ticket endpoints (`GET /tickets/my`, `POST /tickets`, `GET /tickets/:ticketId`, `POST /tickets/:ticketId/reply`), admin ticket endpoints (`GET /admin/tickets`, `GET /admin/tickets/:ticketId`, `POST /admin/tickets/:ticketId/reply`, `POST /admin/tickets/:ticketId/todos`, `PATCH /admin/tickets/todos/:todoId`), startup schema-bootstrap voor support-tabellen, en admin-reply koppeling naar speler inbox + push notificatie
+- [ ] Support tickets + todo workflow uitgebreid: player ticket endpoints bevatten nu ook verwijderen (`DELETE /tickets/:ticketId`), admin ticket endpoints bevatten nu ook verwijderen (`DELETE /admin/tickets/:ticketId`); startup schema-bootstrap blijft actief en admin-reply blijft gekoppeld aan speler inbox + push notificatie
   - Bestanden: `backend/src/startup/ensureSupportSchema.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/routes/tickets.ts`, `backend/src/routes/admin.ts`, `backend/src/app.ts`, `backend/src/index.ts`
 - [ ] Admin speler-overzicht uitgebreid met combat-inventory details: `/admin/players/:playerId/overview` levert nu munitie- en wapen-namen + aantallen + totalen (`assetSummary`) zodat direct zichtbaar is welke wapens/munitie een speler heeft
   - Bestand: `backend/src/routes/admin.ts`
@@ -119,6 +119,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Client (game)
 - [ ] Support navigatie aangepast: knop `Melding / Contact` verwijderd uit Help & Uitleg; nieuw apart menu-item `Support` staat direct onder `Help & Uitleg` en opent het player ticket center als eigen scherm
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
+- [ ] Player support scherm vereenvoudigd: spelers zien alleen nog het ticketformulier; reacties en eerder gestuurde tickets zijn verwijderd uit de speler-UI
+  - Bestand: `client/lib/screens/support_tickets_screen.dart`
+- [ ] Admin tickets kunnen nu verwijderd worden via de tickets-detailkaart
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
 - [ ] Web build-fix support scherm: ontbrekende import van `SupportTicketsScreen` hersteld in dashboard zodat Flutter web rebuild niet meer faalt met `The method 'SupportTicketsScreen' isn't defined`
   - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Admin tickets schema-drift fix: support startup-bootstrap voegt nu ontbrekende kolommen en indexes ook toe aan bestaande productie-tabellen, zodat `/admin/tickets` en ticket-detail niet meer 500'en op oudere databases

@@ -1192,6 +1192,26 @@ function App() {
     }
   }
 
+  const handleDeleteTicket = async () => {
+    if (!selectedTicketId) return
+
+    const confirmed = window.confirm(l('Weet je zeker dat je dit ticket wilt verwijderen?', 'Are you sure you want to delete this ticket?'))
+    if (!confirmed) return
+
+    try {
+      await adminService.deleteTicket(selectedTicketId)
+      setSelectedTicketDetail(null)
+      setSelectedTicketId(null)
+      setTicketReplyMessage('')
+      setTicketTodoTitle('')
+      setTicketTodoDescription('')
+      await loadTickets(ticketStatusFilter)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Ticket verwijderen mislukt', 'Failed to delete ticket')}: ${(err as Error).message}`)
+    }
+  }
+
   const loadAuditLogs = async () => {
     try {
       const data = await adminService.getAuditLogs(auditPage, 50)
@@ -5171,7 +5191,12 @@ function App() {
                     <div className="card mb-3">
                       <div className="card-header d-flex justify-content-between align-items-center">
                         <h5 className="mb-0">#{selectedTicketDetail.ticket.id} - {selectedTicketDetail.ticket.subject}</h5>
-                        <span className="badge bg-secondary">{selectedTicketDetail.ticket.status}</span>
+                        <div className="d-flex align-items-center gap-2">
+                          <span className="badge bg-secondary">{selectedTicketDetail.ticket.status}</span>
+                          <button type="button" className="btn btn-sm btn-outline-danger" onClick={handleDeleteTicket}>
+                            {l('Verwijderen', 'Delete')}
+                          </button>
+                        </div>
                       </div>
                       <div className="card-body" style={{ maxHeight: 360, overflow: 'auto' }}>
                         {selectedTicketDetail.messages.map((message) => (

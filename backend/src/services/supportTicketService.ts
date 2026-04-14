@@ -195,6 +195,29 @@ export const supportTicketService = {
     );
   },
 
+  async deleteTicketForPlayer(playerId: number, ticketId: number) {
+    const ticket = await this.getTicketWithMessagesForPlayer(playerId, ticketId);
+    if (!ticket) {
+      throw new Error('TICKET_NOT_FOUND');
+    }
+
+    await prisma.$transaction([
+      prisma.$executeRawUnsafe(
+        'DELETE FROM support_ticket_todos WHERE ticketId = ?',
+        ticketId
+      ),
+      prisma.$executeRawUnsafe(
+        'DELETE FROM support_ticket_messages WHERE ticketId = ?',
+        ticketId
+      ),
+      prisma.$executeRawUnsafe(
+        'DELETE FROM support_tickets WHERE id = ? AND playerId = ?',
+        ticketId,
+        playerId
+      ),
+    ]);
+  },
+
   async listAdminTickets(status?: string) {
     const sql = status && status !== 'all'
       ? `
@@ -281,6 +304,28 @@ export const supportTicketService = {
       messages,
       todos,
     };
+  },
+
+  async deleteTicketAsAdmin(ticketId: number) {
+    const detail = await this.getAdminTicketDetail(ticketId);
+    if (!detail) {
+      throw new Error('TICKET_NOT_FOUND');
+    }
+
+    await prisma.$transaction([
+      prisma.$executeRawUnsafe(
+        'DELETE FROM support_ticket_todos WHERE ticketId = ?',
+        ticketId
+      ),
+      prisma.$executeRawUnsafe(
+        'DELETE FROM support_ticket_messages WHERE ticketId = ?',
+        ticketId
+      ),
+      prisma.$executeRawUnsafe(
+        'DELETE FROM support_tickets WHERE id = ?',
+        ticketId
+      ),
+    ]);
   },
 
   async addAdminReply(adminId: number, ticketId: number, message: string, status?: TicketStatus) {

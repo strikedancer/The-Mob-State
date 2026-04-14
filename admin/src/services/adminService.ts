@@ -872,6 +872,19 @@ export const adminService = {
     return response.json();
   },
 
+  async deleteTicket(ticketId: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/tickets/${ticketId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to delete ticket');
+    return response.json();
+  },
+
   async getConfig() {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/config`, {

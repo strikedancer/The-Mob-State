@@ -1763,6 +1763,24 @@ router.patch('/tickets/todos/:todoId', async (req: AdminRequest, res) => {
   }
 });
 
+router.delete('/tickets/:ticketId', async (req: AdminRequest, res) => {
+  try {
+    const ticketId = Number(req.params.ticketId);
+    if (!Number.isFinite(ticketId) || ticketId <= 0) {
+      return res.status(400).json({ error: 'Invalid ticket id' });
+    }
+
+    await supportTicketService.deleteTicketAsAdmin(ticketId);
+    return res.json({ success: true });
+  } catch (error: any) {
+    if (error?.message === 'TICKET_NOT_FOUND') {
+      return res.status(404).json({ error: 'Ticket not found' });
+    }
+    console.error('Admin ticket delete error:', error);
+    return res.status(500).json({ error: 'Failed to delete ticket' });
+  }
+});
+
 /**
  * GET /api/admin/audit-logs
  * Get audit logs with pagination

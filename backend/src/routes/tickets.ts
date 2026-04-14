@@ -71,4 +71,22 @@ router.post('/:ticketId/reply', authenticate, async (req: AuthRequest, res: Resp
   }
 });
 
+router.delete('/:ticketId', authenticate, async (req: AuthRequest, res: Response) => {
+  const playerId = req.player!.id;
+  const ticketId = Number(req.params.ticketId);
+  if (!Number.isFinite(ticketId) || ticketId <= 0) {
+    return res.status(400).json({ event: 'tickets.invalid_id', params: {} });
+  }
+
+  try {
+    await supportTicketService.deleteTicketForPlayer(playerId, ticketId);
+    return res.json({ event: 'tickets.deleted', params: { ticketId } });
+  } catch (error: any) {
+    if (error?.message === 'TICKET_NOT_FOUND') {
+      return res.status(404).json({ event: 'tickets.not_found', params: {} });
+    }
+    throw error;
+  }
+});
+
 export default router;

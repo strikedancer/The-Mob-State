@@ -14,7 +14,7 @@ class HelpScreen extends StatefulWidget {
 }
 
 class _HelpScreenState extends State<HelpScreen> {
-    bool _showSupportTickets = false;
+    // Removed embedded support tickets logic
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
   String? _selectedCategory;
@@ -150,81 +150,7 @@ class _HelpScreenState extends State<HelpScreen> {
       ],
     );
 
-    if (_showSupportTickets) {
-      // Responsive: wide = side-by-side, narrow = stacked
-      if (isWide) {
-        mainContent = Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: mainContent),
-            const SizedBox(width: 24),
-            Expanded(
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(_tr('Support Tickets', 'Support Tickets'), style: Theme.of(context).textTheme.titleMedium),
-                          IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () => setState(() => _showSupportTickets = false),
-                          ),
-                        ],
-                      ),
-                      const Divider(),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: SupportTicketsScreen(key: const ValueKey('embedded-support-tickets')),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      } else {
-        mainContent = ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          children: [
-            _buildHeader(context),
-            const SizedBox(height: 16),
-            _buildSearchBar(context),
-            const SizedBox(height: 12),
-            _buildCategoryChips(),
-            const SizedBox(height: 16),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_tr('Support Tickets', 'Support Tickets'), style: Theme.of(context).textTheme.titleMedium),
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () => setState(() => _showSupportTickets = false),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    SupportTicketsScreen(key: const ValueKey('embedded-support-tickets')),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        );
-      }
-    }
+    // Removed embedded support tickets logic
 
     // In embedded mode (dashboard), don't wrap with ScrollConfiguration since dashboard provides it
     final compactBody = widget.embedded
@@ -297,17 +223,6 @@ class _HelpScreenState extends State<HelpScreen> {
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 12),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: ElevatedButton.icon(
-              onPressed: () {
-                setState(() => _showSupportTickets = true);
-              },
-              icon: const Icon(Icons.support_agent),
-              label: Text(_tr('Melding / Contact', 'Report / Contact')),
-            ),
           ),
         ],
       ),
