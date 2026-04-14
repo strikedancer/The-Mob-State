@@ -54,6 +54,7 @@ import 'help_screen.dart';
 import 'player_profile_screen.dart';
 
 enum _WebSection {
+    support,
   dashboard,
   events,
   crimes,
@@ -653,7 +654,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     VoidCallback? onBeforeNavigate,
   }) {
     final items =
-        <({IconData icon, String label, _WebSection section, int badge})>[
+      <({IconData icon, String label, _WebSection section, int badge})>[
           (
             icon: Icons.dashboard,
             label: l10n.dashboard,
@@ -664,6 +665,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: Icons.menu_book,
             label: _tr('Help & Uitleg', 'Help & Guide'),
             section: _WebSection.help,
+            badge: 0,
+          ),
+          (
+            icon: Icons.support_agent,
+            label: _tr('Support', 'Support'),
+            section: _WebSection.support,
             badge: 0,
           ),
           (
@@ -1403,6 +1410,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildWebContent(BuildContext context) {
     switch (_selectedWebSection) {
+            case _WebSection.support:
+              return const SupportTicketsScreen();
       case _WebSection.dashboard:
         return const _WebDashboardHomeContent();
       case _WebSection.events:
