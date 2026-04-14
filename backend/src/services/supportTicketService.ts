@@ -58,6 +58,19 @@ function normalizeTicketStatus(status: string): TicketStatus {
   return 'open';
 }
 
+function toSafeNumber(value: unknown): number {
+  if (typeof value === 'bigint') {
+    return Number(value);
+  }
+  if (typeof value === 'number') {
+    return value;
+  }
+  if (typeof value === 'string') {
+    return Number.parseInt(value, 10) || 0;
+  }
+  return 0;
+}
+
 export const supportTicketService = {
   async createTicket(playerId: number, category: string, subject: string, message: string) {
     await prisma.$executeRawUnsafe(
@@ -212,7 +225,13 @@ export const supportTicketService = {
       ? await prisma.$queryRawUnsafe<Array<any>>(sql, status)
       : await prisma.$queryRawUnsafe<Array<any>>(sql);
 
-    return rows.map((row) => ({ ...row, status: normalizeTicketStatus(row.status) }));
+    return rows.map((row) => ({
+      ...row,
+      status: normalizeTicketStatus(row.status),
+      playerMessageCount: toSafeNumber(row.playerMessageCount),
+      adminMessageCount: toSafeNumber(row.adminMessageCount),
+      openTodoCount: toSafeNumber(row.openTodoCount),
+    }));
   },
 
   async getAdminTicketDetail(ticketId: number) {

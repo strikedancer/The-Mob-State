@@ -125,6 +125,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/startup/ensureSupportSchema.ts`
 - [ ] Ticket-systeem Prisma-keten geformaliseerd: support-tabellen staan nu ook in `schema.prisma` en hebben een idempotente Prisma migration, zodat online deploys niet alleen op startup SQL-bootstrap leunen
   - Bestanden: `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260414103000_add_support_ticket_system/migration.sql`
+- [ ] Admin tickets BigInt-serialisatie fix: `COUNT(*)` velden in de admin ticketlijst worden nu naar gewone numbers genormaliseerd, zodat `/admin/tickets` niet meer 500't tijdens `res.json(...)`
+  - Bestand: `backend/src/services/supportTicketService.ts`
 - [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
   - Bestand: `client/lib/screens/property_screen.dart`
 - [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`
