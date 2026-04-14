@@ -157,6 +157,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Admin
 - [ ] Admin ticket attachment lightbox fix: klikken op een ticketafbeelding opent de vergroting nu weer buiten tab-scope issues, omdat de attachment-modal globaal rendert en een preview/origineel fallback gebruikt
   - Bestanden: `admin/src/App.tsx`
+- [ ] Admin ticket attachment modal styling hersteld: `modal-overlay` en `admin-modal` styles staan weer in de admin stylesheets, zodat klikken op support-bijlagen ook visueel echt een overlay/lightbox opent in plaats van inline onder de pagina te renderen
+  - Bestanden: `admin/src/App.css`
 - [ ] Admin support todo interaction fix: bewerken werkt nu ook vanuit de centrale todo-tab omdat de editor-modal niet langer alleen binnen de tickets-tab rendert; afvinken/heropenen geeft direct zichtbare statusfeedback en refresht daarna ticket- en todo-overzichten opnieuw
   - Bestanden: `admin/src/App.tsx`
 - [ ] Support status/analytics follow-up fix: admin reply-templates/type-switches sturen tickets nu weer correct naar bijvoorbeeld `waiting_player`, en support analytics verversen direct na reply- of ticketstatus-updates zodat tellers niet blijven hangen op oude waarden

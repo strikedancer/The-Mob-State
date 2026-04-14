@@ -67,6 +67,42 @@
   overflow-x: auto;
 }
 
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.admin-modal {
+  width: min(680px, 100%);
+  max-height: min(90vh, 960px);
+  overflow-y: auto;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #212529);
+  border: 1px solid color-mix(in srgb, var(--bs-border-color), transparent 10%);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.3);
+}
+
+.admin-modal-large {
+  width: min(960px, 100%);
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;
