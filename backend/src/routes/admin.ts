@@ -159,22 +159,47 @@ const resetPlayerProgressSchema = z.object({
 });
 
 const adminTicketReplySchema = z.object({
-  message: z.string().trim().min(1).max(2000),
-  status: z.enum(['open', 'in_progress', 'waiting_player', 'resolved', 'closed']).optional(),
+  message: z.string().trim().min(1).max(2000).optional(),
+  templateKey: z.string().trim().min(1).max(80).optional(),
+  messageType: z.enum(['public_reply', 'internal_note']).optional(),
+  status: z.enum(['new', 'open', 'triage', 'in_progress', 'waiting_player', 'blocked', 'resolved', 'closed', 'archived']).optional(),
+}).refine((value) => Boolean(value.message?.trim() || value.templateKey), {
+  message: 'Message or templateKey is required',
 });
 
 const adminTicketTodoSchema = z.object({
   ticketId: z.number().int().positive().optional().nullable(),
   title: z.string().trim().min(3).max(255),
   description: z.string().trim().max(2000).optional(),
+  assignedAdminId: z.number().int().positive().optional().nullable(),
+  priority: z.enum(['low', 'normal', 'high', 'urgent']).optional(),
+  dueAt: z.string().datetime().optional().nullable(),
+  moduleKey: z.string().trim().max(80).optional().nullable(),
 });
 
 const adminTicketTodoUpdateSchema = z.object({
   title: z.string().trim().min(3).max(255).optional(),
   description: z.string().trim().max(2000).nullable().optional(),
-  status: z.enum(['open', 'done']).optional(),
-}).refine((value) => value.title !== undefined || value.description !== undefined || value.status !== undefined, {
+  status: z.enum(['open', 'in_progress', 'blocked', 'done']).optional(),
+  assignedAdminId: z.number().int().positive().nullable().optional(),
+  priority: z.enum(['low', 'normal', 'high', 'urgent']).optional(),
+  dueAt: z.string().datetime().nullable().optional(),
+  moduleKey: z.string().trim().max(80).nullable().optional(),
+}).refine((value) => value.title !== undefined || value.description !== undefined || value.status !== undefined || value.assignedAdminId !== undefined || value.priority !== undefined || value.dueAt !== undefined || value.moduleKey !== undefined, {
   message: 'At least one todo field must be provided',
+});
+
+const adminTicketUpdateSchema = z.object({
+  assignedAdminId: z.number().int().positive().nullable().optional(),
+  priority: z.enum(['low', 'normal', 'high', 'urgent']).optional(),
+  status: z.enum(['new', 'open', 'triage', 'in_progress', 'waiting_player', 'blocked', 'resolved', 'closed', 'archived']).optional(),
+  archive: z.boolean().optional(),
+}).refine((value) => value.assignedAdminId !== undefined || value.priority !== undefined || value.status !== undefined || value.archive !== undefined, {
+  message: 'At least one ticket field must be provided',
+});
+
+const supportTodoCommentSchema = z.object({
+  comment: z.string().trim().min(1).max(4000),
 });
 
 async function resetPlayerProgressInTransaction(tx: any, playerId: number) {
@@ -1668,6 +1693,25 @@ router.get('/tickets', async (req: AdminRequest, res) => {
   }
 });
 
+router.get('/support-analytics', async (_req: AdminRequest, res) => {
+  try {
+    const analytics = await supportTicketService.getAnalytics();
+    return res.json(analytics);
+  } catch (error) {
+    console.error('Admin support analytics error:', error);
+    return res.status(500).json({ error: 'Failed to fetch support analytics' });
+  }
+});
+
+router.get('/support-reply-templates', async (_req: AdminRequest, res) => {
+  try {
+    return res.json({ templates: supportTicketService.getReplyTemplates() });
+  } catch (error) {
+    console.error('Admin support reply templates error:', error);
+    return res.status(500).json({ error: 'Failed to fetch support reply templates' });
+  }
+});
+
 router.get('/tickets/:ticketId', async (req: AdminRequest, res) => {
   try {
     const ticketId = Number(req.params.ticketId);
@@ -1726,14 +1770,45 @@ router.post('/tickets/:ticketId/reply', async (req: AdminRequest, res) => {
       return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
     }
 
-    await supportTicketService.addAdminReply(adminId, ticketId, parsed.data.message, parsed.data.status);
+    await supportTicketService.addAdminReply(adminId, ticketId, parsed.data);
     return res.json({ success: true });
   } catch (error: any) {
     if (error?.message === 'TICKET_NOT_FOUND') {
       return res.status(404).json({ error: 'Ticket not found' });
     }
+    if (error?.message === 'REPLY_TEMPLATE_NOT_FOUND') {
+      return res.status(404).json({ error: 'Reply template not found' });
+    }
     console.error('Admin ticket reply error:', error);
     return res.status(500).json({ error: 'Failed to send reply' });
+  }
+});
+
+router.patch('/tickets/:ticketId', async (req: AdminRequest, res) => {
+  try {
+    const adminId = req.admin?.id;
+    if (!adminId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const ticketId = Number(req.params.ticketId);
+    if (!Number.isFinite(ticketId) || ticketId <= 0) {
+      return res.status(400).json({ error: 'Invalid ticket id' });
+    }
+
+    const parsed = adminTicketUpdateSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
+    }
+
+    await supportTicketService.updateTicket(adminId, ticketId, parsed.data);
+    return res.json({ success: true });
+  } catch (error: any) {
+    if (error?.message === 'TICKET_NOT_FOUND') {
+      return res.status(404).json({ error: 'Ticket not found' });
+    }
+    console.error('Admin ticket update error:', error);
+    return res.status(500).json({ error: 'Failed to update ticket' });
   }
 });
 
@@ -1754,7 +1829,15 @@ router.post('/tickets/:ticketId/todos', async (req: AdminRequest, res) => {
       return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
     }
 
-    await supportTicketService.addTodo(adminId, parsed.data.title, parsed.data.description, ticketId);
+    await supportTicketService.addTodo(adminId, {
+      ticketId,
+      title: parsed.data.title,
+      description: parsed.data.description,
+      assignedAdminId: parsed.data.assignedAdminId,
+      priority: parsed.data.priority,
+      dueAt: parsed.data.dueAt,
+      moduleKey: parsed.data.moduleKey,
+    });
     return res.json({ success: true });
   } catch (error: any) {
     if (error?.message === 'TICKET_NOT_FOUND') {
@@ -1768,7 +1851,7 @@ router.post('/tickets/:ticketId/todos', async (req: AdminRequest, res) => {
 router.get('/support-todos', async (req: AdminRequest, res) => {
   try {
     const statusParam = String(req.query.status || 'all');
-    const status = statusParam === 'open' || statusParam === 'done' ? statusParam : 'all';
+    const status = statusParam === 'open' || statusParam === 'in_progress' || statusParam === 'blocked' || statusParam === 'done' ? statusParam : 'all';
     const todos = await supportTicketService.listTodos(status);
     return res.json({ todos });
   } catch (error) {
@@ -1789,12 +1872,15 @@ router.post('/support-todos', async (req: AdminRequest, res) => {
       return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
     }
 
-    await supportTicketService.addTodo(
-      adminId,
-      parsed.data.title,
-      parsed.data.description,
-      parsed.data.ticketId ?? null,
-    );
+    await supportTicketService.addTodo(adminId, {
+      title: parsed.data.title,
+      description: parsed.data.description,
+      ticketId: parsed.data.ticketId ?? null,
+      assignedAdminId: parsed.data.assignedAdminId,
+      priority: parsed.data.priority,
+      dueAt: parsed.data.dueAt,
+      moduleKey: parsed.data.moduleKey,
+    });
     return res.json({ success: true });
   } catch (error: any) {
     if (error?.message === 'TICKET_NOT_FOUND') {
@@ -1835,12 +1921,17 @@ router.patch('/support-todos/:todoId', async (req: AdminRequest, res) => {
 
 router.delete('/support-todos/:todoId', async (req: AdminRequest, res) => {
   try {
+    const adminId = req.admin?.id;
+    if (!adminId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     const todoId = Number(req.params.todoId);
     if (!Number.isFinite(todoId) || todoId <= 0) {
       return res.status(400).json({ error: 'Invalid todo id' });
     }
 
-    await supportTicketService.deleteTodo(todoId);
+    await supportTicketService.deleteTodo(todoId, adminId);
     return res.json({ success: true });
   } catch (error: any) {
     if (error?.message === 'TODO_NOT_FOUND') {
@@ -1848,6 +1939,49 @@ router.delete('/support-todos/:todoId', async (req: AdminRequest, res) => {
     }
     console.error('Admin support todo delete error:', error);
     return res.status(500).json({ error: 'Failed to delete support todo' });
+  }
+});
+
+router.get('/support-todos/:todoId/comments', async (req: AdminRequest, res) => {
+  try {
+    const todoId = Number(req.params.todoId);
+    if (!Number.isFinite(todoId) || todoId <= 0) {
+      return res.status(400).json({ error: 'Invalid todo id' });
+    }
+
+    const comments = await supportTicketService.listTodoComments(todoId);
+    return res.json({ comments });
+  } catch (error) {
+    console.error('Admin support todo comments list error:', error);
+    return res.status(500).json({ error: 'Failed to fetch todo comments' });
+  }
+});
+
+router.post('/support-todos/:todoId/comments', async (req: AdminRequest, res) => {
+  try {
+    const adminId = req.admin?.id;
+    if (!adminId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const todoId = Number(req.params.todoId);
+    if (!Number.isFinite(todoId) || todoId <= 0) {
+      return res.status(400).json({ error: 'Invalid todo id' });
+    }
+
+    const parsed = supportTodoCommentSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
+    }
+
+    await supportTicketService.addTodoComment(adminId, todoId, parsed.data.comment);
+    return res.json({ success: true });
+  } catch (error: any) {
+    if (error?.message === 'TODO_NOT_FOUND') {
+      return res.status(404).json({ error: 'Todo not found' });
+    }
+    console.error('Admin support todo comment create error:', error);
+    return res.status(500).json({ error: 'Failed to add todo comment' });
   }
 });
 
@@ -1881,12 +2015,17 @@ router.patch('/tickets/todos/:todoId', async (req: AdminRequest, res) => {
 
 router.delete('/tickets/todos/:todoId', async (req: AdminRequest, res) => {
   try {
+    const adminId = req.admin?.id;
+    if (!adminId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     const todoId = Number(req.params.todoId);
     if (!Number.isFinite(todoId) || todoId <= 0) {
       return res.status(400).json({ error: 'Invalid todo id' });
     }
 
-    await supportTicketService.deleteTodo(todoId);
+    await supportTicketService.deleteTodo(todoId, adminId);
     return res.json({ success: true });
   } catch (error: any) {
     if (error?.message === 'TODO_NOT_FOUND') {

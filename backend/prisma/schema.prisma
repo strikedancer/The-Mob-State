@@ -540,8 +540,16 @@ model SupportTicket {
   subject             String    @db.VarChar(255)
   status              String    @default("open") @db.VarChar(30)
   priority            String    @default("normal") @db.VarChar(20)
+  sourceModule        String?   @db.VarChar(80)
+  referenceCode       String?   @db.VarChar(120)
+  metadataJson        String?   @db.LongText
+  assignedAdminId     Int?
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
+  firstResponseAt     DateTime?
+  resolvedAt          DateTime?
+  archivedAt          DateTime?
+  archivedByAdminId   Int?
   closedAt            DateTime?
   closedByAdminId     Int?
   lastPlayerMessageAt DateTime?
@@ -549,6 +557,8 @@ model SupportTicket {
 
   @@index([playerId], map: "idx_support_tickets_player")
   @@index([status], map: "idx_support_tickets_status")
+  @@index([assignedAdminId], map: "idx_support_tickets_assigned_admin")
+  @@index([priority], map: "idx_support_tickets_priority")
   @@index([updatedAt], map: "idx_support_tickets_updated")
   @@map("support_tickets")
 }
@@ -557,6 +567,7 @@ model SupportTicketMessage {
   id         Int      @id @default(autoincrement())
   ticketId    Int
   senderType  String   @db.VarChar(20)
+  messageType String   @default("public_reply") @db.VarChar(30)
   playerId    Int?
   adminId     Int?
   message     String   @db.Text
@@ -569,22 +580,40 @@ model SupportTicketMessage {
 }
 
 model SupportTicketTodo {
-  id               Int      @id @default(autoincrement())
-  ticketId         Int?
-  title            String   @db.VarChar(255)
-  description      String?  @db.Text
-  status           String   @default("open") @db.VarChar(20)
-  createdByAdminId Int
-  assignedAdminId  Int?
+  id                Int      @id @default(autoincrement())
+  ticketId          Int?
+  title             String   @db.VarChar(255)
+  description       String?  @db.Text
+  status            String   @default("open") @db.VarChar(20)
+  priority          String   @default("normal") @db.VarChar(20)
+  moduleKey         String?  @db.VarChar(80)
+  dueAt             DateTime?
+  createdByAdminId  Int
+  assignedAdminId   Int?
   resolvedByAdminId Int?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  resolvedAt       DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  resolvedAt        DateTime?
 
   @@index([ticketId], map: "idx_support_ticket_todos_ticket")
   @@index([status], map: "idx_support_ticket_todos_status")
+  @@index([assignedAdminId], map: "idx_support_ticket_todos_assigned_admin")
+  @@index([dueAt], map: "idx_support_ticket_todos_due_at")
   @@index([updatedAt], map: "idx_support_ticket_todos_updated")
   @@map("support_ticket_todos")
+}
+
+model SupportTicketTodoComment {
+  id              Int      @id @default(autoincrement())
+  todoId          Int
+  adminId         Int
+  comment         String   @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([todoId], map: "idx_support_ticket_todo_comments_todo")
+  @@index([createdAt], map: "idx_support_ticket_todo_comments_created")
+  @@map("support_ticket_todo_comments")
 }
 
 model SupportTicketAttachment {

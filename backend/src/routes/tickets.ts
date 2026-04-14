@@ -17,6 +17,10 @@ const createTicketSchema = z.object({
   category: z.enum(['bug', 'question', 'feedback', 'other']),
   subject: z.string().trim().min(3).max(120),
   message: z.string().trim().min(3).max(2000),
+  sourceModule: z.string().trim().max(80).optional(),
+  referenceCode: z.string().trim().max(120).optional(),
+  clientPlatform: z.string().trim().max(40).optional(),
+  appLocale: z.string().trim().max(10).optional(),
 });
 
 const replySchema = z.object({
@@ -36,7 +40,7 @@ router.post('/', authenticate, upload.single('attachment'), async (req: AuthRequ
     return res.status(400).json({ event: 'tickets.invalid_input', params: { errors: parsed.error.flatten() } });
   }
 
-  const { category, subject, message } = parsed.data;
+  const { category, subject, message, sourceModule, referenceCode, clientPlatform, appLocale } = parsed.data;
   const attachment = req.file
     ? [{
         originalName: req.file.originalname,
@@ -46,7 +50,19 @@ router.post('/', authenticate, upload.single('attachment'), async (req: AuthRequ
       }]
     : [];
 
-  const ticketId = await supportTicketService.createTicket(playerId, category, subject, message, attachment);
+  const ticketId = await supportTicketService.createTicket(playerId, {
+    category,
+    subject,
+    message,
+    sourceModule: sourceModule || 'support_screen',
+    referenceCode: referenceCode || null,
+    metadataJson: JSON.stringify({
+      clientPlatform: clientPlatform || req.get('user-agent') || null,
+      appLocale: appLocale || null,
+      hasAttachment: attachment.length > 0,
+    }),
+    attachments: attachment,
+  });
   return res.status(201).json({ event: 'tickets.created', params: { ticketId } });
 });
 

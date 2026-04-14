@@ -314,22 +314,44 @@ export interface SupportTicketSummary {
   username: string;
   category: string;
   subject: string;
-  status: 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed';
+  status: 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived';
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+  sourceModule?: string | null;
+  referenceCode?: string | null;
+  assignedAdminId?: number | null;
+  assignedAdminUsername?: string | null;
   updatedAt: string;
   createdAt: string;
+  firstResponseAt?: string | null;
+  resolvedAt?: string | null;
+  archivedAt?: string | null;
   attachmentCount: number;
   openTodoCount: number;
+  ageHours?: number;
+  lastMessageBy?: 'player' | 'admin' | 'none';
 }
 
 export interface SupportTicketMessage {
   id: number;
   ticketId: number;
   senderType: 'player' | 'admin' | 'system';
+  messageType?: 'public_reply' | 'internal_note';
   message: string;
   createdAt: string;
   playerId?: number | null;
   adminId?: number | null;
+  adminUsername?: string | null;
   isInternal?: number;
+}
+
+export interface SupportTicketTodoComment {
+  id: number;
+  todoId: number;
+  adminId: number;
+  adminUsername?: string | null;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface SupportTicketTodo {
@@ -337,13 +359,19 @@ export interface SupportTicketTodo {
   ticketId: number | null;
   title: string;
   description: string | null;
-  status: 'open' | 'done';
+  status: 'open' | 'in_progress' | 'blocked' | 'done';
+  priority?: 'low' | 'normal' | 'high' | 'urgent';
+  moduleKey?: string | null;
+  dueAt?: string | null;
+  assignedAdminId?: number | null;
+  assignedAdminUsername?: string | null;
   createdAt: string;
   updatedAt: string;
   resolvedAt: string | null;
   ticketSubject?: string | null;
-  ticketStatus?: 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' | null;
+  ticketStatus?: 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived' | null;
   playerUsername?: string | null;
+  comments?: SupportTicketTodoComment[];
 }
 
 export interface SupportTicketAttachment {
@@ -363,6 +391,27 @@ export interface SupportTicketDetailResponse {
   messages: SupportTicketMessage[];
   todos: SupportTicketTodo[];
   attachments: SupportTicketAttachment[];
+}
+
+export interface SupportReplyTemplate {
+  key: string;
+  labelNl: string;
+  labelEn: string;
+  bodyNl: string;
+  bodyEn: string;
+  suggestedStatus: SupportTicketSummary['status'];
+}
+
+export interface SupportAnalyticsResponse {
+  totals: {
+    totalTickets: number;
+    activeTickets: number;
+    urgentTickets: number;
+    avgFirstResponseMinutes: number;
+    avgResolutionMinutes: number;
+  };
+  byCategory: Array<{ category: string; total: number }>;
+  byAssignee: Array<{ label: string; total: number }>;
 }
 
 export interface SystemLogEntry {
@@ -820,7 +869,7 @@ export const adminService = {
     return response.json();
   },
 
-  async getTickets(status: 'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' = 'all'): Promise<{ tickets: SupportTicketSummary[] }> {
+  async getTickets(status: 'all' | 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived' = 'all'): Promise<{ tickets: SupportTicketSummary[] }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets?status=${encodeURIComponent(status)}`, {
       headers: {
@@ -844,7 +893,31 @@ export const adminService = {
     return response.json();
   },
 
-  async replyToTicket(ticketId: number, payload: { message: string; status?: 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' }) {
+  async getSupportAnalytics(): Promise<SupportAnalyticsResponse> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-analytics`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch support analytics');
+    return response.json();
+  },
+
+  async getSupportReplyTemplates(): Promise<{ templates: SupportReplyTemplate[] }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-reply-templates`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch support reply templates');
+    return response.json();
+  },
+
+  async replyToTicket(ticketId: number, payload: { message?: string; templateKey?: string; messageType?: 'public_reply' | 'internal_note'; status?: SupportTicketSummary['status'] }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/${ticketId}/reply`, {
       method: 'POST',
@@ -859,7 +932,22 @@ export const adminService = {
     return response.json();
   },
 
-  async createTicketTodo(ticketId: number, payload: { title: string; description?: string }) {
+  async updateTicket(ticketId: number, payload: { assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; status?: SupportTicketSummary['status']; archive?: boolean }) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/tickets/${ticketId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to update ticket');
+    return response.json();
+  },
+
+  async createTicketTodo(ticketId: number, payload: { title: string; description?: string; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/${ticketId}/todos`, {
       method: 'POST',
@@ -874,7 +962,7 @@ export const adminService = {
     return response.json();
   },
 
-  async getSupportTodos(status: 'all' | 'open' | 'done' = 'all'): Promise<{ todos: SupportTicketTodo[] }> {
+  async getSupportTodos(status: 'all' | 'open' | 'in_progress' | 'blocked' | 'done' = 'all'): Promise<{ todos: SupportTicketTodo[] }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-todos?status=${encodeURIComponent(status)}`, {
       headers: {
@@ -886,7 +974,7 @@ export const adminService = {
     return response.json();
   },
 
-  async createSupportTodo(payload: { title: string; description?: string; ticketId?: number | null }) {
+  async createSupportTodo(payload: { title: string; description?: string; ticketId?: number | null; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-todos`, {
       method: 'POST',
@@ -901,7 +989,7 @@ export const adminService = {
     return response.json();
   },
 
-  async updateSupportTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'done' }) {
+  async updateSupportTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'in_progress' | 'blocked' | 'done'; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-todos/${todoId}`, {
       method: 'PATCH',
@@ -916,7 +1004,7 @@ export const adminService = {
     return response.json();
   },
 
-  async updateTicketTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'done' }) {
+  async updateTicketTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'in_progress' | 'blocked' | 'done'; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/todos/${todoId}`, {
       method: 'PATCH',
@@ -941,6 +1029,33 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to delete support todo');
+    return response.json();
+  },
+
+  async getSupportTodoComments(todoId: number): Promise<{ comments: SupportTicketTodoComment[] }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-todos/${todoId}/comments`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch support todo comments');
+    return response.json();
+  },
+
+  async createSupportTodoComment(todoId: number, payload: { comment: string }) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-todos/${todoId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to create support todo comment');
     return response.json();
   },
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment } from './services/adminService'
 
 type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets' | 'todos'
 type Language = 'nl' | 'en'
@@ -812,25 +812,45 @@ function App() {
   // Ticket system state
   const [tickets, setTickets] = useState<SupportTicketSummary[]>([])
   const [ticketsLoading, setTicketsLoading] = useState(false)
-  const [ticketStatusFilter, setTicketStatusFilter] = useState<'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed'>('open')
+  const [ticketStatusFilter, setTicketStatusFilter] = useState<'all' | 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived'>('new')
+  const [supportAnalytics, setSupportAnalytics] = useState<SupportAnalyticsResponse | null>(null)
+  const [supportReplyTemplates, setSupportReplyTemplates] = useState<SupportReplyTemplate[]>([])
   const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
   const [selectedTicketDetail, setSelectedTicketDetail] = useState<SupportTicketDetailResponse | null>(null)
   const [selectedTicketAttachment, setSelectedTicketAttachment] = useState<SupportTicketAttachment | null>(null)
   const [editingSupportTodo, setEditingSupportTodo] = useState<SupportTicketTodo | null>(null)
   const [editingSupportTodoTitle, setEditingSupportTodoTitle] = useState('')
   const [editingSupportTodoDescription, setEditingSupportTodoDescription] = useState('')
-  const [editingSupportTodoStatus, setEditingSupportTodoStatus] = useState<'open' | 'done'>('open')
+  const [editingSupportTodoStatus, setEditingSupportTodoStatus] = useState<'open' | 'in_progress' | 'blocked' | 'done'>('open')
+  const [editingSupportTodoPriority, setEditingSupportTodoPriority] = useState<'low' | 'normal' | 'high' | 'urgent'>('normal')
+  const [editingSupportTodoModuleKey, setEditingSupportTodoModuleKey] = useState('')
+  const [editingSupportTodoDueAt, setEditingSupportTodoDueAt] = useState('')
+  const [editingSupportTodoAssignedAdminId, setEditingSupportTodoAssignedAdminId] = useState<string>('')
+  const [editingSupportTodoComments, setEditingSupportTodoComments] = useState<SupportTicketTodoComment[]>([])
+  const [newSupportTodoComment, setNewSupportTodoComment] = useState('')
   const [savingSupportTodo, setSavingSupportTodo] = useState(false)
   const [deletingSupportTodoId, setDeletingSupportTodoId] = useState<number | null>(null)
+  const [ticketReplyType, setTicketReplyType] = useState<'public_reply' | 'internal_note'>('public_reply')
+  const [ticketReplyTemplateKey, setTicketReplyTemplateKey] = useState('')
   const [ticketReplyMessage, setTicketReplyMessage] = useState('')
-  const [ticketReplyStatus, setTicketReplyStatus] = useState<'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed'>('waiting_player')
+  const [ticketReplyStatus, setTicketReplyStatus] = useState<'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived'>('waiting_player')
+  const [ticketAssignedAdminId, setTicketAssignedAdminId] = useState<string>('')
+  const [ticketPriority, setTicketPriority] = useState<'low' | 'normal' | 'high' | 'urgent'>('normal')
   const [ticketTodoTitle, setTicketTodoTitle] = useState('')
   const [ticketTodoDescription, setTicketTodoDescription] = useState('')
+  const [ticketTodoPriority, setTicketTodoPriority] = useState<'low' | 'normal' | 'high' | 'urgent'>('normal')
+  const [ticketTodoDueAt, setTicketTodoDueAt] = useState('')
+  const [ticketTodoModuleKey, setTicketTodoModuleKey] = useState('')
+  const [ticketTodoAssignedAdminId, setTicketTodoAssignedAdminId] = useState<string>('')
   const [supportTodos, setSupportTodos] = useState<SupportTicketTodo[]>([])
   const [supportTodosLoading, setSupportTodosLoading] = useState(false)
-  const [supportTodoStatusFilter, setSupportTodoStatusFilter] = useState<'all' | 'open' | 'done'>('open')
+  const [supportTodoStatusFilter, setSupportTodoStatusFilter] = useState<'all' | 'open' | 'in_progress' | 'blocked' | 'done'>('open')
   const [globalTodoTitle, setGlobalTodoTitle] = useState('')
   const [globalTodoDescription, setGlobalTodoDescription] = useState('')
+  const [globalTodoPriority, setGlobalTodoPriority] = useState<'low' | 'normal' | 'high' | 'urgent'>('normal')
+  const [globalTodoDueAt, setGlobalTodoDueAt] = useState('')
+  const [globalTodoModuleKey, setGlobalTodoModuleKey] = useState('')
+  const [globalTodoAssignedAdminId, setGlobalTodoAssignedAdminId] = useState<string>('')
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -918,7 +938,7 @@ function App() {
   }, [actionsDateRange, actionsTypeFilter, actionsSearchInput, actionsSort])
 
   useEffect(() => {
-    if (isAuthenticated && activeTab === 'admins') {
+    if (isAuthenticated && (activeTab === 'admins' || activeTab === 'tickets' || activeTab === 'todos')) {
       loadAdmins()
     }
   }, [isAuthenticated, activeTab])
@@ -969,6 +989,8 @@ function App() {
   useEffect(() => {
     if (isAuthenticated && activeTab === 'tickets') {
       void loadTickets(ticketStatusFilter)
+      void loadSupportAnalytics()
+      void loadSupportReplyTemplates()
     }
   }, [isAuthenticated, activeTab, ticketStatusFilter])
 
@@ -1124,7 +1146,38 @@ function App() {
     }
   }
 
-  const loadTickets = async (status: 'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' = ticketStatusFilter) => {
+  const loadSupportAnalytics = async () => {
+    try {
+      const analytics = await adminService.getSupportAnalytics()
+      setSupportAnalytics(analytics)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load support analytics:', err)
+    }
+  }
+
+  const loadSupportReplyTemplates = async () => {
+    try {
+      const data = await adminService.getSupportReplyTemplates()
+      setSupportReplyTemplates(data.templates || [])
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load support reply templates:', err)
+    }
+  }
+
+  const loadSupportTodoComments = async (todoId: number) => {
+    try {
+      const data = await adminService.getSupportTodoComments(todoId)
+      setEditingSupportTodoComments(data.comments || [])
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load support todo comments:', err)
+      setEditingSupportTodoComments([])
+    }
+  }
+
+  const loadTickets = async (status: 'all' | 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived' = ticketStatusFilter) => {
     try {
       setTicketsLoading(true)
       const data = await adminService.getTickets(status)
@@ -1155,6 +1208,11 @@ function App() {
       const detail = await adminService.getTicketDetail(ticketId)
       setSelectedTicketDetail(detail)
       setSelectedTicketId(ticketId)
+      setTicketAssignedAdminId(detail.ticket.assignedAdminId ? String(detail.ticket.assignedAdminId) : '')
+      setTicketPriority(detail.ticket.priority || 'normal')
+      setTicketReplyStatus(detail.ticket.status)
+      setTicketReplyType('public_reply')
+      setTicketReplyTemplateKey('')
     } catch (err) {
       if (handleUnauthorized(err)) return
       console.error('Failed to load ticket detail:', err)
@@ -1163,19 +1221,39 @@ function App() {
   }
 
   const handleAdminTicketReply = async () => {
-    if (!selectedTicketId || !ticketReplyMessage.trim()) return
+    if (!selectedTicketId || (!ticketReplyMessage.trim() && !ticketReplyTemplateKey)) return
 
     try {
       await adminService.replyToTicket(selectedTicketId, {
-        message: ticketReplyMessage.trim(),
+        message: ticketReplyMessage.trim() || undefined,
+        templateKey: ticketReplyTemplateKey || undefined,
+        messageType: ticketReplyType,
         status: ticketReplyStatus,
       })
       setTicketReplyMessage('')
+      setTicketReplyTemplateKey('')
       await loadTickets(ticketStatusFilter)
       await loadTicketDetail(selectedTicketId)
     } catch (err) {
       if (handleUnauthorized(err)) return
       alert(`${l('Antwoord sturen mislukt', 'Failed to send reply')}: ${(err as Error).message}`)
+    }
+  }
+
+  const handleUpdateTicketSettings = async () => {
+    if (!selectedTicketId) return
+
+    try {
+      await adminService.updateTicket(selectedTicketId, {
+        assignedAdminId: ticketAssignedAdminId ? Number(ticketAssignedAdminId) : null,
+        priority: ticketPriority,
+        status: ticketReplyStatus,
+      })
+      await loadTickets(ticketStatusFilter)
+      await loadTicketDetail(selectedTicketId)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Ticket bijwerken mislukt', 'Failed to update ticket')}: ${(err as Error).message}`)
     }
   }
 
@@ -1186,9 +1264,17 @@ function App() {
       await adminService.createTicketTodo(selectedTicketId, {
         title: ticketTodoTitle.trim(),
         description: ticketTodoDescription.trim() || undefined,
+        assignedAdminId: ticketTodoAssignedAdminId ? Number(ticketTodoAssignedAdminId) : null,
+        priority: ticketTodoPriority,
+        dueAt: ticketTodoDueAt ? new Date(ticketTodoDueAt).toISOString() : null,
+        moduleKey: ticketTodoModuleKey.trim() || null,
       })
       setTicketTodoTitle('')
       setTicketTodoDescription('')
+      setTicketTodoAssignedAdminId('')
+      setTicketTodoPriority('normal')
+      setTicketTodoDueAt('')
+      setTicketTodoModuleKey('')
       await loadTicketDetail(selectedTicketId)
       await loadTickets(ticketStatusFilter)
     } catch (err) {
@@ -1197,7 +1283,7 @@ function App() {
     }
   }
 
-  const handleToggleTicketTodo = async (todoId: number, status: 'open' | 'done') => {
+  const handleToggleTicketTodo = async (todoId: number, status: 'open' | 'in_progress' | 'blocked' | 'done') => {
     try {
       await adminService.updateSupportTodo(todoId, { status })
       if (selectedTicketId) {
@@ -1216,6 +1302,13 @@ function App() {
     setEditingSupportTodoTitle(todo.title)
     setEditingSupportTodoDescription(todo.description || '')
     setEditingSupportTodoStatus(todo.status)
+    setEditingSupportTodoPriority(todo.priority || 'normal')
+    setEditingSupportTodoModuleKey(todo.moduleKey || '')
+    setEditingSupportTodoDueAt(todo.dueAt ? todo.dueAt.slice(0, 16) : '')
+    setEditingSupportTodoAssignedAdminId(todo.assignedAdminId ? String(todo.assignedAdminId) : '')
+    setEditingSupportTodoComments(todo.comments || [])
+    setNewSupportTodoComment('')
+    void loadSupportTodoComments(todo.id)
   }
 
   const handleCloseSupportTodoEditor = () => {
@@ -1223,6 +1316,12 @@ function App() {
     setEditingSupportTodoTitle('')
     setEditingSupportTodoDescription('')
     setEditingSupportTodoStatus('open')
+    setEditingSupportTodoPriority('normal')
+    setEditingSupportTodoModuleKey('')
+    setEditingSupportTodoDueAt('')
+    setEditingSupportTodoAssignedAdminId('')
+    setEditingSupportTodoComments([])
+    setNewSupportTodoComment('')
   }
 
   const handleSaveSupportTodo = async () => {
@@ -1234,6 +1333,10 @@ function App() {
         title: editingSupportTodoTitle.trim(),
         description: editingSupportTodoDescription.trim() || null,
         status: editingSupportTodoStatus,
+        assignedAdminId: editingSupportTodoAssignedAdminId ? Number(editingSupportTodoAssignedAdminId) : null,
+        priority: editingSupportTodoPriority,
+        dueAt: editingSupportTodoDueAt ? new Date(editingSupportTodoDueAt).toISOString() : null,
+        moduleKey: editingSupportTodoModuleKey.trim() || null,
       })
       if (selectedTicketId && editingSupportTodo.ticketId === selectedTicketId) {
         await loadTicketDetail(selectedTicketId)
@@ -1272,7 +1375,7 @@ function App() {
     }
   }
 
-  const loadSupportTodos = async (status: 'all' | 'open' | 'done' = supportTodoStatusFilter) => {
+  const loadSupportTodos = async (status: 'all' | 'open' | 'in_progress' | 'blocked' | 'done' = supportTodoStatusFilter) => {
     try {
       setSupportTodosLoading(true)
       const data = await adminService.getSupportTodos(status)
@@ -1294,13 +1397,38 @@ function App() {
       await adminService.createSupportTodo({
         title: globalTodoTitle.trim(),
         description: globalTodoDescription.trim() || undefined,
+        assignedAdminId: globalTodoAssignedAdminId ? Number(globalTodoAssignedAdminId) : null,
+        priority: globalTodoPriority,
+        dueAt: globalTodoDueAt ? new Date(globalTodoDueAt).toISOString() : null,
+        moduleKey: globalTodoModuleKey.trim() || null,
       })
       setGlobalTodoTitle('')
       setGlobalTodoDescription('')
+      setGlobalTodoAssignedAdminId('')
+      setGlobalTodoPriority('normal')
+      setGlobalTodoDueAt('')
+      setGlobalTodoModuleKey('')
       await loadSupportTodos(supportTodoStatusFilter)
     } catch (err) {
       if (handleUnauthorized(err)) return
       alert(`${l('Todo aanmaken mislukt', 'Failed to create todo')}: ${(err as Error).message}`)
+    }
+  }
+
+  const handleCreateSupportTodoComment = async () => {
+    if (!editingSupportTodo || !newSupportTodoComment.trim()) return
+
+    try {
+      await adminService.createSupportTodoComment(editingSupportTodo.id, { comment: newSupportTodoComment.trim() })
+      setNewSupportTodoComment('')
+      await loadSupportTodoComments(editingSupportTodo.id)
+      if (selectedTicketId && editingSupportTodo.ticketId === selectedTicketId) {
+        await loadTicketDetail(selectedTicketId)
+      }
+      await loadSupportTodos(supportTodoStatusFilter)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Todo-opmerking toevoegen mislukt', 'Failed to add todo note')}: ${(err as Error).message}`)
     }
   }
 
@@ -2252,6 +2380,45 @@ function App() {
   }
 
   const canManagePlayers = adminRole === 'SUPER_ADMIN' || adminRole === 'MODERATOR'
+
+  const supportTicketStatusLabel = (status: SupportTicketSummary['status']) => {
+    switch (status) {
+      case 'new': return l('Nieuw', 'New')
+      case 'triage': return l('Triaging', 'Triage')
+      case 'in_progress': return l('In behandeling', 'In progress')
+      case 'waiting_player': return l('Wacht op speler', 'Waiting for player')
+      case 'blocked': return l('Geblokkeerd', 'Blocked')
+      case 'resolved': return l('Opgelost', 'Resolved')
+      case 'archived': return l('Gearchiveerd', 'Archived')
+      case 'closed': return l('Gesloten', 'Closed')
+      default: return l('Open', 'Open')
+    }
+  }
+
+  const supportTodoStatusLabel = (status: SupportTicketTodo['status']) => {
+    switch (status) {
+      case 'in_progress': return l('In behandeling', 'In progress')
+      case 'blocked': return l('Geblokkeerd', 'Blocked')
+      case 'done': return l('Afgerond', 'Done')
+      default: return l('Open', 'Open')
+    }
+  }
+
+  const supportPriorityLabel = (priority?: 'low' | 'normal' | 'high' | 'urgent' | null) => {
+    switch (priority) {
+      case 'low': return l('Laag', 'Low')
+      case 'high': return l('Hoog', 'High')
+      case 'urgent': return l('Urgent', 'Urgent')
+      default: return l('Normaal', 'Normal')
+    }
+  }
+
+  const formatSupportAge = (ageHours?: number) => {
+    if (!ageHours || ageHours <= 0) return l('Nieuw', 'New')
+    if (ageHours < 24) return `${ageHours}u`
+    const days = Math.floor(ageHours / 24)
+    return `${days}d`
+  }
 
   const formatDateWithTimezone = (isoDate: string) => {
     const date = new Date(isoDate)
@@ -5264,19 +5431,39 @@ function App() {
         {activeTab === 'tickets' && (
           <>
             <h1>{l('Tickets', 'Tickets')}</h1>
+            {supportAnalytics && (
+              <div className="row g-3 mb-3">
+                <div className="col-md-3">
+                  <div className="card"><div className="card-body"><div className="small text-muted">{l('Actieve tickets', 'Active tickets')}</div><div className="h3 mb-0">{supportAnalytics.totals.activeTickets}</div></div></div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card"><div className="card-body"><div className="small text-muted">{l('Urgent', 'Urgent')}</div><div className="h3 mb-0">{supportAnalytics.totals.urgentTickets}</div></div></div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card"><div className="card-body"><div className="small text-muted">{l('Gem. eerste reactie', 'Avg first reply')}</div><div className="h3 mb-0">{supportAnalytics.totals.avgFirstResponseMinutes}m</div></div></div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card"><div className="card-body"><div className="small text-muted">{l('Gem. oplostijd', 'Avg resolution')}</div><div className="h3 mb-0">{supportAnalytics.totals.avgResolutionMinutes}m</div></div></div>
+                </div>
+              </div>
+            )}
             <div className="search-bar" style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
               <select
                 className="search-input"
                 value={ticketStatusFilter}
-                onChange={(e) => setTicketStatusFilter(e.target.value as 'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed')}
+                onChange={(e) => setTicketStatusFilter(e.target.value as 'all' | 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived')}
                 style={{ maxWidth: 260 }}
               >
                 <option value="all">{l('Alle statussen', 'All statuses')}</option>
+                <option value="new">{l('Nieuw', 'New')}</option>
                 <option value="open">{l('Open', 'Open')}</option>
+                <option value="triage">{l('Triaging', 'Triage')}</option>
                 <option value="in_progress">{l('In behandeling', 'In progress')}</option>
                 <option value="waiting_player">{l('Wacht op speler', 'Waiting for player')}</option>
+                <option value="blocked">{l('Geblokkeerd', 'Blocked')}</option>
                 <option value="resolved">{l('Opgelost', 'Resolved')}</option>
                 <option value="closed">{l('Gesloten', 'Closed')}</option>
+                <option value="archived">{l('Gearchiveerd', 'Archived')}</option>
               </select>
               <button type="button" className="btn-small" onClick={() => loadTickets(ticketStatusFilter)}>
                 {t.refresh}
@@ -5299,9 +5486,11 @@ function App() {
                             <tr>
                               <th>{l('Speler', 'Player')}</th>
                               <th>{l('Onderwerp', 'Subject')}</th>
+                              <th>{l('Prioriteit', 'Priority')}</th>
+                              <th>{l('Behandelaar', 'Assignee')}</th>
+                              <th>{l('Leeftijd', 'Age')}</th>
                               <th>{l('Afbeeldingen', 'Images')}</th>
-                              <th>{l('Tijd', 'Time')}</th>
-                              <th>{l('Datum', 'Date')}</th>
+                              <th>{l('Laatste', 'Last')}</th>
                               <th>{l('Status', 'Status')}</th>
                               <th>{l('Actie', 'Action')}</th>
                             </tr>
@@ -5318,12 +5507,14 @@ function App() {
                                   <td className="fw-semibold">{ticket.username}</td>
                                   <td>
                                     <div className="fw-semibold">{ticket.subject}</div>
-                                    <div className="small text-muted">#{ticket.id} • {ticket.category}</div>
+                                    <div className="small text-muted">#{ticket.id} • {ticket.category}{ticket.sourceModule ? ` • ${ticket.sourceModule}` : ''}</div>
                                   </td>
+                                  <td><span className="badge bg-dark">{supportPriorityLabel(ticket.priority)}</span></td>
+                                  <td>{ticket.assignedAdminUsername || l('Onverdeeld', 'Unassigned')}</td>
+                                  <td>{formatSupportAge(ticket.ageHours)}</td>
                                   <td>{ticket.attachmentCount}</td>
-                                  <td>{createdAt.toLocaleTimeString()}</td>
-                                  <td>{createdAt.toLocaleDateString()}</td>
-                                  <td><span className="badge bg-secondary">{ticket.status}</span></td>
+                                  <td>{ticket.lastMessageBy === 'player' ? l('Speler', 'Player') : ticket.lastMessageBy === 'admin' ? l('Admin', 'Admin') : '-'}<div className="small text-muted">{createdAt.toLocaleDateString()}</div></td>
+                                  <td><span className="badge bg-secondary">{supportTicketStatusLabel(ticket.status)}</span></td>
                                   <td>
                                     <button
                                       type="button"
@@ -5356,13 +5547,28 @@ function App() {
                       <div className="card-header d-flex justify-content-between align-items-center">
                         <h5 className="mb-0">#{selectedTicketDetail.ticket.id} - {selectedTicketDetail.ticket.subject}</h5>
                         <div className="d-flex align-items-center gap-2">
-                          <span className="badge bg-secondary">{selectedTicketDetail.ticket.status}</span>
+                          <span className="badge bg-dark">{supportPriorityLabel(selectedTicketDetail.ticket.priority)}</span>
+                          <span className="badge bg-secondary">{supportTicketStatusLabel(selectedTicketDetail.ticket.status)}</span>
                           <button type="button" className="btn btn-sm btn-outline-danger" onClick={handleDeleteTicket}>
                             {l('Verwijderen', 'Delete')}
                           </button>
                         </div>
                       </div>
                       <div className="card-body" style={{ maxHeight: 360, overflow: 'auto' }}>
+                        <div className="row g-2 mb-3">
+                          <div className="col-md-4">
+                            <div className="small text-muted">{l('Behandelaar', 'Assignee')}</div>
+                            <div>{selectedTicketDetail.ticket.assignedAdminUsername || l('Onverdeeld', 'Unassigned')}</div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className="small text-muted">{l('Module', 'Module')}</div>
+                            <div>{selectedTicketDetail.ticket.sourceModule || '-'}</div>
+                          </div>
+                          <div className="col-md-4">
+                            <div className="small text-muted">{l('Referentie', 'Reference')}</div>
+                            <div>{selectedTicketDetail.ticket.referenceCode || '-'}</div>
+                          </div>
+                        </div>
                         {selectedTicketDetail.attachments.length > 0 && (
                           <div className="mb-3">
                             <div className="fw-semibold mb-2">{l('Bijlagen', 'Attachments')}</div>
@@ -5387,9 +5593,9 @@ function App() {
                           </div>
                         )}
                         {selectedTicketDetail.messages.map((message) => (
-                          <div key={message.id} className="mb-2 p-2 border rounded">
+                          <div key={message.id} className={`mb-2 p-2 border rounded ${message.messageType === 'internal_note' || message.isInternal ? 'bg-warning-subtle' : ''}`}>
                             <div className="small text-muted mb-1">
-                              {message.senderType === 'player' ? l('Speler', 'Player') : message.senderType === 'admin' ? l('Admin', 'Admin') : l('Systeem', 'System')} • {new Date(message.createdAt).toLocaleString()}
+                              {message.senderType === 'player' ? l('Speler', 'Player') : message.senderType === 'admin' ? (message.adminUsername || l('Admin', 'Admin')) : l('Systeem', 'System')} • {new Date(message.createdAt).toLocaleString()} {message.messageType === 'internal_note' || message.isInternal ? `• ${l('Interne notitie', 'Internal note')}` : ''}
                             </div>
                             <div>{message.message}</div>
                           </div>
@@ -5398,28 +5604,63 @@ function App() {
                       <div className="card-footer">
                         <div className="row g-2">
                           <div className="col-md-8">
+                            <div className="row g-2 mb-2">
+                              <div className="col-md-6">
+                                <select className="form-select" value={ticketReplyType} onChange={(e) => setTicketReplyType(e.target.value as 'public_reply' | 'internal_note')}>
+                                  <option value="public_reply">{l('Spelerantwoord', 'Player reply')}</option>
+                                  <option value="internal_note">{l('Interne notitie', 'Internal note')}</option>
+                                </select>
+                              </div>
+                              <div className="col-md-6">
+                                <select className="form-select" value={ticketReplyTemplateKey} onChange={(e) => setTicketReplyTemplateKey(e.target.value)}>
+                                  <option value="">{l('Geen template', 'No template')}</option>
+                                  {supportReplyTemplates.map((template) => (
+                                    <option key={template.key} value={template.key}>{l(template.labelNl, template.labelEn)}</option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
                             <textarea
                               className="form-control"
                               rows={3}
-                              placeholder={l('Antwoord aan speler...', 'Reply to player...')}
+                              placeholder={ticketReplyType === 'internal_note' ? l('Interne notitie...', 'Internal note...') : l('Antwoord aan speler...', 'Reply to player...')}
                               value={ticketReplyMessage}
                               onChange={(e) => setTicketReplyMessage(e.target.value)}
                             />
                           </div>
                           <div className="col-md-4 d-flex flex-column gap-2">
+                            <select className="form-select" value={ticketAssignedAdminId} onChange={(e) => setTicketAssignedAdminId(e.target.value)}>
+                              <option value="">{l('Niet toegewezen', 'Unassigned')}</option>
+                              {admins.map((admin) => (
+                                <option key={admin.id} value={admin.id}>{admin.username}</option>
+                              ))}
+                            </select>
+                            <select className="form-select" value={ticketPriority} onChange={(e) => setTicketPriority(e.target.value as 'low' | 'normal' | 'high' | 'urgent')}>
+                              <option value="low">{l('Laag', 'Low')}</option>
+                              <option value="normal">{l('Normaal', 'Normal')}</option>
+                              <option value="high">{l('Hoog', 'High')}</option>
+                              <option value="urgent">{l('Urgent', 'Urgent')}</option>
+                            </select>
                             <select
                               className="form-select"
                               value={ticketReplyStatus}
-                              onChange={(e) => setTicketReplyStatus(e.target.value as 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed')}
+                              onChange={(e) => setTicketReplyStatus(e.target.value as 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived')}
                             >
+                              <option value="new">{l('Nieuw', 'New')}</option>
                               <option value="open">{l('Open', 'Open')}</option>
+                              <option value="triage">{l('Triaging', 'Triage')}</option>
                               <option value="in_progress">{l('In behandeling', 'In progress')}</option>
                               <option value="waiting_player">{l('Wacht op speler', 'Waiting for player')}</option>
+                              <option value="blocked">{l('Geblokkeerd', 'Blocked')}</option>
                               <option value="resolved">{l('Opgelost', 'Resolved')}</option>
                               <option value="closed">{l('Gesloten', 'Closed')}</option>
+                              <option value="archived">{l('Gearchiveerd', 'Archived')}</option>
                             </select>
+                            <button type="button" className="btn btn-outline-primary" onClick={handleUpdateTicketSettings}>
+                              {l('Ticketinstellingen opslaan', 'Save ticket settings')}
+                            </button>
                             <button type="button" className="btn btn-primary" onClick={handleAdminTicketReply}>
-                              {l('Verstuur reply', 'Send reply')}
+                              {ticketReplyType === 'internal_note' ? l('Interne notitie opslaan', 'Save internal note') : l('Verstuur reply', 'Send reply')}
                             </button>
                           </div>
                         </div>
@@ -5435,7 +5676,7 @@ function App() {
                       </div>
                       <div className="card-body">
                         <div className="row g-2 mb-3">
-                          <div className="col-md-5">
+                          <div className="col-md-3">
                             <input
                               className="form-control"
                               placeholder={l('Todo titel', 'Todo title')}
@@ -5443,13 +5684,35 @@ function App() {
                               onChange={(e) => setTicketTodoTitle(e.target.value)}
                             />
                           </div>
-                          <div className="col-md-5">
+                          <div className="col-md-3">
                             <input
                               className="form-control"
                               placeholder={l('Beschrijving (optioneel)', 'Description (optional)')}
                               value={ticketTodoDescription}
                               onChange={(e) => setTicketTodoDescription(e.target.value)}
                             />
+                          </div>
+                          <div className="col-md-2">
+                            <select className="form-select" value={ticketTodoPriority} onChange={(e) => setTicketTodoPriority(e.target.value as 'low' | 'normal' | 'high' | 'urgent')}>
+                              <option value="low">{l('Laag', 'Low')}</option>
+                              <option value="normal">{l('Normaal', 'Normal')}</option>
+                              <option value="high">{l('Hoog', 'High')}</option>
+                              <option value="urgent">{l('Urgent', 'Urgent')}</option>
+                            </select>
+                          </div>
+                          <div className="col-md-2">
+                            <select className="form-select" value={ticketTodoAssignedAdminId} onChange={(e) => setTicketTodoAssignedAdminId(e.target.value)}>
+                              <option value="">{l('Geen eigenaar', 'No owner')}</option>
+                              {admins.map((admin) => (
+                                <option key={admin.id} value={admin.id}>{admin.username}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="col-md-2">
+                            <input className="form-control" type="datetime-local" value={ticketTodoDueAt} onChange={(e) => setTicketTodoDueAt(e.target.value)} />
+                          </div>
+                          <div className="col-md-2">
+                            <input className="form-control" placeholder={l('Module', 'Module')} value={ticketTodoModuleKey} onChange={(e) => setTicketTodoModuleKey(e.target.value)} />
                           </div>
                           <div className="col-md-2 d-grid">
                             <button type="button" className="btn btn-outline-primary" onClick={handleCreateTicketTodo}>
@@ -5466,7 +5729,10 @@ function App() {
                               <thead>
                                 <tr>
                                   <th>{l('Titel', 'Title')}</th>
+                                  <th>{l('Prioriteit', 'Priority')}</th>
+                                  <th>{l('Eigenaar', 'Owner')}</th>
                                   <th>{l('Status', 'Status')}</th>
+                                  <th>{l('Due', 'Due')}</th>
                                   <th>{l('Bijgewerkt', 'Updated')}</th>
                                   <th>{l('Actie', 'Action')}</th>
                                 </tr>
@@ -5480,7 +5746,10 @@ function App() {
                                       </button>
                                       {todo.description && <small className="text-muted">{todo.description}</small>}
                                     </td>
-                                    <td>{todo.status}</td>
+                                    <td>{supportPriorityLabel(todo.priority)}</td>
+                                    <td>{todo.assignedAdminUsername || '-'}</td>
+                                    <td>{supportTodoStatusLabel(todo.status)}</td>
+                                    <td>{todo.dueAt ? new Date(todo.dueAt).toLocaleString() : '-'}</td>
                                     <td>{new Date(todo.updatedAt).toLocaleString()}</td>
                                     <td>
                                       <div className="d-flex flex-wrap gap-2">
@@ -5526,11 +5795,13 @@ function App() {
               <select
                 className="search-input"
                 value={supportTodoStatusFilter}
-                onChange={(e) => setSupportTodoStatusFilter(e.target.value as 'all' | 'open' | 'done')}
+                onChange={(e) => setSupportTodoStatusFilter(e.target.value as 'all' | 'open' | 'in_progress' | 'blocked' | 'done')}
                 style={{ maxWidth: 220 }}
               >
                 <option value="all">{l('Alle todo\'s', 'All todos')}</option>
                 <option value="open">{l('Open', 'Open')}</option>
+                <option value="in_progress">{l('In behandeling', 'In progress')}</option>
+                <option value="blocked">{l('Geblokkeerd', 'Blocked')}</option>
                 <option value="done">{l('Afgerond', 'Done')}</option>
               </select>
               <button type="button" className="btn-small" onClick={() => loadSupportTodos(supportTodoStatusFilter)}>
@@ -5542,7 +5813,7 @@ function App() {
               <div className="card-header"><h5 className="mb-0">{l('Nieuw todo item', 'New todo item')}</h5></div>
               <div className="card-body">
                 <div className="row g-2">
-                  <div className="col-md-5">
+                  <div className="col-md-3">
                     <input
                       className="form-control"
                       placeholder={l('Todo titel', 'Todo title')}
@@ -5550,13 +5821,35 @@ function App() {
                       onChange={(e) => setGlobalTodoTitle(e.target.value)}
                     />
                   </div>
-                  <div className="col-md-5">
+                  <div className="col-md-3">
                     <input
                       className="form-control"
                       placeholder={l('Beschrijving (optioneel)', 'Description (optional)')}
                       value={globalTodoDescription}
                       onChange={(e) => setGlobalTodoDescription(e.target.value)}
                     />
+                  </div>
+                  <div className="col-md-2">
+                    <select className="form-select" value={globalTodoPriority} onChange={(e) => setGlobalTodoPriority(e.target.value as 'low' | 'normal' | 'high' | 'urgent')}>
+                      <option value="low">{l('Laag', 'Low')}</option>
+                      <option value="normal">{l('Normaal', 'Normal')}</option>
+                      <option value="high">{l('Hoog', 'High')}</option>
+                      <option value="urgent">{l('Urgent', 'Urgent')}</option>
+                    </select>
+                  </div>
+                  <div className="col-md-2">
+                    <select className="form-select" value={globalTodoAssignedAdminId} onChange={(e) => setGlobalTodoAssignedAdminId(e.target.value)}>
+                      <option value="">{l('Geen eigenaar', 'No owner')}</option>
+                      {admins.map((admin) => (
+                        <option key={admin.id} value={admin.id}>{admin.username}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="col-md-2">
+                    <input className="form-control" type="datetime-local" value={globalTodoDueAt} onChange={(e) => setGlobalTodoDueAt(e.target.value)} />
+                  </div>
+                  <div className="col-md-2">
+                    <input className="form-control" placeholder={l('Module', 'Module')} value={globalTodoModuleKey} onChange={(e) => setGlobalTodoModuleKey(e.target.value)} />
                   </div>
                   <div className="col-md-2 d-grid">
                     <button type="button" className="btn btn-primary" onClick={handleCreateGlobalTodo}>
@@ -5582,7 +5875,10 @@ function App() {
                           <th>{l('Titel', 'Title')}</th>
                           <th>{l('Ticket', 'Ticket')}</th>
                           <th>{l('Speler', 'Player')}</th>
+                          <th>{l('Prioriteit', 'Priority')}</th>
+                          <th>{l('Eigenaar', 'Owner')}</th>
                           <th>{l('Status', 'Status')}</th>
+                          <th>{l('Due', 'Due')}</th>
                           <th>{l('Bijgewerkt', 'Updated')}</th>
                           <th>{l('Actie', 'Action')}</th>
                         </tr>
@@ -5606,7 +5902,10 @@ function App() {
                               )}
                             </td>
                             <td>{todo.playerUsername || '-'}</td>
-                            <td>{todo.status}</td>
+                            <td>{supportPriorityLabel(todo.priority)}</td>
+                            <td>{todo.assignedAdminUsername || '-'}</td>
+                            <td>{supportTodoStatusLabel(todo.status)}</td>
+                            <td>{todo.dueAt ? new Date(todo.dueAt).toLocaleString() : '-'}</td>
                             <td>{new Date(todo.updatedAt).toLocaleString()}</td>
                             <td>
                               <div className="d-flex flex-wrap gap-2">
@@ -6253,11 +6552,39 @@ function App() {
                     />
                   </div>
                   <div className="form-group">
+                    <label>{l('Prioriteit', 'Priority')}</label>
+                    <select value={editingSupportTodoPriority} onChange={(e) => setEditingSupportTodoPriority(e.target.value as 'low' | 'normal' | 'high' | 'urgent')}>
+                      <option value="low">{l('Laag', 'Low')}</option>
+                      <option value="normal">{l('Normaal', 'Normal')}</option>
+                      <option value="high">{l('Hoog', 'High')}</option>
+                      <option value="urgent">{l('Urgent', 'Urgent')}</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
                     <label>{l('Status', 'Status')}</label>
-                    <select value={editingSupportTodoStatus} onChange={(e) => setEditingSupportTodoStatus(e.target.value as 'open' | 'done')}>
+                    <select value={editingSupportTodoStatus} onChange={(e) => setEditingSupportTodoStatus(e.target.value as 'open' | 'in_progress' | 'blocked' | 'done')}>
                       <option value="open">{l('Open', 'Open')}</option>
+                      <option value="in_progress">{l('In behandeling', 'In progress')}</option>
+                      <option value="blocked">{l('Geblokkeerd', 'Blocked')}</option>
                       <option value="done">{l('Afgerond', 'Done')}</option>
                     </select>
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Eigenaar', 'Owner')}</label>
+                    <select value={editingSupportTodoAssignedAdminId} onChange={(e) => setEditingSupportTodoAssignedAdminId(e.target.value)}>
+                      <option value="">{l('Geen eigenaar', 'No owner')}</option>
+                      {admins.map((admin) => (
+                        <option key={admin.id} value={admin.id}>{admin.username}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Due', 'Due')}</label>
+                    <input type="datetime-local" value={editingSupportTodoDueAt} onChange={(e) => setEditingSupportTodoDueAt(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Module', 'Module')}</label>
+                    <input value={editingSupportTodoModuleKey} onChange={(e) => setEditingSupportTodoModuleKey(e.target.value)} placeholder={l('Bijv. payments, travel of inventory', 'For example payments, travel or inventory')} />
                   </div>
                   {editingSupportTodo.ticketId && (
                     <div className="form-group">
@@ -6274,6 +6601,32 @@ function App() {
                       </button>
                     </div>
                   )}
+                  <div className="form-group">
+                    <label>{l('Todo-opmerkingen', 'Todo notes')}</label>
+                    <div style={{ maxHeight: 180, overflow: 'auto', border: '1px solid rgba(255,255,255,.1)', borderRadius: 8, padding: 10, marginBottom: 10 }}>
+                      {editingSupportTodoComments.length === 0 && (
+                        <div className="text-muted small">{l('Nog geen todo-opmerkingen.', 'No todo notes yet.')}</div>
+                      )}
+                      {editingSupportTodoComments.map((comment) => (
+                        <div key={comment.id} className="mb-2 pb-2 border-bottom">
+                          <div className="small text-muted">{comment.adminUsername || l('Admin', 'Admin')} • {new Date(comment.createdAt).toLocaleString()}</div>
+                          <div>{comment.comment}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <textarea
+                      value={newSupportTodoComment}
+                      onChange={(e) => setNewSupportTodoComment(e.target.value)}
+                      rows={3}
+                      placeholder={l('Nieuwe todo-opmerking...', 'New todo note...')}
+                      style={{ resize: 'vertical' }}
+                    />
+                    <div className="mt-2">
+                      <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => void handleCreateSupportTodoComment()}>
+                        {l('Opmerking toevoegen', 'Add note')}
+                      </button>
+                    </div>
+                  </div>
                   <div className="modal-actions">
                     <button
                       className="btn-small btn-danger"

@@ -64,8 +64,48 @@ export async function ensureSupportSchema(): Promise<void> {
 
   await ensureColumn(
     'support_tickets',
+    'sourceModule',
+    'ALTER TABLE support_tickets ADD COLUMN sourceModule VARCHAR(80) NULL AFTER priority'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'referenceCode',
+    'ALTER TABLE support_tickets ADD COLUMN referenceCode VARCHAR(120) NULL AFTER sourceModule'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'metadataJson',
+    'ALTER TABLE support_tickets ADD COLUMN metadataJson LONGTEXT NULL AFTER referenceCode'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'assignedAdminId',
+    'ALTER TABLE support_tickets ADD COLUMN assignedAdminId INT NULL AFTER metadataJson'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'firstResponseAt',
+    'ALTER TABLE support_tickets ADD COLUMN firstResponseAt DATETIME NULL AFTER updatedAt'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'resolvedAt',
+    'ALTER TABLE support_tickets ADD COLUMN resolvedAt DATETIME NULL AFTER firstResponseAt'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'archivedAt',
+    'ALTER TABLE support_tickets ADD COLUMN archivedAt DATETIME NULL AFTER resolvedAt'
+  );
+  await ensureColumn(
+    'support_tickets',
+    'archivedByAdminId',
+    'ALTER TABLE support_tickets ADD COLUMN archivedByAdminId INT NULL AFTER archivedAt'
+  );
+  await ensureColumn(
+    'support_tickets',
     'closedAt',
-    'ALTER TABLE support_tickets ADD COLUMN closedAt DATETIME NULL AFTER updatedAt'
+    'ALTER TABLE support_tickets ADD COLUMN closedAt DATETIME NULL AFTER archivedByAdminId'
   );
   await ensureColumn(
     'support_tickets',
@@ -95,6 +135,16 @@ export async function ensureSupportSchema(): Promise<void> {
   );
   await ensureIndex(
     'support_tickets',
+    'idx_support_tickets_assigned_admin',
+    'CREATE INDEX idx_support_tickets_assigned_admin ON support_tickets(assignedAdminId)'
+  );
+  await ensureIndex(
+    'support_tickets',
+    'idx_support_tickets_priority',
+    'CREATE INDEX idx_support_tickets_priority ON support_tickets(priority)'
+  );
+  await ensureIndex(
+    'support_tickets',
     'idx_support_tickets_updated',
     'CREATE INDEX idx_support_tickets_updated ON support_tickets(updatedAt)'
   );
@@ -115,6 +165,11 @@ export async function ensureSupportSchema(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
+  await ensureColumn(
+    'support_ticket_messages',
+    'messageType',
+    "ALTER TABLE support_ticket_messages ADD COLUMN messageType VARCHAR(30) NOT NULL DEFAULT 'public_reply' AFTER senderType"
+  );
   await ensureColumn(
     'support_ticket_messages',
     'adminId',
@@ -163,6 +218,21 @@ export async function ensureSupportSchema(): Promise<void> {
 
   await ensureColumn(
     'support_ticket_todos',
+    'priority',
+    "ALTER TABLE support_ticket_todos ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal' AFTER status"
+  );
+  await ensureColumn(
+    'support_ticket_todos',
+    'moduleKey',
+    'ALTER TABLE support_ticket_todos ADD COLUMN moduleKey VARCHAR(80) NULL AFTER priority'
+  );
+  await ensureColumn(
+    'support_ticket_todos',
+    'dueAt',
+    'ALTER TABLE support_ticket_todos ADD COLUMN dueAt DATETIME NULL AFTER moduleKey'
+  );
+  await ensureColumn(
+    'support_ticket_todos',
     'assignedAdminId',
     'ALTER TABLE support_ticket_todos ADD COLUMN assignedAdminId INT NULL AFTER createdByAdminId'
   );
@@ -194,8 +264,43 @@ export async function ensureSupportSchema(): Promise<void> {
   );
   await ensureIndex(
     'support_ticket_todos',
+    'idx_support_ticket_todos_assigned_admin',
+    'CREATE INDEX idx_support_ticket_todos_assigned_admin ON support_ticket_todos(assignedAdminId)'
+  );
+  await ensureIndex(
+    'support_ticket_todos',
+    'idx_support_ticket_todos_due_at',
+    'CREATE INDEX idx_support_ticket_todos_due_at ON support_ticket_todos(dueAt)'
+  );
+  await ensureIndex(
+    'support_ticket_todos',
     'idx_support_ticket_todos_updated',
     'CREATE INDEX idx_support_ticket_todos_updated ON support_ticket_todos(updatedAt)'
+  );
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS support_ticket_todo_comments (
+      id INT NOT NULL AUTO_INCREMENT,
+      todoId INT NOT NULL,
+      adminId INT NOT NULL,
+      comment TEXT NOT NULL,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      INDEX idx_support_ticket_todo_comments_todo (todoId),
+      INDEX idx_support_ticket_todo_comments_created (createdAt)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await ensureIndex(
+    'support_ticket_todo_comments',
+    'idx_support_ticket_todo_comments_todo',
+    'CREATE INDEX idx_support_ticket_todo_comments_todo ON support_ticket_todo_comments(todoId)'
+  );
+  await ensureIndex(
+    'support_ticket_todo_comments',
+    'idx_support_ticket_todo_comments_created',
+    'CREATE INDEX idx_support_ticket_todo_comments_created ON support_ticket_todo_comments(createdAt)'
   );
 
   await prisma.$executeRawUnsafe(`

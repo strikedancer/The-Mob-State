@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Support workflow professionalisering: tickets ondersteunen nu priority, assignee, source-module/referentie metadata, internal note vs public reply, reply templates, workflow-timestamps, archive-status en support analytics; todo's ondersteunen nu priority, owner, due date, module-koppeling en interne commenthistorie
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260414223000_expand_support_workflow/migration.sql`, `backend/src/startup/ensureSupportSchema.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/routes/admin.ts`, `backend/src/routes/tickets.ts`
 - [ ] Support tickets + todo workflow uitgebreid: player ticket endpoints bevatten nu ook verwijderen (`DELETE /tickets/:ticketId`), admin ticket endpoints bevatten nu ook verwijderen (`DELETE /admin/tickets/:ticketId`); startup schema-bootstrap blijft actief en admin-reply blijft gekoppeld aan speler inbox + push notificatie
   - Bestanden: `backend/src/startup/ensureSupportSchema.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/routes/tickets.ts`, `backend/src/routes/admin.ts`, `backend/src/app.ts`, `backend/src/index.ts`
 - [ ] Admin speler-overzicht uitgebreid met combat-inventory details: `/admin/players/:playerId/overview` levert nu munitie- en wapen-namen + aantallen + totalen (`assetSummary`) zodat direct zichtbaar is welke wapens/munitie een speler heeft
@@ -117,6 +119,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Support intake uitgebreid maar minimalistisch gehouden: speler kan nu context meesturen via module, referentiecode, platform/locale metadata en optionele screenshot, en krijgt na verzenden een duidelijk ticketnummer-terugkoppeling; help-content is gesynchroniseerd met de dedicated support-flow
+  - Bestanden: `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Support navigatie aangepast: knop `Melding / Contact` verwijderd uit Help & Uitleg; nieuw apart menu-item `Support` staat direct onder `Help & Uitleg` en opent het player ticket center als eigen scherm
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
 - [ ] Player support scherm vereenvoudigd: spelers zien alleen nog het ticketformulier; reacties en eerder gestuurde tickets zijn verwijderd uit de speler-UI
@@ -149,6 +153,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Support operations upgrade in admin: tickets-tab toont nu analytics, priority, assignee, leeftijd en laatste actor; admins kunnen ticketinstellingen wijzigen, public replies of internal notes plaatsen met templates, en support todo's centraal beheren met priority, assignee, due date, module-link en interne comments
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
 - [ ] Admin support todo build-fix: kapotte JSX in de gekoppelde todo-tabel hersteld zodat `npm run build` weer slaagt en de Docker admin image niet meer stopt met `JSX expressions must have one parent element`
   - Bestand: `admin/src/App.tsx`
 - [ ] Nieuw Tickets & Todo beheer in adminpanel: aparte tickets-tab met ticketlijst/filtering, thread-details, admin-reply acties en geïntegreerde todo-lijst per ticket (aanmaken + status-prioriteit updates) met NL/EN labels

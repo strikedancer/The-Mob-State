@@ -1,7 +1,12 @@
 import prisma from '../lib/prisma';
 import { directMessageService } from './directMessageService';
+import { createAuditLog } from '../middleware/auditLog';
 
-type TicketStatus = 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed';
+type TicketStatus = 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived';
+type TicketPriority = 'low' | 'normal' | 'high' | 'urgent';
+type TicketMessageType = 'public_reply' | 'internal_note';
+type TodoStatus = 'open' | 'in_progress' | 'blocked' | 'done';
+type TodoPriority = 'low' | 'normal' | 'high' | 'urgent';
 
 interface TicketRow {
   id: number;
@@ -9,9 +14,17 @@ interface TicketRow {
   category: string;
   subject: string;
   status: TicketStatus;
-  priority: string;
+  priority: TicketPriority;
+  sourceModule: string | null;
+  referenceCode: string | null;
+  metadataJson: string | null;
+  assignedAdminId: number | null;
   createdAt: Date;
   updatedAt: Date;
+  firstResponseAt: Date | null;
+  resolvedAt: Date | null;
+  archivedAt: Date | null;
+  archivedByAdminId: number | null;
   closedAt: Date | null;
   closedByAdminId: number | null;
   lastPlayerMessageAt: Date | null;
@@ -22,8 +35,10 @@ interface TicketMessageRow {
   id: number;
   ticketId: number;
   senderType: 'player' | 'admin' | 'system';
+  messageType: TicketMessageType;
   playerId: number | null;
   adminId: number | null;
+  adminUsername?: string | null;
   message: string;
   isInternal: number;
   createdAt: Date;
@@ -34,13 +49,27 @@ interface TicketTodoRow {
   ticketId: number | null;
   title: string;
   description: string | null;
-  status: 'open' | 'done';
+  status: TodoStatus;
+  priority: TodoPriority;
+  moduleKey: string | null;
+  dueAt: Date | null;
   createdByAdminId: number;
   assignedAdminId: number | null;
+  assignedAdminUsername?: string | null;
   resolvedByAdminId: number | null;
   createdAt: Date;
   updatedAt: Date;
   resolvedAt: Date | null;
+}
+
+interface TicketTodoCommentRow {
+  id: number;
+  todoId: number;
+  adminId: number;
+  adminUsername: string | null;
+  comment: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface TicketAttachmentRow {
@@ -67,6 +96,42 @@ interface SupportTodoListRow extends TicketTodoRow {
   playerUsername: string | null;
 }
 
+interface SupportReplyTemplate {
+  key: string;
+  labelNl: string;
+  labelEn: string;
+  bodyNl: string;
+  bodyEn: string;
+  suggestedStatus: TicketStatus;
+}
+
+const SUPPORT_REPLY_TEMPLATES: SupportReplyTemplate[] = [
+  {
+    key: 'need_more_info',
+    labelNl: 'Vraag extra informatie',
+    labelEn: 'Request more information',
+    bodyNl: 'Bedankt voor je melding. Kun je extra informatie, stappen of een screenshot delen zodat we dit sneller kunnen onderzoeken?',
+    bodyEn: 'Thanks for your report. Could you share additional details, steps or a screenshot so we can investigate this faster?',
+    suggestedStatus: 'waiting_player',
+  },
+  {
+    key: 'investigating',
+    labelNl: 'In onderzoek',
+    labelEn: 'Under investigation',
+    bodyNl: 'We hebben je melding in behandeling genomen en onderzoeken dit momenteel. Zodra er een update is, krijg je bericht via je inbox.',
+    bodyEn: 'We have picked up your report and are currently investigating it. As soon as there is an update, you will receive a message in your inbox.',
+    suggestedStatus: 'in_progress',
+  },
+  {
+    key: 'resolved',
+    labelNl: 'Opgelost',
+    labelEn: 'Resolved',
+    bodyNl: 'We hebben deze melding afgehandeld. Als het probleem toch nog terugkomt, stuur dan gerust een nieuwe update of screenshot mee.',
+    bodyEn: 'We have handled this report. If the problem returns, feel free to send a new update or include a screenshot.',
+    suggestedStatus: 'resolved',
+  },
+];
+
 async function getPlayerLanguage(playerId: number): Promise<'nl' | 'en'> {
   const row = await prisma.player.findUnique({
     where: { id: playerId },
@@ -76,10 +141,31 @@ async function getPlayerLanguage(playerId: number): Promise<'nl' | 'en'> {
 }
 
 function normalizeTicketStatus(status: string): TicketStatus {
-  if (status === 'in_progress' || status === 'waiting_player' || status === 'resolved' || status === 'closed') {
+  if (status === 'new' || status === 'triage' || status === 'in_progress' || status === 'waiting_player' || status === 'blocked' || status === 'resolved' || status === 'closed' || status === 'archived') {
     return status;
   }
   return 'open';
+}
+
+function normalizeTicketPriority(priority: string): TicketPriority {
+  if (priority === 'low' || priority === 'high' || priority === 'urgent') {
+    return priority;
+  }
+  return 'normal';
+}
+
+function normalizeTodoStatus(status: string): TodoStatus {
+  if (status === 'in_progress' || status === 'blocked' || status === 'done') {
+    return status;
+  }
+  return 'open';
+}
+
+function normalizeTodoPriority(priority: string): TodoPriority {
+  if (priority === 'low' || priority === 'high' || priority === 'urgent') {
+    return priority;
+  }
+  return 'normal';
 }
 
 function toSafeNumber(value: unknown): number {
@@ -109,16 +195,68 @@ function mapAttachmentRow(row: TicketAttachmentRow, urlPrefix: string) {
   };
 }
 
+function mapTodoRow<T extends TicketTodoRow>(row: T): T {
+  return {
+    ...row,
+    status: normalizeTodoStatus(row.status),
+    priority: normalizeTodoPriority(row.priority),
+  };
+}
+
+function getLastMessageBy(row: TicketRow): 'player' | 'admin' | 'none' {
+  if (!row.lastAdminMessageAt && !row.lastPlayerMessageAt) return 'none';
+  if (row.lastAdminMessageAt && (!row.lastPlayerMessageAt || row.lastAdminMessageAt >= row.lastPlayerMessageAt)) {
+    return 'admin';
+  }
+  return 'player';
+}
+
+async function resolveReplyBody(playerId: number, message?: string, templateKey?: string): Promise<{ message: string; suggestedStatus?: TicketStatus }> {
+  if (message?.trim()) {
+    return { message: message.trim() };
+  }
+
+  const template = SUPPORT_REPLY_TEMPLATES.find((item) => item.key === templateKey);
+  if (!template) {
+    throw new Error('REPLY_TEMPLATE_NOT_FOUND');
+  }
+
+  const language = await getPlayerLanguage(playerId);
+  return {
+    message: language === 'nl' ? template.bodyNl : template.bodyEn,
+    suggestedStatus: template.suggestedStatus,
+  };
+}
+
 export const supportTicketService = {
-  async createTicket(playerId: number, category: string, subject: string, message: string, attachments: TicketAttachmentInput[] = []) {
+  getReplyTemplates() {
+    return SUPPORT_REPLY_TEMPLATES;
+  },
+
+  async createTicket(
+    playerId: number,
+    payload: {
+      category: string;
+      subject: string;
+      message: string;
+      sourceModule?: string | null;
+      referenceCode?: string | null;
+      metadataJson?: string | null;
+      attachments?: TicketAttachmentInput[];
+    }
+  ) {
+    const attachments = payload.attachments || [];
     await prisma.$executeRawUnsafe(
       `
-      INSERT INTO support_tickets (playerId, category, subject, status, priority, lastPlayerMessageAt)
-      VALUES (?, ?, ?, 'open', 'normal', NOW())
+      INSERT INTO support_tickets (playerId, category, subject, status, priority, sourceModule, referenceCode, metadataJson, lastPlayerMessageAt)
+      VALUES (?, ?, ?, 'new', 'normal', ?, ?, ?, NOW())
       `,
       playerId,
-      category,
-      subject
+      payload.category,
+      payload.subject,
+      payload.sourceModule || null,
+      payload.referenceCode || null,
+      payload.metadataJson || null,
     );
 
     const idRows = await prisma.$queryRawUnsafe<Array<{ id: number }>>('SELECT LAST_INSERT_ID() AS id');
@@ -126,12 +264,12 @@ export const supportTicketService = {
 
     await prisma.$executeRawUnsafe(
       `
-      INSERT INTO support_ticket_messages (ticketId, senderType, playerId, message, isInternal)
-      VALUES (?, 'player', ?, ?, 0)
+      INSERT INTO support_ticket_messages (ticketId, senderType, messageType, playerId, message, isInternal)
+      VALUES (?, 'player', 'public_reply', ?, ?, 0)
       `,
       ticketId,
       playerId,
-      message
+      payload.message
     );
 
     for (const attachment of attachments) {
@@ -155,8 +293,9 @@ export const supportTicketService = {
   async listPlayerTickets(playerId: number) {
     const tickets = await prisma.$queryRawUnsafe<Array<TicketRow>>(
       `
-      SELECT id, playerId, category, subject, status, priority, createdAt, updatedAt,
-             closedAt, closedByAdminId, lastPlayerMessageAt, lastAdminMessageAt
+        SELECT id, playerId, category, subject, status, priority, sourceModule, referenceCode, metadataJson,
+          assignedAdminId, createdAt, updatedAt, firstResponseAt, resolvedAt, archivedAt, archivedByAdminId,
+          closedAt, closedByAdminId, lastPlayerMessageAt, lastAdminMessageAt
       FROM support_tickets
       WHERE playerId = ?
       ORDER BY updatedAt DESC
@@ -167,13 +306,16 @@ export const supportTicketService = {
     return tickets.map((ticket) => ({
       ...ticket,
       status: normalizeTicketStatus(ticket.status),
+      priority: normalizeTicketPriority(ticket.priority),
+      lastMessageBy: getLastMessageBy(ticket),
     }));
   },
 
   async getTicketWithMessagesForPlayer(playerId: number, ticketId: number) {
     const tickets = await prisma.$queryRawUnsafe<Array<TicketRow>>(
       `
-      SELECT id, playerId, category, subject, status, priority, createdAt, updatedAt,
+      SELECT id, playerId, category, subject, status, priority, sourceModule, referenceCode, metadataJson,
+             assignedAdminId, createdAt, updatedAt, firstResponseAt, resolvedAt, archivedAt, archivedByAdminId,
              closedAt, closedByAdminId, lastPlayerMessageAt, lastAdminMessageAt
       FROM support_tickets
       WHERE id = ? AND playerId = ?
@@ -189,7 +331,7 @@ export const supportTicketService = {
 
     const messages = await prisma.$queryRawUnsafe<Array<TicketMessageRow>>(
       `
-      SELECT id, ticketId, senderType, playerId, adminId, message, isInternal, createdAt
+      SELECT id, ticketId, senderType, messageType, playerId, adminId, message, isInternal, createdAt
       FROM support_ticket_messages
       WHERE ticketId = ? AND isInternal = 0
       ORDER BY createdAt ASC
@@ -199,8 +341,8 @@ export const supportTicketService = {
 
     const todos = await prisma.$queryRawUnsafe<Array<TicketTodoRow>>(
       `
-      SELECT id, ticketId, title, description, status, createdByAdminId, assignedAdminId,
-             resolvedByAdminId, createdAt, updatedAt, resolvedAt
+            SELECT id, ticketId, title, description, status, priority, moduleKey, dueAt, createdByAdminId, assignedAdminId,
+              resolvedByAdminId, createdAt, updatedAt, resolvedAt
       FROM support_ticket_todos
       WHERE ticketId = ?
       ORDER BY createdAt DESC
@@ -223,9 +365,11 @@ export const supportTicketService = {
       ticket: {
         ...tickets[0],
         status: normalizeTicketStatus(tickets[0].status),
+        priority: normalizeTicketPriority(tickets[0].priority),
+        lastMessageBy: getLastMessageBy(tickets[0]),
       },
       messages,
-      todos,
+      todos: todos.map((todo) => mapTodoRow(todo)),
       attachments: attachments.map((attachment) => mapAttachmentRow(attachment, '/tickets/attachments')),
     };
   },
@@ -238,8 +382,8 @@ export const supportTicketService = {
 
     await prisma.$executeRawUnsafe(
       `
-      INSERT INTO support_ticket_messages (ticketId, senderType, playerId, message, isInternal)
-      VALUES (?, 'player', ?, ?, 0)
+      INSERT INTO support_ticket_messages (ticketId, senderType, messageType, playerId, message, isInternal)
+      VALUES (?, 'player', 'public_reply', ?, ?, 0)
       `,
       ticketId,
       playerId,
@@ -249,8 +393,9 @@ export const supportTicketService = {
     await prisma.$executeRawUnsafe(
       `
       UPDATE support_tickets
-      SET status = 'open',
+        SET status = CASE WHEN status IN ('waiting_player', 'new', 'open') THEN 'triage' ELSE status END,
           closedAt = NULL,
+          resolvedAt = NULL,
           closedByAdminId = NULL,
           lastPlayerMessageAt = NOW(),
           updatedAt = NOW()
@@ -290,28 +435,36 @@ export const supportTicketService = {
   async listAdminTickets(status?: string) {
     const sql = status && status !== 'all'
       ? `
-        SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.createdAt, t.updatedAt,
-               t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
+     SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.sourceModule, t.referenceCode,
+       t.metadataJson, t.assignedAdminId, t.createdAt, t.updatedAt, t.firstResponseAt, t.resolvedAt,
+       t.archivedAt, t.archivedByAdminId, t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
                p.username,
+       a.username AS assignedAdminUsername,
                (SELECT COUNT(*) FROM support_ticket_attachments a WHERE a.ticketId = t.id) AS attachmentCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'player') AS playerMessageCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'admin') AS adminMessageCount,
-               (SELECT COUNT(*) FROM support_ticket_todos td WHERE td.ticketId = t.id AND td.status = 'open') AS openTodoCount
+       (SELECT COUNT(*) FROM support_ticket_todos td WHERE td.ticketId = t.id AND td.status IN ('open', 'in_progress', 'blocked')) AS openTodoCount,
+       TIMESTAMPDIFF(HOUR, t.createdAt, NOW()) AS ageHours
         FROM support_tickets t
         JOIN players p ON p.id = t.playerId
+     LEFT JOIN admins a ON a.id = t.assignedAdminId
         WHERE t.status = ?
         ORDER BY t.updatedAt DESC
       `
       : `
-        SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.createdAt, t.updatedAt,
-               t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
+     SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.sourceModule, t.referenceCode,
+       t.metadataJson, t.assignedAdminId, t.createdAt, t.updatedAt, t.firstResponseAt, t.resolvedAt,
+       t.archivedAt, t.archivedByAdminId, t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
                p.username,
+       a.username AS assignedAdminUsername,
                (SELECT COUNT(*) FROM support_ticket_attachments a WHERE a.ticketId = t.id) AS attachmentCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'player') AS playerMessageCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'admin') AS adminMessageCount,
-               (SELECT COUNT(*) FROM support_ticket_todos td WHERE td.ticketId = t.id AND td.status = 'open') AS openTodoCount
+       (SELECT COUNT(*) FROM support_ticket_todos td WHERE td.ticketId = t.id AND td.status IN ('open', 'in_progress', 'blocked')) AS openTodoCount,
+       TIMESTAMPDIFF(HOUR, t.createdAt, NOW()) AS ageHours
         FROM support_tickets t
         JOIN players p ON p.id = t.playerId
+     LEFT JOIN admins a ON a.id = t.assignedAdminId
         ORDER BY t.updatedAt DESC
       `;
 
@@ -322,21 +475,27 @@ export const supportTicketService = {
     return rows.map((row) => ({
       ...row,
       status: normalizeTicketStatus(row.status),
+      priority: normalizeTicketPriority(row.priority),
       attachmentCount: toSafeNumber(row.attachmentCount),
       playerMessageCount: toSafeNumber(row.playerMessageCount),
       adminMessageCount: toSafeNumber(row.adminMessageCount),
       openTodoCount: toSafeNumber(row.openTodoCount),
+      ageHours: toSafeNumber(row.ageHours),
+      lastMessageBy: getLastMessageBy(row),
     }));
   },
 
   async getAdminTicketDetail(ticketId: number) {
     const ticketRows = await prisma.$queryRawUnsafe<Array<any>>(
       `
-      SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.createdAt, t.updatedAt,
-             t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
-             p.username
+      SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.sourceModule, t.referenceCode,
+             t.metadataJson, t.assignedAdminId, t.createdAt, t.updatedAt, t.firstResponseAt, t.resolvedAt,
+             t.archivedAt, t.archivedByAdminId, t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
+             p.username, a.username AS assignedAdminUsername,
+             TIMESTAMPDIFF(HOUR, t.createdAt, NOW()) AS ageHours
       FROM support_tickets t
       JOIN players p ON p.id = t.playerId
+      LEFT JOIN admins a ON a.id = t.assignedAdminId
       WHERE t.id = ?
       LIMIT 1
       `,
@@ -349,8 +508,10 @@ export const supportTicketService = {
 
     const messages = await prisma.$queryRawUnsafe<Array<TicketMessageRow>>(
       `
-      SELECT id, ticketId, senderType, playerId, adminId, message, isInternal, createdAt
-      FROM support_ticket_messages
+          SELECT m.id, m.ticketId, m.senderType, m.messageType, m.playerId, m.adminId, m.message, m.isInternal, m.createdAt,
+            a.username AS adminUsername
+          FROM support_ticket_messages m
+          LEFT JOIN admins a ON a.id = m.adminId
       WHERE ticketId = ?
       ORDER BY createdAt ASC
       `,
@@ -359,9 +520,11 @@ export const supportTicketService = {
 
     const todos = await prisma.$queryRawUnsafe<Array<TicketTodoRow>>(
       `
-      SELECT id, ticketId, title, description, status, createdByAdminId, assignedAdminId,
-             resolvedByAdminId, createdAt, updatedAt, resolvedAt
-      FROM support_ticket_todos
+          SELECT td.id, td.ticketId, td.title, td.description, td.status, td.priority, td.moduleKey, td.dueAt,
+            td.createdByAdminId, td.assignedAdminId, a.username AS assignedAdminUsername,
+            td.resolvedByAdminId, td.createdAt, td.updatedAt, td.resolvedAt
+          FROM support_ticket_todos td
+          LEFT JOIN admins a ON a.id = td.assignedAdminId
       WHERE ticketId = ?
       ORDER BY createdAt DESC
       `,
@@ -379,14 +542,31 @@ export const supportTicketService = {
       ticketId
     );
 
+    const todoComments = await prisma.$queryRawUnsafe<Array<TicketTodoCommentRow>>(
+      `
+      SELECT c.id, c.todoId, c.adminId, a.username AS adminUsername, c.comment, c.createdAt, c.updatedAt
+      FROM support_ticket_todo_comments c
+      LEFT JOIN admins a ON a.id = c.adminId
+      WHERE c.todoId IN (SELECT id FROM support_ticket_todos WHERE ticketId = ?)
+      ORDER BY c.createdAt ASC
+      `,
+      ticketId
+    );
+
     return {
       ticket: {
         ...ticketRows[0],
         status: normalizeTicketStatus(ticketRows[0].status),
+        priority: normalizeTicketPriority(ticketRows[0].priority),
         attachmentCount: attachments.length,
+        ageHours: toSafeNumber(ticketRows[0].ageHours),
+        lastMessageBy: getLastMessageBy(ticketRows[0]),
       },
       messages,
-      todos,
+      todos: todos.map((todo) => ({
+        ...mapTodoRow(todo),
+        comments: todoComments.filter((comment) => comment.todoId === todo.id),
+      })),
       attachments: attachments.map((attachment) => mapAttachmentRow(attachment, '/admin/tickets/attachments')),
     };
   },
@@ -417,50 +597,93 @@ export const supportTicketService = {
     ]);
   },
 
-  async addAdminReply(adminId: number, ticketId: number, message: string, status?: TicketStatus) {
+  async addAdminReply(
+    adminId: number,
+    ticketId: number,
+    payload: { message?: string; templateKey?: string; status?: TicketStatus; messageType?: TicketMessageType }
+  ) {
     const detail = await this.getAdminTicketDetail(ticketId);
     if (!detail) {
       throw new Error('TICKET_NOT_FOUND');
     }
 
-    const nextStatus = status || 'waiting_player';
+    const messageType = payload.messageType === 'internal_note' ? 'internal_note' : 'public_reply';
+    const resolvedReply = await resolveReplyBody(detail.ticket.playerId, payload.message, payload.templateKey);
+    const nextStatus = payload.status || resolvedReply.suggestedStatus || (messageType === 'internal_note' ? detail.ticket.status : 'waiting_player');
 
     await prisma.$executeRawUnsafe(
       `
-      INSERT INTO support_ticket_messages (ticketId, senderType, adminId, message, isInternal)
-      VALUES (?, 'admin', ?, ?, 0)
+      INSERT INTO support_ticket_messages (ticketId, senderType, messageType, adminId, message, isInternal)
+      VALUES (?, 'admin', ?, ?, ?, ?)
       `,
       ticketId,
+      messageType,
       adminId,
-      message
+      resolvedReply.message,
+      messageType === 'internal_note' ? 1 : 0,
     );
 
     await prisma.$executeRawUnsafe(
       `
       UPDATE support_tickets
       SET status = ?,
+          firstResponseAt = CASE WHEN firstResponseAt IS NULL AND ? = 'public_reply' THEN NOW() ELSE firstResponseAt END,
+          resolvedAt = CASE WHEN ? = 'resolved' THEN NOW() ELSE resolvedAt END,
+          archivedAt = CASE WHEN ? = 'archived' THEN NOW() ELSE archivedAt END,
+          archivedByAdminId = CASE WHEN ? = 'archived' THEN ? ELSE archivedByAdminId END,
           closedAt = CASE WHEN ? IN ('resolved', 'closed') THEN NOW() ELSE NULL END,
           closedByAdminId = CASE WHEN ? IN ('resolved', 'closed') THEN ? ELSE NULL END,
-          lastAdminMessageAt = NOW(),
+          lastAdminMessageAt = CASE WHEN ? = 'public_reply' THEN NOW() ELSE lastAdminMessageAt END,
+          assignedAdminId = COALESCE(assignedAdminId, ?),
           updatedAt = NOW()
       WHERE id = ?
       `,
       nextStatus,
+      messageType,
+      nextStatus,
       nextStatus,
       nextStatus,
       adminId,
-      ticketId
+      nextStatus,
+      nextStatus,
+      adminId,
+      messageType,
+      adminId,
+      ticketId,
     );
 
-    const language = await getPlayerLanguage(detail.ticket.playerId);
-    const inboxMessage = language === 'nl'
-      ? `[Ticket #${ticketId}] Reactie van support: ${message}`
-      : `[Ticket #${ticketId}] Support reply: ${message}`;
+    await createAuditLog({
+      adminId,
+      action: messageType === 'internal_note' ? 'SUPPORT_INTERNAL_NOTE' : 'SUPPORT_REPLY',
+      targetType: 'SupportTicket',
+      targetId: String(ticketId),
+      details: { status: nextStatus, templateKey: payload.templateKey || null },
+    });
 
-    await directMessageService.sendSystemMessage(detail.ticket.playerId, inboxMessage, { sendPush: true });
+    if (messageType === 'public_reply') {
+      const language = await getPlayerLanguage(detail.ticket.playerId);
+      const inboxMessage = language === 'nl'
+        ? `[Ticket #${ticketId}] Reactie van support: ${resolvedReply.message}`
+        : `[Ticket #${ticketId}] Support reply: ${resolvedReply.message}`;
+
+      await directMessageService.sendSystemMessage(detail.ticket.playerId, inboxMessage, { sendPush: true });
+    }
   },
 
-  async addTodo(adminId: number, title: string, description?: string, ticketId?: number | null) {
+  async addTodo(
+    adminId: number,
+    payload: {
+      title: string;
+      description?: string;
+      ticketId?: number | null;
+      assignedAdminId?: number | null;
+      priority?: TodoPriority;
+      dueAt?: string | null;
+      moduleKey?: string | null;
+    }
+  ) {
+    const ticketId = payload.ticketId ?? null;
+
     if (ticketId) {
       const detail = await this.getAdminTicketDetail(ticketId);
       if (!detail) {
@@ -470,13 +693,17 @@ export const supportTicketService = {
 
     await prisma.$executeRawUnsafe(
       `
-      INSERT INTO support_ticket_todos (ticketId, title, description, status, createdByAdminId)
-      VALUES (?, ?, ?, 'open', ?)
+      INSERT INTO support_ticket_todos (ticketId, title, description, status, priority, moduleKey, dueAt, createdByAdminId, assignedAdminId)
+      VALUES (?, ?, ?, 'open', ?, ?, ?, ?, ?)
       `,
       ticketId ?? null,
-      title,
-      description || null,
-      adminId
+      payload.title,
+      payload.description || null,
+      payload.priority || 'normal',
+      payload.moduleKey || null,
+      payload.dueAt || null,
+      adminId,
+      payload.assignedAdminId ?? null,
     );
 
     if (ticketId) {
@@ -484,48 +711,72 @@ export const supportTicketService = {
         `
         UPDATE support_tickets
         SET updatedAt = NOW(),
-            status = CASE WHEN status = 'open' THEN 'in_progress' ELSE status END
+            assignedAdminId = COALESCE(assignedAdminId, ?),
+            status = CASE WHEN status IN ('new', 'open', 'triage') THEN 'in_progress' ELSE status END
         WHERE id = ?
         `,
+        payload.assignedAdminId ?? adminId,
         ticketId
       );
     }
+
+    await createAuditLog({
+      adminId,
+      action: 'SUPPORT_TODO_CREATED',
+      targetType: 'SupportTicket',
+      targetId: ticketId ? String(ticketId) : undefined,
+      details: { ticketId, title: payload.title, assignedAdminId: payload.assignedAdminId ?? null },
+    });
   },
 
-  async listTodos(status?: 'all' | 'open' | 'done') {
+  async listTodos(status?: 'all' | TodoStatus) {
     const rows = status && status !== 'all'
       ? await prisma.$queryRawUnsafe<Array<SupportTodoListRow>>(
           `
-          SELECT td.id, td.ticketId, td.title, td.description, td.status, td.createdByAdminId,
-                 td.assignedAdminId, td.resolvedByAdminId, td.createdAt, td.updatedAt, td.resolvedAt,
+          SELECT td.id, td.ticketId, td.title, td.description, td.status, td.priority, td.moduleKey, td.dueAt, td.createdByAdminId,
+                 td.assignedAdminId, a.username AS assignedAdminUsername, td.resolvedByAdminId, td.createdAt, td.updatedAt, td.resolvedAt,
                  t.subject AS ticketSubject, t.status AS ticketStatus, p.username AS playerUsername
           FROM support_ticket_todos td
           LEFT JOIN support_tickets t ON t.id = td.ticketId
           LEFT JOIN players p ON p.id = t.playerId
+          LEFT JOIN admins a ON a.id = td.assignedAdminId
           WHERE td.status = ?
-          ORDER BY CASE WHEN td.status = 'open' THEN 0 ELSE 1 END, td.updatedAt DESC, td.createdAt DESC
+          ORDER BY CASE WHEN td.status = 'open' THEN 0 WHEN td.status = 'in_progress' THEN 1 WHEN td.status = 'blocked' THEN 2 ELSE 3 END, td.updatedAt DESC, td.createdAt DESC
           `,
           status
         )
       : await prisma.$queryRawUnsafe<Array<SupportTodoListRow>>(
           `
-          SELECT td.id, td.ticketId, td.title, td.description, td.status, td.createdByAdminId,
-                 td.assignedAdminId, td.resolvedByAdminId, td.createdAt, td.updatedAt, td.resolvedAt,
+          SELECT td.id, td.ticketId, td.title, td.description, td.status, td.priority, td.moduleKey, td.dueAt, td.createdByAdminId,
+                 td.assignedAdminId, a.username AS assignedAdminUsername, td.resolvedByAdminId, td.createdAt, td.updatedAt, td.resolvedAt,
                  t.subject AS ticketSubject, t.status AS ticketStatus, p.username AS playerUsername
           FROM support_ticket_todos td
           LEFT JOIN support_tickets t ON t.id = td.ticketId
           LEFT JOIN players p ON p.id = t.playerId
-          ORDER BY CASE WHEN td.status = 'open' THEN 0 ELSE 1 END, td.updatedAt DESC, td.createdAt DESC
+          LEFT JOIN admins a ON a.id = td.assignedAdminId
+          ORDER BY CASE WHEN td.status = 'open' THEN 0 WHEN td.status = 'in_progress' THEN 1 WHEN td.status = 'blocked' THEN 2 ELSE 3 END, td.updatedAt DESC, td.createdAt DESC
           `
         );
 
     return rows.map((row) => ({
-      ...row,
+      ...mapTodoRow(row),
       ticketStatus: row.ticketStatus ? normalizeTicketStatus(row.ticketStatus) : null,
     }));
   },
 
-  async updateTodo(adminId: number, todoId: number, updates: { title?: string; description?: string | null; status?: 'open' | 'done' }) {
+  async updateTodo(
+    adminId: number,
+    todoId: number,
+    updates: {
+      title?: string;
+      description?: string | null;
+      status?: TodoStatus;
+      assignedAdminId?: number | null;
+      priority?: TodoPriority;
+      dueAt?: string | null;
+      moduleKey?: string | null;
+    }
+  ) {
     const rows = await prisma.$queryRawUnsafe<Array<{ id: number; ticketId: number | null }>>(
       'SELECT id, ticketId FROM support_ticket_todos WHERE id = ? LIMIT 1',
       todoId
@@ -539,6 +790,10 @@ export const supportTicketService = {
     const hasTitleUpdate = typeof updates.title === 'string';
     const hasDescriptionUpdate = Object.prototype.hasOwnProperty.call(updates, 'description');
     const nextStatus = updates.status ?? null;
+    const hasAssignedAdminUpdate = Object.prototype.hasOwnProperty.call(updates, 'assignedAdminId');
+    const hasPriorityUpdate = Object.prototype.hasOwnProperty.call(updates, 'priority');
+    const hasDueAtUpdate = Object.prototype.hasOwnProperty.call(updates, 'dueAt');
+    const hasModuleKeyUpdate = Object.prototype.hasOwnProperty.call(updates, 'moduleKey');
 
     await prisma.$executeRawUnsafe(
       `
@@ -546,14 +801,18 @@ export const supportTicketService = {
       SET title = CASE WHEN ? = 1 THEN ? ELSE title END,
           description = CASE WHEN ? = 1 THEN ? ELSE description END,
           status = COALESCE(?, status),
+          assignedAdminId = CASE WHEN ? = 1 THEN ? ELSE assignedAdminId END,
+          priority = CASE WHEN ? = 1 THEN ? ELSE priority END,
+          dueAt = CASE WHEN ? = 1 THEN ? ELSE dueAt END,
+          moduleKey = CASE WHEN ? = 1 THEN ? ELSE moduleKey END,
           resolvedByAdminId = CASE
             WHEN ? = 'done' THEN ?
-            WHEN ? = 'open' THEN NULL
+            WHEN ? IN ('open', 'in_progress', 'blocked') THEN NULL
             ELSE resolvedByAdminId
           END,
           resolvedAt = CASE
             WHEN ? = 'done' THEN COALESCE(resolvedAt, NOW())
-            WHEN ? = 'open' THEN NULL
+            WHEN ? IN ('open', 'in_progress', 'blocked') THEN NULL
             ELSE resolvedAt
           END,
           updatedAt = NOW()
@@ -564,6 +823,14 @@ export const supportTicketService = {
       hasDescriptionUpdate ? 1 : 0,
       hasDescriptionUpdate ? (updates.description ?? null) : null,
       nextStatus,
+      hasAssignedAdminUpdate ? 1 : 0,
+      hasAssignedAdminUpdate ? (updates.assignedAdminId ?? null) : null,
+      hasPriorityUpdate ? 1 : 0,
+      hasPriorityUpdate ? (updates.priority ?? null) : null,
+      hasDueAtUpdate ? 1 : 0,
+      hasDueAtUpdate ? (updates.dueAt ?? null) : null,
+      hasModuleKeyUpdate ? 1 : 0,
+      hasModuleKeyUpdate ? (updates.moduleKey ?? null) : null,
       nextStatus,
       adminId,
       nextStatus,
@@ -577,19 +844,32 @@ export const supportTicketService = {
       await prisma.$executeRawUnsafe(
         `
         UPDATE support_tickets
-        SET updatedAt = NOW()
+        SET updatedAt = NOW(),
+            assignedAdminId = CASE WHEN ? IS NOT NULL THEN ? ELSE assignedAdminId END,
+            status = CASE WHEN ? = 'done' AND status NOT IN ('resolved', 'archived', 'closed') THEN 'in_progress' ELSE status END
         WHERE id = ?
         `,
+        hasAssignedAdminUpdate ? (updates.assignedAdminId ?? null) : null,
+        hasAssignedAdminUpdate ? (updates.assignedAdminId ?? null) : null,
+        nextStatus,
         ticketId
       );
     }
+
+    await createAuditLog({
+      adminId,
+      action: 'SUPPORT_TODO_UPDATED',
+      targetType: 'SupportTodo',
+      targetId: String(todoId),
+      details: updates,
+    });
   },
 
-  async updateTodoStatus(adminId: number, todoId: number, status: 'open' | 'done') {
+  async updateTodoStatus(adminId: number, todoId: number, status: TodoStatus) {
     await this.updateTodo(adminId, todoId, { status });
   },
 
-  async deleteTodo(todoId: number) {
+  async deleteTodo(todoId: number, adminId?: number) {
     const rows = await prisma.$queryRawUnsafe<Array<{ id: number; ticketId: number | null }>>(
       'SELECT id, ticketId FROM support_ticket_todos WHERE id = ? LIMIT 1',
       todoId
@@ -600,6 +880,7 @@ export const supportTicketService = {
       throw new Error('TODO_NOT_FOUND');
     }
 
+    await prisma.$executeRawUnsafe('DELETE FROM support_ticket_todo_comments WHERE todoId = ?', todoId);
     await prisma.$executeRawUnsafe('DELETE FROM support_ticket_todos WHERE id = ?', todoId);
 
     if (existingTodo.ticketId) {
@@ -612,6 +893,168 @@ export const supportTicketService = {
         existingTodo.ticketId
       );
     }
+
+    if (adminId) {
+      await createAuditLog({
+        adminId,
+        action: 'SUPPORT_TODO_DELETED',
+        targetType: 'SupportTodo',
+        targetId: String(todoId),
+        details: { ticketId: existingTodo.ticketId ?? null },
+      });
+    }
+  },
+
+  async addTodoComment(adminId: number, todoId: number, comment: string) {
+    const rows = await prisma.$queryRawUnsafe<Array<{ id: number; ticketId: number | null }>>(
+      'SELECT id, ticketId FROM support_ticket_todos WHERE id = ? LIMIT 1',
+      todoId
+    );
+
+    const existingTodo = rows[0] || null;
+    if (!existingTodo) {
+      throw new Error('TODO_NOT_FOUND');
+    }
+
+    await prisma.$executeRawUnsafe(
+      `
+      INSERT INTO support_ticket_todo_comments (todoId, adminId, comment)
+      VALUES (?, ?, ?)
+      `,
+      todoId,
+      adminId,
+      comment,
+    );
+
+    await prisma.$executeRawUnsafe('UPDATE support_ticket_todos SET updatedAt = NOW() WHERE id = ?', todoId);
+
+    if (existingTodo.ticketId) {
+      await prisma.$executeRawUnsafe('UPDATE support_tickets SET updatedAt = NOW() WHERE id = ?', existingTodo.ticketId);
+    }
+
+    await createAuditLog({
+      adminId,
+      action: 'SUPPORT_TODO_COMMENT_ADDED',
+      targetType: 'SupportTodo',
+      targetId: String(todoId),
+      details: { ticketId: existingTodo.ticketId ?? null },
+    });
+  },
+
+  async listTodoComments(todoId: number) {
+    return prisma.$queryRawUnsafe<Array<TicketTodoCommentRow>>(
+      `
+      SELECT c.id, c.todoId, c.adminId, a.username AS adminUsername, c.comment, c.createdAt, c.updatedAt
+      FROM support_ticket_todo_comments c
+      LEFT JOIN admins a ON a.id = c.adminId
+      WHERE c.todoId = ?
+      ORDER BY c.createdAt ASC
+      `,
+      todoId,
+    );
+  },
+
+  async updateTicket(adminId: number, ticketId: number, updates: {
+    assignedAdminId?: number | null;
+    priority?: TicketPriority;
+    status?: TicketStatus;
+    archive?: boolean;
+  }) {
+    const detail = await this.getAdminTicketDetail(ticketId);
+    if (!detail) {
+      throw new Error('TICKET_NOT_FOUND');
+    }
+
+    const hasAssignedAdminUpdate = Object.prototype.hasOwnProperty.call(updates, 'assignedAdminId');
+    const hasPriorityUpdate = Object.prototype.hasOwnProperty.call(updates, 'priority');
+    const nextStatus = updates.archive ? 'archived' : (updates.status ?? null);
+
+    await prisma.$executeRawUnsafe(
+      `
+      UPDATE support_tickets
+      SET assignedAdminId = CASE WHEN ? = 1 THEN ? ELSE assignedAdminId END,
+          priority = CASE WHEN ? = 1 THEN ? ELSE priority END,
+          status = COALESCE(?, status),
+          resolvedAt = CASE WHEN ? = 'resolved' THEN COALESCE(resolvedAt, NOW()) ELSE resolvedAt END,
+          archivedAt = CASE WHEN ? = 'archived' THEN NOW() WHEN ? IS NOT NULL AND ? <> 'archived' THEN NULL ELSE archivedAt END,
+          archivedByAdminId = CASE WHEN ? = 'archived' THEN ? WHEN ? IS NOT NULL AND ? <> 'archived' THEN NULL ELSE archivedByAdminId END,
+          closedAt = CASE WHEN ? IN ('resolved', 'closed') THEN COALESCE(closedAt, NOW()) ELSE closedAt END,
+          closedByAdminId = CASE WHEN ? IN ('resolved', 'closed') THEN ? ELSE closedByAdminId END,
+          updatedAt = NOW()
+      WHERE id = ?
+      `,
+      hasAssignedAdminUpdate ? 1 : 0,
+      hasAssignedAdminUpdate ? (updates.assignedAdminId ?? null) : null,
+      hasPriorityUpdate ? 1 : 0,
+      hasPriorityUpdate ? (updates.priority ?? null) : null,
+      nextStatus,
+      nextStatus,
+      nextStatus,
+      nextStatus,
+      nextStatus,
+      nextStatus,
+      adminId,
+      nextStatus,
+      nextStatus,
+      nextStatus,
+      adminId,
+      ticketId,
+    );
+
+    await createAuditLog({
+      adminId,
+      action: 'SUPPORT_TICKET_UPDATED',
+      targetType: 'SupportTicket',
+      targetId: String(ticketId),
+      details: updates,
+    });
+  },
+
+  async getAnalytics() {
+    const [summaryRows, categoryRows, assigneeRows] = await Promise.all([
+      prisma.$queryRawUnsafe<Array<any>>(
+        `
+        SELECT
+          COUNT(*) AS totalTickets,
+          SUM(CASE WHEN status IN ('new', 'triage', 'in_progress', 'waiting_player', 'blocked', 'open') THEN 1 ELSE 0 END) AS activeTickets,
+          SUM(CASE WHEN priority = 'urgent' THEN 1 ELSE 0 END) AS urgentTickets,
+          ROUND(AVG(CASE WHEN firstResponseAt IS NOT NULL THEN TIMESTAMPDIFF(MINUTE, createdAt, firstResponseAt) END), 1) AS avgFirstResponseMinutes,
+          ROUND(AVG(CASE WHEN resolvedAt IS NOT NULL THEN TIMESTAMPDIFF(MINUTE, createdAt, resolvedAt) END), 1) AS avgResolutionMinutes
+        FROM support_tickets
+        `,
+      ),
+      prisma.$queryRawUnsafe<Array<any>>(
+        `
+        SELECT category, COUNT(*) AS total
+        FROM support_tickets
+        GROUP BY category
+        ORDER BY total DESC, category ASC
+        `,
+      ),
+      prisma.$queryRawUnsafe<Array<any>>(
+        `
+        SELECT COALESCE(a.username, 'Unassigned') AS label,
+               COUNT(*) AS total
+        FROM support_tickets t
+        LEFT JOIN admins a ON a.id = t.assignedAdminId
+        WHERE t.status IN ('new', 'triage', 'in_progress', 'waiting_player', 'blocked', 'open')
+        GROUP BY COALESCE(a.username, 'Unassigned')
+        ORDER BY total DESC, label ASC
+        `,
+      ),
+    ]);
+
+    return {
+      totals: {
+        totalTickets: toSafeNumber(summaryRows[0]?.totalTickets),
+        activeTickets: toSafeNumber(summaryRows[0]?.activeTickets),
+        urgentTickets: toSafeNumber(summaryRows[0]?.urgentTickets),
+        avgFirstResponseMinutes: toSafeNumber(summaryRows[0]?.avgFirstResponseMinutes),
+        avgResolutionMinutes: toSafeNumber(summaryRows[0]?.avgResolutionMinutes),
+      },
+      byCategory: categoryRows.map((row) => ({ category: row.category, total: toSafeNumber(row.total) })),
+      byAssignee: assigneeRows.map((row) => ({ label: row.label, total: toSafeNumber(row.total) })),
+    };
   },
 
   async getAttachmentForPlayer(playerId: number, attachmentId: number) {

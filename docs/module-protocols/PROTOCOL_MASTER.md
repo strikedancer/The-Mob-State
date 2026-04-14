@@ -70,6 +70,15 @@ Acceptatie-eis:
 Zorg dat alle documentatie, help-content en QA-checks deze nieuwe navigatie volgen.
 Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX minimal houden, admin delete-flow mee testen, attachment-weergave verifiëren en geen regressie op ticket-aanmaakfeedback in NL/EN.
 
+## Support Workflow Maturity Guardrails (2026-04-14)
+
+- Support is niet langer alleen een simpel ticket + reply-flow; beheer werkt nu met triage-statussen, prioriteit, toewijzing, reply templates en interne notities.
+- Public replies blijven gekoppeld aan inbox + push; interne notities en todo-comments blijven strikt admin-only.
+- Gebruik voor support todos overal hetzelfde operationele model: eigenaar, prioriteit, vervaldatum, modulekoppeling en interne commenthistorie.
+- Player intake mag rijkere context meesturen (module, referentie, platform, locale, screenshot), maar de player-UX moet bewust compact en laagdrempelig blijven.
+- Admin ticketlijsten moeten scanbaar blijven op status, prioriteit, behandelaar, leeftijd en laatste actor; workflow-uitbreiding mag de overzichtelijkheid niet verminderen.
+- Elke support-wijziging moet cross-module worden gecheckt tegen Messages, Notifications, Admin, Help-content en release-documentatie.
+
 ## Module Richtlijnen (Ingebouwd)
 
 - Dashboard: kritieke kaarten en statussen moeten zichtbaar blijven bij partial failure.
