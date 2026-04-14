@@ -140,7 +140,7 @@ export async function ensureSupportSchema(): Promise<void> {
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS support_ticket_todos (
       id INT NOT NULL AUTO_INCREMENT,
-      ticketId INT NOT NULL,
+      ticketId INT NULL,
       title VARCHAR(255) NOT NULL,
       description TEXT NULL,
       status VARCHAR(20) NOT NULL DEFAULT 'open',
@@ -156,6 +156,10 @@ export async function ensureSupportSchema(): Promise<void> {
       INDEX idx_support_ticket_todos_updated (updatedAt)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
+
+  await prisma.$executeRawUnsafe(
+    'ALTER TABLE support_ticket_todos MODIFY COLUMN ticketId INT NULL'
+  );
 
   await ensureColumn(
     'support_ticket_todos',
@@ -192,6 +196,39 @@ export async function ensureSupportSchema(): Promise<void> {
     'support_ticket_todos',
     'idx_support_ticket_todos_updated',
     'CREATE INDEX idx_support_ticket_todos_updated ON support_ticket_todos(updatedAt)'
+  );
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS support_ticket_attachments (
+      id INT NOT NULL AUTO_INCREMENT,
+      ticketId INT NOT NULL,
+      playerId INT NOT NULL,
+      originalName VARCHAR(255) NOT NULL,
+      mimeType VARCHAR(120) NOT NULL,
+      fileSize INT NOT NULL,
+      data LONGBLOB NOT NULL,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      INDEX idx_support_ticket_attachments_ticket (ticketId),
+      INDEX idx_support_ticket_attachments_player (playerId),
+      INDEX idx_support_ticket_attachments_created (createdAt)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  await ensureIndex(
+    'support_ticket_attachments',
+    'idx_support_ticket_attachments_ticket',
+    'CREATE INDEX idx_support_ticket_attachments_ticket ON support_ticket_attachments(ticketId)'
+  );
+  await ensureIndex(
+    'support_ticket_attachments',
+    'idx_support_ticket_attachments_player',
+    'CREATE INDEX idx_support_ticket_attachments_player ON support_ticket_attachments(playerId)'
+  );
+  await ensureIndex(
+    'support_ticket_attachments',
+    'idx_support_ticket_attachments_created',
+    'CREATE INDEX idx_support_ticket_attachments_created ON support_ticket_attachments(createdAt)'
   );
 
   console.log('[StartupSchema] Support ticket schema check complete');

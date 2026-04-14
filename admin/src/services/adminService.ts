@@ -317,6 +317,7 @@ export interface SupportTicketSummary {
   status: 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed';
   updatedAt: string;
   createdAt: string;
+  attachmentCount: number;
   openTodoCount: number;
 }
 
@@ -333,19 +334,35 @@ export interface SupportTicketMessage {
 
 export interface SupportTicketTodo {
   id: number;
-  ticketId: number;
+  ticketId: number | null;
   title: string;
   description: string | null;
   status: 'open' | 'done';
   createdAt: string;
   updatedAt: string;
   resolvedAt: string | null;
+  ticketSubject?: string | null;
+  ticketStatus?: 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' | null;
+  playerUsername?: string | null;
+}
+
+export interface SupportTicketAttachment {
+  id: number;
+  ticketId: number;
+  playerId: number;
+  originalName: string;
+  mimeType: string;
+  fileSize: number;
+  createdAt: string;
+  url: string;
+  previewDataUrl?: string | null;
 }
 
 export interface SupportTicketDetailResponse {
   ticket: SupportTicketSummary;
   messages: SupportTicketMessage[];
   todos: SupportTicketTodo[];
+  attachments: SupportTicketAttachment[];
 }
 
 export interface SystemLogEntry {
@@ -854,6 +871,48 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to create ticket todo');
+    return response.json();
+  },
+
+  async getSupportTodos(status: 'all' | 'open' | 'done' = 'all'): Promise<{ todos: SupportTicketTodo[] }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-todos?status=${encodeURIComponent(status)}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch support todos');
+    return response.json();
+  },
+
+  async createSupportTodo(payload: { title: string; description?: string; ticketId?: number | null }) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-todos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to create support todo');
+    return response.json();
+  },
+
+  async updateSupportTodo(todoId: number, payload: { status: 'open' | 'done' }) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/support-todos/${todoId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to update support todo');
     return response.json();
   },
 

@@ -164,6 +164,7 @@ const adminTicketReplySchema = z.object({
 });
 
 const adminTicketTodoSchema = z.object({
+  ticketId: z.number().int().positive().optional().nullable(),
   title: z.string().trim().min(3).max(255),
   description: z.string().trim().max(2000).optional(),
 });
@@ -1682,6 +1683,28 @@ router.get('/tickets/:ticketId', async (req: AdminRequest, res) => {
   }
 });
 
+router.get('/tickets/attachments/:attachmentId', async (req: AdminRequest, res) => {
+  try {
+    const attachmentId = Number(req.params.attachmentId);
+    if (!Number.isFinite(attachmentId) || attachmentId <= 0) {
+      return res.status(400).json({ error: 'Invalid attachment id' });
+    }
+
+    const attachment = await supportTicketService.getAttachmentAsAdmin(attachmentId);
+    if (!attachment) {
+      return res.status(404).json({ error: 'Attachment not found' });
+    }
+
+    res.setHeader('Content-Type', attachment.mimeType);
+    res.setHeader('Content-Length', String(attachment.fileSize));
+    res.setHeader('Content-Disposition', `inline; filename="${attachment.originalName}"`);
+    return res.send(attachment.data);
+  } catch (error) {
+    console.error('Admin ticket attachment error:', error);
+    return res.status(500).json({ error: 'Failed to fetch attachment' });
+  }
+});
+
 router.post('/tickets/:ticketId/reply', async (req: AdminRequest, res) => {
   try {
     const adminId = req.admin?.id;
@@ -1727,7 +1750,7 @@ router.post('/tickets/:ticketId/todos', async (req: AdminRequest, res) => {
       return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
     }
 
-    await supportTicketService.addTodo(adminId, ticketId, parsed.data.title, parsed.data.description);
+    await supportTicketService.addTodo(adminId, parsed.data.title, parsed.data.description, ticketId);
     return res.json({ success: true });
   } catch (error: any) {
     if (error?.message === 'TICKET_NOT_FOUND') {
@@ -1735,6 +1758,71 @@ router.post('/tickets/:ticketId/todos', async (req: AdminRequest, res) => {
     }
     console.error('Admin ticket todo create error:', error);
     return res.status(500).json({ error: 'Failed to create todo' });
+  }
+});
+
+router.get('/support-todos', async (req: AdminRequest, res) => {
+  try {
+    const statusParam = String(req.query.status || 'all');
+    const status = statusParam === 'open' || statusParam === 'done' ? statusParam : 'all';
+    const todos = await supportTicketService.listTodos(status);
+    return res.json({ todos });
+  } catch (error) {
+    console.error('Admin support todo list error:', error);
+    return res.status(500).json({ error: 'Failed to fetch support todos' });
+  }
+});
+
+router.post('/support-todos', async (req: AdminRequest, res) => {
+  try {
+    const adminId = req.admin?.id;
+    if (!adminId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const parsed = adminTicketTodoSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
+    }
+
+    await supportTicketService.addTodo(
+      adminId,
+      parsed.data.title,
+      parsed.data.description,
+      parsed.data.ticketId ?? null,
+    );
+    return res.json({ success: true });
+  } catch (error: any) {
+    if (error?.message === 'TICKET_NOT_FOUND') {
+      return res.status(404).json({ error: 'Ticket not found' });
+    }
+    console.error('Admin support todo create error:', error);
+    return res.status(500).json({ error: 'Failed to create support todo' });
+  }
+});
+
+router.patch('/support-todos/:todoId', async (req: AdminRequest, res) => {
+  try {
+    const adminId = req.admin?.id;
+    if (!adminId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const todoId = Number(req.params.todoId);
+    if (!Number.isFinite(todoId) || todoId <= 0) {
+      return res.status(400).json({ error: 'Invalid todo id' });
+    }
+
+    const parsed = adminTicketTodoUpdateSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten() });
+    }
+
+    await supportTicketService.updateTodoStatus(adminId, todoId, parsed.data.status);
+    return res.json({ success: true });
+  } catch (error) {
+    console.error('Admin support todo update error:', error);
+    return res.status(500).json({ error: 'Failed to update support todo' });
   }
 });
 

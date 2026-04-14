@@ -570,7 +570,7 @@ model SupportTicketMessage {
 
 model SupportTicketTodo {
   id               Int      @id @default(autoincrement())
-  ticketId         Int
+  ticketId         Int?
   title            String   @db.VarChar(255)
   description      String?  @db.Text
   status           String   @default("open") @db.VarChar(20)
@@ -585,6 +585,22 @@ model SupportTicketTodo {
   @@index([status], map: "idx_support_ticket_todos_status")
   @@index([updatedAt], map: "idx_support_ticket_todos_updated")
   @@map("support_ticket_todos")
+}
+
+model SupportTicketAttachment {
+  id           Int      @id @default(autoincrement())
+  ticketId      Int
+  playerId      Int
+  originalName  String   @db.VarChar(255)
+  mimeType      String   @db.VarChar(120)
+  fileSize      Int
+  data          Bytes    @db.LongBlob
+  createdAt     DateTime @default(now())
+
+  @@index([ticketId], map: "idx_support_ticket_attachments_ticket")
+  @@index([playerId], map: "idx_support_ticket_attachments_player")
+  @@index([createdAt], map: "idx_support_ticket_attachments_created")
+  @@map("support_ticket_attachments")
 }
 
 model CrewJoinRequest {

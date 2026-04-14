@@ -31,7 +31,7 @@ interface TicketMessageRow {
 
 interface TicketTodoRow {
   id: number;
-  ticketId: number;
+  ticketId: number | null;
   title: string;
   description: string | null;
   status: 'open' | 'done';
@@ -41,6 +41,30 @@ interface TicketTodoRow {
   createdAt: Date;
   updatedAt: Date;
   resolvedAt: Date | null;
+}
+
+interface TicketAttachmentRow {
+  id: number;
+  ticketId: number;
+  playerId: number;
+  originalName: string;
+  mimeType: string;
+  fileSize: number;
+  createdAt: Date;
+  base64Data?: string | null;
+}
+
+interface TicketAttachmentInput {
+  originalName: string;
+  mimeType: string;
+  fileSize: number;
+  data: Buffer;
+}
+
+interface SupportTodoListRow extends TicketTodoRow {
+  ticketSubject: string | null;
+  ticketStatus: string | null;
+  playerUsername: string | null;
 }
 
 async function getPlayerLanguage(playerId: number): Promise<'nl' | 'en'> {
@@ -71,8 +95,22 @@ function toSafeNumber(value: unknown): number {
   return 0;
 }
 
+function mapAttachmentRow(row: TicketAttachmentRow, urlPrefix: string) {
+  return {
+    id: row.id,
+    ticketId: row.ticketId,
+    playerId: row.playerId,
+    originalName: row.originalName,
+    mimeType: row.mimeType,
+    fileSize: row.fileSize,
+    createdAt: row.createdAt,
+    url: `${urlPrefix}/${row.id}`,
+    previewDataUrl: row.base64Data ? `data:${row.mimeType};base64,${row.base64Data}` : null,
+  };
+}
+
 export const supportTicketService = {
-  async createTicket(playerId: number, category: string, subject: string, message: string) {
+  async createTicket(playerId: number, category: string, subject: string, message: string, attachments: TicketAttachmentInput[] = []) {
     await prisma.$executeRawUnsafe(
       `
       INSERT INTO support_tickets (playerId, category, subject, status, priority, lastPlayerMessageAt)
@@ -95,6 +133,21 @@ export const supportTicketService = {
       playerId,
       message
     );
+
+    for (const attachment of attachments) {
+      await prisma.$executeRawUnsafe(
+        `
+        INSERT INTO support_ticket_attachments (ticketId, playerId, originalName, mimeType, fileSize, data)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `,
+        ticketId,
+        playerId,
+        attachment.originalName,
+        attachment.mimeType,
+        attachment.fileSize,
+        attachment.data
+      );
+    }
 
     return ticketId;
   },
@@ -155,6 +208,17 @@ export const supportTicketService = {
       ticketId
     );
 
+    const attachments = await prisma.$queryRawUnsafe<Array<TicketAttachmentRow>>(
+      `
+      SELECT id, ticketId, playerId, originalName, mimeType, fileSize, createdAt,
+             TO_BASE64(data) AS base64Data
+      FROM support_ticket_attachments
+      WHERE ticketId = ?
+      ORDER BY createdAt ASC
+      `,
+      ticketId
+    );
+
     return {
       ticket: {
         ...tickets[0],
@@ -162,6 +226,7 @@ export const supportTicketService = {
       },
       messages,
       todos,
+      attachments: attachments.map((attachment) => mapAttachmentRow(attachment, '/tickets/attachments')),
     };
   },
 
@@ -203,6 +268,10 @@ export const supportTicketService = {
 
     await prisma.$transaction([
       prisma.$executeRawUnsafe(
+        'DELETE FROM support_ticket_attachments WHERE ticketId = ?',
+        ticketId
+      ),
+      prisma.$executeRawUnsafe(
         'DELETE FROM support_ticket_todos WHERE ticketId = ?',
         ticketId
       ),
@@ -224,6 +293,7 @@ export const supportTicketService = {
         SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.createdAt, t.updatedAt,
                t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
                p.username,
+               (SELECT COUNT(*) FROM support_ticket_attachments a WHERE a.ticketId = t.id) AS attachmentCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'player') AS playerMessageCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'admin') AS adminMessageCount,
                (SELECT COUNT(*) FROM support_ticket_todos td WHERE td.ticketId = t.id AND td.status = 'open') AS openTodoCount
@@ -236,6 +306,7 @@ export const supportTicketService = {
         SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.createdAt, t.updatedAt,
                t.closedAt, t.closedByAdminId, t.lastPlayerMessageAt, t.lastAdminMessageAt,
                p.username,
+               (SELECT COUNT(*) FROM support_ticket_attachments a WHERE a.ticketId = t.id) AS attachmentCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'player') AS playerMessageCount,
                (SELECT COUNT(*) FROM support_ticket_messages m WHERE m.ticketId = t.id AND m.senderType = 'admin') AS adminMessageCount,
                (SELECT COUNT(*) FROM support_ticket_todos td WHERE td.ticketId = t.id AND td.status = 'open') AS openTodoCount
@@ -251,6 +322,7 @@ export const supportTicketService = {
     return rows.map((row) => ({
       ...row,
       status: normalizeTicketStatus(row.status),
+      attachmentCount: toSafeNumber(row.attachmentCount),
       playerMessageCount: toSafeNumber(row.playerMessageCount),
       adminMessageCount: toSafeNumber(row.adminMessageCount),
       openTodoCount: toSafeNumber(row.openTodoCount),
@@ -296,13 +368,26 @@ export const supportTicketService = {
       ticketId
     );
 
+    const attachments = await prisma.$queryRawUnsafe<Array<TicketAttachmentRow>>(
+      `
+      SELECT id, ticketId, playerId, originalName, mimeType, fileSize, createdAt,
+             TO_BASE64(data) AS base64Data
+      FROM support_ticket_attachments
+      WHERE ticketId = ?
+      ORDER BY createdAt ASC
+      `,
+      ticketId
+    );
+
     return {
       ticket: {
         ...ticketRows[0],
         status: normalizeTicketStatus(ticketRows[0].status),
+        attachmentCount: attachments.length,
       },
       messages,
       todos,
+      attachments: attachments.map((attachment) => mapAttachmentRow(attachment, '/admin/tickets/attachments')),
     };
   },
 
@@ -313,6 +398,10 @@ export const supportTicketService = {
     }
 
     await prisma.$transaction([
+      prisma.$executeRawUnsafe(
+        'DELETE FROM support_ticket_attachments WHERE ticketId = ?',
+        ticketId
+      ),
       prisma.$executeRawUnsafe(
         'DELETE FROM support_ticket_todos WHERE ticketId = ?',
         ticketId
@@ -371,10 +460,12 @@ export const supportTicketService = {
     await directMessageService.sendSystemMessage(detail.ticket.playerId, inboxMessage, { sendPush: true });
   },
 
-  async addTodo(adminId: number, ticketId: number, title: string, description?: string) {
-    const detail = await this.getAdminTicketDetail(ticketId);
-    if (!detail) {
-      throw new Error('TICKET_NOT_FOUND');
+  async addTodo(adminId: number, title: string, description?: string, ticketId?: number | null) {
+    if (ticketId) {
+      const detail = await this.getAdminTicketDetail(ticketId);
+      if (!detail) {
+        throw new Error('TICKET_NOT_FOUND');
+      }
     }
 
     await prisma.$executeRawUnsafe(
@@ -382,21 +473,56 @@ export const supportTicketService = {
       INSERT INTO support_ticket_todos (ticketId, title, description, status, createdByAdminId)
       VALUES (?, ?, ?, 'open', ?)
       `,
-      ticketId,
+      ticketId ?? null,
       title,
       description || null,
       adminId
     );
 
-    await prisma.$executeRawUnsafe(
-      `
-      UPDATE support_tickets
-      SET updatedAt = NOW(),
-          status = CASE WHEN status = 'open' THEN 'in_progress' ELSE status END
-      WHERE id = ?
-      `,
-      ticketId
-    );
+    if (ticketId) {
+      await prisma.$executeRawUnsafe(
+        `
+        UPDATE support_tickets
+        SET updatedAt = NOW(),
+            status = CASE WHEN status = 'open' THEN 'in_progress' ELSE status END
+        WHERE id = ?
+        `,
+        ticketId
+      );
+    }
+  },
+
+  async listTodos(status?: 'all' | 'open' | 'done') {
+    const rows = status && status !== 'all'
+      ? await prisma.$queryRawUnsafe<Array<SupportTodoListRow>>(
+          `
+          SELECT td.id, td.ticketId, td.title, td.description, td.status, td.createdByAdminId,
+                 td.assignedAdminId, td.resolvedByAdminId, td.createdAt, td.updatedAt, td.resolvedAt,
+                 t.subject AS ticketSubject, t.status AS ticketStatus, p.username AS playerUsername
+          FROM support_ticket_todos td
+          LEFT JOIN support_tickets t ON t.id = td.ticketId
+          LEFT JOIN players p ON p.id = t.playerId
+          WHERE td.status = ?
+          ORDER BY CASE WHEN td.status = 'open' THEN 0 ELSE 1 END, td.updatedAt DESC, td.createdAt DESC
+          `,
+          status
+        )
+      : await prisma.$queryRawUnsafe<Array<SupportTodoListRow>>(
+          `
+          SELECT td.id, td.ticketId, td.title, td.description, td.status, td.createdByAdminId,
+                 td.assignedAdminId, td.resolvedByAdminId, td.createdAt, td.updatedAt, td.resolvedAt,
+                 t.subject AS ticketSubject, t.status AS ticketStatus, p.username AS playerUsername
+          FROM support_ticket_todos td
+          LEFT JOIN support_tickets t ON t.id = td.ticketId
+          LEFT JOIN players p ON p.id = t.playerId
+          ORDER BY CASE WHEN td.status = 'open' THEN 0 ELSE 1 END, td.updatedAt DESC, td.createdAt DESC
+          `
+        );
+
+    return rows.map((row) => ({
+      ...row,
+      ticketStatus: row.ticketStatus ? normalizeTicketStatus(row.ticketStatus) : null,
+    }));
   },
 
   async updateTodoStatus(adminId: number, todoId: number, status: 'open' | 'done') {
@@ -415,5 +541,52 @@ export const supportTicketService = {
       status,
       todoId
     );
+
+    const rows = await prisma.$queryRawUnsafe<Array<{ ticketId: number | null }>>(
+      'SELECT ticketId FROM support_ticket_todos WHERE id = ? LIMIT 1',
+      todoId
+    );
+
+    const ticketId = rows[0]?.ticketId ?? null;
+    if (ticketId) {
+      await prisma.$executeRawUnsafe(
+        `
+        UPDATE support_tickets
+        SET updatedAt = NOW()
+        WHERE id = ?
+        `,
+        ticketId
+      );
+    }
+  },
+
+  async getAttachmentForPlayer(playerId: number, attachmentId: number) {
+    const rows = await prisma.$queryRawUnsafe<Array<any>>(
+      `
+      SELECT a.id, a.ticketId, a.playerId, a.originalName, a.mimeType, a.fileSize, a.data, a.createdAt
+      FROM support_ticket_attachments a
+      JOIN support_tickets t ON t.id = a.ticketId
+      WHERE a.id = ? AND t.playerId = ?
+      LIMIT 1
+      `,
+      attachmentId,
+      playerId
+    );
+
+    return rows[0] || null;
+  },
+
+  async getAttachmentAsAdmin(attachmentId: number) {
+    const rows = await prisma.$queryRawUnsafe<Array<any>>(
+      `
+      SELECT id, ticketId, playerId, originalName, mimeType, fileSize, data, createdAt
+      FROM support_ticket_attachments
+      WHERE id = ?
+      LIMIT 1
+      `,
+      attachmentId
+    );
+
+    return rows[0] || null;
   },
 };

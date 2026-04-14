@@ -123,6 +123,12 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/support_tickets_screen.dart`
 - [ ] Admin tickets kunnen nu verwijderd worden via de tickets-detailkaart
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
+- [ ] Support tickets uitgebreid met optionele screenshot/image upload voor spelers en attachment-weergave in admin ticketdetail
+  - Bestanden: `client/lib/screens/support_tickets_screen.dart`, `client/pubspec.yaml`, `backend/src/routes/tickets.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/startup/ensureSupportSchema.ts`, `backend/prisma/schema.prisma`
+- [ ] Support todo workflow losgetrokken naar centrale admin todo-pagina; todo's kunnen los of vanuit ticket worden aangemaakt en centraal worden bijgewerkt
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/startup/ensureSupportSchema.ts`, `backend/prisma/schema.prisma`
+- [ ] Admin ticketlijst verduidelijkt met spelernaam, onderwerp, aantal afbeeldingen, tijd, datum, status en directe delete-actie
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/services/supportTicketService.ts`
 - [ ] Web build-fix support scherm: ontbrekende import van `SupportTicketsScreen` hersteld in dashboard zodat Flutter web rebuild niet meer faalt met `The method 'SupportTicketsScreen' isn't defined`
   - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Admin tickets schema-drift fix: support startup-bootstrap voegt nu ontbrekende kolommen en indexes ook toe aan bestaande productie-tabellen, zodat `/admin/tickets` en ticket-detail niet meer 500'en op oudere databases

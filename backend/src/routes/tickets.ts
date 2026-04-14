@@ -1,9 +1,17 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { z } from 'zod';
+import multer from 'multer';
 import { supportTicketService } from '../services/supportTicketService';
 
 const router = Router();
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    cb(null, file.mimetype.startsWith('image/'));
+  },
+});
 
 const createTicketSchema = z.object({
   category: z.enum(['bug', 'question', 'feedback', 'other']),
@@ -21,7 +29,7 @@ router.get('/my', authenticate, async (req: AuthRequest, res: Response) => {
   return res.json({ event: 'tickets.list', params: { tickets } });
 });
 
-router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
+router.post('/', authenticate, upload.single('attachment'), async (req: AuthRequest, res: Response) => {
   const playerId = req.player!.id;
   const parsed = createTicketSchema.safeParse(req.body);
   if (!parsed.success) {
@@ -29,8 +37,35 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
   }
 
   const { category, subject, message } = parsed.data;
-  const ticketId = await supportTicketService.createTicket(playerId, category, subject, message);
+  const attachment = req.file
+    ? [{
+        originalName: req.file.originalname,
+        mimeType: req.file.mimetype,
+        fileSize: req.file.size,
+        data: req.file.buffer,
+      }]
+    : [];
+
+  const ticketId = await supportTicketService.createTicket(playerId, category, subject, message, attachment);
   return res.status(201).json({ event: 'tickets.created', params: { ticketId } });
+});
+
+router.get('/attachments/:attachmentId', authenticate, async (req: AuthRequest, res: Response) => {
+  const playerId = req.player!.id;
+  const attachmentId = Number(req.params.attachmentId);
+  if (!Number.isFinite(attachmentId) || attachmentId <= 0) {
+    return res.status(400).json({ event: 'tickets.invalid_id', params: {} });
+  }
+
+  const attachment = await supportTicketService.getAttachmentForPlayer(playerId, attachmentId);
+  if (!attachment) {
+    return res.status(404).json({ event: 'tickets.not_found', params: {} });
+  }
+
+  res.setHeader('Content-Type', attachment.mimeType);
+  res.setHeader('Content-Length', String(attachment.fileSize));
+  res.setHeader('Content-Disposition', `inline; filename="${attachment.originalName}"`);
+  return res.send(attachment.data);
 });
 
 router.get('/:ticketId', authenticate, async (req: AuthRequest, res: Response) => {

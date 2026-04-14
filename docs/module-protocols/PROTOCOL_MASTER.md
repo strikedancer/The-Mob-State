@@ -57,9 +57,16 @@ Acceptatie-eis:
 - Support Tickets is nu een eigen scherm, direct bereikbaar via het hoofdmenu (“Support”/“Support Tickets”).
 - Niet langer embedded in het Help-scherm; verwijzing in Help alleen als uitleg of link.
 - Navigatie en protocol zijn aangepast: dedicated route, eigen menu-entry, responsive en multilanguage.
+- Player Support is vereenvoudigd: het spelerscherm toont alleen nog een formulier om een nieuw ticket aan te maken.
+- Reacties/thread-weergave en eerder verzonden tickets worden niet meer in de player UI getoond.
+- Tickets moeten verwijderbaar zijn vanuit beheer; admin heeft daarom een expliciete delete-actie op ticketdetail.
+- Speler moet bij ticket-aanmaak optioneel een screenshot/afbeelding kunnen uploaden; admin-detail moet die bijlagen zichtbaar tonen.
+- Support todo's zijn centraal beheerwerk en niet langer alleen per ticket verborgen in ticketdetail; gebruik een aparte admin todo-pagina met lijst, statusbeheer en mogelijkheid om zowel losse als ticket-gekoppelde todo's aan te maken.
+- Admin ticketlijst moet operationeel scanbaar zijn en minimaal tonen: spelernaam, onderwerp, aantal afbeeldingen, tijd, datum en status.
 - Cross-module checks: Dashboard, Admin, Messages, Notifications, Help (alleen als uitleg), i18n.
 
 Zorg dat alle documentatie, help-content en QA-checks deze nieuwe navigatie volgen.
+Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX minimal houden, admin delete-flow mee testen, attachment-weergave verifiëren en geen regressie op ticket-aanmaakfeedback in NL/EN.
 
 ## Module Richtlijnen (Ingebouwd)
 
