@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse } from './services/adminService'
 
-type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events'
+type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets'
 type Language = 'nl' | 'en'
 type PlayerDetailTab = 'overview' | 'manage' | 'financial'
 type DateRangeFilter = '24h' | '7d' | '30d' | 'all'
@@ -809,6 +809,17 @@ function App() {
   const [savingEventScheduleId, setSavingEventScheduleId] = useState<number | null>(null)
   const [savingLiveEventId, setSavingLiveEventId] = useState<number | null>(null)
 
+  // Ticket system state
+  const [tickets, setTickets] = useState<SupportTicketSummary[]>([])
+  const [ticketsLoading, setTicketsLoading] = useState(false)
+  const [ticketStatusFilter, setTicketStatusFilter] = useState<'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed'>('open')
+  const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
+  const [selectedTicketDetail, setSelectedTicketDetail] = useState<SupportTicketDetailResponse | null>(null)
+  const [ticketReplyMessage, setTicketReplyMessage] = useState('')
+  const [ticketReplyStatus, setTicketReplyStatus] = useState<'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed'>('waiting_player')
+  const [ticketTodoTitle, setTicketTodoTitle] = useState('')
+  const [ticketTodoDescription, setTicketTodoDescription] = useState('')
+
   useEffect(() => {
     if (isAuthenticated) {
       loadStats()
@@ -942,6 +953,12 @@ function App() {
       loadEventAdminData()
     }
   }, [isAuthenticated, activeTab])
+
+  useEffect(() => {
+    if (isAuthenticated && activeTab === 'tickets') {
+      void loadTickets(ticketStatusFilter)
+    }
+  }, [isAuthenticated, activeTab, ticketStatusFilter])
 
   useEffect(() => {
     const loadRecentActivities = async () => {
@@ -1086,6 +1103,92 @@ function App() {
       if (handleUnauthorized(err)) return
       console.error('Failed to load players:', err)
       setApiError(t.playersLoadError)
+    }
+  }
+
+  const loadTickets = async (status: 'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' = ticketStatusFilter) => {
+    try {
+      setTicketsLoading(true)
+      const data = await adminService.getTickets(status)
+      const list = data.tickets || []
+      setTickets(list)
+      setApiError('')
+
+      const selectedStillExists = selectedTicketId ? list.some((ticket) => ticket.id === selectedTicketId) : false
+      const nextTicketId = selectedStillExists ? selectedTicketId : (list[0]?.id ?? null)
+      setSelectedTicketId(nextTicketId)
+
+      if (nextTicketId) {
+        await loadTicketDetail(nextTicketId)
+      } else {
+        setSelectedTicketDetail(null)
+      }
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load tickets:', err)
+      setApiError(l('Tickets konden niet geladen worden.', 'Failed to load tickets.'))
+    } finally {
+      setTicketsLoading(false)
+    }
+  }
+
+  const loadTicketDetail = async (ticketId: number) => {
+    try {
+      const detail = await adminService.getTicketDetail(ticketId)
+      setSelectedTicketDetail(detail)
+      setSelectedTicketId(ticketId)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load ticket detail:', err)
+      setApiError(l('Ticketdetail laden mislukt.', 'Failed to load ticket detail.'))
+    }
+  }
+
+  const handleAdminTicketReply = async () => {
+    if (!selectedTicketId || !ticketReplyMessage.trim()) return
+
+    try {
+      await adminService.replyToTicket(selectedTicketId, {
+        message: ticketReplyMessage.trim(),
+        status: ticketReplyStatus,
+      })
+      setTicketReplyMessage('')
+      await loadTickets(ticketStatusFilter)
+      await loadTicketDetail(selectedTicketId)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Antwoord sturen mislukt', 'Failed to send reply')}: ${(err as Error).message}`)
+    }
+  }
+
+  const handleCreateTicketTodo = async () => {
+    if (!selectedTicketId || !ticketTodoTitle.trim()) return
+
+    try {
+      await adminService.createTicketTodo(selectedTicketId, {
+        title: ticketTodoTitle.trim(),
+        description: ticketTodoDescription.trim() || undefined,
+      })
+      setTicketTodoTitle('')
+      setTicketTodoDescription('')
+      await loadTicketDetail(selectedTicketId)
+      await loadTickets(ticketStatusFilter)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Todo aanmaken mislukt', 'Failed to create todo')}: ${(err as Error).message}`)
+    }
+  }
+
+  const handleToggleTicketTodo = async (todoId: number, status: 'open' | 'done') => {
+    try {
+      await adminService.updateTicketTodo(todoId, { status })
+      if (selectedTicketId) {
+        await loadTicketDetail(selectedTicketId)
+      }
+      await loadTickets(ticketStatusFilter)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Todo bijwerken mislukt', 'Failed to update todo')}: ${(err as Error).message}`)
     }
   }
 
@@ -2396,6 +2499,7 @@ function App() {
     { id: 'tools', label: t.navTools, icon: 'bi-tools' },
     { id: 'crimes', label: t.navCrimes, icon: 'bi-shield-fill-exclamation' },
     { id: 'events', label: l('Events', 'Events'), icon: 'bi-calendar2-event-fill' },
+    { id: 'tickets', label: l('Tickets', 'Tickets'), icon: 'bi-life-preserver' },
     { id: 'npcs', label: t.navNpcs, icon: 'bi-robot' },
     { id: 'audit-logs', label: t.navAudit, icon: 'bi-journal-text' },
     { id: 'system-logs', label: l('Systeem Logs', 'System Logs'), icon: 'bi-bug-fill' },
@@ -5007,6 +5111,175 @@ function App() {
                 >
                   {t.next}
                 </button>
+              </div>
+            </div>
+          </>
+        )}
+
+        {activeTab === 'tickets' && (
+          <>
+            <h1>{l('Tickets & Todo', 'Tickets & Todo')}</h1>
+            <div className="search-bar" style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
+              <select
+                className="search-input"
+                value={ticketStatusFilter}
+                onChange={(e) => setTicketStatusFilter(e.target.value as 'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed')}
+                style={{ maxWidth: 260 }}
+              >
+                <option value="all">{l('Alle statussen', 'All statuses')}</option>
+                <option value="open">{l('Open', 'Open')}</option>
+                <option value="in_progress">{l('In behandeling', 'In progress')}</option>
+                <option value="waiting_player">{l('Wacht op speler', 'Waiting for player')}</option>
+                <option value="resolved">{l('Opgelost', 'Resolved')}</option>
+                <option value="closed">{l('Gesloten', 'Closed')}</option>
+              </select>
+              <button type="button" className="btn-small" onClick={() => loadTickets(ticketStatusFilter)}>
+                {t.refresh}
+              </button>
+            </div>
+
+            <div className="row g-3">
+              <div className="col-lg-4">
+                <div className="card h-100">
+                  <div className="card-header"><h5 className="mb-0">{l('Tickets', 'Tickets')}</h5></div>
+                  <div className="card-body" style={{ maxHeight: 620, overflow: 'auto' }}>
+                    {ticketsLoading && <div className="text-muted">{t.loading}</div>}
+                    {!ticketsLoading && tickets.length === 0 && (
+                      <div className="text-muted">{l('Geen tickets gevonden.', 'No tickets found.')}</div>
+                    )}
+                    {!ticketsLoading && tickets.map((ticket) => (
+                      <button
+                        key={ticket.id}
+                        type="button"
+                        className={`btn btn-sm w-100 text-start mb-2 ${selectedTicketId === ticket.id ? 'btn-primary' : 'btn-outline-secondary'}`}
+                        onClick={() => loadTicketDetail(ticket.id)}
+                      >
+                        <div className="fw-semibold">#{ticket.id} - {ticket.subject}</div>
+                        <div className="small opacity-75">{ticket.username} • {ticket.category} • {ticket.status}</div>
+                        <div className="small opacity-75">{l('Open todos', 'Open todos')}: {ticket.openTodoCount}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-8">
+                {!selectedTicketDetail ? (
+                  <div className="card"><div className="card-body text-muted">{l('Selecteer een ticket.', 'Select a ticket.')}</div></div>
+                ) : (
+                  <>
+                    <div className="card mb-3">
+                      <div className="card-header d-flex justify-content-between align-items-center">
+                        <h5 className="mb-0">#{selectedTicketDetail.ticket.id} - {selectedTicketDetail.ticket.subject}</h5>
+                        <span className="badge bg-secondary">{selectedTicketDetail.ticket.status}</span>
+                      </div>
+                      <div className="card-body" style={{ maxHeight: 360, overflow: 'auto' }}>
+                        {selectedTicketDetail.messages.map((message) => (
+                          <div key={message.id} className="mb-2 p-2 border rounded">
+                            <div className="small text-muted mb-1">
+                              {message.senderType === 'player' ? l('Speler', 'Player') : message.senderType === 'admin' ? l('Admin', 'Admin') : l('Systeem', 'System')} • {new Date(message.createdAt).toLocaleString()}
+                            </div>
+                            <div>{message.message}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="card-footer">
+                        <div className="row g-2">
+                          <div className="col-md-8">
+                            <textarea
+                              className="form-control"
+                              rows={3}
+                              placeholder={l('Antwoord aan speler...', 'Reply to player...')}
+                              value={ticketReplyMessage}
+                              onChange={(e) => setTicketReplyMessage(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-md-4 d-flex flex-column gap-2">
+                            <select
+                              className="form-select"
+                              value={ticketReplyStatus}
+                              onChange={(e) => setTicketReplyStatus(e.target.value as 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed')}
+                            >
+                              <option value="open">{l('Open', 'Open')}</option>
+                              <option value="in_progress">{l('In behandeling', 'In progress')}</option>
+                              <option value="waiting_player">{l('Wacht op speler', 'Waiting for player')}</option>
+                              <option value="resolved">{l('Opgelost', 'Resolved')}</option>
+                              <option value="closed">{l('Gesloten', 'Closed')}</option>
+                            </select>
+                            <button type="button" className="btn btn-primary" onClick={handleAdminTicketReply}>
+                              {l('Verstuur reply', 'Send reply')}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="card">
+                      <div className="card-header"><h5 className="mb-0">{l('Todo lijst', 'Todo list')}</h5></div>
+                      <div className="card-body">
+                        <div className="row g-2 mb-3">
+                          <div className="col-md-5">
+                            <input
+                              className="form-control"
+                              placeholder={l('Todo titel', 'Todo title')}
+                              value={ticketTodoTitle}
+                              onChange={(e) => setTicketTodoTitle(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-md-5">
+                            <input
+                              className="form-control"
+                              placeholder={l('Beschrijving (optioneel)', 'Description (optional)')}
+                              value={ticketTodoDescription}
+                              onChange={(e) => setTicketTodoDescription(e.target.value)}
+                            />
+                          </div>
+                          <div className="col-md-2 d-grid">
+                            <button type="button" className="btn btn-outline-primary" onClick={handleCreateTicketTodo}>
+                              {l('Toevoegen', 'Add')}
+                            </button>
+                          </div>
+                        </div>
+
+                        {selectedTicketDetail.todos.length === 0 ? (
+                          <div className="text-muted">{l('Nog geen todo items.', 'No todo items yet.')}</div>
+                        ) : (
+                          <div className="table-responsive">
+                            <table className="table table-sm">
+                              <thead>
+                                <tr>
+                                  <th>{l('Titel', 'Title')}</th>
+                                  <th>{l('Status', 'Status')}</th>
+                                  <th>{l('Actie', 'Action')}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {selectedTicketDetail.todos.map((todo) => (
+                                  <tr key={todo.id}>
+                                    <td>
+                                      <div className="fw-semibold">{todo.title}</div>
+                                      {todo.description && <small className="text-muted">{todo.description}</small>}
+                                    </td>
+                                    <td>{todo.status}</td>
+                                    <td>
+                                      <button
+                                        type="button"
+                                        className={`btn btn-sm ${todo.status === 'done' ? 'btn-outline-warning' : 'btn-outline-success'}`}
+                                        onClick={() => handleToggleTicketTodo(todo.id, todo.status === 'done' ? 'open' : 'done')}
+                                      >
+                                        {todo.status === 'done' ? l('Heropen', 'Reopen') : l('Afvinken', 'Mark done')}
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </>

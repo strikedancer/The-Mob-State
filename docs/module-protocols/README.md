@@ -26,6 +26,7 @@ De master protocol zorgt ervoor dat je:
 - [Crew Management](crew.md) - Groep eigendom + upgrades (HQ_PROGRESSION_GUIDE.md)
 - [Properties](properties.md) - Huizen/appartementen/magazijnen (HQ_PROGRESSION_GUIDE.md)
 - [Friends & Messages](friends.md) & [Messages](messages.md)
+- [Support Tickets](support-tickets.md) - Player reports, admin opvolging en todo-tracking
 - [Inventory](inventory.md) - Item opslag en management
 
 ### Economy & Trading
@@ -134,3 +135,4 @@ Voor schermen die meerdere API calls doen:
 - [Red Light Districts](red-light-districts.md)
 - [Achievements](achievements.md)
 - [Settings](settings.md)
+- [Support Tickets](support-tickets.md)

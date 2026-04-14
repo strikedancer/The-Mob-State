@@ -1403,6 +1403,43 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/achievements.md',
   ),
   HelpTopic(
+    id: 'support-tickets',
+    categoryNl: 'Support',
+    categoryEn: 'Support',
+    icon: Icons.support_agent,
+    titleNl: 'Meldingen & Tickets',
+    titleEn: 'Reports & Tickets',
+    summaryNl:
+        'Meld bugs, vragen of feedback via het ticketsysteem. Support en admins kunnen antwoorden, taken toevoegen aan de todo-lijst en updates terugkoppelen.',
+    summaryEn:
+        'Report bugs, questions or feedback via the ticket system. Support and admins can reply, add todo tasks and send updates back to you.',
+    howNl: [
+      'Open Help en klik op `Melding / Contact` om een nieuw ticket te maken.',
+      'Kies categorie (bug, vraag, feedback of overig), geef een duidelijk onderwerp en beschrijf je probleem zo concreet mogelijk.',
+      'Na verzending komt je ticket in het admin ticketsysteem, waar support kan reageren en interne todo-items kan aanmaken.',
+      'Als support antwoordt, krijg je een bericht in je inbox en een pushmelding (indien notificaties actief zijn).',
+      'Je kunt direct op je ticket reageren met extra details, screenshots-info of bevestiging dat het probleem is opgelost.',
+      'Ticketstatussen tonen voortgang: open, in behandeling, wacht op speler, opgelost of gesloten.',
+    ],
+    howEn: [
+      'Open Help and click `Report / Contact` to create a new ticket.',
+      'Choose a category (bug, question, feedback or other), provide a clear subject and describe your issue as specifically as possible.',
+      'After submission your ticket appears in the admin ticket system, where support can reply and create internal todo tasks.',
+      'When support replies, you receive an inbox message and a push notification (if notifications are enabled).',
+      'You can reply directly in your ticket with extra details, screenshot context or confirmation that the issue is resolved.',
+      'Ticket statuses show progress: open, in progress, waiting for player, resolved or closed.',
+    ],
+    tipsNl: [
+      'Noem altijd je land, actie en exacte foutmelding; dat versnelt de oplossing voor devs.',
+      'Gebruik één ticket per probleemtype, zodat de todo-lijst en opvolging overzichtelijk blijven.',
+    ],
+    tipsEn: [
+      'Always include your country, action and exact error message; this speeds up fixes for developers.',
+      'Use one ticket per issue type so the todo list and follow-up stay clear.',
+    ],
+    protocolPath: 'docs/module-protocols/messages.md',
+  ),
+  HelpTopic(
     id: 'settings',
     categoryNl: 'Basis',
     categoryEn: 'Core',

@@ -308,6 +308,46 @@ export interface DashboardOverview {
   };
 }
 
+export interface SupportTicketSummary {
+  id: number;
+  playerId: number;
+  username: string;
+  category: string;
+  subject: string;
+  status: 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed';
+  updatedAt: string;
+  createdAt: string;
+  openTodoCount: number;
+}
+
+export interface SupportTicketMessage {
+  id: number;
+  ticketId: number;
+  senderType: 'player' | 'admin' | 'system';
+  message: string;
+  createdAt: string;
+  playerId?: number | null;
+  adminId?: number | null;
+  isInternal?: number;
+}
+
+export interface SupportTicketTodo {
+  id: number;
+  ticketId: number;
+  title: string;
+  description: string | null;
+  status: 'open' | 'done';
+  createdAt: string;
+  updatedAt: string;
+  resolvedAt: string | null;
+}
+
+export interface SupportTicketDetailResponse {
+  ticket: SupportTicketSummary;
+  messages: SupportTicketMessage[];
+  todos: SupportTicketTodo[];
+}
+
 export interface SystemLogEntry {
   id: number;
   eventKey: string;
@@ -760,6 +800,75 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to reset all players progress');
+    return response.json();
+  },
+
+  async getTickets(status: 'all' | 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' = 'all'): Promise<{ tickets: SupportTicketSummary[] }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/tickets?status=${encodeURIComponent(status)}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch tickets');
+    return response.json();
+  },
+
+  async getTicketDetail(ticketId: number): Promise<SupportTicketDetailResponse> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/tickets/${ticketId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch ticket detail');
+    return response.json();
+  },
+
+  async replyToTicket(ticketId: number, payload: { message: string; status?: 'open' | 'in_progress' | 'waiting_player' | 'resolved' | 'closed' }) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/tickets/${ticketId}/reply`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to reply to ticket');
+    return response.json();
+  },
+
+  async createTicketTodo(ticketId: number, payload: { title: string; description?: string }) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/tickets/${ticketId}/todos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to create ticket todo');
+    return response.json();
+  },
+
+  async updateTicketTodo(todoId: number, payload: { status: 'open' | 'done' }) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/tickets/todos/${todoId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to update ticket todo');
     return response.json();
   },
 

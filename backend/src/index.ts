@@ -9,6 +9,7 @@ import { initializeCronJobs } from './services/cronService';
 import { waitForPrisma } from './lib/prisma';
 import { systemLogService } from './services/systemLogService';
 import { ensureProstitutionSchema } from './startup/ensureProstitutionSchema';
+import { ensureSupportSchema } from './startup/ensureSupportSchema';
 import path from 'path';
 import fs from 'fs';
 
@@ -40,6 +41,7 @@ async function startServer() {
 
   // Ensure production schema is aligned before prostitution endpoints are hit.
   await ensureProstitutionSchema();
+  await ensureSupportSchema();
 
   // Capture runtime errors into persistent system logs for admin monitoring
   systemLogService.installConsoleErrorCapture();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 import '../data/help_content.dart';
+import 'support_tickets_screen.dart';
 
 class HelpScreen extends StatefulWidget {
   final bool embedded;
@@ -238,6 +239,19 @@ class _HelpScreenState extends State<HelpScreen> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const SupportTicketsScreen()),
+                );
+              },
+              icon: const Icon(Icons.support_agent),
+              label: Text(_tr('Melding / Contact', 'Report / Contact')),
+            ),
           ),
         ],
       ),

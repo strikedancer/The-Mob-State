@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Support tickets + todo workflow toegevoegd: nieuwe player ticket endpoints (`GET /tickets/my`, `POST /tickets`, `GET /tickets/:ticketId`, `POST /tickets/:ticketId/reply`), admin ticket endpoints (`GET /admin/tickets`, `GET /admin/tickets/:ticketId`, `POST /admin/tickets/:ticketId/reply`, `POST /admin/tickets/:ticketId/todos`, `PATCH /admin/tickets/todos/:todoId`), startup schema-bootstrap voor support-tabellen, en admin-reply koppeling naar speler inbox + push notificatie
+  - Bestanden: `backend/src/startup/ensureSupportSchema.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/routes/tickets.ts`, `backend/src/routes/admin.ts`, `backend/src/app.ts`, `backend/src/index.ts`
 - [ ] Admin speler-overzicht uitgebreid met combat-inventory details: `/admin/players/:playerId/overview` levert nu munitie- en wapen-namen + aantallen + totalen (`assetSummary`) zodat direct zichtbaar is welke wapens/munitie een speler heeft
   - Bestand: `backend/src/routes/admin.ts`
 - [ ] Admin speler-overzicht telt nu ook opgeslagen property-wapens mee (house/apartment/mansion/penthouse/safehouse), niet alleen `weapon_inventory`; wapens-table toont ook locatie (`inventory` of `storage:...`) zodat verschillen direct te verklaren zijn
@@ -115,6 +117,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Help uitgebreid met Melding/Contact flow: nieuw support ticket center met categorie/onderwerp/bericht, ticketlijst, thread-weergave en reply-mogelijkheid; inclusief NL/EN help-topic en navigatie vanaf Help-scherm
+  - Bestanden: `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
 - [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
   - Bestand: `client/lib/screens/property_screen.dart`
 - [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`
@@ -123,6 +127,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Nieuw Tickets & Todo beheer in adminpanel: aparte tickets-tab met ticketlijst/filtering, thread-details, admin-reply acties en geïntegreerde todo-lijst per ticket (aanmaken + status-prioriteit updates) met NL/EN labels
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
 - [ ] Admin spelerdetail uitgebreid: Overview toont nu expliciet munitie- en wapentotalen bovenaan, plus tabellen met leesbare naam + ID + aantallen, zodat direct zichtbaar is welke wapens/munitie een speler bezit
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
 - [ ] Reset-knoppen altijd zichtbaar: reset speler en reset alle spelers gebruiken nu expliciete `admin-reset-btn` styling zodat tekst/icon niet meer alleen bij hover zichtbaar zijn
