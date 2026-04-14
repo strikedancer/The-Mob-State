@@ -1411,7 +1411,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildWebContent(BuildContext context) {
     switch (_selectedWebSection) {
             case _WebSection.support:
-              return const SupportTicketsScreen();
+              return SupportTicketsScreen();
       case _WebSection.dashboard:
         return const _WebDashboardHomeContent();
       case _WebSection.events:
