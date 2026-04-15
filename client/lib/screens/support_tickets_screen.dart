@@ -851,9 +851,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                     'Je hebt nog geen tickets. Maak hieronder een nieuwe melding aan.',
                     'You do not have any tickets yet. Create a new report below.',
                   ),
-                  style: const TextStyle(
-                    color: Color(0xFFF2E6DF),
-                  ),
+                  style: const TextStyle(color: Color(0xFFF2E6DF)),
                 ),
               )
             else
