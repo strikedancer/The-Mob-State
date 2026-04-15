@@ -82,7 +82,7 @@ class _GymScreenState extends State<GymScreen> {
     final strengthBonus = ((status['strengthBonus'] as num?) ?? 0) * 100;
     final nextTrainAtRaw = status['nextTrainAt']?.toString();
     final nextTrainAt = nextTrainAtRaw != null
-        ? DateTime.tryParse(nextTrainAtRaw)
+      ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
         : null;
     final nextTrainLabel = nextTrainAt != null
         ? DateFormat('HH:mm').format(nextTrainAt)
