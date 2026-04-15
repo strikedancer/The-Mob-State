@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../config/app_config.dart';
 import '../services/auth_service.dart';
+import '../utils/support_badge_state.dart';
 import '../utils/top_right_notification.dart';
 
 class _SupportModuleOption {
@@ -156,7 +157,9 @@ DateTime _asDateTime(dynamic value) {
 }
 
 class SupportTicketsScreen extends StatefulWidget {
-  const SupportTicketsScreen({super.key});
+  const SupportTicketsScreen({super.key, this.onSeenSnapshotChanged});
+
+  final VoidCallback? onSeenSnapshotChanged;
 
   @override
   State<SupportTicketsScreen> createState() => _SupportTicketsScreenState();
@@ -304,6 +307,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         }
       });
 
+      await _markTicketsAsSeen(tickets);
+
       if (nextSelectedId != null) {
         await _loadTicketDetail(nextSelectedId);
       }
@@ -323,6 +328,20 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         setState(() => _isLoadingTickets = false);
       }
     }
+  }
+
+  Future<void> _markTicketsAsSeen(List<_SupportTicketSummary> tickets) async {
+    final signatures = <int, String>{
+      for (final ticket in tickets)
+        ticket.id: buildSupportTicketSeenSignature(
+          updatedAt: ticket.updatedAt,
+          status: ticket.status,
+          lastMessageBy: ticket.lastMessageBy,
+        ),
+    };
+
+    await markSupportTicketSignaturesSeen(signatures);
+    widget.onSeenSnapshotChanged?.call();
   }
 
   Future<void> _loadTicketDetail(int ticketId) async {

@@ -119,6 +119,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Dashboard Support-badge toegevoegd: menu-item `Support` toont nu een badge bij nieuwe supportreacties of ticketstatus-updates sinds het laatste bezoek aan het supportoverzicht, en wist die badge weer zodra de speler Support opent
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/utils/support_badge_state.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`
 - [ ] Dashboard Vrienden-badge semantiek hersteld: menu-item `Vrienden` toont nu alleen nog openstaande ontvangen vriendschapsverzoeken via `/friends/pending`, niet langer ongelezen privéberichten uit `/messages/unread`
   - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Dashboard menu icon fix: Support heeft weer een expliciete menukaart met zichtbaar icon op mobiel, en Support/Luchtvaart gebruiken nu een robuuste iconbron die consistent toont in de dashboardnavigatie, ook online

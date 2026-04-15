@@ -20,6 +20,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 - Never break existing direct-message inbox behavior while extending support messaging.
 - Keep ticket + todo state recoverable after refresh and navigation.
 - The Support screen remains the canonical player reply surface; inbox and push are notifications, not the only place where the conversation can continue.
+- Dashboard Support badge must reflect unseen player-relevant ticket activity since the last Support visit, including public admin replies and admin-driven status changes.
 
 ## Data Contract Requirements
 - Ticket create payload must include: category, subject, message, plus optional sourceModule, referenceCode, clientPlatform and appLocale.
@@ -50,6 +51,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 - Player creates ticket successfully (bug/question/feedback/other).
 - Player can include optional module context, reference code and screenshot.
 - Player sees existing tickets in Support and can reopen a thread after refresh/navigation.
+- Support menu badge appears after a new admin reply or ticket status change and clears after the player opens Support.
 - Admin sees ticket, triage metadata, attachments, assignee and priority.
 - Admin can post both public replies and internal notes.
 - Player receives public admin reply in inbox and push notification.

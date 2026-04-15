@@ -10,6 +10,7 @@ import '../providers/auth_provider.dart';
 import '../providers/event_provider.dart';
 import '../services/auth_service.dart';
 import '../services/dashboard_service.dart';
+import '../utils/support_badge_state.dart';
 import '../utils/avatar_helper.dart';
 import '../utils/country_helper.dart';
 import '../utils/fontawesome_icons.dart';
@@ -136,6 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   int _unreadCount = 0;
   int _pendingFriendRequestCount = 0;
+  int _supportBadgeCount = 0;
 
   void _openPlayerProfile(Player player) {
     Navigator.push(
@@ -223,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (event['event'] == 'direct_message.received' ||
           event['event'] == 'direct_message.deleted' ||
           event['event'] == 'direct_message.read') {
-        _loadUnreadCount();
+        _refreshDashboardBadges();
       }
     });
   }
@@ -232,6 +234,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     await Future.wait<void>([
       _loadUnreadCount(),
       _loadPendingFriendRequestCount(),
+      _loadSupportBadgeCount(),
     ]);
   }
 
@@ -313,6 +316,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
     } catch (e) {
       print('[Dashboard] Error loading pending friend requests: $e');
     }
+  }
+
+  Future<void> _loadSupportBadgeCount() async {
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.get('/tickets/my');
+
+      if (response.statusCode != 200 || response.body.isEmpty) {
+        if (mounted) {
+          setState(() => _supportBadgeCount = 0);
+        }
+        return;
+      }
+
+      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      final params = decoded['params'] as Map<String, dynamic>? ?? const {};
+      final rawTickets = params['tickets'] as List<dynamic>? ?? const [];
+      final currentSignatures = <int, String>{};
+
+      for (final rawTicket in rawTickets) {
+        final ticket = rawTicket as Map<String, dynamic>;
+        final ticketId = _asDashboardInt(ticket['id']);
+        if (ticketId <= 0) {
+          continue;
+        }
+
+        currentSignatures[ticketId] = buildSupportTicketSeenSignature(
+          updatedAt: _asDashboardDateTime(ticket['updatedAt']),
+          status: (ticket['status'] ?? 'new').toString(),
+          lastMessageBy: ticket['lastMessageBy']?.toString(),
+        );
+      }
+
+      final badgeCount = await countUnseenSupportTicketUpdates(
+        currentSignatures,
+        initializeIfEmpty: true,
+      );
+
+      if (mounted) {
+        setState(() => _supportBadgeCount = badgeCount);
+      }
+    } catch (e) {
+      print('[Dashboard] Error loading support badge count: $e');
+    }
+  }
+
+  int _asDashboardInt(dynamic value) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  DateTime _asDashboardDateTime(dynamic value) {
+    final parsed = DateTime.tryParse(value?.toString() ?? '');
+    return (parsed ?? DateTime.now()).toLocal();
   }
 
   Future<void> _checkPremiumPopupOnOpen() async {
@@ -714,7 +772,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: FontAwesomeIcons.commentsSolid,
             label: _tr('Support', 'Support'),
             section: _WebSection.support,
-            badge: 0,
+            badge: _supportBadgeCount,
           ),
           (
             icon: Icons.event,
@@ -1454,7 +1512,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildWebContent(BuildContext context) {
     switch (_selectedWebSection) {
       case _WebSection.support:
-        return SupportTicketsScreen();
+        return SupportTicketsScreen(onSeenSnapshotChanged: _loadSupportBadgeCount);
       case _WebSection.dashboard:
         return const _WebDashboardHomeContent();
       case _WebSection.events:
@@ -1788,7 +1846,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       builder: (_) =>
                                           const DirectMessagesScreen(),
                                     ),
-                                  ).then((_) => _loadUnreadCount()),
+                                  ).then((_) => _refreshDashboardBadges()),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1801,12 +1859,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   context,
                                   icon: FontAwesomeIcons.commentsSolid,
                                   label: _tr('Support', 'Support'),
+                                  badge: _supportBadgeCount,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => SupportTicketsScreen(),
+                                      builder: (_) => SupportTicketsScreen(
+                                        onSeenSnapshotChanged:
+                                            _loadSupportBadgeCount,
+                                      ),
                                     ),
-                                  ),
+                                  ).then((_) => _refreshDashboardBadges()),
                                 ),
                                 _buildMenuTile(
                                   context,
