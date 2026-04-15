@@ -243,6 +243,28 @@ export class NotificationService {
     );
   }
 
+  public async sendSupportTicketUpdateNotification(
+    playerId: number,
+    ticketId: number,
+    subject: string,
+    language: Language = 'en'
+  ): Promise<void> {
+    const t = translationService.getTranslations(language);
+    const trimmedSubject = subject.length > 80
+      ? `${subject.substring(0, 77)}...`
+      : subject;
+
+    await this.sendToPlayer(
+      playerId,
+      t.notification.supportTicketUpdate.title,
+      t.notification.supportTicketUpdate.body(String(ticketId), trimmedSubject),
+      {
+        type: 'support_ticket_update',
+        ticketId: String(ticketId),
+      }
+    );
+  }
+
   /**
    * Send crew message notification
    */

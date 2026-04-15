@@ -58,26 +58,27 @@ Acceptatie-eis:
 - Niet langer embedded in het Help-scherm; verwijzing in Help alleen als uitleg of link.
 - Navigatie en protocol zijn aangepast: dedicated route, eigen menu-entry, responsive en multilanguage.
 - Player Support blijft compact, maar toont wel het eigen ticketoverzicht en de support-thread zodat een speler direct vanuit het Support-scherm kan reageren.
-- Inbox en push blijven notificatiekanalen voor supportreacties, maar zijn niet de enige plek waar het supportgesprek verdergaat.
+- Supportreacties horen in de support-thread zelf; gebruik geen speler-inbox/direct messages meer als apart gesprekskanaal voor ticketupdates.
+- Push en dashboard-badges mogen supportupdates signaleren, maar het gesprek zelf blijft in het Support-scherm.
 - Tickets moeten verwijderbaar zijn vanuit beheer; admin heeft daarom een expliciete delete-actie op ticketdetail.
 - Speler moet bij ticket-aanmaak optioneel een screenshot/afbeelding kunnen uploaden; admin-detail moet die bijlagen zichtbaar tonen.
 - Attachment-preview in admin moet in-context blijven: klik op een ticketafbeelding opent een vergrote preview/lightbox binnen admin, met optie om het origineel apart te openen, en mag de beheerder niet teruggooien naar het dashboard of ticketcontext verliezen.
 - Support todo's zijn centraal beheerwerk en niet langer alleen per ticket verborgen in ticketdetail; gebruik een aparte admin todo-pagina met lijst, statusbeheer en mogelijkheid om zowel losse als ticket-gekoppelde todo's aan te maken.
 - Bestaande support todo's moeten vanuit admin direct aanklikbaar en volledig beheerbaar blijven: open/bewerk status, voeg interne opmerkingen toe, open gekoppeld ticket en verwijder todo's zonder verborgen of ontbrekende acties.
 - Admin ticketlijst moet operationeel scanbaar zijn en minimaal tonen: spelernaam, onderwerp, aantal afbeeldingen, tijd, datum en status.
-- Cross-module checks: Dashboard, Admin, Messages, Notifications, Help (alleen als uitleg), i18n.
+- Cross-module checks: Dashboard, Admin, Notifications, Help (alleen als uitleg), i18n.
 
 Zorg dat alle documentatie, help-content en QA-checks deze nieuwe navigatie volgen.
-Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX compact houden, support-thread in het Support-scherm intact houden, admin delete-flow mee testen, attachment-weergave verifiëren en geen regressie op ticket-aanmaakfeedback in NL/EN.
+Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX compact houden, support-thread in het Support-scherm intact houden, geen inbox/direct-message regressie voor supportupdates introduceren, admin delete-flow mee testen, attachment-weergave verifiëren en geen regressie op ticket-aanmaakfeedback in NL/EN.
 
 ## Support Workflow Maturity Guardrails (2026-04-14)
 
 - Support is niet langer alleen een simpel ticket + reply-flow; beheer werkt nu met triage-statussen, prioriteit, toewijzing, reply templates en interne notities.
-- Public replies blijven gekoppeld aan inbox + push; interne notities en todo-comments blijven strikt admin-only.
+- Public replies blijven gekoppeld aan support-thread + optionele push; interne notities en todo-comments blijven strikt admin-only.
 - Gebruik voor support todos overal hetzelfde operationele model: eigenaar, prioriteit, vervaldatum, modulekoppeling en interne commenthistorie.
 - Player intake mag rijkere context meesturen (module, referentie, platform, locale, screenshot), maar de player-UX moet bewust compact en laagdrempelig blijven.
 - Admin ticketlijsten moeten scanbaar blijven op status, prioriteit, behandelaar, leeftijd en laatste actor; workflow-uitbreiding mag de overzichtelijkheid niet verminderen.
-- Elke support-wijziging moet cross-module worden gecheckt tegen Messages, Notifications, Admin, Help-content en release-documentatie.
+- Elke support-wijziging moet cross-module worden gecheckt tegen Dashboard, Notifications, Admin, Help-content en release-documentatie.
 
 ## Module Richtlijnen (Ingebouwd)
 

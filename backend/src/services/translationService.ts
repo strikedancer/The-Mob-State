@@ -135,6 +135,10 @@ interface Translations {
       title: string;
       body: (senderUsername: string, message: string) => string;
     };
+    supportTicketUpdate: {
+      title: string;
+      body: (ticketId: string, subject: string) => string;
+    };
     crewMessage: {
       title: (crewName: string) => string;
       body: (senderUsername: string, message: string) => string;
@@ -337,6 +341,10 @@ const translations: Record<Language, Translations> = {
       directMessage: {
         title: 'New Message',
         body: (senderUsername, message) => `${senderUsername}: ${message}`,
+      },
+      supportTicketUpdate: {
+        title: 'Support Ticket Update',
+        body: (ticketId, subject) => `Ticket #${ticketId} has a new support update: ${subject}`,
       },
       crewMessage: {
         title: (crewName) => `${crewName}`,
@@ -542,6 +550,10 @@ const translations: Record<Language, Translations> = {
       directMessage: {
         title: 'Nieuw Bericht',
         body: (senderUsername, message) => `${senderUsername}: ${message}`,
+      },
+      supportTicketUpdate: {
+        title: 'Support Ticket Update',
+        body: (ticketId, subject) => `Ticket #${ticketId} heeft een nieuwe supportupdate: ${subject}`,
       },
       crewMessage: {
         title: (crewName) => `${crewName}`,

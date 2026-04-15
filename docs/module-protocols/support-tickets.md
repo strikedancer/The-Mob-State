@@ -1,7 +1,7 @@
 # Support Tickets Protocol
 
 ## Scope
-Player support intake, admin ticket handling, reply loop, todo tracking and inbox/push follow-up.
+Player support intake, admin ticket handling, reply loop, todo tracking and push follow-up.
 
 ## Primary Frontend Entries
 - client/lib/screens/help_screen.dart
@@ -12,14 +12,13 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 - backend/src/routes/tickets.ts
 - backend/src/routes/admin.ts (admin ticket endpoints)
 - backend/src/services/supportTicketService.ts
-- backend/src/services/directMessageService.ts
 - backend/src/services/notificationService.ts
 
 ## Change Rules
-- Keep the full round-trip intact: player report -> admin reply -> player inbox + push -> player follow-up in the Support screen.
-- Never break existing direct-message inbox behavior while extending support messaging.
+- Keep the full round-trip intact: player report -> admin reply -> player push/support badge -> player follow-up in the Support screen.
+- Support replies must stay inside the Support screen itself and may not create player inbox/direct-message entries.
 - Keep ticket + todo state recoverable after refresh and navigation.
-- The Support screen remains the canonical player reply surface; inbox and push are notifications, not the only place where the conversation can continue.
+- The Support screen remains the canonical player reply surface; push and the Support badge are notifications, not separate conversation surfaces.
 - Dashboard Support badge must reflect unseen player-relevant ticket activity since the last Support visit, including public admin replies and admin-driven status changes.
 
 ## Data Contract Requirements
@@ -27,7 +26,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 - Ticket summary payload must include: status, priority, assignedAdminId or assignedAdminUsername, updatedAt, ageHours and lastMessageBy.
 - Ticket detail payload must include: messages, todos, attachments and all admin workflow metadata needed for triage.
 - Todo payload must support: status, priority, assignedAdminId, dueAt, moduleKey and comment history.
-- Public admin replies must write to ticket history and trigger a player inbox message; internal notes must stay admin-only.
+- Public admin replies must write to ticket history and may trigger a player push notification, but must never create a player inbox/direct-message entry; internal notes must stay admin-only.
 
 ## Admin Workflow Requirements
 - Use the richer lifecycle consistently: new, triage, in_progress, waiting_player, blocked, resolved, closed, archived.
@@ -38,13 +37,13 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 
 ## i18n and Messaging
 - All player-facing copy in ticket create/reply flow must be NL + EN.
-- Admin reply wording in inbox notifications must be language-aware by player preference.
+- Support push notification wording must be language-aware by player preference.
 - Keep status labels clear and consistent across player and admin UI.
 
 ## Push + Inbox Rules
-- Public admin reply should always create an inbox message for the player.
-- Push notification should be sent through existing notification service pipeline.
-- Internal notes must not create player inbox or push traffic.
+- Public admin reply should never create an inbox/direct-message entry for the player.
+- Push notification should be sent through the existing notification service pipeline.
+- Internal notes must not create player-facing push traffic.
 - Do not block ticket reply flow if push dispatch fails.
 
 ## QA Checklist
@@ -54,7 +53,7 @@ Player support intake, admin ticket handling, reply loop, todo tracking and inbo
 - Support menu badge appears after a new admin reply or ticket status change and clears after the player opens Support.
 - Admin sees ticket, triage metadata, attachments, assignee and priority.
 - Admin can post both public replies and internal notes.
-- Player receives public admin reply in inbox and push notification.
+- Player receives public admin replies directly in the Support thread without a new inbox message; push remains optional notification only.
 - Player can post follow-up reply in ticket thread.
 - Admin can add todo item, assign it, set priority and due date, add internal todo comments and mark todo done or open.
 - Ticket status transitions and archive state reflect correctly in admin while player UX stays minimal.

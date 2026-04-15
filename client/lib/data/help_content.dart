@@ -1410,15 +1410,15 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Meldingen & Tickets',
     titleEn: 'Reports & Tickets',
     summaryNl:
-        'Meld bugs, vragen of feedback via het ticketsysteem. Support en admins kunnen antwoorden, interne opvolging doen en updates terugkoppelen via inbox, push en het supportgesprek zelf.',
+      'Meld bugs, vragen of feedback via het ticketsysteem. Support en admins kunnen antwoorden, interne opvolging doen en updates terugkoppelen via het supportgesprek zelf en optionele pushmeldingen.',
     summaryEn:
-        'Report bugs, questions or feedback via the ticket system. Support and admins can reply, manage internal follow-up and send updates back through inbox, push and the support conversation itself.',
+      'Report bugs, questions or feedback via the ticket system. Support and admins can reply, manage internal follow-up and send updates back through the support conversation itself and optional push notifications.',
     howNl: [
       'Open het aparte menu-item `Support` om je tickets te bekijken of een nieuw ticket te maken.',
       'Kies categorie (bug, vraag, feedback of overig), selecteer indien nodig het onderdeel en beschrijf je probleem zo concreet mogelijk.',
       'Je kunt optioneel een referentie toevoegen, zoals een order-id, schermnaam of korte context, plus een screenshot als dat helpt.',
       'Na verzending krijg je direct een ticketnummer en komt je ticket in je supportoverzicht te staan, waar support kan reageren en interne todo-items kan aanmaken.',
-      'Als support antwoordt, krijg je een bericht in je inbox en een pushmelding (indien notificaties actief zijn), maar je kunt ook direct in hetzelfde supportgesprek verder reageren.',
+      'Als support antwoordt of de ticketstatus wijzigt, zie je dat direct terug in hetzelfde supportgesprek en kun je optioneel een pushmelding krijgen (indien notificaties actief zijn).',
       'Het menu-item Support toont een badge zodra er een nieuwe supportreactie of statusupdate op een ticket is sinds je laatste bezoek aan het supportoverzicht.',
       'Support gebruikt statussen zoals nieuw, triage, in behandeling, wacht op speler, geblokkeerd en opgelost om je melding intern op te volgen.',
     ],
@@ -1427,7 +1427,7 @@ const List<HelpTopic> helpTopics = [
       'Choose a category (bug, question, feedback or other), select the related module if needed, and describe your issue as specifically as possible.',
       'You can optionally add a reference such as an order id, screen name or short context, plus a screenshot if that helps.',
       'After submission you immediately receive a ticket number and your ticket appears in your support overview, where support can reply and create internal todo tasks.',
-      'When support replies, you receive an inbox message and a push notification (if notifications are enabled), but you can also continue replying inside the same support conversation.',
+      'When support replies or the ticket status changes, you see that directly inside the same support conversation and can optionally receive a push notification (if notifications are enabled).',
       'The Support menu item shows a badge as soon as a ticket gets a new support reply or status update since your last visit to the support overview.',
       'Support uses statuses such as new, triage, in progress, waiting for player, blocked and resolved to track your report internally.',
     ],

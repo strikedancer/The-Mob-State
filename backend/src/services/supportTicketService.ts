@@ -1,6 +1,6 @@
 import prisma from '../lib/prisma';
-import { directMessageService } from './directMessageService';
 import { createAuditLog } from '../middleware/auditLog';
+import { NotificationService } from './notificationService';
 
 type TicketStatus = 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived';
 type TicketPriority = 'low' | 'normal' | 'high' | 'urgent';
@@ -673,11 +673,13 @@ export const supportTicketService = {
 
     if (messageType === 'public_reply') {
       const language = await getPlayerLanguage(detail.ticket.playerId);
-      const inboxMessage = language === 'nl'
-        ? `[Ticket #${ticketId}] Reactie van support: ${resolvedReply.message}`
-        : `[Ticket #${ticketId}] Support reply: ${resolvedReply.message}`;
-
-      await directMessageService.sendSystemMessage(detail.ticket.playerId, inboxMessage, { sendPush: true });
+      const notificationService = NotificationService.getInstance();
+      await notificationService.sendSupportTicketUpdateNotification(
+        detail.ticket.playerId,
+        ticketId,
+        detail.ticket.subject,
+        language,
+      );
     }
   },
 

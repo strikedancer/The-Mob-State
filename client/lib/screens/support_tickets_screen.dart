@@ -823,8 +823,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
             const SizedBox(height: 8),
             Text(
               _tr(
-                'Je krijgt nog steeds een inboxbericht en pushmelding als support antwoordt, maar je kunt hier ook direct verder reageren.',
-                'You still receive an inbox message and push notification when support replies, but you can also continue the conversation here directly.',
+                'Support reageert voortaan rechtstreeks in dit scherm. Je kunt optioneel nog wel een pushmelding krijgen als er een update op je ticket is.',
+                'Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.',
               ),
             ),
             const SizedBox(height: 12),
@@ -840,13 +840,19 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
+                  color: const Color(0xFF2A1F1C),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.08),
+                  ),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   _tr(
                     'Je hebt nog geen tickets. Maak hieronder een nieuwe melding aan.',
                     'You do not have any tickets yet. Create a new report below.',
+                  ),
+                  style: const TextStyle(
+                    color: Color(0xFFF2E6DF),
                   ),
                 ),
               )

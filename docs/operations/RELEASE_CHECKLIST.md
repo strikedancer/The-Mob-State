@@ -119,6 +119,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Support replies ontkoppeld van speler-inbox: adminreacties op tickets komen niet langer als direct message in `Berichten`, maar uitsluitend in het Support-scherm zelf, met alleen optionele pushmelding en support-badge als signaal
+  - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/translationService.ts`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Support empty-state leesbaarheid verbeterd: de melding dat er nog geen tickets zijn gebruikt nu een contrastrijke donkere placeholder-kaart, zodat de tekst in de donkere Support-layout leesbaar blijft
+  - Bestand: `client/lib/screens/support_tickets_screen.dart`
 - [ ] Dashboard Support-badge toegevoegd: menu-item `Support` toont nu een badge bij nieuwe supportreacties of ticketstatus-updates sinds het laatste bezoek aan het supportoverzicht, en wist die badge weer zodra de speler Support opent
   - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/utils/support_badge_state.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`
 - [ ] Dashboard Vrienden-badge semantiek hersteld: menu-item `Vrienden` toont nu alleen nog openstaande ontvangen vriendschapsverzoeken via `/friends/pending`, niet langer ongelezen privéberichten uit `/messages/unread`
