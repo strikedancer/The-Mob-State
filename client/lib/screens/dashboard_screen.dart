@@ -135,6 +135,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   static const double _wideDesktopBreakpoint = 1200;
 
   int _unreadCount = 0;
+  int _pendingFriendRequestCount = 0;
 
   void _openPlayerProfile(Player player) {
     Navigator.push(
@@ -181,7 +182,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
       eventProvider.connect();
-      _loadUnreadCount();
+      _refreshDashboardBadges();
       _setupSSEListener();
       _startPlayerRefreshTimer();
       _checkPremiumPopupOnOpen();
@@ -210,6 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }
 
       await authProvider.refreshPlayer();
+      await _refreshDashboardBadges();
     });
   }
 
@@ -224,6 +226,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _loadUnreadCount();
       }
     });
+  }
+
+  Future<void> _refreshDashboardBadges() async {
+    await Future.wait<void>([
+      _loadUnreadCount(),
+      _loadPendingFriendRequestCount(),
+    ]);
   }
 
   Future<void> _loadUnreadCount() async {
@@ -273,6 +282,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
     } catch (e, stackTrace) {
       print('[Dashboard] Error loading unread count: $e');
       print('[Dashboard] Stack trace: $stackTrace');
+    }
+  }
+
+  Future<void> _loadPendingFriendRequestCount() async {
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.get('/friends/pending');
+
+      if (response.statusCode == 200) {
+        if (response.body.isEmpty) {
+          if (mounted) {
+            setState(() => _pendingFriendRequestCount = 0);
+          }
+          return;
+        }
+
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final params = data['params'] as Map<String, dynamic>?;
+        final requests = params?['requests'] as List<dynamic>?;
+
+        if (mounted) {
+          setState(() {
+            _pendingFriendRequestCount = requests?.length ?? 0;
+          });
+        }
+      } else if (mounted) {
+        setState(() => _pendingFriendRequestCount = 0);
+      }
+    } catch (e) {
+      print('[Dashboard] Error loading pending friend requests: $e');
     }
   }
 
@@ -717,7 +756,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: Icons.group,
             label: l10n.friends,
             section: _WebSection.friends,
-            badge: _unreadCount,
+            badge: _pendingFriendRequestCount,
           ),
           (
             icon: Icons.inventory,
@@ -1806,13 +1845,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   context,
                                   icon: Icons.group,
                                   label: l10n.friends,
-                                  badge: _unreadCount,
+                                  badge: _pendingFriendRequestCount,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => const FriendsScreen(),
                                     ),
-                                  ).then((_) => _loadUnreadCount()),
+                                  ).then((_) => _refreshDashboardBadges()),
                                 ),
                                 _buildMenuTile(
                                   context,
