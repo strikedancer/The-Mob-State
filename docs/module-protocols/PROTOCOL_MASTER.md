@@ -27,6 +27,7 @@ Minimum output bij implementatie:
 - Noem welke protocollen zijn toegepast.
 - Noem welke cross-module checks uitgevoerd zijn.
 - Bevestig expliciet dat alle nieuwe en gewijzigde tekst, labels, meldingen en flows meertalig zijn uitgewerkt (minimaal NL + EN).
+- Bevestig expliciet dat `Help & Uitleg` is gecontroleerd en waar nodig is bijgewerkt voor de wijziging of nieuwe module.
 
 ## Nieuw Systeem: Auto Protocol Bootstrap (Verplicht)
 
@@ -36,7 +37,8 @@ Verplichte acties:
 1. Maak een nieuw protocolbestand in `docs/module-protocols/` op basis van `PROTOCOL_TEMPLATE.md`.
 2. Voeg het nieuwe protocol toe aan de index in `docs/module-protocols/README.md`.
 3. Update in dit bestand de Cross-Module Dependency Map als er nieuwe koppelingen zijn.
-4. Vermeld in de delivery-output dat protocol bootstrap is uitgevoerd.
+4. Controleer of `Help & Uitleg` voor het nieuwe systeem of de nieuwe module moet worden uitgebreid en werk dit direct mee bij.
+5. Vermeld in de delivery-output dat protocol bootstrap is uitgevoerd.
 
 Acceptatie-eis:
 - Een nieuw systeem is niet "done" zonder bijbehorend protocol en index-verwijzing.
@@ -109,6 +111,7 @@ Implementatievoorkeur:
 - Multilanguage is een harde eis voor alles wat nieuw wordt gemaakt of aangepast en tekst of UX-signalen bevat (minimaal NL + EN).
 - Geen enkele wijziging is "done" als nieuwe of gewijzigde labels, knoppen, foutmeldingen, succesmeldingen, dialogs, help-content, notificaties of admin/player UI-tekst maar in 1 taal aanwezig zijn.
 - Nieuwe features en refactors mogen geen bestaande NL/EN pariteit breken; werk ontbrekende vertalingen direct mee bij in dezelfde wijziging.
+- Bij aanpassingen of nieuwe modules is het verplicht om te controleren of `Help & Uitleg` nog klopt; als player-gedrag, flows, uitleg of terminologie verandert, moet de help-content in dezelfde wijziging worden bijgewerkt.
 - NL en EN tekst altijd synchroon houden.
 - Geen regressies op mobiel, tablet, desktop.
 - Duidelijke feedback voor succes/foutstatus behouden.
@@ -130,6 +133,7 @@ Implementatievoorkeur:
 6. Verifieer cross-module gedrag (minimaal 1 gekoppelde module testen).
 7. Verifieer dat Admin/logging de wijziging correct weergeeft als die module-impact heeft.
 8. Verifieer dat alle nieuwe/gewijzigde player-facing teksten in NL en EN aanwezig zijn.
+9. Verifieer dat `Help & Uitleg` nog klopt voor de gewijzigde of nieuw toegevoegde module/flow.
 
 ## Flutter Analyze Hang Recovery (Windows)
 

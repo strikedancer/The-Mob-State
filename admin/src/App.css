@@ -24,6 +24,10 @@
   min-height: calc(100vh - 150px);
 }
 
+.admin-sidebar-backdrop {
+  display: none;
+}
+
 .page-content,
 .content-wrapper,
 .content-inner {
@@ -43,6 +47,56 @@
     top: 0;
     z-index: 1030;
   }
+
+  .navbar .container-fluid {
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .navbar .nav {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    row-gap: 0.5rem;
+  }
+
+  .admin-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1040;
+    border: 0;
+    padding: 0;
+    background: rgba(15, 23, 42, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .admin-sidebar-backdrop.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sidebar.sidebar-expand-lg {
+    z-index: 1045;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .page-header-content {
+    gap: 0.75rem;
+  }
+
+  .page-header .ms-lg-auto {
+    width: 100%;
+  }
+
+  .page-header .ms-lg-auto .d-flex {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 }
 
 /* Improved touch target sizes */
@@ -61,10 +115,58 @@
     font-size: 16px;
     padding: 0.75rem 1rem;
   }
+
+  .content {
+    padding: 0.85rem;
+  }
+
+  .page-header .breadcrumb {
+    flex-wrap: wrap;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0.5rem;
+  }
+
+  .admin-modal,
+  .admin-modal-large {
+    width: 100%;
+    max-height: calc(100vh - 1rem);
+    border-radius: 1rem 1rem 0.5rem 0.5rem;
+    padding: 1rem;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+
+  .table-container .data-table,
+  .table-responsive > .table {
+    min-width: 640px;
+  }
+
+  .table-container::after,
+  .table-responsive::after {
+    content: '';
+    display: block;
+    width: 1rem;
+    height: 1px;
+  }
 }
 
 .table-container {
   overflow-x: auto;
+}
+
+.table-container,
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-overlay {

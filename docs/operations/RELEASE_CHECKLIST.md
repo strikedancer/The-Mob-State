@@ -15,6 +15,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Push lifecycle guardrail toegevoegd: eerder toegestane web/PWA push moet na refresh, herstart of nieuwe build automatisch opnieuw aan het actuele device-token worden gekoppeld zonder handmatige re-enable door de speler
   - Bestanden: `docs/module-protocols/notifications.md`
+- [ ] Harde Help & Uitleg-eis aangescherpt in master protocol: bij aanpassingen of nieuwe modules moet altijd gecontroleerd worden of de player-help nog klopt en moet help-content in dezelfde wijziging mee worden bijgewerkt als gedrag of uitleg verandert
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
 - [ ] Security module hersteld en uitgebreid: armor-aankoop gebruikt weer `backend/content/security.json`, lijfwachten rekenen nu elke 24 uur systeemloon af en lopen weg bij wanbetaling, armor slijt na aanvallen waardoor effectieve bescherming afneemt en op 100% schade volledig verdwijnt, en hetzelfde onbeschadigde vest kan niet opnieuw gekocht worden terwijl armor als single active slot blijft werken
@@ -183,6 +185,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Admin responsive fix: mobiele hamburger opent nu echt het sidemenu via React-state + overlay, sluit weer op overlay/Escape/tabwissel, topbar/page-header wrappen beter op smallere schermen, en admin-tabellen/modals gebruiken nu mobielere spacing, full-width acties en betrouwbare horizontale scroll
+  - Bestanden: `admin/src/App.tsx`, `admin/src/App.css`
 - [ ] Admin support ticket close-guard UX: ticketdetail toont nu expliciet dat open todo's `resolved`/`closed`/`archived` blokkeren en archiveeractie is disabled zolang gekoppelde todo's niet zijn afgerond
   - Bestanden: `admin/src/App.tsx`
 - [ ] Admin support ticket/todo actie-fix: ticketdetail kan nu statuswijzigingen zonder reply opslaan, heeft een expliciete archiveeractie, en support todo updates gebruiken weer het juiste admin endpoint voor losse versus ticket-gekoppelde todo's

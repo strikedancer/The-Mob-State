@@ -669,6 +669,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState<TabType>('dashboard')
   const [isTopbarScrolled, setIsTopbarScrolled] = useState(false)
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   
   // Players state
   const [players, setPlayers] = useState<Player[]>([])
@@ -999,6 +1000,40 @@ function App() {
       void loadSupportTodos(supportTodoStatusFilter)
     }
   }, [isAuthenticated, activeTab, supportTodoStatusFilter])
+
+  useEffect(() => {
+    const syncMobileSidebarState = () => {
+      if (window.innerWidth >= 992) {
+        setIsMobileSidebarOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', syncMobileSidebarState)
+    syncMobileSidebarState()
+
+    return () => window.removeEventListener('resize', syncMobileSidebarState)
+  }, [])
+
+  useEffect(() => {
+    document.body.classList.toggle('admin-mobile-sidebar-open', isMobileSidebarOpen)
+
+    return () => {
+      document.body.classList.remove('admin-mobile-sidebar-open')
+    }
+  }, [isMobileSidebarOpen])
+
+  useEffect(() => {
+    if (!isMobileSidebarOpen) return
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileSidebarOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isMobileSidebarOpen])
 
   useEffect(() => {
     const loadRecentActivities = async () => {
@@ -2919,11 +2954,20 @@ function App() {
     setUsername('')
     setPassword('')
     setActiveTab('dashboard')
+    setIsMobileSidebarOpen(false)
   }
 
   const handleTabSelect = (tabId: TabType) => {
     setActiveTab(tabId)
-    document.body.classList.remove('sidebar-mobile-expanded')
+    setIsMobileSidebarOpen(false)
+  }
+
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen((current) => !current)
+  }
+
+  const closeMobileSidebar = () => {
+    setIsMobileSidebarOpen(false)
   }
 
   const toggleTheme = () => {
@@ -2987,7 +3031,13 @@ function App() {
       <div className={`navbar navbar-dark navbar-expand-lg navbar-static border-bottom border-bottom-white border-opacity-10 ${isTopbarScrolled ? 'shadow-sm' : ''}`}>
         <div className="container-fluid">
           <div className="d-flex d-lg-none me-2">
-            <button type="button" className="navbar-toggler sidebar-mobile-main-toggle rounded-pill" aria-label="Toggle sidebar">
+            <button
+              type="button"
+              className="navbar-toggler sidebar-mobile-main-toggle rounded-pill"
+              aria-label="Toggle sidebar"
+              aria-expanded={isMobileSidebarOpen}
+              onClick={toggleMobileSidebar}
+            >
               <i className="ph-list" />
             </button>
           </div>
@@ -3023,7 +3073,14 @@ function App() {
       </div>
 
       <div className="page-content">
-        <div className="sidebar sidebar-dark sidebar-main sidebar-expand-lg">
+        <button
+          type="button"
+          className={`admin-sidebar-backdrop ${isMobileSidebarOpen ? 'is-visible' : ''}`}
+          aria-label="Close sidebar"
+          onClick={closeMobileSidebar}
+        />
+
+        <div className={`sidebar sidebar-dark sidebar-main sidebar-expand-lg ${isMobileSidebarOpen ? 'sidebar-mobile-expanded' : ''}`}>
           <div className="sidebar-content">
             <div className="sidebar-section">
               <div className="sidebar-section-body d-flex justify-content-center">
@@ -3032,7 +3089,12 @@ function App() {
                   <button type="button" className="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-control sidebar-main-resize d-none d-lg-inline-flex">
                     <i className="ph-arrows-left-right" />
                   </button>
-                  <button type="button" className="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-lg-none">
+                  <button
+                    type="button"
+                    className="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-lg-none"
+                    aria-label="Close sidebar"
+                    onClick={closeMobileSidebar}
+                  >
                     <i className="ph-x" />
                   </button>
                 </div>
