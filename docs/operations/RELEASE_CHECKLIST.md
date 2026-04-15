@@ -17,6 +17,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/notifications.md`
 - [ ] Harde Help & Uitleg-eis aangescherpt in master protocol: bij aanpassingen of nieuwe modules moet altijd gecontroleerd worden of de player-help nog klopt en moet help-content in dezelfde wijziging mee worden bijgewerkt als gedrag of uitleg verandert
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Harde protocol-koppelingseis aangescherpt in master protocol: bij nieuwe systemen of modules moeten altijd alle relevante bestaande protocollen worden nagelopen op koppelingen, overlap en regressierisico's voordat iets als done geldt
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
 - [ ] Security module hersteld en uitgebreid: armor-aankoop gebruikt weer `backend/content/security.json`, lijfwachten rekenen nu elke 24 uur systeemloon af en lopen weg bij wanbetaling, armor slijt na aanvallen waardoor effectieve bescherming afneemt en op 100% schade volledig verdwijnt, en hetzelfde onbeschadigde vest kan niet opnieuw gekocht worden terwijl armor als single active slot blijft werken

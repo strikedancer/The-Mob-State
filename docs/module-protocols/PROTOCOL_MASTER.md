@@ -22,6 +22,7 @@ Dit bestand is de enige bijlage, maar niet de enige bron.
 
 Verplichte regel:
 - Bij elke taak moeten alle relevante module-protocollen gelezen worden, inclusief afhankelijkheden.
+- Bij nieuwe systemen of modules is het verplicht om actief alle bestaande protocollen te scannen op mogelijke koppelingen, afhankelijkheden, overlap en regressierisico's; een nieuw systeem is niet klaar zonder expliciete protocol-impactcheck.
 
 Minimum output bij implementatie:
 - Noem welke protocollen zijn toegepast.
@@ -37,11 +38,13 @@ Verplichte acties:
 1. Maak een nieuw protocolbestand in `docs/module-protocols/` op basis van `PROTOCOL_TEMPLATE.md`.
 2. Voeg het nieuwe protocol toe aan de index in `docs/module-protocols/README.md`.
 3. Update in dit bestand de Cross-Module Dependency Map als er nieuwe koppelingen zijn.
-4. Controleer of `Help & Uitleg` voor het nieuwe systeem of de nieuwe module moet worden uitgebreid en werk dit direct mee bij.
-5. Vermeld in de delivery-output dat protocol bootstrap is uitgevoerd.
+4. Loop actief alle bestaande relevante protocollen langs om te controleren welke modules of cross-cutting regels door het nieuwe systeem geraakt kunnen worden en welke regressies voorkomen moeten worden.
+5. Controleer of `Help & Uitleg` voor het nieuwe systeem of de nieuwe module moet worden uitgebreid en werk dit direct mee bij.
+6. Vermeld in de delivery-output dat protocol bootstrap is uitgevoerd en welke protocol-koppelingen zijn nagekeken.
 
 Acceptatie-eis:
 - Een nieuw systeem is niet "done" zonder bijbehorend protocol en index-verwijzing.
+- Een nieuw systeem is niet "done" zonder expliciete controle van protocol-koppelingen en regressierisico's voor bestaande modules.
 
 ## Cross-Module Dependency Map (Minimaal)
 
@@ -134,6 +137,7 @@ Implementatievoorkeur:
 7. Verifieer dat Admin/logging de wijziging correct weergeeft als die module-impact heeft.
 8. Verifieer dat alle nieuwe/gewijzigde player-facing teksten in NL en EN aanwezig zijn.
 9. Verifieer dat `Help & Uitleg` nog klopt voor de gewijzigde of nieuw toegevoegde module/flow.
+10. Bij nieuwe systemen of modules: bevestig dat alle relevante bestaande protocollen op koppelingen en regressierisico's zijn nagelopen.
 
 ## Flutter Analyze Hang Recovery (Windows)
 
