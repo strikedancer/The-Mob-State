@@ -26,6 +26,7 @@ Verplichte regel:
 Minimum output bij implementatie:
 - Noem welke protocollen zijn toegepast.
 - Noem welke cross-module checks uitgevoerd zijn.
+- Bevestig expliciet dat alle nieuwe en gewijzigde tekst, labels, meldingen en flows meertalig zijn uitgewerkt (minimaal NL + EN).
 
 ## Nieuw Systeem: Auto Protocol Bootstrap (Verplicht)
 
@@ -50,50 +51,34 @@ Acceptatie-eis:
 - Payments/Premium -> Crew, Hitlist/Security, Garage, TuneShop, Events, Dashboard, Admin
 - Travel -> Properties, Drugs, Nightclub, Smuggling, Admin
 - Admin -> Alle gameplay modules met logs, assets of economy-impact
+- Player-facing lists/avatars/namen -> Player Profile
+- Flutter Web/Mobile/PWA shell behavior -> Frontend Platform, Notifications
 
+## Wat Hier Wel En Niet Hoort
 
-## Support Tickets UI/UX Update (2026-04-14)
+Dit bestand is de orchestrator, niet de detail-specificatie van een module.
 
-- Support Tickets is nu een eigen scherm, direct bereikbaar via het hoofdmenu (“Support”/“Support Tickets”).
-- Niet langer embedded in het Help-scherm; verwijzing in Help alleen als uitleg of link.
-- Navigatie en protocol zijn aangepast: dedicated route, eigen menu-entry, responsive en multilanguage.
-- Player Support blijft compact, maar toont wel het eigen ticketoverzicht en de support-thread zodat een speler direct vanuit het Support-scherm kan reageren.
-- Supportreacties horen in de support-thread zelf; gebruik geen speler-inbox/direct messages meer als apart gesprekskanaal voor ticketupdates.
-- Push en dashboard-badges mogen supportupdates signaleren, maar het gesprek zelf blijft in het Support-scherm.
-- Tickets moeten verwijderbaar zijn vanuit beheer; admin heeft daarom een expliciete delete-actie op ticketdetail.
-- Speler moet bij ticket-aanmaak optioneel een screenshot/afbeelding kunnen uploaden; admin-detail moet die bijlagen zichtbaar tonen.
-- Attachment-preview in admin moet in-context blijven: klik op een ticketafbeelding opent een vergrote preview/lightbox binnen admin, met optie om het origineel apart te openen, en mag de beheerder niet teruggooien naar het dashboard of ticketcontext verliezen.
-- Support todo's zijn centraal beheerwerk en niet langer alleen per ticket verborgen in ticketdetail; gebruik een aparte admin todo-pagina met lijst, statusbeheer en mogelijkheid om zowel losse als ticket-gekoppelde todo's aan te maken.
-- Bestaande support todo's moeten vanuit admin direct aanklikbaar en volledig beheerbaar blijven: open/bewerk status, voeg interne opmerkingen toe, open gekoppeld ticket en verwijder todo's zonder verborgen of ontbrekende acties.
-- Admin ticketlijst moet operationeel scanbaar zijn en minimaal tonen: spelernaam, onderwerp, aantal afbeeldingen, tijd, datum en status.
-- Ticketstatus moet los opslaan van public reply mogelijk blijven; een admin mag assignment, prioriteit, sluiten of archiveren zonder verplichte extra spelertekst.
-- Gearchiveerde tickets horen niet meer zichtbaar te zijn in het speler Support-scherm; gesloten tickets moeten na 3 dagen automatisch naar archived doorstromen.
-- Tickets mogen pas naar `resolved`, `closed` of `archived` zodra alle gekoppelde support todo's afgerond zijn; unfinished todo's blokkeren die eindstatussen dus hard in backend en admin.
-- Cross-module checks: Dashboard, Admin, Notifications, Help (alleen als uitleg), i18n.
+Wel hier houden:
+- workflow voor protocol-resolutie
+- cross-module dependency map
+- generieke backend-, QA-, i18n- en UX-guardrails die voor meerdere modules gelden
+- regels voor het aanmaken en koppelen van nieuwe protocollen
 
-Zorg dat alle documentatie, help-content en QA-checks deze nieuwe navigatie volgen.
-Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX compact houden, support-thread in het Support-scherm intact houden, geen inbox/direct-message regressie voor supportupdates introduceren, admin delete-flow mee testen, attachment-weergave verifiëren en geen regressie op ticket-aanmaakfeedback in NL/EN.
+Niet hier houden:
+- module-specifieke lifecycle-regels
+- scherm-specifieke UX-beslissingen
+- endpoint- of datacontractdetails van één feature
+- tijdelijke projectbesluiten die al een logische plek hebben in een module-protocol
 
-## Support Workflow Maturity Guardrails (2026-04-14)
+Voorbeelden:
+- Support workflow-regels horen in `support-tickets.md`
+- Security lifecycle-regels horen in `security.md`
+- Player profile/privacy/navigation regels horen in `player-profile.md`
+- Flutter/web/mobile/PWA shell-, asset- en cache-regels horen in `frontend-platform.md`
+- Push/inbox/service-worker regels horen in `notifications.md`
+- Dashboard/Properties/Nightclub/Drugs details horen in hun eigen module-protocol
 
-- Support is niet langer alleen een simpel ticket + reply-flow; beheer werkt nu met triage-statussen, prioriteit, toewijzing, reply templates en interne notities.
-- Public replies blijven gekoppeld aan support-thread + optionele push; interne notities en todo-comments blijven strikt admin-only.
-- Gebruik voor support todos overal hetzelfde operationele model: eigenaar, prioriteit, vervaldatum, modulekoppeling en interne commenthistorie.
-- Player intake mag rijkere context meesturen (module, referentie, platform, locale, screenshot), maar de player-UX moet bewust compact en laagdrempelig blijven.
-- Admin ticketlijsten moeten scanbaar blijven op status, prioriteit, behandelaar, leeftijd en laatste actor; workflow-uitbreiding mag de overzichtelijkheid niet verminderen.
-- Ticket lifecycle moet expliciet bewaakt worden: `closed` is tijdelijke nazorgstatus, `archived` is verborgen eindstatus voor spelers, en auto-archivering na 3 dagen gesloten staat is verplicht.
-- Ticket lifecycle en todo lifecycle moeten consistent zijn: een ticket mag geen eindstatus krijgen zolang gekoppelde todo's nog `open`, `in_progress` of `blocked` zijn.
-- Elke support-wijziging moet cross-module worden gecheckt tegen Dashboard, Notifications, Admin, Help-content en release-documentatie.
-
-## Module Richtlijnen (Ingebouwd)
-
-- Dashboard: kritieke kaarten en statussen moeten zichtbaar blijven bij partial failure.
-- Drugs: actieve producties en eigendom/upgrades moeten zichtbaar blijven na refresh, navigatie en travel.
-- Properties: eigendom moet direct terugkomen in UI voor de eigenschappenstroom (house/apartment/warehouse/nightclub); shop items mogen hier niet verschijnen. Nightclub-aankoop via Properties start het nachtclub-systeem; beheer vindt daarna plaats in de Nightclub-module.
-- Nightclub: draait als eigen systeem met idempotente venue setup en mag niet afhankelijk zijn van zichtbaarheid in de algemene Properties-module.
-- Admin: player activity logging moet complete details tonen (type, bron, duur/tijd).
-
-Als een wijziging meerdere modules raakt, gelden alle relevante bullets tegelijk.
+Als een wijziging meerdere modules raakt, lees en combineer je nog steeds alle relevante module-protocollen tegelijk.
 
 ## Verplicht Bij Backend Wijzigingen
 
@@ -121,7 +106,9 @@ Implementatievoorkeur:
 
 ## i18n en UX Basisregels
 
-- Multilanguage is verplicht voor alle player-facing tekst (minimaal NL + EN).
+- Multilanguage is een harde eis voor alles wat nieuw wordt gemaakt of aangepast en tekst of UX-signalen bevat (minimaal NL + EN).
+- Geen enkele wijziging is "done" als nieuwe of gewijzigde labels, knoppen, foutmeldingen, succesmeldingen, dialogs, help-content, notificaties of admin/player UI-tekst maar in 1 taal aanwezig zijn.
+- Nieuwe features en refactors mogen geen bestaande NL/EN pariteit breken; werk ontbrekende vertalingen direct mee bij in dezelfde wijziging.
 - NL en EN tekst altijd synchroon houden.
 - Geen regressies op mobiel, tablet, desktop.
 - Duidelijke feedback voor succes/foutstatus behouden.
@@ -129,59 +116,9 @@ Implementatievoorkeur:
 - Bij lange beheerpagina's: groepeer secties in tabs i.p.v. eindeloze verticale stapels.
 - Gebruik waar mogelijk visuele selectiekaarten (images) voor entities zoals staff/items; altijd met icon-fallback.
 - Gebruik responsive/clamped hoogtes voor tabpanelen i.p.v. één vaste hoogte.
-- Voor web/iOS homescreen push: zorg altijd voor een expliciete in-app permissie-entrypoint (bijv. in Settings) die `requestPermission` triggert op user gesture; vertrouw niet alleen op login/startup-init.
-- Web push FCM payload: stuur naar web-tokens altijd een **data-only** bericht (geen `notification`-key). FCM toont anders automatisch een melding én de service worker (`onBackgroundMessage`) doet dat ook → dubbele notificatie. De service worker leest `payload.data.title` en `payload.data.body` als fallback. Native (Android/iOS) tokens blijven het `notification`-veld ontvangen.
-- Safari/iOS PWA (homescreen-app) verwijdert het `notification`-veld uit FCM-berichten voordat ze bij de service worker komen (`onBackgroundMessage` ontvangt `payload.notification === undefined`). Dit levert "you have a new notification" op als de service worker geen `payload.data.body` fallback heeft. Oplossing: verplicht `title` en `body` ook in `payload.data` meesturen — wat de data-only web-aanpak al afdwing.
-- Crypto marktmeldingen (`crypto.market.regime`, `crypto.market.news`) worden alleen verstuurd naar spelers met een actieve positie (`quantity > 0` in `crypto_holdings`). Stuur marktmeldingen nooit naar alle spelers tegelijk — filter altijd op actief portfolio via `getActiveCryptoPlayerIds()`.
-- Bij profiel-like functionaliteit: zorg dat `profile_likes` runtime idempotent gebootstrapt kan worden (of expliciet als deploy-stap), zodat schema-drift niet leidt tot player-facing 500-fouten op `/player/:id/profile/like`.
-- Cooldown-expiry pushmeldingen worden gepland via `setTimeout` direct na het instellen van de cooldown. Dit geldt voor: `crime` (90s), `job` (900s), `vehicle_theft` (300s), `boat_theft` (600s), `prostitute_recruit` (300s). Meldingen overleven geen server-restart — dit is acceptabel bij korte cooldowns. Voeg nieuwe cooldown-types toe in **zowel** `notificationService.sendCooldownExpiredNotification` (`actionNames`-map) **als** de `NOTIFY_ACTIONS`-set in `cooldownService.setCooldown()` (of een equivalente `setTimeout` in de eigen service).
-- Bankoverschrijvingen: de ontvanger krijgt altijd een pushmelding via `notificationService.sendBankTransferReceivedNotification(...)` na de `bank.transfer_received` worldevent. Fire-and-forget (`.catch(() => {})`), nooit blocking.
-- Bij jail/bail flows: na succesvolle borgbetaling altijd opnieuw jail+cooldown state ophalen (geen losse crimes-refresh), zodat overgang van jail overlay naar cooldown overlay betrouwbaar blijft. Eigen borgbetaling (`/player/pay-bail`) mag niet achter een extra prison cooldown hangen; betaling moet direct verwerken en overlay direct verdwijnen.
-- Borgbedragen in jail-flow moeten meeschalen met resterende celstraf, niet alleen met wanted level. Hanteer een dynamische berekening (bijv. wanted-base +/of tijd-base) zodat 2 uur cel merkbaar duurder is dan 10 minuten.
-- Overlay UX mobile: jail/cooldown overlays moeten compacte responsive header-typografie gebruiken en feedback via zichtbare snackbar/toast tonen, zodat meldingen niet buiten viewport vallen.
-- Dashboard web-navigatie: klik op dezelfde sectie moet een expliciete remount/refresh triggeren (zelfde pagina opnieuw laden i.p.v. no-op).
-
-## Flutter Web Asset Pad Conventie (Verplicht)
-
-- Voor runtime `Image.asset(...)` in Flutter web gebruik standaard keys onder `assets/images/...` (dit matcht de bestaande bundle-layout).
-- Let op web output-pad: assets onder `assets/images/...` worden in `build/web` fysiek onder `assets/assets/images/...` geplaatst; directe URL-fallbacks moeten daarom dit canonical pad ondersteunen.
-- Vermijd nieuwe `images/...` keys in gameplay-schermen; die leiden in productie snel tot 404-routes op `/assets/images/*`.
-- Login/landing/rechtbank backgrounds vallen ook onder deze regel; gebruik dus `assets/images/backgrounds/...` in `Image.asset(...)`.
-- Voor kritieke visuals (zoals login achtergrond) implementeer altijd een fallback-keten: primaire asset key -> legacy key -> directe `/assets/images/...` URL -> visuele fallback.
-- Bij URL-resolving helpers voor web-assets: gebruik base-relative paden (geen root-absolute `/assets/...`), zodat deployments op subpaths ook correct assets laden.
-- Voor login/landing backgrounds op Flutter web: houd ook een static public fallback beschikbaar onder `web/images/backgrounds/*` en gebruik indien nodig een directe network fallback naar `images/backgrounds/*`.
-- Voor brede gameplay image-loading op web: gebruik een centrale `/images/*` runtime-route (via helper + nginx alias naar Flutter bundle) zodat crimes/jobs/avatars/badges op alle omgevingen hetzelfde pad gebruiken.
-- Voor productie-deploys met veel beeldmateriaal: images worden **niet** gebundeld in het Docker-image. De client Dockerfile verwijdert `build/web/assets/assets/images/` na de Flutter build. `AssetManifest.json` blijft intact zodat Flutter web HTTP-requests blijft maken die nginx afhandelt via de externe mount.
-- Alle image-routes (`/images/*`, `/assets/assets/images/*`, `/assets/images/*`) verwijzen uitsluitend naar de externe runtime mount (`/mnt/external-images`). Er is geen bundled fallback — ontbrekende images resulteren in een `404` die de `errorBuilder` in Flutter triggert.
-- Als `client/.dockerignore` `assets/images/` uitsluit, moet de client Docker build vóór `flutter build web` alle in `pubspec.yaml` gedeclareerde asset-directories (`flutter.assets`) aanmaken (stub dirs). Zonder die bootstrap faalt Flutter met `unable to find directory entry in pubspec.yaml`.
-- Voor gameplay-schermen met dynamische afbeeldingen (drugs, facilities, voertuigen, black market, garage, marina, catalogi): gebruik op web altijd `WebAssetHelper.image(...)`, **nooit** losse `Image.asset(...)`. Dit geldt ook voor de interne `Image.asset`-aanroepen in `OverlayImage` — die widget gebruikt intern al `WebAssetHelper` (gefixed). Gebruik `OverlayImageBuilder()` voor voertuig-afbeeldingen met conditionele overlays; dit is web-safe.
-- Voor achtergrondafbeeldingen in schermen (bijv. garage, marina): gebruik `Stack(fit: StackFit.expand, children: [Positioned.fill(child: Opacity(opacity: 0.3, child: WebAssetHelper.image(...))), Scaffold(...)])` in plaats van `Container(decoration: BoxDecoration(image: DecorationImage(image: AssetImage(...))))`. `AssetImage` in `DecorationImage` ondersteunt geen network fallback.
-- Na refactors van `Container(decoration: BoxDecoration(image: ...))` naar `Stack(children: [...])`: controleer expliciet de sluitende `]` van `children` en draai minimaal `flutter analyze` of een web build vóór push; een missende bracket geeft pas bij build een harde compile-fout.
-- Scope van runtime external storage is **alle** assets onder `client/assets/images/**`. Houd de runtime map-structuur gelijk aan de repository-structuur (rsync).
-- Na server-deploy: altijd `rsync -av --delete client/assets/images/ runtime/client-images/` uitvoeren voordat de container herbouwd wordt, anders zijn alle afbeeldingen leeg.
-- Bij runtime image updates zonder rebuild: hanteer versie-bestandsnamen (`*.v2.png`) of expliciete cache-invalidering om stale image caches te voorkomen.
-- Voor kaarten/lijsten met dynamische image-bestanden (zoals jobs/crimes): implementeer altijd een visuele `errorBuilder` fallback zodat ontbrekende assets niet als lege/broken tiles eindigen.
-- In gedeelde web image helpers: hanteer `Image.asset(...)` als primaire renderpad en gebruik network-URL alleen als fallback, zodat hosting/proxy variaties minder snel alle visuals breken.
-- Voor web image helpers met network fallback: probeer meerdere compatibele URL-routes in volgorde (`images/...` -> `assets/assets/images/...` -> `assets/images/...`) voordat een icon-fallback wordt getoond, zodat reverse-proxy/nginx routeverschillen geen complete voertuig/drugs-catalogi breken.
-- Normaliseer runtime image-strings altijd in de helper vóór render/fallback (bijv. varianten zoals `vehicles/foo.png`, `assets/images/vehicles/foo.png`, `/assets/assets/images/vehicles/foo.png` en dubbele segmenten zoals `vehicles/vehicles/...`). Zo blijven catalogi en market kaarten werken bij gemixte dataformaten.
-- Voor Properties-data contracten: lever `maxLevel` expliciet vanuit backend (of leid deze server-side af uit `upgradeOptions`) zodat client-level badges/upgrade-knoppen nooit `3/3` tonen terwijl upgrades nog mogelijk zijn.
-- Voor residentiële properties (house/apartment): bewaak economische volgorde in balans-updates; een appartement hoort niet duurder geprijsd te zijn dan een huis tenzij dit expliciet als designwijziging is vastgelegd in release-notes.
-- Voor Inventory (op zak): tools, wapens en munitie moeten in dezelfde refresh zichtbaar blijven; gebruik robuuste parse-fallbacks op weapon-inventory responses en slik API-parsefouten niet stil weg als dat hele secties leeg trekt.
-- Voor property-opslag van wapens (house/apartment): storage-detail payload moet altijd een stabiele withdraw-key bevatten (`weaponId`), en client moet fallback kunnen lezen op `id`/`drugType` voor legacy data zodat opgeslagen wapens altijd zichtbaar en opneembaar blijven.
-- Voor mobiele schermen met filters + contentlijsten (zoals Inventory/Storage en Help/Uitleg): gebruik bij voorkeur één doorlopende verticale scrollcontainer in compacte layout. Vermijd combinaties van vaste header + geneste `Expanded`/interne lijst die scroll kunnen blokkeren op kleine schermen. Voor Help/Uitleg op mobiel: gebruik een **vaste onderwerp-selector** (dropdown/chips) met **inline detail-content** in dezelfde scrollcontainer i.p.v. aparte topic-kaarten + modal-sheet flow. Houd de help-header compact: alleen icon + titel, zonder extra badge-rij of lange subtitel.
-  - **KRITIEK**: Als een scherm in `Expanded` context ingebed is (bijv. dashboard web-views): **gebruik `ListView` (niet `SingleChildScrollView`)**. ListView accepteert oneindige hoogte en scrolle correct; SingleChildScrollView past zich aan content-hoogte aan en blokkeert scroll als content in viewport past.
-  - Pattern: `ScrollConfiguration(...dragDevices...) { child: ListView(physics: AlwaysScrollableScrollPhysics(), children: [...]) }`
-- Voor TabBar + TabBarView schermen (bijv. Inventory): plaats de vaste header (weapon selector, tabs) boven het TabBarView in een Column, stel TabBarView physics in op `NeverScrollableScrollPhysics()`, en laat elke tab-content zelf scroll afhandelen (storage_tab met ListView, etc.). Dit vermijdt nested scroll conflicts tussen TabBarView en ListView.
-- Voor screens ingebed in dashboard web-views: als parent al een `ScrollConfiguration(dragDevices)` heeft, voeg **geen extra ScrollConfiguration** toe aan child-content (bijv. HelpScreen embedded mode). Inner ScrollConfiguration overschrijft outer behavior en blokkeert scroll. Standalone schermen (non-embedded) mogen hun eigen ScrollConfiguration hebben.
-- Voor Flutter web/PWA embedded views: forceer waar nodig `ScrollConfiguration(...dragDevices...)` op section-containers zodat touch-drag scroll op mobiel niet wordt geblokkeerd door platform-defaults of geneste shells.
-- Voor kritieke web-assets die structureel issues geven (avatars, crime-art, login backgrounds) gebruik bij voorkeur een gedeelde helper die op web direct naar de publieke HTTPS asset-URL resolvet in plaats van losse `AssetImage` aanroepen te verspreiden.
-- Bij helper-refactors over meerdere schermen: verifieer expliciet imports op alle aangepaste screens voordat een web build wordt gedeployed.
-- Productie-nginx mag compat-aliases bevatten voor legacy paden (`/assets/images/*` en `/assets/image/*`) zodat oude clients niet direct breken.
-- Voor nginx-routes naar external images (`/images/*`, `/assets/assets/images/*`, `/assets/images/*`, `/assets/image/*`): gebruik `alias /mnt/external-images/;` op prefix-locaties (`location ^~ ...`) en vermijd `try_files /mnt/external-images/...` patronen. Verkeerde `try_files` padresolutie geeft globale 404 op alle web-afbeeldingen.
-- Na elke productie client-update met image-wijzigingen: voer `git lfs pull --include="client/assets/**,client/images/**"` + `git lfs checkout` uit op de server vóór `docker compose ... --build`.
-- Post-deploy cache-eis: hard refresh verplicht; bij visuele regressies eerst Service Worker unregisteren en opnieuw laden voordat code als “stuk” wordt beschouwd.
-- Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js` en `main.dart.js` altijd met `Cache-Control: no-cache, must-revalidate` (of no-store voor service worker) zodat nieuwe releases zonder app-herinstallatie zichtbaar worden.
-- Voor chat/berichten UI: timestamps uit API/SSE altijd expliciet naar lokale tijd converteren (`DateTime.parse(...).toLocal()`) vóór formatting/rendering. Anders ontstaan vaste timezone-shifts (bijv. -2 uur) in gesprek- en berichtenweergave.
+- Voor cross-cutting Flutter/web/mobile/PWA shell-, asset- en embedded-view regels: zie `frontend-platform.md`.
+- Voor push-, inbox- en FCM/service-worker regels: zie `notifications.md`.
+- Voor profielprivacy, profielnavigatie en profielinteracties: zie `player-profile.md`.
 
 ## Minimale QA Checklist (Altijd Draaien)
 
@@ -226,62 +163,6 @@ Werk dit bestand bij als:
 - de algemene workflow verandert,
 - nieuwe verplichte checks gelden voor alle modules,
 - of een terugkerende productiebug extra guardrails nodig maakt.
-
-## Spelerprofiel Navigatie Standaard (Verplicht)
-
-Elke screen die een andere speler toont (naam, avatar, rank) **moet** navigatie naar diens profiel bieden.
-
-### Verplicht patroon
-
-```dart
-// 1. Import bovenaan
-import 'player_profile_screen.dart';
-
-// 2. Methode in de State-klasse
-void _openPlayerProfile(int playerId, String username) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => PlayerProfileScreen(playerId: playerId, username: username),
-    ),
-  );
-}
-
-// 3. Wrappen van avatar- en naam-widgets
-GestureDetector(
-  onTap: () => _openPlayerProfile(playerId, username),
-  child: /* Text(username) of CircleAvatar */,
-)
-```
-
-### Richtlijnen
-- Gebruik `color: Colors.lightBlue` op de naam-Text om klikbaarheid te signaleren.
-- Bewak altijd op nullable `playerId`: alleen klikbaar maken als `playerId != null` (of `> 0`).
-- Geldt voor: avatars, namen, leaderboard-rijen, gevangenenlijsten, eigenaarstekst, crew-leden, etc.
-
-### Profiel Privacy & Context (Verplicht)
-- Toon op een publiek spelersprofiel **geen live locatieveld** zoals huidig land/reislocatie als dat gameplay-intel lekt (o.a. hitlist/onderzoek).
-- In context-screens (zoals hitlist) moet profielweergave standaard als embedded content/modal tonen en niet de hoofdschermnavigatie doorbreken.
-
-### Screens waar dit is geïmplementeerd (✅)
-| Screen | Avatar | Naam |
-|---|---|---|
-| `crew_screen.dart` | ✅ | ✅ |
-| `friends_screen.dart` | ✅ | ✅ |
-| `activity_feed_screen.dart` | ✅ | ✅ |
-| `direct_messages_screen.dart` | ✅ | ✅ |
-| `dashboard_screen.dart` | ✅ eigen avatar | — |
-| `hitlist_screen.dart` | ✅ via callback | ✅ |
-| `trade_screen.dart` | ✅ | ✅ |
-| `chat_screen.dart` | ✅ | — |
-| `prison_screen.dart` | — | ✅ gevangenenlijst |
-| `prostitution_leaderboard_screen.dart` | — | ✅ leaderboard-rijen |
-| `red_light_districts_screen.dart` | — | ✅ eigenaarsnaam |
-
-### Screens nog te checken (❓)
-- `nightclub_screen.dart` — leaderboard heeft `ownerUsername` maar nog geen `ownerId` in API response
-- `events_screen.dart` — `player['username']` aanwezig, `player['id']` te verifiëren
-
----
 
 ## File Management & Repository Hygiene
 

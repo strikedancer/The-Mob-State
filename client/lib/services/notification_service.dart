@@ -16,6 +16,7 @@ class NotificationService {
   String? _fcmToken;
   String? get fcmToken => _fcmToken;
   bool _listenersRegistered = false;
+  bool _localNotificationsInitialized = false;
 
   static const Set<String> _cryptoNotificationTypes = {
     'crypto_trade_buy',
@@ -44,7 +45,7 @@ class NotificationService {
     }
 
     // Request permission for iOS and Web
-    NotificationSettings settings = await _messaging.requestPermission(
+    final settings = await _messaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -60,85 +61,34 @@ class NotificationService {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized ||
         settings.authorizationStatus == AuthorizationStatus.provisional) {
-      // Initialize local notifications for Android
-      if (!kIsWeb && Platform.isAndroid) {
-        // Create notification channel for Android 8.0+
-        const AndroidNotificationChannel channel = AndroidNotificationChannel(
-          'high_importance_channel',
-          'High Importance Notifications',
-          description: 'This channel is used for important notifications.',
-          importance: Importance.high,
-        );
-
-        await _localNotifications
-            .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin
-            >()
-            ?.createNotificationChannel(channel);
-
-        const AndroidInitializationSettings initializationSettingsAndroid =
-            AndroidInitializationSettings('@mipmap/ic_launcher');
-
-        const InitializationSettings initializationSettings =
-            InitializationSettings(android: initializationSettingsAndroid);
-
-        await _localNotifications.initialize(
-          initializationSettings,
-          onDidReceiveNotificationResponse: _onNotificationTap,
-        );
-      }
-
-      // Get FCM token (with service worker for web)
-      if (kIsWeb) {
-        // Register service worker for web push
-        try {
-          // Wait for service worker to be ready before getting token
-          await Future.delayed(Duration(milliseconds: 500));
-          _fcmToken = await _messaging.getToken(
-            vapidKey:
-                'BM8aWvMl_7R7fzsuRKBQ4ugAgKMeW1IW8_7emoc0u2cRkHNvIjGWkUHK45xuN0ctdMn-60NpdVyTfSIbLSXcKwU',
-          );
-        } catch (e) {
-          print('[NotificationService] ⚠️ Error getting web token: $e');
-          // Service worker might not be registered yet, that's okay
-        }
-      } else {
-        _fcmToken = await _messaging.getToken();
-      }
-
-      print('[NotificationService] FCM Token: $_fcmToken');
-
-      // Register token with backend
-      if (_fcmToken != null) {
-        await _registerTokenWithBackend(_fcmToken!);
-      }
-
-      if (!_listenersRegistered) {
-        // Listen for token refresh
-        _messaging.onTokenRefresh.listen((newToken) {
-          print('[NotificationService] Token refreshed: $newToken');
-          _fcmToken = newToken;
-          _registerTokenWithBackend(newToken);
-        });
-
-        // Handle foreground messages - ONLY for Android local notifications
-        // Web notifications are handled by the service worker, so skip the duplicate
-        if (!kIsWeb) {
-          FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
-        }
-
-        // Handle background messages
-        FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler,
-        );
-
-        // Handle notification taps when app is in background/terminated
-        FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
-        _listenersRegistered = true;
-      }
+      await _finishAuthorizedInitialization(registerWithBackend: true);
     } else {
       print('[NotificationService] Permission denied');
     }
+  }
+
+  Future<bool> syncAuthorizedSession() async {
+    print('[NotificationService] Syncing existing push permission/session...');
+
+    if (kIsWeb && !_supportsWebPushNotifications()) {
+      print(
+        '[NotificationService] Skipping push sync because current origin does not support web push.',
+      );
+      return false;
+    }
+
+    final settings = await _messaging.getNotificationSettings();
+    final authorized =
+        settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional;
+
+    if (!authorized) {
+      print('[NotificationService] Push permission not granted, skipping sync');
+      return false;
+    }
+
+    await _finishAuthorizedInitialization(registerWithBackend: true);
+    return _fcmToken != null && _fcmToken!.isNotEmpty;
   }
 
   Future<NotificationSettings> getNotificationSettings() {
@@ -149,6 +99,90 @@ class NotificationService {
     if (_fcmToken != null) {
       await _registerTokenWithBackend(_fcmToken!);
     }
+  }
+
+  Future<void> _finishAuthorizedInitialization({
+    required bool registerWithBackend,
+  }) async {
+    await _initializeLocalNotificationsIfNeeded();
+    await _refreshToken();
+
+    print('[NotificationService] FCM Token: $_fcmToken');
+
+    if (registerWithBackend && _fcmToken != null && _fcmToken!.isNotEmpty) {
+      await _registerTokenWithBackend(_fcmToken!);
+    }
+
+    _registerListenersIfNeeded();
+  }
+
+  Future<void> _initializeLocalNotificationsIfNeeded() async {
+    if (_localNotificationsInitialized || kIsWeb || !Platform.isAndroid) {
+      return;
+    }
+
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'high_importance_channel',
+      'High Importance Notifications',
+      description: 'This channel is used for important notifications.',
+      importance: Importance.high,
+    );
+
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.createNotificationChannel(channel);
+
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+
+    await _localNotifications.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: _onNotificationTap,
+    );
+
+    _localNotificationsInitialized = true;
+  }
+
+  Future<void> _refreshToken() async {
+    if (kIsWeb) {
+      try {
+        await Future.delayed(const Duration(milliseconds: 500));
+        _fcmToken = await _messaging.getToken(
+          vapidKey:
+              'BM8aWvMl_7R7fzsuRKBQ4ugAgKMeW1IW8_7emoc0u2cRkHNvIjGWkUHK45xuN0ctdMn-60NpdVyTfSIbLSXcKwU',
+        );
+      } catch (e) {
+        print('[NotificationService] ⚠️ Error getting web token: $e');
+      }
+      return;
+    }
+
+    _fcmToken = await _messaging.getToken();
+  }
+
+  void _registerListenersIfNeeded() {
+    if (_listenersRegistered) {
+      return;
+    }
+
+    _messaging.onTokenRefresh.listen((newToken) {
+      print('[NotificationService] Token refreshed: $newToken');
+      _fcmToken = newToken;
+      _registerTokenWithBackend(newToken);
+    });
+
+    if (!kIsWeb) {
+      FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+    }
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
+    _listenersRegistered = true;
   }
 
   Future<void> unregisterCurrentToken() async {

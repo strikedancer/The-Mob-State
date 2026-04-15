@@ -13,6 +13,7 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - Bodyguard upkeep must be explicit: recurring cost, next charge moment and dismissal-on-nonpayment must remain visible in both logic and UI.
 - Armor effectiveness must reflect wear: damaged armor gives less defense and disappears when fully destroyed.
+- Armor remains a single active slot: players can wear only one vest at a time, and replacement UX must make that explicit.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?
@@ -26,6 +27,7 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Attack resolution, investigation reports and the Security screen must all use the same effective armor/bodyguard numbers.
+- Mobile-width layouts must keep the security status summary readable without row overflow or clipped stats.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

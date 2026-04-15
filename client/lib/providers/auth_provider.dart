@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../models/player.dart';
 import '../services/auth_service.dart';
+import '../services/notification_service.dart';
 
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -33,6 +34,13 @@ class AuthProvider with ChangeNotifier {
       if (isLoggedIn) {
         _currentPlayer = await _authService.getCurrentPlayer();
         _isAuthenticated = _currentPlayer != null;
+        if (_isAuthenticated) {
+          try {
+            await NotificationService().syncAuthorizedSession();
+          } catch (e) {
+            debugPrint('[AuthProvider] Push session sync failed: $e');
+          }
+        }
       } else {
         _isAuthenticated = false;
         _currentPlayer = null;

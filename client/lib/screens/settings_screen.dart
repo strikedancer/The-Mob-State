@@ -485,6 +485,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadPushPermissionStatus() async {
     try {
+      await _notificationService.syncAuthorizedSession();
       final settings = await _notificationService.getNotificationSettings();
       if (!mounted) return;
       setState(() {
@@ -566,15 +567,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   String _pushStatusText() {
+    final hasToken = _pushTokenRegistered;
     switch (_pushAuthorizationStatus) {
       case AuthorizationStatus.authorized:
-        return _isDutch
-            ? 'Toestemming: toegestaan'
-            : 'Permission: allowed';
+        return hasToken
+            ? (_isDutch
+                  ? 'Toestemming: toegestaan, apparaat gekoppeld'
+                  : 'Permission: allowed, device linked')
+            : (_isDutch
+                  ? 'Toestemming: toegestaan, apparaat wordt opnieuw gekoppeld'
+                  : 'Permission: allowed, device is re-linking');
       case AuthorizationStatus.provisional:
-        return _isDutch
-            ? 'Toestemming: voorlopig'
-            : 'Permission: provisional';
+        return hasToken
+            ? (_isDutch
+                  ? 'Toestemming: voorlopig, apparaat gekoppeld'
+                  : 'Permission: provisional, device linked')
+            : (_isDutch
+                  ? 'Toestemming: voorlopig, apparaat wordt opnieuw gekoppeld'
+                  : 'Permission: provisional, device is re-linking');
       case AuthorizationStatus.denied:
         return _isDutch
             ? 'Toestemming: geweigerd'

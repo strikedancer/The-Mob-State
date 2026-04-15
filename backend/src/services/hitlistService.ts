@@ -757,6 +757,21 @@ export async function buyArmor(
 
   await settleBodyguardUpkeep(prisma, playerId);
 
+  const security = await prisma.playerSecurity.findUnique({
+    where: { playerId },
+  });
+
+  const currentArmorCondition = getArmorConditionValue(security?.armorCondition);
+  const isSameArmorEquipped =
+    !!security &&
+    Number(security.armor || 0) > 0 &&
+    security.armorType === armorId &&
+    currentArmorCondition >= 100;
+
+  if (isSameArmorEquipped) {
+    throw new Error('ARMOR_ALREADY_EQUIPPED');
+  }
+
   // Check if player can afford
   const player = await prisma.player.findUnique({
     where: { id: playerId },
@@ -774,10 +789,6 @@ export async function buyArmor(
   });
 
   // Update or create security
-  const security = await prisma.playerSecurity.findUnique({
-    where: { playerId },
-  });
-
   if (security) {
     await prisma.playerSecurity.update({
       where: { playerId },

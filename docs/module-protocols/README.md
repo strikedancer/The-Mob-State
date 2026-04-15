@@ -21,6 +21,11 @@ De master protocol zorgt ervoor dat je:
 
 ## beschikbare Module Protocols
 
+### Shared Cross-Cutting Protocols
+- [Frontend Platform](frontend-platform.md) - Flutter web/mobile/PWA shells, assets, embedded views en cachegedrag
+- [Notifications & Push](notifications.md) - Push pipeline, FCM/service worker en cooldown-signalen
+- [Player Profile](player-profile.md) - Profielnavigatie, privacy en profielinteracties
+
 ### Core Systems
 - [Dashboard](dashboard.md) - UI voor alle stats/overview
 - [Crew Management](crew.md) - Groep eigendom + upgrades (HQ_PROGRESSION_GUIDE.md)
@@ -111,6 +116,9 @@ Voor schermen die meerdere API calls doen:
 - [PROTOCOL_MASTER.md](PROTOCOL_MASTER.md) - Workflow & Cross-Module Map
 - [docs/game-systems/](../game-systems/) - Game mechanics & system documentation
 - [PROTOCOL_TEMPLATE.md](PROTOCOL_TEMPLATE.md) - Template voor nieuwe modules
+- [Frontend Platform](frontend-platform.md)
+- [Notifications & Push](notifications.md)
+- [Player Profile](player-profile.md)
 - [Drugs](drugs.md)
 - [Nightclub](nightclub.md)
 - [Crypto](crypto.md)

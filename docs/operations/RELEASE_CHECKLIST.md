@@ -4,13 +4,21 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 
 ## Status
 - Release mode: **Batched deploy**
-- Laatste update: 2026-04-14
+- Laatste update: 2026-04-15
 
 ## Pending Changes (nog NIET live)
 
+### Documentation
+- [ ] Protocol-architectuur opgeschoond: `PROTOCOL_MASTER.md` is verder teruggebracht naar orchestrator-only documentatie; profielnavigatie/privacy, frontend platform/PWA-shell regels en notificatie-pipeline regels staan nu in eigen cross-cutting protocollen en de module-index verwijst daar expliciet naar
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/README.md`, `docs/module-protocols/player-profile.md`, `docs/module-protocols/frontend-platform.md`, `docs/module-protocols/notifications.md`, `docs/module-protocols/dashboard.md`, `docs/module-protocols/bank.md`, `docs/module-protocols/prison.md`, `docs/module-protocols/crypto.md`, `docs/module-protocols/messages.md`
+- [ ] Harde meertaligheidseis aangescherpt in master protocol: alle nieuwe en gewijzigde tekst, meldingen, labels, dialogs, notificaties en admin/player UI-signalen moeten in dezelfde wijziging minimaal NL + EN bevatten; 1-talige oplevering geldt niet als done
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Push lifecycle guardrail toegevoegd: eerder toegestane web/PWA push moet na refresh, herstart of nieuwe build automatisch opnieuw aan het actuele device-token worden gekoppeld zonder handmatige re-enable door de speler
+  - Bestanden: `docs/module-protocols/notifications.md`
+
 ### Backend
-- [ ] Security module hersteld en uitgebreid: armor-aankoop gebruikt weer `backend/content/security.json`, lijfwachten rekenen nu elke 24 uur systeemloon af en lopen weg bij wanbetaling, en armor slijt na aanvallen waardoor effectieve bescherming afneemt en op 100% schade volledig verdwijnt
-  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/startup/ensureSecuritySchema.ts`, `backend/src/index.ts`, `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260415061500_expand_player_security/migration.sql`
+- [ ] Security module hersteld en uitgebreid: armor-aankoop gebruikt weer `backend/content/security.json`, lijfwachten rekenen nu elke 24 uur systeemloon af en lopen weg bij wanbetaling, armor slijt na aanvallen waardoor effectieve bescherming afneemt en op 100% schade volledig verdwijnt, en hetzelfde onbeschadigde vest kan niet opnieuw gekocht worden terwijl armor als single active slot blijft werken
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`, `backend/src/startup/ensureSecuritySchema.ts`, `backend/src/index.ts`, `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260415061500_expand_player_security/migration.sql`
 - [ ] Support terminal-status todo guard: tickets kunnen nu niet meer naar `resolved`, `closed` of `archived` zolang gekoppelde todo's nog openstaan; dezelfde blokkade geldt voor reply-flow, settings-flow en lazy auto-archive
   - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/routes/admin.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/support-tickets.md`
 - [ ] Support archive lifecycle fix: gearchiveerde tickets verdwijnen nu uit het speler Support-scherm, admins kunnen ticketstatussen zonder verplichte extra reply opslaan, en tickets met status `closed` worden na 3 dagen automatisch naar `archived` gezet via backend lazy auto-archive
@@ -125,8 +133,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
-- [ ] Security-scherm synced met nieuwe beveiligingsregels: toont nu bodyguard dagloon + volgende afschrijving, laat beschadigde armor met lagere actuele bescherming zien en laat beschadigde huidige armor opnieuw aankopen/vervangen
+- [ ] Security-scherm synced met nieuwe beveiligingsregels: toont nu bodyguard dagloon + volgende afschrijving, laat beschadigde armor met lagere actuele bescherming zien, behandelt armor expliciet als 1 gedragen slot met vervang-flow, en gebruikt contrastrijke styling zodat de actieve armor-kaart leesbaar blijft
   - Bestanden: `client/lib/screens/security_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/security.md`
+- [ ] Push token lifecycle fix: bestaande sessies synchroniseren nu bij refresh/startup automatisch een al toegestane push-permissie opnieuw met het actuele FCM-token, zodat spelers na page refresh of nieuwe build niet opnieuw handmatig push hoeven aan te zetten
+  - Bestanden: `client/lib/services/notification_service.dart`, `client/lib/providers/auth_provider.dart`, `client/lib/screens/settings_screen.dart`, `docs/module-protocols/notifications.md`
 - [ ] Support replies ontkoppeld van speler-inbox: adminreacties op tickets komen niet langer als direct message in `Berichten`, maar uitsluitend in het Support-scherm zelf, met alleen optionele pushmelding en support-badge als signaal
   - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/translationService.ts`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Support empty-state leesbaarheid verbeterd: de melding dat er nog geen tickets zijn gebruikt nu een contrastrijke donkere placeholder-kaart, zodat de tekst in de donkere Support-layout leesbaar blijft

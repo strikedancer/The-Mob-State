@@ -28,6 +28,7 @@ Deposits, withdrawals, transfers, transaction history and money safety.
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
+- Bij bankoverschrijvingen krijgt de ontvanger altijd een pushmelding via de bestaande notification pipeline; dit blijft fire-and-forget en mag transfers niet blokkeren.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.

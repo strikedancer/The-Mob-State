@@ -888,6 +888,7 @@ const List<HelpTopic> helpTopics = [
         'Protect your character and empire with armor, bodyguards and installation security. Better security means less damage taken during attacks.',
     howNl: [
       'Armor-types in oplopende sterkte: Lichte Armor → Zware Armor → Kogelvrij Vest → Tactische Outfit.',
+      'Je kunt maar 1 armor tegelijk dragen; koop je een ander vest, dan vervangt dat direct je huidige armor.',
       'Elke armor-klasse verlaagt inkomende schade per aanval met een vast percentage. Betere armor = meer overleving bij PvP en raids.',
       'Armor raakt na een aanval beschadigd en verliest effectiviteit. Hoe lager de conditie, hoe minder bescherming je actuele armor nog geeft.',
       'Bij 100% schade is je armor versleten en verdwijnt die volledig; daarna moet je nieuwe armor kopen om weer bescherming te hebben.',
@@ -899,6 +900,7 @@ const List<HelpTopic> helpTopics = [
     ],
     howEn: [
       'Armor types in ascending strength: Light Armor → Heavy Armor → Bulletproof Vest → Tactical Outfit.',
+      'You can only wear 1 armor at a time; if you buy another vest it immediately replaces your current armor.',
       'Each armor class reduces incoming damage per attack by a fixed percentage. Better armor = more survival in PvP and raids.',
       'Armor gets damaged after an attack and loses effectiveness. The lower the condition, the less protection your current armor provides.',
       'At 100% damage your armor is destroyed and disappears completely; you need to buy a new set to regain protection.',
@@ -1416,9 +1418,9 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Meldingen & Tickets',
     titleEn: 'Reports & Tickets',
     summaryNl:
-      'Meld bugs, vragen of feedback via het ticketsysteem. Support en admins kunnen antwoorden, interne opvolging doen en updates terugkoppelen via het supportgesprek zelf en optionele pushmeldingen.',
+        'Meld bugs, vragen of feedback via het ticketsysteem. Support en admins kunnen antwoorden, interne opvolging doen en updates terugkoppelen via het supportgesprek zelf en optionele pushmeldingen.',
     summaryEn:
-      'Report bugs, questions or feedback via the ticket system. Support and admins can reply, manage internal follow-up and send updates back through the support conversation itself and optional push notifications.',
+        'Report bugs, questions or feedback via the ticket system. Support and admins can reply, manage internal follow-up and send updates back through the support conversation itself and optional push notifications.',
     howNl: [
       'Open het aparte menu-item `Support` om je tickets te bekijken of een nieuw ticket te maken.',
       'Kies categorie (bug, vraag, feedback of overig), selecteer indien nodig het onderdeel en beschrijf je probleem zo concreet mogelijk.',

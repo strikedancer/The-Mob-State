@@ -23,6 +23,7 @@ Direct messages, system inbox messages, unread state and chat entry points.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Timestamps uit API of SSE moeten altijd expliciet naar lokale tijd worden geconverteerd vóór rendering.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

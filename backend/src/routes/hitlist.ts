@@ -485,6 +485,14 @@ router.post(
         });
       }
 
+      if (error.message === 'ARMOR_ALREADY_EQUIPPED') {
+        return res.status(400).json({
+          success: false,
+          error: 'ARMOR_ALREADY_EQUIPPED',
+          message: 'Je draagt dit armor al',
+        });
+      }
+
       return next(error);
     }
   }

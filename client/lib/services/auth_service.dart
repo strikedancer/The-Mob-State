@@ -55,7 +55,8 @@ class AuthService {
               await NotificationService().initialize();
               print('✅ Push notifications initialized');
             } else {
-              print('ℹ️ Web push permission is requested via explicit in-app prompt.');
+              await NotificationService().syncAuthorizedSession();
+              print('ℹ️ Web push session synchronized after login.');
             }
           } catch (e) {
             print('⚠️ Push notifications failed: $e');
@@ -153,6 +154,14 @@ class AuthService {
         try {
           final player = Player.fromJson(playerData);
           print('[AuthService] Player parsed successfully: ${player.username}');
+          try {
+            if (kIsWeb) {
+              await NotificationService().syncAuthorizedSession();
+              print('ℹ️ Web push session synchronized after registration.');
+            }
+          } catch (e) {
+            print('⚠️ Push notifications failed after registration: $e');
+          }
           return AuthResult(
             success: true,
             player: player,
