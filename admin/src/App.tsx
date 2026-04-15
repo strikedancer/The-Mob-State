@@ -1221,7 +1221,28 @@ function App() {
   }
 
   const handleAdminTicketReply = async () => {
-    if (!selectedTicketId || (!ticketReplyMessage.trim() && !ticketReplyTemplateKey)) return
+    if (!selectedTicketId) return
+
+    const hasReplyContent = Boolean(ticketReplyMessage.trim() || ticketReplyTemplateKey)
+    const hasActiveTicketTodos = selectedTicketDetail?.todos.some((todo) => todo.status !== 'done') ?? false
+    const wantsTerminalTicketStatus = ticketReplyStatus === 'resolved' || ticketReplyStatus === 'closed' || ticketReplyStatus === 'archived'
+    const hasTicketSettingsChanges = selectedTicketDetail
+      ? (selectedTicketDetail.ticket.assignedAdminId ?? null) !== (ticketAssignedAdminId ? Number(ticketAssignedAdminId) : null)
+        || (selectedTicketDetail.ticket.priority || 'normal') !== ticketPriority
+        || selectedTicketDetail.ticket.status !== ticketReplyStatus
+      : false
+
+    if (hasActiveTicketTodos && wantsTerminalTicketStatus) {
+      alert(l('Je kunt dit ticket pas afronden of archiveren als alle gekoppelde todo\'s op afgerond staan.', 'You can only complete or archive this ticket after all linked todos are marked done.'))
+      return
+    }
+
+    if (!hasReplyContent) {
+      if (hasTicketSettingsChanges) {
+        await handleUpdateTicketSettings()
+      }
+      return
+    }
 
     try {
       await adminService.replyToTicket(selectedTicketId, {
@@ -1234,7 +1255,6 @@ function App() {
       setTicketReplyTemplateKey('')
       await loadSupportAnalytics()
       await loadTickets(ticketStatusFilter)
-      await loadTicketDetail(selectedTicketId)
     } catch (err) {
       if (handleUnauthorized(err)) return
       alert(`${l('Antwoord sturen mislukt', 'Failed to send reply')}: ${(err as Error).message}`)
@@ -1244,18 +1264,49 @@ function App() {
   const handleUpdateTicketSettings = async () => {
     if (!selectedTicketId) return
 
+    const hasActiveTicketTodos = selectedTicketDetail?.todos.some((todo) => todo.status !== 'done') ?? false
+    const wantsTerminalTicketStatus = ticketReplyStatus === 'resolved' || ticketReplyStatus === 'closed' || ticketReplyStatus === 'archived'
+
+    if (hasActiveTicketTodos && wantsTerminalTicketStatus) {
+      alert(l('Je kunt dit ticket pas afronden of archiveren als alle gekoppelde todo\'s op afgerond staan.', 'You can only complete or archive this ticket after all linked todos are marked done.'))
+      return
+    }
+
     try {
       await adminService.updateTicket(selectedTicketId, {
         assignedAdminId: ticketAssignedAdminId ? Number(ticketAssignedAdminId) : null,
         priority: ticketPriority,
-        status: ticketReplyStatus,
+        status: ticketReplyStatus === 'archived' ? undefined : ticketReplyStatus,
+        archive: ticketReplyStatus === 'archived',
       })
       await loadSupportAnalytics()
       await loadTickets(ticketStatusFilter)
-      await loadTicketDetail(selectedTicketId)
     } catch (err) {
       if (handleUnauthorized(err)) return
       alert(`${l('Ticket bijwerken mislukt', 'Failed to update ticket')}: ${(err as Error).message}`)
+    }
+  }
+
+  const handleArchiveTicket = async () => {
+    if (!selectedTicketId) return
+
+    const hasActiveTicketTodos = selectedTicketDetail?.todos.some((todo) => todo.status !== 'done') ?? false
+    if (hasActiveTicketTodos) {
+      alert(l('Archiveer dit ticket pas nadat alle gekoppelde todo\'s zijn afgerond.', 'Archive this ticket only after all linked todos are done.'))
+      return
+    }
+
+    try {
+      await adminService.updateTicket(selectedTicketId, {
+        assignedAdminId: ticketAssignedAdminId ? Number(ticketAssignedAdminId) : null,
+        priority: ticketPriority,
+        archive: true,
+      })
+      await loadSupportAnalytics()
+      await loadTickets(ticketStatusFilter)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Ticket archiveren mislukt', 'Failed to archive ticket')}: ${(err as Error).message}`)
     }
   }
 
@@ -1285,15 +1336,28 @@ function App() {
     }
   }
 
-  const handleToggleTicketTodo = async (todoId: number, status: 'open' | 'in_progress' | 'blocked' | 'done') => {
-    setSupportTodos((prev) => prev.map((todo) => (todo.id === todoId ? { ...todo, status } : todo)))
+  const updateSupportTodoRecord = async (
+    todo: Pick<SupportTicketTodo, 'id' | 'ticketId'>,
+    payload: { title?: string; description?: string | null; status?: 'open' | 'in_progress' | 'blocked' | 'done'; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null },
+  ) => {
+    if (todo.ticketId) {
+      return adminService.updateTicketTodo(todo.id, payload)
+    }
+
+    return adminService.updateSupportTodo(todo.id, payload)
+  }
+
+  const handleToggleTicketTodo = async (todo: SupportTicketTodo, status: 'open' | 'in_progress' | 'blocked' | 'done') => {
+    setSupportTodos((prev) => prev.map((item) => (item.id === todo.id ? { ...item, status } : item)))
     setSelectedTicketDetail((prev) => prev ? {
       ...prev,
-      todos: prev.todos.map((todo) => (todo.id === todoId ? { ...todo, status } : todo)),
+      todos: prev.todos.map((item) => (item.id === todo.id ? { ...item, status } : item)),
     } : prev)
+    setEditingSupportTodo((prev) => (prev && prev.id === todo.id ? { ...prev, status } : prev))
+    setEditingSupportTodoStatus((prev) => (editingSupportTodo?.id === todo.id ? status : prev))
 
     try {
-      await adminService.updateSupportTodo(todoId, { status })
+      await updateSupportTodoRecord(todo, { status })
       if (selectedTicketId) {
         await loadTicketDetail(selectedTicketId)
       }
@@ -1341,7 +1405,7 @@ function App() {
 
     try {
       setSavingSupportTodo(true)
-      await adminService.updateSupportTodo(editingSupportTodo.id, {
+      await updateSupportTodoRecord(editingSupportTodo, {
         title: editingSupportTodoTitle.trim(),
         description: editingSupportTodoDescription.trim() || null,
         status: editingSupportTodoStatus,
@@ -5694,11 +5758,31 @@ function App() {
                               <option value="closed">{l('Gesloten', 'Closed')}</option>
                               <option value="archived">{l('Gearchiveerd', 'Archived')}</option>
                             </select>
+                            {selectedTicketDetail.todos.some((todo) => todo.status !== 'done') && (
+                              <div className="small text-warning">
+                                {l('Ticket kan pas op opgelost, gesloten of gearchiveerd zodra alle gekoppelde todo\'s zijn afgerond.', 'This ticket can only move to resolved, closed or archived after all linked todos are done.')}
+                              </div>
+                            )}
                             <button type="button" className="btn btn-outline-primary" onClick={handleUpdateTicketSettings}>
                               {l('Ticketinstellingen opslaan', 'Save ticket settings')}
                             </button>
+                            <button
+                              type="button"
+                              className="btn btn-outline-secondary"
+                              onClick={() => {
+                                setTicketReplyStatus('archived')
+                                void handleArchiveTicket()
+                              }}
+                              disabled={selectedTicketDetail.ticket.status === 'archived' || selectedTicketDetail.todos.some((todo) => todo.status !== 'done')}
+                            >
+                              {l('Archiveer ticket', 'Archive ticket')}
+                            </button>
                             <button type="button" className="btn btn-primary" onClick={handleAdminTicketReply}>
-                              {ticketReplyType === 'internal_note' ? l('Interne notitie opslaan', 'Save internal note') : l('Verstuur reply', 'Send reply')}
+                              {ticketReplyType === 'internal_note'
+                                ? l('Interne notitie opslaan', 'Save internal note')
+                                : ticketReplyMessage.trim() || ticketReplyTemplateKey
+                                  ? l('Verstuur reply', 'Send reply')
+                                  : l('Opslaan zonder reply', 'Save without reply')}
                             </button>
                           </div>
                         </div>
@@ -5797,7 +5881,7 @@ function App() {
                                         <button
                                           type="button"
                                           className={`btn btn-sm ${todo.status === 'done' ? 'btn-outline-warning' : 'btn-outline-success'}`}
-                                          onClick={() => handleToggleTicketTodo(todo.id, todo.status === 'done' ? 'open' : 'done')}
+                                          onClick={() => handleToggleTicketTodo(todo, todo.status === 'done' ? 'open' : 'done')}
                                         >
                                           {todo.status === 'done' ? l('Heropen', 'Reopen') : l('Afvinken', 'Mark done')}
                                         </button>
@@ -5953,7 +6037,7 @@ function App() {
                                 <button
                                   type="button"
                                   className={`btn btn-sm ${todo.status === 'done' ? 'btn-outline-secondary' : 'btn-success'}`}
-                                  onClick={() => handleToggleTicketTodo(todo.id, todo.status === 'done' ? 'open' : 'done')}
+                                  onClick={() => handleToggleTicketTodo(todo, todo.status === 'done' ? 'open' : 'done')}
                                 >
                                   {todo.status === 'done' ? l('Heropenen', 'Reopen') : l('Afronden', 'Complete')}
                                 </button>

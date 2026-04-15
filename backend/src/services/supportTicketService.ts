@@ -8,6 +8,8 @@ type TicketMessageType = 'public_reply' | 'internal_note';
 type TodoStatus = 'open' | 'in_progress' | 'blocked' | 'done';
 type TodoPriority = 'low' | 'normal' | 'high' | 'urgent';
 
+const TERMINAL_TICKET_STATUSES: TicketStatus[] = ['resolved', 'closed', 'archived'];
+
 interface TicketRow {
   id: number;
   playerId: number;
@@ -239,6 +241,48 @@ async function resolveReplyBody(playerId: number, message?: string, templateKey?
   };
 }
 
+async function autoArchiveExpiredClosedTickets() {
+  await prisma.$executeRawUnsafe(
+    `
+    UPDATE support_tickets
+    SET status = 'archived',
+        archivedAt = COALESCE(archivedAt, NOW()),
+        archivedByAdminId = NULL,
+        updatedAt = NOW()
+    WHERE status = 'closed'
+      AND archivedAt IS NULL
+      AND closedAt IS NOT NULL
+      AND NOT EXISTS (
+        SELECT 1
+        FROM support_ticket_todos td
+        WHERE td.ticketId = support_tickets.id
+          AND td.status IN ('open', 'in_progress', 'blocked')
+      )
+      AND closedAt <= DATE_SUB(NOW(), INTERVAL 3 DAY)
+    `,
+  );
+}
+
+async function ensureTicketCanEnterTerminalStatus(ticketId: number, nextStatus: TicketStatus | null) {
+  if (!nextStatus || !TERMINAL_TICKET_STATUSES.includes(nextStatus)) {
+    return;
+  }
+
+  const rows = await prisma.$queryRawUnsafe<Array<{ total: bigint | number | string }>>(
+    `
+    SELECT COUNT(*) AS total
+    FROM support_ticket_todos
+    WHERE ticketId = ?
+      AND status IN ('open', 'in_progress', 'blocked')
+    `,
+    ticketId,
+  );
+
+  if (toSafeNumber(rows[0]?.total) > 0) {
+    throw new Error('TICKET_HAS_OPEN_TODOS');
+  }
+}
+
 export const supportTicketService = {
   getReplyTemplates() {
     return SUPPORT_REPLY_TEMPLATES;
@@ -302,13 +346,15 @@ export const supportTicketService = {
   },
 
   async listPlayerTickets(playerId: number) {
+    await autoArchiveExpiredClosedTickets();
+
     const tickets = await prisma.$queryRawUnsafe<Array<TicketRow>>(
       `
         SELECT id, playerId, category, subject, status, priority, sourceModule, referenceCode, metadataJson,
           assignedAdminId, createdAt, updatedAt, firstResponseAt, resolvedAt, archivedAt, archivedByAdminId,
           closedAt, closedByAdminId, lastPlayerMessageAt, lastAdminMessageAt
       FROM support_tickets
-      WHERE playerId = ?
+      WHERE playerId = ? AND status <> 'archived'
       ORDER BY updatedAt DESC
       `,
       playerId
@@ -323,13 +369,15 @@ export const supportTicketService = {
   },
 
   async getTicketWithMessagesForPlayer(playerId: number, ticketId: number) {
+    await autoArchiveExpiredClosedTickets();
+
     const tickets = await prisma.$queryRawUnsafe<Array<TicketRow>>(
       `
       SELECT id, playerId, category, subject, status, priority, sourceModule, referenceCode, metadataJson,
              assignedAdminId, createdAt, updatedAt, firstResponseAt, resolvedAt, archivedAt, archivedByAdminId,
              closedAt, closedByAdminId, lastPlayerMessageAt, lastAdminMessageAt
       FROM support_tickets
-      WHERE id = ? AND playerId = ?
+      WHERE id = ? AND playerId = ? AND status <> 'archived'
       LIMIT 1
       `,
       ticketId,
@@ -444,6 +492,8 @@ export const supportTicketService = {
   },
 
   async listAdminTickets(status?: string) {
+    await autoArchiveExpiredClosedTickets();
+
     const sql = status && status !== 'all'
       ? `
      SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.sourceModule, t.referenceCode,
@@ -497,6 +547,8 @@ export const supportTicketService = {
   },
 
   async getAdminTicketDetail(ticketId: number) {
+    await autoArchiveExpiredClosedTickets();
+
     const ticketRows = await prisma.$queryRawUnsafe<Array<any>>(
       `
       SELECT t.id, t.playerId, t.category, t.subject, t.status, t.priority, t.sourceModule, t.referenceCode,
@@ -621,6 +673,8 @@ export const supportTicketService = {
     const messageType = payload.messageType === 'internal_note' ? 'internal_note' : 'public_reply';
     const resolvedReply = await resolveReplyBody(detail.ticket.playerId, payload.message, payload.templateKey);
     const nextStatus = payload.status || resolvedReply.suggestedStatus || (messageType === 'internal_note' ? detail.ticket.status : 'waiting_player');
+
+    await ensureTicketCanEnterTerminalStatus(ticketId, nextStatus);
 
     await prisma.$executeRawUnsafe(
       `
@@ -982,17 +1036,19 @@ export const supportTicketService = {
     const hasPriorityUpdate = Object.prototype.hasOwnProperty.call(updates, 'priority');
     const nextStatus = updates.archive ? 'archived' : (updates.status ?? null);
 
+    await ensureTicketCanEnterTerminalStatus(ticketId, nextStatus);
+
     await prisma.$executeRawUnsafe(
       `
       UPDATE support_tickets
       SET assignedAdminId = CASE WHEN ? = 1 THEN ? ELSE assignedAdminId END,
           priority = CASE WHEN ? = 1 THEN ? ELSE priority END,
           status = COALESCE(?, status),
-          resolvedAt = CASE WHEN ? = 'resolved' THEN COALESCE(resolvedAt, NOW()) ELSE resolvedAt END,
+          resolvedAt = CASE WHEN ? = 'resolved' THEN COALESCE(resolvedAt, NOW()) WHEN ? IS NOT NULL AND ? <> 'resolved' THEN NULL ELSE resolvedAt END,
           archivedAt = CASE WHEN ? = 'archived' THEN NOW() WHEN ? IS NOT NULL AND ? <> 'archived' THEN NULL ELSE archivedAt END,
           archivedByAdminId = CASE WHEN ? = 'archived' THEN ? WHEN ? IS NOT NULL AND ? <> 'archived' THEN NULL ELSE archivedByAdminId END,
-          closedAt = CASE WHEN ? IN ('resolved', 'closed') THEN COALESCE(closedAt, NOW()) ELSE closedAt END,
-          closedByAdminId = CASE WHEN ? IN ('resolved', 'closed') THEN ? ELSE closedByAdminId END,
+          closedAt = CASE WHEN ? IN ('resolved', 'closed') THEN COALESCE(closedAt, NOW()) WHEN ? IS NOT NULL AND ? NOT IN ('resolved', 'closed') THEN NULL ELSE closedAt END,
+          closedByAdminId = CASE WHEN ? IN ('resolved', 'closed') THEN ? WHEN ? IS NOT NULL AND ? NOT IN ('resolved', 'closed') THEN NULL ELSE closedByAdminId END,
           updatedAt = NOW()
       WHERE id = ?
       `,
@@ -1002,6 +1058,8 @@ export const supportTicketService = {
       hasPriorityUpdate ? (updates.priority ?? null) : null,
       nextStatus,
       nextStatus,
+        nextStatus,
+        nextStatus,
       nextStatus,
       nextStatus,
       nextStatus,
@@ -1010,7 +1068,12 @@ export const supportTicketService = {
       nextStatus,
       nextStatus,
       nextStatus,
+        nextStatus,
+        nextStatus,
+      nextStatus,
       adminId,
+        nextStatus,
+        nextStatus,
       ticketId,
     );
 
@@ -1024,6 +1087,8 @@ export const supportTicketService = {
   },
 
   async getAnalytics() {
+    await autoArchiveExpiredClosedTickets();
+
     const [summaryRows, categoryRows, assigneeRows] = await Promise.all([
       prisma.$queryRawUnsafe<Array<any>>(
         `

@@ -66,6 +66,9 @@ Acceptatie-eis:
 - Support todo's zijn centraal beheerwerk en niet langer alleen per ticket verborgen in ticketdetail; gebruik een aparte admin todo-pagina met lijst, statusbeheer en mogelijkheid om zowel losse als ticket-gekoppelde todo's aan te maken.
 - Bestaande support todo's moeten vanuit admin direct aanklikbaar en volledig beheerbaar blijven: open/bewerk status, voeg interne opmerkingen toe, open gekoppeld ticket en verwijder todo's zonder verborgen of ontbrekende acties.
 - Admin ticketlijst moet operationeel scanbaar zijn en minimaal tonen: spelernaam, onderwerp, aantal afbeeldingen, tijd, datum en status.
+- Ticketstatus moet los opslaan van public reply mogelijk blijven; een admin mag assignment, prioriteit, sluiten of archiveren zonder verplichte extra spelertekst.
+- Gearchiveerde tickets horen niet meer zichtbaar te zijn in het speler Support-scherm; gesloten tickets moeten na 3 dagen automatisch naar archived doorstromen.
+- Tickets mogen pas naar `resolved`, `closed` of `archived` zodra alle gekoppelde support todo's afgerond zijn; unfinished todo's blokkeren die eindstatussen dus hard in backend en admin.
 - Cross-module checks: Dashboard, Admin, Notifications, Help (alleen als uitleg), i18n.
 
 Zorg dat alle documentatie, help-content en QA-checks deze nieuwe navigatie volgen.
@@ -78,6 +81,8 @@ Voor nieuwe support-wijzigingen geldt daarnaast expliciet: player UX compact hou
 - Gebruik voor support todos overal hetzelfde operationele model: eigenaar, prioriteit, vervaldatum, modulekoppeling en interne commenthistorie.
 - Player intake mag rijkere context meesturen (module, referentie, platform, locale, screenshot), maar de player-UX moet bewust compact en laagdrempelig blijven.
 - Admin ticketlijsten moeten scanbaar blijven op status, prioriteit, behandelaar, leeftijd en laatste actor; workflow-uitbreiding mag de overzichtelijkheid niet verminderen.
+- Ticket lifecycle moet expliciet bewaakt worden: `closed` is tijdelijke nazorgstatus, `archived` is verborgen eindstatus voor spelers, en auto-archivering na 3 dagen gesloten staat is verplicht.
+- Ticket lifecycle en todo lifecycle moeten consistent zijn: een ticket mag geen eindstatus krijgen zolang gekoppelde todo's nog `open`, `in_progress` of `blocked` zijn.
 - Elke support-wijziging moet cross-module worden gecheckt tegen Dashboard, Notifications, Admin, Help-content en release-documentatie.
 
 ## Module Richtlijnen (Ingebouwd)

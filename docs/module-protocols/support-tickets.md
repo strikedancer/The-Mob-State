@@ -20,6 +20,8 @@ Player support intake, admin ticket handling, reply loop, todo tracking and push
 - Keep ticket + todo state recoverable after refresh and navigation.
 - The Support screen remains the canonical player reply surface; push and the Support badge are notifications, not separate conversation surfaces.
 - Dashboard Support badge must reflect unseen player-relevant ticket activity since the last Support visit, including public admin replies and admin-driven status changes.
+- Archived tickets must disappear from the player Support overview and detail flow; closed tickets automatically move to archived after 3 days.
+- Tickets may only move to resolved, closed or archived after every linked support todo is done.
 
 ## Data Contract Requirements
 - Ticket create payload must include: category, subject, message, plus optional sourceModule, referenceCode, clientPlatform and appLocale.
@@ -31,8 +33,10 @@ Player support intake, admin ticket handling, reply loop, todo tracking and push
 ## Admin Workflow Requirements
 - Use the richer lifecycle consistently: new, triage, in_progress, waiting_player, blocked, resolved, closed, archived.
 - Assignment, priority and archive actions must be editable without losing ticket history.
+- Admins must be able to save assignment, priority and status changes without being forced to send an extra public reply.
 - Reply templates must stay language-aware and may only auto-message players on public replies.
 - Ticket-linked todos and global support todos must use the same status and priority semantics.
+- Unfinished linked todos must block terminal ticket statuses in both admin reply flow and ticket settings flow.
 - Todo comments are internal operational notes and must never leak into player-facing flows.
 
 ## i18n and Messaging
@@ -57,6 +61,8 @@ Player support intake, admin ticket handling, reply loop, todo tracking and push
 - Player can post follow-up reply in ticket thread.
 - Admin can add todo item, assign it, set priority and due date, add internal todo comments and mark todo done or open.
 - Ticket status transitions and archive state reflect correctly in admin while player UX stays minimal.
+- Closing a ticket without a new reply, archiving it later, and auto-archiving after 3 days must all persist correctly after refresh.
+- Ticket close/archive attempts with linked open todos must be blocked with clear admin feedback.
 
 ## When To Update This File
 Update when ticket status model changes, todo workflow changes, inbox/push coupling changes, or new participant roles are added.

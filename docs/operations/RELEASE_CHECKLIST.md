@@ -9,6 +9,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Support terminal-status todo guard: tickets kunnen nu niet meer naar `resolved`, `closed` of `archived` zolang gekoppelde todo's nog openstaan; dezelfde blokkade geldt voor reply-flow, settings-flow en lazy auto-archive
+  - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/routes/admin.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/support-tickets.md`
+- [ ] Support archive lifecycle fix: gearchiveerde tickets verdwijnen nu uit het speler Support-scherm, admins kunnen ticketstatussen zonder verplichte extra reply opslaan, en tickets met status `closed` worden na 3 dagen automatisch naar `archived` gezet via backend lazy auto-archive
+  - Bestanden: `backend/src/services/supportTicketService.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/support-tickets.md`
 - [ ] Support workflow professionalisering: tickets ondersteunen nu priority, assignee, source-module/referentie metadata, internal note vs public reply, reply templates, workflow-timestamps, archive-status en support analytics; todo's ondersteunen nu priority, owner, due date, module-koppeling en interne commenthistorie
   - Bestanden: `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260414223000_expand_support_workflow/migration.sql`, `backend/src/startup/ensureSupportSchema.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/routes/admin.ts`, `backend/src/routes/tickets.ts`
 - [ ] Support tickets + todo workflow uitgebreid: player ticket endpoints bevatten nu ook verwijderen (`DELETE /tickets/:ticketId`), admin ticket endpoints bevatten nu ook verwijderen (`DELETE /admin/tickets/:ticketId`); startup schema-bootstrap blijft actief en admin-reply blijft gekoppeld aan speler inbox + push notificatie
@@ -165,6 +169,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Admin support ticket close-guard UX: ticketdetail toont nu expliciet dat open todo's `resolved`/`closed`/`archived` blokkeren en archiveeractie is disabled zolang gekoppelde todo's niet zijn afgerond
+  - Bestanden: `admin/src/App.tsx`
+- [ ] Admin support ticket/todo actie-fix: ticketdetail kan nu statuswijzigingen zonder reply opslaan, heeft een expliciete archiveeractie, en support todo updates gebruiken weer het juiste admin endpoint voor losse versus ticket-gekoppelde todo's
+  - Bestanden: `admin/src/App.tsx`
 - [ ] Admin ticket attachment lightbox fix: klikken op een ticketafbeelding opent de vergroting nu weer buiten tab-scope issues, omdat de attachment-modal globaal rendert en een preview/origineel fallback gebruikt
   - Bestanden: `admin/src/App.tsx`
 - [ ] Admin ticket attachment modal styling hersteld: `modal-overlay` en `admin-modal` styles staan weer in de admin stylesheets, zodat klikken op support-bijlagen ook visueel echt een overlay/lightbox opent in plaats van inline onder de pagina te renderen

@@ -1779,6 +1779,9 @@ router.post('/tickets/:ticketId/reply', async (req: AdminRequest, res) => {
     if (error?.message === 'REPLY_TEMPLATE_NOT_FOUND') {
       return res.status(404).json({ error: 'Reply template not found' });
     }
+    if (error?.message === 'TICKET_HAS_OPEN_TODOS') {
+      return res.status(409).json({ error: 'Ticket still has unfinished todos' });
+    }
     console.error('Admin ticket reply error:', error);
     return res.status(500).json({ error: 'Failed to send reply' });
   }
@@ -1806,6 +1809,9 @@ router.patch('/tickets/:ticketId', async (req: AdminRequest, res) => {
   } catch (error: any) {
     if (error?.message === 'TICKET_NOT_FOUND') {
       return res.status(404).json({ error: 'Ticket not found' });
+    }
+    if (error?.message === 'TICKET_HAS_OPEN_TODOS') {
+      return res.status(409).json({ error: 'Ticket still has unfinished todos' });
     }
     console.error('Admin ticket update error:', error);
     return res.status(500).json({ error: 'Failed to update ticket' });
