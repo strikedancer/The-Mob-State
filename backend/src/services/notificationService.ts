@@ -418,6 +418,44 @@ export class NotificationService {
     });
   }
 
+  public async sendCrewWarStartedNotification(
+    playerId: number,
+    warId: number,
+    opposingCrewName: string,
+    language?: Language
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const title = resolvedLanguage === 'nl' ? 'Crew-oorlog gestart' : 'Crew war started';
+    const body = resolvedLanguage === 'nl'
+      ? `Oorlog #${warId} tegen ${opposingCrewName} is nu live.`
+      : `War #${warId} against ${opposingCrewName} is now live.`;
+
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'crew_war_started',
+      warId: String(warId),
+      opposingCrewName,
+    });
+  }
+
+  public async sendCrewWarLockdownNotification(
+    playerId: number,
+    warId: number,
+    opposingCrewName: string,
+    language?: Language
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const title = resolvedLanguage === 'nl' ? 'Crew-oorlog lockdown' : 'Crew war lockdown';
+    const body = resolvedLanguage === 'nl'
+      ? `Oorlog #${warId} tegen ${opposingCrewName} zit nu in lockdown.`
+      : `War #${warId} against ${opposingCrewName} is now in lockdown.`;
+
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'crew_war_lockdown',
+      warId: String(warId),
+      opposingCrewName,
+    });
+  }
+
   public async sendCrewWarEndedNotification(
     playerId: number,
     warId: number,

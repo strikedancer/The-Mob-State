@@ -296,6 +296,8 @@ class NotificationService {
       case 'direct_message':
       case 'crew_message':
       case 'crew_war_declared':
+      case 'crew_war_started':
+      case 'crew_war_lockdown':
       case 'crew_war_ended':
         return '/dashboard';
       default:

@@ -23,6 +23,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Crew Wars admin-control + notificatiefix: online backend-CORS accepteert nu ook `PATCH`, waardoor de vijf admin statusknoppen niet meer stuklopen op preflight, en admin-gestarte/status-gewijzigde wars sturen nu dezelfde Discord- en push/inbox-events als de gewone declare/lifecycle-flow
+  - Bestanden: `backend/src/app.ts`, `backend/src/services/crewWarService.ts`, `backend/src/services/notificationService.ts`, `client/lib/services/notification_service.dart`
 - [ ] Crew Wars backend live gezet: nieuw `/crew-wars` domein met war lifecycle, seasons, standings, actions, admin moderatie, startup schema-bootstrap en Discord/push koppelingen toegevoegd
   - Bestanden: `backend/prisma/schema.prisma`, `backend/src/startup/ensureCrewWarSchema.ts`, `backend/src/services/crewWarService.ts`, `backend/src/routes/crewWars.ts`, `backend/src/routes/admin.ts`, `backend/src/routes/player.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/discordWebhookService.ts`, `backend/src/services/achievementService.ts`, `backend/src/app.ts`, `backend/src/index.ts`
 - [ ] Crew Wars Discord transport deployment-klaar gemaakt: webhookconfiguratie staat nu in zowel het backend env-template als de lokale runtime-config en de transportlaag ondersteunt configureerbare event-types plus rate-limiting, zodat Discord fire-and-forget blijft zonder war flows te blokkeren of te spammen

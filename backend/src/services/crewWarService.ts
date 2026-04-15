@@ -406,6 +406,32 @@ async function getCrewNames(crewIds: number[]) {
   return new Map(crews.map((crew) => [crew.id, crew]));
 }
 
+async function notifyWarMembers(
+  war: { id: number; attackerCrewId: number; defenderCrewId: number },
+  type: 'declared' | 'started' | 'lockdown',
+) {
+  const [crewMap, memberRows] = await Promise.all([
+    getCrewNames([war.attackerCrewId, war.defenderCrewId]),
+    prisma.crewMember.findMany({
+      where: { crewId: { in: [war.attackerCrewId, war.defenderCrewId] } },
+      include: { player: { select: { id: true } } },
+    }),
+  ]);
+
+  for (const member of memberRows) {
+    const opposingCrewId = member.crewId === war.attackerCrewId ? war.defenderCrewId : war.attackerCrewId;
+    const opposingCrewName = crewMap.get(opposingCrewId)?.name ?? `#${opposingCrewId}`;
+
+    if (type === 'declared') {
+      await notificationService.sendCrewWarDeclaredNotification(member.player.id, war.id, opposingCrewName);
+    } else if (type === 'started') {
+      await notificationService.sendCrewWarStartedNotification(member.player.id, war.id, opposingCrewName);
+    } else {
+      await notificationService.sendCrewWarLockdownNotification(member.player.id, war.id, opposingCrewName);
+    }
+  }
+}
+
 async function getPlayerNames(playerIds: number[]) {
   const players = await prisma.player.findMany({
     where: { id: { in: playerIds } },
@@ -1132,6 +1158,36 @@ export async function adminDeclareWar(adminId: number, payload: {
     ],
   });
 
+  await prisma.crewWarAction.create({
+    data: {
+      warId: war.id,
+      actorId: adminId,
+      actorCrewId: payload.attackerCrewId,
+      targetCrewId: payload.defenderCrewId,
+      actionType: 'war_declared',
+      result: 'success',
+      metadataJson: stringifyJson({ warType: payload.warType, declaredVia: 'admin' }),
+    },
+  });
+
+  await notifyWarMembers(war, 'declared');
+
+  await worldEventService.createEvent('crew.war_declared', {
+    warId: war.id,
+    attackerCrewId: payload.attackerCrewId,
+    defenderCrewId: payload.defenderCrewId,
+    warType: payload.warType,
+    declaredVia: 'admin',
+  });
+
+  void discordWebhookService.sendCrewWarEvent('war_declared', {
+    warId: war.id,
+    attackerCrewId: payload.attackerCrewId,
+    defenderCrewId: payload.defenderCrewId,
+    warType: payload.warType,
+    declaredVia: 'admin',
+  });
+
   return buildWarDetail(war.id);
 }
 
@@ -1140,7 +1196,7 @@ export async function adminUpdateWarStatus(warId: number, action: 'start_now' | 
   if (!war) throw new Error('WAR_NOT_FOUND');
 
   if (action === 'start_now') {
-    await prisma.crewWar.update({
+    const updatedWar = await prisma.crewWar.update({
       where: { id: warId },
       data: {
         status: 'active',
@@ -1150,8 +1206,34 @@ export async function adminUpdateWarStatus(warId: number, action: 'start_now' | 
         endTime: new Date(Date.now() + ACTIVE_HOURS * 60 * 60 * 1000),
       },
     });
+    await notifyWarMembers(updatedWar, 'started');
+    await worldEventService.createEvent('crew.war_started', {
+      warId: updatedWar.id,
+      attackerCrewId: updatedWar.attackerCrewId,
+      defenderCrewId: updatedWar.defenderCrewId,
+      startedVia: 'admin',
+    });
+    void discordWebhookService.sendCrewWarEvent('war_started', {
+      warId: updatedWar.id,
+      attackerCrewId: updatedWar.attackerCrewId,
+      defenderCrewId: updatedWar.defenderCrewId,
+      startedVia: 'admin',
+    });
   } else if (action === 'enter_lockdown') {
-    await prisma.crewWar.update({ where: { id: warId }, data: { status: 'lockdown', lockDownFrom: new Date() } });
+    const updatedWar = await prisma.crewWar.update({ where: { id: warId }, data: { status: 'lockdown', lockDownFrom: new Date() } });
+    await notifyWarMembers(updatedWar, 'lockdown');
+    await worldEventService.createEvent('crew.war_lockdown', {
+      warId: updatedWar.id,
+      attackerCrewId: updatedWar.attackerCrewId,
+      defenderCrewId: updatedWar.defenderCrewId,
+      enteredVia: 'admin',
+    });
+    void discordWebhookService.sendCrewWarEvent('war_lockdown', {
+      warId: updatedWar.id,
+      attackerCrewId: updatedWar.attackerCrewId,
+      defenderCrewId: updatedWar.defenderCrewId,
+      enteredVia: 'admin',
+    });
   } else if (action === 'resolve') {
     await finalizeWar(war);
   } else if (action === 'archive') {
