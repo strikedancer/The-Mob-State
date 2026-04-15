@@ -1,7 +1,7 @@
 ﻿# Properties Protocol
 
 ## Scope
-Property buying, upgrading, income collection and ownership rules.
+Property buying, upgrading, utility and ownership rules.
 
 Scope-afbakening:
 - Shop valt buiten deze module en wordt hier niet getoond of geclaimd.

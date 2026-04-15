@@ -586,17 +586,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ? 'Toestemming: voorlopig, apparaat wordt opnieuw gekoppeld'
                   : 'Permission: provisional, device is re-linking');
       case AuthorizationStatus.denied:
-        return _isDutch
-            ? 'Toestemming: geweigerd'
-            : 'Permission: denied';
+        return _isDutch ? 'Toestemming: geweigerd' : 'Permission: denied';
       case AuthorizationStatus.notDetermined:
         return _isDutch
             ? 'Toestemming: nog niet gevraagd'
             : 'Permission: not requested yet';
       default:
-        return _isDutch
-            ? 'Toestemming: onbekend'
-            : 'Permission: unknown';
+        return _isDutch ? 'Toestemming: onbekend' : 'Permission: unknown';
     }
   }
 

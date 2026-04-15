@@ -179,6 +179,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/supportTicketService.ts`
 - [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
   - Bestand: `client/lib/screens/property_screen.dart`
+- [ ] Properties copy-correctie: eigendommen-scherm en help-content claimen niet langer dat alle properties directe inkomsten opleveren; property cards tonen nu alleen relevante utility-info zoals opslag, wooncapaciteit, upgrades en nightclub-doorverwijzing
+  - Bestanden: `client/lib/screens/property_screen.dart`, `client/lib/widgets/property_card.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/properties.md`
 - [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`
   - Bestand: `client/lib/screens/drug_environment_screen.dart`
 - [ ] Prison UI opgeschoond: regel met beschikbaar saldo verwijderd en acties op je eigen prisoner-row uitgeschakeld; eigen row wordt gemarkeerd als `Jij/You`

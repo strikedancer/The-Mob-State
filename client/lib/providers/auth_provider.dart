@@ -136,7 +136,9 @@ class AuthProvider with ChangeNotifier {
         _isAuthenticated = false;
         _error = result.error;
         _isLoading = false;
-        print('[AuthProvider] Registration successful, email verification required');
+        print(
+          '[AuthProvider] Registration successful, email verification required',
+        );
         notifyListeners();
         return true;
       } else {

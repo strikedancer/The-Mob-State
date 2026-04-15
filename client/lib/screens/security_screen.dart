@@ -181,9 +181,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(
-                _armorErrorMessage(data) ?? 'Could not buy armor',
-              ),
+              content: Text(_armorErrorMessage(data) ?? 'Could not buy armor'),
             ),
           );
         }
@@ -465,10 +463,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                       'Je kunt maar 1 armor tegelijk dragen. Een nieuw vest vervangt altijd je huidige vest.',
                       'You can only wear 1 armor at a time. A new armor always replaces your current one.',
                     ),
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   const SizedBox(height: 12),
                   Column(
@@ -478,17 +473,16 @@ class _SecurityScreenState extends State<SecurityScreen> {
                       final hasActiveArmor = _hasActiveArmor();
                       final canRefreshCurrentArmor =
                           isCurrentArmor && _isArmorDamaged();
-                      final primaryTextColor =
-                          isCurrentArmor ? _activeArmorText : null;
+                      final primaryTextColor = isCurrentArmor
+                          ? _activeArmorText
+                          : null;
                       final secondaryTextColor = isCurrentArmor
                           ? _activeArmorMutedText
                           : Colors.grey;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: Card(
-                          color: isCurrentArmor
-                              ? _activeArmorBackground
-                              : null,
+                          color: isCurrentArmor ? _activeArmorBackground : null,
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
                               color: isCurrentArmor

@@ -23,14 +23,10 @@ class AuthService {
 
   Future<AuthResult> login(String username, String password) async {
     try {
-      final response = await _apiClient.post(
-        '/auth/login',
-        {
-          'username': username,
-          'password': password,
-        },
-        includeAuth: false,
-      );
+      final response = await _apiClient.post('/auth/login', {
+        'username': username,
+        'password': password,
+      }, includeAuth: false);
 
       print('[AuthService] Login response status: ${response.statusCode}');
       print('[AuthService] Login response body: ${response.body}');
@@ -39,16 +35,16 @@ class AuthService {
         final data = jsonDecode(response.body);
         final token = data['token'] as String;
         final playerData = data['player'] as Map<String, dynamic>;
-        
+
         print('[AuthService] Token: ${token.substring(0, 20)}...');
         print('[AuthService] Player data: $playerData');
-        
+
         await _apiClient.setToken(token);
-        
+
         try {
           final player = Player.fromJson(playerData);
           print('[AuthService] Player parsed successfully: ${player.username}');
-          
+
           // Initialize push notifications
           try {
             if (!kIsWeb) {
@@ -62,11 +58,8 @@ class AuthService {
             print('⚠️ Push notifications failed: $e');
             // Don't fail login if notifications fail
           }
-          
-          return AuthResult(
-            success: true,
-            player: player,
-          );
+
+          return AuthResult(success: true, player: player);
         } catch (e) {
           print('[AuthService] Player parsing error: $e');
           return AuthResult(
@@ -76,7 +69,7 @@ class AuthService {
         }
       } else {
         final data = jsonDecode(response.body);
-        
+
         // Handle event-based error responses
         String errorMessage = 'Login failed';
         if (data['event'] == 'auth.error' && data['params'] != null) {
@@ -94,26 +87,25 @@ class AuthService {
         } else if (data['message'] != null) {
           errorMessage = data['message'];
         }
-        
-        return AuthResult(
-          success: false,
-          error: errorMessage,
-        );
+
+        return AuthResult(success: false, error: errorMessage);
       }
     } catch (e) {
       print('[AuthService] Login exception: $e');
-      return AuthResult(
-        success: false,
-        error: 'Connection error: $e',
-      );
+      return AuthResult(success: false, error: 'Connection error: $e');
     }
   }
 
-  Future<AuthResult> register(String username, String password, {String? email, String? language}) async {
+  Future<AuthResult> register(
+    String username,
+    String password, {
+    String? email,
+    String? language,
+  }) async {
     try {
       // Use provided language or detect device language
       final selectedLanguage = language ?? _getDeviceLanguage();
-      
+
       final body = {
         'username': username,
         'password': password,
@@ -122,7 +114,7 @@ class AuthService {
       if (email != null && email.isNotEmpty) {
         body['email'] = email;
       }
-      
+
       final response = await _apiClient.post(
         '/auth/register',
         body,
@@ -145,12 +137,12 @@ class AuthService {
 
         final token = data['token'] as String;
         final playerData = data['player'] as Map<String, dynamic>;
-        
+
         print('[AuthService] Token: ${token.substring(0, 20)}...');
         print('[AuthService] Player data: $playerData');
-        
+
         await _apiClient.setToken(token);
-        
+
         try {
           final player = Player.fromJson(playerData);
           print('[AuthService] Player parsed successfully: ${player.username}');
@@ -162,10 +154,7 @@ class AuthService {
           } catch (e) {
             print('⚠️ Push notifications failed after registration: $e');
           }
-          return AuthResult(
-            success: true,
-            player: player,
-          );
+          return AuthResult(success: true, player: player);
         } catch (e) {
           print('[AuthService] Player parsing error: $e');
           return AuthResult(
@@ -175,7 +164,7 @@ class AuthService {
         }
       } else {
         final data = jsonDecode(response.body);
-        
+
         // Handle event-based error responses
         String errorMessage = 'Registration failed';
         if (data['event'] == 'auth.error' && data['params'] != null) {
@@ -190,18 +179,12 @@ class AuthService {
         } else if (data['message'] != null) {
           errorMessage = data['message'];
         }
-        
-        return AuthResult(
-          success: false,
-          error: errorMessage,
-        );
+
+        return AuthResult(success: false, error: errorMessage);
       }
     } catch (e) {
       print('[AuthService] Register exception: $e');
-      return AuthResult(
-        success: false,
-        error: 'Connection error: $e',
-      );
+      return AuthResult(success: false, error: 'Connection error: $e');
     }
   }
 

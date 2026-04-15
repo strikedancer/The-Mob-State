@@ -304,55 +304,6 @@ class PropertyScreenState extends State<PropertyScreen>
     }
   }
 
-  Future<void> _collectIncome(Property property) async {
-    try {
-      final response = await _apiClient.post(
-        '/properties/${property.id}/collect',
-        {},
-      );
-      final data = jsonDecode(response.body);
-
-      if (data['event'] == 'property.income_collected') {
-        final income = data['params']?['income'] ?? property.currentIncome;
-        final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text(l10n.incomeCollected(income.toString())),
-            backgroundColor: Colors.green,
-          ),
-        );
-        _loadMyProperties();
-      } else if (data['event']?.toString().contains('failed') == true) {
-        final l10n = AppLocalizations.of(context)!;
-        final message =
-            data['params']?['message'] ?? l10n.errorCollectingIncome;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(content: Text(message), backgroundColor: Colors.red),
-        );
-      } else {
-        final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text(l10n.unknownResponse),
-            backgroundColor: Colors.orange,
-          ),
-        );
-      }
-    } catch (e) {
-      final l10n = AppLocalizations.of(context)!;
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(l10n.networkError(e.toString())),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
   Future<void> _openNightclub(Property property) async {
     await Navigator.push(
       context,
@@ -499,7 +450,6 @@ class PropertyScreenState extends State<PropertyScreen>
             playerIsVip: _playerIsVip,
             vipBonusPerProperty: _vipHousingBonusPerProperty,
             onUpgrade: () => _upgradeProperty(property),
-            onCollectIncome: () => _collectIncome(property),
             onManage: propertyType == 'nightclub'
                 ? () => _openNightclub(property)
                 : null,

@@ -8,7 +8,6 @@ class PropertyCard extends StatelessWidget {
   final Property? ownedProperty;
   final VoidCallback? onBuy;
   final VoidCallback? onUpgrade;
-  final VoidCallback? onCollectIncome;
   final VoidCallback? onManage;
   final bool isLoading;
   final bool playerIsVip;
@@ -20,7 +19,6 @@ class PropertyCard extends StatelessWidget {
     this.ownedProperty,
     this.onBuy,
     this.onUpgrade,
-    this.onCollectIncome,
     this.onManage,
     this.isLoading = false,
     this.playerIsVip = false,
@@ -171,7 +169,7 @@ class PropertyCard extends StatelessWidget {
   }
 
   List<Widget> _buildOverlays(List<String> overlayKeys) {
-    return overlayKeys.map((key) {
+    return overlayKeys.where((key) => key != 'income_ready').map((key) {
       final overlayPath = 'assets/images/overlays/$key.png';
 
       // Position overlays based on type
@@ -180,8 +178,6 @@ class PropertyCard extends StatelessWidget {
         alignment = Alignment.topRight;
       } else if (key == 'new') {
         alignment = Alignment.topLeft;
-      } else if (key == 'income_ready') {
-        alignment = Alignment.bottomRight;
       } else {
         alignment = Alignment.center;
       }
@@ -254,13 +250,6 @@ class PropertyCard extends StatelessWidget {
       if (definition!.minLevel > 0) ...[
         SizedBox(height: 8),
         _buildStatRow(l10n.propertyMinLevel, '${definition!.minLevel}'),
-      ],
-      if (definition!.baseIncome > 0) ...[
-        SizedBox(height: 8),
-        _buildStatRow(
-          l10n.propertyIncomePerHour,
-          formatCurrency(definition!.baseIncome),
-        ),
       ],
       if (definition!.storageCapacity.isNotEmpty &&
           definition!.storageCapacity[0] > 0) ...[
@@ -335,11 +324,6 @@ class PropertyCard extends StatelessWidget {
 
     return [
       _buildStatRow(
-        l10n.propertyIncomePerHour,
-        formatCurrency(ownedProperty!.currentIncome),
-      ),
-      SizedBox(height: 8),
-      _buildStatRow(
         l10n.level,
         '${ownedProperty!.level} / ${definition?.maxLevel ?? ownedProperty!.level}',
       ),
@@ -382,25 +366,6 @@ class PropertyCard extends StatelessWidget {
               : '$effectiveCapacity hoeren  ✅ max',
         ),
       ],
-      if (ownedProperty!.canCollectIncome) ...[
-        SizedBox(height: 8),
-        Text(
-          l10n.propertyIncomeReady,
-          style: TextStyle(
-            color: Colors.green,
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
-          ),
-        ),
-      ] else if (ownedProperty!.timeUntilNextCollection != null) ...[
-        SizedBox(height: 8),
-        Text(
-          l10n.propertyNextIncome(
-            _formatDuration(ownedProperty!.timeUntilNextCollection!, l10n),
-          ),
-          style: TextStyle(color: Colors.grey[600], fontSize: 12),
-        ),
-      ],
     ];
   }
 
@@ -436,52 +401,35 @@ class PropertyCard extends StatelessWidget {
     final canUpgrade = upgradeCost != null;
 
     return [
-      Row(
-        children: [
-          Expanded(
-            child: ElevatedButton.icon(
-              onPressed: ownedProperty!.canCollectIncome
-                  ? onCollectIncome
-                  : null,
-              icon: Icon(Icons.attach_money),
-              label: Text(l10n.propertyCollectAction),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-              ),
-            ),
+      SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: canUpgrade ? onUpgrade : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
           ),
-          SizedBox(width: 8),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: canUpgrade ? onUpgrade : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-              ),
-              child: Column(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.upgrade, size: 16),
-                      SizedBox(width: 4),
-                      Text(l10n.propertyUpgradeAction),
-                    ],
-                  ),
-                  if (canUpgrade)
-                    Text(
-                      '€${formatCompactNumber(upgradeCost)}',
-                      style: TextStyle(fontSize: 11),
-                    )
-                  else
-                    Text(l10n.propertyMax, style: TextStyle(fontSize: 11)),
+                  Icon(Icons.upgrade, size: 16),
+                  SizedBox(width: 4),
+                  Text(l10n.propertyUpgradeAction),
                 ],
               ),
-            ),
+              if (canUpgrade)
+                Text(
+                  '€${formatCompactNumber(upgradeCost)}',
+                  style: TextStyle(fontSize: 11),
+                )
+              else
+                Text(l10n.propertyMax, style: TextStyle(fontSize: 11)),
+            ],
           ),
-        ],
+        ),
       ),
       if (ownedProperty?.propertyId == 'nightclub') ...[
         SizedBox(height: 8),
@@ -502,17 +450,6 @@ class PropertyCard extends StatelessWidget {
       height: 200,
       child: Center(child: CircularProgressIndicator()),
     );
-  }
-
-  String _formatDuration(Duration duration, AppLocalizations l10n) {
-    if (duration.inHours > 0) {
-      return l10n.durationHoursMinutes(
-        duration.inHours.toString(),
-        duration.inMinutes.remainder(60).toString(),
-      );
-    } else {
-      return l10n.durationMinutes(duration.inMinutes.toString());
-    }
   }
 
   String? _localizedPropertyName(String? propertyId, AppLocalizations l10n) {
