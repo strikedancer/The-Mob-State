@@ -12,6 +12,7 @@ import 'providers/vehicle_provider.dart';
 import 'providers/locale_provider.dart';
 import 'screens/login_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/reset_password_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/inventory_screen.dart';
 import 'screens/hitlist_screen.dart';
@@ -42,6 +43,18 @@ void main() async {
 
 class MafiaGameApp extends StatelessWidget {
   const MafiaGameApp({super.key});
+
+  Widget _resolveHome() {
+    final path = Uri.base.path;
+
+    if (path == '/auth/reset-password') {
+      return ResetPasswordScreen(
+        initialToken: Uri.base.queryParameters['token'],
+      );
+    }
+
+    return const AuthWrapper();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +89,12 @@ class MafiaGameApp extends StatelessWidget {
           ),
 
           // Routes
-          home: const AuthWrapper(),
+          home: _resolveHome(),
           routes: {
             '/login': (context) => const LoginScreen(),
+            '/auth/reset-password': (context) => ResetPasswordScreen(
+              initialToken: Uri.base.queryParameters['token'],
+            ),
             '/dashboard': (context) => const DashboardScreen(),
             '/settings': (context) => const SettingsScreen(),
             '/inventory': (context) {

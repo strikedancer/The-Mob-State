@@ -143,6 +143,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Auth reset-flow hersteld: scherm `Wachtwoord vergeten` doet nu een echte backend-call naar `/auth/request-password-reset` in plaats van een fake succesmelding, en de Flutter app kan resetlinks op `/auth/reset-password?token=...` nu direct openen en afhandelen met een nieuw wachtwoordscherm
+  - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/screens/forgot_password_screen.dart`, `client/lib/screens/reset_password_screen.dart`, `client/lib/main.dart`
 - [ ] Crew Wars player UX toegevoegd: Crew-scherm heeft nu een War Room-tab met declare/join/action flows, season leaderboard, current-war standings, war action feed, event-rendering en notificatie-routing; Help & Uitleg voor Crew is bijgewerkt
   - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/services/dashboard_service.dart`, `client/lib/services/event_renderer.dart`, `client/lib/services/notification_service.dart`, `client/lib/data/help_content.dart`
 - [ ] Security-scherm synced met nieuwe beveiligingsregels: toont nu bodyguard dagloon + volgende afschrijving, laat beschadigde armor met lagere actuele bescherming zien, behandelt armor expliciet als 1 gedragen slot met vervang-flow, en gebruikt contrastrijke styling zodat de actieve armor-kaart leesbaar blijft

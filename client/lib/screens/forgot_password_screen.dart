@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../services/auth_service.dart';
 import '../utils/top_right_notification.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _authService = AuthService();
   bool _isLoading = false;
   bool _emailSent = false;
 
@@ -31,11 +33,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
 
     try {
-      // TODO: Call backend API to send password reset email
-      // await authService.requestPasswordReset(_emailController.text.trim());
-
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
+      await _authService.requestPasswordReset(_emailController.text.trim());
 
       if (mounted) {
         setState(() {
@@ -48,11 +46,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         setState(() {
           _isLoading = false;
         });
-        showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(context,
+          SnackBar(content: Text(_mapResetRequestError(e)), backgroundColor: Colors.red),
         );
       }
     }
+  }
+
+  String _mapResetRequestError(Object error) {
+    final isDutch = Localizations.localeOf(context).languageCode == 'nl';
+    final message = error.toString();
+
+    if (message.contains('EMAIL_REQUIRED')) {
+      return isDutch ? 'Voer een e-mailadres in.' : 'Please enter an email address.';
+    }
+
+    return isDutch
+        ? 'Herstellink verzenden mislukt. Probeer het opnieuw.'
+        : 'Failed to send reset link. Please try again.';
   }
 
   @override
