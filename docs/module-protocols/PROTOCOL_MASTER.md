@@ -53,6 +53,7 @@ Acceptatie-eis:
 - Nightclub -> Drugs, Prostitution, Dashboard, Admin
 - Crimes/Vehicle Theft -> Garage, Prison, Security, Admin
 - Hitlist -> Crimes, Security, Crew, Dashboard, Admin
+- Crew Wars -> Crew, Hitlist, Crimes, Dashboard, Notifications, Payments, Achievements, Admin
 - Payments/Premium -> Crew, Hitlist/Security, Garage, TuneShop, Events, Dashboard, Admin
 - Travel -> Properties, Drugs, Nightclub, Smuggling, Admin
 - Admin -> Alle gameplay modules met logs, assets of economy-impact

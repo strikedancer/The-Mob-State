@@ -819,6 +819,116 @@ model CrewDrugInventory {
   @@map("crew_drug_inventory")
 }
 
+model CrewWar {
+  id                Int      @id @default(autoincrement())
+  seasonId          Int?
+  warType           String   @db.VarChar(32)
+  status            String   @db.VarChar(20)
+  declaredByPlayerId Int
+  attackerCrewId    Int
+  defenderCrewId    Int
+  winnerCrewId      Int?
+  metadataJson      String?  @db.LongText
+  startTime         DateTime
+  activeFrom        DateTime
+  lockDownFrom      DateTime
+  endTime           DateTime
+  resolvedAt        DateTime?
+  cooldownUntil     DateTime?
+  entryStake        Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([attackerCrewId])
+  @@index([defenderCrewId])
+  @@index([status])
+  @@index([seasonId])
+  @@map("crew_wars")
+}
+
+model CrewWarParticipant {
+  id             Int      @id @default(autoincrement())
+  warId          Int
+  playerId       Int
+  crewId         Int
+  role           String   @db.VarChar(20)
+  status         String   @default("joined") @db.VarChar(20)
+  joinedAt       DateTime @default(now())
+  points         Int      @default(0)
+  kills          Int      @default(0)
+  deaths         Int      @default(0)
+  assists        Int      @default(0)
+  lootStolen     Int      @default(0)
+  abuseFlagCount Int      @default(0)
+  actionCount    Int      @default(0)
+  lastActionAt   DateTime?
+  updatedAt      DateTime @updatedAt
+
+  @@unique([warId, playerId])
+  @@index([warId])
+  @@index([playerId])
+  @@index([crewId])
+  @@map("crew_war_participants")
+}
+
+model CrewWarAction {
+  id            Int      @id @default(autoincrement())
+  warId         Int
+  actorId       Int?
+  actorCrewId   Int?
+  targetId      Int?
+  targetCrewId  Int?
+  territoryKey  String?  @db.VarChar(50)
+  actionType    String   @db.VarChar(32)
+  result        String   @db.VarChar(32)
+  pointsAwarded Int      @default(0)
+  moneyDelta    Int      @default(0)
+  metadataJson  String?  @db.LongText
+  createdAt     DateTime @default(now())
+
+  @@index([warId])
+  @@index([actorId])
+  @@index([targetId])
+  @@index([actionType])
+  @@index([createdAt])
+  @@map("crew_war_actions")
+}
+
+model CrewWarStanding {
+  id             Int      @id @default(autoincrement())
+  warId          Int
+  crewId         Int
+  totalPoints    Int      @default(0)
+  totalKills     Int      @default(0)
+  totalDeaths    Int      @default(0)
+  totalLoot      Int      @default(0)
+  territoriesHeld Int     @default(0)
+  rank           Int      @default(0)
+  updatedAt      DateTime @updatedAt
+
+  @@unique([warId, crewId])
+  @@index([warId])
+  @@index([crewId])
+  @@map("crew_war_standings")
+}
+
+model CrewWarSeason {
+  id                  Int      @id @default(autoincrement())
+  seasonKey           String   @unique @db.VarChar(64)
+  startsAt            DateTime
+  endsAt              DateTime
+  status              String   @db.VarChar(20)
+  rewardConfigJson    String?  @db.LongText
+  rewardsDistributedAt DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([status])
+  @@index([startsAt])
+  @@index([endsAt])
+  @@map("crew_war_seasons")
+}
+
 model BankAccount {
   id           Int      @id @default(autoincrement())
   playerId     Int      @unique

@@ -35,7 +35,11 @@ class _CrewScreenState extends State<CrewScreen>
   Map<String, int>? _crewStats;
   List<dynamic> _crewBuildings = [];
   Map<String, dynamic>? _crewStorage;
+  Map<String, dynamic>? _crewWarHub;
   bool _loading = true;
+  bool _crewWarLoading = false;
+  String _selectedWarType = 'kill_war';
+  int? _selectedWarTargetCrewId;
 
   void _openPlayerProfile(int playerId, String username) {
     Navigator.of(context).push(
@@ -51,6 +55,7 @@ class _CrewScreenState extends State<CrewScreen>
     'tab.myCrew': {'nl': 'Mijn Crew', 'en': 'My Crew'},
     'tab.crewHq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
     'tab.members': {'nl': 'Leden', 'en': 'Members'},
+    'tab.warRoom': {'nl': 'War Room', 'en': 'War Room'},
     'tab.carStorage': {'nl': 'Auto opslag', 'en': 'Car Storage'},
     'tab.boatStorage': {'nl': 'Haven', 'en': 'Boat Storage'},
     'tab.weaponStorage': {'nl': 'Wapen opslag', 'en': 'Weapon Storage'},
@@ -649,7 +654,7 @@ class _CrewScreenState extends State<CrewScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 11, vsync: this);
+    _tabController = TabController(length: 12, vsync: this);
     _loadData();
   }
 
@@ -666,6 +671,7 @@ class _CrewScreenState extends State<CrewScreen>
 
       final futures = <Future<void>>[_loadAllCrews(), _loadOneTimeProducts()];
       if (_myCrew != null) {
+        futures.add(_loadCrewWarHub());
         futures.add(_loadCrewStats());
         futures.add(_loadCrewBuildings());
         futures.add(_loadCrewStorage());
@@ -827,6 +833,355 @@ class _CrewScreenState extends State<CrewScreen>
       }
     } catch (e) {
       print('Error loading crew storage: $e');
+    }
+  }
+
+  Future<void> _loadCrewWarHub() async {
+    if (_myCrew == null) {
+      if (mounted) {
+        setState(() {
+          _crewWarHub = null;
+          _selectedWarTargetCrewId = null;
+        });
+      }
+      return;
+    }
+
+    try {
+      if (mounted) {
+        setState(() => _crewWarLoading = true);
+      }
+
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.get('/crew-wars/hub');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final params = data['params'] as Map<String, dynamic>;
+        final hub = (params['hub'] as Map?)?.cast<String, dynamic>() ?? <String, dynamic>{};
+        final targets = (hub['availableTargets'] as List<dynamic>? ?? []);
+        final suggestedTargetId = targets.isNotEmpty
+            ? (targets.first as Map<String, dynamic>)['id'] as int?
+            : null;
+
+        if (mounted) {
+          setState(() {
+            _crewWarHub = hub;
+            _selectedWarTargetCrewId = targets.any((target) => (target as Map<String, dynamic>)['id'] == _selectedWarTargetCrewId)
+                ? _selectedWarTargetCrewId
+                : suggestedTargetId;
+          });
+        }
+      }
+    } catch (e) {
+      print('Error loading crew war hub: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _crewWarLoading = false);
+      }
+    }
+  }
+
+  String _crewWarErrorMessage(
+    String locale,
+    String? event,
+    Map<String, dynamic>? params,
+  ) {
+    switch (event) {
+      case 'error.not_in_crew':
+        return _tr(locale, 'Je zit niet in een crew.', 'You are not in a crew.');
+      case 'error.not_crew_leader':
+        return _tr(locale, 'Alleen de crew leader kan dit doen.', 'Only the crew leader can do this.');
+      case 'error.target_crew_not_found':
+        return _tr(locale, 'Doelcrew niet gevonden.', 'Target crew not found.');
+      case 'error.crew_already_in_war':
+        return _tr(locale, 'Deze crew zit al in een war.', 'This crew is already in a war.');
+      case 'error.not_enough_crew_members':
+        return _tr(locale, 'Minimaal 3 crewleden vereist.', 'At least 3 crew members are required.');
+      case 'error.war_not_found':
+        return _tr(locale, 'War niet gevonden.', 'War not found.');
+      case 'error.war_not_active':
+        return _tr(locale, 'Deze war is niet actief.', 'This war is not active.');
+      case 'error.war_not_joinable':
+        return _tr(locale, 'Je kunt deze war nu niet joinen.', 'You cannot join this war right now.');
+      case 'error.war_target_required':
+        return _tr(locale, 'Deze actie vereist een doelspeler.', 'This action requires a target player.');
+      case 'error.war_repeated_target_blocked':
+        return _tr(locale, 'Anti-farm blokkade: kies een ander doelwit.', 'Anti-farm block: pick another target.');
+      case 'error.vip_player_required':
+        return _tr(locale, 'Hiervoor is een VIP-speler vereist.', 'A VIP player is required for this action.');
+      case 'error.vip_crew_required':
+        return _tr(locale, 'Hiervoor is een VIP-crew vereist.', 'A VIP crew is required for this action.');
+      case 'error.war_action_limit_reached':
+        return _tr(locale, 'Actielimiet bereikt voor nu.', 'Action limit reached for now.');
+      case 'error.war_action_cooldown':
+        final remaining = params?['remainingMinutes'] ?? 0;
+        return _tr(locale, 'Cooldown actief: wacht nog $remaining minuten.', 'Cooldown active: wait $remaining more minutes.');
+      case 'error.invalid_war_territory':
+        return _tr(locale, 'Ongeldig gebied gekozen.', 'Invalid territory selected.');
+      default:
+        return _tr(locale, 'Crew war actie mislukt.', 'Crew war action failed.');
+    }
+  }
+
+  Future<int?> _promptWarPlayerId(String locale, String title) async {
+    final controller = TextEditingController();
+    final result = await showDialog<int>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(title),
+        content: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: _tr(locale, 'Doelspeler ID', 'Target player ID'),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final value = int.tryParse(controller.text.trim());
+              Navigator.of(dialogContext).pop(value);
+            },
+            child: Text(_tr(locale, 'Bevestigen', 'Confirm')),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    return result;
+  }
+
+  Future<String?> _promptWarTerritory(
+    String locale,
+    List<String> territories,
+  ) async {
+    if (territories.isEmpty) return null;
+    String selected = territories.first;
+    return showDialog<String>(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setLocalState) => AlertDialog(
+          title: Text(_tr(locale, 'Kies gebied', 'Select territory')),
+          content: DropdownButtonFormField<String>(
+            value: selected,
+            items: territories
+                .map((territory) => DropdownMenuItem<String>(
+                      value: territory,
+                      child: Text(territory),
+                    ))
+                .toList(),
+            onChanged: (value) {
+              if (value == null) return;
+              setLocalState(() => selected = value);
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(selected),
+              child: Text(_tr(locale, 'Claim', 'Claim')),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _declareCrewWar() async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_selectedWarTargetCrewId == null) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_tr(locale, 'Kies eerst een doelcrew.', 'Select a target crew first.')),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post('/crew-wars/declare', {
+        'targetCrewId': _selectedWarTargetCrewId,
+        'warType': _selectedWarType,
+      });
+
+      if (response.statusCode == 201) {
+        await _loadData();
+        if (!mounted) return;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_tr(locale, 'Crew war gedeclareerd.', 'Crew war declared.')),
+            backgroundColor: Colors.green,
+          ),
+        );
+        return;
+      }
+
+      if (!mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final event = data['event'] as String?;
+      final params = (data['params'] as Map?)?.cast<String, dynamic>();
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_crewWarErrorMessage(locale, event, params)),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_tr(locale, 'Crew war declareren mislukt.', 'Failed to declare crew war.')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _joinCrewWar(int warId) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post('/crew-wars/$warId/join', {});
+      if (response.statusCode == 200) {
+        await _loadData();
+        if (!mounted) return;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_tr(locale, 'Je bent toegetreden tot de war.', 'You joined the war.')),
+            backgroundColor: Colors.green,
+          ),
+        );
+        return;
+      }
+
+      if (!mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _crewWarErrorMessage(
+              locale,
+              data['event'] as String?,
+              (data['params'] as Map?)?.cast<String, dynamic>(),
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_tr(locale, 'Joinen van war mislukt.', 'Failed to join the war.')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _performCrewWarAction(
+    int warId,
+    String actionType, {
+    int? targetPlayerId,
+    String? territoryKey,
+  }) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post('/crew-wars/$warId/actions', {
+        'actionType': actionType,
+        if (targetPlayerId != null) 'targetPlayerId': targetPlayerId,
+        if (territoryKey != null) 'territoryKey': territoryKey,
+      });
+
+      if (response.statusCode == 200) {
+        await _loadData();
+        if (!mounted) return;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_tr(locale, 'Crew war actie verwerkt.', 'Crew war action completed.')),
+            backgroundColor: Colors.green,
+          ),
+        );
+        return;
+      }
+
+      if (!mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _crewWarErrorMessage(
+              locale,
+              data['event'] as String?,
+              (data['params'] as Map?)?.cast<String, dynamic>(),
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_tr(locale, 'Crew war actie mislukt.', 'Crew war action failed.')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  String _formatCrewWarType(String locale, String? warType) {
+    switch (warType) {
+      case 'kill_war':
+        return _tr(locale, 'Kill War', 'Kill War');
+      case 'economy_war':
+        return _tr(locale, 'Economy War', 'Economy War');
+      case 'territory_war':
+        return _tr(locale, 'Territory War', 'Territory War');
+      case 'total_war':
+        return _tr(locale, 'Total War', 'Total War');
+      default:
+        return warType ?? '-';
+    }
+  }
+
+  String _formatCrewWarStatus(String locale, String? status) {
+    switch (status) {
+      case 'preparing':
+        return _tr(locale, 'Voorbereiding', 'Preparing');
+      case 'active':
+        return _tr(locale, 'Actief', 'Active');
+      case 'lockdown':
+        return _tr(locale, 'Lockdown', 'Lockdown');
+      case 'resolved':
+        return _tr(locale, 'Afgerond', 'Resolved');
+      case 'archived':
+        return _tr(locale, 'Gearchiveerd', 'Archived');
+      case 'cancelled':
+        return _tr(locale, 'Geannuleerd', 'Cancelled');
+      default:
+        return status ?? '-';
     }
   }
 
@@ -2592,6 +2947,7 @@ class _CrewScreenState extends State<CrewScreen>
             Tab(text: _t(locale, 'tab.myCrew')),
             Tab(text: _t(locale, 'tab.crewHq')),
             Tab(text: _t(locale, 'tab.members')),
+            Tab(text: _t(locale, 'tab.warRoom')),
             Tab(text: _t(locale, 'tab.carStorage')),
             Tab(text: _t(locale, 'tab.boatStorage')),
             Tab(text: _t(locale, 'tab.weaponStorage')),
@@ -2611,6 +2967,7 @@ class _CrewScreenState extends State<CrewScreen>
                 _buildMyCrewTab(),
                 _buildBuildingTab('hq'),
                 _buildMembersTab(),
+                _buildCrewWarTab(),
                 _buildBuildingTab('car_storage'),
                 _buildBuildingTab('boat_storage'),
                 _buildBuildingTab('weapon_storage'),
@@ -3286,6 +3643,362 @@ class _CrewScreenState extends State<CrewScreen>
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCrewWarTab() {
+    final locale = Localizations.localeOf(context).languageCode;
+
+    if (_myCrew == null) {
+      return Center(
+        child: Text(
+          _tr(locale, 'Join eerst een crew om Crew Wars te gebruiken.', 'Join a crew first to use Crew Wars.'),
+          style: const TextStyle(color: Colors.grey, fontSize: 16),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    final hub = _crewWarHub ?? <String, dynamic>{};
+    final currentWar = (hub['currentWar'] as Map?)?.cast<String, dynamic>();
+    final availableTargets = (hub['availableTargets'] as List<dynamic>? ?? [])
+        .map((target) => (target as Map).cast<String, dynamic>())
+        .toList();
+    final seasonLeaderboard = (hub['seasonLeaderboard'] as List<dynamic>? ?? [])
+        .map((entry) => (entry as Map).cast<String, dynamic>())
+        .toList();
+    final recentWars = (hub['recentWars'] as List<dynamic>? ?? [])
+        .map((war) => (war as Map).cast<String, dynamic>())
+        .toList();
+    final standings = (currentWar?['standings'] as List<dynamic>? ?? [])
+        .map((entry) => (entry as Map).cast<String, dynamic>())
+        .toList();
+    final recentActions = (currentWar?['recentActions'] as List<dynamic>? ?? [])
+        .map((entry) => (entry as Map).cast<String, dynamic>())
+        .toList();
+    final myParticipant = (currentWar?['myParticipant'] as Map?)?.cast<String, dynamic>();
+    final status = currentWar?['status'] as String?;
+    final canAct = currentWar != null && myParticipant != null && (status == 'active' || status == 'lockdown');
+    final metadata = currentWar != null
+      ? ((currentWar['metadata'] as Map?)?.cast<String, dynamic>() ??
+          <String, dynamic>{})
+      : <String, dynamic>{};
+    final territories = ((metadata['territories'] as Map?)?.cast<String, dynamic>() ??
+        <String, dynamic>{})
+      .keys
+      .toList();
+
+    Future<void> handleAction(String actionType) async {
+      if (currentWar == null) return;
+      int? targetPlayerId;
+      String? territoryKey;
+
+      if (['attack_kill', 'attack_mug', 'attack_sabotage', 'raid'].contains(actionType)) {
+        targetPlayerId = await _promptWarPlayerId(
+          locale,
+          _tr(locale, 'Voer doelspeler ID in', 'Enter target player ID'),
+        );
+        if (targetPlayerId == null || targetPlayerId <= 0) return;
+      }
+
+      if (actionType == 'territory_claim') {
+        territoryKey = await _promptWarTerritory(locale, territories);
+        if (territoryKey == null || territoryKey.isEmpty) return;
+      }
+
+      await _performCrewWarAction(
+        currentWar['id'] as int,
+        actionType,
+        targetPlayerId: targetPlayerId,
+        territoryKey: territoryKey,
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadCrewWarHub,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    _t(locale, 'tab.warRoom'),
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                IconButton(
+                  onPressed: _crewWarLoading ? null : () => _loadCrewWarHub(),
+                  icon: _crewWarLoading
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.refresh),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _tr(locale, 'Seizoensoverzicht', 'Season overview'),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    const SizedBox(height: 8),
+                    Text('${_tr(locale, 'Actief seizoen', 'Active season')}: ${hub['season'] is Map ? ((hub['season'] as Map)['seasonKey'] ?? '-') : '-'}'),
+                    Text('${_tr(locale, 'Mijn rol', 'My role')}: ${hub['myRole'] ?? '-'}'),
+                    Text('${_tr(locale, 'Crew kan declareren', 'Crew can declare')}: ${(hub['canDeclare'] == true) ? _tr(locale, 'Ja', 'Yes') : _tr(locale, 'Nee', 'No')}'),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            if (hub['canDeclare'] == true && currentWar == null)
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _tr(locale, 'Nieuwe oorlog declareren', 'Declare new war'),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      const SizedBox(height: 12),
+                      DropdownButtonFormField<int>(
+                        value: _selectedWarTargetCrewId,
+                        decoration: InputDecoration(
+                          labelText: _tr(locale, 'Doelcrew', 'Target crew'),
+                        ),
+                        items: availableTargets
+                            .map(
+                              (target) => DropdownMenuItem<int>(
+                                value: target['id'] as int,
+                                child: Text('${target['name']} (${target['memberCount']} leden)'),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() => _selectedWarTargetCrewId = value);
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      DropdownButtonFormField<String>(
+                        value: _selectedWarType,
+                        decoration: InputDecoration(
+                          labelText: _tr(locale, 'War type', 'War type'),
+                        ),
+                        items: const [
+                          DropdownMenuItem(value: 'kill_war', child: Text('Kill War')),
+                          DropdownMenuItem(value: 'economy_war', child: Text('Economy War')),
+                          DropdownMenuItem(value: 'territory_war', child: Text('Territory War')),
+                          DropdownMenuItem(value: 'total_war', child: Text('Total War')),
+                        ],
+                        onChanged: (value) {
+                          if (value == null) return;
+                          setState(() => _selectedWarType = value);
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _crewWarLoading ? null : _declareCrewWar,
+                          icon: const Icon(Icons.gavel),
+                          label: Text(_tr(locale, 'Declareer oorlog', 'Declare war')),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            if (currentWar != null) ...[
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '${currentWar['attackerCrew'] is Map ? ((currentWar['attackerCrew'] as Map)['name'] ?? '#${currentWar['attackerCrewId']}') : '#${currentWar['attackerCrewId']}'} vs ${currentWar['defenderCrew'] is Map ? ((currentWar['defenderCrew'] as Map)['name'] ?? '#${currentWar['defenderCrewId']}') : '#${currentWar['defenderCrewId']}'}',
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ),
+                          Chip(label: Text(_formatCrewWarStatus(locale, status))),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(_formatCrewWarType(locale, currentWar['warType'] as String?)),
+                      Text('${_tr(locale, 'Actief vanaf', 'Active from')}: ${currentWar['activeFrom'] ?? '-'}'),
+                      if (myParticipant == null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: ElevatedButton.icon(
+                            onPressed: _crewWarLoading ? null : () => _joinCrewWar(currentWar['id'] as int),
+                            icon: const Icon(Icons.login),
+                            label: Text(_tr(locale, 'Join war', 'Join war')),
+                          ),
+                        )
+                      else
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              _buildWarActionButton(locale, 'Kill', Icons.close, canAct, () => handleAction('attack_kill')),
+                              _buildWarActionButton(locale, 'Mug', Icons.paid, canAct, () => handleAction('attack_mug')),
+                              _buildWarActionButton(locale, 'Sabotage', Icons.construction, canAct, () => handleAction('attack_sabotage')),
+                              _buildWarActionButton(locale, 'Intel', Icons.search, canAct, () => handleAction('intel_scan')),
+                              _buildWarActionButton(locale, 'Raid', Icons.local_fire_department, canAct, () => handleAction('raid')),
+                              _buildWarActionButton(locale, 'Shield', Icons.shield, canAct, () => handleAction('crew_shield')),
+                              _buildWarActionButton(locale, 'Boost', Icons.bolt, canAct, () => handleAction('war_boost')),
+                              _buildWarActionButton(locale, 'Territory', Icons.flag, canAct, () => handleAction('territory_claim')),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _tr(locale, 'Standings', 'Standings'),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      const SizedBox(height: 8),
+                      ...standings.map(
+                        (standing) => ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: CircleAvatar(child: Text('${standing['rank'] ?? '-'}')),
+                          title: Text(standing['crew'] is Map ? ((standing['crew'] as Map)['name'] ?? '#${standing['crewId']}') : '#${standing['crewId']}'),
+                          subtitle: Text('${_tr(locale, 'Kills', 'Kills')}: ${standing['totalKills'] ?? 0} • ${_tr(locale, 'Deaths', 'Deaths')}: ${standing['totalDeaths'] ?? 0} • ${_tr(locale, 'Gebieden', 'Territories')}: ${standing['territoriesHeld'] ?? 0}'),
+                          trailing: Text('${standing['totalPoints'] ?? 0} pt'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _tr(locale, 'Laatste acties', 'Recent actions'),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      const SizedBox(height: 8),
+                      if (recentActions.isEmpty)
+                        Text(_tr(locale, 'Nog geen war-acties.', 'No war actions yet.')),
+                      ...recentActions.take(10).map(
+                        (action) => ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          leading: const Icon(Icons.bolt, size: 18),
+                          title: Text('${action['actionType']} • +${action['pointsAwarded'] ?? 0} pt'),
+                          subtitle: Text('${action['actor'] is Map ? ((action['actor'] as Map)['username'] ?? '#${action['actorId']}') : '#${action['actorId']}'} ${_tr(locale, 'tegen', 'vs')} ${action['target'] is Map ? ((action['target'] as Map)['username'] ?? '-') : '-'}'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(height: 12),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _tr(locale, 'Seizoensleaderboard', 'Season leaderboard'),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    const SizedBox(height: 8),
+                    if (seasonLeaderboard.isEmpty)
+                      Text(_tr(locale, 'Nog geen seizoenspunten.', 'No season points yet.')),
+                    ...seasonLeaderboard.map(
+                      (entry) => ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: CircleAvatar(child: Text('${entry['rank'] ?? '-'}')),
+                        title: Text(entry['crew'] is Map ? ((entry['crew'] as Map)['name'] ?? '#${entry['crewId']}') : '#${entry['crewId']}'),
+                        subtitle: Text('${_tr(locale, 'Kills', 'Kills')}: ${entry['totalKills'] ?? 0} • ${_tr(locale, 'Loot', 'Loot')}: €${entry['totalLoot'] ?? 0}'),
+                        trailing: Text('${entry['totalPoints'] ?? 0} pt'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _tr(locale, 'Recente wars', 'Recent wars'),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    const SizedBox(height: 8),
+                    if (recentWars.isEmpty)
+                      Text(_tr(locale, 'Nog geen recente wars.', 'No recent wars yet.')),
+                    ...recentWars.map(
+                      (war) => ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.history),
+                        title: Text('${_formatCrewWarType(locale, war['warType'] as String?)} • ${_formatCrewWarStatus(locale, war['status'] as String?)}'),
+                        subtitle: Text('#${war['attackerCrewId']} vs #${war['defenderCrewId']}'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWarActionButton(
+    String locale,
+    String label,
+    IconData icon,
+    bool enabled,
+    VoidCallback onPressed,
+  ) {
+    return ElevatedButton.icon(
+      onPressed: enabled ? onPressed : null,
+      icon: Icon(icon, size: 18),
+      label: Text(locale == 'nl' ? label : label),
     );
   }
 

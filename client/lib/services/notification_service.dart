@@ -295,6 +295,8 @@ class NotificationService {
       case 'friend_accepted':
       case 'direct_message':
       case 'crew_message':
+      case 'crew_war_declared':
+      case 'crew_war_ended':
         return '/dashboard';
       default:
         return null;

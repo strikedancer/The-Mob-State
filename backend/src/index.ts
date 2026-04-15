@@ -11,6 +11,7 @@ import { systemLogService } from './services/systemLogService';
 import { ensureProstitutionSchema } from './startup/ensureProstitutionSchema';
 import { ensureSecuritySchema } from './startup/ensureSecuritySchema';
 import { ensureSupportSchema } from './startup/ensureSupportSchema';
+import { ensureCrewWarSchema } from './startup/ensureCrewWarSchema';
 import path from 'path';
 import fs from 'fs';
 
@@ -44,6 +45,7 @@ async function startServer() {
   await ensureProstitutionSchema();
   await ensureSecuritySchema();
   await ensureSupportSchema();
+  await ensureCrewWarSchema();
 
   // Capture runtime errors into persistent system logs for admin monitoring
   systemLogService.installConsoleErrorCapture();

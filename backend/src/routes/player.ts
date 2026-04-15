@@ -12,6 +12,7 @@ import { vehicleService } from '../services/vehicleService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from '../services/achievementService';
 import { existsCached } from '../services/redisClient';
+import * as crewWarService from '../services/crewWarService';
 
 const router = Router();
 const PROSTITUTE_RECRUITMENT_COOLDOWN_SECONDS = 5 * 60;
@@ -690,7 +691,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       return Math.max(0, Math.ceil((nextAllowedAt.getTime() - Date.now()) / 1000));
     };
 
-    const [shootingStats, gymStats, drugInventoryAgg, nightclubVenueCount, nightclubRevenueAgg, nightclubSeasonState] = await Promise.all([
+    const [shootingStats, gymStats, drugInventoryAgg, nightclubVenueCount, nightclubRevenueAgg, nightclubSeasonState, crewWarHub] = await Promise.all([
       prisma.shootingRangeStats.findUnique({
         where: { playerId },
         select: { lastTrainedAt: true },
@@ -714,6 +715,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         where: { seasonKey: 'weekly-nightclub-season' },
         select: { seasonEndAt: true },
       }),
+      crewWarService.getWarHubForPlayer(playerId),
     ]);
 
     const cooldownPlayer = await prisma.player.findUnique({
@@ -839,6 +841,33 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       playerId,
     );
 
+    const currentCrewWar = crewWarHub.currentWar;
+    const myCrewId = crewWarHub.myCrewId;
+    const currentStanding =
+      currentCrewWar && myCrewId
+        ? currentCrewWar.standings.find((standing: any) => standing.crewId === myCrewId) ?? null
+        : null;
+    const opponentCrew =
+      currentCrewWar && myCrewId
+        ? currentCrewWar.attackerCrewId === myCrewId
+          ? currentCrewWar.defenderCrew
+          : currentCrewWar.attackerCrew
+        : null;
+    const seasonRankEntry =
+      myCrewId != null
+        ? crewWarHub.seasonLeaderboard.find((entry: any) => entry.crewId === myCrewId) ?? null
+        : null;
+    const phaseEndsAt = currentCrewWar
+      ? currentCrewWar.status === 'preparing'
+        ? currentCrewWar.activeFrom
+        : currentCrewWar.status === 'active'
+          ? currentCrewWar.lockDownFrom ?? currentCrewWar.endTime
+          : currentCrewWar.endTime
+      : null;
+    const crewWarPhaseEndsInSeconds = phaseEndsAt
+      ? Math.max(0, Math.ceil((new Date(phaseEndsAt).getTime() - Date.now()) / 1000))
+      : 0;
+
     // Get jail status
     const jailStatus = await policeService.checkIfJailed(playerId);
 
@@ -885,6 +914,20 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         jailed: jailStatus > 0,
         jailTimeRemaining: jailStatus,
         bankBalance: bankAccount?.balance || 0,
+        crewWar: {
+          hasActiveWar: Boolean(currentCrewWar),
+          canDeclare: crewWarHub.canDeclare === true,
+          status: currentCrewWar?.status ?? null,
+          warType: currentCrewWar?.warType ?? null,
+          opponentCrewName: opponentCrew?.name ?? null,
+          myCrewPoints: currentStanding?.totalPoints ?? 0,
+          myCrewRank: currentStanding?.rank ?? null,
+          seasonRank: seasonRankEntry?.rank ?? null,
+          availableTargetsCount: Array.isArray(crewWarHub.availableTargets)
+            ? crewWarHub.availableTargets.length
+            : 0,
+          phaseEndsInSeconds: crewWarPhaseEndsInSeconds,
+        },
         cooldowns,
       },
     });

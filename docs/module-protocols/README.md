@@ -29,6 +29,7 @@ De master protocol zorgt ervoor dat je:
 ### Core Systems
 - [Dashboard](dashboard.md) - UI voor alle stats/overview
 - [Crew Management](crew.md) - Groep eigendom + upgrades (HQ_PROGRESSION_GUIDE.md)
+- [Crew Wars](crew-wars.md) - Crew-vs-crew wars, scoring, rewards en seasons
 - [Properties](properties.md) - Huizen/appartementen/magazijnen (HQ_PROGRESSION_GUIDE.md)
 - [Friends & Messages](friends.md) & [Messages](messages.md)
 - [Support Tickets](support-tickets.md) - Player reports, admin opvolging en todo-tracking
@@ -119,6 +120,7 @@ Voor schermen die meerdere API calls doen:
 - [Frontend Platform](frontend-platform.md)
 - [Notifications & Push](notifications.md)
 - [Player Profile](player-profile.md)
+- [Crew Wars](crew-wars.md)
 - [Drugs](drugs.md)
 - [Nightclub](nightclub.md)
 - [Crypto](crypto.md)

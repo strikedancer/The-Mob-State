@@ -19,8 +19,14 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Harde protocol-koppelingseis aangescherpt in master protocol: bij nieuwe systemen of modules moeten altijd alle relevante bestaande protocollen worden nagelopen op koppelingen, overlap en regressierisico's voordat iets als done geldt
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Nieuw Crew Wars systeem gebootstrapt in protocol-laag: nieuw protocol voor war lifecycle, war types, scoring, VIP-balans, anti-abuse, rewards, seasons en Discord/notificatie-koppelingen toegevoegd en opgenomen in master dependency map + module-index
+  - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Crew Wars backend live gezet: nieuw `/crew-wars` domein met war lifecycle, seasons, standings, actions, admin moderatie, startup schema-bootstrap en Discord/push koppelingen toegevoegd
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/src/startup/ensureCrewWarSchema.ts`, `backend/src/services/crewWarService.ts`, `backend/src/routes/crewWars.ts`, `backend/src/routes/admin.ts`, `backend/src/routes/player.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/discordWebhookService.ts`, `backend/src/services/achievementService.ts`, `backend/src/app.ts`, `backend/src/index.ts`
+- [ ] Crew Wars Discord transport deployment-klaar gemaakt: webhookconfiguratie staat nu in zowel het backend env-template als de lokale runtime-config en de transportlaag ondersteunt configureerbare event-types plus rate-limiting, zodat Discord fire-and-forget blijft zonder war flows te blokkeren of te spammen
+  - Bestanden: `backend/src/services/discordWebhookService.ts`, `backend/.env.example`, `backend/.env`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Security module hersteld en uitgebreid: armor-aankoop gebruikt weer `backend/content/security.json`, lijfwachten rekenen nu elke 24 uur systeemloon af en lopen weg bij wanbetaling, armor slijt na aanvallen waardoor effectieve bescherming afneemt en op 100% schade volledig verdwijnt, en hetzelfde onbeschadigde vest kan niet opnieuw gekocht worden terwijl armor als single active slot blijft werken
   - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`, `backend/src/startup/ensureSecuritySchema.ts`, `backend/src/index.ts`, `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260415061500_expand_player_security/migration.sql`
 - [ ] Support terminal-status todo guard: tickets kunnen nu niet meer naar `resolved`, `closed` of `archived` zolang gekoppelde todo's nog openstaan; dezelfde blokkade geldt voor reply-flow, settings-flow en lazy auto-archive
@@ -137,6 +143,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Crew Wars player UX toegevoegd: Crew-scherm heeft nu een War Room-tab met declare/join/action flows, season leaderboard, current-war standings, war action feed, event-rendering en notificatie-routing; Help & Uitleg voor Crew is bijgewerkt
+  - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/services/dashboard_service.dart`, `client/lib/services/event_renderer.dart`, `client/lib/services/notification_service.dart`, `client/lib/data/help_content.dart`
 - [ ] Security-scherm synced met nieuwe beveiligingsregels: toont nu bodyguard dagloon + volgende afschrijving, laat beschadigde armor met lagere actuele bescherming zien, behandelt armor expliciet als 1 gedragen slot met vervang-flow, en gebruikt contrastrijke styling zodat de actieve armor-kaart leesbaar blijft
   - Bestanden: `client/lib/screens/security_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/security.md`
 - [ ] Push token lifecycle fix: bestaande sessies synchroniseren nu bij refresh/startup automatisch een al toegestane push-permissie opnieuw met het actuele FCM-token, zodat spelers na page refresh of nieuwe build niet opnieuw handmatig push hoeven aan te zetten
@@ -191,6 +199,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/prison_screen.dart`
 
 ### Admin
+- [ ] Crew Wars adminpanel toegevoegd: nieuw Crew Wars-tabblad met overview, declare-war formulier, live standings en handmatige statusacties voor moderation/control
+  - Bestanden: `admin/src/App.tsx`, `admin/src/components/CrewWarsAdminPanel.tsx`, `admin/src/services/adminService.ts`
 - [ ] Admin responsive fix: mobiele hamburger opent nu echt het sidemenu via React-state + overlay, sluit weer op overlay/Escape/tabwissel, topbar/page-header wrappen beter op smallere schermen, en admin-tabellen/modals gebruiken nu mobielere spacing, full-width acties en betrouwbare horizontale scroll
   - Bestanden: `admin/src/App.tsx`, `admin/src/App.css`
 - [ ] Admin support ticket close-guard UX: ticketdetail toont nu expliciet dat open todo's `resolved`/`closed`/`archived` blokkeren en archiveeractie is disabled zolang gekoppelde todo's niet zijn afgerond

@@ -399,6 +399,44 @@ export class NotificationService {
     );
   }
 
+  public async sendCrewWarDeclaredNotification(
+    playerId: number,
+    warId: number,
+    opposingCrewName: string,
+    language?: Language
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const title = resolvedLanguage === 'nl' ? 'Crew-oorlog verklaard' : 'Crew war declared';
+    const body = resolvedLanguage === 'nl'
+      ? `Oorlog #${warId} tegen ${opposingCrewName} start binnenkort.`
+      : `War #${warId} against ${opposingCrewName} begins soon.`;
+
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'crew_war_declared',
+      warId: String(warId),
+      opposingCrewName,
+    });
+  }
+
+  public async sendCrewWarEndedNotification(
+    playerId: number,
+    warId: number,
+    winnerCrewId: number,
+    language?: Language
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const title = resolvedLanguage === 'nl' ? 'Crew-oorlog afgelopen' : 'Crew war ended';
+    const body = resolvedLanguage === 'nl'
+      ? `Oorlog #${warId} is afgerond. Winnende crew: #${winnerCrewId}.`
+      : `War #${warId} has been resolved. Winning crew: #${winnerCrewId}.`;
+
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'crew_war_ended',
+      warId: String(warId),
+      winnerCrewId: String(winnerCrewId),
+    });
+  }
+
   public async sendCasinoLowBalanceNotification(
     playerId: number,
     casinoName: string,

@@ -219,6 +219,31 @@ class EventRenderer {
         final crewName = params['crewName'] as String?;
         return 'Joined crew: $crewName';
 
+      case 'crew.war_declared':
+        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
+        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
+        final warType = params['warType'] as String? ?? 'war';
+        return 'Crew war declared: #$attackerCrewId vs #$defenderCrewId ($warType)';
+
+      case 'crew.war_started':
+        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
+        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
+        return 'Crew war started: #$attackerCrewId vs #$defenderCrewId';
+
+      case 'crew.war_lockdown':
+        final warId = params['warId']?.toString() ?? '-';
+        return 'Crew war #$warId entered lockdown';
+
+      case 'crew.war_resolved':
+        final warId = params['warId']?.toString() ?? '-';
+        final winnerCrewId = params['winnerCrewId']?.toString() ?? '-';
+        return 'Crew war #$warId resolved. Winner: crew #$winnerCrewId';
+
+      case 'crew.war_action':
+        final actionType = params['actionType'] as String? ?? 'action';
+        final pointsAwarded = params['pointsAwarded']?.toString() ?? '0';
+        return 'Crew war action: $actionType (+$pointsAwarded pt)';
+
       // Heist events
       case 'heist.success':
         final money = params['money'] as int?;
@@ -573,6 +598,31 @@ class EventRenderer {
       case 'crew.joined':
         final crewName = params['crewName'] as String?;
         return 'Crew binnengekomen: $crewName';
+
+      case 'crew.war_declared':
+        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
+        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
+        final warType = params['warType'] as String? ?? 'war';
+        return 'Crew-oorlog verklaard: #$attackerCrewId vs #$defenderCrewId ($warType)';
+
+      case 'crew.war_started':
+        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
+        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
+        return 'Crew-oorlog gestart: #$attackerCrewId vs #$defenderCrewId';
+
+      case 'crew.war_lockdown':
+        final warId = params['warId']?.toString() ?? '-';
+        return 'Crew-oorlog #$warId zit nu in lockdown';
+
+      case 'crew.war_resolved':
+        final warId = params['warId']?.toString() ?? '-';
+        final winnerCrewId = params['winnerCrewId']?.toString() ?? '-';
+        return 'Crew-oorlog #$warId afgerond. Winnaar: crew #$winnerCrewId';
+
+      case 'crew.war_action':
+        final actionType = params['actionType'] as String? ?? 'actie';
+        final pointsAwarded = params['pointsAwarded']?.toString() ?? '0';
+        return 'Crew-oorlogsactie: $actionType (+$pointsAwarded pt)';
 
       // Heist events
       case 'heist.success':

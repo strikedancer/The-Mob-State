@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
 import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment } from './services/adminService'
+import { CrewWarsAdminPanel } from './components/CrewWarsAdminPanel'
 
-type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets' | 'todos'
+type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets' | 'todos' | 'crew-wars'
 type Language = 'nl' | 'en'
 type PlayerDetailTab = 'overview' | 'manage' | 'financial'
 type DateRangeFilter = '24h' | '7d' | '30d' | 'all'
@@ -2921,6 +2922,7 @@ function App() {
     { id: 'tools', label: t.navTools, icon: 'bi-tools' },
     { id: 'crimes', label: t.navCrimes, icon: 'bi-shield-fill-exclamation' },
     { id: 'events', label: l('Events', 'Events'), icon: 'bi-calendar2-event-fill' },
+    { id: 'crew-wars', label: l('Crew Wars', 'Crew Wars'), icon: 'bi-crosshair2' },
     { id: 'tickets', label: l('Tickets', 'Tickets'), icon: 'bi-life-preserver' },
     { id: 'todos', label: l('Todo', 'Todo'), icon: 'bi-card-checklist' },
     { id: 'npcs', label: t.navNpcs, icon: 'bi-robot' },
@@ -5433,6 +5435,16 @@ function App() {
                 </tbody>
               </table>
             </div>
+          </>
+        )}
+
+        {activeTab === 'crew-wars' && (
+          <>
+            <h1>{l('Crew Wars', 'Crew Wars')}</h1>
+            <div className="config-warning">
+              {l('Beheer oorlogen, seizoensstanden en handmatige moderatie vanuit een centrale war room.', 'Manage wars, seasonal standings, and manual moderation from a central war room.')}
+            </div>
+            <CrewWarsAdminPanel locale={language} />
           </>
         )}
 

@@ -19,6 +19,7 @@ import { notificationService } from '../services/notificationService';
 import { existsCached, isRedisConnected } from '../services/redisClient';
 import { queueService } from '../queues/queueService';
 import { supportTicketService } from '../services/supportTicketService';
+import * as crewWarService from '../services/crewWarService';
 
 const router = express.Router();
 
@@ -414,6 +415,17 @@ const createAdminSchema = z.object({
   username: z.string().min(3).max(50).regex(/^[a-zA-Z0-9_\-.]+$/),
   password: z.string().min(8).max(128),
   role: z.nativeEnum(AdminRole).default(AdminRole.VIEWER),
+});
+
+const adminDeclareCrewWarSchema = z.object({
+  attackerCrewId: z.number().int().positive(),
+  defenderCrewId: z.number().int().positive(),
+  warType: z.enum(['kill_war', 'economy_war', 'territory_war', 'total_war']),
+  startsInMinutes: z.number().int().min(1).max(60).optional(),
+});
+
+const adminUpdateCrewWarStatusSchema = z.object({
+  action: z.enum(['start_now', 'enter_lockdown', 'resolve', 'archive', 'cancel']),
 });
 
 const updateAdminSchema = z.object({
@@ -3373,6 +3385,68 @@ router.delete(
     } catch (error) {
       console.error('Admin delete crime error:', error);
       res.status(500).json({ error: 'Failed to delete crime' });
+    }
+  }
+);
+
+router.get('/crew-wars/overview', async (_req: AdminRequest, res) => {
+  try {
+    const overview = await crewWarService.getAdminWarOverview();
+    res.json(overview);
+  } catch (error) {
+    console.error('Admin crew war overview error:', error);
+    res.status(500).json({ error: 'Failed to fetch crew war overview' });
+  }
+});
+
+router.post(
+  '/crew-wars/declare',
+  auditLog({ action: 'ADMIN_DECLARE_CREW_WAR', targetType: 'CrewWar' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const payload = adminDeclareCrewWarSchema.parse(req.body);
+      const war = await crewWarService.adminDeclareWar(req.admin!.id, payload);
+      res.json({ war });
+    } catch (error) {
+      console.error('Admin declare crew war error:', error);
+      res.status(400).json({ error: error instanceof Error ? error.message : 'Failed to declare crew war' });
+    }
+  }
+);
+
+router.get('/crew-wars/:warId', async (req: AdminRequest, res) => {
+  try {
+    const warId = Number(req.params.warId);
+    if (Number.isNaN(warId)) {
+      return res.status(400).json({ error: 'Invalid war ID' });
+    }
+    const war = await crewWarService.getAdminWarOverview();
+    const match = war.activeWars.find((entry) => entry.id === warId) ?? null;
+    if (!match) {
+      return res.status(404).json({ error: 'Crew war not found' });
+    }
+    return res.json({ war: match });
+  } catch (error) {
+    console.error('Admin get crew war error:', error);
+    return res.status(500).json({ error: 'Failed to fetch crew war' });
+  }
+});
+
+router.patch(
+  '/crew-wars/:warId/status',
+  auditLog({ action: 'ADMIN_UPDATE_CREW_WAR_STATUS', targetType: 'CrewWar' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const warId = Number(req.params.warId);
+      if (Number.isNaN(warId)) {
+        return res.status(400).json({ error: 'Invalid war ID' });
+      }
+      const { action } = adminUpdateCrewWarStatusSchema.parse(req.body);
+      const war = await crewWarService.adminUpdateWarStatus(warId, action);
+      return res.json({ war });
+    } catch (error) {
+      console.error('Admin update crew war status error:', error);
+      return res.status(400).json({ error: error instanceof Error ? error.message : 'Failed to update crew war status' });
     }
   }
 );

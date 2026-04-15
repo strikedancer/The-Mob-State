@@ -430,6 +430,43 @@ export const ACHIEVEMENT_DEFINITIONS: Record<string, AchievementDefinition> = {
     rewardXp: 1500,
     icon: '⚔️',
   },
+
+  crew_war_recruit: {
+    id: 'crew_war_recruit',
+    title: 'War Recruit',
+    description: 'Complete your first Crew War action',
+    category: 'social',
+    requirementType: 'crew_war_actions_count',
+    requirementValue: 1,
+    rewardMoney: 10000,
+    rewardXp: 400,
+    icon: '🪖',
+  },
+
+  crew_war_veteran: {
+    id: 'crew_war_veteran',
+    title: 'War Veteran',
+    description: 'Complete 25 Crew War actions',
+    category: 'social',
+    requirementType: 'crew_war_actions_count',
+    requirementValue: 25,
+    rewardMoney: 75000,
+    rewardXp: 2000,
+    icon: '🎯',
+  },
+
+  crew_war_mvp: {
+    id: 'crew_war_mvp',
+    title: 'War MVP',
+    description: 'Earn your first Crew War MVP reward',
+    category: 'power',
+    requirementType: 'crew_war_mvp_rewards_count',
+    requirementValue: 1,
+    rewardMoney: 125000,
+    rewardXp: 3500,
+    rewardReputation: 15,
+    icon: '🏅',
+  },
   
   untouchable_rival: {
     id: 'untouchable_rival',
@@ -1920,6 +1957,8 @@ interface AchievementSnapshot {
   cryptoTradesCount: number;
   cryptoRealizedProfit: number;
   cryptoPortfolioValue: number;
+  crewWarActionsCount: number;
+  crewWarMvpRewardsCount: number;
 }
 
 async function safeCount(
@@ -1996,6 +2035,8 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     educationProfile,
     jailbreaksSuccessCount,
     prisonerBuyoutsCount,
+    crewWarActionsCount,
+    crewWarMvpRewardsCount,
   ] = await Promise.all([
     safeValue(
       'player.money',
@@ -2216,6 +2257,22 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     safeCount('prisonerBuyoutsCount', () =>
       prisma.worldEvent.count({
         where: { playerId, eventKey: 'prison.buyout_success' },
+      })
+    ),
+    safeCount('crewWarActionsCount', () =>
+      prisma.playerActivity.count({
+        where: {
+          playerId,
+          activityType: 'crew_war_action',
+        },
+      })
+    ),
+    safeCount('crewWarMvpRewardsCount', () =>
+      prisma.playerActivity.count({
+        where: {
+          playerId,
+          activityType: 'crew_war_reward',
+        },
       })
     ),
   ]);
@@ -2444,6 +2501,8 @@ async function getAchievementSnapshot(playerId: number): Promise<AchievementSnap
     cryptoTradesCount,
     cryptoRealizedProfit,
     cryptoPortfolioValue,
+    crewWarActionsCount,
+    crewWarMvpRewardsCount,
   };
 }
 
@@ -2709,6 +2768,16 @@ function evaluateAchievement(
     case 'crypto_portfolio_value':
       currentValue = Math.max(0, Math.floor(snapshot.cryptoPortfolioValue));
       data = { cryptoPortfolioValue: snapshot.cryptoPortfolioValue };
+      break;
+
+    case 'crew_war_actions_count':
+      currentValue = snapshot.crewWarActionsCount;
+      data = { crewWarActionsCount: currentValue };
+      break;
+
+    case 'crew_war_mvp_rewards_count':
+      currentValue = snapshot.crewWarMvpRewardsCount;
+      data = { crewWarMvpRewardsCount: currentValue };
       break;
 
     case 'max_security_all': {

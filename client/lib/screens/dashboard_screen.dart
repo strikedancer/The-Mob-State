@@ -384,8 +384,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         '/subscriptions/checkout/one-time/popup?locale=$locale',
       );
 
-      if (response.statusCode != 200 || response.body.isEmpty || !mounted)
+      if (response.statusCode != 200 || response.body.isEmpty || !mounted) {
         return;
+      }
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final popup = data['popup'] as Map<String, dynamic>?;
@@ -2341,6 +2342,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 ? _stats!.jailTimeRemaining - 1
                 : 0,
             bankBalance: _stats!.bankBalance,
+            crewWar: _stats!.crewWar?.copyWith(
+              phaseEndsInSeconds: (_stats!.crewWar?.phaseEndsInSeconds ?? 0) > 0
+                  ? (_stats!.crewWar?.phaseEndsInSeconds ?? 0) - 1
+                  : 0,
+            ),
             cooldowns: Map.fromEntries(
               _stats!.cooldowns.entries.map(
                 (e) => MapEntry(e.key, e.value > 0 ? e.value - 1 : 0),
@@ -2378,7 +2384,12 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
           lastEvent.eventKey == 'job.work' ||
           lastEvent.eventKey == 'casino.gamble' ||
           lastEvent.eventKey == 'trade.buy' ||
-          lastEvent.eventKey == 'travel.arrive') {
+          lastEvent.eventKey == 'travel.arrive' ||
+          lastEvent.eventKey == 'crew.war_declared' ||
+          lastEvent.eventKey == 'crew.war_started' ||
+          lastEvent.eventKey == 'crew.war_lockdown' ||
+          lastEvent.eventKey == 'crew.war_resolved' ||
+          lastEvent.eventKey == 'crew.war_action') {
         _loadStats();
       }
     }
@@ -2730,6 +2741,72 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                           ? Colors.red.shade300
                           : Colors.green.shade300,
                     ),
+                    const SizedBox(height: 12),
+                    const Divider(color: Colors.grey),
+                    const SizedBox(height: 12),
+                    Text(
+                      _tr('Crew Wars', 'Crew Wars'),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildInfoRow(
+                      _tr('Status', 'Status'),
+                      _formatCrewWarDashboardStatus(_stats?.crewWar?.status),
+                      _stats?.crewWar?.hasActiveWar == true
+                          ? Colors.orange.shade300
+                          : Colors.grey.shade400,
+                    ),
+                    _buildInfoRow(
+                      _tr('Kan declareren', 'Can declare'),
+                      _stats?.crewWar?.canDeclare == true
+                          ? _tr('Ja', 'Yes')
+                          : _tr('Nee', 'No'),
+                      _stats?.crewWar?.canDeclare == true
+                          ? Colors.green.shade300
+                          : Colors.grey.shade400,
+                    ),
+                    if ((_stats?.crewWar?.warType ?? '').isNotEmpty)
+                      _buildInfoRow(
+                        _tr('Type', 'Type'),
+                        _formatCrewWarDashboardType(_stats?.crewWar?.warType),
+                        Colors.white,
+                      ),
+                    if ((_stats?.crewWar?.opponentCrewName ?? '').isNotEmpty)
+                      _buildInfoRow(
+                        _tr('Tegenstander', 'Opponent'),
+                        _stats!.crewWar!.opponentCrewName!,
+                        Colors.white,
+                      ),
+                    _buildInfoRow(
+                      _tr('Crewpunten', 'Crew points'),
+                      '${_stats?.crewWar?.myCrewPoints ?? 0}',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('War-rang', 'War rank'),
+                      _stats?.crewWar?.myCrewRank?.toString() ?? '-',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Seizoensrang', 'Season rank'),
+                      _stats?.crewWar?.seasonRank?.toString() ?? '-',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Open targets', 'Open targets'),
+                      '${_stats?.crewWar?.availableTargetsCount ?? 0}',
+                      Colors.white,
+                    ),
+                    if ((_stats?.crewWar?.phaseEndsInSeconds ?? 0) > 0)
+                      _buildInfoRow(
+                        _tr('Fase eindigt over', 'Phase ends in'),
+                        _formatCooldown(_stats!.crewWar!.phaseEndsInSeconds),
+                        Colors.orange.shade300,
+                      ),
                   ],
                 ),
               );
@@ -2806,6 +2883,40 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ],
       ),
     );
+  }
+
+  String _formatCrewWarDashboardStatus(String? status) {
+    switch (status) {
+      case 'preparing':
+        return _tr('Voorbereiding', 'Preparing');
+      case 'active':
+        return _tr('Actief', 'Active');
+      case 'lockdown':
+        return _tr('Lockdown', 'Lockdown');
+      case 'resolved':
+        return _tr('Afgerond', 'Resolved');
+      case 'archived':
+        return _tr('Gearchiveerd', 'Archived');
+      case 'cancelled':
+        return _tr('Geannuleerd', 'Cancelled');
+      default:
+        return _tr('Geen actieve oorlog', 'No active war');
+    }
+  }
+
+  String _formatCrewWarDashboardType(String? warType) {
+    switch (warType) {
+      case 'kill_war':
+        return 'Kill War';
+      case 'economy_war':
+        return 'Economy War';
+      case 'territory_war':
+        return 'Territory War';
+      case 'total_war':
+        return 'Total War';
+      default:
+        return '-';
+    }
   }
 
   Widget _buildDetailedProgressBar(

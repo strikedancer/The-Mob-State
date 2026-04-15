@@ -3,6 +3,64 @@ import 'package:http/http.dart' as http;
 import '../config/app_config.dart';
 import 'api_client.dart';
 
+class CrewWarDashboardSummary {
+  final bool hasActiveWar;
+  final bool canDeclare;
+  final String? status;
+  final String? warType;
+  final String? opponentCrewName;
+  final int myCrewPoints;
+  final int? myCrewRank;
+  final int? seasonRank;
+  final int availableTargetsCount;
+  final int phaseEndsInSeconds;
+
+  CrewWarDashboardSummary({
+    required this.hasActiveWar,
+    required this.canDeclare,
+    this.status,
+    this.warType,
+    this.opponentCrewName,
+    required this.myCrewPoints,
+    this.myCrewRank,
+    this.seasonRank,
+    required this.availableTargetsCount,
+    required this.phaseEndsInSeconds,
+  });
+
+  factory CrewWarDashboardSummary.fromJson(Map<String, dynamic> json) {
+    return CrewWarDashboardSummary(
+      hasActiveWar: json['hasActiveWar'] as bool? ?? false,
+      canDeclare: json['canDeclare'] as bool? ?? false,
+      status: json['status'] as String?,
+      warType: json['warType'] as String?,
+      opponentCrewName: json['opponentCrewName'] as String?,
+      myCrewPoints: json['myCrewPoints'] as int? ?? 0,
+      myCrewRank: json['myCrewRank'] as int?,
+      seasonRank: json['seasonRank'] as int?,
+      availableTargetsCount: json['availableTargetsCount'] as int? ?? 0,
+      phaseEndsInSeconds: json['phaseEndsInSeconds'] as int? ?? 0,
+    );
+  }
+
+  CrewWarDashboardSummary copyWith({
+    int? phaseEndsInSeconds,
+  }) {
+    return CrewWarDashboardSummary(
+      hasActiveWar: hasActiveWar,
+      canDeclare: canDeclare,
+      status: status,
+      warType: warType,
+      opponentCrewName: opponentCrewName,
+      myCrewPoints: myCrewPoints,
+      myCrewRank: myCrewRank,
+      seasonRank: seasonRank,
+      availableTargetsCount: availableTargetsCount,
+      phaseEndsInSeconds: phaseEndsInSeconds ?? this.phaseEndsInSeconds,
+    );
+  }
+}
+
 class DashboardStats {
   final int crimeAttempts;
   final int successfulCrimes;
@@ -21,6 +79,7 @@ class DashboardStats {
   final bool jailed;
   final int jailTimeRemaining;
   final int bankBalance;
+  final CrewWarDashboardSummary? crewWar;
   final Map<String, int> cooldowns;
 
   DashboardStats({
@@ -41,6 +100,7 @@ class DashboardStats {
     required this.jailed,
     required this.jailTimeRemaining,
     required this.bankBalance,
+    this.crewWar,
     required this.cooldowns,
   });
 
@@ -67,6 +127,11 @@ class DashboardStats {
       jailed: json['jailed'] as bool,
       jailTimeRemaining: json['jailTimeRemaining'] as int,
       bankBalance: json['bankBalance'] as int,
+      crewWar: json['crewWar'] != null
+          ? CrewWarDashboardSummary.fromJson(
+              json['crewWar'] as Map<String, dynamic>,
+            )
+          : null,
       cooldowns: Map<String, int>.from(json['cooldowns'] as Map),
     );
   }

@@ -519,6 +519,87 @@ export interface CreateGameLiveEventPayload {
   scopeJson?: Record<string, unknown>;
 }
 
+export interface AdminCrewWarStanding {
+  rank: number;
+  crewId: number;
+  totalPoints: number;
+  totalKills: number;
+  totalLoot: number;
+  crew: {
+    id: number;
+    name: string;
+    isVip?: boolean;
+    vipExpiresAt?: string | null;
+    bankBalance?: number;
+  } | null;
+}
+
+export interface AdminCrewWarDetail {
+  id: number;
+  seasonId?: number | null;
+  warType: 'kill_war' | 'economy_war' | 'territory_war' | 'total_war';
+  status: 'preparing' | 'active' | 'lockdown' | 'resolved' | 'archived' | 'cancelled';
+  attackerCrewId: number;
+  defenderCrewId: number;
+  winnerCrewId?: number | null;
+  activeFrom: string;
+  lockDownFrom: string;
+  endTime: string;
+  createdAt: string;
+  attackerCrew?: { id: number; name: string } | null;
+  defenderCrew?: { id: number; name: string } | null;
+  standings: Array<{
+    crewId: number;
+    totalPoints: number;
+    totalKills: number;
+    totalDeaths: number;
+    totalLoot: number;
+    territoriesHeld: number;
+    rank: number;
+    crew: { id: number; name: string } | null;
+  }>;
+  recentActions: Array<{
+    id: number;
+    actionType: string;
+    result: string;
+    pointsAwarded: number;
+    moneyDelta: number;
+    createdAt: string;
+    actor?: { id: number; username: string } | null;
+    target?: { id: number; username: string } | null;
+  }>;
+}
+
+export interface AdminCrewWarOverview {
+  season: {
+    id: number;
+    seasonKey: string;
+    startsAt: string;
+    endsAt: string;
+    status: string;
+  };
+  flaggedActions: number;
+  crews: Array<{
+    id: number;
+    name: string;
+    isVip?: boolean;
+    vipExpiresAt?: string | null;
+    bankBalance?: number;
+  }>;
+  activeWars: AdminCrewWarDetail[];
+  recentWars: Array<{
+    id: number;
+    warType: string;
+    status: string;
+    attackerCrewId: number;
+    defenderCrewId: number;
+    winnerCrewId?: number | null;
+    createdAt: string;
+    resolvedAt?: string | null;
+  }>;
+  seasonLeaderboard: AdminCrewWarStanding[];
+}
+
 export const adminAuthService = {
   async login(username: string, password: string): Promise<AdminLoginResponse> {
     const response = await fetch(`${API_URL}/admin/auth/login`, {
@@ -1532,6 +1613,54 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to update live event');
+    return response.json();
+  },
+
+  async getCrewWarsOverview(): Promise<AdminCrewWarOverview> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/crew-wars/overview`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    await ensureOk(response, 'Failed to fetch crew wars overview');
+    return response.json();
+  },
+
+  async declareCrewWar(payload: {
+    attackerCrewId: number;
+    defenderCrewId: number;
+    warType: 'kill_war' | 'economy_war' | 'territory_war' | 'total_war';
+    startsInMinutes?: number;
+  }): Promise<{ war: AdminCrewWarDetail }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/crew-wars/declare`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to declare crew war');
+    return response.json();
+  },
+
+  async updateCrewWarStatus(
+    warId: number,
+    action: 'start_now' | 'enter_lockdown' | 'resolve' | 'archive' | 'cancel',
+  ): Promise<{ war: AdminCrewWarDetail }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/crew-wars/${warId}/status`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ action }),
+    });
+
+    await ensureOk(response, 'Failed to update crew war status');
     return response.json();
   },
 };
