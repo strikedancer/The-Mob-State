@@ -11,6 +11,8 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
+- Bodyguard upkeep must be explicit: recurring cost, next charge moment and dismissal-on-nonpayment must remain visible in both logic and UI.
+- Armor effectiveness must reflect wear: damaged armor gives less defense and disappears when fully destroyed.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?
@@ -23,6 +25,7 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Attack resolution, investigation reports and the Security screen must all use the same effective armor/bodyguard numbers.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -35,6 +38,8 @@ Armor, defense level and survivability settings for conflict-heavy gameplay.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify bodyguard upkeep deducts every 24 hours and dismisses guards when the player cannot pay.
+- Verify armor purchase succeeds, armor condition drops after an attack, and destroyed armor no longer contributes defense.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

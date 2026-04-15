@@ -7,6 +7,32 @@
 import prisma from '../lib/prisma';
 import { ammoFactoryService } from './ammoFactoryService';
 import weaponService from './weaponService';
+import fs from 'fs';
+import path from 'path';
+
+const BODYGUARD_DAILY_UPKEEP = 10000;
+const BODYGUARD_DEFENSE = 10;
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
+interface SecurityArmorDefinition {
+  id: string;
+  name: string;
+  price: number;
+  armor: number;
+  description: string;
+}
+
+interface PlayerSecurityState {
+  id: number;
+  playerId: number;
+  bodyguards: number;
+  bodyguardUpkeepDueAt: Date | null;
+  armor: number;
+  armorCondition: number;
+  armorType: string | null;
+}
+
+let cachedArmorDefinitions: SecurityArmorDefinition[] | null = null;
 
 interface HitListItem {
   id: number;
@@ -18,6 +44,150 @@ interface HitListItem {
   createdAt: Date;
   completedAt?: Date;
   completedBy?: number;
+}
+
+function loadArmorDefinitions(): SecurityArmorDefinition[] {
+  if (cachedArmorDefinitions) {
+    return cachedArmorDefinitions;
+  }
+
+  const filePath = path.resolve(process.cwd(), 'content', 'security.json');
+  const raw = fs.readFileSync(filePath, 'utf8');
+  const parsed = JSON.parse(raw) as SecurityArmorDefinition[];
+  cachedArmorDefinitions = parsed;
+  return parsed;
+}
+
+function getArmorDefinition(armorId: string): SecurityArmorDefinition {
+  const definitions = loadArmorDefinitions();
+  const armor = definitions.find((item) => item.id === armorId);
+  if (!armor) {
+    throw new Error('ARMOR_NOT_FOUND');
+  }
+
+  return armor;
+}
+
+function getArmorConditionValue(condition?: number | null): number {
+  const normalized = typeof condition === 'number' ? condition : 100;
+  return Math.max(0, Math.min(100, normalized));
+}
+
+function getEffectiveArmor(security?: Pick<PlayerSecurityState, 'armor' | 'armorCondition'> | null): number {
+  if (!security || !security.armor) {
+    return 0;
+  }
+
+  return Math.max(0, Math.round(security.armor * (getArmorConditionValue(security.armorCondition) / 100)));
+}
+
+function calculateArmorConditionLoss(attackerPower: number): number {
+  return Math.max(6, Math.min(35, Math.round(Math.sqrt(Math.max(1, attackerPower)) * 1.5)));
+}
+
+async function settleBodyguardUpkeep(db: any, playerId: number): Promise<PlayerSecurityState | null> {
+  const security = await db.playerSecurity.findUnique({
+    where: { playerId },
+  });
+
+  if (!security) {
+    return null;
+  }
+
+  const now = new Date();
+  let bodyguards = Number(security.bodyguards || 0);
+  let upkeepDueAt = security.bodyguardUpkeepDueAt ? new Date(security.bodyguardUpkeepDueAt) : null;
+  let changedSecurity = false;
+
+  if (bodyguards <= 0) {
+    if (upkeepDueAt !== null) {
+      upkeepDueAt = null;
+      changedSecurity = true;
+    }
+  } else if (!upkeepDueAt) {
+    upkeepDueAt = new Date(now.getTime() + DAY_IN_MS);
+    changedSecurity = true;
+  } else {
+    const player = await db.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+
+    let balance = Number(player?.money || 0);
+    let changedMoney = false;
+
+    while (bodyguards > 0 && upkeepDueAt && upkeepDueAt.getTime() <= now.getTime()) {
+      const cycleCost = bodyguards * BODYGUARD_DAILY_UPKEEP;
+      if (balance >= cycleCost) {
+        balance -= cycleCost;
+        upkeepDueAt = new Date(upkeepDueAt.getTime() + DAY_IN_MS);
+        changedMoney = true;
+      } else {
+        bodyguards = 0;
+        upkeepDueAt = null;
+        changedSecurity = true;
+        break;
+      }
+    }
+
+    if (changedMoney) {
+      await db.player.update({
+        where: { id: playerId },
+        data: { money: balance },
+      });
+      changedSecurity = true;
+    }
+  }
+
+  if (!changedSecurity) {
+    return {
+      ...security,
+      armorCondition: getArmorConditionValue(security.armorCondition),
+      bodyguardUpkeepDueAt: upkeepDueAt,
+      bodyguards,
+    };
+  }
+
+  return db.playerSecurity.update({
+    where: { playerId },
+    data: {
+      bodyguards,
+      bodyguardUpkeepDueAt: upkeepDueAt,
+      armorCondition: getArmorConditionValue(security.armorCondition),
+    },
+  });
+}
+
+async function applyArmorWearInTransaction(
+  tx: any,
+  targetSecurity: PlayerSecurityState | null,
+  conditionLoss: number,
+) {
+  if (!targetSecurity || !targetSecurity.armor || conditionLoss <= 0) {
+    return;
+  }
+
+  const currentCondition = getArmorConditionValue(targetSecurity.armorCondition);
+  const nextCondition = Math.max(0, currentCondition - conditionLoss);
+
+  if (nextCondition <= 0) {
+    await tx.playerSecurity.update({
+      where: { playerId: targetSecurity.playerId },
+      data: {
+        armor: 0,
+        armorCondition: 100,
+        armorType: null,
+      },
+    });
+    return;
+  }
+
+  await tx.playerSecurity.update({
+    where: { playerId: targetSecurity.playerId },
+    data: {
+      armorCondition: nextCondition,
+    },
+  });
 }
 
 export async function placeHit(
@@ -270,9 +440,7 @@ export async function attemptHit(
     ammoQuality = ammoInventory.quality || 1.0;
   }
 
-  const targetSecurity = await prisma.playerSecurity.findUnique({
-    where: { playerId: hit.targetId },
-  });
+  const targetSecurity = await settleBodyguardUpkeep(prisma, hit.targetId);
 
   const shootingStats = await prisma.shootingRangeStats.findUnique({
     where: { playerId },
@@ -295,8 +463,9 @@ export async function attemptHit(
     ? weaponService.getWeaponDefinition(String(target.weapon))
     : undefined;
   const targetWeaponDamage = targetWeapon?.damage || 0;
-  const targetDefense = (targetSecurity?.armor || 0) + ((targetSecurity?.bodyguards || 0) * 10);
+  const targetDefense = getEffectiveArmor(targetSecurity) + ((targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE);
   const targetPower = targetWeaponDamage * 5 + targetDefense;
+  const armorConditionLoss = calculateArmorConditionLoss(attackerPower);
 
   const rawWinChance = attackerPower / Math.max(1, attackerPower + targetPower);
   const winChance = Math.min(0.95, Math.max(0.05, rawWinChance));
@@ -321,6 +490,8 @@ export async function attemptHit(
           data: { quantity: ammoRemaining },
         });
       }
+
+      await applyArmorWearInTransaction(tx, targetSecurity, armorConditionLoss);
 
       await tx.player.update({
         where: { id: playerId },
@@ -371,6 +542,8 @@ export async function attemptHit(
         data: { quantity: ammoRemaining },
       });
     }
+
+    await applyArmorWearInTransaction(tx, targetSecurity, armorConditionLoss);
 
     if (!isCounterReversal) {
       await tx.player.update({
@@ -451,10 +624,7 @@ export async function investigateHit(
     throw new Error('TARGET_NOT_FOUND');
   }
 
-  const targetSecurity = await prisma.playerSecurity.findUnique({
-    where: { playerId: hit.targetId },
-    select: { bodyguards: true, armor: true },
-  });
+  const targetSecurity = await settleBodyguardUpkeep(prisma, hit.targetId);
 
   await prisma.player.update({
     where: { id: playerId },
@@ -467,7 +637,7 @@ export async function investigateHit(
       targetId: hit.targetId,
       country: target.currentCountry,
       bodyguards: targetSecurity?.bodyguards || 0,
-      armor: targetSecurity?.armor || 0,
+      armor: getEffectiveArmor(targetSecurity),
       validUntil: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       tier,
       cost,
@@ -535,6 +705,8 @@ export async function buyBodyguards(
 ): Promise<any> {
   const cost = quantity * 10000; // €10k per bodyguard
 
+  const security = await settleBodyguardUpkeep(prisma, playerId);
+
   // Check if player can afford
   const player = await prisma.player.findUnique({
     where: { id: playerId },
@@ -551,21 +723,22 @@ export async function buyBodyguards(
     data: { money: player.money - cost },
   });
 
-  // Update or create security
-  const security = await prisma.playerSecurity.findUnique({
-    where: { playerId },
-  });
-
   if (security) {
     await prisma.playerSecurity.update({
       where: { playerId },
-      data: { bodyguards: security.bodyguards + quantity },
+      data: {
+        bodyguards: security.bodyguards + quantity,
+        bodyguardUpkeepDueAt: security.bodyguards > 0
+          ? security.bodyguardUpkeepDueAt
+          : new Date(Date.now() + DAY_IN_MS),
+      },
     });
   } else {
     await prisma.playerSecurity.create({
       data: {
         playerId,
         bodyguards: quantity,
+        bodyguardUpkeepDueAt: new Date(Date.now() + DAY_IN_MS),
       },
     });
   }
@@ -580,8 +753,9 @@ export async function buyArmor(
   playerId: number,
   armorId: string
 ): Promise<any> {
-  // Security.json content file not available - feature disabled
-  throw new Error('ARMOR_PURCHASE_UNAVAILABLE');
+  const armor = getArmorDefinition(armorId);
+
+  await settleBodyguardUpkeep(prisma, playerId);
 
   // Check if player can afford
   const player = await prisma.player.findUnique({
@@ -608,7 +782,8 @@ export async function buyArmor(
     await prisma.playerSecurity.update({
       where: { playerId },
       data: {
-        armor: Math.max(security.armor, armor.armor), // Take highest armor rating
+        armor: armor.armor,
+        armorCondition: 100,
         armorType: armorId,
       },
     });
@@ -616,7 +791,9 @@ export async function buyArmor(
     await prisma.playerSecurity.create({
       data: {
         playerId,
+        bodyguardUpkeepDueAt: null,
         armor: armor.armor,
+        armorCondition: 100,
         armorType: armorId,
       },
     });
@@ -631,17 +808,29 @@ export async function buyArmor(
 export async function getSecurityStatus(
   playerId: number
 ): Promise<any> {
-  const security = await prisma.playerSecurity.findUnique({
-    where: { playerId },
-  });
+  const security = await settleBodyguardUpkeep(prisma, playerId);
 
   if (!security) {
     return {
       bodyguards: 0,
       armor: 0,
+      baseArmor: 0,
+      armorCondition: 100,
+      armorDamagePercent: 0,
       armorType: null,
+      bodyguardDailyCost: 0,
+      bodyguardUpkeepDueAt: null,
     };
   }
 
-  return security;
+  const armorCondition = security.armor > 0 ? getArmorConditionValue(security.armorCondition) : 100;
+  return {
+    ...security,
+    armor: getEffectiveArmor(security),
+    baseArmor: security.armor,
+    armorCondition,
+    armorDamagePercent: security.armor > 0 ? 100 - armorCondition : 0,
+    bodyguardDailyCost: security.bodyguards * BODYGUARD_DAILY_UPKEEP,
+    bodyguardUpkeepDueAt: security.bodyguardUpkeepDueAt?.toISOString() ?? null,
+  };
 }

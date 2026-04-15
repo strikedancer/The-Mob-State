@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/api_client.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/formatters.dart';
 
 class SecurityScreen extends StatefulWidget {
   const SecurityScreen({super.key});
@@ -57,6 +58,27 @@ class _SecurityScreenState extends State<SecurityScreen> {
         'armor': 150,
       },
     ];
+  }
+
+  String _tr(String nl, String en) {
+    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
+  }
+
+  String _formatDateTime(String? value) {
+    if (value == null || value.isEmpty) {
+      return '-';
+    }
+
+    final parsed = DateTime.tryParse(value)?.toLocal();
+    if (parsed == null) {
+      return '-';
+    }
+
+    final day = parsed.day.toString().padLeft(2, '0');
+    final month = parsed.month.toString().padLeft(2, '0');
+    final hour = parsed.hour.toString().padLeft(2, '0');
+    final minute = parsed.minute.toString().padLeft(2, '0');
+    return '$day/$month ${hour}:$minute';
   }
 
   @override
@@ -171,6 +193,15 @@ class _SecurityScreenState extends State<SecurityScreen> {
     return armorRating + (bodyguards * 10);
   }
 
+  int _armorCondition() {
+    if (_securityStatus == null) return 100;
+    return _securityStatus['armorCondition'] ?? 100;
+  }
+
+  bool _isArmorDamaged() {
+    return (_securityStatus?['baseArmor'] ?? 0) > 0 && _armorCondition() < 100;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -250,6 +281,14 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      if ((_securityStatus['baseArmor'] ?? 0) > 0)
+                                        Text(
+                                          _tr(
+                                            'Conditie ${_armorCondition()}% · basis ${_securityStatus['baseArmor']}',
+                                            'Condition ${_armorCondition()}% · base ${_securityStatus['baseArmor']}',
+                                          ),
+                                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                        ),
                                     ],
                                   ),
                                   Column(
@@ -263,6 +302,13 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
+                                      ),
+                                      Text(
+                                        _tr(
+                                          'Dagloon ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
+                                          'Daily wage ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
+                                        ),
+                                        style: const TextStyle(fontSize: 12, color: Colors.grey),
                                       ),
                                     ],
                                   ),
@@ -293,6 +339,29 @@ class _SecurityScreenState extends State<SecurityScreen> {
                               Text(
                                 l10n?.eachGivesDefense ?? 'Each gives +10 defense',
                                 style: const TextStyle(color: Colors.grey),
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                _tr(
+                                  'Dagelijkse systeemkost: ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
+                                  'Daily system cost: ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _tr(
+                                  'Volgende afschrijving: ${_formatDateTime(_securityStatus['bodyguardUpkeepDueAt'] as String?)}',
+                                  'Next payroll: ${_formatDateTime(_securityStatus['bodyguardUpkeepDueAt'] as String?)}',
+                                ),
+                                style: const TextStyle(color: Colors.grey),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                _tr(
+                                  'Kun je het dagloon niet betalen, dan lopen alle lijfwachten weg.',
+                                  'If you cannot pay the daily wage, all bodyguards leave.',
+                                ),
+                                style: const TextStyle(fontSize: 12, color: Colors.grey),
                               ),
                               const SizedBox(height: 12),
                               Row(
@@ -340,6 +409,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                         children: armorTypes.map((armor) {
                           final isCurrentArmor =
                               _securityStatus['armorType'] == armor['id'];
+                          final canRefreshCurrentArmor = isCurrentArmor && _isArmorDamaged();
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: Card(
@@ -399,6 +469,14 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
+                                            if (isCurrentArmor && (_securityStatus['baseArmor'] ?? 0) > 0)
+                                              Text(
+                                                _tr(
+                                                  'Nu +${_securityStatus['armor']} bij ${_armorCondition()}%',
+                                                  'Now +${_securityStatus['armor']} at ${_armorCondition()}%',
+                                                ),
+                                                style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                              ),
                                           ],
                                         ),
                                       ],
@@ -409,18 +487,18 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          '€${armor['price'].toStringAsFixed(0)}',
+                                          formatCurrency(armor['price']),
                                           style: const TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.orange,
                                           ),
                                         ),
-                                        if (!isCurrentArmor)
+                                        if (!isCurrentArmor || canRefreshCurrentArmor)
                                           ElevatedButton(
                                             onPressed: () =>
                                                 _buyArmor(armor['id']),
-                                            child: Text(l10n?.buy ?? 'Buy'),
+                                            child: Text(canRefreshCurrentArmor ? _tr('Vervangen', 'Replace') : (l10n?.buy ?? 'Buy')),
                                           )
                                         else
                                           Chip(

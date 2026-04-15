@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Backend
+- [ ] Security module hersteld en uitgebreid: armor-aankoop gebruikt weer `backend/content/security.json`, lijfwachten rekenen nu elke 24 uur systeemloon af en lopen weg bij wanbetaling, en armor slijt na aanvallen waardoor effectieve bescherming afneemt en op 100% schade volledig verdwijnt
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/startup/ensureSecuritySchema.ts`, `backend/src/index.ts`, `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260415061500_expand_player_security/migration.sql`
 - [ ] Support terminal-status todo guard: tickets kunnen nu niet meer naar `resolved`, `closed` of `archived` zolang gekoppelde todo's nog openstaan; dezelfde blokkade geldt voor reply-flow, settings-flow en lazy auto-archive
   - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/routes/admin.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/support-tickets.md`
 - [ ] Support archive lifecycle fix: gearchiveerde tickets verdwijnen nu uit het speler Support-scherm, admins kunnen ticketstatussen zonder verplichte extra reply opslaan, en tickets met status `closed` worden na 3 dagen automatisch naar `archived` gezet via backend lazy auto-archive
@@ -123,6 +125,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Security-scherm synced met nieuwe beveiligingsregels: toont nu bodyguard dagloon + volgende afschrijving, laat beschadigde armor met lagere actuele bescherming zien en laat beschadigde huidige armor opnieuw aankopen/vervangen
+  - Bestanden: `client/lib/screens/security_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/security.md`
 - [ ] Support replies ontkoppeld van speler-inbox: adminreacties op tickets komen niet langer als direct message in `Berichten`, maar uitsluitend in het Support-scherm zelf, met alleen optionele pushmelding en support-badge als signaal
   - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/translationService.ts`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Support empty-state leesbaarheid verbeterd: de melding dat er nog geen tickets zijn gebruikt nu een contrastrijke donkere placeholder-kaart, zodat de tekst in de donkere Support-layout leesbaar blijft

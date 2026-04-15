@@ -1523,12 +1523,14 @@ model HitList {
 }
 
 model PlayerSecurity {
-  id         Int     @id @default(autoincrement())
-  playerId   Int     @unique
-  bodyguards Int     @default(0)
-  armor      Int     @default(0)
-  armorType  String? @db.VarChar(50)
-  player     Player  @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  id                    Int       @id @default(autoincrement())
+  playerId              Int       @unique
+  bodyguards            Int       @default(0)
+  bodyguardUpkeepDueAt  DateTime?
+  armor                 Int       @default(0)
+  armorCondition        Int       @default(100)
+  armorType             String?   @db.VarChar(50)
+  player                Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
   @@index([playerId])
   @@map("player_security")
