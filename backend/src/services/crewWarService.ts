@@ -352,6 +352,7 @@ async function syncWarLifecycle(warId: number) {
       where: { id: current.id },
       data: { status: 'active', startTime: now },
     });
+    await notifyWarMembers(current, 'started');
     await worldEventService.createEvent('crew.war_started', {
       warId: current.id,
       attackerCrewId: current.attackerCrewId,
@@ -371,6 +372,7 @@ async function syncWarLifecycle(warId: number) {
         where: { id: current.id },
         data: { status: 'lockdown' },
       });
+      await notifyWarMembers(current, 'lockdown');
       await worldEventService.createEvent('crew.war_lockdown', { warId: current.id });
       void discordWebhookService.sendCrewWarEvent('war_lockdown', { warId: current.id });
     }
@@ -731,14 +733,7 @@ export async function declareWar(playerId: number, targetCrewId: number, warType
     return createdWar;
   });
 
-  const memberRows = await prisma.crewMember.findMany({
-    where: { crewId: { in: [membership.crewId, targetCrewId] } },
-    include: { player: { select: { id: true } } },
-  });
-
-  for (const member of memberRows) {
-    await notificationService.sendCrewWarDeclaredNotification(member.player.id, war.id, targetCrew.name);
-  }
+  await notifyWarMembers(war, 'declared');
 
   await worldEventService.createEvent('crew.war_declared', {
     warId: war.id,

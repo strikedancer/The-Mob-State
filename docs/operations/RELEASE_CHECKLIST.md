@@ -23,6 +23,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Crew Wars member push coverage aangescherpt: ook automatische war lifecycle-transities (`started`, `lockdown`) sturen nu push/inbox naar alle betrokken crew members inclusief leaders, in plaats van alleen admin-handmatige of declare/resolve momenten
+  - Bestanden: `backend/src/services/crewWarService.ts`, `docs/module-protocols/crew-wars.md`
 - [ ] Crew Wars admin-control + notificatiefix: online backend-CORS accepteert nu ook `PATCH`, waardoor de vijf admin statusknoppen niet meer stuklopen op preflight, en admin-gestarte/status-gewijzigde wars sturen nu dezelfde Discord- en push/inbox-events als de gewone declare/lifecycle-flow
   - Bestanden: `backend/src/app.ts`, `backend/src/services/crewWarService.ts`, `backend/src/services/notificationService.ts`, `client/lib/services/notification_service.dart`
 - [ ] Crew Wars backend live gezet: nieuw `/crew-wars` domein met war lifecycle, seasons, standings, actions, admin moderatie, startup schema-bootstrap en Discord/push koppelingen toegevoegd

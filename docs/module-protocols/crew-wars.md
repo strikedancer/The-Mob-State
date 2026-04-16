@@ -189,6 +189,7 @@ war_season
 - Discord-integratie mag alleen een extra transportlaag zijn bovenop bestaande war events; game state mag nooit afhankelijk zijn van een Discord webhook.
 - Discord berichten moeten per event-type configureerbaar zijn, rate-limited en veilig bij webhook failure.
 - Admin-gestarte wars en admin lifecycle-acties zoals `start_now` en `enter_lockdown` moeten exact dezelfde event-transports activeren als de reguliere war-flow; admin controls mogen geen stille bypass zijn voor push/inbox of Discord.
+- Bij `declared`, `started`, `lockdown` en `resolved` moeten alle betrokken crew members, inclusief leaders, een consistente push/inbox-notificatie kunnen ontvangen; automatische lifecycle-transities mogen die member-notificaties niet overslaan.
 - Relevante Discord use-cases: war declared, war started, double points hour, territory swing, war ended, season rewards.
 
 ## Frontend Loading Guardrails
