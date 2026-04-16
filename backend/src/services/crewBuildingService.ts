@@ -16,6 +16,28 @@ const styleOrder: CrewBuildingStyle[] = ['camping', 'rural', 'city', 'villa', 'v
 
 const MAX_STANDARD_BUILDING_LEVEL = 10;
 const MAX_VIP_BUILDING_LEVEL = 15;
+const HQ_MEMBER_CAPS_BY_GLOBAL_LEVEL = [
+  5,
+  10,
+  16,
+  24,
+  32,
+  40,
+  50,
+  60,
+  72,
+  84,
+  96,
+  108,
+  118,
+  126,
+  133,
+  139,
+  144,
+  147,
+  149,
+  150,
+] as const;
 const starterStorageTypes: CrewBuildingType[] = [
   'car_storage',
   'boat_storage',
@@ -158,6 +180,15 @@ function getHqGlobalLevel(style: CrewBuildingStyle | null, level: number | null)
   }
   const styleIndex = Math.max(0, styleOrder.indexOf(normalizedStyle));
   return styleIndex * 4 + normalizedLevel;
+}
+
+function getHqMemberCap(style: CrewBuildingStyle | null, level: number | null): number {
+  const globalLevel = getHqGlobalLevel(style, level);
+  const safeIndex = Math.min(
+    Math.max(0, globalLevel),
+    HQ_MEMBER_CAPS_BY_GLOBAL_LEVEL.length - 1
+  );
+  return HQ_MEMBER_CAPS_BY_GLOBAL_LEVEL[safeIndex];
 }
 
 function getHqStyleMaxLevel(style: CrewBuildingStyle | null, crewVip: boolean): number {
@@ -418,7 +449,10 @@ export async function getCrewBuildingStatus(crewId: number) {
         maxLevel,
         style,
         capacity: levelDef?.capacity ?? null,
-        memberCap: levelDef?.memberCap ?? null,
+        memberCap:
+          type === 'hq'
+            ? getHqMemberCap(style as CrewBuildingStyle | null, level)
+            : levelDef?.memberCap ?? null,
         parkingSlots: levelDef?.parkingSlots ?? null,
         nextUpgradeCost:
           level === null || level < maxLevel ? nextLevelDef?.upgradeCost ?? null : null,
@@ -603,9 +637,9 @@ export async function upgradeCrewBuilding(
 
 export function getCrewMemberCap(hqLevel: number | null): number {
   if (hqLevel === null) {
-    return getLevelDefinition('hq', 0).memberCap ?? 0;
+    return getHqMemberCap('camping', 0);
   }
-  return getLevelDefinition('hq', hqLevel).memberCap ?? 0;
+  return getHqMemberCap('camping', hqLevel);
 }
 
 export async function getCrewMemberCapForCrew(crewId: number): Promise<number> {
@@ -614,7 +648,7 @@ export async function getCrewMemberCapForCrew(crewId: number): Promise<number> {
   const crewVip = await isCrewVip(crewId);
   const style = (hq?.style as CrewBuildingStyle | null) ?? 'camping';
   const level = Math.min(hq?.level ?? 0, getHqStyleMaxLevel(style, crewVip));
-  return getLevelDefinition('hq', level).memberCap ?? 0;
+  return getHqMemberCap(style, level);
 }
 
 export async function getCrewStorageCapacity(crewId: number, type: CrewBuildingType): Promise<number> {

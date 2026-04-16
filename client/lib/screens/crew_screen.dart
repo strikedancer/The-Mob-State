@@ -29,6 +29,28 @@ class _CrewScreenState extends State<CrewScreen>
     'villa',
     'vip',
   ];
+  static const List<int> _hqMemberCapsByGlobalLevel = [
+    5,
+    10,
+    16,
+    24,
+    32,
+    40,
+    50,
+    60,
+    72,
+    84,
+    96,
+    108,
+    118,
+    126,
+    133,
+    139,
+    144,
+    147,
+    149,
+    150,
+  ];
 
   late TabController _tabController;
   Crew? _myCrew;
@@ -419,8 +441,7 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   List<int> _getHqCapsByGlobalLevel() {
-    const baseCaps = [5, 10, 16, 24];
-    return [for (final _ in _hqStyleOrder) ...baseCaps];
+    return _hqMemberCapsByGlobalLevel;
   }
 
   List<int> _getHqCostsByGlobalLevel() {

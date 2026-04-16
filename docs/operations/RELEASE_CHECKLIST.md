@@ -29,6 +29,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
 - [ ] Crew starter-state hersteld: nieuwe crews starten nu direct met Crew HQ level 1 en alle opslaggebouwen op level 1, terwijl legacy crews in de oude lege startstaat automatisch naar dezelfde basis worden genormaliseerd zodat crew bank en gedeelde opslag meteen werken
   - Bestanden: `backend/src/services/crewService.ts`, `backend/src/services/crewBuildingService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew HQ leden-cap progression hersteld: de cap-overview en backend member-cap logica lopen nu door over alle HQ-stijlen heen in plaats van per stijl terug te vallen naar 5/10/16/24, en schalen door tot maximaal 150 leden
+  - Bestanden: `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
 - [ ] Crew building-prijzen nu ook zichtbaar op koopknoppen voor nog niet gekochte gebouwen doordat de building-status API weer een `nextUpgradeCost` teruggeeft voor niet-bezette slots
   - Bestanden: `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`
 - [ ] Nachtclub staffing self-healing toegevoegd: DJ- en beveiligingslijsten vullen zichzelf nu automatisch met een standaard roster als de live tabellen leeg zijn, zodat de selectors in het Nachtclub-scherm niet leeg blijven op omgevingen zonder seed-data

@@ -247,7 +247,7 @@ const List<HelpTopic> helpTopics = [
     summaryEn:
         'Start a crew or join existing players to pull off heists together, share storage and become stronger as a unit.',
     howNl: [
-      'Crew aanmaken kost €10.000. Elke crew heeft max 10 leden. De leader kan leden uitnodigen, kicken en heists starten.',
+      'Crew aanmaken kost €10.000. De Crew HQ bepaalt hoeveel leden je crew aankan en groeit door tot maximaal 150 leden. De leader kan leden uitnodigen, kicken en heists starten.',
       'Crew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.',
       'Nieuwe crews starten direct met Crew HQ level 1 en alle opslaggebouwen op level 1, inclusief cash opslag, zodat crew bank en gedeelde opslag meteen bruikbaar zijn.',
       'Als een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.',
@@ -264,7 +264,7 @@ const List<HelpTopic> helpTopics = [
       'Crew HQ-progressie: hoe langer en actiever de crew, hoe meer gezamenlijke upgrades en buffs vrijkomen.',
     ],
     howEn: [
-      'Creating a crew costs €10.000. Each crew has max 10 members. Leader can invite, kick and start heists.',
+      'Creating a crew costs €10.000. The Crew HQ determines how many members your crew can hold and scales up to 150 members. The leader can invite, kick and start heists.',
       'Crew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.',
       'New crews now start with Crew HQ level 1 and all storage buildings at level 1, including cash storage, so the crew bank and shared storage work immediately.',
       'When a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.',
