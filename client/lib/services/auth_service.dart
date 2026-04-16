@@ -223,21 +223,18 @@ class AuthService {
 
   Future<void> requestPasswordReset(String email) async {
     try {
-      final response = await _apiClient.post(
-        '/auth/request-password-reset',
-        {'email': email},
-        includeAuth: false,
-      );
+      final response = await _apiClient.post('/auth/request-password-reset', {
+        'email': email,
+      }, includeAuth: false);
 
       if (response.statusCode == 200) {
         return;
       }
 
       final data = jsonDecode(response.body);
-      final reason =
-          data['params'] is Map<String, dynamic>
-              ? data['params']['reason'] as String?
-              : null;
+      final reason = data['params'] is Map<String, dynamic>
+          ? data['params']['reason'] as String?
+          : null;
 
       throw Exception(reason ?? 'REQUEST_PASSWORD_RESET_FAILED');
     } catch (e) {
@@ -248,24 +245,19 @@ class AuthService {
 
   Future<void> resetPassword(String token, String newPassword) async {
     try {
-      final response = await _apiClient.post(
-        '/auth/reset-password',
-        {
-          'token': token,
-          'newPassword': newPassword,
-        },
-        includeAuth: false,
-      );
+      final response = await _apiClient.post('/auth/reset-password', {
+        'token': token,
+        'newPassword': newPassword,
+      }, includeAuth: false);
 
       if (response.statusCode == 200) {
         return;
       }
 
       final data = jsonDecode(response.body);
-      final reason =
-          data['params'] is Map<String, dynamic>
-              ? data['params']['reason'] as String?
-              : null;
+      final reason = data['params'] is Map<String, dynamic>
+          ? data['params']['reason'] as String?
+          : null;
 
       throw Exception(reason ?? 'RESET_PASSWORD_FAILED');
     } catch (e) {

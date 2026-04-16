@@ -32,6 +32,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Voor cooldown-expiry meldingen: voeg nieuwe cooldown-actions toe in zowel `notificationService.sendCooldownExpiredNotification(...)` als de notifier-registratie in `cooldownService` of een gelijkwaardige scheduler.
 - Bankoverschrijvingen sturen altijd een pushmelding naar de ontvanger via de bestaande notification pipeline en blijven fire-and-forget.
 - Web-only notificaties gebruiken een data-only payload; native clients mogen het `notification` veld blijven gebruiken als dat nodig is.
+- Arrestatie-alerts voor vrienden of crewleden moeten via dezelfde fire-and-forget pipeline lopen, ontvangers dedupliceren als iemand zowel vriend als crewlid is, en mogen arrest-/jailflows nooit rollbacken.
 
 ## Frontend Guardrails
 - Settings moet een expliciete action bevatten die browser/iOS permission requests via user gesture kan starten.
@@ -44,6 +45,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 3. Verifieer dat Safari/iOS PWA niet terugvalt op generieke notification copy.
 4. Verifieer dat cooldown-expiry notificaties voor ondersteunde actions nog steeds aankomen.
 5. Verifieer dat pushfouten hoofdflows niet blokkeren.
+6. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
 
 ## When To Update This File
 Update bij nieuwe notificatiekanalen, FCM/service-worker gedrag, permission flows, cooldown-signalen of inbox/push koppelingen.

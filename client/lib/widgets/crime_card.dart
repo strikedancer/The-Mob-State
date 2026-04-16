@@ -75,6 +75,9 @@ class _CrimeCardState extends State<CrimeCard> {
       case 'protection_racket':
         return '👥';
 
+      case 'criminal_record_wipe':
+        return '🧾';
+
       // No icon for others
       default:
         return null;
@@ -184,6 +187,11 @@ class _CrimeCardState extends State<CrimeCard> {
       case 'extortion':
       case 'protection_racket':
         return l10n.tooltipCrimeRequiresViolence;
+
+      case 'criminal_record_wipe':
+        return l10n.localeName == 'nl'
+            ? 'Wis je volledige strafblad bij succes. Alleen beschikbaar als je al veroordelingen hebt.'
+            : 'Wipes your full criminal record on success. Only useful if you already have convictions.';
 
       default:
         return null;

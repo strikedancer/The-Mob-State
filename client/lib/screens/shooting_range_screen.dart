@@ -46,7 +46,8 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(l10n?.shootingTrainSuccess ?? 'Training complete'),
             ),
@@ -76,7 +77,7 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
     final accuracyBonus = ((status['accuracyBonus'] as num?) ?? 0) * 100;
     final nextTrainAtRaw = status['nextTrainAt']?.toString();
     final nextTrainAt = nextTrainAtRaw != null
-      ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
+        ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
         : null;
     final nextTrainLabel = nextTrainAt != null
         ? DateFormat('HH:mm').format(nextTrainAt)
@@ -93,7 +94,9 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage('assets/images/backgrounds/shooting_range_bg.png'),
+            image: const AssetImage(
+              'assets/images/backgrounds/shooting_range_bg.png',
+            ),
             fit: BoxFit.cover,
             opacity: 0.15,
           ),

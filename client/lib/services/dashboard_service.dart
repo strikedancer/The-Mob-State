@@ -43,9 +43,7 @@ class CrewWarDashboardSummary {
     );
   }
 
-  CrewWarDashboardSummary copyWith({
-    int? phaseEndsInSeconds,
-  }) {
+  CrewWarDashboardSummary copyWith({int? phaseEndsInSeconds}) {
     return CrewWarDashboardSummary(
       hasActiveWar: hasActiveWar,
       canDeclare: canDeclare,
@@ -114,9 +112,9 @@ class DashboardStats {
       streetProstitutes: json['streetProstitutes'] as int? ?? 0,
       redLightProstitutes: json['redLightProstitutes'] as int? ?? 0,
       totalAmmo: json['totalAmmo'] as int,
-        drugsTotalQuantity: json['drugsTotalQuantity'] as int? ?? 0,
-        nightclubVenues: json['nightclubVenues'] as int? ?? 0,
-        nightclubRevenueAllTime: json['nightclubRevenueAllTime'] as int? ?? 0,
+      drugsTotalQuantity: json['drugsTotalQuantity'] as int? ?? 0,
+      nightclubVenues: json['nightclubVenues'] as int? ?? 0,
+      nightclubRevenueAllTime: json['nightclubRevenueAllTime'] as int? ?? 0,
       weapons: (json['weapons'] as List<dynamic>)
           .map((w) => WeaponInfo.fromJson(w as Map<String, dynamic>))
           .toList(),

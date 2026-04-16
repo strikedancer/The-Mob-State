@@ -559,6 +559,21 @@
       "jailTime": 125,
       "requiredVehicle": false,
       "breakdownChance": 0
+    },
+    {
+      "id": "criminal_record_wipe",
+      "name": "Strafblad Wissen",
+      "description": "Verval dossiers en wis je volledige strafblad als de operatie slaagt",
+      "minLevel": 21,
+      "baseSuccessChance": 0.18,
+      "minReward": 0,
+      "maxReward": 0,
+      "xpReward": 850,
+      "jailTime": 240,
+      "requiredVehicle": false,
+      "breakdownChance": 0,
+      "isFederal": true,
+      "requiredTools": ["hacking_laptop", "fake_documents"]
     }
   ]
 }

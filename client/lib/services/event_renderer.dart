@@ -37,10 +37,14 @@ class EventRenderer {
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
         final jailTime = params['jailTime'] as int?; // in MINUTES
+        final clearedRecordCount = (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
 
         if (jailed && jailTime != null && jailTime > 0) {
           final minutes = jailTime;
           return 'Successfully completed $crimeName! +EUR ${reward ?? 0}, +${xpGained ?? 0} XP - BUT CAUGHT! Jailed for $minutes minute${minutes != 1 ? 's' : ''}!';
+        }
+        if (clearedRecordCount > 0) {
+          return 'Successfully completed $crimeName! Criminal record wiped: $clearedRecordCount conviction${clearedRecordCount != 1 ? 's' : ''} removed. +${xpGained ?? 0} XP';
         }
         return 'Successfully completed $crimeName! +EUR ${reward ?? 0}, +${xpGained ?? 0} XP';
 
@@ -323,6 +327,8 @@ class EventRenderer {
             return l10n.crimeErrorNoFuel;
           case 'LEVEL_TOO_LOW':
             return l10n.crimeErrorLevelTooLow;
+          case 'NO_CRIMINAL_RECORD':
+            return 'You do not have a criminal record to wipe';
           case 'INVALID_CRIME_ID':
             return l10n.crimeErrorInvalidCrimeId;
           case 'WEAPON_REQUIRED':
@@ -415,11 +421,15 @@ class EventRenderer {
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
         final jailTime = params['jailTime'] as int?; // in MINUTES
+        final clearedRecordCount = (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
 
         if (jailed && jailTime != null && jailTime > 0) {
           final minutes = jailTime;
           final minuteLabel = minutes == 1 ? 'minuut' : 'minuten';
           return 'Succesvol $crimeName gepleegd! +€${reward ?? 0}, +${xpGained ?? 0} XP - MAAR GEPAKT! $minutes $minuteLabel!';
+        }
+        if (clearedRecordCount > 0) {
+          return 'Succesvol $crimeName gepleegd! Strafblad gewist: $clearedRecordCount veroordeling${clearedRecordCount != 1 ? 'en' : ''} verwijderd. +${xpGained ?? 0} XP';
         }
         return 'Succesvol $crimeName gepleegd! +€${reward ?? 0}, +${xpGained ?? 0} XP';
 
@@ -703,6 +713,8 @@ class EventRenderer {
             return l10n.crimeErrorNoFuel;
           case 'LEVEL_TOO_LOW':
             return l10n.crimeErrorLevelTooLow;
+          case 'NO_CRIMINAL_RECORD':
+            return 'Je hebt geen strafblad om te wissen';
           case 'INVALID_CRIME_ID':
             return l10n.crimeErrorInvalidCrimeId;
           case 'WEAPON_REQUIRED':

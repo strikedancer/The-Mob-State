@@ -23,6 +23,8 @@ Coin market, portfolio, orders, charts, missions, rewards and notifications.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Direct sell flows should offer a clear full-position shortcut when the player already owns the coin, and open-order inputs must not silently depend on an ambiguous quantity field from another section.
+- If live market prices are used, keep the game loop hybrid: external anchor prices may guide the market, but regime/news modifiers, sane bounds, cache/fallback behavior and order safety must remain under backend control so the module does not hard-fail on provider outages.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -37,6 +39,7 @@ Coin market, portfolio, orders, charts, missions, rewards and notifications.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify scheduled price updates keep `current_price` within sane asset bounds and backend logs stay free of overflow/`Out of range` errors.
+- Verify the external price provider can fail without breaking market loads, order processing or chart history; stale-cache fallback must continue serving prices until the synthetic fallback takes over.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

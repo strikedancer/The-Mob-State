@@ -19,6 +19,19 @@ import { notificationService } from '../services/notificationService';
 
 const router = Router();
 
+const normalizeOptionalDescription = (value: unknown): string | null => {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  return trimmed.slice(0, 160);
+};
+
 /**
  * POST /bank/deposit
  * Deposit money into bank account
@@ -26,7 +39,8 @@ const router = Router();
 router.post('/deposit', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = req.player?.id;
-    const { amount } = req.body;
+    const { amount, description } = req.body;
+    const normalizedDescription = normalizeOptionalDescription(description);
 
     if (!playerId) {
       return res.status(401).json({
@@ -42,13 +56,14 @@ router.post('/deposit', authenticate, async (req: AuthRequest, res: Response) =>
       });
     }
 
-    const result = await bankService.deposit(playerId, amount);
+    const result = await bankService.deposit(playerId, amount, normalizedDescription);
 
     // Create world event
     await worldEventService.createEvent('bank.deposit', {
       playerId,
       amount,
       newBalance: result.newBalance,
+      description: result.description,
     }, playerId);
 
     return res.json({
@@ -57,6 +72,7 @@ router.post('/deposit', authenticate, async (req: AuthRequest, res: Response) =>
         amount: result.amount,
         bankBalance: result.newBalance,
         cashRemaining: result.newCash,
+        description: result.description,
       },
     });
   } catch (error) {
@@ -97,7 +113,8 @@ router.post('/deposit', authenticate, async (req: AuthRequest, res: Response) =>
 router.post('/withdraw', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = req.player?.id;
-    const { amount } = req.body;
+    const { amount, description } = req.body;
+    const normalizedDescription = normalizeOptionalDescription(description);
 
     if (!playerId) {
       return res.status(401).json({
@@ -113,13 +130,14 @@ router.post('/withdraw', authenticate, async (req: AuthRequest, res: Response) =
       });
     }
 
-    const result = await bankService.withdraw(playerId, amount);
+    const result = await bankService.withdraw(playerId, amount, normalizedDescription);
 
     // Create world event
     await worldEventService.createEvent('bank.withdraw', {
       playerId,
       amount,
       newBalance: result.newBalance,
+      description: result.description,
     }, playerId);
 
     return res.json({
@@ -128,6 +146,7 @@ router.post('/withdraw', authenticate, async (req: AuthRequest, res: Response) =
         amount: result.amount,
         bankBalance: result.newBalance,
         cashReceived: result.newCash,
+        description: result.description,
       },
     });
   } catch (error) {
@@ -168,7 +187,8 @@ router.post('/withdraw', authenticate, async (req: AuthRequest, res: Response) =
 router.post('/transfer', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const senderPlayerId = req.player?.id;
-    const { recipientUsername, amount } = req.body;
+    const { recipientUsername, amount, description } = req.body;
+    const normalizedDescription = normalizeOptionalDescription(description);
 
     if (!senderPlayerId) {
       return res.status(401).json({
@@ -191,7 +211,12 @@ router.post('/transfer', authenticate, async (req: AuthRequest, res: Response) =
       });
     }
 
-    const result = await bankService.transferToPlayer(senderPlayerId, recipientUsername, amount);
+    const result = await bankService.transferToPlayer(
+      senderPlayerId,
+      recipientUsername,
+      amount,
+      normalizedDescription
+    );
 
     await worldEventService.createEvent(
       'bank.transfer_sent',
@@ -199,7 +224,9 @@ router.post('/transfer', authenticate, async (req: AuthRequest, res: Response) =
         amount,
         recipientPlayerId: result.recipientPlayerId,
         recipientUsername: result.recipientUsername,
+        senderUsername: result.senderUsername,
         newBalance: result.senderNewBalance,
+        description: result.description,
       },
       senderPlayerId
     );
@@ -209,8 +236,10 @@ router.post('/transfer', authenticate, async (req: AuthRequest, res: Response) =
       {
         amount,
         senderPlayerId,
-        senderUsername: req.player?.username,
+        senderUsername: result.senderUsername,
+        recipientUsername: result.recipientUsername,
         newBalance: result.recipientNewBalance,
+        description: result.description,
       },
       result.recipientPlayerId
     );
@@ -227,6 +256,7 @@ router.post('/transfer', authenticate, async (req: AuthRequest, res: Response) =
         amount: result.amount,
         recipientUsername: result.recipientUsername,
         bankBalance: result.senderNewBalance,
+        description: result.description,
       },
     });
   } catch (error) {

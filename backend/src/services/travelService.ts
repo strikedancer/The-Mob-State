@@ -8,6 +8,7 @@
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
 import { activityService } from './activityService';
+import { notificationService } from './notificationService';
 import { clearPlayerCrimeVehicle } from './vehicleToolService';
 import countries from '../../content/countries.json';
 import tradableGoods from '../../content/tradableGoods.json';
@@ -349,6 +350,13 @@ async function sendPlayerToJail(playerId: number, jailTimeMinutes: number): Prom
       jailedUntil: jailRelease.toISOString(),
     },
     true
+  );
+
+  void notificationService.sendArrestAwaitingHelpNotifications(
+    playerId,
+    jailTimeMinutes,
+    'Border Police',
+    'TRAVEL'
   );
 }
 

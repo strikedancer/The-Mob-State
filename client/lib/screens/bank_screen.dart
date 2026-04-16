@@ -18,9 +18,13 @@ class BankScreen extends StatefulWidget {
 class _BankScreenState extends State<BankScreen> {
   final ApiClient _apiClient = ApiClient();
   final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _amountDescriptionController =
+      TextEditingController();
   final TextEditingController _transferUsernameController =
       TextEditingController();
   final TextEditingController _transferAmountController =
+      TextEditingController();
+  final TextEditingController _transferDescriptionController =
       TextEditingController();
   Timer? _searchDebounce;
 
@@ -56,8 +60,10 @@ class _BankScreenState extends State<BankScreen> {
   void dispose() {
     _searchDebounce?.cancel();
     _amountController.dispose();
+    _amountDescriptionController.dispose();
     _transferUsernameController.dispose();
     _transferAmountController.dispose();
+    _transferDescriptionController.dispose();
     super.dispose();
   }
 
@@ -154,9 +160,13 @@ class _BankScreenState extends State<BankScreen> {
           _totalTransactions = (params?['total'] as num?)?.toInt() ?? 0;
           _transactionSummary = {
             'deposits': (params?['summary']?['deposits'] as num?)?.toInt() ?? 0,
-            'withdrawals': (params?['summary']?['withdrawals'] as num?)?.toInt() ?? 0,
-            'transfersSent': (params?['summary']?['transfersSent'] as num?)?.toInt() ?? 0,
-            'transfersReceived': (params?['summary']?['transfersReceived'] as num?)?.toInt() ?? 0,
+            'withdrawals':
+                (params?['summary']?['withdrawals'] as num?)?.toInt() ?? 0,
+            'transfersSent':
+                (params?['summary']?['transfersSent'] as num?)?.toInt() ?? 0,
+            'transfersReceived':
+                (params?['summary']?['transfersReceived'] as num?)?.toInt() ??
+                0,
           };
           _isLoadingTransactions = false;
         });
@@ -195,6 +205,33 @@ class _BankScreenState extends State<BankScreen> {
     return List<int>.generate(end - start + 1, (index) => start + index);
   }
 
+  String? _transactionCounterpartyLabel(Map<String, dynamic> transaction) {
+    final type = (transaction['type']?.toString() ?? '').toLowerCase();
+    final username = transaction['counterpartyUsername']?.toString().trim();
+    if (username == null || username.isEmpty) {
+      return null;
+    }
+
+    if (type == 'transfer_sent') {
+      return _tr('Naar: $username', 'To: $username');
+    }
+
+    if (type == 'transfer_received') {
+      return _tr('Van: $username', 'From: $username');
+    }
+
+    return null;
+  }
+
+  String? _transactionDescription(Map<String, dynamic> transaction) {
+    final description = transaction['description']?.toString().trim();
+    if (description == null || description.isEmpty) {
+      return null;
+    }
+
+    return description;
+  }
+
   Widget _pageButton(int page) {
     final isActive = page == _currentPage;
     return InkWell(
@@ -223,6 +260,7 @@ class _BankScreenState extends State<BankScreen> {
 
   Future<void> _deposit() async {
     final amount = int.tryParse(_amountController.text.trim()) ?? 0;
+    final description = _amountDescriptionController.text.trim();
     if (amount <= 0) return;
 
     setState(() => _isSubmitting = true);
@@ -230,6 +268,7 @@ class _BankScreenState extends State<BankScreen> {
     try {
       final response = await _apiClient.post('/bank/deposit', {
         'amount': amount,
+        'description': description.isEmpty ? null : description,
       });
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -238,6 +277,7 @@ class _BankScreenState extends State<BankScreen> {
         setState(() {
           _balance = (params?['bankBalance'] as num?)?.toInt() ?? _balance;
           _amountController.clear();
+          _amountDescriptionController.clear();
         });
         if (mounted) {
           await Provider.of<AuthProvider>(
@@ -281,6 +321,7 @@ class _BankScreenState extends State<BankScreen> {
 
   Future<void> _withdraw() async {
     final amount = int.tryParse(_amountController.text.trim()) ?? 0;
+    final description = _amountDescriptionController.text.trim();
     if (amount <= 0) return;
 
     setState(() => _isSubmitting = true);
@@ -288,6 +329,7 @@ class _BankScreenState extends State<BankScreen> {
     try {
       final response = await _apiClient.post('/bank/withdraw', {
         'amount': amount,
+        'description': description.isEmpty ? null : description,
       });
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -296,6 +338,7 @@ class _BankScreenState extends State<BankScreen> {
         setState(() {
           _balance = (params?['bankBalance'] as num?)?.toInt() ?? _balance;
           _amountController.clear();
+          _amountDescriptionController.clear();
         });
         if (mounted) {
           await Provider.of<AuthProvider>(
@@ -340,6 +383,7 @@ class _BankScreenState extends State<BankScreen> {
   Future<void> _transfer() async {
     final recipientUsername = _transferUsernameController.text.trim();
     final amount = int.tryParse(_transferAmountController.text.trim()) ?? 0;
+    final description = _transferDescriptionController.text.trim();
     if (recipientUsername.isEmpty || amount <= 0) return;
 
     setState(() => _isSubmitting = true);
@@ -348,6 +392,7 @@ class _BankScreenState extends State<BankScreen> {
       final response = await _apiClient.post('/bank/transfer', {
         'recipientUsername': recipientUsername,
         'amount': amount,
+        'description': description.isEmpty ? null : description,
       });
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -356,6 +401,7 @@ class _BankScreenState extends State<BankScreen> {
         setState(() {
           _balance = (params?['bankBalance'] as num?)?.toInt() ?? _balance;
           _transferAmountController.clear();
+          _transferDescriptionController.clear();
           _transferUsernameController.clear();
           _transferSuggestions = const [];
         });
@@ -585,6 +631,29 @@ class _BankScreenState extends State<BankScreen> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _amountDescriptionController,
+              maxLength: 160,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: _tr(
+                  'Omschrijving (optioneel)',
+                  'Description (optional)',
+                ),
+                helperText: _tr(
+                  'Wordt opgeslagen bij je storting of opname in transacties.',
+                  'Will be stored with your deposit or withdrawal in transactions.',
+                ),
+                helperStyle: TextStyle(color: Colors.grey.shade500),
+                labelStyle: TextStyle(color: Colors.grey.shade300),
+                filled: true,
+                fillColor: Colors.grey.shade900,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
             const SizedBox(height: 12),
             Row(
               children: [
@@ -803,6 +872,29 @@ class _BankScreenState extends State<BankScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
+                    TextField(
+                      controller: _transferDescriptionController,
+                      maxLength: 160,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        labelText: _tr(
+                          'Omschrijving (optioneel)',
+                          'Description (optional)',
+                        ),
+                        helperText: _tr(
+                          'De ontvanger ziet deze omschrijving ook terug in transacties.',
+                          'The recipient will also see this description in transactions.',
+                        ),
+                        helperStyle: TextStyle(color: Colors.grey.shade500),
+                        labelStyle: TextStyle(color: Colors.grey.shade300),
+                        filled: true,
+                        fillColor: Colors.grey.shade800,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
@@ -910,6 +1002,11 @@ class _BankScreenState extends State<BankScreen> {
                                 final amount =
                                     (transaction['amount'] as num?)?.toInt() ??
                                     0;
+                                final counterpartyLabel =
+                                    _transactionCounterpartyLabel(transaction);
+                                final description = _transactionDescription(
+                                  transaction,
+                                );
                                 final createdAt = _formatDate(
                                   transaction['createdAt']?.toString(),
                                 );
@@ -961,6 +1058,31 @@ class _BankScreenState extends State<BankScreen> {
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
+                                            if (counterpartyLabel != null) ...[
+                                              const SizedBox(height: 2),
+                                              Text(
+                                                counterpartyLabel,
+                                                style: const TextStyle(
+                                                  color: Color(0xFFD4AF37),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                            if (description != null) ...[
+                                              const SizedBox(height: 2),
+                                              Text(
+                                                description,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  color: Colors.white70,
+                                                  fontSize: 12,
+                                                  fontStyle: FontStyle.italic,
+                                                ),
+                                              ),
+                                            ],
+                                            const SizedBox(height: 2),
                                             Text(
                                               createdAt,
                                               style: const TextStyle(

@@ -105,6 +105,7 @@ const List<HelpTopic> helpTopics = [
       'Check unread messages before starting risky actions: rewards, order fills and system events all appear in your inbox.',
     ],
     protocolPath: 'docs/module-protocols/dashboard.md',
+      'De late-game crime Strafblad Wissen wist bij succes je volledige strafblad, maar vereist zware tools en heeft hoge federale risico\'s.',
   ),
   HelpTopic(
     id: 'crimes',
@@ -114,6 +115,7 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Misdaden',
     titleEn: 'Crimes',
     summaryNl:
+      'The late-game Wipe Criminal Record crime removes your full criminal record on success, but it needs heavy tools and carries high federal risk.',
         'Pleeg illegale acties voor cash en XP, maar elke poging brengt kans op schade, arrestatie of extra Wanted Level mee.',
     summaryEn:
         'Commit illegal actions for cash and XP, but every attempt risks damage, arrest or extra Wanted Level.',
@@ -247,6 +249,7 @@ const List<HelpTopic> helpTopics = [
     howNl: [
       'Crew aanmaken kost €10.000. Elke crew heeft max 10 leden. De leader kan leden uitnodigen, kicken en heists starten.',
       'Crew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.',
+      'Als een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.',
       'Crew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.',
       'War-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.',
       'Tijdens een actieve war kunnen deelnemers acties uitvoeren zoals kills, mugs, sabotage, intel, raids, shields, boosts en territory claims. Sommige acties vereisen een doelspeler of VIP-status.',
@@ -261,6 +264,7 @@ const List<HelpTopic> helpTopics = [
     howEn: [
       'Creating a crew costs €10.000. Each crew has max 10 members. Leader can invite, kick and start heists.',
       'Crew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.',
+      'When a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.',
       'Crew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.',
       'War types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.',
       'During an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Some actions require a target player or VIP status.',
@@ -305,6 +309,7 @@ const List<HelpTopic> helpTopics = [
       'Vrienden zien elke keer als ze actief zijn in het spel. Dat helpt bij planning van gezamenlijke heists of trades.',
       'Vriendverzoeken verlopen niet automatisch; houd de lijst actueel zodat ongewenste verzoeken je niet afleiden.',
       'Vrienden buiten je crew zijn waardevol voor jail-escapes (een vriend kan je helpen ontsnappen) en voor informatie-uitwisseling.',
+      'Als een vriend wordt opgepakt krijgen geaccepteerde vrienden nu ook een pushmelding dat die speler op hulp wacht in de gevangenis.',
     ],
     howEn: [
       'Friends page shows three lists: current friends, sent requests and received requests.',
@@ -312,6 +317,7 @@ const List<HelpTopic> helpTopics = [
       'You can see when friends are active in the game, which helps planning heists or trades.',
       'Friend requests do not expire automatically; keep the list tidy so pending requests do not distract you.',
       'Friends outside your crew are valuable for jail escapes (a friend can help you break out) and information sharing.',
+      'When a friend gets arrested, accepted friends now also receive a push notification that the player is waiting for help in prison.',
     ],
     tipsNl: [
       'Voeg vrienden toe die in dezelfde speelstijl zitten: heist-partners, trader-netwerk of crime-support.',
@@ -455,17 +461,17 @@ const List<HelpTopic> helpTopics = [
       'Rente: 0.5% van je banksaldo per tick (elke 5 minuten). Voorbeeld: €10.000 op bank = €50 rente per tick = €600 per uur = €14.400 per dag.',
       'Storten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.',
       'Geld op de bank is beschermd tegen politie-confiscaties. Alleen contant cash kan je verliezen bij arrestatie.',
-      'Transactiehistorie toont alle in- en uitgaande stromen met tijdstip en bedrag.',
+      'Transactiehistorie toont alle in- en uitgaande stromen met tijdstip, bedrag, tegenpartij bij overboekingen en optionele omschrijvingen.',
       'Bank Robbery crime: slaagt bij 30% kans en steelt 10-30% van het banksaldo van een willekeurig andere speler. Hoog Wanted Level risico.',
-      'Geld overmaken naar andere spelers is mogelijk. Check de prijzen en bevestig bedrag twee keer voordat je verstuurt.',
+      'Geld overmaken naar andere spelers is mogelijk. Je kunt daarbij optioneel een omschrijving meegeven; die wordt ook zichtbaar voor de ontvanger in transacties. Check bedrag en ontvanger altijd goed voordat je verstuurt.',
     ],
     howEn: [
       'Interest: 0.5% of your bank balance per tick (every 5 minutes). Example: €10.000 in bank = €50 interest per tick = €600 per hour = €14.400 per day.',
       'Deposits and withdrawals are both free and instant with no minimum or maximum limit.',
       'Money in the bank is protected from police confiscations. Only cash on hand can be lost at arrest.',
-      'Transaction history shows all incoming and outgoing flows with timestamp and amount.',
+      'Transaction history shows all incoming and outgoing flows with timestamp, amount, transfer counterparty and optional descriptions.',
       'Bank Robbery crime: succeeds at 30% and steals 10-30% of a random other player\'s bank balance. High Wanted Level risk.',
-      'Transferring money to other players is possible. Double-check amounts before confirming.',
+      'Transferring money to other players is possible. You can optionally add a description, and the recipient will also see it in transactions. Double-check both amount and recipient before confirming.',
     ],
     tipsNl: [
       'Stuur grote bedragen meteen naar de bank — contant cash is kwetsbaar bij elke crimeworp.',
@@ -692,14 +698,14 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Crypto',
     titleEn: 'Crypto',
     summaryNl:
-        'Handel in 30 echte cryptocurrencies. Koop en verkoop direct, of automatiseer via limit-, stop-loss- en take-profit orders. Volg live grafieken en beheer je positie via de coin-popup.',
+        'Handel in 30 echte cryptocurrencies. Koop en verkoop direct, of automatiseer via limit-, stop-loss- en take-profit orders. Koersen volgen nu live marktankers met extra in-game regimes en nieuws, en de coin-popup gebruikt aparte velden voor directe trades en open orders.',
     summaryEn:
-        'Trade 30 real cryptocurrencies. Buy and sell directly or automate via limit, stop-loss and take-profit orders. Follow live charts and manage your position via the coin popup.',
+        'Trade 30 real cryptocurrencies. Buy and sell directly or automate via limit, stop-loss and take-profit orders. Prices now follow live market anchors with extra in-game regimes and news, and the coin popup uses separate fields for direct trades and open orders.',
     howNl: [
-      'De cryptolijst toont 30 coins met actuele prijs, 24-uurs percentage en je huidige bezit per coin.',
+      'De cryptolijst toont 30 coins met actuele prijs, 24-uurs percentage en je huidige bezit per coin. De prijsbasis volgt live marktdata, maar blijft beïnvloed door in-game regimes en nieuws.',
       'Klik op een coin om de popup te openen met: live grafiek (tijdfilters 1u, 4u, 8u, 24u, 7d, 30d, Alles), koopgeschiedenis, gemiddelde aankoopprijs en koop/verkoop formulier.',
-      'Directe trade: kies hoeveelheid en klik Koop of Verkoop. Uitvoering is onmiddellijk tegen de actuele marktprijs.',
-      'Open orders: Limit (koop/verkoop op exacte doelprijs), Stop-loss (automatisch verkopen als koers daalt tot een grens), Take-profit (automatisch verkopen als koers stijgt tot een doel).',
+      'Directe trade: kies hoeveelheid en klik Koop of Verkoop. Bij verkopen kun je met `ALL` direct je volledige positie invullen. Uitvoering is onmiddellijk tegen de actuele marktprijs.',
+      'Open orders: Limit (koop/verkoop op exacte doelprijs), Stop-loss (automatisch verkopen als koers daalt tot een grens), Take-profit (automatisch verkopen als koers stijgt tot een doel). Deze sectie heeft een eigen hoeveelheidveld en een eigen doelprijsveld.',
       'Open orders worden automatisch uitgevoerd door de backend zodra de marktprijs de doelprijs bereikt. Je hoeft niet online te zijn.',
       'Marktregimes (Bull/Bear/Sideways) en nieuwsevents beïnvloeden prijsbewegingen. Regime-notificaties ontvang je via push als je dat hebt ingesteld.',
       'Weekelijks crypto-leaderboard: de speler met de hoogste gerealiseerde winst van die week wint een geldbedrag-beloning.',
@@ -707,10 +713,10 @@ const List<HelpTopic> helpTopics = [
       'Portfolio overzicht toont: totale waarde, inleg, ongerealiseerde en gerealiseerde winst/verlies.',
     ],
     howEn: [
-      'The crypto list shows 30 coins with current price, 24-hour percentage and your current holding per coin.',
+      'The crypto list shows 30 coins with current price, 24-hour percentage and your current holding per coin. The price base follows live market data, but it is still influenced by in-game regimes and news.',
       'Click a coin to open the popup with: live chart (time filters 1h, 4h, 8h, 24h, 7d, 30d, All), purchase history, average buy price and buy/sell form.',
-      'Direct trade: enter quantity and click Buy or Sell. Execution is immediate at the current market price.',
-      'Open orders: Limit (buy/sell at an exact target price), Stop-loss (auto sell when price drops to a threshold), Take-profit (auto sell when price rises to a target).',
+      'Direct trade: enter quantity and click Buy or Sell. When selling you can press `ALL` to instantly fill your full position. Execution is immediate at the current market price.',
+      'Open orders: Limit (buy/sell at an exact target price), Stop-loss (auto sell when price drops to a threshold), Take-profit (auto sell when price rises to a target). This section now has its own quantity field and its own target price field.',
       'Open orders are executed automatically by the backend as soon as the market price hits the target. You do not need to be online.',
       'Market regimes (Bull/Bear/Sideways) and news events influence price movements. You receive regime notifications via push when enabled.',
       'Weekly crypto leaderboard: the player with the highest realized gain that week wins a cash reward.',
@@ -826,7 +832,9 @@ const List<HelpTopic> helpTopics = [
       'Hoger beroep kun je maar een keer per veroordeling doen en er zit een cooldown op herhaald indienen.',
       'Omkoping werkt met een zelfgekozen bedrag. Dat bedrag wordt altijd afgeschreven, ook wanneer de poging mislukt.',
       'Een hogere omkoopsom geeft een betere slagingskans. Bij succes word je direct vrijgelaten.',
-      'Je strafblad blijft zichtbaar, ook als je niet meer vastzit.',
+      'Je strafblad bewaart eerdere veroordelingen met datum en rechtbankhistorie, ook als je niet meer vastzit.',
+      'Een geslaagde rechteromkoping verwijdert alleen die actuele veroordeling van je strafblad.',
+      'Wil je je volledige strafblad wissen, dan moet je dat buiten de rechtbank via de late-game crime Strafblad Wissen doen.',
     ],
     howEn: [
       'When jailed, the court screen shows your active conviction with remaining time, crime and judge profile.',
@@ -834,7 +842,9 @@ const List<HelpTopic> helpTopics = [
       'You can appeal only once per conviction and a cooldown applies to rapid retries.',
       'Bribery uses a player-selected amount. That amount is always deducted, even when the attempt fails.',
       'A higher bribe amount increases success chance. On success, you are released immediately.',
-      'Your criminal record remains visible even when you are no longer jailed.',
+      'Your criminal record keeps earlier convictions with dates and court-history details even when you are no longer jailed.',
+      'A successful judge bribe removes only that current conviction from your criminal record.',
+      'If you want to wipe your full criminal record, you must do it outside court through the late-game Wipe Criminal Record crime.',
     ],
     tipsNl: [
       'Gebruik hoger beroep bij lange straffen: de verwachte tijdswinst is dan het grootst.',
@@ -987,6 +997,7 @@ const List<HelpTopic> helpTopics = [
       'Borgtocht: Wanted Level × €1.000. Betaal dit bedrag om direct vrij te komen. Bij Wanted 5 kost borgtocht €5.000.',
       'Ontsnappen: je kunt een ontsnappingspoging wagen maar de slagingskans is laag. Mislukking verlengt je straftijd met een vast bedrag.',
       'Crewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.',
+      'Bij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.',
       'Wapen- en armor-bezit wordt geconfisceerd bij arrest als je er geen legale dekking voor hebt.',
       'Rechtbank-optie: ga naar de rechtbank voor strafvermindering via advocaat (zie Rechtbank).',
       'Terwijl je vastzit lopen productie-timers (drugs, ammo-factory) gewoon door. Je empire werkt zonder je.',
@@ -997,6 +1008,7 @@ const List<HelpTopic> helpTopics = [
       'Bail: Wanted Level × €1,000. Pay this amount to be released immediately. At Wanted 5 bail costs €5,000.',
       'Escape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.',
       'Crew members can visit you and provide small benefits (stats, morale) while you are locked up.',
+      'On arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.',
       'Weapons and armor are confiscated on arrest if you have no legal cover for them.',
       'Court option: go to court for a sentence reduction via a lawyer (see Court).',
       'While locked up production timers (drugs, ammo factory) keep running. Your empire works without you.',

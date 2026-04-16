@@ -24,6 +24,7 @@ Deposits, withdrawals, transfers, transaction history and money safety.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Transaction history and transaction summary counters must reflect the same underlying deposit, withdrawal, sent-transfer and received-transfer data; withdrawals may not be omitted from the visible transaction summary.
+- Transaction history must preserve transfer counterpart identity and any optional player-entered description for deposits, withdrawals and transfers; received transfers must show the sender's description symmetrically when one was provided.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

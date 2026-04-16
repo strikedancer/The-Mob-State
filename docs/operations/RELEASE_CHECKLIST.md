@@ -23,6 +23,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Arrestatie-alerts toegevoegd: wanneer een speler wordt opgepakt sturen crimes, police/FBI, travel, vehicle theft en failed heists nu fire-and-forget pushmeldingen naar geaccepteerde vrienden en overige crewleden dat de speler vastzit en op hulp wacht, met overlap-dedupe voor ontvangers
+  - Bestanden: `backend/src/services/notificationService.ts`, `backend/src/services/crimeService.ts`, `backend/src/services/policeService.ts`, `backend/src/services/fbiService.ts`, `backend/src/services/travelService.ts`, `backend/src/services/vehicleService.ts`, `backend/src/services/heistService.ts`, `docs/module-protocols/notifications.md`, `docs/module-protocols/crimes.md`, `docs/module-protocols/prison.md`, `docs/module-protocols/crew.md`, `docs/module-protocols/friends.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Nieuwe late-game crime Strafblad Wissen toegevoegd: een succesvolle run wist nu het volledige zichtbare strafblad via een expunge-event in plaats van DB-records te verwijderen; court-record en appeal-logica negeren sindsdien alleen oudere convictions, terwijl nieuwe veroordelingen daarna weer normaal opbouwen
+  - Bestanden: `backend/content/crimes.json`, `backend/data/tools.json`, `backend/src/services/crimeService.ts`, `backend/src/services/judgeService.ts`, `backend/src/routes/crimes.ts`, `docs/module-protocols/crimes.md`, `docs/module-protocols/court.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Bank transacties hersteld: banktransactiebedragen worden nu correct uit opgeslagen world-event JSON geparsed in plaats van als string-object te mislukken naar `0`, en de bank API levert nu ook aparte samenvattingstellers voor stortingen, opnames, verzonden overboekingen en ontvangen overboekingen
   - Bestanden: `backend/src/services/bankService.ts`, `backend/src/routes/bank.ts`, `client/lib/screens/bank_screen.dart`, `docs/module-protocols/bank.md`
 - [ ] Crew Wars member push coverage aangescherpt: ook automatische war lifecycle-transities (`started`, `lockdown`) sturen nu push/inbox naar alle betrokken crew members inclusief leaders, in plaats van alleen admin-handmatige of declare/resolve momenten
@@ -149,8 +153,20 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Help & Uitleg gesynchroniseerd voor arrestatie-alerts: crew-, vrienden- en gevangenis-uitleg vermelden nu dat vrienden en crewleden een pushmelding krijgen wanneer iemand wordt opgepakt en op hulp wacht
+  - Bestanden: `client/lib/data/help_content.dart`
+- [ ] Crime en rechtbank UX gesynchroniseerd voor strafblad-wipe: Crimes toont nu de late-game actie Strafblad Wissen met duidelijke tooltip en succes/foutfeedback, en Help & Uitleg legt uit dat volledige record-wipe via Crimes loopt terwijl de rechtbank alleen zaak-specifieke historie en omkoping beheert
+  - Bestanden: `client/lib/screens/crime_screen.dart`, `client/lib/widgets/crime_card.dart`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`
+- [ ] Rechtbank strafblad-historie gecorrigeerd: het strafblad toont nu blijvende veroordelingen ook na vrijlating, laat beroep- en mislukte omkoop-uitkomsten per zaak zien, en een geslaagde rechteromkoping verwijdert alleen de gekoppelde actuele veroordeling uit het strafblad
+  - Bestanden: `backend/src/services/judgeService.ts`, `backend/src/routes/trial.ts`, `client/lib/screens/court_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/court.md`
 - [ ] Auth reset-flow hersteld: scherm `Wachtwoord vergeten` doet nu een echte backend-call naar `/auth/request-password-reset` in plaats van een fake succesmelding, en de Flutter app kan resetlinks op `/auth/reset-password?token=...` nu direct openen en afhandelen met een nieuw wachtwoordscherm
   - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/screens/forgot_password_screen.dart`, `client/lib/screens/reset_password_screen.dart`, `client/lib/main.dart`
+- [ ] Bank transactiedetails verrijkt: transactielijst toont nu bij overboekingen de tegenpartij, en stortingen/opnames/overboekingen ondersteunen een optionele omschrijving die ook voor de ontvanger zichtbaar is in diens transacties
+  - Bestanden: `backend/src/routes/bank.ts`, `backend/src/services/bankService.ts`, `client/lib/screens/bank_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/bank.md`
+- [ ] Crypto live-marktankers toegevoegd: de backend haalt nu echte marktprijzen op als anchor, cachet die en combineert ze met het bestaande game-algoritme voor regimes, nieuws en orderveiligheid; bij providerstoringen valt het systeem terug op cache en daarna op synthetische prijsbewegingen
+  - Bestanden: `backend/src/config/index.ts`, `backend/src/services/cryptoService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/crypto.md`
+- [ ] Crypto order UX verduidelijkt: coin-popup heeft nu een `ALL`-actie om bij direct verkopen je volledige positie in te vullen, en open orders gebruiken een eigen hoeveelheidveld met expliciete uitleg zodat direct trade en orderinvoer niet meer door elkaar lopen
+  - Bestanden: `client/lib/screens/crypto_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crypto.md`
 - [ ] Crew Wars player UX toegevoegd: Crew-scherm heeft nu een War Room-tab met declare/join/action flows, season leaderboard, current-war standings, war action feed, event-rendering en notificatie-routing; Help & Uitleg voor Crew is bijgewerkt
   - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/services/dashboard_service.dart`, `client/lib/services/event_renderer.dart`, `client/lib/services/notification_service.dart`, `client/lib/data/help_content.dart`
 - [ ] Security-scherm synced met nieuwe beveiligingsregels: toont nu bodyguard dagloon + volgende afschrijving, laat beschadigde armor met lagere actuele bescherming zien, behandelt armor expliciet als 1 gedragen slot met vervang-flow, en gebruikt contrastrijke styling zodat de actieve armor-kaart leesbaar blijft

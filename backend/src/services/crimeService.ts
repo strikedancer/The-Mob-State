@@ -15,6 +15,10 @@ import config from '../config';
 import { processCrimeAttempt, CrimeOutcome } from '../utils/crimeOutcomeEngine';
 import { getPlayerCrimeVehicle, getPlayerTool, degradeVehicle, degradeTool } from './vehicleToolService';
 import { serializeAchievementForClient } from './achievementService';
+import * as judgeService from './judgeService';
+import { notificationService } from './notificationService';
+
+const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 
 interface CrimeDefinition {
   id: string;
@@ -94,6 +98,7 @@ export const crimeService = {
     vehicleConfiscated?: boolean;
     vehicleChaseDamage?: number;
     newlyUnlockedAchievements?: any[];
+    clearedRecordCount?: number;
   }> {
     const crime = this.getCrimeDefinition(crimeId);
     if (!crime) {
@@ -118,6 +123,13 @@ export const crimeService = {
     // Check level requirement
     if (player.rank < crime.minLevel) {
       throw new Error('LEVEL_TOO_LOW');
+    }
+
+    if (crimeId === CRIMINAL_RECORD_WIPE_CRIME_ID) {
+      const visibleConvictionCount = await judgeService.getVisibleCriminalRecordCount(playerId);
+      if (visibleConvictionCount <= 0) {
+        throw new Error('NO_CRIMINAL_RECORD');
+      }
     }
 
     // Check vehicle requirement
@@ -527,27 +539,50 @@ export const crimeService = {
     }
 
     // Create world event
+    let clearedRecordCount = 0;
     if (success) {
+      if (crimeId === CRIMINAL_RECORD_WIPE_CRIME_ID) {
+        clearedRecordCount = await judgeService.expungeCriminalRecord(playerId);
+      }
+
       await worldEventService.createEvent('crime.success', {
         playerId,
         crimeName: crime.name,
         reward,
         xpGained,
+        clearedRecordCount,
       });
 
       // Log activity for friend feed
       await activityService.logActivity(
         playerId,
         'CRIME',
-        `Completed ${crime.name} and earned €${reward.toLocaleString()}`,
+        clearedRecordCount > 0
+          ? `Completed ${crime.name} and wiped ${clearedRecordCount} criminal record entries`
+          : `Completed ${crime.name} and earned €${reward.toLocaleString()}`,
         {
           crimeId: crime.id,
           crimeName: crime.name,
           reward,
           xpGained,
+          clearedRecordCount,
         },
         true
       );
+
+      if (clearedRecordCount > 0) {
+        await activityService.logActivity(
+          playerId,
+          'CRIMINAL_RECORD_EXPUNGED',
+          `Wiped ${clearedRecordCount} criminal record entries via ${crime.name}`,
+          {
+            crimeId: crime.id,
+            crimeName: crime.name,
+            clearedRecordCount,
+          },
+          true
+        );
+      }
 
       // Check if player ranked up
       if (result.newRank > player.rank) {
@@ -681,6 +716,13 @@ export const crimeService = {
         },
         true
       );
+
+      void notificationService.sendArrestAwaitingHelpNotifications(
+        playerId,
+        jailTime,
+        crime.isFederal ? 'FBI' : 'Police',
+        'CRIME'
+      );
     }
 
     // Check for achievement unlocks if crime was successful
@@ -721,6 +763,7 @@ export const crimeService = {
       vehicleConfiscated: result.vehicleConfiscated,
       vehicleChaseDamage: result.vehicleChaseDamage,
       newlyUnlockedAchievements,
+      clearedRecordCount,
       // weaponUsed: weaponUsed?.weaponId || null,
       // ammoConsumed,
     };

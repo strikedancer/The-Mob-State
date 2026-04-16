@@ -51,7 +51,7 @@ Acceptatie-eis:
 - Drugs -> Facilities, Production, Inventory, Dashboard, Admin
 - Properties -> Drugs, Dashboard, Admin
 - Nightclub -> Drugs, Prostitution, Dashboard, Admin
-- Crimes/Vehicle Theft -> Garage, Prison, Security, Admin
+- Crimes/Vehicle Theft -> Garage, Prison, Security, Court, Crew, Friends, Notifications, Admin
 - Hitlist -> Crimes, Security, Crew, Dashboard, Admin
 - Crew Wars -> Crew, Hitlist, Crimes, Dashboard, Notifications, Payments, Achievements, Admin
 - Payments/Premium -> Crew, Hitlist/Security, Garage, TuneShop, Events, Dashboard, Admin

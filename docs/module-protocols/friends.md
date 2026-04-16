@@ -29,6 +29,10 @@ Friend graph, requests, social activity and player-to-player discovery.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
 
+## Notification Guardrails
+- Geaccepteerde vrienden mogen arrestatie-alerts ontvangen wanneer een vriend wordt opgepakt en op hulp wacht.
+- Dedupeer ontvangers die tegelijk vriend en crewlid zijn zodat ze maar 1 push voor dezelfde arrestatie krijgen.
+
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
 - Run through the main success path and at least one failure or locked-state path.

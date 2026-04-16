@@ -295,6 +295,13 @@ router.post(
         });
       }
 
+      if (error.message === 'NO_CRIMINAL_RECORD') {
+        return res.status(400).json({
+          event: 'crime.error',
+          params: { reason: 'NO_CRIMINAL_RECORD' },
+        });
+      }
+
       if (error.message === 'VEHICLE_REQUIRED') {
         return res.status(400).json({
           event: 'crime.error',

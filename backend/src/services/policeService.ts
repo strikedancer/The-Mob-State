@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import config from '../config';
 import { activityService } from './activityService';
+import { notificationService } from './notificationService';
 
 /**
  * Police Service
@@ -302,6 +303,13 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
       jailedUntil: jailRelease.toISOString(),
     },
     true
+  );
+
+  void notificationService.sendArrestAwaitingHelpNotifications(
+    playerId,
+    jailTime,
+    'Police',
+    'POLICE'
   );
 }
 

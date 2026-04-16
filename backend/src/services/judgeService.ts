@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import crimesData from '../../content/crimes.json';
 import * as policeService from './policeService';
 import { educationService } from './educationService';
+import { worldEventService } from './worldEventService';
 
 interface JudgeProfile {
   id: number;
@@ -16,9 +17,36 @@ interface CriminalRecordItem {
   crimeId: string;
   crimeName: string;
   jailTime: number;
+  originalJailTime: number;
   createdAt: Date;
   appealed: boolean;
+  status: 'active' | 'served';
+  history: CriminalRecordHistoryItem[];
 }
+
+interface CriminalRecordHistoryItem {
+  type: 'conviction' | 'appeal_granted' | 'appeal_denied' | 'bribe_failed';
+  createdAt: Date;
+  originalSentence?: number;
+  newSentence?: number;
+  amount?: number;
+}
+
+interface TrialEventDetail {
+  eventKey: TrialEventKey;
+  createdAt: Date;
+  crimeAttemptId: number;
+  originalSentence?: number;
+  newSentence?: number;
+  amount?: number;
+}
+
+type TrialEventKey =
+  | 'trial.appeal_granted'
+  | 'trial.appeal_denied'
+  | 'trial.bribe_success'
+  | 'trial.bribe_failed'
+  | 'trial.record_expunged';
 
 export interface AppealResult {
   success: boolean;
@@ -71,6 +99,14 @@ const crimeNameById = new Map(
   (crimesData.crimes || []).map((crime) => [crime.id, crime.name])
 );
 
+const TRIAL_EVENT_KEYS: TrialEventKey[] = [
+  'trial.appeal_granted',
+  'trial.appeal_denied',
+  'trial.bribe_success',
+  'trial.bribe_failed',
+  'trial.record_expunged',
+];
+
 function getJudgeForAttempt(crimeAttemptId: number): JudgeProfile {
   return JUDGES[crimeAttemptId % JUDGES.length] as JudgeProfile;
 }
@@ -81,6 +117,227 @@ function getCrimeName(crimeId: string): string {
 
 function calculateReleaseTime(createdAt: Date, jailTimeMinutes: number): Date {
   return new Date(createdAt.getTime() + jailTimeMinutes * 60 * 1000);
+}
+
+function parseOptionalNumber(value: unknown): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+
+  return undefined;
+}
+
+function parseTrialEvent(params: string, eventKey: string, createdAt: Date): TrialEventDetail | null {
+  if (!TRIAL_EVENT_KEYS.includes(eventKey as TrialEventKey)) {
+    return null;
+  }
+
+  let parsedParams: unknown = {};
+  try {
+    parsedParams = JSON.parse(params);
+  } catch {
+    return null;
+  }
+
+  if (!parsedParams || typeof parsedParams !== 'object') {
+    return null;
+  }
+
+  const payload = parsedParams as Record<string, unknown>;
+  const crimeAttemptId = parseOptionalNumber(payload.crimeAttemptId);
+  if (!crimeAttemptId) {
+    return null;
+  }
+
+  return {
+    eventKey: eventKey as TrialEventKey,
+    createdAt,
+    crimeAttemptId,
+    originalSentence: parseOptionalNumber(payload.originalSentence),
+    newSentence: parseOptionalNumber(payload.newSentence),
+    amount: parseOptionalNumber(payload.amount),
+  };
+}
+
+async function getTrialEventsByAttempt(playerId: number, attemptIds: number[]): Promise<Map<number, TrialEventDetail[]>> {
+  const eventsByAttempt = new Map<number, TrialEventDetail[]>();
+
+  if (attemptIds.length === 0) {
+    return eventsByAttempt;
+  }
+
+  const knownAttemptIds = new Set(attemptIds);
+  const events = await prisma.worldEvent.findMany({
+    where: {
+      playerId,
+      eventKey: {
+        in: TRIAL_EVENT_KEYS,
+      },
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+    select: {
+      eventKey: true,
+      params: true,
+      createdAt: true,
+    },
+  });
+
+  for (const event of events) {
+    const parsedEvent = parseTrialEvent(event.params, event.eventKey, event.createdAt);
+    if (!parsedEvent || !knownAttemptIds.has(parsedEvent.crimeAttemptId)) {
+      continue;
+    }
+
+    const attemptEvents = eventsByAttempt.get(parsedEvent.crimeAttemptId) ?? [];
+    attemptEvents.push(parsedEvent);
+    eventsByAttempt.set(parsedEvent.crimeAttemptId, attemptEvents);
+  }
+
+  return eventsByAttempt;
+}
+
+async function getLatestRecordExpungementAt(playerId: number): Promise<Date | null> {
+  const expungement = await prisma.worldEvent.findFirst({
+    where: {
+      playerId,
+      eventKey: 'trial.record_expunged',
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      createdAt: true,
+    },
+  });
+
+  return expungement?.createdAt ?? null;
+}
+
+async function getVisibleConvictionAttempts(
+  playerId: number,
+  excludeAttemptId?: number
+) {
+  const expungedAt = await getLatestRecordExpungementAt(playerId);
+  const attempts = await prisma.crimeAttempt.findMany({
+    where: {
+      playerId,
+      jailTime: {
+        gt: 0,
+      },
+      ...(excludeAttemptId
+        ? {
+            id: {
+              not: excludeAttemptId,
+            },
+          }
+        : {}),
+      ...(expungedAt
+        ? {
+            createdAt: {
+              gt: expungedAt,
+            },
+          }
+        : {}),
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      id: true,
+      crimeId: true,
+      jailTime: true,
+      createdAt: true,
+      appealedAt: true,
+      jailed: true,
+    },
+  });
+
+  const trialEventsByAttempt = await getTrialEventsByAttempt(
+    playerId,
+    attempts.map((attempt) => attempt.id)
+  );
+  const clearedAttemptIds = getClearedAttemptIds(trialEventsByAttempt);
+  const visibleAttempts = attempts.filter((attempt) => !clearedAttemptIds.has(attempt.id));
+
+  return {
+    visibleAttempts,
+    trialEventsByAttempt,
+    expungedAt,
+  };
+}
+
+function getClearedAttemptIds(eventsByAttempt: Map<number, TrialEventDetail[]>): Set<number> {
+  const clearedAttemptIds = new Set<number>();
+
+  for (const [attemptId, events] of eventsByAttempt.entries()) {
+    if (events.some((event) => event.eventKey === 'trial.bribe_success')) {
+      clearedAttemptIds.add(attemptId);
+    }
+  }
+
+  return clearedAttemptIds;
+}
+
+function buildHistory(
+  createdAt: Date,
+  currentJailTime: number,
+  events: TrialEventDetail[]
+): { history: CriminalRecordHistoryItem[]; originalJailTime: number } {
+  const appealGranted = events.find((event) => event.eventKey === 'trial.appeal_granted');
+  const appealDenied = events.find((event) => event.eventKey === 'trial.appeal_denied');
+  const originalJailTime =
+    appealGranted?.originalSentence ?? appealDenied?.originalSentence ?? currentJailTime;
+
+  const history: CriminalRecordHistoryItem[] = [
+    {
+      type: 'conviction',
+      createdAt,
+      originalSentence: originalJailTime,
+    },
+  ];
+
+  for (const event of events) {
+    if (event.eventKey === 'trial.appeal_granted') {
+      history.push({
+        type: 'appeal_granted',
+        createdAt: event.createdAt,
+        originalSentence: event.originalSentence,
+        newSentence: event.newSentence ?? currentJailTime,
+      });
+      continue;
+    }
+
+    if (event.eventKey === 'trial.appeal_denied') {
+      history.push({
+        type: 'appeal_denied',
+        createdAt: event.createdAt,
+        originalSentence: event.originalSentence ?? currentJailTime,
+      });
+      continue;
+    }
+
+    if (event.eventKey === 'trial.bribe_failed') {
+      history.push({
+        type: 'bribe_failed',
+        createdAt: event.createdAt,
+        amount: event.amount,
+      });
+    }
+  }
+
+  return {
+    history,
+    originalJailTime,
+  };
 }
 
 async function getLatestJailedAttempt(playerId: number) {
@@ -135,42 +392,32 @@ export async function getCriminalRecord(playerId: number): Promise<{
   totalConvictions: number;
   recentCrimes: CriminalRecordItem[];
 }> {
-  const [totalConvictions, attempts] = await Promise.all([
-    prisma.crimeAttempt.count({
-      where: {
-        playerId,
-        jailed: true,
-      },
-    }),
-    prisma.crimeAttempt.findMany({
-      where: {
-        playerId,
-        jailed: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 20,
-      select: {
-        id: true,
-        crimeId: true,
-        jailTime: true,
-        createdAt: true,
-        appealedAt: true,
-      },
-    }),
-  ]);
+  const { visibleAttempts, trialEventsByAttempt } = await getVisibleConvictionAttempts(playerId);
 
   return {
-    totalConvictions,
-    recentCrimes: attempts.map((attempt) => ({
-      crimeAttemptId: attempt.id,
-      crimeId: attempt.crimeId,
-      crimeName: getCrimeName(attempt.crimeId),
-      jailTime: attempt.jailTime,
-      createdAt: attempt.createdAt,
-      appealed: !!attempt.appealedAt,
-    })),
+    totalConvictions: visibleAttempts.length,
+    recentCrimes: visibleAttempts.slice(0, 20).map((attempt) => {
+      const { history, originalJailTime } = buildHistory(
+        attempt.createdAt,
+        attempt.jailTime,
+        trialEventsByAttempt.get(attempt.id) ?? []
+      );
+
+      return {
+        crimeAttemptId: attempt.id,
+        crimeId: attempt.crimeId,
+        crimeName: getCrimeName(attempt.crimeId),
+        jailTime: attempt.jailTime,
+        originalJailTime,
+        createdAt: attempt.createdAt,
+        appealed: !!attempt.appealedAt,
+        status:
+          attempt.jailed && calculateReleaseTime(attempt.createdAt, attempt.jailTime) > new Date()
+            ? 'active'
+            : 'served',
+        history,
+      };
+    }),
   };
 }
 
@@ -231,15 +478,11 @@ export async function appealSentence(
     throw new Error('INSUFFICIENT_MONEY');
   }
 
-  const priorConvictions = await prisma.crimeAttempt.count({
-    where: {
-      playerId,
-      jailed: true,
-      id: {
-        not: crimeAttemptId,
-      },
-    },
-  });
+  const { visibleAttempts: priorConvictionAttempts } = await getVisibleConvictionAttempts(
+    playerId,
+    crimeAttemptId
+  );
+  const priorConvictions = priorConvictionAttempts.length;
 
   // Law education track: every level adds +5% appeal success chance (max +25% at level 5)
   const lawLevel = educationProfile.tracks['law']?.level ?? 0;
@@ -413,4 +656,25 @@ export async function bribeJudgeForAttempt(
     success,
     newBalance: updatedPlayer.money,
   };
+}
+
+export async function getVisibleCriminalRecordCount(playerId: number): Promise<number> {
+  const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
+  return visibleAttempts.length;
+}
+
+export async function expungeCriminalRecord(playerId: number): Promise<number> {
+  const { visibleAttempts } = await getVisibleConvictionAttempts(playerId);
+  const clearedCount = visibleAttempts.length;
+
+  if (clearedCount <= 0) {
+    return 0;
+  }
+
+  await worldEventService.createEvent('trial.record_expunged', {
+    playerId,
+    clearedCount,
+  }, playerId);
+
+  return clearedCount;
 }

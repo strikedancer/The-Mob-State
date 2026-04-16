@@ -24,6 +24,7 @@ export interface DepositResult {
   newBalance: number;
   newCash: number;
   amount: number;
+  description: string | null;
 }
 
 export interface WithdrawResult {
@@ -31,6 +32,7 @@ export interface WithdrawResult {
   newBalance: number;
   newCash: number;
   amount: number;
+  description: string | null;
 }
 
 export interface TransferResult {
@@ -40,6 +42,8 @@ export interface TransferResult {
   recipientNewBalance: number;
   recipientPlayerId: number;
   recipientUsername: string;
+  senderUsername: string;
+  description: string | null;
 }
 
 export interface BankTransactionItem {
@@ -47,6 +51,8 @@ export interface BankTransactionItem {
   type: 'deposit' | 'withdraw' | 'transfer_sent' | 'transfer_received';
   amount: number;
   createdAt: Date;
+  counterpartyUsername: string | null;
+  description: string | null;
 }
 
 export interface BankTransactionPage {
@@ -68,6 +74,36 @@ export interface RecentRecipient {
   playerId: number | null;
   isFriend: boolean;
 }
+
+const normalizeDescription = (value: unknown): string | null => {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  return trimmed.slice(0, 160);
+};
+
+const parseWorldEventParams = (value: unknown): Record<string, unknown> => {
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return parsed && typeof parsed === 'object'
+        ? (parsed as Record<string, unknown>)
+        : {};
+    } catch {
+      return {};
+    }
+  }
+
+  return value && typeof value === 'object'
+    ? (value as Record<string, unknown>)
+    : {};
+};
 
 /**
  * Get or create bank account for player
@@ -103,7 +139,11 @@ export async function getBalance(playerId: number): Promise<number> {
 /**
  * Deposit money into bank account
  */
-export async function deposit(playerId: number, amount: number): Promise<DepositResult> {
+export async function deposit(
+  playerId: number,
+  amount: number,
+  description: string | null = null
+): Promise<DepositResult> {
   // Validate amount
   if (amount <= 0) {
     throw new Error('INVALID_AMOUNT');
@@ -153,13 +193,18 @@ export async function deposit(playerId: number, amount: number): Promise<Deposit
     newBalance: updatedAccount.balance,
     newCash: updatedPlayer.money,
     amount,
+    description,
   };
 }
 
 /**
  * Withdraw money from bank account
  */
-export async function withdraw(playerId: number, amount: number): Promise<WithdrawResult> {
+export async function withdraw(
+  playerId: number,
+  amount: number,
+  description: string | null = null
+): Promise<WithdrawResult> {
   // Validate amount
   if (amount <= 0) {
     throw new Error('INVALID_AMOUNT');
@@ -209,6 +254,7 @@ export async function withdraw(playerId: number, amount: number): Promise<Withdr
     newBalance: updatedAccount.balance,
     newCash: updatedPlayer.money,
     amount,
+    description,
   };
 }
 
@@ -218,7 +264,8 @@ export async function withdraw(playerId: number, amount: number): Promise<Withdr
 export async function transferToPlayer(
   senderPlayerId: number,
   recipientUsername: string,
-  amount: number
+  amount: number,
+  description: string | null = null
 ): Promise<TransferResult> {
   if (!recipientUsername || recipientUsername.trim().length < 2) {
     throw new Error('INVALID_RECIPIENT');
@@ -306,6 +353,8 @@ export async function transferToPlayer(
     recipientNewBalance: result.updatedRecipientAccount.balance,
     recipientPlayerId: recipient.id,
     recipientUsername: recipient.username,
+    senderUsername: sender.username,
+    description,
   };
 }
 
@@ -406,22 +455,7 @@ export async function getTransactions(
   }
 
   const transactions: BankTransactionItem[] = events.map((event) => {
-    const params = (() => {
-      if (typeof event.params === 'string') {
-        try {
-          const parsed = JSON.parse(event.params);
-          return parsed && typeof parsed === 'object'
-            ? (parsed as Record<string, unknown>)
-            : {};
-        } catch {
-          return {};
-        }
-      }
-
-      return event.params && typeof event.params === 'object'
-        ? (event.params as Record<string, unknown>)
-        : {};
-    })();
+    const params = parseWorldEventParams(event.params);
     const amountValue = params.amount;
     const amount =
       typeof amountValue === 'number'
@@ -429,6 +463,16 @@ export async function getTransactions(
         : typeof amountValue === 'string'
           ? parseInt(amountValue, 10) || 0
           : 0;
+    const counterpartyUsername =
+      event.eventKey === 'bank.transfer_sent'
+        ? typeof params.recipientUsername === 'string'
+          ? params.recipientUsername.trim() || null
+          : null
+        : event.eventKey === 'bank.transfer_received'
+          ? typeof params.senderUsername === 'string'
+            ? params.senderUsername.trim() || null
+            : null
+          : null;
 
     return {
       id: event.id,
@@ -442,6 +486,8 @@ export async function getTransactions(
               : 'transfer_received',
       amount,
       createdAt: event.createdAt,
+      counterpartyUsername,
+      description: normalizeDescription(params.description),
     };
   });
 
@@ -484,7 +530,7 @@ export async function getRecentRecipients(
   const recipients: RecentRecipient[] = [];
 
   for (const event of events) {
-    const params = (event.params as Record<string, unknown>) || {};
+    const params = parseWorldEventParams(event.params);
     const username = (params.recipientUsername as string | undefined)?.trim();
     if (!username) continue;
 

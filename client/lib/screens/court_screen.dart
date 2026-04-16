@@ -15,8 +15,10 @@ class CourtScreen extends StatefulWidget {
 }
 
 class _CourtScreenState extends State<CourtScreen> {
-  static const String _backgroundAsset = 'assets/images/backgrounds/courtroom_background.png';
-  static const String _backgroundAssetMobile = 'assets/images/backgrounds/courtroom_background_mobile.png';
+  static const String _backgroundAsset =
+      'assets/images/backgrounds/courtroom_background.png';
+  static const String _backgroundAssetMobile =
+      'assets/images/backgrounds/courtroom_background_mobile.png';
 
   final ApiClient _apiClient = ApiClient();
 
@@ -54,7 +56,9 @@ class _CourtScreenState extends State<CourtScreen> {
       final response = await _apiClient.get('/trial/current-sentence');
       final sentenceData = jsonDecode(response.body) as Map<String, dynamic>;
       final sentenceJson = sentenceData['sentence'] as Map<String, dynamic>?;
-      sentence = sentenceJson == null ? null : JailSentence.fromJson(sentenceJson);
+      sentence = sentenceJson == null
+          ? null
+          : JailSentence.fromJson(sentenceJson);
     } catch (e) {
       _sentenceFailed = true;
       debugPrint('[CourtScreen] Failed loading /trial/current-sentence: $e');
@@ -63,10 +67,13 @@ class _CourtScreenState extends State<CourtScreen> {
     try {
       final response = await _apiClient.get('/trial/record');
       final recordData = jsonDecode(response.body) as Map<String, dynamic>;
-      final recordParams = (recordData['params'] as Map<String, dynamic>?) ?? {};
-      final recentCrimesRaw = (recordParams['recentCrimes'] as List?) ?? const [];
+      final recordParams =
+          (recordData['params'] as Map<String, dynamic>?) ?? {};
+      final recentCrimesRaw =
+          (recordParams['recentCrimes'] as List?) ?? const [];
 
-      totalConvictions = (recordParams['totalConvictions'] as num?)?.toInt() ?? 0;
+      totalConvictions =
+          (recordParams['totalConvictions'] as num?)?.toInt() ?? 0;
       recentCrimes = recentCrimesRaw.whereType<Map<String, dynamic>>().toList();
     } catch (e) {
       _recordFailed = true;
@@ -134,7 +141,10 @@ class _CourtScreenState extends State<CourtScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              _tr('Rechter: ${_currentSentence!.judge.name}', 'Judge: ${_currentSentence!.judge.name}'),
+              _tr(
+                'Rechter: ${_currentSentence!.judge.name}',
+                'Judge: ${_currentSentence!.judge.name}',
+              ),
               style: TextStyle(fontSize: 14, color: Colors.grey[700]),
             ),
             Text(
@@ -184,10 +194,9 @@ class _CourtScreenState extends State<CourtScreen> {
     setState(() => _isProcessing = true);
 
     try {
-      final response = await _apiClient.post(
-        '/trial/appeal',
-        {'crimeAttemptId': _currentSentence!.crimeAttemptId},
-      );
+      final response = await _apiClient.post('/trial/appeal', {
+        'crimeAttemptId': _currentSentence!.crimeAttemptId,
+      });
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final params = data['params'] as Map<String, dynamic>? ?? data;
@@ -258,7 +267,10 @@ class _CourtScreenState extends State<CourtScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                _tr('Rechter: ${_currentSentence!.judge.name}', 'Judge: ${_currentSentence!.judge.name}'),
+                _tr(
+                  'Rechter: ${_currentSentence!.judge.name}',
+                  'Judge: ${_currentSentence!.judge.name}',
+                ),
                 style: TextStyle(fontSize: 14, color: Colors.grey[700]),
               ),
               Text(
@@ -274,8 +286,14 @@ class _CourtScreenState extends State<CourtScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                _tr('Omkoopsom: €${_formatMoney(bribeAmount)}', 'Bribe amount: €${_formatMoney(bribeAmount)}'),
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                _tr(
+                  'Omkoopsom: €${_formatMoney(bribeAmount)}',
+                  'Bribe amount: €${_formatMoney(bribeAmount)}',
+                ),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Slider(
                 value: bribeAmount.toDouble(),
@@ -323,13 +341,10 @@ class _CourtScreenState extends State<CourtScreen> {
     setState(() => _isProcessing = true);
 
     try {
-      final response = await _apiClient.post(
-        '/trial/bribe',
-        {
-          'crimeAttemptId': _currentSentence!.crimeAttemptId,
-          'amount': confirmed,
-        },
-      );
+      final response = await _apiClient.post('/trial/bribe', {
+        'crimeAttemptId': _currentSentence!.crimeAttemptId,
+        'amount': confirmed,
+      });
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final success = data['success'] as bool? ?? false;
@@ -340,8 +355,14 @@ class _CourtScreenState extends State<CourtScreen> {
           SnackBar(
             content: Text(
               success
-                  ? _tr('Rechter omgekocht. Je bent direct vrij.', 'Judge bribed. You are released immediately.')
-                  : _tr('Omkoping mislukt. Bedrag is wel afgeschreven.', 'Bribe failed. Amount was still deducted.'),
+                  ? _tr(
+                      'Rechter omgekocht. Je bent direct vrij.',
+                      'Judge bribed. You are released immediately.',
+                    )
+                  : _tr(
+                      'Omkoping mislukt. Bedrag is wel afgeschreven.',
+                      'Bribe failed. Amount was still deducted.',
+                    ),
             ),
             backgroundColor: success ? Colors.green : Colors.red,
             duration: const Duration(seconds: 4),
@@ -379,7 +400,10 @@ class _CourtScreenState extends State<CourtScreen> {
     final bribeBonus = ((bribeAmount - 50000) / 150000 * 40).toInt();
     final totalChance = (baseChance + bribeBonus).clamp(0, 90);
 
-    return _tr('Geschatte slagingskans: ~$totalChance%', 'Estimated success chance: ~$totalChance%');
+    return _tr(
+      'Geschatte slagingskans: ~$totalChance%',
+      'Estimated success chance: ~$totalChance%',
+    );
   }
 
   Color _getSuccessChanceColor(int bribeAmount) {
@@ -401,6 +425,114 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
+  String _formatDateTime(DateTime dateTime) {
+    return '${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+  }
+
+  String _recordStatusLabel(String status) {
+    switch (status) {
+      case 'active':
+        return _tr('Actief', 'Active');
+      default:
+        return _tr('Afgerond', 'Served');
+    }
+  }
+
+  Color _recordStatusColor(String status) {
+    switch (status) {
+      case 'active':
+        return const Color(0xFFE6B85C);
+      default:
+        return const Color(0xFF72C48F);
+    }
+  }
+
+  Color _historyColor(String type) {
+    switch (type) {
+      case 'appeal_granted':
+        return const Color(0xFF8AB4F8);
+      case 'appeal_denied':
+        return const Color(0xFFE5967A);
+      case 'bribe_failed':
+        return const Color(0xFFD98989);
+      default:
+        return const Color(0xFFB9C4D6);
+    }
+  }
+
+  String _historyLabel(Map<String, dynamic> entry) {
+    final type = entry['type'] as String? ?? 'conviction';
+    final originalSentence = (entry['originalSentence'] as num?)?.toInt();
+    final newSentence = (entry['newSentence'] as num?)?.toInt();
+    final amount = (entry['amount'] as num?)?.toInt();
+
+    switch (type) {
+      case 'appeal_granted':
+        return _tr(
+          'Hoger beroep toegekend: ${originalSentence ?? 0} -> ${newSentence ?? 0} minuten',
+          'Appeal granted: ${originalSentence ?? 0} -> ${newSentence ?? 0} minutes',
+        );
+      case 'appeal_denied':
+        return _tr(
+          'Hoger beroep afgewezen: ${originalSentence ?? 0} minuten bleef staan',
+          'Appeal denied: ${originalSentence ?? 0} minutes remained',
+        );
+      case 'bribe_failed':
+        return _tr(
+          'Omkoping mislukt: €${_formatMoney(amount ?? 0)} betaald',
+          'Bribe failed: paid €${_formatMoney(amount ?? 0)}',
+        );
+      default:
+        return _tr(
+          'Veroordeeld tot ${originalSentence ?? 0} minuten',
+          'Convicted to ${originalSentence ?? 0} minutes',
+        );
+    }
+  }
+
+  Widget _buildHistoryEntry(Map<String, dynamic> entry) {
+    final type = entry['type'] as String? ?? 'conviction';
+    final createdAtRaw = entry['createdAt'] as String?;
+    final createdAt = createdAtRaw == null
+        ? null
+        : DateTime.tryParse(createdAtRaw)?.toLocal();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 4),
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: _historyColor(type),
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _historyLabel(entry),
+                  style: const TextStyle(fontSize: 12.5, color: Colors.white),
+                ),
+                if (createdAt != null)
+                  Text(
+                    _formatDateTime(createdAt),
+                    style: TextStyle(fontSize: 11.5, color: Colors.grey[500]),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildLoadWarning() {
     if (!_sentenceFailed && !_recordFailed) {
       return const SizedBox.shrink();
@@ -417,7 +549,9 @@ class _CourtScreenState extends State<CourtScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF53360E).withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFD1A857).withValues(alpha: 0.6)),
+        border: Border.all(
+          color: const Color(0xFFD1A857).withValues(alpha: 0.6),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,7 +576,9 @@ class _CourtScreenState extends State<CourtScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141923).withValues(alpha: 0.84),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFB8894E).withValues(alpha: 0.55)),
+        border: Border.all(
+          color: const Color(0xFFB8894E).withValues(alpha: 0.55),
+        ),
         boxShadow: const [
           BoxShadow(
             color: Color(0x80000000),
@@ -515,7 +651,10 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           Text(
             '${_tr('Resterend', 'Remaining')}: ${_currentSentence!.remainingMinutes} ${_tr('minuten', 'minutes')}',
-            style: const TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFFFD27A)),
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFFFD27A),
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -531,7 +670,10 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            _tr('Beroepskosten nu: €${_formatMoney(appealCost)}', 'Current appeal cost: €${_formatMoney(appealCost)}'),
+            _tr(
+              'Beroepskosten nu: €${_formatMoney(appealCost)}',
+              'Current appeal cost: €${_formatMoney(appealCost)}',
+            ),
             style: TextStyle(color: Colors.grey[300], fontSize: 13),
           ),
           const SizedBox(height: 14),
@@ -565,11 +707,21 @@ class _CourtScreenState extends State<CourtScreen> {
   }
 
   Widget _buildRecordItem(Map<String, dynamic> crime) {
-    final crimeName = crime['crimeName'] as String? ?? (crime['crimeId'] as String? ?? _tr('Onbekend', 'Unknown'));
+    final crimeName =
+        crime['crimeName'] as String? ??
+        (crime['crimeId'] as String? ?? _tr('Onbekend', 'Unknown'));
     final jailTime = (crime['jailTime'] as num?)?.toInt() ?? 0;
+    final originalJailTime =
+        (crime['originalJailTime'] as num?)?.toInt() ?? jailTime;
     final appealed = crime['appealed'] as bool? ?? false;
+    final status = crime['status'] as String? ?? 'served';
     final createdAtRaw = crime['createdAt'] as String?;
-    final createdAt = createdAtRaw == null ? null : DateTime.tryParse(createdAtRaw)?.toLocal();
+    final createdAt = createdAtRaw == null
+        ? null
+        : DateTime.tryParse(createdAtRaw)?.toLocal();
+    final history = ((crime['history'] as List?) ?? const [])
+        .whereType<Map<String, dynamic>>()
+        .toList();
 
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -577,25 +729,67 @@ class _CourtScreenState extends State<CourtScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF111723).withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFF32506C).withValues(alpha: 0.5)),
+        border: Border.all(
+          color: const Color(0xFF32506C).withValues(alpha: 0.5),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            crimeName,
-            style: const TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  crimeName,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: _recordStatusColor(status).withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(999),
+                  border: Border.all(
+                    color: _recordStatusColor(status).withValues(alpha: 0.45),
+                  ),
+                ),
+                child: Text(
+                  _recordStatusLabel(status),
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                    color: _recordStatusColor(status),
+                  ),
+                ),
+              ),
+            ],
           ),
           Text(
-            '${_tr('Straf', 'Sentence')}: $jailTime ${_tr('minuten', 'minutes')}',
+            originalJailTime == jailTime
+                ? '${_tr('Straf', 'Sentence')}: $jailTime ${_tr('minuten', 'minutes')}'
+                : '${_tr('Straf', 'Sentence')}: $originalJailTime -> $jailTime ${_tr('minuten', 'minutes')}',
             style: TextStyle(color: Colors.grey[200]),
           ),
           if (createdAt != null)
             Text(
-              '${_tr('Datum', 'Date')}: ${createdAt.day.toString().padLeft(2, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.year} ${createdAt.hour.toString().padLeft(2, '0')}:${createdAt.minute.toString().padLeft(2, '0')}',
+              '${_tr('Datum', 'Date')}: ${_formatDateTime(createdAt)}',
               style: TextStyle(fontSize: 12, color: Colors.grey[400]),
             ),
-          if (appealed)
+          if (history.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              _tr('Rechtbankhistorie', 'Court history'),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: Colors.grey[300],
+              ),
+            ),
+            ...history.map(_buildHistoryEntry),
+          ] else if (appealed)
             Text(
               _tr('Beroep ingediend', 'Appeal submitted'),
               style: const TextStyle(fontSize: 12, color: Color(0xFF8AB4F8)),
@@ -626,10 +820,21 @@ class _CourtScreenState extends State<CourtScreen> {
             ),
             style: TextStyle(color: Colors.grey[100]),
           ),
+          const SizedBox(height: 4),
+          Text(
+            _tr(
+              'Vorige veroordelingen blijven zichtbaar. Een geslaagde rechteromkoping wist alleen die ene actuele zaak.',
+              'Past convictions stay visible. A successful judge bribe clears only that one active case.',
+            ),
+            style: TextStyle(fontSize: 12.5, color: Colors.grey[400]),
+          ),
           const SizedBox(height: 12),
           if (_recentCrimes.isEmpty)
             Text(
-              _tr('Nog geen veroordelingen geregistreerd.', 'No convictions recorded yet.'),
+              _tr(
+                'Nog geen veroordelingen geregistreerd.',
+                'No convictions recorded yet.',
+              ),
               style: TextStyle(color: Colors.grey[300]),
             )
           else
@@ -640,9 +845,14 @@ class _CourtScreenState extends State<CourtScreen> {
   }
 
   Widget _buildBackgroundLayer() {
-    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    final preferredAsset = isPortrait ? _backgroundAssetMobile : _backgroundAsset;
-    final fallbackAsset = isPortrait ? _backgroundAsset : _backgroundAssetMobile;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    final preferredAsset = isPortrait
+        ? _backgroundAssetMobile
+        : _backgroundAsset;
+    final fallbackAsset = isPortrait
+        ? _backgroundAsset
+        : _backgroundAssetMobile;
 
     return Stack(
       fit: StackFit.expand,
@@ -660,10 +870,7 @@ class _CourtScreenState extends State<CourtScreen> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF283445),
-                        Color(0xFF161D27),
-                      ],
+                      colors: [Color(0xFF283445), Color(0xFF161D27)],
                     ),
                   ),
                 );
@@ -720,9 +927,13 @@ class _CourtScreenState extends State<CourtScreen> {
                                   margin: const EdgeInsets.only(bottom: 12),
                                   padding: const EdgeInsets.all(16),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF601D1D).withValues(alpha: 0.82),
+                                    color: const Color(
+                                      0xFF601D1D,
+                                    ).withValues(alpha: 0.82),
                                     border: Border.all(
-                                      color: const Color(0xFFE58B8B).withValues(alpha: 0.6),
+                                      color: const Color(
+                                        0xFFE58B8B,
+                                      ).withValues(alpha: 0.6),
                                     ),
                                     borderRadius: BorderRadius.circular(12),
                                   ),

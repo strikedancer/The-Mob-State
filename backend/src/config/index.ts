@@ -23,6 +23,10 @@ interface Config {
   fbiRatio: number;
   fbiHeatDecayPerTick: number;
   fbiHeatIncreaseOnFederalCrimeFail: number;
+  cryptoLiveAnchorEnabled: boolean;
+  cryptoLiveAnchorApiBaseUrl: string;
+  cryptoLiveAnchorCacheSeconds: number;
+  cryptoLiveAnchorPullStrength: number;
   maxFlightsPerDay: number;
   // Crime & Job settings
   crimeFuelCost: number;
@@ -67,6 +71,17 @@ const config: Config = {
   fbiHeatIncreaseOnFederalCrimeFail: parseInt(
     process.env.FBI_HEAT_INCREASE_ON_FEDERAL_CRIME_FAIL || '10',
     10
+  ),
+  cryptoLiveAnchorEnabled: (process.env.CRYPTO_LIVE_ANCHOR_ENABLED || 'true') === 'true',
+  cryptoLiveAnchorApiBaseUrl:
+    process.env.CRYPTO_LIVE_ANCHOR_API_BASE_URL ||
+    'https://api.coingecko.com/api/v3/simple/price',
+  cryptoLiveAnchorCacheSeconds: parseInt(
+    process.env.CRYPTO_LIVE_ANCHOR_CACHE_SECONDS || '60',
+    10
+  ),
+  cryptoLiveAnchorPullStrength: parseFloat(
+    process.env.CRYPTO_LIVE_ANCHOR_PULL_STRENGTH || '0.22'
   ),
   maxFlightsPerDay: parseInt(process.env.MAX_FLIGHTS_PER_DAY || '100', 10),
   // Crime & Job settings

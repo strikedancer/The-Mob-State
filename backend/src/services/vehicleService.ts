@@ -10,6 +10,7 @@ import vehiclesData from '../../content/vehicles.json';
 import { checkCooldown, setCooldown } from './cooldownService';
 import { checkArrest, checkIfJailed } from './policeService';
 import { activityService } from './activityService';
+import { notificationService } from './notificationService';
 import { applyReputationAction } from './reputationService';
 import {
   checkAndUnlockAchievements,
@@ -893,6 +894,13 @@ export const vehicleService = {
           jailedUntil: jailReleaseTime.toISOString(),
         },
         true,
+      );
+
+      void notificationService.sendArrestAwaitingHelpNotifications(
+        playerId,
+        jailTime,
+        'Police',
+        'VEHICLE_THEFT'
       );
     };
 

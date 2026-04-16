@@ -78,7 +78,7 @@
       "maxDurability": 100,
       "loseChance": 0.05,
       "wearPerUse": 5,
-      "requiredFor": ["hack_account", "identity_theft"]
+      "requiredFor": ["hack_account", "identity_theft", "criminal_record_wipe"]
     },
     {
       "id": "counterfeiting_kit",
@@ -128,7 +128,7 @@
       "maxDurability": 1,
       "loseChance": 1.0,
       "wearPerUse": 100,
-      "requiredFor": ["smuggling"]
+      "requiredFor": ["smuggling", "criminal_record_wipe"]
     },
     {
       "id": "night_vision",

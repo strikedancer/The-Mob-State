@@ -18,6 +18,10 @@ Judicial recovery, sentence handling and legal consequence flows.
 - Appeal can be submitted once per crime attempt and follows appeal cooldown rules.
 - Bribe always deducts offered money and can either release player immediately or fail without release.
 - Criminal record must remain visible both while jailed and while free.
+- Criminal record must be based on the player's conviction history, not only rows that are currently `jailed = true`.
+- Record entries must preserve sentence changes and trial outcomes such as appeal granted, appeal denied and failed bribe attempts.
+- A successful judge bribe must clear only the linked active conviction from the criminal record, not wipe unrelated convictions.
+- If the player uses an external crime flow to wipe their full record, the court record must hide only convictions older than that expungement point and show new convictions normally afterward.
 - **Law education bonus**: the player's `law` track level (0–5) grants +5% appeal success per level (max +25% at level 5). Base appeal chance is therefore 35%–60% before prior-convictions/wanted-level/FBI-heat adjustments. Hard cap raised from 70% to 85%.
   - Cross-dependency: `educationService.getPlayerEducationProfile` is called in parallel inside `judgeService.appealSentence`.
   - This bonus is applied silently server-side; no UI change required in the court screen.

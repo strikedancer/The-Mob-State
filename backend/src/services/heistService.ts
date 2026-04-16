@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import * as crewService from './crewService';
 import { worldEventService } from './worldEventService';
+import { notificationService } from './notificationService';
 import { activityService } from './activityService';
 import * as bankRobberyService from './bankRobberyService';
 import { playerService } from './playerService';
@@ -362,6 +363,17 @@ export async function startHeist(
         true
       );
     }
+
+    await Promise.allSettled(
+      crew.members.map((member) =>
+        notificationService.sendArrestAwaitingHelpNotifications(
+          member.playerId,
+          heist.jailTimeOnFailure,
+          'Police',
+          'HEIST'
+        )
+      )
+    );
 
     // Decrease trust for all members on failure
     for (const member of crew.members) {

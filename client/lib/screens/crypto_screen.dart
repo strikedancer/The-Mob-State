@@ -576,6 +576,9 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
   final TextEditingController _quantityController = TextEditingController(
     text: '0.10',
   );
+  final TextEditingController _orderQuantityController = TextEditingController(
+    text: '0.10',
+  );
   final TextEditingController _targetPriceController = TextEditingController();
 
   List<Map<String, dynamic>> _points = const [];
@@ -607,6 +610,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
   @override
   void dispose() {
     _quantityController.dispose();
+    _orderQuantityController.dispose();
     _targetPriceController.dispose();
     super.dispose();
   }
@@ -757,6 +761,46 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
     return side == 'SELL' ? _tr('Verkoop', 'Sell') : _tr('Koop', 'Buy');
   }
 
+  bool get _orderUsesOwnedPosition =>
+      _selectedOrderSide == 'SELL' || _selectedOrderType != 'LIMIT';
+
+  String _formatQuantityInput(double value) {
+    final fixed = value.toStringAsFixed(6);
+    return fixed.contains('.')
+        ? fixed
+              .replaceFirst(RegExp(r'0+$'), '')
+              .replaceFirst(RegExp(r'\.$'), '')
+        : fixed;
+  }
+
+  void _fillDirectQuantityAll() {
+    if (_ownedQuantity <= 0) {
+      return;
+    }
+
+    final value = _formatQuantityInput(_ownedQuantity);
+    setState(() {
+      _quantityController.text = value;
+      _quantityController.selection = TextSelection.fromPosition(
+        TextPosition(offset: value.length),
+      );
+    });
+  }
+
+  void _fillOrderQuantityAll() {
+    if (_ownedQuantity <= 0) {
+      return;
+    }
+
+    final value = _formatQuantityInput(_ownedQuantity);
+    setState(() {
+      _orderQuantityController.text = value;
+      _orderQuantityController.selection = TextSelection.fromPosition(
+        TextPosition(offset: value.length),
+      );
+    });
+  }
+
   Future<void> _executeTrade({required bool buy}) async {
     final quantity = double.tryParse(
       _quantityController.text.trim().replaceAll(',', '.'),
@@ -817,7 +861,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
 
   Future<void> _placeOpenOrder() async {
     final quantity = double.tryParse(
-      _quantityController.text.trim().replaceAll(',', '.'),
+      _orderQuantityController.text.trim().replaceAll(',', '.'),
     );
     final targetPrice = double.tryParse(
       _targetPriceController.text.trim().replaceAll(',', '.'),
@@ -838,6 +882,21 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
         context,
         SnackBar(
           content: Text(_tr('Ongeldige doelprijs', 'Invalid target price')),
+        ),
+      );
+      return;
+    }
+
+    if (_orderUsesOwnedPosition && quantity > _ownedQuantity) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Je kunt niet meer verkopen dan je bezit.',
+              'You cannot sell more than you own.',
+            ),
+          ),
         ),
       );
       return;
@@ -877,6 +936,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
       return;
     }
 
+    _orderQuantityController.clear();
     _targetPriceController.clear();
     await _loadDetails();
   }
@@ -938,17 +998,29 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
               labelText: _tr('Hoeveelheid', 'Quantity'),
               helperText: _avgBuyPrice > 0
                   ? _tr(
-                      'Huidige prijs: €${_currentPrice.toStringAsFixed(6)} • Gem. gekocht: €${_avgBuyPrice.toStringAsFixed(6)}',
-                      'Current price: €${_currentPrice.toStringAsFixed(6)} • Avg buy: €${_avgBuyPrice.toStringAsFixed(6)}',
+                      'Huidige prijs: €${_currentPrice.toStringAsFixed(6)} • Gem. gekocht: €${_avgBuyPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nGebruik ALL om je volledige positie direct te verkopen.' : ''}',
+                      'Current price: €${_currentPrice.toStringAsFixed(6)} • Avg buy: €${_avgBuyPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nUse ALL to sell your full position instantly.' : ''}',
                     )
                   : _tr(
-                      'Huidige prijs: €${_currentPrice.toStringAsFixed(6)}',
-                      'Current price: €${_currentPrice.toStringAsFixed(6)}',
+                      'Huidige prijs: €${_currentPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nGebruik ALL om je volledige positie direct te verkopen.' : ''}',
+                      'Current price: €${_currentPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nUse ALL to sell your full position instantly.' : ''}',
                     ),
               helperStyle: const TextStyle(color: Colors.white54),
               labelStyle: const TextStyle(color: Colors.white70),
               filled: true,
               fillColor: Colors.white.withOpacity(0.08),
+              suffixIcon: _ownedQuantity > 0
+                  ? TextButton(
+                      onPressed: _processing ? null : _fillDirectQuantityAll,
+                      child: Text(
+                        'ALL',
+                        style: TextStyle(
+                          color: Colors.amber.shade200,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    )
+                  : null,
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white30),
                 borderRadius: BorderRadius.circular(10),
@@ -1192,6 +1264,14 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             ),
           ),
           const SizedBox(height: 10),
+          Text(
+            _tr(
+              'Open orders gebruiken hun eigen hoeveelheid hieronder. Vul in deze sectie zowel hoeveelheid als doelprijs in.',
+              'Open orders use their own quantity below. Fill in both quantity and target price in this section.',
+            ),
+            style: const TextStyle(color: Colors.white60, fontSize: 12),
+          ),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
@@ -1280,6 +1360,48 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _orderQuantityController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: _tr('Order hoeveelheid', 'Order quantity'),
+              helperText: _orderUsesOwnedPosition
+                  ? _tr(
+                      'Voor deze order verkoop je vanuit je huidige positie. In bezit: ${_ownedQuantity.toStringAsFixed(6)}',
+                      'This order sells from your current position. Owned: ${_ownedQuantity.toStringAsFixed(6)}',
+                    )
+                  : _tr(
+                      'Deze hoeveelheid staat los van direct handelen hierboven.',
+                      'This quantity is separate from the direct trade above.',
+                    ),
+              helperStyle: const TextStyle(color: Colors.white54),
+              labelStyle: const TextStyle(color: Colors.white70),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.08),
+              suffixIcon: _orderUsesOwnedPosition && _ownedQuantity > 0
+                  ? TextButton(
+                      onPressed: _processing ? null : _fillOrderQuantityAll,
+                      child: Text(
+                        'ALL',
+                        style: TextStyle(
+                          color: Colors.amber.shade200,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    )
+                  : null,
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white30),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.amber.shade300),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           ),
           const SizedBox(height: 10),
           TextField(

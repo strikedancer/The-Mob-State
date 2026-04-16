@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import config from '../config';
 import {
   checkAndUnlockAchievements,
   serializeAchievementForClient,
@@ -86,6 +87,9 @@ const CRYPTO_SEEDS: CryptoSeed[] = [
 let setupReady = false;
 let setupPromise: Promise<void> | null = null;
 let orderProcessorPromise: Promise<CryptoOrderProcessResult> | null = null;
+let liveAnchorCache: LiveAnchorSnapshot | null = null;
+let liveAnchorFetchPromise: Promise<LiveAnchorSnapshot | null> | null = null;
+let lastLiveAnchorWarningAt = 0;
 
 type CryptoOrderProcessResult = {
   processed: number;
@@ -117,6 +121,12 @@ type MarketPulse = {
   leaders: string[];
 };
 
+type LiveAnchorSnapshot = {
+  pricesBySymbol: Map<string, number>;
+  fetchedAt: number;
+  source: 'coingecko';
+};
+
 type CryptoHistoryPoint = {
   price: number;
   timestamp: string;
@@ -126,6 +136,42 @@ const MARKET_REGIME_BULL_THRESHOLD = 1.5;
 const MARKET_REGIME_BEAR_THRESHOLD = -1.5;
 const MARKET_REGIME_MIN_INTERVAL_MS = 15 * 60 * 1000;
 const MARKET_NEWS_MIN_INTERVAL_MS = 10 * 60 * 1000;
+const LIVE_ANCHOR_FETCH_TIMEOUT_MS = 4000;
+const LIVE_ANCHOR_STALE_GRACE_MS = 15 * 60 * 1000;
+const LIVE_ANCHOR_WARNING_INTERVAL_MS = 5 * 60 * 1000;
+
+const CRYPTO_LIVE_ANCHOR_IDS: Record<string, string> = {
+  BTC: 'bitcoin',
+  ETH: 'ethereum',
+  SOL: 'solana',
+  XRP: 'ripple',
+  ADA: 'cardano',
+  DOGE: 'dogecoin',
+  AVAX: 'avalanche-2',
+  DOT: 'polkadot',
+  MATIC: 'matic-network',
+  LTC: 'litecoin',
+  LINK: 'chainlink',
+  ATOM: 'cosmos',
+  UNI: 'uniswap',
+  AAVE: 'aave',
+  FIL: 'filecoin',
+  ARB: 'arbitrum',
+  OP: 'optimism',
+  NEAR: 'near',
+  INJ: 'injective-protocol',
+  APT: 'aptos',
+  SUI: 'sui',
+  THETA: 'theta-token',
+  ALGO: 'algorand',
+  VET: 'vechain',
+  TRX: 'tron',
+  XLM: 'stellar',
+  EOS: 'eos',
+  KAS: 'kaspa',
+  SEI: 'sei-network',
+  PEPE: 'pepe',
+};
 
 const CRYPTO_MISSIONS: CryptoMissionDefinition[] = [
   {
@@ -451,6 +497,119 @@ function clampPrice(value: number, basePrice: number): number {
   }
 
   return Math.max(boundedMinPrice, normalized);
+}
+
+function getLiveAnchorCacheMs(): number {
+  const configuredSeconds = Number.isFinite(config.cryptoLiveAnchorCacheSeconds)
+    ? config.cryptoLiveAnchorCacheSeconds
+    : 60;
+  return Math.max(15, configuredSeconds) * 1000;
+}
+
+function clampLiveAnchorPull(rawPct: number, volatility: number): number {
+  const maxPull = Math.max(2.5, volatility * 1.35);
+  return Math.max(-maxPull, Math.min(maxPull, rawPct));
+}
+
+function logLiveAnchorWarning(message: string, error?: unknown): void {
+  const now = Date.now();
+  if (now - lastLiveAnchorWarningAt < LIVE_ANCHOR_WARNING_INTERVAL_MS) {
+    return;
+  }
+
+  lastLiveAnchorWarningAt = now;
+  console.warn('[crypto] Live anchor feed warning:', message, error ?? '');
+}
+
+async function fetchLiveAnchorSnapshot(): Promise<LiveAnchorSnapshot | null> {
+  if (!config.cryptoLiveAnchorEnabled) {
+    return null;
+  }
+
+  const ids = Array.from(new Set(Object.values(CRYPTO_LIVE_ANCHOR_IDS)));
+  if (ids.length === 0) {
+    return null;
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), LIVE_ANCHOR_FETCH_TIMEOUT_MS);
+
+  try {
+    const url = new URL(config.cryptoLiveAnchorApiBaseUrl);
+    url.searchParams.set('ids', ids.join(','));
+    url.searchParams.set('vs_currencies', 'eur');
+
+    const response = await fetch(url, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP_${response.status}`);
+    }
+
+    const payload = (await response.json()) as Record<string, { eur?: number }>;
+    const pricesBySymbol = new Map<string, number>();
+
+    for (const [symbol, id] of Object.entries(CRYPTO_LIVE_ANCHOR_IDS)) {
+      const price = payload?.[id]?.eur;
+      if (typeof price === 'number' && Number.isFinite(price) && price > 0) {
+        pricesBySymbol.set(symbol, price);
+      }
+    }
+
+    if (pricesBySymbol.size === 0) {
+      throw new Error('EMPTY_LIVE_ANCHOR_PAYLOAD');
+    }
+
+    const snapshot: LiveAnchorSnapshot = {
+      pricesBySymbol,
+      fetchedAt: Date.now(),
+      source: 'coingecko',
+    };
+
+    liveAnchorCache = snapshot;
+    return snapshot;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function getLiveAnchorSnapshot(): Promise<LiveAnchorSnapshot | null> {
+  if (!config.cryptoLiveAnchorEnabled) {
+    return null;
+  }
+
+  const cacheMs = getLiveAnchorCacheMs();
+  const now = Date.now();
+  if (liveAnchorCache && now - liveAnchorCache.fetchedAt <= cacheMs) {
+    return liveAnchorCache;
+  }
+
+  if (!liveAnchorFetchPromise) {
+    liveAnchorFetchPromise = fetchLiveAnchorSnapshot()
+      .catch((error) => {
+        logLiveAnchorWarning('Falling back to synthetic pricing.', error);
+        return null;
+      })
+      .finally(() => {
+        liveAnchorFetchPromise = null;
+      });
+  }
+
+  const snapshot = await liveAnchorFetchPromise;
+  if (snapshot) {
+    return snapshot;
+  }
+
+  if (liveAnchorCache && now - liveAnchorCache.fetchedAt <= LIVE_ANCHOR_STALE_GRACE_MS) {
+    return liveAnchorCache;
+  }
+
+  return null;
 }
 
 function toUtcDateKey(date: Date): string {
@@ -1224,12 +1383,17 @@ async function updatePricesIfNeeded(): Promise<void> {
   );
 
   const now = Date.now();
+  const liveAnchors = await getLiveAnchorSnapshot();
 
   for (const row of rows) {
     const basePrice = Math.max(parseNumber(row.base_price, 0), 0.000001);
     const currentPrice = clampPrice(parseNumber(row.current_price, basePrice), basePrice);
     const volatility = parseNumber(row.volatility, 0);
     const trendBias = parseNumber(row.trend_bias, 0);
+    const anchorPrice = liveAnchors?.pricesBySymbol.get(row.symbol);
+    const equilibriumPrice = anchorPrice != null
+      ? clampPrice(anchorPrice, basePrice)
+      : basePrice;
     const updatedAtMs = new Date(row.updated_at).getTime();
     const elapsedSeconds = Math.max(0, Math.floor((now - updatedAtMs) / 1000));
 
@@ -1243,9 +1407,15 @@ async function updatePricesIfNeeded(): Promise<void> {
     for (let i = 0; i < steps; i += 1) {
       const randomPulse = (Math.random() * 2 - 1) * volatility;
       const cyclicalDrift = Math.sin((now / 600000) + i) * (volatility * 0.1);
-      const deviationRatio = (nextPrice - basePrice) / basePrice;
+      const deviationRatio = (nextPrice - equilibriumPrice) / equilibriumPrice;
       const meanReversion = Math.max(-12, Math.min(12, deviationRatio * -0.35));
-      const pctMove = (randomPulse + trendBias + cyclicalDrift + meanReversion) / 100;
+      const anchorPull = anchorPrice != null
+        ? clampLiveAnchorPull(
+            (((equilibriumPrice - nextPrice) / nextPrice) * 100) * config.cryptoLiveAnchorPullStrength,
+            volatility
+          )
+        : 0;
+      const pctMove = (randomPulse + trendBias + cyclicalDrift + meanReversion + anchorPull) / 100;
       nextPrice = clampPrice(nextPrice * (1 + pctMove), basePrice);
     }
 
@@ -1686,6 +1856,13 @@ export async function getMarket() {
       regime: pulse.regime,
       marketMovePct: pulse.marketMovePct,
       leaders: pulse.leaders,
+    },
+    pricing: {
+      mode: config.cryptoLiveAnchorEnabled ? 'live_anchor_hybrid' : 'synthetic',
+      source: liveAnchorCache?.source ?? null,
+      anchorUpdatedAt: liveAnchorCache
+        ? new Date(liveAnchorCache.fetchedAt).toISOString()
+        : null,
     },
     generatedAt: new Date().toISOString(),
   };

@@ -526,6 +526,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
         return l10n.crimeStealYachtName;
       case 'corrupt_official':
         return l10n.crimeCorruptOfficialName;
+      case 'criminal_record_wipe':
+        return l10n.localeName == 'nl' ? 'Strafblad Wissen' : 'Wipe Criminal Record';
       default:
         return crime.name;
     }
@@ -593,6 +595,10 @@ class _CrimeScreenState extends State<CrimeScreen> {
         return l10n.crimeStealYachtDesc;
       case 'corrupt_official':
         return l10n.crimeCorruptOfficialDesc;
+      case 'criminal_record_wipe':
+        return l10n.localeName == 'nl'
+            ? 'Verval dossiers en wis je volledige strafblad als de operatie slaagt.'
+            : 'Forge court files and wipe your full criminal record if the operation succeeds.';
       default:
         return crime.description ?? '';
     }

@@ -220,6 +220,122 @@ export class NotificationService {
     );
   }
 
+  public async sendArrestAwaitingHelpNotifications(
+    arrestedPlayerId: number,
+    jailTimeMinutes: number,
+    authority: string,
+    source?: string
+  ): Promise<void> {
+    try {
+      const [player, friendships, crewMembership] = await Promise.all([
+        prisma.player.findUnique({
+          where: { id: arrestedPlayerId },
+          select: {
+            id: true,
+            username: true,
+          },
+        }),
+        prisma.friendship.findMany({
+          where: {
+            status: 'accepted',
+            OR: [
+              { requesterId: arrestedPlayerId },
+              { addresseeId: arrestedPlayerId },
+            ],
+          },
+          select: {
+            requesterId: true,
+            addresseeId: true,
+          },
+        }),
+        prisma.crewMember.findUnique({
+          where: { playerId: arrestedPlayerId },
+          select: {
+            crewId: true,
+            crew: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        }),
+      ]);
+
+      if (!player) {
+        return;
+      }
+
+      const recipients = new Map<number, { isFriend: boolean; isCrew: boolean }>();
+
+      for (const friendship of friendships) {
+        const recipientId = friendship.requesterId === arrestedPlayerId
+          ? friendship.addresseeId
+          : friendship.requesterId;
+        const current = recipients.get(recipientId) ?? { isFriend: false, isCrew: false };
+        current.isFriend = true;
+        recipients.set(recipientId, current);
+      }
+
+      if (crewMembership) {
+        const crewMembers = await prisma.crewMember.findMany({
+          where: {
+            crewId: crewMembership.crewId,
+            playerId: {
+              not: arrestedPlayerId,
+            },
+          },
+          select: {
+            playerId: true,
+          },
+        });
+
+        for (const member of crewMembers) {
+          const current = recipients.get(member.playerId) ?? { isFriend: false, isCrew: false };
+          current.isCrew = true;
+          recipients.set(member.playerId, current);
+        }
+      }
+
+      if (recipients.size === 0) {
+        return;
+      }
+
+      await Promise.allSettled(
+        Array.from(recipients.entries()).map(async ([recipientId, relation]) => {
+          const language = await this.resolveLanguageForPlayer(recipientId);
+          const isCrewRelation = relation.isCrew;
+          const crewName = crewMembership?.crew.name;
+          const title = language === 'nl'
+            ? (isCrewRelation ? 'Crewlid opgepakt' : 'Vriend opgepakt')
+            : (isCrewRelation ? 'Crewmate Arrested' : 'Friend Arrested');
+          const body = language === 'nl'
+            ? isCrewRelation
+              ? `${player.username}${crewName ? ` van ${crewName}` : ''} is opgepakt door ${authority} en wacht op hulp in de gevangenis (${jailTimeMinutes} min).`
+              : `${player.username} is opgepakt door ${authority} en wacht op hulp in de gevangenis (${jailTimeMinutes} min).`
+            : isCrewRelation
+              ? `${player.username}${crewName ? ` from ${crewName}` : ''} was arrested by ${authority} and is waiting for help in prison (${jailTimeMinutes} min).`
+              : `${player.username} was arrested by ${authority} and is waiting for help in prison (${jailTimeMinutes} min).`;
+
+          await this.sendToPlayer(recipientId, title, body, {
+            type: 'ally_arrested',
+            arrestedPlayerId: String(arrestedPlayerId),
+            username: player.username,
+            authority,
+            jailTimeMinutes: String(jailTimeMinutes),
+            relation: relation.isCrew && relation.isFriend
+              ? 'friend_crew'
+              : relation.isCrew
+                ? 'crew'
+                : 'friend',
+            source: source ?? 'UNKNOWN',
+          });
+        })
+      );
+    } catch (error) {
+      console.error('[NotificationService] Failed to send arrest awaiting help notifications:', error);
+    }
+  }
+
   /**
    * Send direct message notification
    */

@@ -29,6 +29,10 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
 
+## Notification Guardrails
+- Crew-gerelateerde arrestatie-alerts moeten alle overige crewleden bereiken wanneer een lid vast komt te zitten.
+- Pushdispatch voor deze alerts blijft fire-and-forget en mag heists, crimes of andere arrestflows niet blokkeren.
+
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
 - Run through the main success path and at least one failure or locked-state path.

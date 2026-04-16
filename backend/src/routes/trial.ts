@@ -8,6 +8,19 @@ import * as cooldownService from '../services/cooldownService';
 
 const router = Router();
 
+function serializeRecordItem(
+  crime: Awaited<ReturnType<typeof judgeService.getCriminalRecord>>['recentCrimes'][number]
+) {
+  return {
+    ...crime,
+    createdAt: crime.createdAt.toISOString(),
+    history: crime.history.map((entry) => ({
+      ...entry,
+      createdAt: entry.createdAt.toISOString(),
+    })),
+  };
+}
+
 router.get('/current-sentence', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = req.player?.id;
@@ -46,10 +59,7 @@ router.get('/record', authenticate, async (req: AuthRequest, res: Response) => {
       event: 'trial.record',
       params: {
         totalConvictions: record.totalConvictions,
-        recentCrimes: record.recentCrimes.map((crime) => ({
-          ...crime,
-          createdAt: crime.createdAt.toISOString(),
-        })),
+        recentCrimes: record.recentCrimes.map(serializeRecordItem),
       },
     });
   } catch {

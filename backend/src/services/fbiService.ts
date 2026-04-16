@@ -6,6 +6,7 @@
 import prisma from '../lib/prisma';
 import config from '../config';
 import { activityService } from './activityService';
+import { notificationService } from './notificationService';
 
 export interface FBIArrestResult {
   arrested: boolean;
@@ -194,6 +195,13 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
       jailTime,
     },
     true
+  );
+
+  void notificationService.sendArrestAwaitingHelpNotifications(
+    playerId,
+    jailTime,
+    'FBI',
+    'FBI'
   );
 }
 

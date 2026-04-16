@@ -26,6 +26,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Na succesvolle borgbetaling moet de client opnieuw jail- en cooldown-state ophalen in plaats van alleen losse crimes-refreshes te doen.
 - Borgbedragen moeten meeschalen met resterende celstraf, niet alleen met wanted level.
 - Jail- en cooldown-overlays moeten op mobiel compacte header-typografie en zichtbare snackbar/toast feedback houden.
+- Arrestatieflows moeten vrienden en crewleden kunnen signaleren dat iemand op hulp wacht, zonder dat het vrijlaten, borg of sentence-state in de gevangenis breekt.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

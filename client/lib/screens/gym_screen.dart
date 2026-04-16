@@ -52,7 +52,8 @@ class _GymScreenState extends State<GymScreen> {
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(l10n?.gymTrainSuccess ?? 'Training complete'),
             ),
@@ -82,7 +83,7 @@ class _GymScreenState extends State<GymScreen> {
     final strengthBonus = ((status['strengthBonus'] as num?) ?? 0) * 100;
     final nextTrainAtRaw = status['nextTrainAt']?.toString();
     final nextTrainAt = nextTrainAtRaw != null
-      ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
+        ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
         : null;
     final nextTrainLabel = nextTrainAt != null
         ? DateFormat('HH:mm').format(nextTrainAt)
@@ -149,7 +150,10 @@ class _GymScreenState extends State<GymScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  _tr('Train je kracht en verhoog je crime slagingskans', 'Train your strength and increase your crime success rate'),
+                                  _tr(
+                                    'Train je kracht en verhoog je crime slagingskans',
+                                    'Train your strength and increase your crime success rate',
+                                  ),
                                   style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(color: Colors.grey[600]),
                                 ),
@@ -329,7 +333,10 @@ class _GymScreenState extends State<GymScreen> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                _tr('Deze bonus wordt toegepast op al je crime pogingen', 'This bonus is applied to all your crime attempts'),
+                                _tr(
+                                  'Deze bonus wordt toegepast op al je crime pogingen',
+                                  'This bonus is applied to all your crime attempts',
+                                ),
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.blue.shade900,
@@ -380,14 +387,20 @@ class _GymScreenState extends State<GymScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              _tr('Volgende sessie om: $nextTrainLabel', 'Next session at: $nextTrainLabel'),
+                              _tr(
+                                'Volgende sessie om: $nextTrainLabel',
+                                'Next session at: $nextTrainLabel',
+                              ),
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _tr('Je moet 1 uur wachten tussen training sessies', 'You must wait 1 hour between training sessions'),
+                          _tr(
+                            'Je moet 1 uur wachten tussen training sessies',
+                            'You must wait 1 hour between training sessions',
+                          ),
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.grey[600]),
                         ),
@@ -459,11 +472,36 @@ class _GymScreenState extends State<GymScreen> {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      _buildInfoRow(_tr('• Train elke uur voor een kracht boost', '• Train every hour for a strength boost')),
-                      _buildInfoRow(_tr('• Elke sessie geeft +0.08% bonus', '• Each session gives +0.08% bonus')),
-                      _buildInfoRow(_tr('• Maximum van 100 sessies (+8% totaal)', '• Maximum of 100 sessions (+8% total)')),
-                      _buildInfoRow(_tr('• Verhoogt je crime slagingskans', '• Increases your crime success rate')),
-                      _buildInfoRow(_tr('• Blijvende bonus, elke sessie telt', '• Permanent bonus, every session counts')),
+                      _buildInfoRow(
+                        _tr(
+                          '• Train elke uur voor een kracht boost',
+                          '• Train every hour for a strength boost',
+                        ),
+                      ),
+                      _buildInfoRow(
+                        _tr(
+                          '• Elke sessie geeft +0.08% bonus',
+                          '• Each session gives +0.08% bonus',
+                        ),
+                      ),
+                      _buildInfoRow(
+                        _tr(
+                          '• Maximum van 100 sessies (+8% totaal)',
+                          '• Maximum of 100 sessions (+8% total)',
+                        ),
+                      ),
+                      _buildInfoRow(
+                        _tr(
+                          '• Verhoogt je crime slagingskans',
+                          '• Increases your crime success rate',
+                        ),
+                      ),
+                      _buildInfoRow(
+                        _tr(
+                          '• Blijvende bonus, elke sessie telt',
+                          '• Permanent bonus, every session counts',
+                        ),
+                      ),
                     ],
                   ),
                 ),

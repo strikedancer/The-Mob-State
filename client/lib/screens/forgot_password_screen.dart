@@ -46,8 +46,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         setState(() {
           _isLoading = false;
         });
-        showTopRightFromSnackBar(context,
-          SnackBar(content: Text(_mapResetRequestError(e)), backgroundColor: Colors.red),
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_mapResetRequestError(e)),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -58,7 +62,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final message = error.toString();
 
     if (message.contains('EMAIL_REQUIRED')) {
-      return isDutch ? 'Voer een e-mailadres in.' : 'Please enter an email address.';
+      return isDutch
+          ? 'Voer een e-mailadres in.'
+          : 'Please enter an email address.';
     }
 
     return isDutch

@@ -54,7 +54,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_isDutch ? 'Ongeldige of ontbrekende resetlink.' : 'Invalid or missing reset link.'),
+          content: Text(
+            _isDutch
+                ? 'Ongeldige of ontbrekende resetlink.'
+                : 'Invalid or missing reset link.',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -205,11 +209,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           Text(
             token == null
                 ? (_isDutch
-                    ? 'Deze pagina heeft geen geldige reset-token ontvangen.'
-                    : 'This page did not receive a valid reset token.')
+                      ? 'Deze pagina heeft geen geldige reset-token ontvangen.'
+                      : 'This page did not receive a valid reset token.')
                 : (_isDutch
-                    ? 'Kies hieronder een nieuw wachtwoord voor je account.'
-                    : 'Choose a new password for your account below.'),
+                      ? 'Kies hieronder een nieuw wachtwoord voor je account.'
+                      : 'Choose a new password for your account below.'),
             style: TextStyle(
               color: Colors.white70,
               fontSize: isMobile ? 13 : 14,
@@ -227,7 +231,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return _isDutch ? 'Voer een wachtwoord in' : 'Please enter a password';
+                return _isDutch
+                    ? 'Voer een wachtwoord in'
+                    : 'Please enter a password';
               }
               if (value.length < 6) {
                 return _isDutch
@@ -375,11 +381,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(color: Color(0xFFD4A574)),
-      prefixIcon: Icon(
-        icon,
-        color: const Color(0xFFD4A574),
-        size: 20,
-      ),
+      prefixIcon: Icon(icon, color: const Color(0xFFD4A574), size: 20),
       filled: true,
       fillColor: Colors.black.withOpacity(0.3),
       border: OutlineInputBorder(
@@ -394,10 +396,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         borderRadius: BorderRadius.circular(4),
         borderSide: BorderSide(color: Colors.amber[700]!, width: 1),
       ),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 14,
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     );
   }
 }
