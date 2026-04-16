@@ -22,6 +22,86 @@ interface DJConfig {
   vibeShift?: 'chill' | 'normal' | 'wild';
 }
 
+const DEFAULT_NIGHTCLUB_DJS = [
+  {
+    djName: 'DJ Voltage',
+    skillLevel: 2,
+    baseCostPerHour: 6000,
+    reputation: 0.55,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'house',
+  },
+  {
+    djName: 'Mister Midnight',
+    skillLevel: 3,
+    baseCostPerHour: 9000,
+    reputation: 0.68,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'techno',
+  },
+  {
+    djName: 'Neon Rosa',
+    skillLevel: 4,
+    baseCostPerHour: 13000,
+    reputation: 0.8,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'latin',
+  },
+  {
+    djName: 'Cobra Beats',
+    skillLevel: 5,
+    baseCostPerHour: 18000,
+    reputation: 0.94,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'festival',
+  },
+] as const;
+
+const DEFAULT_NIGHTCLUB_SECURITY_GUARDS = [
+  {
+    guardName: 'Brick Malone',
+    skillLevel: 2,
+    baseCostPerHour: 3500,
+    reputation: 0.56,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'door',
+  },
+  {
+    guardName: 'Vera Lock',
+    skillLevel: 3,
+    baseCostPerHour: 5000,
+    reputation: 0.69,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'vip',
+  },
+  {
+    guardName: 'Titan Noor',
+    skillLevel: 4,
+    baseCostPerHour: 7000,
+    reputation: 0.82,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'anti-theft',
+  },
+  {
+    guardName: 'Helix Stone',
+    skillLevel: 5,
+    baseCostPerHour: 9500,
+    reputation: 0.95,
+    isAvailable: true,
+    profileImage: null,
+    specialty: 'tactical',
+  },
+] as const;
+
+let nightclubStaffSeedPromise: Promise<void> | null = null;
+
 class NightclubService {
   private readonly BASE_CROWD_REGEN_RATE = 2;      // 2% per minute
   private readonly BASE_CROWD_DECAY_RATE = 1;       // 1% per minute
@@ -50,6 +130,38 @@ class NightclubService {
     9: 10000,
     10: 7500,
   };
+
+  private async ensureStaffSeedData(): Promise<void> {
+    if (nightclubStaffSeedPromise) {
+      await nightclubStaffSeedPromise;
+      return;
+    }
+
+    nightclubStaffSeedPromise = (async () => {
+      const [djCount, securityCount] = await Promise.all([
+        prisma.nightclubDJ.count(),
+        prisma.nightclubSecurity.count(),
+      ]);
+
+      if (djCount === 0) {
+        await prisma.nightclubDJ.createMany({
+          data: [...DEFAULT_NIGHTCLUB_DJS],
+        });
+      }
+
+      if (securityCount === 0) {
+        await prisma.nightclubSecurity.createMany({
+          data: [...DEFAULT_NIGHTCLUB_SECURITY_GUARDS],
+        });
+      }
+    })();
+
+    try {
+      await nightclubStaffSeedPromise;
+    } finally {
+      nightclubStaffSeedPromise = null;
+    }
+  }
 
   private async getPlayerLanguage(playerId: number): Promise<'nl' | 'en'> {
     const player = await prisma.player.findUnique({
@@ -658,8 +770,15 @@ class NightclubService {
    * Get all available DJs
    */
   async getAvailableDJs(): Promise<any[]> {
+    await this.ensureStaffSeedData();
+
     const djs = await prisma.nightclubDJ.findMany({
-      where: { isAvailable: true },
+      where: {
+        OR: [
+          { isAvailable: true },
+          { isAvailable: null },
+        ],
+      },
       orderBy: { skillLevel: 'desc' },
     });
 
@@ -773,8 +892,15 @@ class NightclubService {
    * Get all available security guards
    */
   async getAvailableSecurityGuards(): Promise<any[]> {
+    await this.ensureStaffSeedData();
+
     const guards = await prisma.nightclubSecurity.findMany({
-      where: { isAvailable: true },
+      where: {
+        OR: [
+          { isAvailable: true },
+          { isAvailable: null },
+        ],
+      },
       orderBy: { skillLevel: 'desc' },
     });
 

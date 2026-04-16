@@ -25,6 +25,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Nachtclub staffing self-healing toegevoegd: DJ- en beveiligingslijsten vullen zichzelf nu automatisch met een standaard roster als de live tabellen leeg zijn, zodat de selectors in het Nachtclub-scherm niet leeg blijven op omgevingen zonder seed-data
+  - Bestanden: `backend/src/services/nightclubService.ts`
 - [ ] Arrestatie-alerts toegevoegd: wanneer een speler wordt opgepakt sturen crimes, police/FBI, travel, vehicle theft en failed heists nu fire-and-forget pushmeldingen naar geaccepteerde vrienden en overige crewleden dat de speler vastzit en op hulp wacht, met overlap-dedupe voor ontvangers
   - Bestanden: `backend/src/services/notificationService.ts`, `backend/src/services/crimeService.ts`, `backend/src/services/policeService.ts`, `backend/src/services/fbiService.ts`, `backend/src/services/travelService.ts`, `backend/src/services/vehicleService.ts`, `backend/src/services/heistService.ts`, `docs/module-protocols/notifications.md`, `docs/module-protocols/crimes.md`, `docs/module-protocols/prison.md`, `docs/module-protocols/crew.md`, `docs/module-protocols/friends.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Nieuwe late-game crime Strafblad Wissen toegevoegd: een succesvolle run wist nu het volledige zichtbare strafblad via een expunge-event in plaats van DB-records te verwijderen; court-record en appeal-logica negeren sindsdien alleen oudere convictions, terwijl nieuwe veroordelingen daarna weer normaal opbouwen
