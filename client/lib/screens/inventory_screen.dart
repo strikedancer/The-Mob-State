@@ -23,6 +23,10 @@ class _InventoryScreenState extends State<InventoryScreen>
   String? _selectedCrimeWeaponId;
   bool _loadingWeaponSelection = true;
 
+  String _tr(String nl, String en) {
+    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +49,11 @@ class _InventoryScreenState extends State<InventoryScreen>
         if (selectedResponse.statusCode == 200) {
           final selectedData = jsonDecode(selectedResponse.body);
           selectedId = selectedData['weapon']?['weaponId'] as String?;
+        }
+
+        if (selectedId != null &&
+            !weapons.any((weapon) => weapon['weaponId'] == selectedId)) {
+          selectedId = null;
         }
 
         if (!mounted) return;
@@ -118,9 +127,9 @@ class _InventoryScreenState extends State<InventoryScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Geselecteerd wapen voor misdaden',
-                  style: TextStyle(
+                Text(
+                  _tr('Geselecteerd crime-wapen', 'Selected crime weapon'),
+                  style: const TextStyle(
                     color: Color(0xFFD4AF37),
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
@@ -154,9 +163,12 @@ class _InventoryScreenState extends State<InventoryScreen>
                       ),
                     ),
                     style: const TextStyle(color: Colors.white),
-                    hint: const Text(
-                      'Selecteer verplicht een wapen',
-                      style: TextStyle(color: Colors.white70),
+                    hint: Text(
+                      _tr(
+                        'Selecteer een wapen voor crimes',
+                        'Select a weapon for crimes',
+                      ),
+                      style: const TextStyle(color: Colors.white70),
                     ),
                     items: _weaponInventory
                         .map(
@@ -178,18 +190,24 @@ class _InventoryScreenState extends State<InventoryScreen>
                 if (!_loadingWeaponSelection &&
                     _weaponInventory.isNotEmpty &&
                     _selectedCrimeWeaponId == null)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Kies eerst een wapen voordat je misdaden doet.',
+                      _tr(
+                        'Kies hier je crime-wapen. Het crimes-scherm gebruikt deze selectie direct.',
+                        'Choose your crime weapon here. The crimes screen uses this selection immediately.',
+                      ),
                       style: TextStyle(color: Colors.orange, fontSize: 12),
                     ),
                   ),
                 if (!_loadingWeaponSelection && _weaponInventory.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Geen bruikbare wapens in inventory. Koop eerst een wapen.',
+                      _tr(
+                        'Geen bruikbare wapens in inventory. Koop of verplaats eerst een wapen naar carried items.',
+                        'No usable weapons in inventory. Buy or move a weapon into carried items first.',
+                      ),
                       style: TextStyle(color: Colors.orange, fontSize: 12),
                     ),
                   ),

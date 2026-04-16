@@ -23,6 +23,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Shared equipment choices that other modules depend on, such as the selected crime weapon, must stay visible and must remain in sync with the consuming gameplay screen.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -35,6 +36,7 @@ Carried items, storage, loadouts and equipment used by multiple modules.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify the selected crime weapon shown in Inventory matches the selection used on the Crimes screen and survives refresh/navigation correctly.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

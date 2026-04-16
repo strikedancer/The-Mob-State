@@ -153,6 +153,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `backend/src/services/redLightDistrictService.ts`
 
 ### Client (game)
+- [ ] Crime weapon-selectie zichtbaar gemaakt: spelers kunnen hun actieve crime-wapen nu direct bovenaan het Crimes-scherm kiezen, terwijl Inventaris dezelfde selectie gesynchroniseerd toont voor carried wapens
+  - Bestanden: `client/lib/screens/crime_screen.dart`, `client/lib/screens/inventory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`, `docs/module-protocols/inventory.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Help & Uitleg gesynchroniseerd voor arrestatie-alerts: crew-, vrienden- en gevangenis-uitleg vermelden nu dat vrienden en crewleden een pushmelding krijgen wanneer iemand wordt opgepakt en op hulp wacht
   - Bestanden: `client/lib/data/help_content.dart`
 - [ ] Crime en rechtbank UX gesynchroniseerd voor strafblad-wipe: Crimes toont nu de late-game actie Strafblad Wissen met duidelijke tooltip en succes/foutfeedback, en Help & Uitleg legt uit dat volledige record-wipe via Crimes loopt terwijl de rechtbank alleen zaak-specifieke historie en omkoping beheert

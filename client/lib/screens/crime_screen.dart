@@ -29,14 +29,17 @@ class _CrimeScreenState extends State<CrimeScreen> {
   final ToolService _toolService = ToolService();
   static const Set<String> _excludedCrimeIds = {'car_theft', 'steal_yacht'};
   List<Crime> _crimes = [];
+  List<Map<String, dynamic>> _weaponInventory = [];
   bool _isLoading = true;
   bool _isCommittingCrime = false;
+  bool _loadingWeaponSelection = true;
   String? _error;
   int? _jailTime; // null = not jailed, >0 = SECONDS remaining
   int? _cooldownSeconds; // null = not on cooldown, >0 = seconds remaining
   String? _cooldownResultMessage;
   bool? _cooldownIsSuccess;
   String? _resultCrimeName;
+  String? _selectedCrimeWeaponId;
   bool _showCrimeResult = false;
   int _crimeReward = 0;
   int _crimeXpGained = 0;
@@ -47,6 +50,11 @@ class _CrimeScreenState extends State<CrimeScreen> {
     _checkJailStatusAndLoadCrimes();
     _loadTools();
     _loadSelectedCrimeVehicle();
+    _loadCrimeWeaponSelection();
+  }
+
+  String _tr(String nl, String en) {
+    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
   }
 
   Future<void> _loadTools() async {
@@ -70,6 +78,232 @@ class _CrimeScreenState extends State<CrimeScreen> {
     } catch (e) {
       print('[CrimeScreen] Error loading selected vehicle: $e');
     }
+  }
+
+  Future<void> _loadCrimeWeaponSelection({bool showLoading = true}) async {
+    if (showLoading && mounted) {
+      setState(() {
+        _loadingWeaponSelection = true;
+      });
+    }
+
+    try {
+      final inventoryResponse = await _apiClient.get('/weapons/inventory');
+      final selectedResponse = await _apiClient.get('/weapons/crime-weapon');
+
+      if (inventoryResponse.statusCode != 200) {
+        throw Exception('WEAPON_INVENTORY_LOAD_FAILED');
+      }
+
+      final inventoryData = jsonDecode(inventoryResponse.body);
+      final weapons = (inventoryData['weapons'] as List<dynamic>? ?? [])
+          .map((w) => (w as Map<String, dynamic>))
+          .where((w) => ((w['condition'] as num?)?.toInt() ?? 0) > 0)
+          .toList();
+
+      String? selectedId;
+      if (selectedResponse.statusCode == 200) {
+        final selectedData = jsonDecode(selectedResponse.body);
+        selectedId = selectedData['weapon']?['weaponId'] as String?;
+      }
+
+      if (selectedId != null &&
+          !weapons.any((weapon) => weapon['weaponId'] == selectedId)) {
+        selectedId = null;
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _weaponInventory = weapons;
+        _selectedCrimeWeaponId = selectedId;
+        _loadingWeaponSelection = false;
+      });
+    } catch (e) {
+      print('[CrimeScreen] Error loading crime weapon selection: $e');
+      if (!mounted) return;
+      setState(() {
+        _loadingWeaponSelection = false;
+      });
+    }
+  }
+
+  Future<void> _setCrimeWeapon(String weaponId) async {
+    try {
+      final response = await _apiClient.post('/weapons/crime-weapon', {
+        'weaponId': weaponId,
+      });
+
+      if (response.statusCode != 200) {
+        throw Exception('SET_CRIME_WEAPON_FAILED');
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _selectedCrimeWeaponId = weaponId;
+      });
+    } catch (e) {
+      print('[CrimeScreen] Error setting crime weapon: $e');
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Instellen van crime-wapen mislukt.',
+              'Failed to set crime weapon.',
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _openInventoryForWeaponSelection() {
+    Navigator.of(context).pushNamed('/inventory').then((_) {
+      _loadCrimeWeaponSelection(showLoading: false);
+    });
+  }
+
+  bool get _hasWeaponCrime =>
+      _crimes.any((crime) => crime.requiredWeapon == true);
+
+  Widget _buildCrimeWeaponSelector(AppLocalizations l10n) {
+    final selectedWeapon = _weaponInventory.cast<Map<String, dynamic>?>().firstWhere(
+      (weapon) => weapon?['weaponId'] == _selectedCrimeWeaponId,
+      orElse: () => null,
+    );
+    final selectedWeaponLabel = selectedWeapon == null
+        ? null
+        : '${selectedWeapon['name'] ?? selectedWeapon['weaponId']} (${selectedWeapon['condition']}%)';
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFD4AF37), width: 0.6),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.gps_fixed, color: Color(0xFFD4AF37), size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  _tr('Crime-wapen', 'Crime weapon'),
+                  style: const TextStyle(
+                    color: Color(0xFFD4AF37),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: _openInventoryForWeaponSelection,
+                icon: const Icon(Icons.inventory_2_outlined, size: 16),
+                label: Text(l10n.goToInventory),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _tr(
+              'Kies hier welk gedragen wapen je standaard gebruikt voor crimes die een wapen vereisen.',
+              'Choose which carried weapon you use by default for crimes that require one.',
+            ),
+            style: const TextStyle(color: Colors.white70, fontSize: 12.5),
+          ),
+          const SizedBox(height: 10),
+          if (_loadingWeaponSelection)
+            const SizedBox(
+              height: 40,
+              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            )
+          else if (_weaponInventory.isEmpty) ...[
+            Text(
+              l10n.noWeapons,
+              style: const TextStyle(color: Colors.orange, fontSize: 12.5),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _tr(
+                'Koop of verplaats eerst een bruikbaar wapen naar je carried inventory.',
+                'Buy or move a usable weapon into your carried inventory first.',
+              ),
+              style: const TextStyle(color: Colors.white60, fontSize: 12),
+            ),
+          ] else ...[
+            DropdownButtonFormField<String>(
+              value: _selectedCrimeWeaponId,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF2A2A2A),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFF1E1E1E),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade700),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade700),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+              hint: Text(
+                _tr(
+                  'Selecteer een wapen voor crimes',
+                  'Select a weapon for crimes',
+                ),
+                style: const TextStyle(color: Colors.white70),
+              ),
+              items: _weaponInventory
+                  .map(
+                    (weapon) => DropdownMenuItem<String>(
+                      value: weapon['weaponId'] as String,
+                      child: Text(
+                        '${weapon['name'] ?? weapon['weaponId']} (${weapon['condition']}%)',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  _setCrimeWeapon(value);
+                }
+              },
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _selectedCrimeWeaponId == null
+                  ? _tr(
+                      'Zonder selectie starten gewapende crimes niet.',
+                      'Without a selection, weapon-based crimes will not start.',
+                    )
+                  : _tr(
+                      'Geselecteerd: $selectedWeaponLabel. Sommige crimes eisen daarnaast nog een passend wapentype.',
+                      'Selected: $selectedWeaponLabel. Some crimes still require a matching weapon type on top of that.',
+                    ),
+              style: TextStyle(
+                color: _selectedCrimeWeaponId == null
+                    ? Colors.orange
+                    : Colors.white60,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   Future<void> _checkJailStatusAndLoadCrimes() async {
@@ -168,6 +402,27 @@ class _CrimeScreenState extends State<CrimeScreen> {
   }
 
   Future<void> _commitCrime(Crime crime) async {
+    if (crime.requiredWeapon == true && _selectedCrimeWeaponId == null) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Kies eerst een crime-wapen bovenaan dit scherm of via Inventaris.',
+              'Choose a crime weapon at the top of this screen or via Inventory first.',
+            ),
+          ),
+          backgroundColor: Colors.orange,
+          action: SnackBarAction(
+            label: l10n.goToInventory,
+            textColor: Colors.white,
+            onPressed: _openInventoryForWeaponSelection,
+          ),
+        ),
+      );
+      return;
+    }
+
     setState(() {
       _isCommittingCrime = true;
       _error = null;
@@ -184,6 +439,14 @@ class _CrimeScreenState extends State<CrimeScreen> {
         final data = jsonDecode(response.body);
         final eventKey = data['event'] as String?;
         final params = (data['params'] as Map<String, dynamic>?) ?? {};
+
+        final reason = params['reason'] as String?;
+        if (reason == 'WEAPON_SELECTION_REQUIRED' ||
+            reason == 'WEAPON_REQUIRED' ||
+            reason == 'WEAPON_BROKEN' ||
+            reason == 'WEAPON_NOT_SUITABLE') {
+          await _loadCrimeWeaponSelection(showLoading: false);
+        }
 
         setState(() {
           _isCommittingCrime = false;
@@ -669,14 +932,20 @@ class _CrimeScreenState extends State<CrimeScreen> {
                   Text(_error!, style: const TextStyle(color: Colors.red)),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _loadCrimes,
+                    onPressed: () async {
+                      await _loadCrimes();
+                      await _loadCrimeWeaponSelection(showLoading: false);
+                    },
                     child: Text(l10n.retry),
                   ),
                 ],
               ),
             )
           : RefreshIndicator(
-              onRefresh: _loadCrimes,
+              onRefresh: () async {
+                await _loadCrimes();
+                await _loadCrimeWeaponSelection(showLoading: false);
+              },
               child: Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -691,6 +960,28 @@ class _CrimeScreenState extends State<CrimeScreen> {
                   slivers: [
                     // Crime Cards Grid
                     SliverPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        sliver: SliverToBoxAdapter(
+                          child: _buildCrimeWeaponSelector(l10n),
+                        ),
+                      ),
+                      if (_hasWeaponCrime)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+                            child: Text(
+                              _tr(
+                                'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.',
+                                'Weapon-based crimes use the selected crime weapon above.',
+                              ),
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      SliverPadding(
                       padding: const EdgeInsets.all(8),
                       sliver: SliverGrid(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
