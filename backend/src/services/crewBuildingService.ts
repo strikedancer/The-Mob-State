@@ -16,6 +16,14 @@ const styleOrder: CrewBuildingStyle[] = ['camping', 'rural', 'city', 'villa', 'v
 
 const MAX_STANDARD_BUILDING_LEVEL = 10;
 const MAX_VIP_BUILDING_LEVEL = 15;
+const starterStorageTypes: CrewBuildingType[] = [
+  'car_storage',
+  'boat_storage',
+  'weapon_storage',
+  'ammo_storage',
+  'drug_storage',
+  'cash_storage',
+];
 
 function getNextStyle(style: CrewBuildingStyle | null): CrewBuildingStyle | null {
   if (!style) return styleOrder[0];
@@ -295,7 +303,91 @@ export async function getCrewBuildingRecord(crewId: number, type: CrewBuildingTy
   return model.findUnique({ where: { crewId } });
 }
 
+export async function ensureCrewStarterBuildings(crewId: number): Promise<void> {
+  const [hq, carStorage, boatStorage, weaponStorage, ammoStorage, drugStorage, cashStorage] =
+    await Promise.all([
+      prisma.crewHqBuilding.findUnique({ where: { crewId } }),
+      prisma.crewCarStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewBoatStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewWeaponStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewAmmoStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewDrugStorageBuilding.findUnique({ where: { crewId } }),
+      prisma.crewCashStorageBuilding.findUnique({ where: { crewId } }),
+    ]);
+
+  const hasAnyStorageRecord = [
+    carStorage,
+    boatStorage,
+    weaponStorage,
+    ammoStorage,
+    drugStorage,
+    cashStorage,
+  ].some(Boolean);
+  const missingTypes = starterStorageTypes.filter((type) => {
+    switch (type) {
+      case 'car_storage':
+        return !carStorage;
+      case 'boat_storage':
+        return !boatStorage;
+      case 'weapon_storage':
+        return !weaponStorage;
+      case 'ammo_storage':
+        return !ammoStorage;
+      case 'drug_storage':
+        return !drugStorage;
+      case 'cash_storage':
+        return !cashStorage;
+      default:
+        return false;
+    }
+  });
+  const shouldNormalizeStarterState = !hq || hq.level < 1 || missingTypes.length > 0;
+
+  if (!shouldNormalizeStarterState) {
+    return;
+  }
+
+  await prisma.$transaction(async (tx) => {
+    const txHq = await tx.crewHqBuilding.findUnique({ where: { crewId } });
+
+    if (!txHq) {
+      await tx.crewHqBuilding.create({
+        data: {
+          crewId,
+          style: 'camping',
+          level: 1,
+        },
+      });
+    } else if (txHq.level < 1 && !hasAnyStorageRecord) {
+      await tx.crewHqBuilding.update({
+        where: { crewId },
+        data: { level: 1 },
+      });
+    }
+
+    if (!carStorage) {
+      await tx.crewCarStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
+    }
+    if (!boatStorage) {
+      await tx.crewBoatStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
+    }
+    if (!weaponStorage) {
+      await tx.crewWeaponStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
+    }
+    if (!ammoStorage) {
+      await tx.crewAmmoStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
+    }
+    if (!drugStorage) {
+      await tx.crewDrugStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
+    }
+    if (!cashStorage) {
+      await tx.crewCashStorageBuilding.create({ data: { crewId, style: 'camping', level: 1 } });
+    }
+  });
+}
+
 export async function getCrewBuildingStatus(crewId: number) {
+  await ensureCrewStarterBuildings(crewId);
   const crewVip = await isCrewVip(crewId);
   const hqRecord = await getCrewBuildingRecord(crewId, 'hq');
   const hqStyle = (hqRecord?.style as CrewBuildingStyle | null) ?? null;
@@ -328,7 +420,8 @@ export async function getCrewBuildingStatus(crewId: number) {
         capacity: levelDef?.capacity ?? null,
         memberCap: levelDef?.memberCap ?? null,
         parkingSlots: levelDef?.parkingSlots ?? null,
-        nextUpgradeCost: level !== null && level < maxLevel ? nextLevelDef?.upgradeCost ?? null : null,
+        nextUpgradeCost:
+          level === null || level < maxLevel ? nextLevelDef?.upgradeCost ?? null : null,
         allowedLevelByHq: type === 'hq' ? maxLevel : allowedByHq,
         crewVip,
         imageKey: level !== null && style ? `${type}_${style}_lvl${level}` : null,
@@ -516,6 +609,7 @@ export function getCrewMemberCap(hqLevel: number | null): number {
 }
 
 export async function getCrewMemberCapForCrew(crewId: number): Promise<number> {
+  await ensureCrewStarterBuildings(crewId);
   const hq = await prisma.crewHqBuilding.findUnique({ where: { crewId } });
   const crewVip = await isCrewVip(crewId);
   const style = (hq?.style as CrewBuildingStyle | null) ?? 'camping';
@@ -524,6 +618,7 @@ export async function getCrewMemberCapForCrew(crewId: number): Promise<number> {
 }
 
 export async function getCrewStorageCapacity(crewId: number, type: CrewBuildingType): Promise<number> {
+  await ensureCrewStarterBuildings(crewId);
   const record = await getCrewBuildingRecord(crewId, type);
   if (!record) {
     return 0;

@@ -27,8 +27,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ### Backend
 - [ ] Crew navigatie professioneler gemaakt: het crew-scherm groepeert beheer nu in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crews en Chat in plaats van losse storage-tabs, zodat management rustiger en schaalbaarder blijft
   - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
-- [ ] Crew bootstrap bankfix: nieuwe crews kunnen nu eerst beperkt geld in de crew bank storten tot exact de aankoopprijs van de eerste cash opslag, zodat cash opslag gekocht kan worden zonder bestaande opslag; extra stortingen blijven daarna geblokkeerd tot cash opslag echt is aangeschaft
-  - Bestanden: `backend/src/services/crewService.ts`, `backend/src/routes/crews.ts`, `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew starter-state hersteld: nieuwe crews starten nu direct met Crew HQ level 1 en alle opslaggebouwen op level 1, terwijl legacy crews in de oude lege startstaat automatisch naar dezelfde basis worden genormaliseerd zodat crew bank en gedeelde opslag meteen werken
+  - Bestanden: `backend/src/services/crewService.ts`, `backend/src/services/crewBuildingService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew building-prijzen nu ook zichtbaar op koopknoppen voor nog niet gekochte gebouwen doordat de building-status API weer een `nextUpgradeCost` teruggeeft voor niet-bezette slots
+  - Bestanden: `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`
 - [ ] Nachtclub staffing self-healing toegevoegd: DJ- en beveiligingslijsten vullen zichzelf nu automatisch met een standaard roster als de live tabellen leeg zijn, zodat de selectors in het Nachtclub-scherm niet leeg blijven op omgevingen zonder seed-data
   - Bestanden: `backend/src/services/nightclubService.ts`
 - [ ] Arrestatie-alerts toegevoegd: wanneer een speler wordt opgepakt sturen crimes, police/FBI, travel, vehicle theft en failed heists nu fire-and-forget pushmeldingen naar geaccepteerde vrienden en overige crewleden dat de speler vastzit en op hulp wacht, met overlap-dedupe voor ontvangers

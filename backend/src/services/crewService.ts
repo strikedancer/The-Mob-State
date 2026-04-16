@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import {
+  ensureCrewStarterBuildings,
   getCrewBuildingCost,
   getCrewMemberCapForCrew,
   getCrewStorageCapacity,
@@ -97,8 +98,32 @@ export async function createCrew(input: CreateCrewInput): Promise<CrewWithMember
       data: {
         crewId: newCrew.id,
         style: 'camping',
-        level: 0,
+        level: 1,
       },
+    });
+
+    await tx.crewCarStorageBuilding.create({
+      data: { crewId: newCrew.id, style: 'camping', level: 1 },
+    });
+
+    await tx.crewBoatStorageBuilding.create({
+      data: { crewId: newCrew.id, style: 'camping', level: 1 },
+    });
+
+    await tx.crewWeaponStorageBuilding.create({
+      data: { crewId: newCrew.id, style: 'camping', level: 1 },
+    });
+
+    await tx.crewAmmoStorageBuilding.create({
+      data: { crewId: newCrew.id, style: 'camping', level: 1 },
+    });
+
+    await tx.crewDrugStorageBuilding.create({
+      data: { crewId: newCrew.id, style: 'camping', level: 1 },
+    });
+
+    await tx.crewCashStorageBuilding.create({
+      data: { crewId: newCrew.id, style: 'camping', level: 1 },
     });
 
     return newCrew;
@@ -519,6 +544,8 @@ export async function depositToCrewBank(
   playerId: number,
   amount: number
 ): Promise<{ crewBalance: number; playerMoney: number }> {
+  await ensureCrewStarterBuildings(crewId);
+
   if (amount <= 0) {
     throw new Error('INVALID_AMOUNT');
   }
