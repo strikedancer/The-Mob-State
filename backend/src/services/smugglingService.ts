@@ -1,9 +1,16 @@
 import prisma from '../lib/prisma';
 import countries from '../../content/countries.json';
+import { vehicleService } from './vehicleService';
 
 export type SmugglingCategory = 'drug' | 'trade' | 'vehicle' | 'weapon' | 'ammo';
 export type SmugglingChannel = 'package' | 'courier' | 'container';
 export type SmugglingNetworkScope = 'personal' | 'crew';
+
+function resolveCrewLandVehicleType(vehicleId: string): 'car' | 'motorcycle' {
+  return vehicleService.getVehicleById(vehicleId)?.vehicleCategory === 'motorcycle'
+    ? 'motorcycle'
+    : 'car';
+}
 
 type ShipmentStatus = 'in_transit' | 'ready' | 'seized' | 'claimed';
 
@@ -358,13 +365,16 @@ class SmugglingService {
           }),
           trade: [],
           vehicle: [
-            ...crewCars.map((v) => ({
-              itemKey: `car:${v.id}`,
-              itemLabel: `CAR • ${v.vehicleId}`,
-              quantity: 1,
-              unitTag: 'vehicle',
-              metadata: { vehicleType: 'car', crewInventoryId: v.id },
-            })),
+            ...crewCars.map((v) => {
+              const vehicleType = resolveCrewLandVehicleType(v.vehicleId);
+              return {
+                itemKey: `${vehicleType}:${v.id}`,
+                itemLabel: `${vehicleType === 'motorcycle' ? 'MOTORCYCLE' : 'CAR'} • ${v.vehicleId}`,
+                quantity: 1,
+                unitTag: 'vehicle',
+                metadata: { vehicleType, crewInventoryId: v.id },
+              };
+            }),
             ...crewBoats.map((v) => ({
               itemKey: `boat:${v.id}`,
               itemLabel: `BOAT • ${v.vehicleId}`,
@@ -595,7 +605,12 @@ class SmugglingService {
       } else if (category === 'vehicle') {
         if (networkScope === 'crew') {
           const [rawType, rawId] = String(itemKey).split(':');
-          const vehicleType = rawType === 'boat' ? 'boat' : 'car';
+          const vehicleType =
+            rawType === 'boat'
+              ? 'boat'
+              : rawType === 'motorcycle'
+                ? 'motorcycle'
+                : 'car';
           const crewInventoryId = Number(rawId);
 
           if (!Number.isFinite(crewInventoryId) || crewInventoryId <= 0) {
@@ -621,16 +636,24 @@ class SmugglingService {
             };
           } else {
             const car = await tx.crewCarInventory.findFirst({ where: { id: crewInventoryId, crewId: crewId! } });
-            if (!car) return { ok: false, message: 'Crew-auto niet beschikbaar voor smokkel' } as const;
+            if (!car) {
+              return {
+                ok: false,
+                message:
+                  vehicleType === 'motorcycle'
+                    ? 'Crew-motor niet beschikbaar voor smokkel'
+                    : 'Crew-auto niet beschikbaar voor smokkel',
+              } as const;
+            }
 
             await tx.crewCarInventory.delete({ where: { id: car.id } });
 
             effectiveQuantity = 1;
-            itemLabel = `CAR • ${car.vehicleId}`;
+            itemLabel = `${vehicleType === 'motorcycle' ? 'MOTORCYCLE' : 'CAR'} • ${car.vehicleId}`;
             unitTag = 'vehicle';
             metadata = {
               ...metadata,
-              vehicleType: 'car',
+              vehicleType,
               vehicleId: car.vehicleId,
               condition: car.condition,
               fuelLevel: car.fuelLevel,
@@ -819,7 +842,12 @@ class SmugglingService {
     } else if (category === 'vehicle') {
       if (networkScope === 'crew') {
         const [rawType, rawId] = String(itemKey).split(':');
-        const vehicleType = rawType === 'boat' ? 'boat' : 'car';
+        const vehicleType =
+          rawType === 'boat'
+            ? 'boat'
+            : rawType === 'motorcycle'
+              ? 'motorcycle'
+              : 'car';
         const crewInventoryId = Number(rawId);
 
         if (!Number.isFinite(crewInventoryId) || crewInventoryId <= 0) {

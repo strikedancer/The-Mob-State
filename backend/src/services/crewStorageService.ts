@@ -1,5 +1,12 @@
 import prisma from '../lib/prisma';
 import { getCrewStorageCapacity } from './crewBuildingService';
+import { vehicleService } from './vehicleService';
+
+function resolveCrewLandVehicleType(vehicleId: string): 'car' | 'motorcycle' {
+  return vehicleService.getVehicleById(vehicleId)?.vehicleCategory === 'motorcycle'
+    ? 'motorcycle'
+    : 'car';
+}
 
 export async function depositCrewCar(
   crewId: number,
@@ -26,7 +33,10 @@ export async function depositCrewCar(
     throw new Error('VEHICLE_NOT_FOUND');
   }
 
-  if (vehicle.playerId !== playerId || vehicle.vehicleType !== 'car') {
+  if (
+    vehicle.playerId !== playerId ||
+    (vehicle.vehicleType !== 'car' && vehicle.vehicleType !== 'motorcycle')
+  ) {
     throw new Error('NOT_OWNER');
   }
 
@@ -381,6 +391,10 @@ export async function getCrewStorageSummary(crewId: number) {
   const weaponCount = weapons.reduce((sum, item) => sum + item.quantity, 0);
   const ammoCount = ammo.reduce((sum, item) => sum + item.quantity, 0);
   const drugCount = drugs.reduce((sum, item) => sum + item.quantity, 0);
+  const carsWithType = cars.map((vehicle) => ({
+    ...vehicle,
+    vehicleType: resolveCrewLandVehicleType(vehicle.vehicleId),
+  }));
 
   return {
     capacities: {
@@ -400,7 +414,7 @@ export async function getCrewStorageSummary(crewId: number) {
       cash: crew?.bankBalance ?? 0,
     },
     inventory: {
-      cars,
+      cars: carsWithType,
       boats,
       weapons,
       ammo,

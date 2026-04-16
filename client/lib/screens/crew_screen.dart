@@ -81,7 +81,7 @@ class _CrewScreenState extends State<CrewScreen>
     'tab.storageHub': {'nl': 'Opslag', 'en': 'Storage'},
     'tab.members': {'nl': 'Leden', 'en': 'Members'},
     'tab.warRoom': {'nl': 'War Room', 'en': 'War Room'},
-    'tab.carStorage': {'nl': 'Auto opslag', 'en': 'Car Storage'},
+    'tab.carStorage': {'nl': 'Auto/motor opslag', 'en': 'Car/Motorcycle Storage'},
     'tab.boatStorage': {'nl': 'Haven', 'en': 'Boat Storage'},
     'tab.weaponStorage': {'nl': 'Wapen opslag', 'en': 'Weapon Storage'},
     'tab.ammoStorage': {'nl': 'Munitie opslag', 'en': 'Ammo Storage'},
@@ -118,7 +118,7 @@ class _CrewScreenState extends State<CrewScreen>
       'nl': 'Geen opslagdata geladen',
       'en': 'No storage data loaded',
     },
-    'action.addCar': {'nl': 'Auto toevoegen', 'en': 'Add car'},
+    'action.addCar': {'nl': 'Auto/motor toevoegen', 'en': 'Add car/motorcycle'},
     'action.addBoat': {'nl': 'Boot toevoegen', 'en': 'Add boat'},
     'action.addWeapon': {'nl': 'Wapen toevoegen', 'en': 'Add weapon'},
     'action.addAmmo': {'nl': 'Munitie toevoegen', 'en': 'Add ammo'},
@@ -2605,9 +2605,13 @@ class _CrewScreenState extends State<CrewScreen>
       if (response.statusCode != 200) return;
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final vehicles = (data['vehicles'] as List).cast<Map<String, dynamic>>();
-      final filtered = vehicles
-          .where((v) => v['vehicleType'] == vehicleType)
-          .toList();
+      final filtered = vehicles.where((v) {
+        final currentType = (v['vehicleType'] ?? '').toString();
+        if (vehicleType == 'car') {
+          return currentType == 'car' || currentType == 'motorcycle';
+        }
+        return currentType == vehicleType;
+      }).toList();
 
       if (filtered.isEmpty) {
         if (mounted) {
@@ -2633,7 +2637,7 @@ class _CrewScreenState extends State<CrewScreen>
           builder: (context, setStateDialog) => AlertDialog(
             title: Text(
               vehicleType == 'car'
-                  ? _tr(locale, 'Auto toevoegen', 'Add car')
+                  ? _tr(locale, 'Auto/motor toevoegen', 'Add car/motorcycle')
                   : _tr(locale, 'Boot toevoegen', 'Add boat'),
             ),
             content: DropdownButtonFormField<int>(
@@ -2643,7 +2647,7 @@ class _CrewScreenState extends State<CrewScreen>
                     (vehicle) => DropdownMenuItem<int>(
                       value: vehicle['id'] as int,
                       child: Text(
-                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} (#${vehicle['id']})',
+                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} • ${((vehicle['vehicleType'] ?? '').toString() == 'motorcycle') ? _tr(locale, 'Motor', 'Motorcycle') : ((vehicle['vehicleType'] ?? '').toString() == 'boat' ? _tr(locale, 'Boot', 'Boat') : _tr(locale, 'Auto', 'Car'))} (#${vehicle['id']})',
                       ),
                     ),
                   )
@@ -3510,8 +3514,8 @@ class _CrewScreenState extends State<CrewScreen>
                         else ...[
                           Text(
                             locale == 'nl'
-                                ? 'Autos: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}'
-                                : 'Cars: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}',
+                              ? 'Auto''s & motoren: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}'
+                              : 'Cars & motorcycles: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}',
                           ),
                           Text(
                             locale == 'nl'
@@ -3776,8 +3780,8 @@ class _CrewScreenState extends State<CrewScreen>
                   const SizedBox(height: 12),
                   Text(
                     locale == 'nl'
-                        ? 'Autos: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}'
-                        : 'Cars: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
+                      ? 'Auto''s & motoren: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}'
+                      : 'Cars & motorcycles: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
                   ),
                   Text(
                     locale == 'nl'
@@ -3811,8 +3815,8 @@ class _CrewScreenState extends State<CrewScreen>
           const SizedBox(height: 16),
           buildStorageTile(
             icon: Icons.directions_car,
-            titleNl: 'Auto opslag',
-            titleEn: 'Car Storage',
+            titleNl: 'Auto/motor opslag',
+            titleEn: 'Car/Motorcycle Storage',
             value: '${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
             onPressed: (capacities?['cars'] as int? ?? 0) > 0
                 ? () => _depositVehicle(vehicleType: 'car')
@@ -5190,7 +5194,7 @@ class _CrewScreenState extends State<CrewScreen>
   String _getBuildingLabel(String buildingType, String locale) {
     const labels = {
       'hq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
-      'car_storage': {'nl': 'Auto opslag', 'en': 'Car Storage'},
+      'car_storage': {'nl': 'Auto/motor opslag', 'en': 'Car/Motorcycle Storage'},
       'boat_storage': {'nl': 'Haven', 'en': 'Boat Storage'},
       'weapon_storage': {'nl': 'Wapen opslag', 'en': 'Weapon Storage'},
       'ammo_storage': {'nl': 'Munitie opslag', 'en': 'Ammo Storage'},
