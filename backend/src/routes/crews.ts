@@ -836,6 +836,12 @@ router.post(
             params: {},
           });
         }
+        if (error.message === 'CASH_BOOTSTRAP_LIMIT_REACHED') {
+          return res.status(400).json({
+            event: 'error.cash_bootstrap_limit_reached',
+            params: {},
+          });
+        }
         if (error.message === 'CASH_STORAGE_FULL') {
           return res.status(400).json({
             event: 'error.cash_storage_full',

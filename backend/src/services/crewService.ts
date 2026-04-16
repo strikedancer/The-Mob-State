@@ -1,5 +1,9 @@
 import prisma from '../lib/prisma';
-import { getCrewMemberCapForCrew, getCrewStorageCapacity } from './crewBuildingService';
+import {
+  getCrewBuildingCost,
+  getCrewMemberCapForCrew,
+  getCrewStorageCapacity,
+} from './crewBuildingService';
 
 interface CreateCrewInput {
   name: string;
@@ -520,37 +524,38 @@ export async function depositToCrewBank(
   }
 
   const cashCapacity = await getCrewStorageCapacity(crewId, 'cash_storage');
-  if (cashCapacity <= 0) {
-    throw new Error('CASH_STORAGE_NOT_OWNED');
-  }
+  const bootstrapLimit = cashCapacity > 0 ? cashCapacity : getCrewBuildingCost('cash_storage', 0);
 
   return prisma.$transaction(async (tx) => {
-    const player = await tx.player.findUnique({
-      where: { id: playerId },
-      select: { money: true },
-    });
+    const [player, currentCrew] = await Promise.all([
+      tx.player.findUnique({
+        where: { id: playerId },
+        select: { money: true },
+      }),
+      tx.crew.findUnique({
+        where: { id: crewId },
+        select: { bankBalance: true },
+      }),
+    ]);
 
     if (!player || player.money < amount) {
       throw new Error('INSUFFICIENT_FUNDS');
+    }
+
+    if (!currentCrew) {
+      throw new Error('CREW_NOT_FOUND');
+    }
+
+    if (currentCrew.bankBalance + amount > bootstrapLimit) {
+      throw new Error(
+        cashCapacity > 0 ? 'CASH_STORAGE_FULL' : 'CASH_BOOTSTRAP_LIMIT_REACHED'
+      );
     }
 
     await tx.player.update({
       where: { id: playerId },
       data: { money: { decrement: amount } },
     });
-
-    const currentCrew = await tx.crew.findUnique({
-      where: { id: crewId },
-      select: { bankBalance: true },
-    });
-
-    if (!currentCrew) {
-      throw new Error('CREW_NOT_FOUND');
-    }
-
-    if (cashCapacity > 0 && currentCrew.bankBalance + amount > cashCapacity) {
-      throw new Error('CASH_STORAGE_FULL');
-    }
 
     const crew = await tx.crew.update({
       where: { id: crewId },

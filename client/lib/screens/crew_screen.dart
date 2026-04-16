@@ -9,6 +9,8 @@ import '../models/crew_join_request.dart';
 import '../widgets/crew_chat_widget.dart';
 import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
 
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
@@ -52,8 +54,9 @@ class _CrewScreenState extends State<CrewScreen>
 
   static const Map<String, Map<String, String>> _crewI18n = {
     'app.crews': {'nl': 'Crews', 'en': 'Crews'},
-    'tab.myCrew': {'nl': 'Mijn Crew', 'en': 'My Crew'},
-    'tab.crewHq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
+    'tab.myCrew': {'nl': 'Overzicht', 'en': 'Overview'},
+    'tab.crewHq': {'nl': 'HQ & Upgrades', 'en': 'HQ & Upgrades'},
+    'tab.storageHub': {'nl': 'Opslag', 'en': 'Storage'},
     'tab.members': {'nl': 'Leden', 'en': 'Members'},
     'tab.warRoom': {'nl': 'War Room', 'en': 'War Room'},
     'tab.carStorage': {'nl': 'Auto opslag', 'en': 'Car Storage'},
@@ -62,7 +65,7 @@ class _CrewScreenState extends State<CrewScreen>
     'tab.ammoStorage': {'nl': 'Munitie opslag', 'en': 'Ammo Storage'},
     'tab.drugStorage': {'nl': 'Drugs opslag', 'en': 'Drug Storage'},
     'tab.cashStorage': {'nl': 'Cash opslag', 'en': 'Cash Storage'},
-    'tab.allCrews': {'nl': 'Alle Crews', 'en': 'All Crews'},
+    'tab.allCrews': {'nl': 'Crews', 'en': 'Crews'},
     'tab.chat': {'nl': 'Chat', 'en': 'Chat'},
     'action.createCrewShort': {
       'nl': 'Crew Maken (€50k)',
@@ -83,10 +86,10 @@ class _CrewScreenState extends State<CrewScreen>
     'action.deleteCrew': {'nl': 'Crew verwijderen', 'en': 'Delete crew'},
     'label.crewStats': {'nl': 'Crew Stats:', 'en': 'Crew Stats:'},
     'action.leaveCrew': {'nl': 'Crew Verlaten', 'en': 'Leave Crew'},
-    'section.buildings': {'nl': 'Crew HQ & Opslag', 'en': 'Crew HQ & Storage'},
+    'section.buildings': {'nl': 'HQ & Upgrades', 'en': 'HQ & Upgrades'},
     'hint.buildingsTabs': {
-      'nl': 'Open Crew HQ en de opslag-tabs om te bekijken en upgraden.',
-      'en': 'Open Crew HQ and the storage tabs to view and upgrade.',
+      'nl': 'Open HQ & Upgrades om het HQ en alle crew-gebouwen centraal te beheren.',
+      'en': 'Open HQ & Upgrades to manage HQ and all crew buildings from one place.',
     },
     'section.crewStorage': {'nl': 'Crew Opslag', 'en': 'Crew Storage'},
     'state.noStorageData': {
@@ -109,6 +112,7 @@ class _CrewScreenState extends State<CrewScreen>
     'action.goToMembers': {'nl': 'Ga naar Leden', 'en': 'Go to Members'},
     'label.crewHq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
     'action.goToCrewHq': {'nl': 'Ga naar Crew HQ', 'en': 'Go to Crew HQ'},
+    'action.goToStorage': {'nl': 'Ga naar Opslag', 'en': 'Go to Storage'},
     'state.joinCrewFirst': {
       'nl': 'Maak of join eerst een crew',
       'en': 'Create or join a crew first',
@@ -144,6 +148,19 @@ class _CrewScreenState extends State<CrewScreen>
     'help.upgradeCost': {'nl': 'Kosten', 'en': 'Cost'},
     'help.close': {'nl': 'Sluiten', 'en': 'Close'},
     'help.showCaps': {'nl': 'Toon caps', 'en': 'Show caps'},
+    'section.upgradeHub': {
+      'nl': 'HQ & Upgrades',
+      'en': 'HQ & Upgrades',
+    },
+    'section.storageHub': {'nl': 'Opslag Hub', 'en': 'Storage Hub'},
+    'hint.storageTab': {
+      'nl': 'Gebruik de opslag-tab voor stortingen, saldo en snelle opslagacties.',
+      'en': 'Use the Storage tab for deposits, balances and quick storage actions.',
+    },
+    'hint.upgradeHub': {
+      'nl': 'Beheer hier het HQ en alle crew-upgrades op 1 plek.',
+      'en': 'Manage HQ and all crew upgrades from one place here.',
+    },
   };
 
   static const Map<String, List<int>> _buildingCapacityByLevel = {
@@ -600,6 +617,8 @@ class _CrewScreenState extends State<CrewScreen>
 
   String _tr(String locale, String nl, String en) => locale == 'nl' ? nl : en;
 
+  String _money(num amount) => formatCurrency(amount);
+
   String _buildingActionErrorMessage(String locale, String? event) {
     switch (event) {
       case 'error.hq_style_locked':
@@ -646,6 +665,12 @@ class _CrewScreenState extends State<CrewScreen>
           'Crew VIP vereist voor level 11+',
           'Crew VIP required for level 11+',
         );
+      case 'error.cash_bootstrap_limit_reached':
+        return _tr(
+          locale,
+          'Starterstorting bereikt. Koop nu eerst cash opslag voor extra crew bankruimte.',
+          'Starter deposit reached. Purchase cash storage first to unlock more crew bank space.',
+        );
       default:
         return _tr(locale, 'Actie mislukt', 'Action failed');
     }
@@ -654,7 +679,7 @@ class _CrewScreenState extends State<CrewScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 12, vsync: this);
+    _tabController = TabController(length: 7, vsync: this);
     _loadData();
   }
 
@@ -2027,7 +2052,16 @@ class _CrewScreenState extends State<CrewScreen>
     final locale = Localizations.localeOf(context).languageCode;
     final cashStorageCapacity =
         _crewStorage?['capacities']?['cash'] as int? ?? 0;
-    if (cashStorageCapacity <= 0) {
+    final cashStorageBuilding = _crewBuildings.firstWhere(
+      (b) => (b['type'] as String?) == 'cash_storage',
+      orElse: () => <String, dynamic>{},
+    );
+    final cashBootstrapLimit =
+        cashStorageBuilding['nextUpgradeCost'] as int? ?? 0;
+    final canUseBootstrapDeposit =
+        deposit && cashStorageCapacity <= 0 && cashBootstrapLimit > 0;
+
+    if (cashStorageCapacity <= 0 && !canUseBootstrapDeposit) {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
@@ -2131,6 +2165,58 @@ class _CrewScreenState extends State<CrewScreen>
           );
         }
         _loadData();
+        return;
+      }
+
+      if (mounted) {
+        String message = _tr(locale, 'Actie mislukt', 'Action failed');
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          final event = data['event'] as String?;
+          switch (event) {
+            case 'error.invalid_amount':
+              message = _tr(locale, 'Ongeldig bedrag', 'Invalid amount');
+              break;
+            case 'error.insufficient_funds':
+              message = _tr(
+                locale,
+                'Onvoldoende contant geld',
+                'Not enough cash on hand',
+              );
+              break;
+            case 'error.cash_storage_not_owned':
+              message = _tr(
+                locale,
+                'Koop eerst cash opslag voor de crew bank',
+                'Purchase cash storage first for the crew bank',
+              );
+              break;
+            case 'error.cash_bootstrap_limit_reached':
+              message = _buildingActionErrorMessage(locale, event);
+              break;
+            case 'error.cash_storage_full':
+              message = _tr(
+                locale,
+                'Crew cash opslag zit vol',
+                'Crew cash storage is full',
+              );
+              break;
+            case 'error.insufficient_crew_funds':
+              message = _tr(
+                locale,
+                'Onvoldoende saldo in crew bank',
+                'Insufficient crew bank funds',
+              );
+              break;
+          }
+        } catch (_) {
+          // Keep fallback message.
+        }
+
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(message), backgroundColor: Colors.red),
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -2221,6 +2307,11 @@ class _CrewScreenState extends State<CrewScreen>
     final isHq = type == 'hq';
     final localizedLabel = _getBuildingLabel(type, locale);
     final purchaseLevel = isHq ? 0 : 1;
+    final building = _crewBuildings.firstWhere(
+      (b) => (b['type'] as String?) == type,
+      orElse: () => <String, dynamic>{},
+    );
+    final nextCost = building['nextUpgradeCost'] as int?;
     String selectedStyle = 'camping';
 
     if (isHq) {
@@ -2258,6 +2349,10 @@ class _CrewScreenState extends State<CrewScreen>
               ),
               const SizedBox(height: 8),
               Text('${_t(locale, 'label.level')}: $purchaseLevel'),
+              if (nextCost != null) ...[
+                const SizedBox(height: 8),
+                Text('${_tr(locale, 'Kosten', 'Cost')}: ${_money(nextCost)}'),
+              ],
               const SizedBox(height: 12),
               if (isHq)
                 Text(
@@ -2373,6 +2468,7 @@ class _CrewScreenState extends State<CrewScreen>
     );
     final currentLevel = currentBuilding['level'] as int? ?? 0;
     final nextLevel = currentLevel + 1;
+    final nextCost = currentBuilding['nextUpgradeCost'] as int?;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -2386,6 +2482,10 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             const SizedBox(height: 8),
             Text('${_t(locale, 'label.level')}: $currentLevel → $nextLevel'),
+            if (nextCost != null) ...[
+              const SizedBox(height: 8),
+              Text('${_tr(locale, 'Kosten', 'Cost')}: ${_money(nextCost)}'),
+            ],
           ],
         ),
         actions: [
@@ -3002,17 +3102,14 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Widget _buildCrewHqThumbnail(String? style, int? level) {
-    print('🏢 Building HQ thumbnail for style=$style, level=$level');
     final path = _getCrewHqImagePath(style, level);
     if (path == null) {
-      print('🏢 Showing default icon (no HQ)');
       return const CircleAvatar(child: Icon(Icons.group));
     }
-    print('🏢 Loading HQ image from: $path');
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
-      child: Image.asset(
+      child: WebAssetHelper.image(
         path,
         width: 56,
         height: 56,
@@ -3041,14 +3138,9 @@ class _CrewScreenState extends State<CrewScreen>
           tabs: [
             Tab(text: _t(locale, 'tab.myCrew')),
             Tab(text: _t(locale, 'tab.crewHq')),
+            Tab(text: _t(locale, 'tab.storageHub')),
             Tab(text: _t(locale, 'tab.members')),
             Tab(text: _t(locale, 'tab.warRoom')),
-            Tab(text: _t(locale, 'tab.carStorage')),
-            Tab(text: _t(locale, 'tab.boatStorage')),
-            Tab(text: _t(locale, 'tab.weaponStorage')),
-            Tab(text: _t(locale, 'tab.ammoStorage')),
-            Tab(text: _t(locale, 'tab.drugStorage')),
-            Tab(text: _t(locale, 'tab.cashStorage')),
             Tab(text: _t(locale, 'tab.allCrews')),
             Tab(icon: const Icon(Icons.chat), text: _t(locale, 'tab.chat')),
           ],
@@ -3060,15 +3152,10 @@ class _CrewScreenState extends State<CrewScreen>
               controller: _tabController,
               children: [
                 _buildMyCrewTab(),
-                _buildBuildingTab('hq'),
+                _buildHqManagementTab(),
+                _buildStorageManagementTab(),
                 _buildMembersTab(),
                 _buildCrewWarTab(),
-                _buildBuildingTab('car_storage'),
-                _buildBuildingTab('boat_storage'),
-                _buildBuildingTab('weapon_storage'),
-                _buildBuildingTab('ammo_storage'),
-                _buildBuildingTab('drug_storage'),
-                _buildBuildingTab('cash_storage'),
                 _buildAllCrewsTab(),
                 _buildChatTab(),
               ],
@@ -3131,6 +3218,14 @@ class _CrewScreenState extends State<CrewScreen>
     final ammoStorageOwned = (storageCapacities?['ammo'] as int? ?? 0) > 0;
     final drugStorageOwned = (storageCapacities?['drugs'] as int? ?? 0) > 0;
     final cashStorageOwned = (storageCapacities?['cash'] as int? ?? 0) > 0;
+    final cashStorageBuilding = _crewBuildings.firstWhere(
+      (b) => (b['type'] as String?) == 'cash_storage',
+      orElse: () => <String, dynamic>{},
+    );
+    final cashBootstrapLimit =
+      cashStorageBuilding['nextUpgradeCost'] as int? ?? 0;
+    final canBootstrapDeposit =
+      !cashStorageOwned && cashBootstrapLimit > 0 && _myCrew!.bankBalance < cashBootstrapLimit;
 
     return RefreshIndicator(
       onRefresh: _loadData,
@@ -3226,8 +3321,12 @@ class _CrewScreenState extends State<CrewScreen>
                         Text(
                           cashStorageOwned
                               ? (locale == 'nl'
-                                    ? 'Opslagcapaciteit: €${(_crewStorage?['capacities']?['cash'] ?? 0).toString()}'
-                                    : 'Storage capacity: €${(_crewStorage?['capacities']?['cash'] ?? 0).toString()}')
+                            ? 'Opslagcapaciteit: ${_money(_crewStorage?['capacities']?['cash'] ?? 0)}'
+                            : 'Storage capacity: ${_money(_crewStorage?['capacities']?['cash'] ?? 0)}')
+                          : canBootstrapDeposit
+                            ? (locale == 'nl'
+                              ? 'Starterstorting voor cash opslag: ${_money(_myCrew!.bankBalance)} / ${_money(cashBootstrapLimit)}'
+                              : 'Starter deposit for cash storage: ${_money(_myCrew!.bankBalance)} / ${_money(cashBootstrapLimit)}')
                               : (locale == 'nl'
                                     ? 'Koop eerst geldopslag om de crew bank te gebruiken'
                                     : 'Purchase cash storage first to use the crew bank'),
@@ -3238,7 +3337,7 @@ class _CrewScreenState extends State<CrewScreen>
                           children: [
                             Expanded(
                               child: OutlinedButton.icon(
-                                onPressed: cashStorageOwned
+                                onPressed: (cashStorageOwned || canBootstrapDeposit)
                                     ? () => _handleBankAction(deposit: true)
                                     : null,
                                 icon: const Icon(Icons.savings),
@@ -3355,6 +3454,18 @@ class _CrewScreenState extends State<CrewScreen>
                   ),
                 ),
                 const SizedBox(height: 16),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.inventory_2),
+                    title: Text(_t(locale, 'section.storageHub')),
+                    subtitle: Text(_t(locale, 'hint.storageTab')),
+                    trailing: TextButton(
+                      onPressed: () => _tabController.animateTo(2),
+                      child: Text(_t(locale, 'action.goToStorage')),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 // Crew Storage
                 Card(
                   child: Padding(
@@ -3398,8 +3509,8 @@ class _CrewScreenState extends State<CrewScreen>
                           ),
                           Text(
                             locale == 'nl'
-                                ? 'Geldopslag: €${_crewStorage!['totals']['cash']} / €${_crewStorage!['capacities']['cash']}'
-                                : 'Cash storage: €${_crewStorage!['totals']['cash']} / €${_crewStorage!['capacities']['cash']}',
+                              ? 'Geldopslag: ${_money(_crewStorage!['totals']['cash'])} / ${_money(cashStorageOwned ? _crewStorage!['capacities']['cash'] : cashBootstrapLimit)}'
+                              : 'Cash storage: ${_money(_crewStorage!['totals']['cash'])} / ${_money(cashStorageOwned ? _crewStorage!['capacities']['cash'] : cashBootstrapLimit)}',
                           ),
                           const SizedBox(height: 12),
                           Text(
@@ -3462,7 +3573,7 @@ class _CrewScreenState extends State<CrewScreen>
                     title: Text(_t(locale, 'section.membersOverview')),
                     subtitle: Text(_t(locale, 'hint.membersTab')),
                     trailing: TextButton(
-                      onPressed: () => _tabController.animateTo(2),
+                      onPressed: () => _tabController.animateTo(3),
                       child: Text(_t(locale, 'action.goToMembers')),
                     ),
                   ),
@@ -3475,7 +3586,7 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  Widget _buildBuildingTab(String buildingType) {
+  Widget _buildHqManagementTab() {
     final locale = Localizations.localeOf(context).languageCode;
     if (_myCrew == null) {
       return Center(
@@ -3492,13 +3603,255 @@ class _CrewScreenState extends State<CrewScreen>
       (m) => m.playerId == currentPlayerId,
     );
     final isLeader = myMembership.isLeader;
+    const storageTypes = [
+      'car_storage',
+      'boat_storage',
+      'weapon_storage',
+      'ammo_storage',
+      'drug_storage',
+      'cash_storage',
+    ];
 
     return RefreshIndicator(
       onRefresh: _loadData,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
-        child: _buildSingleBuildingCard(buildingType, locale, isLeader),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _t(locale, 'section.upgradeHub'),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _t(locale, 'hint.upgradeHub'),
+              style: const TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: _buildSingleBuildingCard('hq', locale, isLeader),
+              ),
+            ),
+            const SizedBox(height: 16),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final fullWidth = constraints.maxWidth;
+                final cardWidth = fullWidth >= 1100
+                    ? (fullWidth - 16) / 2
+                    : fullWidth;
+
+                return Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  children: storageTypes
+                      .map(
+                        (type) => SizedBox(
+                          width: cardWidth,
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: _buildSingleBuildingCard(
+                                type,
+                                locale,
+                                isLeader,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStorageManagementTab() {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_myCrew == null) {
+      return Center(
+        child: Text(
+          _t(locale, 'state.joinCrewFirst'),
+          style: const TextStyle(color: Colors.grey, fontSize: 16),
+        ),
+      );
+    }
+
+    final storage = _crewStorage;
+    final capacities = storage?['capacities'] as Map<String, dynamic>?;
+    final totals = storage?['totals'] as Map<String, dynamic>?;
+    final cashStorageOwned = (capacities?['cash'] as int? ?? 0) > 0;
+    final cashStorageBuilding = _crewBuildings.firstWhere(
+      (b) => (b['type'] as String?) == 'cash_storage',
+      orElse: () => <String, dynamic>{},
+    );
+    final cashBootstrapLimit =
+        cashStorageBuilding['nextUpgradeCost'] as int? ?? 0;
+    final cashLimit = cashStorageOwned
+        ? (capacities?['cash'] as int? ?? 0)
+        : cashBootstrapLimit;
+
+    Widget buildStorageTile({
+      required IconData icon,
+      required String titleNl,
+      required String titleEn,
+      required String value,
+      VoidCallback? onPressed,
+      String? actionNl,
+      String? actionEn,
+    }) {
+      return Card(
+        child: ListTile(
+          leading: Icon(icon),
+          title: Text(locale == 'nl' ? titleNl : titleEn),
+          subtitle: Text(value),
+          trailing: onPressed != null
+              ? OutlinedButton(
+                  onPressed: onPressed,
+                  child: Text(locale == 'nl' ? actionNl! : actionEn!),
+                )
+              : null,
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        children: [
+          Text(
+            _t(locale, 'section.storageHub'),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _t(locale, 'hint.storageTab'),
+            style: const TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 16),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _t(locale, 'section.crewStorage'),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    locale == 'nl'
+                        ? 'Autos: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}'
+                        : 'Cars: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
+                  ),
+                  Text(
+                    locale == 'nl'
+                        ? 'Boten: ${totals?['boats'] ?? 0} / ${capacities?['boats'] ?? 0}'
+                        : 'Boats: ${totals?['boats'] ?? 0} / ${capacities?['boats'] ?? 0}',
+                  ),
+                  Text(
+                    locale == 'nl'
+                        ? 'Wapens: ${totals?['weapons'] ?? 0} / ${capacities?['weapons'] ?? 0}'
+                        : 'Weapons: ${totals?['weapons'] ?? 0} / ${capacities?['weapons'] ?? 0}',
+                  ),
+                  Text(
+                    locale == 'nl'
+                        ? 'Munitie: ${totals?['ammo'] ?? 0} / ${capacities?['ammo'] ?? 0}'
+                        : 'Ammo: ${totals?['ammo'] ?? 0} / ${capacities?['ammo'] ?? 0}',
+                  ),
+                  Text(
+                    locale == 'nl'
+                        ? 'Drugs: ${totals?['drugs'] ?? 0} / ${capacities?['drugs'] ?? 0}'
+                        : 'Drugs: ${totals?['drugs'] ?? 0} / ${capacities?['drugs'] ?? 0}',
+                  ),
+                  Text(
+                    locale == 'nl'
+                        ? 'Cash: ${_money(totals?['cash'] ?? 0)} / ${_money(cashLimit)}'
+                        : 'Cash: ${_money(totals?['cash'] ?? 0)} / ${_money(cashLimit)}',
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          buildStorageTile(
+            icon: Icons.directions_car,
+            titleNl: 'Auto opslag',
+            titleEn: 'Car Storage',
+            value: '${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
+            onPressed: (capacities?['cars'] as int? ?? 0) > 0
+                ? () => _depositVehicle(vehicleType: 'car')
+                : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
+            icon: Icons.directions_boat,
+            titleNl: 'Haven',
+            titleEn: 'Boat Storage',
+            value: '${totals?['boats'] ?? 0} / ${capacities?['boats'] ?? 0}',
+            onPressed: (capacities?['boats'] as int? ?? 0) > 0
+                ? () => _depositVehicle(vehicleType: 'boat')
+                : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
+            icon: Icons.gavel,
+            titleNl: 'Wapen opslag',
+            titleEn: 'Weapon Storage',
+            value: '${totals?['weapons'] ?? 0} / ${capacities?['weapons'] ?? 0}',
+            onPressed: (capacities?['weapons'] as int? ?? 0) > 0 ? _depositWeapon : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
+            icon: Icons.inventory_2,
+            titleNl: 'Munitie opslag',
+            titleEn: 'Ammo Storage',
+            value: '${totals?['ammo'] ?? 0} / ${capacities?['ammo'] ?? 0}',
+            onPressed: (capacities?['ammo'] as int? ?? 0) > 0 ? _depositAmmo : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
+            icon: Icons.medication,
+            titleNl: 'Drugs opslag',
+            titleEn: 'Drug Storage',
+            value: '${totals?['drugs'] ?? 0} / ${capacities?['drugs'] ?? 0}',
+            onPressed: (capacities?['drugs'] as int? ?? 0) > 0 ? _depositDrugs : null,
+            actionNl: 'Toevoegen',
+            actionEn: 'Add',
+          ),
+          buildStorageTile(
+            icon: Icons.account_balance_wallet,
+            titleNl: 'Cash opslag',
+            titleEn: 'Cash Storage',
+            value: '${_money(totals?['cash'] ?? 0)} / ${_money(cashLimit)}',
+            onPressed: () => _handleBankAction(deposit: true),
+            actionNl: 'Storten',
+            actionEn: 'Deposit',
+          ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () => _tabController.animateTo(1),
+              icon: const Icon(Icons.upgrade),
+              label: Text(_t(locale, 'section.upgradeHub')),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -4342,7 +4695,7 @@ class _CrewScreenState extends State<CrewScreen>
                         children: [
                           if (imagePath != null)
                             Positioned.fill(
-                              child: Image.asset(
+                              child: WebAssetHelper.image(
                                 imagePath,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
@@ -4474,9 +4827,9 @@ class _CrewScreenState extends State<CrewScreen>
                           : null,
                       child: Text(
                         (level == null)
-                            ? _t(locale, 'action.purchase')
+                            ? '${_t(locale, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
                             : (level < maxLevel && nextCost != null)
-                            ? '${_t(locale, 'action.upgrade')} (€${nextCost.toString()})'
+                            ? '${_t(locale, 'action.upgrade')} (${_money(nextCost)})'
                             : status,
                       ),
                     ),
@@ -4588,7 +4941,7 @@ class _CrewScreenState extends State<CrewScreen>
                       children: [
                         if (imagePath != null)
                           Positioned.fill(
-                            child: Image.asset(
+                            child: WebAssetHelper.image(
                               imagePath,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
@@ -4718,9 +5071,9 @@ class _CrewScreenState extends State<CrewScreen>
                         : null,
                     child: Text(
                       (level == null)
-                          ? _t(locale, 'action.purchase')
+                          ? '${_t(locale, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
                           : (level < maxLevel && nextCost != null)
-                          ? '${_t(locale, 'action.upgrade')} (€${nextCost.toString()})'
+                          ? '${_t(locale, 'action.upgrade')} (${_money(nextCost)})'
                           : status,
                     ),
                   ),

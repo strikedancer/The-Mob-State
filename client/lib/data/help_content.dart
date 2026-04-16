@@ -249,7 +249,9 @@ const List<HelpTopic> helpTopics = [
     howNl: [
       'Crew aanmaken kost €10.000. Elke crew heeft max 10 leden. De leader kan leden uitnodigen, kicken en heists starten.',
       'Crew-voordelen: toegang tot grote heists, gedeelde opslag, teamwork-bonus (+10% slagingskans per extra lid, max +30%) en groepschat.',
+      'Nieuwe crews mogen eerst een beperkte starterstorting in de crew bank doen tot precies genoeg saldo voor de eerste cash opslag. Daarna moet cash opslag gekocht zijn voordat verdere stortingen mogelijk zijn.',
       'Als een crewlid wordt opgepakt krijgen crewleden nu een pushmelding dat die speler vastzit en op hulp wacht.',
+      'Het crew-scherm is nu gegroepeerd in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crews en Chat zodat beheer rustiger en professioneler blijft.',
       'Crew Wars hebben een eigen War Room-tab in het crew-scherm. Alleen leaders kunnen een war declareren en er zijn minimaal 3 crewleden nodig om mee te doen.',
       'War-types: Kill War, Economy War, Territory War en Total War. Iedere war doorloopt voorbereiding, actieve fase, lockdown en afronding.',
       'Tijdens een actieve war kunnen deelnemers acties uitvoeren zoals kills, mugs, sabotage, intel, raids, shields, boosts en territory claims. Sommige acties vereisen een doelspeler of VIP-status.',
@@ -264,7 +266,9 @@ const List<HelpTopic> helpTopics = [
     howEn: [
       'Creating a crew costs €10.000. Each crew has max 10 members. Leader can invite, kick and start heists.',
       'Crew benefits: access to large heists, shared storage, teamwork bonus (+10% success per extra member, max +30%) and group chat.',
+      'New crews may first make a limited starter deposit into the crew bank up to exactly enough balance for the first cash storage purchase. After that, cash storage must be owned before further deposits are allowed.',
       'When a crew member gets arrested, crew members now receive a push notification that the player is locked up and waiting for help.',
+      'The crew screen is now grouped into Overview, HQ & Upgrades, Storage, Members, War Room, Crews and Chat so management feels calmer and more professional.',
       'Crew Wars have their own War Room tab inside the crew screen. Only leaders can declare a war and at least 3 crew members are required to participate.',
       'War types: Kill War, Economy War, Territory War and Total War. Each war moves through preparation, active phase, lockdown and resolution.',
       'During an active war, participants can perform actions like kills, mugs, sabotage, intel, raids, shields, boosts and territory claims. Some actions require a target player or VIP status.',
@@ -277,6 +281,7 @@ const List<HelpTopic> helpTopics = [
       'Crew HQ progression: the longer and more active the crew, the more shared upgrades and buffs unlock.',
     ],
     tipsNl: [
+      'Gebruik de starterstorting alleen om de eerste cash opslag vrij te spelen; daarna groeit de crew bank pas verder via echte cash opslag upgrades.',
       'Gebruik de War Room eerst om te zien of je crew al in cooldown zit voordat je een nieuwe oorlog probeert te declareren.',
       'Verdeel target calls in de crew-chat zodat je niet steeds op dezelfde tegenstander focust en door de anti-farm guard wordt geblokkeerd.',
       'Coördineer heist-starttijden in de crew-chat zodat iedereen online is en niemand in de cel zit.',
@@ -284,6 +289,7 @@ const List<HelpTopic> helpTopics = [
       'Gebruik gedeelde crew-opslag om risicovolle goederen los te koppelen van je persoonlijke inventaris.',
     ],
     tipsEn: [
+      'Use the starter deposit only to unlock the first cash storage; after that the crew bank can grow further only through real cash storage upgrades.',
       'Check the War Room first to see whether your crew is still on cooldown before trying to declare a new war.',
       'Coordinate target calls in crew chat so you do not keep farming the same opponent and trip the anti-farm guard.',
       'Coordinate heist start times in crew chat so everyone is online and nobody is in jail.',

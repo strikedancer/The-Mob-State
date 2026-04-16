@@ -115,6 +115,10 @@ function getLevelDefinition(type: CrewBuildingType, level: number): BuildingLeve
   return current;
 }
 
+export function getCrewBuildingCost(type: CrewBuildingType, level: number): number {
+  return getLevelDefinition(type, level).upgradeCost;
+}
+
 function validateStyle(style: string): CrewBuildingStyle {
   if (!buildingConfig.styles.includes(style as CrewBuildingStyle)) {
     throw new Error('INVALID_BUILDING_STYLE');

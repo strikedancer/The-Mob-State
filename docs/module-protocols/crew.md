@@ -23,6 +23,10 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Crew bank bootstrap must not deadlock progression: a brand-new crew without cash storage still needs a clearly bounded path to fund its first cash storage purchase.
+- Crew HQ and storage cards must show purchase and upgrade costs directly in the UI; price information may not be hidden behind failed actions.
+- Crew/HQ images must use the shared platform-safe loading path with icon fallback so externally mounted web assets do not disappear silently.
+- Top-level crew navigation should stay grouped by management intent instead of exposing every storage type as a separate main tab.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -39,6 +43,9 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify a fresh crew can deposit enough starter cash to buy the first cash storage without already owning cash storage, but cannot exceed that bootstrap limit before purchase.
+- Verify purchase and upgrade buttons/dialogs show the correct euro amounts for HQ and every storage building.
+- Verify HQ/storage images still load on web when assets are served through external mounts or nginx alias fallbacks.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
