@@ -32,6 +32,12 @@ class _BankScreenState extends State<BankScreen> {
   int _currentPage = 1;
   int _totalPages = 1;
   int _totalTransactions = 0;
+  Map<String, int> _transactionSummary = const {
+    'deposits': 0,
+    'withdrawals': 0,
+    'transfersSent': 0,
+    'transfersReceived': 0,
+  };
   List<Map<String, dynamic>> _transactions = const [];
   List<Map<String, dynamic>> _transferSuggestions = const [];
   List<Map<String, dynamic>> _recentRecipients = const [];
@@ -146,6 +152,12 @@ class _BankScreenState extends State<BankScreen> {
           _currentPage = (params?['page'] as num?)?.toInt() ?? page;
           _totalPages = (params?['totalPages'] as num?)?.toInt() ?? 1;
           _totalTransactions = (params?['total'] as num?)?.toInt() ?? 0;
+          _transactionSummary = {
+            'deposits': (params?['summary']?['deposits'] as num?)?.toInt() ?? 0,
+            'withdrawals': (params?['summary']?['withdrawals'] as num?)?.toInt() ?? 0,
+            'transfersSent': (params?['summary']?['transfersSent'] as num?)?.toInt() ?? 0,
+            'transfersReceived': (params?['summary']?['transfersReceived'] as num?)?.toInt() ?? 0,
+          };
           _isLoadingTransactions = false;
         });
       } else {
@@ -835,6 +847,33 @@ class _BankScreenState extends State<BankScreen> {
                       ],
                     ),
                     const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _buildTransactionSummaryChip(
+                          label: _tr('Stortingen', 'Deposits'),
+                          value: _transactionSummary['deposits'] ?? 0,
+                          color: Colors.greenAccent,
+                        ),
+                        _buildTransactionSummaryChip(
+                          label: _tr('Opnames', 'Withdrawals'),
+                          value: _transactionSummary['withdrawals'] ?? 0,
+                          color: Colors.redAccent,
+                        ),
+                        _buildTransactionSummaryChip(
+                          label: _tr('Verzonden', 'Sent'),
+                          value: _transactionSummary['transfersSent'] ?? 0,
+                          color: const Color(0xFFD4AF37),
+                        ),
+                        _buildTransactionSummaryChip(
+                          label: _tr('Ontvangen', 'Received'),
+                          value: _transactionSummary['transfersReceived'] ?? 0,
+                          color: Colors.lightBlueAccent,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
                     SizedBox(
                       height: transactionsListHeight,
                       child: _isLoadingTransactions
@@ -1032,6 +1071,43 @@ class _BankScreenState extends State<BankScreen> {
                       ),
                   ],
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTransactionSummaryChip({
+    required String label,
+    required int value,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: color.withOpacity(0.6)),
+      ),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '$label: ',
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            TextSpan(
+              text: '$value',
+              style: TextStyle(
+                color: color,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],

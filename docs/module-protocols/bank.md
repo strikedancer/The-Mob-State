@@ -23,6 +23,7 @@ Deposits, withdrawals, transfers, transaction history and money safety.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Transaction history and transaction summary counters must reflect the same underlying deposit, withdrawal, sent-transfer and received-transfer data; withdrawals may not be omitted from the visible transaction summary.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

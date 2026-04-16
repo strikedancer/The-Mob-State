@@ -55,6 +55,12 @@ export interface BankTransactionPage {
   page: number;
   limit: number;
   totalPages: number;
+  summary: {
+    deposits: number;
+    withdrawals: number;
+    transfersSent: number;
+    transfersReceived: number;
+  };
 }
 
 export interface RecentRecipient {
@@ -371,8 +377,51 @@ export async function getTransactions(
     }),
   ]);
 
+  const summaryRows = await prisma.worldEvent.groupBy({
+    by: ['eventKey'],
+    where: whereClause,
+    _count: {
+      eventKey: true,
+    },
+  });
+
+  const summary = {
+    deposits: 0,
+    withdrawals: 0,
+    transfersSent: 0,
+    transfersReceived: 0,
+  };
+
+  for (const row of summaryRows) {
+    const count = row._count.eventKey;
+    if (row.eventKey === 'bank.deposit') {
+      summary.deposits = count;
+    } else if (row.eventKey === 'bank.withdraw') {
+      summary.withdrawals = count;
+    } else if (row.eventKey === 'bank.transfer_sent') {
+      summary.transfersSent = count;
+    } else if (row.eventKey === 'bank.transfer_received') {
+      summary.transfersReceived = count;
+    }
+  }
+
   const transactions: BankTransactionItem[] = events.map((event) => {
-    const params = (event.params as Record<string, unknown>) || {};
+    const params = (() => {
+      if (typeof event.params === 'string') {
+        try {
+          const parsed = JSON.parse(event.params);
+          return parsed && typeof parsed === 'object'
+            ? (parsed as Record<string, unknown>)
+            : {};
+        } catch {
+          return {};
+        }
+      }
+
+      return event.params && typeof event.params === 'object'
+        ? (event.params as Record<string, unknown>)
+        : {};
+    })();
     const amountValue = params.amount;
     const amount =
       typeof amountValue === 'number'
@@ -404,6 +453,7 @@ export async function getTransactions(
     page: safePage,
     limit: safeLimit,
     totalPages,
+    summary,
   };
 }
 

@@ -370,6 +370,7 @@ router.get('/transactions', authenticate, async (req: AuthRequest, res: Response
         page: result.page,
         limit: result.limit,
         totalPages: result.totalPages,
+        summary: result.summary,
       },
     });
   } catch {

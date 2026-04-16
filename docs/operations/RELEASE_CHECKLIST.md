@@ -23,6 +23,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Bank transacties hersteld: banktransactiebedragen worden nu correct uit opgeslagen world-event JSON geparsed in plaats van als string-object te mislukken naar `0`, en de bank API levert nu ook aparte samenvattingstellers voor stortingen, opnames, verzonden overboekingen en ontvangen overboekingen
+  - Bestanden: `backend/src/services/bankService.ts`, `backend/src/routes/bank.ts`, `client/lib/screens/bank_screen.dart`, `docs/module-protocols/bank.md`
 - [ ] Crew Wars member push coverage aangescherpt: ook automatische war lifecycle-transities (`started`, `lockdown`) sturen nu push/inbox naar alle betrokken crew members inclusief leaders, in plaats van alleen admin-handmatige of declare/resolve momenten
   - Bestanden: `backend/src/services/crewWarService.ts`, `docs/module-protocols/crew-wars.md`
 - [ ] Crew Wars admin-control + notificatiefix: online backend-CORS accepteert nu ook `PATCH`, waardoor de vijf admin statusknoppen niet meer stuklopen op preflight, en admin-gestarte/status-gewijzigde wars sturen nu dezelfde Discord- en push/inbox-events als de gewone declare/lifecycle-flow
