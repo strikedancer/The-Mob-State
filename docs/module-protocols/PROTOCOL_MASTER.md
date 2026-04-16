@@ -124,6 +124,7 @@ Implementatievoorkeur:
 - Bij lange beheerpagina's: groepeer secties in tabs i.p.v. eindeloze verticale stapels.
 - Gebruik waar mogelijk visuele selectiekaarten (images) voor entities zoals staff/items; altijd met icon-fallback.
 - Gebruik responsive/clamped hoogtes voor tabpanelen i.p.v. één vaste hoogte.
+- Bij member-gebonden systemen met lifecycle-events moet notificatiedekking expliciet worden gevalideerd voor alle betrokken gebruikers, inclusief leiders/eigenaren waar van toepassing; handmatige admin-acties en automatische statusovergangen mogen geen stille bypass vormen voor push of inbox.
 - Voor cross-cutting Flutter/web/mobile/PWA shell-, asset- en embedded-view regels: zie `frontend-platform.md`.
 - Voor push-, inbox- en FCM/service-worker regels: zie `notifications.md`.
 - Voor profielprivacy, profielnavigatie en profielinteracties: zie `player-profile.md`.
