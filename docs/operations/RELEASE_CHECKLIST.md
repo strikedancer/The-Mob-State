@@ -33,6 +33,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
 - [ ] Crew building-cards tonen nu ook expliciete titels boven de afbeeldingen, zodat in HQ & Upgrades direct zichtbaar is of een kaart over Crew HQ, auto opslag, drugs opslag of een ander gebouwtype gaat
   - Bestanden: `client/lib/screens/crew_screen.dart`
+- [ ] Crew HQ & Upgrades-layout compacter gemaakt: de zes opslagkaarten tonen nu op desktop een 3-koloms grid van 2 rijen terwijl de grote HQ-kaart bovenaan volbreed blijft staan
+  - Bestanden: `client/lib/screens/crew_screen.dart`
 - [ ] Crew building-prijzen nu ook zichtbaar op koopknoppen voor nog niet gekochte gebouwen doordat de building-status API weer een `nextUpgradeCost` teruggeeft voor niet-bezette slots
   - Bestanden: `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`
 - [ ] Nachtclub staffing self-healing toegevoegd: DJ- en beveiligingslijsten vullen zichzelf nu automatisch met een standaard roster als de live tabellen leeg zijn, zodat de selectors in het Nachtclub-scherm niet leeg blijven op omgevingen zonder seed-data

@@ -3661,9 +3661,13 @@ class _CrewScreenState extends State<CrewScreen>
             LayoutBuilder(
               builder: (context, constraints) {
                 final fullWidth = constraints.maxWidth;
-                final cardWidth = fullWidth >= 1100
-                    ? (fullWidth - 16) / 2
-                    : fullWidth;
+                final columns = fullWidth >= 980
+                    ? 3
+                    : fullWidth >= 640
+                    ? 2
+                    : 1;
+                final totalSpacing = 16.0 * (columns - 1);
+                final cardWidth = (fullWidth - totalSpacing) / columns;
 
                 return Wrap(
                   spacing: 16,
