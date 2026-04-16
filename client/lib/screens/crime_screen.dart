@@ -404,6 +404,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
   }
 
   Future<void> _commitCrime(Crime crime) async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (crime.requiredWeapon == true && _selectedCrimeWeaponId == null) {
       showTopRightFromSnackBar(
         context,
@@ -455,7 +457,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
         });
 
         if (eventKey != null) {
-          final l10n = AppLocalizations.of(context)!;
           final eventRenderer = EventRenderer(l10n);
           final message = eventRenderer.renderEvent(eventKey, params);
 
@@ -562,7 +563,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
       }
 
       // Render event
-      final l10n = AppLocalizations.of(context)!;
       final eventRenderer = EventRenderer(l10n);
       final message = eventRenderer.renderEvent(eventKey, params);
 
