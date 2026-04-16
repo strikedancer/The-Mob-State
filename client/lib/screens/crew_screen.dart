@@ -1033,36 +1033,69 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  Future<int?> _promptWarPlayerId(String locale, String title) async {
-    final controller = TextEditingController();
-    final result = await showDialog<int>(
+  Future<int?> _promptWarTargetPlayer(
+    String locale,
+    String title,
+    List<Map<String, dynamic>> opponents,
+  ) async {
+    if (opponents.isEmpty) return null;
+    int? selectedPlayerId = (opponents.first['playerId'] as num?)?.toInt();
+    return showDialog<int>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(title),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            labelText: _tr(locale, 'Doelspeler ID', 'Target player ID'),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(_tr(locale, 'Annuleren', 'Cancel')),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final value = int.tryParse(controller.text.trim());
-              Navigator.of(dialogContext).pop(value);
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setLocalState) => AlertDialog(
+          title: Text(title),
+          content: DropdownButtonFormField<int>(
+            value: selectedPlayerId,
+            decoration: InputDecoration(
+              labelText: _tr(locale, 'Doelspeler', 'Target player'),
+            ),
+            items: opponents.map((opponent) {
+              final player = (opponent['player'] as Map?)?.cast<String, dynamic>();
+              final participant =
+                  (opponent['participant'] as Map?)?.cast<String, dynamic>();
+              final role = (opponent['role'] ?? 'member').toString();
+              final playerId = (opponent['playerId'] as num?)?.toInt() ?? 0;
+              final username =
+                  (player?['username'] ?? '#$playerId').toString();
+              final kills = (participant?['kills'] as num?)?.toInt() ?? 0;
+              final deaths = (participant?['deaths'] as num?)?.toInt() ?? 0;
+              return DropdownMenuItem<int>(
+                value: playerId,
+                child: Text(
+                  '$username • ${_formatCrewWarRole(locale, role)} (#$playerId) • ${_tr(locale, 'Kills', 'Kills')}: $kills • ${_tr(locale, 'Deaths', 'Deaths')}: $deaths',
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              if (value == null) return;
+              setLocalState(() => selectedPlayerId = value);
             },
-            child: Text(_tr(locale, 'Bevestigen', 'Confirm')),
           ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(selectedPlayerId),
+              child: Text(_tr(locale, 'Bevestigen', 'Confirm')),
+            ),
+          ],
+        ),
       ),
     );
-    controller.dispose();
-    return result;
+  }
+
+  String _formatCrewWarRole(String locale, String role) {
+    switch (role) {
+      case 'leader':
+        return _tr(locale, 'Leader', 'Leader');
+      case 'co_leader':
+        return _tr(locale, 'Co-leader', 'Co-leader');
+      default:
+        return _tr(locale, 'Lid', 'Member');
+    }
   }
 
   Future<String?> _promptWarTerritory(
@@ -4168,6 +4201,10 @@ class _CrewScreenState extends State<CrewScreen>
         ? ((currentWar['metadata'] as Map?)?.cast<String, dynamic>() ??
               <String, dynamic>{})
         : <String, dynamic>{};
+    final opponentMembers =
+      (currentWar?['opponentMembers'] as List<dynamic>? ?? [])
+        .map((entry) => (entry as Map).cast<String, dynamic>())
+        .toList();
     final territories =
         ((metadata['territories'] as Map?)?.cast<String, dynamic>() ??
                 <String, dynamic>{})
@@ -4185,9 +4222,27 @@ class _CrewScreenState extends State<CrewScreen>
         'attack_sabotage',
         'raid',
       ].contains(actionType)) {
-        targetPlayerId = await _promptWarPlayerId(
+        if (opponentMembers.isEmpty) {
+          if (!mounted) return;
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(
+                _tr(
+                  locale,
+                  'Geen spelers van de tegencrew beschikbaar om te kiezen.',
+                  'No opponent crew members are available to target.',
+                ),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
+        targetPlayerId = await _promptWarTargetPlayer(
           locale,
-          _tr(locale, 'Voer doelspeler ID in', 'Enter target player ID'),
+          _tr(locale, 'Kies doelspeler', 'Select target player'),
+          opponentMembers,
         );
         if (targetPlayerId == null || targetPlayerId <= 0) return;
       }
@@ -4377,6 +4432,42 @@ class _CrewScreenState extends State<CrewScreen>
                           currentWar['warType'] as String?,
                         ),
                       ),
+                      if (opponentMembers.isNotEmpty) ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          '${_tr(locale, 'Tegencrew', 'Opponent crew')}: ${currentWar['opponentCrew'] is Map ? ((currentWar['opponentCrew'] as Map)['name'] ?? '-') : '-'}',
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: opponentMembers.map((member) {
+                            final player =
+                                (member['player'] as Map?)?.cast<String, dynamic>();
+                            final participant = (member['participant'] as Map?)
+                                ?.cast<String, dynamic>();
+                            final playerId =
+                                (member['playerId'] as num?)?.toInt() ?? 0;
+                            final username =
+                                (player?['username'] ?? '#$playerId').toString();
+                            final role = _formatCrewWarRole(
+                              locale,
+                              (member['role'] ?? 'member').toString(),
+                            );
+                            final kills =
+                                (participant?['kills'] as num?)?.toInt() ?? 0;
+                            final deaths =
+                                (participant?['deaths'] as num?)?.toInt() ?? 0;
+                            return Chip(
+                              avatar: const Icon(Icons.person, size: 18),
+                              label: Text(
+                                '$username • $role • K:$kills D:$deaths',
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                       Text(
                         '${_tr(locale, 'Actief vanaf', 'Active from')}: ${currentWar['activeFrom'] ?? '-'}',
                       ),

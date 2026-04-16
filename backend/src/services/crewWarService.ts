@@ -448,7 +448,21 @@ async function buildWarDetail(warId: number, playerId?: number) {
     throw new Error('WAR_NOT_FOUND');
   }
 
-  const [standings, participants, actions] = await Promise.all([
+  const viewerMembership = playerId
+    ? await prisma.crewMember.findFirst({
+        where: { playerId },
+        select: { crewId: true, role: true },
+      })
+    : null;
+  const opponentCrewId = viewerMembership
+    ? war.attackerCrewId === viewerMembership.crewId
+      ? war.defenderCrewId
+      : war.defenderCrewId === viewerMembership.crewId
+        ? war.attackerCrewId
+        : null
+    : null;
+
+  const [standings, participants, actions, opponentMembers] = await Promise.all([
     prisma.crewWarStanding.findMany({
       where: { warId },
       orderBy: [{ rank: 'asc' }, { totalPoints: 'desc' }],
@@ -462,6 +476,20 @@ async function buildWarDetail(warId: number, playerId?: number) {
       orderBy: { createdAt: 'desc' },
       take: 25,
     }),
+    opponentCrewId
+      ? prisma.crewMember.findMany({
+          where: { crewId: opponentCrewId },
+          include: {
+            player: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
+          orderBy: [{ role: 'asc' }, { playerId: 'asc' }],
+        })
+      : Promise.resolve([]),
   ]);
 
   const crewMap = await getCrewNames([
@@ -482,6 +510,7 @@ async function buildWarDetail(warId: number, playerId?: number) {
   const joinedParticipant = playerId
     ? participants.find((entry) => entry.playerId === playerId) ?? null
     : null;
+  const participantMap = new Map(participants.map((entry) => [entry.playerId, entry]));
 
   return {
     ...war,
@@ -489,6 +518,7 @@ async function buildWarDetail(warId: number, playerId?: number) {
     attackerCrew: crewMap.get(war.attackerCrewId) ?? null,
     defenderCrew: crewMap.get(war.defenderCrewId) ?? null,
     winnerCrew: war.winnerCrewId ? crewMap.get(war.winnerCrewId) ?? null : null,
+    opponentCrew: opponentCrewId ? crewMap.get(opponentCrewId) ?? null : null,
     standings: standings.map((entry) => ({
       ...entry,
       crew: crewMap.get(entry.crewId) ?? null,
@@ -506,6 +536,23 @@ async function buildWarDetail(warId: number, playerId?: number) {
       actorCrew: entry.actorCrewId ? crewMap.get(entry.actorCrewId) ?? null : null,
       targetCrew: entry.targetCrewId ? crewMap.get(entry.targetCrewId) ?? null : null,
     })),
+    opponentMembers: opponentMembers.map((entry) => {
+      const participant = participantMap.get(entry.playerId);
+      return {
+        playerId: entry.playerId,
+        role: entry.role,
+        player: entry.player,
+        participant: participant
+          ? {
+              actionCount: participant.actionCount,
+              kills: participant.kills,
+              deaths: participant.deaths,
+              points: participant.points,
+              status: participant.status,
+            }
+          : null,
+      };
+    }),
     myParticipant: joinedParticipant,
   };
 }
