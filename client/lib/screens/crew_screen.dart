@@ -4664,6 +4664,7 @@ class _CrewScreenState extends State<CrewScreen>
     final level = building['level'] as int?;
     final maxLevel = building['maxLevel'] as int? ?? 0;
     final label = building['label'] as String? ?? 'Building';
+    final localizedLabel = _getBuildingLabel(type ?? buildingType, locale);
     final imagePath = _getCrewBuildingImagePath(type, hqStyle, level);
     final capacity = building['capacity'] as int?;
     final memberCap = building['memberCap'] as int?;
@@ -4704,6 +4705,17 @@ class _CrewScreenState extends State<CrewScreen>
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: Text(
+                  localizedLabel,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
@@ -4950,6 +4962,17 @@ class _CrewScreenState extends State<CrewScreen>
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Center(
+              child: Text(
+                localizedLabel,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
