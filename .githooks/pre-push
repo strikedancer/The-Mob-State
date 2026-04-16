@@ -1,3 +1,19 @@
 #!/bin/sh
+
+remote_name="$1"
+
+while read -r local_ref local_sha remote_ref remote_sha
+do
+	case "$remote_ref" in
+		refs/heads/main|refs/heads/master)
+			if [ "$ALLOW_MAIN_PUSH" != "1" ]; then
+				printf >&2 "\nDirect pushes to '%s' are blocked in this repository.\n" "$remote_ref"
+				printf >&2 "Use a branch + pull request, or override once with ALLOW_MAIN_PUSH=1 if you intentionally need an emergency push.\n\n"
+				exit 1
+			fi
+			;;
+	esac
+done
+
 command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository is configured for Git LFS but 'git-lfs' was not found on your path. If you no longer wish to use Git LFS, remove this hook by deleting the 'pre-push' file in the hooks directory (set by 'core.hookspath'; usually '.git/hooks')."; exit 2; }
 git lfs pre-push "$@"

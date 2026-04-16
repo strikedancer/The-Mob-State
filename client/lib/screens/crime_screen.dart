@@ -169,10 +169,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
       _crimes.any((crime) => crime.requiredWeapon == true);
 
   Widget _buildCrimeWeaponSelector(AppLocalizations l10n) {
-    final selectedWeapon = _weaponInventory.cast<Map<String, dynamic>?>().firstWhere(
-      (weapon) => weapon?['weaponId'] == _selectedCrimeWeaponId,
-      orElse: () => null,
-    );
+    final selectedWeapon = _weaponInventory
+        .cast<Map<String, dynamic>?>()
+        .firstWhere(
+          (weapon) => weapon?['weaponId'] == _selectedCrimeWeaponId,
+          orElse: () => null,
+        );
     final selectedWeaponLabel = selectedWeapon == null
         ? null
         : '${selectedWeapon['name'] ?? selectedWeapon['weaponId']} (${selectedWeapon['condition']}%)';
@@ -790,7 +792,9 @@ class _CrimeScreenState extends State<CrimeScreen> {
       case 'corrupt_official':
         return l10n.crimeCorruptOfficialName;
       case 'criminal_record_wipe':
-        return l10n.localeName == 'nl' ? 'Strafblad Wissen' : 'Wipe Criminal Record';
+        return l10n.localeName == 'nl'
+            ? 'Strafblad Wissen'
+            : 'Wipe Criminal Record';
       default:
         return crime.name;
     }
@@ -960,28 +964,28 @@ class _CrimeScreenState extends State<CrimeScreen> {
                   slivers: [
                     // Crime Cards Grid
                     SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        sliver: SliverToBoxAdapter(
-                          child: _buildCrimeWeaponSelector(l10n),
-                        ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      sliver: SliverToBoxAdapter(
+                        child: _buildCrimeWeaponSelector(l10n),
                       ),
-                      if (_hasWeaponCrime)
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
-                            child: Text(
-                              _tr(
-                                'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.',
-                                'Weapon-based crimes use the selected crime weapon above.',
-                              ),
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 12,
-                              ),
+                    ),
+                    if (_hasWeaponCrime)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+                          child: Text(
+                            _tr(
+                              'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.',
+                              'Weapon-based crimes use the selected crime weapon above.',
+                            ),
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
                             ),
                           ),
                         ),
-                      SliverPadding(
+                      ),
+                    SliverPadding(
                       padding: const EdgeInsets.all(8),
                       sliver: SliverGrid(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

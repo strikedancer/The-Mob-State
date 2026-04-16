@@ -2,19 +2,34 @@
 
 ## Iets aanpassen en naar GitHub pushen
 
+Standaard blokkeert deze repository directe pushes naar `main` en `master` via de repo-local `pre-push` hook. De normale route is dus: feature branch maken, committen, pushen naar die branch en daarna een pull request openen.
+
 ```bash
-# 1. Bekijk wat je hebt aangepast
+# 1. Maak een werkbranch
+git checkout -b fix/mijn-wijziging
+
+# 2. Bekijk wat je hebt aangepast
 git status
 
-# 2. Voeg alles toe
+# 3. Voeg alles toe
 git add .
 
-# 3. Commit met omschrijving
+# 4. Commit met omschrijving
 git commit -m "Beschrijf wat je hebt aangepast"
 
-# 4. Push naar GitHub
-git push
+# 5. Push je branch naar GitHub
+git push -u origin HEAD
 ```
+
+## Nooduitzondering
+
+Alleen als een directe push naar `main` of `master` echt bewust nodig is, kun je de lokale blokkade eenmalig overriden:
+
+```bash
+ALLOW_MAIN_PUSH=1 git push origin main
+```
+
+Dat voorkomt niet de GitHub-ruleset zelf, maar zorgt wel dat deze repo lokaal niet meer per ongeluk direct naar `main` pusht.
 
 ## Als je gameplay code aanpast
 
@@ -37,7 +52,8 @@ Daarna opnieuw `git add .` en dan werkt de commit wel.
 ## Kortste versie om te onthouden
 
 ```
-git add . → git commit -m "..." → git push
+git checkout -b mijn-branch → git add . → git commit -m "..." → git push -u origin HEAD
 ```
 
 Als commit geweigerd wordt: eerst het bijpassende protocol bijwerken, dan opnieuw `git add .` en committen.
+Als push geweigerd wordt: controleer of je per ongeluk naar `main` of `master` pusht.

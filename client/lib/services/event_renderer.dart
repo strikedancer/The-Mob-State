@@ -37,7 +37,8 @@ class EventRenderer {
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
         final jailTime = params['jailTime'] as int?; // in MINUTES
-        final clearedRecordCount = (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
+        final clearedRecordCount =
+            (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
 
         if (jailed && jailTime != null && jailTime > 0) {
           final minutes = jailTime;
@@ -421,7 +422,8 @@ class EventRenderer {
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
         final jailTime = params['jailTime'] as int?; // in MINUTES
-        final clearedRecordCount = (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
+        final clearedRecordCount =
+            (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
 
         if (jailed && jailTime != null && jailTime > 0) {
           final minutes = jailTime;

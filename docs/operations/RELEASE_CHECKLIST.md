@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Repo git-guard aangescherpt: de bestaande repo-local `pre-push` hook blokkeert nu directe pushes naar `main`/`master` standaard, met alleen een expliciete `ALLOW_MAIN_PUSH=1` override voor bewuste noodgevallen; workflow-documentatie stuurt nu standaard naar branch + pull request
+  - Bestanden: `.githooks/pre-push`, `GIT_WORKFLOW.md`
 - [ ] Protocol-architectuur opgeschoond: `PROTOCOL_MASTER.md` is verder teruggebracht naar orchestrator-only documentatie; profielnavigatie/privacy, frontend platform/PWA-shell regels en notificatie-pipeline regels staan nu in eigen cross-cutting protocollen en de module-index verwijst daar expliciet naar
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/README.md`, `docs/module-protocols/player-profile.md`, `docs/module-protocols/frontend-platform.md`, `docs/module-protocols/notifications.md`, `docs/module-protocols/dashboard.md`, `docs/module-protocols/bank.md`, `docs/module-protocols/prison.md`, `docs/module-protocols/crypto.md`, `docs/module-protocols/messages.md`
 - [ ] Harde meertaligheidseis aangescherpt in master protocol: alle nieuwe en gewijzigde tekst, meldingen, labels, dialogs, notificaties en admin/player UI-signalen moeten in dezelfde wijziging minimaal NL + EN bevatten; 1-talige oplevering geldt niet als done
