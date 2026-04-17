@@ -535,44 +535,53 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           ),
         );
 
+        final tabBody = AnimatedSwitcher(
+          duration: const Duration(milliseconds: 260),
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
+          transitionBuilder: (child, animation) {
+            final slide = Tween<Offset>(
+              begin: const Offset(0.02, 0),
+              end: Offset.zero,
+            ).animate(animation);
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(position: slide, child: child),
+            );
+          },
+          child: KeyedSubtree(
+            key: ValueKey<int>(_activeTabIndex),
+            child: _buildTabContent(),
+          ),
+        );
+
+        if (widget.embedded) {
+          return NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverToBoxAdapter(child: header),
+              SliverToBoxAdapter(child: tabs),
+              const SliverToBoxAdapter(child: Divider(height: 1)),
+            ],
+            body: tabBody,
+          );
+        }
+
         return Column(
           children: [
             header,
             tabs,
             const Divider(height: 1),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 260),
-                switchInCurve: Curves.easeOutCubic,
-                switchOutCurve: Curves.easeInCubic,
-                transitionBuilder: (child, animation) {
-                  final slide = Tween<Offset>(
-                    begin: const Offset(0.02, 0),
-                    end: Offset.zero,
-                  ).animate(animation);
-                  return FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(position: slide, child: child),
-                  );
-                },
-                child: KeyedSubtree(
-                  key: ValueKey<int>(_activeTabIndex),
-                  child: _buildTabContent(),
-                ),
-              ),
-            ),
+            Expanded(child: tabBody),
           ],
         );
       },
     );
 
-    if (widget.embedded) {
-      return content;
-    }
-
-    return Scaffold(
-      appBar: AppBar(title: Text(_tr('Voertuig Stelen', 'Vehicle Heist'))),
-      body: content,
-    );
+    return widget.embedded
+        ? content
+        : Scaffold(
+            appBar: AppBar(title: Text(_tr('Voertuig Stelen', 'Vehicle Heist'))),
+            body: content,
+          );
   }
 }

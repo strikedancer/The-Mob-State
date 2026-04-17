@@ -177,6 +177,87 @@ class _MarinaScreenState extends State<MarinaScreen> {
     return vehicles;
   }
 
+  Widget _buildEmptyBoatState() {
+    final l10n = AppLocalizations.of(context)!;
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.sailing, size: 64, color: Colors.grey[500]),
+          const SizedBox(height: 16),
+          Text(
+            l10n.noBoatsInMarina,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Colors.grey[700],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.stealBoatsToStart,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBoatCardItem(
+    VehicleProvider provider,
+    VehicleInventoryItem boat,
+  ) {
+    return VehicleCard(
+      vehicle: boat,
+      onSelectForCrimes: _selectedVehicleId == boat.id
+          ? null
+          : () => _selectForCrimes(boat),
+      onDeselectForCrimes: _selectedVehicleId == boat.id
+          ? _deselectForCrimes
+          : null,
+      isSelectedForCrimes: _selectedVehicleId == boat.id,
+      onRefuel: () => _refuelVehicle(provider, boat),
+      onRepair: () => _repairVehicle(provider, boat),
+      onSell: () => _sellVehicle(provider, boat.id),
+      onScrap: () => _scrapVehicle(provider, boat.id),
+      onList: () => _showListOnMarketDialog(provider, boat),
+    );
+  }
+
+  Widget _buildEmbeddedBoatContent(
+    VehicleProvider provider,
+    AuthProvider authProvider,
+  ) {
+    final boats = _getSortedVehicles(provider);
+    final children = <Widget>[
+      if (provider.marinaStatus != null)
+        _buildCapacityIndicator(provider, authProvider),
+      if (boats.isEmpty)
+        Padding(
+          padding: const EdgeInsets.all(24),
+          child: _buildEmptyBoatState(),
+        )
+      else
+        ...boats.map(
+          (boat) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _buildBoatCardItem(provider, boat),
+          ),
+        ),
+    ];
+
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: ListView.separated(
+        padding: const EdgeInsets.only(top: 0, bottom: 16),
+        itemCount: children.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 16),
+        itemBuilder: (context, index) => children[index],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final vehicleProvider = Provider.of<VehicleProvider>(context);
@@ -196,6 +277,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
                   _checkJailStatusAndLoadData();
                 },
               )
+            : widget.embedded
+            ? _buildEmbeddedBoatContent(vehicleProvider, authProvider)
             : Column(
                 children: [
                   if (vehicleProvider.marinaStatus != null)

@@ -204,6 +204,87 @@ class _GarageScreenState extends State<GarageScreen> {
     return vehicles;
   }
 
+  Widget _buildEmptyVehicleState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.garage, size: 64, color: Colors.grey[500]),
+          const SizedBox(height: 16),
+          Text(
+            _emptyStateTitle,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Colors.grey[700],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _tr(
+              'Steel voertuigen om te starten',
+              'Steal vehicles to get started',
+            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVehicleCardItem(
+    VehicleProvider provider,
+    VehicleInventoryItem vehicle,
+  ) {
+    return VehicleCard(
+      vehicle: vehicle,
+      onRefuel: () => _refuelVehicle(provider, vehicle),
+      onRepair: () => _repairVehicle(provider, vehicle),
+      onSell: () => _sellVehicle(provider, vehicle.id),
+      onScrap: () => _scrapVehicle(provider, vehicle.id),
+      onList: () => _showListOnMarketDialog(provider, vehicle),
+      onSelectForCrimes: () => _selectForCrimes(vehicle),
+      onDeselectForCrimes: _selectedVehicleId == vehicle.id
+          ? _deselectForCrimes
+          : null,
+      isSelectedForCrimes: _selectedVehicleId == vehicle.id,
+    );
+  }
+
+  Widget _buildEmbeddedVehicleContent(
+    VehicleProvider provider,
+    AuthProvider authProvider,
+  ) {
+    final vehicles = _getSortedVehicles(provider);
+    final children = <Widget>[
+      if (provider.garageStatus != null)
+        _buildCapacityIndicator(provider, authProvider),
+      if (vehicles.isEmpty)
+        Padding(
+          padding: const EdgeInsets.all(24),
+          child: _buildEmptyVehicleState(),
+        )
+      else
+        ...vehicles.map(
+          (vehicle) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _buildVehicleCardItem(provider, vehicle),
+          ),
+        ),
+    ];
+
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: ListView.separated(
+        padding: const EdgeInsets.only(top: 0, bottom: 16),
+        itemCount: children.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 16),
+        itemBuilder: (context, index) => children[index],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final vehicleProvider = Provider.of<VehicleProvider>(context);
@@ -223,6 +304,8 @@ class _GarageScreenState extends State<GarageScreen> {
                   _checkJailStatusAndLoadData();
                 },
               )
+            : widget.embedded
+            ? _buildEmbeddedVehicleContent(vehicleProvider, authProvider)
             : Column(
                 children: [
                   if (vehicleProvider.garageStatus != null)
