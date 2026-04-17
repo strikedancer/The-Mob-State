@@ -12,6 +12,7 @@ import '../utils/country_helper.dart';
 import 'player_profile_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../utils/top_right_notification.dart';
+import '../widgets/responsive_modal.dart';
 
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
@@ -305,23 +306,28 @@ class _FriendsScreenState extends State<FriendsScreen>
               ? 'Weet je het zeker?'
               : 'Are you sure?',
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Vriend verwijderen'
-                  : 'Remove friend',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Weet je zeker dat je deze vriend wilt verwijderen?'
-                  : 'Are you sure you want to remove this friend?',
-            ),
-          ],
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 440,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                Localizations.localeOf(context).languageCode == 'nl'
+                    ? 'Vriend verwijderen'
+                    : 'Remove friend',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                Localizations.localeOf(context).languageCode == 'nl'
+                    ? 'Weet je zeker dat je deze vriend wilt verwijderen?'
+                    : 'Are you sure you want to remove this friend?',
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -412,23 +418,28 @@ class _FriendsScreenState extends State<FriendsScreen>
               ? 'Weet je het zeker?'
               : 'Are you sure?',
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Speler blokkeren'
-                  : 'Block player',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Weet je zeker dat je $username wilt blokkeren? Je kunt geen berichten meer sturen of ontvangen.'
-                  : 'Are you sure you want to block $username? You won\'t be able to send or receive messages.',
-            ),
-          ],
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 460,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                Localizations.localeOf(context).languageCode == 'nl'
+                    ? 'Speler blokkeren'
+                    : 'Block player',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                Localizations.localeOf(context).languageCode == 'nl'
+                    ? 'Weet je zeker dat je $username wilt blokkeren? Je kunt geen berichten meer sturen of ontvangen.'
+                    : 'Are you sure you want to block $username? You won\'t be able to send or receive messages.',
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -549,6 +560,7 @@ class _FriendsScreenState extends State<FriendsScreen>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           _buildFriendsTab(locale, l10n),
           _buildActivityTab(locale, l10n),

@@ -238,6 +238,7 @@ class _ToolsScreenState extends State<ToolsScreen>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [_buildShopTab(), _buildInventoryTab()],
       ),
     );

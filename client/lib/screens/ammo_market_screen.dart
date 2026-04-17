@@ -357,6 +357,7 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 ListView.builder(
                   padding: const EdgeInsets.all(12),

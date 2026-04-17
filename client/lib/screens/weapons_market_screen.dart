@@ -138,6 +138,7 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
           Expanded(
             child: TabBarView(
               controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 ListView.builder(
                   padding: const EdgeInsets.all(12),

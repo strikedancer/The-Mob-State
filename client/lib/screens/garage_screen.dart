@@ -619,29 +619,47 @@ class _GarageScreenState extends State<GarageScreen> {
 
     return RefreshIndicator(
       onRefresh: _loadData,
-      child: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 350,
-          childAspectRatio: 0.50,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-        itemCount: cars.length,
-        itemBuilder: (context, index) {
-          final vehicle = cars[index];
-          return VehicleCard(
-            vehicle: vehicle,
-            onRefuel: () => _refuelVehicle(provider, vehicle),
-            onRepair: () => _repairVehicle(provider, vehicle),
-            onSell: () => _sellVehicle(provider, vehicle.id),
-            onScrap: () => _scrapVehicle(provider, vehicle.id),
-            onList: () => _showListOnMarketDialog(provider, vehicle),
-            onSelectForCrimes: () => _selectForCrimes(vehicle),
-            onDeselectForCrimes: _selectedVehicleId == vehicle.id
-                ? _deselectForCrimes
-                : null,
-            isSelectedForCrimes: _selectedVehicleId == vehicle.id,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final useListLayout = constraints.maxWidth < 720;
+
+          Widget buildVehicleCard(VehicleInventoryItem vehicle) {
+            return VehicleCard(
+              vehicle: vehicle,
+              onRefuel: () => _refuelVehicle(provider, vehicle),
+              onRepair: () => _repairVehicle(provider, vehicle),
+              onSell: () => _sellVehicle(provider, vehicle.id),
+              onScrap: () => _scrapVehicle(provider, vehicle.id),
+              onList: () => _showListOnMarketDialog(provider, vehicle),
+              onSelectForCrimes: () => _selectForCrimes(vehicle),
+              onDeselectForCrimes: _selectedVehicleId == vehicle.id
+                  ? _deselectForCrimes
+                  : null,
+              isSelectedForCrimes: _selectedVehicleId == vehicle.id,
+            );
+          }
+
+          if (useListLayout) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: cars.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              itemBuilder: (context, index) => buildVehicleCard(cars[index]),
+            );
+          }
+
+          final childAspectRatio = constraints.maxWidth >= 1280 ? 0.82 : 0.72;
+
+          return GridView.builder(
+            padding: const EdgeInsets.all(16),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: constraints.maxWidth >= 1280 ? 360 : 340,
+              childAspectRatio: childAspectRatio,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: cars.length,
+            itemBuilder: (context, index) => buildVehicleCard(cars[index]),
           );
         },
       ),

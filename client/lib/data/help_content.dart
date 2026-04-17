@@ -1014,7 +1014,7 @@ const List<HelpTopic> helpTopics = [
         'Serve your prison sentence, pay bail or attempt to escape. The higher your Wanted Level the longer and more expensive your sentence.',
     howNl: [
       'Na arrestatie start een timer op basis van Wanted Level. Wanted Level 1 = korte straf (minuten), Wanted Level 5+ = uren gevangenisstraf.',
-      'Borgtocht: Wanted Level × €1.000. Betaal dit bedrag om direct vrij te komen. Bij Wanted 5 kost borgtocht €5.000.',
+      'Borgtocht schaalt met je resterende celstraf en valt nooit lager uit dan Wanted Level × €1.000. Lange straffen worden dus duurder om direct af te kopen.',
       'Ontsnappen: je kunt een ontsnappingspoging wagen maar de slagingskans is laag. Mislukking verlengt je straftijd met een vast bedrag.',
       'Crewleden kunnen je bezoeken en kleine voordelen geven (stats, moreel) terwijl je vastzit.',
       'Bij arrestatie ontvangen je vrienden en crewleden nu een pushmelding dat je bent opgepakt en op hulp wacht.',
@@ -1025,7 +1025,7 @@ const List<HelpTopic> helpTopics = [
     ],
     howEn: [
       'After arrest a timer starts based on Wanted Level. Wanted Level 1 = short sentence (minutes), Wanted Level 5+ = hours in prison.',
-      'Bail: Wanted Level × €1,000. Pay this amount to be released immediately. At Wanted 5 bail costs €5,000.',
+      'Bail scales with your remaining sentence and never drops below Wanted Level × €1,000. Longer sentences therefore cost more to buy out immediately.',
       'Escape: you can attempt a prison break but success chance is low. Failure extends your sentence by a fixed amount.',
       'Crew members can visit you and provide small benefits (stats, morale) while you are locked up.',
       'On arrest your friends and crew members now receive a push notification that you were caught and are waiting for help.',
@@ -1035,11 +1035,11 @@ const List<HelpTopic> helpTopics = [
       'You cannot visit the hospital while locked up. HP recovery waits until you are free.',
     ],
     tipsNl: [
-      'Betaal altijd borgtocht als de timer langer dan 30 minuten is: de kosten zijn laag en de tijdsbesparing is groot.',
+      'Controleer borg direct na arrestatie: de knop hoort altijd zichtbaar te blijven zolang je nog vastzit, ook als je Wanted Level al is teruggelopen.',
       'Start productie-timers vlak voordat je een gevaarlijke crimerun doet: als je gepakt wordt loopt de productie in ieder geval door.',
     ],
     tipsEn: [
-      'Always pay bail when the timer is longer than 30 minutes: the cost is low and the time saved is significant.',
+      'Check bail immediately after arrest: the button should remain visible as long as you are still jailed, even if your Wanted Level has already dropped.',
       'Start production timers just before doing a high-risk crime run: if you get caught production keeps running anyway.',
     ],
     protocolPath: 'docs/module-protocols/prison.md',

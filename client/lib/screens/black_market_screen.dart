@@ -10,6 +10,7 @@ import 'weapons_market_screen.dart';
 import 'ammo_market_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/responsive_modal.dart';
 
 class BlackMarketScreen extends StatefulWidget {
   final int initialTabIndex;
@@ -117,6 +118,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           _buildMarketListings(vehicleProvider),
           _buildMyListings(vehicleProvider),
@@ -521,11 +523,13 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
           title: Text(_tr('Listings filteren', 'Filter listings')),
-          content: SingleChildScrollView(
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 340,
+            tabletMaxWidth: 420,
+            desktopMaxWidth: 500,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Country Filter
                 DropdownButtonFormField<String?>(
                   initialValue: tempCountry,
                   decoration: InputDecoration(labelText: _tr('Land', 'Country')),
@@ -557,8 +561,6 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   },
                 ),
                 const SizedBox(height: 16),
-
-                // Vehicle Type Filter
                 DropdownButtonFormField<String?>(
                   initialValue: tempVehicleType,
                   decoration: InputDecoration(labelText: _tr('Voertuigtype', 'Vehicle type')),
@@ -574,8 +576,6 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   },
                 ),
                 const SizedBox(height: 16),
-
-                // Price Range
                 Text(
                   '${_tr('Prijsbereik', 'Price range')}: €${tempMinPrice.toInt()} - €${tempMaxPrice.toInt()}',
                 ),
@@ -656,22 +656,27 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _tr('Voertuig kopen', 'Buy vehicle'),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _tr(
-                'Koop ${listing.vehicle.definition?.name ?? 'voertuig'} voor €${askingPrice.toStringAsFixed(0)}?',
-                'Buy ${listing.vehicle.definition?.name ?? 'vehicle'} for €${askingPrice.toStringAsFixed(0)}?',
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 420,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _tr('Voertuig kopen', 'Buy vehicle'),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                _tr(
+                  'Koop ${listing.vehicle.definition?.name ?? 'voertuig'} voor €${askingPrice.toStringAsFixed(0)}?',
+                  'Buy ${listing.vehicle.definition?.name ?? 'vehicle'} for €${askingPrice.toStringAsFixed(0)}?',
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -719,22 +724,27 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(_tr('Prijs aanpassen', 'Edit price')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              '${_tr('Huidige prijs', 'Current price')}: €${vehicle.askingPrice?.toStringAsFixed(0) ?? '0'}',
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: priceController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: _tr('Nieuwe prijs (€)', 'New price (€)'),
-                hintText: _tr('Vul nieuwe prijs in', 'Enter new price'),
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 440,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${_tr('Huidige prijs', 'Current price')}: €${vehicle.askingPrice?.toStringAsFixed(0) ?? '0'}',
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              TextField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: _tr('Nieuwe prijs (€)', 'New price (€)'),
+                  hintText: _tr('Vul nieuwe prijs in', 'Enter new price'),
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -789,22 +799,27 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _tr('Voertuig van markt halen', 'Delist vehicle'),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _tr(
-                'Verwijder ${vehicle.definition?.name ?? 'voertuig'} van de markt?',
-                'Remove ${vehicle.definition?.name ?? 'vehicle'} from the market?',
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 420,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _tr('Voertuig van markt halen', 'Delist vehicle'),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                _tr(
+                  'Verwijder ${vehicle.definition?.name ?? 'voertuig'} van de markt?',
+                  'Remove ${vehicle.definition?.name ?? 'vehicle'} from the market?',
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(

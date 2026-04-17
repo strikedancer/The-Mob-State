@@ -902,7 +902,7 @@ class _TravelScreenState extends State<TravelScreen> {
                 setState(() {
                   _jailTime = null;
                 });
-                _loadCountries();
+                _checkJailStatusAndLoadCountries();
               },
             )
           : _isLoading

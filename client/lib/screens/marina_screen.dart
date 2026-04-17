@@ -579,31 +579,49 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
     return RefreshIndicator(
       onRefresh: _loadData,
-      child: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 350,
-          childAspectRatio: 0.50,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-        itemCount: sortedBoats.length,
-        itemBuilder: (context, index) {
-          final boat = sortedBoats[index];
-          return VehicleCard(
-            vehicle: boat,
-            onSelectForCrimes: _selectedVehicleId == boat.id
-                ? null
-                : () => _selectForCrimes(boat),
-            onDeselectForCrimes: _selectedVehicleId == boat.id
-                ? _deselectForCrimes
-                : null,
-            isSelectedForCrimes: _selectedVehicleId == boat.id,
-            onRefuel: () => _refuelVehicle(provider, boat),
-            onRepair: () => _repairVehicle(provider, boat),
-            onSell: () => _sellVehicle(provider, boat.id),
-            onScrap: () => _scrapVehicle(provider, boat.id),
-            onList: () => _showListOnMarketDialog(provider, boat),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final useListLayout = constraints.maxWidth < 720;
+
+          Widget buildVehicleCard(VehicleInventoryItem boat) {
+            return VehicleCard(
+              vehicle: boat,
+              onSelectForCrimes: _selectedVehicleId == boat.id
+                  ? null
+                  : () => _selectForCrimes(boat),
+              onDeselectForCrimes: _selectedVehicleId == boat.id
+                  ? _deselectForCrimes
+                  : null,
+              isSelectedForCrimes: _selectedVehicleId == boat.id,
+              onRefuel: () => _refuelVehicle(provider, boat),
+              onRepair: () => _repairVehicle(provider, boat),
+              onSell: () => _sellVehicle(provider, boat.id),
+              onScrap: () => _scrapVehicle(provider, boat.id),
+              onList: () => _showListOnMarketDialog(provider, boat),
+            );
+          }
+
+          if (useListLayout) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: sortedBoats.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              itemBuilder: (context, index) => buildVehicleCard(sortedBoats[index]),
+            );
+          }
+
+          final childAspectRatio = constraints.maxWidth >= 1280 ? 0.82 : 0.72;
+
+          return GridView.builder(
+            padding: const EdgeInsets.all(16),
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: constraints.maxWidth >= 1280 ? 360 : 340,
+              childAspectRatio: childAspectRatio,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: sortedBoats.length,
+            itemBuilder: (context, index) => buildVehicleCard(sortedBoats[index]),
           );
         },
       ),

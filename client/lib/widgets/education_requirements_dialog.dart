@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import 'responsive_modal.dart';
 
 class EducationRequirementsDialog extends StatelessWidget {
   final String? title;
@@ -27,6 +28,17 @@ class EducationRequirementsDialog extends StatelessWidget {
         missingRequirements: missingRequirements,
       ),
     );
+  }
+
+  EdgeInsets _dialogInsetPadding(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width < 430) {
+      return const EdgeInsets.symmetric(horizontal: 12, vertical: 18);
+    }
+    if (width < 900) {
+      return const EdgeInsets.symmetric(horizontal: 24, vertical: 24);
+    }
+    return const EdgeInsets.symmetric(horizontal: 40, vertical: 32);
   }
 
   String _trackName(String trackId, AppLocalizations l10n) {
@@ -186,13 +198,16 @@ class EducationRequirementsDialog extends StatelessWidget {
         .toList(growable: false);
 
     return AlertDialog(
+      insetPadding: _dialogInsetPadding(context),
       backgroundColor: Colors.grey[900],
       title: Text(
         title ?? l10n.educationDialogDefaultTitle,
         style: const TextStyle(color: Colors.white),
       ),
-      content: SizedBox(
-        width: 460,
+      content: ResponsiveDialogContent(
+        phoneMaxWidth: 340,
+        tabletMaxWidth: 460,
+        desktopMaxWidth: 520,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

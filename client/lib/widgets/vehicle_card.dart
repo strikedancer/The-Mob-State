@@ -98,8 +98,14 @@ class VehicleCard extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isSmallScreen = MediaQuery.of(context).size.width < 600;
-        final imageHeight = isSmallScreen ? 120.0 : 200.0;
+        final screenWidth = MediaQuery.of(context).size.width;
+        final isSmallScreen = screenWidth < 600;
+        final isMediumScreen = screenWidth < 900;
+        final imageHeight = isSmallScreen
+            ? 108.0
+            : isMediumScreen
+                ? 132.0
+                : 168.0;
         final padding = isSmallScreen ? 8.0 : 12.0;
 
         return Card(

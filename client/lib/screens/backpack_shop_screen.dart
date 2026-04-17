@@ -6,6 +6,7 @@ import '../services/api_client.dart';
 import '../models/backpack.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/responsive_modal.dart';
 
 class BackpackShopScreen extends StatefulWidget {
   final bool isTab;
@@ -166,21 +167,26 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              backpack.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(backpack.description),
-            const SizedBox(height: 16),
-            Text('${_tr('Prijs', 'Price')}: ${formatCurrency(backpack.price)}'),
-            Text('${_tr('Extra slots', 'Extra slots')}: +${backpack.slots}'),
-            Text('${_tr('Totaal', 'Total')}: ${5 + backpack.slots} slots'),
-          ],
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 340,
+          tabletMaxWidth: 420,
+          desktopMaxWidth: 500,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                backpack.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(backpack.description),
+              const SizedBox(height: 16),
+              Text('${_tr('Prijs', 'Price')}: ${formatCurrency(backpack.price)}'),
+              Text('${_tr('Extra slots', 'Extra slots')}: +${backpack.slots}'),
+              Text('${_tr('Totaal', 'Total')}: ${5 + backpack.slots} slots'),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -248,35 +254,40 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              backpack.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '${_tr('Huidige', 'Current')}: ${owned.name} (+${owned.slots} slots)',
-            ),
-            Text(
-              '${_tr('Nieuw', 'New')}: ${backpack.name} (+${backpack.slots} slots)',
-            ),
-            const SizedBox(height: 16),
-            Text(
-              '${_tr('Upgrade', 'Upgrade')}: +${backpack.slots - owned.slots} slots',
-            ),
-            const Divider(),
-            Text('${_tr('Prijs', 'Price')}: ${formatCurrency(backpack.price)}'),
-            Text(
-              '${_tr('Inruilwaarde', 'Trade-in value')}: ${formatCurrency(tradeInValue)}',
-            ),
-            Text(
-              '${_tr('Upgrade kosten', 'Upgrade cost')}: ${formatCurrency(upgradeCost)}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ],
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 340,
+          tabletMaxWidth: 420,
+          desktopMaxWidth: 500,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                backpack.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                '${_tr('Huidige', 'Current')}: ${owned.name} (+${owned.slots} slots)',
+              ),
+              Text(
+                '${_tr('Nieuw', 'New')}: ${backpack.name} (+${backpack.slots} slots)',
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '${_tr('Upgrade', 'Upgrade')}: +${backpack.slots - owned.slots} slots',
+              ),
+              const Divider(),
+              Text('${_tr('Prijs', 'Price')}: ${formatCurrency(backpack.price)}'),
+              Text(
+                '${_tr('Inruilwaarde', 'Trade-in value')}: ${formatCurrency(tradeInValue)}',
+              ),
+              Text(
+                '${_tr('Upgrade kosten', 'Upgrade cost')}: ${formatCurrency(upgradeCost)}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(

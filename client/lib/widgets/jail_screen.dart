@@ -30,6 +30,7 @@ class JailOverlay extends StatefulWidget {
 
 class _JailOverlayState extends State<JailOverlay> {
   late int _remainingSeconds;
+  int? _bailAmount;
   Timer? _timer;
   bool _isPayingBail = false;
   final ApiClient _apiClient = ApiClient();
@@ -41,7 +42,9 @@ class _JailOverlayState extends State<JailOverlay> {
     super.initState();
     _remainingSeconds =
         widget.remainingSeconds; // Already in seconds from backend
+    _bailAmount = _calculateFallbackBailAmount();
     _startTimer();
+    _refreshJailStatus();
   }
 
   @override
@@ -82,19 +85,57 @@ class _JailOverlayState extends State<JailOverlay> {
       setState(() {
         if (_remainingSeconds > 0) {
           _remainingSeconds--;
+          if (_remainingSeconds % 60 == 0) {
+            _bailAmount = _calculateDisplayedBailAmount();
+          }
         } else {
           timer.cancel();
           widget.onReleased?.call();
         }
       });
+
+      if (_remainingSeconds > 0 && _remainingSeconds % 60 == 0) {
+        _refreshJailStatus();
+      }
     });
   }
 
-  int _calculateBailAmount() {
+  int _calculateFallbackBailAmount() {
     final wantedBase = (widget.wantedLevel ?? 0) * 1000;
     final remainingMinutes = (_remainingSeconds / 60).ceil();
     final timeBase = remainingMinutes * 500;
     return wantedBase > timeBase ? wantedBase : timeBase;
+  }
+
+  int _calculateDisplayedBailAmount() {
+    final fallback = _calculateFallbackBailAmount();
+    final backendBail = _bailAmount ?? 0;
+    return backendBail > fallback ? backendBail : fallback;
+  }
+
+  Future<void> _refreshJailStatus() async {
+    try {
+      final response = await _apiClient.get('/player/jail-status');
+      if (response.statusCode != 200) {
+        return;
+      }
+
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      if (!mounted) return;
+
+      setState(() {
+        final remainingTime = (data['remainingTime'] as num?)?.toInt();
+        final bailAmount = (data['bailAmount'] as num?)?.toInt();
+        if (remainingTime != null && remainingTime >= 0) {
+          _remainingSeconds = remainingTime;
+        }
+        if (bailAmount != null && bailAmount >= 0) {
+          _bailAmount = bailAmount;
+        }
+      });
+    } catch (_) {
+      // Keep local fallback values when jail status refresh fails.
+    }
   }
 
   String _formatTime() {
@@ -134,7 +175,9 @@ class _JailOverlayState extends State<JailOverlay> {
           }
           await authProvider.refreshPlayer();
 
-          final amount = data['params']?['amount'] as int? ?? 0;
+            final amount =
+              (data['params']?['amount'] as num?)?.toInt() ??
+              _calculateDisplayedBailAmount();
           final l10n = AppLocalizations.of(context)!;
           final isDutch = l10n.localeName == 'nl';
 
@@ -158,10 +201,13 @@ class _JailOverlayState extends State<JailOverlay> {
         if (mounted) {
           final l10n = AppLocalizations.of(context)!;
           final isDutch = l10n.localeName == 'nl';
+          final requiredAmount =
+              (data['params']?['required'] as num?)?.toInt() ??
+              _calculateDisplayedBailAmount();
           _showTopRightNotification(
             isDutch
-                ? 'Niet genoeg geld voor borg'
-                : 'Not enough money for bail',
+                ? 'Niet genoeg geld voor borg (€$requiredAmount)'
+                : 'Not enough money for bail (€$requiredAmount)',
             backgroundColor: Colors.red.shade700,
             icon: Icons.error_outline,
           );
@@ -204,177 +250,253 @@ class _JailOverlayState extends State<JailOverlay> {
     final l10n = AppLocalizations.of(context)!;
     final isDutch = l10n.localeName == 'nl';
     final screenSize = MediaQuery.of(context).size;
-    final compact = screenSize.width < 430;
+    final compactWidth = screenSize.width < 430;
+    final compactHeight = screenSize.height < 760;
+    final compact = compactWidth || compactHeight;
+    final cardMargin = EdgeInsets.all(compactWidth ? 12 : 24);
+    final maxCardWidth = screenSize.width >= 1200
+        ? 720.0
+        : screenSize.width >= 800
+            ? 640.0
+            : 560.0;
 
     final card = Card(
-      margin: EdgeInsets.all(compact ? 12 : 24),
+      margin: cardMargin,
       elevation: 12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       clipBehavior: Clip.antiAlias,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: 560,
-          maxHeight: screenSize.height - (compact ? 24 : 96),
+          maxWidth: maxCardWidth,
+          maxHeight: screenSize.height - (compactWidth ? 24 : 96),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.grey[850],
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey[700]!, width: 1),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final narrowHeader = constraints.maxWidth < 430;
+            final bodyPadding = EdgeInsets.all(compact ? 16 : 20);
+            final buttonLabel = isDutch
+                ? 'Betaal Borg €${_calculateDisplayedBailAmount()}'
+                : 'Pay Bail €${_calculateDisplayedBailAmount()}';
+
+            Widget buildTimerChip() {
+              return Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: compact ? 12 : 14,
+                  vertical: compact ? 7 : 8,
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Text(
-                          '🔒',
-                          style: TextStyle(fontSize: compact ? 22 : 28),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            isDutch ? 'Je zit in de cel' : 'You are in jail',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: compact ? 18 : 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.18),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.white.withOpacity(0.35)),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          isDutch ? 'Resterende tijd' : 'Time left',
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          _formatTime(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: compact ? 20 : 24,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'monospace',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    'assets/images/cooldown_jail.png',
-                    fit: BoxFit.cover,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withOpacity(0.15),
-                          Colors.black.withOpacity(0.75),
-                        ],
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.white.withOpacity(0.35)),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      isDutch ? 'Resterende tijd' : 'Time left',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: compact ? 10.5 : 11,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.white24),
-                          ),
-                          child: Text(
-                            isDutch
-                                ? 'Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.'
-                                : 'You cannot commit crimes, work, or travel while serving your sentence.',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    Text(
+                      _formatTime(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: compact ? 18 : 24,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'monospace',
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            Widget buildBottomPanel() {
+              return ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 460),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(compact ? 12 : 14),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.white24),
+                      ),
+                      child: Text(
+                        isDutch
+                            ? 'Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.'
+                            : 'You cannot commit crimes, work, or travel while serving your sentence.',
+                        style: TextStyle(
+                          fontSize: compact ? 14 : 15,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    if (_calculateDisplayedBailAmount() > 0) ...[
+                      SizedBox(height: compact ? 10 : 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _isPayingBail ? null : _payBail,
+                          icon: _isPayingBail
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const Icon(Icons.attach_money),
+                          label: Text(
+                            buttonLabel,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        if (widget.wantedLevel != null &&
-                            widget.wantedLevel! > 0)
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                              onPressed: _isPayingBail ? null : _payBail,
-                              icon: _isPayingBail
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Icon(Icons.attach_money),
-                              label: Text(
-                                isDutch
-                                    ? 'Betaal Borg €${_calculateBailAmount()}'
-                                    : 'Pay Bail €${_calculateBailAmount()}',
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 16,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            minimumSize: Size.fromHeight(compact ? 50 : 56),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: compact ? 12 : 18,
+                              vertical: compact ? 12 : 16,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                      ],
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              );
+            }
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(compact ? 16 : 20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[850],
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[700]!, width: 1),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ],
+                  child: narrowHeader
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  '🔒',
+                                  style: TextStyle(fontSize: compact ? 22 : 26),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    isDutch ? 'Je zit in de cel' : 'You are in jail',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: compact ? 17 : 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: buildTimerChip(),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '🔒',
+                                    style: TextStyle(fontSize: compact ? 24 : 28),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      isDutch ? 'Je zit in de cel' : 'You are in jail',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: compact ? 18 : 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            buildTimerChip(),
+                          ],
+                        ),
+                ),
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(
+                        'assets/images/cooldown_jail.png',
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withOpacity(compact ? 0.2 : 0.15),
+                              Colors.black.withOpacity(0.8),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: bodyPadding,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SingleChildScrollView(
+                            reverse: true,
+                            physics: const BouncingScrollPhysics(),
+                            child: Padding(
+                              padding: EdgeInsets.only(top: compact ? 96 : 140),
+                              child: buildBottomPanel(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -385,7 +507,7 @@ class _JailOverlayState extends State<JailOverlay> {
 
     return Scaffold(
       backgroundColor: Colors.black87,
-      body: Center(child: card),
+      body: SafeArea(child: Center(child: card)),
     );
   }
 }

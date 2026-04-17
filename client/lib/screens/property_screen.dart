@@ -8,6 +8,7 @@ import '../widgets/property_card.dart';
 import './nightclub_screen.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/responsive_modal.dart';
 
 class PropertyScreen extends StatefulWidget {
   const PropertyScreen({super.key});
@@ -173,24 +174,29 @@ class PropertyScreenState extends State<PropertyScreen>
               ? 'Weet je het zeker?'
               : 'Are you sure?',
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Eigendom kopen'
-                  : 'Buy property',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              AppLocalizations.of(context)!.buyPropertyConfirm(
-                property.name,
-                property.basePrice.toString(),
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 440,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                Localizations.localeOf(context).languageCode == 'nl'
+                    ? 'Eigendom kopen'
+                    : 'Buy property',
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                AppLocalizations.of(context)!.buyPropertyConfirm(
+                  property.name,
+                  property.basePrice.toString(),
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -330,6 +336,7 @@ class PropertyScreenState extends State<PropertyScreen>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [_buildAvailablePropertiesTab(), _buildMyPropertiesTab()],
       ),
     );

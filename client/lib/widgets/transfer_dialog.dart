@@ -4,6 +4,7 @@ import '../models/storage_info.dart';
 import '../services/inventory_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import 'responsive_modal.dart';
 
 class TransferDialog extends StatefulWidget {
   final CarriedTool tool;
@@ -133,36 +134,53 @@ class _TransferDialogState extends State<TransferDialog> {
     }
   }
 
+  EdgeInsets _dialogInsetPadding(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    if (width < 430) {
+      return const EdgeInsets.symmetric(horizontal: 12, vertical: 18);
+    }
+    if (width < 900) {
+      return const EdgeInsets.symmetric(horizontal: 24, vertical: 24);
+    }
+    return const EdgeInsets.symmetric(horizontal: 40, vertical: 32);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
     return AlertDialog(
+      insetPadding: _dialogInsetPadding(context),
       backgroundColor: Colors.grey[850],
       title: Text(
         l10n.transferTool,
         style: const TextStyle(color: Colors.white),
       ),
-      content: _isLoading
-          ? const SizedBox(
-              height: 100,
-              child: Center(child: CircularProgressIndicator(color: Colors.amber)),
-            )
-          : _error != null
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.error, color: Colors.red, size: 48),
-                    const SizedBox(height: 16),
-                    Text(
-                      _error!,
-                      style: const TextStyle(color: Colors.red),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                )
-              : SingleChildScrollView(
-                  child: Column(
+      content: ResponsiveDialogContent(
+        phoneMaxWidth: 340,
+        tabletMaxWidth: 460,
+        desktopMaxWidth: 520,
+        child: _isLoading
+            ? const SizedBox(
+                height: 100,
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.amber),
+                ),
+              )
+            : _error != null
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.error, color: Colors.red, size: 48),
+                      const SizedBox(height: 16),
+                      Text(
+                        _error!,
+                        style: const TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  )
+                : Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -283,6 +301,7 @@ class _TransferDialogState extends State<TransferDialog> {
                               )
                             : DropdownButtonFormField<String>(
                                 initialValue: _selectedDestination,
+                                isExpanded: true,
                                 dropdownColor: Colors.grey[800],
                                 decoration: InputDecoration(
                                   filled: true,
@@ -302,22 +321,26 @@ class _TransferDialogState extends State<TransferDialog> {
                                           style: const TextStyle(fontSize: 20),
                                         ),
                                         const SizedBox(width: 8),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              _getPropertyName(storage.propertyType),
-                                              style: const TextStyle(color: Colors.white),
-                                            ),
-                                            Text(
-                                              '${storage.usage}/${storage.capacity} ${l10n.slots}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey[400],
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                _getPropertyName(storage.propertyType),
+                                                style: const TextStyle(color: Colors.white),
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                            ),
-                                          ],
+                                              Text(
+                                                '${storage.usage}/${storage.capacity} ${l10n.slots}',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey[400],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -349,8 +372,8 @@ class _TransferDialogState extends State<TransferDialog> {
                                 ),
                               ),
                             ],
-                          ),
-                        ),
+                    ),
+        ),
                     ],
                   ),
                 ),

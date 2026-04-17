@@ -4,6 +4,7 @@ import '../services/drug_service.dart';
 import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/responsive_modal.dart';
 
 class MaterialsShopScreen extends StatefulWidget {
   const MaterialsShopScreen({super.key});
@@ -112,51 +113,54 @@ class _MaterialsShopScreenState extends State<MaterialsShopScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(material.name),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(material.description),
-            const SizedBox(height: 16),
-            Text(
-              '${_tr('Prijs', 'Price')}: €${material.price.toString().replaceAllMapped(
-                    RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                    (Match m) => '${m[1]}.',
-                  )} ${_tr('per stuk', 'each')}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: _tr('Hoeveelheid', 'Quantity'),
-                border: const OutlineInputBorder(),
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 340,
+          tabletMaxWidth: 420,
+          desktopMaxWidth: 500,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(material.description),
+              const SizedBox(height: 16),
+              Text(
+                '${_tr('Prijs', 'Price')}: €${material.price.toString().replaceAllMapped(
+                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                      (Match m) => '${m[1]}.',
+                    )} ${_tr('per stuk', 'each')}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              onChanged: (value) {
-                // Validate input (handled by ValueListenableBuilder below)
-              },
-            ),
-            const SizedBox(height: 8),
-            ValueListenableBuilder(
-              valueListenable: controller,
-              builder: (context, TextEditingValue value, _) {
-                final qty = int.tryParse(value.text) ?? 0;
-                final total = material.price * qty;
-                return Text(
-                  '${_tr('Totaal', 'Total')}: €${total.toString().replaceAllMapped(
-                        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                        (Match m) => '${m[1]}.',
-                      )}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                );
-              },
-            ),
-          ],
+              const SizedBox(height: 16),
+              TextField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: _tr('Hoeveelheid', 'Quantity'),
+                  border: const OutlineInputBorder(),
+                ),
+                onChanged: (value) {},
+              ),
+              const SizedBox(height: 8),
+              ValueListenableBuilder(
+                valueListenable: controller,
+                builder: (context, TextEditingValue value, _) {
+                  final qty = int.tryParse(value.text) ?? 0;
+                  final total = material.price * qty;
+                  return Text(
+                    '${_tr('Totaal', 'Total')}: €${total.toString().replaceAllMapped(
+                          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                          (Match m) => '${m[1]}.',
+                        )}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(

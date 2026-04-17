@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/cooldown_info.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
+import '../utils/web_asset_helper.dart';
 
 /// Full-screen overlay showing cooldown timer with cartoon and countdown
 /// Similar to JailOverlay but for action cooldowns
@@ -78,8 +79,6 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = l10n.localeName;
-    final screenSize = MediaQuery.of(context).size;
-    final compact = screenSize.width < 430;
 
     // Determine which background image to use
     String? backgroundImagePath;
@@ -93,173 +92,319 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
       backgroundImagePath = 'assets/images/cooldown_school.png';
     }
 
-    final overlayCard = Card(
-      margin: EdgeInsets.all(compact ? 12 : 24),
-      elevation: 12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      clipBehavior: Clip.antiAlias,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: 560,
-          maxHeight: screenSize.height - (compact ? 24 : 96),
+    Widget timerChip({required bool compactWidth}) {
+      return Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: compactWidth ? 12 : 16,
+          vertical: compactWidth ? 8 : 10,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.18),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white.withOpacity(0.35)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.grey[850],
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey[700]!, width: 1),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        _cooldownInfo.getIcon(),
-                        style: TextStyle(fontSize: compact ? 22 : 28),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          '${_cooldownInfo.getActionName(locale)} Cooldown',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: compact ? 18 : 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.18),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.white.withOpacity(0.35)),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          locale == 'nl' ? 'Resterende tijd' : 'Time left',
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          _formatTime(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: compact ? 20 : 24,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'monospace',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            Text(
+              locale == 'nl' ? 'Resterende tijd' : 'Time left',
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
               ),
             ),
+            const SizedBox(height: 2),
+            Text(
+              _formatTime(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: compactWidth ? 20 : 24,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'monospace',
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget buildResultCard(bool compactWidth) {
+      if (widget.resultMessage == null) {
+        return const SizedBox.shrink();
+      }
+
+      final isSuccess = widget.isSuccess == true;
+      final toneColor = isSuccess ? Colors.green : Colors.red;
+      final textColor = isSuccess ? Colors.green[900] : Colors.red[900];
+
+      return Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(compactWidth ? 12 : 14),
+        decoration: BoxDecoration(
+          color: toneColor.withOpacity(0.18),
+          border: Border.all(color: toneColor, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 1),
+              child: Icon(
+                isSuccess ? Icons.check_circle : Icons.cancel,
+                color: toneColor,
+                size: compactWidth ? 20 : 22,
+              ),
+            ),
+            const SizedBox(width: 10),
             Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  if (backgroundImagePath != null)
-                    Image.asset(backgroundImagePath, fit: BoxFit.cover),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (widget.resultMessage != null) ...[
-                          Container(
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: widget.isSuccess == true
-                                  ? Colors.green.withOpacity(0.15)
-                                  : Colors.red.withOpacity(0.15),
-                              border: Border.all(
-                                color: widget.isSuccess == true
-                                    ? Colors.green
-                                    : Colors.red,
-                                width: 1.5,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
+              child: Text(
+                widget.resultMessage!,
+                style: TextStyle(
+                  fontSize: compactWidth ? 13 : 14,
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final mediaSize = MediaQuery.of(context).size;
+        final availableWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : mediaSize.width;
+        final availableHeight = constraints.maxHeight.isFinite
+            ? constraints.maxHeight
+            : mediaSize.height;
+        final compactWidth = availableWidth < 430;
+        final compactHeight = availableHeight < 760;
+        final tabletWidth = availableWidth >= 700;
+        final desktopWidth = availableWidth >= 1100;
+        final horizontalMargin = compactWidth
+            ? 12.0
+            : tabletWidth
+            ? 24.0
+            : 18.0;
+        final verticalMargin = compactHeight ? 12.0 : 24.0;
+        final maxCardWidth = desktopWidth
+            ? 920.0
+            : tabletWidth
+            ? 760.0
+            : 620.0;
+        final maxCardHeight = (availableHeight - (verticalMargin * 2)).clamp(
+          280.0,
+          double.infinity,
+        );
+        final headerStacks = compactWidth || availableWidth < 560;
+
+        final overlayCard = Card(
+          margin: EdgeInsets.symmetric(
+            horizontal: horizontalMargin,
+            vertical: verticalMargin,
+          ),
+          elevation: 12,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          clipBehavior: Clip.antiAlias,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: maxCardWidth,
+              maxHeight: maxCardHeight,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.fromLTRB(
+                    compactWidth ? 16 : 20,
+                    compactWidth ? 16 : 18,
+                    compactWidth ? 16 : 20,
+                    compactWidth ? 14 : 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[850],
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[700]!, width: 1),
+                    ),
+                  ),
+                  child: headerStacks
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
-                                Icon(
-                                  widget.isSuccess == true
-                                      ? Icons.check_circle
-                                      : Icons.cancel,
-                                  color: widget.isSuccess == true
-                                      ? Colors.green
-                                      : Colors.red,
-                                  size: 22,
+                                Text(
+                                  _cooldownInfo.getIcon(),
+                                  style: TextStyle(
+                                    fontSize: compactWidth ? 22 : 26,
+                                  ),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    widget.resultMessage!,
+                                    '${_cooldownInfo.getActionName(locale)} Cooldown',
                                     style: TextStyle(
-                                      fontSize: compact ? 13 : 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: widget.isSuccess == true
-                                          ? Colors.green[800]
-                                          : Colors.red[800],
+                                      color: Colors.white,
+                                      fontSize: compactWidth ? 18 : 21,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          const SizedBox(height: 14),
-                        ],
-                        Text(
-                          locale == 'nl'
-                              ? 'Je moet wachten voordat je deze actie opnieuw kunt uitvoeren.'
-                              : 'You must wait before you can perform this action again.',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[300],
-                            backgroundColor: Colors.black54,
-                          ),
-                          textAlign: TextAlign.center,
+                            const SizedBox(height: 12),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: timerChip(compactWidth: compactWidth),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    _cooldownInfo.getIcon(),
+                                    style: const TextStyle(fontSize: 28),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      '${_cooldownInfo.getActionName(locale)} Cooldown',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            timerChip(compactWidth: false),
+                          ],
                         ),
-                      ],
-                    ),
+                ),
+                Flexible(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(color: Colors.black),
+                      if (backgroundImagePath != null)
+                        Positioned.fill(
+                          child: WebAssetHelper.image(
+                            backgroundImagePath,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      Positioned.fill(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black.withOpacity(0.18),
+                                Colors.black.withOpacity(0.32),
+                                Colors.black.withOpacity(0.74),
+                              ],
+                              stops: const [0.0, 0.45, 1.0],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.all(compactWidth ? 16 : 20),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: double.infinity,
+                              minHeight: compactHeight ? 140 : 180,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                if (widget.resultMessage != null) ...[
+                                  buildResultCard(compactWidth),
+                                  const SizedBox(height: 14),
+                                ],
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: compactWidth ? 14 : 16,
+                                    vertical: compactWidth ? 12 : 14,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.12),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _getWaitMessage(locale),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: compactWidth ? 14 : 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        locale == 'nl'
+                                            ? 'Je moet wachten voordat je deze actie opnieuw kunt uitvoeren.'
+                                            : 'You must wait before you can perform this action again.',
+                                        style: TextStyle(
+                                          fontSize: compactWidth ? 13 : 15,
+                                          color: Colors.grey[200],
+                                          height: 1.35,
+                                        ),
+                                        textAlign: compactWidth
+                                            ? TextAlign.left
+                                            : TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        );
 
-    if (widget.embedded) {
-      return Center(child: overlayCard);
-    }
+        if (widget.embedded) {
+          return Center(child: overlayCard);
+        }
 
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      body: Center(child: overlayCard),
+        return Scaffold(
+          backgroundColor: Colors.black87,
+          body: SafeArea(child: Center(child: overlayCard)),
+        );
+      },
     );
   }
 

@@ -292,8 +292,9 @@ class _TradeScreenState extends State<TradeScreen>
                 ],
               ),
             )
-          : TabBarView(
+            : TabBarView(
               controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildMarketTab(),
                 _buildVehicleMarketTab(vehicleProvider),

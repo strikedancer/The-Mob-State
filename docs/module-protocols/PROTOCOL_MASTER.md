@@ -120,6 +120,9 @@ Implementatievoorkeur:
 - Bij aanpassingen of nieuwe modules is het verplicht om te controleren of `Help & Uitleg` nog klopt; als player-gedrag, flows, uitleg of terminologie verandert, moet de help-content in dezelfde wijziging worden bijgewerkt.
 - NL en EN tekst altijd synchroon houden.
 - Geen regressies op mobiel, tablet, desktop.
+- Alle nieuwe en aangepaste overlays, dialogs, modals en full-screen lock states moeten expliciet responsive zijn voor mobiel, tablet en desktop; vaste breedtes/hoogtes zonder clamp, scrollfallback of safe-area-afhandeling gelden niet als done.
+- Gebruik voor gedeelde overlays/dialogs een centraal responsive patroon of helper in plaats van losse one-off layoutlogica per scherm.
+- Op mobiel mag een sticky topbar of statusheader blijven staan, maar daaronder moet player-facing content altijd via precies één primaire verticale scrollflow bruikbaar blijven; losse ingebedde scrollvensters of verborgen inner-scrollgebieden gelden niet als done.
 - Duidelijke feedback voor succes/foutstatus behouden.
 - Geen kritieke actieknoppen verstoppen achter hover-only styling.
 - Bij lange beheerpagina's: groepeer secties in tabs i.p.v. eindeloze verticale stapels.

@@ -1602,9 +1602,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final useEmbeddedWebShell = kIsWeb && screenWidth >= _tabletBreakpoint;
 
     return Scaffold(
-      appBar: kIsWeb
+      appBar: useEmbeddedWebShell
           ? null
           : AppBar(
               title: Text(l10n.dashboard),
@@ -1662,7 +1664,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (kIsWeb) {
+          if (useEmbeddedWebShell) {
             return _buildWebShell(context, l10n, player);
           }
 

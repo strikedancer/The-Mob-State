@@ -8,6 +8,7 @@ import '../providers/event_provider.dart';
 import '../models/crew_message.dart';
 import 'message_bubble.dart';
 import '../utils/top_right_notification.dart';
+import 'responsive_modal.dart';
 
 class CrewChatWidget extends StatefulWidget {
   final int crewId;
@@ -25,6 +26,10 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
   bool _loading = false;
   bool _sending = false;
   StreamSubscription? _eventSubscription;
+
+  String _tr(String nl, String en) {
+    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
+  }
 
   @override
   void initState() {
@@ -112,7 +117,7 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('Fout bij laden berichten: $e'),
+            content: Text('${_tr('Fout bij laden berichten', 'Error loading messages')}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -129,8 +134,8 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
     
     if (message.length > 500) {
       showTopRightFromSnackBar(context, 
-        const SnackBar(
-          content: Text('Bericht te lang (max 500 karakters)'),
+        SnackBar(
+          content: Text(_tr('Bericht te lang (max 500 karakters)', 'Message too long (max 500 characters)')),
           backgroundColor: Colors.orange,
         ),
       );
@@ -163,7 +168,7 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('Fout bij verzenden: $e'),
+            content: Text('${_tr('Fout bij verzenden', 'Error sending message')}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -187,7 +192,7 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('Kon bericht niet verwijderen: $e'),
+            content: Text('${_tr('Kon bericht niet verwijderen', 'Could not delete message')}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -214,23 +219,31 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF2A2A2A),
-        title: const Text(
-          'Bericht verwijderen?',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          _tr('Bericht verwijderen?', 'Delete message?'),
+          style: const TextStyle(color: Colors.white),
         ),
-        content: const Text(
-          'Dit bericht wordt permanent verwijderd.',
-          style: TextStyle(color: Colors.grey),
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 320,
+          tabletMaxWidth: 380,
+          desktopMaxWidth: 420,
+          child: Text(
+            _tr(
+              'Dit bericht wordt permanent verwijderd.',
+              'This message will be permanently deleted.',
+            ),
+            style: const TextStyle(color: Colors.grey),
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuleren'),
+            child: Text(_tr('Annuleren', 'Cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text(
-              'Verwijderen',
+            child: Text(
+              _tr('Verwijderen', 'Delete'),
               style: TextStyle(color: Colors.red),
             ),
           ),
@@ -271,7 +284,7 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Nog geen berichten',
+                        _tr('Nog geen berichten', 'No messages yet'),
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey[600],
@@ -279,7 +292,10 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Stuur het eerste bericht naar je crew!',
+                        _tr(
+                          'Stuur het eerste bericht naar je crew!',
+                          'Send the first message to your crew!',
+                        ),
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                     ],

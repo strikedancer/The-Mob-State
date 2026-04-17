@@ -24,6 +24,7 @@ import 'screens/achievements_screen.dart';
 import 'screens/school_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/tune_shop_screen.dart';
+import 'widgets/mobile_web_sticky_player_header.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -89,6 +90,11 @@ class MafiaGameApp extends StatelessWidget {
           ),
 
           // Routes
+          builder: (context, child) {
+            return MobileWebStickyPlayerHeaderShell(
+              child: child ?? const SizedBox.shrink(),
+            );
+          },
           home: _resolveHome(),
           routes: {
             '/login': (context) => const LoginScreen(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'responsive_modal.dart';
 
 class CrimeResultOverlay extends StatelessWidget {
   final String crimeName;
@@ -25,60 +26,87 @@ class CrimeResultOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final card = Card(
-      margin: const EdgeInsets.all(24),
-      elevation: 12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.emoji_events, size: 48, color: Color(0xFFFFC107)),
-            const SizedBox(height: 12),
-            Text(
-              crimeName,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _ResultStat(
-                  icon: Icons.euro,
-                  label: 'Geld',
-                  value: '+€${_formatNumber(reward)}',
-                  color: Colors.green,
-                ),
-                _ResultStat(
-                  icon: Icons.auto_awesome,
-                  label: 'XP',
-                  value: '+$xpGained',
-                  color: Colors.blue,
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: onContinue,
-                child: const Text('Verder'),
+    final isDutch = Localizations.localeOf(context).languageCode == 'nl';
+
+    return ResponsiveModalLayout(
+      embedded: embedded,
+      phoneMaxWidth: 520,
+      tabletMaxWidth: 620,
+      desktopMaxWidth: 720,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final compactWidth = constraints.maxWidth < 430;
+
+          return Container(
+            padding: EdgeInsets.all(compactWidth ? 18 : 24),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFF9F4D6), Colors.white],
               ),
             ),
-          ],
-        ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.emoji_events,
+                    size: compactWidth ? 40 : 48,
+                    color: const Color(0xFFFFC107),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    crimeName,
+                    style: TextStyle(
+                      fontSize: compactWidth ? 21 : 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: compactWidth ? double.infinity : 220,
+                        child: _ResultStat(
+                          icon: Icons.euro,
+                          label: isDutch ? 'Geld' : 'Money',
+                          value: '+€${_formatNumber(reward)}',
+                          color: Colors.green,
+                        ),
+                      ),
+                      SizedBox(
+                        width: compactWidth ? double.infinity : 220,
+                        child: _ResultStat(
+                          icon: Icons.auto_awesome,
+                          label: 'XP',
+                          value: '+$xpGained',
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: onContinue,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size.fromHeight(compactWidth ? 48 : 54),
+                      ),
+                      child: Text(isDutch ? 'Verder' : 'Continue'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
-    );
-
-    if (embedded) {
-      return Center(child: card);
-    }
-
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      body: Center(child: card),
     );
   }
 }
@@ -99,6 +127,7 @@ class _ResultStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),

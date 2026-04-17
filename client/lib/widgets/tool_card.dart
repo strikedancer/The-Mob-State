@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/carried_tool.dart';
 import '../l10n/app_localizations.dart';
+import 'responsive_modal.dart';
 
 class ToolCard extends StatelessWidget {
   final CarriedTool tool;
@@ -242,7 +243,10 @@ class ToolCard extends StatelessWidget {
             ),
           ],
         ),
-        content: SingleChildScrollView(
+        content: ResponsiveDialogContent(
+          phoneMaxWidth: 340,
+          tabletMaxWidth: 420,
+          desktopMaxWidth: 520,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

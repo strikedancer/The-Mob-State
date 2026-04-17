@@ -47,9 +47,12 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 ## Embedded Scroll & Layout Guardrails
 - In embedded dashboard-views moet klik op dezelfde sectie een expliciete remount/refresh triggeren als de UX dat verwacht.
 - Gebruik bij mobiele schermen met filters + contentlijsten bij voorkeur één doorlopende verticale scrollcontainer.
+- Op mobiel/web-smal mag een sticky player-header bovenaan blijven staan, maar de rest van de pagina moet in één primaire scrollcontainer renderen; embed geen volledige schermen in kleine innerlijke viewport-vensters met aparte scrollbars.
 - In `Expanded` contexten heeft `ListView` de voorkeur boven `SingleChildScrollView`.
 - Bij `TabBar + TabBarView` schermen: laat elke tabcontent zelf scrollen en voorkom nested scroll conflicts.
 - Voeg geen extra `ScrollConfiguration` toe aan child-content als parent embedded gedrag al afhandelt.
+- Nieuwe en aangepaste overlays/dialogs/modals moeten `SafeArea`, clamped breedte/hoogte en een scrollfallback voor kleine viewports hebben; kritieke CTA's mogen op mobiel of embedded layouts niet buiten beeld vallen.
+- Geef gedeelde overlay- en dialogcomponenten de voorkeur boven scherm-specifieke fixed-width `AlertDialog` implementaties wanneer hetzelfde patroon op meerdere screens terugkomt.
 
 ## QA Checklist
 1. Controleer web, mobiel en embedded dashboard-weergave.
