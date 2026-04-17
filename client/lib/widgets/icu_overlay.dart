@@ -236,7 +236,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
                             size: 20,
                           ),
                           const SizedBox(width: 12),
-                          const Expanded(
+                          Expanded(
                             child: Text(
                               isDutch
                                   ? 'Tijdens deze tijd kun je geen acties uitvoeren.\nWees voorzichtiger met je gezondheid!'
