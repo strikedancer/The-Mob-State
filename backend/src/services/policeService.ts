@@ -3,6 +3,17 @@ import config from '../config';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 
+async function runPoliceSideEffect(
+  label: string,
+  effect: () => Promise<void>,
+): Promise<void> {
+  try {
+    await effect();
+  } catch (error) {
+    console.error(`[Police Service] ${label} failed:`, error);
+  }
+}
+
 /**
  * Police Service
  * Manages wanted levels, arrests, and bail system
@@ -143,18 +154,20 @@ export async function payBail(
     });
   });
 
-  await activityService.logActivity(
-    playerId,
-    'BAIL_PAID',
-    `Paid bail of €${bail.toLocaleString()}`,
-    {
-      authority: 'Police',
-      bail,
-      wantedLevelBefore: player.wantedLevel,
-      wantedLevelAfter: newWantedLevel,
-    },
-    true
-  );
+  await runPoliceSideEffect('BAIL_PAID activity', async () => {
+    await activityService.logActivity(
+      playerId,
+      'BAIL_PAID',
+      `Paid bail of €${bail.toLocaleString()}`,
+      {
+        authority: 'Police',
+        bail,
+        wantedLevelBefore: player.wantedLevel,
+        wantedLevelAfter: newWantedLevel,
+      },
+      true
+    );
+  });
 }
 
 /**
@@ -293,24 +306,28 @@ export async function jailPlayer(playerId: number, jailTime: number): Promise<vo
     });
   });
 
-  await activityService.logActivity(
-    playerId,
-    'ARREST',
-    `Arrested by police for ${jailTime} minutes`,
-    {
-      authority: 'Police',
-      jailTime,
-      jailedUntil: jailRelease.toISOString(),
-    },
-    true
-  );
+  await runPoliceSideEffect('ARREST activity', async () => {
+    await activityService.logActivity(
+      playerId,
+      'ARREST',
+      `Arrested by police for ${jailTime} minutes`,
+      {
+        authority: 'Police',
+        jailTime,
+        jailedUntil: jailRelease.toISOString(),
+      },
+      true
+    );
+  });
 
   void notificationService.sendArrestAwaitingHelpNotifications(
     playerId,
     jailTime,
     'Police',
     'POLICE'
-  );
+  ).catch((error) => {
+    console.error('[Police Service] arrest help notifications failed:', error);
+  });
 }
 
 export async function getJailedPrisoners(_viewerId: number): Promise<

@@ -71,7 +71,8 @@ class EventRenderer {
             params['vehicleConfiscated'] as bool? ?? false;
         final weaponConfiscated =
           params['weaponConfiscated'] as bool? ?? false;
-        final vehicleChaseDamage = params['vehicleChaseDamage'] as int?;
+        final vehicleChaseDamage =
+          (params['vehicleChaseDamage'] as num?)?.toInt();
 
         String message = '';
 
@@ -102,7 +103,7 @@ class EventRenderer {
       case 'crime.jailed':
       case 'crime.caught':
         final crimeName = params['crimeName'] as String?;
-        final jailTime = params['jailTime'] as int?; // in MINUTES
+        final jailTime = (params['jailTime'] as num?)?.toInt(); // in MINUTES
         final minutes = jailTime != null && jailTime > 0 ? jailTime : 0;
         return 'Caught during $crimeName! Jailed for $minutes minute${minutes != 1 ? 's' : ''}';
 
@@ -474,7 +475,8 @@ class EventRenderer {
             params['vehicleConfiscated'] as bool? ?? false;
         final weaponConfiscated =
           params['weaponConfiscated'] as bool? ?? false;
-        final vehicleChaseDamage = params['vehicleChaseDamage'] as int?;
+        final vehicleChaseDamage =
+          (params['vehicleChaseDamage'] as num?)?.toInt();
 
         String message = '';
 
@@ -505,7 +507,7 @@ class EventRenderer {
       case 'crime.jailed':
       case 'crime.caught':
         final crimeName = params['crimeName'] as String?;
-        final jailTime = params['jailTime'] as int?; // in MINUTES
+        final jailTime = (params['jailTime'] as num?)?.toInt(); // in MINUTES
         final minutes = jailTime != null && jailTime > 0 ? jailTime : 0;
         final minuteLabel = minutes == 1 ? 'minuut' : 'minuten';
         return 'Gepakt tijdens $crimeName! $minutes $minuteLabel!';

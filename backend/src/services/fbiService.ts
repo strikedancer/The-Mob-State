@@ -8,6 +8,17 @@ import config from '../config';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 
+async function runFbiSideEffect(
+  label: string,
+  effect: () => Promise<void>,
+): Promise<void> {
+  try {
+    await effect();
+  } catch (error) {
+    console.error(`[FBI Service] ${label} failed:`, error);
+  }
+}
+
 export interface FBIArrestResult {
   arrested: boolean;
   fbiHeat: number;
@@ -117,18 +128,20 @@ export async function payFederalBail(playerId: number): Promise<void> {
     });
   });
 
-  await activityService.logActivity(
-    playerId,
-    'FEDERAL_BAIL_PAID',
-    `Paid federal bail of €${federalBail.toLocaleString()}`,
-    {
-      authority: 'FBI',
-      bail: federalBail,
-      fbiHeatBefore: player.fbiHeat,
-      fbiHeatAfter: newFbiHeat,
-    },
-    true
-  );
+  await runFbiSideEffect('FEDERAL_BAIL_PAID activity', async () => {
+    await activityService.logActivity(
+      playerId,
+      'FEDERAL_BAIL_PAID',
+      `Paid federal bail of €${federalBail.toLocaleString()}`,
+      {
+        authority: 'FBI',
+        bail: federalBail,
+        fbiHeatBefore: player.fbiHeat,
+        fbiHeatAfter: newFbiHeat,
+      },
+      true
+    );
+  });
 }
 
 /**
@@ -186,23 +199,27 @@ export async function jailPlayerFederal(playerId: number, jailTime: number): Pro
     },
   });
 
-  await activityService.logActivity(
-    playerId,
-    'ARREST',
-    `Arrested by FBI for ${jailTime} minutes`,
-    {
-      authority: 'FBI',
-      jailTime,
-    },
-    true
-  );
+  await runFbiSideEffect('ARREST activity', async () => {
+    await activityService.logActivity(
+      playerId,
+      'ARREST',
+      `Arrested by FBI for ${jailTime} minutes`,
+      {
+        authority: 'FBI',
+        jailTime,
+      },
+      true
+    );
+  });
 
   void notificationService.sendArrestAwaitingHelpNotifications(
     playerId,
     jailTime,
     'FBI',
     'FBI'
-  );
+  ).catch((error) => {
+    console.error('[FBI Service] arrest help notifications failed:', error);
+  });
 }
 
 /**
