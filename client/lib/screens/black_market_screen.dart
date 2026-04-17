@@ -12,7 +12,9 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 
 class BlackMarketScreen extends StatefulWidget {
-  const BlackMarketScreen({super.key});
+  final int initialTabIndex;
+
+  const BlackMarketScreen({super.key, this.initialTabIndex = 0});
 
   @override
   State<BlackMarketScreen> createState() => _BlackMarketScreenState();
@@ -29,7 +31,11 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this);
+    _tabController = TabController(
+      length: 6,
+      vsync: this,
+      initialIndex: widget.initialTabIndex.clamp(0, 5),
+    );
     _loadData();
   }
 

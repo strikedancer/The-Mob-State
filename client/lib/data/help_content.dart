@@ -1255,14 +1255,14 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Ammo Factory',
     titleEn: 'Ammo Factory',
     summaryNl:
-        'Produceer munitie voor eigen gebruik of verkoop via de markt. Een goed gerunde ammo-factory is een stabiele inkomstenstroom en vermindert je afhankelijkheid van de zwarte markt.',
+      'Produceer munitie voor eigen gebruik en beheer je output vanuit de fabriek. Koop en verkoop munitie verlopen via de Zwarte Markt, niet direct vanuit het factory-scherm.',
     summaryEn:
-        'Produce ammunition for personal use or market sale. A well-run ammo factory is a stable income stream and reduces your dependency on the black market.',
+      'Produce ammunition for personal use and manage your output from the factory. Ammo buying and selling go through the Black Market, not directly from the factory screen.',
     howNl: [
       'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer output per productieronde en betere kwaliteit.',
       'Je hebt grondstoffen nodig (metalen, chemicaliën) die je via de zwarte markt of handel aanschaft.',
       'Productietimers lopen door terwijl je offline bent. Check terug als de timer klaar is om output te verzamelen.',
-      'Je kunt geproduceerde munitie: zelf gebruiken bij crimes en PvP, verkopen op de zwarte markt of trade aan crewleden.',
+      'Je gebruikt geproduceerde munitie zelf bij crimes en PvP. Voor koop en verkoop van munitie ga je via de Zwarte Markt; het factory-scherm zelf verkoopt geen kogels direct.',
       'Upgrades kopen verhoogt output-volume, verlaagt productietimer en opent hogere kalibers (meer waarde per eenheid).',
       'Marktprijs van ammo fluctueert met vraag. Sla ammo op als de prijs laag is en verkoop als de prijs hoog is.',
       'Bij een raid op je factory verlies je een deel van de opgeslagen output. Beveiliging verlaagt dit risico.',
@@ -1271,7 +1271,7 @@ const List<HelpTopic> helpTopics = [
       'The ammo factory has production levels (Level 1 through 5). Higher level = more output per production round and better quality.',
       'You need raw materials (metals, chemicals) purchased via the black market or trade.',
       'Production timers run while you are offline. Check back when the timer finishes to collect output.',
-      'Produced ammo can be: used personally in crimes and PvP, sold on the black market or traded to crew members.',
+      'Produced ammo is used personally in crimes and PvP. For buying and selling ammo, go through the Black Market; the factory screen itself does not sell bullets directly.',
       'Buying upgrades increases output volume, reduces production timer and unlocks higher calibres (more value per unit).',
       'Ammo market price fluctuates with demand. Stock up when prices are low and sell when prices are high.',
       'During a factory raid you lose part of stored output. Security lowers this risk.',

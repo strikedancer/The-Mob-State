@@ -9,6 +9,7 @@ import '../services/api_client.dart';
 import '../utils/country_helper.dart';
 import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
+import 'black_market_screen.dart';
 
 class AmmoFactoryScreen extends StatefulWidget {
   const AmmoFactoryScreen({super.key});
@@ -21,7 +22,6 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
   final ApiClient _apiClient = ApiClient();
   Map<String, dynamic>? _currentCountryFactory;
   Map<String, dynamic>? _myFactory;
-  List<dynamic> _marketStock = [];
   bool _isLoading = true;
   bool _isWorking = false;
   Timer? _clockTimer;
@@ -59,11 +59,9 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     try {
       final factoriesResponse = await _apiClient.get('/ammo-factories');
       final myResponse = await _apiClient.get('/ammo-factories/my');
-      final marketResponse = await _apiClient.get('/ammo/market');
 
       final factoriesData = jsonDecode(factoriesResponse.body);
       final myData = jsonDecode(myResponse.body);
-      final marketData = jsonDecode(marketResponse.body);
 
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final currentCountry = authProvider.currentPlayer?.currentCountry;
@@ -77,7 +75,6 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
       setState(() {
         _currentCountryFactory = currentCountryFactory as Map<String, dynamic>?;
         _myFactory = myData['factory'] as Map<String, dynamic>?;
-        _marketStock = (marketData['stock'] as List<dynamic>? ?? []);
         _isLoading = false;
       });
     } catch (_) {
@@ -364,95 +361,6 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     }
   }
 
-  Future<void> _buyAmmo(String ammoType, [String? factoryId]) async {
-    final l10n = AppLocalizations.of(context);
-    final controller = TextEditingController(text: '1');
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Munitie kopen'
-                  : 'Buy ammo',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: l10n?.ammoBoxes ?? 'Boxes',
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n?.cancel ?? 'Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(l10n?.buy ?? 'Buy'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed != true) return;
-
-    final boxes = int.tryParse(controller.text) ?? 0;
-    if (boxes < 1) return;
-
-    setState(() => _isWorking = true);
-    try {
-      final response = await _apiClient.post('/ammo/buy', {
-        'ammoType': ammoType,
-        'boxes': boxes,
-      });
-      final data = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        if (mounted) {
-          showTopRightFromSnackBar(
-            context,
-            SnackBar(
-              content: Text(l10n?.ammoPurchased ?? 'Ammo purchased'),
-              backgroundColor: Colors.green,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        }
-        await _loadData();
-      } else if (mounted) {
-        final message =
-            data['message']?.toString() ??
-            (l10n?.hitError(data.toString()) ?? 'Error: $data');
-        showTopRightFromSnackBar(
-          context,
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 4),
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() => _isWorking = false);
-      }
-    }
-  }
-
   String _formatDate(String? iso) {
     if (iso == null) return '-';
     final parsed = DateTime.tryParse(iso);
@@ -521,123 +429,44 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
-  String _getAmmoName(String ammoType) {
-    switch (ammoType) {
-      case '9mm':
-        return '9mm';
-      case '45acp':
-        return '.45 ACP';
-      case '12gauge':
-        return '12 Gauge';
-      case '556mm':
-        return '5.56mm';
-      case '762mm':
-        return '7.62mm';
-      case '308':
-        return '.308 Winchester';
-      default:
-        return ammoType;
-    }
+  void _openBlackMarketAmmo() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const BlackMarketScreen(initialTabIndex: 5),
+      ),
+    );
   }
 
-  Widget _buildAmmoMarket(
-    Map<String, dynamic> factory,
-    AppLocalizations? l10n,
-  ) {
-    final isMyFactory = _myFactory?['id'] == factory['id'];
-    final factoryLabel = isMyFactory
-        ? (l10n?.myFactory ?? 'My Factory')
-        : (factory['owner']?['username'] ?? 'Factory');
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '${l10n?.ammoMarket ?? "Ammo Market"} - $factoryLabel',
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        const SizedBox(height: 8),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: MediaQuery.of(context).size.width < 520 ? 1 : 2,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            childAspectRatio: 2.7,
+  Widget _buildBlackMarketNotice(AppLocalizations? l10n) {
+    final isNl = Localizations.localeOf(context).languageCode == 'nl';
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.18),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFFFFC107).withOpacity(0.55)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            isNl ? 'Kogels te koop' : 'Ammo for sale',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          itemCount: _marketStock.length,
-          itemBuilder: (context, index) {
-            final stock = _marketStock[index] as Map<String, dynamic>;
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide(
-                  color: const Color(0xFFFFC107).withOpacity(0.55),
-                  width: 1,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 8,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey[900]?.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.inventory_2,
-                        color: Color(0xFFFFC107),
-                        size: 18,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _getAmmoName(stock['ammoType']?.toString() ?? ''),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            '${l10n?.ammoQuality ?? 'Quality'}: ${((stock['quality'] as num?)?.toDouble() ?? 1.0).toStringAsFixed(2)}x',
-                            style: TextStyle(
-                              color: Colors.grey[300],
-                              fontSize: 11,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: _isWorking
-                          ? null
-                          : () => _buyAmmo(
-                              stock['ammoType']?.toString() ?? '',
-                              factory['id']?.toString(),
-                            ),
-                      child: Text(l10n?.buy ?? 'Buy'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ],
+          const SizedBox(height: 6),
+          Text(
+            isNl
+                ? 'De munitiefabriek verkoopt geen kogels direct vanuit dit scherm. Voor koop en verkoop van munitie ga je via de Zwarte Markt.'
+                : 'The ammo factory does not sell bullets directly from this screen. Use the Black Market for buying and selling ammo.',
+          ),
+          const SizedBox(height: 10),
+          OutlinedButton.icon(
+            onPressed: _openBlackMarketAmmo,
+            icon: const Icon(Icons.open_in_new),
+            label: Text(l10n?.blackMarket ?? 'Black Market'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -701,6 +530,9 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                   Text(
                     '• ${l10n?.ammoFactoryActionQuality ?? 'Upgrade quality for stronger market prices'}',
                   ),
+                  Text(
+                    '• ${Localizations.localeOf(context).languageCode == 'nl' ? 'Koop en verkoop munitie via de Zwarte Markt, niet vanuit de fabriek.' : 'Buy and sell ammo through the Black Market, not directly from the factory.'}',
+                  ),
                 ],
               ),
             ),
@@ -752,10 +584,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                               child: Text(l10n?.factoryBuy ?? 'Buy'),
                             )
                           else
-                            _buildAmmoMarket(
-                              _currentCountryFactory ?? {},
-                              l10n,
-                            ),
+                            _buildBlackMarketNotice(l10n),
                         ],
                       )
                     // If I own it
@@ -919,7 +748,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                             ],
                           ),
                           const SizedBox(height: 12),
-                          _buildAmmoMarket(_myFactory ?? {}, l10n),
+                          _buildBlackMarketNotice(l10n),
                         ],
                       ),
                   ],
