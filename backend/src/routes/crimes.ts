@@ -18,66 +18,79 @@ const router = Router();
  * Get all available crimes with player-specific success chances
  */
 router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
-  const playerId = req.player?.id;
-  
-  if (playerId) {
-    // Check for active cooldown
-    const cooldown = await cooldownService.getCooldown(playerId, 'crime');
-    if (cooldown && cooldown.remainingSeconds > 0) {
-      return res.status(200).json({
-        event: 'crimes.list',
-        params: {},
-        crimes: [],
-        cooldown: {
-          actionType: 'crime',
-          remainingSeconds: cooldown.remainingSeconds,
-        },
-      });
-    }
-  }
-  
-  const crimes = crimeService.getAvailableCrimes();
+  try {
+    const playerId = req.player?.id;
 
-  // Get player's selected vehicle for crime bonus calculations
-  let vehicleStats: { speed: number; armor: number; cargo: number; stealth: number; condition: number } | undefined;
-  if (playerId) {
-    const selectedVehicle = await getPlayerCrimeVehicle(playerId);
-    if (selectedVehicle) {
-      vehicleStats = {
-        speed: selectedVehicle.speed,
-        armor: selectedVehicle.armor,
-        cargo: selectedVehicle.cargo,
-        stealth: selectedVehicle.stealth,
-        condition: selectedVehicle.condition,
-      };
+    if (playerId) {
+      // Check for active cooldown
+      const cooldown = await cooldownService.getCooldown(playerId, 'crime');
+      if (cooldown && cooldown.remainingSeconds > 0) {
+        return res.status(200).json({
+          event: 'crimes.list',
+          params: {},
+          crimes: [],
+          cooldown: {
+            actionType: 'crime',
+            remainingSeconds: cooldown.remainingSeconds,
+          },
+        });
+      }
     }
-  }
 
-  // Calculate player-specific success chances for each crime
-  let crimesWithChances = crimes;
-  if (playerId) {
-    crimesWithChances = await Promise.all(
-      crimes.map(async (crime) => {
-        const vehicleStatsForCrime = crime.requiredVehicle ? vehicleStats : undefined;
-        const playerSuccessChance = await crimeService.calculatePlayerSuccessChance(
-          playerId,
-          crime.id,
-          undefined, // weaponUsed
-          vehicleStatsForCrime // Only apply vehicle bonus to crimes that require a vehicle
-        );
-        return {
-          ...crime,
-          playerSuccessChance: Math.round(playerSuccessChance * 100), // Convert to percentage
+    const crimes = crimeService.getAvailableCrimes();
+
+    // Get player's selected vehicle for crime bonus calculations.
+    let vehicleStats:
+      | { speed: number; armor: number; cargo: number; stealth: number; condition: number }
+      | undefined;
+    if (playerId) {
+      const selectedVehicle = await resolveSelectedCrimeVehicle(
+        playerId,
+        req.player!.currentCountry,
+      );
+      if (selectedVehicle) {
+        vehicleStats = {
+          speed: selectedVehicle.vehicle.speed,
+          armor: selectedVehicle.vehicle.armor,
+          cargo: selectedVehicle.vehicle.cargo,
+          stealth: selectedVehicle.vehicle.stealth,
+          condition: selectedVehicle.vehicle.condition,
         };
-      })
-    );
-  }
+      }
+    }
 
-  return res.status(200).json({
-    event: 'crimes.list',
-    params: {},
-    crimes: crimesWithChances,
-  });
+    // Calculate player-specific success chances for each crime.
+    let crimesWithChances = crimes;
+    if (playerId) {
+      crimesWithChances = await Promise.all(
+        crimes.map(async (crime) => {
+          const vehicleStatsForCrime = crime.requiredVehicle ? vehicleStats : undefined;
+          const playerSuccessChance = await crimeService.calculatePlayerSuccessChance(
+            playerId,
+            crime.id,
+            undefined,
+            vehicleStatsForCrime,
+          );
+          return {
+            ...crime,
+            playerSuccessChance: Math.round(playerSuccessChance * 100),
+          };
+        }),
+      );
+    }
+
+    return res.status(200).json({
+      event: 'crimes.list',
+      params: {},
+      crimes: crimesWithChances,
+    });
+  } catch (error) {
+    console.error('[Crimes Route] Error loading crimes list:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
 });
 
 /**

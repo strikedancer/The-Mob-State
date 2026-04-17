@@ -25,7 +25,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
-- [ ] Crime vehicle-selectie gehard tegen interne fouten: Crimes en Garage resolven nu dezelfde live `vehicle_inventory` selectie, synchroniseren de oude crimes-snapshot met het gekozen inventory-item en laten niet-kritieke crime logging/notificatie-side-effects de response niet meer omvallen nadat de attempt al verwerkt is
+- [ ] Crime vehicle-selectie gehard tegen interne fouten: Crimes en Garage resolven nu dezelfde live `vehicle_inventory` selectie, synchroniseren de oude crimes-snapshot met het gekozen inventory-item, hebben ook de crimes-lijstloader weer op diezelfde resolver gezet, en laten niet-kritieke crime logging/notificatie-side-effects de response niet meer omvallen nadat de attempt al verwerkt is
   - Bestanden: `backend/src/services/vehicleToolService.ts`, `backend/src/routes/crimes.ts`, `backend/src/routes/garage.ts`, `backend/src/services/crimeService.ts`
 - [ ] Crime requirement failures verduidelijkt en ammo-verbruik gehard: vehicle-required crimes resolven nu alleen een echt beschikbaar geselecteerd crime-voertuig uit het huidige land, requirement-fouten voor voertuig/wapen/ammo vallen niet meer terug op een generieke retry, en munitie wordt niet meer verbruikt wanneer een crime al op een harde startvoorwaarde afketst
   - Bestanden: `backend/src/routes/crimes.ts`, `backend/src/routes/garage.ts`, `backend/src/services/crimeService.ts`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
