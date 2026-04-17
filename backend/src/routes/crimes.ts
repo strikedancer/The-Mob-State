@@ -247,7 +247,7 @@ router.post(
     const newReputation = await applyReputationDelta(req.player!.id, repDelta);
 
     return res.status(200).json({
-      event: result.success ? 'crime.success' : 'crime.failed',
+      event: result.success && !result.jailed ? 'crime.success' : 'crime.failed',
       params: {
         crimeId,
         crimeName: crime.name,
@@ -265,6 +265,7 @@ router.post(
         vehicleConfiscated: result.vehicleConfiscated,
         weaponConfiscated: result.weaponConfiscated,
         vehicleChaseDamage: result.vehicleChaseDamage,
+        clearedRecordCount: result.clearedRecordCount,
       },
       player: {
         money: result.newMoney,

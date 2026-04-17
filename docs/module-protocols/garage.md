@@ -20,6 +20,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
+- A theft that ends in an immediate arrest must resolve as an arrest outcome, not a success outcome: the just-stolen vehicle is confiscated, the player goes to jail, and the feedback must say so clearly.
 - Direct vehicle transport does not belong here anymore. Cross-country movement must route through the Smuggling Hub flow.
 - Theft outcome videos are legacy and should not be reintroduced without a deliberate design decision.
 - Repairs must use a timed flow, not instant click-pay-complete behavior.
@@ -75,6 +76,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Verify repair concurrency cap: non-VIP can start only 1 active repair, VIP can start up to 5.
 - Confirm transport actions are no longer offered from Garage and that players are pointed to Smuggling when relevant.
 - Verify event-only police cars/motorcycles only appear during active event windows.
+- Verify a vehicle theft that ends in arrest does not show a success message, places the player in jail, and confirms that the stolen vehicle was confiscated.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

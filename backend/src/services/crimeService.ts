@@ -340,7 +340,7 @@ export const crimeService = {
     }
 
     // Map outcome engine result to existing format
-    const success = crimeResult.success;
+    let success = crimeResult.success;
     const reward = crimeResult.reward;
     let xpGained = crimeResult.xpGained;
     let xpLost = 0;
@@ -397,7 +397,7 @@ export const crimeService = {
     const requiredToolsForCrime = toolService.getRequiredToolsForCrime(crimeId);
 
     // Execute transaction
-    const result = await prisma.$transaction(async (tx) => {
+    let result = await prisma.$transaction(async (tx) => {
       // Calculate health damage (5-15 HP per crime)
       const healthDamage = 5 + Math.floor(Math.random() * 11); // 5-15
       const newHealth = Math.max(0, player.health - healthDamage);
@@ -586,73 +586,6 @@ export const crimeService = {
       await intensiveCareService.checkAndApplyICU(playerId, result.newHealth);
     }
 
-    // Create world event
-    let clearedRecordCount = 0;
-    if (success) {
-      if (crimeId === CRIMINAL_RECORD_WIPE_CRIME_ID) {
-        clearedRecordCount = await judgeService.expungeCriminalRecord(playerId);
-      }
-
-      await worldEventService.createEvent('crime.success', {
-        playerId,
-        crimeName: crime.name,
-        reward,
-        xpGained,
-        clearedRecordCount,
-      });
-
-      // Log activity for friend feed
-      await activityService.logActivity(
-        playerId,
-        'CRIME',
-        clearedRecordCount > 0
-          ? `Completed ${crime.name} and wiped ${clearedRecordCount} criminal record entries`
-          : `Completed ${crime.name} and earned €${reward.toLocaleString()}`,
-        {
-          crimeId: crime.id,
-          crimeName: crime.name,
-          reward,
-          xpGained,
-          clearedRecordCount,
-        },
-        true
-      );
-
-      if (clearedRecordCount > 0) {
-        await activityService.logActivity(
-          playerId,
-          'CRIMINAL_RECORD_EXPUNGED',
-          `Wiped ${clearedRecordCount} criminal record entries via ${crime.name}`,
-          {
-            crimeId: crime.id,
-            crimeName: crime.name,
-            clearedRecordCount,
-          },
-          true
-        );
-      }
-
-      // Check if player ranked up
-      if (result.newRank > player.rank) {
-        await activityService.logActivity(
-          playerId,
-          'RANK_UP',
-          `Ranked up to level ${result.newRank}!`,
-          {
-            oldRank: player.rank,
-            newRank: result.newRank,
-          },
-          true
-        );
-      }
-    } else if (jailed) {
-      await worldEventService.createEvent('crime.caught', {
-        playerId,
-        crimeName: crime.name,
-        jailTime,
-      });
-    }
-
     // Check if player gets arrested (FBI for federal crimes, police for regular)
     // ONLY if not already jailed by the crime outcome itself
     let arrested = false;
@@ -724,6 +657,191 @@ export const crimeService = {
         const policeArrestResult = await policeService.checkArrest(playerId);
         heatLevel = policeArrestResult.wantedLevel;
       }
+    }
+
+    if (jailed && !arrested && jailTime > 0) {
+      if (crime.isFederal) {
+        await fbiService.jailPlayerFederal(playerId, jailTime);
+        const fbiArrestResult = await fbiService.checkFBIArrest(playerId);
+        arrestingAuthority = 'FBI';
+        heatLevel = fbiArrestResult.fbiHeat;
+        bailAmount = fbiArrestResult.federalBail || bailAmount;
+      } else {
+        await policeService.jailPlayer(playerId, jailTime);
+        const policeArrestResult = await policeService.checkArrest(playerId);
+        arrestingAuthority = 'Police';
+        heatLevel = policeArrestResult.wantedLevel;
+        bailAmount = policeArrestResult.bail || bailAmount;
+      }
+    }
+
+    const jailedAfterSuccessfulCrime = success && jailed;
+
+    if (jailedAfterSuccessfulCrime) {
+      await toolService.confiscateTools(playerId, requiredToolsForCrime);
+
+      const lateArrestResult = await prisma.$transaction(async (tx) => {
+        let vehicleConfiscated = false;
+        let weaponConfiscated = false;
+        let vehicleChaseDamage = 0;
+        let clearCrimeWeaponSelection = false;
+
+        if (weaponUsed) {
+          const currentWeapon = await tx.weaponInventory.findUnique({
+            where: {
+              playerId_weaponId: {
+                playerId,
+                weaponId: weaponUsed.weaponId,
+              },
+            },
+            select: {
+              id: true,
+              quantity: true,
+            },
+          });
+
+          if (currentWeapon) {
+            if (currentWeapon.quantity > 1) {
+              await tx.weaponInventory.update({
+                where: { id: currentWeapon.id },
+                data: { quantity: currentWeapon.quantity - 1 },
+              });
+            } else {
+              await tx.weaponInventory.delete({
+                where: { id: currentWeapon.id },
+              });
+              clearCrimeWeaponSelection = true;
+            }
+
+            await tx.player.update({
+              where: { id: playerId },
+              data: {
+                inventory_slots_used: { decrement: 1 },
+              },
+            });
+
+            weaponConfiscated = true;
+          }
+        }
+
+        if (vehicleInventory && vehicleId) {
+          const confiscationChance = 0.7;
+          if (Math.random() < confiscationChance) {
+            await tx.vehicleInventory.deleteMany({
+              where: {
+                id: vehicleId,
+                playerId,
+              },
+            });
+            vehicleConfiscated = true;
+          } else {
+            const currentVehicle = await tx.vehicleInventory.findUnique({
+              where: { id: vehicleId },
+              select: { condition: true },
+            });
+
+            if (currentVehicle) {
+              const chaseDamage = 30 + Math.floor(Math.random() * 31);
+              const newCondition = Math.max(0, currentVehicle.condition - chaseDamage);
+
+              await tx.vehicleInventory.update({
+                where: { id: vehicleId },
+                data: { condition: newCondition },
+              });
+              vehicleChaseDamage = chaseDamage;
+            }
+          }
+        }
+
+        return {
+          vehicleConfiscated,
+          weaponConfiscated,
+          vehicleChaseDamage,
+          clearCrimeWeaponSelection,
+        };
+      });
+
+      result = {
+        ...result,
+        vehicleConfiscated:
+          result.vehicleConfiscated || lateArrestResult.vehicleConfiscated,
+        weaponConfiscated:
+          result.weaponConfiscated || lateArrestResult.weaponConfiscated,
+        vehicleChaseDamage:
+          lateArrestResult.vehicleChaseDamage > 0
+            ? lateArrestResult.vehicleChaseDamage
+            : result.vehicleChaseDamage,
+        clearCrimeWeaponSelection:
+          result.clearCrimeWeaponSelection ||
+          lateArrestResult.clearCrimeWeaponSelection,
+      };
+
+      success = false;
+    }
+
+    // Create world event and activity logging after final arrest state is known.
+    let clearedRecordCount = 0;
+    if (success) {
+      if (crimeId === CRIMINAL_RECORD_WIPE_CRIME_ID) {
+        clearedRecordCount = await judgeService.expungeCriminalRecord(playerId);
+      }
+
+      await worldEventService.createEvent('crime.success', {
+        playerId,
+        crimeName: crime.name,
+        reward,
+        xpGained,
+        clearedRecordCount,
+      });
+
+      await activityService.logActivity(
+        playerId,
+        'CRIME',
+        clearedRecordCount > 0
+          ? `Completed ${crime.name} and wiped ${clearedRecordCount} criminal record entries`
+          : `Completed ${crime.name} and earned €${reward.toLocaleString()}`,
+        {
+          crimeId: crime.id,
+          crimeName: crime.name,
+          reward,
+          xpGained,
+          clearedRecordCount,
+        },
+        true
+      );
+
+      if (clearedRecordCount > 0) {
+        await activityService.logActivity(
+          playerId,
+          'CRIMINAL_RECORD_EXPUNGED',
+          `Wiped ${clearedRecordCount} criminal record entries via ${crime.name}`,
+          {
+            crimeId: crime.id,
+            crimeName: crime.name,
+            clearedRecordCount,
+          },
+          true
+        );
+      }
+
+      if (result.newRank > player.rank) {
+        await activityService.logActivity(
+          playerId,
+          'RANK_UP',
+          `Ranked up to level ${result.newRank}!`,
+          {
+            oldRank: player.rank,
+            newRank: result.newRank,
+          },
+          true
+        );
+      }
+    } else if (jailed) {
+      await worldEventService.createEvent('crime.caught', {
+        playerId,
+        crimeName: crime.name,
+        jailTime,
+      });
     }
 
     if (!success) {

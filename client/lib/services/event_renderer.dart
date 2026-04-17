@@ -32,11 +32,11 @@ class EventRenderer {
 
       // Crime events
       case 'crime.success':
-        final reward = params['reward'] as int?;
-        final xpGained = params['xpGained'] as int?;
+        final reward = (params['reward'] as num?)?.toInt();
+        final xpGained = (params['xpGained'] as num?)?.toInt();
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = params['jailTime'] as int?; // in MINUTES
+        final jailTime = (params['jailTime'] as num?)?.toInt();
         final vehicleConfiscated =
             params['vehicleConfiscated'] as bool? ?? false;
         final weaponConfiscated =
@@ -64,7 +64,7 @@ class EventRenderer {
       case 'crime.failed':
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = params['jailTime'] as int?; // in MINUTES
+        final jailTime = (params['jailTime'] as num?)?.toInt();
         final arrested = params['arrested'] as bool? ?? false;
         final arrestingAuthority = params['arrestingAuthority'] as String?;
         final vehicleConfiscated =
@@ -434,11 +434,11 @@ class EventRenderer {
 
       // Crime events
       case 'crime.success':
-        final reward = params['reward'] as int?;
-        final xpGained = params['xpGained'] as int?;
+        final reward = (params['reward'] as num?)?.toInt();
+        final xpGained = (params['xpGained'] as num?)?.toInt();
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = params['jailTime'] as int?; // in MINUTES
+        final jailTime = (params['jailTime'] as num?)?.toInt();
         final vehicleConfiscated =
             params['vehicleConfiscated'] as bool? ?? false;
         final weaponConfiscated =
@@ -467,7 +467,7 @@ class EventRenderer {
       case 'crime.failed':
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = params['jailTime'] as int?; // in MINUTES
+        final jailTime = (params['jailTime'] as num?)?.toInt();
         final arrested = params['arrested'] as bool? ?? false;
         final arrestingAuthority = params['arrestingAuthority'] as String?;
         final vehicleConfiscated =

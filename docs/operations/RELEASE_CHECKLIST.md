@@ -25,6 +25,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Crime arrest-uitkomsten aangescherpt: als politie/FBI je na een ogenschijnlijk geslaagde crime alsnog pakt, komt de response niet meer als clean success terug, wordt de jail-state echt toegepast en worden tool/weapon/vehicle-consequenties alsnog consistent afgehandeld
+  - Bestanden: `backend/src/services/crimeService.ts`, `backend/src/routes/crimes.ts`, `client/lib/screens/crime_screen.dart`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
+- [ ] Vehicle theft arrest-flow gecorrigeerd: als je na een geslaagde steal direct wordt opgepakt, telt dat niet meer als succesmelding; de net gestolen auto/motor wordt meteen in beslag genomen en de jail-feedback toont dat expliciet
+  - Bestanden: `backend/src/services/vehicleService.ts`, `client/lib/screens/garage_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/garage.md`
 - [ ] Ammo Factory-flow aangescherpt: het factory-scherm embedt geen directe munitiemarkt meer en toont nu alleen een duidelijke verwijzing naar de ammo-tab van de Zwarte Markt voor koop/verkoop van kogels
   - Bestanden: `client/lib/screens/ammo_factory_screen.dart`, `client/lib/screens/black_market_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/ammo-factory.md`
 - [ ] Arrestatie bij weapon-based crimes nu consistent gemaakt: als je tijdens een crime met geselecteerd wapen wordt opgepakt, wordt het gebruikte crime-wapen ook geconfisqueerd, wordt de opgeslagen selectie gewist als het je laatste exemplaar was, en meldt de crime-feedback dit expliciet

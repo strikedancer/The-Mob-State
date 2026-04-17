@@ -476,6 +476,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
       final eventKey = data['event'] as String;
       final params = (data['params'] as Map<String, dynamic>?) ?? {};
 
+      int readInt(dynamic value) {
+        if (value is int) return value;
+        if (value is num) return value.toInt();
+        return 0;
+      }
+
       print('[CrimeScreen] Event: $eventKey');
       print('[CrimeScreen] Params: $params');
 
@@ -497,7 +503,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
       // Check if error.jailed - handle specially
       if (eventKey == 'error.jailed') {
-        final remainingTime = params['remainingTime'] as int? ?? 0;
+        final remainingTime = readInt(params['remainingTime']);
         final l10n = AppLocalizations.of(context)!;
         final eventRenderer = EventRenderer(l10n);
         final message = eventRenderer.renderEvent(eventKey, params);
@@ -575,7 +581,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
       if (data.containsKey('cooldown') && data['cooldown'] != null) {
         final cooldownData = data['cooldown'] as Map<String, dynamic>;
         if (cooldownData['remainingSeconds'] != null) {
-          cooldownSeconds = cooldownData['remainingSeconds'] as int;
+          cooldownSeconds = readInt(cooldownData['remainingSeconds']);
         }
       }
 
@@ -591,12 +597,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
             print('[CrimeScreen] Player data: $playerData');
 
             authProvider.updatePlayerStats(
-              money: playerData['money'] as int?,
-              xp: playerData['xp'] as int?,
-              rank: playerData['rank'] as int?,
-              health: playerData['health'] as int?,
-              wantedLevel: playerData['wantedLevel'] as int?,
-              fbiHeat: playerData['fbiHeat'] as int?,
+              money: playerData['money'] == null ? null : readInt(playerData['money']),
+              xp: playerData['xp'] == null ? null : readInt(playerData['xp']),
+              rank: playerData['rank'] == null ? null : readInt(playerData['rank']),
+              health: playerData['health'] == null ? null : readInt(playerData['health']),
+              wantedLevel: playerData['wantedLevel'] == null ? null : readInt(playerData['wantedLevel']),
+              fbiHeat: playerData['fbiHeat'] == null ? null : readInt(playerData['fbiHeat']),
             );
             print('[CrimeScreen] Player stats updated successfully');
             // Validate by refreshing to ensure XP is correct on server side
@@ -615,7 +621,9 @@ class _CrimeScreenState extends State<CrimeScreen> {
         int? jailTimeMinutes;
         if (params.containsKey('jailed') && params['jailed'] == true) {
           wasJailed = true;
-          jailTimeMinutes = params['jailTime'] as int?;
+            jailTimeMinutes = params['jailTime'] == null
+              ? null
+              : readInt(params['jailTime']);
           if (jailTimeMinutes != null && jailTimeMinutes > 0) {
             setState(() {
               _jailTime = jailTimeMinutes! * 60;
@@ -646,8 +654,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
         // Show cooldown overlay ONLY if not jailed
         if (!wasJailed && cooldownSeconds != null && cooldownSeconds > 0) {
-          final reward = params['reward'] as int? ?? 0;
-          final xpGained = params['xpGained'] as int? ?? 0;
+          final reward = readInt(params['reward']);
+          final xpGained = readInt(params['xpGained']);
 
           if (eventKey.contains('success')) {
             setState(() {

@@ -698,6 +698,16 @@ class _GarageScreenState extends State<GarageScreen> {
     if (!mounted) return;
 
     if (jailSeconds > 0) {
+      if (!success && provider.lastStealArrested) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_buildStealFailureMessage(provider)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+
       setState(() {
         _jailTime = jailSeconds;
         _isStealAttemptRunning = false;

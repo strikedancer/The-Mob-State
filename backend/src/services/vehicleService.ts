@@ -756,6 +756,7 @@ export const vehicleService = {
     reputation?: number;
     newlyUnlockedAchievements?: any[];
     arrestedAfterTheft?: boolean;
+    vehicleConfiscated?: boolean;
     cooldownRemainingSeconds?: number;
   }> {
     console.log(`\n====== [STEAL FUNCTION START] vehicleId="${vehicleId}" ======`);
@@ -857,11 +858,23 @@ export const vehicleService = {
       }
     };
 
-    const applyVehicleArrest = async (jailTime: number) => {
+    const applyVehicleArrest = async (
+      jailTime: number,
+      confiscatedInventoryId?: number,
+    ) => {
       const now = new Date();
       const jailReleaseTime = new Date(now.getTime() + (jailTime * 60 * 1000));
 
       await prisma.$transaction(async (tx) => {
+        if (confiscatedInventoryId != null) {
+          await tx.vehicleInventory.deleteMany({
+            where: {
+              id: confiscatedInventoryId,
+              playerId,
+            },
+          });
+        }
+
         await tx.crimeAttempt.create({
           data: {
             playerId,
@@ -1155,30 +1168,6 @@ export const vehicleService = {
     }
 
     // Success - create vehicle inventory entry
-    const theftXpGained = calculateVehicleTheftXp(vehicleWithMeta, vehicleType);
-
-    const xpUpdate = await prisma.player.update({
-      where: { id: playerId },
-      data: {
-        xp: { increment: theftXpGained },
-      },
-      select: {
-        xp: true,
-        rank: true,
-      },
-    });
-
-    const computedRank = getRankFromXP(xpUpdate.xp);
-    let newRank = xpUpdate.rank;
-    if (computedRank > xpUpdate.rank) {
-      const rankUpdate = await prisma.player.update({
-        where: { id: playerId },
-        data: { rank: computedRank },
-        select: { rank: true },
-      });
-      newRank = rankUpdate.rank;
-    }
-
     const stolenVehicle = await prisma.vehicleInventory.create({
       data: {
         playerId,
@@ -1204,23 +1193,12 @@ export const vehicleService = {
     // Set cooldown after successful theft
     await setCooldown(playerId, cooldownType);
 
-    const newReputation = await applyReputationAction(
-      playerId,
-      'vehicle_theft',
-      true,
-    );
-
-    const newlyUnlockedAchievements = (
-      await checkAndUnlockAchievements(playerId)
-    ).map(({ achievement }) => serializeAchievementForClient(achievement));
-
     // Check if player gets arrested even after successful steal (lower chance)
     const arrestResult = await checkArrest(playerId);
     
     if (arrestResult.arrested) {
-      // Player got arrested AFTER stealing the vehicle successfully
-      // Vehicle stays stolen but player goes to jail
-      await applyVehicleArrest(arrestResult.jailTime!);
+      // Player got arrested during the getaway, so the stolen vehicle is seized.
+      await applyVehicleArrest(arrestResult.jailTime!, stolenVehicle.id);
 
       const postArrestReputation = await applyReputationAction(
         playerId,
@@ -1234,35 +1212,60 @@ export const vehicleService = {
           vehicleId,
           vehicleName: vehicleDef.name,
           vehicleType,
-          success: true,
-          xpGained: theftXpGained,
-          newXp: xpUpdate.xp,
-          newRank,
+          success: false,
           arrestedAfterTheft: true,
+          vehicleConfiscated: true,
           jailTime: arrestResult.jailTime,
           bail: arrestResult.bail,
         },
       );
 
       return {
-        success: true,
-        message: `Je stal de ${vehicleDef.name}, maar werd daarna opgepakt! ${arrestResult.jailTime} min gevangenis. Borgsom: €${arrestResult.bail}`,
+        success: false,
+        message: `Je werd opgepakt tijdens de ontsnapping. De ${vehicleDef.name} is direct in beslag genomen. ${arrestResult.jailTime} min gevangenis. Borgsom: €${arrestResult.bail}`,
         arrested: true,
         arrestedAfterTheft: true,
+        vehicleConfiscated: true,
         jailTime: arrestResult.jailTime,
         bail: arrestResult.bail,
         wantedLevel: 0,
-        xpGained: theftXpGained,
-        newXp: xpUpdate.xp,
-        newRank,
         reputation: postArrestReputation,
-        newlyUnlockedAchievements,
-        vehicle: {
-          ...stolenVehicle,
-          definition: vehicleDef,
-        },
       };
     }
+
+    const theftXpGained = calculateVehicleTheftXp(vehicleWithMeta, vehicleType);
+
+    const xpUpdate = await prisma.player.update({
+      where: { id: playerId },
+      data: {
+        xp: { increment: theftXpGained },
+      },
+      select: {
+        xp: true,
+        rank: true,
+      },
+    });
+
+    const computedRank = getRankFromXP(xpUpdate.xp);
+    let newRank = xpUpdate.rank;
+    if (computedRank > xpUpdate.rank) {
+      const rankUpdate = await prisma.player.update({
+        where: { id: playerId },
+        data: { rank: computedRank },
+        select: { rank: true },
+      });
+      newRank = rankUpdate.rank;
+    }
+
+    const newReputation = await applyReputationAction(
+      playerId,
+      'vehicle_theft',
+      true,
+    );
+
+    const newlyUnlockedAchievements = (
+      await checkAndUnlockAchievements(playerId)
+    ).map(({ achievement }) => serializeAchievementForClient(achievement));
 
     await logVehicleTheftActivity(
       `Succesvolle voertuigdiefstal: ${vehicleDef.name}`,

@@ -27,6 +27,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Responsive usability without pushing critical actions off-screen.
 - If a crime requires a weapon, the player must be able to see and change the active crime-weapon selection directly from the crime flow or through an explicit nearby CTA.
 - When a player is arrested after a weapon-based crime, the used crime weapon must be confiscated consistently with the arrest consequences shown to the player; if that was the last copy, the saved crime-weapon selection must no longer remain active.
+- A crime that ends in arrest may not still surface as a clean success result in the UI; if police/FBI catch the player after the attempt, the final response must resolve as an arrest outcome with consistent vehicle/weapon confiscation messaging.
 - Crime-specific special effects must be explicit in player feedback; if a crime wipes or alters judicial history, the success message must state that effect clearly.
 - Wanneer een crime eindigt in arrestatie moet de social notification pipeline voor vrienden/crew worden getriggerd zonder de crime-respons te blokkeren.
 
@@ -43,6 +44,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Verify no text overflows or clipped buttons appear.
 - Verify weapon-required crimes clearly show which weapon is selected, block cleanly when no weapon is selected, and stay synced with Inventory after refresh/navigation.
 - Verify an arrest during a weapon-based crime confiscates the used weapon, clears the saved selection when no copy remains, and tells the player about the confiscation in the crime result feedback.
+- Verify a crime that initially succeeds but ends in a police/FBI arrest no longer shows a success state, actually puts the player in jail, and applies the matching confiscation consequences.
 - If a crime has a court-side effect, verify the linked court record updates after cooldown refresh and only the intended convictions are affected.
 
 ## When To Update This File
