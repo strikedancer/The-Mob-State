@@ -310,6 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             controller: _usernameController,
                             onChanged: (_) => _clearAuthError(),
+                            textInputAction: TextInputAction.next,
                             style: const TextStyle(color: Color(0xFFD4A574)),
                             decoration: InputDecoration(
                               hintText: l10n.usernamePlaceholder,
@@ -357,6 +358,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             controller: _passwordController,
                             onChanged: (_) => _clearAuthError(),
+                            textInputAction: _isLogin
+                                ? TextInputAction.done
+                                : TextInputAction.next,
+                            onFieldSubmitted: (_) {
+                              if (_isLogin) {
+                                _submit();
+                              }
+                            },
                             style: const TextStyle(color: Color(0xFFD4A574)),
                             decoration: InputDecoration(
                               hintText: l10n.passwordPlaceholder,
@@ -423,6 +432,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextFormField(
                               controller: _emailController,
                               onChanged: (_) => _clearAuthError(),
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (_) => _submit(),
                               style: const TextStyle(color: Color(0xFFD4A574)),
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(

@@ -7,7 +7,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import '../config/app_config.dart';
 import '../providers/locale_provider.dart';
 import '../l10n/app_localizations.dart';
-import '../services/user_preferences_service.dart';
 import '../services/notification_service.dart';
 import '../utils/top_right_notification.dart';
 
@@ -27,7 +26,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<String> _freeAvatars = [];
   List<String> _vipAvatars = [];
   bool _allowMessages = true;
-  bool _showVideos = true;
   bool _pushCryptoTrade = true;
   bool _pushCryptoPriceAlert = true;
   bool _pushCryptoOrder = true;
@@ -50,6 +48,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     _loadSettings();
+  }
+
+  bool _readPreferenceValue(dynamic value, bool fallback) {
+    if (value is bool) {
+      return value;
+    }
+    if (value is num) {
+      return value != 0;
+    }
+    if (value is String) {
+      final normalized = value.trim().toLowerCase();
+      if (normalized == 'true' || normalized == '1') {
+        return true;
+      }
+      if (normalized == 'false' || normalized == '0') {
+        return false;
+      }
+    }
+    return fallback;
   }
 
   Future<void> _loadSettings() async {
@@ -86,25 +103,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
         final notificationPreferences =
             (_settings?['notificationPreferences'] as Map<String, dynamic>?) ??
             <String, dynamic>{};
-        _pushCryptoTrade = notificationPreferences['pushCryptoTrade'] ?? true;
+        _pushCryptoTrade = _readPreferenceValue(
+          notificationPreferences['pushCryptoTrade'],
+          true,
+        );
         _pushCryptoPriceAlert =
-            notificationPreferences['pushCryptoPriceAlert'] ?? true;
-        _pushCryptoOrder = notificationPreferences['pushCryptoOrder'] ?? true;
+            _readPreferenceValue(
+              notificationPreferences['pushCryptoPriceAlert'],
+              true,
+            );
+        _pushCryptoOrder = _readPreferenceValue(
+          notificationPreferences['pushCryptoOrder'],
+          true,
+        );
         _pushCryptoMission =
-            notificationPreferences['pushCryptoMission'] ?? true;
+            _readPreferenceValue(
+              notificationPreferences['pushCryptoMission'],
+              true,
+            );
         _pushCryptoLeaderboard =
-            notificationPreferences['pushCryptoLeaderboard'] ?? true;
-        _inAppCryptoTrade = notificationPreferences['inAppCryptoTrade'] ?? true;
+            _readPreferenceValue(
+              notificationPreferences['pushCryptoLeaderboard'],
+              true,
+            );
+        _inAppCryptoTrade = _readPreferenceValue(
+          notificationPreferences['inAppCryptoTrade'],
+          true,
+        );
         _inAppCryptoPriceAlert =
-            notificationPreferences['inAppCryptoPriceAlert'] ?? true;
-        _inAppCryptoOrder = notificationPreferences['inAppCryptoOrder'] ?? true;
+            _readPreferenceValue(
+              notificationPreferences['inAppCryptoPriceAlert'],
+              true,
+            );
+        _inAppCryptoOrder = _readPreferenceValue(
+          notificationPreferences['inAppCryptoOrder'],
+          true,
+        );
         _inAppCryptoMission =
-            notificationPreferences['inAppCryptoMission'] ?? true;
+            _readPreferenceValue(
+              notificationPreferences['inAppCryptoMission'],
+              true,
+            );
         _inAppCryptoLeaderboard =
-            notificationPreferences['inAppCryptoLeaderboard'] ?? true;
+            _readPreferenceValue(
+              notificationPreferences['inAppCryptoLeaderboard'],
+              true,
+            );
       }
-
-      _showVideos = await UserPreferencesService.getShowVideosEnabled();
 
       // Load available avatars
       final avatarsResponse = await http.get(
@@ -387,24 +432,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  Future<void> _updateVideoSettings(bool value) async {
-    await UserPreferencesService.setShowVideosEnabled(value);
-    if (!mounted) return;
-
-    setState(() {
-      _showVideos = value;
-    });
-
-    final l10n = AppLocalizations.of(context)!;
-    showTopRightFromSnackBar(
-      context,
-      SnackBar(
-        content: Text(l10n.settingsSaved),
-        backgroundColor: Colors.green,
-      ),
-    );
-  }
-
   Future<void> _updateCryptoNotificationPreference(
     String key,
     bool value,
@@ -429,21 +456,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
             <String, dynamic>{};
 
         setState(() {
-          _pushCryptoTrade = prefs['pushCryptoTrade'] ?? _pushCryptoTrade;
+          _pushCryptoTrade = _readPreferenceValue(
+            prefs['pushCryptoTrade'],
+            _pushCryptoTrade,
+          );
           _pushCryptoPriceAlert =
-              prefs['pushCryptoPriceAlert'] ?? _pushCryptoPriceAlert;
-          _pushCryptoOrder = prefs['pushCryptoOrder'] ?? _pushCryptoOrder;
-          _pushCryptoMission = prefs['pushCryptoMission'] ?? _pushCryptoMission;
+              _readPreferenceValue(
+                prefs['pushCryptoPriceAlert'],
+                _pushCryptoPriceAlert,
+              );
+          _pushCryptoOrder = _readPreferenceValue(
+            prefs['pushCryptoOrder'],
+            _pushCryptoOrder,
+          );
+          _pushCryptoMission = _readPreferenceValue(
+            prefs['pushCryptoMission'],
+            _pushCryptoMission,
+          );
           _pushCryptoLeaderboard =
-              prefs['pushCryptoLeaderboard'] ?? _pushCryptoLeaderboard;
-          _inAppCryptoTrade = prefs['inAppCryptoTrade'] ?? _inAppCryptoTrade;
+              _readPreferenceValue(
+                prefs['pushCryptoLeaderboard'],
+                _pushCryptoLeaderboard,
+              );
+          _inAppCryptoTrade = _readPreferenceValue(
+            prefs['inAppCryptoTrade'],
+            _inAppCryptoTrade,
+          );
           _inAppCryptoPriceAlert =
-              prefs['inAppCryptoPriceAlert'] ?? _inAppCryptoPriceAlert;
-          _inAppCryptoOrder = prefs['inAppCryptoOrder'] ?? _inAppCryptoOrder;
+              _readPreferenceValue(
+                prefs['inAppCryptoPriceAlert'],
+                _inAppCryptoPriceAlert,
+              );
+          _inAppCryptoOrder = _readPreferenceValue(
+            prefs['inAppCryptoOrder'],
+            _inAppCryptoOrder,
+          );
           _inAppCryptoMission =
-              prefs['inAppCryptoMission'] ?? _inAppCryptoMission;
+              _readPreferenceValue(
+                prefs['inAppCryptoMission'],
+                _inAppCryptoMission,
+              );
           _inAppCryptoLeaderboard =
-              prefs['inAppCryptoLeaderboard'] ?? _inAppCryptoLeaderboard;
+              _readPreferenceValue(
+                prefs['inAppCryptoLeaderboard'],
+                _inAppCryptoLeaderboard,
+              );
           _settings?['notificationPreferences'] = prefs;
         });
 
@@ -897,32 +954,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   subtitle: Text(l10n.allowMessagesDesc),
                   value: _allowMessages,
                   onChanged: _updateMessageSettings,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Card(
-                child: SwitchListTile(
-                  secondary: const Icon(Icons.movie, color: Colors.redAccent),
-                  title: Text(
-                    Localizations.localeOf(context).languageCode == 'nl'
-                        ? 'Video\'s tonen'
-                        : 'Show videos',
-                  ),
-                  subtitle: Text(
-                    Localizations.localeOf(context).languageCode == 'nl'
-                        ? 'Uit = direct resultaat zonder afspeelvideo'
-                        : 'Off = show result directly without playback video',
-                  ),
-                  value: _showVideos,
-                  onChanged: _updateVideoSettings,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                _isDutch ? 'Push Meldingen' : 'Push Notifications',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),

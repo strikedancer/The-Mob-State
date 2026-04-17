@@ -105,8 +105,23 @@ function toBool(value: unknown, fallback: boolean): boolean {
   if (typeof value === 'boolean') {
     return value;
   }
+  if (typeof value === 'bigint') {
+    return value !== 0n;
+  }
   if (typeof value === 'number') {
     return value !== 0;
+  }
+  if (value instanceof Uint8Array) {
+    if (value.length == 0) {
+      return fallback;
+    }
+    return value[0] !== 0;
+  }
+  if (Array.isArray(value) && value.every((entry) => typeof entry === 'number')) {
+    if (value.length === 0) {
+      return fallback;
+    }
+    return value[0] !== 0;
   }
   if (typeof value === 'string') {
     const normalized = value.trim().toLowerCase();

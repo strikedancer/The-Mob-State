@@ -23,6 +23,8 @@ Language, privacy, avatar and notification preference management.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Obsolete toggles for removed features must be removed from Settings instead of staying visible as dead preferences.
+- Notification preference toggles must reload with the same saved state after leaving and reopening the screen.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -35,6 +37,8 @@ Language, privacy, avatar and notification preference management.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify removed feature toggles no longer appear in Settings.
+- Verify crypto notification toggles remain in the chosen state after reopening Settings.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

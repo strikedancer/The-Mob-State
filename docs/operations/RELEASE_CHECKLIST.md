@@ -25,6 +25,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Settings cleanup + login UX hersteld: de verouderde video-toggle is uit Instellingen verwijderd, crypto push/in-app voorkeuren worden nu robuuster teruggelezen zodat uitgeschakelde sliders na heropenen niet meer terugspringen, en het login-scherm ondersteunt Enter om direct in te loggen
+  - Bestanden: `client/lib/screens/settings_screen.dart`, `client/lib/screens/login_screen.dart`, `backend/src/services/playerNotificationPreferenceService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/settings.md`
 - [ ] Drugs VIP auto-ophalen geactiveerd: de VIP toggle voor drugsproductie draait nu echt via een backend cron-job, zodat gereed product automatisch op de achtergrond wordt opgehaald in plaats van alleen een instelling in de UI op te slaan
   - Bestanden: `backend/src/services/cronService.ts`, `backend/src/services/drugService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/drugs.md`
 - [ ] Drugs productie-zichtbaarheid hersteld: batches die klaar zijn maar nog niet opgehaald, blijven zichtbaar in het Productie-scherm en tellen in faciliteitsslots mee totdat ze echt zijn opgehaald; VIP auto-ophalen kijkt nu ook naar die ready output in plaats van ze stil te missen
