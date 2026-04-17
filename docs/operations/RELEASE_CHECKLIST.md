@@ -25,6 +25,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Crime-wapen selectie hersteld: het opslaan en terugladen van de geselecteerde crime-weapon serializeert player-activity details nu correct als string-json, zodat selectie vanuit Crimes en Inventaris niet meer faalt met een generieke foutmelding
+  - Bestanden: `backend/src/services/weaponSelectionService.ts`
 - [ ] Crew navigatie professioneler gemaakt: het crew-scherm groepeert beheer nu in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crews en Chat in plaats van losse storage-tabs, zodat management rustiger en schaalbaarder blijft
   - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
 - [ ] Crew starter-state hersteld: nieuwe crews starten nu direct met Crew HQ level 1 en alle opslaggebouwen op level 1, terwijl legacy crews in de oude lege startstaat automatisch naar dezelfde basis worden genormaliseerd zodat crew bank en gedeelde opslag meteen werken

@@ -4,6 +4,29 @@ import { weaponService } from './weaponService';
 const ACTIVITY_SELECT = 'CRIME_WEAPON_SELECTED';
 const ACTIVITY_CLEAR = 'CRIME_WEAPON_CLEARED';
 
+const safeStringifyDetails = (value: unknown): string => {
+  try {
+    return JSON.stringify(value ?? {});
+  } catch {
+    return '{}';
+  }
+};
+
+const safeParseDetails = (value: string | null | undefined): Record<string, unknown> => {
+  if (!value) {
+    return {};
+  }
+
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? (parsed as Record<string, unknown>)
+      : {};
+  } catch {
+    return {};
+  }
+};
+
 export const weaponSelectionService = {
   async getSelectedCrimeWeapon(playerId: number): Promise<{
     weaponId: string;
@@ -28,7 +51,7 @@ export const weaponSelectionService = {
       return null;
     }
 
-    const details = latestActivity.details as Record<string, unknown>;
+    const details = safeParseDetails(latestActivity.details);
     const weaponId = typeof details?.weaponId === 'string' ? details.weaponId : null;
 
     if (!weaponId) return null;
@@ -86,7 +109,7 @@ export const weaponSelectionService = {
         playerId,
         activityType: ACTIVITY_SELECT,
         description: `Selected crime weapon: ${weaponId}`,
-        details: { weaponId },
+        details: safeStringifyDetails({ weaponId }),
         isPublic: false,
       },
     });
@@ -98,7 +121,7 @@ export const weaponSelectionService = {
         playerId,
         activityType: ACTIVITY_CLEAR,
         description: 'Cleared selected crime weapon',
-        details: {},
+        details: safeStringifyDetails({}),
         isPublic: false,
       },
     });
