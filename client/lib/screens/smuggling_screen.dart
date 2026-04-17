@@ -26,9 +26,12 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   String? _selectedDestination;
   String _selectedChannel = 'courier';
   String _selectedNetworkScope = 'personal';
+  String _selectedTransportMode = 'commercial';
+  String? _selectedOwnedTransportKey;
 
   List<dynamic> _destinations = [];
   List<dynamic> _channels = ['package', 'courier', 'container'];
+  List<dynamic> _ownedTransports = [];
   bool _canUseCrewNetwork = false;
   Map<String, dynamic> _categories = {
     'drug': <dynamic>[],
@@ -73,6 +76,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
         : <String, dynamic>{};
 
     final destinations = (catalog['destinations'] as List<dynamic>?) ?? [];
+    final ownedTransports = (catalog['ownedTransports'] as List<dynamic>?) ?? [];
     final defaultItems =
         (categories[_selectedCategory] as List<dynamic>?) ?? [];
 
@@ -88,6 +92,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       _channels =
           (catalog['channels'] as List<dynamic>?) ??
           ['package', 'courier', 'container'];
+      _ownedTransports = ownedTransports;
       _canUseCrewNetwork = catalog['canUseCrewNetwork'] == true;
       final selectedNetwork = catalog['selectedNetworkScope']?.toString();
       if (selectedNetwork == 'crew' || selectedNetwork == 'personal') {
@@ -96,8 +101,22 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       if (!_canUseCrewNetwork) {
         _selectedNetworkScope = 'personal';
       }
+      if (_selectedNetworkScope == 'crew') {
+        _selectedTransportMode = 'commercial';
+      }
       if (!_channels.contains(_selectedChannel)) {
         _selectedChannel = 'courier';
+      }
+      final availableOwnedTransport = ownedTransports.whereType<Map<String, dynamic>>().toList();
+      if (availableOwnedTransport.isEmpty) {
+        _selectedOwnedTransportKey = null;
+        _selectedTransportMode = 'commercial';
+      } else if (
+          _selectedOwnedTransportKey == null ||
+          !availableOwnedTransport.any(
+            (transport) => transport['transportKey']?.toString() == _selectedOwnedTransportKey,
+          )) {
+        _selectedOwnedTransportKey = availableOwnedTransport.first['transportKey']?.toString();
       }
       _shipments = (overview['shipments'] as List<dynamic>?) ?? [];
       _depots = (overview['depots'] as List<dynamic>?) ?? [];
@@ -118,6 +137,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   List<dynamic> get _currentItems =>
       (_categories[_selectedCategory] as List<dynamic>? ?? []);
 
+    List<dynamic> get _currentOwnedTransports => _ownedTransports;
+
   dynamic get _selectedItem {
     if (_selectedItemKey == null) return null;
     for (final item in _currentItems) {
@@ -127,6 +148,28 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       }
     }
     return null;
+  }
+
+  Map<String, dynamic>? get _selectedOwnedTransport {
+    if (_selectedOwnedTransportKey == null) return null;
+    for (final item in _currentOwnedTransports) {
+      if (item is Map<String, dynamic> &&
+          item['transportKey']?.toString() == _selectedOwnedTransportKey) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  String _quoteMessage(String? rawMessage) {
+    switch (rawMessage) {
+      case 'BOAT_CANNOT_FIT':
+        return _tr('Een boot past niet in een vliegtuig.', 'A boat cannot fit in an aircraft.');
+      case 'CARGO_OVERFLOW':
+        return _tr('De cargo-capaciteit van je eigen transport is te klein.', 'Your owned transport cargo capacity is too small.');
+      default:
+        return rawMessage ?? _tr('Quote niet beschikbaar', 'Quote unavailable');
+    }
   }
 
   Future<void> _sendShipment() async {
@@ -164,6 +207,21 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       return;
     }
 
+    if (_selectedTransportMode == 'owned' && _selectedOwnedTransportKey == null) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Kies eerst een eigen voertuig of vliegtuig',
+              'Select an owned vehicle or aircraft first',
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
     if (qty <= 0 || qty > maxQty) {
       showTopRightFromSnackBar(
         context,
@@ -192,6 +250,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       destinationCountry: _selectedDestination!,
       channel: _selectedChannel,
       networkScope: _selectedNetworkScope,
+      transportMode: _selectedTransportMode,
+      ownedTransportKey: _selectedOwnedTransportKey,
       metadata: metadata,
     );
 
@@ -281,6 +341,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       destinationCountry: _selectedDestination!,
       channel: _selectedChannel,
       networkScope: _selectedNetworkScope,
+      transportMode: _selectedTransportMode,
+      ownedTransportKey: _selectedOwnedTransportKey,
       metadata: metadata,
     );
 
@@ -299,7 +361,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
       case 'trade':
         return _tr('Handelswaar', 'Trade Goods');
       case 'vehicle':
-        return _tr('Auto/Boot', 'Car/Boat');
+        return _tr('Voertuigen', 'Vehicles');
       case 'weapon':
         return _tr('Wapens', 'Weapons');
       case 'ammo':
@@ -334,6 +396,8 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
         return _tr('Koerier', 'Courier');
       case 'container':
         return _tr('Container', 'Container');
+      case 'owned':
+        return _tr('Eigen transport', 'Owned transport');
       default:
         return channel;
     }
@@ -346,6 +410,13 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   }
 
   String _channelHintFor(String category) {
+    if (_selectedTransportMode == 'owned') {
+      return _tr(
+        'Eigen transport verlaagt de kosten en het risico, maar kan bij mislukking in beslag genomen worden.',
+        'Owned transport lowers cost and risk, but it can be confiscated on a failed run.',
+      );
+    }
+
     switch (category) {
       case 'vehicle':
         return _tr(
@@ -376,16 +447,19 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   }
 
   String _backgroundAssetForWidth(double width) {
-    if (width >= 1200)
+    if (width >= 1200) {
       return 'assets/images/backgrounds/smuggling_hub_bg_desktop.png';
-    if (width >= 700)
+    }
+    if (width >= 700) {
       return 'assets/images/backgrounds/smuggling_hub_bg_tablet.png';
+    }
     return 'assets/images/backgrounds/smuggling_hub_bg_mobile.png';
   }
 
   String _emblemAssetForWidth(double width) {
-    if (width >= 1200)
+    if (width >= 1200) {
       return 'assets/images/ui/smuggling_hub_emblem_desktop.png';
+    }
     if (width >= 700) return 'assets/images/ui/smuggling_hub_emblem_tablet.png';
     return 'assets/images/ui/smuggling_hub_emblem_mobile.png';
   }
@@ -446,7 +520,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             _emblemAssetForWidth(width),
             width: 56,
             height: 56,
-            errorBuilder: (_, __, ___) =>
+            errorBuilder: (context, error, stackTrace) =>
                 const Icon(Icons.local_shipping, size: 42, color: Colors.amber),
           ),
           const SizedBox(width: 12),
@@ -501,6 +575,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
   Widget _buildSendPanel() {
     final width = MediaQuery.of(context).size.width;
     final selected = _selectedItem;
+    final selectedOwnedTransport = _selectedOwnedTransport;
     final isVehicle = _selectedCategory == 'vehicle';
     final maxQty = (selected is Map<String, dynamic>)
         ? ((selected['quantity'] as num?)?.toInt() ?? 1)
@@ -522,7 +597,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                 _crateAssetForWidth(width),
                 width: 28,
                 height: 28,
-                errorBuilder: (_, __, ___) =>
+                errorBuilder: (context, error, stackTrace) =>
                     const Icon(Icons.inventory_2, color: Colors.white),
               ),
               const SizedBox(width: 8),
@@ -630,6 +705,88 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             ),
             const SizedBox(height: 10),
             Text(
+              _tr('Transport', 'Transport'),
+              style: const TextStyle(color: Colors.white70),
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ChoiceChip(
+                  selected: _selectedTransportMode == 'commercial',
+                  label: Text(_tr('Commercieel kanaal', 'Commercial channel')),
+                  onSelected: (_) {
+                    if (_selectedTransportMode == 'commercial') return;
+                    setState(() => _selectedTransportMode = 'commercial');
+                    _loadQuote();
+                  },
+                ),
+                ChoiceChip(
+                  selected: _selectedTransportMode == 'owned',
+                  label: Text(_tr('Eigen voertuig / vliegtuig', 'Owned vehicle / aircraft')),
+                  onSelected: (_currentOwnedTransports.isEmpty || _selectedNetworkScope == 'crew')
+                      ? null
+                      : (_) {
+                          if (_selectedTransportMode == 'owned') return;
+                          setState(() => _selectedTransportMode = 'owned');
+                          _loadQuote();
+                        },
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            if (_selectedTransportMode == 'owned' && _selectedNetworkScope != 'crew')
+              if (_currentOwnedTransports.isEmpty)
+                Text(
+                  _tr(
+                    'Je hebt in dit land geen eigen voertuig of vliegtuig beschikbaar voor smokkel.',
+                    'You do not have an owned vehicle or aircraft available for smuggling in this country.',
+                  ),
+                  style: const TextStyle(color: Colors.orangeAccent),
+                )
+              else ...[
+                DropdownButtonFormField<String>(
+                  value: _selectedOwnedTransportKey,
+                  dropdownColor: Colors.black87,
+                  decoration: InputDecoration(
+                    labelText: _tr('Eigen transport', 'Owned transport'),
+                    labelStyle: const TextStyle(color: Colors.white70),
+                    filled: true,
+                    fillColor: Colors.black45,
+                    border: const OutlineInputBorder(),
+                  ),
+                  items: _currentOwnedTransports.map((transport) {
+                    final map = transport as Map<String, dynamic>;
+                    final key = map['transportKey']?.toString() ?? '';
+                    final slots = (map['cargoSlots'] as num?)?.toInt() ?? 0;
+                    final risk = (((map['riskReduction'] as num?)?.toDouble() ?? 0) * 100).toStringAsFixed(0);
+                    final label = '${map['transportLabel']} • $slots slots • -$risk%';
+                    return DropdownMenuItem<String>(
+                      value: key,
+                      child: Text(
+                        label,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() => _selectedOwnedTransportKey = value);
+                    _loadQuote();
+                  },
+                ),
+                const SizedBox(height: 10),
+                if (selectedOwnedTransport != null)
+                  Text(
+                    _tr(
+                      'Capaciteit: ${selectedOwnedTransport['cargoSlots']} slots • Inbeslagname bij mislukking: ${((((selectedOwnedTransport['confiscationChance'] as num?)?.toDouble() ?? 0) * 100)).toStringAsFixed(0)}%',
+                      'Capacity: ${selectedOwnedTransport['cargoSlots']} slots • Confiscation on failure: ${((((selectedOwnedTransport['confiscationChance'] as num?)?.toDouble() ?? 0) * 100)).toStringAsFixed(0)}%',
+                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
+                const SizedBox(height: 10),
+              ],
+            Text(
               _tr('Netwerk', 'Network'),
               style: const TextStyle(color: Colors.white70),
             ),
@@ -660,33 +817,35 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
               ],
             ),
             const SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              value: _selectedChannel,
-              dropdownColor: Colors.black87,
-              decoration: InputDecoration(
-                labelText: _tr('Smokkelkanaal', 'Smuggling channel'),
-                labelStyle: const TextStyle(color: Colors.white70),
-                filled: true,
-                fillColor: Colors.black45,
-                border: const OutlineInputBorder(),
+            if (_selectedTransportMode == 'commercial') ...[
+              DropdownButtonFormField<String>(
+                value: _selectedChannel,
+                dropdownColor: Colors.black87,
+                decoration: InputDecoration(
+                  labelText: _tr('Smokkelkanaal', 'Smuggling channel'),
+                  labelStyle: const TextStyle(color: Colors.white70),
+                  filled: true,
+                  fillColor: Colors.black45,
+                  border: const OutlineInputBorder(),
+                ),
+                items: _channels.map((c) {
+                  final channel = c.toString();
+                  return DropdownMenuItem<String>(
+                    value: channel,
+                    child: Text(
+                      _channelLabel(channel),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  if (value == null) return;
+                  setState(() => _selectedChannel = value);
+                  _loadQuote();
+                },
               ),
-              items: _channels.map((c) {
-                final channel = c.toString();
-                return DropdownMenuItem<String>(
-                  value: channel,
-                  child: Text(
-                    _channelLabel(channel),
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                if (value == null) return;
-                setState(() => _selectedChannel = value);
-                _loadQuote();
-              },
-            ),
-            const SizedBox(height: 10),
+              const SizedBox(height: 10),
+            ],
             Text(
               _channelHintFor(_selectedCategory),
               style: const TextStyle(color: Colors.white70, fontSize: 12),
@@ -716,7 +875,9 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton.icon(
-                onPressed: _isSending ? null : _sendShipment,
+                onPressed: _isSending || (_selectedTransportMode == 'owned' && _selectedOwnedTransportKey == null)
+                    ? null
+                    : _sendShipment,
                 icon: const Icon(Icons.send),
                 label: Text(_tr('Start Smokkel', 'Start Smuggling')),
               ),
@@ -744,8 +905,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
 
     if (_quote!['success'] != true) {
       return Text(
-        _quote!['message']?.toString() ??
-            _tr('Quote niet beschikbaar', 'Quote unavailable'),
+        _quoteMessage(_quote!['message']?.toString()),
         style: const TextStyle(color: Colors.orangeAccent),
       );
     }
@@ -760,6 +920,9 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
     final cooldown =
         (_quote!['cooldownRemainingSeconds'] as num?)?.toInt() ?? 0;
     final recommended = _quote!['recommendedChannel']?.toString();
+    final transportLabel = _quote!['transportLabel']?.toString();
+    final cargoSlotsRequired = (_quote!['cargoSlotsRequired'] as num?)?.toInt();
+    final cargoSlotsAvailable = (_quote!['cargoSlotsAvailable'] as num?)?.toInt();
 
     return Container(
       padding: const EdgeInsets.all(10),
@@ -783,6 +946,19 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
             '€$fee • $eta ${_tr('min', 'min')} • $risk% ${_tr('risico', 'risk')}',
             style: const TextStyle(color: Colors.white70),
           ),
+          if (transportLabel != null && transportLabel.isNotEmpty)
+            Text(
+              _tr('Eigen transport: $transportLabel', 'Owned transport: $transportLabel'),
+              style: const TextStyle(color: Colors.lightBlueAccent),
+            ),
+          if (cargoSlotsRequired != null && cargoSlotsAvailable != null)
+            Text(
+              _tr(
+                'Cargo-slots: $cargoSlotsRequired / $cargoSlotsAvailable',
+                'Cargo slots: $cargoSlotsRequired / $cargoSlotsAvailable',
+              ),
+              style: const TextStyle(color: Colors.white70),
+            ),
           if (cooldown > 0)
             Text(
               _tr(
@@ -882,7 +1058,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                   ],
                 ),
               );
-            }).toList(),
+            }),
         ],
       ),
     );
@@ -934,7 +1110,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                     style: const TextStyle(color: Colors.white),
                   ),
                   subtitle: Text(
-                    '${shipment['originCountryName']} → ${shipment['destinationCountryName']} • ${_networkLabel(shipment['networkScope']?.toString() ?? 'personal')} • ${_channelLabel(shipment['channel']?.toString() ?? 'courier')} • €${shipment['shippingFee']} • ${((double.tryParse(shipment['seizureChance'].toString()) ?? 0) * 100).toStringAsFixed(1)}% ${_tr('risico', 'risk')}',
+                    '${shipment['originCountryName']} → ${shipment['destinationCountryName']} • ${_networkLabel(shipment['networkScope']?.toString() ?? 'personal')} • ${_channelLabel(shipment['channel']?.toString() ?? 'courier')}${(shipment['metadata'] is Map<String, dynamic> && (shipment['metadata'] as Map<String, dynamic>)['ownedTransport'] is Map<String, dynamic>) ? ' • ${((shipment['metadata'] as Map<String, dynamic>)['ownedTransport'] as Map<String, dynamic>)['transportLabel']}' : ''} • €${shipment['shippingFee']} • ${((double.tryParse(shipment['seizureChance'].toString()) ?? 0) * 100).toStringAsFixed(1)}% ${_tr('risico', 'risk')}',
                     style: const TextStyle(color: Colors.white70),
                   ),
                   trailing: Text(
@@ -946,7 +1122,7 @@ class _SmugglingScreenState extends State<SmugglingScreen> {
                   ),
                 ),
               );
-            }).toList(),
+            }),
         ],
       ),
     );

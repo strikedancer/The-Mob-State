@@ -151,11 +151,14 @@ router.post(
     if (crime.requiredVehicle) {
       const selectedVehicle = await getPlayerCrimeVehicle(req.player!.id);
       if (selectedVehicle) {
-        // Find the VehicleInventory record with matching type
+        // Resolve the currently available inventory item for the selected crime vehicle.
         const vehicleInventory = await prisma.vehicleInventory.findFirst({
           where: {
             playerId: req.player!.id,
             vehicleId: selectedVehicle.vehicleType,
+            currentLocation: req.player!.currentCountry,
+            transportStatus: null,
+            marketListing: false,
           },
           orderBy: {
             stolenAt: 'desc',

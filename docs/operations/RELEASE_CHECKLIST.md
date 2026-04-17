@@ -25,6 +25,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Crime requirement failures verduidelijkt en ammo-verbruik gehard: vehicle-required crimes resolven nu alleen een echt beschikbaar geselecteerd crime-voertuig uit het huidige land, requirement-fouten voor voertuig/wapen/ammo vallen niet meer terug op een generieke retry, en munitie wordt niet meer verbruikt wanneer een crime al op een harde startvoorwaarde afketst
+  - Bestanden: `backend/src/routes/crimes.ts`, `backend/src/routes/garage.ts`, `backend/src/services/crimeService.ts`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
+- [ ] Smuggling Hub hersteld en uitgebreid: live quotes en verzending ondersteunen nu weer consistente commerciële runs, plus een expliciete eigen-transportmodus met auto's, motoren, boten en vliegtuigen inclusief cargo-slot validatie, risicoreductie en confiscatiekans bij mislukking
+  - Bestanden: `backend/src/services/smugglingService.ts`, `backend/src/routes/smuggling.ts`, `client/lib/screens/smuggling_screen.dart`, `client/lib/services/smuggling_service.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/smuggling.md`
 - [ ] Settings cleanup + login UX hersteld: de verouderde video-toggle is uit Instellingen verwijderd, crypto push/in-app voorkeuren worden nu robuuster teruggelezen zodat uitgeschakelde sliders na heropenen niet meer terugspringen, en het login-scherm ondersteunt Enter om direct in te loggen
   - Bestanden: `client/lib/screens/settings_screen.dart`, `client/lib/screens/login_screen.dart`, `backend/src/services/playerNotificationPreferenceService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/settings.md`
 - [ ] Drugs VIP auto-ophalen geactiveerd: de VIP toggle voor drugsproductie draait nu echt via een backend cron-job, zodat gereed product automatisch op de achtergrond wordt opgehaald in plaats van alleen een instelling in de UI op te slaan

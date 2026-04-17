@@ -19,7 +19,7 @@ router.get('/catalog', authenticate, async (req: AuthRequest, res: Response) => 
 
 router.post('/send', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const { category, itemKey, quantity, destinationCountry, metadata, channel, networkScope } = req.body;
+    const { category, itemKey, quantity, destinationCountry, metadata, channel, networkScope, transportMode, ownedTransportKey } = req.body;
 
     const categoryNormalized = String(category ?? '').toLowerCase() as SmugglingCategory;
     const allowed: SmugglingCategory[] = ['drug', 'trade', 'vehicle', 'weapon', 'ammo'];
@@ -38,6 +38,8 @@ router.post('/send', authenticate, async (req: AuthRequest, res: Response) => {
       destinationCountry: String(destinationCountry),
          channel,
          networkScope,
+      transportMode,
+      ownedTransportKey,
       metadata: metadata ?? {},
     });
 
@@ -54,7 +56,7 @@ router.post('/send', authenticate, async (req: AuthRequest, res: Response) => {
 
 router.post('/quote', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const { category, itemKey, quantity, destinationCountry, metadata, channel, networkScope } = req.body;
+    const { category, itemKey, quantity, destinationCountry, metadata, channel, networkScope, transportMode, ownedTransportKey } = req.body;
 
     const categoryNormalized = String(category ?? '').toLowerCase() as SmugglingCategory;
     const allowed: SmugglingCategory[] = ['drug', 'trade', 'vehicle', 'weapon', 'ammo'];
@@ -73,6 +75,8 @@ router.post('/quote', authenticate, async (req: AuthRequest, res: Response) => {
       destinationCountry: String(destinationCountry),
       channel,
       networkScope,
+      transportMode,
+      ownedTransportKey,
       metadata: metadata ?? {},
     });
 

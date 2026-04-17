@@ -24,6 +24,8 @@ class SmugglingService {
     required String destinationCountry,
     String channel = 'courier',
     String networkScope = 'personal',
+    String transportMode = 'commercial',
+    String? ownedTransportKey,
     Map<String, dynamic>? metadata,
   }) async {
     try {
@@ -34,6 +36,8 @@ class SmugglingService {
         'destinationCountry': destinationCountry,
         'channel': channel,
         'networkScope': networkScope,
+        'transportMode': transportMode,
+        'ownedTransportKey': ownedTransportKey,
         'metadata': metadata ?? {},
       });
 
@@ -58,6 +62,8 @@ class SmugglingService {
     required String destinationCountry,
     String channel = 'courier',
     String networkScope = 'personal',
+    String transportMode = 'commercial',
+    String? ownedTransportKey,
     Map<String, dynamic>? metadata,
   }) async {
     try {
@@ -68,6 +74,8 @@ class SmugglingService {
         'destinationCountry': destinationCountry,
         'channel': channel,
         'networkScope': networkScope,
+        'transportMode': transportMode,
+        'ownedTransportKey': ownedTransportKey,
         'metadata': metadata ?? {},
       });
 

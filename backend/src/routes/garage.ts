@@ -205,10 +205,13 @@ router.get('/crime-vehicle', authenticate, async (req: AuthRequest, res: Respons
     const vehicleInventory = await prisma.vehicleInventory.findFirst({
       where: {
         playerId: req.player!.id,
-        vehicleId: vehicle.vehicleType, // vehicleType in Vehicle matches vehicleId in VehicleInventory
+        vehicleId: vehicle.vehicleType,
+        currentLocation: req.player!.currentCountry,
+        transportStatus: null,
+        marketListing: false,
       },
       orderBy: {
-        stolenAt: 'desc', // Get the most recently stolen one if multiple exist
+        stolenAt: 'desc',
       },
     });
 
@@ -255,12 +258,12 @@ router.post('/crime-vehicle', authenticate, async (req: AuthRequest, res: Respon
     }
 
     // Check if player and vehicle are in same country
-    if (vehicleInventory.stolenInCountry !== req.player!.currentCountry) {
+    if (vehicleInventory.currentLocation !== req.player!.currentCountry) {
       return res.status(400).json({
         event: 'error.vehicleLocation',
         params: { 
           message: 'Vehicle must be in the same country as you',
-          vehicleCountry: vehicleInventory.stolenInCountry,
+          vehicleCountry: vehicleInventory.currentLocation,
           playerCountry: req.player!.currentCountry,
         },
       });

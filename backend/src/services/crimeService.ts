@@ -170,7 +170,7 @@ export const crimeService = {
 
     // Check weapon requirements
     let weaponUsed = null;
-    // let ammoConsumed = 0; // Commented out - not used yet
+    let pendingAmmoRequirement: { ammoType: string; amount: number } | null = null;
 
     if (crime.requiredWeapon) {
       if (!selectedWeaponId) {
@@ -223,17 +223,16 @@ export const crimeService = {
 
       if (weaponDef?.requiresAmmo && weaponDef.ammoType) {
         const ammoNeeded = weaponDef.ammoPerCrime || 1;
-        console.log(`[CrimeService] Weapon ammo check - weaponId: ${weaponUsed.weaponId}, ammoType: ${weaponDef.ammoType}, ammoPerCrime: ${weaponDef.ammoPerCrime}, calculated ammoNeeded: ${ammoNeeded}`);
 
         // Check if player has enough ammo
         if (!(await ammoService.hasAmmo(playerId, weaponDef.ammoType, ammoNeeded))) {
           throw new Error('NO_AMMO');
         }
 
-        // Consume ammo (this happens regardless of crime success)
-        console.log(`[CrimeService] About to consume ammo - playerId: ${playerId}, ammoType: ${weaponDef.ammoType}, amount: ${ammoNeeded}`);
-        await ammoService.consumeAmmo(playerId, weaponDef.ammoType, ammoNeeded);
-        // ammoConsumed = ammoNeeded; // Commented out - variable not used
+        pendingAmmoRequirement = {
+          ammoType: weaponDef.ammoType,
+          amount: ammoNeeded,
+        };
       }
     }
 
@@ -418,6 +417,38 @@ export const crimeService = {
         },
       });
 
+      if (pendingAmmoRequirement) {
+        const currentAmmo = await tx.ammoInventory.findUnique({
+          where: {
+            playerId_ammoType: {
+              playerId,
+              ammoType: pendingAmmoRequirement.ammoType,
+            },
+          },
+          select: {
+            id: true,
+            quantity: true,
+          },
+        });
+
+        if (!currentAmmo || currentAmmo.quantity < pendingAmmoRequirement.amount) {
+          throw new Error('NO_AMMO');
+        }
+
+        if (currentAmmo.quantity === pendingAmmoRequirement.amount) {
+          await tx.ammoInventory.delete({
+            where: { id: currentAmmo.id },
+          });
+        } else {
+          await tx.ammoInventory.update({
+            where: { id: currentAmmo.id },
+            data: {
+              quantity: currentAmmo.quantity - pendingAmmoRequirement.amount,
+            },
+          });
+        }
+      }
+
       // Check for rank up using exponential system
       const { getRankFromXP } = await import('../config');
       const calculatedNewRank = getRankFromXP(updatedPlayer.xp);
@@ -436,7 +467,7 @@ export const crimeService = {
       if (vehicleBroken && vehicleInventory && vehicleId) {
         await tx.vehicleInventory.update({
           where: { id: vehicleId },
-          data: { isBroken: true },
+          data: { condition: 0 },
         });
       }
 

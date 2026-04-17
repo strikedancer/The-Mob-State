@@ -352,7 +352,7 @@ class EventRenderer {
           case 'WEAPON_REQUIRED':
             return l10n.crimeErrorWeaponRequired;
           case 'WEAPON_SELECTION_REQUIRED':
-            return 'Select a weapon in Inventory before committing this crime';
+            return 'Select a crime weapon before committing this crime';
           case 'WEAPON_NOT_SUITABLE':
             final suitableTypes = params['suitableTypes'] as String? ?? '';
             final weaponNames = _translateWeaponTypes(suitableTypes, false);
@@ -756,7 +756,7 @@ class EventRenderer {
           case 'WEAPON_REQUIRED':
             return l10n.crimeErrorWeaponRequired;
           case 'WEAPON_SELECTION_REQUIRED':
-            return 'Selecteer eerst een wapen in Inventory voordat je deze misdaad pleegt';
+            return 'Kies eerst een crime-wapen voordat je deze misdaad start';
           case 'WEAPON_NOT_SUITABLE':
             final suitableTypes = params['suitableTypes'] as String? ?? '';
             final weaponNames = _translateWeaponTypes(suitableTypes, true);

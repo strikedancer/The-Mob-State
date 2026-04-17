@@ -1,10 +1,23 @@
 import prisma from '../lib/prisma';
 import countries from '../../content/countries.json';
 import { vehicleService } from './vehicleService';
+import { getAircraftById } from './aviationService';
 
 export type SmugglingCategory = 'drug' | 'trade' | 'vehicle' | 'weapon' | 'ammo';
-export type SmugglingChannel = 'package' | 'courier' | 'container';
+export type SmugglingChannel = 'package' | 'courier' | 'container' | 'owned';
 export type SmugglingNetworkScope = 'personal' | 'crew';
+export type SmugglingTransportMode = 'commercial' | 'owned';
+type OwnedTransportType = 'car' | 'motorcycle' | 'boat' | 'aircraft';
+
+interface OwnedTransportOption {
+  transportKey: string;
+  transportLabel: string;
+  transportType: OwnedTransportType;
+  cargoSlots: number;
+  riskReduction: number;
+  confiscationChance: number;
+  metadata: Record<string, any>;
+}
 
 function resolveCrewLandVehicleType(vehicleId: string): 'car' | 'motorcycle' {
   return vehicleService.getVehicleById(vehicleId)?.vehicleCategory === 'motorcycle'
@@ -44,6 +57,8 @@ interface SendShipmentInput {
   destinationCountry: string;
   channel?: SmugglingChannel;
   networkScope?: SmugglingNetworkScope;
+  transportMode?: SmugglingTransportMode;
+  ownedTransportKey?: string;
   metadata?: Record<string, any>;
 }
 
@@ -57,6 +72,9 @@ interface QuoteShipmentResult {
   canAfford?: boolean;
   cooldownRemainingSeconds?: number;
   recommendedChannel?: SmugglingChannel;
+  transportLabel?: string;
+  cargoSlotsRequired?: number;
+  cargoSlotsAvailable?: number;
 }
 
 class SmugglingService {
@@ -65,6 +83,7 @@ class SmugglingService {
     package: 8,
     courier: 14,
     container: 22,
+    owned: 16,
   };
 
   private parseCrewDrugGoodType(goodType: string): { drugType: string; quality: string } {
@@ -80,6 +99,232 @@ class SmugglingService {
     }
 
     return { drugType: goodType, quality: 'C' };
+  }
+
+  private normalizeTransportMode(value: unknown): SmugglingTransportMode {
+    return value === 'owned' ? 'owned' : 'commercial';
+  }
+
+  private vehicleSlotsForType(vehicleType: string): number {
+    switch (vehicleType) {
+      case 'motorcycle':
+        return 5;
+      case 'boat':
+        return 30;
+      case 'aircraft':
+        return 80;
+      case 'car':
+      default:
+        return 10;
+    }
+  }
+
+  private aircraftCargoSlots(aircraftType: string): number {
+    const knownSlots: Record<string, number> = {
+      cessna_172: 20,
+      king_air_350: 50,
+      citation_x: 70,
+      gulfstream_g650: 80,
+      boeing_737_cargo: 200,
+      antonov_an_225: 400,
+    };
+
+    if (knownSlots[aircraftType]) {
+      return knownSlots[aircraftType];
+    }
+
+    const definition = getAircraftById(aircraftType);
+    if (!definition) {
+      return 40;
+    }
+
+    return Math.max(20, Math.round(definition.cargoCapacity / 10));
+  }
+
+  private aircraftRiskReduction(aircraftType: string): number {
+    const knownReduction: Record<string, number> = {
+      cessna_172: 0.10,
+      king_air_350: 0.15,
+      citation_x: 0.18,
+      gulfstream_g650: 0.20,
+      boeing_737_cargo: 0.25,
+      antonov_an_225: 0.25,
+    };
+
+    return knownReduction[aircraftType] ?? 0.12;
+  }
+
+  private parseOwnedTransportKey(value: string): { kind: 'vehicle' | 'aircraft'; id: number } | null {
+    const [kind, rawId] = String(value).split(':');
+    const id = Number(rawId);
+    if (!Number.isFinite(id) || id <= 0) {
+      return null;
+    }
+
+    if (kind === 'vehicle' || kind === 'aircraft') {
+      return { kind, id };
+    }
+
+    return null;
+  }
+
+  private calculateOwnedCargoSlots(
+    category: SmugglingCategory,
+    quantity: number,
+    metadata: Record<string, any>
+  ): number {
+    if (category === 'vehicle') {
+      const vehicleType = String(metadata.vehicleType ?? 'car');
+      return this.vehicleSlotsForType(vehicleType);
+    }
+
+    return quantity;
+  }
+
+  private async getOwnedTransportOptions(playerId: number, currentCountry: string): Promise<OwnedTransportOption[]> {
+    const [vehicles, aircraft] = await Promise.all([
+      prisma.vehicleInventory.findMany({
+        where: {
+          playerId,
+          currentLocation: currentCountry,
+          transportStatus: null,
+          marketListing: false,
+        },
+        orderBy: { stolenAt: 'desc' },
+      }),
+      prisma.aircraft.findMany({
+        where: { playerId },
+        orderBy: { purchasedAt: 'desc' },
+      }),
+    ]);
+
+    const vehicleOptions = vehicles.map((vehicle) => {
+      const transportType = vehicle.vehicleType === 'boat'
+        ? 'boat'
+        : vehicle.vehicleType === 'motorcycle'
+          ? 'motorcycle'
+          : 'car';
+
+      return {
+        transportKey: `vehicle:${vehicle.id}`,
+        transportLabel: `${vehicle.vehicleType.toUpperCase()} • ${vehicle.vehicleId}`,
+        transportType,
+        cargoSlots: this.vehicleSlotsForType(transportType),
+        riskReduction: transportType === 'motorcycle' ? 0.08 : transportType === 'boat' ? 0.07 : 0.05,
+        confiscationChance: transportType === 'boat' ? 0.25 : 0.15,
+        metadata: {
+          sourceId: vehicle.id,
+          vehicleId: vehicle.vehicleId,
+          vehicleType: transportType,
+        },
+      } satisfies OwnedTransportOption;
+    });
+
+    const aircraftOptions = aircraft.map((plane) => {
+      const definition = getAircraftById(plane.aircraftType);
+      return {
+        transportKey: `aircraft:${plane.id}`,
+        transportLabel: `${definition?.name ?? plane.aircraftType} • #${plane.id}`,
+        transportType: 'aircraft' as const,
+        cargoSlots: this.aircraftCargoSlots(plane.aircraftType),
+        riskReduction: this.aircraftRiskReduction(plane.aircraftType),
+        confiscationChance: 0.30,
+        metadata: {
+          sourceId: plane.id,
+          aircraftType: plane.aircraftType,
+        },
+      } satisfies OwnedTransportOption;
+    });
+
+    return [...aircraftOptions, ...vehicleOptions];
+  }
+
+  private async getOwnedTransportOption(
+    playerId: number,
+    currentCountry: string,
+    transportKey: string
+  ): Promise<OwnedTransportOption | null> {
+    const parsed = this.parseOwnedTransportKey(transportKey);
+    if (!parsed) {
+      return null;
+    }
+
+    if (parsed.kind === 'aircraft') {
+      const plane = await prisma.aircraft.findFirst({
+        where: { id: parsed.id, playerId },
+      });
+
+      if (!plane) {
+        return null;
+      }
+
+      const definition = getAircraftById(plane.aircraftType);
+      return {
+        transportKey,
+        transportLabel: `${definition?.name ?? plane.aircraftType} • #${plane.id}`,
+        transportType: 'aircraft',
+        cargoSlots: this.aircraftCargoSlots(plane.aircraftType),
+        riskReduction: this.aircraftRiskReduction(plane.aircraftType),
+        confiscationChance: 0.30,
+        metadata: {
+          sourceId: plane.id,
+          aircraftType: plane.aircraftType,
+        },
+      };
+    }
+
+    const vehicle = await prisma.vehicleInventory.findFirst({
+      where: {
+        id: parsed.id,
+        playerId,
+        currentLocation: currentCountry,
+        transportStatus: null,
+        marketListing: false,
+      },
+    });
+
+    if (!vehicle) {
+      return null;
+    }
+
+    const transportType = vehicle.vehicleType === 'boat'
+      ? 'boat'
+      : vehicle.vehicleType === 'motorcycle'
+        ? 'motorcycle'
+        : 'car';
+
+    return {
+      transportKey,
+      transportLabel: `${vehicle.vehicleType.toUpperCase()} • ${vehicle.vehicleId}`,
+      transportType,
+      cargoSlots: this.vehicleSlotsForType(transportType),
+      riskReduction: transportType === 'motorcycle' ? 0.08 : transportType === 'boat' ? 0.07 : 0.05,
+      confiscationChance: transportType === 'boat' ? 0.25 : 0.15,
+      metadata: {
+        sourceId: vehicle.id,
+        vehicleId: vehicle.vehicleId,
+        vehicleType: transportType,
+      },
+    };
+  }
+
+  private async confiscateOwnedTransport(metadata: Record<string, any>): Promise<void> {
+    const transport = metadata.ownedTransport;
+    if (!transport || transport.transportMode !== 'owned') {
+      return;
+    }
+
+    const sourceId = Number(transport.sourceId);
+    if (!Number.isFinite(sourceId) || sourceId <= 0) {
+      return;
+    }
+
+    if (transport.transportType === 'aircraft') {
+      await prisma.aircraft.deleteMany({ where: { id: sourceId } });
+      return;
+    }
+
+    await prisma.vehicleInventory.deleteMany({ where: { id: sourceId } });
   }
 
   private async ensureTable(): Promise<void> {
@@ -164,6 +409,24 @@ class SmugglingService {
       const seized = Math.random() < Number(shipment.seizure_chance);
       const nextStatus: ShipmentStatus = seized ? 'seized' : 'ready';
 
+      if (seized) {
+        const metadata = this.parseMetadata(shipment);
+        const transport = metadata.ownedTransport;
+        const confiscationChance = Number(transport?.confiscationChance ?? 0);
+
+        if (confiscationChance > 0 && Math.random() < confiscationChance) {
+          await this.confiscateOwnedTransport(metadata);
+          metadata.ownedTransportConfiscated = true;
+          metadata.confiscationMessage = `${transport?.transportLabel ?? 'Voertuig'} in beslag genomen`;
+
+          await prisma.$executeRaw`
+            UPDATE smuggling_shipments
+            SET metadata_json = ${JSON.stringify(metadata)}
+            WHERE id = ${shipment.id}
+          `;
+        }
+      }
+
       await prisma.$executeRaw`
         UPDATE smuggling_shipments
         SET status = ${nextStatus}, delivered_at = NOW()
@@ -177,7 +440,8 @@ class SmugglingService {
     quantity: number,
     wantedLevel: number,
     channel: SmugglingChannel,
-    networkScope: SmugglingNetworkScope
+    networkScope: SmugglingNetworkScope,
+    ownedTransport?: OwnedTransportOption | null
   ): { fee: number; etaMinutes: number; seizureChance: number } {
     const baseByCategory: Record<SmugglingCategory, { fee: number; eta: number; risk: number; qtyFee: number; qtyRisk: number }> = {
       drug: { fee: 350, eta: 55, risk: 0.06, qtyFee: 4, qtyRisk: 0.00025 },
@@ -191,6 +455,7 @@ class SmugglingService {
       package: { fee: 0.85, eta: 0.85, risk: 1.15 },
       courier: { fee: 1.00, eta: 1.00, risk: 1.00 },
       container: { fee: 1.25, eta: 1.30, risk: 0.75 },
+      owned: { fee: 0.55, eta: 0.82, risk: 0.92 },
     };
 
     const p = baseByCategory[category];
@@ -234,10 +499,20 @@ class SmugglingService {
       },
     };
 
-    const adj = categoryChannelAdjust[category][channel];
+    const adj = categoryChannelAdjust[category][channel === 'owned' ? 'courier' : channel];
     fee = Math.max(50, Math.round(fee * adj.fee));
     etaMinutes = this.clamp(Math.round(etaMinutes * adj.eta), 25, 420);
     seizureChance = this.clamp(seizureChance * adj.risk, 0.02, 0.50);
+
+    if (ownedTransport) {
+      fee = Math.max(75, Math.round(fee * 0.45));
+      etaMinutes = this.clamp(
+        Math.round(etaMinutes * (ownedTransport.transportType === 'aircraft' ? 0.65 : 0.85)),
+        20,
+        360
+      );
+      seizureChance = this.clamp(seizureChance * (1 - ownedTransport.riskReduction), 0.01, 0.50);
+    }
 
     return { fee, etaMinutes, seizureChance };
   }
@@ -252,6 +527,10 @@ class SmugglingService {
         return { ok: false, message: 'Voertuigen kunnen niet via pakketkanaal', normalizedQuantity: 1 };
       }
       return { ok: true, normalizedQuantity: 1 };
+    }
+
+    if (channel === 'owned') {
+      return { ok: true, normalizedQuantity: quantity };
     }
 
     const maxByCategoryChannel: Record<SmugglingCategory, Record<SmugglingChannel, number>> = {
@@ -307,7 +586,7 @@ class SmugglingService {
     return row?.name ?? countryId;
   }
 
-  async getCatalog(playerId: number, networkScope: SmugglingNetworkScope = 'personal'): Promise<{ success: boolean; currentCountry: string; destinations: any[]; canUseCrewNetwork: boolean; channels: SmugglingChannel[]; selectedNetworkScope: SmugglingNetworkScope; categories: Record<SmugglingCategory, any[]> }> {
+  async getCatalog(playerId: number, networkScope: SmugglingNetworkScope = 'personal'): Promise<{ success: boolean; currentCountry: string; destinations: any[]; canUseCrewNetwork: boolean; channels: SmugglingChannel[]; selectedNetworkScope: SmugglingNetworkScope; ownedTransports: OwnedTransportOption[]; categories: Record<SmugglingCategory, any[]> }> {
     await this.ensureTable();
 
     const player = await prisma.player.findUnique({
@@ -323,6 +602,7 @@ class SmugglingService {
         canUseCrewNetwork: false,
         channels: ['package', 'courier', 'container'],
         selectedNetworkScope: 'personal',
+        ownedTransports: [],
         categories: { drug: [], trade: [], vehicle: [], weapon: [], ammo: [] },
       };
     }
@@ -351,6 +631,7 @@ class SmugglingService {
         canUseCrewNetwork: true,
         channels: ['package', 'courier', 'container'],
         selectedNetworkScope: 'crew',
+        ownedTransports: [],
         categories: {
           drug: crewDrugs.map((d) => {
             const parsed = this.parseCrewDrugGoodType(d.goodType);
@@ -408,10 +689,11 @@ class SmugglingService {
       canUseCrewNetwork: crewId !== null,
       channels: ['package', 'courier', 'container'],
       selectedNetworkScope: 'personal',
+      ownedTransports: await this.getOwnedTransportOptions(playerId, player.currentCountry),
       categories: {
         drug: drugs.map((d) => ({ itemKey: `${d.drugType}:${d.quality}`, itemLabel: `${d.drugType} (${d.quality})`, quantity: d.quantity, quality: d.quality, unitTag: 'g' })),
         trade: tradeGoods.map((g) => ({ itemKey: g.goodType, itemLabel: g.goodType, quantity: g.quantity, unitTag: 'unit' })),
-        vehicle: vehicles.map((v) => ({ itemKey: String(v.id), itemLabel: `${v.vehicleType.toUpperCase()} • ${v.vehicleId}`, quantity: 1, unitTag: 'vehicle', metadata: { vehicleType: v.vehicleType } })),
+        vehicle: vehicles.map((v) => ({ itemKey: `vehicle:${v.id}`, itemLabel: `${v.vehicleType.toUpperCase()} • ${v.vehicleId}`, quantity: 1, unitTag: 'vehicle', metadata: { vehicleType: v.vehicleType, inventoryId: v.id } })),
         weapon: weapons.map((w) => ({ itemKey: w.weaponId, itemLabel: w.weaponId, quantity: w.quantity, unitTag: 'weapon' })),
         ammo: ammo.map((a) => ({ itemKey: a.ammoType, itemLabel: a.ammoType, quantity: a.quantity, unitTag: 'round' })),
       },
@@ -423,10 +705,11 @@ class SmugglingService {
 
     const { category, itemKey, destinationCountry } = input;
     const requestedQuantity = Math.max(1, Math.floor(input.quantity));
-    const channel = (input.channel ?? 'courier') as SmugglingChannel;
+    const transportMode = this.normalizeTransportMode(input.transportMode);
+    const channel = (transportMode === 'owned' ? 'owned' : (input.channel ?? 'courier')) as SmugglingChannel;
     const networkScope = (input.networkScope ?? 'personal') as SmugglingNetworkScope;
 
-    if (!['package', 'courier', 'container'].includes(channel)) {
+    if (!['package', 'courier', 'container', 'owned'].includes(channel)) {
       return { success: false, message: 'Ongeldig smokkelkanaal' };
     }
 
@@ -467,6 +750,46 @@ class SmugglingService {
       return { success: false, message: 'Crew-smokkel voor handelswaar is nog niet beschikbaar' };
     }
 
+    if (transportMode === 'owned' && networkScope !== 'personal') {
+      return { success: false, message: 'Eigen voertuigen werken alleen voor persoonlijke smokkel' };
+    }
+
+    const shipmentMetadata = (input.metadata ?? {}) as Record<string, any>;
+    let ownedTransport: OwnedTransportOption | null = null;
+    let cargoSlotsRequired: number | undefined;
+
+    if (transportMode === 'owned') {
+      if (!input.ownedTransportKey) {
+        return { success: false, message: 'Kies een eigen voertuig of vliegtuig' };
+      }
+
+      ownedTransport = await this.getOwnedTransportOption(playerId, player.currentCountry, input.ownedTransportKey);
+      if (!ownedTransport) {
+        return { success: false, message: 'Gekozen eigen voertuig is niet beschikbaar' };
+      }
+
+      if (category === 'vehicle' && input.ownedTransportKey === itemKey) {
+        return { success: false, message: 'Je kunt hetzelfde voertuig niet als vracht en transport gebruiken' };
+      }
+
+      if (category === 'vehicle' && ['car', 'motorcycle'].includes(ownedTransport.transportType)) {
+        return { success: false, message: 'Auto of motor kan geen ander voertuig vervoeren' };
+      }
+
+      cargoSlotsRequired = this.calculateOwnedCargoSlots(category, quantity, shipmentMetadata);
+      if (
+        ownedTransport.transportType === 'aircraft' &&
+        category === 'vehicle' &&
+        String(shipmentMetadata.vehicleType ?? 'car') === 'boat'
+      ) {
+        return { success: false, message: 'BOAT_CANNOT_FIT' };
+      }
+
+      if (cargoSlotsRequired > ownedTransport.cargoSlots) {
+        return { success: false, message: 'CARGO_OVERFLOW' };
+      }
+    }
+
     const cooldownRemainingSeconds = await this.getSendCooldownRemainingSeconds(playerId, networkScope, channel);
     if (cooldownRemainingSeconds > 0) {
       return {
@@ -476,7 +799,7 @@ class SmugglingService {
     }
 
     const wantedLevel = player.wantedLevel ?? 0;
-    const pricing = this.buildPricing(category, quantity, wantedLevel, channel, networkScope);
+    const pricing = this.buildPricing(category, quantity, wantedLevel, channel, networkScope, ownedTransport);
 
     if (player.money < pricing.fee) {
       return { success: false, message: 'Niet genoeg geld voor smokkelkosten' };
@@ -487,7 +810,7 @@ class SmugglingService {
     const result = await prisma.$transaction(async (tx) => {
       let itemLabel = itemKey;
       let unitTag = 'unit';
-      let metadata: Record<string, any> = input.metadata ?? {};
+      let metadata: Record<string, any> = shipmentMetadata;
       let effectiveQuantity = quantity;
       let storeItemKey = itemKey;
 
@@ -661,7 +984,12 @@ class SmugglingService {
             };
           }
         } else {
-          const vehicleInventoryId = Number(itemKey);
+          const parsedVehicleKey = this.parseOwnedTransportKey(itemKey);
+          if (!parsedVehicleKey || parsedVehicleKey.kind !== 'vehicle') {
+            return { ok: false, message: 'Ongeldig voertuig' } as const;
+          }
+
+          const vehicleInventoryId = parsedVehicleKey.id;
           const vehicle = await tx.vehicleInventory.findFirst({
             where: {
               id: vehicleInventoryId,
@@ -688,6 +1016,24 @@ class SmugglingService {
             stolenInCountry: vehicle.stolenInCountry,
           };
         }
+      }
+
+      if (ownedTransport) {
+        metadata = {
+          ...metadata,
+          ownedTransport: {
+            transportMode: 'owned',
+            transportKey: ownedTransport.transportKey,
+            transportLabel: ownedTransport.transportLabel,
+            transportType: ownedTransport.transportType,
+            cargoSlots: ownedTransport.cargoSlots,
+            confiscationChance: ownedTransport.confiscationChance,
+            riskReduction: ownedTransport.riskReduction,
+            sourceId: ownedTransport.metadata.sourceId,
+            aircraftType: ownedTransport.metadata.aircraftType,
+            vehicleId: ownedTransport.metadata.vehicleId,
+          },
+        };
       }
 
       await tx.player.update({
@@ -736,10 +1082,11 @@ class SmugglingService {
 
     const { category, itemKey, destinationCountry } = input;
     const requestedQuantity = Math.max(1, Math.floor(input.quantity));
-    const channel = (input.channel ?? 'courier') as SmugglingChannel;
+    const transportMode = this.normalizeTransportMode(input.transportMode);
+    const channel = (transportMode === 'owned' ? 'owned' : (input.channel ?? 'courier')) as SmugglingChannel;
     const networkScope = (input.networkScope ?? 'personal') as SmugglingNetworkScope;
 
-    if (!['package', 'courier', 'container'].includes(channel)) {
+    if (!['package', 'courier', 'container', 'owned'].includes(channel)) {
       return { success: false, message: 'Ongeldig smokkelkanaal' };
     }
 
@@ -782,6 +1129,58 @@ class SmugglingService {
 
     if (networkScope === 'crew' && category === 'trade') {
       return { success: false, message: 'Crew-smokkel voor handelswaar is nog niet beschikbaar' };
+    }
+
+    if (transportMode === 'owned' && networkScope !== 'personal') {
+      return { success: false, message: 'Eigen voertuigen werken alleen voor persoonlijke smokkel' };
+    }
+
+    const quoteMetadata = (input.metadata ?? {}) as Record<string, any>;
+    let ownedTransport: OwnedTransportOption | null = null;
+    let cargoSlotsRequired: number | undefined;
+
+    if (transportMode === 'owned') {
+      if (!input.ownedTransportKey) {
+        return { success: false, message: 'Kies een eigen voertuig of vliegtuig' };
+      }
+
+      ownedTransport = await this.getOwnedTransportOption(playerId, player.currentCountry, input.ownedTransportKey);
+      if (!ownedTransport) {
+        return { success: false, message: 'Gekozen eigen voertuig is niet beschikbaar' };
+      }
+
+      if (category === 'vehicle' && input.ownedTransportKey === itemKey) {
+        return { success: false, message: 'Je kunt hetzelfde voertuig niet als vracht en transport gebruiken' };
+      }
+
+      if (category === 'vehicle' && ['car', 'motorcycle'].includes(ownedTransport.transportType)) {
+        return { success: false, message: 'Auto of motor kan geen ander voertuig vervoeren' };
+      }
+
+      cargoSlotsRequired = this.calculateOwnedCargoSlots(category, quantity, quoteMetadata);
+      if (
+        ownedTransport.transportType === 'aircraft' &&
+        category === 'vehicle' &&
+        String(quoteMetadata.vehicleType ?? 'car') === 'boat'
+      ) {
+        return {
+          success: false,
+          message: 'BOAT_CANNOT_FIT',
+          transportLabel: ownedTransport.transportLabel,
+          cargoSlotsRequired,
+          cargoSlotsAvailable: ownedTransport.cargoSlots,
+        };
+      }
+
+      if (cargoSlotsRequired > ownedTransport.cargoSlots) {
+        return {
+          success: false,
+          message: 'CARGO_OVERFLOW',
+          transportLabel: ownedTransport.transportLabel,
+          cargoSlotsRequired,
+          cargoSlotsAvailable: ownedTransport.cargoSlots,
+        };
+      }
     }
 
     const cooldownRemainingSeconds = await this.getSendCooldownRemainingSeconds(playerId, networkScope, channel);
@@ -868,7 +1267,12 @@ class SmugglingService {
           availableQuantity = car ? 1 : 0;
         }
       } else {
-        const vehicleInventoryId = Number(itemKey);
+        const parsedVehicleKey = this.parseOwnedTransportKey(itemKey);
+        if (!parsedVehicleKey || parsedVehicleKey.kind !== 'vehicle') {
+          return { success: false, message: 'Ongeldig voertuig' };
+        }
+
+        const vehicleInventoryId = parsedVehicleKey.id;
         const vehicle = await prisma.vehicleInventory.findFirst({
           where: {
             id: vehicleInventoryId,
@@ -894,7 +1298,7 @@ class SmugglingService {
     }
 
     const wantedLevel = player.wantedLevel ?? 0;
-    const pricing = this.buildPricing(category, quantity, wantedLevel, channel, networkScope);
+    const pricing = this.buildPricing(category, quantity, wantedLevel, channel, networkScope, ownedTransport);
 
     return {
       success: true,
@@ -905,7 +1309,10 @@ class SmugglingService {
       availableQuantity,
       canAfford: (player.money ?? 0) >= pricing.fee,
       cooldownRemainingSeconds,
-      recommendedChannel: this.recommendedChannelFor(category, quantity),
+      recommendedChannel: transportMode === 'owned' ? 'owned' : this.recommendedChannelFor(category, quantity),
+      transportLabel: ownedTransport?.transportLabel,
+      cargoSlotsRequired,
+      cargoSlotsAvailable: ownedTransport?.cargoSlots,
     };
   }
 

@@ -26,6 +26,8 @@ Vehicle movement between countries also belongs here when cars or boats are relo
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- De speler moet expliciet kunnen zien of een quote via commercieel kanaal of eigen transport loopt.
+- Cargo-capaciteit en confiscatierisico van eigen transport moeten zichtbaar en server-side leidend blijven.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -38,6 +40,9 @@ Vehicle movement between countries also belongs here when cars or boats are relo
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify owned cars, motorcycles, boats and aircraft appear as selectable transport when available.
+- Verify `BOAT_CANNOT_FIT` and `CARGO_OVERFLOW` are surfaced clearly from the live quote and send flow.
+- Verify failed owned-transport shipments can mark the transport asset as confiscated in the shipment result data.
 
 ## Eigen Voertuig Smokkelkanaal
 
