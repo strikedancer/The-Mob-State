@@ -28,6 +28,11 @@ class MobileWebStickyPlayerHeaderShell extends StatelessWidget {
       return child;
     }
 
+    final currentPath = Uri.base.path;
+    if (currentPath == '/' || currentPath == '/dashboard') {
+      return child;
+    }
+
     return Consumer<AuthProvider>(
       builder: (context, authProvider, _) {
         final player = authProvider.currentPlayer;

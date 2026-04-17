@@ -1602,8 +1602,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final useEmbeddedWebShell = kIsWeb && screenWidth >= _tabletBreakpoint;
+    final useEmbeddedWebShell = kIsWeb;
 
     return Scaffold(
       appBar: useEmbeddedWebShell
