@@ -63,9 +63,21 @@ import cryptoRouter from './routes/crypto';
 import ticketsRouter from './routes/tickets';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { globalRateLimiter } from './middleware/rateLimit';
+import { waitForPrisma } from './lib/prisma';
 import path from 'path';
 
 const app: Application = express();
+
+// CRITICAL: Wait for Prisma DB connection before processing any requests
+app.use(async (req, res, next) => {
+  try {
+    await waitForPrisma();
+    next();
+  } catch (error) {
+    console.error('[App] Prisma initialization failed:', error);
+    res.status(503).json({ error: 'Database connection unavailable' });
+  }
+});
 
 // Payment webhook — raw JSON requests must be registered before express.json()
 app.use('/subscriptions/webhook', express.raw({ type: 'application/json' }));
