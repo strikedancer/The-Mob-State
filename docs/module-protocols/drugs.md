@@ -24,7 +24,10 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Visibility of current productions in both Production flow and Facility context when players expect that summary.
+- Finished but uncollected productions must remain visible in the Production flow and still count against their facility slot until they are actually collected.
+- VIP auto-collect must be backed by a real background automation path; a toggle without server-side execution is not sufficient.
 - Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
+- Facility ownership or type (including darkweb storefront) must not imply silent auto-sale of finished drug output unless a dedicated sale feature explicitly exists and is documented.
 
 ## Backend Contract Guardrails (Drugs)
 - If drugs services use Prisma nested `include` (example: production -> facility -> upgrades), relation fields must exist in `schema.prisma`.
@@ -48,6 +51,8 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify active productions remain visible after starting a batch and navigating back to facilities.
+- Verify ready-but-uncollected productions remain visible after timer completion and still appear in facility context until collected.
+- Verify VIP auto-collect actually collects ready batches without opening the screen manually.
 - Verify owned facilities remain visible and upgrade options stay available after travel or refresh.
 - Verify no Prisma validation errors appear in backend logs while loading drugs screens.
 - Verify collect action removes only the collected production card without showing global loading spinner or reloading unrelated content blocks.

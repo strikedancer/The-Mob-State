@@ -1,6 +1,7 @@
 ﻿import { PrismaClient } from '@prisma/client';
 import cron from 'node-cron';
 import { processOpenOrdersInBackground } from './cryptoService';
+import drugService from './drugService';
 import { gameEventService } from './gameEventService';
 
 const prisma = new PrismaClient();
@@ -331,6 +332,43 @@ export async function runEventScheduler(): Promise<void> {
   }
 }
 
+export async function runDrugProductionAutomation(): Promise<void> {
+  const now = new Date();
+
+  try {
+    await drugService.processFinishedProductions();
+
+    const autoCollectPlayers = await prisma.player.findMany({
+      where: {
+        isVip: true,
+        autoCollectDrugs: true,
+      },
+      select: { id: true },
+    });
+
+    let totalCollected = 0;
+    let playersCollected = 0;
+
+    for (const player of autoCollectPlayers) {
+      const collected = await drugService.autoCollectAll(player.id);
+      if (collected > 0) {
+        totalCollected += collected;
+        playersCollected++;
+      }
+    }
+
+    if (totalCollected > 0) {
+      console.log(
+        `[CRON JOB] drugProductionAutomation players=${playersCollected} collected=${totalCollected}`,
+      );
+    }
+
+    lastJobExecutions['drugProductionAutomation'] = now;
+  } catch (error) {
+    console.error('[CRON ERROR] runDrugProductionAutomation:', error);
+  }
+}
+
 export function getCronStatus() {
   return {
     lastExecutions: lastJobExecutions,
@@ -339,6 +377,7 @@ export function getCronStatus() {
       updateLeaderboards: 'Daily at 00:00',
       resetWeeklyLeaderboard: 'Monday at 00:00',
       cleanupRivalries: 'Sunday at 03:00',
+      drugProductionAutomation: 'Every minute',
       cryptoOrderProcessor: 'Every 30 seconds',
       eventScheduler: 'Every 5 minutes',
     },
@@ -368,6 +407,10 @@ export function initializeCronJobs(): void {
     await cleanupOldRivalries();
   });
 
+  cron.schedule('* * * * *', async () => {
+    await runDrugProductionAutomation();
+  });
+
   cron.schedule('*/30 * * * * *', async () => {
     try {
       const result = await processOpenOrdersInBackground();
@@ -393,6 +436,7 @@ export function initializeCronJobs(): void {
   console.log('  - Update Leaderboards: Daily at 00:00');
   console.log('  - Reset Weekly Leaderboard: Monday at 00:00');
   console.log('  - Cleanup Old Rivalries: Sunday at 03:00');
+  console.log('  - Drug Production Automation: Every minute');
   console.log('  - Crypto Order Processor: Every 30 seconds');
   console.log('  - Game Event Scheduler: Every 5 minutes');
 }

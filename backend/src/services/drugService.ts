@@ -637,7 +637,7 @@ class DrugService {
     const productions = await prisma.drugProduction.findMany({
       where: {
         playerId,
-        completed: false,
+        collected: false,
       },
       include: {
         facility: {
@@ -1392,7 +1392,7 @@ class DrugService {
 
   async autoCollectAll(playerId: number): Promise<number> {
     const ready = await prisma.drugProduction.findMany({
-      where: { playerId, completed: false, finishesAt: { lte: new Date() } },
+      where: { playerId, collected: false, finishesAt: { lte: new Date() } },
       select: { id: true },
     });
     let collected = 0;

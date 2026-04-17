@@ -25,6 +25,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Drugs VIP auto-ophalen geactiveerd: de VIP toggle voor drugsproductie draait nu echt via een backend cron-job, zodat gereed product automatisch op de achtergrond wordt opgehaald in plaats van alleen een instelling in de UI op te slaan
+  - Bestanden: `backend/src/services/cronService.ts`, `backend/src/services/drugService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/drugs.md`
+- [ ] Drugs productie-zichtbaarheid hersteld: batches die klaar zijn maar nog niet opgehaald, blijven zichtbaar in het Productie-scherm en tellen in faciliteitsslots mee totdat ze echt zijn opgehaald; VIP auto-ophalen kijkt nu ook naar die ready output in plaats van ze stil te missen
+  - Bestanden: `backend/src/services/drugService.ts`, `backend/src/services/drugFacilityService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/drugs.md`
 - [ ] Ammo Factory ownership-load hersteld: read-only schermopeningen en travel-refreshes revoken geen fabriekseigendom meer; inactivity-cleanup gebeurt nu pas bij een echte overnamepoging in plaats van alleen door het scherm te bekijken
   - Bestanden: `backend/src/services/ammoFactoryService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/ammo-factory.md`
 - [ ] Crime arrest-uitkomsten aangescherpt: als politie/FBI je na een ogenschijnlijk geslaagde crime alsnog pakt, komt de response niet meer als clean success terug, wordt de jail-state echt toegepast en worden tool/weapon/vehicle-consequenties alsnog consistent afgehandeld

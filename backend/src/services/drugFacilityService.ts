@@ -407,7 +407,7 @@ class DrugFacilityService {
   /** Check how many active productions a facility has */
   async getActiveProductionCount(facilityId: number): Promise<number> {
     return prisma.drugProduction.count({
-      where: { facilityId, completed: false },
+      where: { facilityId, collected: false },
     });
   }
 }
