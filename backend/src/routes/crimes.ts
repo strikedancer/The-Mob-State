@@ -263,6 +263,7 @@ router.post(
         fbiHeat: result.fbiHeat,
         bail: result.bail,
         vehicleConfiscated: result.vehicleConfiscated,
+        weaponConfiscated: result.weaponConfiscated,
         vehicleChaseDamage: result.vehicleChaseDamage,
       },
       player: {

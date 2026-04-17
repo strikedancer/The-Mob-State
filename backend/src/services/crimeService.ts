@@ -11,6 +11,7 @@ import { intensiveCareService } from './intensiveCareService';
 import toolService from './toolService';
 import drugService from './drugService';
 import { vehicleService } from './vehicleService';
+import { weaponSelectionService } from './weaponSelectionService';
 import config from '../config';
 import { processCrimeAttempt, CrimeOutcome } from '../utils/crimeOutcomeEngine';
 import { getPlayerCrimeVehicle, getPlayerTool, degradeVehicle, degradeTool } from './vehicleToolService';
@@ -96,6 +97,7 @@ export const crimeService = {
     vehicleConditionLoss?: number;
     toolDamageSustained?: number;
     vehicleConfiscated?: boolean;
+    weaponConfiscated?: boolean;
     vehicleChaseDamage?: number;
     newlyUnlockedAchievements?: any[];
     clearedRecordCount?: number;
@@ -402,7 +404,9 @@ export const crimeService = {
 
       // Track vehicle consequences
       let vehicleConfiscated = false;
+      let weaponConfiscated = false;
       let vehicleChaseDamage = 0;
+      let clearCrimeWeaponSelection = false;
 
       // Update player money, XP, and health
       const updatedPlayer = await tx.player.update({
@@ -454,6 +458,44 @@ export const crimeService = {
       if (jailed) {
         // Police confiscate all tools when caught
         await toolService.confiscateTools(playerId, requiredToolsForCrime);
+
+        if (weaponUsed) {
+          const currentWeapon = await tx.weaponInventory.findUnique({
+            where: {
+              playerId_weaponId: {
+                playerId,
+                weaponId: weaponUsed.weaponId,
+              },
+            },
+            select: {
+              id: true,
+              quantity: true,
+            },
+          });
+
+          if (currentWeapon) {
+            if (currentWeapon.quantity > 1) {
+              await tx.weaponInventory.update({
+                where: { id: currentWeapon.id },
+                data: { quantity: currentWeapon.quantity - 1 },
+              });
+            } else {
+              await tx.weaponInventory.delete({
+                where: { id: currentWeapon.id },
+              });
+              clearCrimeWeaponSelection = true;
+            }
+
+            await tx.player.update({
+              where: { id: playerId },
+              data: {
+                inventory_slots_used: { decrement: 1 },
+              },
+            });
+
+            weaponConfiscated = true;
+          }
+        }
       }
       // Note: Tool durability loss is handled by degradeTool() call above
       // so we skip the useTool() call to avoid double degradation
@@ -529,9 +571,15 @@ export const crimeService = {
         healthDamage,
         xpLost,
         vehicleConfiscated,
+        weaponConfiscated,
         vehicleChaseDamage,
+        clearCrimeWeaponSelection,
       };
     });
+
+    if (result.clearCrimeWeaponSelection) {
+      await weaponSelectionService.clearSelectedCrimeWeapon(playerId);
+    }
 
     // Check if player needs ICU (health reached 0)
     if (result.newHealth === 0) {
@@ -761,6 +809,7 @@ export const crimeService = {
       vehicleConditionLoss: crimeResult.vehicleConditionLoss,
       toolDamageSustained: crimeResult.toolDamageSustained,
       vehicleConfiscated: result.vehicleConfiscated,
+      weaponConfiscated: result.weaponConfiscated,
       vehicleChaseDamage: result.vehicleChaseDamage,
       newlyUnlockedAchievements,
       clearedRecordCount,

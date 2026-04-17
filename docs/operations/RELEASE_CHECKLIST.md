@@ -25,6 +25,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Arrestatie bij weapon-based crimes nu consistent gemaakt: als je tijdens een crime met geselecteerd wapen wordt opgepakt, wordt het gebruikte crime-wapen ook geconfisqueerd, wordt de opgeslagen selectie gewist als het je laatste exemplaar was, en meldt de crime-feedback dit expliciet
+  - Bestanden: `backend/src/services/crimeService.ts`, `backend/src/routes/crimes.ts`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
 - [ ] Crime-wapen selectie hersteld: het opslaan en terugladen van de geselecteerde crime-weapon serializeert player-activity details nu correct als string-json, zodat selectie vanuit Crimes en Inventaris niet meer faalt met een generieke foutmelding
   - Bestanden: `backend/src/services/weaponSelectionService.ts`
 - [ ] Crew navigatie professioneler gemaakt: het crew-scherm groepeert beheer nu in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crews en Chat in plaats van losse storage-tabs, zodat management rustiger en schaalbaarder blijft

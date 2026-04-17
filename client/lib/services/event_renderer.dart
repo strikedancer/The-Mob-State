@@ -37,12 +37,24 @@ class EventRenderer {
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
         final jailTime = params['jailTime'] as int?; // in MINUTES
+        final vehicleConfiscated =
+            params['vehicleConfiscated'] as bool? ?? false;
+        final weaponConfiscated =
+            params['weaponConfiscated'] as bool? ?? false;
         final clearedRecordCount =
             (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
 
         if (jailed && jailTime != null && jailTime > 0) {
           final minutes = jailTime;
-          return 'Successfully completed $crimeName! +EUR ${reward ?? 0}, +${xpGained ?? 0} XP - BUT CAUGHT! Jailed for $minutes minute${minutes != 1 ? 's' : ''}!';
+          String message =
+              'Successfully completed $crimeName! +EUR ${reward ?? 0}, +${xpGained ?? 0} XP - BUT CAUGHT! Jailed for $minutes minute${minutes != 1 ? 's' : ''}!';
+          if (vehicleConfiscated) {
+            message += ' Your vehicle was seized by police!';
+          }
+          if (weaponConfiscated) {
+            message += ' Your weapon was confiscated by police!';
+          }
+          return message;
         }
         if (clearedRecordCount > 0) {
           return 'Successfully completed $crimeName! Criminal record wiped: $clearedRecordCount conviction${clearedRecordCount != 1 ? 's' : ''} removed. +${xpGained ?? 0} XP';
@@ -57,6 +69,8 @@ class EventRenderer {
         final arrestingAuthority = params['arrestingAuthority'] as String?;
         final vehicleConfiscated =
             params['vehicleConfiscated'] as bool? ?? false;
+        final weaponConfiscated =
+          params['weaponConfiscated'] as bool? ?? false;
         final vehicleChaseDamage = params['vehicleChaseDamage'] as int?;
 
         String message = '';
@@ -78,6 +92,9 @@ class EventRenderer {
         } else if (vehicleChaseDamage != null && vehicleChaseDamage > 0) {
           message +=
               ' Your vehicle took $vehicleChaseDamage% damage during the chase!';
+        }
+        if (weaponConfiscated) {
+          message += ' Your weapon was confiscated by police!';
         }
 
         return message;
@@ -422,13 +439,25 @@ class EventRenderer {
         final crimeName = params['crimeName'] as String?;
         final jailed = params['jailed'] as bool? ?? false;
         final jailTime = params['jailTime'] as int?; // in MINUTES
+        final vehicleConfiscated =
+            params['vehicleConfiscated'] as bool? ?? false;
+        final weaponConfiscated =
+            params['weaponConfiscated'] as bool? ?? false;
         final clearedRecordCount =
             (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
 
         if (jailed && jailTime != null && jailTime > 0) {
           final minutes = jailTime;
           final minuteLabel = minutes == 1 ? 'minuut' : 'minuten';
-          return 'Succesvol $crimeName gepleegd! +€${reward ?? 0}, +${xpGained ?? 0} XP - MAAR GEPAKT! $minutes $minuteLabel!';
+          String message =
+              'Succesvol $crimeName gepleegd! +€${reward ?? 0}, +${xpGained ?? 0} XP - MAAR GEPAKT! $minutes $minuteLabel!';
+          if (vehicleConfiscated) {
+            message += ' Je voertuig is in beslag genomen door de politie!';
+          }
+          if (weaponConfiscated) {
+            message += ' Je wapen is in beslag genomen door de politie!';
+          }
+          return message;
         }
         if (clearedRecordCount > 0) {
           return 'Succesvol $crimeName gepleegd! Strafblad gewist: $clearedRecordCount veroordeling${clearedRecordCount != 1 ? 'en' : ''} verwijderd. +${xpGained ?? 0} XP';
@@ -443,6 +472,8 @@ class EventRenderer {
         final arrestingAuthority = params['arrestingAuthority'] as String?;
         final vehicleConfiscated =
             params['vehicleConfiscated'] as bool? ?? false;
+        final weaponConfiscated =
+          params['weaponConfiscated'] as bool? ?? false;
         final vehicleChaseDamage = params['vehicleChaseDamage'] as int?;
 
         String message = '';
@@ -464,6 +495,9 @@ class EventRenderer {
         } else if (vehicleChaseDamage != null && vehicleChaseDamage > 0) {
           message +=
               ' Je voertuig heeft $vehicleChaseDamage% schade opgelopen tijdens de achtervolging!';
+        }
+        if (weaponConfiscated) {
+          message += ' Je wapen is in beslag genomen door de politie!';
         }
 
         return message;
