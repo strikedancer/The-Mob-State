@@ -111,14 +111,6 @@ class AmmoFactoryService {
   async listFactories() {
     await this.ensureFactoriesExist();
 
-    const ownedFactories = await prisma.ammoFactory.findMany({
-      where: { ownerId: { not: null } },
-    });
-
-    for (const ownedFactory of ownedFactories) {
-      await this.settleProduction(ownedFactory.id, false);
-    }
-
     return prisma.ammoFactory.findMany({
       include: {
         owner: { select: { id: true, username: true } },
@@ -129,15 +121,6 @@ class AmmoFactoryService {
 
   async getPlayerFactory(playerId: number) {
     await this.ensureFactoriesExist();
-
-    const existing = await prisma.ammoFactory.findFirst({
-      where: { ownerId: playerId },
-      orderBy: { countryId: 'asc' },
-    });
-
-    if (existing) {
-      await this.settleProduction(existing.id, false);
-    }
 
     return prisma.ammoFactory.findFirst({
       where: { ownerId: playerId },
@@ -264,12 +247,23 @@ class AmmoFactoryService {
   async purchaseFactory(playerId: number, countryId: string) {
     await this.ensureFactoriesExist();
 
-    const factory = await prisma.ammoFactory.findUnique({
+    let factory = await prisma.ammoFactory.findUnique({
       where: { countryId },
     });
 
     if (!factory) {
       return { success: false, error: 'FACTORY_NOT_FOUND', cost: 0 };
+    }
+
+    if (factory.ownerId && factory.ownerId !== playerId && this.isInactive(factory)) {
+      await this.revokeFactoriesForPlayer(factory.ownerId);
+      factory = await prisma.ammoFactory.findUnique({
+        where: { countryId },
+      });
+
+      if (!factory) {
+        return { success: false, error: 'FACTORY_NOT_FOUND', cost: 0 };
+      }
     }
 
     if (factory.ownerId && factory.ownerId !== playerId) {

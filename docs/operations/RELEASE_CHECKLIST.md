@@ -25,6 +25,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Ammo Factory ownership-load hersteld: read-only schermopeningen en travel-refreshes revoken geen fabriekseigendom meer; inactivity-cleanup gebeurt nu pas bij een echte overnamepoging in plaats van alleen door het scherm te bekijken
+  - Bestanden: `backend/src/services/ammoFactoryService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/ammo-factory.md`
 - [ ] Crime arrest-uitkomsten aangescherpt: als politie/FBI je na een ogenschijnlijk geslaagde crime alsnog pakt, komt de response niet meer als clean success terug, wordt de jail-state echt toegepast en worden tool/weapon/vehicle-consequenties alsnog consistent afgehandeld
   - Bestanden: `backend/src/services/crimeService.ts`, `backend/src/routes/crimes.ts`, `client/lib/screens/crime_screen.dart`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
 - [ ] Vehicle theft arrest-flow gecorrigeerd: als je na een geslaagde steal direct wordt opgepakt, telt dat niet meer als succesmelding; de net gestolen auto/motor wordt meteen in beslag genomen en de jail-feedback toont dat expliciet

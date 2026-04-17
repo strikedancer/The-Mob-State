@@ -24,6 +24,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - The Ammo Factory screen is for ownership, upgrades and production status; direct ammo buy/sell flows belong to the Black Market and should be linked there instead of being embedded here.
+- Read-only ownership/status loads must not mutate factory ownership; inactivity forfeiture may only be resolved by an owner action or a contested purchase flow, never by simply opening the screen after travel.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -37,6 +38,7 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
 - Verify the factory screen no longer offers direct ammo market trading and instead routes the player clearly to the Black Market ammo tab.
+- Verify traveling away and back, then reopening Ammo Factory, does not silently turn an owned factory into `for sale` just because the screen was viewed.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
