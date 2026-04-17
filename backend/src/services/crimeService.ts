@@ -14,12 +14,23 @@ import { vehicleService } from './vehicleService';
 import { weaponSelectionService } from './weaponSelectionService';
 import config from '../config';
 import { processCrimeAttempt, CrimeOutcome } from '../utils/crimeOutcomeEngine';
-import { getPlayerCrimeVehicle, getPlayerTool, degradeVehicle, degradeTool } from './vehicleToolService';
+import { getPlayerTool, degradeTool } from './vehicleToolService';
 import { serializeAchievementForClient } from './achievementService';
 import * as judgeService from './judgeService';
 import { notificationService } from './notificationService';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
+
+async function runCrimeSideEffect(
+  label: string,
+  effect: () => Promise<void>,
+): Promise<void> {
+  try {
+    await effect();
+  } catch (error) {
+    console.error(`[Crime Service] ${label} failed:`, error);
+  }
+}
 
 interface CrimeDefinition {
   id: string;
@@ -135,7 +146,16 @@ export const crimeService = {
     }
 
     // Check vehicle requirement
-    let vehicleStats = null;
+    let selectedVehicle: {
+      id: number;
+      speed: number;
+      armor: number;
+      stealth: number;
+      cargo: number;
+      condition: number;
+      fuel: number;
+      maxFuel: number;
+    } | null = null;
     let vehicleInventory = null;
     if (crime.requiredVehicle) {
       if (!vehicleId) {
@@ -160,12 +180,16 @@ export const crimeService = {
 
       // Get vehicle definition to extract stats
       const vehicleDef = vehicleService.getVehicleById(vehicleInventory.vehicleId);
-      if (vehicleDef && vehicleDef.stats) {
-        vehicleStats = {
-          ...vehicleDef.stats,
-          condition: vehicleInventory.condition, // 0-100
-        };
-      }
+      selectedVehicle = {
+        id: vehicleInventory.id,
+        speed: vehicleDef?.stats.speed ?? 50,
+        armor: vehicleDef?.stats.armor ?? 50,
+        stealth: vehicleDef?.stats.stealth ?? 50,
+        cargo: vehicleDef?.stats.cargo ?? 50,
+        condition: vehicleInventory.condition,
+        fuel: vehicleInventory.fuelLevel,
+        maxFuel: vehicleDef?.fuelCapacity ?? 100,
+      };
     }
 
     // Check weapon requirements
@@ -274,26 +298,6 @@ export const crimeService = {
       }
     }
 
-    // Get selected crime vehicle (from new system)
-    let selectedVehicle = null;
-    let selectedVehicleRecord = null;
-    if (crime.requiredVehicle) {
-      selectedVehicleRecord = await getPlayerCrimeVehicle(playerId);
-      if (selectedVehicleRecord) {
-        // Map to outcome engine format
-        selectedVehicle = {
-          id: selectedVehicleRecord.id,
-          speed: selectedVehicleRecord.speed,
-          armor: selectedVehicleRecord.armor,
-          stealth: selectedVehicleRecord.stealth,
-          cargo: selectedVehicleRecord.cargo,
-          condition: selectedVehicleRecord.condition,
-          fuel: selectedVehicleRecord.fuel,
-          maxFuel: 100, // TODO: Get from vehicle definition if needed
-        };
-      }
-    }
-
     // Get primary tool (if required)
     let primaryTool = null;
     let primaryToolRecord = null;
@@ -323,15 +327,6 @@ export const crimeService = {
       selectedVehicle || undefined,
       primaryTool || undefined
     );
-
-    // Apply vehicle degradation (if used)
-    if (selectedVehicle && selectedVehicleRecord && crimeResult.vehicleConditionLoss) {
-      await degradeVehicle(
-        selectedVehicleRecord.id,
-        crimeResult.vehicleConditionLoss,
-        crimeResult.vehicleFuelUsed || 0
-      );
-    }
 
     // Apply tool degradation (if used)
     if (primaryTool && primaryToolRecord && crimeResult.toolDamageSustained) {
@@ -462,20 +457,20 @@ export const crimeService = {
         updatedPlayer.rank = playerWithNewRank.rank;
       }
 
-      // Vehicle degradation already handled by outcome engine
-      // Old vehicleInventory system kept for backward compatibility
-      if (vehicleBroken && vehicleInventory && vehicleId) {
-        await tx.vehicleInventory.update({
-          where: { id: vehicleId },
-          data: { condition: 0 },
-        });
-      }
-
-      // Fuel consumption for old vehicleInventory system
       if (vehicleInventory && vehicleId) {
+        const conditionLoss = Math.ceil(crimeResult.vehicleConditionLoss ?? 0);
+        const fuelUsed = crimeResult.vehicleFuelUsed ?? config.crimeFuelCost;
+        const nextCondition = vehicleBroken
+          ? 0
+          : Math.max(0, vehicleInventory.condition - conditionLoss);
+        const nextFuelLevel = Math.max(0, vehicleInventory.fuelLevel - fuelUsed);
+
         await tx.vehicleInventory.update({
           where: { id: vehicleId },
-          data: { fuelLevel: Math.max(0, vehicleInventory.fuelLevel - config.crimeFuelCost) },
+          data: {
+            condition: nextCondition,
+            fuelLevel: nextFuelLevel,
+          },
         });
       }
 
@@ -579,7 +574,7 @@ export const crimeService = {
           xpGained,
           jailed,
           jailTime,
-          vehicleId: selectedVehicleRecord?.id || null,
+          vehicleId: null,
           usedToolId: primaryToolRecord?.toolId || null,
           outcome: crimeResult.outcome,
           outcomeFail: !success ? crimeResult.message : null,
@@ -817,109 +812,125 @@ export const crimeService = {
         clearedRecordCount = await judgeService.expungeCriminalRecord(playerId);
       }
 
-      await worldEventService.createEvent('crime.success', {
-        playerId,
-        crimeName: crime.name,
-        reward,
-        xpGained,
-        clearedRecordCount,
-      });
-
-      await activityService.logActivity(
-        playerId,
-        'CRIME',
-        clearedRecordCount > 0
-          ? `Completed ${crime.name} and wiped ${clearedRecordCount} criminal record entries`
-          : `Completed ${crime.name} and earned €${reward.toLocaleString()}`,
-        {
-          crimeId: crime.id,
+      await runCrimeSideEffect('worldEvent crime.success', async () => {
+        await worldEventService.createEvent('crime.success', {
+          playerId,
           crimeName: crime.name,
           reward,
           xpGained,
           clearedRecordCount,
-        },
-        true
-      );
+        });
+      });
 
-      if (clearedRecordCount > 0) {
+      await runCrimeSideEffect('activity CRIME', async () => {
         await activityService.logActivity(
           playerId,
-          'CRIMINAL_RECORD_EXPUNGED',
-          `Wiped ${clearedRecordCount} criminal record entries via ${crime.name}`,
+          'CRIME',
+          clearedRecordCount > 0
+            ? `Completed ${crime.name} and wiped ${clearedRecordCount} criminal record entries`
+            : `Completed ${crime.name} and earned €${reward.toLocaleString()}`,
           {
             crimeId: crime.id,
             crimeName: crime.name,
+            reward,
+            xpGained,
             clearedRecordCount,
           },
           true
         );
+      });
+
+      if (clearedRecordCount > 0) {
+        await runCrimeSideEffect('activity CRIMINAL_RECORD_EXPUNGED', async () => {
+          await activityService.logActivity(
+            playerId,
+            'CRIMINAL_RECORD_EXPUNGED',
+            `Wiped ${clearedRecordCount} criminal record entries via ${crime.name}`,
+            {
+              crimeId: crime.id,
+              crimeName: crime.name,
+              clearedRecordCount,
+            },
+            true
+          );
+        });
       }
 
       if (result.newRank > player.rank) {
-        await activityService.logActivity(
-          playerId,
-          'RANK_UP',
-          `Ranked up to level ${result.newRank}!`,
-          {
-            oldRank: player.rank,
-            newRank: result.newRank,
-          },
-          true
-        );
+        await runCrimeSideEffect('activity RANK_UP', async () => {
+          await activityService.logActivity(
+            playerId,
+            'RANK_UP',
+            `Ranked up to level ${result.newRank}!`,
+            {
+              oldRank: player.rank,
+              newRank: result.newRank,
+            },
+            true
+          );
+        });
       }
     } else if (jailed) {
-      await worldEventService.createEvent('crime.caught', {
-        playerId,
-        crimeName: crime.name,
-        jailTime,
+      await runCrimeSideEffect('worldEvent crime.caught', async () => {
+        await worldEventService.createEvent('crime.caught', {
+          playerId,
+          crimeName: crime.name,
+          jailTime,
+        });
       });
     }
 
     if (!success) {
-      await activityService.logActivity(
-        playerId,
-        'CRIME_FAILED',
-        `Failed ${crime.name}${jailed ? ' and got caught' : ''}`,
-        {
-          crimeId: crime.id,
-          crimeName: crime.name,
-          outcome: crimeResult.outcome,
-          outcomeMessage: crimeResult.message,
-          xpLost,
-          jailed,
-          jailTime,
-          wantedLevel: crime.isFederal ? undefined : heatLevel,
-          fbiHeat: crime.isFederal ? heatLevel : undefined,
-          bail: bailAmount,
-          confiscatedTools: jailed ? requiredToolsForCrime : [],
-        },
-        true
-      );
+      await runCrimeSideEffect('activity CRIME_FAILED', async () => {
+        await activityService.logActivity(
+          playerId,
+          'CRIME_FAILED',
+          `Failed ${crime.name}${jailed ? ' and got caught' : ''}`,
+          {
+            crimeId: crime.id,
+            crimeName: crime.name,
+            outcome: crimeResult.outcome,
+            outcomeMessage: crimeResult.message,
+            xpLost,
+            jailed,
+            jailTime,
+            wantedLevel: crime.isFederal ? undefined : heatLevel,
+            fbiHeat: crime.isFederal ? heatLevel : undefined,
+            bail: bailAmount,
+            confiscatedTools: jailed ? requiredToolsForCrime : [],
+          },
+          true
+        );
+      });
     }
 
     if (!success && jailed && !arrested) {
-      await activityService.logActivity(
-        playerId,
-        'ARREST',
-        `Arrested after ${crime.name}`,
-        {
-          crimeId: crime.id,
-          crimeName: crime.name,
-          authority: arrestingAuthority || (crime.isFederal ? 'FBI' : 'Police'),
-          jailTime,
-          bail: bailAmount,
-          wantedLevel: crime.isFederal ? undefined : heatLevel,
-          fbiHeat: crime.isFederal ? heatLevel : undefined,
-        },
-        true
-      );
+      await runCrimeSideEffect('activity ARREST', async () => {
+        await activityService.logActivity(
+          playerId,
+          'ARREST',
+          `Arrested after ${crime.name}`,
+          {
+            crimeId: crime.id,
+            crimeName: crime.name,
+            authority: arrestingAuthority || (crime.isFederal ? 'FBI' : 'Police'),
+            jailTime,
+            bail: bailAmount,
+            wantedLevel: crime.isFederal ? undefined : heatLevel,
+            fbiHeat: crime.isFederal ? heatLevel : undefined,
+          },
+          true
+        );
+      });
 
       void notificationService.sendArrestAwaitingHelpNotifications(
         playerId,
         jailTime,
         crime.isFederal ? 'FBI' : 'Police',
         'CRIME'
-      );
+      ).catch((error) => {
+        console.error('[Crime Service] arrest help notifications failed:', error);
+      });
     }
 
     // Check for achievement unlocks if crime was successful

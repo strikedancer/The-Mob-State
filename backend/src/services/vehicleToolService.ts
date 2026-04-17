@@ -1,4 +1,45 @@
 import prisma from '../lib/prisma';
+import { vehicleService } from './vehicleService';
+
+interface ResolvedCrimeVehicleSelection {
+  vehicle: Awaited<ReturnType<typeof getPlayerCrimeVehicle>>;
+  inventory: {
+    id: number;
+    playerId: number;
+    vehicleId: string;
+    currentLocation: string;
+    condition: number;
+    fuelLevel: number;
+    transportStatus: string | null;
+    marketListing: boolean;
+  };
+}
+
+async function syncCrimeVehicleSnapshot(
+  vehicleRecordId: number,
+  inventory: {
+    vehicleId: string;
+    condition: number;
+    fuelLevel: number;
+  }
+): Promise<void> {
+  const definition = vehicleService.getVehicleById(inventory.vehicleId);
+
+  await prisma.vehicle.update({
+    where: { id: vehicleRecordId },
+    data: {
+      vehicleType: inventory.vehicleId,
+      fuel: inventory.fuelLevel,
+      maxFuel: definition?.fuelCapacity ?? 100,
+      condition: inventory.condition,
+      isBroken: inventory.condition < 10,
+      speed: definition?.stats.speed ?? 50,
+      armor: definition?.stats.armor ?? 50,
+      cargo: definition?.stats.cargo ?? 50,
+      stealth: definition?.stats.stealth ?? 50,
+    },
+  });
+}
 
 /**
  * Apply tool degradation after crime use
@@ -84,6 +125,66 @@ export async function getPlayerCrimeVehicle(playerId: number) {
   return selection?.vehicle;
 }
 
+export async function resolveSelectedCrimeVehicle(
+  playerId: number,
+  currentCountry: string,
+): Promise<ResolvedCrimeVehicleSelection | null> {
+  const selection = await prisma.playerSelectedVehicle.findUnique({
+    where: { playerId },
+    include: {
+      vehicle: true,
+    },
+  });
+
+  if (!selection?.vehicle) {
+    if (selection) {
+      await clearPlayerCrimeVehicle(playerId);
+    }
+    return null;
+  }
+
+  const inventory = await prisma.vehicleInventory.findFirst({
+    where: {
+      playerId,
+      vehicleId: selection.vehicle.vehicleType,
+      currentLocation: currentCountry,
+      transportStatus: null,
+      marketListing: false,
+    },
+    orderBy: {
+      stolenAt: 'desc',
+    },
+    select: {
+      id: true,
+      playerId: true,
+      vehicleId: true,
+      currentLocation: true,
+      condition: true,
+      fuelLevel: true,
+      transportStatus: true,
+      marketListing: true,
+    },
+  });
+
+  if (!inventory) {
+    await clearPlayerCrimeVehicle(playerId);
+    return null;
+  }
+
+  await syncCrimeVehicleSnapshot(selection.vehicle.id, inventory);
+
+  return {
+    vehicle: {
+      ...selection.vehicle,
+      vehicleType: inventory.vehicleId,
+      fuel: inventory.fuelLevel,
+      condition: inventory.condition,
+      isBroken: inventory.condition < 10,
+    },
+    inventory,
+  };
+}
+
 /**
  * Get player's tool for crime
  */
@@ -129,6 +230,87 @@ export async function setPlayerCrimeVehicle(
       selectedAt: new Date(),
     },
   });
+}
+
+export async function setPlayerCrimeVehicleFromInventory(
+  playerId: number,
+  inventoryId: number,
+): Promise<{ vehicleId: number; vehicleInventoryId: number }> {
+  const vehicleInventory = await prisma.vehicleInventory.findUnique({
+    where: { id: inventoryId },
+  });
+
+  if (!vehicleInventory || vehicleInventory.playerId !== playerId) {
+    throw new Error('Vehicle not found or does not belong to player');
+  }
+
+  if (vehicleInventory.transportStatus || vehicleInventory.marketListing) {
+    throw new Error('VEHICLE_UNAVAILABLE');
+  }
+
+  const definition = vehicleService.getVehicleById(vehicleInventory.vehicleId);
+
+  let vehicleRecord = await prisma.playerSelectedVehicle.findUnique({
+    where: { playerId },
+    include: { vehicle: true },
+  });
+
+  if (vehicleRecord?.vehicle) {
+    await prisma.vehicle.update({
+      where: { id: vehicleRecord.vehicle.id },
+      data: {
+        vehicleType: vehicleInventory.vehicleId,
+        fuel: vehicleInventory.fuelLevel,
+        maxFuel: definition?.fuelCapacity ?? 100,
+        condition: vehicleInventory.condition,
+        isBroken: vehicleInventory.condition < 10,
+        speed: definition?.stats.speed ?? 50,
+        armor: definition?.stats.armor ?? 50,
+        cargo: definition?.stats.cargo ?? 50,
+        stealth: definition?.stats.stealth ?? 50,
+      },
+    });
+
+    await prisma.playerSelectedVehicle.update({
+      where: { playerId },
+      data: {
+        selectedAt: new Date(),
+      },
+    });
+
+    return {
+      vehicleId: vehicleRecord.vehicle.id,
+      vehicleInventoryId: vehicleInventory.id,
+    };
+  }
+
+  const createdVehicle = await prisma.vehicle.create({
+    data: {
+      playerId,
+      vehicleType: vehicleInventory.vehicleId,
+      fuel: vehicleInventory.fuelLevel,
+      maxFuel: definition?.fuelCapacity ?? 100,
+      condition: vehicleInventory.condition,
+      isBroken: vehicleInventory.condition < 10,
+      speed: definition?.stats.speed ?? 50,
+      armor: definition?.stats.armor ?? 50,
+      cargo: definition?.stats.cargo ?? 50,
+      stealth: definition?.stats.stealth ?? 50,
+    },
+  });
+
+  await prisma.playerSelectedVehicle.create({
+    data: {
+      playerId,
+      vehicleId: createdVehicle.id,
+      selectedFor: 'crimes',
+    },
+  });
+
+  return {
+    vehicleId: createdVehicle.id,
+    vehicleInventoryId: vehicleInventory.id,
+  };
 }
 
 /**

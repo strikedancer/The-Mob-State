@@ -7,13 +7,12 @@ import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { garageService } from '../services/garageService';
 import {
-  getPlayerCrimeVehicle,
-  setPlayerCrimeVehicle,
   clearPlayerCrimeVehicle,
   repairVehicle,
   refuelVehicle,
+  resolveSelectedCrimeVehicle,
+  setPlayerCrimeVehicleFromInventory,
 } from '../services/vehicleToolService';
-import prisma from '../lib/prisma';
 
 const router = Router();
 
@@ -191,9 +190,12 @@ router.post('/marina/upgrade', authenticate, async (req: AuthRequest, res: Respo
  */
 router.get('/crime-vehicle', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const vehicle = await getPlayerCrimeVehicle(req.player!.id);
+    const resolvedVehicle = await resolveSelectedCrimeVehicle(
+      req.player!.id,
+      req.player!.currentCountry,
+    );
 
-    if (!vehicle) {
+    if (!resolvedVehicle) {
       return res.status(200).json({
         event: 'garage.crimeVehicle',
         params: {},
@@ -201,25 +203,11 @@ router.get('/crime-vehicle', authenticate, async (req: AuthRequest, res: Respons
       });
     }
 
-    // Find the corresponding VehicleInventory item
-    const vehicleInventory = await prisma.vehicleInventory.findFirst({
-      where: {
-        playerId: req.player!.id,
-        vehicleId: vehicle.vehicleType,
-        currentLocation: req.player!.currentCountry,
-        transportStatus: null,
-        marketListing: false,
-      },
-      orderBy: {
-        stolenAt: 'desc',
-      },
-    });
-
     return res.status(200).json({
       event: 'garage.crimeVehicle',
       params: {},
-      vehicle,
-      vehicleInventoryId: vehicleInventory?.id,
+      vehicle: resolvedVehicle.vehicle,
+      vehicleInventoryId: resolvedVehicle.inventory.id,
     });
   } catch (error) {
     console.error('[Garage Route] Error getting crime vehicle:', error);
@@ -245,60 +233,33 @@ router.post('/crime-vehicle', authenticate, async (req: AuthRequest, res: Respon
       });
     }
 
-    // Get vehicle from inventory to check location
-    const vehicleInventory = await prisma.vehicleInventory.findUnique({
-      where: { id: parseInt(vehicleId, 10) },
-    });
+    const parsedVehicleId = parseInt(vehicleId, 10);
+    const selectedVehicle = await setPlayerCrimeVehicleFromInventory(
+      req.player!.id,
+      parsedVehicleId,
+    );
 
-    if (!vehicleInventory || vehicleInventory.playerId !== req.player!.id) {
-      return res.status(404).json({
-        event: 'error.vehicle',
-        params: { message: 'Vehicle not found or does not belong to player' },
-      });
-    }
+    const resolvedVehicle = await resolveSelectedCrimeVehicle(
+      req.player!.id,
+      req.player!.currentCountry,
+    );
 
-    // Check if player and vehicle are in same country
-    if (vehicleInventory.currentLocation !== req.player!.currentCountry) {
+    if (!resolvedVehicle) {
       return res.status(400).json({
         event: 'error.vehicleLocation',
         params: { 
           message: 'Vehicle must be in the same country as you',
-          vehicleCountry: vehicleInventory.currentLocation,
+          vehicleCountry: null,
           playerCountry: req.player!.currentCountry,
         },
       });
     }
 
-    // Create or find a Vehicle record for this inventory item if needed
-    // For now, we'll create a simple mapping
-    let vehicleRecord = await prisma.vehicle.findFirst({
-      where: {
-        playerId: req.player!.id,
-        vehicleType: vehicleInventory.vehicleId,
-      },
-    });
-
-    if (!vehicleRecord) {
-      // Create a vehicle record based on inventory
-      vehicleRecord = await prisma.vehicle.create({
-        data: {
-          playerId: req.player!.id,
-          vehicleType: vehicleInventory.vehicleId,
-          fuel: vehicleInventory.fuelLevel,
-          maxFuel: 100,
-          condition: vehicleInventory.condition,
-          isBroken: vehicleInventory.condition < 10,
-        },
-      });
-    }
-
-    await setPlayerCrimeVehicle(req.player!.id, vehicleRecord.id);
-
     return res.status(200).json({
       event: 'garage.crimeVehicleSet',
       params: { 
-        vehicleId: vehicleRecord.id,
-        vehicleInventoryId: vehicleInventory.id,
+        vehicleId: selectedVehicle.vehicleId,
+        vehicleInventoryId: selectedVehicle.vehicleInventoryId,
       },
     });
   } catch (error) {
@@ -308,6 +269,16 @@ router.post('/crime-vehicle', authenticate, async (req: AuthRequest, res: Respon
       return res.status(404).json({
         event: 'error.vehicle',
         params: { message: error.message },
+      });
+    }
+
+    if (error instanceof Error && error.message === 'VEHICLE_UNAVAILABLE') {
+      return res.status(400).json({
+        event: 'error.vehicleLocation',
+        params: {
+          message: 'Vehicle is currently unavailable for crimes',
+          playerCountry: req.player!.currentCountry,
+        },
       });
     }
     

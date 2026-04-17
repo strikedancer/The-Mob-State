@@ -7,9 +7,8 @@ import { intensiveCareService } from '../services/intensiveCareService';
 import { getWealthStatus } from '../utils/wealthSystem';
 import { calculateReputationChange } from '../utils/rankSystem';
 import { applyReputationDelta } from '../services/reputationService';
-import { getPlayerCrimeVehicle } from '../services/vehicleToolService';
+import { resolveSelectedCrimeVehicle } from '../services/vehicleToolService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
-import prisma from '../lib/prisma';
 import { gameEventService } from '../services/gameEventService';
 
 const router = Router();
@@ -149,24 +148,12 @@ router.post(
     // Get player's selected vehicle for crimes
     let vehicleId: number | undefined;
     if (crime.requiredVehicle) {
-      const selectedVehicle = await getPlayerCrimeVehicle(req.player!.id);
+      const selectedVehicle = await resolveSelectedCrimeVehicle(
+        req.player!.id,
+        req.player!.currentCountry,
+      );
       if (selectedVehicle) {
-        // Resolve the currently available inventory item for the selected crime vehicle.
-        const vehicleInventory = await prisma.vehicleInventory.findFirst({
-          where: {
-            playerId: req.player!.id,
-            vehicleId: selectedVehicle.vehicleType,
-            currentLocation: req.player!.currentCountry,
-            transportStatus: null,
-            marketListing: false,
-          },
-          orderBy: {
-            stolenAt: 'desc',
-          },
-        });
-        if (vehicleInventory) {
-          vehicleId = vehicleInventory.id;
-        }
+        vehicleId = selectedVehicle.inventory.id;
       }
     }
 
@@ -311,6 +298,13 @@ router.post(
         return res.status(400).json({
           event: 'crime.error',
           params: { reason: 'VEHICLE_REQUIRED' },
+        });
+      }
+
+      if (error.message === 'VEHICLE_UNAVAILABLE') {
+        return res.status(400).json({
+          event: 'crime.error',
+          params: { reason: 'VEHICLE_NOT_FOUND' },
         });
       }
 
