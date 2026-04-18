@@ -470,7 +470,7 @@ class DrugService {
     const hasDelayIssue = actualMinutes > expectedMinutes + 2;
 
     if (hasYieldIssue) {
-      notes.add(
+      notes.push(
         drug.id === 'magic_mushrooms'
             ? 'Schimmel of besmetting heeft de opbrengst verlaagd.'
             : 'De batch heeft minder opgeleverd dan verwacht.',
@@ -480,7 +480,7 @@ class DrugService {
     }
 
     if (hasDelayIssue) {
-      notes.add(
+      notes.push(
         drug.id === 'magic_mushrooms'
             ? 'De groei liep vertraging op door instabiele omstandigheden.'
             : 'De productie liep vertraging op door een storing.',
@@ -493,7 +493,7 @@ class DrugService {
       }
     }
 
-    if (notes.isEmpty) return {};
+    if (notes.length === 0) return {};
 
     return {
       note: notes.join(' '),

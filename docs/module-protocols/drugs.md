@@ -33,6 +33,8 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - If drugs services use Prisma nested `include` (example: production -> facility -> upgrades), relation fields must exist in `schema.prisma`.
 - Do not query non-existent model fields (example: filtering inventory by a field not present in `DrugInventory`).
 - After relation/query changes: regenerate Prisma client and verify `/drugs/productions`, `/drug-facilities`, and `/drugs/inventory` all return success.
+- Production list helpers must stay runtime-safe JavaScript/TypeScript; do not introduce Dart-style collection calls or other non-JS APIs in server-side mapping logic, because `/drugs/productions` is used during live play and admin error monitoring.
+- When `/drugs/productions` throws, preserve actionable `Error` details in backend system logs so Admin -> System Logs shows message and stack instead of empty `{}` payloads.
 
 ## Frontend Loading Guardrails (Drugs)
 - Drug dashboards often load multiple endpoints in parallel. One failure may hide all cards if not guarded.

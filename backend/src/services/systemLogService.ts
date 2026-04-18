@@ -14,6 +14,21 @@ function safeStringify(value: unknown): string {
       return value;
     }
 
+    if (value instanceof Error) {
+      const errorRecord: Record<string, unknown> = {
+        name: value.name,
+        message: value.message,
+        stack: value.stack,
+      };
+
+      const errorWithExtras = value as Error & Record<string, unknown>;
+      for (const key of Object.keys(errorWithExtras)) {
+        errorRecord[key] = errorWithExtras[key];
+      }
+
+      return JSON.stringify(errorRecord);
+    }
+
     return JSON.stringify(value);
   } catch {
     return String(value);

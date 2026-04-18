@@ -717,6 +717,214 @@ After each client deploy, validate image serving and clear stale browser state.
 ```bash
 # Verify representative assets respond correctly
 curl -I https://yourdomain.com/images/crimes/pickpocket_crime.png
+```
+
+---
+
+## Live Testing & Error Monitoring
+
+When testing changes live on production or staging (via `docker-compose.plesk.yml`), always monitor system errors.
+
+### 1. Check Real-Time System Error Logs
+
+During or immediately after live testing, fetch system errors from the admin API:
+
+```bash
+# Get last 10 system error logs (requires admin access)
+curl -s "https://admin.themobstate.com/api/admin/system-logs?limit=10" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN" | jq .
+```
+
+**What to look for:**
+- `[CRON ERROR]` - Background job failures (e.g., crypto processor)
+- `[AUTH] Login/Register error` - Authentication issues
+- `[ERROR] 500` - API endpoint crashes
+- `PrismaClientKnownRequestError` - Database errors (P2024 = connection limit, P2010 = data validation)
+- `Cannot read properties of undefined` - Uninitialized services or missing null-checks
+
+### 2. Critical Runtime Errors & Fixes
+
+| Error Type | Cause | Fix |
+|-----------|-------|-----|
+| `P2024: Too many connections` | Prisma connection pool exhausted | Increase pool in `DATABASE_URL` query params: `?connection_limit=200&pool_timeout=10` |
+| `Cannot read properties of undefined (reading 'findUnique')` | Missing null-check on Prisma client | Add `await waitForPrisma()` in route initialization or middleware |
+| `PrismaClientValidationError` | Schema mismatch between code and database | Run `npx prisma generate` and `npx prisma validate` |
+| `Out of range value for column` | Numeric overflow in database column | Check field width (decimal/int) and adjust calculation or column type |
+| `ZodError: Invalid input` | Request validation failure | Log full request body and Zod error details before returning 500 |
+
+### 3. Enable Debug Logging During Live Testing
+
+Temporarily increase logging in `.env` during testing:
+
+```env
+NODE_ENV=production
+DEBUG=true  # Add this temporarily
+LOG_LEVEL=debug
+PRISMA_LOG_LEVEL=debug  # Log all Prisma queries
+```
+
+Then restart affected containers:
+
+```bash
+docker compose -f docker-compose.plesk.yml restart backend admin
+docker compose -f docker-compose.plesk.yml logs -f backend
+```
+
+### 4. Quick Health Check During Live Testing
+
+```bash
+# Backend alive?
+curl -s https://api.themobstate.com/api/health | jq .
+
+# Admin panel responds?
+curl -s -I https://admin.themobstate.com/ | head -5
+
+# Client (Flutter web) loads?
+curl -s https://themobstate.com/ | head -20
+
+# Database connected?
+curl -s https://api.themobstate.com/api/admin/overview | jq '.alerts' 2>/dev/null || echo "Admin endpoint not responding"
+```
+
+### 5. Common Testing Workflows
+
+**Testing a single feature (e.g., Crew Wars endpoint):**
+
+```bash
+# 1. Make code change locally
+# 2. Rebuild and deploy to staging
+docker compose -f docker-compose.plesk.yml up -d --build backend
+
+# 3. Monitor logs real-time
+docker compose -f docker-compose.plesk.yml logs -f backend | grep -E "(ERROR|WARN|crew|war)"
+
+# 4. Call endpoint and watch for errors
+curl -X POST https://api.themobstate.com/crew-wars/declare \
+  -H "Authorization: Bearer TEST_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"targetCrewId": 123}'
+
+# 5. Check system error logs immediately
+curl -s "https://admin.themobstate.com/api/admin/system-logs?limit=5" | jq '.'
+```
+
+**Testing database migrations:**
+
+```bash
+# 1. Deploy code with new Prisma schema
+docker compose -f docker-compose.plesk.yml up -d --build backend
+
+# 2. Run migration in container
+docker compose -f docker-compose.plesk.yml run --rm backend npx prisma migrate deploy
+
+# 3. Check for schema validation errors
+docker compose -f docker-compose.plesk.yml run --rm backend npx prisma validate
+
+# 4. Monitor backend for any connection errors
+docker compose -f docker-compose.plesk.yml logs backend | tail -30
+```
+
+### 6. Post-Testing Checklist (Before Merging)
+
+- [ ] No new `system.error` events logged in the last 5 minutes
+- [ ] All admin dashboard alerts are green (no "Recent system errors")
+- [ ] Backend CPU/memory stable (no memory leak signs)
+- [ ] Response times normal (check admin `/api/admin/overview` trends)
+- [ ] No `PrismaClientValidationError` or `PrismaClientKnownRequestError` in logs
+- [ ] All player-facing endpoints tested (login, profile, actions, notifications)
+- [ ] Cross-module integration tested (if change touches multiple modules)
+
+---
+
+## Docker Compose Debugging (Plesk/Production)
+
+### Restart Individual Services
+
+```bash
+# Restart backend only
+docker compose -f docker-compose.plesk.yml restart backend
+
+# Restart client (nginx)
+docker compose -f docker-compose.plesk.yml restart client
+
+# Restart admin dashboard
+docker compose -f docker-compose.plesk.yml restart admin
+
+# Full restart
+docker compose -f docker-compose.plesk.yml down && docker compose -f docker-compose.plesk.yml up -d
+```
+
+### View Real-Time Logs
+
+```bash
+# All services
+docker compose -f docker-compose.plesk.yml logs -f
+
+# Single service (e.g., backend)
+docker compose -f docker-compose.plesk.yml logs -f backend
+
+# Last 50 lines + follow
+docker compose -f docker-compose.plesk.yml logs -f --tail=50 backend
+
+# Search for specific error
+docker compose -f docker-compose.plesk.yml logs backend | grep "ERROR\|WARN"
+```
+
+### Check Resource Usage
+
+```bash
+# See container stats (CPU, memory, network)
+docker stats
+
+# Check disk space
+df -h /var/www/vhosts/themobstate.com/apps/mafia_game/
+
+# Check container size
+docker ps -a --format "table {{.Names}}\t{{.Size}}"
+```
+
+### Force Container Rebuild (after code changes)
+
+```bash
+# Rebuild and restart backend
+docker compose -f docker-compose.plesk.yml up -d --build --no-deps backend
+
+# Rebuild and restart client
+docker compose -f docker-compose.plesk.yml up -d --build --no-deps client
+
+# Full rebuild (all services)
+docker compose -f docker-compose.plesk.yml up -d --build
+```
+
+---
+
+## Prisma Connection Pool Tuning
+
+If `P2024: Too many connections` errors occur frequently:
+
+**In `.env`:**
+```env
+# Increase connection pool
+DATABASE_URL="mysql://user:pass@localhost:3306/mafia_game?connection_limit=200&pool_timeout=10"
+
+# Tune Prisma client settings
+PRISMA_CLIENT_ENGINE_TYPE=binary
+```
+
+**In `backend/src/lib/prisma.ts`:**
+```typescript
+const prisma = new PrismaClient({
+  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  // Optional: timeouts per query
+  // errorFormat: 'pretty',
+});
+```
+
+Monitor connection usage:
+```bash
+# Check active MySQL connections
+docker compose -f docker-compose.plesk.yml exec mariadb mysql -u root -p$MYSQL_ROOT_PASSWORD -e "SHOW PROCESSLIST;" | wc -l
+```
 curl -I https://yourdomain.com/images/avatars/default_1.png
 
 # Optional: check a known-missing file returns 404 (sanity check)

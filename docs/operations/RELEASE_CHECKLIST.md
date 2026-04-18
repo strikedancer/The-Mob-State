@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Admin live-test logging verbeterd en drugs productie-500 opgelost: `/drugs/productions` crasht niet meer door Dart-achtige array-calls in de incident-weergave, en `system.error` logs serialiseren nu echte `Error` details met naam, message en stack zodat System Logs in admin bruikbare foutinformatie tonen tijdens online testen
+  - Bestanden: `backend/src/services/drugService.ts`, `backend/src/services/systemLogService.ts`
 - [ ] Repo git-guard aangescherpt: de bestaande repo-local `pre-push` hook blokkeert nu directe pushes naar `main`/`master` standaard, met alleen een expliciete `ALLOW_MAIN_PUSH=1` override voor bewuste noodgevallen; workflow-documentatie stuurt nu standaard naar branch + pull request
   - Bestanden: `.githooks/pre-push`, `GIT_WORKFLOW.md`
 - [ ] Protocol-architectuur opgeschoond: `PROTOCOL_MASTER.md` is verder teruggebracht naar orchestrator-only documentatie; profielnavigatie/privacy, frontend platform/PWA-shell regels en notificatie-pipeline regels staan nu in eigen cross-cutting protocollen en de module-index verwijst daar expliciet naar
