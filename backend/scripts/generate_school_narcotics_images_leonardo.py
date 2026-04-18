@@ -23,20 +23,26 @@ from typing import Dict, List, Tuple
 import requests
 
 ROOT = Path(__file__).resolve().parents[2]
-LOCAL_ENV_PATH = ROOT / "backend" / ".env.local"
+ENV_CANDIDATES = [
+    ROOT / "backend" / ".env.local",
+    ROOT / ".env",
+    ROOT / "backend" / ".env",
+    ROOT / ".env.docker",
+]
 
 
 def _load_local_env_value(key: str) -> str:
-    if not LOCAL_ENV_PATH.exists():
-        return ""
-    for raw_line in LOCAL_ENV_PATH.read_text(encoding="utf-8").splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith("#") or "=" not in line:
+    for env_path in ENV_CANDIDATES:
+        if not env_path.exists():
             continue
-        name, value = line.split("=", 1)
-        if name.strip() != key:
-            continue
-        return value.strip().strip('"').strip("'")
+        for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            name, value = line.split("=", 1)
+            if name.strip() != key:
+                continue
+            return value.strip().strip('"').strip("'")
     return ""
 
 
