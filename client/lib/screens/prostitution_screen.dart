@@ -870,43 +870,31 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       onRefresh: _loadData,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Responsive grid: 2 columns on mobile, 3 on tablet, 6 on desktop
-          int crossAxisCount;
-          if (constraints.maxWidth >= 1200) {
-            crossAxisCount = 6; // Desktop
-          } else if (constraints.maxWidth >= 800) {
-            crossAxisCount = 3; // Tablet
-          } else {
-            crossAxisCount = 2; // Mobile
+          final useListLayout = constraints.maxWidth < 720;
+
+          if (useListLayout) {
+            return ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(16),
+              itemCount: _prostitutes.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              itemBuilder: (context, index) =>
+                  _buildProstituteCard(_prostitutes[index]),
+            );
           }
 
-          return SingleChildScrollView(
+          return GridView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    // Responsive tile height: mobile needs more height because cards
-                    // are narrower and info section must show all content without scroll.
-                    mainAxisExtent: constraints.maxWidth >= 1200
-                        ? 400  // desktop: 6 cols, wider cards
-                        : constraints.maxWidth >= 800
-                        ? 430  // tablet: 3 cols
-                        : 460, // mobile: 2 cols, tallest to fit all content
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                  ),
-                  itemCount: _prostitutes.length,
-                  itemBuilder: (context, index) =>
-                      _buildProstituteCard(_prostitutes[index]),
-                ),
-              ],
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: constraints.maxWidth >= 1200 ? 280 : 320,
+              childAspectRatio: constraints.maxWidth >= 1200 ? 0.72 : 0.62,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
             ),
+            itemCount: _prostitutes.length,
+            itemBuilder: (context, index) =>
+                _buildProstituteCard(_prostitutes[index]),
           );
         },
       ),
@@ -1155,8 +1143,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            flex: 3,
+          AspectRatio(
+            aspectRatio: 1.05,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -1236,9 +1224,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             ),
           ),
           // Info section
-          Expanded(
-            flex: 2,
-            child: Padding(
+          Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1518,7 +1504,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                   ],
                 ),
               ),
-            ),
         ],
       ),
     );
