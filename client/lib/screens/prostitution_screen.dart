@@ -479,7 +479,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.prostitutionTitle)),
       body: _jailSeconds != null && _jailSeconds! > 0
           ? JailOverlay(
               embedded: true,
@@ -494,93 +493,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 _loadData();
               },
             )
-          : Column(
-              children: [
-                if (_latestIncomingSabotage != null)
-                  _buildUnderAttackBanner(_latestIncomingSabotage!),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed:
-                          (_housingSummary == null ||
-                                  _housingSummary!.freeSlots > 0) &&
-                              (_cooldownSeconds == null ||
-                                  _cooldownSeconds == 0) &&
-                              (_jailSeconds == null || _jailSeconds == 0) &&
-                              !_isRecruiting
-                          ? _recruitProstitute
-                          : null,
-                      icon: _isRecruiting
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.person_add),
-                      label: Text(
-                        _housingSummary != null &&
-                                _housingSummary!.freeSlots <= 0
-                            ? _tr(
-                                'Koop eerst huis/appartement',
-                                'Buy a house/apartment first',
-                              )
-                            : _jailSeconds != null && _jailSeconds! > 0
-                            ? '${l10n.jail} (${_formatCooldown(_jailSeconds!)})'
-                            : _cooldownSeconds != null && _cooldownSeconds! > 0
-                            ? '${l10n.prostitutionRecruit} (${_formatCooldown(_cooldownSeconds!)})'
-                            : l10n.prostitutionRecruit,
-                      ),
-                    ),
-                  ),
-                ),
-                if (_housingSummary != null && _housingSummary!.freeSlots <= 0)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                    child: Text(
-                      _tr(
-                        'Geen vrije woonplek. Koop of upgrade een huis/appartement voordat je nieuwe hoeren kunt pimpen.',
-                        'No free housing slot. Buy or upgrade a house/apartment before recruiting more prostitutes.',
-                      ),
-                      style: TextStyle(
-                        color: Colors.orange.shade300,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 12),
-                TabBar(
-                  controller: _tabController,
-                  labelColor: theme.colorScheme.primary,
-                  unselectedLabelColor: Colors.grey,
-                  isScrollable: true,
-                  tabs: [
-                    Tab(text: l10n.prostitutionMyProstitutes),
-                    Tab(text: l10n.vipEventsTabTitle),
-                    Tab(text: l10n.prostitutionLeaderboardButton),
-                    Tab(text: l10n.prostitutionRivalryButton),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      _buildProstitutesTab(),
-                      _buildEventsTab(),
-                      const ProstitutionLeaderboardScreen(),
-                      const ProstitutionRivalryScreen(),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-    );
-  }
-
           : NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                  title: Text(l10n.prostitutionTitle),
+                  pinned: false,
+                  floating: false,
+                ),
                 if (_latestIncomingSabotage != null)
                   SliverToBoxAdapter(
                     child: _buildUnderAttackBanner(_latestIncomingSabotage!),
@@ -604,9 +523,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
+                                child: CircularProgressIndicator(strokeWidth: 2),
                               )
                             : const Icon(Icons.person_add),
                         label: Text(
@@ -647,68 +564,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 if (_housingSummary != null)
                   SliverToBoxAdapter(
                     child: Padding(
-              Widget _buildHousingSummaryBox() {
-                if (_housingSummary == null) return const SizedBox.shrink();
-                return Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.35),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.white24),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _tr('Huisvesting', 'Housing'),
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        _tr(
-                          'Elke hoer moet minstens 1 shift per ${_housingSummary!.graceDays} dagen werken om de huur te betalen.',
-                          'Each prostitute must work at least 1 shift every ${_housingSummary!.graceDays} days to cover rent.',
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: [
-                          _buildHousingChip(_tr('Plekken', 'Slots'), '${_housingSummary!.occupiedSlots}/${_housingSummary!.totalCapacity}'),
-                          _buildHousingChip(_tr('Vrij', 'Free'), '${_housingSummary!.freeSlots}'),
-                          _buildHousingChip(_tr('Woningen', 'Homes'), '${_housingSummary!.residentialProperties}'),
-                          _buildHousingChip(_tr('Upgrade gem.', 'Avg upgrade'), _housingSummary!.averageResidentialUpgrade.toStringAsFixed(1)),
-                          _buildHousingChip(_tr('Geluk bonus', 'Happiness bonus'), '+${_housingSummary!.housingHappinessBonusPercent}%'),
-                          _buildHousingChip(_tr('Weekhuur', 'Weekly rent'), '€${_housingSummary!.totalWeeklyRent}'),
-                          _buildHousingChip(_tr('Risico', 'At risk'), '${_housingSummary!.atRiskCount}'),
-                          _buildHousingChip(_tr('Veilig', 'Safe'), '${_housingSummary!.safeCount}'),
-                        ],
-                      ),
-                      if (_housingSummary!.betrayalTriggered) ...[
-                        const SizedBox(height: 10),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.red.withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.redAccent),
-                          ),
-                          child: Text(
-                            _tr(
-                              'Verraad actief: ${_housingSummary!.seizedDrugsGrams}g drugs in beslag genomen, ${_housingSummary!.nightclubLicensesRevoked} nightclub vergunning(en) kwijt.',
-                              'Betrayal triggered: ${_housingSummary!.seizedDrugsGrams}g drugs seized, ${_housingSummary!.nightclubLicensesRevoked} nightclub license(s) revoked.',
-                            ),
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                );
-              }
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                       child: _buildHousingSummaryBox(),
                     ),
                   ),
@@ -740,55 +596,222 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 ],
               ),
             ),
-                              _tr('Weekhuur', 'Weekly rent'),
-                              '€${_housingSummary!.totalWeeklyRent}',
-                            ),
-                            _buildHousingChip(
-                              _tr('Risico', 'At risk'),
-                              '${_housingSummary!.atRiskCount}',
-                            ),
-                            _buildHousingChip(
-                              _tr('Veilig', 'Safe'),
-                              '${_housingSummary!.safeCount}',
-                            ),
-                          ],
-                        ),
-                        if (_housingSummary!.betrayalTriggered) ...[
-                          const SizedBox(height: 10),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.18),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.redAccent),
-                            ),
-                            child: Text(
-                              _tr(
-                                'Verraad actief: ${_housingSummary!.seizedDrugsGrams}g drugs in beslag genomen, ${_housingSummary!.nightclubLicensesRevoked} nightclub vergunning(en) kwijt.',
-                                'Betrayal triggered: ${_housingSummary!.seizedDrugsGrams}g drugs seized, ${_housingSummary!.nightclubLicensesRevoked} nightclub license(s) revoked.',
-                              ),
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                ],
+    );
+  }
+
+  Widget _buildProstitutesTab() {
+    if (_isLoading) return const Center(child: CircularProgressIndicator());
+
+    if (_prostitutes.isEmpty) {
+      return Center(
+        child: Text(AppLocalizations.of(context)!.prostitutionNoProstitutes),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Responsive grid: 2 columns on mobile, 3 on tablet, 6 on desktop
+          int crossAxisCount;
+          if (constraints.maxWidth >= 1200) {
+            crossAxisCount = 6; // Desktop
+          } else if (constraints.maxWidth >= 800) {
+            crossAxisCount = 3; // Tablet
+          } else {
+            crossAxisCount = 2; // Mobile
+          }
+
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 GridView.builder(
                   shrinkWrap: true,
-                  return SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    // Responsive tile height: mobile needs more height because cards
+                    // are narrower and info section must show all content without scroll.
+                    mainAxisExtent: constraints.maxWidth >= 1200
+                        ? 400  // desktop: 6 cols, wider cards
+                        : constraints.maxWidth >= 800
+                        ? 430  // tablet: 3 cols
+                        : 460, // mobile: 2 cols, tallest to fit all content
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemCount: _prostitutes.length,
+                  itemBuilder: (context, index) =>
+                      _buildProstituteCard(_prostitutes[index]),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildHousingSummaryBox() {
+    if (_housingSummary == null) return const SizedBox.shrink();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.35),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _tr('Huisvesting', 'Housing'),
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _tr(
+              'Elke hoer moet minstens 1 shift per ${_housingSummary!.graceDays} dagen werken om de huur te betalen.',
+              'Each prostitute must work at least 1 shift every ${_housingSummary!.graceDays} days to cover rent.',
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _buildHousingChip(
+                _tr('Plekken', 'Slots'),
+                '${_housingSummary!.occupiedSlots}/${_housingSummary!.totalCapacity}',
+              ),
+              _buildHousingChip(_tr('Vrij', 'Free'), '${_housingSummary!.freeSlots}'),
+              _buildHousingChip(
+                _tr('Woningen', 'Homes'),
+                '${_housingSummary!.residentialProperties}',
+              ),
+              _buildHousingChip(
+                _tr('Upgrade gem.', 'Avg upgrade'),
+                _housingSummary!.averageResidentialUpgrade.toStringAsFixed(1),
+              ),
+              _buildHousingChip(
+                _tr('Geluk bonus', 'Happiness bonus'),
+                '+${_housingSummary!.housingHappinessBonusPercent}%',
+              ),
+              _buildHousingChip(
+                _tr('Weekhuur', 'Weekly rent'),
+                '€${_housingSummary!.totalWeeklyRent}',
+              ),
+              _buildHousingChip(
+                _tr('Risico', 'At risk'),
+                '${_housingSummary!.atRiskCount}',
+              ),
+              _buildHousingChip(_tr('Veilig', 'Safe'), '${_housingSummary!.safeCount}'),
+            ],
+          ),
+          if (_housingSummary!.betrayalTriggered) ...[
+            const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.18),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.redAccent),
+              ),
+              child: Text(
+                _tr(
+                  'Verraad actief: ${_housingSummary!.seizedDrugsGrams}g drugs in beslag genomen, ${_housingSummary!.nightclubLicensesRevoked} nightclub vergunning(en) kwijt.',
+                  'Betrayal triggered: ${_housingSummary!.seizedDrugsGrams}g drugs seized, ${_housingSummary!.nightclubLicensesRevoked} nightclub license(s) revoked.',
+                ),
+                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHousingChip(String label, String value) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 11, color: Colors.white70),
+          ),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w700)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProstituteCard(Prostitute prostitute) {
+    final l10n = AppLocalizations.of(context)!;
+    final isBusted = prostitute.isCurrentlyBusted;
+    final isVip = prostitute.isVipProstitute;
+    final String portraitPath = _getPortraitPath(prostitute.variant);
+    final currentLevelXp = prostitute.experience % 100;
+    final happinessLabel = _tr(
+      prostitute.happinessLabel == 'ecstatic'
+          ? 'Extatisch'
+          : prostitute.happinessLabel == 'happy'
+          ? 'Blij'
+          : prostitute.happinessLabel == 'stable'
+          ? 'Stabiel'
+          : prostitute.happinessLabel == 'stressed'
+          ? 'Gestrest'
+          : 'Miserabel',
+      prostitute.happinessLabel,
+    );
+    final housingRemaining = prostitute.housingTimeRemaining;
+    final housingLabel = prostitute.isHousingExpired
+        ? _tr('Verlopen', 'Expired')
+        : housingRemaining == null
+        ? '-'
+        : housingRemaining.inDays >= 1
+        ? _tr(
+            '${housingRemaining.inDays}d over',
+            '${housingRemaining.inDays}d left',
+          )
+        : _tr('minder dan 1 dag', 'less than 1 day');
+
+    // Calculate hourly earnings
+    final base = prostitute.isInRedLight
+        ? (prostitute.redLightRoom != null
+              ? _getTierGrossEarnings(prostitute.redLightRoom!.tier)
+              : 40.0)
+        : 40.0;
+    final levelBonus = base * (prostitute.level - 1) * 0.05;
+    final vipBonus = isVip ? base * 0.5 : 0;
+    final hourlyEarnings = base + levelBonus + vipBonus;
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            flex: 3,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                // Portrait image
+                Image.asset(
+                  portraitPath,
+                  fit: BoxFit.contain,
                   alignment: Alignment.bottomCenter,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(

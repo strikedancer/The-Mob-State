@@ -4,7 +4,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 
 ## Status
 - Release mode: **Batched deploy**
-- Laatste update: 2026-04-15
+- Laatste update: 2026-04-18
 
 ## Pending Changes (nog NIET live)
 
@@ -29,6 +29,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Prostitutie mobile scrollflow hersteld: de schermtitel (`Prostitutie`), sabotage-banner, werven-knop, housing waarschuwing, huisvestingsoverzicht en tabbladen staan nu in een meescrollende `NestedScrollView` header (niet sticky), zodat op mobiel/tablet weer 1 logische verticale flow ontstaat terwijl prostituee-cards zelf niet intern scrollen
+  - Bestanden: `client/lib/screens/prostitution_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Jail overlay borgknop en layout gehard: de gedeelde gevangenis-overlay haalt borgbedragen nu uit `/player/jail-status`, valt terug op strafduur-gebaseerde prijs als backup, verbergt de betaaloptie niet meer onterecht wanneer `wantedLevel` leeg of al gedaald is, en gebruikt nu een responsieve mobiele/tablet/desktop-layout met scroll-safe onderpaneel zodat de borgknop niet buiten beeld valt
   - Bestanden: `client/lib/widgets/jail_screen.dart`, `client/lib/screens/travel_screen.dart`, `client/lib/data/help_content.dart`
 - [ ] Timeout overlay responsief gemaakt: de gedeelde cooldown-overlay gebruikt nu dezelfde mobiele/tablet/desktop guardrails met veilige kaartbreedte, stapelende header op smalle schermen, scroll-safe ondercontent en web-veilige asset fallback zodat timers en resultaatmeldingen niet buiten beeld of afgekapt raken in Crimes, Jobs, Travel, School, Garage en Marina
