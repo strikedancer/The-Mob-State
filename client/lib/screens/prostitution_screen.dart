@@ -706,8 +706,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
-                    // Fixed tile height prevents card overflow on wide desktop layouts.
-                    mainAxisExtent: 380,
+                    // Responsive tile height: mobile needs more height because cards
+                    // are narrower and info section must show all content without scroll.
+                    mainAxisExtent: constraints.maxWidth >= 1200
+                        ? 400  // desktop: 6 cols, wider cards
+                        : constraints.maxWidth >= 800
+                        ? 430  // tablet: 3 cols
+                        : 460, // mobile: 2 cols, tallest to fit all content
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
                   ),
@@ -790,7 +795,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Stack(
               fit: StackFit.expand,
               children: [
