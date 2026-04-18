@@ -108,6 +108,7 @@ Extra harde eis:
 - Laat 1 falende API-call niet het hele scherm leeg maken.
 - Gebruik fallbacks (`[]`, `{}`, `null`) of aparte try/catch per kritieke sectie.
 - Verifieer dat kerninformatie zichtbaar blijft (bijv. actieve producties, eigendom, timers).
+- Admin diagnose- en logschermen die tijdens live QA gebruikt worden, moeten korte tijdvensters (zoals 1 uur) en gerichte clear-acties voor de huidige filterselectie ondersteunen zodat regressies zonder ruis van oudere testlogs beoordeeld kunnen worden.
 
 Implementatievoorkeur:
 - Gebruik partial rendering boven "alles of niets" loading.

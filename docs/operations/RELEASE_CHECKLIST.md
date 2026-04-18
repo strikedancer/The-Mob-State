@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Admin system logs uitgebreid voor live QA: het admin-scherm ondersteunt nu ook een `1 uur` filter en een gerichte wis-actie voor de huidige filterselectie, zodat testers oude systeemfouten snel kunnen opruimen zonder breder historisch logmateriaal kwijt te raken
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Admin live-test logging verbeterd en drugs productie-500 opgelost: `/drugs/productions` crasht niet meer door Dart-achtige array-calls in de incident-weergave, en `system.error` logs serialiseren nu echte `Error` details met naam, message en stack zodat System Logs in admin bruikbare foutinformatie tonen tijdens online testen
   - Bestanden: `backend/src/services/drugService.ts`, `backend/src/services/systemLogService.ts`
 - [ ] Repo git-guard aangescherpt: de bestaande repo-local `pre-push` hook blokkeert nu directe pushes naar `main`/`master` standaard, met alleen een expliciete `ALLOW_MAIN_PUSH=1` override voor bewuste noodgevallen; workflow-documentatie stuurt nu standaard naar branch + pull request

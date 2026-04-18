@@ -25,9 +25,19 @@ const router = express.Router();
 
 type ActivitySort = 'date_desc' | 'date_asc' | 'type_asc' | 'type_desc';
 type ActivityDateRange = '24h' | '7d' | '30d' | 'all';
+type SystemLogDateRange = '1h' | '24h' | '7d' | '30d' | 'all';
 
 const getRangeStartForActivities = (range: ActivityDateRange): Date | null => {
   const now = Date.now();
+  if (range === '24h') return new Date(now - 24 * 60 * 60 * 1000);
+  if (range === '7d') return new Date(now - 7 * 24 * 60 * 60 * 1000);
+  if (range === '30d') return new Date(now - 30 * 24 * 60 * 60 * 1000);
+  return null;
+};
+
+const getRangeStartForSystemLogs = (range: SystemLogDateRange): Date | null => {
+  const now = Date.now();
+  if (range === '1h') return new Date(now - 60 * 60 * 1000);
   if (range === '24h') return new Date(now - 24 * 60 * 60 * 1000);
   if (range === '7d') return new Date(now - 7 * 24 * 60 * 60 * 1000);
   if (range === '30d') return new Date(now - 30 * 24 * 60 * 60 * 1000);
@@ -68,6 +78,67 @@ const parseWorldEventParams = (params: unknown): Record<string, unknown> => {
     return params as Record<string, unknown>;
   }
   return {};
+};
+
+const systemLogFilterSchema = z.object({
+  dateRange: z.enum(['1h', '24h', '7d', '30d', 'all']).optional().default('7d'),
+  source: z.string().trim().optional().default('all'),
+  search: z.string().trim().optional().default(''),
+});
+
+const getFilteredSystemLogs = async (filters: {
+  dateRange: SystemLogDateRange;
+  source: string;
+  search: string;
+}) => {
+  const rangeStart = getRangeStartForSystemLogs(filters.dateRange);
+
+  const logs = await prisma.worldEvent.findMany({
+    where: {
+      eventKey: 'system.error',
+      ...(rangeStart ? { createdAt: { gte: rangeStart } } : {}),
+    },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      id: true,
+      eventKey: true,
+      params: true,
+      createdAt: true,
+    },
+  });
+
+  const normalizedLogs = logs.map((entry) => ({
+    ...entry,
+    params: parseWorldEventParams(entry.params),
+  }));
+
+  const sources = Array.from(
+    new Set(
+      normalizedLogs
+        .map((entry) => String(entry.params.source || '').trim())
+        .filter((source) => source.length > 0),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
+
+  const searchNeedle = filters.search.trim().toLowerCase();
+
+  const filteredLogs = normalizedLogs.filter((entry) => {
+    const source = String(entry.params.source || '').trim();
+    const message = String(entry.params.message || '').toLowerCase();
+    const details = String(entry.params.details || '').toLowerCase();
+
+    if (filters.source !== 'all' && source !== filters.source) {
+      return false;
+    }
+
+    if (!searchNeedle) {
+      return true;
+    }
+
+    return message.includes(searchNeedle) || details.includes(searchNeedle) || source.toLowerCase().includes(searchNeedle);
+  });
+
+  return { filteredLogs, sources };
 };
 
 const getActivityMoneyAmount = (details: unknown): number => {
@@ -2120,45 +2191,67 @@ router.get('/system-logs', async (req, res) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = Math.min(200, parseInt(req.query.limit as string, 10) || 50);
     const skip = (page - 1) * limit;
-
-    const [logs, total] = await Promise.all([
-      prisma.worldEvent.findMany({
-        where: {
-          eventKey: 'system.error',
-        },
-        skip,
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-        select: {
-          id: true,
-          eventKey: true,
-          params: true,
-          createdAt: true,
-        },
-      }),
-      prisma.worldEvent.count({
-        where: {
-          eventKey: 'system.error',
-        },
-      }),
-    ]);
-
-    const normalizedLogs = logs.map((entry) => ({
-      ...entry,
-      params: parseWorldEventParams(entry.params),
-    }));
+    const filters = systemLogFilterSchema.parse(req.query);
+    const { filteredLogs, sources } = await getFilteredSystemLogs(filters);
+    const pagedLogs = filteredLogs.slice(skip, skip + limit);
 
     return res.json({
-      logs: normalizedLogs,
-      total,
+      logs: pagedLogs,
+      total: filteredLogs.length,
       page,
-      totalPages: Math.max(1, Math.ceil(total / limit)),
+      totalPages: Math.max(1, Math.ceil(filteredLogs.length / limit)),
+      sources,
     });
   } catch (error) {
     console.error('Admin get system logs error:', error);
     return res.status(500).json({ error: 'Failed to fetch system logs' });
   }
 });
+
+router.delete(
+  '/system-logs',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  auditLog({ action: 'CLEAR_SYSTEM_LOGS', targetType: 'SystemLog' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const filters = systemLogFilterSchema.parse(req.body ?? {});
+      const { filteredLogs } = await getFilteredSystemLogs(filters);
+      const logIds = filteredLogs.map((entry) => entry.id);
+
+      if (logIds.length === 0) {
+        res.locals.auditLogDetails = {
+          deletedCount: 0,
+          dateRange: filters.dateRange,
+          source: filters.source,
+          search: filters.search,
+        };
+        return res.json({ message: 'No system logs matched the selected filters', deletedCount: 0 });
+      }
+
+      const result = await prisma.worldEvent.deleteMany({
+        where: {
+          id: { in: logIds },
+        },
+      });
+
+      res.locals.auditLogDetails = {
+        deletedCount: result.count,
+        dateRange: filters.dateRange,
+        source: filters.source,
+        search: filters.search,
+      };
+
+      return res.json({ message: 'System logs cleared', deletedCount: result.count });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid system log filters', details: error.errors });
+      }
+
+      console.error('Admin clear system logs error:', error);
+      return res.status(500).json({ error: 'Failed to clear system logs' });
+    }
+  },
+);
 
 /**
  * GET /api/admin/admins

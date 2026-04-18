@@ -7,6 +7,7 @@ type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' |
 type Language = 'nl' | 'en'
 type PlayerDetailTab = 'overview' | 'manage' | 'financial'
 type DateRangeFilter = '24h' | '7d' | '30d' | 'all'
+type SystemLogDateRange = '1h' | '24h' | '7d' | '30d' | 'all'
 const RECENT_ACTIONS_PAGE_SIZE = 10
 const RECENT_ACTIONS_PREFS_KEY = 'admin_recent_actions_prefs_v1'
 const RECENT_ACTIONS_VIEWS_KEY = 'admin_recent_actions_views_v1'
@@ -741,9 +742,13 @@ function App() {
   const [systemLogs, setSystemLogs] = useState<SystemLogEntry[]>([])
   const [systemLogPage, setSystemLogPage] = useState(1)
   const [systemLogTotalPages, setSystemLogTotalPages] = useState(1)
-  const [systemLogDateFilter, setSystemLogDateFilter] = useState<DateRangeFilter>('7d')
+  const [systemLogTotalCount, setSystemLogTotalCount] = useState(0)
+  const [systemLogDateFilter, setSystemLogDateFilter] = useState<SystemLogDateRange>('7d')
+  const [systemLogSources, setSystemLogSources] = useState<string[]>([])
   const [systemLogSourceFilter, setSystemLogSourceFilter] = useState('all')
+  const [systemLogSearchInput, setSystemLogSearchInput] = useState('')
   const [systemLogSearchFilter, setSystemLogSearchFilter] = useState('')
+  const [isClearingSystemLogs, setIsClearingSystemLogs] = useState(false)
 
   const [admins, setAdmins] = useState<AdminAccount[]>([])
   const [adminsLoading, setAdminsLoading] = useState(false)
@@ -897,7 +902,16 @@ function App() {
     if (isAuthenticated && activeTab === 'system-logs') {
       loadSystemLogs()
     }
-  }, [isAuthenticated, activeTab, systemLogPage])
+  }, [isAuthenticated, activeTab, systemLogPage, systemLogDateFilter, systemLogSourceFilter, systemLogSearchFilter])
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      setSystemLogSearchFilter(systemLogSearchInput.trim())
+      setSystemLogPage(1)
+    }, PLAYER_SEARCH_DEBOUNCE_MS)
+
+    return () => window.clearTimeout(timeout)
+  }, [systemLogSearchInput])
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
@@ -1591,14 +1605,55 @@ function App() {
 
   const loadSystemLogs = async () => {
     try {
-      const data = await adminService.getSystemLogs(systemLogPage, 50)
+      const data = await adminService.getSystemLogs(systemLogPage, 50, {
+        dateRange: systemLogDateFilter,
+        source: systemLogSourceFilter,
+        search: systemLogSearchFilter,
+      })
       setSystemLogs(data.logs || [])
       setSystemLogTotalPages(data.totalPages || 1)
+      setSystemLogTotalCount(data.total || 0)
+      setSystemLogSources(data.sources || [])
       setApiError('')
     } catch (err) {
       if (handleUnauthorized(err)) return
       console.error('Failed to load system logs:', err)
       setApiError(l('Systeemlogs konden niet geladen worden.', 'System logs could not be loaded.'))
+    }
+  }
+
+  const handleClearSystemLogs = async () => {
+    const confirmed = window.confirm(
+      l(
+        'Weet je zeker dat je de systeemlogs wilt wissen voor de huidige filterselectie?',
+        'Are you sure you want to clear the system logs for the current filter selection?'
+      )
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    try {
+      setIsClearingSystemLogs(true)
+      const data = await adminService.clearSystemLogs({
+        dateRange: systemLogDateFilter,
+        source: systemLogSourceFilter,
+        search: systemLogSearchFilter,
+      })
+
+      if (systemLogPage !== 1) {
+        setSystemLogPage(1)
+      } else {
+        await loadSystemLogs()
+      }
+
+      alert(`${l('Systeemlogs gewist', 'System logs cleared')}: ${data.deletedCount ?? 0}`)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Systeemlogs wissen mislukt', 'Failed to clear system logs')}: ${(err as Error).message}`)
+    } finally {
+      setIsClearingSystemLogs(false)
     }
   }
 
@@ -2752,48 +2807,7 @@ function App() {
     }
   }
 
-  const systemLogSources = Array.from(
-    new Set(
-      systemLogs
-        .map((log) => (log.params?.source || '').trim())
-        .filter((source) => source.length > 0)
-    )
-  ).sort((a, b) => a.localeCompare(b))
-
-  const filteredSystemLogs = systemLogs.filter((log) => {
-    const source = (log.params?.source || '').trim()
-    const message = (log.params?.message || '').toLowerCase()
-    const details = (log.params?.details || '').toLowerCase()
-    const search = systemLogSearchFilter.trim().toLowerCase()
-
-    const createdAt = new Date(log.createdAt)
-    const now = Date.now()
-    const minTimestamp =
-      systemLogDateFilter === '24h'
-        ? now - 24 * 60 * 60 * 1000
-        : systemLogDateFilter === '7d'
-          ? now - 7 * 24 * 60 * 60 * 1000
-          : systemLogDateFilter === '30d'
-            ? now - 30 * 24 * 60 * 60 * 1000
-            : null
-    const byDate =
-      minTimestamp === null ||
-      (!Number.isNaN(createdAt.getTime()) && createdAt.getTime() >= minTimestamp)
-
-    if (!byDate) {
-      return false
-    }
-
-    if (systemLogSourceFilter !== 'all' && source !== systemLogSourceFilter) {
-      return false
-    }
-
-    if (!search) {
-      return true
-    }
-
-    return message.includes(search) || details.includes(search) || source.toLowerCase().includes(search)
-  })
+  const filteredSystemLogs = systemLogs
 
   const getRangeStart = (range: DateRangeFilter): Date | null => {
     const now = Date.now()
@@ -5501,9 +5515,13 @@ function App() {
             <div className="search-bar" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr auto', gap: 10, marginBottom: 12 }}>
               <select
                 value={systemLogDateFilter}
-                onChange={(e) => setSystemLogDateFilter(e.target.value as DateRangeFilter)}
+                onChange={(e) => {
+                  setSystemLogDateFilter(e.target.value as SystemLogDateRange)
+                  setSystemLogPage(1)
+                }}
                 className="search-input"
               >
+                <option value="1h">{l('Laatste 1 uur', 'Last 1 hour')}</option>
                 <option value="24h">{l('Laatste 24 uur', 'Last 24 hours')}</option>
                 <option value="7d">{l('Laatste 7 dagen', 'Last 7 days')}</option>
                 <option value="30d">{l('Laatste 30 dagen', 'Last 30 days')}</option>
@@ -5511,7 +5529,10 @@ function App() {
               </select>
               <select
                 value={systemLogSourceFilter}
-                onChange={(e) => setSystemLogSourceFilter(e.target.value)}
+                onChange={(e) => {
+                  setSystemLogSourceFilter(e.target.value)
+                  setSystemLogPage(1)
+                }}
                 className="search-input"
               >
                 <option value="all">{l('Alle bronnen', 'All sources')}</option>
@@ -5523,12 +5544,23 @@ function App() {
                 type="text"
                 className="search-input"
                 placeholder={l('Zoek in melding of details...', 'Search in message or details...')}
-                value={systemLogSearchFilter}
-                onChange={(e) => setSystemLogSearchFilter(e.target.value)}
+                value={systemLogSearchInput}
+                onChange={(e) => setSystemLogSearchInput(e.target.value)}
               />
-              <button type="button" className="btn-small" onClick={loadSystemLogs}>
-                {t.refresh}
-              </button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button type="button" className="btn-small" onClick={loadSystemLogs}>
+                  {t.refresh}
+                </button>
+                <button
+                  type="button"
+                  className="btn-small"
+                  onClick={handleClearSystemLogs}
+                  disabled={isClearingSystemLogs || systemLogTotalCount === 0}
+                  style={{ whiteSpace: 'nowrap' }}
+                >
+                  {isClearingSystemLogs ? l('Wissen...', 'Clearing...') : l('Wis logs', 'Clear logs')}
+                </button>
+              </div>
             </div>
             <div className="table-container">
               <table className="data-table">

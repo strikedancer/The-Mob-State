@@ -426,6 +426,12 @@ export interface SystemLogEntry {
   createdAt: string;
 }
 
+export interface SystemLogFilters {
+  dateRange?: '1h' | '24h' | '7d' | '30d' | 'all';
+  source?: string;
+  search?: string;
+}
+
 export interface AdminAccount {
   id: number;
   username: string;
@@ -707,15 +713,42 @@ export const adminService = {
     return response.json();
   },
 
-  async getSystemLogs(page = 1, limit = 50) {
+  async getSystemLogs(page = 1, limit = 50, filters: SystemLogFilters = {}) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/system-logs?page=${page}&limit=${limit}`, {
+    const query = new URLSearchParams({
+      page: String(page),
+      limit: String(limit),
+      dateRange: filters.dateRange || '7d',
+      source: filters.source || 'all',
+      search: filters.search || '',
+    });
+    const response = await fetch(`${API_URL}/admin/system-logs?${query.toString()}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
     });
 
     await ensureOk(response, 'Failed to fetch system logs');
+
+    return response.json();
+  },
+
+  async clearSystemLogs(filters: SystemLogFilters = {}) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/system-logs`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        dateRange: filters.dateRange || '7d',
+        source: filters.source || 'all',
+        search: filters.search || '',
+      }),
+    });
+
+    await ensureOk(response, 'Failed to clear system logs');
 
     return response.json();
   },
