@@ -25,7 +25,6 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/content ./content
 COPY --from=builder /app/data ./data
-COPY .env ./
 
 EXPOSE 3000
 
