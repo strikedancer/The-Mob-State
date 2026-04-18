@@ -35,4 +35,19 @@ class AppConfig {
 
     return '';
   }
+
+  static String get drugFacilityImageBaseUrl {
+    const raw = String.fromEnvironment('DRUG_FACILITY_IMAGE_BASE_URL');
+    final trimmed = raw.trim();
+    if (trimmed.isNotEmpty) {
+      return trimmed;
+    }
+
+    if (kIsWeb) {
+      final base = Uri.base;
+      return '${base.scheme}://${base.host}/game-assets/facilities';
+    }
+
+    return '';
+  }
 }

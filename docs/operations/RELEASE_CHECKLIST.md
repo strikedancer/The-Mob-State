@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Drugs faciliteiten apparatuur-afbeeldingen voorbereid voor Leonardo + externe hosting: apparatuur-rijen renderen nu image-first via `DRUG_FACILITY_IMAGE_BASE_URL` (met icon-fallback), inclusief one-shot generator-script en upload/runbook met 15 vaste bestandsnamen onder `/game-assets/facilities/equipment`
+  - Bestanden: `client/lib/config/app_config.dart`, `client/lib/screens/drug_facility_screen.dart`, `backend/scripts/generate_drug_facility_equipment_images_leonardo.py`, `docs/operations/DRUG_FACILITY_EQUIPMENT_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Drugs productie -> faciliteiten doorlink op web hersteld: de knop in Productie toont niet langer alleen een oranje waarschuwing, maar schakelt in de embedded Drugs Omgeving direct door naar de Faciliteiten-subview; buiten embedded context blijft normale schermnavigatie actief
   - Bestanden: `client/lib/screens/drug_production_screen.dart`, `client/lib/screens/drug_environment_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Drug Faciliteiten apparatuur-upgrades visueel hersteld: backend `equipmentUpgrades.icon` waarden (zoals `lightbulb`, `soil`, `thermostat`, `biotech`) renderen nu als echte Material-icons i.p.v. platte tekst in de avatar, zodat upgrade-rijen weer direct herkenbaar zijn en niet meer als gebroken "geen image" ogen

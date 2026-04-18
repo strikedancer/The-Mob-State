@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../config/app_config.dart';
 import '../models/drug_models.dart';
 import '../services/drug_service.dart';
 import '../utils/top_right_notification.dart';
@@ -166,6 +167,50 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
       default:
         return Icons.tune;
     }
+  }
+
+  String _equipmentImageFileName(String facilityType, String upgradeId) {
+    return '${facilityType}_$upgradeId.png';
+  }
+
+  String? _equipmentExternalImageUrl(String facilityType, String upgradeId) {
+    final base = AppConfig.drugFacilityImageBaseUrl;
+    if (base.isEmpty) {
+      return null;
+    }
+
+    var normalizedBase = base;
+    if (normalizedBase.endsWith('/')) {
+      normalizedBase = normalizedBase.substring(0, normalizedBase.length - 1);
+    }
+
+    return '$normalizedBase/equipment/${_equipmentImageFileName(facilityType, upgradeId)}';
+  }
+
+  Widget _buildEquipmentAvatar(String facilityType, String upgradeId, String iconName) {
+    final imageUrl = _equipmentExternalImageUrl(facilityType, upgradeId);
+
+    Widget iconFallback() {
+      return Icon(
+        _equipmentIconData(iconName),
+        color: Colors.white,
+        size: 20,
+      );
+    }
+
+    if (imageUrl == null) {
+      return iconFallback();
+    }
+
+    return ClipOval(
+      child: Image.network(
+        imageUrl,
+        width: 36,
+        height: 36,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) => iconFallback(),
+      ),
+    );
   }
 
   Color _facilityAccent(String facilityType) {
@@ -702,10 +747,10 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                   contentPadding: EdgeInsets.zero,
                   leading: CircleAvatar(
                     backgroundColor: Colors.white10,
-                    child: Icon(
-                      _equipmentIconData(iconName),
-                      color: Colors.white,
-                      size: 20,
+                    child: _buildEquipmentAvatar(
+                      facilityType,
+                      upgradeId,
+                      iconName,
                     ),
                   ),
                   title: Text((upgrade['name'] ?? upgradeId).toString()),
