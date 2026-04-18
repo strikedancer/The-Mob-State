@@ -874,11 +874,11 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             flex: 2,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
                     Text(
                       prostitute.name,
                       style: const TextStyle(
@@ -1081,7 +1081,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
