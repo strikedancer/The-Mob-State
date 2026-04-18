@@ -191,27 +191,58 @@ def _extract_status_and_url(payload) -> Tuple[str | None, str | None]:
 
 
 def _generate_one(prompt: str, model: str) -> str:
-    payload = {
-        "model": model,
-        "parameters": {
-            "width": 1536,
-            "height": 864,
-            "prompt": prompt,
-            "negative_prompt": NEGATIVE_PROMPT,
-            "quantity": 1,
-            "prompt_enhance": "OFF",
+    payload_variants = [
+        {
+            "model": model,
+            "parameters": {
+                "width": 1536,
+                "height": 864,
+                "prompt": prompt,
+                "negative_prompt": NEGATIVE_PROMPT,
+                "quantity": 1,
+                "prompt_enhance": "OFF",
+            },
+            "public": False,
         },
-        "public": False,
-    }
+        {
+            "model": model,
+            "parameters": {
+                "width": 1024,
+                "height": 1024,
+                "prompt": prompt,
+                "negative_prompt": NEGATIVE_PROMPT,
+                "quantity": 1,
+            },
+            "public": False,
+        },
+    ]
 
-    create_resp = requests.post(GENERATE_URL_V2, headers=_headers(), json=payload, timeout=90)
-    create_resp.raise_for_status()
-    create_payload = create_resp.json()
-    generation_id = _extract_generation_id(create_payload)
+    last_payload = None
+    last_error: Exception | None = None
+    generation_id = None
+
+    for variant in payload_variants:
+        try:
+            create_resp = requests.post(
+                GENERATE_URL_V2,
+                headers=_headers(),
+                json=variant,
+                timeout=90,
+            )
+            create_resp.raise_for_status()
+            create_payload = create_resp.json()
+            generation_id = _extract_generation_id(create_payload)
+            if generation_id:
+                break
+            last_payload = create_payload
+            last_error = RuntimeError("No generation ID returned")
+        except Exception as exc:  # noqa: BLE001
+            last_error = exc
+
     if not generation_id:
-        snippet = str(create_payload)
-        if len(snippet) > 1200:
-            snippet = snippet[:1200] + "..."
+        snippet = str(last_payload if last_payload is not None else last_error)
+        if len(snippet) > 1600:
+            snippet = snippet[:1600] + "..."
         raise RuntimeError(f"No generation ID returned. API payload: {snippet}")
 
     for _ in range(240):
