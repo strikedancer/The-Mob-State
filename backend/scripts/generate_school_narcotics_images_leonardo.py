@@ -147,12 +147,20 @@ def _extract_generation_id(payload) -> str | None:
         return payload["sdGenerationJob"]["generationId"]
     if payload.get("generationId"):
         return payload["generationId"]
+    if payload.get("id"):
+        return str(payload["id"])
+    if payload.get("generation_id"):
+        return str(payload["generation_id"])
+    if payload.get("jobId"):
+        return str(payload["jobId"])
     generate = payload.get("generate", {})
     if isinstance(generate, dict) and generate.get("generationId"):
         return generate["generationId"]
     data = payload.get("data", {})
     if isinstance(data, dict) and data.get("generationId"):
         return data["generationId"]
+    if isinstance(data, dict) and data.get("id"):
+        return str(data["id"])
     return None
 
 
@@ -198,9 +206,13 @@ def _generate_one(prompt: str, model: str) -> str:
 
     create_resp = requests.post(GENERATE_URL_V2, headers=_headers(), json=payload, timeout=90)
     create_resp.raise_for_status()
-    generation_id = _extract_generation_id(create_resp.json())
+    create_payload = create_resp.json()
+    generation_id = _extract_generation_id(create_payload)
     if not generation_id:
-        raise RuntimeError("No generation ID returned")
+        snippet = str(create_payload)
+        if len(snippet) > 1200:
+            snippet = snippet[:1200] + "..."
+        raise RuntimeError(f"No generation ID returned. API payload: {snippet}")
 
     for _ in range(240):
         poll_resp = requests.get(f"{STATUS_URL_V1}/{generation_id}", headers=_headers(), timeout=60)
