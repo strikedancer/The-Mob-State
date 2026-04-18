@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
 import '../models/drug_models.dart';
 import '../services/drug_service.dart';
@@ -11,7 +10,12 @@ import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 
 class DrugProductionScreen extends StatefulWidget {
-  const DrugProductionScreen({super.key});
+  final VoidCallback? onOpenFacilitiesRequested;
+
+  const DrugProductionScreen({
+    super.key,
+    this.onOpenFacilitiesRequested,
+  });
 
   @override
   State<DrugProductionScreen> createState() => _DrugProductionScreenState();
@@ -124,20 +128,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   }
 
   Future<void> _openFacilities() async {
-    if (kIsWeb) {
-      if (!mounted) return;
-      showTopRightFromSnackBar(
-        context,
-        SnackBar(
-          content: Text(
-            _tr(
-              'Gebruik de terugknop en open daarna Faciliteiten in Drugs Omgeving.',
-              'Use the back button and then open Facilities in Drug Environment.',
-            ),
-          ),
-          backgroundColor: Colors.orange,
-        ),
-      );
+    if (widget.onOpenFacilitiesRequested != null) {
+      widget.onOpenFacilitiesRequested!.call();
       return;
     }
 

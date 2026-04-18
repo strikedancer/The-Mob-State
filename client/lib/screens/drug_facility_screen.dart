@@ -128,6 +128,46 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     }
   }
 
+  IconData _equipmentIconData(String rawIcon) {
+    switch (rawIcon) {
+      case 'lightbulb':
+        return Icons.lightbulb_outline;
+      case 'soil':
+      case 'compost':
+        return Icons.compost;
+      case 'thermostat':
+        return Icons.thermostat;
+      case 'biotech':
+        return Icons.biotech;
+      case 'medication':
+        return Icons.medication_outlined;
+      case 'science':
+        return Icons.science_outlined;
+      case 'water_drop':
+        return Icons.water_drop_outlined;
+      case 'inventory_2':
+        return Icons.inventory_2_outlined;
+      case 'speed':
+        return Icons.speed;
+      case 'security':
+        return Icons.security;
+      case 'route':
+        return Icons.route;
+      case 'currency_bitcoin':
+        return Icons.currency_bitcoin;
+      case 'public':
+        return Icons.public;
+      case 'greenhouse':
+        return Icons.yard_outlined;
+      case 'eco':
+        return Icons.eco_outlined;
+      case 'local_fire_department':
+        return Icons.local_fire_department;
+      default:
+        return Icons.tune;
+    }
+  }
+
   Color _facilityAccent(String facilityType) {
     switch (facilityType) {
       case 'greenhouse':
@@ -649,6 +689,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
               ...equipment.map((rawUpgrade) {
                 final upgrade = rawUpgrade;
                 final upgradeId = (upgrade['id'] ?? '').toString();
+                final iconName = (upgrade['icon'] ?? '').toString();
                 final current = owned.upgrades[upgradeId] ?? 1;
                 final levels =
                     (upgrade['levels'] as List<dynamic>? ?? const []);
@@ -661,7 +702,11 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                   contentPadding: EdgeInsets.zero,
                   leading: CircleAvatar(
                     backgroundColor: Colors.white10,
-                    child: Text((upgrade['icon'] ?? '⚙️').toString()),
+                    child: Icon(
+                      _equipmentIconData(iconName),
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                   title: Text((upgrade['name'] ?? upgradeId).toString()),
                   subtitle: Text('${_tr('Level', 'Level')} $current'),

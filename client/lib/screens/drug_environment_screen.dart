@@ -170,7 +170,11 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
           title: Text(_webSubviewTitle(_webSubview)),
         ),
         body: switch (_webSubview) {
-          _DrugWebSubview.production => const DrugProductionScreen(),
+          _DrugWebSubview.production => DrugProductionScreen(
+            onOpenFacilitiesRequested: () {
+              setState(() => _webSubview = _DrugWebSubview.facilities);
+            },
+          ),
           _DrugWebSubview.facilities =>
             const DrugFacilityScreen(showAppBar: false),
           _DrugWebSubview.inventory => const DrugInventoryScreen(),
@@ -507,7 +511,14 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                             duration: const Duration(milliseconds: 520),
                             onTap: () => _openScreen(
                               context,
-                              const DrugProductionScreen(),
+                              DrugProductionScreen(
+                                onOpenFacilitiesRequested: () {
+                                  setState(
+                                    () =>
+                                        _webSubview = _DrugWebSubview.facilities,
+                                  );
+                                },
+                              ),
                               _DrugWebSubview.production,
                             ),
                           ),

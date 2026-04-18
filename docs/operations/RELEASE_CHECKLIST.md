@@ -9,6 +9,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Drugs productie -> faciliteiten doorlink op web hersteld: de knop in Productie toont niet langer alleen een oranje waarschuwing, maar schakelt in de embedded Drugs Omgeving direct door naar de Faciliteiten-subview; buiten embedded context blijft normale schermnavigatie actief
+  - Bestanden: `client/lib/screens/drug_production_screen.dart`, `client/lib/screens/drug_environment_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Drug Faciliteiten apparatuur-upgrades visueel hersteld: backend `equipmentUpgrades.icon` waarden (zoals `lightbulb`, `soil`, `thermostat`, `biotech`) renderen nu als echte Material-icons i.p.v. platte tekst in de avatar, zodat upgrade-rijen weer direct herkenbaar zijn en niet meer als gebroken "geen image" ogen
+  - Bestanden: `client/lib/screens/drug_facility_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Drug Facilities web-subview en school image fallback gehard: de embedded faciliteiten-weergave toont niet langer een tweede interne `Drug Faciliteiten` appbar/terugknop (parent header blijft leidend), en school gate/track images vallen op web nu automatisch terug op `${origin}/game-assets/school` wanneer `SCHOOL_IMAGE_BASE_URL` niet expliciet is meegegeven
   - Bestanden: `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/drug_environment_screen.dart`, `client/lib/config/app_config.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] PROTOCOL_MASTER aangevuld met vaste one-shot Leonardo workflow voor VPS/Docker: API-key handling en volgorde staan nu expliciet vast (compose env injectie via `docker-compose.plesk.yml`, ondersteunde env fallback-bronnen, verplichte verify/restart/run/check stappen) zodat image-generatie volgende keer in 1 run reproduceerbaar is
