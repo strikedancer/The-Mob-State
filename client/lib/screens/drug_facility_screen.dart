@@ -7,7 +7,9 @@ import '../utils/web_asset_helper.dart';
 import '../widgets/education_requirements_dialog.dart';
 
 class DrugFacilityScreen extends StatefulWidget {
-  const DrugFacilityScreen({super.key});
+  final bool showAppBar;
+
+  const DrugFacilityScreen({super.key, this.showAppBar = true});
 
   @override
   State<DrugFacilityScreen> createState() => _DrugFacilityScreenState();
@@ -290,21 +292,26 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
         final padding = isMobile ? 12.0 : 20.0;
 
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xCC111111),
-            title: Text(_tr('Drug Faciliteiten', 'Drug Facilities')),
-            actions: [
-              if (!_isLoading && _facilities.isNotEmpty)
-                _KpiChip(
-                  value:
-                      '${_facilities.fold(0, (s, f) => s + f.activeProductions)}/${_facilities.fold(0, (s, f) => s + f.slots)}',
-                  label: _tr('slots', 'slots'),
-                  icon: Icons.grid_view_rounded,
-                  color: const Color(0xFF48B8FF),
-                ),
-              IconButton(onPressed: _loadData, icon: const Icon(Icons.refresh)),
-            ],
-          ),
+          appBar: widget.showAppBar
+              ? AppBar(
+                  backgroundColor: const Color(0xCC111111),
+                  title: Text(_tr('Drug Faciliteiten', 'Drug Facilities')),
+                  actions: [
+                    if (!_isLoading && _facilities.isNotEmpty)
+                      _KpiChip(
+                        value:
+                            '${_facilities.fold(0, (s, f) => s + f.activeProductions)}/${_facilities.fold(0, (s, f) => s + f.slots)}',
+                        label: _tr('slots', 'slots'),
+                        icon: Icons.grid_view_rounded,
+                        color: const Color(0xFF48B8FF),
+                      ),
+                    IconButton(
+                      onPressed: _loadData,
+                      icon: const Icon(Icons.refresh),
+                    ),
+                  ],
+                )
+              : null,
           body: Stack(
             children: [
               Positioned.fill(

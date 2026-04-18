@@ -165,11 +165,39 @@ Doel:
 - Centrale index: `docs/module-protocols/README.md`
 - Moduleprotocollen: `docs/module-protocols/*.md`
 
-## Lokale AI Keys (Leonardo)
+## AI Keys & One-Shot Leonardo Workflow (Lokaal + VPS)
 
-- Sla Leonardo API keys lokaal op in `backend/.env.local` met key `LEONARDO_API_KEY`.
+Basisregels:
+- Gebruik altijd key `LEONARDO_API_KEY`.
 - Commit nooit API keys in repository-bestanden.
-- Generatie-scripts met `*leonardo*` lezen eerst env vars en daarna `backend/.env.local`.
+- Generatie-scripts met `*leonardo*` lezen eerst runtime env vars en daarna fallback env files.
+
+Ondersteunde env bronnen (in volgorde):
+1. Proces environment (`LEONARDO_API_KEY` al gezet in shell/container)
+2. `.env.local`
+3. `.env` (project root)
+4. `backend/.env`
+5. `.env.docker`
+
+### VPS Docker Compose standaard (aanbevolen)
+
+Voor productie/VPS runs hoort de key via compose naar de backend-container te gaan.
+
+Verplicht:
+- Voeg `LEONARDO_API_KEY=${LEONARDO_API_KEY}` toe aan backend `environment` in `docker-compose.plesk.yml`.
+- Zet de echte waarde in de server-side `.env` die compose gebruikt (niet in git).
+
+One-shot runbook (volgende keer in 1 keer uitvoeren):
+1. `git pull origin main`
+2. Verifieer key aanwezigheid: `docker compose config | Select-String LEONARDO_API_KEY`
+3. Herstart backend met nieuwe env: `docker compose restart backend`
+4. Run generator in backend-context (waar env beschikbaar is)
+5. Controleer dat alle doelbestanden zijn gegenereerd (8/8 voor school narcotics set)
+6. Doe pas daarna de smoke test van de school/drugs flow
+
+Fallback bij API validation errors:
+- Gebruik de fallback payload variant uit `generate_school_narcotics_images_leonardo.py` (latest main).
+- Als nog steeds failing: log volledige Leonardo response payload in run-output en corrigeer request-schema, niet de key handling.
 
 Dit bestand is leidend als orchestrator, maar moduleprotocollen blijven verplicht per scope.
 

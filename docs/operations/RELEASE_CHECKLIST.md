@@ -9,6 +9,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Drug Facilities web-subview en school image fallback gehard: de embedded faciliteiten-weergave toont niet langer een tweede interne `Drug Faciliteiten` appbar/terugknop (parent header blijft leidend), en school gate/track images vallen op web nu automatisch terug op `${origin}/game-assets/school` wanneer `SCHOOL_IMAGE_BASE_URL` niet expliciet is meegegeven
+  - Bestanden: `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/drug_environment_screen.dart`, `client/lib/config/app_config.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] PROTOCOL_MASTER aangevuld met vaste one-shot Leonardo workflow voor VPS/Docker: API-key handling en volgorde staan nu expliciet vast (compose env injectie via `docker-compose.plesk.yml`, ondersteunde env fallback-bronnen, verplichte verify/restart/run/check stappen) zodat image-generatie volgende keer in 1 run reproduceerbaar is
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Admin system logs uitgebreid voor live QA: het admin-scherm ondersteunt nu ook een `1 uur` filter en een gerichte wis-actie voor de huidige filterselectie, zodat testers oude systeemfouten snel kunnen opruimen zonder breder historisch logmateriaal kwijt te raken
   - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Admin live-test logging verbeterd en drugs productie-500 opgelost: `/drugs/productions` crasht niet meer door Dart-achtige array-calls in de incident-weergave, en `system.error` logs serialiseren nu echte `Error` details met naam, message en stack zodat System Logs in admin bruikbare foutinformatie tonen tijdens online testen

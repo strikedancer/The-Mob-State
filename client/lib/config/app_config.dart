@@ -23,6 +23,16 @@ class AppConfig {
 
   static String get schoolImageBaseUrl {
     const raw = String.fromEnvironment('SCHOOL_IMAGE_BASE_URL');
-    return raw.trim();
+    final trimmed = raw.trim();
+    if (trimmed.isNotEmpty) {
+      return trimmed;
+    }
+
+    if (kIsWeb) {
+      final base = Uri.base;
+      return '${base.scheme}://${base.host}/game-assets/school';
+    }
+
+    return '';
   }
 }
