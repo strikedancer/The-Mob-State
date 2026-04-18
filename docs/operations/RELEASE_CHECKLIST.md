@@ -29,6 +29,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Prostitutie batch-werkknop toegevoegd: naast `Werven` staat nu een extra knop om alle beschikbare (niet-gearresteerde) hoeren in één keer een work-shift te laten doen, inclusief duidelijke statusmelding met aantal succesvol gestart en aantal mislukt
+  - Bestanden: `client/lib/screens/prostitution_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Prostitutie mobile scrollflow hersteld: de schermtitel (`Prostitutie`), sabotage-banner, werven-knop, housing waarschuwing, huisvestingsoverzicht en tabbladen staan nu in een meescrollende `NestedScrollView` header (niet sticky), zodat op mobiel/tablet weer 1 logische verticale flow ontstaat terwijl prostituee-cards zelf niet intern scrollen
   - Bestanden: `client/lib/screens/prostitution_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Jail overlay borgknop en layout gehard: de gedeelde gevangenis-overlay haalt borgbedragen nu uit `/player/jail-status`, valt terug op strafduur-gebaseerde prijs als backup, verbergt de betaaloptie niet meer onterecht wanneer `wantedLevel` leeg of al gedaald is, en gebruikt nu een responsieve mobiele/tablet/desktop-layout met scroll-safe onderpaneel zodat de borgknop niet buiten beeld valt

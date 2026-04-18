@@ -35,6 +35,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   bool _isLoading = true;
   bool _isRecruiting = false;
+  bool _isWorkingAll = false;
   int? _cooldownSeconds;
   int? _jailSeconds;
   int? _wantedLevel;
@@ -44,6 +45,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
+  int get _availableWorkCount =>
+      _prostitutes.where((prostitute) => !prostitute.isCurrentlyBusted).length;
 
   @override
   void initState() {
@@ -217,8 +220,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   }
 
   Future<void> _executeWorkShift(Prostitute prostitute) async {
-    final l10n = AppLocalizations.of(context)!;
-
     if (prostitute.isCurrentlyBusted) {
       if (!mounted) return;
       showTopRightFromSnackBar(
@@ -255,6 +256,70 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     if (result['success'] == true) {
       await _loadData();
     }
+  }
+
+  Future<void> _executeWorkShiftForAllAvailable() async {
+    if (_isWorkingAll) return;
+
+    final available = _prostitutes
+        .where((prostitute) => !prostitute.isCurrentlyBusted)
+        .toList();
+
+    if (available.isEmpty) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Geen beschikbare hoeren om aan het werk te zetten.',
+              'No available prostitutes to put to work.',
+            ),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isWorkingAll = true);
+
+    int successCount = 0;
+    int failedCount = 0;
+
+    for (final prostitute in available) {
+      final location = prostitute.isInRedLight ? 'redlight' : 'street';
+      final result = await _service.workShift(prostitute.id, location: location);
+      if (result['success'] == true) {
+        successCount++;
+      } else {
+        failedCount++;
+      }
+    }
+
+    await _loadData();
+
+    if (!mounted) return;
+
+    setState(() => _isWorkingAll = false);
+
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          failedCount == 0
+              ? _tr(
+                  '$successCount hoeren aan het werk gezet.',
+                  '$successCount prostitutes sent to work.',
+                )
+              : _tr(
+                  '$successCount hoeren aan het werk gezet, $failedCount mislukt.',
+                  '$successCount prostitutes sent to work, $failedCount failed.',
+                ),
+        ),
+        backgroundColor: successCount > 0 ? Colors.green : Colors.red,
+      ),
+    );
   }
 
   Future<void> _checkRecruitmentStatus() async {
@@ -507,40 +572,69 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed:
-                            (_housingSummary == null ||
-                                    _housingSummary!.freeSlots > 0) &&
-                                (_cooldownSeconds == null ||
-                                    _cooldownSeconds == 0) &&
-                                (_jailSeconds == null || _jailSeconds == 0) &&
-                                !_isRecruiting
-                            ? _recruitProstitute
-                            : null,
-                        icon: _isRecruiting
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Icon(Icons.person_add),
-                        label: Text(
-                          _housingSummary != null &&
-                                  _housingSummary!.freeSlots <= 0
-                              ? _tr(
-                                  'Koop eerst huis/appartement',
-                                  'Buy a house/apartment first',
-                                )
-                              : _jailSeconds != null && _jailSeconds! > 0
-                              ? '${l10n.jail} (${_formatCooldown(_jailSeconds!)})'
-                              : _cooldownSeconds != null &&
-                                  _cooldownSeconds! > 0
-                              ? '${l10n.prostitutionRecruit} (${_formatCooldown(_cooldownSeconds!)})'
-                              : l10n.prostitutionRecruit,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed:
+                                (_housingSummary == null ||
+                                        _housingSummary!.freeSlots > 0) &&
+                                    (_cooldownSeconds == null ||
+                                        _cooldownSeconds == 0) &&
+                                    (_jailSeconds == null ||
+                                        _jailSeconds == 0) &&
+                                    !_isRecruiting
+                                ? _recruitProstitute
+                                : null,
+                            icon: _isRecruiting
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Icon(Icons.person_add),
+                            label: Text(
+                              _housingSummary != null &&
+                                      _housingSummary!.freeSlots <= 0
+                                  ? _tr(
+                                      'Koop eerst huis/appartement',
+                                      'Buy a house/apartment first',
+                                    )
+                                  : _jailSeconds != null && _jailSeconds! > 0
+                                  ? '${l10n.jail} (${_formatCooldown(_jailSeconds!)})'
+                                  : _cooldownSeconds != null &&
+                                      _cooldownSeconds! > 0
+                                  ? '${l10n.prostitutionRecruit} (${_formatCooldown(_cooldownSeconds!)})'
+                                  : l10n.prostitutionRecruit,
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: _isWorkingAll || _availableWorkCount == 0
+                                ? null
+                                : _executeWorkShiftForAllAvailable,
+                            icon: _isWorkingAll
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Icon(Icons.groups_2),
+                            label: Text(
+                              _tr(
+                                'Werk alle ($_availableWorkCount)',
+                                'Work all ($_availableWorkCount)',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
