@@ -507,10 +507,11 @@ const updateAdminSchema = z.object({
   message: 'At least one field must be provided',
 });
 
-const vehiclesFilePath = path.join(__dirname, '../../content/vehicles.json');
-const aircraftFilePath = path.join(__dirname, '../../content/aircraft.json');
-const toolsFilePath = path.join(__dirname, '../../data/tools.json');
-const crimesFilePath = path.join(__dirname, '../../content/crimes.json');
+// Use process.cwd() for more reliable path resolution in Docker
+const vehiclesFilePath = path.join(process.cwd(), 'content/vehicles.json');
+const aircraftFilePath = path.join(process.cwd(), 'content/aircraft.json');
+const toolsFilePath = path.join(process.cwd(), 'data/tools.json');
+const crimesFilePath = path.join(process.cwd(), 'content/crimes.json');
 
 type VehiclesFile = {
   cars: Array<z.infer<typeof vehicleSchema>>;
@@ -2568,8 +2569,8 @@ router.post(
  */
 router.get('/config', async (req, res) => {
   try {
-    // Read the .env file
-    const envPath = path.join(__dirname, '../../.env');
+    // Read the .env file from application root
+    const envPath = path.join(process.cwd(), '.env');
     const envContent = await fs.readFile(envPath, 'utf-8');
     
     // Parse .env file into key-value pairs
@@ -2590,7 +2591,7 @@ router.get('/config', async (req, res) => {
     });
   } catch (error) {
     console.error('Admin get config error:', error);
-    res.status(500).json({ error: 'Failed to fetch config' });
+    res.status(500).json({ error: 'Failed to fetch config', details: error instanceof Error ? error.message : String(error) });
   }
 });
 
@@ -3271,7 +3272,7 @@ router.get('/aircraft', async (_req, res) => {
     res.json({ success: true, aircraft: list });
   } catch (error) {
     console.error('Admin get aircraft error:', error);
-    res.status(500).json({ error: 'Failed to fetch aircraft' });
+    res.status(500).json({ error: 'Failed to fetch aircraft', details: error instanceof Error ? error.message : String(error) });
   }
 });
 
