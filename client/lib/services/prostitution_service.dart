@@ -215,6 +215,41 @@ class ProstitutionService {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getMyNightclubVenues() async {
+    try {
+      final response = await _apiClient.get('/nightclub/mine');
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        final raw = data['data'];
+        if (raw is List) {
+          return raw
+              .whereType<Map>()
+              .map((item) => item.map((key, value) => MapEntry('$key', value)))
+              .toList();
+        }
+      }
+      return const [];
+    } catch (e) {
+      print('Error loading nightclub venues: $e');
+      return const [];
+    }
+  }
+
+  Future<Map<String, dynamic>> assignProstituteToNightclub({
+    required int venueId,
+    required int prostituteId,
+  }) async {
+    try {
+      final response = await _apiClient.post('/nightclub/$venueId/prostitutes/assign', {
+        'prostituteId': prostituteId,
+      });
+      return json.decode(response.body);
+    } catch (e) {
+      print('Error assigning prostitute to nightclub: $e');
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   // Settle earnings
   Future<Map<String, dynamic>> settleEarnings() async {
     try {

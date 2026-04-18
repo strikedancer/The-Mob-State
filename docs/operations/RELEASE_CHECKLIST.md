@@ -29,6 +29,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Prostitutie bediening aangescherpt: `Werk 8 uur` schakelt nu uit tijdens de 8u rusttijd per recruit, batch-werk respecteert dezelfde beschikbaarheidscheck, kaartacties ondersteunen verplaatsen naar straat/RLD/nightclub, en het scherm toont nu een duidelijk opbrengstoverzicht per locatie (straat, RLD, nightclub) met totaal per uur
+  - Bestanden: `client/lib/screens/prostitution_screen.dart`, `client/lib/services/prostitution_service.dart`, `backend/src/services/prostituteService.ts`, `backend/src/services/nightclubService.ts`, `client/lib/data/help_content.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Prostitutie batch-werkknop toegevoegd: naast `Werven` staat nu een extra knop om alle beschikbare (niet-gearresteerde) hoeren in één keer een work-shift te laten doen, inclusief duidelijke statusmelding met aantal succesvol gestart en aantal mislukt
   - Bestanden: `client/lib/screens/prostitution_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Prostitutie mobile scrollflow hersteld: de schermtitel (`Prostitutie`), sabotage-banner, werven-knop, housing waarschuwing, huisvestingsoverzicht en tabbladen staan nu in een meescrollende `NestedScrollView` header (niet sticky), zodat op mobiel/tablet weer 1 logische verticale flow ontstaat terwijl prostituee-cards zelf niet intern scrollen

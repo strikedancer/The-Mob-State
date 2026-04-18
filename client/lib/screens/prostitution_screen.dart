@@ -46,7 +46,38 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
   int get _availableWorkCount =>
-      _prostitutes.where((prostitute) => !prostitute.isCurrentlyBusted).length;
+      _prostitutes.where(_canStartWorkShift).length;
+
+  bool _isNightclubProstitute(Prostitute prostitute) =>
+      prostitute.location == 'nightclub';
+
+  Duration? _getWorkShiftRemaining(Prostitute prostitute) {
+    if (prostitute.lastWorkedAt == null) return null;
+    final availableAt = prostitute.lastWorkedAt!.add(const Duration(hours: 8));
+    final remaining = availableAt.difference(DateTime.now());
+    return remaining.isNegative ? null : remaining;
+  }
+
+  bool _canStartWorkShift(Prostitute prostitute) {
+    if (prostitute.isCurrentlyBusted) return false;
+    return _getWorkShiftRemaining(prostitute) == null;
+  }
+
+  String _resolveWorkLocation(Prostitute prostitute) {
+    if (_isNightclubProstitute(prostitute)) return 'nightclub';
+    if (prostitute.isInRedLight) return 'redlight';
+    return 'street';
+  }
+
+  String _formatDurationHoursMinutes(Duration duration) {
+    final totalMinutes = duration.inMinutes;
+    final hours = totalMinutes ~/ 60;
+    final minutes = totalMinutes % 60;
+    if (_isNl) {
+      return '${hours}u ${minutes}m';
+    }
+    return '${hours}h ${minutes}m';
+  }
 
   @override
   void initState() {
@@ -219,6 +250,121 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     }
   }
 
+  Future<void> _moveProstituteToStreet(Prostitute prostitute) async {
+    final result = await _service.moveToStreet(prostitute.id);
+
+    if (!mounted) return;
+
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          result['message']?.toString() ??
+              _tr('Verplaatst naar straat', 'Moved to street'),
+        ),
+        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
+      ),
+    );
+
+    if (result['success'] == true) {
+      await _loadData();
+    }
+  }
+
+  Future<void> _assignProstituteToNightclub(Prostitute prostitute) async {
+    if (prostitute.isCurrentlyBusted) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Deze hoer is gearresteerd en kan niet geplaatst worden.',
+              'This prostitute is arrested and cannot be assigned.',
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    final venues = await _service.getMyNightclubVenues();
+    if (!mounted) return;
+
+    if (venues.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Je hebt nog geen nightclub in beheer om personeel te plaatsen.',
+              'You do not have a nightclub venue yet to assign staff.',
+            ),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    int? venueId;
+    if (venues.length == 1) {
+      venueId = (venues.first['id'] as num?)?.toInt();
+    } else {
+      venueId = await showModalBottomSheet<int>(
+        context: context,
+        builder: (ctx) {
+          return SafeArea(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: venues.length,
+              itemBuilder: (context, index) {
+                final venue = venues[index];
+                final id = (venue['id'] as num?)?.toInt();
+                final venueLabel = id == null
+                    ? _tr('Nightclub', 'Nightclub')
+                    : _tr('Nightclub #$id', 'Nightclub #$id');
+                final country = venue['country']?.toString() ??
+                    _tr('Onbekend land', 'Unknown country');
+                return ListTile(
+                  enabled: id != null,
+                  title: Text(venueLabel),
+                  subtitle: Text(country),
+                  onTap: id == null ? null : () => Navigator.of(ctx).pop(id),
+                );
+              },
+            ),
+          );
+        },
+      );
+    }
+
+    if (venueId == null) return;
+
+    final result = await _service.assignProstituteToNightclub(
+      venueId: venueId,
+      prostituteId: prostitute.id,
+    );
+
+    if (!mounted) return;
+
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(
+          result['message']?.toString() ??
+              _tr('Geplaatst in nightclub', 'Assigned to nightclub'),
+        ),
+        backgroundColor: result['success'] == true ? Colors.green : Colors.red,
+      ),
+    );
+
+    if (result['success'] == true) {
+      await _loadData();
+    }
+  }
+
   Future<void> _executeWorkShift(Prostitute prostitute) async {
     if (prostitute.isCurrentlyBusted) {
       if (!mounted) return;
@@ -237,7 +383,25 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       return;
     }
 
-    final location = prostitute.isInRedLight ? 'redlight' : 'street';
+    final shiftRemaining = _getWorkShiftRemaining(prostitute);
+    if (shiftRemaining != null) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Nog ${_formatDurationHoursMinutes(shiftRemaining)} rust nodig voor volgende shift.',
+              'Needs ${_formatDurationHoursMinutes(shiftRemaining)} rest before next shift.',
+            ),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final location = _resolveWorkLocation(prostitute);
     final result = await _service.workShift(prostitute.id, location: location);
 
     if (!mounted) return;
@@ -262,7 +426,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     if (_isWorkingAll) return;
 
     final available = _prostitutes
-        .where((prostitute) => !prostitute.isCurrentlyBusted)
+        .where(_canStartWorkShift)
         .toList();
 
     if (available.isEmpty) {
@@ -288,7 +452,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     int failedCount = 0;
 
     for (final prostitute in available) {
-      final location = prostitute.isInRedLight ? 'redlight' : 'street';
+      final location = _resolveWorkLocation(prostitute);
       final result = await _service.workShift(prostitute.id, location: location);
       if (result['success'] == true) {
         successCount++;
@@ -807,6 +971,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
               _buildHousingChip(_tr('Veilig', 'Safe'), '${_housingSummary!.safeCount}'),
             ],
           ),
+          const SizedBox(height: 10),
+          _buildEarningsInsightBox(),
           if (_housingSummary!.betrayalTriggered) ...[
             const SizedBox(height: 10),
             Container(
@@ -826,6 +992,96 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+
+  double _calculateHourlyEarningsForProstitute(Prostitute prostitute) {
+    final base = prostitute.isInRedLight
+        ? (prostitute.redLightRoom != null
+              ? _getTierGrossEarnings(prostitute.redLightRoom!.tier)
+              : 40.0)
+        : 40.0;
+    final levelBonus = base * (prostitute.level - 1) * 0.05;
+    final vipBonus = prostitute.isVipProstitute ? base * 0.5 : 0;
+    final gross = base + levelBonus + vipBonus;
+    return gross * prostitute.happinessEarningsMultiplier;
+  }
+
+  Widget _buildEarningsInsightBox() {
+    int streetCount = 0;
+    int redLightCount = 0;
+    int nightclubCount = 0;
+    double streetEarnings = 0;
+    double redLightEarnings = 0;
+    double nightclubEarnings = 0;
+
+    for (final prostitute in _prostitutes) {
+      if (prostitute.isCurrentlyBusted) continue;
+      final hourly = _calculateHourlyEarningsForProstitute(prostitute);
+      if (prostitute.location == 'nightclub') {
+        nightclubCount++;
+        nightclubEarnings += hourly;
+      } else if (prostitute.isInRedLight) {
+        redLightCount++;
+        redLightEarnings += hourly;
+      } else {
+        streetCount++;
+        streetEarnings += hourly;
+      }
+    }
+
+    final totalEarnings = streetEarnings + redLightEarnings + nightclubEarnings;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.white24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _tr('Opbrengst inzicht (actieve hoeren)', 'Earnings insight (active prostitutes)'),
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _tr(
+              'Straat: $streetCount • €${streetEarnings.toStringAsFixed(0)}/uur',
+              'Street: $streetCount • €${streetEarnings.toStringAsFixed(0)}/hour',
+            ),
+            style: const TextStyle(fontSize: 12),
+          ),
+          Text(
+            _tr(
+              'RLD: $redLightCount • €${redLightEarnings.toStringAsFixed(0)}/uur',
+              'RLD: $redLightCount • €${redLightEarnings.toStringAsFixed(0)}/hour',
+            ),
+            style: const TextStyle(fontSize: 12),
+          ),
+          Text(
+            _tr(
+              'Nachtclub: $nightclubCount • €${nightclubEarnings.toStringAsFixed(0)}/uur',
+              'Nightclub: $nightclubCount • €${nightclubEarnings.toStringAsFixed(0)}/hour',
+            ),
+            style: const TextStyle(fontSize: 12),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            _tr(
+              'Totaal: €${totalEarnings.toStringAsFixed(0)}/uur',
+              'Total: €${totalEarnings.toStringAsFixed(0)}/hour',
+            ),
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Colors.lightGreenAccent,
+            ),
+          ),
         ],
       ),
     );
@@ -891,6 +1147,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     final levelBonus = base * (prostitute.level - 1) * 0.05;
     final vipBonus = isVip ? base * 0.5 : 0;
     final hourlyEarnings = base + levelBonus + vipBonus;
+    final shiftRemaining = _getWorkShiftRemaining(prostitute);
+    final canWorkNow = !isBusted && shiftRemaining == null;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -1012,7 +1270,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                           Row(
                             children: [
                               Icon(
-                                prostitute.isInRedLight
+                                _isNightclubProstitute(prostitute)
+                                    ? Icons.local_bar
+                                    : prostitute.isInRedLight
                                     ? Icons.business
                                     : Icons.location_on,
                                 size: 12,
@@ -1021,7 +1281,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
-                                  prostitute.isInRedLight
+                                  _isNightclubProstitute(prostitute)
+                                      ? _tr('Nachtclub', 'Nightclub')
+                                      : prostitute.isInRedLight
                                       ? l10n.prostitutionRedLight
                                       : l10n.prostitutionStreet,
                                   style: TextStyle(
@@ -1040,37 +1302,84 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              if (!prostitute.isInRedLight && !isBusted)
-                                Semantics(
-                                  button: true,
-                                  label: l10n.prostitutionMoveToRedLight,
-                                  child: Tooltip(
-                                    message: l10n.prostitutionMoveToRedLight,
-                                    child: TextButton(
-                                      onPressed: () =>
-                                          _moveProstituteToCurrentCountryRld(
-                                            prostitute,
-                                          ),
-                                      style: TextButton.styleFrom(
-                                        minimumSize: const Size(0, 22),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 6,
-                                          vertical: 0,
-                                        ),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        visualDensity: VisualDensity.compact,
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Wrap(
+                            spacing: 6,
+                            runSpacing: 0,
+                            children: [
+                              if (!prostitute.isInRedLight &&
+                                  !_isNightclubProstitute(prostitute) &&
+                                  !isBusted)
+                                TextButton(
+                                  onPressed: () =>
+                                      _moveProstituteToCurrentCountryRld(
+                                        prostitute,
                                       ),
-                                      child: Text(
-                                        l10n.prostitutionMoveToRldShort,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.primary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
+                                  style: TextButton.styleFrom(
+                                    minimumSize: const Size(0, 22),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 0,
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    visualDensity: VisualDensity.compact,
+                                  ),
+                                  child: Text(
+                                    l10n.prostitutionMoveToRldShort,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              if ((prostitute.isInRedLight ||
+                                      _isNightclubProstitute(prostitute)) &&
+                                  !isBusted)
+                                TextButton(
+                                  onPressed: () => _moveProstituteToStreet(
+                                    prostitute,
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    minimumSize: const Size(0, 22),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 0,
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    visualDensity: VisualDensity.compact,
+                                  ),
+                                  child: Text(
+                                    _tr('Naar straat', 'To street'),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              if (!_isNightclubProstitute(prostitute) && !isBusted)
+                                TextButton(
+                                  onPressed: () =>
+                                      _assignProstituteToNightclub(prostitute),
+                                  style: TextButton.styleFrom(
+                                    minimumSize: const Size(0, 22),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 0,
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    visualDensity: VisualDensity.compact,
+                                  ),
+                                  child: Text(
+                                    _tr('Naar nightclub', 'To nightclub'),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -1149,10 +1458,17 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
-                                onPressed: () => _executeWorkShift(prostitute),
+                                onPressed: canWorkNow
+                                    ? () => _executeWorkShift(prostitute)
+                                    : null,
                                 icon: const Icon(Icons.work, size: 14),
                                 label: Text(
-                                  _tr('Werk 8 uur', 'Work 8h'),
+                                  shiftRemaining == null
+                                      ? _tr('Werk 8 uur', 'Work 8h')
+                                      : _tr(
+                                          'Rust ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                          'Rest ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                        ),
                                   style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
@@ -1170,6 +1486,20 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                                 ),
                               ),
                             ),
+                            if (shiftRemaining != null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Text(
+                                  _tr(
+                                    'Volgende shift over ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                    'Next shift in ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 9,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              ),
                             const SizedBox(height: 4),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(4),

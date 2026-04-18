@@ -1314,13 +1314,6 @@ export const prostituteService = {
       return { success: true, message: 'Prostituee staat al op straat' };
     }
 
-    if (prostitute.location === 'redlight' || prostitute.redLightRoomId) {
-      return {
-        success: false,
-        message: 'Eenmaal geplaatst in Red Light District kan een prostituee niet terug naar straat'
-      };
-    }
-
     // Settle earnings before moving
     await this.settleEarnings(playerId);
 

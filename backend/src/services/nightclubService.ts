@@ -1692,17 +1692,6 @@ class NightclubService {
       };
     }
 
-    if (prostitute.location === 'redlight' || prostitute.redLightRoomId) {
-      return {
-        success: false,
-        message: this.localize(
-          language,
-          'Prostituees in Red Light District kun je niet naar de nachtclub verplaatsen',
-          'Crew members in a Red Light District cannot be moved to the nightclub'
-        ),
-      };
-    }
-
     if (prostitute.location === 'nightclub' && prostitute.nightclubVenueId === venueId) {
       return {
         success: true,
@@ -1745,25 +1734,34 @@ class NightclubService {
       };
     }
 
-    await prisma.$transaction([
-      prisma.prostitute.update({
+    await prisma.$transaction(async (tx) => {
+      if (prostitute.redLightRoomId) {
+        await tx.redLightRoom.update({
+          where: { id: prostitute.redLightRoomId },
+          data: { occupied: false },
+        });
+      }
+
+      await tx.prostitute.update({
         where: { id: prostituteId },
         data: {
           location: 'nightclub',
+          redLightRoomId: null,
           nightclubVenueId: venueId,
           nightclubAssignedAt: new Date(),
           lastEarningsAt: new Date(),
         },
-      }),
-      prisma.nightclubProstituteAssignment.create({
+      });
+
+      await tx.nightclubProstituteAssignment.create({
         data: {
           playerId,
           venueId,
           prostituteId,
           isActive: true,
         },
-      }),
-    ]);
+      });
+    });
 
     return {
       success: true,
