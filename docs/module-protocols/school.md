@@ -43,6 +43,9 @@ Education tracks, certifications, gates, cooldowns and unlock dependencies.
 - **Aviation track → Aircraft purchase (Aviation module)**: het aankopen van privévliegtuigen is vergrendeld achter aviation track levels (Cessna = level 2 + `flight_basic`, King Air = level 3, Gulfstream = level 4 + `flight_commercial`, Boeing 737 = level 5). Gates worden afgedwongen via `educationService.checkGate` in de aviation-route.
   - Bij het herstructureren van de aviation track of certifications: update `educationService.ts → EDUCATION_GATES` en `aviation.md`.
 - **Aviation track → Airline pilot job**: de bestaande gate `gate_job_airline_pilot` vereist aviation level 4 + `flight_commercial`. Dit geldt naast de aircraft-aankoopgates.
+- **Narcotics track → Drugs facility upgrades**: drugsfaciliteit-upgrades zijn nu stapsgewijs gekoppeld aan de school track `narcotics`. Slot-upgrades en equipment-upgrades vereisen oplopende levels/certificaten (`hydroponic_specialist`, `process_electrics_specialist`, `clandestine_chemist`, `narco_grid_architect`) via asset-gates `drug_facility_upgrade_slots_tier_*` en `drug_facility_upgrade_equipment_tier_*`.
+  - Dependency files: `backend/src/services/educationService.ts`, `backend/src/services/drugFacilityService.ts`, `backend/src/routes/drugFacilities.ts`
+  - Als track-id, certificaat-id of gate-targets wijzigen: update ook `school_screen.dart`, `education_requirements_dialog.dart` en de drugs-helptekst.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

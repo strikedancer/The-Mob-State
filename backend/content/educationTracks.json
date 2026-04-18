@@ -56,6 +56,18 @@
       "certifications": [
         { "id": "software_engineer", "name": "Software Engineering Certification", "requiredLevel": 3 }
       ]
+    },
+    {
+      "id": "narcotics",
+      "name": "Narcotics Engineering",
+      "description": "Controlled cultivation, process electrics, and advanced clandestine chemistry.",
+      "maxLevel": 5,
+      "certifications": [
+        { "id": "hydroponic_specialist", "name": "Hydroponics Specialist", "requiredLevel": 2 },
+        { "id": "process_electrics_specialist", "name": "Process Electrics Specialist", "requiredLevel": 3 },
+        { "id": "clandestine_chemist", "name": "Clandestine Chemist", "requiredLevel": 4 },
+        { "id": "narco_grid_architect", "name": "Narco Grid Architect", "requiredLevel": 5 }
+      ]
     }
   ]
 }

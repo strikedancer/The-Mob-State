@@ -260,7 +260,13 @@ class DrugService {
         return json.decode(response.body);
       }
       final data = json.decode(response.body);
-      return {'success': false, 'message': data['message'] ?? 'Fout'};
+      return {
+        'success': false,
+        ...((data is Map<String, dynamic>) ? data : <String, dynamic>{}),
+        'message': (data is Map<String, dynamic>)
+        ? (data['message'] ?? 'Fout')
+        : 'Fout',
+      };
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
     }
@@ -279,7 +285,13 @@ class DrugService {
         return json.decode(response.body);
       }
       final data = json.decode(response.body);
-      return {'success': false, 'message': data['message'] ?? 'Fout'};
+      return {
+        'success': false,
+        ...((data is Map<String, dynamic>) ? data : <String, dynamic>{}),
+        'message': (data is Map<String, dynamic>)
+        ? (data['message'] ?? 'Fout')
+        : 'Fout',
+      };
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
     }

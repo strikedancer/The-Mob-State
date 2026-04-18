@@ -20,4 +20,9 @@ class AppConfig {
   
   static const Duration apiTimeout = Duration(seconds: 30);
   static const String defaultLocale = 'nl';
+
+  static String get schoolImageBaseUrl {
+    const raw = String.fromEnvironment('SCHOOL_IMAGE_BASE_URL');
+    return raw.trim();
+  }
 }

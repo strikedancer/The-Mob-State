@@ -4,6 +4,7 @@ import '../models/drug_models.dart';
 import '../services/drug_service.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../widgets/education_requirements_dialog.dart';
 
 class DrugFacilityScreen extends StatefulWidget {
   const DrugFacilityScreen({super.key});
@@ -158,8 +159,9 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
   }
 
   String _facilityNameById(int? facilityId) {
-    if (facilityId == null)
+    if (facilityId == null) {
       return _tr('Onbekende faciliteit', 'Unknown facility');
+    }
     for (final facility in _facilities) {
       if (facility.id == facilityId) {
         return facility.displayName;
@@ -188,6 +190,28 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
   Future<void> _upgradeSlots(DrugFacilityInfo facility) async {
     final result = await _drugService.upgradeSlots(facility.id);
     if (!mounted) return;
+
+    if (result['success'] != true &&
+        (result['error'] == 'EDUCATION_REQUIREMENTS_NOT_MET' ||
+            result['reason'] == 'EDUCATION_REQUIREMENTS_NOT_MET' ||
+            (result['reasonKey']?.toString() ?? '').contains(
+              'education_requirements_not_met',
+            ))) {
+      await EducationRequirementsDialog.show(
+        context,
+        title: _tr(
+          '🔒 Drugs upgrade vergrendeld',
+          '🔒 Drug upgrade locked',
+        ),
+        subtitle: _tr(
+          'Je hebt eerst de juiste Narcotica-opleidingen en certificaten nodig.',
+          'You first need the right Narcotics education levels and certifications.',
+        ),
+        missingRequirements: (result['missing'] as List?) ?? const [],
+      );
+      return;
+    }
+
     showTopRightFromSnackBar(
       context,
       SnackBar(
@@ -211,6 +235,28 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
       upgradeType,
     );
     if (!mounted) return;
+
+    if (result['success'] != true &&
+        (result['error'] == 'EDUCATION_REQUIREMENTS_NOT_MET' ||
+            result['reason'] == 'EDUCATION_REQUIREMENTS_NOT_MET' ||
+            (result['reasonKey']?.toString() ?? '').contains(
+              'education_requirements_not_met',
+            ))) {
+      await EducationRequirementsDialog.show(
+        context,
+        title: _tr(
+          '🔒 Apparatuur upgrade vergrendeld',
+          '🔒 Equipment upgrade locked',
+        ),
+        subtitle: _tr(
+          'Train eerst je Narcotica-track om naar het volgende upgrade-niveau te gaan.',
+          'Train your Narcotics track first to unlock the next upgrade level.',
+        ),
+        missingRequirements: (result['missing'] as List?) ?? const [],
+      );
+      return;
+    }
+
     showTopRightFromSnackBar(
       context,
       SnackBar(

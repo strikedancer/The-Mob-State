@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
+import '../config/app_config.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/cooldown_overlay.dart';
@@ -254,6 +255,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
   }
 
   String _certDisplayName(String certificationId, AppLocalizations l10n) {
+    final isNl = l10n.localeName.startsWith('nl');
     switch (certificationId) {
       case 'software_engineer':
         return l10n.educationCertSoftwareEngineer;
@@ -273,6 +275,18 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return l10n.educationCertCasinoManagement;
       case 'paramedic_cert':
         return l10n.educationCertParamedic;
+      case 'hydroponic_specialist':
+        return isNl
+            ? 'Hydroponics Specialist'
+            : 'Hydroponics Specialist';
+      case 'process_electrics_specialist':
+        return isNl
+            ? 'Process Electrics Specialist'
+            : 'Process Electrics Specialist';
+      case 'clandestine_chemist':
+        return isNl ? 'Clandestien Chemicus' : 'Clandestine Chemist';
+      case 'narco_grid_architect':
+        return isNl ? 'Narco Grid Architect' : 'Narco Grid Architect';
       default:
         return certificationId;
     }
@@ -283,6 +297,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
     String fallback,
     AppLocalizations l10n,
   ) {
+    final isNl = l10n.localeName.startsWith('nl');
     switch (trackId) {
       case 'aviation':
         return l10n.educationTrackNameAviation;
@@ -296,6 +311,8 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return l10n.educationTrackNameEngineering;
       case 'it':
         return l10n.educationTrackNameIt;
+      case 'narcotics':
+        return isNl ? 'Narcotica Technologie' : 'Narcotics Engineering';
       default:
         return fallback;
     }
@@ -306,6 +323,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
     String fallback,
     AppLocalizations l10n,
   ) {
+    final isNl = l10n.localeName.startsWith('nl');
     switch (trackId) {
       case 'aviation':
         return l10n.schoolTrackDescriptionAviation;
@@ -319,6 +337,10 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return l10n.schoolTrackDescriptionEngineering;
       case 'it':
         return l10n.schoolTrackDescriptionIt;
+      case 'narcotics':
+        return isNl
+            ? 'Gecontroleerde teelt, proces-elektra en geavanceerde chemische productie.'
+            : 'Controlled cultivation, process electrics and advanced chemical production.';
       default:
         return fallback;
     }
@@ -406,6 +428,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   String _gateTargetLabel(String targetType, String targetId) {
     final l10n = AppLocalizations.of(context)!;
+    final isNl = l10n.localeName.startsWith('nl');
 
     if (targetType == 'job') {
       return l10n.schoolGateJobTarget(targetId);
@@ -421,6 +444,34 @@ class _SchoolScreenState extends State<SchoolScreen> {
           return l10n.schoolGateAssetAmmoOutputUpgrade;
         case 'ammo_factory_upgrade_quality':
           return l10n.schoolGateAssetAmmoQualityUpgrade;
+        case 'drug_facility_upgrade_slots_tier_1':
+          return isNl
+              ? 'Asset: Drugsfaciliteit slot-upgrade I'
+              : 'Asset: Drug facility slot upgrade I';
+        case 'drug_facility_upgrade_slots_tier_2':
+          return isNl
+              ? 'Asset: Drugsfaciliteit slot-upgrade II'
+              : 'Asset: Drug facility slot upgrade II';
+        case 'drug_facility_upgrade_slots_tier_3':
+          return isNl
+              ? 'Asset: Drugsfaciliteit slot-upgrade III'
+              : 'Asset: Drug facility slot upgrade III';
+        case 'drug_facility_upgrade_slots_tier_4':
+          return isNl
+              ? 'Asset: Drugsfaciliteit slot-upgrade IV'
+              : 'Asset: Drug facility slot upgrade IV';
+        case 'drug_facility_upgrade_equipment_tier_1':
+          return isNl
+              ? 'Asset: Drugsfaciliteit apparatuur-upgrade I'
+              : 'Asset: Drug facility equipment upgrade I';
+        case 'drug_facility_upgrade_equipment_tier_2':
+          return isNl
+              ? 'Asset: Drugsfaciliteit apparatuur-upgrade II'
+              : 'Asset: Drug facility equipment upgrade II';
+        case 'drug_facility_upgrade_equipment_tier_3':
+          return isNl
+              ? 'Asset: Drugsfaciliteit apparatuur-upgrade III'
+              : 'Asset: Drug facility equipment upgrade III';
         default:
           return l10n.schoolGateAssetGeneric(targetId);
       }
@@ -431,6 +482,61 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   String _trackImageAsset(String trackId) {
     return 'assets/images/school/tracks/${trackId}_track.png';
+  }
+
+  String? _schoolExternalImageUrl(String assetPath) {
+    final base = AppConfig.schoolImageBaseUrl;
+    if (base.isEmpty) {
+      return null;
+    }
+
+    var normalizedBase = base;
+    if (normalizedBase.endsWith('/')) {
+      normalizedBase = normalizedBase.substring(0, normalizedBase.length - 1);
+    }
+
+    var relative = assetPath;
+    if (relative.startsWith('assets/images/school/')) {
+      relative = relative.substring('assets/images/school/'.length);
+    }
+
+    return '$normalizedBase/$relative';
+  }
+
+  Widget _buildSchoolImage(
+    String assetPath,
+    String fallbackEmoji,
+    double fallbackFontSize,
+  ) {
+    Widget fallbackWidget() {
+      return Container(
+        color: Colors.blueGrey[900]?.withOpacity(0.8),
+        alignment: Alignment.center,
+        child: Text(
+          fallbackEmoji,
+          style: TextStyle(fontSize: fallbackFontSize),
+        ),
+      );
+    }
+
+    final externalUrl = _schoolExternalImageUrl(assetPath);
+    if (externalUrl != null) {
+      return Image.network(
+        externalUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) => Image.asset(
+          assetPath,
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => fallbackWidget(),
+        ),
+      );
+    }
+
+    return Image.asset(
+      assetPath,
+      fit: BoxFit.cover,
+      errorBuilder: (_, _, _) => fallbackWidget(),
+    );
   }
 
   String _gateImageAsset(String targetType, String targetId) {
@@ -459,6 +565,8 @@ class _SchoolScreenState extends State<SchoolScreen> {
         return '🛠️';
       case 'it':
         return '💻';
+      case 'narcotics':
+        return '🧪';
       default:
         return '🎓';
     }
@@ -570,18 +678,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.asset(
-                        imageAsset,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => Container(
-                          color: Colors.blueGrey[900]?.withOpacity(0.8),
-                          alignment: Alignment.center,
-                          child: Text(
-                            fallbackEmoji,
-                            style: const TextStyle(fontSize: 30),
-                          ),
-                        ),
-                      ),
+                      _buildSchoolImage(imageAsset, fallbackEmoji, 30),
                       Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -863,18 +960,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.asset(
-                      imageAsset,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Container(
-                        color: Colors.blueGrey[900]?.withOpacity(0.8),
-                        alignment: Alignment.center,
-                        child: Text(
-                          fallbackEmoji,
-                          style: const TextStyle(fontSize: 28),
-                        ),
-                      ),
-                    ),
+                    _buildSchoolImage(imageAsset, fallbackEmoji, 28),
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(

@@ -55,6 +55,12 @@ router.post('/:id/upgrade-slots', authenticate, async (req: Request, res: Respon
     }
 
     const result = await drugFacilityService.upgradeSlots(playerId, facilityId);
+    if (!result.success && (result as any).error === 'EDUCATION_REQUIREMENTS_NOT_MET') {
+      return res.status(403).json({
+        ...result,
+        reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+      });
+    }
     res.json(result);
   } catch (err) {
     console.error('POST /drug-facilities/:id/upgrade-slots error:', err);
@@ -77,6 +83,12 @@ router.post('/:id/upgrade-equipment', authenticate, async (req: Request, res: Re
     }
 
     const result = await drugFacilityService.upgradeEquipment(playerId, facilityId, upgradeType);
+    if (!result.success && (result as any).error === 'EDUCATION_REQUIREMENTS_NOT_MET') {
+      return res.status(403).json({
+        ...result,
+        reason: 'EDUCATION_REQUIREMENTS_NOT_MET',
+      });
+    }
     res.json(result);
   } catch (err) {
     console.error('POST /drug-facilities/:id/upgrade-equipment error:', err);

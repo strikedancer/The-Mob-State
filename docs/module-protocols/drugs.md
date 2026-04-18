@@ -28,6 +28,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - VIP auto-collect must be backed by a real background automation path; a toggle without server-side execution is not sufficient.
 - Collect UX should not force a full-screen reload; after successful collect, remove only the relevant production card and sync dependent counters in background.
 - Facility ownership or type (including darkweb storefront) must not imply silent auto-sale of finished drug output unless a dedicated sale feature explicitly exists and is documented.
+- Education-gated drug facility progression: slot/equipment upgrades that are locked behind school gates must return structured requirement details (`gateId`, `gateLabelKey`, `missing`) so the client can render the education requirements dialog instead of a generic error.
 
 ## Backend Contract Guardrails (Drugs)
 - If drugs services use Prisma nested `include` (example: production -> facility -> upgrades), relation fields must exist in `schema.prisma`.
@@ -45,6 +46,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
+- If drugs upgrade gates change, keep School and Drugs terminology aligned in both Dutch and English (track/certification naming and gate labels).
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.

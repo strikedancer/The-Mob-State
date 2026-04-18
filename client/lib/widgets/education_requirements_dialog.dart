@@ -55,6 +55,8 @@ class EducationRequirementsDialog extends StatelessWidget {
         return l10n.educationTrackNameEngineering;
       case 'it':
         return l10n.educationTrackNameIt;
+      case 'narcotics':
+        return 'Narcotics Engineering';
       default:
         return trackId;
     }
@@ -80,6 +82,14 @@ class EducationRequirementsDialog extends StatelessWidget {
         return l10n.educationCertCasinoManagement;
       case 'paramedic_cert':
         return l10n.educationCertParamedic;
+      case 'hydroponic_specialist':
+        return 'Hydroponics Specialist';
+      case 'process_electrics_specialist':
+        return 'Process Electrics Specialist';
+      case 'clandestine_chemist':
+        return 'Clandestine Chemist';
+      case 'narco_grid_architect':
+        return 'Narco Grid Architect';
       default:
         return certificationId;
     }

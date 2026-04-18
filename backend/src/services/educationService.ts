@@ -10,7 +10,8 @@ type EducationTrackId =
   | 'medicine'
   | 'finance'
   | 'engineering'
-  | 'it';
+  | 'it'
+  | 'narcotics';
 
 interface CertificationDefinition {
   id: string;
@@ -50,6 +51,7 @@ const TRACK_MIN_PLAYER_RANK: Record<EducationTrackId, number> = {
   finance: 8,
   engineering: 6,
   it: 5,
+  narcotics: 7,
 };
 
 const EDUCATION_GATES: EducationGate[] = [
@@ -116,6 +118,90 @@ const EDUCATION_GATES: EducationGate[] = [
     targetType: 'asset',
     targetId: 'ammo_factory_upgrade_quality',
     requirements: { trackId: 'engineering', level: 5 },
+  },
+  {
+    id: 'gate_asset_drug_facility_upgrade_slots_tier_1',
+    label: 'Asset: Drugsfaciliteit slot-upgrade I',
+    labelKey: 'education.gate.asset.drug_facility_upgrade_slots_tier_1',
+    targetType: 'asset',
+    targetId: 'drug_facility_upgrade_slots_tier_1',
+    requirements: {
+      trackId: 'narcotics',
+      level: 2,
+      certifications: ['hydroponic_specialist'],
+    },
+  },
+  {
+    id: 'gate_asset_drug_facility_upgrade_slots_tier_2',
+    label: 'Asset: Drugsfaciliteit slot-upgrade II',
+    labelKey: 'education.gate.asset.drug_facility_upgrade_slots_tier_2',
+    targetType: 'asset',
+    targetId: 'drug_facility_upgrade_slots_tier_2',
+    requirements: {
+      trackId: 'narcotics',
+      level: 3,
+      certifications: ['process_electrics_specialist'],
+    },
+  },
+  {
+    id: 'gate_asset_drug_facility_upgrade_slots_tier_3',
+    label: 'Asset: Drugsfaciliteit slot-upgrade III',
+    labelKey: 'education.gate.asset.drug_facility_upgrade_slots_tier_3',
+    targetType: 'asset',
+    targetId: 'drug_facility_upgrade_slots_tier_3',
+    requirements: {
+      trackId: 'narcotics',
+      level: 4,
+      certifications: ['clandestine_chemist'],
+    },
+  },
+  {
+    id: 'gate_asset_drug_facility_upgrade_slots_tier_4',
+    label: 'Asset: Drugsfaciliteit slot-upgrade IV',
+    labelKey: 'education.gate.asset.drug_facility_upgrade_slots_tier_4',
+    targetType: 'asset',
+    targetId: 'drug_facility_upgrade_slots_tier_4',
+    requirements: {
+      trackId: 'narcotics',
+      level: 5,
+      certifications: ['narco_grid_architect'],
+    },
+  },
+  {
+    id: 'gate_asset_drug_facility_upgrade_equipment_tier_1',
+    label: 'Asset: Drugsfaciliteit apparatuur-upgrade I',
+    labelKey: 'education.gate.asset.drug_facility_upgrade_equipment_tier_1',
+    targetType: 'asset',
+    targetId: 'drug_facility_upgrade_equipment_tier_1',
+    requirements: {
+      trackId: 'narcotics',
+      level: 2,
+      certifications: ['hydroponic_specialist'],
+    },
+  },
+  {
+    id: 'gate_asset_drug_facility_upgrade_equipment_tier_2',
+    label: 'Asset: Drugsfaciliteit apparatuur-upgrade II',
+    labelKey: 'education.gate.asset.drug_facility_upgrade_equipment_tier_2',
+    targetType: 'asset',
+    targetId: 'drug_facility_upgrade_equipment_tier_2',
+    requirements: {
+      trackId: 'narcotics',
+      level: 3,
+      certifications: ['process_electrics_specialist'],
+    },
+  },
+  {
+    id: 'gate_asset_drug_facility_upgrade_equipment_tier_3',
+    label: 'Asset: Drugsfaciliteit apparatuur-upgrade III',
+    labelKey: 'education.gate.asset.drug_facility_upgrade_equipment_tier_3',
+    targetType: 'asset',
+    targetId: 'drug_facility_upgrade_equipment_tier_3',
+    requirements: {
+      trackId: 'narcotics',
+      level: 4,
+      certifications: ['clandestine_chemist'],
+    },
   },
 ];
 

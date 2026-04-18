@@ -641,6 +641,7 @@ const List<HelpTopic> helpTopics = [
       'Drugs verkopen kan via de zwarte markt, via Colombia of andere speciale verkooplocaties voor de hoogste marge.',
       'FBI Heat stijgt bij elke productieronde en extra bij grote verkopen. Hoge heat leidt tot raid-events die je operatie kunnen stilleggen.',
       'Faciliteit-upgrades verlagen productietime, verhogen output en vergroten opslagcapaciteit.',
+      'Geavanceerde slot- en apparatuur-upgrades zijn gekoppeld aan de nieuwe Narcotica-opleiding (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus). Zonder voldoende opleidingsniveau/certificaat kun je niet door naar de volgende upgrade-tier.',
       'Drugs in je inventaris verhogen het risico op confiscatie bij reizen en politiecontroles.',
     ],
     howEn: [
@@ -653,6 +654,7 @@ const List<HelpTopic> helpTopics = [
       'Sell drugs via the black market, Colombia or other special sales locations for the highest margin.',
       'FBI Heat rises every production cycle and extra on large sales. High heat leads to raid events that can shut down your operation.',
       'Facility upgrades reduce production time, increase output and expand storage capacity.',
+      'Advanced slot and equipment upgrades are tied to the new Narcotics education track (Hydroponics Specialist, Process Electrics Specialist, Clandestine Chemist). Without the required level/certification you cannot progress to the next upgrade tier.',
       'Drugs in inventory increase confiscation risk during travel and police checks.',
     ],
     tipsNl: [
@@ -1310,7 +1312,7 @@ const List<HelpTopic> helpTopics = [
     summaryEn:
         'Follow courses in multiple tracks to unlock bonuses, reduce costs and open new systems. School is a multiplier on everything you do.',
     howNl: [
-      'School biedt tracks per domein: Crimineel (betere crime stats), Economie (lagere handels- en bankkosten), Militair (combat bonussen), Geneeskunde (lagere ziekenhuiskosten), Rechten (lagere advocaatkosten), Technisch (betere factory en drugproductie).',
+      'School biedt tracks per domein: Crimineel (betere crime stats), Economie (lagere handels- en bankkosten), Militair (combat bonussen), Geneeskunde (lagere ziekenhuiskosten), Rechten (lagere advocaatkosten), Technisch (factory) en Narcotica (drugsfaciliteit-upgrades).',
       'Elke les heeft een studietime van 15-60 minuten afhankelijk van het level. Hogere levels duren langer.',
       'Na het voltooien van een les ontvang je een certificaat voor dat track-level. Dit certificaat is permanent en geeft de bonus direct.',
       'Je kunt maar één les tegelijk volgen. Plan je studies zorgvuldig als je snel een specifiek certificaat nodig hebt.',
@@ -1324,7 +1326,7 @@ const List<HelpTopic> helpTopics = [
       'After completing a lesson you receive a certificate for that track level. This certificate is permanent and grants the bonus immediately.',
       'You can only follow one lesson at a time. Plan your studies carefully when you urgently need a specific certificate.',
       'School costs increase per level. Higher education requires earlier levels in the same track to be completed.',
-      'Some advanced game features are locked behind a school certificate: e.g. access to certain jobs, higher factory levels, VIP nightclub events.',
+      'Some advanced game features are locked behind a school certificate: e.g. access to certain jobs, higher factory levels, VIP nightclub events and higher drug facility upgrade tiers.',
       'Certificates are never reset unless your account receives a heavy penalty.',
     ],
     tipsNl: [

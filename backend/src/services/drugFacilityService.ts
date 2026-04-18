@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import fs from 'fs';
 import path from 'path';
 import { activityService } from './activityService';
+import { educationService } from './educationService';
 
 interface SlotUpgrade {
   slots: number;
@@ -107,6 +108,34 @@ class DrugFacilityService {
     return this.qualityTiers.get(quality);
   }
 
+  private getSlotUpgradeGateTarget(nextSlots: number): string | null {
+    switch (nextSlots) {
+      case 2:
+        return 'drug_facility_upgrade_slots_tier_1';
+      case 3:
+        return 'drug_facility_upgrade_slots_tier_2';
+      case 4:
+        return 'drug_facility_upgrade_slots_tier_3';
+      case 5:
+        return 'drug_facility_upgrade_slots_tier_4';
+      default:
+        return null;
+    }
+  }
+
+  private getEquipmentUpgradeGateTarget(nextLevel: number): string | null {
+    switch (nextLevel) {
+      case 2:
+        return 'drug_facility_upgrade_equipment_tier_1';
+      case 3:
+        return 'drug_facility_upgrade_equipment_tier_2';
+      case 4:
+        return 'drug_facility_upgrade_equipment_tier_3';
+      default:
+        return null;
+    }
+  }
+
   // ─── Buy a new facility ─────────────────────────────────────────────────────
 
   async buyFacility(
@@ -117,7 +146,10 @@ class DrugFacilityService {
     const def = this.facilities.get(facilityType);
     if (!def) return { success: false, message: 'Onbekend faciliteitstype' };
 
-    const player = await prisma.player.findUnique({ where: { id: playerId } });
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true, rank: true, currentCountry: true },
+    });
     if (!player) return { success: false, message: 'Speler niet gevonden' };
 
     const facilityCountry = country || player.currentCountry || 'netherlands';
@@ -236,8 +268,32 @@ class DrugFacilityService {
       return { success: false, message: 'Maximaal aantal plekken bereikt' };
     }
 
-    const player = await prisma.player.findUnique({ where: { id: playerId } });
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true, rank: true },
+    });
     if (!player) return { success: false, message: 'Speler niet gevonden' };
+
+    const slotGateTarget = this.getSlotUpgradeGateTarget(nextUpgrade.slots);
+    if (slotGateTarget) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        slotGateTarget,
+        player.rank
+      );
+
+      if (!educationEligibility.allowed) {
+        return {
+          success: false,
+          message: 'Opleidingseisen niet gehaald voor deze slot-upgrade',
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          reasonKey: 'drugFacility.error.education_requirements_not_met',
+          gateId: educationEligibility.gateId,
+          gateLabelKey: educationEligibility.gateLabelKey,
+          missing: educationEligibility.missing,
+        };
+      }
+    }
 
     if (player.rank < nextUpgrade.requiredRank) {
       return { success: false, message: `Je hebt rank ${nextUpgrade.requiredRank} nodig voor deze uitbreiding` };
@@ -292,8 +348,32 @@ class DrugFacilityService {
     const nextLevel = equipDef.levels.find((l) => l.level === currentLevel + 1);
     if (!nextLevel) return { success: false, message: 'Maximaal niveau bereikt' };
 
-    const player = await prisma.player.findUnique({ where: { id: playerId } });
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true, rank: true },
+    });
     if (!player) return { success: false, message: 'Speler niet gevonden' };
+
+    const equipmentGateTarget = this.getEquipmentUpgradeGateTarget(nextLevel.level);
+    if (equipmentGateTarget) {
+      const educationEligibility = await educationService.checkAssetEligibility(
+        playerId,
+        equipmentGateTarget,
+        player.rank
+      );
+
+      if (!educationEligibility.allowed) {
+        return {
+          success: false,
+          message: 'Opleidingseisen niet gehaald voor deze equipment-upgrade',
+          error: 'EDUCATION_REQUIREMENTS_NOT_MET',
+          reasonKey: 'drugFacility.error.education_requirements_not_met',
+          gateId: educationEligibility.gateId,
+          gateLabelKey: educationEligibility.gateLabelKey,
+          missing: educationEligibility.missing,
+        };
+      }
+    }
 
     if (player.money < nextLevel.price) {
       return {
