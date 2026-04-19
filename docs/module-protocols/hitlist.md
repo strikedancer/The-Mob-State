@@ -212,7 +212,8 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 
 ### Attack Attempt
 - ✅ Attacker and target in same country
-- ✅ Attacker has weapon + ammo
+- ✅ Attacker has a usable weapon in inventory (weaponId present, quantity > 0, condition > 0) + enough ammo
+- ✅ Broken weapon returns explicit repair-required feedback (no generic "not owned" fallback)
 - ✅ Target is not in Premium Protection mode
 - ✅ Attacker not in global cooldown (24h after fail)
 - ✅ Hit is ACTIVE status

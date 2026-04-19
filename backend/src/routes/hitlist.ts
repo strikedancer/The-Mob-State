@@ -259,6 +259,14 @@ router.post(
         });
       }
 
+      if (error.message === 'WEAPON_BROKEN') {
+        return res.status(400).json({
+          success: false,
+          error: 'WEAPON_BROKEN',
+          message: 'Je geselecteerde wapen is kapot. Repareer het eerst.',
+        });
+      }
+
       if (error.message === 'INSUFFICIENT_AMMO') {
         return res.status(400).json({
           success: false,

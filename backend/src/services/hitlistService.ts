@@ -389,22 +389,26 @@ export async function attemptHit(
     throw new Error('TARGET_UNDER_HIT_PROTECTION');
   }
 
-  const weaponData = weaponService.getWeaponDefinition(String(weaponId));
+  const normalizedWeaponId = String(weaponId || '').trim();
+  const weaponData = weaponService.getWeaponDefinition(normalizedWeaponId);
   if (!weaponData) {
     throw new Error('WEAPON_NOT_FOUND');
   }
 
-  const ownedWeapon = await prisma.weaponInventory.findUnique({
+  const ownedWeapon = await prisma.weaponInventory.findFirst({
     where: {
-      playerId_weaponId: {
-        playerId,
-        weaponId: String(weaponId),
-      },
+      playerId,
+      weaponId: normalizedWeaponId,
+      quantity: { gt: 0 },
     },
   });
 
-  if (!ownedWeapon || ownedWeapon.quantity <= 0 || ownedWeapon.condition <= 0) {
+  if (!ownedWeapon) {
     throw new Error('WEAPON_NOT_OWNED');
+  }
+
+  if (ownedWeapon.condition <= 0) {
+    throw new Error('WEAPON_BROKEN');
   }
 
   const requiresAmmo = weaponData.requiresAmmo !== false;

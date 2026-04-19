@@ -608,6 +608,11 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
   final _ammoController = TextEditingController();
   bool _isExecuting = false;
 
+  String _tr(String nl, String en) {
+    final code = Localizations.localeOf(context).languageCode;
+    return code == 'nl' ? nl : en;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -637,8 +642,12 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
             'weaponId': 'unknown',
             'weaponName': l10n.unknown,
             'ammoAvailable': 0,
+            'quantity': 0,
+            'condition': 0,
           };
         }
+        final resolvedWeaponId =
+            (weapon['weaponId'] ?? weapon['id'] ?? '').toString().trim();
         final ammoType = weapon['ammoType']?.toString();
         final ammoAvailable = ammoType != null
             ? (ammoByType[ammoType] ?? 0)
@@ -650,13 +659,27 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
             l10n.unknown;
         return {
           ...weapon,
+          'weaponId': resolvedWeaponId,
           'weaponName': weaponName,
           'ammoAvailable': ammoAvailable,
+          'quantity': (weapon['quantity'] as num?)?.toInt() ?? 0,
+          'condition': (weapon['condition'] as num?)?.toDouble() ?? 0,
         };
       }).toList();
+
+      final usableWeapons = weapons
+          .whereType<Map<String, dynamic>>()
+          .where((weapon) {
+            final weaponId = (weapon['weaponId'] ?? '').toString().trim();
+            final quantity = (weapon['quantity'] as num?)?.toInt() ?? 0;
+            final condition = (weapon['condition'] as num?)?.toDouble() ?? 0;
+            return weaponId.isNotEmpty && quantity > 0 && condition > 0;
+          })
+          .toList();
+
       if (mounted) {
         setState(() {
-          _weapons = weapons.whereType<Map<String, dynamic>>().toList();
+          _weapons = usableWeapons;
           _isLoading = false;
           if (_weapons.isNotEmpty) {
             _selectedWeaponId = _weapons[0]['weaponId'];
@@ -683,7 +706,8 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     final l10n = AppLocalizations.of(context)!;
     final localeCode = Localizations.localeOf(context).languageCode;
     String t(String nl, String en) => localeCode == 'nl' ? nl : en;
-    if (_selectedWeaponId == null) {
+    final selectedWeaponId = _selectedWeaponId?.trim();
+    if (selectedWeaponId == null || selectedWeaponId.isEmpty) {
       showTopRightFromSnackBar(
         context,
         SnackBar(content: Text(l10n.selectWeapon)),
@@ -704,7 +728,7 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     try {
       final response = await _apiClient
           .post('/hitlist/attempt/${widget.hitId}', {
-            'weaponId': _selectedWeaponId,
+            'weaponId': selectedWeaponId,
             'ammoQuantity': ammo,
           })
           .timeout(const Duration(seconds: 15));
@@ -763,7 +787,12 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     if (weaponItems.isEmpty) {
       return AlertDialog(
         title: Text(l10n.executeHit),
-        content: Text(l10n.noWeapons),
+        content: Text(
+          _tr(
+            'Je hebt geen bruikbare wapens in je inventaris. Koop of repareer eerst een wapen.',
+            'You have no usable weapons in your inventory. Buy or repair a weapon first.',
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
