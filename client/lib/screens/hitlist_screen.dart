@@ -836,6 +836,28 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
       orElse: () => weaponItems.first,
     );
 
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+    final infoCardColor = isDark
+        ? Colors.black.withValues(alpha: 0.45)
+        : Colors.white.withValues(alpha: 0.92);
+    final infoBorderColor = isDark
+        ? Colors.white.withValues(alpha: 0.14)
+        : Colors.black.withValues(alpha: 0.10);
+    final infoTitleStyle = theme.textTheme.titleSmall?.copyWith(
+      color: colorScheme.onSurface,
+      fontWeight: FontWeight.w700,
+    );
+    final infoLabelStyle = theme.textTheme.bodySmall?.copyWith(
+      color: colorScheme.onSurfaceVariant,
+      fontWeight: FontWeight.w600,
+    );
+    final infoValueStyle = theme.textTheme.bodySmall?.copyWith(
+      color: colorScheme.onSurface,
+      fontWeight: FontWeight.w700,
+    );
+
     return AlertDialog(
       title: Text(l10n.executeHit),
       content: SingleChildScrollView(
@@ -908,29 +930,36 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: infoCardColor,
                 borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: infoBorderColor),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     l10n.weaponStats,
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: infoTitleStyle,
                   ),
                   const SizedBox(height: 8),
                   _StatRow(
                     label: '${l10n.damage}:',
                     value: '${selectedWeapon['damage'] ?? 0}',
+                    labelStyle: infoLabelStyle,
+                    valueStyle: infoValueStyle,
                   ),
                   _StatRow(
                     label: '${l10n.intimidation}:',
                     value: '${selectedWeapon['intimidation'] ?? 0}',
+                    labelStyle: infoLabelStyle,
+                    valueStyle: infoValueStyle,
                   ),
                   _StatRow(
                     label: '${l10n.condition}:',
                     value:
                         '${(selectedWeapon['condition'] ?? 100).toStringAsFixed(1)}%',
+                    labelStyle: infoLabelStyle,
+                    valueStyle: infoValueStyle,
                   ),
                 ],
               ),
@@ -1097,21 +1126,28 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
 class _StatRow extends StatelessWidget {
   final String label;
   final String value;
+  final TextStyle? labelStyle;
+  final TextStyle? valueStyle;
 
-  const _StatRow({required this.label, required this.value});
+  const _StatRow({
+    required this.label,
+    required this.value,
+    this.labelStyle,
+    this.valueStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final defaultLabelStyle = Theme.of(context).textTheme.bodySmall;
+    final defaultValueStyle = Theme.of(
+      context,
+    ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: Theme.of(context).textTheme.bodySmall),
-        Text(
-          value,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        Text(label, style: labelStyle ?? defaultLabelStyle),
+        Text(value, style: valueStyle ?? defaultValueStyle),
       ],
     );
   }
