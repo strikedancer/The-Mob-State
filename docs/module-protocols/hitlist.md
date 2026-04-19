@@ -112,6 +112,10 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
   - bij falen: melding dat de dader niet met zekerheid vastgesteld kon worden
 - Een murder case kan maar eenmaal onderzocht worden en kan niet heropend worden.
 
+### Hit Placed Notification Coverage
+- Zodra een speler op de hitlist wordt gezet, ontvangt het doelwit direct een inbox-bericht + push van `Moordlijst Bureau` / `Hitlist Bureau` met minimaal bounty-bedrag en waarschuwing.
+- Deze notificatie is onderdeel van de verplichte lifecycle-notificaties voor hitlist-events en mag niet stil wegvallen bij succesvolle hit-creatie.
+
 ### Notifications (Push + Inbox)
 
 **Hit Placed ON ME:**

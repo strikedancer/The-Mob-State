@@ -43,6 +43,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Hitlist plaatsing-notificatie toegevoegd voor doelwit: zodra een speler op de moordlijst wordt gezet ontvangt het doelwit direct een inboxbericht + push van Moordlijst Bureau / Hitlist Bureau met bountybedrag en waarschuwing
+  - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/data/help_content.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist slachtoffer-notificaties uitgebreid: bij succesvolle moord ontvangt het slachtoffer nu direct push + inboxbericht van Moordlijst Bureau, inclusief in-bericht knop om binnen 24 uur een detective-onderzoek te starten; Detective Bureau stuurt daarna een apart rapport met dadernaam bij succes of cold-case melding bij falen
   - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`, `client/lib/screens/chat_screen.dart`, `client/lib/widgets/message_bubble.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist loot percentages zijn nu admin-instelbaar via runtime database-config (geen file-only workflow): nieuwe keys `HITLIST_LOOT_CASH_PERCENT` en `HITLIST_LOOT_ITEM_PERCENT` worden via Admin Config opgeslagen en direct gebruikt bij loot-uitbetaling na succesvolle hits

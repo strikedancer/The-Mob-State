@@ -891,6 +891,7 @@ const List<HelpTopic> helpTopics = [
         'Place a bounty on an enemy or accept a hit contract. Eliminate your target in the same country for the full payout.',
     howNl: [
       'Via de hitlist kun je een speler toevoegen door een bounty in te stellen. Minimumbounty is €5.000. De betaler verliest dit geld direct.',
+      'Als er een bounty op jou wordt geplaatst, ontvang je direct een pushmelding en inboxbericht van Moordlijst Bureau.',
       'Actieve hits zijn zichtbaar voor alle spelers. Hoe hoger de bounty, hoe meer aandacht het contract trekt.',
       'Detective-onderzoek levert geen directe uitslag meer op: rapporten komen later via een bericht van Detective Bureau (Snel 1 uur €1.000.000, Gemiddeld 6 uur €500.000, Langzaam 24 uur €250.000).',
       'Word je via de hitlist vermoord, dan ontvang je een Moordlijst Bureau-bericht met een knop om binnen 24 uur onderzoek naar de dader te starten.',
@@ -903,6 +904,7 @@ const List<HelpTopic> helpTopics = [
     ],
     howEn: [
       'Via the hitlist you add a player by setting a bounty. Minimum bounty is €5,000. The payer loses this money immediately.',
+      'If a bounty is placed on you, you immediately receive a push notification and inbox message from Hitlist Bureau.',
       'Active hits are visible to all players. The higher the bounty, the more attention the contract attracts.',
       'Detective investigations no longer return instant intel: reports arrive later via a Detective Bureau message (Quick 1 hour €1,000,000, Standard 6 hours €500,000, Slow 24 hours €250,000).',
       'If you are killed through the hitlist, you receive a Hitlist Bureau message with a button to start a killer investigation within 24 hours.',

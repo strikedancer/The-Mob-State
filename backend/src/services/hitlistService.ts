@@ -266,6 +266,28 @@ function buildMurderCaseReport(
   ].join('\n');
 }
 
+function buildHitPlacedOnMeMessage(
+  language: 'nl' | 'en',
+  placedByUsername: string,
+  bounty: number,
+): string {
+  if (language === 'nl') {
+    return [
+      'Er is een moordlijst-contract op je geplaatst.',
+      `Bounty: €${bounty.toLocaleString('nl-NL')}`,
+      `Geplaatst door: ${placedByUsername}`,
+      'Tip: overweeg direct extra beveiliging of een tegen-bounty.',
+    ].join('\n');
+  }
+
+  return [
+    'A hitlist contract was placed on you.',
+    `Bounty: €${bounty.toLocaleString('en-US')}`,
+    `Placed by: ${placedByUsername}`,
+    'Tip: consider buying extra protection or placing a counter-bounty immediately.',
+  ].join('\n');
+}
+
 async function createMurderCaseForVictim(
   victimId: number,
   killerId: number,
@@ -676,7 +698,7 @@ export async function placeHit(
   // Check if player can afford bounty
   const player = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { money: true },
+    select: { money: true, username: true },
   });
 
   if (!player || player.money < bounty) {
@@ -700,10 +722,27 @@ export async function placeHit(
   });
 
   // Mark target as hunted
-  await prisma.player.update({
+  const target = await prisma.player.update({
     where: { id: targetId },
     data: { isHunted: true },
+    select: {
+      preferredLanguage: true,
+    },
   });
+
+  try {
+    const language: 'nl' | 'en' = target.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+    await directMessageService.sendSystemMessage(
+      targetId,
+      buildHitPlacedOnMeMessage(language, player.username, bounty),
+      {
+        senderName: language === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau',
+        sendPush: true,
+      },
+    );
+  } catch (error) {
+    console.error('[Hitlist] Failed to send hit placed notification:', error);
+  }
 
   return hit as any;
 }
