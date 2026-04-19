@@ -15,6 +15,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/territory_screen.dart`
 
 ### Documentation
+- [ ] Dashboard navigatie-guardrail aangescherpt: web-sidebar (`_buildWebMenuItems` + `_WebSection` switch) is nu expliciet de leidende bron voor module-navigatie; legacy tegel-grid geldt alleen nog als fallback en telt niet als enige oplevering
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [x] Territory systeem volledig uitgewerkt voor crew map-control (NL-first, multi-country ready): nieuw protocol beschrijft contest lifecycle, datamodel, API surface, anti-abuse, seizoenen, responsive map UX en i18n-eisen; alle territory tuning keys zijn expliciet vastgelegd als admin/runtime database settings (geen file-based gameplay settings)
   - Bestanden: `docs/module-protocols/territory.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [x] Territory Fase 1 geïmplementeerd: DB-schema (7 tabellen + 12 NL provincies seed), service (contests, acties, anti-abuse, resolve, notificaties), routes (player + admin moderation), app.ts+index.ts bootstrap, Flutter service + responsive screen

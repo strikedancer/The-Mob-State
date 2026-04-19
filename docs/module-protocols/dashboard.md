@@ -11,6 +11,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
+- Web dashboard navigation is sidebar-first: add or change module navigation via the sidebar source (`_buildWebMenuItems` + `_WebSection` content switch) and not only via the legacy tile grid.
 
 ## Check Before Editing
 - What is the player trying to achieve in this screen or loop?
@@ -41,6 +42,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer in admin image-management dat uploaden en vervangen werkt voor dezelfde storage-root die door runtime `/assets/images` wordt geserveerd.
 - Verifieer dat modulefilter + zoekresultaten overeenkomen met de daadwerkelijke serverbestanden per module.
 

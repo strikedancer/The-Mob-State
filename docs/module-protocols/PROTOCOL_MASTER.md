@@ -112,6 +112,8 @@ Extra harde eis:
 - Gebruik fallbacks (`[]`, `{}`, `null`) of aparte try/catch per kritieke sectie.
 - Verifieer dat kerninformatie zichtbaar blijft (bijv. actieve producties, eigendom, timers).
 - Admin diagnose- en logschermen die tijdens live QA gebruikt worden, moeten korte tijdvensters (zoals 1 uur) en gerichte clear-acties voor de huidige filterselectie ondersteunen zodat regressies zonder ruis van oudere testlogs beoordeeld kunnen worden.
+- Voor web dashboard-navigatie is de sidebar-sectie (`_buildWebMenuItems` + `_WebSection` switch in `dashboard_screen.dart`) de primaire en leidende bron; wijzigingen aan zichtbare modules moeten daar altijd worden doorgevoerd.
+- Het oude tegel-grid geldt als legacy/fallback en is niet leidend voor web-navigatie; alleen een tegel toevoegen zonder sidebar-update geldt niet als done.
 
 Implementatievoorkeur:
 - Gebruik partial rendering boven "alles of niets" loading.
