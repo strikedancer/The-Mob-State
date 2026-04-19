@@ -144,15 +144,22 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 "Valid until: [Time remaining]"
 ```
 
-**Hit Success:**
+**Hit Success (Killer Loot Notification):**
+- Na een succesvolle kill ontvangt de moordenaar direct een inbox-bericht + push van `Moordlijst Bureau` / `Hitlist Bureau` met bounty-bedrag, buit-geld (€ en %) en aantal buit-items.
+- Bericht is meertalig (NL/EN) op basis van `preferredLanguage` van de aanvaller.
+
 ```nl
 "💀 Moordslooptocht voltooid!"
 "Je verdiende: €XXX.XXX"
+"Contant geld buit: €YY.YYY (60% van €ZZ.ZZZ)"
+"Items buit: N voorwerp(en) overgenomen."
 ```
 
 ```en
 "💀 Hit completed!"
 "You earned: €XXX,XXX"
+"Cash looted: €YY,YYY (60% of €ZZ,ZZZ)"
+"Items looted: N item(s) transferred to your inventory."
 ```
 
 **Hit Failed:**

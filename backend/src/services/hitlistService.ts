@@ -288,6 +288,41 @@ function buildHitPlacedOnMeMessage(
   ].join('\n');
 }
 
+function buildKillerSuccessMessage(
+  language: 'nl' | 'en',
+  victimUsername: string,
+  bounty: number,
+  loot: HitLootSummary,
+): string {
+  if (language === 'nl') {
+    const lines = [
+      `Je hebt ${victimUsername} geëlimineerd via de moordlijst.`,
+      `Bounty ontvangen: €${bounty.toLocaleString('nl-NL')}`,
+    ];
+    if (loot.cashAwarded > 0) {
+      lines.push(`Contant geld buit: €${loot.cashAwarded.toLocaleString('nl-NL')} (${loot.cashTaken > 0 ? Math.round((loot.cashAwarded / loot.cashTaken) * 100) : 0}% van ${loot.cashTaken.toLocaleString('nl-NL')})`);
+    }
+    if (loot.itemsAwarded > 0) {
+      lines.push(`Items buit: ${loot.itemsAwarded} voorwerp(en) overgenomen.`);
+    }
+    lines.push('Je stats zijn bijgewerkt. Goed werk, moordenaar.');
+    return lines.join('\n');
+  }
+
+  const lines = [
+    `You eliminated ${victimUsername} via the hitlist.`,
+    `Bounty received: €${bounty.toLocaleString('en-US')}`,
+  ];
+  if (loot.cashAwarded > 0) {
+    lines.push(`Cash looted: €${loot.cashAwarded.toLocaleString('en-US')} (${loot.cashTaken > 0 ? Math.round((loot.cashAwarded / loot.cashTaken) * 100) : 0}% of €${loot.cashTaken.toLocaleString('en-US')})`);
+  }
+  if (loot.itemsAwarded > 0) {
+    lines.push(`Items looted: ${loot.itemsAwarded} item(s) transferred to your inventory.`);
+  }
+  lines.push('Your stats have been updated. Good work, hitman.');
+  return lines.join('\n');
+}
+
 async function createMurderCaseForVictim(
   victimId: number,
   killerId: number,
@@ -859,7 +894,7 @@ export async function attemptHit(
 
   const attacker = await prisma.player.findUnique({
     where: { id: playerId },
-    select: { currentCountry: true, money: true },
+    select: { currentCountry: true, money: true, preferredLanguage: true },
   });
 
   if (!attacker) {
@@ -1050,6 +1085,24 @@ export async function attemptHit(
       await createMurderCaseForVictim(victimId, playerId, hitId);
     } catch (error) {
       console.error('[Hitlist] Failed to create murder case notification:', error);
+    }
+
+    try {
+      const victim = await prisma.player.findUnique({
+        where: { id: victimId },
+        select: { username: true },
+      });
+      if (victim) {
+        const killerLang: 'nl' | 'en' = attacker.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+        const senderName = killerLang === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau';
+        await directMessageService.sendSystemMessage(
+          playerId,
+          buildKillerSuccessMessage(killerLang, victim.username, bounty, lootSummary),
+          { senderName, sendPush: true },
+        );
+      }
+    } catch (error) {
+      console.error('[Hitlist] Failed to send killer loot notification:', error);
     }
 
     return {
