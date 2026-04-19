@@ -90,11 +90,28 @@ app.use(express.urlencoded({ extended: true }));
 const clientBuildPath = path.join(__dirname, '../../client/build/web');
 app.use(express.static(clientBuildPath));
 
+const configuredImageLibraryPath = (process.env.IMAGE_LIBRARY_ROOT_PATH || '').trim();
 const dockerClientImagesPath = '/client/images';
 const localClientImagesPath = path.join(__dirname, '../../client/images');
-const clientImagesPath = fs.existsSync(dockerClientImagesPath)
-  ? dockerClientImagesPath
-  : localClientImagesPath;
+const clientImagePathCandidates = [
+  configuredImageLibraryPath,
+  dockerClientImagesPath,
+  localClientImagesPath,
+  path.join(process.cwd(), 'client/images'),
+  path.join(process.cwd(), '../client/images'),
+  path.join(process.cwd(), '../../client/images'),
+].filter((candidate) => Boolean(candidate));
+
+const clientImagesPath =
+  clientImagePathCandidates.find((candidate) => fs.existsSync(candidate)) || localClientImagesPath;
+
+if (configuredImageLibraryPath && clientImagesPath !== configuredImageLibraryPath) {
+  console.warn(
+    `[App] IMAGE_LIBRARY_ROOT_PATH is configured but not found: ${configuredImageLibraryPath}. Falling back to: ${clientImagesPath}`,
+  );
+}
+
+console.log(`[App] Serving /assets/images from: ${clientImagesPath}`);
 
 app.use('/assets/images', express.static(clientImagesPath));
 
