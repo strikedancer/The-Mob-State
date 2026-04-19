@@ -219,7 +219,7 @@ function buildMurderCaseNotification(
     return [
       'Moordlijst melding',
       `${victimUsername}, je bent zojuist vermoord via de moordlijst.`,
-      'Je accountprogress is hard gereset: je begint opnieuw vanaf basisstatus.',
+      'Je accountprogress is hard gereset naar basisstatus, maar je banktegoed en crew-leiderschap blijven behouden.',
       'Je kunt binnen 24 uur een detective-onderzoek starten via de knop in dit bericht.',
       'Detective Bureau stuurt daarna een nieuw rapport en kan de moordenaar mogelijk identificeren.',
       marker,
@@ -229,7 +229,7 @@ function buildMurderCaseNotification(
   return [
     'Hitlist notice',
     `${victimUsername}, you were just killed through the hitlist.`,
-    'Your account progress was hard-reset: you are starting over from baseline status.',
+    'Your account progress was hard-reset to baseline status, but your bank balance and crew leadership are preserved.',
     'You can start a detective investigation within 24 hours using the button in this message.',
     'Detective Bureau will then send a follow-up report and may identify the killer.',
     marker,
@@ -237,6 +237,12 @@ function buildMurderCaseNotification(
 }
 
 async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number): Promise<void> {
+  const crewMembership = await tx.crewMember.findUnique({
+    where: { playerId },
+    select: { crewId: true, role: true },
+  });
+  const wasCrewLeader = crewMembership?.role === 'leader';
+
   await tx.actionCooldown.deleteMany({ where: { playerId } });
   await tx.crimeAttempt.deleteMany({ where: { playerId } });
   await tx.jobAttempt.deleteMany({ where: { playerId } });
@@ -256,7 +262,6 @@ async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number)
   await tx.crypto_holdings.deleteMany({ where: { player_id: playerId } });
   await tx.crypto_mission_progress.deleteMany({ where: { player_id: playerId } });
   await tx.crypto_leaderboard_rewards.deleteMany({ where: { player_id: playerId } });
-  await tx.bankAccount.updateMany({ where: { playerId }, data: { balance: 0 } });
   await tx.playerBackpack.deleteMany({ where: { playerId } }).catch(() => undefined);
   await tx.playerSelectedVehicle.deleteMany({ where: { playerId } }).catch(() => undefined);
 
@@ -293,6 +298,22 @@ async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number)
       lastDrugActionAt: null,
     },
   });
+
+  // Keep crew ownership stable for leaders so crew systems do not orphan or break.
+  if (wasCrewLeader && crewMembership) {
+    await tx.crewMember.upsert({
+      where: { playerId },
+      update: {
+        crewId: crewMembership.crewId,
+        role: 'leader',
+      },
+      create: {
+        playerId,
+        crewId: crewMembership.crewId,
+        role: 'leader',
+      },
+    });
+  }
 }
 
 function buildMurderCaseReport(
