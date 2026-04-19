@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Admin dashboard info-kaarten verder leesbaar gemaakt: alerts en status-infoblokken hebben nu expliciete hover/focus contraststates en badges met sterkere tekstcontrast zodat kerninfo ook in dark mode en op lagere helderheid direct leesbaar blijft
+  - Bestanden: `admin/src/App.css`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Drugs faciliteiten apparatuur-afbeeldingen voorbereid voor Leonardo + externe hosting: apparatuur-rijen renderen nu image-first via `DRUG_FACILITY_IMAGE_BASE_URL` (met icon-fallback), inclusief one-shot generator-script en upload/runbook met 15 vaste bestandsnamen onder de client runtime image-route `/images/facilities/equipment`
   - Bestanden: `client/lib/config/app_config.dart`, `client/lib/screens/drug_facility_screen.dart`, `backend/scripts/generate_drug_facility_equipment_images_leonardo.py`, `docs/operations/DRUG_FACILITY_EQUIPMENT_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Client nginx serveert nu ook compatibiliteitsroute voor oudere drugs image-URLs: cached of nog niet ververste web builds die nog `/game-assets/facilities/...` gebruiken krijgen dezelfde runtime-mounted equipment images terug, zodat avatars niet leeg blijven tijdens rollout/cache-overgang
