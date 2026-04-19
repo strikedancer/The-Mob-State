@@ -154,6 +154,7 @@ flutter:
     - assets/images/ui/
     - assets/images/vehicles/
     - assets/images/weapons/
+    - assets/images/maps/
     - assets/videos/
     - assets/videos/garage/
     - assets/videos/marina/
