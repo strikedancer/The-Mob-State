@@ -16,6 +16,7 @@
   - `client/lib/screens/dashboard_screen.dart` — expliciet sidebar-icoon voor Territory (`Icons.public_rounded`)
   - `client/assets/images/maps/cafuego-Nederland.svg` — NL kaart asset gekoppeld aan Territory
   - `client/lib/screens/territory_screen.dart` — SVG kaart render + dynamische inkleuring per `svgElementId` op basis van ownership/contest status
+  - `client/lib/screens/territory_screen.dart` — kaart-legend met crew-naam ↔ kleur voor snelle interpretatie van ownership op desktop/tablet/mobiel
 - Bug fixes: ✅
   - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)

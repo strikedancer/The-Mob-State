@@ -124,6 +124,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       return '#D1D5DB';
     }
 
+    return _hexColorForCrewId(crewId);
+  }
+
+  String _hexColorForCrewId(int crewId) {
+
     final palette = <String>[
       '#2563EB',
       '#059669',
@@ -137,6 +142,71 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       '#0F766E',
     ];
     return palette[crewId.abs() % palette.length];
+  }
+
+  Color _colorFromHex(String hex) {
+    final normalized = hex.replaceFirst('#', '').trim();
+    if (normalized.length != 6) return Colors.grey;
+    final value = int.tryParse(normalized, radix: 16);
+    if (value == null) return Colors.grey;
+    return Color(0xFF000000 | value);
+  }
+
+  List<_TerritoryLegendEntry> _buildLegendEntries(List<dynamic> regions) {
+    final crewLegendById = <int, _TerritoryLegendEntry>{};
+
+    for (final rawRegion in regions) {
+      if (rawRegion is! Map<String, dynamic>) continue;
+      final ownerCrewIdRaw = rawRegion['ownerCrewId'];
+      final ownerCrewName = (rawRegion['ownerCrewName'] as String?)?.trim();
+      if (ownerCrewIdRaw == null || ownerCrewName == null || ownerCrewName.isEmpty) {
+        continue;
+      }
+
+      final ownerCrewId = ownerCrewIdRaw is num
+          ? ownerCrewIdRaw.toInt()
+          : int.tryParse(ownerCrewIdRaw.toString());
+      if (ownerCrewId == null || crewLegendById.containsKey(ownerCrewId)) {
+        continue;
+      }
+
+      crewLegendById[ownerCrewId] = _TerritoryLegendEntry(
+        label: ownerCrewName,
+        colorHex: _hexColorForCrewId(ownerCrewId),
+      );
+    }
+
+    final crewEntries = crewLegendById.values.toList()
+      ..sort((a, b) => a.label.toLowerCase().compareTo(b.label.toLowerCase()));
+
+    return <_TerritoryLegendEntry>[
+      _TerritoryLegendEntry(label: _t('In strijd', 'Under contest'), colorHex: '#F59E0B'),
+      _TerritoryLegendEntry(label: _t('Neutraal', 'Neutral'), colorHex: '#D1D5DB'),
+      ...crewEntries,
+    ];
+  }
+
+  Widget _buildLegendChip(_TerritoryLegendEntry entry) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.45)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(color: _colorFromHex(entry.colorHex), shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 6),
+          Text(entry.label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        ],
+      ),
+    );
   }
 
   String _applyFillToElement(String svg, String elementId, String fillHex) {
@@ -307,6 +377,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     if (svgMarkup == null || svgMarkup.isEmpty) {
       return const SizedBox.shrink();
     }
+    final legendEntries = _buildLegendEntries(regions);
 
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
@@ -336,6 +407,17 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                 'Region colors show ownership; orange = active contest.',
               ),
               style: TextStyle(color: Colors.grey[600], fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _t('Legenda', 'Legend'),
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: legendEntries.map(_buildLegendChip).toList(growable: false),
             ),
           ],
         ),
@@ -671,4 +753,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       );
     }
   }
+}
+
+class _TerritoryLegendEntry {
+  const _TerritoryLegendEntry({required this.label, required this.colorHex});
+
+  final String label;
+  final String colorHex;
 }
