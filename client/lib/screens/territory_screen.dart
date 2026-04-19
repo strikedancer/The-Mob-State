@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:path_drawing/path_drawing.dart';
 
 import '../services/territory_service.dart';
 import '../utils/top_right_notification.dart';
@@ -54,6 +57,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   String _selectedCountryCode = 'nl';
   String? _svgTemplate;
   String? _renderedSvgMap;
+  Rect? _svgViewBox;
+  List<_SvgRegionShape> _svgRegionShapes = const [];
+  String? _mapTooltipLabel;
+  Offset? _mapTooltipOffset;
+  Timer? _mapTooltipTimer;
 
   // ── Selection ─────────────────────────────────────────────────────────────
   Map<String, dynamic>? _selectedRegion;
@@ -74,6 +82,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
   @override
   void dispose() {
+    _mapTooltipTimer?.cancel();
     _tabController.dispose();
     super.dispose();
   }
@@ -112,6 +121,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final resolvedCountryCode = (mapCountry?['countryCode'] as String?)?.toLowerCase() ?? targetCountryCode;
     final svgAssetKey = mapCountry?['svgAssetKey'] as String?;
     final svgTemplate = await _loadSvgTemplateForCountry(resolvedCountryCode, svgAssetKey);
+    final parsedSvg = _parseSvgMap(svgTemplate);
 
     if (!mounted) return;
     setState(() {
@@ -122,6 +132,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _leaderboard = leaderboard as List<dynamic>;
       _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
       _svgTemplate = svgTemplate;
+      _svgViewBox = parsedSvg?.viewBox;
+      _svgRegionShapes = parsedSvg?.shapes ?? const [];
+      _mapTooltipLabel = null;
+      _mapTooltipOffset = null;
       _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
       _isLoading = false;
     });
@@ -171,6 +185,127 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       return label.trim();
     }
     return (country['countryCode'] as String?)?.toUpperCase() ?? _selectedCountryCode.toUpperCase();
+  }
+
+  _SvgMapParseResult? _parseSvgMap(String? svg) {
+    if (svg == null || svg.isEmpty) return null;
+
+    final viewBoxMatch = RegExp(
+      'viewBox="([^"]+)"',
+      caseSensitive: false,
+      dotAll: true,
+    ).firstMatch(svg);
+    if (viewBoxMatch == null) return null;
+
+    final viewBoxParts = viewBoxMatch
+        .group(1)
+        ?.trim()
+        .split(RegExp(r'\s+'))
+        .map((part) => double.tryParse(part))
+        .toList();
+    if (viewBoxParts == null || viewBoxParts.length != 4 || viewBoxParts.any((v) => v == null)) {
+      return null;
+    }
+
+    final minX = viewBoxParts[0]!;
+    final minY = viewBoxParts[1]!;
+    final width = viewBoxParts[2]!;
+    final height = viewBoxParts[3]!;
+    if (width <= 0 || height <= 0) return null;
+
+    final pathTagRegex = RegExp(r'<path\b[^>]*>', caseSensitive: false, dotAll: true);
+    final shapes = <_SvgRegionShape>[];
+
+    for (final match in pathTagRegex.allMatches(svg)) {
+      final tag = match.group(0);
+      if (tag == null) continue;
+
+      final id = _extractSvgAttr(tag, 'id');
+      final d = _extractSvgAttr(tag, 'd');
+      if (id == null || id.trim().isEmpty || d == null || d.trim().isEmpty) continue;
+
+      final name = _extractSvgAttr(tag, 'data-name')?.trim();
+
+      try {
+        final path = parseSvgPathData(d);
+        shapes.add(_SvgRegionShape(id: id.trim(), name: name, path: path));
+      } catch (_) {
+        // Ignore malformed individual paths and continue.
+      }
+    }
+
+    if (shapes.isEmpty) return null;
+    return _SvgMapParseResult(viewBox: Rect.fromLTWH(minX, minY, width, height), shapes: shapes);
+  }
+
+  String? _extractSvgAttr(String tag, String attr) {
+    final regex = RegExp('$attr="([^"]*)"', caseSensitive: false, dotAll: true);
+    return regex.firstMatch(tag)?.group(1);
+  }
+
+  Offset? _localToSvgPoint({
+    required Offset local,
+    required Size renderSize,
+    required Rect viewBox,
+  }) {
+    final fitted = applyBoxFit(BoxFit.contain, viewBox.size, renderSize);
+    final destination = Alignment.center.inscribe(fitted.destination, Offset.zero & renderSize);
+    if (!destination.contains(local) || destination.width <= 0 || destination.height <= 0) {
+      return null;
+    }
+
+    final dx = (local.dx - destination.left) / destination.width;
+    final dy = (local.dy - destination.top) / destination.height;
+    return Offset(viewBox.left + (dx * viewBox.width), viewBox.top + (dy * viewBox.height));
+  }
+
+  void _handleMapTap(TapDownDetails details, Size renderSize, List<dynamic> regions) {
+    final viewBox = _svgViewBox;
+    if (viewBox == null || _svgRegionShapes.isEmpty) return;
+
+    final svgPoint = _localToSvgPoint(local: details.localPosition, renderSize: renderSize, viewBox: viewBox);
+    if (svgPoint == null) return;
+
+    final shapes = _svgRegionShapes;
+    _SvgRegionShape? hit;
+    for (var i = shapes.length - 1; i >= 0; i--) {
+      if (shapes[i].path.contains(svgPoint)) {
+        hit = shapes[i];
+        break;
+      }
+    }
+    if (hit == null) return;
+
+    final matchedRegion = regions
+        .whereType<Map<String, dynamic>>()
+        .cast<Map<String, dynamic>?>()
+        .firstWhere(
+          (region) => (region?['svgElementId'] as String?)?.trim().toLowerCase() == hit!.id.toLowerCase(),
+          orElse: () => null,
+        );
+
+    final regionName = matchedRegion != null
+        ? (_isNl
+            ? (matchedRegion['nameNl'] as String? ?? matchedRegion['regionKey'] as String? ?? hit.name ?? hit.id)
+            : (matchedRegion['nameEn'] as String? ?? matchedRegion['regionKey'] as String? ?? hit.name ?? hit.id))
+        : (hit.name ?? hit.id);
+
+    _mapTooltipTimer?.cancel();
+    setState(() {
+      if (matchedRegion != null) {
+        _selectedRegion = matchedRegion;
+      }
+      _mapTooltipLabel = regionName;
+      _mapTooltipOffset = details.localPosition;
+    });
+
+    _mapTooltipTimer = Timer(const Duration(seconds: 2), () {
+      if (!mounted) return;
+      setState(() {
+        _mapTooltipLabel = null;
+        _mapTooltipOffset = null;
+      });
+    });
   }
 
   String? _renderSvgWithOwnership(List<dynamic> regions) {
@@ -415,7 +550,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
               const VerticalDivider(width: 1),
               SizedBox(
                 width: 320,
-                child: _selectedRegion != null ? _buildRegionDetail(_selectedRegion!) : _buildNoSelectionPlaceholder(),
+                child: SingleChildScrollView(
+                  child: _selectedRegion != null
+                      ? _buildRegionDetail(_selectedRegion!)
+                      : _buildNoSelectionPlaceholder(),
+                ),
               ),
             ],
           );
@@ -427,7 +566,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
               _buildSvgMapOverview(regions),
               const SizedBox(height: 8),
               Expanded(child: _buildRegionGrid(regions)),
-              if (_selectedRegion != null) SizedBox(height: 280, child: _buildRegionDetail(_selectedRegion!)),
+              if (_selectedRegion != null)
+                SizedBox(
+                  height: 320,
+                  child: SingleChildScrollView(child: _buildRegionDetail(_selectedRegion!)),
+                ),
             ],
           );
         }
@@ -496,13 +639,58 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              height: 220,
-              width: double.infinity,
-              child: SvgPicture.string(
-                svgMarkup,
-                fit: BoxFit.contain,
-                placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final maxWidth = constraints.maxWidth;
+                final mapHeight = maxWidth >= 900
+                    ? 420.0
+                    : (maxWidth >= 600 ? 340.0 : 300.0);
+
+                return SizedBox(
+                  height: mapHeight,
+                  width: double.infinity,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTapDown: (details) => _handleMapTap(details, Size(maxWidth, mapHeight), regions),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: SvgPicture.string(
+                            svgMarkup,
+                            fit: BoxFit.contain,
+                            placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
+                          ),
+                        ),
+                        if (_mapTooltipLabel != null && _mapTooltipOffset != null)
+                          Positioned(
+                            left: (_mapTooltipOffset!.dx + 10).clamp(8, maxWidth - 180),
+                            top: (_mapTooltipOffset!.dy - 36).clamp(8, mapHeight - 32),
+                            child: Container(
+                              constraints: const BoxConstraints(maxWidth: 170),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Colors.black87,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                _mapTooltipLabel!,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _t(
+                'Klik op een gebied voor details; oranje = actieve contest.',
+                'Tap a region for details; orange = active contest.',
               ),
             ),
             const SizedBox(height: 8),

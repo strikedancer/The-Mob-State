@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
+- [ ] Territory map UX verbeterd voor live gebruik: kaartweergave is vergroot, regio's zijn nu direct klikbaar op de SVG (path hit-test op `svgElementId`) en tonen een tooltip met gebiedsnaam; geselecteerde regio opent meteen detailpaneel, en detail-content is scrollbaar gemaakt op desktop/tablet layouts
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `client/pubspec.yaml`, `client/pubspec.lock`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory NL asset source gecorrigeerd: Nederland gebruikt nu direct `netherlandsLow.svg` (backend `svgAssetKey` + frontend fallback) in plaats van de legacy `cafuego-Nederland` alias
   - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory multi-country SVG batch verwerkt: alle aangeleverde landenkaarten uit de root dropzone zijn gekopieerd naar `client/assets/images/maps`, `cafuego-Nederland.svg` is vervangen door de nieuwe NL SVG (`netherlandsLow.svg` als source), en Territory UI laadt nu land-specifieke map-assets dynamisch op basis van backend `country.svgAssetKey` met fallback per country-code

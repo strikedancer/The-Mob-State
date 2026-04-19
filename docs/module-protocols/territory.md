@@ -22,6 +22,7 @@
   - `client/lib/screens/territory_screen.dart` — map asset loading nu dynamisch per land via `country.svgAssetKey` met country-code fallback en country selector in de appbar
   - `backend/src/startup/ensureTerritorySchema.ts` — country seed uitgebreid zodat meerdere landen direct zichtbaar zijn via `/territory/countries`
   - NL correctie: Nederland gebruikt nu primair `netherlandsLow.svg` (backend `svgAssetKey = netherlandsLow` + frontend NL fallback naar `netherlandsLow.svg`)
+  - Interactieve map UX: de Territory SVG is vergroot, regio-paden zijn direct klikbaar via path hit-testing op `svgElementId`, tonen een tooltip met gebiedsnaam en openen meteen het detailpaneel; detail-content blijft scrollbaar op desktop/tablet
 - Bug fixes: ✅
   - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
