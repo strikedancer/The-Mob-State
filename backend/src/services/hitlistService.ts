@@ -15,6 +15,8 @@ import path from 'path';
 const BODYGUARD_DAILY_UPKEEP = 10000;
 const BODYGUARD_DEFENSE = 10;
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
+const HIT_LOOT_CASH_SHARE = 0.6;
+const HIT_LOOT_ITEM_SHARE = 0.5;
 
 interface SecurityArmorDefinition {
   id: string;
@@ -46,6 +48,177 @@ interface HitListItem {
   createdAt: Date;
   completedAt?: Date;
   completedBy?: number;
+}
+
+interface HitLootSummary {
+  cashTaken: number;
+  cashAwarded: number;
+  itemsTaken: number;
+  itemsAwarded: number;
+}
+
+function calculateLootAmount(quantity: number, share: number): number {
+  if (quantity <= 0) return 0;
+  return Math.max(1, Math.floor(quantity * share));
+}
+
+async function transferHitLoot(
+  tx: any,
+  killerId: number,
+  victimId: number,
+): Promise<HitLootSummary> {
+  const summary: HitLootSummary = {
+    cashTaken: 0,
+    cashAwarded: 0,
+    itemsTaken: 0,
+    itemsAwarded: 0,
+  };
+
+  const victim = await tx.player.findUnique({
+    where: { id: victimId },
+    select: { money: true },
+  });
+
+  const victimCash = Math.max(0, Number(victim?.money || 0));
+  summary.cashTaken = victimCash;
+  summary.cashAwarded = Math.floor(victimCash * HIT_LOOT_CASH_SHARE);
+
+  const victimGoods = await tx.inventory.findMany({
+    where: { playerId: victimId, quantity: { gt: 0 } },
+  });
+  for (const row of victimGoods) {
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    summary.itemsTaken += Number(row.quantity || 0);
+    summary.itemsAwarded += transferQty;
+    if (transferQty > 0) {
+      await tx.inventory.upsert({
+        where: {
+          playerId_goodType: {
+            playerId: killerId,
+            goodType: row.goodType,
+          },
+        },
+        update: {
+          quantity: { increment: transferQty },
+        },
+        create: {
+          playerId: killerId,
+          goodType: row.goodType,
+          quantity: transferQty,
+          condition: row.condition,
+          purchasePrice: row.purchasePrice,
+        },
+      });
+    }
+  }
+  if (victimGoods.length > 0) {
+    await tx.inventory.deleteMany({ where: { playerId: victimId } });
+  }
+
+  const victimAmmo = await tx.ammoInventory.findMany({
+    where: { playerId: victimId, quantity: { gt: 0 } },
+  });
+  for (const row of victimAmmo) {
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    summary.itemsTaken += Number(row.quantity || 0);
+    summary.itemsAwarded += transferQty;
+    if (transferQty > 0) {
+      await tx.ammoInventory.upsert({
+        where: {
+          playerId_ammoType: {
+            playerId: killerId,
+            ammoType: row.ammoType,
+          },
+        },
+        update: {
+          quantity: { increment: transferQty },
+          quality: Math.max(Number(row.quality || 1), 1),
+        },
+        create: {
+          playerId: killerId,
+          ammoType: row.ammoType,
+          quantity: transferQty,
+          quality: row.quality,
+        },
+      });
+    }
+  }
+  if (victimAmmo.length > 0) {
+    await tx.ammoInventory.deleteMany({ where: { playerId: victimId } });
+  }
+
+  const victimWeapons = await tx.weaponInventory.findMany({
+    where: { playerId: victimId, quantity: { gt: 0 } },
+  });
+  for (const row of victimWeapons) {
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    summary.itemsTaken += Number(row.quantity || 0);
+    summary.itemsAwarded += transferQty;
+    if (transferQty > 0) {
+      await tx.weaponInventory.upsert({
+        where: {
+          playerId_weaponId: {
+            playerId: killerId,
+            weaponId: row.weaponId,
+          },
+        },
+        update: {
+          quantity: { increment: transferQty },
+          condition: Math.max(1, Number(row.condition || 1)),
+        },
+        create: {
+          playerId: killerId,
+          weaponId: row.weaponId,
+          quantity: transferQty,
+          condition: row.condition,
+        },
+      });
+    }
+  }
+  if (victimWeapons.length > 0) {
+    await tx.weaponInventory.deleteMany({ where: { playerId: victimId } });
+  }
+
+  const victimTools = await tx.playerTools.findMany({
+    where: { playerId: victimId, location: 'carried', quantity: { gt: 0 } },
+  });
+  for (const row of victimTools) {
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    summary.itemsTaken += Number(row.quantity || 0);
+    summary.itemsAwarded += transferQty;
+    if (transferQty > 0) {
+      const existingTool = await tx.playerTools.findFirst({
+        where: {
+          playerId: killerId,
+          toolId: row.toolId,
+          location: 'carried',
+          durability: row.durability,
+        },
+      });
+
+      if (existingTool) {
+        await tx.playerTools.update({
+          where: { id: existingTool.id },
+          data: { quantity: { increment: transferQty } },
+        });
+      } else {
+        await tx.playerTools.create({
+          data: {
+            playerId: killerId,
+            toolId: row.toolId,
+            durability: row.durability,
+            location: 'carried',
+            quantity: transferQty,
+          },
+        });
+      }
+    }
+  }
+  if (victimTools.length > 0) {
+    await tx.playerTools.deleteMany({ where: { playerId: victimId, location: 'carried' } });
+  }
+
+  return summary;
 }
 
 function loadArmorDefinitions(): SecurityArmorDefinition[] {
@@ -492,6 +665,14 @@ export async function attemptHit(
   });
 
   if (attackerWins) {
+    const victimId = isCounterReversal ? hit.placedById : hit.targetId;
+    let lootSummary: HitLootSummary = {
+      cashTaken: 0,
+      cashAwarded: 0,
+      itemsTaken: 0,
+      itemsAwarded: 0,
+    };
+
     await prisma.$transaction(async (tx) => {
       if (ammoInventoryId != null) {
         await tx.ammoInventory.update({
@@ -502,10 +683,12 @@ export async function attemptHit(
 
       await applyArmorWearInTransaction(tx, targetSecurity, armorConditionLoss);
 
+      lootSummary = await transferHitLoot(tx, playerId, victimId);
+
       await tx.player.update({
         where: { id: playerId },
         data: {
-          money: attacker.money + bounty,
+          money: attacker.money + bounty + lootSummary.cashAwarded,
           killCount: { increment: 1 },
         },
       });
@@ -513,12 +696,18 @@ export async function attemptHit(
       if (isCounterReversal) {
         await tx.player.update({
           where: { id: hit.placedById },
-          data: { health: 0, isHunted: true },
+          data: { health: 0, isHunted: true, money: 0, inventory_slots_used: 0 },
         });
       } else {
         await tx.player.update({
           where: { id: hit.targetId },
-          data: { health: 0, isHunted: false, hitCount: { increment: 1 } },
+          data: {
+            health: 0,
+            isHunted: false,
+            hitCount: { increment: 1 },
+            money: 0,
+            inventory_slots_used: 0,
+          },
         });
       }
 
@@ -540,6 +729,7 @@ export async function attemptHit(
       success: true,
       winner: playerId,
       bountyPaid: bounty,
+      loot: lootSummary,
       message: `Hit completed! ${playerId} won €${bounty}`,
     };
   }

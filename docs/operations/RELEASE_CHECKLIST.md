@@ -43,6 +43,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Hitlist loot-mechaniek toegevoegd: bij succesvolle moord verliest het slachtoffer al het contante geld en alle gedragen inventory (goods, ammo, weapons, carried tools), terwijl de aanvaller naast bounty ook een deel van cash en items als buit ontvangt; resultaatmelding toont nu ontvangen buit in NL/EN
+  - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/screens/hitlist_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist runtime crash op moord-uitvoering opgelost: `weaponService` miste default export terwijl hitlist-service die als default importeerde, waardoor `getWeaponDefinition` op `undefined` werd aangeroepen; default export hersteld zodat gedeelde combat resolvers weer stabiel laden
   - Bestanden: `backend/src/services/weaponService.ts`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moordflow Prisma-validatiefout opgelost: backend selecteerde nog legacy `player.weapon` in target-query tijdens `/hitlist/attempt/:hitId`, wat runtime `PrismaClientValidationError` gaf; target weapon defense wordt nu schema-veilig bepaald via geselecteerd crime weapon i.p.v. niet-bestaand spelerkolomveld

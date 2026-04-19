@@ -762,7 +762,16 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
 
       if (data['success'] == true) {
         if (mounted) {
-          final msg = l10n.hitExecuted;
+          String msg = l10n.hitExecuted;
+          if (data['loot'] is Map) {
+            final loot = data['loot'] as Map;
+            final cashAwarded = _asInt(loot['cashAwarded'], fallback: 0);
+            final itemsAwarded = _asInt(loot['itemsAwarded'], fallback: 0);
+            msg = t(
+              'Moord succesvol! Bounty + buit ontvangen: cash €$cashAwarded, gedragen items $itemsAwarded.',
+              'Hit successful! Bounty + loot received: cash €$cashAwarded, carried items $itemsAwarded.',
+            );
+          }
           showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
         }
         widget.onComplete();
