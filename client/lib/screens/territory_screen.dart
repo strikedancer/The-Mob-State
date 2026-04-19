@@ -1055,3 +1055,18 @@ class _TerritoryLegendEntry {
   final String label;
   final String colorHex;
 }
+
+class _SvgMapParseResult {
+  const _SvgMapParseResult({required this.viewBox, required this.shapes});
+
+  final Rect viewBox;
+  final List<_SvgRegionShape> shapes;
+}
+
+class _SvgRegionShape {
+  const _SvgRegionShape({required this.id, required this.name, required this.path});
+
+  final String id;
+  final String? name;
+  final Path path;
+}

@@ -26,6 +26,7 @@
   - Zuid-Afrika toegevoegd aan de asset/country set: `za` is nu gekoppeld aan `southAfricaLow.svg` (backend seed + frontend fallback)
 - Bug fixes: ✅
   - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
+  - Territory web buildfix: ontbrekende interactieve SVG helpertypes (`_SvgMapParseResult`, `_SvgRegionShape`) toegevoegd zodat compile op web release/Docker niet faalt
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 

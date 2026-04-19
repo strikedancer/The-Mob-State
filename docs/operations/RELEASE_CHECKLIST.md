@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
+- [ ] Territory buildfix voor interactieve SVG map: ontbrekende private helpertypes (`_SvgMapParseResult`, `_SvgRegionShape`) toegevoegd zodat de nieuwe klikbare kaart en tooltip-flow weer compileert in Docker/web release builds
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory SVG pool uitgebreid met Zuid-Afrika: `southAfricaLow.svg` is vanuit de root dropzone naar de game maps-map gekopieerd en country fallback mapping bevat nu ook `za`, zodat de kaart direct als asset kan laden in Territory
   - Bestanden: `client/assets/images/maps/southAfricaLow.svg`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory map UX verbeterd voor live gebruik: kaartweergave is vergroot, regio's zijn nu direct klikbaar op de SVG (path hit-test op `svgElementId`) en tonen een tooltip met gebiedsnaam; geselecteerde regio opent meteen detailpaneel, en detail-content is scrollbaar gemaakt op desktop/tablet layouts
