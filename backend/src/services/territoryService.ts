@@ -43,7 +43,7 @@ async function getTerritoryConfig() {
   ];
   const cfg = await getRuntimeConfig(keys);
   return {
-    enabled: cfg['TERRITORY_ENABLED'] === '1',
+    enabled: true,
     contestPrepMinutes: Number(cfg['TERRITORY_CONTEST_PREP_MINUTES'] ?? 30),
     contestActiveMinutes: Number(cfg['TERRITORY_CONTEST_ACTIVE_MINUTES'] ?? 120),
     contestLockdownMinutes: Number(cfg['TERRITORY_CONTEST_LOCKDOWN_MINUTES'] ?? 15),

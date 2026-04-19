@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 
 /// Widget shown when player is in jail

@@ -6,7 +6,7 @@ import prisma from '../lib/prisma';
 // ---------------------------------------------------------------------------
 
 const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
-  TERRITORY_ENABLED: '0',
+  TERRITORY_ENABLED: '1',
   TERRITORY_DEFAULT_COUNTRY: 'nl',
   TERRITORY_CONTEST_PREP_MINUTES: '30',
   TERRITORY_CONTEST_ACTIVE_MINUTES: '120',
@@ -44,6 +44,13 @@ async function seedRuntimeConfigDefaults(): Promise<void> {
       value,
     );
   }
+
+  // Territory must stay enabled in all environments.
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO runtime_config (configKey, configValue)
+     VALUES ('TERRITORY_ENABLED', '1')
+     ON DUPLICATE KEY UPDATE configValue = '1'`,
+  );
 }
 
 export async function ensureTerritorySchema(): Promise<void> {
@@ -188,8 +195,8 @@ export async function ensureTerritorySchema(): Promise<void> {
   // ── Seed NL country ───────────────────────────────────────────────────────
   await prisma.$executeRawUnsafe(`
     INSERT INTO territory_countries (countryCode, displayNameNl, displayNameEn, svgAssetKey, enabled)
-    VALUES ('nl', 'Nederland', 'Netherlands', 'cafuego-Nederland', 0)
-    ON DUPLICATE KEY UPDATE countryCode = countryCode
+    VALUES ('nl', 'Nederland', 'Netherlands', 'cafuego-Nederland', 1)
+    ON DUPLICATE KEY UPDATE enabled = 1
   `);
 
   // ── Seed NL provinces ─────────────────────────────────────────────────────

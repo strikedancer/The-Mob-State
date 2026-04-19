@@ -99,8 +99,11 @@ Scope-afbakening:
 ## Runtime Settings (Admin-Only, Database)
 Gebruik `runtime_config` (via admin config API) voor alle territory tuning.
 
+Always-on regel:
+- `TERRITORY_ENABLED` blijft forceren op `1` (startup seed + runtime guard) en wordt niet gebruikt als schakelaar om territory uit te zetten.
+
 Verplichte keys:
-- `TERRITORY_ENABLED` (`0`/`1`)
+- `TERRITORY_ENABLED` (forced `1`)
 - `TERRITORY_DEFAULT_COUNTRY` (bv. `nl`)
 - `TERRITORY_CONTEST_PREP_MINUTES`
 - `TERRITORY_CONTEST_ACTIVE_MINUTES`
