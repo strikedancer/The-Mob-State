@@ -365,21 +365,72 @@
   border-radius: 0.75rem;
   padding: 0.75rem 0.9rem;
   border: 1px solid transparent;
+  color: var(--bs-emphasis-color, #1f2937);
+}
+
+.dashboard-alert .small {
+  color: inherit;
+  opacity: 0.92;
 }
 
 .dashboard-alert-danger {
   background: color-mix(in srgb, var(--bs-danger-bg-subtle, #fee2e2), white 25%);
   border-color: color-mix(in srgb, var(--bs-danger), transparent 65%);
+  color: #7f1d1d;
 }
 
 .dashboard-alert-warning {
   background: color-mix(in srgb, var(--bs-warning-bg-subtle, #fef3c7), white 25%);
   border-color: color-mix(in srgb, var(--bs-warning), transparent 65%);
+  color: #7c2d12;
 }
 
 .dashboard-alert-info {
   background: color-mix(in srgb, var(--bs-info-bg-subtle, #dbeafe), white 25%);
   border-color: color-mix(in srgb, var(--bs-info), transparent 65%);
+  color: #0c4a6e;
+}
+
+.dashboard-live-badge {
+  background: #e2e8f0;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.dashboard-updated-badge {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+[data-color-theme='dark'] .dashboard-alert-danger {
+  background: #3b1317;
+  border-color: #7f1d1d;
+  color: #fecaca;
+}
+
+[data-color-theme='dark'] .dashboard-alert-warning {
+  background: #3a2a12;
+  border-color: #a16207;
+  color: #fde68a;
+}
+
+[data-color-theme='dark'] .dashboard-alert-info {
+  background: #132f44;
+  border-color: #1d4e73;
+  color: #d8efff;
+}
+
+[data-color-theme='dark'] .dashboard-live-badge {
+  background: #263244;
+  color: #e5ecf6;
+  border-color: #3f4f65;
+}
+
+[data-color-theme='dark'] .dashboard-updated-badge {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
 }
 
 .dashboard-quick-stats {

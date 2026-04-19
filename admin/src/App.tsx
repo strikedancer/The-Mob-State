@@ -3245,8 +3245,8 @@ function App() {
             <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
               <h1 className="mb-0">{t.dashboardTitle}</h1>
               <div className="d-flex align-items-center gap-2 flex-wrap">
-                <span className="badge bg-secondary-subtle text-body border">{l('Live overzicht', 'Live overview')}</span>
-                <span className="badge bg-light text-body border">{formatDashboardUpdatedAt(dashboardLastUpdated.stats)}</span>
+                <span className="badge dashboard-live-badge">{l('Live overzicht', 'Live overview')}</span>
+                <span className="badge dashboard-updated-badge">{formatDashboardUpdatedAt(dashboardLastUpdated.stats)}</span>
               </div>
             </div>
 
