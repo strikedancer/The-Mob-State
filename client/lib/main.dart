@@ -24,6 +24,7 @@ import 'screens/achievements_screen.dart';
 import 'screens/school_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/tune_shop_screen.dart';
+import 'screens/territory_screen.dart';
 import 'widgets/mobile_web_sticky_player_header.dart';
 
 void main() async {
@@ -31,9 +32,7 @@ void main() async {
 
   // Initialize Firebase (only if not already initialized)
   try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   } catch (e) {
     // Firebase already initialized (e.g., during hot reload)
     print('[main] Firebase already initialized: $e');
@@ -49,9 +48,7 @@ class MafiaGameApp extends StatelessWidget {
     final path = Uri.base.path;
 
     if (path == '/auth/reset-password') {
-      return ResetPasswordScreen(
-        initialToken: Uri.base.queryParameters['token'],
-      );
+      return ResetPasswordScreen(initialToken: Uri.base.queryParameters['token']);
     }
 
     return const AuthWrapper();
@@ -82,25 +79,18 @@ class MafiaGameApp extends StatelessWidget {
 
           // Theme
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.red,
-              brightness: Brightness.dark,
-            ),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.red, brightness: Brightness.dark),
             useMaterial3: true,
           ),
 
           // Routes
           builder: (context, child) {
-            return MobileWebStickyPlayerHeaderShell(
-              child: child ?? const SizedBox.shrink(),
-            );
+            return MobileWebStickyPlayerHeaderShell(child: child ?? const SizedBox.shrink());
           },
           home: _resolveHome(),
           routes: {
             '/login': (context) => const LoginScreen(),
-            '/auth/reset-password': (context) => ResetPasswordScreen(
-              initialToken: Uri.base.queryParameters['token'],
-            ),
+            '/auth/reset-password': (context) => ResetPasswordScreen(initialToken: Uri.base.queryParameters['token']),
             '/dashboard': (context) => const DashboardScreen(),
             '/settings': (context) => const SettingsScreen(),
             '/inventory': (context) {
@@ -120,14 +110,13 @@ class MafiaGameApp extends StatelessWidget {
 
               return ProstitutionScreen(initialTabIndex: tabIndex);
             },
-            '/prostitution-leaderboard': (context) =>
-                const ProstitutionLeaderboardScreen(),
-            '/prostitution-rivalry': (context) =>
-                const ProstitutionRivalryScreen(),
+            '/prostitution-leaderboard': (context) => const ProstitutionLeaderboardScreen(),
+            '/prostitution-rivalry': (context) => const ProstitutionRivalryScreen(),
             '/achievements': (context) => const AchievementsScreen(),
             '/school': (context) => const SchoolScreen(),
             '/help': (context) => const HelpScreen(),
             '/tune-shop': (context) => const TuneShopScreen(),
+            '/territory': (context) => const TerritoryScreen(),
           },
         ),
       ),
@@ -158,10 +147,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
     // Load user's preferred language if authenticated
     if (authProvider.isAuthenticated) {
-      final localeProvider = Provider.of<LocaleProvider>(
-        context,
-        listen: false,
-      );
+      final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
       await localeProvider.loadLocale();
     }
   }
@@ -178,16 +164,11 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
         if (authProvider.isLoading) {
           print('[AuthWrapper-$timestamp] Showing Loading indicator');
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
 
-        if (authProvider.isAuthenticated &&
-            authProvider.currentPlayer != null) {
-          print(
-            '[AuthWrapper-$timestamp] ✅ Showing DashboardScreen for ${authProvider.currentPlayer!.username}',
-          );
+        if (authProvider.isAuthenticated && authProvider.currentPlayer != null) {
+          print('[AuthWrapper-$timestamp] ✅ Showing DashboardScreen for ${authProvider.currentPlayer!.username}');
           return const DashboardScreen();
         }
 

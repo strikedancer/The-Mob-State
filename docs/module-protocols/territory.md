@@ -8,6 +8,10 @@
   - `backend/src/app.ts` / `index.ts` — route en startup bootstrap geregistreerd
   - `client/lib/services/territory_service.dart` — Flutter API service
   - `client/lib/screens/territory_screen.dart` — responsive UI (desktop split / tablet stacked / mobiel bottom sheet)
+- Fase 2 (UI navigation): ✅ geïmplementeerd
+  - `client/lib/main.dart` — route `/territory` registered
+  - `client/lib/screens/dashboard_screen.dart` — menu item met kaart-icoon in navigatie-grid
+  - `client/lib/data/help_content.dart` — help entry met NL/EN beschrijving
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 

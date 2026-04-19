@@ -311,10 +311,8 @@ const List<HelpTopic> helpTopics = [
     icon: Icons.group,
     titleNl: 'Vrienden',
     titleEn: 'Friends',
-    summaryNl:
-        'Beheer je vriendenlijst voor snellere samenwerking, profieldoorzoeken en social feedback.',
-    summaryEn:
-        'Manage your friends list for faster coordination, profile browsing and social feedback.',
+    summaryNl: 'Beheer je vriendenlijst voor snellere samenwerking, profieldoorzoeken en social feedback.',
+    summaryEn: 'Manage your friends list for faster coordination, profile browsing and social feedback.',
     howNl: [
       'Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.',
       'Je kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.',
@@ -350,8 +348,7 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Messages',
     summaryNl:
         'Je inbox met persoonlijke berichten van andere spelers en systeemberichten over beloningen, orders en game-events.',
-    summaryEn:
-        'Your inbox with personal player messages and system messages about rewards, orders and game events.',
+    summaryEn: 'Your inbox with personal player messages and system messages about rewards, orders and game events.',
     howNl: [
       'Berichten zijn onderverdeeld in persoonlijke gesprekken en The Mob State systeemberg.',
       'Systeemberichten worden automatisch gestuurd bij: crypto trades, order fills, leaderboard uitkeringen, heist-resultaten, jail-escapes en achievement-badges.',
@@ -385,10 +382,8 @@ const List<HelpTopic> helpTopics = [
     icon: Icons.inventory,
     titleNl: 'Inventaris',
     titleEn: 'Inventory',
-    summaryNl:
-        'Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.',
-    summaryEn:
-        'Manage everything you carry, store and equip: weapons, tools, vehicles, drugs and trade goods.',
+    summaryNl: 'Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.',
+    summaryEn: 'Manage everything you carry, store and equip: weapons, tools, vehicles, drugs and trade goods.',
     howNl: [
       'Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.',
       'Gewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.',
@@ -469,8 +464,7 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Bank',
     summaryNl:
         'Zet geld op je bankrekening om rente te verdienen en cash buiten bereik van politie-confiscaties te houden.',
-    summaryEn:
-        'Deposit money to earn interest and keep cash beyond the reach of police confiscations.',
+    summaryEn: 'Deposit money to earn interest and keep cash beyond the reach of police confiscations.',
     howNl: [
       'Rente: 0.5% van je banksaldo per tick (elke 5 minuten). Voorbeeld: €10.000 op bank = €50 rente per tick = €600 per uur = €14.400 per dag.',
       'Storten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.',
@@ -588,8 +582,7 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Black Market',
     summaryNl:
         'Koop en verkoop illegale en schaarse goederen: wapens, munitie, drugs en materials die nergens anders verkrijgbaar zijn.',
-    summaryEn:
-        'Buy and sell illegal and scarce goods: weapons, ammo, drugs and materials unavailable elsewhere.',
+    summaryEn: 'Buy and sell illegal and scarce goods: weapons, ammo, drugs and materials unavailable elsewhere.',
     howNl: [
       'De zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).',
       'Prijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.',
@@ -846,8 +839,7 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Court',
     summaryNl:
         'Tijdens je straf kun je hoger beroep indienen of de rechter proberen om te kopen om sneller vrij te komen.',
-    summaryEn:
-        'During your sentence you can file an appeal or try to bribe the judge to get released sooner.',
+    summaryEn: 'During your sentence you can file an appeal or try to bribe the judge to get released sooner.',
     howNl: [
       'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.',
       'Hoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.',
@@ -1281,9 +1273,9 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Ammo Factory',
     titleEn: 'Ammo Factory',
     summaryNl:
-      'Produceer munitie voor eigen gebruik en beheer je output vanuit de fabriek. Koop en verkoop munitie verlopen via de Zwarte Markt, niet direct vanuit het factory-scherm.',
+        'Produceer munitie voor eigen gebruik en beheer je output vanuit de fabriek. Koop en verkoop munitie verlopen via de Zwarte Markt, niet direct vanuit het factory-scherm.',
     summaryEn:
-      'Produce ammunition for personal use and manage your output from the factory. Ammo buying and selling go through the Black Market, not directly from the factory screen.',
+        'Produce ammunition for personal use and manage your output from the factory. Ammo buying and selling go through the Black Market, not directly from the factory screen.',
     howNl: [
       'De ammo-factory heeft productieniveaus (Level 1 t/m 5). Hoger level = meer output per productieronde en betere kwaliteit.',
       'Je hebt grondstoffen nodig (metalen, chemicaliën) die je via de zwarte markt of handel aanschaft.',
@@ -1352,6 +1344,51 @@ const List<HelpTopic> helpTopics = [
       'Schedule long studies (60 min+) before going to sleep: you wake up with a new certificate without missing active time.',
     ],
     protocolPath: 'docs/module-protocols/school.md',
+  ),
+  HelpTopic(
+    id: 'territory',
+    categoryNl: 'Empire',
+    categoryEn: 'Empire',
+    icon: Icons.map,
+    titleNl: 'Territorium',
+    titleEn: 'Territory',
+    summaryNl:
+        'Claim en controleer geografische regio\'s voor passief inkomen en crew-prestige. Territory combineert kaartcontrol met contests en seizoenale beloningen.',
+    summaryEn:
+        'Claim and control geographical regions for passive income and crew prestige. Territory combines map control with contests and seasonal rewards.',
+    howNl: [
+      'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.',
+      'Elke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur.',
+      'Starts een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (vote).',
+      'Tijdens een actieve contest voer je acties uit (patrouille, raiding, sabotage, verdediging) om controle-punten op te bouwen tegen je tegenstander.',
+      'Contests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.',
+      'Grote regio\'s (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.',
+      'Seizoenale events geven bonus-beloningen en speciale challenges per regio\'s groep.',
+      'Prevent deathlocks: je crew kan niet dezelfde tegenstand onmiddellijk na een loss aanvallen; wacht op cooldown.',
+      'Anti-abuse checks voorkomen dat ene crew hetzelfde target keer op keer aanvalt in korte tijd.',
+    ],
+    howEn: [
+      'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.',
+      'Each region can be controlled by at most one crew at a time. Ownership grants passive income per hour.',
+      'Start a contest in an unclaimed region using the contest button. The contest progresses through preparation (prep time), active (actions), and lockdown (vote).',
+      'During an active contest you execute actions (patrol, raid, sabotage, defense) to build control points against your opponent.',
+      'Contests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.',
+      'Large regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.',
+      'Seasonal events give bonus rewards and special challenges per region group.',
+      'Prevent deadlocks: your crew cannot immediately attack the same opponent after a loss; wait for cooldown.',
+      'Anti-abuse checks prevent one crew from attacking the same target repeatedly in short time windows.',
+    ],
+    tipsNl: [
+      'Begin in een uitgebalanceerd land met middelgrote regio\'s: minder competitie dan grote landen, maar redelijk passief inkomen.',
+      'Focus eerst op één land waar je crew sterk is: betere kennis leidt tot betere contest-strategie dan oppervlakkige controle in veel landen.',
+      'Gebruik seasons als strategisch reset: als je lost in een drought-seizoen, volgt er altijd een beter seizoen voor comeback.',
+    ],
+    tipsEn: [
+      'Start in a balanced country with medium-sized regions: less competition than large countries but reasonable passive income.',
+      'Focus on one country where your crew is strong first: better knowledge leads to better contest strategy than shallow control in many countries.',
+      'Use seasons as strategic resets: if you lose in a dry season, a better season always follows for a comeback.',
+    ],
+    protocolPath: 'docs/module-protocols/territory.md',
   ),
   HelpTopic(
     id: 'prostitution',

@@ -8,6 +8,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 
 ## Pending Changes (nog NIET live)
 
+### Frontend
+- [ ] Territory schermnavigatie toegevoegd: neue route `/territory` in main.dart, menu-item met kaart-icoon in dashboard_screen.dart, help-entry in help_content.dart met NL/EN beschrijving van territoriumcontrole mechanics
+  - Bestanden: `client/lib/main.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/data/help_content.dart`
+
 ### Documentation
 - [x] Territory systeem volledig uitgewerkt voor crew map-control (NL-first, multi-country ready): nieuw protocol beschrijft contest lifecycle, datamodel, API surface, anti-abuse, seizoenen, responsive map UX en i18n-eisen; alle territory tuning keys zijn expliciet vastgelegd als admin/runtime database settings (geen file-based gameplay settings)
   - Bestanden: `docs/module-protocols/territory.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
