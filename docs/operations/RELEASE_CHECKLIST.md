@@ -43,6 +43,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Hitlist runtime crash op moord-uitvoering opgelost: `weaponService` miste default export terwijl hitlist-service die als default importeerde, waardoor `getWeaponDefinition` op `undefined` werd aangeroepen; default export hersteld zodat gedeelde combat resolvers weer stabiel laden
+  - Bestanden: `backend/src/services/weaponService.ts`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moordflow Prisma-validatiefout opgelost: backend selecteerde nog legacy `player.weapon` in target-query tijdens `/hitlist/attempt/:hitId`, wat runtime `PrismaClientValidationError` gaf; target weapon defense wordt nu schema-veilig bepaald via geselecteerd crime weapon i.p.v. niet-bestaand spelerkolomveld
   - Bestanden: `backend/src/services/hitlistService.ts`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moorddialog leesbaarheid gehard: het wapenstatistiekblok gebruikt nu expliciete contrastkleuren voor card-achtergrond, border, labels en waardes zodat info in light/dark themes en transparante overlays altijd goed leesbaar blijft

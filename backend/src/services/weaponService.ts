@@ -379,3 +379,4 @@ class WeaponService {
 }
 
 export const weaponService = new WeaponService();
+export default weaponService;
