@@ -33,6 +33,7 @@ class _JailOverlayState extends State<JailOverlay> {
   int? _bailAmount;
   Timer? _timer;
   bool _isPayingBail = false;
+  bool _isEscaping = false;
   final ApiClient _apiClient = ApiClient();
   OverlayEntry? _notificationEntry;
   Timer? _notificationTimer;
@@ -245,6 +246,89 @@ class _JailOverlayState extends State<JailOverlay> {
     }
   }
 
+  Future<void> _attemptEscape() async {
+    setState(() {
+      _isEscaping = true;
+    });
+
+    try {
+      final response = await _apiClient.post('/player/prison/escape', {});
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final event = data['event'] as String? ?? 'error.internal';
+      final params = (data['params'] as Map<String, dynamic>?) ?? {};
+
+      if (!mounted) return;
+
+      final l10n = AppLocalizations.of(context)!;
+      final isDutch = l10n.localeName == 'nl';
+
+      if (event == 'prison.escape_success') {
+        _timer?.cancel();
+        setState(() {
+          _remainingSeconds = 0;
+        });
+
+        _showTopRightNotification(
+          isDutch
+              ? '🎉 Ontsnapping gelukt! Je bent vrij.'
+              : '🎉 Escape succeeded! You are free.',
+          backgroundColor: Colors.green.shade700,
+          icon: Icons.check_circle_outline,
+        );
+
+        widget.onReleased?.call();
+      } else if (event == 'prison.escape_failed') {
+        final nextRemaining = (params['remainingSeconds'] as num?)?.toInt();
+        final penaltySeconds = (params['penaltySeconds'] as num?)?.toInt() ?? 0;
+
+        if (nextRemaining != null && nextRemaining >= 0) {
+          setState(() {
+            _remainingSeconds = nextRemaining;
+          });
+        }
+
+        final penaltyText = '${formatAdaptiveDurationFromSeconds(penaltySeconds, localeName: isDutch ? 'nl' : 'en')}';
+
+        _showTopRightNotification(
+          isDutch
+              ? '❌ Ontsnapping mislukt. Straf verlengd met $penaltyText.'
+              : '❌ Escape failed. Sentence extended by $penaltyText.',
+          backgroundColor: Colors.orange.shade700,
+          icon: Icons.warning_amber_rounded,
+        );
+      } else if (event == 'error.cooldown') {
+        final remainingSeconds = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
+        _showTopRightNotification(
+          isDutch
+              ? 'Cooldown actief: wacht nog ${remainingSeconds}s'
+              : 'Cooldown active: wait ${remainingSeconds}s',
+          backgroundColor: Colors.red.shade700,
+          icon: Icons.hourglass_top,
+        );
+      } else {
+        _showTopRightNotification(
+          isDutch ? 'Uitbraak mislukt' : 'Escape failed',
+          backgroundColor: Colors.red.shade700,
+          icon: Icons.error_outline,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        _showTopRightNotification(
+          'Error: $e',
+          backgroundColor: Colors.red.shade700,
+          icon: Icons.error_outline,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isEscaping = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -377,6 +461,31 @@ class _JailOverlayState extends State<JailOverlay> {
                         ),
                       ),
                     ],
+                    SizedBox(height: compact ? 10 : 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: _isEscaping || _isPayingBail ? null : _attemptEscape,
+                        icon: _isEscaping
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.lock_open),
+                        label: Text(
+                          isDutch ? 'Probeer uitbraak' : 'Attempt escape',
+                          textAlign: TextAlign.center,
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size.fromHeight(compact ? 46 : 52),
+                          foregroundColor: Colors.white,
+                          side: BorderSide(color: Colors.white.withOpacity(0.65)),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               );

@@ -305,6 +305,150 @@ class _PrisonScreenState extends State<PrisonScreen> {
     }
   }
 
+  Future<void> _payOwnBail() async {
+    if (_isActing) {
+      return;
+    }
+
+    setState(() {
+      _isActing = true;
+    });
+
+    try {
+      final response = await _apiClient.post('/player/pay-bail', {});
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final event = data['event'] as String? ?? 'error.internal';
+      final l10n = AppLocalizations.of(context)!;
+      final isDutch = l10n.localeName == 'nl';
+
+      if (!mounted) {
+        return;
+      }
+
+      if (response.statusCode >= 200 && response.statusCode < 300 &&
+          event == 'bail.paid') {
+        final amount =
+            ((data['params'] as Map<String, dynamic>?)?['amount'] as num?)
+                ?.toInt() ??
+            0;
+        _showTopRightNotification(
+          isDutch
+              ? '✅ Je bent vrijgekocht voor €$amount'
+              : '✅ You paid bail for €$amount and are free',
+          backgroundColor: Colors.green.shade700,
+          icon: Icons.check_circle_outline,
+        );
+      } else {
+        final params = (data['params'] as Map<String, dynamic>?) ?? {};
+        final message = _resolveActionError(event, isDutch, params);
+        _showTopRightNotification(
+          message,
+          backgroundColor: Colors.red.shade700,
+          icon: Icons.error_outline,
+        );
+      }
+
+      await _loadPrisoners();
+    } catch (_) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        final isDutch = l10n.localeName == 'nl';
+        _showTopRightNotification(
+          isDutch ? '❌ Actie mislukt' : '❌ Action failed',
+          backgroundColor: Colors.red.shade700,
+          icon: Icons.error_outline,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isActing = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _attemptOwnEscape() async {
+    if (_isActing) {
+      return;
+    }
+
+    setState(() {
+      _isActing = true;
+    });
+
+    try {
+      final response = await _apiClient.post('/player/prison/escape', {});
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final event = data['event'] as String? ?? 'error.internal';
+      final params = (data['params'] as Map<String, dynamic>?) ?? {};
+      final l10n = AppLocalizations.of(context)!;
+      final isDutch = l10n.localeName == 'nl';
+
+      if (!mounted) {
+        return;
+      }
+
+      String message;
+      Color backgroundColor;
+      IconData icon;
+
+      if (event == 'prison.escape_success') {
+        message = isDutch
+            ? '✅ Ontsnapping gelukt! Je bent vrij.'
+            : '✅ Escape succeeded! You are free.';
+        backgroundColor = Colors.green.shade700;
+        icon = Icons.check_circle_outline;
+      } else if (event == 'prison.escape_failed') {
+        final penalty = (params['penaltySeconds'] as num?)?.toInt() ?? 0;
+        final penaltyText = formatAdaptiveDurationFromSeconds(
+          penalty,
+          localeName: isDutch ? 'nl' : 'en',
+        );
+        message = isDutch
+            ? '❌ Ontsnapping mislukt. Straf verlengd met $penaltyText.'
+            : '❌ Escape failed. Sentence extended by $penaltyText.';
+        backgroundColor = Colors.orange.shade700;
+        icon = Icons.warning_amber_rounded;
+      } else if (event == 'error.cooldown') {
+        final remaining = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
+        message = isDutch
+            ? '⏱️ Cooldown actief: wacht nog ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'nl')}'
+            : '⏱️ Cooldown active: wait ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'en')}';
+        backgroundColor = Colors.red.shade700;
+        icon = Icons.hourglass_top;
+      } else {
+        message = isDutch ? '❌ Uitbraak mislukt' : '❌ Escape failed';
+        backgroundColor = Colors.red.shade700;
+        icon = Icons.error_outline;
+      }
+
+      _showTopRightNotification(
+        message,
+        backgroundColor: backgroundColor,
+        icon: icon,
+      );
+
+      await _loadPrisoners();
+    } catch (_) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        final isDutch = l10n.localeName == 'nl';
+        _showTopRightNotification(
+          isDutch ? '❌ Actie mislukt' : '❌ Action failed',
+          backgroundColor: Colors.red.shade700,
+          icon: Icons.error_outline,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isActing = false;
+        });
+      }
+    }
+  }
+
   String _resolveActionError(
     String event,
     bool isDutch,
@@ -494,34 +638,34 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                       children: [
                                         Expanded(
                                           child: ElevatedButton.icon(
-                                            onPressed:
-                                                _isActing ||
-                                                    playerId == 0 ||
-                                                    isCurrentViewer
+                                            onPressed: _isActing || playerId == 0
                                                 ? null
+                                                : isCurrentViewer
+                                                ? _payOwnBail
                                                 : () => _buyOut(playerId),
                                             icon: const Icon(Icons.payments),
                                             label: Text(
-                                              isDutch ? 'Uitkopen' : 'Buy out',
+                                              isCurrentViewer
+                                                  ? (isDutch ? 'Betaal borg' : 'Pay bail')
+                                                  : (isDutch ? 'Uitkopen' : 'Buy out'),
                                             ),
                                           ),
                                         ),
                                         const SizedBox(width: 10),
                                         Expanded(
                                           child: OutlinedButton.icon(
-                                            onPressed:
-                                                _isActing ||
-                                                    playerId == 0 ||
-                                                    isCurrentViewer
+                                            onPressed: _isActing || playerId == 0
                                                 ? null
+                                                : isCurrentViewer
+                                                ? _attemptOwnEscape
                                                 : () => _attemptJailbreak(
                                                     playerId,
                                                   ),
                                             icon: const Icon(Icons.lock_open),
                                             label: Text(
-                                              isDutch
-                                                  ? 'Uitbreken'
-                                                  : 'Jailbreak',
+                                              isCurrentViewer
+                                                  ? (isDutch ? 'Probeer uitbraak' : 'Attempt escape')
+                                                  : (isDutch ? 'Uitbreken' : 'Jailbreak'),
                                             ),
                                           ),
                                         ),

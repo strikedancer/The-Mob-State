@@ -23,6 +23,7 @@ Jail state, prisoner list, actions while jailed and release-related flow.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- While jailed, self-service actions remain available from prison UI: paying your own bail and attempting your own escape may not disappear from the primary prison flow.
 - Na succesvolle borgbetaling moet de client opnieuw jail- en cooldown-state ophalen in plaats van alleen losse crimes-refreshes te doen.
 - Borgbedragen moeten meeschalen met resterende celstraf, niet alleen met wanted level.
 - Jail- en cooldown-overlays moeten op mobiel compacte header-typografie en zichtbare snackbar/toast feedback houden.

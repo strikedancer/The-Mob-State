@@ -487,6 +487,58 @@ router.post('/jailbreak/:targetId', authenticate, async (req: AuthRequest, res: 
   }
 });
 
+router.post('/prison/escape', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player!.id;
+
+    const cooldownRemaining = await getPrisonActionCooldownRemaining(
+      playerId,
+      'prison.cooldown.escape'
+    );
+    if (cooldownRemaining > 0) {
+      return res.status(429).json({
+        event: 'error.cooldown',
+        params: {
+          actionType: 'prison_escape',
+          remainingSeconds: cooldownRemaining,
+          message: `Wait ${cooldownRemaining} seconds before attempting another escape`,
+        },
+      });
+    }
+
+    const result = await policeService.attemptSelfEscape(playerId);
+    await markPrisonActionCooldown(playerId, 'prison.cooldown.escape');
+
+    return res.status(200).json({
+      event: result.success ? 'prison.escape_success' : 'prison.escape_failed',
+      params: {
+        remainingSeconds: result.remainingSeconds,
+        penaltySeconds: result.penaltySeconds,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === 'NOT_JAILED') {
+        return res.status(400).json({
+          event: 'error.not_jailed',
+          params: {},
+        });
+      }
+      if (error.message === 'PLAYER_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'error.player_not_found',
+          params: {},
+        });
+      }
+    }
+
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
 router.get('/prisoners', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const viewerId = req.player!.id;

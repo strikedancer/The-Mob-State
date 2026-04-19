@@ -51,6 +51,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Gevangenis self-acties hersteld: spelers kunnen zichzelf in de prison-flow weer uitkopen met borg en ook zelf een uitbraakpoging doen; nieuw endpoint `/player/prison/escape` verwerkt lage-kans ontsnapping met straftijdverlenging bij mislukking, en prison/jail UI toont deze acties nu weer expliciet voor de ingelogde gevangene
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`, `client/lib/screens/prison_screen.dart`, `client/lib/widgets/jail_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/prison.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Rugzak shop opgeschoond voor upgrades: zodra een speler al een rugzak bezit toont `/backpacks/available` geen lagere of gelijke tiers meer in `available`; alleen echte upgrades blijven zichtbaar in `canUpgradeTo`, zodat oude opties verdwijnen na aankoop van een betere versie
   - Bestanden: `backend/src/services/backpackService.ts`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Docker productie-config gelijkgetrokken voor admin image-library: backend service mount nu expliciet dezelfde externe image-map als client (`CLIENT_EXTERNAL_IMAGES_PATH` -> `/client/images`) en forceert `IMAGE_LIBRARY_ROOT_PATH=/client/images`, zodat admin browse/upload/replace niet meer op een niet-gemounte fallbackpad uitkomt

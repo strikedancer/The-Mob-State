@@ -620,3 +620,96 @@ export async function attemptJailbreak(
     };
   }
 }
+
+/**
+ * Attempt to escape from your own jail sentence.
+ * On failure, sentence is extended.
+ */
+export async function attemptSelfEscape(playerId: number): Promise<{
+  success: boolean;
+  message: string;
+  remainingSeconds?: number;
+  penaltySeconds?: number;
+}> {
+  const remainingSeconds = await checkIfJailed(playerId);
+  if (remainingSeconds <= 0) {
+    throw new Error('NOT_JAILED');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { rank: true, wantedLevel: true },
+  });
+
+  if (!player) {
+    throw new Error('PLAYER_NOT_FOUND');
+  }
+
+  let successChance = 12 + (player.rank * 0.6) - (player.wantedLevel * 0.7);
+  successChance = Math.max(5, Math.min(45, successChance));
+
+  const roll = Math.random() * 100;
+  const success = roll < successChance;
+
+  if (success) {
+    await prisma.$transaction(async (tx: any) => {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { jailRelease: null },
+      });
+
+      await tx.crimeAttempt.updateMany({
+        where: { playerId, jailed: true },
+        data: { jailed: false },
+      });
+
+      await tx.worldEvent.create({
+        data: {
+          eventKey: 'prison.escape_success',
+          playerId,
+          params: JSON.stringify({ successChance, roll }),
+        },
+      });
+    });
+
+    return {
+      success: true,
+      message: 'Escape succeeded. You are free.',
+      remainingSeconds: 0,
+    };
+  }
+
+  const penaltySeconds = 15 * 60;
+  const nextRemainingSeconds = remainingSeconds + penaltySeconds;
+  const nextRelease = new Date(Date.now() + (nextRemainingSeconds * 1000));
+
+  await prisma.$transaction(async (tx: any) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: {
+        jailRelease: nextRelease,
+        wantedLevel: { increment: 1 },
+      },
+    });
+
+    await tx.worldEvent.create({
+      data: {
+        eventKey: 'prison.escape_failed',
+        playerId,
+        params: JSON.stringify({
+          successChance,
+          roll,
+          penaltySeconds,
+          remainingSeconds: nextRemainingSeconds,
+        }),
+      },
+    });
+  });
+
+  return {
+    success: false,
+    message: 'Escape failed. Sentence extended.',
+    remainingSeconds: nextRemainingSeconds,
+    penaltySeconds,
+  };
+}
