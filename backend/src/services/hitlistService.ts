@@ -15,8 +15,20 @@ import path from 'path';
 const BODYGUARD_DAILY_UPKEEP = 10000;
 const BODYGUARD_DEFENSE = 10;
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
-const HIT_LOOT_CASH_SHARE = 0.6;
-const HIT_LOOT_ITEM_SHARE = 0.5;
+const MURDER_CASE_ACTIVITY_TYPE = 'HITLIST_MURDER_CASE';
+const MURDER_CASE_WINDOW_MS = 24 * 60 * 60 * 1000;
+const MURDER_CASE_SOLVE_CHANCE = 0.65;
+const HITLIST_LOOT_CASH_PERCENT_KEY = 'HITLIST_LOOT_CASH_PERCENT';
+const HITLIST_LOOT_ITEM_PERCENT_KEY = 'HITLIST_LOOT_ITEM_PERCENT';
+const HITLIST_LOOT_CASH_PERCENT_DEFAULT = 60;
+const HITLIST_LOOT_ITEM_PERCENT_DEFAULT = 50;
+
+interface HitLootSettings {
+  cashShare: number;
+  itemShare: number;
+}
+
+let runtimeConfigTableReady = false;
 
 interface SecurityArmorDefinition {
   id: string;
@@ -57,6 +69,274 @@ interface HitLootSummary {
   itemsAwarded: number;
 }
 
+interface MurderCaseDetails {
+  caseId: number;
+  hitId: number;
+  victimId: number;
+  victimUsername: string;
+  killerId: number;
+  killerUsername: string;
+  createdAt: string;
+  expiresAt: string;
+  investigationRequestedAt: string | null;
+  resolvedAt: string | null;
+  solved: boolean | null;
+}
+
+interface MurderCaseActionResult {
+  caseId: number;
+  expiresAt: string;
+}
+
+async function ensureRuntimeConfigTable(): Promise<void> {
+  if (runtimeConfigTableReady) {
+    return;
+  }
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS runtime_config (
+      configKey VARCHAR(120) NOT NULL PRIMARY KEY,
+      configValue VARCHAR(255) NOT NULL,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
+
+  runtimeConfigTableReady = true;
+}
+
+function parseLootPercent(rawValue: string | undefined, fallback: number): number {
+  if (rawValue == null || rawValue === '') {
+    return fallback;
+  }
+
+  const parsed = Number(rawValue);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  // Backward compatibility: allow legacy share format (0-1)
+  if (parsed >= 0 && parsed <= 1) {
+    return Math.round(parsed * 100);
+  }
+
+  return Math.max(0, Math.min(100, Math.round(parsed)));
+}
+
+async function getHitLootSettings(): Promise<HitLootSettings> {
+  try {
+    await ensureRuntimeConfigTable();
+    const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+      `
+        SELECT configKey, configValue
+        FROM runtime_config
+        WHERE configKey IN (?, ?)
+      `,
+      HITLIST_LOOT_CASH_PERCENT_KEY,
+      HITLIST_LOOT_ITEM_PERCENT_KEY,
+    );
+
+    const valueMap = rows.reduce<Record<string, string>>((acc, row) => {
+      acc[row.configKey] = String(row.configValue ?? '');
+      return acc;
+    }, {});
+
+    const cashPercent = parseLootPercent(
+      valueMap[HITLIST_LOOT_CASH_PERCENT_KEY],
+      HITLIST_LOOT_CASH_PERCENT_DEFAULT,
+    );
+    const itemPercent = parseLootPercent(
+      valueMap[HITLIST_LOOT_ITEM_PERCENT_KEY],
+      HITLIST_LOOT_ITEM_PERCENT_DEFAULT,
+    );
+
+    return {
+      cashShare: cashPercent / 100,
+      itemShare: itemPercent / 100,
+    };
+  } catch (error) {
+    console.warn('Hitlist loot settings fallback to defaults:', error);
+    return {
+      cashShare: HITLIST_LOOT_CASH_PERCENT_DEFAULT / 100,
+      itemShare: HITLIST_LOOT_ITEM_PERCENT_DEFAULT / 100,
+    };
+  }
+}
+
+function parseMurderCaseDetails(rawDetails: string | null | undefined): MurderCaseDetails | null {
+  if (!rawDetails) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(rawDetails) as Partial<MurderCaseDetails>;
+    if (!parsed || typeof parsed !== 'object') {
+      return null;
+    }
+
+    const caseId = Number(parsed.caseId || 0);
+    const hitId = Number(parsed.hitId || 0);
+    const victimId = Number(parsed.victimId || 0);
+    const killerId = Number(parsed.killerId || 0);
+    const victimUsername = String(parsed.victimUsername || '');
+    const killerUsername = String(parsed.killerUsername || '');
+    const createdAt = String(parsed.createdAt || '');
+    const expiresAt = String(parsed.expiresAt || '');
+
+    if (!caseId || !hitId || !victimId || !killerId || !createdAt || !expiresAt) {
+      return null;
+    }
+
+    return {
+      caseId,
+      hitId,
+      victimId,
+      victimUsername,
+      killerId,
+      killerUsername,
+      createdAt,
+      expiresAt,
+      investigationRequestedAt: parsed.investigationRequestedAt || null,
+      resolvedAt: parsed.resolvedAt || null,
+      solved: typeof parsed.solved === 'boolean' ? parsed.solved : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function buildMurderCaseNotification(
+  language: 'nl' | 'en',
+  caseInfo: MurderCaseActionResult,
+  victimUsername: string,
+): string {
+  const marker = `[[hitlist_murder_case:${caseInfo.caseId}:${caseInfo.expiresAt}]]`;
+
+  if (language === 'nl') {
+    return [
+      'Moordlijst melding',
+      `${victimUsername}, je bent zojuist vermoord via de moordlijst.`,
+      'Je kunt binnen 24 uur een detective-onderzoek starten via de knop in dit bericht.',
+      'Detective Bureau stuurt daarna een nieuw rapport en kan de moordenaar mogelijk identificeren.',
+      marker,
+    ].join('\n');
+  }
+
+  return [
+    'Hitlist notice',
+    `${victimUsername}, you were just killed through the hitlist.`,
+    'You can start a detective investigation within 24 hours using the button in this message.',
+    'Detective Bureau will then send a follow-up report and may identify the killer.',
+    marker,
+  ].join('\n');
+}
+
+function buildMurderCaseReport(
+  language: 'nl' | 'en',
+  solved: boolean,
+  killerUsername: string,
+): string {
+  if (language === 'nl') {
+    if (solved) {
+      return [
+        'Detective Bureau rapport',
+        `Onderzoek afgerond: we hebben je moordenaar kunnen identificeren.`,
+        `Dader: ${killerUsername}`,
+      ].join('\n');
+    }
+
+    return [
+      'Detective Bureau rapport',
+      'Onderzoek afgerond: het spoor werd koud en de dader kon niet met zekerheid worden vastgesteld.',
+      'Je kunt dit dossier niet opnieuw openen.',
+    ].join('\n');
+  }
+
+  if (solved) {
+    return [
+      'Detective Bureau report',
+      'Investigation complete: we were able to identify your killer.',
+      `Killer: ${killerUsername}`,
+    ].join('\n');
+  }
+
+  return [
+    'Detective Bureau report',
+    'Investigation complete: the trail went cold and we could not identify the killer with certainty.',
+    'This case cannot be reopened.',
+  ].join('\n');
+}
+
+async function createMurderCaseForVictim(
+  victimId: number,
+  killerId: number,
+  hitId: number,
+): Promise<MurderCaseActionResult | null> {
+  const [victim, killer] = await Promise.all([
+    prisma.player.findUnique({
+      where: { id: victimId },
+      select: { username: true, preferredLanguage: true },
+    }),
+    prisma.player.findUnique({
+      where: { id: killerId },
+      select: { username: true },
+    }),
+  ]);
+
+  if (!victim || !killer) {
+    return null;
+  }
+
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + MURDER_CASE_WINDOW_MS);
+
+  const activity = await prisma.playerActivity.create({
+    data: {
+      playerId: victimId,
+      activityType: MURDER_CASE_ACTIVITY_TYPE,
+      description: 'Hitlist murder case',
+      details: '{}',
+      isPublic: false,
+    },
+    select: { id: true },
+  });
+
+  const caseDetails: MurderCaseDetails = {
+    caseId: activity.id,
+    hitId,
+    victimId,
+    victimUsername: victim.username,
+    killerId,
+    killerUsername: killer.username,
+    createdAt: now.toISOString(),
+    expiresAt: expiresAt.toISOString(),
+    investigationRequestedAt: null,
+    resolvedAt: null,
+    solved: null,
+  };
+
+  await prisma.playerActivity.update({
+    where: { id: activity.id },
+    data: {
+      details: JSON.stringify(caseDetails),
+    },
+  });
+
+  const language: 'nl' | 'en' = victim.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+  await directMessageService.sendSystemMessage(
+    victimId,
+    buildMurderCaseNotification(language, { caseId: activity.id, expiresAt: caseDetails.expiresAt }, victim.username),
+    {
+      senderName: language === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau',
+      sendPush: true,
+    },
+  );
+
+  return {
+    caseId: activity.id,
+    expiresAt: caseDetails.expiresAt,
+  };
+}
+
 function calculateLootAmount(quantity: number, share: number): number {
   if (quantity <= 0) return 0;
   return Math.max(1, Math.floor(quantity * share));
@@ -66,6 +346,7 @@ async function transferHitLoot(
   tx: any,
   killerId: number,
   victimId: number,
+  lootSettings: HitLootSettings,
 ): Promise<HitLootSummary> {
   const summary: HitLootSummary = {
     cashTaken: 0,
@@ -81,13 +362,13 @@ async function transferHitLoot(
 
   const victimCash = Math.max(0, Number(victim?.money || 0));
   summary.cashTaken = victimCash;
-  summary.cashAwarded = Math.floor(victimCash * HIT_LOOT_CASH_SHARE);
+  summary.cashAwarded = Math.floor(victimCash * lootSettings.cashShare);
 
   const victimGoods = await tx.inventory.findMany({
     where: { playerId: victimId, quantity: { gt: 0 } },
   });
   for (const row of victimGoods) {
-    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), lootSettings.itemShare);
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
@@ -119,7 +400,7 @@ async function transferHitLoot(
     where: { playerId: victimId, quantity: { gt: 0 } },
   });
   for (const row of victimAmmo) {
-    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), lootSettings.itemShare);
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
@@ -151,7 +432,7 @@ async function transferHitLoot(
     where: { playerId: victimId, quantity: { gt: 0 } },
   });
   for (const row of victimWeapons) {
-    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), lootSettings.itemShare);
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
@@ -183,7 +464,7 @@ async function transferHitLoot(
     where: { playerId: victimId, location: 'carried', quantity: { gt: 0 } },
   });
   for (const row of victimTools) {
-    const transferQty = calculateLootAmount(Number(row.quantity || 0), HIT_LOOT_ITEM_SHARE);
+    const transferQty = calculateLootAmount(Number(row.quantity || 0), lootSettings.itemShare);
     summary.itemsTaken += Number(row.quantity || 0);
     summary.itemsAwarded += transferQty;
     if (transferQty > 0) {
@@ -666,6 +947,7 @@ export async function attemptHit(
 
   if (attackerWins) {
     const victimId = isCounterReversal ? hit.placedById : hit.targetId;
+    const lootSettings = await getHitLootSettings();
     let lootSummary: HitLootSummary = {
       cashTaken: 0,
       cashAwarded: 0,
@@ -683,7 +965,7 @@ export async function attemptHit(
 
       await applyArmorWearInTransaction(tx, targetSecurity, armorConditionLoss);
 
-      lootSummary = await transferHitLoot(tx, playerId, victimId);
+      lootSummary = await transferHitLoot(tx, playerId, victimId, lootSettings);
 
       await tx.player.update({
         where: { id: playerId },
@@ -724,6 +1006,12 @@ export async function attemptHit(
     await ammoFactoryService.revokeFactoriesForPlayer(
       isCounterReversal ? hit.placedById : hit.targetId
     );
+
+    try {
+      await createMurderCaseForVictim(victimId, playerId, hitId);
+    } catch (error) {
+      console.error('[Hitlist] Failed to create murder case notification:', error);
+    }
 
     return {
       success: true,
@@ -1117,6 +1405,88 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
   }
 
   return processed;
+}
+
+export async function requestMurderCaseInvestigation(
+  playerId: number,
+  caseId: number,
+): Promise<{
+  success: true;
+  caseId: number;
+  solved: boolean;
+  message: string;
+}> {
+  const activity = await prisma.playerActivity.findFirst({
+    where: {
+      id: caseId,
+      playerId,
+      activityType: MURDER_CASE_ACTIVITY_TYPE,
+    },
+    select: {
+      id: true,
+      details: true,
+      player: {
+        select: {
+          preferredLanguage: true,
+        },
+      },
+    },
+  });
+
+  if (!activity) {
+    throw new Error('MURDER_CASE_NOT_FOUND');
+  }
+
+  const caseDetails = parseMurderCaseDetails(activity.details);
+  if (!caseDetails) {
+    throw new Error('MURDER_CASE_INVALID');
+  }
+
+  const expiresAt = new Date(caseDetails.expiresAt);
+  if (isNaN(expiresAt.getTime()) || expiresAt.getTime() <= Date.now()) {
+    throw new Error('MURDER_CASE_EXPIRED');
+  }
+
+  if (caseDetails.investigationRequestedAt) {
+    throw new Error('MURDER_CASE_ALREADY_REQUESTED');
+  }
+
+  const now = new Date();
+  const solved = Math.random() < MURDER_CASE_SOLVE_CHANCE;
+  const language: 'nl' | 'en' = activity.player?.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+
+  const updatedDetails: MurderCaseDetails = {
+    ...caseDetails,
+    investigationRequestedAt: now.toISOString(),
+    resolvedAt: now.toISOString(),
+    solved,
+  };
+
+  await prisma.playerActivity.update({
+    where: { id: activity.id },
+    data: {
+      details: JSON.stringify(updatedDetails),
+    },
+  });
+
+  await directMessageService.sendSystemMessage(
+    playerId,
+    buildMurderCaseReport(language, solved, caseDetails.killerUsername),
+    {
+      senderName: 'Detective Bureau',
+      sendPush: true,
+    },
+  );
+
+  return {
+    success: true,
+    caseId,
+    solved,
+    message:
+      language === 'nl'
+        ? 'Onderzoek gestart. Het detective-rapport staat in je inbox.'
+        : 'Investigation started. The detective report has been sent to your inbox.',
+  };
 }
 
 export async function cancelHit(playerId: number, hitId: number): Promise<any> {

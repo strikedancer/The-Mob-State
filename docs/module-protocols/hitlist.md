@@ -49,6 +49,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - Counter-bounty reversal (must reverse attacker AND target roles)
 - Consistent formatting for money, timers, bounty amounts
 - Responsive usability without hiding critical actions
+- Loot reward percentages must be runtime-configurable via admin settings (`HITLIST_LOOT_CASH_PERCENT`, `HITLIST_LOOT_ITEM_PERCENT`) and not hardcoded in code or file-only env workflow
 
 ## Data Contract Requirements
 
@@ -101,6 +102,15 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 ```
 
 ## i18n and Messaging
+
+### Victim Murder Notification + Killer Investigation
+- Bij succesvolle hit krijgt het slachtoffer direct een inbox-bericht + push van `Moordlijst Bureau` / `Hitlist Bureau`.
+- Dit bericht bevat een in-app actieknop om een detective-onderzoek te starten.
+- Deze knop is maximaal 24 uur beschikbaar na de moord.
+- Na starten stuurt `Detective Bureau` een follow-up inbox/push rapport:
+  - bij succes: gebruikersnaam van de moordenaar
+  - bij falen: melding dat de dader niet met zekerheid vastgesteld kon worden
+- Een murder case kan maar eenmaal onderzocht worden en kan niet heropend worden.
 
 ### Notifications (Push + Inbox)
 

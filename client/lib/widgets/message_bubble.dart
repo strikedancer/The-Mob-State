@@ -295,6 +295,7 @@ class MessageBubble extends StatelessWidget {
   String _stripAchievementMeta(String rawMessage) {
     return rawMessage
         .replaceAll(RegExp(r'\n?\[\[achievement:[a-z_]+/[a-z0-9_]+\]\]\n?'), '\n')
+      .replaceAll(RegExp(r'\n?\[\[hitlist_murder_case:[0-9]+:[^\]]+\]\]\n?'), '\n')
         .replaceAll(RegExp(r'\n{3,}'), '\n\n')
         .trim();
   }

@@ -375,6 +375,61 @@ router.post(
 );
 
 /**
+ * POST /hitlist/murder-case/:caseId/investigate
+ * Start detective investigation for a victim murder case (available for 24h after death)
+ */
+router.post(
+  '/murder-case/:caseId/investigate',
+  authenticate,
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const playerId = req.player?.id;
+      if (!playerId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const caseId = parseInt(req.params.caseId);
+      if (Number.isNaN(caseId) || caseId <= 0) {
+        return res.status(400).json({
+          success: false,
+          error: 'INVALID_CASE_ID',
+          message: 'Ongeldig dossiernummer',
+        });
+      }
+
+      const result = await hitlistService.requestMurderCaseInvestigation(playerId, caseId);
+      return res.json(result);
+    } catch (error: any) {
+      if (error.message === 'MURDER_CASE_NOT_FOUND') {
+        return res.status(404).json({
+          success: false,
+          error: 'MURDER_CASE_NOT_FOUND',
+          message: 'Dossier niet gevonden',
+        });
+      }
+
+      if (error.message === 'MURDER_CASE_EXPIRED') {
+        return res.status(400).json({
+          success: false,
+          error: 'MURDER_CASE_EXPIRED',
+          message: 'Onderzoeksvenster verlopen (24 uur)',
+        });
+      }
+
+      if (error.message === 'MURDER_CASE_ALREADY_REQUESTED') {
+        return res.status(400).json({
+          success: false,
+          error: 'MURDER_CASE_ALREADY_REQUESTED',
+          message: 'Onderzoek voor dit dossier is al gestart',
+        });
+      }
+
+      return next(error);
+    }
+  }
+);
+
+/**
  * POST /hitlist/cancel/:hitId
  * Cancel a hit (only placer can do this)
  */

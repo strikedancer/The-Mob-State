@@ -39,6 +39,8 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _sending = false;
   StreamSubscription? _eventSubscription;
   int? _currentUserId;
+  final Set<int> _investigationPendingCaseIds = <int>{};
+  final Set<int> _investigationCompletedCaseIds = <int>{};
 
   bool get _isSystemThread => widget.friendId == 0;
 
@@ -346,6 +348,113 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  _MurderCaseMeta? _extractMurderCaseMeta(String rawMessage) {
+    final match = RegExp(r'\[\[hitlist_murder_case:(\d+):([^\]]+)\]\]').firstMatch(rawMessage);
+    if (match == null) return null;
+
+    final caseId = int.tryParse(match.group(1) ?? '');
+    final expiresAtRaw = match.group(2);
+    if (caseId == null || expiresAtRaw == null) return null;
+
+    final expiresAt = DateTime.tryParse(expiresAtRaw)?.toUtc();
+    if (expiresAt == null) return null;
+
+    return _MurderCaseMeta(caseId: caseId, expiresAt: expiresAt);
+  }
+
+  bool _isMurderCaseExpired(_MurderCaseMeta meta) {
+    return DateTime.now().toUtc().isAfter(meta.expiresAt);
+  }
+
+  Future<void> _startMurderCaseInvestigation(_MurderCaseMeta meta) async {
+    if (_investigationPendingCaseIds.contains(meta.caseId) || _investigationCompletedCaseIds.contains(meta.caseId)) {
+      return;
+    }
+
+    if (_isMurderCaseExpired(meta)) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_tr('Onderzoeksvenster verlopen (24 uur).', 'Investigation window expired (24 hours).')),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _investigationPendingCaseIds.add(meta.caseId);
+    });
+
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post('/hitlist/murder-case/${meta.caseId}/investigate', {});
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _investigationCompletedCaseIds.add(meta.caseId);
+        });
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_tr(
+              'Onderzoek gestart. Check je inbox voor het detective-rapport.',
+              'Investigation started. Check your inbox for the detective report.',
+            )),
+            backgroundColor: const Color(0xFF1F8B24),
+          ),
+        );
+      } else {
+        String errorCode = 'UNKNOWN';
+        try {
+          final payload = jsonDecode(response.body) as Map<String, dynamic>;
+          errorCode = (payload['error'] ?? '').toString();
+        } catch (_) {
+          // ignore parse errors
+        }
+
+        if (errorCode == 'MURDER_CASE_EXPIRED') {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(_tr('Onderzoeksvenster verlopen (24 uur).', 'Investigation window expired (24 hours).')),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        } else if (errorCode == 'MURDER_CASE_ALREADY_REQUESTED') {
+          setState(() {
+            _investigationCompletedCaseIds.add(meta.caseId);
+          });
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(_tr(
+                'Dit onderzoek loopt al of is al afgerond.',
+                'This investigation is already in progress or completed.',
+              )),
+              backgroundColor: Colors.blueGrey,
+            ),
+          );
+        } else {
+          throw Exception('Failed to start investigation');
+        }
+      }
+    } catch (e) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text('${_tr('Onderzoek starten mislukt', 'Failed to start investigation')}: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (!mounted) return;
+      setState(() {
+        _investigationPendingCaseIds.remove(meta.caseId);
+      });
+    }
+  }
+
   Widget _buildThreadAvatar() {
     if (_isSystemThread) {
       return Container(
@@ -491,11 +600,52 @@ class _ChatScreenState extends State<ChatScreen> {
                         itemCount: _messages.length,
                         itemBuilder: (context, index) {
                           final message = _messages[index];
-                          return MessageBubble.fromDirectMessage(
-                            message: message,
-                            currentUserId: _currentUserId ?? 0,
-                            friendAvatar: widget.friendAvatar,
-                            onLongPress: () => _deleteMessage(message),
+                          final caseMeta = _extractMurderCaseMeta(message.message);
+                          final canShowAction = _isSystemThread &&
+                              message.senderId == 0 &&
+                              caseMeta != null;
+                          final isExpired = caseMeta != null ? _isMurderCaseExpired(caseMeta) : false;
+                          final isPending = caseMeta != null && _investigationPendingCaseIds.contains(caseMeta.caseId);
+                          final isCompleted = caseMeta != null && _investigationCompletedCaseIds.contains(caseMeta.caseId);
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              MessageBubble.fromDirectMessage(
+                                message: message,
+                                currentUserId: _currentUserId ?? 0,
+                                friendAvatar: widget.friendAvatar,
+                                onLongPress: () => _deleteMessage(message),
+                              ),
+                              if (canShowAction)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 52, right: 16, top: 2, bottom: 8),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: ElevatedButton.icon(
+                                      onPressed: (isExpired || isPending || isCompleted)
+                                          ? null
+                                          : () => _startMurderCaseInvestigation(caseMeta),
+                                      icon: const Icon(Icons.search, size: 16),
+                                      label: Text(
+                                        isExpired
+                                            ? _tr('Onderzoek verlopen', 'Investigation expired')
+                                            : isCompleted
+                                                ? _tr('Onderzoek gestart', 'Investigation started')
+                                                : isPending
+                                                    ? _tr('Bezig...', 'Starting...')
+                                                    : _tr('Start moordonderzoek', 'Start murder investigation'),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFF36454F),
+                                        foregroundColor: Colors.white,
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                        textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           );
                         },
                       ),
@@ -512,4 +662,14 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+}
+
+class _MurderCaseMeta {
+  final int caseId;
+  final DateTime expiresAt;
+
+  const _MurderCaseMeta({
+    required this.caseId,
+    required this.expiresAt,
+  });
 }

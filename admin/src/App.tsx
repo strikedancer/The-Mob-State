@@ -21,6 +21,10 @@ const HOUSING_RENT_STANDARD_KEY = 'PROSTITUTION_HOUSING_RENT_STANDARD_PER_DAY'
 const HOUSING_RENT_VIP_KEY = 'PROSTITUTION_HOUSING_RENT_VIP_PER_DAY'
 const HOUSING_RENT_STANDARD_DEFAULT = '35'
 const HOUSING_RENT_VIP_DEFAULT = '60'
+const HITLIST_LOOT_CASH_PERCENT_KEY = 'HITLIST_LOOT_CASH_PERCENT'
+const HITLIST_LOOT_ITEM_PERCENT_KEY = 'HITLIST_LOOT_ITEM_PERCENT'
+const HITLIST_LOOT_CASH_PERCENT_DEFAULT = '60'
+const HITLIST_LOOT_ITEM_PERCENT_DEFAULT = '50'
 type ActivitySort = 'date_desc' | 'date_asc' | 'type_asc' | 'type_desc'
 type ActivityTimezone = 'local' | 'utc'
 type SavedRecentActionsView = {
@@ -2764,6 +2768,12 @@ function App() {
   const [housingRentVipInput, setHousingRentVipInput] = useState<string>(
     () => editingConfig[HOUSING_RENT_VIP_KEY] ?? HOUSING_RENT_VIP_DEFAULT
   )
+  const [hitlistLootCashPercentInput, setHitlistLootCashPercentInput] = useState<string>(
+    () => editingConfig[HITLIST_LOOT_CASH_PERCENT_KEY] ?? HITLIST_LOOT_CASH_PERCENT_DEFAULT
+  )
+  const [hitlistLootItemPercentInput, setHitlistLootItemPercentInput] = useState<string>(
+    () => editingConfig[HITLIST_LOOT_ITEM_PERCENT_KEY] ?? HITLIST_LOOT_ITEM_PERCENT_DEFAULT
+  )
 
   const handleSaveVipHousingBonus = async () => {
     const parsed = parseInt(vipHousingBonusInput, 10)
@@ -2802,6 +2812,33 @@ function App() {
         [HOUSING_RENT_VIP_KEY]: String(vip),
       })
       alert(t.prostitutionHousingRentSaved)
+    } catch {
+      // values remain staged in editingConfig for bulk save
+    }
+  }
+
+  const handleSaveHitlistLootSettings = async () => {
+    const cashPercent = parseInt(hitlistLootCashPercentInput, 10)
+    const itemPercent = parseInt(hitlistLootItemPercentInput, 10)
+
+    const validRange = (value: number) => !isNaN(value) && value >= 0 && value <= 100
+    if (!validRange(cashPercent) || !validRange(itemPercent)) {
+      alert(l('Loot percentages moeten tussen 0 en 100 liggen.', 'Loot percentages must be between 0 and 100.'))
+      return
+    }
+
+    setEditingConfig((current) => ({
+      ...current,
+      [HITLIST_LOOT_CASH_PERCENT_KEY]: String(cashPercent),
+      [HITLIST_LOOT_ITEM_PERCENT_KEY]: String(itemPercent),
+    }))
+
+    try {
+      await adminService.updateConfig({
+        [HITLIST_LOOT_CASH_PERCENT_KEY]: String(cashPercent),
+        [HITLIST_LOOT_ITEM_PERCENT_KEY]: String(itemPercent),
+      })
+      alert(l('Hitlist loot-instellingen opgeslagen.', 'Hitlist loot settings saved.'))
     } catch {
       // values remain staged in editingConfig for bulk save
     }
@@ -6361,6 +6398,62 @@ function App() {
                   {t.prostitutionHousingRentSave}
                 </button>
               </div>
+            </div>
+            <div className="table-container" style={{ marginBottom: '1rem' }}>
+              <h3 style={{ marginBottom: '0.5rem' }}>{l('Hitlist loot percentages', 'Hitlist loot percentages')}</h3>
+              <p className="text-muted" style={{ marginBottom: '0.75rem' }}>
+                {l(
+                  'Stel in hoeveel buit een moordenaar krijgt na een succesvolle hit. Slachtoffer verliest nog steeds 100%.',
+                  'Configure how much loot a killer receives after a successful hit. Victim still loses 100%.',
+                )}
+              </p>
+              <div className="d-flex gap-2 align-items-center flex-wrap">
+                <label className="fw-semibold" style={{ whiteSpace: 'nowrap' }}>
+                  {l('Cash %', 'Cash %')}:
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="1"
+                  className="form-control"
+                  style={{ maxWidth: 120 }}
+                  value={hitlistLootCashPercentInput}
+                  onChange={(e) => setHitlistLootCashPercentInput(e.target.value)}
+                />
+                <span className="badge bg-light text-body border">{HITLIST_LOOT_CASH_PERCENT_KEY}</span>
+              </div>
+              <div className="d-flex gap-2 align-items-center flex-wrap mt-2">
+                <label className="fw-semibold" style={{ whiteSpace: 'nowrap' }}>
+                  {l('Items %', 'Items %')}:
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="1"
+                  className="form-control"
+                  style={{ maxWidth: 120 }}
+                  value={hitlistLootItemPercentInput}
+                  onChange={(e) => setHitlistLootItemPercentInput(e.target.value)}
+                />
+                <span className="badge bg-light text-body border">{HITLIST_LOOT_ITEM_PERCENT_KEY}</span>
+              </div>
+              <div className="mt-2">
+                <button
+                  className="btn btn-sm btn-success"
+                  type="button"
+                  onClick={handleSaveHitlistLootSettings}
+                >
+                  {l('Hitlist loot opslaan', 'Save hitlist loot')}
+                </button>
+              </div>
+              <p className="text-muted small mt-2" style={{ marginBottom: 0 }}>
+                {l('Huidige waarden', 'Current values')}:&nbsp;
+                <strong>{editingConfig[HITLIST_LOOT_CASH_PERCENT_KEY] ?? HITLIST_LOOT_CASH_PERCENT_DEFAULT}%</strong>
+                {' / '}
+                <strong>{editingConfig[HITLIST_LOOT_ITEM_PERCENT_KEY] ?? HITLIST_LOOT_ITEM_PERCENT_DEFAULT}%</strong>
+              </p>
             </div>
             <div className="search-bar">
               <input 

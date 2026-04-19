@@ -23,6 +23,69 @@ import * as crewWarService from '../services/crewWarService';
 
 const router = express.Router();
 
+const HITLIST_LOOT_CASH_PERCENT_KEY = 'HITLIST_LOOT_CASH_PERCENT';
+const HITLIST_LOOT_ITEM_PERCENT_KEY = 'HITLIST_LOOT_ITEM_PERCENT';
+const HITLIST_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
+  [HITLIST_LOOT_CASH_PERCENT_KEY]: '60',
+  [HITLIST_LOOT_ITEM_PERCENT_KEY]: '50',
+};
+const HITLIST_RUNTIME_SETTING_KEYS = Object.keys(HITLIST_RUNTIME_SETTING_DEFAULTS);
+let runtimeConfigSchemaReady = false;
+
+const ensureRuntimeConfigSchema = async () => {
+  if (runtimeConfigSchemaReady) {
+    return;
+  }
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS runtime_config (
+      configKey VARCHAR(120) NOT NULL PRIMARY KEY,
+      configValue VARCHAR(255) NOT NULL,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  `);
+
+  runtimeConfigSchemaReady = true;
+};
+
+const loadRuntimeConfigValues = async (keys: string[]): Promise<Record<string, string>> => {
+  if (keys.length === 0) {
+    return {};
+  }
+
+  await ensureRuntimeConfigSchema();
+  const placeholders = keys.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+    `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+    ...keys,
+  );
+
+  return rows.reduce<Record<string, string>>((acc, row) => {
+    acc[row.configKey] = String(row.configValue ?? '');
+    return acc;
+  }, {});
+};
+
+const upsertRuntimeConfigValues = async (updates: Record<string, string>) => {
+  const entries = Object.entries(updates);
+  if (entries.length === 0) {
+    return;
+  }
+
+  await ensureRuntimeConfigSchema();
+  for (const [key, value] of entries) {
+    await prisma.$executeRawUnsafe(
+      `
+        INSERT INTO runtime_config (configKey, configValue)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE configValue = VALUES(configValue)
+      `,
+      key,
+      value,
+    );
+  }
+};
+
 type ActivitySort = 'date_desc' | 'date_asc' | 'type_asc' | 'type_desc';
 type ActivityDateRange = '24h' | '7d' | '30d' | 'all';
 type SystemLogDateRange = '1h' | '24h' | '7d' | '30d' | 'all';
@@ -2596,10 +2659,15 @@ router.get('/config', async (req, res) => {
       console.debug('Config: .env file not found (expected in production), using process.env instead');
     }
 
+    const runtimeConfig = await loadRuntimeConfigValues(HITLIST_RUNTIME_SETTING_KEYS);
+    for (const [key, defaultValue] of Object.entries(HITLIST_RUNTIME_SETTING_DEFAULTS)) {
+      envVars[key] = runtimeConfig[key] ?? envVars[key] ?? defaultValue;
+    }
+
     res.json({
       env: envVars,
       configPath: envPath,
-      note: 'In production, environment variables are injected via docker-compose and may not be available in .env file',
+      note: 'In production, environment variables are injected via docker-compose and may not be available in .env file. Runtime gameplay settings are merged from database.',
     });
   } catch (error) {
     console.error('Admin get config error:', error);
@@ -2622,50 +2690,75 @@ router.put(
         return res.status(400).json({ error: 'Invalid updates object' });
       }
 
-      // Read current .env file (may not exist in production Docker)
-      const envPath = path.join(__dirname, '../../.env');
-      let envContent = '';
-      try {
-        envContent = await fs.readFile(envPath, 'utf-8');
-      } catch (fileError) {
-        // .env file may not exist in production, start with empty content
-        console.debug('Config: .env file not found for update, creating new one');
-        envContent = '';
-      }
+      const updatesRecord = updates as Record<string, string>;
+      const runtimeUpdates: Record<string, string> = {};
+      const envUpdates: Record<string, string> = {};
 
-      // Parse and update
-      const lines = envContent.split('\n');
-      const existingKeys = new Set<string>();
-
-      const updatedLines = lines.map(line => {
-        const trimmed = line.trim();
-        if (trimmed && !trimmed.startsWith('#')) {
-          const [key] = trimmed.split('=');
-          if (key && updates[key.trim()] !== undefined) {
-            existingKeys.add(key.trim());
-            return `${key.trim()}=${updates[key.trim()]}`;
+      for (const [key, value] of Object.entries(updatesRecord)) {
+        const normalized = String(value ?? '').trim();
+        if (HITLIST_RUNTIME_SETTING_KEYS.includes(key)) {
+          const parsed = Number(normalized);
+          if (!Number.isFinite(parsed) || parsed < 0 || parsed > 100) {
+            return res.status(400).json({
+              error: `${key} must be a number between 0 and 100`,
+            });
           }
-          if (key) {
-            existingKeys.add(key.trim());
-          }
-        }
-        return line;
-      });
-
-      // Support creating new keys via admin panel when they are not present yet.
-      for (const [key, value] of Object.entries(updates as Record<string, string>)) {
-        if (!existingKeys.has(key)) {
-          updatedLines.push(`${key}=${value}`);
+          runtimeUpdates[key] = normalized;
+        } else {
+          envUpdates[key] = normalized;
         }
       }
 
-      // Write back to .env file
-      await fs.writeFile(envPath, updatedLines.join('\n'), 'utf-8');
+      if (Object.keys(runtimeUpdates).length > 0) {
+        await upsertRuntimeConfigValues(runtimeUpdates);
+      }
+
+      if (Object.keys(envUpdates).length > 0) {
+        // Read current .env file (may not exist in production Docker)
+        const envPath = path.join(__dirname, '../../.env');
+        let envContent = '';
+        try {
+          envContent = await fs.readFile(envPath, 'utf-8');
+        } catch (fileError) {
+          // .env file may not exist in production, start with empty content
+          console.debug('Config: .env file not found for update, creating new one');
+          envContent = '';
+        }
+
+        // Parse and update
+        const lines = envContent.split('\n');
+        const existingKeys = new Set<string>();
+
+        const updatedLines = lines.map(line => {
+          const trimmed = line.trim();
+          if (trimmed && !trimmed.startsWith('#')) {
+            const [key] = trimmed.split('=');
+            if (key && envUpdates[key.trim()] !== undefined) {
+              existingKeys.add(key.trim());
+              return `${key.trim()}=${envUpdates[key.trim()]}`;
+            }
+            if (key) {
+              existingKeys.add(key.trim());
+            }
+          }
+          return line;
+        });
+
+        // Support creating new keys via admin panel when they are not present yet.
+        for (const [key, value] of Object.entries(envUpdates)) {
+          if (!existingKeys.has(key)) {
+            updatedLines.push(`${key}=${value}`);
+          }
+        }
+
+        // Write back to .env file
+        await fs.writeFile(envPath, updatedLines.join('\n'), 'utf-8');
+      }
 
       res.json({
         message: 'Config updated successfully',
         warning: 'Server restart required for changes to take effect',
-        updated: Object.keys(updates),
+        updated: Object.keys(updatesRecord),
       });
     } catch (error) {
       console.error('Admin update config error:', error);
