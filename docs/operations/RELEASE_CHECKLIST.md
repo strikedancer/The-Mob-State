@@ -43,6 +43,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Hitlist moordflow Prisma-validatiefout opgelost: backend selecteerde nog legacy `player.weapon` in target-query tijdens `/hitlist/attempt/:hitId`, wat runtime `PrismaClientValidationError` gaf; target weapon defense wordt nu schema-veilig bepaald via geselecteerd crime weapon i.p.v. niet-bestaand spelerkolomveld
+  - Bestanden: `backend/src/services/hitlistService.ts`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moorddialog leesbaarheid gehard: het wapenstatistiekblok gebruikt nu expliciete contrastkleuren voor card-achtergrond, border, labels en waardes zodat info in light/dark themes en transparante overlays altijd goed leesbaar blijft
   - Bestanden: `client/lib/screens/hitlist_screen.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist wapenlijst normaliseert decoded JSON maps nu expliciet naar string-keyed maps voordat bruikbare wapens worden gefilterd of gerenderd; omgevingen waar `weapons/inventory` als `Map<dynamic, dynamic>` decodeert laten daardoor pas gekochte wapens niet meer verdwijnen uit de moorddialoog

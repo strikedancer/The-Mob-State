@@ -7,6 +7,7 @@
 import prisma from '../lib/prisma';
 import { ammoFactoryService } from './ammoFactoryService';
 import weaponService from './weaponService';
+import { weaponSelectionService } from './weaponSelectionService';
 import { directMessageService } from './directMessageService';
 import fs from 'fs';
 import path from 'path';
@@ -374,7 +375,7 @@ export async function attemptHit(
 
   const target = await prisma.player.findUnique({
     where: { id: hit.targetId },
-    select: { weapon: true, currentCountry: true, hitProtectionExpiresAt: true },
+    select: { currentCountry: true, hitProtectionExpiresAt: true },
   });
 
   if (!target) {
@@ -464,8 +465,11 @@ export async function attemptHit(
     ammoQualityMultiplier *
     conditionMultiplier;
 
-  const targetWeapon = target.weapon
-    ? weaponService.getWeaponDefinition(String(target.weapon))
+  const targetSelectedWeapon = await weaponSelectionService.getSelectedCrimeWeapon(
+    hit.targetId,
+  );
+  const targetWeapon = targetSelectedWeapon?.weaponId
+    ? weaponService.getWeaponDefinition(String(targetSelectedWeapon.weaponId))
     : undefined;
   const targetWeaponDamage = targetWeapon?.damage || 0;
   const targetDefense = getEffectiveArmor(targetSecurity) + ((targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE);
