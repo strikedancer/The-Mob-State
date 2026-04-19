@@ -613,6 +613,21 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     return code == 'nl' ? nl : en;
   }
 
+  int _asInt(dynamic value, {required int fallback}) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value.trim()) ?? fallback;
+    return fallback;
+  }
+
+  double _asDouble(dynamic value, {required double fallback}) {
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value.trim()) ?? fallback;
+    return fallback;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -662,8 +677,8 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
           'weaponId': resolvedWeaponId,
           'weaponName': weaponName,
           'ammoAvailable': ammoAvailable,
-          'quantity': (weapon['quantity'] as num?)?.toInt() ?? 0,
-          'condition': (weapon['condition'] as num?)?.toDouble() ?? 0,
+          'quantity': _asInt(weapon['quantity'], fallback: 1),
+          'condition': _asDouble(weapon['condition'], fallback: 100),
         };
       }).toList();
 
@@ -671,8 +686,8 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
           .whereType<Map<String, dynamic>>()
           .where((weapon) {
             final weaponId = (weapon['weaponId'] ?? '').toString().trim();
-            final quantity = (weapon['quantity'] as num?)?.toInt() ?? 0;
-            final condition = (weapon['condition'] as num?)?.toDouble() ?? 0;
+            final quantity = _asInt(weapon['quantity'], fallback: 1);
+            final condition = _asDouble(weapon['condition'], fallback: 100);
             return weaponId.isNotEmpty && quantity > 0 && condition > 0;
           })
           .toList();
