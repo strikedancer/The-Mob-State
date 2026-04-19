@@ -107,7 +107,9 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - Bij succesvolle hit krijgt het slachtoffer direct een inbox-bericht + push van `Moordlijst Bureau` / `Hitlist Bureau`.
 - Dit bericht bevat een in-app actieknop om een detective-onderzoek te starten.
 - Deze knop is maximaal 24 uur beschikbaar na de moord.
-- Na starten stuurt `Detective Bureau` een follow-up inbox/push rapport:
+- Na starten stuurt `Detective Bureau` een follow-up inbox/push rapport met variabele wachttijd (niet instant):
+  - snel aangevraagd na de moord -> kortere wachttijd
+  - laat aangevraagd binnen het 24-uurs venster -> langere wachttijd omdat de dader meer tijd heeft om sporen te wissen en zich te verplaatsen
   - bij succes: gebruikersnaam van de moordenaar
   - bij falen: melding dat de dader niet met zekerheid vastgesteld kon worden
 - Een murder case kan maar eenmaal onderzocht worden en kan niet heropend worden.

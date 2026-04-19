@@ -18,6 +18,8 @@ const DAY_IN_MS = 24 * 60 * 60 * 1000;
 const MURDER_CASE_ACTIVITY_TYPE = 'HITLIST_MURDER_CASE';
 const MURDER_CASE_WINDOW_MS = 24 * 60 * 60 * 1000;
 const MURDER_CASE_SOLVE_CHANCE = 0.65;
+const MURDER_CASE_MIN_REPORT_DELAY_MS = 15 * 60 * 1000;
+const MURDER_CASE_MAX_REPORT_DELAY_MS = 12 * 60 * 60 * 1000;
 const HITLIST_LOOT_CASH_PERCENT_KEY = 'HITLIST_LOOT_CASH_PERCENT';
 const HITLIST_LOOT_ITEM_PERCENT_KEY = 'HITLIST_LOOT_ITEM_PERCENT';
 const HITLIST_LOOT_CASH_PERCENT_DEFAULT = 60;
@@ -79,6 +81,7 @@ interface MurderCaseDetails {
   createdAt: string;
   expiresAt: string;
   investigationRequestedAt: string | null;
+  investigationResolveAt: string | null;
   resolvedAt: string | null;
   solved: boolean | null;
 }
@@ -196,6 +199,7 @@ function parseMurderCaseDetails(rawDetails: string | null | undefined): MurderCa
       createdAt,
       expiresAt,
       investigationRequestedAt: parsed.investigationRequestedAt || null,
+      investigationResolveAt: parsed.investigationResolveAt || null,
       resolvedAt: parsed.resolvedAt || null,
       solved: typeof parsed.solved === 'boolean' ? parsed.solved : null,
     };
@@ -264,6 +268,49 @@ function buildMurderCaseReport(
     'Investigation complete: the trail went cold and we could not identify the killer with certainty.',
     'This case cannot be reopened.',
   ].join('\n');
+}
+
+function getMurderCaseRequestDelayRatio(caseDetails: MurderCaseDetails, requestedAt: Date): number {
+  const createdAtMs = Date.parse(caseDetails.createdAt);
+  if (!Number.isFinite(createdAtMs)) {
+    return 1;
+  }
+
+  const elapsedMs = Math.max(0, requestedAt.getTime() - createdAtMs);
+  return Math.max(0, Math.min(1, elapsedMs / MURDER_CASE_WINDOW_MS));
+}
+
+function getMurderCaseReportDelayMs(caseDetails: MurderCaseDetails, requestedAt: Date): number {
+  const ratio = getMurderCaseRequestDelayRatio(caseDetails, requestedAt);
+  const dynamicDelay =
+    MURDER_CASE_MIN_REPORT_DELAY_MS +
+    (MURDER_CASE_MAX_REPORT_DELAY_MS - MURDER_CASE_MIN_REPORT_DELAY_MS) * ratio;
+
+  return Math.round(dynamicDelay);
+}
+
+function buildMurderCaseQueuedMessage(
+  language: 'nl' | 'en',
+  resolveAt: Date,
+): { message: string; etaMinutes: number } {
+  const etaMinutes = Math.max(1, Math.ceil((resolveAt.getTime() - Date.now()) / 60000));
+  const resolveAtIso = resolveAt.toISOString();
+
+  if (language === 'nl') {
+    return {
+      etaMinutes,
+      message:
+        `Onderzoek gestart. Detective Bureau werkt dit dossier asynchroon af. ` +
+        `Hoe eerder je aanvraagt, hoe sneller je rapport. Verwachte rapporttijd: ${resolveAtIso}.`,
+    };
+  }
+
+  return {
+    etaMinutes,
+    message:
+      `Investigation started. Detective Bureau will process this case asynchronously. ` +
+      `The earlier you request, the faster your report. Expected report time: ${resolveAtIso}.`,
+  };
 }
 
 function buildHitPlacedOnMeMessage(
@@ -367,6 +414,7 @@ async function createMurderCaseForVictim(
     createdAt: now.toISOString(),
     expiresAt: expiresAt.toISOString(),
     investigationRequestedAt: null,
+    investigationResolveAt: null,
     resolvedAt: null,
     solved: null,
   };
@@ -1505,7 +1553,8 @@ export async function requestMurderCaseInvestigation(
 ): Promise<{
   success: true;
   caseId: number;
-  solved: boolean;
+  resolveAt: string;
+  etaMinutes: number;
   message: string;
 }> {
   const activity = await prisma.playerActivity.findFirst({
@@ -1544,14 +1593,16 @@ export async function requestMurderCaseInvestigation(
   }
 
   const now = new Date();
-  const solved = Math.random() < MURDER_CASE_SOLVE_CHANCE;
+  const reportDelayMs = getMurderCaseReportDelayMs(caseDetails, now);
+  const resolveAt = new Date(now.getTime() + reportDelayMs);
   const language: 'nl' | 'en' = activity.player?.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
 
   const updatedDetails: MurderCaseDetails = {
     ...caseDetails,
     investigationRequestedAt: now.toISOString(),
-    resolvedAt: now.toISOString(),
-    solved,
+    investigationResolveAt: resolveAt.toISOString(),
+    resolvedAt: null,
+    solved: null,
   };
 
   await prisma.playerActivity.update({
@@ -1561,24 +1612,107 @@ export async function requestMurderCaseInvestigation(
     },
   });
 
-  await directMessageService.sendSystemMessage(
-    playerId,
-    buildMurderCaseReport(language, solved, caseDetails.killerUsername),
-    {
-      senderName: 'Detective Bureau',
-      sendPush: true,
-    },
-  );
+  const queued = buildMurderCaseQueuedMessage(language, resolveAt);
 
   return {
     success: true,
     caseId,
-    solved,
-    message:
-      language === 'nl'
-        ? 'Onderzoek gestart. Het detective-rapport staat in je inbox.'
-        : 'Investigation started. The detective report has been sent to your inbox.',
+    resolveAt: resolveAt.toISOString(),
+    etaMinutes: queued.etaMinutes,
+    message: queued.message,
   };
+}
+
+export async function processPendingMurderCaseInvestigations(limit = 100): Promise<number> {
+  const candidates = await prisma.playerActivity.findMany({
+    where: {
+      activityType: MURDER_CASE_ACTIVITY_TYPE,
+      AND: [
+        {
+          details: {
+            contains: '"investigationRequestedAt":"',
+          },
+        },
+        {
+          details: {
+            contains: '"resolvedAt":null',
+          },
+        },
+      ],
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+    take: limit,
+    select: {
+      id: true,
+      details: true,
+      playerId: true,
+      player: {
+        select: {
+          preferredLanguage: true,
+        },
+      },
+    },
+  });
+
+  if (candidates.length === 0) {
+    return 0;
+  }
+
+  const now = new Date();
+  let processed = 0;
+
+  for (const activity of candidates) {
+    try {
+      const details = parseMurderCaseDetails(activity.details);
+      if (!details || !details.investigationRequestedAt || details.resolvedAt) {
+        continue;
+      }
+
+      const resolveAt = details.investigationResolveAt
+        ? new Date(details.investigationResolveAt)
+        : new Date(Date.parse(details.investigationRequestedAt));
+
+      if (!Number.isFinite(resolveAt.getTime()) || resolveAt.getTime() > now.getTime()) {
+        continue;
+      }
+
+      const solved = Math.random() < MURDER_CASE_SOLVE_CHANCE;
+      const language: 'nl' | 'en' = activity.player?.preferredLanguage?.toLowerCase().startsWith('nl')
+        ? 'nl'
+        : 'en';
+
+      const updatedDetails: MurderCaseDetails = {
+        ...details,
+        investigationResolveAt: details.investigationResolveAt || resolveAt.toISOString(),
+        resolvedAt: now.toISOString(),
+        solved,
+      };
+
+      await prisma.playerActivity.update({
+        where: { id: activity.id },
+        data: {
+          details: JSON.stringify(updatedDetails),
+        },
+      });
+
+      await directMessageService.sendSystemMessage(
+        activity.playerId,
+        buildMurderCaseReport(language, solved, details.killerUsername),
+        {
+          senderName: 'Detective Bureau',
+          sendPush: true,
+        },
+      );
+
+      processed += 1;
+    } catch (error) {
+      console.error('[Hitlist] Failed to process murder case investigation', activity.id, error);
+    }
+  }
+
+  return processed;
 }
 
 export async function cancelHit(playerId: number, hitId: number): Promise<any> {

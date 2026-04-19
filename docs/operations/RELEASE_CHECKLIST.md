@@ -43,6 +43,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Hitlist moordzaak-onderzoek is nu asynchroon met variabele wachttijd: na aanvraag komt detective-rapport niet direct; snelle aanvraag geeft kortere ETA, late aanvraag geeft langere ETA binnen het 24-uurs venster
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/services/cronService.ts`, `docs/module-protocols/hitlist.md`, `client/lib/data/help_content.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist killer buit-notificatie: na een succesvolle kill ontvangt de moordenaar direct een inboxbericht + push van Moordlijst Bureau / Hitlist Bureau met bounty, buit-geld (bedrag + %) en aantal buit-items; meertalig NL/EN op basis van `preferredLanguage` aanvaller
   - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist plaatsing-notificatie toegevoegd voor doelwit: zodra een speler op de moordlijst wordt gezet ontvangt het doelwit direct een inboxbericht + push van Moordlijst Bureau / Hitlist Bureau met bountybedrag en waarschuwing

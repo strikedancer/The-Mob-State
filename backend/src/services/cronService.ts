@@ -3,7 +3,10 @@ import cron from 'node-cron';
 import { processOpenOrdersInBackground } from './cryptoService';
 import drugService from './drugService';
 import { gameEventService } from './gameEventService';
-import { processPendingInvestigations } from './hitlistService';
+import {
+  processPendingInvestigations,
+  processPendingMurderCaseInvestigations,
+} from './hitlistService';
 
 const prisma = new PrismaClient();
 
@@ -374,9 +377,15 @@ export async function runHitlistInvestigationProcessor(): Promise<void> {
   const now = new Date();
 
   try {
-    const processed = await processPendingInvestigations(100);
+    const [detectiveProcessed, murderCaseProcessed] = await Promise.all([
+      processPendingInvestigations(100),
+      processPendingMurderCaseInvestigations(100),
+    ]);
+    const processed = detectiveProcessed + murderCaseProcessed;
     if (processed > 0) {
-      console.log(`[CRON JOB] hitlistInvestigationProcessor processed=${processed}`);
+      console.log(
+        `[CRON JOB] hitlistInvestigationProcessor processed=${processed} detective=${detectiveProcessed} murderCases=${murderCaseProcessed}`,
+      );
     }
     lastJobExecutions['hitlistInvestigationProcessor'] = now;
   } catch (error) {
