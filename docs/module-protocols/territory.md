@@ -12,6 +12,10 @@
   - `client/lib/main.dart` — route `/territory` registered
   - `client/lib/screens/dashboard_screen.dart` — menu item met kaart-icoon in navigatie-grid én web-sidebar
   - `client/lib/data/help_content.dart` — help entry met NL/EN beschrijving
+- Fase 3 (visual map): ✅ geïmplementeerd
+  - `client/lib/screens/dashboard_screen.dart` — expliciet sidebar-icoon voor Territory (`Icons.public_rounded`)
+  - `client/assets/images/maps/cafuego-Nederland.svg` — NL kaart asset gekoppeld aan Territory
+  - `client/lib/screens/territory_screen.dart` — SVG kaart render + dynamische inkleuring per `svgElementId` op basis van ownership/contest status
 - Bug fixes: ✅
   - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)

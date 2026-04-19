@@ -729,7 +729,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       (icon: Icons.fitness_center, label: l10n.gym, section: _WebSection.gym, badge: 0),
       (icon: Icons.factory, label: l10n.ammoFactory, section: _WebSection.ammoFactory, badge: 0),
       (icon: Icons.school, label: l10n.schoolMenuLabel, section: _WebSection.school, badge: 0),
-      (icon: Icons.map, label: _tr('Territorium', 'Territory'), section: _WebSection.territory, badge: 0),
+      (icon: Icons.public_rounded, label: _tr('Territorium', 'Territory'), section: _WebSection.territory, badge: 0),
       (icon: Icons.favorite, label: l10n.prostitutionTitle, section: _WebSection.prostitution, badge: 0),
       (
         icon: Icons.storefront,
@@ -1653,7 +1653,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                                 _buildMenuTile(
                                   context,
-                                  icon: Icons.map,
+                                  icon: Icons.public_rounded,
                                   label: _tr('Territorium', 'Territory'),
                                   onTap: () => Navigator.pushNamed(context, '/territory'),
                                 ),

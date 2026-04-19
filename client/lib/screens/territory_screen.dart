@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../services/territory_service.dart';
 import '../utils/top_right_notification.dart';
@@ -18,6 +20,7 @@ class TerritoryScreen extends StatefulWidget {
 
 class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProviderStateMixin {
   final TerritoryService _service = TerritoryService();
+  static const String _nlMapSvgAsset = 'assets/images/maps/cafuego-Nederland.svg';
 
   bool _isLoading = true;
   bool _isTerritoryEnabled = false;
@@ -26,6 +29,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   Map<String, dynamic> _mapData = {};
   List<dynamic> _leaderboard = [];
   Map<String, dynamic> _overview = {};
+  String? _svgTemplate;
+  String? _renderedSvgMap;
 
   // ── Selection ─────────────────────────────────────────────────────────────
   Map<String, dynamic>? _selectedRegion;
@@ -41,6 +46,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _loadSvgTemplate();
     _loadData();
   }
 
@@ -64,7 +70,106 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _overview = overview as Map<String, dynamic>;
       _leaderboard = leaderboard as List<dynamic>;
       _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
+      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
       _isLoading = false;
+    });
+  }
+
+  Future<void> _loadSvgTemplate() async {
+    try {
+      final rawSvg = await rootBundle.loadString(_nlMapSvgAsset);
+      if (!mounted) return;
+      setState(() {
+        _svgTemplate = rawSvg;
+        _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _svgTemplate = null;
+        _renderedSvgMap = null;
+      });
+    }
+  }
+
+  String? _renderSvgWithOwnership(List<dynamic> regions) {
+    final template = _svgTemplate;
+    if (template == null || template.isEmpty || regions.isEmpty) return template;
+
+    var svg = template;
+    for (final rawRegion in regions) {
+      if (rawRegion is! Map<String, dynamic>) continue;
+      final svgElementId = rawRegion['svgElementId'] as String?;
+      if (svgElementId == null || svgElementId.trim().isEmpty) continue;
+
+      final fillHex = _hexColorForRegion(rawRegion);
+      svg = _applyFillToElement(svg, svgElementId.trim(), fillHex);
+    }
+    return svg;
+  }
+
+  String _hexColorForRegion(Map<String, dynamic> region) {
+    final contestStatus = (region['contestStatus'] as String?)?.toLowerCase();
+    if (contestStatus != null && contestStatus != 'resolved' && contestStatus != 'cancelled') {
+      return '#F59E0B';
+    }
+
+    final ownerCrewId = region['ownerCrewId'];
+    if (ownerCrewId == null) {
+      return '#D1D5DB';
+    }
+
+    final crewId = ownerCrewId is num ? ownerCrewId.toInt() : int.tryParse(ownerCrewId.toString());
+    if (crewId == null) {
+      return '#D1D5DB';
+    }
+
+    final palette = <String>[
+      '#2563EB',
+      '#059669',
+      '#DC2626',
+      '#7C3AED',
+      '#EA580C',
+      '#0891B2',
+      '#65A30D',
+      '#DB2777',
+      '#4F46E5',
+      '#0F766E',
+    ];
+    return palette[crewId.abs() % palette.length];
+  }
+
+  String _applyFillToElement(String svg, String elementId, String fillHex) {
+    final escapedId = RegExp.escape(elementId);
+    final tagRegex = RegExp('(<[^>]*\\bid="$escapedId"[^>]*>)', caseSensitive: false);
+
+    return svg.replaceFirstMapped(tagRegex, (match) {
+      final tag = match.group(1) ?? '';
+
+      if (tag.contains('style="')) {
+        final styleRegex = RegExp('style="([^"]*)"', caseSensitive: false);
+        return tag.replaceFirstMapped(styleRegex, (styleMatch) {
+          var styleValue = styleMatch.group(1) ?? '';
+          if (RegExp(r'(^|;)\\s*fill\\s*:', caseSensitive: false).hasMatch(styleValue)) {
+            styleValue = styleValue.replaceAllMapped(
+              RegExp(r'(^|;)\\s*fill\\s*:[^;]*', caseSensitive: false),
+              (m) => '${m.group(1) ?? ';'}fill:$fillHex',
+            );
+          } else {
+            if (styleValue.isNotEmpty && !styleValue.trim().endsWith(';')) {
+              styleValue = '$styleValue;';
+            }
+            styleValue = '$styleValue fill:$fillHex;';
+          }
+          return 'style="$styleValue"';
+        });
+      }
+
+      if (RegExp('\\sfill="', caseSensitive: false).hasMatch(tag)) {
+        return tag.replaceFirst(RegExp('fill="[^"]*"', caseSensitive: false), 'fill="$fillHex"');
+      }
+
+      return tag.replaceFirst('>', ' fill="$fillHex">');
     });
   }
 
@@ -124,7 +229,16 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         if (isDesktop) {
           return Row(
             children: [
-              Expanded(flex: 3, child: _buildRegionGrid(regions)),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    _buildSvgMapOverview(regions),
+                    const SizedBox(height: 8),
+                    Expanded(child: _buildRegionGrid(regions)),
+                  ],
+                ),
+              ),
               const VerticalDivider(width: 1),
               SizedBox(
                 width: 320,
@@ -137,6 +251,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         if (isTablet) {
           return Column(
             children: [
+              _buildSvgMapOverview(regions),
+              const SizedBox(height: 8),
               Expanded(child: _buildRegionGrid(regions)),
               if (_selectedRegion != null) SizedBox(height: 280, child: _buildRegionDetail(_selectedRegion!)),
             ],
@@ -146,7 +262,13 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         // Mobile
         return Stack(
           children: [
-            _buildRegionGrid(regions),
+            Column(
+              children: [
+                _buildSvgMapOverview(regions),
+                const SizedBox(height: 8),
+                Expanded(child: _buildRegionGrid(regions)),
+              ],
+            ),
             if (_selectedRegion != null)
               DraggableScrollableSheet(
                 initialChildSize: 0.35,
@@ -177,6 +299,47 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           ],
         );
       },
+    );
+  }
+
+  Widget _buildSvgMapOverview(List<dynamic> regions) {
+    final svgMarkup = _renderedSvgMap;
+    if (svgMarkup == null || svgMarkup.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Card(
+      margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _t('Nederland kaart (crew controle)', 'Netherlands map (crew control)'),
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 220,
+              width: double.infinity,
+              child: SvgPicture.string(
+                svgMarkup,
+                fit: BoxFit.contain,
+                placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _t(
+                'Regio-kleuren tonen eigendom; oranje = actieve contest.',
+                'Region colors show ownership; orange = active contest.',
+              ),
+              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -381,7 +544,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: _leaderboard.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
+      separatorBuilder: (context, index) => const Divider(height: 1),
       itemBuilder: (context, i) {
         final entry = _leaderboard[i] as Map<String, dynamic>;
         return ListTile(

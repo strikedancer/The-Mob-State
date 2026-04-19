@@ -9,8 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
-- [ ] Territory schermnavigatie toegevoegd: nieuwe route `/territory` in main.dart, menu-item met kaart-icoon in dashboard-tegelgrid en web-sidebar navigatie in dashboard_screen.dart, plus help-entry in help_content.dart met NL/EN beschrijving van territoriumcontrole mechanics
-  - Bestanden: `client/lib/main.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/data/help_content.dart`
+- [ ] Territory schermnavigatie en visuals uitgebreid: nieuwe route `/territory` in main.dart, zichtbaar sidebar-icoon in dashboard (web-shell), help-entry in NL/EN, en gekoppelde `cafuego-Nederland.svg` kaart met dynamische region-inkleuring op ownership/contest status
+  - Bestanden: `client/lib/main.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/data/help_content.dart`, `client/lib/screens/territory_screen.dart`, `client/assets/images/maps/cafuego-Nederland.svg`, `client/pubspec.yaml`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory screen notification fix: showTopRightNotification calls gecorrigeerd naar showTopRightFromSnackBar SnackBar pattern om build-fout op te lossen
   - Bestanden: `client/lib/screens/territory_screen.dart`
 
