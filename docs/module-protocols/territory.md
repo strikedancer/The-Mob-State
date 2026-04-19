@@ -1,5 +1,16 @@
 # Territory Protocol
 
+## Implementatiestatus
+- Fase 1 (backend + Flutter): ✅ geïmplementeerd
+  - `backend/src/startup/ensureTerritorySchema.ts` — DB schema + NL regio seed + runtime_config defaults
+  - `backend/src/services/territoryService.ts` — game logic (contests, actions, anti-abuse, resolve, notifications)
+  - `backend/src/routes/territory.ts` — player endpoints + admin moderation endpoints
+  - `backend/src/app.ts` / `index.ts` — route en startup bootstrap geregistreerd
+  - `client/lib/services/territory_service.dart` — Flutter API service
+  - `client/lib/screens/territory_screen.dart` — responsive UI (desktop split / tablet stacked / mobiel bottom sheet)
+- SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
+- Admin Vue-frontend territory sectie: ⏳ gepland
+
 ## Scope
 Crew-territoriumcontrole per land met kaartweergave (SVG), contest lifecycle, invloedspunten, seizoenen, rewards, anti-abuse, notificaties en admin-moderatie.
 

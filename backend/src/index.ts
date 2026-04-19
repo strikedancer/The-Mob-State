@@ -12,6 +12,7 @@ import { ensureProstitutionSchema } from './startup/ensureProstitutionSchema';
 import { ensureSecuritySchema } from './startup/ensureSecuritySchema';
 import { ensureSupportSchema } from './startup/ensureSupportSchema';
 import { ensureCrewWarSchema } from './startup/ensureCrewWarSchema';
+import { ensureTerritorySchema } from './startup/ensureTerritorySchema';
 import path from 'path';
 import fs from 'fs';
 
@@ -46,6 +47,7 @@ async function startServer() {
   await ensureSecuritySchema();
   await ensureSupportSchema();
   await ensureCrewWarSchema();
+  await ensureTerritorySchema();
 
   // Capture runtime errors into persistent system logs for admin monitoring
   systemLogService.installConsoleErrorCapture();
