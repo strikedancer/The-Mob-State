@@ -16,8 +16,7 @@ class TerritoryScreen extends StatefulWidget {
   State<TerritoryScreen> createState() => _TerritoryScreenState();
 }
 
-class _TerritoryScreenState extends State<TerritoryScreen>
-    with SingleTickerProviderStateMixin {
+class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProviderStateMixin {
   final TerritoryService _service = TerritoryService();
 
   bool _isLoading = true;
@@ -64,8 +63,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       _mapData = mapData as Map<String, dynamic>;
       _overview = overview as Map<String, dynamic>;
       _leaderboard = leaderboard as List<dynamic>;
-      _isTerritoryEnabled =
-          (_overview['config']?['enabled'] as bool?) ?? false;
+      _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
       _isLoading = false;
     });
   }
@@ -80,13 +78,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
     if (!_isTerritoryEnabled) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text(_t('Territorium', 'Territory')),
-        ),
+        appBar: AppBar(title: Text(_t('Territorium', 'Territory'))),
         body: Center(
           child: Text(
-            _t('Territorium is momenteel niet beschikbaar.',
-                'Territory is currently unavailable.'),
+            _t('Territorium is momenteel niet beschikbaar.', 'Territory is currently unavailable.'),
             style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.center,
           ),
@@ -106,20 +101,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: _t('Vernieuwen', 'Refresh'),
-            onPressed: _loadData,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), tooltip: _t('Vernieuwen', 'Refresh'), onPressed: _loadData),
         ],
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          _buildMapTab(),
-          _buildLeaderboardTab(),
-          _buildSeasonTab(),
-        ],
+        children: [_buildMapTab(), _buildLeaderboardTab(), _buildSeasonTab()],
       ),
     );
   }
@@ -129,76 +116,68 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Widget _buildMapTab() {
     final regions = (_mapData['regions'] as List<dynamic>?) ?? [];
 
-    return LayoutBuilder(builder: (context, constraints) {
-      final isDesktop = constraints.maxWidth >= 900;
-      final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 900;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isDesktop = constraints.maxWidth >= 900;
+        final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 900;
 
-      if (isDesktop) {
-        return Row(
-          children: [
-            Expanded(flex: 3, child: _buildRegionGrid(regions)),
-            const VerticalDivider(width: 1),
-            SizedBox(
-              width: 320,
-              child: _selectedRegion != null
-                  ? _buildRegionDetail(_selectedRegion!)
-                  : _buildNoSelectionPlaceholder(),
-            ),
-          ],
-        );
-      }
-
-      if (isTablet) {
-        return Column(
-          children: [
-            Expanded(child: _buildRegionGrid(regions)),
-            if (_selectedRegion != null)
+        if (isDesktop) {
+          return Row(
+            children: [
+              Expanded(flex: 3, child: _buildRegionGrid(regions)),
+              const VerticalDivider(width: 1),
               SizedBox(
-                height: 280,
-                child: _buildRegionDetail(_selectedRegion!),
+                width: 320,
+                child: _selectedRegion != null ? _buildRegionDetail(_selectedRegion!) : _buildNoSelectionPlaceholder(),
               ),
-          ],
-        );
-      }
+            ],
+          );
+        }
 
-      // Mobile
-      return Stack(
-        children: [
-          _buildRegionGrid(regions),
-          if (_selectedRegion != null)
-            DraggableScrollableSheet(
-              initialChildSize: 0.35,
-              minChildSize: 0.15,
-              maxChildSize: 0.65,
-              builder: (_, controller) => Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(16)),
-                  boxShadow: const [BoxShadow(blurRadius: 8, spreadRadius: 2)],
-                ),
-                child: ListView(
-                  controller: controller,
-                  children: [
-                    Center(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[400],
-                          borderRadius: BorderRadius.circular(2),
+        if (isTablet) {
+          return Column(
+            children: [
+              Expanded(child: _buildRegionGrid(regions)),
+              if (_selectedRegion != null) SizedBox(height: 280, child: _buildRegionDetail(_selectedRegion!)),
+            ],
+          );
+        }
+
+        // Mobile
+        return Stack(
+          children: [
+            _buildRegionGrid(regions),
+            if (_selectedRegion != null)
+              DraggableScrollableSheet(
+                initialChildSize: 0.35,
+                minChildSize: 0.15,
+                maxChildSize: 0.65,
+                builder: (_, controller) => Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    boxShadow: const [BoxShadow(blurRadius: 8, spreadRadius: 2)],
+                  ),
+                  child: ListView(
+                    controller: controller,
+                    children: [
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(2)),
                         ),
                       ),
-                    ),
-                    _buildRegionDetail(_selectedRegion!),
-                  ],
+                      _buildRegionDetail(_selectedRegion!),
+                    ],
+                  ),
                 ),
               ),
-            ),
-        ],
-      );
-    });
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildRegionGrid(List<dynamic> regions) {
@@ -241,19 +220,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         elevation: isSelected ? 6 : 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: isSelected
-              ? BorderSide(color: Theme.of(context).colorScheme.primary, width: 2)
-              : BorderSide.none,
+          side: isSelected ? BorderSide(color: Theme.of(context).colorScheme.primary, width: 2) : BorderSide.none,
         ),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(regionName,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis),
+              Text(
+                regionName,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
               const SizedBox(height: 4),
               Text(
                 ownerName ?? _t('Neutraal', 'Neutral'),
@@ -272,14 +251,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
               ],
               if (contestStatus != null) ...[
                 const SizedBox(height: 4),
-                Row(children: [
-                  const Icon(Icons.warning_amber_rounded, size: 12, color: Colors.orange),
-                  const SizedBox(width: 2),
-                  Text(
-                    _t('In strijd', 'Under contest'),
-                    style: const TextStyle(color: Colors.orange, fontSize: 10),
-                  ),
-                ]),
+                Row(
+                  children: [
+                    const Icon(Icons.warning_amber_rounded, size: 12, color: Colors.orange),
+                    const SizedBox(width: 2),
+                    Text(_t('In strijd', 'Under contest'), style: const TextStyle(color: Colors.orange, fontSize: 10)),
+                  ],
+                ),
               ],
             ],
           ),
@@ -289,9 +267,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   }
 
   Widget _buildRegionDetail(Map<String, dynamic> region) {
-    final regionName = _isNl
-        ? (region['nameNl'] as String? ?? '')
-        : (region['nameEn'] as String? ?? '');
+    final regionName = _isNl ? (region['nameNl'] as String? ?? '') : (region['nameEn'] as String? ?? '');
     final ownerName = region['ownerCrewName'] as String?;
     final stability = (region['stability'] as num?)?.toInt() ?? 100;
     final contestId = region['contestId'] as int?;
@@ -304,34 +280,22 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(children: [
-            Expanded(
-              child: Text(regionName,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            ),
-            IconButton(
-              icon: const Icon(Icons.close, size: 18),
-              onPressed: () => setState(() => _selectedRegion = null),
-            ),
-          ]),
+          Row(
+            children: [
+              Expanded(
+                child: Text(regionName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close, size: 18),
+                onPressed: () => setState(() => _selectedRegion = null),
+              ),
+            ],
+          ),
           const SizedBox(height: 8),
-          _detailRow(
-            _t('Eigenaar', 'Owner'),
-            ownerName ?? _t('Neutraal', 'Neutral'),
-          ),
-          _detailRow(
-            _t('Stabiliteit', 'Stability'),
-            '$stability%',
-          ),
-          _detailRow(
-            _t('Waarde', 'Value tier'),
-            '⭐' * tier,
-          ),
-          if (contestStatus != null)
-            _detailRow(
-              _t('Contest status', 'Contest status'),
-              contestStatus,
-            ),
+          _detailRow(_t('Eigenaar', 'Owner'), ownerName ?? _t('Neutraal', 'Neutral')),
+          _detailRow(_t('Stabiliteit', 'Stability'), '$stability%'),
+          _detailRow(_t('Waarde', 'Value tier'), '⭐' * tier),
+          if (contestStatus != null) _detailRow(_t('Contest status', 'Contest status'), contestStatus),
           const SizedBox(height: 16),
           // Actions
           if (contestStatus == null)
@@ -364,8 +328,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
-          Text('$label: ',
-              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
           Expanded(child: Text(value, style: const TextStyle(fontSize: 13))),
         ],
       ),
@@ -413,9 +376,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
   Widget _buildLeaderboardTab() {
     if (_leaderboard.isEmpty) {
-      return Center(
-        child: Text(_t('Nog geen territorium gecontroleerd.', 'No territory controlled yet.')),
-      );
+      return Center(child: Text(_t('Nog geen territorium gecontroleerd.', 'No territory controlled yet.')));
     }
     return ListView.separated(
       padding: const EdgeInsets.all(16),
@@ -442,9 +403,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   Widget _buildSeasonTab() {
     final season = _overview['activeSeason'] as Map<String, dynamic>?;
     if (season == null) {
-      return Center(
-        child: Text(_t('Geen actief seizoen gevonden.', 'No active season found.')),
-      );
+      return Center(child: Text(_t('Geen actief seizoen gevonden.', 'No active season found.')));
     }
 
     final key = season['seasonKey'] as String? ?? '';
@@ -457,8 +416,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(_t('Huidig seizoen', 'Current season'),
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+            _t('Huidig seizoen', 'Current season'),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 16),
           _detailRow(_t('Sleutel', 'Key'), key),
           _detailRow(_t('Status', 'Status'), status),
@@ -476,18 +437,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       context: context,
       builder: (_) => AlertDialog(
         title: Text(_t('Aanvallen?', 'Attack?')),
-        content: Text(
-            _t('Wil je een contest starten voor $regionKey?',
-                'Start a contest for $regionKey?')),
+        content: Text(_t('Wil je een contest starten voor $regionKey?', 'Start a contest for $regionKey?')),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(_t('Annuleer', 'Cancel')),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(_t('Aanvallen', 'Attack')),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(_t('Annuleer', 'Cancel'))),
+          ElevatedButton(onPressed: () => Navigator.pop(context, true), child: Text(_t('Aanvallen', 'Attack'))),
         ],
       ),
     );
@@ -499,14 +452,26 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     setState(() => _isActing = false);
 
     if (result['success'] == true) {
-      showTopRightNotification(
-          context, _t('Contest gestart!', 'Contest started!'));
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_t('Contest gestart!', 'Contest started!')),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 3),
+        ),
+      );
       await _loadData();
     } else {
-      showTopRightNotification(
-          context,
-          _t('Mislukt: ${result['event'] ?? result['message']}',
-              'Failed: ${result['event'] ?? result['message']}'));
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _t('Mislukt: ${result['event'] ?? result['message']}', 'Failed: ${result['event'] ?? result['message']}'),
+          ),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
     }
   }
 
@@ -518,14 +483,29 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
     if (result['success'] == true) {
       final pts = result['pointsDelta'] ?? 0;
-      showTopRightNotification(
-          context, _t('+$pts punten!', '+$pts points!'));
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_t('+$pts punten!', '+$pts points!')),
+          backgroundColor: Colors.blue,
+          duration: const Duration(seconds: 3),
+        ),
+      );
       await _loadData();
     } else {
-      showTopRightNotification(
-          context,
-          _t('Actie mislukt: ${result['event'] ?? result['message']}',
-              'Action failed: ${result['event'] ?? result['message']}'));
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _t(
+              'Actie mislukt: ${result['event'] ?? result['message']}',
+              'Action failed: ${result['event'] ?? result['message']}',
+            ),
+          ),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
     }
   }
 }

@@ -12,6 +12,8 @@
   - `client/lib/main.dart` — route `/territory` registered
   - `client/lib/screens/dashboard_screen.dart` — menu item met kaart-icoon in navigatie-grid
   - `client/lib/data/help_content.dart` — help entry met NL/EN beschrijving
+- Bug fixes: ✅
+  - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 
