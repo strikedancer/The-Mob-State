@@ -20,9 +20,9 @@ class TerritoryScreen extends StatefulWidget {
 
 class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProviderStateMixin {
   final TerritoryService _service = TerritoryService();
-  static const String _fallbackNlMapSvgAsset = 'assets/images/maps/cafuego-Nederland.svg';
+  static const String _fallbackNlMapSvgAsset = 'assets/images/maps/netherlandsLow.svg';
   static const Map<String, String> _countryMapAssetFallbackByCode = {
-    'nl': 'cafuego-Nederland.svg',
+    'nl': 'netherlandsLow.svg',
     'be': 'belgium.svg',
     'ar': 'argentinaLow.svg',
     'au': 'australiaLow.svg',

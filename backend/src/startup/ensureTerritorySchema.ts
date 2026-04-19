@@ -194,7 +194,7 @@ export async function ensureTerritorySchema(): Promise<void> {
 
   // ── Seed supported countries ──────────────────────────────────────────────
   const countries = [
-    { code: 'nl', nl: 'Nederland', en: 'Netherlands', svgAssetKey: 'cafuego-Nederland' },
+    { code: 'nl', nl: 'Nederland', en: 'Netherlands', svgAssetKey: 'netherlandsLow' },
     { code: 'be', nl: 'Belgie', en: 'Belgium', svgAssetKey: 'belgium' },
     { code: 'ar', nl: 'Argentinie', en: 'Argentina', svgAssetKey: 'argentinaLow' },
     { code: 'au', nl: 'Australie', en: 'Australia', svgAssetKey: 'australiaLow' },
