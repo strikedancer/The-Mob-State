@@ -215,6 +215,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - ✅ Attacker has a usable weapon in inventory (weaponId present, quantity > 0, condition > 0) + enough ammo
 - ✅ Broken weapon returns explicit repair-required feedback (no generic "not owned" fallback)
 - ✅ Client inventory parsing must tolerate numeric fields arriving as numbers or numeric strings; hitlist UI may not false-block attack flow because `quantity`/`condition` serialization differs per environment
+- ✅ Client inventory-fed attack dialogs must normalize decoded JSON maps to string-keyed maps before filtering or rendering; runtime `Map<dynamic, dynamic>` payloads may not collapse valid weapon lists to empty
 - ✅ Target is not in Premium Protection mode
 - ✅ Attacker not in global cooldown (24h after fail)
 - ✅ Hit is ACTIVE status

@@ -628,6 +628,15 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     return fallback;
   }
 
+  Map<String, dynamic>? _normalizeMap(dynamic value) {
+    if (value is Map) {
+      return value.map(
+        (key, mapValue) => MapEntry(key.toString(), mapValue),
+      );
+    }
+    return null;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -645,14 +654,15 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
       final ammoList = ammoRaw is List ? ammoRaw : <dynamic>[];
       final ammoByType = <String, int>{
         for (final item in ammoList)
-          if (item is Map)
-            (item['ammoType'] ?? item['type'] ?? '').toString():
-                (item['quantity'] as num?)?.toInt() ?? 0,
+          if (_normalizeMap(item) != null)
+            ((_normalizeMap(item)!['ammoType'] ?? _normalizeMap(item)!['type'] ?? '').toString()):
+                _asInt(_normalizeMap(item)!['quantity'], fallback: 0),
       };
       final weaponsRaw = weaponsData is Map ? weaponsData['weapons'] : null;
       final rawWeapons = weaponsRaw is List ? weaponsRaw : <dynamic>[];
       final weapons = rawWeapons.map((weapon) {
-        if (weapon is! Map) {
+        final normalizedWeapon = _normalizeMap(weapon);
+        if (normalizedWeapon == null) {
           return <String, dynamic>{
             'weaponId': 'unknown',
             'weaponName': l10n.unknown,
@@ -662,27 +672,28 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
           };
         }
         final resolvedWeaponId =
-            (weapon['weaponId'] ?? weapon['id'] ?? '').toString().trim();
-        final ammoType = weapon['ammoType']?.toString();
+            (normalizedWeapon['weaponId'] ?? normalizedWeapon['id'] ?? '').toString().trim();
+        final ammoType = normalizedWeapon['ammoType']?.toString();
         final ammoAvailable = ammoType != null
             ? (ammoByType[ammoType] ?? 0)
             : 0;
         final weaponName =
-            weapon['name'] ??
-            weapon['weaponName'] ??
-            weapon['weaponId'] ??
+            normalizedWeapon['name'] ??
+            normalizedWeapon['weaponName'] ??
+            normalizedWeapon['weaponId'] ??
             l10n.unknown;
         return {
-          ...weapon,
+          ...normalizedWeapon,
           'weaponId': resolvedWeaponId,
           'weaponName': weaponName,
           'ammoAvailable': ammoAvailable,
-          'quantity': _asInt(weapon['quantity'], fallback: 1),
-          'condition': _asDouble(weapon['condition'], fallback: 100),
+          'quantity': _asInt(normalizedWeapon['quantity'], fallback: 1),
+          'condition': _asDouble(normalizedWeapon['condition'], fallback: 100),
         };
       }).toList();
 
       final usableWeapons = weapons
+          .map(_normalizeMap)
           .whereType<Map<String, dynamic>>()
           .where((weapon) {
             final weaponId = (weapon['weaponId'] ?? '').toString().trim();
@@ -797,7 +808,10 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
       );
     }
 
-    final weaponItems = _weapons.whereType<Map<String, dynamic>>().toList();
+    final weaponItems = _weapons
+      .map(_normalizeMap)
+      .whereType<Map<String, dynamic>>()
+      .toList();
 
     if (weaponItems.isEmpty) {
       return AlertDialog(

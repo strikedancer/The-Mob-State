@@ -43,6 +43,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Hitlist wapenlijst normaliseert decoded JSON maps nu expliciet naar string-keyed maps voordat bruikbare wapens worden gefilterd of gerenderd; omgevingen waar `weapons/inventory` als `Map<dynamic, dynamic>` decodeert laten daardoor pas gekochte wapens niet meer verdwijnen uit de moorddialoog
+  - Bestanden: `client/lib/screens/hitlist_screen.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist aanvalsdialoog parseert inventory-data nu toleranter: `quantity` en `condition` mogen als getal of string binnenkomen zonder dat pas gekochte wapens onterecht uit de selectie verdwijnen; zo blokkeert de client de moordflow niet meer met een valse "geen bruikbare wapens" melding
   - Bestanden: `client/lib/screens/hitlist_screen.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moordpoging wapenvalidatie gehard: aanvalsdialoog toont en verstuurt nu alleen bruikbare inventory-wapens (weaponId aanwezig, quantity > 0, condition > 0), backend normaliseert weaponId en geeft een aparte `WEAPON_BROKEN` fout i.p.v. generieke "niet in inventaris", zodat spelers met geldige wapens niet meer onterecht geblokkeerd worden
