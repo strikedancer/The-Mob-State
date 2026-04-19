@@ -17,6 +17,10 @@
   - `client/assets/images/maps/cafuego-Nederland.svg` — NL kaart asset gekoppeld aan Territory
   - `client/lib/screens/territory_screen.dart` — SVG kaart render + dynamische inkleuring per `svgElementId` op basis van ownership/contest status
   - `client/lib/screens/territory_screen.dart` — kaart-legend met crew-naam ↔ kleur voor snelle interpretatie van ownership op desktop/tablet/mobiel
+- Fase 4 (multi-country assets): ✅ geïmplementeerd
+  - `client/assets/images/maps/*.svg` — batch pool van landkaarten toegevoegd (o.a. be, de, fr, us, uk)
+  - `client/lib/screens/territory_screen.dart` — map asset loading nu dynamisch per land via `country.svgAssetKey` met country-code fallback en country selector in de appbar
+  - `backend/src/startup/ensureTerritorySchema.ts` — country seed uitgebreid zodat meerdere landen direct zichtbaar zijn via `/territory/countries`
 - Bug fixes: ✅
   - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)

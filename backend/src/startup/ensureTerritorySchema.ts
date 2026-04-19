@@ -192,12 +192,43 @@ export async function ensureTerritorySchema(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
-  // ── Seed NL country ───────────────────────────────────────────────────────
-  await prisma.$executeRawUnsafe(`
-    INSERT INTO territory_countries (countryCode, displayNameNl, displayNameEn, svgAssetKey, enabled)
-    VALUES ('nl', 'Nederland', 'Netherlands', 'cafuego-Nederland', 1)
-    ON DUPLICATE KEY UPDATE enabled = 1
-  `);
+  // ── Seed supported countries ──────────────────────────────────────────────
+  const countries = [
+    { code: 'nl', nl: 'Nederland', en: 'Netherlands', svgAssetKey: 'cafuego-Nederland' },
+    { code: 'be', nl: 'Belgie', en: 'Belgium', svgAssetKey: 'belgium' },
+    { code: 'ar', nl: 'Argentinie', en: 'Argentina', svgAssetKey: 'argentinaLow' },
+    { code: 'au', nl: 'Australie', en: 'Australia', svgAssetKey: 'australiaLow' },
+    { code: 'br', nl: 'Brazilie', en: 'Brazil', svgAssetKey: 'brazilLow' },
+    { code: 'cn', nl: 'China', en: 'China', svgAssetKey: 'chinaLow' },
+    { code: 'co', nl: 'Colombia', en: 'Colombia', svgAssetKey: 'colombiaLow' },
+    { code: 'fr', nl: 'Frankrijk', en: 'France', svgAssetKey: 'franceLow' },
+    { code: 'de', nl: 'Duitsland', en: 'Germany', svgAssetKey: 'germanyLow' },
+    { code: 'it', nl: 'Italie', en: 'Italy', svgAssetKey: 'italyLow' },
+    { code: 'jp', nl: 'Japan', en: 'Japan', svgAssetKey: 'japanLow' },
+    { code: 'mx', nl: 'Mexico', en: 'Mexico', svgAssetKey: 'mexicoLow' },
+    { code: 'ru', nl: 'Rusland', en: 'Russia', svgAssetKey: 'russiaLow' },
+    { code: 'es', nl: 'Spanje', en: 'Spain', svgAssetKey: 'spainLow' },
+    { code: 'ch', nl: 'Zwitserland', en: 'Switzerland', svgAssetKey: 'switzerlandLow' },
+    { code: 'tr', nl: 'Turkije', en: 'Turkey', svgAssetKey: 'turkeyLow' },
+    { code: 'gb', nl: 'Verenigd Koninkrijk', en: 'United Kingdom', svgAssetKey: 'ukLow' },
+    { code: 'us', nl: 'Verenigde Staten', en: 'United States', svgAssetKey: 'usaLow' },
+  ];
+
+  for (const country of countries) {
+    await prisma.$executeRawUnsafe(
+      `INSERT INTO territory_countries (countryCode, displayNameNl, displayNameEn, svgAssetKey, enabled)
+       VALUES (?, ?, ?, ?, 1)
+       ON DUPLICATE KEY UPDATE
+         displayNameNl = VALUES(displayNameNl),
+         displayNameEn = VALUES(displayNameEn),
+         svgAssetKey = VALUES(svgAssetKey),
+         enabled = 1`,
+      country.code,
+      country.nl,
+      country.en,
+      country.svgAssetKey,
+    );
+  }
 
   // ── Seed NL provinces ─────────────────────────────────────────────────────
   const nlRegions = [

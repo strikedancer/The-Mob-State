@@ -20,15 +20,38 @@ class TerritoryScreen extends StatefulWidget {
 
 class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProviderStateMixin {
   final TerritoryService _service = TerritoryService();
-  static const String _nlMapSvgAsset = 'assets/images/maps/cafuego-Nederland.svg';
+  static const String _fallbackNlMapSvgAsset = 'assets/images/maps/cafuego-Nederland.svg';
+  static const Map<String, String> _countryMapAssetFallbackByCode = {
+    'nl': 'cafuego-Nederland.svg',
+    'be': 'belgium.svg',
+    'ar': 'argentinaLow.svg',
+    'au': 'australiaLow.svg',
+    'br': 'brazilLow.svg',
+    'cn': 'chinaLow.svg',
+    'co': 'colombiaLow.svg',
+    'fr': 'franceLow.svg',
+    'de': 'germanyLow.svg',
+    'it': 'italyLow.svg',
+    'jp': 'japanLow.svg',
+    'mx': 'mexicoLow.svg',
+    'ru': 'russiaLow.svg',
+    'es': 'spainLow.svg',
+    'ch': 'switzerlandLow.svg',
+    'tr': 'turkeyLow.svg',
+    'uk': 'ukLow.svg',
+    'gb': 'ukLow.svg',
+    'us': 'usaLow.svg',
+  };
 
   bool _isLoading = true;
   bool _isTerritoryEnabled = false;
 
   // ── Data ──────────────────────────────────────────────────────────────────
   Map<String, dynamic> _mapData = {};
+  List<Map<String, dynamic>> _countries = [];
   List<dynamic> _leaderboard = [];
   Map<String, dynamic> _overview = {};
+  String _selectedCountryCode = 'nl';
   String? _svgTemplate;
   String? _renderedSvgMap;
 
@@ -46,8 +69,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _loadSvgTemplate();
-    _loadData();
+    _loadData(reloadCountries: true);
   }
 
   @override
@@ -56,40 +78,99 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     super.dispose();
   }
 
-  Future<void> _loadData() async {
+  Future<void> _loadData({String? countryCode, bool reloadCountries = false}) async {
     setState(() => _isLoading = true);
+
+    List<Map<String, dynamic>> countries = _countries;
+    if (reloadCountries || countries.isEmpty) {
+      final rawCountries = await _service.getCountries();
+      countries = rawCountries
+          .whereType<Map<String, dynamic>>()
+          .map((country) => Map<String, dynamic>.from(country))
+          .toList(growable: false);
+    }
+
+    var targetCountryCode = (countryCode ?? _selectedCountryCode).toLowerCase();
+    if (countries.isNotEmpty) {
+      final countryCodes = countries
+          .map((country) => (country['countryCode'] as String?)?.toLowerCase())
+          .whereType<String>()
+          .toSet();
+      if (!countryCodes.contains(targetCountryCode)) {
+        targetCountryCode = (countries.first['countryCode'] as String?)?.toLowerCase() ?? targetCountryCode;
+      }
+    }
+
     final [mapData, overview, leaderboard] = await Future.wait([
-      _service.getMap('nl'),
+      _service.getMap(targetCountryCode),
       _service.getOverview(),
       _service.getLeaderboard(),
     ]);
 
+    final mapDataMap = mapData as Map<String, dynamic>;
+    final mapCountry = mapDataMap['country'] as Map<String, dynamic>?;
+    final resolvedCountryCode = (mapCountry?['countryCode'] as String?)?.toLowerCase() ?? targetCountryCode;
+    final svgAssetKey = mapCountry?['svgAssetKey'] as String?;
+    final svgTemplate = await _loadSvgTemplateForCountry(resolvedCountryCode, svgAssetKey);
+
     if (!mounted) return;
     setState(() {
-      _mapData = mapData as Map<String, dynamic>;
+      _countries = countries;
+      _selectedCountryCode = resolvedCountryCode;
+      _mapData = mapDataMap;
       _overview = overview as Map<String, dynamic>;
       _leaderboard = leaderboard as List<dynamic>;
       _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
+      _svgTemplate = svgTemplate;
       _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
       _isLoading = false;
     });
   }
 
-  Future<void> _loadSvgTemplate() async {
-    try {
-      final rawSvg = await rootBundle.loadString(_nlMapSvgAsset);
-      if (!mounted) return;
-      setState(() {
-        _svgTemplate = rawSvg;
-        _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
-      });
-    } catch (_) {
-      if (!mounted) return;
-      setState(() {
-        _svgTemplate = null;
-        _renderedSvgMap = null;
-      });
+  List<String> _buildMapAssetCandidates(String countryCode, String? svgAssetKey) {
+    final candidates = <String>[];
+
+    if (svgAssetKey != null && svgAssetKey.trim().isNotEmpty) {
+      final key = svgAssetKey.trim();
+      if (key.startsWith('assets/')) {
+        candidates.add(key.toLowerCase().endsWith('.svg') ? key : '$key.svg');
+      } else {
+        final normalized = key.toLowerCase().endsWith('.svg') ? key : '$key.svg';
+        candidates.add('assets/images/maps/$normalized');
+      }
     }
+
+    final fallbackFile = _countryMapAssetFallbackByCode[countryCode];
+    if (fallbackFile != null) {
+      candidates.add('assets/images/maps/$fallbackFile');
+    }
+
+    candidates.add(_fallbackNlMapSvgAsset);
+    return candidates.toSet().toList(growable: false);
+  }
+
+  Future<String?> _loadSvgTemplateForCountry(String countryCode, String? svgAssetKey) async {
+    final candidates = _buildMapAssetCandidates(countryCode, svgAssetKey);
+    for (final candidate in candidates) {
+      try {
+        return await rootBundle.loadString(candidate);
+      } catch (_) {
+        // Continue with the next candidate.
+      }
+    }
+    return null;
+  }
+
+  String _currentCountryLabel() {
+    final country = _mapData['country'] as Map<String, dynamic>?;
+    if (country == null) return _selectedCountryCode.toUpperCase();
+    final label = _isNl
+        ? (country['displayNameNl'] as String?)
+        : (country['displayNameEn'] as String?);
+    if (label != null && label.trim().isNotEmpty) {
+      return label.trim();
+    }
+    return (country['countryCode'] as String?)?.toUpperCase() ?? _selectedCountryCode.toUpperCase();
   }
 
   String? _renderSvgWithOwnership(List<dynamic> regions) {
@@ -276,6 +357,28 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           ],
         ),
         actions: [
+          if (_countries.length > 1)
+            PopupMenuButton<String>(
+              tooltip: _t('Kies land', 'Select country'),
+              icon: const Icon(Icons.public),
+              onSelected: (countryCode) {
+                if (countryCode == _selectedCountryCode) return;
+                setState(() => _selectedRegion = null);
+                _loadData(countryCode: countryCode);
+              },
+              itemBuilder: (context) => _countries
+                  .map(
+                    (country) => PopupMenuItem<String>(
+                      value: ((country['countryCode'] as String?) ?? '').toLowerCase(),
+                      child: Text(
+                        _isNl
+                            ? (country['displayNameNl'] as String? ?? (country['countryCode'] as String? ?? ''))
+                            : (country['displayNameEn'] as String? ?? (country['countryCode'] as String? ?? '')),
+                      ),
+                    ),
+                  )
+                  .toList(growable: false),
+            ),
           IconButton(icon: const Icon(Icons.refresh), tooltip: _t('Vernieuwen', 'Refresh'), onPressed: _loadData),
         ],
       ),
@@ -387,7 +490,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _t('Nederland kaart (crew controle)', 'Netherlands map (crew control)'),
+              _isNl
+                  ? '${_currentCountryLabel()} kaart (crew controle)'
+                  : '${_currentCountryLabel()} map (crew control)',
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),
