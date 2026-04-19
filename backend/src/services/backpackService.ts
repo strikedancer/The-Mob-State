@@ -366,8 +366,8 @@ export async function getAvailableBackpacks(playerId: number): Promise<{
   const owned = playerBackpack?.backpack || null;
   const ownedSlots = owned?.slots || 0;
 
-  // Filter available backpacks
-  const available = allBackpacks.filter(bp => {
+  // Filter backpacks player can buy based on rank/VIP and ownership
+  const purchasable = allBackpacks.filter(bp => {
     // Check rank
     if (player.rank < bp.requiredRank) return false;
     
@@ -380,8 +380,13 @@ export async function getAvailableBackpacks(playerId: number): Promise<{
     return true;
   });
 
-  // Upgradeable backpacks (better than current)
-  const canUpgradeTo = available.filter(bp => bp.slots > ownedSlots);
+  // Only show true upgrades when player already owns a backpack.
+  const canUpgradeTo = owned
+    ? purchasable.filter(bp => bp.slots > ownedSlots)
+    : [];
+
+  // Hide lower/equal tiers once a backpack is owned.
+  const available = owned ? [] : purchasable;
 
   return { owned, available, canUpgradeTo };
 }
