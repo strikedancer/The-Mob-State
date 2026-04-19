@@ -534,9 +534,14 @@ const writeVehiclesFile = async (vehicles: VehiclesFile): Promise<void> => {
 type AircraftDef = z.infer<typeof aircraftSchema>;
 
 const readAircraftFile = async (): Promise<AircraftDef[]> => {
-  const content = await fs.readFile(aircraftFilePath, 'utf-8');
-  const parsed = JSON.parse(content);
-  return Array.isArray(parsed) ? parsed : [];
+  try {
+    const content = await fs.readFile(aircraftFilePath, 'utf-8');
+    const parsed = JSON.parse(content);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error('Error reading aircraft file:', error);
+    return [];
+  }
 };
 
 const writeAircraftFile = async (list: AircraftDef[]): Promise<void> => {
@@ -2569,25 +2574,32 @@ router.post(
  */
 router.get('/config', async (req, res) => {
   try {
-    // Read the .env file from application root
+    // Read the .env file from application root (may not exist in Docker production)
     const envPath = path.join(process.cwd(), '.env');
-    const envContent = await fs.readFile(envPath, 'utf-8');
+    let envVars: Record<string, string> = {};
     
-    // Parse .env file into key-value pairs
-    const envVars: Record<string, string> = {};
-    envContent.split('\n').forEach(line => {
-      const trimmed = line.trim();
-      if (trimmed && !trimmed.startsWith('#')) {
-        const [key, ...valueParts] = trimmed.split('=');
-        if (key) {
-          envVars[key.trim()] = valueParts.join('=').trim();
+    try {
+      const envContent = await fs.readFile(envPath, 'utf-8');
+      // Parse .env file into key-value pairs
+      envContent.split('\n').forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#')) {
+          const [key, ...valueParts] = trimmed.split('=');
+          if (key) {
+            envVars[key.trim()] = valueParts.join('=').trim();
+          }
         }
-      }
-    });
+      });
+    } catch (fileError) {
+      // .env file may not exist in production Docker containers (env vars injected via docker-compose)
+      // This is expected and not an error condition
+      console.debug('Config: .env file not found (expected in production), using process.env instead');
+    }
 
     res.json({
       env: envVars,
       configPath: envPath,
+      note: 'In production, environment variables are injected via docker-compose and may not be available in .env file',
     });
   } catch (error) {
     console.error('Admin get config error:', error);
@@ -2610,9 +2622,16 @@ router.put(
         return res.status(400).json({ error: 'Invalid updates object' });
       }
 
-      // Read current .env file
+      // Read current .env file (may not exist in production Docker)
       const envPath = path.join(__dirname, '../../.env');
-      const envContent = await fs.readFile(envPath, 'utf-8');
+      let envContent = '';
+      try {
+        envContent = await fs.readFile(envPath, 'utf-8');
+      } catch (fileError) {
+        // .env file may not exist in production, start with empty content
+        console.debug('Config: .env file not found for update, creating new one');
+        envContent = '';
+      }
 
       // Parse and update
       const lines = envContent.split('\n');

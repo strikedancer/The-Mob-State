@@ -671,7 +671,7 @@ class SmugglingService {
     }
 
     const [drugs, tradeGoods, vehicles, weapons, ammo] = await Promise.all([
-      prisma.drugInventory.findMany({ where: { playerId, country: player.currentCountry, quantity: { gt: 0 } }, orderBy: [{ drugType: 'asc' }, { quality: 'asc' }] }),
+      prisma.drugInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: [{ drugType: 'asc' }, { quality: 'asc' }] }),
       prisma.inventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: { goodType: 'asc' } }),
       prisma.vehicleInventory.findMany({ where: { playerId, currentLocation: player.currentCountry, transportStatus: null, marketListing: false }, orderBy: { stolenAt: 'desc' } }),
       prisma.weaponInventory.findMany({ where: { playerId, quantity: { gt: 0 } }, orderBy: { weaponId: 'asc' } }),
