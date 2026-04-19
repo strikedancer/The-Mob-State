@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Auth 401-diagnostiek uitgebreid voor spontane logout-meldingen: de auth-middleware logt nu route + reden (`MISSING_TOKEN`, `INVALID_TOKEN`, `TOKEN_EXPIRED`, `SESSION_REPLACED`, `PLAYER_NOT_FOUND`) en `/player/me` logt interne 500-fouten met spelercontext, zodat avondelijke sessie-uitval achteraf herleidbaar is
+  - Bestanden: `backend/src/middleware/authenticate.ts`, `backend/src/routes/player.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Auth sessie-uitval gehard: tijdelijke `/player/me` netwerk- of backendfouten loggen spelers niet langer lokaal uit; alleen expliciete auth-fouten zoals verlopen/vervangen/ongeldige tokens beëindigen nog de sessie. Backend login gebruikt nu ook de configureerbare JWT-expiry en schrijft weer een `auth.session.login` event voor consistente sessievervanging
   - Bestanden: `backend/src/services/authService.ts`, `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Crypto pushmelding-taal gelijkgetrokken per speler: crypto marktnieuws/headlines worden nu per ontvanger opgebouwd op basis van `preferredLanguage`, zodat NL-spelers geen Engelse headline meer krijgen in dezelfde push/in-app melding

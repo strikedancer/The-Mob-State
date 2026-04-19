@@ -93,7 +93,12 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
       params: {},
       player,
     });
-  } catch {
+  } catch (error) {
+    console.error('[PlayerRoute] Failed to load /player/me', {
+      playerId: req.player?.id,
+      username: req.player?.username,
+      error,
+    });
     return res.status(500).json({
       event: 'error.internal',
       params: {},

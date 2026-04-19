@@ -20,6 +20,17 @@ interface JwtPayload {
   iat?: number;
 }
 
+function logAuthFailure(req: Request, reason: string, context?: Record<string, unknown>) {
+  console.warn('[Auth] Authorization failed', {
+    method: req.method,
+    path: req.path,
+    reason,
+    ip: req.ip,
+    userAgent: req.get('user-agent') || 'unknown',
+    ...context,
+  });
+}
+
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authReq = req as AuthRequest;
@@ -27,7 +38,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.log('[Auth] Missing or invalid authorization header');
+      logAuthFailure(req, 'MISSING_TOKEN');
       return res.status(401).json({
         event: 'auth.unauthorized',
         params: { reason: 'MISSING_TOKEN' },
@@ -55,6 +66,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     });
 
     if (!player) {
+      logAuthFailure(req, 'PLAYER_NOT_FOUND', { playerId: decoded.playerId });
       return res.status(401).json({
         event: 'auth.unauthorized',
         params: { reason: 'PLAYER_NOT_FOUND' },
@@ -75,6 +87,11 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
       const latestLoginMs = latestSessionLogin.createdAt.getTime();
 
       if (latestLoginMs - tokenIssuedAtMs > 1000) {
+        logAuthFailure(req, 'SESSION_REPLACED', {
+          playerId: decoded.playerId,
+          tokenIssuedAtMs,
+          latestLoginMs,
+        });
         return res.status(401).json({
           event: 'auth.unauthorized',
           params: { reason: 'SESSION_REPLACED' },
@@ -120,6 +137,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     return next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
+      logAuthFailure(req, 'INVALID_TOKEN', {
+        error: error.message,
+      });
       return res.status(401).json({
         event: 'auth.unauthorized',
         params: { reason: 'INVALID_TOKEN' },
@@ -127,12 +147,20 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     }
 
     if (error instanceof jwt.TokenExpiredError) {
+      logAuthFailure(req, 'TOKEN_EXPIRED', {
+        expiredAt: error.expiredAt?.toISOString?.() ?? String(error.expiredAt ?? ''),
+      });
       return res.status(401).json({
         event: 'auth.unauthorized',
         params: { reason: 'TOKEN_EXPIRED' },
       });
     }
 
+    console.error('[Auth] Authentication failed with internal error', {
+      method: req.method,
+      path: req.path,
+      error,
+    });
     return res.status(500).json({
       event: 'error.internal',
       params: { message: 'Authentication failed' },
