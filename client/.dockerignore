@@ -9,4 +9,6 @@ ios
 build
 test
 # Images are served from external runtime mount — exclude from build context to keep it small.
+# Exception: maps/ contains SVG assets bundled by Flutter (rootBundle) — must be included.
 assets/images/
+!assets/images/maps/
