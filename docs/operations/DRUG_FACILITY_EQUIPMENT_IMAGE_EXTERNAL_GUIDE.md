@@ -10,21 +10,21 @@ Dit document fixeert naming + pad voor apparatuur-afbeeldingen in Drugs Facilite
 ## Stap 1 - Externe base URL
 Gebruik runtime build-flag in Flutter:
 
-- `DRUG_FACILITY_IMAGE_BASE_URL=https://jouw-server.nl/game-assets/facilities`
+- `DRUG_FACILITY_IMAGE_BASE_URL=https://jouw-server.nl/images/facilities`
 
 Voorbeeld web build:
 
 ```bash
-flutter build web --dart-define=DRUG_FACILITY_IMAGE_BASE_URL=https://cdn.jouwdomein.nl/game-assets/facilities
+flutter build web --dart-define=DRUG_FACILITY_IMAGE_BASE_URL=https://cdn.jouwdomein.nl/images/facilities
 ```
 
 Fallback gedrag:
-- Als de define niet is gezet op web, gebruikt de app automatisch `${origin}/game-assets/facilities`.
+- Als de define niet is gezet op web, gebruikt de app automatisch `${origin}/images/facilities`.
 - Als een afbeelding ontbreekt, valt de UI terug op een Material icon.
 
 ## Stap 2 - Exacte bestandsnamen (15)
 Map:
-- `/game-assets/facilities/equipment/`
+- `/images/facilities/equipment/`
 
 Bestanden:
 1. `greenhouse_lighting.png`
@@ -67,16 +67,23 @@ python backend/scripts/generate_drug_facility_equipment_images_leonardo.py --con
 
 ## Stap 4 - Upload
 Upload exact naar:
-- `/game-assets/facilities/equipment/<bestandsnaam>.png`
+- `runtime/client-images/facilities/equipment/<bestandsnaam>.png`
 
 Belangrijk:
+- De client-container mount deze map automatisch op `/images/*`; een extra kopie naar Plesk `httpdocs` is niet nodig.
 - Geen extra submap gebruiken zoals `/assets/images/facilities/`.
 - Geen bestandsnamen hernoemen.
 
+VPS rebuild:
+
+```bash
+docker compose -f docker-compose.plesk.yml up -d --build client
+```
+
 ## Stap 5 - Verificatie
 Check minimaal deze URLs:
-1. `https://<host>/game-assets/facilities/equipment/greenhouse_lighting.png`
-2. `https://<host>/game-assets/facilities/equipment/drug_lab_extraction_equipment.png`
-3. `https://<host>/game-assets/facilities/equipment/darkweb_storefront_crypto_settlement.png`
+1. `https://<host>/images/facilities/equipment/greenhouse_lighting.png`
+2. `https://<host>/images/facilities/equipment/drug_lab_extraction_equipment.png`
+3. `https://<host>/images/facilities/equipment/darkweb_storefront_crypto_settlement.png`
 
 Als deze laden, zijn path + naming correct en pakt de UI de images automatisch op.

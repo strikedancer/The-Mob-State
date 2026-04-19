@@ -173,22 +173,59 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     return '${facilityType}_$upgradeId.png';
   }
 
-  String? _equipmentExternalImageUrl(String facilityType, String upgradeId) {
+  List<String> _equipmentExternalImageCandidates(
+    String facilityType,
+    String upgradeId,
+  ) {
+    final fileName = _equipmentImageFileName(facilityType, upgradeId);
+    final candidates = <String>[];
+
+    void addBase(String base) {
+      var normalizedBase = base.trim();
+      if (normalizedBase.isEmpty) return;
+      if (normalizedBase.endsWith('/')) {
+        normalizedBase = normalizedBase.substring(0, normalizedBase.length - 1);
+      }
+      final url = '$normalizedBase/equipment/$fileName';
+      if (!candidates.contains(url)) {
+        candidates.add(url);
+      }
+    }
+
     final base = AppConfig.drugFacilityImageBaseUrl;
-    if (base.isEmpty) {
-      return null;
+    addBase(base);
+
+    final runtimeBase = Uri.base;
+    addBase('${runtimeBase.scheme}://${runtimeBase.host}/images/facilities');
+    addBase('${runtimeBase.scheme}://${runtimeBase.host}/game-assets/facilities');
+
+    return candidates;
+  }
+
+  Widget _buildEquipmentNetworkImage(
+    List<String> urls,
+    int index,
+    Widget fallback,
+  ) {
+    if (index >= urls.length) {
+      return fallback;
     }
 
-    var normalizedBase = base;
-    if (normalizedBase.endsWith('/')) {
-      normalizedBase = normalizedBase.substring(0, normalizedBase.length - 1);
-    }
-
-    return '$normalizedBase/equipment/${_equipmentImageFileName(facilityType, upgradeId)}';
+    return Image.network(
+      urls[index],
+      width: 36,
+      height: 36,
+      fit: BoxFit.cover,
+      errorBuilder: (_, _, _) => _buildEquipmentNetworkImage(
+        urls,
+        index + 1,
+        fallback,
+      ),
+    );
   }
 
   Widget _buildEquipmentAvatar(String facilityType, String upgradeId, String iconName) {
-    final imageUrl = _equipmentExternalImageUrl(facilityType, upgradeId);
+    final imageUrls = _equipmentExternalImageCandidates(facilityType, upgradeId);
 
     Widget iconFallback() {
       return Icon(
@@ -198,18 +235,12 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
       );
     }
 
-    if (imageUrl == null) {
+    if (imageUrls.isEmpty) {
       return iconFallback();
     }
 
     return ClipOval(
-      child: Image.network(
-        imageUrl,
-        width: 36,
-        height: 36,
-        fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => iconFallback(),
-      ),
+      child: _buildEquipmentNetworkImage(imageUrls, 0, iconFallback()),
     );
   }
 

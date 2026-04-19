@@ -45,7 +45,7 @@ class AppConfig {
 
     if (kIsWeb) {
       final base = Uri.base;
-      return '${base.scheme}://${base.host}/game-assets/facilities';
+      return '${base.scheme}://${base.host}/images/facilities';
     }
 
     return '';
