@@ -50,6 +50,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - Consistent formatting for money, timers, bounty amounts
 - Responsive usability without hiding critical actions
 - Loot reward percentages must be runtime-configurable via admin settings (`HITLIST_LOOT_CASH_PERCENT`, `HITLIST_LOOT_ITEM_PERCENT`) and not hardcoded in code or file-only env workflow
+- On successful hit, the murdered player must receive a hard progress reset (baseline restart), not only carried-loot loss
 
 ## Data Contract Requirements
 
@@ -241,7 +242,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - ✅ Client inventory-fed attack dialogs must normalize decoded JSON maps to string-keyed maps before filtering or rendering; runtime `Map<dynamic, dynamic>` payloads may not collapse valid weapon lists to empty
 - ✅ Target defense queries may only request schema-valid Prisma fields; do not select removed legacy fields (e.g. `player.weapon`) in hit combat flow
 - ✅ Shared combat services must keep import/export contracts stable (named/default) so runtime weapon definition resolution cannot become `undefined`
-- ✅ On successful hit, target loses all cash-on-hand and all carried inventory, while attacker receives configured loot share on top of bounty
+- ✅ On successful hit, target receives a hard progress reset (inventory, tools, properties, productions, crypto, cooldowns and key progress fields reset to baseline) while attacker receives configured loot share on top of bounty
 - ✅ Target is not in Premium Protection mode
 - ✅ Attacker not in global cooldown (24h after fail)
 - ✅ Hit is ACTIVE status

@@ -67,6 +67,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Hitlist moord-impact verzwaard naar harde reset: bij succesvolle hit krijgt het slachtoffer nu een volledige progress-reset (bezittingen en voortgang terug naar baseline) in plaats van alleen verlies van contant geld en gedragen items; detective-notificatie en help-content zijn daarop bijgewerkt
+  - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Gevangenis self-acties hersteld: spelers kunnen zichzelf in de prison-flow weer uitkopen met borg en ook zelf een uitbraakpoging doen; nieuw endpoint `/player/prison/escape` verwerkt lage-kans ontsnapping met straftijdverlenging bij mislukking, en prison/jail UI toont deze acties nu weer expliciet voor de ingelogde gevangene
   - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`, `client/lib/screens/prison_screen.dart`, `client/lib/widgets/jail_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/prison.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Rugzak shop opgeschoond voor upgrades: zodra een speler al een rugzak bezit toont `/backpacks/available` geen lagere of gelijke tiers meer in `available`; alleen echte upgrades blijven zichtbaar in `canUpgradeTo`, zodat oude opties verdwijnen na aankoop van een betere versie

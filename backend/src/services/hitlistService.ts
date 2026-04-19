@@ -219,6 +219,7 @@ function buildMurderCaseNotification(
     return [
       'Moordlijst melding',
       `${victimUsername}, je bent zojuist vermoord via de moordlijst.`,
+      'Je accountprogress is hard gereset: je begint opnieuw vanaf basisstatus.',
       'Je kunt binnen 24 uur een detective-onderzoek starten via de knop in dit bericht.',
       'Detective Bureau stuurt daarna een nieuw rapport en kan de moordenaar mogelijk identificeren.',
       marker,
@@ -228,10 +229,70 @@ function buildMurderCaseNotification(
   return [
     'Hitlist notice',
     `${victimUsername}, you were just killed through the hitlist.`,
+    'Your account progress was hard-reset: you are starting over from baseline status.',
     'You can start a detective investigation within 24 hours using the button in this message.',
     'Detective Bureau will then send a follow-up report and may identify the killer.',
     marker,
   ].join('\n');
+}
+
+async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number): Promise<void> {
+  await tx.actionCooldown.deleteMany({ where: { playerId } });
+  await tx.crimeAttempt.deleteMany({ where: { playerId } });
+  await tx.jobAttempt.deleteMany({ where: { playerId } });
+  await tx.inventory.deleteMany({ where: { playerId } });
+  await tx.vehicleInventory.deleteMany({ where: { playerId } });
+  await tx.ammoInventory.deleteMany({ where: { playerId } });
+  await tx.weaponInventory.deleteMany({ where: { playerId } });
+  await tx.playerTools.deleteMany({ where: { playerId } });
+  await tx.property.deleteMany({ where: { playerId } });
+  await tx.prostitute.deleteMany({ where: { playerId } });
+  await tx.drugProduction.deleteMany({ where: { playerId } });
+  await tx.productionMaterial.deleteMany({ where: { playerId } });
+  await tx.playerActivity.deleteMany({ where: { playerId } });
+  await tx.worldEvent.deleteMany({ where: { playerId } });
+  await tx.crypto_orders.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_transactions.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_holdings.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_mission_progress.deleteMany({ where: { player_id: playerId } });
+  await tx.crypto_leaderboard_rewards.deleteMany({ where: { player_id: playerId } });
+  await tx.bankAccount.updateMany({ where: { playerId }, data: { balance: 0 } });
+  await tx.playerBackpack.deleteMany({ where: { playerId } }).catch(() => undefined);
+  await tx.playerSelectedVehicle.deleteMany({ where: { playerId } }).catch(() => undefined);
+
+  await tx.player.update({
+    where: { id: playerId },
+    data: {
+      money: 0,
+      health: 100,
+      hunger: 100,
+      thirst: 100,
+      rank: 1,
+      xp: 0,
+      currentCountry: 'netherlands',
+      fbiHeat: 0,
+      wantedLevel: 0,
+      travelingTo: null,
+      travelRoute: null,
+      currentTravelLeg: 0,
+      travelStartedAt: null,
+      killCount: 0,
+      isHunted: false,
+      hitCount: 0,
+      jailRelease: null,
+      intensiveCareUntil: null,
+      inventory_slots_used: 0,
+      max_inventory_slots: 5,
+      lastAmmoPurchaseAt: null,
+      lastHospitalVisit: null,
+      reputation: 0,
+      premiumCredits: 0,
+      lastProstituteRecruitment: null,
+      drugHeat: 0,
+      autoCollectDrugs: false,
+      lastDrugActionAt: null,
+    },
+  });
 }
 
 function buildMurderCaseReport(
@@ -1097,23 +1158,7 @@ export async function attemptHit(
         },
       });
 
-      if (isCounterReversal) {
-        await tx.player.update({
-          where: { id: hit.placedById },
-          data: { health: 0, isHunted: true, money: 0, inventory_slots_used: 0 },
-        });
-      } else {
-        await tx.player.update({
-          where: { id: hit.targetId },
-          data: {
-            health: 0,
-            isHunted: false,
-            hitCount: { increment: 1 },
-            money: 0,
-            inventory_slots_used: 0,
-          },
-        });
-      }
+      await resetKilledPlayerProgressInTransaction(tx, victimId);
 
       await tx.hitList.update({
         where: { id: hitId },
