@@ -579,9 +579,13 @@ const crimesFilePath = path.join(process.cwd(), 'content/crimes.json');
 
 const dockerClientImagesPath = '/client/images';
 const imageLibraryPathCandidates = [
+  process.env.IMAGE_LIBRARY_ROOT_PATH || '',
   dockerClientImagesPath,
+  path.join(__dirname, '../../client/images'),
+  path.join(__dirname, '../../../client/images'),
   path.join(process.cwd(), 'client/images'),
   path.join(process.cwd(), '../client/images'),
+  path.join(process.cwd(), '../../client/images'),
 ];
 
 const imageLibraryUpload = multer({
@@ -625,6 +629,7 @@ const joinImageLibraryPath = (base: string, relativePath: string): string => {
 
 const resolveImageLibraryRoot = async (): Promise<string> => {
   for (const candidate of imageLibraryPathCandidates) {
+    if (!candidate) continue;
     try {
       const absolute = path.resolve(candidate);
       const stat = await fs.stat(absolute);
@@ -637,6 +642,58 @@ const resolveImageLibraryRoot = async (): Promise<string> => {
   }
 
   throw new Error('IMAGE_LIBRARY_UNAVAILABLE');
+};
+
+const isImageFileName = (fileName: string): boolean => {
+  return /\.(png|jpe?g|webp|gif|svg|avif)$/i.test(fileName);
+};
+
+const deriveImageModuleFromPath = (relativePath: string): string => {
+  const normalized = normalizeImageLibraryPath(relativePath).toLowerCase();
+
+  if (normalized.includes('facilit') || normalized.includes('drug')) return 'drugs';
+  if (normalized.includes('school') || normalized.includes('narcot')) return 'school';
+  if (normalized.includes('vehicle') || normalized.includes('car') || normalized.includes('boat') || normalized.includes('motor')) return 'vehicles';
+  if (normalized.includes('avatar') || normalized.includes('profile')) return 'avatars';
+  if (normalized.includes('crew')) return 'crew';
+  if (normalized.includes('property') || normalized.includes('housing')) return 'properties';
+  if (normalized.includes('event')) return 'events';
+
+  const firstSegment = normalized.split('/')[0] || 'other';
+  return firstSegment || 'other';
+};
+
+const collectImageFilesRecursive = async (
+  rootPath: string,
+  currentRelativePath = '',
+  bucket: Array<{ path: string; name: string; sizeBytes: number; updatedAt: string; module: string }> = [],
+): Promise<Array<{ path: string; name: string; sizeBytes: number; updatedAt: string; module: string }>> => {
+  const currentAbsolutePath = joinImageLibraryPath(rootPath, currentRelativePath);
+  const entries = await fs.readdir(currentAbsolutePath, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const childRelativePath = normalizeImageLibraryPath(path.posix.join(currentRelativePath, entry.name));
+    if (entry.isDirectory()) {
+      await collectImageFilesRecursive(rootPath, childRelativePath, bucket);
+      continue;
+    }
+
+    if (!entry.isFile() || !isImageFileName(entry.name)) {
+      continue;
+    }
+
+    const absolutePath = joinImageLibraryPath(rootPath, childRelativePath);
+    const stat = await fs.stat(absolutePath);
+    bucket.push({
+      path: childRelativePath,
+      name: entry.name,
+      sizeBytes: stat.size,
+      updatedAt: stat.mtime.toISOString(),
+      module: deriveImageModuleFromPath(childRelativePath),
+    });
+  }
+
+  return bucket;
 };
 
 const buildImageLibraryUrl = (req: express.Request, relativePath: string): string => {
@@ -2900,7 +2957,10 @@ router.get('/image-library', requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.M
     }
 
     if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
-      return res.status(503).json({ error: 'Image library storage is unavailable on this server' });
+      return res.status(503).json({
+        error: 'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
+        checkedPaths: imageLibraryPathCandidates.filter(Boolean),
+      });
     }
 
     if ((error as NodeJS.ErrnoException)?.code === 'ENOENT') {
@@ -2909,6 +2969,72 @@ router.get('/image-library', requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.M
 
     console.error('Admin get image library error:', error);
     return res.status(500).json({ error: 'Failed to load image library' });
+  }
+});
+
+/**
+ * GET /api/admin/image-library/modules
+ * List modules and search images across the full image library
+ */
+router.get('/image-library/modules', requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR), async (req, res) => {
+  try {
+    const rootPath = await resolveImageLibraryRoot();
+    const moduleFilterRaw = String(req.query.module ?? 'all').trim().toLowerCase();
+    const moduleFilter = moduleFilterRaw.length > 0 ? moduleFilterRaw : 'all';
+    const searchFilter = String(req.query.search ?? '').trim().toLowerCase();
+
+    const allFiles = await collectImageFilesRecursive(rootPath);
+
+    const moduleCounts = allFiles.reduce<Record<string, number>>((acc, file) => {
+      acc[file.module] = (acc[file.module] ?? 0) + 1;
+      return acc;
+    }, {});
+
+    const modules = Object.entries(moduleCounts)
+      .map(([module, count]) => ({ module, count }))
+      .sort((a, b) => a.module.localeCompare(b.module));
+
+    const filteredFiles = allFiles.filter((file) => {
+      if (moduleFilter !== 'all' && file.module !== moduleFilter) {
+        return false;
+      }
+
+      if (!searchFilter) {
+        return true;
+      }
+
+      const searchable = `${file.name} ${file.path} ${file.module}`.toLowerCase();
+      return searchable.includes(searchFilter);
+    });
+
+    const files = filteredFiles
+      .sort((a, b) => a.path.localeCompare(b.path))
+      .slice(0, 1000)
+      .map((file) => ({
+        ...file,
+        url: buildImageLibraryUrl(req, file.path),
+      }));
+
+    return res.json({
+      root: rootPath,
+      moduleFilter,
+      search: searchFilter,
+      modules,
+      totalMatches: filteredFiles.length,
+      files,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
+
+    if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
+      return res.status(503).json({
+        error: 'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
+        checkedPaths: imageLibraryPathCandidates.filter(Boolean),
+      });
+    }
+
+    console.error('Admin get image modules error:', error);
+    return res.status(500).json({ error: 'Failed to load image module overview' });
   }
 });
 
@@ -2994,7 +3120,10 @@ router.post(
       }
 
       if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
-        return res.status(503).json({ error: 'Image library storage is unavailable on this server' });
+        return res.status(503).json({
+          error: 'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
+          checkedPaths: imageLibraryPathCandidates.filter(Boolean),
+        });
       }
 
       console.error('Admin upload image error:', error);

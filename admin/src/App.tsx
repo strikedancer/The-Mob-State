@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder, type AdminImageModuleOverviewResponse } from './services/adminService'
 import { CrewWarsAdminPanel } from './components/CrewWarsAdminPanel'
 
 type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'images' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets' | 'todos' | 'crew-wars'
@@ -785,6 +785,10 @@ function App() {
   const [selectedUploadFile, setSelectedUploadFile] = useState<File | null>(null)
   const [replaceTargetPath, setReplaceTargetPath] = useState('')
   const [selectedReplaceFile, setSelectedReplaceFile] = useState<File | null>(null)
+  const [imageModuleFilter, setImageModuleFilter] = useState('all')
+  const [imageModuleSearch, setImageModuleSearch] = useState('')
+  const [imageModuleOverview, setImageModuleOverview] = useState<AdminImageModuleOverviewResponse | null>(null)
+  const [imageModuleLoading, setImageModuleLoading] = useState(false)
 
   // Premium offers state
   const [premiumOffers, setPremiumOffers] = useState<PremiumOffer[]>([])
@@ -991,6 +995,12 @@ function App() {
       void loadImageLibrary(imageLibraryFolder)
     }
   }, [isAuthenticated, activeTab, imageLibraryFolder])
+
+  useEffect(() => {
+    if (isAuthenticated && activeTab === 'images') {
+      void loadImageModuleOverview(imageModuleFilter, imageModuleSearch)
+    }
+  }, [isAuthenticated, activeTab, imageModuleFilter, imageModuleSearch])
 
   useEffect(() => {
     if (isAuthenticated && activeTab === 'premium-offers') {
@@ -1766,6 +1776,23 @@ function App() {
       setApiError(message)
     } finally {
       setImageLibraryLoading(false)
+    }
+  }
+
+  const loadImageModuleOverview = async (module: string, search: string) => {
+    try {
+      setImageModuleLoading(true)
+      const data = await adminService.getImageLibraryModules(module, search)
+      setImageModuleOverview(data)
+      setImageLibraryError('')
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load image module overview:', err)
+      const message = (err as Error).message || l('Module-overzicht kon niet geladen worden.', 'Failed to load module overview.')
+      setImageLibraryError(message)
+      setApiError(message)
+    } finally {
+      setImageModuleLoading(false)
     }
   }
 
@@ -6561,6 +6588,76 @@ function App() {
                   )}
                 </div>
               </div>
+            </div>
+
+            <div className="table-container mt-3">
+              <h3 className="h5 mb-2">{l('Per module zoeken', 'Search by module')}</h3>
+              <div className="d-flex flex-wrap gap-2 align-items-center mb-3">
+                <select
+                  className="form-select"
+                  style={{ maxWidth: 260 }}
+                  value={imageModuleFilter}
+                  onChange={(e) => setImageModuleFilter(e.target.value)}
+                >
+                  <option value="all">{l('Alle modules', 'All modules')}</option>
+                  {(imageModuleOverview?.modules || []).map((item) => (
+                    <option key={item.module} value={item.module}>
+                      {item.module} ({item.count})
+                    </option>
+                  ))}
+                </select>
+                <input
+                  className="form-control"
+                  style={{ maxWidth: 320 }}
+                  value={imageModuleSearch}
+                  onChange={(e) => setImageModuleSearch(e.target.value)}
+                  placeholder={l('Zoek op naam of pad...', 'Search by name or path...')}
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={() => void loadImageModuleOverview(imageModuleFilter, imageModuleSearch)}
+                  disabled={imageModuleLoading}
+                >
+                  {l('Zoeken', 'Search')}
+                </button>
+                <span className="badge bg-light text-body border">
+                  {l('Resultaten', 'Results')}: {imageModuleOverview?.totalMatches ?? 0}
+                </span>
+              </div>
+
+              {imageModuleLoading ? (
+                <p className="mb-0">{t.loading}</p>
+              ) : !(imageModuleOverview?.files?.length) ? (
+                <p className="text-muted mb-0">{l('Geen resultaten voor deze module/zoekopdracht', 'No results for this module/search')}</p>
+              ) : (
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>{l('Preview', 'Preview')}</th>
+                      <th>{l('Module', 'Module')}</th>
+                      <th>{l('Bestand', 'File')}</th>
+                      <th>{l('Pad', 'Path')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {imageModuleOverview.files.slice(0, 200).map((file) => (
+                      <tr key={`module-${file.path}`}>
+                        <td style={{ width: 88 }}>
+                          <img
+                            src={file.url}
+                            alt={file.name}
+                            style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 8, border: '1px solid rgba(255,255,255,.12)' }}
+                          />
+                        </td>
+                        <td><span className="badge bg-info bg-opacity-25 text-info">{file.module}</span></td>
+                        <td>{file.name}</td>
+                        <td>{file.path}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </>
         )}

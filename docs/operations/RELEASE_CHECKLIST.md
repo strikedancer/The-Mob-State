@@ -51,6 +51,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Admin image library productie-fix + modulezoekfunctie: image-root detectie ondersteunt nu extra Docker/build fallback-paden en expliciete `IMAGE_LIBRARY_ROOT_PATH` configuratie met duidelijke fout-hint als storage ontbreekt; daarnaast is een module-overzicht API + UI toegevoegd om afbeeldingen per module te filteren en op naam/pad te zoeken
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Admin image-beheersysteem toegevoegd voor extern opgeslagen server-images: nieuwe admin-tab ondersteunt mapnavigatie, preview, upload van nieuwe afbeeldingen en vervangen van bestaande bestanden; backend biedt beveiligde list/upload API op dezelfde image-storage root die runtime via `/assets/images` serveert
   - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Voertuigreparatie-slots aangescherpt en gereedmelding toegevoegd: gelijktijdige reparaties zijn nu gedeeld over auto/motor/boot (zonder VIP max 1, met VIP max 2) en afgeronde timed repairs sturen nu een NL/EN in-app + pushmelding dat het voertuig weer klaar is; cron verwerkt afgeronde repair-jobs nu elke minuut zodat meldingen niet wachten op handmatige schermrefresh

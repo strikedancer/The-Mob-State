@@ -627,6 +627,15 @@ export interface AdminImageLibraryResponse {
   files: AdminImageLibraryFile[];
 }
 
+export interface AdminImageModuleOverviewResponse {
+  root: string;
+  moduleFilter: string;
+  search: string;
+  modules: Array<{ module: string; count: number }>;
+  totalMatches: number;
+  files: Array<AdminImageLibraryFile & { module: string }>;
+}
+
 export const adminAuthService = {
   async login(username: string, password: string): Promise<AdminLoginResponse> {
     const response = await fetch(`${API_URL}/admin/auth/login`, {
@@ -1277,6 +1286,22 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to upload image file');
+    return response.json();
+  },
+
+  async getImageLibraryModules(module = 'all', search = ''): Promise<AdminImageModuleOverviewResponse> {
+    const token = adminAuthService.getToken();
+    const query = new URLSearchParams({
+      module,
+      search,
+    });
+    const response = await fetch(`${API_URL}/admin/image-library/modules?${query.toString()}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch image module overview');
     return response.json();
   },
 
