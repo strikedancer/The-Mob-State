@@ -41,6 +41,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     'es': 'spainLow.svg',
     'ch': 'switzerlandLow.svg',
     'tr': 'turkeyLow.svg',
+    'za': 'southAfricaLow.svg',
     'uk': 'ukLow.svg',
     'gb': 'ukLow.svg',
     'us': 'usaLow.svg',

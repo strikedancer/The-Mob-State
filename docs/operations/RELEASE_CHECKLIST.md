@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
+- [ ] Territory SVG pool uitgebreid met Zuid-Afrika: `southAfricaLow.svg` is vanuit de root dropzone naar de game maps-map gekopieerd en country fallback mapping bevat nu ook `za`, zodat de kaart direct als asset kan laden in Territory
+  - Bestanden: `client/assets/images/maps/southAfricaLow.svg`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory map UX verbeterd voor live gebruik: kaartweergave is vergroot, regio's zijn nu direct klikbaar op de SVG (path hit-test op `svgElementId`) en tonen een tooltip met gebiedsnaam; geselecteerde regio opent meteen detailpaneel, en detail-content is scrollbaar gemaakt op desktop/tablet layouts
   - Bestanden: `client/lib/screens/territory_screen.dart`, `client/pubspec.yaml`, `client/pubspec.lock`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory NL asset source gecorrigeerd: Nederland gebruikt nu direct `netherlandsLow.svg` (backend `svgAssetKey` + frontend fallback) in plaats van de legacy `cafuego-Nederland` alias
@@ -75,6 +77,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Territory country seed uitgebreid met Zuid-Afrika (`za`): startup bootstrap schrijft nu `southAfricaLow` als `svgAssetKey`, zodat `/territory/countries` en map-resolutie deze landkaart direct kunnen aanbieden
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory country bootstrap uitgebreid: startup schema seed activeert nu alle beschikbare landen (`nl`, `be`, `ar`, `au`, `br`, `cn`, `co`, `fr`, `de`, `it`, `jp`, `mx`, `ru`, `es`, `ch`, `tr`, `gb`, `us`) met gekoppelde `svgAssetKey`, zodat de countries API en frontend country-switch direct met de nieuwe map-asset pool werken
   - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moord-impact verzwaard naar harde reset: bij succesvolle hit krijgt het slachtoffer nu een progress-reset (bezittingen en voortgang terug naar baseline) in plaats van alleen verlies van contant geld en gedragen items, met behoud van banktegoed en crew-leiderschap; detective-notificatie en help-content zijn daarop bijgewerkt

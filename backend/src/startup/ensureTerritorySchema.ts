@@ -210,6 +210,7 @@ export async function ensureTerritorySchema(): Promise<void> {
     { code: 'es', nl: 'Spanje', en: 'Spain', svgAssetKey: 'spainLow' },
     { code: 'ch', nl: 'Zwitserland', en: 'Switzerland', svgAssetKey: 'switzerlandLow' },
     { code: 'tr', nl: 'Turkije', en: 'Turkey', svgAssetKey: 'turkeyLow' },
+    { code: 'za', nl: 'Zuid-Afrika', en: 'South Africa', svgAssetKey: 'southAfricaLow' },
     { code: 'gb', nl: 'Verenigd Koninkrijk', en: 'United Kingdom', svgAssetKey: 'ukLow' },
     { code: 'us', nl: 'Verenigde Staten', en: 'United States', svgAssetKey: 'usaLow' },
   ];
