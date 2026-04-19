@@ -5,6 +5,7 @@ import { adminAuthMiddleware, requireAdminRole, type AdminRequest } from '../mid
 import { z } from 'zod';
 import fs from 'fs/promises';
 import path from 'path';
+import multer from 'multer';
 import { AdminRole, Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import {
@@ -575,6 +576,76 @@ const vehiclesFilePath = path.join(process.cwd(), 'content/vehicles.json');
 const aircraftFilePath = path.join(process.cwd(), 'content/aircraft.json');
 const toolsFilePath = path.join(process.cwd(), 'data/tools.json');
 const crimesFilePath = path.join(process.cwd(), 'content/crimes.json');
+
+const dockerClientImagesPath = '/client/images';
+const imageLibraryPathCandidates = [
+  dockerClientImagesPath,
+  path.join(process.cwd(), 'client/images'),
+  path.join(process.cwd(), '../client/images'),
+];
+
+const imageLibraryUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 15 * 1024 * 1024,
+  },
+  fileFilter: (_req, file, cb) => {
+    cb(null, file.mimetype.startsWith('image/'));
+  },
+});
+
+const normalizeImageLibraryPath = (raw: unknown): string => {
+  const value = String(raw ?? '').trim().replace(/\\/g, '/');
+  if (!value) return '';
+  return value
+    .split('/')
+    .map((segment) => segment.trim())
+    .filter((segment) => segment.length > 0 && segment !== '.')
+    .join('/');
+};
+
+const assertSafeImageLibraryPath = (relativePath: string) => {
+  if (relativePath.includes('..')) {
+    throw new Error('INVALID_IMAGE_PATH');
+  }
+};
+
+const joinImageLibraryPath = (base: string, relativePath: string): string => {
+  const safeRelative = normalizeImageLibraryPath(relativePath);
+  assertSafeImageLibraryPath(safeRelative);
+
+  const absolutePath = path.resolve(base, safeRelative);
+  const normalizedBase = path.resolve(base);
+  if (!absolutePath.startsWith(normalizedBase)) {
+    throw new Error('INVALID_IMAGE_PATH');
+  }
+
+  return absolutePath;
+};
+
+const resolveImageLibraryRoot = async (): Promise<string> => {
+  for (const candidate of imageLibraryPathCandidates) {
+    try {
+      const absolute = path.resolve(candidate);
+      const stat = await fs.stat(absolute);
+      if (stat.isDirectory()) {
+        return absolute;
+      }
+    } catch {
+      // Try next candidate.
+    }
+  }
+
+  throw new Error('IMAGE_LIBRARY_UNAVAILABLE');
+};
+
+const buildImageLibraryUrl = (req: express.Request, relativePath: string): string => {
+  const encodedPath = relativePath
+    .split('/')
+    .map((segment) => encodeURIComponent(segment))
+    .join('/');
+  return `${req.protocol}://${req.get('host')}/assets/images/${encodedPath}`;
+};
 
 type VehiclesFile = {
   cars: Array<z.infer<typeof vehicleSchema>>;
@@ -2763,6 +2834,171 @@ router.put(
     } catch (error) {
       console.error('Admin update config error:', error);
       res.status(500).json({ error: 'Failed to update config' });
+    }
+  }
+);
+
+/**
+ * GET /api/admin/image-library
+ * List image folders/files from server image storage
+ */
+router.get('/image-library', requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR), async (req, res) => {
+  try {
+    const rootPath = await resolveImageLibraryRoot();
+    const folder = normalizeImageLibraryPath(req.query.folder);
+    assertSafeImageLibraryPath(folder);
+
+    const currentPath = joinImageLibraryPath(rootPath, folder);
+    const entries = await fs.readdir(currentPath, { withFileTypes: true });
+
+    const folders = entries
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => {
+        const relativePath = normalizeImageLibraryPath(path.posix.join(folder, entry.name));
+        return {
+          name: entry.name,
+          path: relativePath,
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    const filesRaw = await Promise.all(
+      entries
+        .filter((entry) => entry.isFile())
+        .map(async (entry) => {
+          const relativePath = normalizeImageLibraryPath(path.posix.join(folder, entry.name));
+          const absolutePath = joinImageLibraryPath(rootPath, relativePath);
+          const stat = await fs.stat(absolutePath);
+          return {
+            name: entry.name,
+            path: relativePath,
+            sizeBytes: stat.size,
+            updatedAt: stat.mtime.toISOString(),
+            url: buildImageLibraryUrl(req, relativePath),
+          };
+        })
+    );
+
+    const files = filesRaw.sort((a, b) => a.name.localeCompare(b.name));
+
+    const parentFolder = folder.includes('/')
+      ? folder.slice(0, folder.lastIndexOf('/'))
+      : '';
+
+    return res.json({
+      root: rootPath,
+      folder,
+      parentFolder,
+      folders,
+      files,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
+
+    if (message === 'INVALID_IMAGE_PATH') {
+      return res.status(400).json({ error: 'Invalid image folder path' });
+    }
+
+    if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
+      return res.status(503).json({ error: 'Image library storage is unavailable on this server' });
+    }
+
+    if ((error as NodeJS.ErrnoException)?.code === 'ENOENT') {
+      return res.status(404).json({ error: 'Folder not found' });
+    }
+
+    console.error('Admin get image library error:', error);
+    return res.status(500).json({ error: 'Failed to load image library' });
+  }
+});
+
+/**
+ * POST /api/admin/image-library/upload
+ * Upload new image or replace existing image
+ */
+router.post(
+  '/image-library/upload',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  imageLibraryUpload.single('file'),
+  auditLog({ action: 'UPLOAD_IMAGE_LIBRARY_FILE', targetType: 'ImageAsset' }),
+  async (req, res) => {
+    try {
+      const file = req.file;
+      if (!file) {
+        return res.status(400).json({ error: 'Missing image file' });
+      }
+
+      const rootPath = await resolveImageLibraryRoot();
+      const replacePath = normalizeImageLibraryPath(req.body?.replacePath);
+      const folder = normalizeImageLibraryPath(req.body?.folder);
+      const customFileName = String(req.body?.fileName ?? '').trim();
+      const overwrite = String(req.body?.overwrite ?? '').toLowerCase() === 'true';
+
+      let targetRelativePath: string;
+      if (replacePath) {
+        assertSafeImageLibraryPath(replacePath);
+        targetRelativePath = replacePath;
+      } else {
+        const resolvedName = customFileName.length > 0 ? customFileName : file.originalname;
+        const normalizedName = normalizeImageLibraryPath(resolvedName);
+        if (!normalizedName || normalizedName.includes('/')) {
+          return res.status(400).json({ error: 'Invalid file name' });
+        }
+        targetRelativePath = normalizeImageLibraryPath(path.posix.join(folder, normalizedName));
+      }
+
+      assertSafeImageLibraryPath(targetRelativePath);
+      const targetAbsolutePath = joinImageLibraryPath(rootPath, targetRelativePath);
+      const targetDir = path.dirname(targetAbsolutePath);
+
+      await fs.mkdir(targetDir, { recursive: true });
+
+      let fileExists = false;
+      try {
+        await fs.stat(targetAbsolutePath);
+        fileExists = true;
+      } catch {
+        fileExists = false;
+      }
+
+      if (fileExists && !overwrite && !replacePath) {
+        return res.status(409).json({
+          error: 'File already exists. Use overwrite=true or replacePath to replace it.',
+        });
+      }
+
+      await fs.writeFile(targetAbsolutePath, file.buffer);
+
+      const stat = await fs.stat(targetAbsolutePath);
+      res.locals.auditLogDetails = {
+        relativePath: targetRelativePath,
+        sizeBytes: stat.size,
+        replaced: fileExists,
+      };
+
+      return res.json({
+        message: fileExists ? 'Image replaced successfully' : 'Image uploaded successfully',
+        file: {
+          name: path.basename(targetRelativePath),
+          path: targetRelativePath,
+          sizeBytes: stat.size,
+          updatedAt: stat.mtime.toISOString(),
+          url: buildImageLibraryUrl(req, targetRelativePath),
+        },
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
+
+      if (message === 'INVALID_IMAGE_PATH') {
+        return res.status(400).json({ error: 'Invalid image path' });
+      }
+
+      if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
+        return res.status(503).json({ error: 'Image library storage is unavailable on this server' });
+      }
+
+      console.error('Admin upload image error:', error);
+      return res.status(500).json({ error: 'Failed to upload image' });
     }
   }
 );

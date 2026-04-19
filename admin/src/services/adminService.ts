@@ -606,6 +606,27 @@ export interface AdminCrewWarOverview {
   seasonLeaderboard: AdminCrewWarStanding[];
 }
 
+export interface AdminImageLibraryFolder {
+  name: string;
+  path: string;
+}
+
+export interface AdminImageLibraryFile {
+  name: string;
+  path: string;
+  sizeBytes: number;
+  updatedAt: string;
+  url: string;
+}
+
+export interface AdminImageLibraryResponse {
+  root: string;
+  folder: string;
+  parentFolder: string;
+  folders: AdminImageLibraryFolder[];
+  files: AdminImageLibraryFile[];
+}
+
 export const adminAuthService = {
   async login(username: string, password: string): Promise<AdminLoginResponse> {
     const response = await fetch(`${API_URL}/admin/auth/login`, {
@@ -1214,6 +1235,48 @@ export const adminService = {
       throw new Error('Failed to update config');
     }
 
+    return response.json();
+  },
+
+  async getImageLibrary(folder = ''): Promise<AdminImageLibraryResponse> {
+    const token = adminAuthService.getToken();
+    const query = new URLSearchParams({
+      folder,
+    });
+    const response = await fetch(`${API_URL}/admin/image-library?${query.toString()}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch image library');
+    return response.json();
+  },
+
+  async uploadImageLibraryFile(payload: {
+    file: File;
+    folder?: string;
+    fileName?: string;
+    replacePath?: string;
+    overwrite?: boolean;
+  }): Promise<{ message: string; file: AdminImageLibraryFile }> {
+    const token = adminAuthService.getToken();
+    const formData = new FormData();
+    formData.append('file', payload.file);
+    if (payload.folder) formData.append('folder', payload.folder);
+    if (payload.fileName) formData.append('fileName', payload.fileName);
+    if (payload.replacePath) formData.append('replacePath', payload.replacePath);
+    if (payload.overwrite) formData.append('overwrite', 'true');
+
+    const response = await fetch(`${API_URL}/admin/image-library/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    await ensureOk(response, 'Failed to upload image file');
     return response.json();
   },
 

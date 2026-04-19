@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder } from './services/adminService'
 import { CrewWarsAdminPanel } from './components/CrewWarsAdminPanel'
 
-type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets' | 'todos' | 'crew-wars'
+type TabType = 'dashboard' | 'players' | 'player-detail' | 'vehicles' | 'npcs' | 'audit-logs' | 'system-logs' | 'admins' | 'images' | 'config' | 'premium-offers' | 'tools' | 'crimes' | 'events' | 'tickets' | 'todos' | 'crew-wars'
 type Language = 'nl' | 'en'
 type PlayerDetailTab = 'overview' | 'manage' | 'financial'
 type DateRangeFilter = '24h' | '7d' | '30d' | 'all'
@@ -101,6 +101,7 @@ const translations = {
     navAudit: 'Audit Logs',
     navPremium: 'Premium Offers',
     navConfig: 'Config',
+    navImages: 'Afbeeldingen',
     totalPlayers: 'Totaal spelers',
     activePlayers: 'Actieve spelers',
     bannedPlayers: 'Gebande spelers',
@@ -112,6 +113,7 @@ const translations = {
     crimesTitle: 'Misdaden',
     auditLogsTitle: 'Audit Logs',
     configEditorTitle: 'Config Editor',
+    imagesTitle: 'Afbeeldingenbeheer',
     prostitutionBalanceTitle: 'Prostitutie balansprofiel',
     prostitutionBalanceDescription: 'Kies een preset voor risico en straf bij verraad: casual, normal of hardcore.',
     prostitutionBalanceApply: 'Pas profiel toe',
@@ -252,6 +254,7 @@ const translations = {
     navAudit: 'Audit Logs',
     navPremium: 'Premium Offers',
     navConfig: 'Config',
+    navImages: 'Images',
     totalPlayers: 'Total players',
     activePlayers: 'Active players',
     bannedPlayers: 'Banned players',
@@ -263,6 +266,7 @@ const translations = {
     crimesTitle: 'Crimes',
     auditLogsTitle: 'Audit Logs',
     configEditorTitle: 'Config Editor',
+    imagesTitle: 'Image management',
     prostitutionBalanceTitle: 'Prostitution balance profile',
     prostitutionBalanceDescription: 'Choose a preset for betrayal risk and punishment: casual, normal or hardcore.',
     prostitutionBalanceApply: 'Apply profile',
@@ -769,6 +773,19 @@ function App() {
   const [configSearch, setConfigSearch] = useState('')
   const [editingConfig, setEditingConfig] = useState<Record<string, string>>({})
 
+  // Image library state
+  const [imageLibraryFolder, setImageLibraryFolder] = useState('')
+  const [imageLibraryFolders, setImageLibraryFolders] = useState<AdminImageLibraryFolder[]>([])
+  const [imageLibraryFiles, setImageLibraryFiles] = useState<AdminImageLibraryFile[]>([])
+  const [imageLibraryParentFolder, setImageLibraryParentFolder] = useState('')
+  const [imageLibraryLoading, setImageLibraryLoading] = useState(false)
+  const [imageLibraryUploading, setImageLibraryUploading] = useState(false)
+  const [imageLibraryError, setImageLibraryError] = useState('')
+  const [newImageFileName, setNewImageFileName] = useState('')
+  const [selectedUploadFile, setSelectedUploadFile] = useState<File | null>(null)
+  const [replaceTargetPath, setReplaceTargetPath] = useState('')
+  const [selectedReplaceFile, setSelectedReplaceFile] = useState<File | null>(null)
+
   // Premium offers state
   const [premiumOffers, setPremiumOffers] = useState<PremiumOffer[]>([])
   const [premiumOffersLoading, setPremiumOffersLoading] = useState(false)
@@ -968,6 +985,12 @@ function App() {
       loadConfig()
     }
   }, [isAuthenticated, activeTab])
+
+  useEffect(() => {
+    if (isAuthenticated && activeTab === 'images') {
+      void loadImageLibrary(imageLibraryFolder)
+    }
+  }, [isAuthenticated, activeTab, imageLibraryFolder])
 
   useEffect(() => {
     if (isAuthenticated && activeTab === 'premium-offers') {
@@ -1723,6 +1746,79 @@ function App() {
       if (handleUnauthorized(err)) return
       console.error('Failed to load config:', err)
       setApiError(t.configLoadError)
+    }
+  }
+
+  const loadImageLibrary = async (folder: string) => {
+    try {
+      setImageLibraryLoading(true)
+      const data = await adminService.getImageLibrary(folder)
+      setImageLibraryFolders(data.folders || [])
+      setImageLibraryFiles(data.files || [])
+      setImageLibraryParentFolder(data.parentFolder || '')
+      setImageLibraryError('')
+      setApiError('')
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load image library:', err)
+      const message = (err as Error).message || l('Afbeeldingen konden niet geladen worden.', 'Failed to load images.')
+      setImageLibraryError(message)
+      setApiError(message)
+    } finally {
+      setImageLibraryLoading(false)
+    }
+  }
+
+  const handleUploadImage = async () => {
+    if (!selectedUploadFile) {
+      alert(l('Kies eerst een afbeelding.', 'Select an image first.'))
+      return
+    }
+
+    try {
+      setImageLibraryUploading(true)
+      await adminService.uploadImageLibraryFile({
+        file: selectedUploadFile,
+        folder: imageLibraryFolder,
+        fileName: newImageFileName.trim() || undefined,
+      })
+      setSelectedUploadFile(null)
+      setNewImageFileName('')
+      await loadImageLibrary(imageLibraryFolder)
+      alert(l('Afbeelding toegevoegd.', 'Image uploaded.'))
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Uploaden mislukt', 'Upload failed')}: ${(err as Error).message}`)
+    } finally {
+      setImageLibraryUploading(false)
+    }
+  }
+
+  const handleReplaceImage = async () => {
+    if (!replaceTargetPath) {
+      alert(l('Selecteer eerst een bestaand bestand.', 'Select an existing file first.'))
+      return
+    }
+
+    if (!selectedReplaceFile) {
+      alert(l('Kies een vervangende afbeelding.', 'Choose a replacement image.'))
+      return
+    }
+
+    try {
+      setImageLibraryUploading(true)
+      await adminService.uploadImageLibraryFile({
+        file: selectedReplaceFile,
+        replacePath: replaceTargetPath,
+      })
+      setSelectedReplaceFile(null)
+      await loadImageLibrary(imageLibraryFolder)
+      alert(l('Afbeelding vervangen.', 'Image replaced.'))
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Vervangen mislukt', 'Replace failed')}: ${(err as Error).message}`)
+    } finally {
+      setImageLibraryUploading(false)
     }
   }
 
@@ -2980,6 +3076,7 @@ function App() {
     { id: 'audit-logs', label: t.navAudit, icon: 'bi-journal-text' },
     { id: 'system-logs', label: l('Systeem Logs', 'System Logs'), icon: 'bi-bug-fill' },
     { id: 'admins', label: l('Admins', 'Admins'), icon: 'bi-person-gear' },
+    { id: 'images', label: t.navImages, icon: 'bi-images' },
     { id: 'premium-offers', label: t.navPremium, icon: 'bi-gem' },
     { id: 'config', label: t.navConfig, icon: 'bi-sliders' },
   ]
@@ -6292,6 +6389,178 @@ function App() {
               </table>
 
               {adminsLoading && <p style={{ padding: 12 }}>{t.loading}</p>}
+            </div>
+          </>
+        )}
+
+        {activeTab === 'images' && (
+          <>
+            <h1>{t.imagesTitle}</h1>
+
+            <div className="card p-3 mb-3" style={{ background: '#151a22', border: '1px solid rgba(255,255,255,.08)' }}>
+              <div className="d-flex flex-wrap align-items-center gap-2 mb-2">
+                <span className="fw-semibold">{l('Huidige map', 'Current folder')}:</span>
+                <span className="badge bg-light text-body border">/{imageLibraryFolder || ''}</span>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-secondary"
+                  disabled={!imageLibraryFolder}
+                  onClick={() => setImageLibraryFolder(imageLibraryParentFolder)}
+                >
+                  {l('Omhoog', 'Up')}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-primary"
+                  onClick={() => void loadImageLibrary(imageLibraryFolder)}
+                  disabled={imageLibraryLoading}
+                >
+                  {l('Ververs', 'Refresh')}
+                </button>
+              </div>
+
+              {imageLibraryError && (
+                <div className="alert alert-danger py-2 mb-0">{imageLibraryError}</div>
+              )}
+            </div>
+
+            <div className="row g-3 mb-3">
+              <div className="col-12 col-xl-6">
+                <div className="card p-3 h-100" style={{ background: '#151a22', border: '1px solid rgba(255,255,255,.08)' }}>
+                  <h3 className="h5 mb-3">{l('Nieuwe afbeelding toevoegen', 'Add new image')}</h3>
+                  <div className="mb-2">
+                    <label className="form-label">{l('Bestandsnaam (optioneel)', 'File name (optional)')}</label>
+                    <input
+                      className="form-control"
+                      value={newImageFileName}
+                      onChange={(e) => setNewImageFileName(e.target.value)}
+                      placeholder={l('Bijv. ferrari_f40_new.png', 'E.g. ferrari_f40_new.png')}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">{l('Afbeelding', 'Image')}</label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setSelectedUploadFile(e.target.files?.[0] ?? null)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={handleUploadImage}
+                    disabled={imageLibraryUploading}
+                  >
+                    {imageLibraryUploading ? l('Bezig...', 'Working...') : l('Upload afbeelding', 'Upload image')}
+                  </button>
+                </div>
+              </div>
+
+              <div className="col-12 col-xl-6">
+                <div className="card p-3 h-100" style={{ background: '#151a22', border: '1px solid rgba(255,255,255,.08)' }}>
+                  <h3 className="h5 mb-3">{l('Bestaande afbeelding vervangen', 'Replace existing image')}</h3>
+                  <div className="mb-2">
+                    <label className="form-label">{l('Doelbestand', 'Target file')}</label>
+                    <select
+                      className="form-select"
+                      value={replaceTargetPath}
+                      onChange={(e) => setReplaceTargetPath(e.target.value)}
+                    >
+                      <option value="">{l('Selecteer bestand', 'Select file')}</option>
+                      {imageLibraryFiles.map((file) => (
+                        <option key={file.path} value={file.path}>{file.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">{l('Nieuwe afbeelding', 'New image')}</label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setSelectedReplaceFile(e.target.files?.[0] ?? null)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-warning"
+                    onClick={handleReplaceImage}
+                    disabled={imageLibraryUploading}
+                  >
+                    {imageLibraryUploading ? l('Bezig...', 'Working...') : l('Vervang afbeelding', 'Replace image')}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="row g-3">
+              <div className="col-12 col-xl-4">
+                <div className="table-container">
+                  <h3 className="h5 mb-2">{l('Mappen', 'Folders')}</h3>
+                  {imageLibraryFolders.length === 0 ? (
+                    <p className="text-muted mb-0">{l('Geen submappen', 'No subfolders')}</p>
+                  ) : (
+                    <div className="d-flex flex-column gap-2">
+                      {imageLibraryFolders.map((folder) => (
+                        <button
+                          key={folder.path}
+                          type="button"
+                          className="btn btn-outline-secondary text-start"
+                          onClick={() => setImageLibraryFolder(folder.path)}
+                        >
+                          <i className="bi bi-folder2-open me-2" />
+                          {folder.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-12 col-xl-8">
+                <div className="table-container">
+                  <h3 className="h5 mb-2">{l('Bestanden', 'Files')}</h3>
+                  {imageLibraryLoading ? (
+                    <p className="mb-0">{t.loading}</p>
+                  ) : imageLibraryFiles.length === 0 ? (
+                    <p className="text-muted mb-0">{l('Geen bestanden in deze map', 'No files in this folder')}</p>
+                  ) : (
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>{l('Preview', 'Preview')}</th>
+                          <th>{l('Naam', 'Name')}</th>
+                          <th>{l('Pad', 'Path')}</th>
+                          <th>{l('Grootte', 'Size')}</th>
+                          <th>{l('Bijgewerkt', 'Updated')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {imageLibraryFiles.map((file) => (
+                          <tr key={file.path}>
+                            <td style={{ width: 88 }}>
+                              <img
+                                src={file.url}
+                                alt={file.name}
+                                style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 8, border: '1px solid rgba(255,255,255,.12)' }}
+                                onError={(e) => {
+                                  const target = e.currentTarget as HTMLImageElement
+                                  target.style.opacity = '0.2'
+                                }}
+                              />
+                            </td>
+                            <td>{file.name}</td>
+                            <td><code>{file.path}</code></td>
+                            <td>{Math.round(file.sizeBytes / 1024)} KB</td>
+                            <td>{new Date(file.updatedAt).toLocaleString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
             </div>
           </>
         )}
