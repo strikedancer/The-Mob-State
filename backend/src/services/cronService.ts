@@ -3,6 +3,7 @@ import cron from 'node-cron';
 import { processOpenOrdersInBackground } from './cryptoService';
 import drugService from './drugService';
 import { gameEventService } from './gameEventService';
+import { processPendingInvestigations } from './hitlistService';
 
 const prisma = new PrismaClient();
 
@@ -369,6 +370,20 @@ export async function runDrugProductionAutomation(): Promise<void> {
   }
 }
 
+export async function runHitlistInvestigationProcessor(): Promise<void> {
+  const now = new Date();
+
+  try {
+    const processed = await processPendingInvestigations(100);
+    if (processed > 0) {
+      console.log(`[CRON JOB] hitlistInvestigationProcessor processed=${processed}`);
+    }
+    lastJobExecutions['hitlistInvestigationProcessor'] = now;
+  } catch (error) {
+    console.error('[CRON ERROR] runHitlistInvestigationProcessor:', error);
+  }
+}
+
 export function getCronStatus() {
   return {
     lastExecutions: lastJobExecutions,
@@ -378,6 +393,7 @@ export function getCronStatus() {
       resetWeeklyLeaderboard: 'Monday at 00:00',
       cleanupRivalries: 'Sunday at 03:00',
       drugProductionAutomation: 'Every minute',
+      hitlistInvestigationProcessor: 'Every minute',
       cryptoOrderProcessor: 'Every 30 seconds',
       eventScheduler: 'Every 5 minutes',
     },
@@ -411,6 +427,10 @@ export function initializeCronJobs(): void {
     await runDrugProductionAutomation();
   });
 
+  cron.schedule('* * * * *', async () => {
+    await runHitlistInvestigationProcessor();
+  });
+
   cron.schedule('*/30 * * * * *', async () => {
     try {
       const result = await processOpenOrdersInBackground();
@@ -437,6 +457,7 @@ export function initializeCronJobs(): void {
   console.log('  - Reset Weekly Leaderboard: Monday at 00:00');
   console.log('  - Cleanup Old Rivalries: Sunday at 03:00');
   console.log('  - Drug Production Automation: Every minute');
+  console.log('  - Hitlist Investigation Processor: Every minute');
   console.log('  - Crypto Order Processor: Every 30 seconds');
   console.log('  - Game Event Scheduler: Every 5 minutes');
 }

@@ -353,6 +353,14 @@ router.post(
         });
       }
 
+      if (error.message === 'INVESTIGATION_ALREADY_PENDING') {
+        return res.status(400).json({
+          success: false,
+          error: 'INVESTIGATION_ALREADY_PENDING',
+          message: 'Er loopt al een onderzoek voor deze hit. Wacht op je detectivebericht.',
+        });
+      }
+
       return next(error);
     }
   }

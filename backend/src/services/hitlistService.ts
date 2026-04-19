@@ -7,6 +7,7 @@
 import prisma from '../lib/prisma';
 import { ammoFactoryService } from './ammoFactoryService';
 import weaponService from './weaponService';
+import { directMessageService } from './directMessageService';
 import fs from 'fs';
 import path from 'path';
 
@@ -567,22 +568,109 @@ export async function attemptHit(
 
 type InvestigationTier = 'quick' | 'standard' | 'deep';
 
+type InvestigationStatus = 'pending' | 'completed' | 'cancelled';
+
+interface InvestigationQueueRow {
+  id: number;
+  playerId: number;
+  hitId: number;
+  targetId: number;
+  tier: InvestigationTier;
+  cost: number;
+  status: InvestigationStatus;
+  requestedAt: Date;
+  resolveAt: Date;
+  completedAt: Date | null;
+  reportValidUntil: Date | null;
+  reportCountry: string | null;
+  reportBodyguards: number | null;
+  reportArmor: number | null;
+}
+
+const INVESTIGATION_TIER_CONFIG: Record<InvestigationTier, { cost: number; delayMs: number; nlLabel: string; enLabel: string }> = {
+  quick: {
+    cost: 1_000_000,
+    delayMs: 60 * 60 * 1000,
+    nlLabel: 'Snel',
+    enLabel: 'Quick',
+  },
+  standard: {
+    cost: 500_000,
+    delayMs: 6 * 60 * 60 * 1000,
+    nlLabel: 'Gemiddeld',
+    enLabel: 'Standard',
+  },
+  deep: {
+    cost: 250_000,
+    delayMs: 24 * 60 * 60 * 1000,
+    nlLabel: 'Langzaam',
+    enLabel: 'Slow',
+  },
+};
+
+let investigationSchemaEnsured = false;
+
+async function ensureInvestigationSchema(): Promise<void> {
+  if (investigationSchemaEnsured) {
+    return;
+  }
+
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS hitlist_investigations (
+      id INT NOT NULL AUTO_INCREMENT,
+      playerId INT NOT NULL,
+      hitId INT NOT NULL,
+      targetId INT NOT NULL,
+      tier VARCHAR(20) NOT NULL,
+      cost INT NOT NULL,
+      status VARCHAR(20) NOT NULL DEFAULT 'pending',
+      requestedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      resolveAt DATETIME NOT NULL,
+      completedAt DATETIME NULL,
+      reportValidUntil DATETIME NULL,
+      reportCountry VARCHAR(50) NULL,
+      reportBodyguards INT NULL,
+      reportArmor INT NULL,
+      PRIMARY KEY (id),
+      INDEX idx_hitlist_inv_player (playerId),
+      INDEX idx_hitlist_inv_hit (hitId),
+      INDEX idx_hitlist_inv_status_resolve (status, resolveAt),
+      CONSTRAINT fk_hitlist_inv_player FOREIGN KEY (playerId) REFERENCES players(id) ON DELETE CASCADE,
+      CONSTRAINT fk_hitlist_inv_hit FOREIGN KEY (hitId) REFERENCES hit_list(id) ON DELETE CASCADE,
+      CONSTRAINT fk_hitlist_inv_target FOREIGN KEY (targetId) REFERENCES players(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  investigationSchemaEnsured = true;
+}
+
+function getTierConfig(tier: InvestigationTier) {
+  const config = INVESTIGATION_TIER_CONFIG[tier];
+  if (!config) {
+    throw new Error('INVALID_INVESTIGATION_TIER');
+  }
+  return config;
+}
+
 export async function investigateHit(
   playerId: number,
   hitId: number,
   tier: InvestigationTier
 ): Promise<{
   success: true;
-  report: {
+  queue: {
+    id: number;
+    hitId: number;
     targetId: number;
-    country: string | null;
-    bodyguards: number;
-    armor: number;
-    validUntil: string;
-    tier: InvestigationTier;
     cost: number;
+    tier: InvestigationTier;
+    etaMinutes: number;
+    resolveAt: string;
   };
+  message: string;
 }> {
+  await ensureInvestigationSchema();
+
   const hit = await prisma.hitList.findUnique({
     where: { id: hitId },
   });
@@ -595,15 +683,20 @@ export async function investigateHit(
     throw new Error('HIT_NOT_ACTIVE');
   }
 
-  const tierCost: Record<InvestigationTier, number> = {
-    quick: 100000,
-    standard: 50000,
-    deep: 25000,
-  };
+  const tierConfig = getTierConfig(tier);
+  const cost = tierConfig.cost;
 
-  const cost = tierCost[tier];
-  if (!cost) {
-    throw new Error('INVALID_INVESTIGATION_TIER');
+  const existingPending = await prisma.$queryRaw<Array<{ id: number }>>`
+    SELECT id
+    FROM hitlist_investigations
+    WHERE playerId = ${playerId}
+      AND hitId = ${hitId}
+      AND status = 'pending'
+    LIMIT 1
+  `;
+
+  if (existingPending.length > 0) {
+    throw new Error('INVESTIGATION_ALREADY_PENDING');
   }
 
   const player = await prisma.player.findUnique({
@@ -615,34 +708,217 @@ export async function investigateHit(
     throw new Error('INSUFFICIENT_MONEY');
   }
 
-  const target = await prisma.player.findUnique({
-    where: { id: hit.targetId },
-    select: { currentCountry: true },
+  const now = new Date();
+  const resolveAt = new Date(now.getTime() + tierConfig.delayMs);
+
+  const queueId = await prisma.$transaction(async (tx) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: player.money - cost },
+    });
+
+    await tx.$executeRaw`
+      INSERT INTO hitlist_investigations (
+        playerId,
+        hitId,
+        targetId,
+        tier,
+        cost,
+        status,
+        requestedAt,
+        resolveAt
+      )
+      VALUES (
+        ${playerId},
+        ${hitId},
+        ${hit.targetId},
+        ${tier},
+        ${cost},
+        'pending',
+        ${now},
+        ${resolveAt}
+      )
+    `;
+
+    const idRows = await tx.$queryRaw<Array<{ id: number }>>`
+      SELECT id
+      FROM hitlist_investigations
+      WHERE playerId = ${playerId}
+        AND hitId = ${hitId}
+        AND status = 'pending'
+      ORDER BY id DESC
+      LIMIT 1
+    `;
+
+    return Number(idRows[0]?.id || 0);
   });
 
-  if (!target) {
-    throw new Error('TARGET_NOT_FOUND');
+  if (!queueId) {
+    throw new Error('INVESTIGATION_QUEUE_FAILED');
   }
 
-  const targetSecurity = await settleBodyguardUpkeep(prisma, hit.targetId);
-
-  await prisma.player.update({
-    where: { id: playerId },
-    data: { money: player.money - cost },
-  });
+  const etaMinutes = Math.round(tierConfig.delayMs / 60000);
 
   return {
     success: true,
-    report: {
+    queue: {
+      id: queueId,
+      hitId,
       targetId: hit.targetId,
-      country: target.currentCountry,
-      bodyguards: targetSecurity?.bodyguards || 0,
-      armor: getEffectiveArmor(targetSecurity),
-      validUntil: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
       tier,
       cost,
+      etaMinutes,
+      resolveAt: resolveAt.toISOString(),
     },
+    message:
+      'Onderzoek is aangevraagd. Detective Bureau levert het rapport later in je berichten inbox.',
   };
+}
+
+function buildInvestigationMessage(
+  language: 'nl' | 'en',
+  investigation: InvestigationQueueRow,
+  targetUsername: string,
+): string {
+  const validUntil = investigation.reportValidUntil?.toISOString() ?? '';
+  const country = investigation.reportCountry ?? (language === 'nl' ? 'Onbekend' : 'Unknown');
+  const bodyguards = investigation.reportBodyguards ?? 0;
+  const armor = investigation.reportArmor ?? 0;
+  const tierConfig = getTierConfig(investigation.tier);
+
+  if (language === 'nl') {
+    return [
+      `Detective Bureau rapport gereed (${tierConfig.nlLabel}).`,
+      `Doelwit: ${targetUsername}`,
+      `Locatie: ${country}`,
+      `Bodyguards: ${bodyguards} | Armor: ${armor}`,
+      `Geldig tot: ${validUntil}`,
+    ].join('\n');
+  }
+
+  return [
+    `Detective Bureau report ready (${tierConfig.enLabel}).`,
+    `Target: ${targetUsername}`,
+    `Location: ${country}`,
+    `Bodyguards: ${bodyguards} | Armor: ${armor}`,
+    `Valid until: ${validUntil}`,
+  ].join('\n');
+}
+
+export async function processPendingInvestigations(limit = 50): Promise<number> {
+  await ensureInvestigationSchema();
+
+  const pendingRows = await prisma.$queryRaw<InvestigationQueueRow[]>`
+    SELECT
+      id,
+      playerId,
+      hitId,
+      targetId,
+      tier,
+      cost,
+      status,
+      requestedAt,
+      resolveAt,
+      completedAt,
+      reportValidUntil,
+      reportCountry,
+      reportBodyguards,
+      reportArmor
+    FROM hitlist_investigations
+    WHERE status = 'pending'
+      AND resolveAt <= NOW()
+    ORDER BY resolveAt ASC
+    LIMIT ${limit}
+  `;
+
+  if (pendingRows.length === 0) {
+    return 0;
+  }
+
+  let processed = 0;
+
+  for (const row of pendingRows) {
+    try {
+      const hit = await prisma.hitList.findUnique({
+        where: { id: row.hitId },
+        select: { status: true, targetId: true },
+      });
+
+      const target = await prisma.player.findUnique({
+        where: { id: row.targetId },
+        select: { username: true, currentCountry: true },
+      });
+
+      const receiver = await prisma.player.findUnique({
+        where: { id: row.playerId },
+        select: { preferredLanguage: true },
+      });
+
+      const security = target ? await settleBodyguardUpkeep(prisma, target ? row.targetId : 0) : null;
+      const now = new Date();
+      const validUntil = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+      const language: 'nl' | 'en' = receiver?.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+
+      if (!hit || hit.status !== 'ACTIVE' || !target) {
+        const cancelledMessage = language === 'nl'
+          ? 'Detective Bureau: onderzoek gesloten omdat de hit niet meer actief is.'
+          : 'Detective Bureau: investigation was closed because the hit is no longer active.';
+
+        await directMessageService.sendSystemMessage(row.playerId, cancelledMessage, {
+          senderName: 'Detective Bureau',
+          sendPush: true,
+        });
+
+        await prisma.$executeRaw`
+          UPDATE hitlist_investigations
+          SET status = 'cancelled',
+              completedAt = ${now}
+          WHERE id = ${row.id}
+        `;
+
+        processed += 1;
+        continue;
+      }
+
+      const updatedRow: InvestigationQueueRow = {
+        ...row,
+        completedAt: now,
+        reportValidUntil: validUntil,
+        reportCountry: target.currentCountry,
+        reportBodyguards: security?.bodyguards || 0,
+        reportArmor: getEffectiveArmor(security),
+        status: 'completed',
+      };
+
+      const reportMessage = buildInvestigationMessage(
+        language,
+        updatedRow,
+        target.username,
+      );
+
+      await directMessageService.sendSystemMessage(row.playerId, reportMessage, {
+        senderName: 'Detective Bureau',
+        sendPush: true,
+      });
+
+      await prisma.$executeRaw`
+        UPDATE hitlist_investigations
+        SET status = 'completed',
+            completedAt = ${now},
+            reportValidUntil = ${validUntil},
+            reportCountry = ${target.currentCountry},
+            reportBodyguards = ${security?.bodyguards || 0},
+            reportArmor = ${getEffectiveArmor(security)}
+        WHERE id = ${row.id}
+      `;
+
+      processed += 1;
+    } catch (error) {
+      console.error('[Hitlist] Failed to process investigation', row.id, error);
+    }
+  }
+
+  return processed;
 }
 
 export async function cancelHit(playerId: number, hitId: number): Promise<any> {

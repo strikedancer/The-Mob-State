@@ -892,6 +892,7 @@ const List<HelpTopic> helpTopics = [
     howNl: [
       'Via de hitlist kun je een speler toevoegen door een bounty in te stellen. Minimumbounty is €5.000. De betaler verliest dit geld direct.',
       'Actieve hits zijn zichtbaar voor alle spelers. Hoe hoger de bounty, hoe meer aandacht het contract trekt.',
+      'Detective-onderzoek levert geen directe uitslag meer op: rapporten komen later via een bericht van Detective Bureau (Snel 1 uur €1.000.000, Gemiddeld 6 uur €500.000, Langzaam 24 uur €250.000).',
       'Om een hit uit te voeren moet je in hetzelfde land zijn als je doelwit. Je valt aan via het spelersprofiel.',
       'Gevecht wordt automatisch berekend op basis van: bewapening, armor, stats (kracht, reflexen), crew-bonussen en actief niveau.',
       'Bij een succesvolle eliminatie ontvang je de volledige bounty. Mislukt de aanval dan verlies je HP en het doelwit blijft leven.',
@@ -901,6 +902,7 @@ const List<HelpTopic> helpTopics = [
     howEn: [
       'Via the hitlist you add a player by setting a bounty. Minimum bounty is €5,000. The payer loses this money immediately.',
       'Active hits are visible to all players. The higher the bounty, the more attention the contract attracts.',
+      'Detective investigations no longer return instant intel: reports arrive later via a Detective Bureau message (Quick 1 hour €1,000,000, Standard 6 hours €500,000, Slow 24 hours €250,000).',
       'To execute a hit you must be in the same country as your target. You attack via the player profile.',
       'Combat is auto-calculated based on: weapons, armor, stats (strength, reflexes), crew bonuses and active level.',
       'On successful elimination you receive the full bounty. If the attack fails you lose HP and the target survives.',

@@ -204,11 +204,11 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - ✅ Target exists (or crew exists if crew hit)
 
 ### Detective Hiring
-- ✅ cost in range €25K-€100K based on time
+- ✅ tiered cost based on speed and delay: quick €1M (1h), standard €500K (6h), deep €250K (24h)
 - ✅ hirerId has funds
 - ✅ No duplicate detective on same target
 - ✅ Target exists
-- ✅ Report expires after 3 hours
+- ✅ Report arrives asynchronously (not instant) and expires after 3 hours post-delivery
 
 ### Attack Attempt
 - ✅ Attacker and target in same country
@@ -286,7 +286,7 @@ await prisma.$transaction([
 ## QA Checklist
 - ✅ Open hitlist screen on mobile, tablet, desktop widths
 - ✅ Place hit (€50K, €500K, €5M) - check money deducted
-- ✅ Hire detective (all 3 cost tiers) - check report arrives in 1hr/6hr/24hr
+- ✅ Hire detective (all 3 cost tiers) - check queue response is immediate but report delivery happens in 1h/6h/24h via Detective Bureau inbox message
 - ✅ View detective report - check 3-hour expiry countdown
 - ✅ Attempt hit (success + failure) - check bounty payout + reputation loss
 - ✅ Place counter-bounty - check reversal atomicity (role swap)

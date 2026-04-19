@@ -17,7 +17,7 @@ export const directMessageService = {
     read: boolean;
     createdAt: Date;
     receiverId: number;
-  }) {
+  }, senderName?: string) {
     return {
       id: directMessage.id,
       senderId: SYSTEM_THREAD_ID,
@@ -25,7 +25,10 @@ export const directMessageService = {
       message: directMessage.message,
       read: directMessage.read,
       createdAt: directMessage.createdAt,
-      sender: SYSTEM_SENDER,
+      sender: {
+        ...SYSTEM_SENDER,
+        username: senderName || SYSTEM_SENDER.username,
+      },
     };
   },
 
@@ -34,6 +37,7 @@ export const directMessageService = {
     message: string,
     options?: {
       sendPush?: boolean;
+      senderName?: string;
     }
   ) {
     if (!message || message.trim().length === 0) {
@@ -52,7 +56,8 @@ export const directMessageService = {
       },
     });
 
-    const payload = this.formatSystemMessage(directMessage);
+    const senderName = options?.senderName || SYSTEM_SENDER.username;
+    const payload = this.formatSystemMessage(directMessage, senderName);
 
     await worldEventService.createEvent(
       'direct_message.received',
@@ -80,7 +85,7 @@ export const directMessageService = {
         const notificationService = NotificationService.getInstance();
         await notificationService.sendDirectMessageNotification(
           receiverId,
-          SYSTEM_SENDER.username,
+          senderName,
           directMessage.message,
           language
         );

@@ -937,21 +937,19 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
 
       if (!mounted) return;
 
-      if (data['success'] == true && data['report'] is Map) {
-        final report = data['report'] as Map;
-        final country =
-            report['country']?.toString() ?? _tr('Onbekend', 'Unknown');
-        final bodyguards = report['bodyguards']?.toString() ?? '0';
-        final armor = report['armor']?.toString() ?? '0';
-        final cost = report['cost']?.toString() ?? '0';
+      if (data['success'] == true && data['queue'] is Map) {
+        final queue = data['queue'] as Map;
+        final cost = queue['cost']?.toString() ?? '0';
+        final etaMinutes = queue['etaMinutes']?.toString() ?? '?';
+        final resolveAt = queue['resolveAt']?.toString() ?? '-';
 
         showTopRightFromSnackBar(
           context,
           SnackBar(
             content: Text(
               _tr(
-                'Onderzoek klaar: land $country, bodyguards $bodyguards, armor $armor (kosten €$cost)',
-                'Investigation complete: country $country, bodyguards $bodyguards, armor $armor (cost €$cost)',
+                'Onderzoek gestart. Kosten €$cost. ETA: $etaMinutes min. Rapport komt via Detective Bureau berichten (rond $resolveAt).',
+                'Investigation queued. Cost €$cost. ETA: $etaMinutes min. Report will arrive via Detective Bureau messages (around $resolveAt).',
               ),
             ),
           ),
@@ -997,8 +995,8 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
             onPressed: _isLoading ? null : () => _runInvestigation('quick'),
             child: Text(
               _tr(
-                'Snel onderzoek (€100.000)',
-                'Quick investigation (€100,000)',
+                'Snel onderzoek (€1.000.000 • 1 uur)',
+                'Quick investigation (€1,000,000 • 1 hour)',
               ),
             ),
           ),
@@ -1007,8 +1005,8 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
             onPressed: _isLoading ? null : () => _runInvestigation('standard'),
             child: Text(
               _tr(
-                'Standaard onderzoek (€50.000)',
-                'Standard investigation (€50,000)',
+                'Gemiddeld onderzoek (€500.000 • 6 uur)',
+                'Standard investigation (€500,000 • 6 hours)',
               ),
             ),
           ),
@@ -1017,8 +1015,8 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
             onPressed: _isLoading ? null : () => _runInvestigation('deep'),
             child: Text(
               _tr(
-                'Langzaam onderzoek (€25.000)',
-                'Slow investigation (€25,000)',
+                'Langzaam onderzoek (€250.000 • 24 uur)',
+                'Slow investigation (€250,000 • 24 hours)',
               ),
             ),
           ),
