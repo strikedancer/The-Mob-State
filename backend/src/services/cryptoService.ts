@@ -667,6 +667,7 @@ function pickMarketNewsImpact(regime: MarketRegime): MarketNewsImpact {
 }
 
 function buildMarketHeadline(
+  language: Language,
   impact: MarketNewsImpact,
   leaders: string[],
   marketMovePct: number
@@ -677,28 +678,46 @@ function buildMarketHeadline(
   const moveAbs = Math.abs(marketMovePct).toFixed(2);
 
   if (impact === 'BULLISH') {
-    const bullishHeadlines = [
-      `Whale accumulation detected as ${leadA} and ${leadB} lead risk-on momentum`,
-      `Institutional inflows lift ${leadA}; broad altcoin breadth expands around ${leadC}`,
-      `Short squeeze accelerates market upside with ${leadB} outperforming majors`,
-    ];
+    const bullishHeadlines = language === 'nl'
+      ? [
+          `Whale-accumulatie gedetecteerd terwijl ${leadA} en ${leadB} het risk-on momentum aanvoeren`,
+          `Institutionele instroom tilt ${leadA}; de altcoin-breedte neemt toe rond ${leadC}`,
+          `Een short squeeze versnelt de marktstijging terwijl ${leadB} beter presteert dan de majors`,
+        ]
+      : [
+          `Whale accumulation detected as ${leadA} and ${leadB} lead risk-on momentum`,
+          `Institutional inflows lift ${leadA}; broad altcoin breadth expands around ${leadC}`,
+          `Short squeeze accelerates market upside with ${leadB} outperforming majors`,
+        ];
     return bullishHeadlines[Math.floor(Math.random() * bullishHeadlines.length)];
   }
 
   if (impact === 'BEARISH') {
-    const bearishHeadlines = [
-      `Risk-off wave hits crypto as ${leadA} loses key support and drags ${leadB}`,
-      `Derivatives liquidations pressure ${leadC} while majors retrace ${moveAbs}%`,
-      `Macro uncertainty triggers defensive flow out of ${leadB} and high-beta alts`,
-    ];
+    const bearishHeadlines = language === 'nl'
+      ? [
+          `Een risk-off golf raakt crypto nu ${leadA} belangrijke steun verliest en ${leadB} meesleept`,
+          `Derivatenliquidaties zetten ${leadC} onder druk terwijl majors ${moveAbs}% terugvallen`,
+          `Macro-onzekerheid veroorzaakt defensieve uitstroom uit ${leadB} en high-beta alts`,
+        ]
+      : [
+          `Risk-off wave hits crypto as ${leadA} loses key support and drags ${leadB}`,
+          `Derivatives liquidations pressure ${leadC} while majors retrace ${moveAbs}%`,
+          `Macro uncertainty triggers defensive flow out of ${leadB} and high-beta alts`,
+        ];
     return bearishHeadlines[Math.floor(Math.random() * bearishHeadlines.length)];
   }
 
-  const neutralHeadlines = [
-    `Market consolidates near flat as ${leadA} and ${leadB} trade inside narrow ranges`,
-    `Mixed flows keep crypto sideways; traders rotate between ${leadB} and ${leadC}`,
-    `Volatility cools with majors pausing after recent ${moveAbs}% swing`,
-  ];
+  const neutralHeadlines = language === 'nl'
+    ? [
+        `De markt consolideert vrijwel vlak terwijl ${leadA} en ${leadB} binnen nauwe ranges handelen`,
+        `Gemengde stromen houden crypto zijwaarts; traders roteren tussen ${leadB} en ${leadC}`,
+        `De volatiliteit koelt af nu majors pauzeren na een recente beweging van ${moveAbs}%`,
+      ]
+    : [
+        `Market consolidates near flat as ${leadA} and ${leadB} trade inside narrow ranges`,
+        `Mixed flows keep crypto sideways; traders rotate between ${leadB} and ${leadC}`,
+        `Volatility cools with majors pausing after recent ${moveAbs}% swing`,
+      ];
   return neutralHeadlines[Math.floor(Math.random() * neutralHeadlines.length)];
 }
 
@@ -1289,17 +1308,19 @@ async function notifyAllPlayersMarketRegime(regime: MarketRegime, marketMovePct:
 }
 
 async function notifyAllPlayersMarketNews(
-  headline: string,
   impact: MarketNewsImpact,
-  symbols: string[]
+  symbols: string[],
+  marketMovePct: number
 ): Promise<void> {
   const playerIds = await getActiveCryptoPlayerIds();
   if (playerIds.length === 0) return;
 
   await Promise.allSettled(
-    playerIds.map((id) =>
-      notificationService.sendCryptoMarketNewsNotification(id, headline, impact, symbols)
-    )
+    playerIds.map(async (id) => {
+      const language = await getPlayerCryptoLanguage(id);
+      const headline = buildMarketHeadline(language, impact, symbols, marketMovePct);
+      return notificationService.sendCryptoMarketNewsNotification(id, headline, impact, symbols, language);
+    })
   );
 }
 
@@ -1353,7 +1374,6 @@ async function publishMarketSignalsIfNeeded(): Promise<void> {
   }
 
   const impact = pickMarketNewsImpact(pulse.regime);
-  const headline = buildMarketHeadline(impact, pulse.leaders, pulse.marketMovePct);
 
   await prisma.$executeRawUnsafe(
     `
@@ -1363,7 +1383,7 @@ async function publishMarketSignalsIfNeeded(): Promise<void> {
     `
   );
 
-  await notifyAllPlayersMarketNews(headline, impact, pulse.leaders);
+  await notifyAllPlayersMarketNews(impact, pulse.leaders, pulse.marketMovePct);
 }
 
 async function updatePricesIfNeeded(): Promise<void> {

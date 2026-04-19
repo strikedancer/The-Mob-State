@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Crypto pushmelding-taal gelijkgetrokken per speler: crypto marktnieuws/headlines worden nu per ontvanger opgebouwd op basis van `preferredLanguage`, zodat NL-spelers geen Engelse headline meer krijgen in dezelfde push/in-app melding
+  - Bestanden: `backend/src/services/cryptoService.ts`, `docs/module-protocols/crypto.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Admin dashboard info-kaarten verder leesbaar gemaakt: alerts en status-infoblokken hebben nu expliciete hover/focus contraststates en badges met sterkere tekstcontrast zodat kerninfo ook in dark mode en op lagere helderheid direct leesbaar blijft
   - Bestanden: `admin/src/App.css`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Drugs faciliteiten apparatuur-afbeeldingen voorbereid voor Leonardo + externe hosting: apparatuur-rijen renderen nu image-first via `DRUG_FACILITY_IMAGE_BASE_URL` (met icon-fallback), inclusief one-shot generator-script en upload/runbook met 15 vaste bestandsnamen onder de client runtime image-route `/images/facilities/equipment`

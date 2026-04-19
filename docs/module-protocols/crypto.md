@@ -31,6 +31,7 @@ Coin market, portfolio, orders, charts, missions, rewards and notifications.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
 - Marktnieuws en regime-notificaties worden alleen verstuurd naar spelers met een actieve crypto-positie; stuur deze signalen nooit platformbreed naar alle spelers.
+- Crypto push/inbox copy moet per ontvanger op `preferredLanguage` worden opgebouwd; gebruik nooit één gedeelde Engelse headline/body voor zowel NL als EN ontvangers.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
