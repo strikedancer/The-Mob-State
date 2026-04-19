@@ -25,7 +25,8 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Theft outcome videos are legacy and should not be reintroduced without a deliberate design decision.
 - Repairs must use a timed flow, not instant click-pay-complete behavior.
 - Numeric voertuigstatussen (zoals condition/fuel) moeten 0 als geldige waarde behandelen; gebruik null-safe fallbacks zodat 0 niet stil als 100 of een andere default wordt geïnterpreteerd.
-- Concurrent repair slots are VIP-gated: non-VIP max 1 active repair, VIP max 5 active repairs.
+- Concurrent repair slots are shared across car/motorcycle/boat: non-VIP max 1 active repair, VIP max 2 active repairs.
+- When a timed repair completes, the owner must receive a repair-ready push notification.
 - Available car and motorcycle catalog entries must expose country availability, value, rarity and world-cap information.
 - World-cap rotation must remain correct: when a vehicle is sold or scrapped, one slot reopens for theft.
 - Scrap system: players can scrap owned vehicles to get salvage value (35% of base value, scaled by condition and garage upgrade level). Scrapping must not be instant; it must trigger immediately but show clear feedback. Scrap price must respect garage upgrade multipliers (up to 20% bonus at max level).
@@ -74,7 +75,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Verify no text overflows or clipped buttons appear.
 - Verify the available-cars catalog matches the player country and hides capped-out vehicles.
 - Start a repair and verify the vehicle becomes temporarily unavailable until the timer completes.
-- Verify repair concurrency cap: non-VIP can start only 1 active repair, VIP can start up to 5.
+- Verify repair concurrency cap shared across car/motorcycle/boat: non-VIP can start only 1 active repair, VIP can start up to 2.
 - Confirm transport actions are no longer offered from Garage and that players are pointed to Smuggling when relevant.
 - Verify event-only police cars/motorcycles only appear during active event windows.
 - Verify a vehicle theft that ends in arrest does not show a success message, places the player in jail, and confirms that the stolen vehicle was confiscated.

@@ -122,8 +122,10 @@ let repairJobsReady = false;
 let tuneTablesReady = false;
 
 const TUNE_MAX_LEVEL = 10;
-const STANDARD_CONCURRENT_VEHICLE_ACTION_LIMIT = 1;
-const VIP_CONCURRENT_VEHICLE_ACTION_LIMIT = 5;
+const STANDARD_CONCURRENT_REPAIR_LIMIT = 1;
+const VIP_CONCURRENT_REPAIR_LIMIT = 2;
+const STANDARD_CONCURRENT_TUNE_LIMIT = 1;
+const VIP_CONCURRENT_TUNE_LIMIT = 5;
 const TUNE_UPGRADE_COOLDOWN_SECONDS_BY_TYPE: Record<'car' | 'boat' | 'motorcycle', number> = {
   car: 180,
   motorcycle: 120,
@@ -511,18 +513,84 @@ async function processCompletedRepairJobs(playerId?: number) {
 
   if (dueJobs.length === 0) return;
 
-  await prisma.$transaction(
-    dueJobs.flatMap((job) => [
-      prisma.vehicleInventory.update({
-        where: { id: job.vehicle_inventory_id },
-        data: { condition: job.target_condition },
-      }),
-      prisma.$executeRaw`
+  const inventoryIds = dueJobs.map((job) => job.vehicle_inventory_id);
+  const vehiclesByInventoryId = new Map(
+    (await prisma.vehicleInventory.findMany({
+      where: { id: { in: inventoryIds } },
+      select: {
+        id: true,
+        playerId: true,
+        vehicleId: true,
+        vehicleType: true,
+      },
+    })).map((vehicle) => [vehicle.id, vehicle])
+  );
+
+  const completedJobs: Array<{
+    playerId: number;
+    vehicleName: string;
+    vehicleType: 'car' | 'boat' | 'motorcycle';
+    vehicleInventoryId: number;
+  }> = [];
+
+  for (const job of dueJobs) {
+    const markedCompleted = await prisma.$transaction(async (tx) => {
+      const updatedRows = await tx.$executeRaw`
         UPDATE vehicle_repair_jobs
         SET status = 'completed', completed_at = UTC_TIMESTAMP()
         WHERE id = ${job.id}
-      `,
-    ])
+          AND status = 'in_progress'
+      `;
+
+      if (Number(updatedRows ?? 0) <= 0) {
+        return false;
+      }
+
+      await tx.vehicleInventory.update({
+        where: { id: job.vehicle_inventory_id },
+        data: { condition: job.target_condition },
+      });
+
+      return true;
+    });
+
+    if (!markedCompleted) {
+      continue;
+    }
+
+    const vehicleInventory = vehiclesByInventoryId.get(job.vehicle_inventory_id);
+    if (!vehicleInventory) {
+      continue;
+    }
+
+    const definition = vehicleService.getVehicleById(vehicleInventory.vehicleId);
+    const normalizedVehicleType = normalizeVehicleType(vehicleInventory.vehicleType);
+
+    completedJobs.push({
+      playerId: vehicleInventory.playerId,
+      vehicleName: definition?.name ?? 'Vehicle',
+      vehicleType: normalizedVehicleType,
+      vehicleInventoryId: vehicleInventory.id,
+    });
+  }
+
+  if (completedJobs.length === 0) {
+    return;
+  }
+
+  await Promise.all(
+    completedJobs.map(async (job) => {
+      try {
+        await notificationService.sendVehicleRepairCompletedNotification(
+          job.playerId,
+          job.vehicleName,
+          job.vehicleType,
+          job.vehicleInventoryId
+        );
+      } catch {
+        // Fire-and-forget: notification failures may not block repair completion.
+      }
+    })
   );
 }
 
@@ -586,9 +654,32 @@ const isPlayerVipActive = (player: { isVip: boolean; vipExpiresAt: Date | null }
   return Boolean(player.isVip) && (!player.vipExpiresAt || player.vipExpiresAt > new Date());
 };
 
-const getConcurrentVehicleActionLimit = (isVipActive: boolean): number => {
-  return isVipActive ? VIP_CONCURRENT_VEHICLE_ACTION_LIMIT : STANDARD_CONCURRENT_VEHICLE_ACTION_LIMIT;
+const getConcurrentRepairLimit = (isVipActive: boolean): number => {
+  return isVipActive ? VIP_CONCURRENT_REPAIR_LIMIT : STANDARD_CONCURRENT_REPAIR_LIMIT;
 };
+
+const getConcurrentTuneLimit = (isVipActive: boolean): number => {
+  return isVipActive ? VIP_CONCURRENT_TUNE_LIMIT : STANDARD_CONCURRENT_TUNE_LIMIT;
+};
+
+export async function processDueVehicleRepairCompletions(): Promise<number> {
+  await ensureRepairJobsTable();
+
+  const rows = await prisma.$queryRaw<Array<{ total: bigint | number }>>`
+    SELECT COUNT(*) AS total
+    FROM vehicle_repair_jobs
+    WHERE status = 'in_progress'
+      AND completes_at <= UTC_TIMESTAMP()
+  `;
+
+  const dueCount = Number(rows[0]?.total ?? 0);
+  if (dueCount <= 0) {
+    return 0;
+  }
+
+  await processCompletedRepairJobs();
+  return dueCount;
+}
 
 async function getWorldVehicleCounts(): Promise<Map<string, number>> {
   const rows = await prisma.$queryRaw<VehicleCountRow[]>`
@@ -1881,7 +1972,7 @@ export const vehicleService = {
     }
 
     const isVipActive = isPlayerVipActive(player);
-    const maxConcurrentRepairs = getConcurrentVehicleActionLimit(isVipActive);
+    const maxConcurrentRepairs = getConcurrentRepairLimit(isVipActive);
     const activeRepairJobsCount = await getActiveRepairJobCount(playerId);
     if (activeRepairJobsCount >= maxConcurrentRepairs) {
       throw new Error(
@@ -2113,7 +2204,7 @@ export const vehicleService = {
     if (!player) throw new Error('PLAYER_NOT_FOUND');
 
     const isVipActive = isPlayerVipActive(player);
-    const maxConcurrentTunes = getConcurrentVehicleActionLimit(isVipActive);
+    const maxConcurrentTunes = getConcurrentTuneLimit(isVipActive);
     const activeTuneJobsCount = await getActiveTuneCooldownCount(playerId);
     if (activeTuneJobsCount >= maxConcurrentTunes) {
       throw new Error(

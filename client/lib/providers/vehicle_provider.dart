@@ -885,7 +885,7 @@ class VehicleProvider with ChangeNotifier {
       case 'VEHICLE_REPAIR_IN_PROGRESS':
         return 'Voertuig is al in reparatie';
       case 'REPAIR_CONCURRENCY_LIMIT_REACHED':
-        return 'Limiet bereikt: zonder VIP max 1 reparatie tegelijk, met VIP max 5';
+        return 'Limiet bereikt: zonder VIP max 1 reparatie tegelijk, met VIP max 2';
       case 'INSUFFICIENT_PARTS':
         return 'Niet genoeg onderdelen';
       case 'TUNE_STAT_MAXED':

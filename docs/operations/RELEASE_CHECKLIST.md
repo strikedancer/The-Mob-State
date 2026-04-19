@@ -51,6 +51,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Voertuigreparatie-slots aangescherpt en gereedmelding toegevoegd: gelijktijdige reparaties zijn nu gedeeld over auto/motor/boot (zonder VIP max 1, met VIP max 2) en afgeronde timed repairs sturen nu een NL/EN in-app + pushmelding dat het voertuig weer klaar is; cron verwerkt afgeronde repair-jobs nu elke minuut zodat meldingen niet wachten op handmatige schermrefresh
+  - Bestanden: `backend/src/services/vehicleService.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/cronService.ts`, `client/lib/providers/vehicle_provider.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/garage.md`, `docs/module-protocols/marina.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Garage reparatie-fout opgelost voor voertuigen met 0% conditie: de backend gebruikte een onjuiste fallback (`condition || 100`) waardoor `0` als `100` werd gelezen en reparatie onterecht werd geweigerd met `VEHICLE_NOT_BROKEN`; dit is nu null-safe gemaakt zodat 0%-voertuigen weer correct in reparatie kunnen
   - Bestanden: `backend/src/services/vehicleService.ts`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moordzaak-onderzoek is nu asynchroon met variabele wachttijd: na aanvraag komt detective-rapport niet direct; snelle aanvraag geeft kortere ETA, late aanvraag geeft langere ETA binnen het 24-uurs venster

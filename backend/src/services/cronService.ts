@@ -7,6 +7,7 @@ import {
   processPendingInvestigations,
   processPendingMurderCaseInvestigations,
 } from './hitlistService';
+import { processDueVehicleRepairCompletions } from './vehicleService';
 
 const prisma = new PrismaClient();
 
@@ -393,6 +394,20 @@ export async function runHitlistInvestigationProcessor(): Promise<void> {
   }
 }
 
+export async function runVehicleRepairCompletionProcessor(): Promise<void> {
+  const now = new Date();
+
+  try {
+    const completed = await processDueVehicleRepairCompletions();
+    if (completed > 0) {
+      console.log(`[CRON JOB] vehicleRepairCompletionProcessor completed=${completed}`);
+    }
+    lastJobExecutions['vehicleRepairCompletionProcessor'] = now;
+  } catch (error) {
+    console.error('[CRON ERROR] vehicleRepairCompletionProcessor:', error);
+  }
+}
+
 export function getCronStatus() {
   return {
     lastExecutions: lastJobExecutions,
@@ -403,6 +418,7 @@ export function getCronStatus() {
       cleanupRivalries: 'Sunday at 03:00',
       drugProductionAutomation: 'Every minute',
       hitlistInvestigationProcessor: 'Every minute',
+      vehicleRepairCompletionProcessor: 'Every minute',
       cryptoOrderProcessor: 'Every 30 seconds',
       eventScheduler: 'Every 5 minutes',
     },
@@ -440,6 +456,10 @@ export function initializeCronJobs(): void {
     await runHitlistInvestigationProcessor();
   });
 
+  cron.schedule('* * * * *', async () => {
+    await runVehicleRepairCompletionProcessor();
+  });
+
   cron.schedule('*/30 * * * * *', async () => {
     try {
       const result = await processOpenOrdersInBackground();
@@ -467,6 +487,7 @@ export function initializeCronJobs(): void {
   console.log('  - Cleanup Old Rivalries: Sunday at 03:00');
   console.log('  - Drug Production Automation: Every minute');
   console.log('  - Hitlist Investigation Processor: Every minute');
+  console.log('  - Vehicle Repair Completion Processor: Every minute');
   console.log('  - Crypto Order Processor: Every 30 seconds');
   console.log('  - Game Event Scheduler: Every 5 minutes');
 }

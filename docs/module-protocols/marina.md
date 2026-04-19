@@ -23,7 +23,8 @@ Boat inventory, theft flow, timed repairs, country availability catalog, boat-sp
 - Direct boat transport does not belong here anymore. Cross-country movement must route through the Smuggling Hub flow.
 - Theft outcome videos are legacy and should not be reintroduced without a deliberate design decision.
 - Repairs must use a timed flow, not instant click-pay-complete behavior.
-- Concurrent repair slots are VIP-gated: non-VIP max 1 active repair, VIP max 5 active repairs.
+- Concurrent repair slots are shared across car/motorcycle/boat: non-VIP max 1 active repair, VIP max 2 active repairs.
+- When a timed repair completes, the owner must receive a repair-ready push notification.
 - Available boat catalog entries must expose country availability, value, rarity and world-cap information.
 - World-cap rotation must remain correct: when a boat is sold or scrapped, one slot reopens for theft.
 - Scrap system: players can scrap owned boats to get salvage value (35% of base value, scaled by condition and marina upgrade level). Scrapping must not be instant; it must trigger immediately but show clear feedback. Scrap price must respect marina upgrade multipliers (up to 20% bonus at max level).
@@ -72,7 +73,7 @@ Boat inventory, theft flow, timed repairs, country availability catalog, boat-sp
 - Verify no text overflows or clipped buttons appear.
 - Verify the available-boats catalog matches the player country and hides capped-out boats.
 - Start a repair and verify the boat becomes temporarily unavailable until the timer completes.
-- Verify repair concurrency cap: non-VIP can start only 1 active repair, VIP can start up to 5.
+- Verify repair concurrency cap shared across car/motorcycle/boat: non-VIP can start only 1 active repair, VIP can start up to 2.
 - Confirm transport actions are no longer offered from Marina and that players are pointed to Smuggling when relevant.
 - Verify event-only police boats only appear during active event windows.
 

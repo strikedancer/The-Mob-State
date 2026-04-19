@@ -643,6 +643,52 @@ export class NotificationService {
     }
   }
 
+  public async sendVehicleRepairCompletedNotification(
+    playerId: number,
+    vehicleName: string,
+    vehicleType: 'car' | 'boat' | 'motorcycle',
+    vehicleInventoryId?: number,
+    language?: Language
+  ): Promise<void> {
+    try {
+      const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+
+      const labels: Record<'car' | 'boat' | 'motorcycle', Record<Language, string>> = {
+        car: { nl: 'Auto', en: 'Car' },
+        motorcycle: { nl: 'Motor', en: 'Motorcycle' },
+        boat: { nl: 'Boot', en: 'Boat' },
+      };
+
+      const title = resolvedLanguage === 'nl'
+        ? 'Voertuigreparatie gereed'
+        : 'Vehicle repair complete';
+      const typeLabel = labels[vehicleType]?.[resolvedLanguage] ?? labels.car[resolvedLanguage];
+      const body = resolvedLanguage === 'nl'
+        ? `${typeLabel} ${vehicleName} is gerepareerd en klaar voor gebruik.`
+        : `${typeLabel} ${vehicleName} has been repaired and is ready to use.`;
+
+      await this.createInAppWorldEvent(playerId, 'vehicle.repair.completed', {
+        vehicleName,
+        vehicleType,
+        vehicleInventoryId: vehicleInventoryId ?? null,
+      });
+
+      await this.sendToPlayer(
+        playerId,
+        title,
+        body,
+        {
+          type: 'vehicle_repair_completed',
+          vehicleName,
+          vehicleType,
+          vehicleInventoryId: String(vehicleInventoryId ?? ''),
+        }
+      );
+    } catch {
+      // Non-critical — never throw
+    }
+  }
+
   public async sendBankTransferReceivedNotification(
     playerId: number,
     senderUsername: string,
