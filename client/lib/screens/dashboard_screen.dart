@@ -52,6 +52,7 @@ import 'nightclub_screen.dart';
 import 'crypto_screen.dart';
 import 'events_screen.dart';
 import 'help_screen.dart';
+import 'territory_screen.dart';
 import 'player_profile_screen.dart';
 import 'support_tickets_screen.dart';
 
@@ -92,6 +93,7 @@ enum _WebSection {
   gym,
   ammoFactory,
   school,
+  territory,
   prostitution,
   redLightDistricts,
   achievements,
@@ -727,6 +729,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       (icon: Icons.fitness_center, label: l10n.gym, section: _WebSection.gym, badge: 0),
       (icon: Icons.factory, label: l10n.ammoFactory, section: _WebSection.ammoFactory, badge: 0),
       (icon: Icons.school, label: l10n.schoolMenuLabel, section: _WebSection.school, badge: 0),
+      (icon: Icons.map, label: _tr('Territorium', 'Territory'), section: _WebSection.territory, badge: 0),
       (icon: Icons.favorite, label: l10n.prostitutionTitle, section: _WebSection.prostitution, badge: 0),
       (
         icon: Icons.storefront,
@@ -1219,6 +1222,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const AmmoFactoryScreen();
       case _WebSection.school:
         return const SchoolScreen();
+      case _WebSection.territory:
+        return const TerritoryScreen();
       case _WebSection.prostitution:
         return const ProstitutionScreen();
       case _WebSection.redLightDistricts:
