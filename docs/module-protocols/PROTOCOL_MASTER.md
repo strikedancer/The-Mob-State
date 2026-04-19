@@ -95,6 +95,7 @@ Als een wijziging meerdere modules raakt, lees en combineer je nog steeds alle r
 - Als geschiedenis-, feed- of transactieschermen hun data uit gelogde events lezen, moet event-payload parsing expliciet en consistent gebeuren en moeten lijstdata en samenvattingstellers op dezelfde bronlogica gebaseerd zijn; voorkom dat JSON-string payloads stilzwijgend als object worden behandeld of dat tellers een ander beeld geven dan de lijst.
 - Log interne fouten met context op kritieke auth-routes (`/auth/register`, `/auth/login`) zodat productie-500's direct herleidbaar zijn.
 - Auth recovery-flows zijn pas done als zowel de aanvraagstap als de vervolgroute echt werken: een `forgot password` scherm mag geen fake succes simuleren, moet de echte backend-endpoint aanroepen, en reset-/verify-links uit e-mail moeten op web/mobile naar een afhandelbaar scherm of route landen.
+- Auth/session handling mag spelers alleen lokaal uitloggen bij expliciete auth-redenen zoals `TOKEN_EXPIRED`, `INVALID_TOKEN`, `SESSION_REPLACED` of ontbrekende credentials; tijdelijke `/player/me` netwerk- of backendfouten mogen een geldige sessie niet stil weggooien.
 - Draai Prisma checks:
   - `npx prisma validate`
   - `npx prisma generate`

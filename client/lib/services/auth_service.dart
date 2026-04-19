@@ -5,6 +5,21 @@ import 'api_client.dart';
 import '../models/player.dart';
 import 'notification_service.dart';
 
+class AuthSessionException implements Exception {
+  final String reason;
+  final bool unauthorized;
+  final int? statusCode;
+
+  const AuthSessionException({
+    required this.reason,
+    required this.unauthorized,
+    this.statusCode,
+  });
+
+  @override
+  String toString() => 'AuthSessionException(reason: $reason, unauthorized: $unauthorized, statusCode: $statusCode)';
+}
+
 class AuthService {
   final ApiClient _apiClient;
 
@@ -214,11 +229,52 @@ class AuthService {
 
       if (response.statusCode == 401 || response.statusCode == 403) {
         await _apiClient.clearToken();
+        throw AuthSessionException(
+          reason: _extractAuthReason(response.body),
+          unauthorized: true,
+          statusCode: response.statusCode,
+        );
       }
-      return null;
+
+      throw AuthSessionException(
+        reason: 'PLAYER_FETCH_FAILED_${response.statusCode}',
+        unauthorized: false,
+        statusCode: response.statusCode,
+      );
     } catch (e) {
-      return null;
+      if (e is AuthSessionException) {
+        rethrow;
+      }
+
+      throw AuthSessionException(
+        reason: 'PLAYER_FETCH_ERROR',
+        unauthorized: false,
+      );
     }
+  }
+
+  String _extractAuthReason(String rawBody) {
+    try {
+      final data = jsonDecode(rawBody) as Map<String, dynamic>;
+      if (data['event'] == 'auth.unauthorized') {
+        final params = data['params'];
+        if (params is Map<String, dynamic>) {
+          final reason = params['reason']?.toString();
+          if (reason != null && reason.isNotEmpty) {
+            return reason;
+          }
+        }
+      }
+
+      final message = data['message']?.toString();
+      if (message != null && message.isNotEmpty) {
+        return message;
+      }
+    } catch (_) {
+      // Ignore parse failures and fall back to generic auth reason.
+    }
+
+    return 'UNAUTHORIZED';
   }
 
   Future<void> requestPasswordReset(String email) async {

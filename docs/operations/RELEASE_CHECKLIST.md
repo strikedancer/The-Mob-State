@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Documentation
+- [ ] Auth sessie-uitval gehard: tijdelijke `/player/me` netwerk- of backendfouten loggen spelers niet langer lokaal uit; alleen expliciete auth-fouten zoals verlopen/vervangen/ongeldige tokens beëindigen nog de sessie. Backend login gebruikt nu ook de configureerbare JWT-expiry en schrijft weer een `auth.session.login` event voor consistente sessievervanging
+  - Bestanden: `backend/src/services/authService.ts`, `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Crypto pushmelding-taal gelijkgetrokken per speler: crypto marktnieuws/headlines worden nu per ontvanger opgebouwd op basis van `preferredLanguage`, zodat NL-spelers geen Engelse headline meer krijgen in dezelfde push/in-app melding
   - Bestanden: `backend/src/services/cryptoService.ts`, `docs/module-protocols/crypto.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Admin dashboard info-kaarten verder leesbaar gemaakt: alerts en status-infoblokken hebben nu expliciete hover/focus contraststates en badges met sterkere tekstcontrast zodat kerninfo ook in dark mode en op lagere helderheid direct leesbaar blijft

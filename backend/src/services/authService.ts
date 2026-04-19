@@ -123,7 +123,7 @@ export const authService = {
 
     // Generate JWT token
     const token = jwt.sign({ playerId: player.id, username: player.username }, config.jwtSecret, {
-      expiresIn: '7d',
+      expiresIn: config.jwtExpiresIn,
     });
 
     await prisma.worldEvent.create({
@@ -202,7 +202,17 @@ export const authService = {
 
     // Generate JWT token
     const token = jwt.sign({ playerId: player.id, username: player.username }, config.jwtSecret, {
-      expiresIn: '7d',
+      expiresIn: config.jwtExpiresIn,
+    });
+
+    await prisma.worldEvent.create({
+      data: {
+        eventKey: 'auth.session.login',
+        playerId: player.id,
+        params: JSON.stringify({
+          username: player.username,
+        }),
+      },
     });
 
     return {

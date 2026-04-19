@@ -32,13 +32,22 @@ class AuthProvider with ChangeNotifier {
     try {
       final isLoggedIn = await _authService.isLoggedIn();
       if (isLoggedIn) {
-        _currentPlayer = await _authService.getCurrentPlayer();
-        _isAuthenticated = _currentPlayer != null;
-        if (_isAuthenticated) {
-          try {
-            await NotificationService().syncAuthorizedSession();
-          } catch (e) {
-            debugPrint('[AuthProvider] Push session sync failed: $e');
+        try {
+          _currentPlayer = await _authService.getCurrentPlayer();
+          _isAuthenticated = _currentPlayer != null;
+          if (_isAuthenticated) {
+            try {
+              await NotificationService().syncAuthorizedSession();
+            } catch (e) {
+              debugPrint('[AuthProvider] Push session sync failed: $e');
+            }
+          }
+        } on AuthSessionException catch (e) {
+          if (e.unauthorized) {
+            _isAuthenticated = false;
+            _currentPlayer = null;
+          } else {
+            _error = e.toString();
           }
         }
       } else {
@@ -171,14 +180,27 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> refreshPlayer() async {
     try {
-      _currentPlayer = await _authService.getCurrentPlayer();
-      _isAuthenticated = _currentPlayer != null;
-      if (!_isAuthenticated) {
+      final refreshedPlayer = await _authService.getCurrentPlayer();
+      _currentPlayer = refreshedPlayer;
+      _isAuthenticated = refreshedPlayer != null;
+      if (_isAuthenticated) {
         _error = null;
       }
       notifyListeners();
+    } on AuthSessionException catch (e) {
+      if (e.unauthorized) {
+        _currentPlayer = null;
+        _isAuthenticated = false;
+        _error = null;
+        notifyListeners();
+        return;
+      }
+
+      _error = e.toString();
+      notifyListeners();
     } catch (e) {
       _error = e.toString();
+      notifyListeners();
     }
   }
 
