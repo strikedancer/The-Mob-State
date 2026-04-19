@@ -1862,7 +1862,7 @@ export const vehicleService = {
     }
 
     // Check if vehicle needs repair
-    const currentCondition = vehicle.condition || 100;
+    const currentCondition = vehicle.condition ?? 100;
     if (currentCondition >= 100) {
       throw new Error('VEHICLE_NOT_BROKEN');
     }

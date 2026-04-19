@@ -51,6 +51,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Garage reparatie-fout opgelost voor voertuigen met 0% conditie: de backend gebruikte een onjuiste fallback (`condition || 100`) waardoor `0` als `100` werd gelezen en reparatie onterecht werd geweigerd met `VEHICLE_NOT_BROKEN`; dit is nu null-safe gemaakt zodat 0%-voertuigen weer correct in reparatie kunnen
+  - Bestanden: `backend/src/services/vehicleService.ts`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist moordzaak-onderzoek is nu asynchroon met variabele wachttijd: na aanvraag komt detective-rapport niet direct; snelle aanvraag geeft kortere ETA, late aanvraag geeft langere ETA binnen het 24-uurs venster
   - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/services/cronService.ts`, `docs/module-protocols/hitlist.md`, `client/lib/data/help_content.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Hitlist killer buit-notificatie: na een succesvolle kill ontvangt de moordenaar direct een inboxbericht + push van Moordlijst Bureau / Hitlist Bureau met bounty, buit-geld (bedrag + %) en aantal buit-items; meertalig NL/EN op basis van `preferredLanguage` aanvaller

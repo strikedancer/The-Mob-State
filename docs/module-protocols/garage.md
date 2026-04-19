@@ -24,6 +24,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Direct vehicle transport does not belong here anymore. Cross-country movement must route through the Smuggling Hub flow.
 - Theft outcome videos are legacy and should not be reintroduced without a deliberate design decision.
 - Repairs must use a timed flow, not instant click-pay-complete behavior.
+- Numeric voertuigstatussen (zoals condition/fuel) moeten 0 als geldige waarde behandelen; gebruik null-safe fallbacks zodat 0 niet stil als 100 of een andere default wordt geïnterpreteerd.
 - Concurrent repair slots are VIP-gated: non-VIP max 1 active repair, VIP max 5 active repairs.
 - Available car and motorcycle catalog entries must expose country availability, value, rarity and world-cap information.
 - World-cap rotation must remain correct: when a vehicle is sold or scrapped, one slot reopens for theft.
