@@ -90,6 +90,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Push lifecycle guardrail toegevoegd: eerder toegestane web/PWA push moet na refresh, herstart of nieuwe build automatisch opnieuw aan het actuele device-token worden gekoppeld zonder handmatige re-enable door de speler
   - Bestanden: `docs/module-protocols/notifications.md`
+- [ ] Web push deploy-regressie gefixt: `firebase-messaging-sw.js` krijgt nu dezelfde no-cache service-worker policy als `flutter_service_worker.js`, web token-sync probeert na service-worker settle opnieuw het actuele FCM token op te halen, en backend tokenregistratie is idempotent/upsert-based zodat refreshes en token-rotatie niet stil op oude records blijven hangen
+  - Bestanden: `client/docker/nginx.conf`, `client/lib/services/notification_service.dart`, `backend/src/routes/notifications.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/frontend-platform.md`, `docs/module-protocols/notifications.md`, `docs/operations/DEPLOY.md`
 - [ ] Harde Help & Uitleg-eis aangescherpt in master protocol: bij aanpassingen of nieuwe modules moet altijd gecontroleerd worden of de player-help nog klopt en moet help-content in dezelfde wijziging mee worden bijgewerkt als gedrag of uitleg verandert
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Harde protocol-koppelingseis aangescherpt in master protocol: bij nieuwe systemen of modules moeten altijd alle relevante bestaande protocollen worden nagelopen op koppelingen, overlap en regressierisico's voordat iets als done geldt

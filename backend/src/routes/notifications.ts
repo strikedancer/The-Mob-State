@@ -15,51 +15,52 @@ router.post('/register-token', authenticate, async (req: Request, res: Response)
   try {
     const playerId = (req as any).player.id;
     const { token, deviceType } = req.body;
+    const normalizedToken = typeof token === 'string' ? token.trim() : '';
+    const normalizedDeviceType = typeof deviceType === 'string' ? deviceType.trim().toLowerCase() : '';
 
-    console.log('[Notifications] PlayerId:', playerId, 'DeviceType:', deviceType);
+    console.log('[Notifications] PlayerId:', playerId, 'DeviceType:', normalizedDeviceType);
 
-    if (!token || !deviceType) {
+    if (!normalizedToken || !normalizedDeviceType) {
       console.log('[Notifications] ❌ Missing token or deviceType');
       return res.status(400).json({ error: 'Token and deviceType are required' });
     }
 
-    if (!['android', 'ios', 'web'].includes(deviceType)) {
-      console.log('[Notifications] ❌ Invalid deviceType:', deviceType);
+    if (!['android', 'ios', 'web'].includes(normalizedDeviceType)) {
+      console.log('[Notifications] ❌ Invalid deviceType:', normalizedDeviceType);
       return res.status(400).json({ error: 'Invalid deviceType. Must be android, ios, or web' });
     }
 
-    console.log('[Notifications] Checking for existing device...');
-    // Check if token already exists
-    const existingDevice = await prisma.playerDevice.findFirst({
-      where: { deviceToken: token }
+    const existingDevice = await prisma.playerDevice.findUnique({
+      where: { deviceToken: normalizedToken }
     });
 
-    if (existingDevice) {
-      console.log('[Notifications] Found existing device:', existingDevice.id);
-      // Update existing device with new playerId if different
-      if (existingDevice.playerId !== playerId) {
-        console.log('[Notifications] Updating device to new playerId');
-        await prisma.playerDevice.update({
-          where: { id: existingDevice.id },
-          data: { playerId }
-        });
-      }
-      return res.json({ success: true, message: 'Device token updated' });
-    }
+    const deviceRecord = await prisma.$transaction(async (tx) => {
+      await tx.playerDevice.deleteMany({
+        where: {
+          playerId,
+          deviceType: normalizedDeviceType as any,
+          NOT: { deviceToken: normalizedToken }
+        }
+      });
 
-    console.log('[Notifications] Creating new device record...');
-    // Create new device record
-    await prisma.playerDevice.create({
-      data: {
-        playerId,
-        deviceToken: token,
-        deviceType
-      }
+      return tx.playerDevice.upsert({
+        where: { deviceToken: normalizedToken },
+        update: {
+          playerId,
+          deviceType: normalizedDeviceType as any
+        },
+        create: {
+          playerId,
+          deviceToken: normalizedToken,
+          deviceType: normalizedDeviceType as any
+        }
+      });
     });
 
-    console.log(`[Notifications] ✅ Registered ${deviceType} device for player ${playerId}`);
+    const message = existingDevice ? 'Device token updated' : 'Device token registered';
+    console.log(`[Notifications] ✅ ${message} for player ${playerId} (${normalizedDeviceType})`);
 
-    res.json({ success: true, message: 'Device token registered' });
+    res.json({ success: true, message, deviceId: deviceRecord.id });
   } catch (error: any) {
     console.error('[Notifications] ❌ Error registering device token:', error);
     console.error('[Notifications] ❌ Error stack:', error.stack);

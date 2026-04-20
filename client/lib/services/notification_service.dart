@@ -156,6 +156,17 @@ class NotificationService {
           vapidKey:
               'BM8aWvMl_7R7fzsuRKBQ4ugAgKMeW1IW8_7emoc0u2cRkHNvIjGWkUHK45xuN0ctdMn-60NpdVyTfSIbLSXcKwU',
         );
+
+        if (_fcmToken == null || _fcmToken!.isEmpty) {
+          print(
+            '[NotificationService] Web push token not available yet, retrying after service worker settle...',
+          );
+          await Future.delayed(const Duration(seconds: 1));
+          _fcmToken = await _messaging.getToken(
+            vapidKey:
+                'BM8aWvMl_7R7fzsuRKBQ4ugAgKMeW1IW8_7emoc0u2cRkHNvIjGWkUHK45xuN0ctdMn-60NpdVyTfSIbLSXcKwU',
+          );
+        }
       } catch (e) {
         print('[NotificationService] ⚠️ Error getting web token: $e');
       }

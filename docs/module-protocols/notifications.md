@@ -26,6 +26,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Expliciete in-app permissie-entrypoint voor web/iOS homescreen push, doorgaans via Settings.
 - Web FCM berichten voor web-tokens blijven data-only om dubbele notificaties te voorkomen.
 - Safari/iOS PWA moet `payload.data.title/body` fallback houden wanneer `payload.notification` ontbreekt.
+- `firebase-messaging-sw.js` moet als update-kritieke service worker altijd met `no-cache, no-store, must-revalidate` worden geserveerd; een nieuwe deploy mag nooit op een oude push-service-worker blijven hangen.
 - Push dispatch failures mogen hoofdflows niet rollbacken.
 
 ## Backend Guardrails
@@ -38,14 +39,16 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Settings moet een expliciete action bevatten die browser/iOS permission requests via user gesture kan starten.
 - Service worker fallbacktekst moet `payload.data` kunnen lezen als `payload.notification` ontbreekt.
 - Bij app-refresh, PWA-herstart of nieuwe client-build moet een eerder toegestane push-permissie automatisch opnieuw aan het actuele FCM token worden gekoppeld; de speler mag push niet handmatig opnieuw hoeven inschakelen na elke deploy of page refresh.
+- Token-registratie moet idempotent zijn: hernieuwde register-calls moeten dezelfde token kunnen verversen en oude tokens voor dezelfde speler/platform mogen niet blijven domineren.
 
 ## QA Checklist
 1. Verifieer permissie-aanvraag vanaf Settings op web/PWA.
 2. Verifieer dat web geen dubbele notificaties toont voor dezelfde FCM payload.
 3. Verifieer dat Safari/iOS PWA niet terugvalt op generieke notification copy.
-4. Verifieer dat cooldown-expiry notificaties voor ondersteunde actions nog steeds aankomen.
-5. Verifieer dat pushfouten hoofdflows niet blokkeren.
-6. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
+4. Verifieer na refresh of nieuwe deploy dat zowel `flutter_service_worker.js` als `firebase-messaging-sw.js` nieuwe headers/scriptinhoud oppakken en dat een eerder geautoriseerde web/PWA sessie zichzelf zonder handmatige re-enable opnieuw registreert.
+5. Verifieer dat cooldown-expiry notificaties voor ondersteunde actions nog steeds aankomen.
+6. Verifieer dat pushfouten hoofdflows niet blokkeren.
+7. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
 
 ## When To Update This File
 Update bij nieuwe notificatiekanalen, FCM/service-worker gedrag, permission flows, cooldown-signalen of inbox/push koppelingen.

@@ -41,8 +41,9 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Bij Docker builds waar `assets/images/` is uitgesloten, moeten gedeclareerde assetdirectories vooraf aangemaakt worden.
 - Images kunnen runtime extern gemount zijn; deploy-flow moet image sync (`rsync` of equivalent) borgen vóór rebuild.
 - Gebruik versie-bestandsnamen of expliciete cache-invalidering bij runtime image updates.
-- Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js` en `main.dart.js` met no-cache/must-revalidate gedrag.
+- Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `firebase-messaging-sw.js` en `main.dart.js` met no-cache/must-revalidate gedrag.
 - Post-deploy cache-eis: hard refresh en indien nodig service worker unregister bij visuele regressies.
+- Custom service workers vallen nooit onder generieke immutable JS caching; geef FCM/service-worker bestanden altijd een expliciete, strengere cache-policy dan normale bundles.
 
 ## Embedded Scroll & Layout Guardrails
 - In embedded dashboard-views moet klik op dezelfde sectie een expliciete remount/refresh triggeren als de UX dat verwacht.
@@ -57,7 +58,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 ## QA Checklist
 1. Controleer web, mobiel en embedded dashboard-weergave.
 2. Controleer asset loading met helper fallback en errorBuilder gedrag.
-3. Verifieer dat service worker/cache een nieuwe release niet maskeert.
+3. Verifieer dat service worker/cache een nieuwe release niet maskeert, inclusief `firebase-messaging-sw.js` naast `flutter_service_worker.js`.
 4. Verifieer scrollgedrag in minimaal één embedded en één standalone screen.
 5. Verifieer dat kritieke achtergrond- en catalogusafbeeldingen blijven laden op web.
 

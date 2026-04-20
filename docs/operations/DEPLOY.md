@@ -6,8 +6,8 @@ This guide covers deploying the Mafia Game to a Linux VPS (Strato) using Docker.
 
 Voor iPhone users die de webapp op het beginscherm installeren, moet de client-nginx cache-policy strikt gescheiden zijn:
 
-- App shell / update-critical bestanden: `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `main.dart.js`, `version.json`, `AssetManifest.json`, `FontManifest.json`
-  - Header: `Cache-Control: no-cache, must-revalidate` (voor `flutter_service_worker.js`: `no-cache, no-store, must-revalidate`).
+- App shell / update-critical bestanden: `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `firebase-messaging-sw.js`, `main.dart.js`, `version.json`, `AssetManifest.json`, `FontManifest.json`
+  - Header: `Cache-Control: no-cache, must-revalidate` (voor `flutter_service_worker.js` en `firebase-messaging-sw.js`: `no-cache, no-store, must-revalidate`).
 - Gehashte/static assets onder `assets/` en image-routes mogen `public, immutable` houden.
 
 Doel:
@@ -19,6 +19,7 @@ Post-deploy verificatie:
 curl -I https://your-domain/index.html
 curl -I https://your-domain/flutter_bootstrap.js
 curl -I https://your-domain/flutter_service_worker.js
+curl -I https://your-domain/firebase-messaging-sw.js
 curl -I https://your-domain/main.dart.js
 ```
 
