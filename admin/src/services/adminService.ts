@@ -196,6 +196,15 @@ export interface PlayerOverview {
   };
 }
 
+export interface AdminTestPushResponse {
+  message: string;
+  player: {
+    id: number;
+    username: string;
+  };
+  deviceCount: number;
+}
+
 export interface ManagePlayerPayload {
   playerId: number;
   reason?: string;
@@ -887,6 +896,26 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to fetch player overview');
+
+    return response.json();
+  },
+
+  async sendPlayerTestPush(playerId: number, payload: {
+    title: string;
+    body: string;
+    dataType?: string;
+  }): Promise<AdminTestPushResponse> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/players/${playerId}/test-push`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to send test push');
 
     return response.json();
   },

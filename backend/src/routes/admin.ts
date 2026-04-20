@@ -24,6 +24,13 @@ import * as crewWarService from '../services/crewWarService';
 
 const router = express.Router();
 
+const adminTestPushSchema = z.object({
+  playerId: z.number().int().positive(),
+  title: z.string().trim().min(1).max(80),
+  body: z.string().trim().min(1).max(180),
+  dataType: z.string().trim().min(1).max(60).optional(),
+});
+
 const HITLIST_LOOT_CASH_PERCENT_KEY = 'HITLIST_LOOT_CASH_PERCENT';
 const HITLIST_LOOT_ITEM_PERCENT_KEY = 'HITLIST_LOOT_ITEM_PERCENT';
 const HITLIST_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
@@ -1409,6 +1416,71 @@ router.get('/players/:playerId/overview', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch player overview' });
   }
 });
+
+/**
+ * POST /api/admin/players/:playerId/test-push
+ * Send a direct test push notification to one player for live verification.
+ */
+router.post(
+  '/players/:playerId/test-push',
+  auditLog({ action: 'SEND_TEST_PUSH', targetType: 'Player' }),
+  async (req: AdminRequest, res) => {
+    try {
+      const playerIdFromPath = Number(req.params.playerId);
+      const parsed = adminTestPushSchema.parse({
+        playerId: playerIdFromPath,
+        title: req.body?.title,
+        body: req.body?.body,
+        dataType: req.body?.dataType,
+      });
+
+      const adminRole = req.admin?.role;
+      if (!adminRole || adminRole === AdminRole.VIEWER) {
+        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot send test pushes' });
+      }
+
+      const player = await prisma.player.findUnique({
+        where: { id: parsed.playerId },
+        select: { id: true, username: true },
+      });
+
+      if (!player) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+
+      const deviceCount = await prisma.playerDevice.count({
+        where: { playerId: parsed.playerId },
+      });
+
+      await notificationService.sendToPlayer(
+        parsed.playerId,
+        parsed.title,
+        parsed.body,
+        {
+          type: parsed.dataType?.trim() || 'admin_test_push',
+          source: 'admin_test_push',
+          playerId: String(parsed.playerId),
+          adminId: String(req.admin?.id ?? ''),
+        },
+      );
+
+      return res.json({
+        message: deviceCount > 0 ? 'Test push queued' : 'No registered devices found for player',
+        player: {
+          id: player.id,
+          username: player.username,
+        },
+        deviceCount,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      }
+      console.error('Admin test push error:', error);
+      return res.status(500).json({ error: 'Failed to send test push' });
+    }
+  },
+);
 
 /**
  * GET /api/admin/players/:playerId/recent-activities

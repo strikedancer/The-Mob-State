@@ -467,6 +467,12 @@ interface PlayerManageForm {
   toolQuantity: string
 }
 
+interface PlayerTestPushForm {
+  title: string
+  body: string
+  dataType: string
+}
+
 interface AuditLog {
   id: number
   action: string
@@ -742,6 +748,12 @@ function App() {
   const [banType, setBanType] = useState<'temporary' | 'permanent'>('temporary')
   const [banDuration, setBanDuration] = useState('24')
   const [playerManageReason, setPlayerManageReason] = useState('')
+  const [isSendingPlayerTestPush, setIsSendingPlayerTestPush] = useState(false)
+  const [playerTestPushForm, setPlayerTestPushForm] = useState<PlayerTestPushForm>({
+    title: 'Test pushmelding',
+    body: 'Dit is een live admin test push. Als je dit ziet, werkt de push route.',
+    dataType: 'admin_test_push',
+  })
   
   // Audit logs state
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([])
@@ -2659,6 +2671,34 @@ function App() {
     }
   }
 
+  const handleSendPlayerTestPush = async () => {
+    if (!selectedPlayerId || !canManagePlayers || isSendingPlayerTestPush) return
+
+    const title = playerTestPushForm.title.trim()
+    const body = playerTestPushForm.body.trim()
+    const dataType = playerTestPushForm.dataType.trim()
+
+    if (!title || !body) {
+      alert(l('Vul eerst een titel en bericht in.', 'Enter a title and message first.'))
+      return
+    }
+
+    try {
+      setIsSendingPlayerTestPush(true)
+      const result = await adminService.sendPlayerTestPush(selectedPlayerId, {
+        title,
+        body,
+        dataType: dataType || 'admin_test_push',
+      })
+      alert(`${result.message}. ${l('Geregistreerde apparaten', 'Registered devices')}: ${result.deviceCount}`)
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      alert(`${l('Test push versturen mislukt', 'Sending test push failed')}: ${(err as Error).message}`)
+    } finally {
+      setIsSendingPlayerTestPush(false)
+    }
+  }
+
   const goBackToPlayers = () => {
     setActiveTab('players')
     setSelectedPlayerId(null)
@@ -4505,6 +4545,56 @@ function App() {
                               : <><i className="ph-warning me-2" />{l('Reset spelerprogress', 'Reset player progress')}</>}
                           </button>
                           <small className="text-muted">{l('Slaat alle velden in dit beheerformulier op.', 'Saves all fields in this management form.')}</small>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-top">
+                          <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                            <h6 className="mb-0"><i className="ph-bell-ringing me-2" />{l('Test pushmelding', 'Test push notification')}</h6>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-primary"
+                              onClick={handleSendPlayerTestPush}
+                              disabled={isSendingPlayerTestPush || !canManagePlayers}
+                            >
+                              {isSendingPlayerTestPush
+                                ? <><span className="spinner-border spinner-border-sm me-2" />{l('Versturen...', 'Sending...')}</>
+                                : <><i className="ph-paper-plane-tilt me-2" />{l('Stuur test push', 'Send test push')}</>}
+                            </button>
+                          </div>
+                          <div className="row g-3">
+                            <div className="col-md-4">
+                              <label className="form-label fw-semibold">{l('Titel', 'Title')}</label>
+                              <input
+                                className="form-control"
+                                maxLength={80}
+                                value={playerTestPushForm.title}
+                                onChange={(e) => setPlayerTestPushForm({ ...playerTestPushForm, title: e.target.value })}
+                              />
+                            </div>
+                            <div className="col-md-4">
+                              <label className="form-label fw-semibold">{l('Datatype', 'Data type')}</label>
+                              <input
+                                className="form-control"
+                                maxLength={60}
+                                value={playerTestPushForm.dataType}
+                                onChange={(e) => setPlayerTestPushForm({ ...playerTestPushForm, dataType: e.target.value })}
+                                placeholder="admin_test_push"
+                              />
+                            </div>
+                            <div className="col-12">
+                              <label className="form-label fw-semibold">{l('Bericht', 'Message')}</label>
+                              <textarea
+                                className="form-control"
+                                rows={3}
+                                maxLength={180}
+                                value={playerTestPushForm.body}
+                                onChange={(e) => setPlayerTestPushForm({ ...playerTestPushForm, body: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                          <small className="text-muted d-block mt-2">
+                            {l('Stuurt direct een live test push naar de geselecteerde speler en toont daarna hoeveel devices er voor deze speler geregistreerd zijn.', 'Sends a live test push directly to the selected player and then shows how many devices are registered for that player.')}
+                          </small>
                         </div>
                       </div>
                     </div>
