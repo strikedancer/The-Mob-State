@@ -1296,7 +1296,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                 if (isAttacker) ...[
                   _smallActionButton(_t('Intel', 'Intel scan'), 'intel_scan', contestId),
                   _smallActionButton(_t('Sabotage', 'Sabotage'), 'sabotage', contestId),
-                  _smallActionButton(_t('Inval', 'Raid'), 'Raid', contestId),
+                  _smallActionButton(_t('Inval', 'Raid'), 'raid', contestId),
                 ],
                 if (isDefender) ...[
                   _smallActionButton(_t('Patrouille', 'Patrol'), 'patrol', contestId),

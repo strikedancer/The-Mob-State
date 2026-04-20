@@ -384,13 +384,7 @@ export async function startContest(playerId: number, crewId: number, regionKey: 
     );
 
     const inserted = await tx.$queryRawUnsafe<Array<{ id: number }>>(
-      `SELECT id FROM territory_contests
-       WHERE regionKey = ? AND attackerCrewId = ? AND startedAt = ?
-       ORDER BY id DESC
-       LIMIT 1`,
-      regionKey,
-      crewId,
-      now,
+      'SELECT LAST_INSERT_ID() AS id',
     );
 
     const insertedContestId = inserted[0]?.id ?? 0;

@@ -39,6 +39,7 @@
   - Territory contest UX-fix: de regio-modal toont nu contest timers (acties starten, acties sluiten, contest eindigt), cooldown per actie en de opbrengstklasse van het gebied; actieve contest-acties zijn bovendien role-based opgesplitst zodat aanvallers geen verdediging meer zien en verdedigers geen aanvalsacties
   - Territory contest state/timer fix: bestaande contests met missende `activeAt`/`lockdownAt`/`resolveAt` worden nu automatisch aangevuld vanuit `startedAt` + runtime-config, zodat regio-modals geen `Onbekend`-timers meer tonen; de open modal volgt bovendien direct verse mapdata na starten/verdedigen zodat spelers niet pas na weg-navigeren de actuele gevechtsstatus zien
   - Territory live-refresh fix: bij contest-start en verdedigen wordt de open regio-modal nu altijd direct ververst; als de eerste call fout terugkomt maar de contest al is aangemaakt, ziet de speler meteen de actuele conteststatus in plaats van pas na weg-navigeren. De modal berekent timerfallbacks bovendien lokaal vanuit `startedAt` + runtime-config als een timestamp in de payload nog ontbreekt
+  - Territory live start-fix: contest-start haalt de nieuw aangemaakte row nu via `LAST_INSERT_ID()` op in plaats van een exacte `startedAt` timestamp-match; hierdoor rollen starts op MariaDB `DATETIME`-kolommen zonder milliseconden niet meer stil terug. De attacker-actie `raid` gebruikt in de UI bovendien weer de correcte lowercase backend-action key
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 
