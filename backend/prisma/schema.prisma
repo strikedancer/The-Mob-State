@@ -993,6 +993,8 @@ model ActionCooldown {
   playerId   Int
   actionType String   @db.VarChar(50)
   lastUsedAt DateTime @default(now())
+  cooldownSeconds Int?
+  lastNotifiedAt DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

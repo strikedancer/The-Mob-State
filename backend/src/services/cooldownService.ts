@@ -18,6 +18,8 @@ interface CooldownConfig {
   ammo: number;
 }
 
+const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>(['crime', 'job', 'vehicle_theft', 'boat_theft']);
+
 // Default cooldown periods (in seconds)
 // Designed for long-term retention (months of gameplay)
 const COOLDOWN_PERIODS: CooldownConfig = {
@@ -78,6 +80,7 @@ export async function checkCooldown(
     },
     select: {
       lastUsedAt: true,
+      cooldownSeconds: true,
     },
   });
 
@@ -86,7 +89,7 @@ export async function checkCooldown(
   }
 
   const now = timeProvider.now();
-  const cooldownPeriod = customCooldown ?? COOLDOWN_PERIODS[actionType];
+  const cooldownPeriod = customCooldown ?? cooldown.cooldownSeconds ?? COOLDOWN_PERIODS[actionType];
   const elapsedSeconds = Math.floor((now.getTime() - cooldown.lastUsedAt.getTime()) / 1000);
   const remainingSeconds = Math.max(0, cooldownPeriod - elapsedSeconds);
 
@@ -128,6 +131,7 @@ export async function setCooldown(
   customCooldown?: number
 ): Promise<{ remainingSeconds: number; actionType: string }> {
   const now = timeProvider.now();
+  const cooldownPeriod = customCooldown ?? COOLDOWN_PERIODS[actionType];
 
   await prisma.actionCooldown.upsert({
     where: {
@@ -138,23 +142,22 @@ export async function setCooldown(
     },
     update: {
       lastUsedAt: now,
+      cooldownSeconds: cooldownPeriod,
+      lastNotifiedAt: null,
       updatedAt: now,
     },
     create: {
       playerId,
       actionType,
       lastUsedAt: now,
+      cooldownSeconds: cooldownPeriod,
+      lastNotifiedAt: null,
     },
   });
-  
-  // Return the cooldown period as remainingSeconds (use custom if provided)
-  const cooldownPeriod = customCooldown ?? COOLDOWN_PERIODS[actionType];
 
-  // Schedule push notification when this cooldown expires
-  const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>(['crime', 'job', 'vehicle_theft', 'boat_theft']);
   if (NOTIFY_ACTIONS.has(actionType)) {
     setTimeout(() => {
-      notificationService.sendCooldownExpiredNotification(playerId, actionType).catch(() => {});
+      processCooldownExpiryNotification(playerId, actionType).catch(() => {});
     }, cooldownPeriod * 1000);
   }
 
@@ -185,6 +188,7 @@ export async function getPlayerCooldowns(playerId: number): Promise<Record<strin
     select: {
       actionType: true,
       lastUsedAt: true,
+      cooldownSeconds: true,
     },
   });
 
@@ -193,7 +197,7 @@ export async function getPlayerCooldowns(playerId: number): Promise<Record<strin
 
   for (const cooldown of cooldowns) {
     const actionType = cooldown.actionType as keyof CooldownConfig;
-    const cooldownPeriod = COOLDOWN_PERIODS[actionType];
+    const cooldownPeriod = cooldown.cooldownSeconds ?? COOLDOWN_PERIODS[actionType];
     
     if (!cooldownPeriod) continue; // Skip unknown action types
 
@@ -206,4 +210,90 @@ export async function getPlayerCooldowns(playerId: number): Promise<Record<strin
   }
 
   return result;
+}
+
+export async function processCooldownExpiryNotification(
+  playerId: number,
+  actionType: keyof CooldownConfig,
+): Promise<boolean> {
+  if (!NOTIFY_ACTIONS.has(actionType)) {
+    return false;
+  }
+
+  const cooldown = await prisma.actionCooldown.findUnique({
+    where: {
+      playerId_actionType: {
+        playerId,
+        actionType,
+      },
+    },
+    select: {
+      lastUsedAt: true,
+      cooldownSeconds: true,
+      lastNotifiedAt: true,
+    },
+  });
+
+  if (!cooldown) {
+    return false;
+  }
+
+  const cooldownSeconds = cooldown.cooldownSeconds ?? COOLDOWN_PERIODS[actionType];
+  const dueAt = new Date(cooldown.lastUsedAt.getTime() + cooldownSeconds * 1000);
+  const now = timeProvider.now();
+
+  if (dueAt.getTime() > now.getTime()) {
+    return false;
+  }
+
+  if (cooldown.lastNotifiedAt && cooldown.lastNotifiedAt.getTime() >= dueAt.getTime()) {
+    return false;
+  }
+
+  const updateResult = await prisma.actionCooldown.updateMany({
+    where: {
+      playerId,
+      actionType,
+      OR: [
+        { lastNotifiedAt: null },
+        { lastNotifiedAt: { lt: dueAt } },
+      ],
+    },
+    data: {
+      lastNotifiedAt: now,
+    },
+  });
+
+  if (updateResult.count === 0) {
+    return false;
+  }
+
+  await notificationService.sendCooldownExpiredNotification(playerId, actionType);
+  return true;
+}
+
+export async function processPendingCooldownExpiryNotifications(): Promise<number> {
+  const cooldowns = await prisma.actionCooldown.findMany({
+    where: {
+      actionType: { in: Array.from(NOTIFY_ACTIONS) },
+    },
+    select: {
+      playerId: true,
+      actionType: true,
+    },
+  });
+
+  let sentCount = 0;
+
+  for (const cooldown of cooldowns) {
+    const sent = await processCooldownExpiryNotification(
+      cooldown.playerId,
+      cooldown.actionType as keyof CooldownConfig,
+    );
+    if (sent) {
+      sentCount += 1;
+    }
+  }
+
+  return sentCount;
 }

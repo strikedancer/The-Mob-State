@@ -31,6 +31,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 
 ## Backend Guardrails
 - Voor cooldown-expiry meldingen: voeg nieuwe cooldown-actions toe in zowel `notificationService.sendCooldownExpiredNotification(...)` als de notifier-registratie in `cooldownService` of een gelijkwaardige scheduler.
+- Cooldown-expiry push voor crimes, jobs en vehicle/boat theft mag nooit alleen op in-memory `setTimeout` vertrouwen; de effectieve cooldownduur en notificatiestatus moeten persistent reconstrueerbaar zijn zodat backend restarts, deploys of container-restarts geen expiry-pushes verliezen.
 - Bankoverschrijvingen sturen altijd een pushmelding naar de ontvanger via de bestaande notification pipeline en blijven fire-and-forget.
 - Web-only notificaties gebruiken een data-only payload; native clients mogen het `notification` veld blijven gebruiken als dat nodig is.
 - Arrestatie-alerts voor vrienden of crewleden moeten via dezelfde fire-and-forget pipeline lopen, ontvangers dedupliceren als iemand zowel vriend als crewlid is, en mogen arrest-/jailflows nooit rollbacken.
@@ -47,8 +48,9 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 3. Verifieer dat Safari/iOS PWA niet terugvalt op generieke notification copy.
 4. Verifieer na refresh of nieuwe deploy dat zowel `flutter_service_worker.js` als `firebase-messaging-sw.js` nieuwe headers/scriptinhoud oppakken en dat een eerder geautoriseerde web/PWA sessie zichzelf zonder handmatige re-enable opnieuw registreert.
 5. Verifieer dat cooldown-expiry notificaties voor ondersteunde actions nog steeds aankomen.
-6. Verifieer dat pushfouten hoofdflows niet blokkeren.
-7. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
+6. Verifieer expliciet dat een cooldown-expiry push nog steeds aankomt na een backend restart terwijl de cooldown al liep.
+7. Verifieer dat pushfouten hoofdflows niet blokkeren.
+8. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
 
 ## When To Update This File
 Update bij nieuwe notificatiekanalen, FCM/service-worker gedrag, permission flows, cooldown-signalen of inbox/push koppelingen.

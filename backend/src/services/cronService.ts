@@ -7,7 +7,9 @@ import {
   processPendingInvestigations,
   processPendingMurderCaseInvestigations,
 } from './hitlistService';
+import { processPendingCooldownExpiryNotifications } from './cooldownService';
 import { processDueVehicleRepairCompletions } from './vehicleService';
+import { processPendingCooldownExpiryNotifications } from './cooldownService';
 
 const prisma = new PrismaClient();
 
@@ -243,6 +245,20 @@ export async function cleanupOldRivalries(): Promise<void> {
   }
 }
 
+export async function processPendingCooldownNotifications(): Promise<void> {
+  const now = new Date();
+
+  try {
+    const sentCount = await processPendingCooldownExpiryNotifications();
+    if (sentCount > 0) {
+      console.log(`[CRON] Sent ${sentCount} pending cooldown expiry notifications`);
+    }
+    lastJobExecutions['cooldownNotifications'] = now;
+  } catch (error) {
+    console.error('[CRON ERROR] processPendingCooldownNotifications:', error);
+  }
+}
+
 /**
  * Helper: Get period start date
  */
@@ -408,6 +424,20 @@ export async function runVehicleRepairCompletionProcessor(): Promise<void> {
   }
 }
 
+export async function processPendingCooldownNotifications(): Promise<void> {
+  const now = new Date();
+
+  try {
+    const sentCount = await processPendingCooldownExpiryNotifications();
+    if (sentCount > 0) {
+      console.log(`[CRON JOB] cooldownNotifications sent=${sentCount}`);
+    }
+    lastJobExecutions['cooldownNotifications'] = now;
+  } catch (error) {
+    console.error('[CRON ERROR] processPendingCooldownNotifications:', error);
+  }
+}
+
 export function getCronStatus() {
   return {
     lastExecutions: lastJobExecutions,
@@ -416,6 +446,7 @@ export function getCronStatus() {
       updateLeaderboards: 'Daily at 00:00',
       resetWeeklyLeaderboard: 'Monday at 00:00',
       cleanupRivalries: 'Sunday at 03:00',
+      cooldownNotifications: 'Every minute',
       drugProductionAutomation: 'Every minute',
       hitlistInvestigationProcessor: 'Every minute',
       vehicleRepairCompletionProcessor: 'Every minute',
@@ -453,6 +484,10 @@ export function initializeCronJobs(): void {
   });
 
   cron.schedule('* * * * *', async () => {
+    await processPendingCooldownNotifications();
+  });
+
+  cron.schedule('* * * * *', async () => {
     await runHitlistInvestigationProcessor();
   });
 
@@ -485,6 +520,7 @@ export function initializeCronJobs(): void {
   console.log('  - Update Leaderboards: Daily at 00:00');
   console.log('  - Reset Weekly Leaderboard: Monday at 00:00');
   console.log('  - Cleanup Old Rivalries: Sunday at 03:00');
+  console.log('  - Cooldown Notifications: Every minute');
   console.log('  - Drug Production Automation: Every minute');
   console.log('  - Hitlist Investigation Processor: Every minute');
   console.log('  - Vehicle Repair Completion Processor: Every minute');
