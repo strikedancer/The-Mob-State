@@ -20,6 +20,7 @@ import { notificationService } from '../services/notificationService';
 import { existsCached, isRedisConnected } from '../services/redisClient';
 import { queueService } from '../queues/queueService';
 import { supportTicketService } from '../services/supportTicketService';
+import { systemLogService } from '../services/systemLogService';
 import * as crewWarService from '../services/crewWarService';
 
 const router = express.Router();
@@ -1452,6 +1453,15 @@ router.post(
         where: { playerId: parsed.playerId },
       });
 
+      if (deviceCount === 0) {
+        await systemLogService.logError('AdminTestPush', 'Admin test push requested for player without registered devices', {
+          adminId: req.admin?.id ?? null,
+          playerId: parsed.playerId,
+          title: parsed.title,
+          dataType: parsed.dataType?.trim() || 'admin_test_push',
+        });
+      }
+
       await notificationService.sendToPlayer(
         parsed.playerId,
         parsed.title,
@@ -1476,6 +1486,11 @@ router.post(
       if (error instanceof z.ZodError) {
         return res.status(400).json({ error: 'Invalid input', details: error.errors });
       }
+      await systemLogService.logError('AdminTestPush', 'Admin test push route failed', {
+        adminId: req.admin?.id ?? null,
+        playerId: Number(req.params.playerId),
+        error,
+      });
       console.error('Admin test push error:', error);
       return res.status(500).json({ error: 'Failed to send test push' });
     }

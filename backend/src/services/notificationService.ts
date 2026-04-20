@@ -2,6 +2,7 @@ import admin from 'firebase-admin';
 import prisma from '../lib/prisma';
 import { translationService, type Language } from './translationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
+import { systemLogService } from './systemLogService';
 /**
  * NotificationService
  * Handles sending push notifications via Firebase Cloud Messaging
@@ -92,6 +93,11 @@ export class NotificationService {
   ): Promise<void> {
     if (!this.initialized) {
       console.warn('[NotificationService] Cannot send notification - Firebase not initialized');
+      await systemLogService.logError('NotificationService.sendToPlayer', 'Firebase Admin not initialized for push send', {
+        playerId,
+        title,
+        data,
+      });
       return;
     }
 
@@ -103,6 +109,11 @@ export class NotificationService {
 
       if (devices.length === 0) {
         console.log(`[NotificationService] No devices registered for player ${playerId}`);
+        await systemLogService.logError('NotificationService.sendToPlayer', 'No registered devices found for push target', {
+          playerId,
+          title,
+          data,
+        });
         return;
       }
 
@@ -137,6 +148,24 @@ export class NotificationService {
 
       let totalSuccess = 0;
       let totalFailure = 0;
+      const failedResponses: Array<{ token: string; platform: 'web' | 'native'; errorCode: string; errorMessage: string }> = [];
+
+      const collectFailedResponses = (
+        tokens: string[],
+        platform: 'web' | 'native',
+        responses: admin.messaging.SendResponse[]
+      ) => {
+        responses.forEach((resp, idx) => {
+          if (!resp.success && resp.error) {
+            failedResponses.push({
+              token: tokens[idx],
+              platform,
+              errorCode: resp.error.code,
+              errorMessage: resp.error.message,
+            });
+          }
+        });
+      };
 
       // Web: data-only so the service worker shows exactly one notification
       if (webTokens.length > 0) {
@@ -148,6 +177,7 @@ export class NotificationService {
         totalSuccess += webResponse.successCount;
         totalFailure += webResponse.failureCount;
         collectInvalidTokens(webTokens, webResponse.responses);
+        collectFailedResponses(webTokens, 'web', webResponse.responses);
       }
 
       // Native (Android / iOS): include notification key for platform handling
@@ -161,9 +191,27 @@ export class NotificationService {
         totalSuccess += nativeResponse.successCount;
         totalFailure += nativeResponse.failureCount;
         collectInvalidTokens(nativeTokens, nativeResponse.responses);
+        collectFailedResponses(nativeTokens, 'native', nativeResponse.responses);
       }
 
       console.log(`[NotificationService] Sent notification to player ${playerId}: ${totalSuccess} succeeded, ${totalFailure} failed`);
+
+      if (totalFailure > 0) {
+        await systemLogService.logError('NotificationService.sendToPlayer', 'Push delivery had failed recipients', {
+          playerId,
+          title,
+          data,
+          deviceCount: devices.length,
+          webDeviceCount: webTokens.length,
+          nativeDeviceCount: nativeTokens.length,
+          totalSuccess,
+          totalFailure,
+          failures: failedResponses.map((failure) => ({
+            ...failure,
+            tokenPreview: failure.token.slice(0, 16),
+          })),
+        });
+      }
 
       // Remove invalid tokens
       if (invalidTokens.length > 0) {
@@ -175,6 +223,12 @@ export class NotificationService {
         console.log(`[NotificationService] Removed ${invalidTokens.length} invalid device tokens`);
       }
     } catch (error) {
+      await systemLogService.logError('NotificationService.sendToPlayer', 'Push send threw an exception', {
+        playerId,
+        title,
+        data,
+        error,
+      });
       console.error('[NotificationService] Error sending notification:', error);
       // Don't throw - notification failures should not block main operations
     }

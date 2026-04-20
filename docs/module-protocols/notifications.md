@@ -33,6 +33,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Voor cooldown-expiry meldingen: voeg nieuwe cooldown-actions toe in zowel `notificationService.sendCooldownExpiredNotification(...)` als de notifier-registratie in `cooldownService` of een gelijkwaardige scheduler.
 - Cooldown-expiry push voor crimes, jobs en vehicle/boat theft mag nooit alleen op in-memory `setTimeout` vertrouwen; de effectieve cooldownduur en notificatiestatus moeten persistent reconstrueerbaar zijn zodat backend restarts, deploys of container-restarts geen expiry-pushes verliezen.
 - Admin moet een handmatige, auditeerbare test-push naar een specifieke speler kunnen sturen voor live QA; zo'n testactie moet device-count terugkoppelen zodat deliveryproblemen onderscheidbaar blijven van ontbrekende tokenregistratie.
+- Push-delivery fouten, ontbrekende device-registraties en admin test-push diagnosepaden moeten ook in het bestaande Admin > System Logs scherm landen met voldoende context (`source`, playerId, device-count, FCM error codes); console-only logging is onvoldoende voor live QA.
 - Bankoverschrijvingen sturen altijd een pushmelding naar de ontvanger via de bestaande notification pipeline en blijven fire-and-forget.
 - Web-only notificaties gebruiken een data-only payload; native clients mogen het `notification` veld blijven gebruiken als dat nodig is.
 - Arrestatie-alerts voor vrienden of crewleden moeten via dezelfde fire-and-forget pipeline lopen, ontvangers dedupliceren als iemand zowel vriend als crewlid is, en mogen arrest-/jailflows nooit rollbacken.
@@ -53,8 +54,9 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 6. Verifieer expliciet dat een cooldown-expiry push nog steeds aankomt na een backend restart terwijl de cooldown al liep.
 7. Verifieer dat een admin test-push naar een gekozen speler succesvol queued en dat de UI het aantal geregistreerde devices teruggeeft.
 8. Verifieer op web zowel een background/service-worker push als een foreground/in-focus push; beide moeten zichtbaar zijn met de verwachte titel/body.
-9. Verifieer dat pushfouten hoofdflows niet blokkeren.
-10. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
+9. Verifieer bij mislukte test-pushes of ontbrekende devices dat Admin > System Logs een bruikbare foutregel met pushcontext toont.
+10. Verifieer dat pushfouten hoofdflows niet blokkeren.
+11. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
 
 ## When To Update This File
 Update bij nieuwe notificatiekanalen, FCM/service-worker gedrag, permission flows, cooldown-signalen of inbox/push koppelingen.
