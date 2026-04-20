@@ -36,6 +36,7 @@
   - Territory desktop layout fix: in brede layouts staat de uitleg/legend links en de SVG-kaart rechts; mobiel en tablet blijven onder elkaar renderen
   - Crew War koppeling: Territory War en Total War gebruiken nu echte Territory-regio\'s als claim-doelen in de War Room metadata, zodat crew wars geen losstaande placeholder-gebieden meer tonen
   - Territory desktop icon compat-fix: Territory gebruikt op desktop/web nu `Icons.language` voor de sidebar-entry en landselector, omdat die in deze Flutter-web shell aantoonbaar wel rendert waar `public/public_rounded` leeg wegviel
+  - Territory contest UX-fix: de regio-modal toont nu contest timers (acties starten, acties sluiten, contest eindigt), cooldown per actie en de opbrengstklasse van het gebied; actieve contest-acties zijn bovendien role-based opgesplitst zodat aanvallers geen verdediging meer zien en verdedigers geen aanvalsacties
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 

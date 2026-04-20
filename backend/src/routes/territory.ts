@@ -61,6 +61,7 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     CONTEST_NOT_ACTIVE:             [409, 'territory.contest_not_active'],
     CONTEST_NOT_JOINABLE:           [409, 'territory.contest_not_joinable'],
     NOT_IN_CONTEST:                 [403, 'territory.not_in_contest'],
+    ACTION_ROLE_MISMATCH:           [403, 'territory.action_role_mismatch'],
     ACTION_COOLDOWN:                [429, 'territory.action_cooldown'],
     DAILY_CAP_REACHED:              [429, 'territory.daily_cap_reached'],
     INVALID_ACTION_TYPE:            [400, 'territory.invalid_action_type'],
@@ -113,7 +114,12 @@ router.get('/countries', authenticate, async (_req: AuthRequest, res: Response, 
 router.get('/map/:countryCode', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const countryCode = req.params.countryCode.toLowerCase();
-    const data = await territoryService.getMapData(countryCode);
+    const viewerPlayerId = req.player?.id ?? null;
+    const viewerCrew = viewerPlayerId ? await crewService.getPlayerCrew(viewerPlayerId) : null;
+    const data = await territoryService.getMapData(countryCode, {
+      viewerPlayerId,
+      viewerCrewId: viewerCrew?.id ?? null,
+    });
     return res.json({ event: 'territory.map', params: data });
   } catch (error) {
     return mapTerritoryError(error, res, next);

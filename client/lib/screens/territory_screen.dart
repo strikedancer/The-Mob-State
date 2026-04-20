@@ -79,6 +79,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   bool get _hasCrew => _myCrewId != null;
   String _t(String nl, String en) => _isNl ? nl : en;
+  int get _actionCooldownSeconds => (_overview['config']?['actionCooldownSeconds'] as num?)?.toInt() ?? 0;
 
   String _countryDisplayName(Map<String, dynamic> country) {
     return _isNl
@@ -212,6 +213,74 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     }
   }
 
+  DateTime? _parseApiDate(dynamic rawValue) {
+    if (rawValue == null) return null;
+    return DateTime.tryParse(rawValue.toString())?.toLocal();
+  }
+
+  String _formatDuration(Duration duration) {
+    final safeDuration = duration.isNegative ? Duration.zero : duration;
+    final totalHours = safeDuration.inHours;
+    final minutes = safeDuration.inMinutes.remainder(60);
+    final seconds = safeDuration.inSeconds.remainder(60);
+
+    if (totalHours > 0) {
+      return '${totalHours}u ${minutes}m';
+    }
+    if (safeDuration.inMinutes > 0) {
+      return '${safeDuration.inMinutes}m';
+    }
+    return '${seconds}s';
+  }
+
+  String _countdownLabel(DateTime? targetAt) {
+    if (targetAt == null) {
+      return _t('Onbekend', 'Unknown');
+    }
+    final remaining = targetAt.difference(DateTime.now());
+    if (remaining.isNegative || remaining.inSeconds <= 0) {
+      return _t('Nu', 'Now');
+    }
+    return _formatDuration(remaining);
+  }
+
+  String _displayContestRole(String role) {
+    switch (role.toLowerCase()) {
+      case 'attacker':
+        return _t('Aanvaller', 'Attacker');
+      case 'defender':
+        return _t('Verdediger', 'Defender');
+      default:
+        return role;
+    }
+  }
+
+  String _valueTierLabel(int tier) {
+    switch (tier) {
+      case 1:
+        return _t('Laag', 'Low');
+      case 2:
+        return _t('Gemiddeld', 'Average');
+      case 3:
+        return _t('Hoog', 'High');
+      default:
+        return _t('Top', 'Top');
+    }
+  }
+
+  String _valueTierYieldSummary(int tier) {
+    switch (tier) {
+      case 1:
+        return _t('Laag passief inkomen en kleine seizoenswaarde', 'Low passive income and modest seasonal value');
+      case 2:
+        return _t('Gemiddeld passief inkomen en seizoenswaarde', 'Average passive income and seasonal value');
+      case 3:
+        return _t('Hoog passief inkomen en sterke seizoenswaarde', 'High passive income and strong seasonal value');
+      default:
+        return _t('Top passief inkomen en maximale seizoenswaarde', 'Top passive income and maximum seasonal value');
+    }
+  }
+
   String _territoryErrorMessage(Object? rawEvent) {
     final event = rawEvent?.toString() ?? '';
     switch (event) {
@@ -227,6 +296,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         return _t('Deze contest is nog niet actief. Wacht tot de voorbereidingsfase voorbij is.', 'This contest is not active yet. Wait for the preparation phase to finish.');
       case 'territory.action_cooldown':
         return _t('Je moet even wachten voor je opnieuw een territory-actie kunt doen.', 'You need to wait before performing another territory action.');
+      case 'territory.action_role_mismatch':
+        return _t('Deze actie hoort bij de andere kant van de contest.', 'This action belongs to the other side of the contest.');
       case 'territory.daily_cap_reached':
         return _t('Je hebt je dagelijkse limiet voor territory-acties bereikt.', 'You have reached your daily limit for territory actions.');
       default:
@@ -1018,11 +1089,24 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final regionName = _isNl ? (region['nameNl'] as String? ?? '') : (region['nameEn'] as String? ?? '');
     final ownerName = region['ownerCrewName'] as String?;
     final stability = (region['stability'] as num?)?.toInt() ?? 100;
+    final controlPercent = (region['controlPercent'] as num?)?.toDouble() ?? 0;
     final contestId = region['contestId'] as int?;
     final contestStatus = region['contestStatus'] as String?;
+    final contestRole = region['viewerContestRole'] as String?;
+    final attackerCrewName = region['attackerCrewName'] as String?;
+    final defenderCrewName = region['defenderCrewName'] as String?;
+    final contestActiveAt = _parseApiDate(region['contestActiveAt']);
+    final contestLockdownAt = _parseApiDate(region['contestLockdownAt']);
+    final contestResolveAt = _parseApiDate(region['contestResolveAt']);
+    final viewerCooldownSecondsRemaining = (region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
     final tier = (region['valueTier'] as num?)?.toInt() ?? 1;
     final isMyCrewRegion = _isMyCrewRegion(region);
     final contestHint = _contestHint(contestStatus);
+    final isAttacker = contestRole == 'attacker';
+    final isDefender = contestRole == 'defender';
+    final hasContest = contestId != null && contestStatus != null;
+    final incomeTierLabel = _valueTierLabel(tier);
+    final incomeSummary = _valueTierYieldSummary(tier);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -1045,9 +1129,24 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           const SizedBox(height: 8),
           _detailRow(_t('Eigenaar', 'Owner'), ownerName ?? _t('Neutraal', 'Neutral')),
           _detailRow(_t('Stabiliteit', 'Stability'), '$stability%'),
+          _detailRow(_t('Controle', 'Control'), '${controlPercent.toStringAsFixed(controlPercent.truncateToDouble() == controlPercent ? 0 : 1)}%'),
           _detailRow(_t('Waarde', 'Value tier'), '⭐' * tier),
+          _detailRow(_t('Opbrengst', 'Yield'), incomeTierLabel),
+          _detailRow(_t('Levert op', 'Yields'), incomeSummary),
           if (_myCrewName != null) _detailRow(_t('Jouw crew', 'Your crew'), _myCrewName!),
           if (contestStatus != null) _detailRow(_t('Contest status', 'Contest status'), _displayContestStatus(contestStatus)),
+          if (attackerCrewName != null) _detailRow(_t('Aanvaller', 'Attacker'), attackerCrewName),
+          if (defenderCrewName != null) _detailRow(_t('Verdediger', 'Defender'), defenderCrewName),
+          if (contestRole != null) _detailRow(_t('Jouw rol', 'Your role'), _displayContestRole(contestRole)),
+          if (contestStatus == 'preparing') _detailRow(_t('Acties starten over', 'Actions unlock in'), _countdownLabel(contestActiveAt)),
+          if (contestStatus == 'active') _detailRow(_t('Acties sluiten over', 'Actions close in'), _countdownLabel(contestLockdownAt)),
+          if (hasContest) _detailRow(_t('Contest eindigt over', 'Contest ends in'), _countdownLabel(contestResolveAt)),
+          if (_actionCooldownSeconds > 0) _detailRow(_t('Cooldown per actie', 'Cooldown per action'), _formatDuration(Duration(seconds: _actionCooldownSeconds))),
+          if (viewerCooldownSecondsRemaining > 0)
+            _detailRow(
+              _t('Jouw cooldown', 'Your cooldown'),
+              _formatDuration(Duration(seconds: viewerCooldownSecondsRemaining)),
+            ),
           const SizedBox(height: 16),
           if (!_hasCrew)
             _buildInfoNotice(
@@ -1075,6 +1174,24 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
               backgroundColor: Colors.green.withValues(alpha: 0.1),
               icon: Icons.verified,
             ),
+          if (contestStatus == 'preparing' && isDefender) ...[
+            _buildInfoNotice(
+              _t(
+                'Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.',
+                'Your crew is defending this region. Once the active phase starts, you will only see defensive actions.',
+              ),
+              borderColor: Colors.blue.shade700,
+              backgroundColor: Colors.blue.withValues(alpha: 0.1),
+              icon: Icons.shield,
+            ),
+            const SizedBox(height: 12),
+            _buildActionButton(
+              label: _t('Verdediging bevestigen', 'Confirm defense'),
+              icon: Icons.shield,
+              color: Colors.blue[700]!,
+              onTap: () => _joinDefense(contestId),
+            ),
+          ],
           // Actions
           if (contestStatus == null && _hasCrew && !isMyCrewRegion)
             _buildActionButton(
@@ -1085,17 +1202,43 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
             ),
           if (contestId != null && contestStatus == 'active') ...[
             const SizedBox(height: 8),
+            Text(
+              isAttacker
+                  ? _t('Aanvalsacties', 'Attacker actions')
+                  : (isDefender ? _t('Verdedigingsacties', 'Defender actions') : _t('Contestacties', 'Contest actions')),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                _smallActionButton(_t('Patrouille', 'Patrol'), 'patrol', contestId),
-                _smallActionButton(_t('Sabotage', 'Sabotage'), 'sabotage', contestId),
-                _smallActionButton(_t('Inval', 'Raid'), 'raid', contestId),
-                _smallActionButton(_t('Verdedigen', 'Defense'), 'defense', contestId),
+                if (isAttacker) ...[
+                  _smallActionButton(_t('Intel', 'Intel scan'), 'intel_scan', contestId),
+                  _smallActionButton(_t('Sabotage', 'Sabotage'), 'sabotage', contestId),
+                  _smallActionButton(_t('Inval', 'Raid'), 'Raid', contestId),
+                ],
+                if (isDefender) ...[
+                  _smallActionButton(_t('Patrouille', 'Patrol'), 'patrol', contestId),
+                  _smallActionButton(_t('Bevoorrading', 'Supply run'), 'supply_run', contestId),
+                  _smallActionButton(_t('Verdedigen', 'Defense'), 'defense', contestId),
+                ],
               ],
             ),
           ],
+          if (contestId != null && contestStatus == 'active' && !isAttacker && !isDefender)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: _buildInfoNotice(
+                _t(
+                  'Je zit niet aan deze contest gekoppeld, dus je kunt hier geen acties uitvoeren.',
+                  'You are not part of this contest, so you cannot perform actions here.',
+                ),
+                borderColor: Colors.blueGrey.shade600,
+                backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
+                icon: Icons.lock_outline,
+              ),
+            ),
         ],
       ),
     );
@@ -1270,6 +1413,41 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           content: Text(_t('+$pts punten!', '+$pts points!')),
           backgroundColor: Colors.blue,
           duration: const Duration(seconds: 3),
+        ),
+      );
+      await _loadData();
+    } else {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
+  }
+
+  Future<void> _joinDefense(int? contestId) async {
+    if (contestId == null) return;
+
+    setState(() => _isActing = true);
+    final result = await _service.defendContest(contestId);
+    if (!mounted) return;
+    setState(() => _isActing = false);
+
+    if (result['success'] == true) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _t(
+              'Verdediging bevestigd. Zodra de actieve fase start, kun je verdedigingsacties uitvoeren.',
+              'Defense confirmed. Once the active phase starts, you can perform defensive actions.',
+            ),
+          ),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 4),
         ),
       );
       await _loadData();

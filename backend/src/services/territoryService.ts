@@ -70,6 +70,7 @@ type RegionRow = { id: number; countryCode: string; regionKey: string; nameNl: s
 type ControlRow = { id: number; regionKey: string; ownerCrewId: number | null; controlJson: string | null; stability: number; lastDecayAt: Date | null; updatedAt: Date };
 type ContestRow = { id: number; regionKey: string; status: string; attackerCrewId: number; defenderCrewId: number | null; startedAt: Date; activeAt: Date | null; lockdownAt: Date | null; resolveAt: Date | null; resolvedAt: Date | null; winnerCrewId: number | null; metadataJson: string | null };
 type SeasonRow = { id: number; seasonKey: string; status: string; startsAt: Date; endsAt: Date; rewardConfigJson: string | null };
+type MapContestRow = ContestRow & { attackerCrewName: string | null; defenderCrewName: string | null };
 
 function parseJson(v: string | null | undefined): Record<string, unknown> {
   if (!v) return {};
@@ -117,11 +118,35 @@ export async function getCountries(): Promise<TerritoryRow[]> {
   );
 }
 
-export async function getMapData(countryCode: string): Promise<{
+export async function getMapData(
+  countryCode: string,
+  viewer?: { viewerPlayerId?: number | null; viewerCrewId?: number | null },
+): Promise<{
   country: TerritoryRow;
-  regions: Array<RegionRow & { ownerCrewId: number | null; ownerCrewName: string | null; controlPercent: number; stability: number; contestId: number | null; contestStatus: string | null }>;
+  regions: Array<RegionRow & {
+    ownerCrewId: number | null;
+    ownerCrewName: string | null;
+    controlPercent: number;
+    stability: number;
+    contestId: number | null;
+    contestStatus: string | null;
+    contestStartedAt: Date | null;
+    contestActiveAt: Date | null;
+    contestLockdownAt: Date | null;
+    contestResolveAt: Date | null;
+    attackerCrewId: number | null;
+    attackerCrewName: string | null;
+    defenderCrewId: number | null;
+    defenderCrewName: string | null;
+    viewerContestRole: 'attacker' | 'defender' | null;
+    viewerNextActionAt: Date | null;
+    viewerCooldownSecondsRemaining: number;
+  }>;
 }> {
   await syncContestLifecycle();
+
+  const cfg = await getTerritoryConfig();
+  const now = new Date();
 
   const [countries, regions, controls, contests] = await Promise.all([
     prisma.$queryRawUnsafe<TerritoryRow[]>(
@@ -138,8 +163,10 @@ export async function getMapData(countryCode: string): Promise<{
        WHERE tr.countryCode = ?`,
       countryCode,
     ),
-    prisma.$queryRawUnsafe<Array<{ regionKey: string; id: number; status: string }>>(
-      `SELECT tc.regionKey, tc.id, tc.status FROM territory_contests tc
+    prisma.$queryRawUnsafe<MapContestRow[]>(
+      `SELECT tc.*, ac.name AS attackerCrewName, dc.name AS defenderCrewName FROM territory_contests tc
+       LEFT JOIN crews ac ON ac.id = tc.attackerCrewId
+       LEFT JOIN crews dc ON dc.id = tc.defenderCrewId
        JOIN territory_regions tr ON tr.regionKey = tc.regionKey
        WHERE tr.countryCode = ? AND tc.status NOT IN ('resolved', 'cancelled')`,
       countryCode,
@@ -161,11 +188,44 @@ export async function getMapData(countryCode: string): Promise<{
   }
   const crewNameMap = crewNames.reduce<Record<number, string>>((a, c) => { a[c.id] = c.name; return a; }, {});
   const controlMap = controls.reduce<Record<string, ControlRow>>((a, c) => { a[c.regionKey] = c; return a; }, {});
-  const contestMap = contests.reduce<Record<string, { id: number; status: string }>>((a, c) => { a[c.regionKey] = { id: c.id, status: c.status }; return a; }, {});
+  const contestMap = contests.reduce<Record<string, MapContestRow>>((acc, contest) => {
+    acc[contest.regionKey] = contest;
+    return acc;
+  }, {});
+
+  let viewerCooldownByContestId: Record<number, { nextActionAt: Date; secondsRemaining: number }> = {};
+  if (viewer?.viewerPlayerId && contests.length > 0) {
+    const contestIds = contests.map((contest) => contest.id);
+    const placeholders = contestIds.map(() => '?').join(', ');
+    const latestViewerActions = await prisma.$queryRawUnsafe<Array<{ contestId: number; lastActionAt: Date }>>(
+      `SELECT contestId, MAX(createdAt) AS lastActionAt
+       FROM territory_actions
+       WHERE actorId = ? AND contestId IN (${placeholders})
+       GROUP BY contestId`,
+      viewer.viewerPlayerId,
+      ...contestIds,
+    );
+
+    viewerCooldownByContestId = latestViewerActions.reduce<Record<number, { nextActionAt: Date; secondsRemaining: number }>>(
+      (acc, action) => {
+        const nextActionAt = new Date(action.lastActionAt.getTime() + (cfg.actionCooldownSeconds * 1000));
+        const secondsRemaining = Math.max(0, Math.ceil((nextActionAt.getTime() - now.getTime()) / 1000));
+        if (secondsRemaining > 0) {
+          acc[action.contestId] = { nextActionAt, secondsRemaining };
+        }
+        return acc;
+      },
+      {},
+    );
+  }
 
   const enrichedRegions = regions.map(r => {
     const ctrl = controlMap[r.regionKey];
     const contest = contestMap[r.regionKey];
+    const viewerContestRole = viewer?.viewerCrewId == null || !contest
+      ? null
+      : (contest.attackerCrewId === viewer.viewerCrewId ? 'attacker' : (contest.defenderCrewId === viewer.viewerCrewId ? 'defender' : null));
+    const viewerCooldown = contest ? viewerCooldownByContestId[contest.id] : undefined;
     const controlPercent = ctrl ? (() => {
       const cpJson = parseJson(ctrl.controlJson ?? null);
       if (!ctrl.ownerCrewId) return 0;
@@ -179,6 +239,17 @@ export async function getMapData(countryCode: string): Promise<{
       stability: ctrl?.stability ?? 100,
       contestId: contest?.id ?? null,
       contestStatus: contest?.status ?? null,
+      contestStartedAt: contest?.startedAt ?? null,
+      contestActiveAt: contest?.activeAt ?? null,
+      contestLockdownAt: contest?.lockdownAt ?? null,
+      contestResolveAt: contest?.resolveAt ?? null,
+      attackerCrewId: contest?.attackerCrewId ?? null,
+      attackerCrewName: contest?.attackerCrewName ?? null,
+      defenderCrewId: contest?.defenderCrewId ?? null,
+      defenderCrewName: contest?.defenderCrewName ?? null,
+      viewerContestRole,
+      viewerNextActionAt: viewerCooldown?.nextActionAt ?? null,
+      viewerCooldownSecondsRemaining: viewerCooldown?.secondsRemaining ?? 0,
     };
   });
 
@@ -316,6 +387,15 @@ export async function doAction(
   if (contest.status !== 'active') throw new Error('CONTEST_NOT_ACTIVE');
   if (contest.attackerCrewId !== crewId && contest.defenderCrewId !== crewId) {
     throw new Error('NOT_IN_CONTEST');
+  }
+
+  const attackerActions = new Set(['intel_scan', 'sabotage', 'raid']);
+  const defenderActions = new Set(['patrol', 'supply_run', 'defense']);
+  if (attackerActions.has(actionType) && contest.attackerCrewId !== crewId) {
+    throw new Error('ACTION_ROLE_MISMATCH');
+  }
+  if (defenderActions.has(actionType) && contest.defenderCrewId !== crewId) {
+    throw new Error('ACTION_ROLE_MISMATCH');
   }
 
   // Cooldown check
