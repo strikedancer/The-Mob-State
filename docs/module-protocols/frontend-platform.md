@@ -44,6 +44,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `firebase-messaging-sw.js` en `main.dart.js` met no-cache/must-revalidate gedrag.
 - Post-deploy cache-eis: hard refresh en indien nodig service worker unregister bij visuele regressies.
 - Custom service workers vallen nooit onder generieke immutable JS caching; geef FCM/service-worker bestanden altijd een expliciete, strengere cache-policy dan normale bundles.
+- De web app-shell mag een nieuwe build actief detecteren via een stabiele build-fingerprint en daarna precies één gecontroleerde runtime reset doen: service workers unregisteren, `CacheStorage` legen en hard reloaden. Doe dit alleen bij echte buildwissels, nooit blind op elke load.
 
 ## Embedded Scroll & Layout Guardrails
 - In embedded dashboard-views moet klik op dezelfde sectie een expliciete remount/refresh triggeren als de UX dat verwacht.
@@ -59,8 +60,9 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 1. Controleer web, mobiel en embedded dashboard-weergave.
 2. Controleer asset loading met helper fallback en errorBuilder gedrag.
 3. Verifieer dat service worker/cache een nieuwe release niet maskeert, inclusief `firebase-messaging-sw.js` naast `flutter_service_worker.js`.
-4. Verifieer scrollgedrag in minimaal één embedded en één standalone screen.
-5. Verifieer dat kritieke achtergrond- en catalogusafbeeldingen blijven laden op web.
+4. Verifieer dat een open mobiele/PWA sessie een nieuwe build detecteert, caches precies één keer reset en daarna op de nieuwe shell uitkomt zonder reload-loop.
+5. Verifieer scrollgedrag in minimaal één embedded en één standalone screen.
+6. Verifieer dat kritieke achtergrond- en catalogusafbeeldingen blijven laden op web.
 
 ## When To Update This File
 Update bij nieuwe gedeelde web/mobile/PWA regels, asset loading changes, embedded shellpatronen of cache/service worker risico's.

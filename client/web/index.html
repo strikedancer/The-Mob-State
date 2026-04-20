@@ -38,6 +38,163 @@
   <title>The Mob State</title>
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    (function () {
+      const BUILD_FINGERPRINT_KEY = 'mobstate.buildFingerprint';
+      const BUILD_RELOAD_TARGET_KEY = 'mobstate.buildReloadTarget';
+      const BUILD_CHECK_INTERVAL_MS = 60000;
+      const SIGNATURE_PATHS = [
+        'version.json',
+        'flutter_bootstrap.js',
+        'main.dart.js',
+        'flutter_service_worker.js',
+        'firebase-messaging-sw.js',
+      ];
+
+      function buildUrl(path) {
+        return new URL(path, document.baseURI).toString();
+      }
+
+      function hashString(input) {
+        let hash = 2166136261;
+        for (let index = 0; index < input.length; index += 1) {
+          hash ^= input.charCodeAt(index);
+          hash = Math.imul(hash, 16777619);
+        }
+        return (hash >>> 0).toString(16);
+      }
+
+      async function fetchSignature(path) {
+        const url = buildUrl(path);
+        const requestOptions = {
+          cache: 'no-store',
+          credentials: 'same-origin',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        };
+
+        try {
+          const headResponse = await fetch(url, {
+            ...requestOptions,
+            method: 'HEAD',
+          });
+          if (headResponse.ok) {
+            const etag = headResponse.headers.get('etag') || '';
+            const lastModified = headResponse.headers.get('last-modified') || '';
+            const contentLength = headResponse.headers.get('content-length') || '';
+            return [path, etag, lastModified, contentLength].join('|');
+          }
+        } catch (_) {
+          // Fall back to GET below.
+        }
+
+        const getResponse = await fetch(url, requestOptions);
+        if (!getResponse.ok) {
+          throw new Error('Failed to fetch build signature for ' + path);
+        }
+        const body = await getResponse.text();
+        return [path, hashString(body)].join('|');
+      }
+
+      async function computeBuildFingerprint() {
+        const signatures = await Promise.all(SIGNATURE_PATHS.map(fetchSignature));
+        return hashString(signatures.join('::'));
+      }
+
+      async function clearRuntimeCaches() {
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(
+            registrations.map((registration) => registration.unregister().catch(() => false)),
+          );
+        }
+
+        if ('caches' in window) {
+          const cacheKeys = await caches.keys();
+          await Promise.all(cacheKeys.map((cacheKey) => caches.delete(cacheKey).catch(() => false)));
+        }
+      }
+
+      function buildReloadUrl(fingerprint) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('build', fingerprint.slice(0, 8));
+        return url.toString();
+      }
+
+      function loadFlutterBootstrap() {
+        const script = document.createElement('script');
+        script.src = buildUrl('flutter_bootstrap.js');
+        script.async = true;
+        document.body.appendChild(script);
+      }
+
+      async function checkForBuildUpdate(allowReload) {
+        const fingerprint = await computeBuildFingerprint();
+        const previousFingerprint = window.localStorage.getItem(BUILD_FINGERPRINT_KEY);
+        const pendingReloadFingerprint = window.sessionStorage.getItem(BUILD_RELOAD_TARGET_KEY);
+
+        if (pendingReloadFingerprint === fingerprint) {
+          window.localStorage.setItem(BUILD_FINGERPRINT_KEY, fingerprint);
+          window.sessionStorage.removeItem(BUILD_RELOAD_TARGET_KEY);
+          return { fingerprint: fingerprint, reloading: false };
+        }
+
+        if (allowReload && previousFingerprint && previousFingerprint !== fingerprint) {
+          window.localStorage.setItem(BUILD_FINGERPRINT_KEY, fingerprint);
+          window.sessionStorage.setItem(BUILD_RELOAD_TARGET_KEY, fingerprint);
+          await clearRuntimeCaches();
+          window.location.replace(buildReloadUrl(fingerprint));
+          return { fingerprint: fingerprint, reloading: true };
+        }
+
+        window.localStorage.setItem(BUILD_FINGERPRINT_KEY, fingerprint);
+        return { fingerprint: fingerprint, reloading: false };
+      }
+
+      function startBuildPolling() {
+        const runCheck = async function () {
+          if (document.visibilityState === 'hidden') {
+            return;
+          }
+
+          try {
+            const result = await checkForBuildUpdate(true);
+            if (result.reloading) {
+              return;
+            }
+          } catch (error) {
+            console.warn('[BuildUpdate] Background build check failed', error);
+          }
+        };
+
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'visible') {
+            void runCheck();
+          }
+        });
+
+        window.setInterval(function () {
+          void runCheck();
+        }, BUILD_CHECK_INTERVAL_MS);
+      }
+
+      async function bootstrap() {
+        try {
+          const result = await checkForBuildUpdate(true);
+          if (result.reloading) {
+            return;
+          }
+        } catch (error) {
+          console.warn('[BuildUpdate] Initial build check failed, continuing with cached app shell', error);
+        }
+
+        loadFlutterBootstrap();
+        startBuildPolling();
+      }
+
+      void bootstrap();
+    })();
+  </script>
 </body>
 </html>

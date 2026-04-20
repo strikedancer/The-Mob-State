@@ -25,6 +25,12 @@ curl -I https://your-domain/main.dart.js
 
 Controleer dat bovenstaande bestanden `no-cache`/`must-revalidate` headers hebben.
 
+Zelfherstellende build-update:
+
+- De web shell controleert nu zelf op een gewijzigde build-fingerprint op basis van `version.json`, `flutter_bootstrap.js`, `main.dart.js`, `flutter_service_worker.js` en `firebase-messaging-sw.js`.
+- Bij een echte buildwissel wist de client precies één keer de runtime web caches (`CacheStorage`) en unregistert hij actieve service workers voordat de app hard herlaadt.
+- Dit is bedoeld om iPhone/mobile PWA sessies sneller naar een nieuwe build te trekken zonder dat spelers handmatig DevTools hoeven te openen.
+
 ## Runtime External Images (No Rebuild For Image Updates)
 
 Doel:
