@@ -1358,6 +1358,7 @@ const List<HelpTopic> helpTopics = [
         'Claim and control geographical regions for passive income and crew prestige. Territory combines map control with contests and seasonal rewards.',
     howNl: [
       'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.',
+      'Tik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.',
       'Territorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.',
       'Elke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur.',
       'Start een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.',
@@ -1370,6 +1371,7 @@ const List<HelpTopic> helpTopics = [
     ],
     howEn: [
       'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.',
+      'Tap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.',
       'Territory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.',
       'Each region can be controlled by at most one crew at a time. Ownership grants passive income per hour.',
       'Start a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).',

@@ -71,6 +71,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   // ── Selection ─────────────────────────────────────────────────────────────
   Map<String, dynamic>? _selectedRegion;
   bool _isActing = false;
+  bool _isRegionSheetOpen = false;
 
   // ── Tabs ──────────────────────────────────────────────────────────────────
   late TabController _tabController;
@@ -463,6 +464,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
     });
 
+    if (matchedRegion != null) {
+      unawaited(_showRegionDetailModal(matchedRegion));
+    }
+
     _mapTooltipTimer = Timer(const Duration(seconds: 2), () {
       if (!mounted) return;
       setState(() {
@@ -470,6 +475,64 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         _mapTooltipOffset = null;
       });
     });
+  }
+
+  Future<void> _showRegionDetailModal(Map<String, dynamic> region) async {
+    if (_isRegionSheetOpen) return;
+
+    setState(() {
+      _isRegionSheetOpen = true;
+    });
+
+    try {
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (sheetContext) {
+          final mediaQuery = MediaQuery.of(sheetContext);
+          final maxHeight = mediaQuery.size.height * 0.88;
+
+          return SafeArea(
+            top: false,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: maxHeight),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: mediaQuery.viewInsets.bottom),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 10),
+                    Container(
+                      width: 44,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Theme.of(sheetContext).dividerColor,
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                    ),
+                    _buildRegionDetail(
+                      region,
+                      onClose: () => Navigator.of(sheetContext).pop(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    } finally {
+      if (!mounted) return;
+      setState(() {
+        _isRegionSheetOpen = false;
+        _selectedRegion = null;
+      });
+    }
   }
 
   String? _renderSvgWithOwnership(List<dynamic> regions) {
@@ -641,9 +704,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         final styleRegex = RegExp('style="([^"]*)"', caseSensitive: false);
         return tag.replaceFirstMapped(styleRegex, (styleMatch) {
           var styleValue = styleMatch.group(1) ?? '';
-          if (RegExp(r'(^|;)\\s*fill\\s*:', caseSensitive: false).hasMatch(styleValue)) {
+          if (RegExp(r'(^|;)\s*fill\s*:', caseSensitive: false).hasMatch(styleValue)) {
             styleValue = styleValue.replaceAllMapped(
-              RegExp(r'(^|;)\\s*fill\\s*:[^;]*', caseSensitive: false),
+              RegExp(r'(^|;)\s*fill\s*:[^;]*', caseSensitive: false),
               (m) => '${m.group(1) ?? ';'}fill:$fillHex',
             );
           } else {
@@ -653,18 +716,18 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
             styleValue = '$styleValue fill:$fillHex;';
           }
 
-          if (RegExp(r'(^|;)\\s*stroke\\s*:', caseSensitive: false).hasMatch(styleValue)) {
+          if (RegExp(r'(^|;)\s*stroke\s*:', caseSensitive: false).hasMatch(styleValue)) {
             styleValue = styleValue.replaceAllMapped(
-              RegExp(r'(^|;)\\s*stroke\\s*:[^;]*', caseSensitive: false),
+              RegExp(r'(^|;)\s*stroke\s*:[^;]*', caseSensitive: false),
               (m) => '${m.group(1) ?? ';'}stroke:$strokeHex',
             );
           } else {
             styleValue = '$styleValue stroke:$strokeHex;';
           }
 
-          if (RegExp(r'(^|;)\\s*stroke-width\\s*:', caseSensitive: false).hasMatch(styleValue)) {
+          if (RegExp(r'(^|;)\s*stroke-width\s*:', caseSensitive: false).hasMatch(styleValue)) {
             styleValue = styleValue.replaceAllMapped(
-              RegExp(r'(^|;)\\s*stroke-width\\s*:[^;]*', caseSensitive: false),
+              RegExp(r'(^|;)\s*stroke-width\s*:[^;]*', caseSensitive: false),
               (m) => '${m.group(1) ?? ';'}stroke-width:$strokeWidth',
             );
           } else {
@@ -777,19 +840,16 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
           _buildSvgMapOverview(regions),
-          const SizedBox(height: 8),
-          _buildRegionGrid(regions, embeddedInParentScroll: true),
-          const SizedBox(height: 8),
-          if (_selectedRegion != null)
-            Card(
-              margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-              child: _buildRegionDetail(_selectedRegion!),
-            )
-          else
-            Card(
-              margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-              child: _buildNoSelectionPlaceholder(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
+            child: Text(
+              _t(
+                'Tik op een gebied op de kaart om gebiedsinformatie en de aanvalsknop in een modal te openen.',
+                'Tap a region on the map to open territory information and the attack button in a modal.',
+              ),
+              style: TextStyle(color: Colors.grey[700], fontSize: 12),
             ),
+          ),
         ],
       ),
     );
@@ -899,94 +959,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildRegionGrid(List<dynamic> regions, {bool embeddedInParentScroll = false}) {
-    if (regions.isEmpty) {
-      return Center(child: Text(_t('Geen regio\'s gevonden.', 'No regions found.')));
-    }
-
-    return GridView.builder(
-      shrinkWrap: embeddedInParentScroll,
-      physics: embeddedInParentScroll
-          ? const NeverScrollableScrollPhysics()
-          : const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(12),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200,
-        mainAxisExtent: 120,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
-      itemCount: regions.length,
-      itemBuilder: (context, i) => _buildRegionCard(regions[i] as Map<String, dynamic>),
-    );
-  }
-
-  Widget _buildRegionCard(Map<String, dynamic> region) {
-    final regionName = _isNl
-        ? (region['nameNl'] as String? ?? region['regionKey'] as String? ?? '')
-        : (region['nameEn'] as String? ?? region['regionKey'] as String? ?? '');
-    final ownerName = region['ownerCrewName'] as String?;
-    final controlPercent = (region['controlPercent'] as num?)?.toInt() ?? 0;
-    final contestStatus = region['contestStatus'] as String?;
-    final isSelected = _selectedRegion?['regionKey'] == region['regionKey'];
-
-    final Color statusColor = contestStatus != null
-        ? Colors.orange
-        : (ownerName != null ? Colors.green[700]! : Colors.grey[600]!);
-
-    return GestureDetector(
-      onTap: () => setState(() => _selectedRegion = region),
-      child: Card(
-        elevation: isSelected ? 6 : 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: isSelected ? BorderSide(color: Theme.of(context).colorScheme.primary, width: 2) : BorderSide.none,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                regionName,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                ownerName ?? _t('Neutraal', 'Neutral'),
-                style: TextStyle(color: statusColor, fontSize: 11),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (controlPercent > 0) ...[
-                const SizedBox(height: 4),
-                LinearProgressIndicator(
-                  value: controlPercent / 100,
-                  color: statusColor,
-                  backgroundColor: Colors.grey[300],
-                  minHeight: 4,
-                ),
-              ],
-              if (contestStatus != null) ...[
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.warning_amber_rounded, size: 12, color: Colors.orange),
-                    const SizedBox(width: 2),
-                    Text(_t('In strijd', 'Under contest'), style: const TextStyle(color: Colors.orange, fontSize: 10)),
-                  ],
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRegionDetail(Map<String, dynamic> region) {
+  Widget _buildRegionDetail(Map<String, dynamic> region, {VoidCallback? onClose}) {
     final regionName = _isNl ? (region['nameNl'] as String? ?? '') : (region['nameEn'] as String? ?? '');
     final ownerName = region['ownerCrewName'] as String?;
     final stability = (region['stability'] as num?)?.toInt() ?? 100;
@@ -1007,10 +980,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
               Expanded(
                 child: Text(regionName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
-              IconButton(
-                icon: const Icon(Icons.close, size: 18),
-                onPressed: () => setState(() => _selectedRegion = null),
-              ),
+              if (onClose != null)
+                IconButton(
+                  icon: const Icon(Icons.close, size: 18),
+                  onPressed: onClose,
+                ),
             ],
           ),
           const SizedBox(height: 8),
@@ -1105,19 +1079,6 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     return OutlinedButton(
       onPressed: _isActing ? null : () => _doAction(contestId, actionType),
       child: Text(label, style: const TextStyle(fontSize: 12)),
-    );
-  }
-
-  Widget _buildNoSelectionPlaceholder() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Text(
-          _t('Selecteer een regio op de kaart.', 'Select a region on the map.'),
-          style: const TextStyle(color: Colors.grey),
-          textAlign: TextAlign.center,
-        ),
-      ),
     );
   }
 
