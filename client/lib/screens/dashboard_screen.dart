@@ -729,7 +729,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       (icon: Icons.fitness_center, label: l10n.gym, section: _WebSection.gym, badge: 0),
       (icon: Icons.factory, label: l10n.ammoFactory, section: _WebSection.ammoFactory, badge: 0),
       (icon: Icons.school, label: l10n.schoolMenuLabel, section: _WebSection.school, badge: 0),
-      (icon: Icons.public_rounded, label: _tr('Territorium', 'Territory'), section: _WebSection.territory, badge: 0),
+      (icon: Icons.public, label: _tr('Territorium', 'Territory'), section: _WebSection.territory, badge: 0),
       (icon: Icons.favorite, label: l10n.prostitutionTitle, section: _WebSection.prostitution, badge: 0),
       (
         icon: Icons.storefront,
@@ -746,23 +746,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.only(bottom: 6),
             child: ListTile(
               selected: _selectedWebSection == item.section,
-              leading: Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  color: Colors.amber.shade700.withOpacity(
-                    item.section == _WebSection.territory || _selectedWebSection == item.section ? 0.2 : 0.12,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.amber.shade700.withOpacity(
-                      item.section == _WebSection.territory || _selectedWebSection == item.section ? 0.9 : 0.35,
-                    ),
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: Icon(item.icon, size: 19, color: Colors.amber.shade700),
-              ),
+              leading: Icon(item.icon),
               title: Text(item.label, maxLines: 1, overflow: TextOverflow.ellipsis),
               trailing: item.badge > 0
                   ? CircleAvatar(

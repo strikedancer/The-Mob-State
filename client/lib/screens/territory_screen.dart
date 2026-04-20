@@ -86,45 +86,6 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         : (country['displayNameEn'] as String? ?? (country['countryCode'] as String? ?? ''));
   }
 
-  Widget _buildCountryMenuLabel(Map<String, dynamic> country, {required bool selected}) {
-    final countryCode = ((country['countryCode'] as String?) ?? '').toUpperCase();
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 28,
-          height: 28,
-          decoration: BoxDecoration(
-            color: selected ? Colors.amber.shade700 : Colors.amber.shade700.withOpacity(0.14),
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: Colors.amber.shade700.withOpacity(selected ? 0 : 0.4)),
-          ),
-          alignment: Alignment.center,
-          child: Icon(
-            selected ? Icons.flag_rounded : Icons.public_rounded,
-            size: 16,
-            color: selected ? Colors.black : Colors.amber.shade700,
-          ),
-        ),
-        const SizedBox(width: 10),
-        Flexible(
-          child: Text(_countryDisplayName(country), overflow: TextOverflow.ellipsis),
-        ),
-        if (countryCode.isNotEmpty) ...[
-          const SizedBox(width: 8),
-          Text(
-            countryCode,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.6,
-            ),
-          ),
-        ],
-      ],
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -845,19 +806,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           if (_countries.length > 1)
             PopupMenuButton<String>(
               tooltip: _t('Kies land', 'Select country'),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.public_rounded),
-                    const SizedBox(width: 8),
-                    Text(_t('Kies land', 'Select country')),
-                    const SizedBox(width: 6),
-                    const Icon(Icons.expand_more_rounded, size: 18),
-                  ],
-                ),
-              ),
+              icon: const Icon(Icons.public),
               onSelected: (countryCode) {
                 if (countryCode == _selectedCountryCode) return;
                 setState(() => _selectedRegion = null);
@@ -869,9 +818,16 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                       final countryCode = ((country['countryCode'] as String?) ?? '').toLowerCase();
                       return PopupMenuItem<String>(
                         value: countryCode,
-                        child: _buildCountryMenuLabel(
-                          country,
-                          selected: countryCode == _selectedCountryCode,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              countryCode == _selectedCountryCode ? Icons.public : Icons.public_outlined,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 8),
+                            Flexible(child: Text(_countryDisplayName(country), overflow: TextOverflow.ellipsis)),
+                          ],
                         ),
                       );
                     },
