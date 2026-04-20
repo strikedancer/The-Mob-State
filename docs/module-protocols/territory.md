@@ -35,6 +35,7 @@
   - Territory crew-resolution fix: action-routes valideren crew membership nu via de echte crew-membership lookup in plaats van een ontbrekende `req.player.crewId`, zodat crew leaders en leden geen valse `error.not_in_crew` meer krijgen op aanvallen/verdedigen
   - Territory desktop layout fix: in brede layouts staat de uitleg/legend links en de SVG-kaart rechts; mobiel en tablet blijven onder elkaar renderen
   - Crew War koppeling: Territory War en Total War gebruiken nu echte Territory-regio\'s als claim-doelen in de War Room metadata, zodat crew wars geen losstaande placeholder-gebieden meer tonen
+  - Territory desktop icon fix: `Kies land` rendert nu als expliciete globe+label trigger met zichtbare iconen in de landlijst, en de Territory-entry in de web-sidebar gebruikt een duidelijke leading icon badge zodat beide desktop-ingangen niet visueel wegvallen
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 

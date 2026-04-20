@@ -746,7 +746,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.only(bottom: 6),
             child: ListTile(
               selected: _selectedWebSection == item.section,
-              leading: Icon(item.icon),
+              leading: Container(
+                width: 34,
+                height: 34,
+                decoration: BoxDecoration(
+                  color: Colors.amber.shade700.withOpacity(
+                    item.section == _WebSection.territory || _selectedWebSection == item.section ? 0.2 : 0.12,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.amber.shade700.withOpacity(
+                      item.section == _WebSection.territory || _selectedWebSection == item.section ? 0.9 : 0.35,
+                    ),
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Icon(item.icon, size: 19, color: Colors.amber.shade700),
+              ),
               title: Text(item.label, maxLines: 1, overflow: TextOverflow.ellipsis),
               trailing: item.badge > 0
                   ? CircleAvatar(
