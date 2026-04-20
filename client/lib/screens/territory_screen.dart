@@ -806,7 +806,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           if (_countries.length > 1)
             PopupMenuButton<String>(
               tooltip: _t('Kies land', 'Select country'),
-              icon: const Icon(Icons.public),
+              icon: const Icon(Icons.language),
               onSelected: (countryCode) {
                 if (countryCode == _selectedCountryCode) return;
                 setState(() => _selectedRegion = null);
@@ -822,7 +822,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
-                              countryCode == _selectedCountryCode ? Icons.public : Icons.public_outlined,
+                              countryCode == _selectedCountryCode ? Icons.language : Icons.flag,
                               size: 18,
                             ),
                             const SizedBox(width: 8),

@@ -28,7 +28,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory crew-validatie en desktop split-layout gecorrigeerd: contest-routes bepalen crew membership nu via de crew-membership lookup in plaats van een ontbrekende auth-payload `crewId`, en op brede schermen staat uitleg/legend links terwijl de SVG rechts rendert
   - Bestanden: `backend/src/routes/territory.ts`, `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
-- [ ] Territory desktop icon-compatibiliteit hersteld: algemene sidebar-iconstijl blijft ongewijzigd, maar Territory gebruikt op desktop/web nu de standaard globe-icon (`Icons.public`) voor de sidebar-entry en de landselector zodat het icoon niet wegvalt
+- [ ] Territory desktop icon-compatibiliteit hersteld: algemene sidebar-iconstijl blijft ongewijzigd, maar Territory gebruikt op desktop/web nu `Icons.language` voor de sidebar-entry en landselector omdat die in deze shell wel zichtbaar rendert
   - Bestanden: `client/lib/screens/territory_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory NL asset source gecorrigeerd: Nederland gebruikt nu direct `netherlandsLow.svg` (backend `svgAssetKey` + frontend fallback) in plaats van de legacy `cafuego-Nederland` alias
   - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
