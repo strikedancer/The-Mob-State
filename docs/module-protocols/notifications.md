@@ -42,6 +42,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Service worker fallbacktekst moet `payload.data` kunnen lezen als `payload.notification` ontbreekt.
 - Bij app-refresh, PWA-herstart of nieuwe client-build moet een eerder toegestane push-permissie automatisch opnieuw aan het actuele FCM token worden gekoppeld; de speler mag push niet handmatig opnieuw hoeven inschakelen na elke deploy of page refresh.
 - Token-registratie moet idempotent zijn: hernieuwde register-calls moeten dezelfde token kunnen verversen en oude tokens voor dezelfde speler/platform mogen niet blijven domineren.
+- Web push mag niet alleen op de service worker vertrouwen: als de gamewebapp actief of gefocust is, moet de foreground-web path dezelfde `payload.data.title/body` kunnen tonen en moet de app bij resume of terugkeer naar foreground zijn geautoriseerde pushsessie opnieuw kunnen syncen om stale tokens weg te werken.
 
 ## QA Checklist
 1. Verifieer permissie-aanvraag vanaf Settings op web/PWA.
@@ -51,8 +52,9 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 5. Verifieer dat cooldown-expiry notificaties voor ondersteunde actions nog steeds aankomen.
 6. Verifieer expliciet dat een cooldown-expiry push nog steeds aankomt na een backend restart terwijl de cooldown al liep.
 7. Verifieer dat een admin test-push naar een gekozen speler succesvol queued en dat de UI het aantal geregistreerde devices teruggeeft.
-8. Verifieer dat pushfouten hoofdflows niet blokkeren.
-9. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
+8. Verifieer op web zowel een background/service-worker push als een foreground/in-focus push; beide moeten zichtbaar zijn met de verwachte titel/body.
+9. Verifieer dat pushfouten hoofdflows niet blokkeren.
+10. Verifieer dat arrestaties van een speler precies de relevante vrienden en crewleden signaleren, zonder dubbele push voor overlap-ontvangers.
 
 ## When To Update This File
 Update bij nieuwe notificatiekanalen, FCM/service-worker gedrag, permission flows, cooldown-signalen of inbox/push koppelingen.

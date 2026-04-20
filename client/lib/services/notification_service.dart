@@ -3,6 +3,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'auth_service.dart';
+import 'web_notification_stub.dart'
+  if (dart.library.html) 'web_notification_web.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -227,8 +229,12 @@ class NotificationService {
         // Import dart:html for web
         // ignore: avoid_web_libraries_in_flutter
         _showWebNotification(
-          message.notification?.title ?? 'The Mob State',
-          message.notification?.body ?? '',
+          message.notification?.title ??
+              message.data['title']?.toString() ??
+              'The Mob State',
+          message.notification?.body ??
+              message.data['body']?.toString() ??
+              'You have a new notification',
           message.data,
         );
         print('[NotificationService] ✅ Foreground web notification shown');
@@ -369,11 +375,9 @@ class NotificationService {
     String body,
     Map<String, dynamic> data,
   ) {
-    // This will only be called on web platform
-    // Use HTML package for web notifications instead of dart:js
     print('[NotificationService] Web notification: $title - $body');
-    // For now, rely on Firebase Cloud Messaging's default web notifications
-    // which are handled by the service worker
+    final shown = showBrowserNotification(title, body, data);
+    print('[NotificationService] Web notification shown: $shown');
   }
 
   bool _supportsWebPushNotifications() {

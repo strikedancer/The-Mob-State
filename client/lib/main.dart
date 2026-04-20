@@ -26,6 +26,7 @@ import 'screens/help_screen.dart';
 import 'screens/tune_shop_screen.dart';
 import 'screens/territory_screen.dart';
 import 'widgets/mobile_web_sticky_player_header.dart';
+import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -131,13 +132,37 @@ class AuthWrapper extends StatefulWidget {
   State<AuthWrapper> createState() => _AuthWrapperState();
 }
 
-class _AuthWrapperState extends State<AuthWrapper> {
+class _AuthWrapperState extends State<AuthWrapper> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // Call checkAuthStatus after the first frame to avoid setState during build
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _checkAuth();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) {
+      return;
+    }
+
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (!authProvider.isAuthenticated) {
+      return;
+    }
+
+    NotificationService().syncAuthorizedSession().catchError((error) {
+      print('[AuthWrapper] Push session sync on resume failed: $error');
+      return false;
     });
   }
 
