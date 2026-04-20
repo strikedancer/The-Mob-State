@@ -24,6 +24,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Dashboard statistiekblokken mogen geen hardcoded nul-placeholders tonen wanneer er al echte backendtellers of bestaande spelerstats beschikbaar zijn.
+- Gekoppelde moduledata zoals Crew Wars mag dashboardstatistieken nooit als alles-of-niets dependency blokkeren; als een secundaire hub-call faalt moet het dashboard met veilige fallbackdata blijven renderen in plaats van 500 of nul-collaps van alle statistiekkaarten.
 - Responsive usability without pushing critical actions off-screen.
 - In web/dashboard-shell context moet klik op dezelfde sectie een expliciete remount of refresh kunnen triggeren wanneer dat scherm anders vastloopt op stale state.
 - Info- en statistiekblokken in dashboard/admin views moeten ook bij subtiele backgrounds en in dark mode expliciete contrasten voor tekst, border en hover/focus-state behouden.
@@ -42,6 +43,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
+- Verifieer dat een fout in een gekoppelde submodule zoals Crew Wars de dashboard-statistieken niet volledig leeg of op nul laat terugvallen.
 - Verify no text overflows or clipped buttons appear.
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer in admin image-management dat uploaden en vervangen werkt voor dezelfde storage-root die door runtime `/assets/images` wordt geserveerd.

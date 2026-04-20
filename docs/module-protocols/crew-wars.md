@@ -48,6 +48,7 @@ Scope-afbakening:
 - Leaderboard en rewards moeten deterministisch herleidbaar zijn uit opgeslagen war actions.
 - UI moet live spanning geven zonder kritieke acties of statusinfo op mobiel te verbergen.
 - Territory War en Total War moeten hun claimbare gebieden tonen met echte Territory-regio-identiteit (regionKey + NL/EN naam), niet met abstracte labels zoals `docks` of `harbor`.
+- Metadata parsing voor war hubs en territory targets moet op standaard JavaScript array-methodes gebaseerd zijn en tolerant blijven voor legacy of lege metadata; een parsefout in war metadata mag gekoppelde dashboard/player responses niet 500 laten gaan.
 
 ## War Lifecycle Guardrails
 

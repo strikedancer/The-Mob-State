@@ -14,6 +14,17 @@ import { checkAndUnlockAchievements, serializeAchievementForClient } from '../se
 import { existsCached } from '../services/redisClient';
 import * as crewWarService from '../services/crewWarService';
 
+function emptyCrewWarHub() {
+  return {
+    myCrewId: null,
+    canDeclare: false,
+    currentWar: null,
+    availableTargets: [],
+    seasonLeaderboard: [],
+    recentWars: [],
+  };
+}
+
 const router = Router();
 const PROSTITUTE_RECRUITMENT_COOLDOWN_SECONDS = 5 * 60;
 const PRISON_ACTION_COOLDOWN_SECONDS = 30;
@@ -772,7 +783,13 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         where: { seasonKey: 'weekly-nightclub-season' },
         select: { seasonEndAt: true },
       }),
-      crewWarService.getWarHubForPlayer(playerId),
+      crewWarService.getWarHubForPlayer(playerId).catch((error) => {
+        console.error('[Dashboard] Crew war hub failed during dashboard stats load:', {
+          playerId,
+          error,
+        });
+        return emptyCrewWarHub();
+      }),
       prisma.player.findUnique({
         where: { id: playerId },
         select: { killCount: true },

@@ -96,6 +96,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `backend/src/services/territoryService.ts`, `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`
 - [ ] Mobiele/PWA build self-heal toegevoegd: de web shell berekent nu een build-fingerprint uit `version.json`, `flutter_bootstrap.js`, `main.dart.js` en beide service workers; bij een echte buildwissel unregistert de client precies één keer oude service workers, wist `CacheStorage` en laadt daarna hard opnieuw zodat nieuwe builds minder vaak vast blijven op oude mobile caches
   - Bestanden: `client/web/index.html`, `docs/module-protocols/frontend-platform.md`, `docs/operations/DEPLOY.md`
+- [ ] Dashboard Crew Wars statistiek-crash gefixt: Crew Wars metadata normaliseert territory-targets nu met geldige array-filtering in plaats van een niet-bestaande `.where(...)` runtime-call, en `/player/dashboard-stats` valt nu terug op een lege Crew Wars hub als die gekoppelde module toch nog faalt zodat dashboardstatistieken niet collectief op nul of 500 eindigen
+  - Bestanden: `backend/src/services/crewWarService.ts`, `backend/src/routes/player.ts`
 - [ ] Harde Help & Uitleg-eis aangescherpt in master protocol: bij aanpassingen of nieuwe modules moet altijd gecontroleerd worden of de player-help nog klopt en moet help-content in dezelfde wijziging mee worden bijgewerkt als gedrag of uitleg verandert
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
 - [ ] Harde protocol-koppelingseis aangescherpt in master protocol: bij nieuwe systemen of modules moeten altijd alle relevante bestaande protocollen worden nagelopen op koppelingen, overlap en regressierisico's voordat iets als done geldt

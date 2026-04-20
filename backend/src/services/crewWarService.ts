@@ -102,7 +102,7 @@ function getWarTerritoryTargetsFromMetadata(metadata: Record<string, any>): Crew
   const rawTargets = Array.isArray(metadata.territoryTargets) ? metadata.territoryTargets : [];
   const normalized = rawTargets
     .map((target) => normalizeCrewWarTerritoryTarget(target, territoryState))
-    .where((target): target is CrewWarTerritoryTarget => target !== null);
+    .filter((target): target is CrewWarTerritoryTarget => target !== null);
 
   if (normalized.length > 0) {
     return normalized;
