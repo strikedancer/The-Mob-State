@@ -879,19 +879,19 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
             LayoutBuilder(
               builder: (context, constraints) {
                 final maxWidth = constraints.maxWidth;
+                final isWideLayout = maxWidth >= 980;
                 final mapHeight = maxWidth >= 900
                     ? 420.0
                     : (maxWidth >= 600 ? 340.0 : 300.0);
-
-                return SizedBox(
+                final mapWidget = SizedBox(
                   height: mapHeight,
                   width: double.infinity,
                   child: MouseRegion(
-                    onHover: (event) => _handleMapHover(event, Size(maxWidth, mapHeight), regions),
+                    onHover: (event) => _handleMapHover(event, Size(isWideLayout ? maxWidth * 0.58 : maxWidth, mapHeight), regions),
                     onExit: (_) => _handleMapHoverExit(),
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTapDown: (details) => _handleMapTap(details, Size(maxWidth, mapHeight), regions),
+                      onTapDown: (details) => _handleMapTap(details, Size(isWideLayout ? maxWidth * 0.58 : maxWidth, mapHeight), regions),
                       child: Stack(
                         children: [
                           Positioned.fill(
@@ -903,7 +903,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                           ),
                           if (_mapTooltipLabel != null && _mapTooltipOffset != null)
                             Positioned(
-                              left: (_mapTooltipOffset!.dx + 10).clamp(8, maxWidth - 180),
+                              left: (_mapTooltipOffset!.dx + 10).clamp(8, (isWideLayout ? (maxWidth * 0.58) : maxWidth) - 180),
                               top: (_mapTooltipOffset!.dy - 36).clamp(8, mapHeight - 32),
                               child: Container(
                                 constraints: const BoxConstraints(maxWidth: 170),
@@ -925,33 +925,73 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                     ),
                   ),
                 );
+                final infoWidget = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _t(
+                        'Klik op een gebied om direct de modal met gebiedsinformatie en aanvalsacties te openen.',
+                        'Tap a region to directly open the modal with territory information and attack actions.',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _t(
+                        'Regio-kleuren tonen eigendom; oranje = actieve contest.',
+                        'Region colors show ownership; orange = active contest.',
+                      ),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      _t('Legenda', 'Legend'),
+                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                    ),
+                    const SizedBox(height: 6),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: legendEntries.map(_buildLegendChip).toList(growable: false),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      _t(
+                        'Jouw crew: ${_myCrewName ?? '-'}',
+                        'Your crew: ${_myCrewName ?? '-'}',
+                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                    ),
+                  ],
+                );
+
+                if (isWideLayout) {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: infoWidget,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: mapWidget,
+                      ),
+                    ],
+                  );
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    mapWidget,
+                    const SizedBox(height: 8),
+                    infoWidget,
+                  ],
+                );
               },
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _t(
-                'Hover of klik op een gebied voor details; oranje = actieve contest.',
-                'Hover or tap a region for details; orange = active contest.',
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _t(
-                'Regio-kleuren tonen eigendom; oranje = actieve contest.',
-                'Region colors show ownership; orange = active contest.',
-              ),
-              style: TextStyle(color: Colors.grey[600], fontSize: 12),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _t('Legenda', 'Legend'),
-              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-            ),
-            const SizedBox(height: 6),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: legendEntries.map(_buildLegendChip).toList(growable: false),
             ),
           ],
         ),

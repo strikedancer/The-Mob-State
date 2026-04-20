@@ -32,6 +32,8 @@
   - Territory hover buildfix: expliciete Flutter pointer event import toegevoegd zodat `PointerHoverEvent` compileert in web release/Docker builds
   - Territory NL SVG id remap: backend seed gebruikt nu de echte `netherlandsLow.svg` ids (`NL-GR`, `NL-FR`, etc.) en update bestaande `territory_regions` rows ook op `svgElementId`, zodat kleur, hover en grenslijnen weer op de juiste gebieden landen
   - Territory usability fix: screen leest nu bestaande crewstatus via `GET /crews/mine`, blokkeert aanvallen met duidelijke NL/EN uitleg voor spelers zonder crew, en backend synchroniseert contest lifecycle automatisch van `preparing -> active -> lockdown -> resolved` op reads/actions zodat contests niet vast blijven staan
+  - Territory crew-resolution fix: action-routes valideren crew membership nu via de echte crew-membership lookup in plaats van een ontbrekende `req.player.crewId`, zodat crew leaders en leden geen valse `error.not_in_crew` meer krijgen op aanvallen/verdedigen
+  - Territory desktop layout fix: in brede layouts staat de uitleg/legend links en de SVG-kaart rechts; mobiel en tablet blijven onder elkaar renderen
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 

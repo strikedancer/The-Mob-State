@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
 import { adminAuthMiddleware, type AdminRequest } from '../middleware/adminAuth';
 import * as territoryService from '../services/territoryService';
+import * as crewService from '../services/crewService';
 
 const router = Router();
 
@@ -74,13 +75,20 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
   return next(error);
 }
 
-function requireCrew(req: AuthRequest, res: Response): number | null {
-  const crewId = req.player?.crewId;
-  if (!crewId) {
+async function requireCrew(req: AuthRequest, res: Response): Promise<number | null> {
+  const playerId = req.player?.id;
+  if (!playerId) {
+    res.status(401).json({ event: 'auth.unauthorized', params: { reason: 'MISSING_PLAYER_CONTEXT' } });
+    return null;
+  }
+
+  const crew = await crewService.getPlayerCrew(playerId);
+  if (!crew?.id) {
     res.status(400).json({ event: 'error.not_in_crew', params: {} });
     return null;
   }
-  return crewId;
+
+  return crew.id;
 }
 
 // ── Player Endpoints ─────────────────────────────────────────────────────────
@@ -131,7 +139,7 @@ router.get('/overview', authenticate, async (_req: AuthRequest, res: Response, n
  */
 router.post('/contest/start', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const crewId = requireCrew(req, res);
+    const crewId = await requireCrew(req, res);
     if (!crewId) return;
     const body = startContestSchema.parse(req.body);
     const result = await territoryService.startContest(req.player!.id, crewId, body.regionKey);
@@ -150,7 +158,7 @@ router.post('/contest/start', authenticate, async (req: AuthRequest, res: Respon
  */
 router.post('/action', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const crewId = requireCrew(req, res);
+    const crewId = await requireCrew(req, res);
     if (!crewId) return;
     const body = actionSchema.parse(req.body);
     const result = await territoryService.doAction(req.player!.id, crewId, body.contestId, body.actionType);
@@ -169,7 +177,7 @@ router.post('/action', authenticate, async (req: AuthRequest, res: Response, nex
  */
 router.post('/contest/defend', authenticate, async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const crewId = requireCrew(req, res);
+    const crewId = await requireCrew(req, res);
     if (!crewId) return;
     const body = defendSchema.parse(req.body);
     await territoryService.defendContest(req.player!.id, crewId, body.contestId);
