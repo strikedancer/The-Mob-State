@@ -364,21 +364,29 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
   String? _renderSvgWithOwnership(List<dynamic> regions) {
     final template = _svgTemplate;
-    if (template == null || template.isEmpty || regions.isEmpty) return template;
+    if (template == null || template.isEmpty) return template;
 
-    var svg = template;
+    final regionBySvgId = <String, Map<String, dynamic>>{};
     for (final rawRegion in regions) {
       if (rawRegion is! Map<String, dynamic>) continue;
-      final svgElementId = rawRegion['svgElementId'] as String?;
-      if (svgElementId == null || svgElementId.trim().isEmpty) continue;
+      final svgElementId = (rawRegion['svgElementId'] as String?)?.trim();
+      if (svgElementId == null || svgElementId.isEmpty) continue;
+      regionBySvgId[svgElementId.toLowerCase()] = rawRegion;
+    }
 
-      var fillHex = _hexColorForRegion(rawRegion);
-      if (_hoveredSvgElementId?.toLowerCase() == svgElementId.trim().toLowerCase()) {
+    final shapes = _svgRegionShapes;
+    if (shapes.isEmpty) return template;
+
+    var svg = template;
+    for (final shape in shapes) {
+      final region = regionBySvgId[shape.id.toLowerCase()];
+      var fillHex = region != null ? _hexColorForRegion(region) : '#D1D5DB';
+      if (_hoveredSvgElementId?.toLowerCase() == shape.id.toLowerCase()) {
         fillHex = _darkenHex(fillHex, 0.18);
       }
       svg = _applyRegionStyleToElement(
         svg,
-        svgElementId.trim(),
+        shape.id,
         fillHex,
         strokeHex: '#FFFFFF',
         strokeWidth: '0.9',

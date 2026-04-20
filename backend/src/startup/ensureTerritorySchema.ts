@@ -233,25 +233,30 @@ export async function ensureTerritorySchema(): Promise<void> {
 
   // ── Seed NL provinces ─────────────────────────────────────────────────────
   const nlRegions = [
-    { key: 'nl-groningen',     nl: 'Groningen',     en: 'Groningen',      svg: 'path-groningen',     tier: 2 },
-    { key: 'nl-friesland',     nl: 'Friesland',     en: 'Friesland',      svg: 'path-friesland',     tier: 1 },
-    { key: 'nl-drenthe',       nl: 'Drenthe',       en: 'Drenthe',        svg: 'path-drenthe',       tier: 1 },
-    { key: 'nl-overijssel',    nl: 'Overijssel',    en: 'Overijssel',     svg: 'path-overijssel',    tier: 2 },
-    { key: 'nl-flevoland',     nl: 'Flevoland',     en: 'Flevoland',      svg: 'path-flevoland',     tier: 1 },
-    { key: 'nl-gelderland',    nl: 'Gelderland',    en: 'Gelderland',     svg: 'path-gelderland',    tier: 2 },
-    { key: 'nl-utrecht',       nl: 'Utrecht',       en: 'Utrecht',        svg: 'path-utrecht',       tier: 3 },
-    { key: 'nl-noord-holland', nl: 'Noord-Holland', en: 'North Holland',  svg: 'path-noord-holland', tier: 3 },
-    { key: 'nl-zuid-holland',  nl: 'Zuid-Holland',  en: 'South Holland',  svg: 'path-zuid-holland',  tier: 3 },
-    { key: 'nl-zeeland',       nl: 'Zeeland',       en: 'Zeeland',        svg: 'path-zeeland',       tier: 1 },
-    { key: 'nl-noord-brabant', nl: 'Noord-Brabant', en: 'North Brabant',  svg: 'path-noord-brabant', tier: 2 },
-    { key: 'nl-limburg',       nl: 'Limburg',       en: 'Limburg',        svg: 'path-limburg',       tier: 2 },
+    { key: 'nl-groningen',     nl: 'Groningen',     en: 'Groningen',      svg: 'NL-GR', tier: 2 },
+    { key: 'nl-friesland',     nl: 'Friesland',     en: 'Friesland',      svg: 'NL-FR', tier: 1 },
+    { key: 'nl-drenthe',       nl: 'Drenthe',       en: 'Drenthe',        svg: 'NL-DR', tier: 1 },
+    { key: 'nl-overijssel',    nl: 'Overijssel',    en: 'Overijssel',     svg: 'NL-OV', tier: 2 },
+    { key: 'nl-flevoland',     nl: 'Flevoland',     en: 'Flevoland',      svg: 'NL-FL', tier: 1 },
+    { key: 'nl-gelderland',    nl: 'Gelderland',    en: 'Gelderland',     svg: 'NL-GE', tier: 2 },
+    { key: 'nl-utrecht',       nl: 'Utrecht',       en: 'Utrecht',        svg: 'NL-UT', tier: 3 },
+    { key: 'nl-noord-holland', nl: 'Noord-Holland', en: 'North Holland',  svg: 'NL-NH', tier: 3 },
+    { key: 'nl-zuid-holland',  nl: 'Zuid-Holland',  en: 'South Holland',  svg: 'NL-ZH', tier: 3 },
+    { key: 'nl-zeeland',       nl: 'Zeeland',       en: 'Zeeland',        svg: 'NL-ZE', tier: 1 },
+    { key: 'nl-noord-brabant', nl: 'Noord-Brabant', en: 'North Brabant',  svg: 'NL-NB', tier: 2 },
+    { key: 'nl-limburg',       nl: 'Limburg',       en: 'Limburg',        svg: 'NL-LI', tier: 2 },
   ];
 
   for (const r of nlRegions) {
     await prisma.$executeRawUnsafe(
       `INSERT INTO territory_regions (countryCode, regionKey, nameNl, nameEn, svgElementId, valueTier, enabled)
        VALUES ('nl', ?, ?, ?, ?, ?, 1)
-       ON DUPLICATE KEY UPDATE regionKey = regionKey`,
+       ON DUPLICATE KEY UPDATE
+         nameNl = VALUES(nameNl),
+         nameEn = VALUES(nameEn),
+         svgElementId = VALUES(svgElementId),
+         valueTier = VALUES(valueTier),
+         enabled = VALUES(enabled)`,
       r.key, r.nl, r.en, r.svg, r.tier,
     );
 

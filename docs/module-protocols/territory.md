@@ -24,11 +24,13 @@
   - NL correctie: Nederland gebruikt nu primair `netherlandsLow.svg` (backend `svgAssetKey = netherlandsLow` + frontend NL fallback naar `netherlandsLow.svg`)
   - Interactieve map UX: de Territory SVG is vergroot, regio-paden zijn direct klikbaar via path hit-testing op `svgElementId`, tonen een tooltip met gebiedsnaam en openen meteen het detailpaneel; detail-content blijft scrollbaar op desktop/tablet
   - Scroll/hover verfijning: de volledige map-tab volgt nu 1 primaire verticale scrollflow, en SVG-regio's krijgen hover-darkening plus expliciete zichtbare grenslijnen (`stroke`) voor betere afbakening
+  - Renderer fallback verbreed: SVG styling draait nu over alle pad-elementen van de kaart (niet alleen backend-gemapte regio's), zodat grenslijnen en hover-darkening ook zichtbaar blijven bij gedeeltelijke `svgElementId` mismatch tussen seed-data en bron-SVG
   - Zuid-Afrika toegevoegd aan de asset/country set: `za` is nu gekoppeld aan `southAfricaLow.svg` (backend seed + frontend fallback)
 - Bug fixes: ✅
   - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
   - Territory web buildfix: ontbrekende interactieve SVG helpertypes (`_SvgMapParseResult`, `_SvgRegionShape`) toegevoegd zodat compile op web release/Docker niet faalt
   - Territory hover buildfix: expliciete Flutter pointer event import toegevoegd zodat `PointerHoverEvent` compileert in web release/Docker builds
+  - Territory NL SVG id remap: backend seed gebruikt nu de echte `netherlandsLow.svg` ids (`NL-GR`, `NL-FR`, etc.) en update bestaande `territory_regions` rows ook op `svgElementId`, zodat kleur, hover en grenslijnen weer op de juiste gebieden landen
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 
