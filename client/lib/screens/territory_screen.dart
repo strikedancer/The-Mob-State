@@ -67,6 +67,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   String? _mapTooltipLabel;
   Offset? _mapTooltipOffset;
   Timer? _mapTooltipTimer;
+  final ValueNotifier<Map<String, dynamic>?> _regionDetailNotifier = ValueNotifier<Map<String, dynamic>?>(null);
 
   // ── Selection ─────────────────────────────────────────────────────────────
   Map<String, dynamic>? _selectedRegion;
@@ -97,6 +98,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   @override
   void dispose() {
     _mapTooltipTimer?.cancel();
+    _regionDetailNotifier.dispose();
     _tabController.dispose();
     super.dispose();
   }
@@ -170,6 +172,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
       _isLoading = false;
     });
+    _regionDetailNotifier.value = selectedRegion;
   }
 
   bool _isMyCrewRegion(Map<String, dynamic> region) {
@@ -244,6 +247,38 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     return _formatDuration(remaining);
   }
 
+  DateTime? _contestTimestampFromFallback({
+    required DateTime? startedAt,
+    required DateTime? primary,
+    required int offsetMinutes,
+  }) {
+    if (primary != null) return primary;
+    if (startedAt == null || offsetMinutes <= 0) return null;
+    return startedAt.add(Duration(minutes: offsetMinutes));
+  }
+
+  Map<String, dynamic>? _findRegionByKey(String regionKey) {
+    final regions = (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[];
+    return regions
+        .whereType<Map<String, dynamic>>()
+        .cast<Map<String, dynamic>?>()
+        .firstWhere(
+          (region) => (region?['regionKey'] as String?) == regionKey,
+          orElse: () => null,
+        );
+  }
+
+  Future<Map<String, dynamic>?> _reloadRegionState(String regionKey) async {
+    await _loadData();
+    if (!mounted) return null;
+    final refreshedRegion = _findRegionByKey(regionKey);
+    if (refreshedRegion != null) {
+      _selectedRegion = refreshedRegion;
+      _regionDetailNotifier.value = refreshedRegion;
+    }
+    return refreshedRegion;
+  }
+
   String _displayContestRole(String role) {
     switch (role.toLowerCase()) {
       case 'attacker':
@@ -287,7 +322,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       case 'error.not_in_crew':
         return _t('Je moet eerst in een crew zitten om territorium aan te vallen.', 'You must join a crew before you can attack territory.');
       case 'territory.contest_already_active':
-        return _t('Voor dit gebied loopt al een contest.', 'A contest is already running for this region.');
+        return _t('Voor dit gebied loopt al een contest. De kaart wordt ververst met de actuele status.', 'A contest is already running for this region. Refreshing the map to the latest state.');
       case 'territory.crew_contest_limit_reached':
         return _t('Je crew heeft al het maximum aantal gelijktijdige contests bereikt.', 'Your crew has already reached the concurrent contest limit.');
       case 'territory.regions_cap_reached':
@@ -302,6 +337,21 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         return _t('Je hebt je dagelijkse limiet voor territory-acties bereikt.', 'You have reached your daily limit for territory actions.');
       default:
         return event.isEmpty ? _t('Onbekende territory-fout.', 'Unknown territory error.') : event;
+    }
+  }
+
+  bool _shouldReloadAfterTerritoryError(Object? rawEvent) {
+    switch (rawEvent?.toString()) {
+      case 'territory.contest_already_active':
+      case 'territory.contest_not_active':
+      case 'territory.contest_not_joinable':
+      case 'territory.contest_not_found':
+      case 'territory.contest_already_resolved':
+      case 'territory.not_in_contest':
+      case 'territory.action_role_mismatch':
+        return true;
+      default:
+        return false;
     }
   }
 
@@ -540,6 +590,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _mapTooltipOffset = details.localPosition;
       _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
     });
+    if (matchedRegion != null) {
+      _regionDetailNotifier.value = matchedRegion;
+    }
 
     if (matchedRegion != null) {
       unawaited(_showRegionDetailModal(matchedRegion));
@@ -556,6 +609,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
   Future<void> _showRegionDetailModal(Map<String, dynamic> region) async {
     if (_isRegionSheetOpen) return;
+
+    _regionDetailNotifier.value = region;
 
     setState(() {
       _isRegionSheetOpen = true;
@@ -592,9 +647,17 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                         borderRadius: BorderRadius.circular(999),
                       ),
                     ),
-                    _buildRegionDetail(
-                      region,
-                      onClose: () => Navigator.of(sheetContext).pop(),
+                    ValueListenableBuilder<Map<String, dynamic>?>(
+                      valueListenable: _regionDetailNotifier,
+                      builder: (context, liveRegion, _) {
+                        if (liveRegion == null) {
+                          return const SizedBox.shrink();
+                        }
+                        return _buildRegionDetail(
+                          liveRegion,
+                          onClose: () => Navigator.of(sheetContext).pop(),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -609,6 +672,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         _isRegionSheetOpen = false;
         _selectedRegion = null;
       });
+      _regionDetailNotifier.value = null;
     }
   }
 
@@ -1095,9 +1159,25 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final contestRole = region['viewerContestRole'] as String?;
     final attackerCrewName = region['attackerCrewName'] as String?;
     final defenderCrewName = region['defenderCrewName'] as String?;
-    final contestActiveAt = _parseApiDate(region['contestActiveAt']);
-    final contestLockdownAt = _parseApiDate(region['contestLockdownAt']);
-    final contestResolveAt = _parseApiDate(region['contestResolveAt']);
+    final contestStartedAt = _parseApiDate(region['contestStartedAt']);
+    final prepMinutes = (_overview['config']?['contestPrepMinutes'] as num?)?.toInt() ?? 0;
+    final activeMinutes = (_overview['config']?['contestActiveMinutes'] as num?)?.toInt() ?? 0;
+    final lockdownMinutes = (_overview['config']?['contestLockdownMinutes'] as num?)?.toInt() ?? 0;
+    final contestActiveAt = _contestTimestampFromFallback(
+      startedAt: contestStartedAt,
+      primary: _parseApiDate(region['contestActiveAt']),
+      offsetMinutes: prepMinutes,
+    );
+    final contestLockdownAt = _contestTimestampFromFallback(
+      startedAt: contestStartedAt,
+      primary: _parseApiDate(region['contestLockdownAt']),
+      offsetMinutes: prepMinutes + activeMinutes,
+    );
+    final contestResolveAt = _contestTimestampFromFallback(
+      startedAt: contestStartedAt,
+      primary: _parseApiDate(region['contestResolveAt']),
+      offsetMinutes: prepMinutes + activeMinutes + lockdownMinutes,
+    );
     final viewerCooldownSecondsRemaining = (region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
     final tier = (region['valueTier'] as num?)?.toInt() ?? 1;
     final isMyCrewRegion = _isMyCrewRegion(region);
@@ -1373,6 +1453,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
     if (result['success'] == true) {
       final contestStatus = _displayContestStatus((result['status'] as String?) ?? 'preparing');
+      await _reloadRegionState(regionKey);
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -1386,12 +1467,31 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           duration: const Duration(seconds: 5),
         ),
       );
-      await _loadData();
     } else {
+      final rawEvent = result['event'] ?? result['message'];
+      final refreshedRegion = await _reloadRegionState(regionKey);
+      final refreshedStatus = refreshedRegion?['contestStatus'] as String?;
+      if (refreshedRegion?['contestId'] != null && refreshedStatus != null) {
+        final liveStatus = _displayContestStatus(refreshedStatus);
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _t(
+                'De contest is al gestart en de kaart is ververst. Status: $liveStatus.',
+                'The contest is already started and the map has been refreshed. Status: $liveStatus.',
+              ),
+            ),
+            backgroundColor: Colors.orange,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+        return;
+      }
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          content: Text(_territoryErrorMessage(rawEvent)),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),
@@ -1417,19 +1517,25 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       );
       await _loadData();
     } else {
+      final rawEvent = result['event'] ?? result['message'];
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          content: Text(_territoryErrorMessage(rawEvent)),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),
       );
+      if (_shouldReloadAfterTerritoryError(rawEvent)) {
+        await _loadData();
+      }
     }
   }
 
   Future<void> _joinDefense(int? contestId) async {
     if (contestId == null) return;
+
+    final regionKey = _regionDetailNotifier.value?['regionKey'] as String? ?? _selectedRegion?['regionKey'] as String?;
 
     setState(() => _isActing = true);
     final result = await _service.defendContest(contestId);
@@ -1437,6 +1543,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     setState(() => _isActing = false);
 
     if (result['success'] == true) {
+      if (regionKey != null) {
+        await _reloadRegionState(regionKey);
+      } else {
+        await _loadData();
+      }
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -1450,12 +1561,34 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           duration: const Duration(seconds: 4),
         ),
       );
-      await _loadData();
     } else {
+      final rawEvent = result['event'] ?? result['message'];
+      if (regionKey != null) {
+        final refreshedRegion = await _reloadRegionState(regionKey);
+        final refreshedStatus = refreshedRegion?['contestStatus'] as String?;
+        if (refreshedRegion?['contestId'] != null && refreshedStatus != null) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(
+                _t(
+                  'De conteststatus is ververst. Je ziet nu direct de actuele verdedigingsfase.',
+                  'The contest state has been refreshed. You can now immediately see the current defense phase.',
+                ),
+              ),
+              backgroundColor: Colors.orange,
+              duration: const Duration(seconds: 4),
+            ),
+          );
+          return;
+        }
+      } else if (_shouldReloadAfterTerritoryError(rawEvent)) {
+        await _loadData();
+      }
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
+          content: Text(_territoryErrorMessage(rawEvent)),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),

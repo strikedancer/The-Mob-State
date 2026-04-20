@@ -32,6 +32,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/territory_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory regio-modal verduidelijkt: contest toont nu resterende prep/active/resolve-tijd, cooldown per actie, opbrengstklasse per gebied en gescheiden aanvaller/verdediger-acties zodat spelers niet langer de verkeerde knopset zien
   - Bestanden: `backend/src/services/territoryService.ts`, `backend/src/routes/territory.ts`, `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Territory conteststatus ververst nu direct in de open regio-modal en oudere contests zonder opgeslagen tijdvensters krijgen automatisch afgeleide prep/active/resolve-tijden, zodat spelers geen foutmelding-plus-stale-state of `Onbekend` timers meer zien
+  - Bestanden: `backend/src/services/territoryService.ts`, `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory NL asset source gecorrigeerd: Nederland gebruikt nu direct `netherlandsLow.svg` (backend `svgAssetKey` + frontend fallback) in plaats van de legacy `cafuego-Nederland` alias
   - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory multi-country SVG batch verwerkt: alle aangeleverde landenkaarten uit de root dropzone zijn gekopieerd naar `client/assets/images/maps`, `cafuego-Nederland.svg` is vervangen door de nieuwe NL SVG (`netherlandsLow.svg` als source), en Territory UI laadt nu land-specifieke map-assets dynamisch op basis van backend `country.svgAssetKey` met fallback per country-code
@@ -580,6 +582,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Dashboard unread teller gebruikt dedicated `/messages/unread` endpoint (sneller/stabieler)
   - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Dashboard statistiekencard gebruikt weer echte live tellers: hardcoded nullen zijn vervangen door backenddata voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels zodat het home-dashboard niet meer misleidend leeg oogt
+  - Bestanden: `backend/src/routes/player.ts`, `client/lib/services/dashboard_service.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Territory contest-start en verdedigen verversen de open modal nu direct; als de eerste API-call fout terugstuurt maar de contest al bestaat, toont de UI meteen de actuele gevechtsstatus. Contesttimers vallen lokaal terug op `startedAt` + runtime-config zodat regio-modals geen `Onbekend` meer tonen tijdens voorbereiding
+  - Bestanden: `backend/src/services/territoryService.ts`, `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Auth-state logout propagatie verbeterd bij 401/403 (forced logout na sessie-vervanging)
   - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`
 - [ ] Admin UI: tab “System Logs” toegevoegd voor runtime backend fouten

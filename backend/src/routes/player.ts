@@ -748,7 +748,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       return Math.max(0, Math.ceil((nextAllowedAt.getTime() - Date.now()) / 1000));
     };
 
-    const [shootingStats, gymStats, drugInventoryAgg, nightclubVenueCount, nightclubRevenueAgg, nightclubSeasonState, crewWarHub] = await Promise.all([
+    const [shootingStats, gymStats, drugInventoryAgg, nightclubVenueCount, nightclubRevenueAgg, nightclubSeasonState, crewWarHub, playerCore, breakoutCount, hitsPlacedCount, travelCount] = await Promise.all([
       prisma.shootingRangeStats.findUnique({
         where: { playerId },
         select: { lastTrainedAt: true },
@@ -773,6 +773,24 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         select: { seasonEndAt: true },
       }),
       crewWarService.getWarHubForPlayer(playerId),
+      prisma.player.findUnique({
+        where: { id: playerId },
+        select: { killCount: true },
+      }),
+      prisma.worldEvent.count({
+        where: { playerId, eventKey: 'prison.escape_success' },
+      }),
+      prisma.hitList.count({
+        where: { placedById: playerId },
+      }),
+      prisma.worldEvent.count({
+        where: {
+          playerId,
+          eventKey: {
+            in: ['travel.arrived', 'travel.journey_complete'],
+          },
+        },
+      }),
     ]);
 
     const cooldownPlayer = await prisma.player.findUnique({
@@ -871,6 +889,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
     const totalAmmo = ammoInventory.reduce((sum, item) => sum + item.quantity, 0);
     const drugsTotalQuantity = Number(drugInventoryAgg._sum.quantity ?? 0);
     const nightclubRevenueAllTime = Number(nightclubRevenueAgg._sum.totalRevenueAllTime ?? 0n);
+    const killCount = Number(playerCore?.killCount ?? 0);
 
     // Get player weapons
     const weapons = await prisma.weaponInventory.findMany({
@@ -938,6 +957,9 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       params: {},
       stats: {
         crimeAttempts,
+        breakoutCount,
+        killCount,
+        hitsPlacedCount,
         successfulCrimes,
         jobAttempts,
         vehicleThieves,
@@ -948,6 +970,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         drugsTotalQuantity,
         nightclubVenues: nightclubVenueCount,
         nightclubRevenueAllTime,
+        travelCount,
         weapons: weapons.map((w) => {
           const weaponDefinition = weaponService.getWeaponDefinition(w.weaponId);
           return {

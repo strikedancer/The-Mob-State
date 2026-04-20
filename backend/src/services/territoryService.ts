@@ -72,12 +72,48 @@ type ContestRow = { id: number; regionKey: string; status: string; attackerCrewI
 type SeasonRow = { id: number; seasonKey: string; status: string; startsAt: Date; endsAt: Date; rewardConfigJson: string | null };
 type MapContestRow = ContestRow & { attackerCrewName: string | null; defenderCrewName: string | null };
 
+function buildContestSchedule(
+  startedAt: Date,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): { activeAt: Date; lockdownAt: Date; resolveAt: Date } {
+  const activeAt = new Date(startedAt.getTime() + (cfg.contestPrepMinutes * 60 * 1000));
+  const lockdownAt = new Date(activeAt.getTime() + (cfg.contestActiveMinutes * 60 * 1000));
+  const resolveAt = new Date(lockdownAt.getTime() + (cfg.contestLockdownMinutes * 60 * 1000));
+  return { activeAt, lockdownAt, resolveAt };
+}
+
+function normalizeContestSchedule(
+  contest: Pick<ContestRow, 'startedAt' | 'activeAt' | 'lockdownAt' | 'resolveAt'>,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): { activeAt: Date; lockdownAt: Date; resolveAt: Date } {
+  const fallback = buildContestSchedule(contest.startedAt, cfg);
+  return {
+    activeAt: contest.activeAt ?? fallback.activeAt,
+    lockdownAt: contest.lockdownAt ?? fallback.lockdownAt,
+    resolveAt: contest.resolveAt ?? fallback.resolveAt,
+  };
+}
+
 function parseJson(v: string | null | undefined): Record<string, unknown> {
   if (!v) return {};
   try { return JSON.parse(v) as Record<string, unknown>; } catch { return {}; }
 }
 
 async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
+  const cfg = await getTerritoryConfig();
+
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_contests
+     SET activeAt = COALESCE(activeAt, TIMESTAMPADD(MINUTE, ?, startedAt)),
+         lockdownAt = COALESCE(lockdownAt, TIMESTAMPADD(MINUTE, ?, startedAt)),
+         resolveAt = COALESCE(resolveAt, TIMESTAMPADD(MINUTE, ?, startedAt))
+     WHERE status IN ('preparing', 'active', 'lockdown')
+       AND (activeAt IS NULL OR lockdownAt IS NULL OR resolveAt IS NULL)` ,
+    cfg.contestPrepMinutes,
+    cfg.contestPrepMinutes + cfg.contestActiveMinutes,
+    cfg.contestPrepMinutes + cfg.contestActiveMinutes + cfg.contestLockdownMinutes,
+  );
+
   await prisma.$executeRawUnsafe(
     `UPDATE territory_contests
      SET status = 'active'
@@ -222,6 +258,7 @@ export async function getMapData(
   const enrichedRegions = regions.map(r => {
     const ctrl = controlMap[r.regionKey];
     const contest = contestMap[r.regionKey];
+    const contestSchedule = contest ? normalizeContestSchedule(contest, cfg) : null;
     const viewerContestRole = viewer?.viewerCrewId == null || !contest
       ? null
       : (contest.attackerCrewId === viewer.viewerCrewId ? 'attacker' : (contest.defenderCrewId === viewer.viewerCrewId ? 'defender' : null));
@@ -240,9 +277,9 @@ export async function getMapData(
       contestId: contest?.id ?? null,
       contestStatus: contest?.status ?? null,
       contestStartedAt: contest?.startedAt ?? null,
-      contestActiveAt: contest?.activeAt ?? null,
-      contestLockdownAt: contest?.lockdownAt ?? null,
-      contestResolveAt: contest?.resolveAt ?? null,
+      contestActiveAt: contestSchedule?.activeAt ?? null,
+      contestLockdownAt: contestSchedule?.lockdownAt ?? null,
+      contestResolveAt: contestSchedule?.resolveAt ?? null,
       attackerCrewId: contest?.attackerCrewId ?? null,
       attackerCrewName: contest?.attackerCrewName ?? null,
       defenderCrewId: contest?.defenderCrewId ?? null,
@@ -288,6 +325,8 @@ export async function startContest(playerId: number, crewId: number, regionKey: 
   lockdownAt: Date;
   resolveAt: Date;
 }> {
+  await syncContestLifecycle();
+
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
 
@@ -325,12 +364,10 @@ export async function startContest(playerId: number, crewId: number, regionKey: 
   }
 
   const now = new Date();
-  const prepMs = cfg.contestPrepMinutes * 60 * 1000;
-  const activeMs = cfg.contestActiveMinutes * 60 * 1000;
-  const lockdownMs = cfg.contestLockdownMinutes * 60 * 1000;
-  const activeAt = new Date(now.getTime() + prepMs);
-  const lockdownAt = new Date(activeAt.getTime() + activeMs);
-  const resolveAt = new Date(lockdownAt.getTime() + lockdownMs);
+  const schedule = buildContestSchedule(now, cfg);
+  const activeAt = schedule.activeAt;
+  const lockdownAt = schedule.lockdownAt;
+  const resolveAt = schedule.resolveAt;
 
   // Get current owner for defender
   const controlRows = await prisma.$queryRawUnsafe<ControlRow[]>(
@@ -339,16 +376,29 @@ export async function startContest(playerId: number, crewId: number, regionKey: 
   );
   const defenderCrewId = controlRows[0]?.ownerCrewId ?? null;
 
-  await prisma.$executeRawUnsafe(
-    `INSERT INTO territory_contests (regionKey, status, attackerCrewId, defenderCrewId, startedAt, activeAt, lockdownAt, resolveAt)
-     VALUES (?, 'preparing', ?, ?, ?, ?, ?, ?)`,
-    regionKey, crewId, defenderCrewId, now, activeAt, lockdownAt, resolveAt,
-  );
+  const contestId = await prisma.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe(
+      `INSERT INTO territory_contests (regionKey, status, attackerCrewId, defenderCrewId, startedAt, activeAt, lockdownAt, resolveAt)
+       VALUES (?, 'preparing', ?, ?, ?, ?, ?, ?)`,
+      regionKey, crewId, defenderCrewId, now, activeAt, lockdownAt, resolveAt,
+    );
 
-  const inserted = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
-    'SELECT LAST_INSERT_ID() AS id'
-  );
-  const contestId = inserted[0]?.id ?? 0;
+    const inserted = await tx.$queryRawUnsafe<Array<{ id: number }>>(
+      `SELECT id FROM territory_contests
+       WHERE regionKey = ? AND attackerCrewId = ? AND startedAt = ?
+       ORDER BY id DESC
+       LIMIT 1`,
+      regionKey,
+      crewId,
+      now,
+    );
+
+    const insertedContestId = inserted[0]?.id ?? 0;
+    if (!insertedContestId) {
+      throw new Error('CONTEST_INSERT_FAILED');
+    }
+    return insertedContestId;
+  });
 
   // Notify defending crew (if any)
   if (defenderCrewId) {

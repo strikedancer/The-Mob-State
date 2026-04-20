@@ -37,6 +37,8 @@
   - Crew War koppeling: Territory War en Total War gebruiken nu echte Territory-regio\'s als claim-doelen in de War Room metadata, zodat crew wars geen losstaande placeholder-gebieden meer tonen
   - Territory desktop icon compat-fix: Territory gebruikt op desktop/web nu `Icons.language` voor de sidebar-entry en landselector, omdat die in deze Flutter-web shell aantoonbaar wel rendert waar `public/public_rounded` leeg wegviel
   - Territory contest UX-fix: de regio-modal toont nu contest timers (acties starten, acties sluiten, contest eindigt), cooldown per actie en de opbrengstklasse van het gebied; actieve contest-acties zijn bovendien role-based opgesplitst zodat aanvallers geen verdediging meer zien en verdedigers geen aanvalsacties
+  - Territory contest state/timer fix: bestaande contests met missende `activeAt`/`lockdownAt`/`resolveAt` worden nu automatisch aangevuld vanuit `startedAt` + runtime-config, zodat regio-modals geen `Onbekend`-timers meer tonen; de open modal volgt bovendien direct verse mapdata na starten/verdedigen zodat spelers niet pas na weg-navigeren de actuele gevechtsstatus zien
+  - Territory live-refresh fix: bij contest-start en verdedigen wordt de open regio-modal nu altijd direct ververst; als de eerste call fout terugkomt maar de contest al is aangemaakt, ziet de speler meteen de actuele conteststatus in plaats van pas na weg-navigeren. De modal berekent timerfallbacks bovendien lokaal vanuit `startedAt` + runtime-config als een timestamp in de payload nog ontbreekt
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 

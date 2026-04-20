@@ -61,6 +61,9 @@ class CrewWarDashboardSummary {
 
 class DashboardStats {
   final int crimeAttempts;
+  final int breakoutCount;
+  final int killCount;
+  final int hitsPlacedCount;
   final int successfulCrimes;
   final int jobAttempts;
   final int vehicleThieves;
@@ -71,6 +74,7 @@ class DashboardStats {
   final int drugsTotalQuantity;
   final int nightclubVenues;
   final int nightclubRevenueAllTime;
+  final int travelCount;
   final List<WeaponInfo> weapons;
   final String? selectedWeaponName;
   final VehicleInfo? activeVehicle;
@@ -82,6 +86,9 @@ class DashboardStats {
 
   DashboardStats({
     required this.crimeAttempts,
+    required this.breakoutCount,
+    required this.killCount,
+    required this.hitsPlacedCount,
     required this.successfulCrimes,
     required this.jobAttempts,
     required this.vehicleThieves,
@@ -92,6 +99,7 @@ class DashboardStats {
     required this.drugsTotalQuantity,
     required this.nightclubVenues,
     required this.nightclubRevenueAllTime,
+    required this.travelCount,
     required this.weapons,
     this.selectedWeaponName,
     this.activeVehicle,
@@ -105,6 +113,9 @@ class DashboardStats {
   factory DashboardStats.fromJson(Map<String, dynamic> json) {
     return DashboardStats(
       crimeAttempts: json['crimeAttempts'] as int,
+      breakoutCount: json['breakoutCount'] as int? ?? 0,
+      killCount: json['killCount'] as int? ?? 0,
+      hitsPlacedCount: json['hitsPlacedCount'] as int? ?? 0,
       successfulCrimes: json['successfulCrimes'] as int,
       jobAttempts: json['jobAttempts'] as int,
       vehicleThieves: json['vehicleThieves'] as int? ?? 0,
@@ -115,6 +126,7 @@ class DashboardStats {
       drugsTotalQuantity: json['drugsTotalQuantity'] as int? ?? 0,
       nightclubVenues: json['nightclubVenues'] as int? ?? 0,
       nightclubRevenueAllTime: json['nightclubRevenueAllTime'] as int? ?? 0,
+        travelCount: json['travelCount'] as int? ?? 0,
       weapons: (json['weapons'] as List<dynamic>)
           .map((w) => WeaponInfo.fromJson(w as Map<String, dynamic>))
           .toList(),
