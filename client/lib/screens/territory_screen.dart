@@ -60,6 +60,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   String? _renderedSvgMap;
   Rect? _svgViewBox;
   List<_SvgRegionShape> _svgRegionShapes = const [];
+  String? _hoveredSvgElementId;
   String? _mapTooltipLabel;
   Offset? _mapTooltipOffset;
   Timer? _mapTooltipTimer;
@@ -135,6 +136,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _svgTemplate = svgTemplate;
       _svgViewBox = parsedSvg?.viewBox;
       _svgRegionShapes = parsedSvg?.shapes ?? const [];
+      _hoveredSvgElementId = null;
       _mapTooltipLabel = null;
       _mapTooltipOffset = null;
       _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
@@ -260,44 +262,94 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     return Offset(viewBox.left + (dx * viewBox.width), viewBox.top + (dy * viewBox.height));
   }
 
-  void _handleMapTap(TapDownDetails details, Size renderSize, List<dynamic> regions) {
+  _SvgRegionShape? _findShapeAtLocalPoint(Offset local, Size renderSize) {
     final viewBox = _svgViewBox;
-    if (viewBox == null || _svgRegionShapes.isEmpty) return;
+    if (viewBox == null || _svgRegionShapes.isEmpty) return null;
 
-    final svgPoint = _localToSvgPoint(local: details.localPosition, renderSize: renderSize, viewBox: viewBox);
-    if (svgPoint == null) return;
+    final svgPoint = _localToSvgPoint(local: local, renderSize: renderSize, viewBox: viewBox);
+    if (svgPoint == null) return null;
 
-    final shapes = _svgRegionShapes;
-    _SvgRegionShape? hit;
-    for (var i = shapes.length - 1; i >= 0; i--) {
-      if (shapes[i].path.contains(svgPoint)) {
-        hit = shapes[i];
-        break;
+    for (var i = _svgRegionShapes.length - 1; i >= 0; i--) {
+      if (_svgRegionShapes[i].path.contains(svgPoint)) {
+        return _svgRegionShapes[i];
       }
     }
-    if (hit == null) return;
+    return null;
+  }
 
-    final matchedRegion = regions
+  Map<String, dynamic>? _findRegionBySvgElementId(List<dynamic> regions, String svgElementId) {
+    return regions
         .whereType<Map<String, dynamic>>()
         .cast<Map<String, dynamic>?>()
         .firstWhere(
-          (region) => (region?['svgElementId'] as String?)?.trim().toLowerCase() == hit!.id.toLowerCase(),
+          (region) =>
+              (region?['svgElementId'] as String?)?.trim().toLowerCase() ==
+              svgElementId.trim().toLowerCase(),
           orElse: () => null,
         );
+  }
 
-    final regionName = matchedRegion != null
-        ? (_isNl
-            ? (matchedRegion['nameNl'] as String? ?? matchedRegion['regionKey'] as String? ?? hit.name ?? hit.id)
-            : (matchedRegion['nameEn'] as String? ?? matchedRegion['regionKey'] as String? ?? hit.name ?? hit.id))
-        : (hit.name ?? hit.id);
+  String _regionDisplayName(Map<String, dynamic>? region, _SvgRegionShape shape) {
+    if (region == null) return shape.name ?? shape.id;
+    return _isNl
+        ? (region['nameNl'] as String? ?? region['regionKey'] as String? ?? shape.name ?? shape.id)
+        : (region['nameEn'] as String? ?? region['regionKey'] as String? ?? shape.name ?? shape.id);
+  }
+
+  void _updateHoveredRegion(String? svgElementId, {bool clearTooltip = false}) {
+    final normalized = svgElementId?.trim();
+    final current = _hoveredSvgElementId;
+    if (current == normalized && !clearTooltip) return;
+
+    setState(() {
+      _hoveredSvgElementId = normalized;
+      if (clearTooltip) {
+        _mapTooltipLabel = null;
+        _mapTooltipOffset = null;
+      }
+      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
+    });
+  }
+
+  void _handleMapHover(PointerHoverEvent event, Size renderSize, List<dynamic> regions) {
+    final hit = _findShapeAtLocalPoint(event.localPosition, renderSize);
+    if (hit == null) {
+      _mapTooltipTimer?.cancel();
+      _updateHoveredRegion(null, clearTooltip: true);
+      return;
+    }
+
+    final matchedRegion = _findRegionBySvgElementId(regions, hit.id);
+    _mapTooltipTimer?.cancel();
+    setState(() {
+      _hoveredSvgElementId = hit.id;
+      _mapTooltipLabel = _regionDisplayName(matchedRegion, hit);
+      _mapTooltipOffset = event.localPosition;
+      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
+    });
+  }
+
+  void _handleMapHoverExit() {
+    _mapTooltipTimer?.cancel();
+    _updateHoveredRegion(null, clearTooltip: true);
+  }
+
+  void _handleMapTap(TapDownDetails details, Size renderSize, List<dynamic> regions) {
+    final hit = _findShapeAtLocalPoint(details.localPosition, renderSize);
+    if (hit == null) return;
+
+    final matchedRegion = _findRegionBySvgElementId(regions, hit.id);
+    final regionName = _regionDisplayName(matchedRegion, hit);
 
     _mapTooltipTimer?.cancel();
     setState(() {
       if (matchedRegion != null) {
         _selectedRegion = matchedRegion;
       }
+      _hoveredSvgElementId = hit.id;
       _mapTooltipLabel = regionName;
       _mapTooltipOffset = details.localPosition;
+      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
     });
 
     _mapTooltipTimer = Timer(const Duration(seconds: 2), () {
@@ -319,10 +371,37 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       final svgElementId = rawRegion['svgElementId'] as String?;
       if (svgElementId == null || svgElementId.trim().isEmpty) continue;
 
-      final fillHex = _hexColorForRegion(rawRegion);
-      svg = _applyFillToElement(svg, svgElementId.trim(), fillHex);
+      var fillHex = _hexColorForRegion(rawRegion);
+      if (_hoveredSvgElementId?.toLowerCase() == svgElementId.trim().toLowerCase()) {
+        fillHex = _darkenHex(fillHex, 0.18);
+      }
+      svg = _applyRegionStyleToElement(
+        svg,
+        svgElementId.trim(),
+        fillHex,
+        strokeHex: '#FFFFFF',
+        strokeWidth: '0.9',
+      );
     }
     return svg;
+  }
+
+  String _darkenHex(String hex, double amount) {
+    final normalized = hex.replaceFirst('#', '').trim();
+    if (normalized.length != 6) return hex;
+    final value = int.tryParse(normalized, radix: 16);
+    if (value == null) return hex;
+
+    int channel(int shift) {
+      final base = (value >> shift) & 0xFF;
+      final darkened = (base * (1.0 - amount)).round().clamp(0, 255);
+      return darkened;
+    }
+
+    final r = channel(16).toRadixString(16).padLeft(2, '0');
+    final g = channel(8).toRadixString(16).padLeft(2, '0');
+    final b = channel(0).toRadixString(16).padLeft(2, '0');
+    return '#$r$g$b'.toUpperCase();
   }
 
   String _hexColorForRegion(Map<String, dynamic> region) {
@@ -426,7 +505,13 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     );
   }
 
-  String _applyFillToElement(String svg, String elementId, String fillHex) {
+  String _applyRegionStyleToElement(
+    String svg,
+    String elementId,
+    String fillHex, {
+    required String strokeHex,
+    required String strokeWidth,
+  }) {
     final escapedId = RegExp.escape(elementId);
     final tagRegex = RegExp('(<[^>]*\\bid="$escapedId"[^>]*>)', caseSensitive: false);
 
@@ -448,15 +533,52 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
             }
             styleValue = '$styleValue fill:$fillHex;';
           }
+
+          if (RegExp(r'(^|;)\\s*stroke\\s*:', caseSensitive: false).hasMatch(styleValue)) {
+            styleValue = styleValue.replaceAllMapped(
+              RegExp(r'(^|;)\\s*stroke\\s*:[^;]*', caseSensitive: false),
+              (m) => '${m.group(1) ?? ';'}stroke:$strokeHex',
+            );
+          } else {
+            styleValue = '$styleValue stroke:$strokeHex;';
+          }
+
+          if (RegExp(r'(^|;)\\s*stroke-width\\s*:', caseSensitive: false).hasMatch(styleValue)) {
+            styleValue = styleValue.replaceAllMapped(
+              RegExp(r'(^|;)\\s*stroke-width\\s*:[^;]*', caseSensitive: false),
+              (m) => '${m.group(1) ?? ';'}stroke-width:$strokeWidth',
+            );
+          } else {
+            styleValue = '$styleValue stroke-width:$strokeWidth;';
+          }
+
           return 'style="$styleValue"';
         });
       }
 
-      if (RegExp('\\sfill="', caseSensitive: false).hasMatch(tag)) {
-        return tag.replaceFirst(RegExp('fill="[^"]*"', caseSensitive: false), 'fill="$fillHex"');
+      var updatedTag = tag;
+      if (RegExp('\\sfill="', caseSensitive: false).hasMatch(updatedTag)) {
+        updatedTag = updatedTag.replaceFirst(RegExp('fill="[^"]*"', caseSensitive: false), 'fill="$fillHex"');
+      } else {
+        updatedTag = updatedTag.replaceFirst('>', ' fill="$fillHex">');
       }
 
-      return tag.replaceFirst('>', ' fill="$fillHex">');
+      if (RegExp('\\sstroke="', caseSensitive: false).hasMatch(updatedTag)) {
+        updatedTag = updatedTag.replaceFirst(RegExp('stroke="[^"]*"', caseSensitive: false), 'stroke="$strokeHex"');
+      } else {
+        updatedTag = updatedTag.replaceFirst('>', ' stroke="$strokeHex">');
+      }
+
+      if (RegExp('\\sstroke-width="', caseSensitive: false).hasMatch(updatedTag)) {
+        updatedTag = updatedTag.replaceFirst(
+          RegExp('stroke-width="[^"]*"', caseSensitive: false),
+          'stroke-width="$strokeWidth"',
+        );
+      } else {
+        updatedTag = updatedTag.replaceFirst('>', ' stroke-width="$strokeWidth">');
+      }
+
+      return updatedTag;
     });
   }
 
@@ -530,92 +652,27 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   Widget _buildMapTab() {
     final regions = (_mapData['regions'] as List<dynamic>?) ?? [];
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isDesktop = constraints.maxWidth >= 900;
-        final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 900;
-
-        if (isDesktop) {
-          return Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    _buildSvgMapOverview(regions),
-                    const SizedBox(height: 8),
-                    Expanded(child: _buildRegionGrid(regions)),
-                  ],
-                ),
-              ),
-              const VerticalDivider(width: 1),
-              SizedBox(
-                width: 320,
-                child: SingleChildScrollView(
-                  child: _selectedRegion != null
-                      ? _buildRegionDetail(_selectedRegion!)
-                      : _buildNoSelectionPlaceholder(),
-                ),
-              ),
-            ],
-          );
-        }
-
-        if (isTablet) {
-          return Column(
-            children: [
-              _buildSvgMapOverview(regions),
-              const SizedBox(height: 8),
-              Expanded(child: _buildRegionGrid(regions)),
-              if (_selectedRegion != null)
-                SizedBox(
-                  height: 320,
-                  child: SingleChildScrollView(child: _buildRegionDetail(_selectedRegion!)),
-                ),
-            ],
-          );
-        }
-
-        // Mobile
-        return Stack(
-          children: [
-            Column(
-              children: [
-                _buildSvgMapOverview(regions),
-                const SizedBox(height: 8),
-                Expanded(child: _buildRegionGrid(regions)),
-              ],
+    return RefreshIndicator(
+      onRefresh: _loadData,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          _buildSvgMapOverview(regions),
+          const SizedBox(height: 8),
+          _buildRegionGrid(regions, embeddedInParentScroll: true),
+          const SizedBox(height: 8),
+          if (_selectedRegion != null)
+            Card(
+              margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              child: _buildRegionDetail(_selectedRegion!),
+            )
+          else
+            Card(
+              margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              child: _buildNoSelectionPlaceholder(),
             ),
-            if (_selectedRegion != null)
-              DraggableScrollableSheet(
-                initialChildSize: 0.35,
-                minChildSize: 0.15,
-                maxChildSize: 0.65,
-                builder: (_, controller) => Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                    boxShadow: const [BoxShadow(blurRadius: 8, spreadRadius: 2)],
-                  ),
-                  child: ListView(
-                    controller: controller,
-                    children: [
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          width: 40,
-                          height: 4,
-                          decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(2)),
-                        ),
-                      ),
-                      _buildRegionDetail(_selectedRegion!),
-                    ],
-                  ),
-                ),
-              ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 
@@ -650,38 +707,42 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                 return SizedBox(
                   height: mapHeight,
                   width: double.infinity,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTapDown: (details) => _handleMapTap(details, Size(maxWidth, mapHeight), regions),
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: SvgPicture.string(
-                            svgMarkup,
-                            fit: BoxFit.contain,
-                            placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
-                          ),
-                        ),
-                        if (_mapTooltipLabel != null && _mapTooltipOffset != null)
-                          Positioned(
-                            left: (_mapTooltipOffset!.dx + 10).clamp(8, maxWidth - 180),
-                            top: (_mapTooltipOffset!.dy - 36).clamp(8, mapHeight - 32),
-                            child: Container(
-                              constraints: const BoxConstraints(maxWidth: 170),
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.black87,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                _mapTooltipLabel!,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Colors.white, fontSize: 12),
-                              ),
+                  child: MouseRegion(
+                    onHover: (event) => _handleMapHover(event, Size(maxWidth, mapHeight), regions),
+                    onExit: (_) => _handleMapHoverExit(),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTapDown: (details) => _handleMapTap(details, Size(maxWidth, mapHeight), regions),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: SvgPicture.string(
+                              svgMarkup,
+                              fit: BoxFit.contain,
+                              placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
                             ),
                           ),
-                      ],
+                          if (_mapTooltipLabel != null && _mapTooltipOffset != null)
+                            Positioned(
+                              left: (_mapTooltipOffset!.dx + 10).clamp(8, maxWidth - 180),
+                              top: (_mapTooltipOffset!.dy - 36).clamp(8, mapHeight - 32),
+                              child: Container(
+                                constraints: const BoxConstraints(maxWidth: 170),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: Colors.black87,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  _mapTooltipLabel!,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -690,8 +751,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
             const SizedBox(height: 8),
             Text(
               _t(
-                'Klik op een gebied voor details; oranje = actieve contest.',
-                'Tap a region for details; orange = active contest.',
+                'Hover of klik op een gebied voor details; oranje = actieve contest.',
+                'Hover or tap a region for details; orange = active contest.',
               ),
             ),
             const SizedBox(height: 8),
@@ -719,24 +780,25 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildRegionGrid(List<dynamic> regions) {
+  Widget _buildRegionGrid(List<dynamic> regions, {bool embeddedInParentScroll = false}) {
     if (regions.isEmpty) {
       return Center(child: Text(_t('Geen regio\'s gevonden.', 'No regions found.')));
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadData,
-      child: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          mainAxisExtent: 120,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemCount: regions.length,
-        itemBuilder: (context, i) => _buildRegionCard(regions[i] as Map<String, dynamic>),
+    return GridView.builder(
+      shrinkWrap: embeddedInParentScroll,
+      physics: embeddedInParentScroll
+          ? const NeverScrollableScrollPhysics()
+          : const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 200,
+        mainAxisExtent: 120,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
       ),
+      itemCount: regions.length,
+      itemBuilder: (context, i) => _buildRegionCard(regions[i] as Map<String, dynamic>),
     );
   }
 

@@ -9,6 +9,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
+- [ ] Territory map scroll + hover UX aangescherpt: de volledige map-tab gebruikt nu één primaire verticale scrollflow (kaart + regiogrid + detailpaneel) conform frontend-richtlijnen; SVG-regio's worden bij hover donkerder, tonen tooltip op hover/tap en forceren zichtbare grenslijnen (`stroke` + `stroke-width`) voor betere regio-afbakening
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory buildfix voor interactieve SVG map: ontbrekende private helpertypes (`_SvgMapParseResult`, `_SvgRegionShape`) toegevoegd zodat de nieuwe klikbare kaart en tooltip-flow weer compileert in Docker/web release builds
   - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory SVG pool uitgebreid met Zuid-Afrika: `southAfricaLow.svg` is vanuit de root dropzone naar de game maps-map gekopieerd en country fallback mapping bevat nu ook `za`, zodat de kaart direct als asset kan laden in Territory

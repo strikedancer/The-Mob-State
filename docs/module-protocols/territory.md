@@ -23,6 +23,7 @@
   - `backend/src/startup/ensureTerritorySchema.ts` — country seed uitgebreid zodat meerdere landen direct zichtbaar zijn via `/territory/countries`
   - NL correctie: Nederland gebruikt nu primair `netherlandsLow.svg` (backend `svgAssetKey = netherlandsLow` + frontend NL fallback naar `netherlandsLow.svg`)
   - Interactieve map UX: de Territory SVG is vergroot, regio-paden zijn direct klikbaar via path hit-testing op `svgElementId`, tonen een tooltip met gebiedsnaam en openen meteen het detailpaneel; detail-content blijft scrollbaar op desktop/tablet
+  - Scroll/hover verfijning: de volledige map-tab volgt nu 1 primaire verticale scrollflow, en SVG-regio's krijgen hover-darkening plus expliciete zichtbare grenslijnen (`stroke`) voor betere afbakening
   - Zuid-Afrika toegevoegd aan de asset/country set: `za` is nu gekoppeld aan `southAfricaLow.svg` (backend seed + frontend fallback)
 - Bug fixes: ✅
   - Territory screen notification calls gecorrigeerd naar `showTopRightFromSnackBar` pattern (was ongedefinieerde `showTopRightNotification` helper)
