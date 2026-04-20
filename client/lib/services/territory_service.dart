@@ -50,6 +50,23 @@ class TerritoryService {
     }
   }
 
+  Future<Map<String, dynamic>?> getMyCrew() async {
+    try {
+      final response = await _api.get('/crews/mine');
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        final params = data['params'] as Map<String, dynamic>?;
+        final crew = params?['crew'];
+        if (crew is Map<String, dynamic>) {
+          return crew;
+        }
+      }
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   // ── Contest ────────────────────────────────────────────────────────────────
 
   Future<Map<String, dynamic>> startContest(String regionKey) async {

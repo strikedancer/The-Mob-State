@@ -9,6 +9,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
+- [ ] Territory crew-gate UX verduidelijkt: het scherm leest nu `GET /crews/mine`, toont de eigen crew in het detailpaneel en vervangt de kale `not_in_crew` fout door duidelijke NL/EN uitleg wanneer een speler nog geen crew heeft; aanvalsknoppen blijven verborgen tot de speler daadwerkelijk in een crew zit
+  - Bestanden: `client/lib/services/territory_service.dart`, `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Territory gebiedslijnen extra zichtbaar gemaakt: SVG-regio borders renderen nu zwart met iets dikkere stroke zodat de grenzen ook op lichtgrijze/neutrale gebieden duidelijk leesbaar blijven
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory SVG renderer gegeneraliseerd voor multi-country betrouwbaarheid: kleuren/lijnen/hover worden nu op alle `path`-elementen toegepast met neutrale fallbackkleur als backend-regio mapping ontbreekt, zodat gebiedslijnen en hover-darkening niet meer wegvallen bij id-mismatches
   - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory map scroll + hover UX aangescherpt: de volledige map-tab gebruikt nu één primaire verticale scrollflow (kaart + regiogrid + detailpaneel) conform frontend-richtlijnen; SVG-regio's worden bij hover donkerder, tonen tooltip op hover/tap en forceren zichtbare grenslijnen (`stroke` + `stroke-width`) voor betere regio-afbakening
@@ -83,6 +87,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
 
 ### Backend
+- [ ] Territory contest lifecycle geautomatiseerd: backend synchroniseert contests nu automatisch van `preparing` naar `active`, daarna naar `lockdown` en tenslotte naar `resolved` op map/overview/action reads, zodat gestart territorium niet meer vast blijft hangen zonder handmatige admin-resolve
+  - Bestanden: `backend/src/services/territoryService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory NL region mapping gelijkgetrokken met nieuwe `netherlandsLow.svg`: backend startup seed schrijft nu de echte SVG element ids (`NL-GR`, `NL-FR`, `NL-DR`, etc.) en update bestaande `territory_regions` rows op duplicate, zodat ownership-kleuren, hover-darkening en grenslijnen weer op de correcte Nederlandse gebieden renderen
   - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory country seed uitgebreid met Zuid-Afrika (`za`): startup bootstrap schrijft nu `southAfricaLow` als `svgAssetKey`, zodat `/territory/countries` en map-resolutie deze landkaart direct kunnen aanbieden

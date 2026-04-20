@@ -57,6 +57,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   List<dynamic> _leaderboard = [];
   Map<String, dynamic> _overview = {};
   String _selectedCountryCode = 'nl';
+  int? _myCrewId;
+  String? _myCrewName;
   String? _svgTemplate;
   String? _renderedSvgMap;
   Rect? _svgViewBox;
@@ -74,6 +76,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   late TabController _tabController;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
+  bool get _hasCrew => _myCrewId != null;
   String _t(String nl, String en) => _isNl ? nl : en;
 
   @override
@@ -113,10 +116,13 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       }
     }
 
-    final [mapData, overview, leaderboard] = await Future.wait([
+    final previousRegionKey = _selectedRegion?['regionKey'] as String?;
+
+    final [mapData, overview, leaderboard, myCrew] = await Future.wait([
       _service.getMap(targetCountryCode),
       _service.getOverview(),
       _service.getLeaderboard(),
+      _service.getMyCrew(),
     ]);
 
     final mapDataMap = mapData as Map<String, dynamic>;
@@ -125,6 +131,16 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final svgAssetKey = mapCountry?['svgAssetKey'] as String?;
     final svgTemplate = await _loadSvgTemplateForCountry(resolvedCountryCode, svgAssetKey);
     final parsedSvg = _parseSvgMap(svgTemplate);
+    final myCrewMap = myCrew as Map<String, dynamic>?;
+    final myCrewIdRaw = myCrewMap?['id'];
+    final myCrewId = myCrewIdRaw is num ? myCrewIdRaw.toInt() : int.tryParse(myCrewIdRaw?.toString() ?? '');
+    final regions = (mapDataMap['regions'] as List<dynamic>?) ?? const <dynamic>[];
+    final selectedRegion = previousRegionKey == null
+        ? null
+        : regions.whereType<Map<String, dynamic>>().cast<Map<String, dynamic>?>().firstWhere(
+              (region) => region?['regionKey'] == previousRegionKey,
+              orElse: () => null,
+            );
 
     if (!mounted) return;
     setState(() {
@@ -134,15 +150,109 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _overview = overview as Map<String, dynamic>;
       _leaderboard = leaderboard as List<dynamic>;
       _isTerritoryEnabled = (_overview['config']?['enabled'] as bool?) ?? false;
+      _myCrewId = myCrewId;
+      _myCrewName = myCrewMap?['name'] as String?;
       _svgTemplate = svgTemplate;
       _svgViewBox = parsedSvg?.viewBox;
       _svgRegionShapes = parsedSvg?.shapes ?? const [];
       _hoveredSvgElementId = null;
       _mapTooltipLabel = null;
       _mapTooltipOffset = null;
+      _selectedRegion = selectedRegion;
       _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
       _isLoading = false;
     });
+  }
+
+  bool _isMyCrewRegion(Map<String, dynamic> region) {
+    if (_myCrewId == null) return false;
+    final ownerCrewId = region['ownerCrewId'];
+    final resolvedOwnerCrewId = ownerCrewId is num ? ownerCrewId.toInt() : int.tryParse(ownerCrewId?.toString() ?? '');
+    return resolvedOwnerCrewId == _myCrewId;
+  }
+
+  String _displayContestStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'preparing':
+        return _t('Voorbereiding', 'Preparation');
+      case 'active':
+        return _t('Actief', 'Active');
+      case 'lockdown':
+        return _t('Lockdown', 'Lockdown');
+      case 'resolved':
+        return _t('Afgerond', 'Resolved');
+      case 'cancelled':
+        return _t('Geannuleerd', 'Cancelled');
+      default:
+        return status;
+    }
+  }
+
+  String? _contestHint(String? status) {
+    switch (status?.toLowerCase()) {
+      case 'preparing':
+        return _t(
+          'De contest loopt nu in voorbereiding. Zodra de prep-tijd voorbij is, wordt dit gebied automatisch actief en kun je acties uitvoeren.',
+          'This contest is currently in preparation. Once prep time ends, the region automatically becomes active and actions unlock.',
+        );
+      case 'lockdown':
+        return _t(
+          'Deze contest zit in lockdown. Er kunnen nu geen nieuwe acties meer worden gedaan; de uitkomst volgt automatisch.',
+          'This contest is in lockdown. No new actions can be taken now; the outcome resolves automatically.',
+        );
+      default:
+        return null;
+    }
+  }
+
+  String _territoryErrorMessage(Object? rawEvent) {
+    final event = rawEvent?.toString() ?? '';
+    switch (event) {
+      case 'error.not_in_crew':
+        return _t('Je moet eerst in een crew zitten om territorium aan te vallen.', 'You must join a crew before you can attack territory.');
+      case 'territory.contest_already_active':
+        return _t('Voor dit gebied loopt al een contest.', 'A contest is already running for this region.');
+      case 'territory.crew_contest_limit_reached':
+        return _t('Je crew heeft al het maximum aantal gelijktijdige contests bereikt.', 'Your crew has already reached the concurrent contest limit.');
+      case 'territory.regions_cap_reached':
+        return _t('Je crew bezit al het maximum aantal gebieden.', 'Your crew already owns the maximum number of regions.');
+      case 'territory.contest_not_active':
+        return _t('Deze contest is nog niet actief. Wacht tot de voorbereidingsfase voorbij is.', 'This contest is not active yet. Wait for the preparation phase to finish.');
+      case 'territory.action_cooldown':
+        return _t('Je moet even wachten voor je opnieuw een territory-actie kunt doen.', 'You need to wait before performing another territory action.');
+      case 'territory.daily_cap_reached':
+        return _t('Je hebt je dagelijkse limiet voor territory-acties bereikt.', 'You have reached your daily limit for territory actions.');
+      default:
+        return event.isEmpty ? _t('Onbekende territory-fout.', 'Unknown territory error.') : event;
+    }
+  }
+
+  Widget _buildInfoNotice(String text, {Color? borderColor, Color? backgroundColor, IconData icon = Icons.info_outline}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Colors.blueGrey.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: borderColor ?? Colors.blueGrey.withValues(alpha: 0.28)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 1),
+            child: Icon(icon, size: 16, color: borderColor ?? Colors.blueGrey.shade700),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 12.5, height: 1.35),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   List<String> _buildMapAssetCandidates(String countryCode, String? svgAssetKey) {
@@ -388,8 +498,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         svg,
         shape.id,
         fillHex,
-        strokeHex: '#FFFFFF',
-        strokeWidth: '0.9',
+        strokeHex: '#000000',
+        strokeWidth: '1.1',
       );
     }
     return svg;
@@ -883,6 +993,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final contestId = region['contestId'] as int?;
     final contestStatus = region['contestStatus'] as String?;
     final tier = (region['valueTier'] as num?)?.toInt() ?? 1;
+    final isMyCrewRegion = _isMyCrewRegion(region);
+    final contestHint = _contestHint(contestStatus);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -905,10 +1017,37 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           _detailRow(_t('Eigenaar', 'Owner'), ownerName ?? _t('Neutraal', 'Neutral')),
           _detailRow(_t('Stabiliteit', 'Stability'), '$stability%'),
           _detailRow(_t('Waarde', 'Value tier'), '⭐' * tier),
-          if (contestStatus != null) _detailRow(_t('Contest status', 'Contest status'), contestStatus),
+          if (_myCrewName != null) _detailRow(_t('Jouw crew', 'Your crew'), _myCrewName!),
+          if (contestStatus != null) _detailRow(_t('Contest status', 'Contest status'), _displayContestStatus(contestStatus)),
           const SizedBox(height: 16),
+          if (!_hasCrew)
+            _buildInfoNotice(
+              _t(
+                'Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.',
+                'Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.',
+              ),
+              borderColor: Colors.orange.shade700,
+              backgroundColor: Colors.orange.withValues(alpha: 0.1),
+              icon: Icons.groups_rounded,
+            ),
+          if (contestHint != null) ...[
+            _buildInfoNotice(
+              contestHint,
+              borderColor: Colors.amber.shade700,
+              backgroundColor: Colors.amber.withValues(alpha: 0.1),
+              icon: Icons.schedule,
+            ),
+            const SizedBox(height: 12),
+          ],
+          if (contestStatus == null && isMyCrewRegion)
+            _buildInfoNotice(
+              _t('Je crew controleert dit gebied al.', 'Your crew already controls this region.'),
+              borderColor: Colors.green.shade700,
+              backgroundColor: Colors.green.withValues(alpha: 0.1),
+              icon: Icons.verified,
+            ),
           // Actions
-          if (contestStatus == null)
+          if (contestStatus == null && _hasCrew && !isMyCrewRegion)
             _buildActionButton(
               label: _t('Aanvallen', 'Attack'),
               icon: Icons.gps_fixed,
@@ -1043,6 +1182,18 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   // ── Actions ────────────────────────────────────────────────────────────────
 
   Future<void> _confirmStartContest(String regionKey) async {
+    if (!_hasCrew) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_t('Sluit je eerst aan bij een crew om territorium aan te vallen.', 'Join a crew first to attack territory.')),
+          backgroundColor: Colors.orange,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+      return;
+    }
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
@@ -1062,12 +1213,18 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     setState(() => _isActing = false);
 
     if (result['success'] == true) {
+      final contestStatus = _displayContestStatus((result['status'] as String?) ?? 'preparing');
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_t('Contest gestart!', 'Contest started!')),
+          content: Text(
+            _t(
+              'Contest gestart. Status: $contestStatus. Wacht tot de voorbereidingsfase voorbij is voor acties.',
+              'Contest started. Status: $contestStatus. Wait for the preparation phase to finish before taking actions.',
+            ),
+          ),
           backgroundColor: Colors.green,
-          duration: const Duration(seconds: 3),
+          duration: const Duration(seconds: 5),
         ),
       );
       await _loadData();
@@ -1075,9 +1232,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _t('Mislukt: ${result['event'] ?? result['message']}', 'Failed: ${result['event'] ?? result['message']}'),
-          ),
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),
@@ -1106,12 +1261,7 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _t(
-              'Actie mislukt: ${result['event'] ?? result['message']}',
-              'Action failed: ${result['event'] ?? result['message']}',
-            ),
-          ),
+          content: Text(_territoryErrorMessage(result['event'] ?? result['message'])),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 4),
         ),

@@ -76,6 +76,38 @@ function parseJson(v: string | null | undefined): Record<string, unknown> {
   try { return JSON.parse(v) as Record<string, unknown>; } catch { return {}; }
 }
 
+async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_contests
+     SET status = 'active'
+     WHERE status = 'preparing' AND activeAt IS NOT NULL AND activeAt <= ?`,
+    now,
+  );
+
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_contests
+     SET status = 'lockdown'
+     WHERE status = 'active' AND lockdownAt IS NOT NULL AND lockdownAt <= ?`,
+    now,
+  );
+
+  const contestsToResolve = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+    `SELECT id FROM territory_contests
+     WHERE status IN ('active', 'lockdown') AND resolveAt IS NOT NULL AND resolveAt <= ?`,
+    now,
+  );
+
+  for (const contest of contestsToResolve) {
+    try {
+      await resolveContest(contest.id);
+    } catch (error) {
+      if (!(error instanceof Error) || error.message !== 'CONTEST_NOT_FOUND_OR_ALREADY_RESOLVED') {
+        throw error;
+      }
+    }
+  }
+}
+
 // ── Public API ──────────────────────────────────────────────────────────────
 
 export async function getCountries(): Promise<TerritoryRow[]> {
@@ -89,6 +121,8 @@ export async function getMapData(countryCode: string): Promise<{
   country: TerritoryRow;
   regions: Array<RegionRow & { ownerCrewId: number | null; ownerCrewName: string | null; controlPercent: number; stability: number; contestId: number | null; contestStatus: string | null }>;
 }> {
+  await syncContestLifecycle();
+
   const [countries, regions, controls, contests] = await Promise.all([
     prisma.$queryRawUnsafe<TerritoryRow[]>(
       'SELECT id, countryCode, displayNameNl, displayNameEn, svgAssetKey, enabled FROM territory_countries WHERE countryCode = ? LIMIT 1',
@@ -156,6 +190,8 @@ export async function getOverview(): Promise<{
   activeSeason: SeasonRow | null;
   leaderboard: Array<{ crewId: number; crewName: string; regionsOwned: number; totalControl: number }>;
 }> {
+  await syncContestLifecycle();
+
   const [cfg, seasons, leaderboard] = await Promise.all([
     getTerritoryConfig(),
     prisma.$queryRawUnsafe<SeasonRow[]>(
@@ -174,7 +210,13 @@ export async function getOverview(): Promise<{
   return { config: cfg, activeSeason: seasons[0] ?? null, leaderboard };
 }
 
-export async function startContest(playerId: number, crewId: number, regionKey: string): Promise<{ contestId: number }> {
+export async function startContest(playerId: number, crewId: number, regionKey: string): Promise<{
+  contestId: number;
+  status: string;
+  activeAt: Date;
+  lockdownAt: Date;
+  resolveAt: Date;
+}> {
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
 
@@ -242,7 +284,13 @@ export async function startContest(playerId: number, crewId: number, regionKey: 
     _notifyCrewContestStarted(defenderCrewId, regionKey, contestId).catch(() => {});
   }
 
-  return { contestId };
+  return {
+    contestId,
+    status: 'preparing',
+    activeAt,
+    lockdownAt,
+    resolveAt,
+  };
 }
 
 export async function doAction(
@@ -251,6 +299,8 @@ export async function doAction(
   contestId: number,
   actionType: string,
 ): Promise<{ pointsDelta: number; message: string }> {
+  await syncContestLifecycle();
+
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
 
@@ -320,6 +370,8 @@ export async function doAction(
 }
 
 export async function defendContest(playerId: number, crewId: number, contestId: number): Promise<void> {
+  await syncContestLifecycle();
+
   const contests = await prisma.$queryRawUnsafe<ContestRow[]>(
     `SELECT * FROM territory_contests WHERE id = ? AND defenderCrewId = ? LIMIT 1`,
     contestId, crewId,
@@ -335,6 +387,8 @@ export async function getCrewTerritory(crewId: number): Promise<{
   regions: Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlPercent: number; contestStatus: string | null }>;
   season: SeasonRow | null;
 }> {
+  await syncContestLifecycle();
+
   const [controlled, seasons] = await Promise.all([
     prisma.$queryRawUnsafe<Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlJson: string | null; ownerCrewId: number | null }>>(
       `SELECT tc.regionKey, tr.nameNl, tr.nameEn, tc.stability, tc.controlJson, tc.ownerCrewId
@@ -379,6 +433,8 @@ export async function getCrewTerritory(crewId: number): Promise<{
 }
 
 export async function getLeaderboard(): Promise<Array<{ crewId: number; crewName: string; regionsOwned: number }>> {
+  await syncContestLifecycle();
+
   return prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number }>>(
     `SELECT c.id AS crewId, c.name AS crewName, COUNT(tc.id) AS regionsOwned
      FROM territory_control tc

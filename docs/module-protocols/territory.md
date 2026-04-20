@@ -31,6 +31,7 @@
   - Territory web buildfix: ontbrekende interactieve SVG helpertypes (`_SvgMapParseResult`, `_SvgRegionShape`) toegevoegd zodat compile op web release/Docker niet faalt
   - Territory hover buildfix: expliciete Flutter pointer event import toegevoegd zodat `PointerHoverEvent` compileert in web release/Docker builds
   - Territory NL SVG id remap: backend seed gebruikt nu de echte `netherlandsLow.svg` ids (`NL-GR`, `NL-FR`, etc.) en update bestaande `territory_regions` rows ook op `svgElementId`, zodat kleur, hover en grenslijnen weer op de juiste gebieden landen
+  - Territory usability fix: screen leest nu bestaande crewstatus via `GET /crews/mine`, blokkeert aanvallen met duidelijke NL/EN uitleg voor spelers zonder crew, en backend synchroniseert contest lifecycle automatisch van `preparing -> active -> lockdown -> resolved` op reads/actions zodat contests niet vast blijven staan
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
 
@@ -72,6 +73,7 @@ Scope-afbakening:
 ## Must Preserve
 - Duidelijke ownership per regio (welke crew controleert).
 - Duidelijke contest status (idle, contested, lockdown, resolved).
+- Duidelijke crew-gate in de UI: spelers zonder crew krijgen uitleg in plaats van een kale `not_in_crew` backendfout.
 - Deterministische score-opbouw en resolve-regels.
 - Volledige audit trail van acties en ownership mutaties.
 - Map rendering met duidelijke fallback als SVG/region mapping deels faalt.
