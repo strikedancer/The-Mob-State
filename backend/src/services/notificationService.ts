@@ -1,8 +1,45 @@
 import admin from 'firebase-admin';
+import fs from 'fs';
 import prisma from '../lib/prisma';
 import { translationService, type Language } from './translationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
 import { systemLogService } from './systemLogService';
+
+type FirebaseServiceAccountShape = {
+  project_id?: string;
+  client_email?: string;
+  private_key?: string;
+};
+
+function parseServiceAccountFromEnv(): FirebaseServiceAccountShape | null {
+  const rawJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
+  const rawBase64 = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64?.trim();
+
+  if (rawJson) {
+    return JSON.parse(rawJson) as FirebaseServiceAccountShape;
+  }
+
+  if (rawBase64) {
+    const decoded = Buffer.from(rawBase64, 'base64').toString('utf8');
+    return JSON.parse(decoded) as FirebaseServiceAccountShape;
+  }
+
+  const projectId = process.env.FIREBASE_PROJECT_ID?.trim();
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim();
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY
+    ?.replace(/\\n/g, '\n')
+    .trim();
+
+  if (projectId && clientEmail && privateKey) {
+    return {
+      project_id: projectId,
+      client_email: clientEmail,
+      private_key: privateKey,
+    };
+  }
+
+  return null;
+}
 /**
  * NotificationService
  * Handles sending push notifications via Firebase Cloud Messaging
@@ -57,22 +94,31 @@ export class NotificationService {
     }
 
     try {
-      // Initialize with service account JSON file or default credentials
-      if (serviceAccountPath) {
-        const serviceAccount = require(serviceAccountPath);
+      const serviceAccountFromEnv = parseServiceAccountFromEnv();
+      const normalizedPath = serviceAccountPath?.trim();
+      const hasServiceAccountFile = normalizedPath ? fs.existsSync(normalizedPath) : false;
+
+      if (serviceAccountFromEnv) {
+        admin.initializeApp({
+          credential: admin.credential.cert(serviceAccountFromEnv as admin.ServiceAccount)
+        });
+        console.log('[NotificationService] Firebase Admin SDK initialized from environment credentials');
+      } else if (normalizedPath && hasServiceAccountFile) {
+        const serviceAccount = JSON.parse(fs.readFileSync(normalizedPath, 'utf8')) as admin.ServiceAccount;
         admin.initializeApp({
           credential: admin.credential.cert(serviceAccount)
         });
+        console.log(`[NotificationService] Firebase Admin SDK initialized from service account file: ${normalizedPath}`);
       } else {
-        // Attempt to initialize with default credentials (for production)
-        // For now, we'll skip initialization if no service account provided
         console.warn('[NotificationService] Firebase Admin not initialized - no service account provided');
         console.warn('[NotificationService] Push notifications will not work until Firebase is configured');
+        if (normalizedPath) {
+          console.warn(`[NotificationService] Missing Firebase service account file at: ${normalizedPath}`);
+        }
         return;
       }
 
       this.initialized = true;
-      console.log('[NotificationService] Firebase Admin SDK initialized');
     } catch (error) {
       console.error('[NotificationService] Failed to initialize Firebase Admin SDK:', error);
     }

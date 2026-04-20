@@ -16,6 +16,17 @@
 
 ### 2. Initialize Firebase Admin
 
+Production/VPS voorkeur:
+
+Gebruik geen gecommit `firebase-service-account.json` in de container-image. Geef de service-account runtime mee via een van deze paden:
+
+1. `FIREBASE_SERVICE_ACCOUNT_JSON` met de volledige JSON in 1 env var
+2. `FIREBASE_SERVICE_ACCOUNT_BASE64` met base64 van de volledige JSON
+3. Losse env vars `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`
+4. Alleen als fallback: een echt beschikbaar bestandspad via `FIREBASE_SERVICE_ACCOUNT_PATH`
+
+Voor `docker-compose.plesk.yml` hoort minimaal een van bovenstaande env-varianten aan de backend-service te worden doorgegeven. Alleen `FIREBASE_SERVICE_ACCOUNT_PATH=firebase-service-account.json` zetten zonder file-mount of env payload is onvoldoende en laat push live stil uitstaan.
+
 In `backend/src/index.ts`, add after app initialization:
 
 ```typescript
@@ -164,6 +175,7 @@ All default to `true` (enabled).
 ### Push notifications not working
 
 1. Check Firebase Admin is initialized (backend logs should show `[NotificationService] Firebase Admin SDK initialized`)
+2. If admin system logs show `Firebase Admin not initialized for push send`, verify the backend container actually receives one of `FIREBASE_SERVICE_ACCOUNT_JSON`, `FIREBASE_SERVICE_ACCOUNT_BASE64`, or the split Firebase env vars, or that the configured `FIREBASE_SERVICE_ACCOUNT_PATH` exists inside the container.
 2. Verify device token is registered (`SELECT * FROM player_devices WHERE playerId = X`)
 3. Check FCM token is valid (Firebase Console → Cloud Messaging → Send test message)
 4. Ensure notification preferences are enabled (`notifyFriendRequest = 1`)
