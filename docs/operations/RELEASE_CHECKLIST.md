@@ -1,3 +1,4 @@
+- Crew War / Territory koppeling gecontroleerd: War Room toont bij `territory_war` en `total_war` echte Territory-regio\'s als claim-doelen, inclusief bruikbare labels i.p.v. generieke placeholder-targets.
 # Release Checklist
 
 Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy uit te rollen.

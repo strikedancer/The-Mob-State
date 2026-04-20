@@ -12,6 +12,7 @@ const MIN_MEMBERS_REQUIRED = 3;
 const REPEATED_TARGET_WINDOW_MS = 30 * 60 * 1000;
 const TERRITORY_TICK_MS = 30 * 60 * 1000;
 const DEFAULT_REWARD_POOL = 150000;
+const DEFAULT_WAR_TERRITORY_TARGET_COUNT = 3;
 
 const WAR_ACTIONS: Record<string, {
   basePoints: number;
@@ -31,7 +32,17 @@ const WAR_ACTIONS: Record<string, {
   territory_claim: { basePoints: 10, cooldownMs: 20 * 60 * 1000 },
 };
 
-const TERRITORIES = ['docks', 'downtown', 'harbor'];
+const LEGACY_TERRITORIES = ['docks', 'downtown', 'harbor'];
+
+type CrewWarTerritoryTarget = {
+  regionKey: string;
+  countryCode: string | null;
+  nameNl: string;
+  nameEn: string;
+  ownerCrewId: number | null;
+  ownerCrewName: string | null;
+  currentHolderCrewId?: number | null;
+};
 
 type WarStatus = 'preparing' | 'active' | 'lockdown' | 'resolved' | 'archived' | 'cancelled';
 type WarType = 'kill_war' | 'economy_war' | 'territory_war' | 'total_war';
@@ -50,6 +61,129 @@ function asJson(value: string | null | undefined): Record<string, any> {
 
 function stringifyJson(value: Record<string, any>): string {
   return JSON.stringify(value ?? {});
+}
+
+function normalizeCrewWarTerritoryTarget(raw: any, territoryState: Record<string, any>): CrewWarTerritoryTarget | null {
+  const regionKey = typeof raw?.regionKey === 'string' ? raw.regionKey.trim() : '';
+  if (!regionKey) return null;
+  const ownerCrewId = raw?.ownerCrewId == null ? null : Number(raw.ownerCrewId);
+  const currentHolderRaw = territoryState[regionKey];
+  const currentHolderCrewId = currentHolderRaw == null ? ownerCrewId : Number(currentHolderRaw);
+  return {
+    regionKey,
+    countryCode: typeof raw?.countryCode === 'string' && raw.countryCode.trim().isNotEmpty ? raw.countryCode.trim() : null,
+    nameNl: typeof raw?.nameNl === 'string' && raw.nameNl.trim().length > 0 ? raw.nameNl.trim() : regionKey,
+    nameEn: typeof raw?.nameEn === 'string' && raw.nameEn.trim().length > 0 ? raw.nameEn.trim() : regionKey,
+    ownerCrewId: Number.isFinite(ownerCrewId) ? ownerCrewId : null,
+    ownerCrewName: typeof raw?.ownerCrewName === 'string' && raw.ownerCrewName.trim().length > 0 ? raw.ownerCrewName.trim() : null,
+    currentHolderCrewId: Number.isFinite(currentHolderCrewId) ? currentHolderCrewId : null,
+  };
+}
+
+function getLegacyCrewWarTerritoryTargets(territoryState: Record<string, any>): CrewWarTerritoryTarget[] {
+  const labels: Record<string, { nl: string; en: string }> = {
+    docks: { nl: 'Havengebied', en: 'Docks' },
+    downtown: { nl: 'Binnenstad', en: 'Downtown' },
+    harbor: { nl: 'Haven', en: 'Harbor' },
+  };
+  return LEGACY_TERRITORIES.map((regionKey) => ({
+    regionKey,
+    countryCode: null,
+    nameNl: labels[regionKey]?.nl ?? regionKey,
+    nameEn: labels[regionKey]?.en ?? regionKey,
+    ownerCrewId: null,
+    ownerCrewName: null,
+    currentHolderCrewId: territoryState[regionKey] == null ? null : Number(territoryState[regionKey]),
+  }));
+}
+
+function getWarTerritoryTargetsFromMetadata(metadata: Record<string, any>): CrewWarTerritoryTarget[] {
+  const territoryState = (metadata.territories ?? {}) as Record<string, any>;
+  const rawTargets = Array.isArray(metadata.territoryTargets) ? metadata.territoryTargets : [];
+  const normalized = rawTargets
+    .map((target) => normalizeCrewWarTerritoryTarget(target, territoryState))
+    .where((target): target is CrewWarTerritoryTarget => target !== null);
+
+  if (normalized.length > 0) {
+    return normalized;
+  }
+
+  return getLegacyCrewWarTerritoryTargets(territoryState);
+}
+
+async function buildCrewWarTerritoryTargets(attackerCrewId: number, defenderCrewId: number): Promise<CrewWarTerritoryTarget[]> {
+  const selected = new Map<string, CrewWarTerritoryTarget>();
+
+  const ownedRows = await prisma.$queryRawUnsafe<Array<{
+    regionKey: string;
+    countryCode: string;
+    nameNl: string;
+    nameEn: string;
+    ownerCrewId: number | null;
+    ownerCrewName: string | null;
+  }>>(
+    `SELECT tr.regionKey, tr.countryCode, tr.nameNl, tr.nameEn, tc.ownerCrewId, c.name AS ownerCrewName
+     FROM territory_regions tr
+     JOIN territory_control tc ON tc.regionKey = tr.regionKey
+     LEFT JOIN crews c ON c.id = tc.ownerCrewId
+     WHERE tr.enabled = 1 AND tc.ownerCrewId IN (?, ?)
+     ORDER BY CASE
+       WHEN tc.ownerCrewId = ? THEN 0
+       WHEN tc.ownerCrewId = ? THEN 1
+       ELSE 2
+     END, tr.valueTier DESC, tr.regionKey ASC`,
+    defenderCrewId,
+    attackerCrewId,
+    defenderCrewId,
+    attackerCrewId,
+  );
+
+  for (const row of ownedRows) {
+    if (selected.size >= DEFAULT_WAR_TERRITORY_TARGET_COUNT) break;
+    selected.set(row.regionKey, {
+      regionKey: row.regionKey,
+      countryCode: row.countryCode,
+      nameNl: row.nameNl,
+      nameEn: row.nameEn,
+      ownerCrewId: row.ownerCrewId,
+      ownerCrewName: row.ownerCrewName,
+      currentHolderCrewId: row.ownerCrewId,
+    });
+  }
+
+  if (selected.size < DEFAULT_WAR_TERRITORY_TARGET_COUNT) {
+    const fillerRows = await prisma.$queryRawUnsafe<Array<{
+      regionKey: string;
+      countryCode: string;
+      nameNl: string;
+      nameEn: string;
+      ownerCrewId: number | null;
+      ownerCrewName: string | null;
+    }>>(
+      `SELECT tr.regionKey, tr.countryCode, tr.nameNl, tr.nameEn, tc.ownerCrewId, c.name AS ownerCrewName
+       FROM territory_regions tr
+       LEFT JOIN territory_control tc ON tc.regionKey = tr.regionKey
+       LEFT JOIN crews c ON c.id = tc.ownerCrewId
+       WHERE tr.enabled = 1
+       ORDER BY tr.valueTier DESC, tr.regionKey ASC`
+    );
+
+    for (const row of fillerRows) {
+      if (selected.size >= DEFAULT_WAR_TERRITORY_TARGET_COUNT) break;
+      if (selected.has(row.regionKey)) continue;
+      selected.set(row.regionKey, {
+        regionKey: row.regionKey,
+        countryCode: row.countryCode,
+        nameNl: row.nameNl,
+        nameEn: row.nameEn,
+        ownerCrewId: row.ownerCrewId,
+        ownerCrewName: row.ownerCrewName,
+        currentHolderCrewId: row.ownerCrewId,
+      });
+    }
+  }
+
+  return selected.size > 0 ? Array.from(selected.values()) : getLegacyCrewWarTerritoryTargets({});
 }
 
 function isVipActive(entity: { isVip: boolean; vipExpiresAt: Date | null } | null | undefined): boolean {
@@ -163,6 +297,7 @@ async function applyTerritoryTicks(war: NonNullable<CrewWarRecord>) {
   const now = new Date();
   const metadata = asJson(war.metadataJson);
   const territories = metadata.territories ?? {};
+  const territoryTargets = getWarTerritoryTargetsFromMetadata(metadata);
   let lastTickAt = metadata.lastTerritoryTickAt ? new Date(metadata.lastTerritoryTickAt) : new Date(war.activeFrom);
   const tickUntil = new Date(Math.min(now.getTime(), war.endTime.getTime()));
 
@@ -177,7 +312,8 @@ async function applyTerritoryTicks(war: NonNullable<CrewWarRecord>) {
       return acc;
     }, {});
 
-    for (const territoryKey of TERRITORIES) {
+    for (const territory of territoryTargets) {
+      const territoryKey = territory.regionKey;
       const ownerCrewId = Number(territories[territoryKey] ?? 0);
       if (ownerCrewId && ownershipCounts[ownerCrewId] !== undefined) {
         ownershipCounts[ownerCrewId] += 1;
@@ -507,6 +643,7 @@ async function buildWarDetail(warId: number, playerId?: number) {
   ]);
 
   const metadata = asJson(war.metadataJson);
+  metadata.territoryTargets = getWarTerritoryTargetsFromMetadata(metadata);
   const joinedParticipant = playerId
     ? participants.find((entry) => entry.playerId === playerId) ?? null
     : null;
@@ -726,9 +863,12 @@ export async function declareWar(playerId: number, targetCrewId: number, warType
   const lockDownFrom = new Date(activeFrom.getTime() + (ACTIVE_HOURS * 60 - LOCKDOWN_MINUTES) * 60 * 1000);
   const endTime = new Date(activeFrom.getTime() + ACTIVE_HOURS * 60 * 60 * 1000);
   const metadata: Record<string, any> = {
-    territories: Object.fromEntries(TERRITORIES.map((territory) => [territory, null])),
+    territoryTargets: await buildCrewWarTerritoryTargets(membership.crewId, targetCrewId),
     lastTerritoryTickAt: activeFrom.toISOString(),
   };
+  metadata.territories = Object.fromEntries(
+    (metadata.territoryTargets as CrewWarTerritoryTarget[]).map((territory) => [territory.regionKey, territory.ownerCrewId ?? null]),
+  );
 
   const war = await prisma.$transaction(async (tx) => {
     const createdWar = await tx.crewWar.create({
@@ -962,22 +1102,32 @@ export async function performWarAction(playerId: number, warId: number, actionTy
     if (war.warType !== 'territory_war' && war.warType !== 'total_war') {
       throw new Error('WAR_TERRITORY_UNAVAILABLE');
     }
-    if (!territoryKey || !TERRITORIES.includes(territoryKey)) {
+    const territoryTargets = getWarTerritoryTargetsFromMetadata(asJson(war.metadataJson));
+    const availableKeys = territoryTargets.map((territory) => territory.regionKey);
+    if (!territoryKey || !availableKeys.includes(territoryKey)) {
       throw new Error('INVALID_TERRITORY');
     }
     const warMetadata = asJson(war.metadataJson);
     const territories = warMetadata.territories ?? {};
+    warMetadata.territoryTargets = getWarTerritoryTargetsFromMetadata(warMetadata);
     const previousOwner = territories[territoryKey] ?? null;
     territories[territoryKey] = membership.crewId;
     warMetadata.territories = territories;
-    metadata = { territoryKey, previousOwner, newOwner: membership.crewId };
+    const territoryInfo = territoryTargets.find((territory) => territory.regionKey === territoryKey);
+    metadata = {
+      territoryKey,
+      territoryNameNl: territoryInfo?.nameNl ?? territoryKey,
+      territoryNameEn: territoryInfo?.nameEn ?? territoryKey,
+      previousOwner,
+      newOwner: membership.crewId,
+    };
     await prisma.crewWar.update({
       where: { id: warId },
       data: { metadataJson: stringifyJson(warMetadata) },
     });
 
-    const heldByActor = TERRITORIES.filter((key) => territories[key] === membership.crewId).length;
-    const heldByEnemy = TERRITORIES.filter((key) => territories[key] === enemyCrewId).length;
+    const heldByActor = availableKeys.filter((key) => territories[key] === membership.crewId).length;
+    const heldByEnemy = availableKeys.filter((key) => territories[key] === enemyCrewId).length;
     await prisma.crewWarStanding.upsert({
       where: { warId_crewId: { warId, crewId: membership.crewId } },
       create: { warId, crewId: membership.crewId, territoriesHeld: heldByActor, rank: 1 },
@@ -1176,6 +1326,7 @@ export async function adminDeclareWar(adminId: number, payload: {
   const activeFrom = new Date(now.getTime() + startsInMinutes * 60 * 1000);
   const lockDownFrom = new Date(activeFrom.getTime() + (ACTIVE_HOURS * 60 - LOCKDOWN_MINUTES) * 60 * 1000);
   const endTime = new Date(activeFrom.getTime() + ACTIVE_HOURS * 60 * 60 * 1000);
+  const territoryTargets = await buildCrewWarTerritoryTargets(payload.attackerCrewId, payload.defenderCrewId);
   const war = await prisma.crewWar.create({
     data: {
       seasonId: season.id,
@@ -1184,7 +1335,12 @@ export async function adminDeclareWar(adminId: number, payload: {
       declaredByPlayerId: adminId,
       attackerCrewId: payload.attackerCrewId,
       defenderCrewId: payload.defenderCrewId,
-      metadataJson: stringifyJson({ territories: Object.fromEntries(TERRITORIES.map((territory) => [territory, null])) }),
+      metadataJson: stringifyJson({
+        territoryTargets,
+        territories: Object.fromEntries(
+          territoryTargets.map((territory) => [territory.regionKey, territory.ownerCrewId ?? null]),
+        ),
+      }),
       startTime: now,
       activeFrom,
       lockDownFrom,

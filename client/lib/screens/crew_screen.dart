@@ -1098,12 +1098,28 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  String _formatWarTerritoryOptionLabel(String locale, Map<String, dynamic> territory) {
+    final name = ((locale == 'nl' ? territory['nameNl'] : territory['nameEn']) ?? territory['regionKey'] ?? '-')
+        .toString();
+    final countryCode = (territory['countryCode'] as String?)?.toUpperCase();
+    final ownerCrewName = territory['currentHolderCrewName'] as String? ?? territory['ownerCrewName'] as String?;
+    final suffixParts = <String>[];
+    if (countryCode != null && countryCode.isNotEmpty) {
+      suffixParts.add(countryCode);
+    }
+    if (ownerCrewName != null && ownerCrewName.isNotEmpty) {
+      suffixParts.add(ownerCrewName);
+    }
+    if (suffixParts.isEmpty) return name;
+    return '$name (${suffixParts.join(' • ')})';
+  }
+
   Future<String?> _promptWarTerritory(
     String locale,
-    List<String> territories,
+    List<Map<String, dynamic>> territories,
   ) async {
     if (territories.isEmpty) return null;
-    String selected = territories.first;
+    String selected = (territories.first['regionKey'] ?? '').toString();
     return showDialog<String>(
       context: context,
       builder: (dialogContext) => StatefulBuilder(
@@ -1114,8 +1130,8 @@ class _CrewScreenState extends State<CrewScreen>
             items: territories
                 .map(
                   (territory) => DropdownMenuItem<String>(
-                    value: territory,
-                    child: Text(territory),
+                    value: (territory['regionKey'] ?? '').toString(),
+                    child: Text(_formatWarTerritoryOptionLabel(locale, territory)),
                   ),
                 )
                 .toList(),
@@ -4205,11 +4221,24 @@ class _CrewScreenState extends State<CrewScreen>
       (currentWar?['opponentMembers'] as List<dynamic>? ?? [])
         .map((entry) => (entry as Map).cast<String, dynamic>())
         .toList();
-    final territories =
+    final territoryTargets =
+        (metadata['territoryTargets'] as List<dynamic>? ?? [])
+            .whereType<Map>()
+            .map((entry) => entry.cast<String, dynamic>())
+            .toList();
+    final legacyTerritories =
         ((metadata['territories'] as Map?)?.cast<String, dynamic>() ??
                 <String, dynamic>{})
             .keys
+            .map(
+              (regionKey) => <String, dynamic>{
+                'regionKey': regionKey,
+                'nameNl': regionKey,
+                'nameEn': regionKey,
+              },
+            )
             .toList();
+    final territories = territoryTargets.isNotEmpty ? territoryTargets : legacyTerritories;
 
     Future<void> handleAction(String actionType) async {
       if (currentWar == null) return;
@@ -4432,6 +4461,32 @@ class _CrewScreenState extends State<CrewScreen>
                           currentWar['warType'] as String?,
                         ),
                       ),
+                      if ((currentWar['warType'] as String?) == 'territory_war' ||
+                          (currentWar['warType'] as String?) == 'total_war') ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          _tr(locale, 'War-gebieden', 'War territories'),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: territories.map<Widget>((territory) {
+                            final territoryKey = (territory['regionKey'] ?? '').toString();
+                            final currentHolderCrewId = territory['currentHolderCrewId'];
+                            final holderLabel = currentHolderCrewId == currentWar['attackerCrewId']
+                                ? ((currentWar['attackerCrew'] as Map?)?['name']?.toString() ?? '#${currentWar['attackerCrewId']}')
+                                : currentHolderCrewId == currentWar['defenderCrewId']
+                                    ? ((currentWar['defenderCrew'] as Map?)?['name']?.toString() ?? '#${currentWar['defenderCrewId']}')
+                                    : _tr(locale, 'Neutraal', 'Neutral');
+                            return Chip(
+                              avatar: const Icon(Icons.place_outlined, size: 18),
+                              label: Text('${_formatWarTerritoryOptionLabel(locale, territory)} • $holderLabel'),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                       if (opponentMembers.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Text(

@@ -38,6 +38,7 @@ Scope-afbakening:
 - Crew Wars -> Payments (VIP player and VIP crew entitlements)
 - Crew Wars -> Achievements (season rewards, war titles, unlockables)
 - Crew Wars -> Admin (manual start/stop, moderation, abuse review, logs)
+- Crew Wars -> Territory (territory war targetselectie moet uit echte territory-regio\'s komen; generieke placeholder-targets gelden niet als done)
 
 ## Must Preserve
 - Heldere war statusweergave: `preparing`, `active`, `lockdown`, `resolved`, `archived`.
@@ -46,6 +47,7 @@ Scope-afbakening:
 - Acties moeten traceerbaar blijven via war logs en admin-audit.
 - Leaderboard en rewards moeten deterministisch herleidbaar zijn uit opgeslagen war actions.
 - UI moet live spanning geven zonder kritieke acties of statusinfo op mobiel te verbergen.
+- Territory War en Total War moeten hun claimbare gebieden tonen met echte Territory-regio-identiteit (regionKey + NL/EN naam), niet met abstracte labels zoals `docks` of `harbor`.
 
 ## War Lifecycle Guardrails
 
