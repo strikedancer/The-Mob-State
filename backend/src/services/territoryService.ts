@@ -328,7 +328,16 @@ export async function getOverview(): Promise<{
        LIMIT 10`
     ),
   ]);
-  return { config: cfg, activeSeason: seasons[0] ?? null, leaderboard };
+  return {
+    config: cfg,
+    activeSeason: seasons[0] ?? null,
+    leaderboard: leaderboard.map((entry) => ({
+      crewId: toNumeric(entry.crewId),
+      crewName: entry.crewName,
+      regionsOwned: toNumeric(entry.regionsOwned),
+      totalControl: toNumeric(entry.totalControl),
+    })),
+  };
 }
 
 export async function startContest(playerId: number, crewId: number, regionKey: string): Promise<{
@@ -572,7 +581,7 @@ export async function getCrewTerritory(crewId: number): Promise<{
 export async function getLeaderboard(): Promise<Array<{ crewId: number; crewName: string; regionsOwned: number }>> {
   await syncContestLifecycle();
 
-  return prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number }>>(
+  const leaderboard = await prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number }>>(
     `SELECT c.id AS crewId, c.name AS crewName, COUNT(tc.id) AS regionsOwned
      FROM territory_control tc
      JOIN crews c ON c.id = tc.ownerCrewId
@@ -581,6 +590,12 @@ export async function getLeaderboard(): Promise<Array<{ crewId: number; crewName
      ORDER BY regionsOwned DESC
      LIMIT 20`
   );
+
+  return leaderboard.map((entry) => ({
+    crewId: toNumeric(entry.crewId),
+    crewName: entry.crewName,
+    regionsOwned: toNumeric(entry.regionsOwned),
+  }));
 }
 
 export async function resolveContest(contestId: number): Promise<{ winnerCrewId: number | null; regionKey: string }> {
