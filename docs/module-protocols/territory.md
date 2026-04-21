@@ -23,6 +23,7 @@
   - `backend/src/startup/ensureTerritorySchema.ts` — country seed uitgebreid zodat meerdere landen direct zichtbaar zijn via `/territory/countries`
   - NL correctie: Nederland gebruikt nu primair `netherlandsLow.svg` (backend `svgAssetKey = netherlandsLow` + frontend NL fallback naar `netherlandsLow.svg`)
   - Interactieve map UX: de Territory SVG is vergroot, regio-paden zijn direct klikbaar via path hit-testing op `svgElementId`, tonen een tooltip met gebiedsnaam en openen nu een responsive modal-bottom-sheet met gebiedsinformatie en aanvalsacties; losse regiokaarten onder de SVG zijn verwijderd zodat de map-tab één duidelijke interactiestroom houdt
+  - Mobiele kaartnavigatie: de SVG-kaart ondersteunt nu pinch-zoom, pan, dubbeltik-zoom en expliciete zoom/reset-knoppen zodat kleine regio's op telefoons beter aantikbaar blijven zonder de bestaande modalflow te breken
   - Scroll/hover verfijning: de volledige map-tab volgt nu 1 primaire verticale scrollflow, en SVG-regio's krijgen hover-darkening plus expliciete zichtbare grenslijnen (`stroke`) voor betere afbakening
   - Renderer fallback verbreed: SVG styling draait nu over alle pad-elementen van de kaart (niet alleen backend-gemapte regio's), zodat grenslijnen en hover-darkening ook zichtbaar blijven bij gedeeltelijke `svgElementId` mismatch tussen seed-data en bron-SVG
   - Zuid-Afrika toegevoegd aan de asset/country set: `za` is nu gekoppeld aan `southAfricaLow.svg` (backend seed + frontend fallback)
@@ -193,6 +194,7 @@ Admin moderation:
 - Desktop: kaart + side panel split.
 - Tablet: kaart boven, details/acties onder in collapsible panel.
 - Mobiel: map card + bottom sheet details + actieknoppen binnen één scrollflow.
+- Mobiele kaartinteractie moet zoom/pan ondersteunen zodra regio's anders te klein worden voor betrouwbare touch input; pinch-zoom of een functioneel equivalent met resetpad is verplicht voor dichtbebouwde landenkaarten.
 - Interactieve SVG-regio taps openen de primaire gebiedsdetails in een responsive modal/bottom-sheet; parallelle losse regiolijsten of duplicate actiekaarten onder de kaart gelden niet als done zodra directe kaartinteractie beschikbaar is.
 - Geen hover-only critical actions; alle hoofdacties expliciet tappable.
 - SVG load failures tonen graceful fallback met regio-lijstweergave.

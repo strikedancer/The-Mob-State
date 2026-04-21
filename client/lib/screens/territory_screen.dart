@@ -71,6 +71,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   String? _mapTooltipLabel;
   Offset? _mapTooltipOffset;
   Timer? _mapTooltipTimer;
+    final TransformationController _mapTransformController =
+      TransformationController();
   final ValueNotifier<Map<String, dynamic>?> _regionDetailNotifier =
       ValueNotifier<Map<String, dynamic>?>(null);
 
@@ -106,6 +108,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   @override
   void dispose() {
     _mapTooltipTimer?.cancel();
+    _mapTransformController.dispose();
     _regionDetailNotifier.dispose();
     _tabController.dispose();
     super.dispose();
@@ -198,6 +201,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       );
       _isLoading = false;
     });
+    _resetMapTransform();
     _regionDetailNotifier.value = selectedRegion;
   }
 
@@ -744,6 +748,74 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     });
   }
 
+  void _resetMapTransform() {
+    _mapTransformController.value = Matrix4.identity();
+  }
+
+  void _zoomMapBy(double factor) {
+    final currentMatrix = _mapTransformController.value.clone();
+    final currentScale = currentMatrix.getMaxScaleOnAxis();
+    final targetScale = (currentScale * factor).clamp(1.0, 6.0);
+    final effectiveFactor = targetScale / currentScale;
+
+    if ((effectiveFactor - 1).abs() < 0.001) return;
+
+    final nextMatrix = currentMatrix.clone()..scale(effectiveFactor);
+    _mapTransformController.value = nextMatrix;
+  }
+
+  Widget _buildMapZoomControls() {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.94),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 12,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            tooltip: _t('Inzoomen', 'Zoom in'),
+            visualDensity: VisualDensity.compact,
+            onPressed: () => _zoomMapBy(1.25),
+            icon: const Icon(Icons.add),
+          ),
+          Container(
+            width: 28,
+            height: 1,
+            color: Theme.of(context).dividerColor.withValues(alpha: 0.45),
+          ),
+          IconButton(
+            tooltip: _t('Uitzoomen', 'Zoom out'),
+            visualDensity: VisualDensity.compact,
+            onPressed: () => _zoomMapBy(0.8),
+            icon: const Icon(Icons.remove),
+          ),
+          Container(
+            width: 28,
+            height: 1,
+            color: Theme.of(context).dividerColor.withValues(alpha: 0.45),
+          ),
+          IconButton(
+            tooltip: _t('Reset kaart', 'Reset map'),
+            visualDensity: VisualDensity.compact,
+            onPressed: _resetMapTransform,
+            icon: const Icon(Icons.center_focus_strong),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _showRegionDetailModal(Map<String, dynamic> region) async {
     if (_isRegionSheetOpen) return;
 
@@ -1225,81 +1297,107 @@ class _TerritoryScreenState extends State<TerritoryScreen>
               builder: (context, constraints) {
                 final maxWidth = constraints.maxWidth;
                 final isWideLayout = maxWidth >= 980;
+                final showZoomControls = maxWidth < 980;
                 final mapHeight = maxWidth >= 900
                     ? 420.0
                     : (maxWidth >= 600 ? 340.0 : 300.0);
                 final mapWidget = SizedBox(
                   height: mapHeight,
                   width: double.infinity,
-                  child: MouseRegion(
-                    onHover: (event) => _handleMapHover(
-                      event,
-                      Size(
-                        isWideLayout ? maxWidth * 0.58 : maxWidth,
-                        mapHeight,
-                      ),
-                      regions,
-                    ),
-                    onExit: (_) => _handleMapHoverExit(),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTapDown: (details) => _handleMapTap(
-                        details,
-                        Size(
-                          isWideLayout ? maxWidth * 0.58 : maxWidth,
-                          mapHeight,
-                        ),
-                        regions,
-                      ),
-                      child: Stack(
+                  child: LayoutBuilder(
+                    builder: (context, mapConstraints) {
+                      final mapWidth = mapConstraints.maxWidth;
+
+                      return Stack(
                         children: [
                           Positioned.fill(
-                            child: SvgPicture.string(
-                              svgMarkup,
-                              fit: BoxFit.contain,
-                              placeholderBuilder: (_) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
-                          ),
-                          if (_mapTooltipLabel != null &&
-                              _mapTooltipOffset != null)
-                            Positioned(
-                              left: (_mapTooltipOffset!.dx + 10).clamp(
-                                8,
-                                (isWideLayout ? (maxWidth * 0.58) : maxWidth) -
-                                    180,
-                              ),
-                              top: (_mapTooltipOffset!.dy - 36).clamp(
-                                8,
-                                mapHeight - 32,
-                              ),
-                              child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 170,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black87,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  _mapTooltipLabel!,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: InteractiveViewer(
+                                transformationController:
+                                    _mapTransformController,
+                                minScale: 1,
+                                maxScale: 6,
+                                panEnabled: true,
+                                scaleEnabled: true,
+                                constrained: true,
+                                boundaryMargin: const EdgeInsets.all(80),
+                                child: MouseRegion(
+                                  onHover: (event) => _handleMapHover(
+                                    event,
+                                    Size(mapWidth, mapHeight),
+                                    regions,
+                                  ),
+                                  onExit: (_) => _handleMapHoverExit(),
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onDoubleTap: () => _zoomMapBy(1.35),
+                                    onTapDown: (details) => _handleMapTap(
+                                      details,
+                                      Size(mapWidth, mapHeight),
+                                      regions,
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Positioned.fill(
+                                          child: SvgPicture.string(
+                                            svgMarkup,
+                                            fit: BoxFit.contain,
+                                            placeholderBuilder: (_) => const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                        ),
+                                        if (_mapTooltipLabel != null &&
+                                            _mapTooltipOffset != null)
+                                          Positioned(
+                                            left: (_mapTooltipOffset!.dx + 10)
+                                                .clamp(8, mapWidth - 180),
+                                            top: (_mapTooltipOffset!.dy - 36)
+                                                .clamp(8, mapHeight - 32),
+                                            child: Container(
+                                              constraints:
+                                                  const BoxConstraints(
+                                                    maxWidth: 170,
+                                                  ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 6,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black87,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Text(
+                                                _mapTooltipLabel!,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
+                          ),
+                          if (showZoomControls)
+                            Positioned(
+                              right: 10,
+                              top: 10,
+                              child: _buildMapZoomControls(),
+                            ),
                         ],
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 );
                 final infoWidget = Column(
@@ -1310,6 +1408,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                         'Klik op een gebied om direct de modal met gebiedsinformatie en aanvalsacties te openen.',
                         'Tap a region to directly open the modal with territory information and attack actions.',
                       ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _t(
+                        'Op mobiel kun je nu pinchen, slepen en dubbeltikken om in te zoomen voor kleine gebieden.',
+                        'On mobile you can now pinch, drag, and double tap to zoom in on smaller regions.',
+                      ),
+                      style: TextStyle(color: Colors.grey[700], fontSize: 12),
                     ),
                     const SizedBox(height: 8),
                     Text(
