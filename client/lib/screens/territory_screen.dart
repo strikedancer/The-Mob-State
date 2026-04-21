@@ -1,7 +1,13 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/gestures.dart' show PointerHoverEvent;
+import 'package:flutter/gestures.dart'
+  show
+    PointerCancelEvent,
+    PointerDownEvent,
+    PointerHoverEvent,
+    PointerMoveEvent,
+    PointerUpEvent;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -71,10 +77,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   String? _mapTooltipLabel;
   Offset? _mapTooltipOffset;
   Timer? _mapTooltipTimer;
-    final TransformationController _mapTransformController =
+  final TransformationController _mapTransformController =
       TransformationController();
   final ValueNotifier<Map<String, dynamic>?> _regionDetailNotifier =
       ValueNotifier<Map<String, dynamic>?>(null);
+  Offset? _mapPointerDownPosition;
+  bool _mapPointerMoved = false;
+  int _activeMapPointers = 0;
+  int _maxMapPointersDuringGesture = 0;
 
   // ── Selection ─────────────────────────────────────────────────────────────
   Map<String, dynamic>? _selectedRegion;
@@ -709,11 +719,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   }
 
   void _handleMapTap(
-    TapDownDetails details,
+    Offset localPosition,
     Size renderSize,
     List<dynamic> regions,
   ) {
-    final hit = _findShapeAtLocalPoint(details.localPosition, renderSize);
+    final hit = _findShapeAtLocalPoint(localPosition, renderSize);
     if (hit == null) return;
 
     final matchedRegion = _findRegionBySvgElementId(regions, hit.id);
@@ -726,7 +736,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       }
       _hoveredSvgElementId = hit.id;
       _mapTooltipLabel = regionName;
-      _mapTooltipOffset = details.localPosition;
+      _mapTooltipOffset = localPosition;
       _renderedSvgMap = _renderSvgWithOwnership(
         (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[],
       );
@@ -746,6 +756,66 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         _mapTooltipOffset = null;
       });
     });
+  }
+
+  void _handleMapPointerDown(PointerDownEvent event) {
+    _activeMapPointers += 1;
+    if (_activeMapPointers == 1) {
+      _mapPointerDownPosition = event.localPosition;
+      _mapPointerMoved = false;
+      _maxMapPointersDuringGesture = 1;
+      return;
+    }
+
+    _maxMapPointersDuringGesture = math.max(
+      _maxMapPointersDuringGesture,
+      _activeMapPointers,
+    );
+    _mapPointerMoved = true;
+  }
+
+  void _handleMapPointerMove(PointerMoveEvent event) {
+    final pointerDownPosition = _mapPointerDownPosition;
+    if (pointerDownPosition == null || _mapPointerMoved) return;
+    if ((event.localPosition - pointerDownPosition).distance > 12) {
+      _mapPointerMoved = true;
+    }
+  }
+
+  void _handleMapPointerEnd() {
+    _activeMapPointers = math.max(0, _activeMapPointers - 1);
+    if (_activeMapPointers == 0) {
+      _mapPointerDownPosition = null;
+      _mapPointerMoved = false;
+      _maxMapPointersDuringGesture = 0;
+    }
+  }
+
+  void _handleMapPointerUp(
+    PointerUpEvent event,
+    Size renderSize,
+    List<dynamic> regions,
+  ) {
+    final shouldTreatAsTap =
+        _activeMapPointers == 1 &&
+        _maxMapPointersDuringGesture == 1 &&
+        !_mapPointerMoved;
+    final pointerDownPosition = _mapPointerDownPosition;
+    _handleMapPointerEnd();
+
+    if (!shouldTreatAsTap || pointerDownPosition == null) {
+      return;
+    }
+
+    if ((event.localPosition - pointerDownPosition).distance > 12) {
+      return;
+    }
+
+    _handleMapTap(event.localPosition, renderSize, regions);
+  }
+
+  void _handleMapPointerCancel(PointerCancelEvent event) {
+    _handleMapPointerEnd();
   }
 
   void _resetMapTransform() {
@@ -1329,14 +1399,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                     regions,
                                   ),
                                   onExit: (_) => _handleMapHoverExit(),
-                                  child: GestureDetector(
+                                  child: Listener(
                                     behavior: HitTestBehavior.opaque,
-                                    onDoubleTap: () => _zoomMapBy(1.35),
-                                    onTapDown: (details) => _handleMapTap(
-                                      details,
+                                    onPointerDown: _handleMapPointerDown,
+                                    onPointerMove: _handleMapPointerMove,
+                                    onPointerUp: (event) => _handleMapPointerUp(
+                                      event,
                                       Size(mapWidth, mapHeight),
                                       regions,
                                     ),
+                                    onPointerCancel: _handleMapPointerCancel,
                                     child: Stack(
                                       children: [
                                         Positioned.fill(
@@ -1412,8 +1484,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                     const SizedBox(height: 8),
                     Text(
                       _t(
-                        'Op mobiel kun je nu pinchen, slepen en dubbeltikken om in te zoomen voor kleine gebieden.',
-                        'On mobile you can now pinch, drag, and double tap to zoom in on smaller regions.',
+                        'Op mobiel kun je nu pinchen, slepen en de zoomknoppen gebruiken om in te zoomen voor kleine gebieden.',
+                        'On mobile you can now pinch, drag, and use the zoom buttons to zoom in on smaller regions.',
                       ),
                       style: TextStyle(color: Colors.grey[700], fontSize: 12),
                     ),
