@@ -109,6 +109,55 @@ type TerritoryCrewEconomySummary = {
   crewBankBalance: number;
 };
 
+const TRAVEL_TO_TERRITORY_COUNTRY_CODE: Record<string, string> = {
+  ar: 'ar',
+  argentina: 'ar',
+  au: 'au',
+  australia: 'au',
+  be: 'be',
+  belgium: 'be',
+  br: 'br',
+  brazil: 'br',
+  ch: 'ch',
+  switzerland: 'ch',
+  cn: 'cn',
+  china: 'cn',
+  co: 'co',
+  colombia: 'co',
+  de: 'de',
+  germany: 'de',
+  es: 'es',
+  spain: 'es',
+  fr: 'fr',
+  france: 'fr',
+  gb: 'gb',
+  uk: 'gb',
+  unitedkingdom: 'gb',
+  united_kingdom: 'gb',
+  'united-kingdom': 'gb',
+  it: 'it',
+  italy: 'it',
+  jp: 'jp',
+  japan: 'jp',
+  mx: 'mx',
+  mexico: 'mx',
+  nl: 'nl',
+  netherlands: 'nl',
+  ru: 'ru',
+  russia: 'ru',
+  tr: 'tr',
+  turkey: 'tr',
+  us: 'us',
+  usa: 'us',
+  unitedstates: 'us',
+  united_states: 'us',
+  'united-states': 'us',
+  za: 'za',
+  southafrica: 'za',
+  south_africa: 'za',
+  'south-africa': 'za',
+};
+
 function buildContestSchedule(
   startedAt: Date,
   cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
@@ -141,6 +190,20 @@ function toNumeric(value: unknown): number {
   if (typeof value === 'bigint') return Number(value);
   const parsed = Number(value ?? 0);
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function mapTravelCountryToTerritoryCode(currentCountry: string | null | undefined): string | null {
+  if (!currentCountry) return null;
+  const normalized = currentCountry.trim().toLowerCase();
+  if (!normalized) return null;
+  return TRAVEL_TO_TERRITORY_COUNTRY_CODE[normalized] ?? null;
+}
+
+function assertPlayerInTerritoryCountry(currentCountry: string | null | undefined, regionCountryCode: string): void {
+  const territoryCountryCode = mapTravelCountryToTerritoryCode(currentCountry);
+  if (!territoryCountryCode || territoryCountryCode !== regionCountryCode.toLowerCase()) {
+    throw new Error('ACTION_OUTSIDE_CURRENT_COUNTRY');
+  }
 }
 
 function getPassiveIncomeCashForTier(
@@ -527,7 +590,12 @@ export async function getOverview(): Promise<{
   };
 }
 
-export async function startContest(playerId: number, crewId: number, regionKey: string): Promise<{
+export async function startContest(
+  playerId: number,
+  crewId: number,
+  regionKey: string,
+  currentCountry: string | null | undefined,
+): Promise<{
   contestId: number;
   status: string;
   activeAt: Date;
@@ -545,6 +613,7 @@ export async function startContest(playerId: number, crewId: number, regionKey: 
     regionKey,
   );
   if (!regions[0]) throw new Error('REGION_NOT_FOUND');
+  assertPlayerInTerritoryCountry(currentCountry, regions[0].countryCode);
 
   // Validate no concurrent active contest
   const existingContests = await prisma.$queryRawUnsafe<ContestRow[]>(
@@ -622,6 +691,7 @@ export async function doAction(
   crewId: number,
   contestId: number,
   actionType: string,
+  currentCountry: string | null | undefined,
 ): Promise<{ pointsDelta: number; message: string }> {
   await syncContestLifecycle();
 
@@ -638,6 +708,15 @@ export async function doAction(
   const contest = contests[0];
   if (!contest) throw new Error('CONTEST_NOT_FOUND');
   if (contest.status !== 'active') throw new Error('CONTEST_NOT_ACTIVE');
+
+  const contestRegions = await prisma.$queryRawUnsafe<RegionRow[]>(
+    'SELECT * FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1',
+    contest.regionKey,
+  );
+  const contestRegion = contestRegions[0];
+  if (!contestRegion) throw new Error('REGION_NOT_FOUND');
+  assertPlayerInTerritoryCountry(currentCountry, contestRegion.countryCode);
+
   if (contest.attackerCrewId !== crewId && contest.defenderCrewId !== crewId) {
     throw new Error('NOT_IN_CONTEST');
   }
@@ -702,7 +781,12 @@ export async function doAction(
   };
 }
 
-export async function defendContest(playerId: number, crewId: number, contestId: number): Promise<void> {
+export async function defendContest(
+  playerId: number,
+  crewId: number,
+  contestId: number,
+  currentCountry: string | null | undefined,
+): Promise<void> {
   await syncContestLifecycle();
 
   const contests = await prisma.$queryRawUnsafe<ContestRow[]>(
@@ -710,6 +794,13 @@ export async function defendContest(playerId: number, crewId: number, contestId:
     contestId, crewId,
   );
   if (!contests[0]) throw new Error('CONTEST_NOT_FOUND');
+  const contestRegions = await prisma.$queryRawUnsafe<RegionRow[]>(
+    'SELECT * FROM territory_regions WHERE regionKey = ? AND enabled = 1 LIMIT 1',
+    contests[0].regionKey,
+  );
+  const contestRegion = contestRegions[0];
+  if (!contestRegion) throw new Error('REGION_NOT_FOUND');
+  assertPlayerInTerritoryCountry(currentCountry, contestRegion.countryCode);
   if (contests[0].status !== 'preparing' && contests[0].status !== 'active') {
     throw new Error('CONTEST_NOT_JOINABLE');
   }

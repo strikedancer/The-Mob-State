@@ -54,6 +54,7 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     TERRITORY_DISABLED:             [403, 'territory.disabled'],
     COUNTRY_NOT_FOUND:              [404, 'territory.country_not_found'],
     REGION_NOT_FOUND:               [404, 'territory.region_not_found'],
+    ACTION_OUTSIDE_CURRENT_COUNTRY: [403, 'territory.action_outside_current_country'],
     CONTEST_ALREADY_ACTIVE:         [409, 'territory.contest_already_active'],
     CREW_CONTEST_LIMIT_REACHED:     [429, 'territory.crew_contest_limit_reached'],
     REGIONS_CAP_REACHED:            [429, 'territory.regions_cap_reached'],
@@ -148,7 +149,12 @@ router.post('/contest/start', authenticate, async (req: AuthRequest, res: Respon
     const crewId = await requireCrew(req, res);
     if (!crewId) return;
     const body = startContestSchema.parse(req.body);
-    const result = await territoryService.startContest(req.player!.id, crewId, body.regionKey);
+    const result = await territoryService.startContest(
+      req.player!.id,
+      crewId,
+      body.regionKey,
+      req.player?.currentCountry,
+    );
     return res.json({ event: 'territory.contest_started', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -167,7 +173,13 @@ router.post('/action', authenticate, async (req: AuthRequest, res: Response, nex
     const crewId = await requireCrew(req, res);
     if (!crewId) return;
     const body = actionSchema.parse(req.body);
-    const result = await territoryService.doAction(req.player!.id, crewId, body.contestId, body.actionType);
+    const result = await territoryService.doAction(
+      req.player!.id,
+      crewId,
+      body.contestId,
+      body.actionType,
+      req.player?.currentCountry,
+    );
     return res.json({ event: 'territory.action_done', params: result });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -186,7 +198,12 @@ router.post('/contest/defend', authenticate, async (req: AuthRequest, res: Respo
     const crewId = await requireCrew(req, res);
     if (!crewId) return;
     const body = defendSchema.parse(req.body);
-    await territoryService.defendContest(req.player!.id, crewId, body.contestId);
+    await territoryService.defendContest(
+      req.player!.id,
+      crewId,
+      body.contestId,
+      req.player?.currentCountry,
+    );
     return res.json({ event: 'territory.defend_joined', params: {} });
   } catch (error) {
     if (error instanceof z.ZodError) {

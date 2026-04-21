@@ -11,6 +11,7 @@
 - [Crews & Heists](#crews--heists)
 - [Bank Systeem](#bank-systeem)
 - [Travel & Countries](#travel--countries)
+- [Territory](#territory)
 - [Trade Market](#trade-market)
 - [Aviation](#aviation)
 - [Casino](#casino)
@@ -248,6 +249,18 @@ Voorbeelden:
 3. **Passive Healing**: Wacht 5 minuten tussen crimes voor +5 HP
 4. **Paid Treatment**: €10k voor +30 HP (1x per uur)
 5. **Vermijd ICU**: 3 uur lockout is lang!
+
+---
+
+## Territory
+
+### Territory Kaarten & Landregels
+- Je kunt alle ondersteunde Territory-landen bekijken via de interactieve kaart, niet alleen Nederland.
+- Elke regio toont ownership, stability, control en contestinformatie zodra je de regio opent.
+- **Belangrijke regel**: bekijken mag in elk land, maar aanvallen, verdedigen en andere Territory-contestacties werken alleen in het land waar je speler zich op dat moment echt bevindt.
+- Voorbeeld: zit je in Nederland en open je de kaart van België, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar België reist.
+- Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
+- Op mobiel ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven.
 
 ---
 

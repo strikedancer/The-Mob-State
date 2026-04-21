@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { territoryAutoRegionSeeds } from './territoryRegionSeeds';
 
 async function columnExists(tableName: string, columnName: string): Promise<boolean> {
   const rows = await prisma.$queryRaw<Array<{ count: number }>>`
@@ -52,6 +53,47 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_PASSIVE_INCOME_TIER_3_CASH: '90000',
   TERRITORY_PASSIVE_INCOME_TIER_4_CASH: '140000',
 };
+
+type TerritorySeedRegion = {
+  countryCode: string;
+  key: string;
+  nl: string;
+  en: string;
+  svg: string;
+  tier: number;
+};
+
+function normalizeTerritoryRegionKey(svgElementId: string): string {
+  return svgElementId
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+}
+
+function sanitizeSeedName(name: string): string {
+  return name
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/[’']/g, "'")
+    .replace(/[^\x20-\x7E]/g, '');
+}
+
+function buildAutoRegions(countryCode: string, svgAssetKey: string): TerritorySeedRegion[] {
+  const seeds = territoryAutoRegionSeeds[svgAssetKey] ?? [];
+  return seeds.map((seed) => {
+    const safeName = sanitizeSeedName(seed.name) || seed.svg;
+    return {
+      countryCode,
+      key: normalizeTerritoryRegionKey(seed.svg),
+      nl: safeName,
+      en: safeName,
+      svg: seed.svg,
+      tier: 2,
+    };
+  });
+}
 
 async function seedRuntimeConfigDefaults(): Promise<void> {
   await prisma.$executeRawUnsafe(`
@@ -269,33 +311,43 @@ export async function ensureTerritorySchema(): Promise<void> {
     );
   }
 
-  // ── Seed NL provinces ─────────────────────────────────────────────────────
+  // ── Seed regions ──────────────────────────────────────────────────────────
   const nlRegions = [
-    { key: 'nl-groningen',     nl: 'Groningen',     en: 'Groningen',      svg: 'NL-GR', tier: 2 },
-    { key: 'nl-friesland',     nl: 'Friesland',     en: 'Friesland',      svg: 'NL-FR', tier: 1 },
-    { key: 'nl-drenthe',       nl: 'Drenthe',       en: 'Drenthe',        svg: 'NL-DR', tier: 1 },
-    { key: 'nl-overijssel',    nl: 'Overijssel',    en: 'Overijssel',     svg: 'NL-OV', tier: 2 },
-    { key: 'nl-flevoland',     nl: 'Flevoland',     en: 'Flevoland',      svg: 'NL-FL', tier: 1 },
-    { key: 'nl-gelderland',    nl: 'Gelderland',    en: 'Gelderland',     svg: 'NL-GE', tier: 2 },
-    { key: 'nl-utrecht',       nl: 'Utrecht',       en: 'Utrecht',        svg: 'NL-UT', tier: 3 },
-    { key: 'nl-noord-holland', nl: 'Noord-Holland', en: 'North Holland',  svg: 'NL-NH', tier: 3 },
-    { key: 'nl-zuid-holland',  nl: 'Zuid-Holland',  en: 'South Holland',  svg: 'NL-ZH', tier: 3 },
-    { key: 'nl-zeeland',       nl: 'Zeeland',       en: 'Zeeland',        svg: 'NL-ZE', tier: 1 },
-    { key: 'nl-noord-brabant', nl: 'Noord-Brabant', en: 'North Brabant',  svg: 'NL-NB', tier: 2 },
-    { key: 'nl-limburg',       nl: 'Limburg',       en: 'Limburg',        svg: 'NL-LI', tier: 2 },
-  ];
+    { countryCode: 'nl', key: 'nl-groningen',     nl: 'Groningen',     en: 'Groningen',      svg: 'NL-GR', tier: 2 },
+    { countryCode: 'nl', key: 'nl-friesland',     nl: 'Friesland',     en: 'Friesland',      svg: 'NL-FR', tier: 1 },
+    { countryCode: 'nl', key: 'nl-drenthe',       nl: 'Drenthe',       en: 'Drenthe',        svg: 'NL-DR', tier: 1 },
+    { countryCode: 'nl', key: 'nl-overijssel',    nl: 'Overijssel',    en: 'Overijssel',     svg: 'NL-OV', tier: 2 },
+    { countryCode: 'nl', key: 'nl-flevoland',     nl: 'Flevoland',     en: 'Flevoland',      svg: 'NL-FL', tier: 1 },
+    { countryCode: 'nl', key: 'nl-gelderland',    nl: 'Gelderland',    en: 'Gelderland',     svg: 'NL-GE', tier: 2 },
+    { countryCode: 'nl', key: 'nl-utrecht',       nl: 'Utrecht',       en: 'Utrecht',        svg: 'NL-UT', tier: 3 },
+    { countryCode: 'nl', key: 'nl-noord-holland', nl: 'Noord-Holland', en: 'North Holland',  svg: 'NL-NH', tier: 3 },
+    { countryCode: 'nl', key: 'nl-zuid-holland',  nl: 'Zuid-Holland',  en: 'South Holland',  svg: 'NL-ZH', tier: 3 },
+    { countryCode: 'nl', key: 'nl-zeeland',       nl: 'Zeeland',       en: 'Zeeland',        svg: 'NL-ZE', tier: 1 },
+    { countryCode: 'nl', key: 'nl-noord-brabant', nl: 'Noord-Brabant', en: 'North Brabant',  svg: 'NL-NB', tier: 2 },
+    { countryCode: 'nl', key: 'nl-limburg',       nl: 'Limburg',       en: 'Limburg',        svg: 'NL-LI', tier: 2 },
+  ] satisfies TerritorySeedRegion[];
 
-  for (const r of nlRegions) {
+  const autoRegions = countries.flatMap((country) => {
+    if (country.code === 'nl') {
+      return [] as TerritorySeedRegion[];
+    }
+    return buildAutoRegions(country.code, country.svgAssetKey);
+  });
+
+  const allRegions = [...nlRegions, ...autoRegions];
+
+  for (const r of allRegions) {
     await prisma.$executeRawUnsafe(
       `INSERT INTO territory_regions (countryCode, regionKey, nameNl, nameEn, svgElementId, valueTier, enabled)
-       VALUES ('nl', ?, ?, ?, ?, ?, 1)
+       VALUES (?, ?, ?, ?, ?, ?, 1)
        ON DUPLICATE KEY UPDATE
+         countryCode = VALUES(countryCode),
          nameNl = VALUES(nameNl),
          nameEn = VALUES(nameEn),
          svgElementId = VALUES(svgElementId),
          valueTier = VALUES(valueTier),
          enabled = VALUES(enabled)`,
-      r.key, r.nl, r.en, r.svg, r.tier,
+      r.countryCode, r.key, r.nl, r.en, r.svg, r.tier,
     );
 
     // Ensure a control row exists for each region (neutral by default)

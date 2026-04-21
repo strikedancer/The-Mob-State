@@ -10,9 +10,11 @@ import 'package:flutter/gestures.dart'
     PointerUpEvent;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path_drawing/path_drawing.dart';
 
+import '../providers/auth_provider.dart';
 import '../services/territory_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
@@ -56,6 +58,54 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     'uk': 'ukLow.svg',
     'gb': 'ukLow.svg',
     'us': 'usaLow.svg',
+  };
+  static const Map<String, String> _territoryCountryCodeByTravelCountry = {
+    'ar': 'ar',
+    'argentina': 'ar',
+    'au': 'au',
+    'australia': 'au',
+    'be': 'be',
+    'belgium': 'be',
+    'br': 'br',
+    'brazil': 'br',
+    'ch': 'ch',
+    'switzerland': 'ch',
+    'cn': 'cn',
+    'china': 'cn',
+    'co': 'co',
+    'colombia': 'co',
+    'de': 'de',
+    'germany': 'de',
+    'es': 'es',
+    'spain': 'es',
+    'fr': 'fr',
+    'france': 'fr',
+    'gb': 'gb',
+    'uk': 'gb',
+    'unitedkingdom': 'gb',
+    'united_kingdom': 'gb',
+    'united-kingdom': 'gb',
+    'it': 'it',
+    'italy': 'it',
+    'jp': 'jp',
+    'japan': 'jp',
+    'mx': 'mx',
+    'mexico': 'mx',
+    'nl': 'nl',
+    'netherlands': 'nl',
+    'ru': 'ru',
+    'russia': 'ru',
+    'tr': 'tr',
+    'turkey': 'tr',
+    'us': 'us',
+    'usa': 'us',
+    'unitedstates': 'us',
+    'united_states': 'us',
+    'united-states': 'us',
+    'za': 'za',
+    'southafrica': 'za',
+    'south_africa': 'za',
+    'south-africa': 'za',
   };
 
   bool _isLoading = true;
@@ -106,6 +156,31 @@ class _TerritoryScreenState extends State<TerritoryScreen>
               (country['countryCode'] as String? ?? ''))
         : (country['displayNameEn'] as String? ??
               (country['countryCode'] as String? ?? ''));
+  }
+
+  String _countryDisplayNameByCode(String countryCode) {
+    for (final country in _countries) {
+      final code = (country['countryCode'] as String?)?.toLowerCase();
+      if (code == countryCode.toLowerCase()) {
+        return _countryDisplayName(country);
+      }
+    }
+    return countryCode.toUpperCase();
+  }
+
+  String _currentTerritoryCountryCode() {
+    final currentCountry = context.select<AuthProvider, String?>(
+      (auth) => auth.currentPlayer?.currentCountry,
+    );
+    final normalized = currentCountry?.trim().toLowerCase();
+    if (normalized == null || normalized.isEmpty) {
+      return 'nl';
+    }
+    return _territoryCountryCodeByTravelCountry[normalized] ?? normalized;
+  }
+
+  bool _canActInSelectedCountry() {
+    return _currentTerritoryCountryCode() == _selectedCountryCode.toLowerCase();
   }
 
   @override
@@ -414,6 +489,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return _t(
           'Je hebt je dagelijkse limiet voor territory-acties bereikt.',
           'You have reached your daily limit for territory actions.',
+        );
+      case 'territory.action_outside_current_country':
+        return _t(
+          'Je kunt alle landen bekijken, maar territory-acties werken alleen in het land waar je nu bent.',
+          'You can view every country, but territory actions only work in the country where you are currently located.',
         );
       default:
         return event.isEmpty
@@ -1536,6 +1616,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final contestHint = _contestHint(contestStatus);
     final isAttacker = contestRole == 'attacker';
     final isDefender = contestRole == 'defender';
+    final canActInSelectedCountry = _canActInSelectedCountry();
+    final playerCountryLabel = _countryDisplayNameByCode(
+      _currentTerritoryCountryCode(),
+    );
     final hasContest = contestId != null && contestStatus != null;
     final incomeTierLabel = _valueTierLabel(tier);
     final passiveIncomeCash = (region['passiveIncomeCash'] as num?)?.toInt() ?? 0;
@@ -1633,6 +1717,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           backgroundColor: Colors.orange.withValues(alpha: 0.1),
           icon: Icons.groups_rounded,
         ),
+      if (_hasCrew && !canActInSelectedCountry)
+        _buildInfoNotice(
+          _t(
+            'Je bekijkt ${_currentCountryLabel()}, maar je bent nu in $playerCountryLabel. Je kunt deze kaart wel bekijken, alleen aanvallen en contest-acties zijn pas beschikbaar zodra je naar dit land reist.',
+            'You are viewing ${_currentCountryLabel()}, but you are currently in $playerCountryLabel. You can browse this map, but attacks and contest actions only unlock after you travel to this country.',
+          ),
+          borderColor: Colors.blueGrey.shade700,
+          backgroundColor: Colors.blueGrey.withValues(alpha: 0.08),
+          icon: Icons.travel_explore,
+        ),
       if (contestHint != null) ...[
         _buildInfoNotice(
           contestHint,
@@ -1652,7 +1746,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           backgroundColor: Colors.green.withValues(alpha: 0.1),
           icon: Icons.verified,
         ),
-      if (contestStatus == 'preparing' && isDefender) ...[
+      if (contestStatus == 'preparing' && isDefender && canActInSelectedCountry) ...[
         _buildInfoNotice(
           _t(
             'Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.',
@@ -1670,14 +1764,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           onTap: () => _joinDefense(contestId),
         ),
       ],
-      if (contestStatus == null && _hasCrew && !isMyCrewRegion)
+      if (contestStatus == null && _hasCrew && !isMyCrewRegion && canActInSelectedCountry)
         _buildActionButton(
           label: _t('Aanvallen', 'Attack'),
           icon: Icons.gps_fixed,
           color: Colors.red[700]!,
           onTap: () => _confirmStartContest(region['regionKey'] as String),
         ),
-      if (contestId != null && contestStatus == 'active') ...[
+      if (contestId != null && contestStatus == 'active' && canActInSelectedCountry) ...[
         const SizedBox(height: 8),
         Text(
           isAttacker
@@ -1707,6 +1801,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       ],
       if (contestId != null &&
           contestStatus == 'active' &&
+          canActInSelectedCountry &&
           !isAttacker &&
           !isDefender)
         Padding(
@@ -1715,6 +1810,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             _t(
               'Je zit niet aan deze contest gekoppeld, dus je kunt hier geen acties uitvoeren.',
               'You are not part of this contest, so you cannot perform actions here.',
+            ),
+            borderColor: Colors.blueGrey.shade600,
+            backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
+            icon: Icons.lock_outline,
+          ),
+        ),
+      if (contestId != null && contestStatus == 'active' && !canActInSelectedCountry)
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: _buildInfoNotice(
+            _t(
+              'Deze contest loopt in een ander land. Je kunt hem volgen, maar pas meedoen zodra je fysiek in ${_currentCountryLabel()} bent.',
+              'This contest is taking place in another country. You can follow it, but you can only join once you are physically in ${_currentCountryLabel()}.',
             ),
             borderColor: Colors.blueGrey.shade600,
             backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),

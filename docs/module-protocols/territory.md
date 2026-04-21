@@ -20,7 +20,8 @@
 - Fase 4 (multi-country assets): ✅ geïmplementeerd
   - `client/assets/images/maps/*.svg` — batch pool van landkaarten toegevoegd (o.a. be, de, fr, us, uk)
   - `client/lib/screens/territory_screen.dart` — map asset loading nu dynamisch per land via `country.svgAssetKey` met country-code fallback en country selector in de appbar
-  - `backend/src/startup/ensureTerritorySchema.ts` — country seed uitgebreid zodat meerdere landen direct zichtbaar zijn via `/territory/countries`
+  - `backend/src/startup/ensureTerritorySchema.ts` — country seed uitgebreid zodat meerdere landen direct zichtbaar zijn via `/territory/countries`, en regio-seed vult nu alle ondersteunde landen zodat niet-NL kaarten dezelfde interactieve regioflow hebben als Nederland
+  - `backend/src/services/territoryService.ts` + `backend/src/routes/territory.ts` — map viewing blijft cross-country toegestaan, maar contest-start, verdedigen en territory-acties zijn nu expliciet beperkt tot het land waar de speler via Travel echt aanwezig is
   - NL correctie: Nederland gebruikt nu primair `netherlandsLow.svg` (backend `svgAssetKey = netherlandsLow` + frontend NL fallback naar `netherlandsLow.svg`)
   - Interactieve map UX: de Territory SVG is vergroot, regio-paden zijn direct klikbaar via path hit-testing op `svgElementId`, tonen een tooltip met gebiedsnaam en openen nu een responsive modal-bottom-sheet met gebiedsinformatie en aanvalsacties; losse regiokaarten onder de SVG zijn verwijderd zodat de map-tab één duidelijke interactiestroom houdt
   - Mobiele kaartnavigatie: de SVG-kaart ondersteunt nu directe pinch-zoom en pan zonder extra plus/min/reset-overlay, zodat kleine regio's op telefoons beter aantikbaar blijven en ingezoomde kaartdelen versleept kunnen worden zonder de bestaande modalflow te breken
@@ -90,6 +91,7 @@ Scope-afbakening:
 - Duidelijke ownership per regio (welke crew controleert).
 - Duidelijke contest status (idle, contested, lockdown, resolved).
 - Duidelijke crew-gate in de UI: spelers zonder crew krijgen uitleg in plaats van een kale `not_in_crew` backendfout.
+- Cross-country browse blijft toegestaan, maar territory-acties mogen alleen in de huidige Travel-locatie van de speler.
 - Deterministische score-opbouw en resolve-regels.
 - Volledige audit trail van acties en ownership mutaties.
 - Map rendering met duidelijke fallback als SVG/region mapping deels faalt.
@@ -221,9 +223,10 @@ Admin moderation:
 - Copy parity NL/EN verplicht in UI + push + inbox.
 
 ## Multi-Country Rollout Guardrails
-- Fase 1: alleen `nl` enabled.
+- Alle ondersteunde landen mogen browseable zijn zodra regio-seed + map validation compleet zijn.
 - Nieuwe landen via admin-country onboarding flow met SVG mapping import en validation.
 - Geen nieuwe country activatie zonder succesvolle map validation en smoke tests.
+- Gameplay-acties in Territory moeten altijd valideren tegen de huidige Travel-locatie; alleen map-view endpoints mogen landoverschrijdend blijven.
 
 ## QA Checklist
 1. Happy flow: crew start contest -> build influence -> capture region.
@@ -235,7 +238,7 @@ Admin moderation:
 7. NL/EN parity op labels, errors, status, push/inbox.
 8. Dashboard en Crew screen tonen territory state consistent.
 9. Settings wijziging via admin config werkt direct (runtime) waar toegestaan.
-10. NL-only launch: alleen Nederland map actief, andere landen disabled zonder regressie.
+10. Multi-country browse: alle enabled landen renderen interactieve regio's; action endpoints blokkeren correct buiten de huidige Travel-locatie.
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.

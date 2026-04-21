@@ -1370,7 +1370,9 @@ const List<HelpTopic> helpTopics = [
         'Claim and control geographical regions for passive income and crew prestige. Territory combines map control with contests and seasonal rewards.',
     howNl: [
       'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.',
+      'Alle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.',
       'Tik op een gebied op de interactieve kaart om een modal met gebiedsinformatie en de aanvalsknop te openen. De losse regiokaarten onder de kaart zijn niet meer nodig.',
+      'Bekijken mag overal, maar aanvallen, verdedigen en contest-acties werken alleen in het land waar je karakter zich op dat moment echt bevindt.',
       'Op mobiel kun je nu met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen, zodat kleine gebieden makkelijker aantikbaar worden zonder extra knoppen op de kaart.',
       'Territorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.',
       'Elke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur.',
@@ -1387,7 +1389,9 @@ const List<HelpTopic> helpTopics = [
     ],
     howEn: [
       'Territory overview shows all available countries and regions by country. Click a country to see the interactive map.',
+      'All supported countries are now fully browseable through the same interactive map flow as the Netherlands.',
       'Tap a region on the interactive map to open a modal with territory information and the attack button. The separate region cards below the map are no longer needed.',
+      'Viewing is allowed everywhere, but attacks, defense joins and contest actions only work in the country where your character is currently located.',
       'On mobile you can now pinch in and out with two fingers and drag the zoomed map directly, making smaller regions easier to tap without extra buttons on the map.',
       'Territory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.',
       'Each region can be controlled by at most one crew at a time. Ownership grants passive income per hour.',
