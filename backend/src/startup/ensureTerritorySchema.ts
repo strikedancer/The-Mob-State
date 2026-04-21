@@ -1,5 +1,27 @@
 import prisma from '../lib/prisma';
 
+async function columnExists(tableName: string, columnName: string): Promise<boolean> {
+  const rows = await prisma.$queryRaw<Array<{ count: number }>>`
+    SELECT COUNT(*) AS count
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = ${tableName}
+      AND COLUMN_NAME = ${columnName}
+  `;
+
+  return Number(rows?.[0]?.count ?? 0) > 0;
+}
+
+async function ensureColumn(tableName: string, columnName: string, alterSql: string): Promise<void> {
+  const exists = await columnExists(tableName, columnName);
+  if (exists) {
+    return;
+  }
+
+  await prisma.$executeRawUnsafe(alterSql);
+  console.log(`[StartupSchema] Added ${tableName}.${columnName}`);
+}
+
 // ---------------------------------------------------------------------------
 // Territory system – startup schema bootstrap
 // All territory runtime settings are seeded into runtime_config (admin-only).
@@ -24,6 +46,11 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_ANTI_FARM_REPEAT_TARGET_CAP: '3',
   TERRITORY_REWARD_CASH_MULTIPLIER_PERCENT: '110',
   TERRITORY_REWARD_XP_MULTIPLIER_PERCENT: '110',
+  TERRITORY_PASSIVE_INCOME_INTERVAL_MINUTES: '60',
+  TERRITORY_PASSIVE_INCOME_TIER_1_CASH: '25000',
+  TERRITORY_PASSIVE_INCOME_TIER_2_CASH: '50000',
+  TERRITORY_PASSIVE_INCOME_TIER_3_CASH: '90000',
+  TERRITORY_PASSIVE_INCOME_TIER_4_CASH: '140000',
 };
 
 async function seedRuntimeConfigDefaults(): Promise<void> {
@@ -63,6 +90,7 @@ export async function ensureTerritorySchema(): Promise<void> {
       displayNameEn VARCHAR(100) NOT NULL,
       svgAssetKey VARCHAR(120) NOT NULL,
       enabled TINYINT(1) NOT NULL DEFAULT 0,
+      lastIncomeAt DATETIME NULL,
       createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
@@ -192,6 +220,16 @@ export async function ensureTerritorySchema(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
+  await ensureColumn(
+    'territory_control',
+    'lastIncomeAt',
+    'ALTER TABLE territory_control ADD COLUMN lastIncomeAt DATETIME NULL AFTER lastDecayAt',
+  );
+
+  await prisma.$executeRawUnsafe(
+    'UPDATE territory_control SET lastIncomeAt = COALESCE(lastIncomeAt, NOW())',
+  );
+
   // ── Seed supported countries ──────────────────────────────────────────────
   const countries = [
     { code: 'nl', nl: 'Nederland', en: 'Netherlands', svgAssetKey: 'netherlandsLow' },
@@ -262,8 +300,8 @@ export async function ensureTerritorySchema(): Promise<void> {
 
     // Ensure a control row exists for each region (neutral by default)
     await prisma.$executeRawUnsafe(
-      `INSERT INTO territory_control (regionKey, ownerCrewId, controlJson, stability)
-       VALUES (?, NULL, '{}', 100)
+      `INSERT INTO territory_control (regionKey, ownerCrewId, controlJson, stability, lastIncomeAt)
+       VALUES (?, NULL, '{}', 100, NOW())
        ON DUPLICATE KEY UPDATE regionKey = regionKey`,
       r.key,
     );

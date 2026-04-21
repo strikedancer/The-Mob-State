@@ -112,7 +112,9 @@ String _cashLabel(BuildContext context) {
 
 String _newMessagesLabel(BuildContext context, int count) {
   final l10n = AppLocalizations.of(context)!;
-  return l10n.localeName == 'nl' ? '$count nieuwe berichten' : '$count new messages';
+  return l10n.localeName == 'nl'
+      ? '$count nieuwe berichten'
+      : '$count new messages';
 }
 
 String _killProgressLabel(BuildContext context) {
@@ -143,7 +145,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => PlayerProfileScreen(playerId: player.id, username: player.username),
+        builder: (_) =>
+            PlayerProfileScreen(playerId: player.id, username: player.username),
       ),
     );
   }
@@ -199,7 +202,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _startPlayerRefreshTimer() {
     _playerRefreshTimer?.cancel();
-    _playerRefreshTimer = Timer.periodic(const Duration(seconds: 30), (_) async {
+    _playerRefreshTimer = Timer.periodic(const Duration(seconds: 30), (
+      _,
+    ) async {
       if (!mounted) {
         return;
       }
@@ -228,7 +233,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _refreshDashboardBadges() async {
-    await Future.wait<void>([_loadUnreadCount(), _loadPendingFriendRequestCount(), _loadSupportBadgeCount()]);
+    await Future.wait<void>([
+      _loadUnreadCount(),
+      _loadPendingFriendRequestCount(),
+      _loadSupportBadgeCount(),
+    ]);
   }
 
   Future<void> _loadUnreadCount() async {
@@ -256,7 +265,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
         if (params != null) {
           final unreadRaw = params['unreadCount'] ?? params['count'] ?? 0;
-          final unreadCount = unreadRaw is int ? unreadRaw : int.tryParse(unreadRaw.toString()) ?? 0;
+          final unreadCount = unreadRaw is int
+              ? unreadRaw
+              : int.tryParse(unreadRaw.toString()) ?? 0;
 
           if (mounted) {
             setState(() {
@@ -340,7 +351,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       }
 
-      final badgeCount = await countUnseenSupportTicketUpdates(currentSignatures, initializeIfEmpty: true);
+      final badgeCount = await countUnseenSupportTicketUpdates(
+        currentSignatures,
+        initializeIfEmpty: true,
+      );
 
       if (mounted) {
         setState(() => _supportBadgeCount = badgeCount);
@@ -368,7 +382,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     try {
       final locale = Localizations.localeOf(context).languageCode;
       final apiClient = AuthService().apiClient;
-      final response = await apiClient.get('/subscriptions/checkout/one-time/popup?locale=$locale');
+      final response = await apiClient.get(
+        '/subscriptions/checkout/one-time/popup?locale=$locale',
+      );
 
       if (response.statusCode != 200 || response.body.isEmpty || !mounted) {
         return;
@@ -399,7 +415,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     imageUrl,
                     height: 120,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                    errorBuilder: (context, error, stackTrace) =>
+                        const SizedBox.shrink(),
                   ),
                 ),
               Text('€$price'),
@@ -407,14 +424,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text(_tr('Sluiten', 'Close'))),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text(_tr('Sluiten', 'Close')),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(ctx).pop();
                 if (kIsWeb) {
                   setState(() => _selectedWebSection = _WebSection.crew);
                 } else {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CrewScreen()));
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (_) => const CrewScreen()));
                 }
               },
               child: Text(_tr('Bekijk aanbieding', 'View offer')),
@@ -424,12 +446,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
       );
 
       if (productKey.isNotEmpty) {
-        await apiClient.post('/subscriptions/checkout/one-time/popup/seen', {'productKey': productKey});
+        await apiClient.post('/subscriptions/checkout/one-time/popup/seen', {
+          'productKey': productKey,
+        });
       }
     } catch (_) {}
   }
 
-  Widget _buildWebShell(BuildContext context, AppLocalizations l10n, dynamic player) {
+  Widget _buildWebShell(
+    BuildContext context,
+    AppLocalizations l10n,
+    dynamic player,
+  ) {
     final countryName = CountryHelper.getLocalizedCountryName(
       player.currentCountry,
       l10n,
@@ -442,7 +470,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: !showLeftSidebar ? _buildDrawer(context, l10n, 'navigation') : null,
+      drawer: !showLeftSidebar
+          ? _buildDrawer(context, l10n, 'navigation')
+          : null,
       endDrawer: !showSidebars ? _buildDrawer(context, l10n, 'actions') : null,
       body: Column(
         children: [
@@ -463,16 +493,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 if (!showLeftSidebar) const SizedBox(width: 8),
                 Expanded(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 600, maxHeight: 100, minHeight: 60),
+                    constraints: BoxConstraints(
+                      maxWidth: 600,
+                      maxHeight: 100,
+                      minHeight: 60,
+                    ),
                     child: Image.network(
                       'title_mobstate.png',
                       fit: BoxFit.contain,
                       alignment: Alignment.center,
                       errorBuilder: (context, error, stackTrace) => Text(
                         'The Mob State',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleLarge?.copyWith(fontSize: 36, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -505,10 +540,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         }
                         break;
                       case 'logout':
-                        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                        final authProvider = Provider.of<AuthProvider>(
+                          context,
+                          listen: false,
+                        );
                         await authProvider.logout();
                         if (context.mounted) {
-                          Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                          Navigator.of(
+                            context,
+                          ).pushNamedAndRemoveUntil('/login', (route) => false);
                         }
                         break;
                     }
@@ -518,7 +558,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       enabled: false,
                       child: Text(
                         player.username,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     const PopupMenuDivider(),
@@ -537,7 +579,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 backgroundColor: Colors.red,
                                 child: Text(
                                   _unreadCount > 99 ? '99+' : '$_unreadCount',
-                                  style: const TextStyle(fontSize: 8, color: Colors.white),
+                                  style: const TextStyle(
+                                    fontSize: 8,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -571,7 +616,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           const Icon(Icons.logout, size: 20, color: Colors.red),
                           const SizedBox(width: 12),
-                          Text(_tr('Uitloggen', 'Log out'), style: const TextStyle(color: Colors.red)),
+                          Text(
+                            _tr('Uitloggen', 'Log out'),
+                            style: const TextStyle(color: Colors.red),
+                          ),
                         ],
                       ),
                     ),
@@ -582,13 +630,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Container(
                         width: 36,
                         height: 36,
-                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey.shade700),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey.shade700,
+                        ),
                         child: ClipOval(
                           child: Image(
-                            image: AvatarHelper.getAvatarImageProvider(player.avatar),
+                            image: AvatarHelper.getAvatarImageProvider(
+                              player.avatar,
+                            ),
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Icon(Icons.account_circle, size: 28, color: Colors.grey.shade400),
+                            errorBuilder: (context, error, stackTrace) => Icon(
+                              Icons.account_circle,
+                              size: 28,
+                              color: Colors.grey.shade400,
+                            ),
                           ),
                         ),
                       ),
@@ -603,10 +659,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.white, width: 1),
                             ),
-                            constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
                             child: Text(
                               _unreadCount > 99 ? '99+' : '$_unreadCount',
-                              style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 8,
+                                fontWeight: FontWeight.bold,
+                              ),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -626,9 +689,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
-                      border: Border(right: BorderSide(color: Colors.amber[600]!)),
+                      border: Border(
+                        right: BorderSide(color: Colors.amber[600]!),
+                      ),
                     ),
-                    child: ListView(children: _buildWebMenuItems(context, l10n)),
+                    child: ListView(
+                      children: _buildWebMenuItems(context, l10n),
+                    ),
                   ),
                 Expanded(
                   child: Padding(
@@ -641,18 +708,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: ScrollConfiguration(
-                              behavior: ScrollConfiguration.of(context).copyWith(
-                                dragDevices: {
-                                  PointerDeviceKind.touch,
-                                  PointerDeviceKind.mouse,
-                                  PointerDeviceKind.stylus,
-                                  PointerDeviceKind.invertedStylus,
-                                  PointerDeviceKind.trackpad,
-                                  PointerDeviceKind.unknown,
-                                },
-                              ),
+                              behavior: ScrollConfiguration.of(context)
+                                  .copyWith(
+                                    dragDevices: {
+                                      PointerDeviceKind.touch,
+                                      PointerDeviceKind.mouse,
+                                      PointerDeviceKind.stylus,
+                                      PointerDeviceKind.invertedStylus,
+                                      PointerDeviceKind.trackpad,
+                                      PointerDeviceKind.unknown,
+                                    },
+                                  ),
                               child: KeyedSubtree(
-                                key: ValueKey('${_selectedWebSection.name}-$_webSectionRefreshSeed'),
+                                key: ValueKey(
+                                  '${_selectedWebSection.name}-$_webSectionRefreshSeed',
+                                ),
                                 child: _buildWebContent(context),
                               ),
                             ),
@@ -668,7 +738,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
-                      border: Border(left: BorderSide(color: Colors.amber[600]!)),
+                      border: Border(
+                        left: BorderSide(color: Colors.amber[600]!),
+                      ),
                     ),
                     child: _buildActionsPanel(context, l10n),
                   ),
@@ -680,65 +752,230 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  List<Widget> _buildWebMenuItems(BuildContext context, AppLocalizations l10n, {VoidCallback? onBeforeNavigate}) {
-    final items = <({IconData icon, String label, _WebSection section, int badge})>[
-      (icon: Icons.dashboard, label: l10n.dashboard, section: _WebSection.dashboard, badge: 0),
-      (icon: Icons.menu_book, label: _tr('Help & Uitleg', 'Help & Guide'), section: _WebSection.help, badge: 0),
-      (
-        icon: FontAwesomeIcons.commentsSolid,
-        label: _tr('Support', 'Support'),
-        section: _WebSection.support,
-        badge: _supportBadgeCount,
-      ),
-      (icon: Icons.event, label: _tr('Events', 'Events'), section: _WebSection.events, badge: 0),
-      (icon: Icons.warning, label: l10n.crimes, section: _WebSection.crimes, badge: 0),
-      (icon: Icons.work, label: l10n.jobs, section: _WebSection.jobs, badge: 0),
-      (icon: Icons.flight, label: l10n.travel, section: _WebSection.travel, badge: 0),
-      (
-        icon: FontAwesomeIcons.planeSolid,
-        label: _tr('Luchtvaart', 'Aviation'),
-        section: _WebSection.aviation,
-        badge: 0,
-      ),
-      (icon: Icons.groups, label: l10n.crew, section: _WebSection.crew, badge: 0),
-      (icon: Icons.group, label: l10n.friends, section: _WebSection.friends, badge: _pendingFriendRequestCount),
-      (icon: Icons.inventory, label: l10n.inventory, section: _WebSection.inventory, badge: 0),
-      (icon: Icons.business, label: l10n.properties, section: _WebSection.properties, badge: 0),
-      (icon: Icons.account_balance, label: 'Bank', section: _WebSection.bank, badge: 0),
-      (icon: Icons.casino, label: l10n.casino, section: _WebSection.casino, badge: 0),
-      (icon: Icons.work, label: 'Handelswaar', section: _WebSection.trade, badge: 0),
-      (icon: Icons.store, label: l10n.blackMarket, section: _WebSection.blackMarket, badge: 0),
-      (icon: Icons.local_pharmacy, label: 'Drugs', section: _WebSection.drugs, badge: 0),
-      (icon: Icons.nightlife, label: _tr('Nachtclub', 'Nightclub'), section: _WebSection.nightclub, badge: 0),
-      (icon: Icons.currency_bitcoin, label: _tr('Crypto', 'Crypto'), section: _WebSection.crypto, badge: 0),
-      (icon: Icons.local_shipping, label: _tr('Smokkelen', 'Smuggling'), section: _WebSection.smuggling, badge: 0),
-      (icon: Icons.build, label: 'Gereedschap', section: _WebSection.tools, badge: 0),
-      (icon: Icons.gavel, label: l10n.court, section: _WebSection.court, badge: 0),
-      (icon: Icons.gps_fixed, label: l10n.hitlist, section: _WebSection.hitlist, badge: 0),
-      (icon: Icons.shield, label: l10n.security, section: _WebSection.security, badge: 0),
-      (icon: Icons.local_hospital, label: l10n.hospital, section: _WebSection.hospital, badge: 0),
-      (icon: Icons.gpp_bad, label: l10n.jail, section: _WebSection.prison, badge: 0),
-      (
-        icon: Icons.directions_car_filled,
-        label: _tr('Voertuig Stelen', 'Vehicle Heist'),
-        section: _WebSection.vehicleHeist,
-        badge: 0,
-      ),
-      (icon: Icons.tune, label: _tr('TuneShop', 'Tune Shop'), section: _WebSection.tuneShop, badge: 0),
-      (icon: Icons.gps_fixed, label: l10n.shootingRange, section: _WebSection.shootingRange, badge: 0),
-      (icon: Icons.fitness_center, label: l10n.gym, section: _WebSection.gym, badge: 0),
-      (icon: Icons.factory, label: l10n.ammoFactory, section: _WebSection.ammoFactory, badge: 0),
-      (icon: Icons.school, label: l10n.schoolMenuLabel, section: _WebSection.school, badge: 0),
-      (icon: Icons.language, label: _tr('Territorium', 'Territory'), section: _WebSection.territory, badge: 0),
-      (icon: Icons.favorite, label: l10n.prostitutionTitle, section: _WebSection.prostitution, badge: 0),
-      (
-        icon: Icons.storefront,
-        label: l10n.prostitutionRedLightDistricts,
-        section: _WebSection.redLightDistricts,
-        badge: 0,
-      ),
-      (icon: Icons.emoji_events, label: 'Prestaties', section: _WebSection.achievements, badge: 0),
-    ];
+  List<Widget> _buildWebMenuItems(
+    BuildContext context,
+    AppLocalizations l10n, {
+    VoidCallback? onBeforeNavigate,
+  }) {
+    final items =
+        <({IconData icon, String label, _WebSection section, int badge})>[
+          (
+            icon: Icons.dashboard,
+            label: l10n.dashboard,
+            section: _WebSection.dashboard,
+            badge: 0,
+          ),
+          (
+            icon: Icons.menu_book,
+            label: _tr('Help & Uitleg', 'Help & Guide'),
+            section: _WebSection.help,
+            badge: 0,
+          ),
+          (
+            icon: FontAwesomeIcons.commentsSolid,
+            label: _tr('Support', 'Support'),
+            section: _WebSection.support,
+            badge: _supportBadgeCount,
+          ),
+          (
+            icon: Icons.event,
+            label: _tr('Events', 'Events'),
+            section: _WebSection.events,
+            badge: 0,
+          ),
+          (
+            icon: Icons.warning,
+            label: l10n.crimes,
+            section: _WebSection.crimes,
+            badge: 0,
+          ),
+          (
+            icon: Icons.work,
+            label: l10n.jobs,
+            section: _WebSection.jobs,
+            badge: 0,
+          ),
+          (
+            icon: Icons.flight,
+            label: l10n.travel,
+            section: _WebSection.travel,
+            badge: 0,
+          ),
+          (
+            icon: FontAwesomeIcons.planeSolid,
+            label: _tr('Luchtvaart', 'Aviation'),
+            section: _WebSection.aviation,
+            badge: 0,
+          ),
+          (
+            icon: Icons.groups,
+            label: l10n.crew,
+            section: _WebSection.crew,
+            badge: 0,
+          ),
+          (
+            icon: Icons.group,
+            label: l10n.friends,
+            section: _WebSection.friends,
+            badge: _pendingFriendRequestCount,
+          ),
+          (
+            icon: Icons.inventory,
+            label: l10n.inventory,
+            section: _WebSection.inventory,
+            badge: 0,
+          ),
+          (
+            icon: Icons.business,
+            label: l10n.properties,
+            section: _WebSection.properties,
+            badge: 0,
+          ),
+          (
+            icon: Icons.account_balance,
+            label: 'Bank',
+            section: _WebSection.bank,
+            badge: 0,
+          ),
+          (
+            icon: Icons.casino,
+            label: l10n.casino,
+            section: _WebSection.casino,
+            badge: 0,
+          ),
+          (
+            icon: Icons.work,
+            label: 'Handelswaar',
+            section: _WebSection.trade,
+            badge: 0,
+          ),
+          (
+            icon: Icons.store,
+            label: l10n.blackMarket,
+            section: _WebSection.blackMarket,
+            badge: 0,
+          ),
+          (
+            icon: Icons.local_pharmacy,
+            label: 'Drugs',
+            section: _WebSection.drugs,
+            badge: 0,
+          ),
+          (
+            icon: Icons.nightlife,
+            label: _tr('Nachtclub', 'Nightclub'),
+            section: _WebSection.nightclub,
+            badge: 0,
+          ),
+          (
+            icon: Icons.currency_bitcoin,
+            label: _tr('Crypto', 'Crypto'),
+            section: _WebSection.crypto,
+            badge: 0,
+          ),
+          (
+            icon: Icons.local_shipping,
+            label: _tr('Smokkelen', 'Smuggling'),
+            section: _WebSection.smuggling,
+            badge: 0,
+          ),
+          (
+            icon: Icons.build,
+            label: 'Gereedschap',
+            section: _WebSection.tools,
+            badge: 0,
+          ),
+          (
+            icon: Icons.gavel,
+            label: l10n.court,
+            section: _WebSection.court,
+            badge: 0,
+          ),
+          (
+            icon: Icons.gps_fixed,
+            label: l10n.hitlist,
+            section: _WebSection.hitlist,
+            badge: 0,
+          ),
+          (
+            icon: Icons.shield,
+            label: l10n.security,
+            section: _WebSection.security,
+            badge: 0,
+          ),
+          (
+            icon: Icons.local_hospital,
+            label: l10n.hospital,
+            section: _WebSection.hospital,
+            badge: 0,
+          ),
+          (
+            icon: Icons.gpp_bad,
+            label: l10n.jail,
+            section: _WebSection.prison,
+            badge: 0,
+          ),
+          (
+            icon: Icons.directions_car_filled,
+            label: _tr('Voertuig Stelen', 'Vehicle Heist'),
+            section: _WebSection.vehicleHeist,
+            badge: 0,
+          ),
+          (
+            icon: Icons.tune,
+            label: _tr('TuneShop', 'Tune Shop'),
+            section: _WebSection.tuneShop,
+            badge: 0,
+          ),
+          (
+            icon: Icons.gps_fixed,
+            label: l10n.shootingRange,
+            section: _WebSection.shootingRange,
+            badge: 0,
+          ),
+          (
+            icon: Icons.fitness_center,
+            label: l10n.gym,
+            section: _WebSection.gym,
+            badge: 0,
+          ),
+          (
+            icon: Icons.factory,
+            label: l10n.ammoFactory,
+            section: _WebSection.ammoFactory,
+            badge: 0,
+          ),
+          (
+            icon: Icons.school,
+            label: l10n.schoolMenuLabel,
+            section: _WebSection.school,
+            badge: 0,
+          ),
+          (
+            icon: Icons.language,
+            label: _tr('Territorium', 'Territory'),
+            section: _WebSection.territory,
+            badge: 0,
+          ),
+          (
+            icon: Icons.favorite,
+            label: l10n.prostitutionTitle,
+            section: _WebSection.prostitution,
+            badge: 0,
+          ),
+          (
+            icon: Icons.storefront,
+            label: l10n.prostitutionRedLightDistricts,
+            section: _WebSection.redLightDistricts,
+            badge: 0,
+          ),
+          (
+            icon: Icons.emoji_events,
+            label: 'Prestaties',
+            section: _WebSection.achievements,
+            badge: 0,
+          ),
+        ];
 
     return items
         .map(
@@ -747,14 +984,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: ListTile(
               selected: _selectedWebSection == item.section,
               leading: Icon(item.icon),
-              title: Text(item.label, maxLines: 1, overflow: TextOverflow.ellipsis),
+              title: Text(
+                item.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
               trailing: item.badge > 0
                   ? CircleAvatar(
                       radius: 10,
                       backgroundColor: Colors.red,
                       child: Text(
                         item.badge > 99 ? '99+' : '${item.badge}',
-                        style: const TextStyle(fontSize: 10, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.white,
+                        ),
                       ),
                     )
                   : null,
@@ -772,7 +1016,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Quick Actions', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+        Text(
+          'Quick Actions',
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 16),
         Expanded(
           child: ListView(
@@ -783,14 +1032,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: 'Misdaden',
                 subtitle: 'Pleeg criminele acties',
                 color: Colors.red.shade700,
-                onTap: () => setState(() => _selectedWebSection = _WebSection.crimes),
+                onTap: () =>
+                    setState(() => _selectedWebSection = _WebSection.crimes),
               ),
               const SizedBox(height: 12),
               _buildActionCard(
                 context,
                 icon: Icons.directions_car_filled,
                 title: _tr('Voertuig Stelen', 'Vehicle Heist'),
-                subtitle: _tr('Auto, motor en boot', 'Car, motorcycle and boat'),
+                subtitle: _tr(
+                  'Auto, motor en boot',
+                  'Car, motorcycle and boat',
+                ),
                 color: Colors.orange.shade700,
                 onTap: () => _openVehicleHeist(0),
               ),
@@ -801,16 +1054,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: _tr('TuneShop', 'Tune Shop'),
                 subtitle: _tr('Onderdelen en upgrades', 'Parts and upgrades'),
                 color: Colors.purple.shade700,
-                onTap: () => setState(() => _selectedWebSection = _WebSection.tuneShop),
+                onTap: () =>
+                    setState(() => _selectedWebSection = _WebSection.tuneShop),
               ),
               const SizedBox(height: 12),
               _buildActionCard(
                 context,
                 icon: Icons.event,
                 title: _tr('Events', 'Events'),
-                subtitle: _tr('Actieve en aankomende events', 'Active and upcoming events'),
+                subtitle: _tr(
+                  'Actieve en aankomende events',
+                  'Active and upcoming events',
+                ),
                 color: Colors.teal.shade700,
-                onTap: () => setState(() => _selectedWebSection = _WebSection.events),
+                onTap: () =>
+                    setState(() => _selectedWebSection = _WebSection.events),
               ),
               const SizedBox(height: 12),
               _buildActionCard(
@@ -819,7 +1077,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: 'Werk',
                 subtitle: 'Verdien legaal geld',
                 color: Colors.green.shade700,
-                onTap: () => setState(() => _selectedWebSection = _WebSection.jobs),
+                onTap: () =>
+                    setState(() => _selectedWebSection = _WebSection.jobs),
               ),
               const SizedBox(height: 12),
               _buildActionCard(
@@ -828,7 +1087,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: 'Casino',
                 subtitle: 'Gok je geld',
                 color: Colors.purple.shade700,
-                onTap: () => setState(() => _selectedWebSection = _WebSection.casino),
+                onTap: () =>
+                    setState(() => _selectedWebSection = _WebSection.casino),
               ),
               const SizedBox(height: 12),
               _buildActionCard(
@@ -837,7 +1097,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: 'Bank',
                 subtitle: 'Beheer je globale saldo',
                 color: Colors.indigo.shade700,
-                onTap: () => setState(() => _selectedWebSection = _WebSection.bank),
+                onTap: () =>
+                    setState(() => _selectedWebSection = _WebSection.bank),
               ),
               const SizedBox(height: 12),
               _buildActionCard(
@@ -846,7 +1107,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: l10n.schoolMenuLabel,
                 subtitle: l10n.schoolMenuSubtitle,
                 color: Colors.amber.shade700,
-                onTap: () => setState(() => _selectedWebSection = _WebSection.school),
+                onTap: () =>
+                    setState(() => _selectedWebSection = _WebSection.school),
               ),
             ],
           ),
@@ -877,7 +1139,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(6)),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(6),
+              ),
               child: Icon(icon, color: Colors.white, size: 24),
             ),
             const SizedBox(width: 12),
@@ -885,9 +1150,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 2),
-                  Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.grey.shade400)),
+                  Text(
+                    subtitle,
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                  ),
                 ],
               ),
             ),
@@ -898,7 +1172,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildDrawer(BuildContext context, AppLocalizations l10n, String type) {
+  Widget _buildDrawer(
+    BuildContext context,
+    AppLocalizations l10n,
+    String type,
+  ) {
     return Drawer(
       child: Container(
         color: Theme.of(context).colorScheme.surface,
@@ -907,7 +1185,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor)),
+                border: Border(
+                  bottom: BorderSide(color: Theme.of(context).dividerColor),
+                ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -916,8 +1196,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     'title_mobstate.png',
                     height: 60,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Text('The Mob State', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    errorBuilder: (context, error, stackTrace) => const Text(
+                      'The Mob State',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -929,70 +1214,128 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ? _buildWebMenuItems(
                         context,
                         l10n,
-                        onBeforeNavigate: () => _scaffoldKey.currentState?.closeDrawer(),
+                        onBeforeNavigate: () =>
+                            _scaffoldKey.currentState?.closeDrawer(),
                       )
                     : [
                         ListTile(
-                          leading: Icon(Icons.warning, color: Colors.red.shade700),
+                          leading: Icon(
+                            Icons.warning,
+                            color: Colors.red.shade700,
+                          ),
                           title: Text(_tr('Misdaden', 'Crimes')),
-                          subtitle: Text(_tr('Pleeg criminele acties', 'Commit criminal actions')),
+                          subtitle: Text(
+                            _tr(
+                              'Pleeg criminele acties',
+                              'Commit criminal actions',
+                            ),
+                          ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            setState(() => _selectedWebSection = _WebSection.crimes);
+                            setState(
+                              () => _selectedWebSection = _WebSection.crimes,
+                            );
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.directions_car_filled, color: Colors.orange.shade700),
+                          leading: Icon(
+                            Icons.directions_car_filled,
+                            color: Colors.orange.shade700,
+                          ),
                           title: Text(_tr('Voertuig Stelen', 'Vehicle Heist')),
-                          subtitle: Text(_tr('Auto, motor en boot', 'Car, motorcycle and boat')),
+                          subtitle: Text(
+                            _tr(
+                              'Auto, motor en boot',
+                              'Car, motorcycle and boat',
+                            ),
+                          ),
                           onTap: () {
                             Navigator.of(context).pop();
                             _openVehicleHeist(0);
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.event, color: Colors.teal.shade700),
+                          leading: Icon(
+                            Icons.event,
+                            color: Colors.teal.shade700,
+                          ),
                           title: Text(_tr('Events', 'Events')),
-                          subtitle: Text(_tr('Actieve en aankomende events', 'Active and upcoming events')),
+                          subtitle: Text(
+                            _tr(
+                              'Actieve en aankomende events',
+                              'Active and upcoming events',
+                            ),
+                          ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            setState(() => _selectedWebSection = _WebSection.events);
+                            setState(
+                              () => _selectedWebSection = _WebSection.events,
+                            );
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.work, color: Colors.green.shade700),
+                          leading: Icon(
+                            Icons.work,
+                            color: Colors.green.shade700,
+                          ),
                           title: Text(_tr('Werk', 'Work')),
-                          subtitle: Text(_tr('Verdien legaal geld', 'Earn legal money')),
+                          subtitle: Text(
+                            _tr('Verdien legaal geld', 'Earn legal money'),
+                          ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            setState(() => _selectedWebSection = _WebSection.jobs);
+                            setState(
+                              () => _selectedWebSection = _WebSection.jobs,
+                            );
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.casino, color: Colors.purple.shade700),
+                          leading: Icon(
+                            Icons.casino,
+                            color: Colors.purple.shade700,
+                          ),
                           title: const Text('Casino'),
-                          subtitle: Text(_tr('Gok je geld', 'Gamble your money')),
+                          subtitle: Text(
+                            _tr('Gok je geld', 'Gamble your money'),
+                          ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            setState(() => _selectedWebSection = _WebSection.casino);
+                            setState(
+                              () => _selectedWebSection = _WebSection.casino,
+                            );
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.account_balance, color: Colors.indigo.shade700),
+                          leading: Icon(
+                            Icons.account_balance,
+                            color: Colors.indigo.shade700,
+                          ),
                           title: const Text('Bank'),
-                          subtitle: Text(_tr('Beheer je globale saldo', 'Manage your global balance')),
+                          subtitle: Text(
+                            _tr(
+                              'Beheer je globale saldo',
+                              'Manage your global balance',
+                            ),
+                          ),
                           onTap: () {
                             Navigator.of(context).pop();
-                            setState(() => _selectedWebSection = _WebSection.bank);
+                            setState(
+                              () => _selectedWebSection = _WebSection.bank,
+                            );
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.school, color: Colors.amber.shade700),
+                          leading: Icon(
+                            Icons.school,
+                            color: Colors.amber.shade700,
+                          ),
                           title: Text(l10n.schoolMenuLabel),
                           subtitle: Text(l10n.schoolMenuSubtitle),
                           onTap: () {
                             Navigator.of(context).pop();
-                            setState(() => _selectedWebSection = _WebSection.school);
+                            setState(
+                              () => _selectedWebSection = _WebSection.school,
+                            );
                           },
                         ),
                       ],
@@ -1004,13 +1347,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildCompactStatusBar(BuildContext context, Player player, String countryName) {
+  Widget _buildCompactStatusBar(
+    BuildContext context,
+    Player player,
+    String countryName,
+  ) {
     // Calculate rank progress
     final xpForCurrentRank = _getXPForRank(player.rank);
     final xpForNextRank = _getXPForRank(player.rank + 1);
     final xpNeededForNextRank = xpForNextRank - xpForCurrentRank;
     final xpProgressInCurrentRank = player.xp - xpForCurrentRank;
-    final rankProgress = (xpProgressInCurrentRank / xpNeededForNextRank).clamp(0.0, 1.0);
+    final rankProgress = (xpProgressInCurrentRank / xpNeededForNextRank).clamp(
+      0.0,
+      1.0,
+    );
     final healthProgress = (player.health / 100).clamp(0.0, 1.0);
     final wantedLevel = (player.wantedLevel ?? 0).toDouble();
     final wantedProgress = (wantedLevel / 5.0).clamp(0.0, 1.0);
@@ -1019,7 +1369,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade900,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1043,7 +1396,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   AppLocalizations.of(context)!.health,
                   healthProgress,
                   '${player.health}%',
-                  player.health > 50 ? Colors.green : (player.health > 25 ? Colors.orange : Colors.red),
+                  player.health > 50
+                      ? Colors.green
+                      : (player.health > 25 ? Colors.orange : Colors.red),
                 ),
               ),
               const SizedBox(width: 12),
@@ -1070,9 +1425,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   runSpacing: 4,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    _buildTopInfoItem('${_cashLabel(context)} ${formatCurrency(player.money)}', Colors.green.shade300),
-                    _buildTopInfoItem(_getRankTitle(player.rank), Colors.amber.shade300),
-                    _buildTopInfoItem(_newMessagesLabel(context, _unreadCount), Colors.white70),
+                    _buildTopInfoItem(
+                      '${_cashLabel(context)} ${formatCurrency(player.money)}',
+                      Colors.green.shade300,
+                    ),
+                    _buildTopInfoItem(
+                      _getRankTitle(player.rank),
+                      Colors.amber.shade300,
+                    ),
+                    _buildTopInfoItem(
+                      _newMessagesLabel(context, _unreadCount),
+                      Colors.white70,
+                    ),
                     _buildTopInfoItem(
                       '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
                       Colors.white70,
@@ -1114,13 +1478,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildLargeProgressBar(BuildContext context, String label, double progress, String valueText, Color color) {
+  Widget _buildLargeProgressBar(
+    BuildContext context,
+    String label,
+    double progress,
+    String valueText,
+    Color color,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '$label: $valueText',
-          style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const SizedBox(height: 4),
         ClipRRect(
@@ -1147,7 +1521,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildWebContent(BuildContext context) {
     switch (_selectedWebSection) {
       case _WebSection.support:
-        return SupportTicketsScreen(onSeenSnapshotChanged: _loadSupportBadgeCount);
+        return SupportTicketsScreen(
+          onSeenSnapshotChanged: _loadSupportBadgeCount,
+        );
       case _WebSection.dashboard:
         return const _WebDashboardHomeContent();
       case _WebSection.events:
@@ -1249,7 +1625,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const DirectMessagesScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const DirectMessagesScreen(),
+                      ),
                     ).then((_) => _loadUnreadCount());
                   },
                   tooltip: _tr('Berichten', 'Messages'),
@@ -1272,10 +1650,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 IconButton(
                   icon: const Icon(Icons.logout),
                   onPressed: () async {
-                    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                    final authProvider = Provider.of<AuthProvider>(
+                      context,
+                      listen: false,
+                    );
                     await authProvider.logout();
                     if (context.mounted) {
-                      Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                      Navigator.of(
+                        context,
+                      ).pushNamedAndRemoveUntil('/login', (route) => false);
                     }
                   },
                   tooltip: l10n.logout,
@@ -1315,15 +1698,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 radius: 32,
                                 child: ClipOval(
                                   child: Image(
-                                    image: AvatarHelper.getAvatarImageProvider(player.avatar),
+                                    image: AvatarHelper.getAvatarImageProvider(
+                                      player.avatar,
+                                    ),
                                     width: 64,
                                     height: 64,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      final avatar = player.avatar ?? 'default_1';
+                                      final avatar =
+                                          player.avatar ?? 'default_1';
                                       return Center(
                                         child: Text(
-                                          avatar.isNotEmpty ? avatar[0].toUpperCase() : '?',
+                                          avatar.isNotEmpty
+                                              ? avatar[0].toUpperCase()
+                                              : '?',
                                           style: const TextStyle(fontSize: 32),
                                         ),
                                       );
@@ -1336,15 +1724,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   right: -4,
                                   top: -4,
                                   child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: Colors.red,
                                       borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Theme.of(context).cardColor, width: 1.5),
+                                      border: Border.all(
+                                        color: Theme.of(context).cardColor,
+                                        width: 1.5,
+                                      ),
                                     ),
-                                    constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                                    constraints: const BoxConstraints(
+                                      minWidth: 18,
+                                      minHeight: 18,
+                                    ),
                                     child: Text(
-                                      _unreadCount > 99 ? '99+' : '$_unreadCount',
+                                      _unreadCount > 99
+                                          ? '99+'
+                                          : '$_unreadCount',
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 10,
@@ -1363,9 +1762,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(l10n.welcome(player.username), style: Theme.of(context).textTheme.headlineSmall),
+                              Text(
+                                l10n.welcome(player.username),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.headlineSmall,
+                              ),
                               const SizedBox(height: 12),
-                              _RankProgressBar(rank: player.rank, currentXP: player.xp),
+                              _RankProgressBar(
+                                rank: player.rank,
+                                currentXP: player.xp,
+                              ),
                             ],
                           ),
                         ),
@@ -1389,10 +1796,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             if (constraints.maxWidth > _wideDesktopBreakpoint) {
                               // Wide desktop: 7 cols
                               crossAxisCount = 7;
-                            } else if (constraints.maxWidth > _tabletBreakpoint) {
+                            } else if (constraints.maxWidth >
+                                _tabletBreakpoint) {
                               // Tablet: 6 cols
                               crossAxisCount = 6;
-                            } else if (constraints.maxWidth > _mobileBreakpoint) {
+                            } else if (constraints.maxWidth >
+                                _mobileBreakpoint) {
                               // Medium mobile: 5 cols
                               crossAxisCount = 5;
                             } else {
@@ -1411,22 +1820,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   context,
                                   icon: Icons.event,
                                   label: _tr('Events', 'Events'),
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const EventsScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const EventsScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.warning,
                                   label: l10n.crimes,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CrimeScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const CrimeScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.work,
                                   label: l10n.jobs,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const JobsScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const JobsScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1435,14 +1856,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   badge: _unreadCount,
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const DirectMessagesScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const DirectMessagesScreen(),
+                                    ),
                                   ).then((_) => _refreshDashboardBadges()),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.menu_book,
                                   label: _tr('Help & Uitleg', 'Help & Guide'),
-                                  onTap: () => Navigator.pushNamed(context, '/help'),
+                                  onTap: () =>
+                                      Navigator.pushNamed(context, '/help'),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1452,8 +1877,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) =>
-                                          SupportTicketsScreen(onSeenSnapshotChanged: _loadSupportBadgeCount),
+                                      builder: (_) => SupportTicketsScreen(
+                                        onSeenSnapshotChanged:
+                                            _loadSupportBadgeCount,
+                                      ),
                                     ),
                                   ).then((_) => _refreshDashboardBadges()),
                                 ),
@@ -1461,8 +1888,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   context,
                                   icon: Icons.flight,
                                   label: l10n.travel,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TravelScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const TravelScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1470,15 +1901,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: _tr('Luchtvaart', 'Aviation'),
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const AviationScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const AviationScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.groups,
                                   label: l10n.crew,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CrewScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const CrewScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1487,36 +1924,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   badge: _pendingFriendRequestCount,
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const FriendsScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const FriendsScreen(),
+                                    ),
                                   ).then((_) => _refreshDashboardBadges()),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.business,
                                   label: l10n.properties,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => PropertyScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => PropertyScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.casino,
                                   label: l10n.casino,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CasinoScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const CasinoScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.account_balance,
                                   label: 'Bank',
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const BankScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const BankScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.shopping_bag,
                                   label: 'Handelswaar',
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TradeScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const TradeScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1524,7 +1979,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: l10n.blackMarket,
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const BlackMarketScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const BlackMarketScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
@@ -1533,7 +1990,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: 'Drugs',
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const DrugEnvironmentScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const DrugEnvironmentScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
@@ -1542,42 +2002,62 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: _tr('Nachtclub', 'Nightclub'),
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const NightclubScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const NightclubScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.build,
                                   label: 'Gereedschap',
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const ToolsScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const ToolsScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.favorite,
                                   label: l10n.prostitutionTitle,
-                                  onTap: () => Navigator.pushNamed(context, '/prostitution'),
+                                  onTap: () => Navigator.pushNamed(
+                                    context,
+                                    '/prostitution',
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.storefront,
                                   label: l10n.prostitutionRedLightDistricts,
-                                  onTap: () =>
-                                      Navigator.pushNamed(context, '/prostitution', arguments: {'tabIndex': 1}),
+                                  onTap: () => Navigator.pushNamed(
+                                    context,
+                                    '/prostitution',
+                                    arguments: {'tabIndex': 1},
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.gavel,
                                   label: l10n.court,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CourtScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const CourtScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.gps_fixed,
                                   label: l10n.hitlist,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const HitlistScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const HitlistScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1585,7 +2065,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: l10n.security,
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const SecurityScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const SecurityScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
@@ -1594,23 +2076,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: l10n.hospital,
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const HospitalScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const HospitalScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.gpp_bad,
                                   label: l10n.jail,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const PrisonScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const PrisonScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.directions_car_filled,
-                                  label: _tr('Voertuig Stelen', 'Vehicle Heist'),
+                                  label: _tr(
+                                    'Voertuig Stelen',
+                                    'Vehicle Heist',
+                                  ),
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const VehicleHeistScreen(initialTabIndex: 0)),
+                                    MaterialPageRoute(
+                                      builder: (_) => const VehicleHeistScreen(
+                                        initialTabIndex: 0,
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
@@ -1619,21 +2114,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: _tr('TuneShop', 'Tune Shop'),
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const TuneShopScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const TuneShopScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.gps_fixed,
                                   label: l10n.shootingRange,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => ShootingRangeScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ShootingRangeScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.fitness_center,
                                   label: l10n.gym,
-                                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => GymScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => GymScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
@@ -1641,21 +2147,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   label: l10n.ammoFactory,
                                   onTap: () => Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const AmmoFactoryScreen()),
+                                    MaterialPageRoute(
+                                      builder: (_) => const AmmoFactoryScreen(),
+                                    ),
                                   ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.school,
                                   label: l10n.schoolMenuLabel,
-                                  onTap: () =>
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const SchoolScreen())),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const SchoolScreen(),
+                                    ),
+                                  ),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.language,
                                   label: _tr('Territorium', 'Territory'),
-                                  onTap: () => Navigator.pushNamed(context, '/territory'),
+                                  onTap: () => Navigator.pushNamed(
+                                    context,
+                                    '/territory',
+                                  ),
                                 ),
                               ],
                             );
@@ -1678,21 +2193,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           children: [
                             const Icon(Icons.feed, size: 20),
                             const SizedBox(width: 8),
-                            Text('Live Events', style: Theme.of(context).textTheme.titleLarge),
+                            Text(
+                              'Live Events',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
                             const Spacer(),
                             Consumer<EventProvider>(
                               builder: (context, eventProvider, _) {
                                 return Icon(
-                                  eventProvider.isConnected ? Icons.wifi : Icons.wifi_off,
+                                  eventProvider.isConnected
+                                      ? Icons.wifi
+                                      : Icons.wifi_off,
                                   size: 20,
-                                  color: eventProvider.isConnected ? Colors.green : Colors.grey,
+                                  color: eventProvider.isConnected
+                                      ? Colors.green
+                                      : Colors.grey,
                                 );
                               },
                             ),
                           ],
                         ),
                         const SizedBox(height: 16),
-                        SizedBox(height: 300, child: const EventFeed(maxEvents: 10)),
+                        SizedBox(
+                          height: 300,
+                          child: const EventFeed(maxEvents: 10),
+                        ),
                       ],
                     ),
                   ),
@@ -1703,7 +2228,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: const ICUOverlay(), // Always rendered, shows itself when in ICU
+      floatingActionButton:
+          const ICUOverlay(), // Always rendered, shows itself when in ICU
     );
   }
 
@@ -1723,7 +2249,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           border: Border.all(color: Colors.amber.shade700, width: 2),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
-            BoxShadow(color: Colors.amber.shade700.withOpacity(0.2), blurRadius: 4, offset: const Offset(0, 2)),
+            BoxShadow(
+              color: Colors.amber.shade700.withOpacity(0.2),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
           ],
         ),
         child: Stack(
@@ -1741,7 +2271,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Text(
                       label,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.amber.shade700),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber.shade700,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -1755,11 +2289,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 top: 4,
                 child: Container(
                   padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(10)),
-                  constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  constraints: const BoxConstraints(
+                    minWidth: 18,
+                    minHeight: 18,
+                  ),
                   child: Text(
                     badge > 99 ? '99+' : '$badge',
-                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -1775,7 +2319,8 @@ class _WebDashboardHomeContent extends StatefulWidget {
   const _WebDashboardHomeContent();
 
   @override
-  State<_WebDashboardHomeContent> createState() => _WebDashboardHomeContentState();
+  State<_WebDashboardHomeContent> createState() =>
+      _WebDashboardHomeContentState();
 }
 
 class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
@@ -1817,15 +2362,20 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             selectedWeaponName: _stats!.selectedWeaponName,
             activeVehicle: _stats!.activeVehicle,
             jailed: _stats!.jailTimeRemaining > 1,
-            jailTimeRemaining: _stats!.jailTimeRemaining > 0 ? _stats!.jailTimeRemaining - 1 : 0,
+            jailTimeRemaining: _stats!.jailTimeRemaining > 0
+                ? _stats!.jailTimeRemaining - 1
+                : 0,
             bankBalance: _stats!.bankBalance,
             crewWar: _stats!.crewWar?.copyWith(
               phaseEndsInSeconds: (_stats!.crewWar?.phaseEndsInSeconds ?? 0) > 0
                   ? (_stats!.crewWar?.phaseEndsInSeconds ?? 0) - 1
                   : 0,
             ),
+            territoryLeaderStats: _stats!.territoryLeaderStats,
             cooldowns: Map.fromEntries(
-              _stats!.cooldowns.entries.map((e) => MapEntry(e.key, e.value > 0 ? e.value - 1 : 0)),
+              _stats!.cooldowns.entries.map(
+                (e) => MapEntry(e.key, e.value > 0 ? e.value - 1 : 0),
+              ),
             ),
           );
         });
@@ -1848,7 +2398,9 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
 
   void _onEventReceived() {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
-    final lastEvent = eventProvider.events.isNotEmpty ? eventProvider.events.last : null;
+    final lastEvent = eventProvider.events.isNotEmpty
+        ? eventProvider.events.last
+        : null;
 
     if (lastEvent != null) {
       // Refresh on action completion events
@@ -1901,7 +2453,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   }
 
   String _formatCooldown(int seconds) {
-    return formatAdaptiveDurationFromSeconds(seconds, localeName: _isNl ? 'nl' : 'en');
+    return formatAdaptiveDurationFromSeconds(
+      seconds,
+      localeName: _isNl ? 'nl' : 'en',
+    );
   }
 
   @override
@@ -1919,9 +2474,15 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     final xpForNextRank = _getXPForRank(player.rank + 1);
     final xpNeededForNextRank = xpForNextRank - xpForCurrentRank;
     final xpProgressInCurrentRank = player.xp - xpForCurrentRank;
-    final rankProgress = (xpProgressInCurrentRank / xpNeededForNextRank).clamp(0.0, 1.0);
+    final rankProgress = (xpProgressInCurrentRank / xpNeededForNextRank).clamp(
+      0.0,
+      1.0,
+    );
 
-    final countryName = CountryHelper.getLocalizedCountryName(player.currentCountry ?? 'netherlands', l10n);
+    final countryName = CountryHelper.getLocalizedCountryName(
+      player.currentCountry ?? 'netherlands',
+      l10n,
+    );
 
     if (_loading) {
       return Container(
@@ -1937,20 +2498,36 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             // Dashboard cards: stack vertically on tablet, 3-column layout on desktop
-            final isCompact = constraints.maxWidth < _DashboardScreenState._tabletBreakpoint;
+            final isCompact =
+                constraints.maxWidth < _DashboardScreenState._tabletBreakpoint;
 
             Widget buildLeftCard() {
               return Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.grey.shade800, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade800,
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildInfoRow('Naam', player.username, Colors.white),
-                    _buildInfoRow('Rank (${player.rank})', _getRankTitle(player.rank), Colors.amber.shade300),
-                    _buildInfoRow('Geldstatus', _getMoneyStatus(player.money), Colors.green.shade300),
-                    _buildInfoRow('Kogels', '${_stats?.totalAmmo ?? 0}', Colors.white),
+                    _buildInfoRow(
+                      'Rank (${player.rank})',
+                      _getRankTitle(player.rank),
+                      Colors.amber.shade300,
+                    ),
+                    _buildInfoRow(
+                      'Geldstatus',
+                      _getMoneyStatus(player.money),
+                      Colors.green.shade300,
+                    ),
+                    _buildInfoRow(
+                      'Kogels',
+                      '${_stats?.totalAmmo ?? 0}',
+                      Colors.white,
+                    ),
                     _buildInfoRow('XP', '${player.xp}', Colors.white),
                     _buildInfoRow('Clicks', '-', Colors.white),
                     _buildInfoRow(
@@ -1959,27 +2536,53 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       Colors.white,
                     ),
                     if (player.wantedLevel != null && player.wantedLevel! > 0)
-                      _buildInfoRow('Wanted Level', '${player.wantedLevel}', Colors.red.shade300),
+                      _buildInfoRow(
+                        'Wanted Level',
+                        '${player.wantedLevel}',
+                        Colors.red.shade300,
+                      ),
                     if (player.fbiHeat != null && player.fbiHeat! > 0)
-                      _buildInfoRow('FBI Heat', '${player.fbiHeat}', Colors.orange.shade300),
+                      _buildInfoRow(
+                        'FBI Heat',
+                        '${player.fbiHeat}',
+                        Colors.orange.shade300,
+                      ),
                     const SizedBox(height: 16),
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 8),
-                    _buildInfoRow('Contant', '\$${player.money}', Colors.green.shade300),
-                    _buildInfoRow('Bank', '\$${_stats?.bankBalance ?? 0}', Colors.white),
+                    _buildInfoRow(
+                      'Contant',
+                      '\$${player.money}',
+                      Colors.green.shade300,
+                    ),
+                    _buildInfoRow(
+                      'Bank',
+                      '\$${_stats?.bankBalance ?? 0}',
+                      Colors.white,
+                    ),
                     const SizedBox(height: 12),
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 8),
-                    _buildInfoRow('Beveiliging', 'Geen beveiliging', Colors.grey.shade400),
+                    _buildInfoRow(
+                      'Beveiliging',
+                      'Geen beveiliging',
+                      Colors.grey.shade400,
+                    ),
                     _buildInfoRow(
                       'Wapen',
-                      _stats?.selectedWeaponName != null ? _stats!.selectedWeaponName! : 'Geen',
-                      _stats?.selectedWeaponName != null ? Colors.green.shade300 : Colors.grey.shade400,
+                      _stats?.selectedWeaponName != null
+                          ? _stats!.selectedWeaponName!
+                          : 'Geen',
+                      _stats?.selectedWeaponName != null
+                          ? Colors.green.shade300
+                          : Colors.grey.shade400,
                     ),
                     _buildInfoRow(
                       'Voertuig',
                       _stats?.activeVehicle?.name ?? 'Geen',
-                      _stats?.activeVehicle != null ? Colors.green.shade300 : Colors.grey.shade400,
+                      _stats?.activeVehicle != null
+                          ? Colors.green.shade300
+                          : Colors.grey.shade400,
                     ),
                   ],
                 ),
@@ -1992,38 +2595,97 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: Colors.grey.shade800, borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade800,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const Text(
                           'Statistieken',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 12),
-                        _buildInfoRow(_tr('Uitbraken', 'Breakouts'), '${_stats?.breakoutCount ?? 0}', Colors.white),
-                        _buildInfoRow(_tr('Moorden', 'Murders'), '${_stats?.killCount ?? 0}', Colors.white),
-                        _buildInfoRow(_tr('Hitlist opdrachten', 'Hitlist contracts'), '${_stats?.hitsPlacedCount ?? 0}', Colors.white),
-                        _buildInfoRow('Auto gestolen', '${_stats?.vehicleThieves ?? 0}', Colors.white),
-                        _buildInfoRow('Boten gestolen', '${_stats?.boatThieves ?? 0}', Colors.white),
-                        _buildInfoRow('Misdaadpogingen', '${_stats?.crimeAttempts ?? 0}', Colors.white),
-                        _buildInfoRow('Succesvol', '${_stats?.successfulCrimes ?? 0}', Colors.green.shade300),
-                        _buildInfoRow('Werk pogingen', '${_stats?.jobAttempts ?? 0}', Colors.white),
-                        _buildInfoRow('Hoeren op straat', '${_stats?.streetProstitutes ?? 0}', Colors.white),
-                        _buildInfoRow('Hoeren in RLD', '${_stats?.redLightProstitutes ?? 0}', Colors.white),
+                        _buildInfoRow(
+                          _tr('Uitbraken', 'Breakouts'),
+                          '${_stats?.breakoutCount ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          _tr('Moorden', 'Murders'),
+                          '${_stats?.killCount ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          _tr('Hitlist opdrachten', 'Hitlist contracts'),
+                          '${_stats?.hitsPlacedCount ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          'Auto gestolen',
+                          '${_stats?.vehicleThieves ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          'Boten gestolen',
+                          '${_stats?.boatThieves ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          'Misdaadpogingen',
+                          '${_stats?.crimeAttempts ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          'Succesvol',
+                          '${_stats?.successfulCrimes ?? 0}',
+                          Colors.green.shade300,
+                        ),
+                        _buildInfoRow(
+                          'Werk pogingen',
+                          '${_stats?.jobAttempts ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          'Hoeren op straat',
+                          '${_stats?.streetProstitutes ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          'Hoeren in RLD',
+                          '${_stats?.redLightProstitutes ?? 0}',
+                          Colors.white,
+                        ),
                         _buildInfoRow(
                           l10n.dashboardInfoDrugsGrams,
                           '${_stats?.drugsTotalQuantity ?? 0}g',
                           Colors.white,
                         ),
-                        _buildInfoRow(l10n.dashboardInfoNightclubs, '${_stats?.nightclubVenues ?? 0}', Colors.white),
+                        _buildInfoRow(
+                          l10n.dashboardInfoNightclubs,
+                          '${_stats?.nightclubVenues ?? 0}',
+                          Colors.white,
+                        ),
                         _buildInfoRow(
                           l10n.dashboardInfoNightclubRevenue,
                           '€${_stats?.nightclubRevenueAllTime ?? 0}',
                           Colors.white,
                         ),
-                        _buildInfoRow(_tr('Reizen', 'Travels'), '${_stats?.travelCount ?? 0}', Colors.white),
-                        _buildInfoRow(_tr('Kogels', 'Bullets'), '${_stats?.totalAmmo ?? 0}', Colors.white),
+                        _buildInfoRow(
+                          _tr('Reizen', 'Travels'),
+                          '${_stats?.travelCount ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          _tr('Kogels', 'Bullets'),
+                          '${_stats?.totalAmmo ?? 0}',
+                          Colors.white,
+                        ),
                       ],
                     ),
                   ),
@@ -2031,7 +2693,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: Colors.grey.shade800, borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade800,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -2046,10 +2711,19 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                           l10n.health,
                           player.health / 100,
                           '${player.health}%',
-                          player.health > 50 ? Colors.green : (player.health > 25 ? Colors.orange : Colors.red),
+                          player.health > 50
+                              ? Colors.green
+                              : (player.health > 25
+                                    ? Colors.orange
+                                    : Colors.red),
                         ),
                         const SizedBox(height: 16),
-                        _buildDetailedProgressBar(_killProgressLabel(context), 0.0, '0%', Colors.red),
+                        _buildDetailedProgressBar(
+                          _killProgressLabel(context),
+                          0.0,
+                          '0%',
+                          Colors.red,
+                        ),
                       ],
                     ),
                   ),
@@ -2061,23 +2735,42 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               return Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(color: Colors.grey.shade800, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade800,
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       l10n.dashboardTimeouts,
-                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     _buildCooldownRow(l10n.dashboardTimeoutCrime, 'crime'),
                     _buildCooldownRow(l10n.dashboardTimeoutJob, 'job'),
                     _buildCooldownRow(l10n.dashboardTimeoutTravel, 'travel'),
-                    _buildCooldownRow(l10n.dashboardTimeoutVehicleTheft, 'vehicle_theft'),
-                    _buildCooldownRow(l10n.dashboardTimeoutBoatTheft, 'boat_theft'),
-                    _buildCooldownRow(l10n.dashboardTimeoutNightclubSeason, 'nightclub'),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutVehicleTheft,
+                      'vehicle_theft',
+                    ),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutBoatTheft,
+                      'boat_theft',
+                    ),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutNightclubSeason,
+                      'nightclub',
+                    ),
                     _buildCooldownRow(l10n.dashboardTimeoutAmmo, 'ammo'),
-                    _buildCooldownRow(l10n.dashboardTimeoutShootingRange, 'shooting_range'),
+                    _buildCooldownRow(
+                      l10n.dashboardTimeoutShootingRange,
+                      'shooting_range',
+                    ),
                     _buildCooldownRow(l10n.dashboardTimeoutGym, 'gym'),
                     _buildCooldownRow(l10n.hospital, 'hospital'),
                     _buildCooldownRow('Hoeren werven', 'prostitute_recruit'),
@@ -2089,25 +2782,37 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       _stats != null && _stats!.jailed
                           ? 'In cel (${_formatCooldown(_stats!.jailTimeRemaining)})'
                           : 'Vrij',
-                      _stats != null && _stats!.jailed ? Colors.red.shade300 : Colors.green.shade300,
+                      _stats != null && _stats!.jailed
+                          ? Colors.red.shade300
+                          : Colors.green.shade300,
                     ),
                     const SizedBox(height: 12),
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 12),
                     Text(
                       _tr('Crew Wars', 'Crew Wars'),
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     _buildInfoRow(
                       _tr('Status', 'Status'),
                       _formatCrewWarDashboardStatus(_stats?.crewWar?.status),
-                      _stats?.crewWar?.hasActiveWar == true ? Colors.orange.shade300 : Colors.grey.shade400,
+                      _stats?.crewWar?.hasActiveWar == true
+                          ? Colors.orange.shade300
+                          : Colors.grey.shade400,
                     ),
                     _buildInfoRow(
                       _tr('Kan declareren', 'Can declare'),
-                      _stats?.crewWar?.canDeclare == true ? _tr('Ja', 'Yes') : _tr('Nee', 'No'),
-                      _stats?.crewWar?.canDeclare == true ? Colors.green.shade300 : Colors.grey.shade400,
+                      _stats?.crewWar?.canDeclare == true
+                          ? _tr('Ja', 'Yes')
+                          : _tr('Nee', 'No'),
+                      _stats?.crewWar?.canDeclare == true
+                          ? Colors.green.shade300
+                          : Colors.grey.shade400,
                     ),
                     if ((_stats?.crewWar?.warType ?? '').isNotEmpty)
                       _buildInfoRow(
@@ -2116,7 +2821,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         Colors.white,
                       ),
                     if ((_stats?.crewWar?.opponentCrewName ?? '').isNotEmpty)
-                      _buildInfoRow(_tr('Tegenstander', 'Opponent'), _stats!.crewWar!.opponentCrewName!, Colors.white),
+                      _buildInfoRow(
+                        _tr('Tegenstander', 'Opponent'),
+                        _stats!.crewWar!.opponentCrewName!,
+                        Colors.white,
+                      ),
                     _buildInfoRow(
                       _tr('Crewpunten', 'Crew points'),
                       '${_stats?.crewWar?.myCrewPoints ?? 0}',
@@ -2143,6 +2852,55 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         _formatCooldown(_stats!.crewWar!.phaseEndsInSeconds),
                         Colors.orange.shade300,
                       ),
+                    if (_stats?.territoryLeaderStats != null) ...[
+                      const SizedBox(height: 12),
+                      const Divider(color: Colors.grey),
+                      const SizedBox(height: 12),
+                      Text(
+                        _tr('Crew Territory', 'Crew Territory'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildInfoRow(
+                        _tr('Gebieden', 'Regions'),
+                        '${_stats!.territoryLeaderStats!.regionsOwned}',
+                        Colors.white,
+                      ),
+                      _buildInfoRow(
+                        _tr('Landen veroverd', 'Countries captured'),
+                        '${_stats!.territoryLeaderStats!.countriesOwned}',
+                        Colors.white,
+                      ),
+                      _buildInfoRow(
+                        _tr('Uitbetaling', 'Payout'),
+                        '${formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerInterval)} · ${_territoryIncomeIntervalLabel(_stats!.territoryLeaderStats!.incomeIntervalMinutes)}',
+                        Colors.green.shade300,
+                      ),
+                      _buildInfoRow(
+                        _tr('Verdient nu per uur', 'Earning now per hour'),
+                        formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerHour),
+                        Colors.green.shade300,
+                      ),
+                      _buildInfoRow(
+                        _tr('Verdient nu per dag', 'Earning now per day'),
+                        formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerDay),
+                        Colors.green.shade300,
+                      ),
+                      _buildInfoRow(
+                        _tr('Totaal verdiend', 'Total earned'),
+                        formatCurrency(_stats!.territoryLeaderStats!.totalPassiveIncomeEarned),
+                        Colors.amber.shade300,
+                      ),
+                      _buildInfoRow(
+                        _tr('Crew bank', 'Crew bank'),
+                        formatCurrency(_stats!.territoryLeaderStats!.crewBankBalance),
+                        Colors.white,
+                      ),
+                    ],
                   ],
                 ),
               );
@@ -2186,7 +2944,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
           Text(label, style: const TextStyle(color: Colors.grey, fontSize: 13)),
           Text(
             value,
-            style: TextStyle(color: valueColor, fontSize: 13, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              color: valueColor,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -2251,7 +3013,26 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     }
   }
 
-  Widget _buildDetailedProgressBar(String label, double progress, String valueText, Color color) {
+  String _territoryIncomeIntervalLabel(int minutes) {
+    if (minutes <= 0) {
+      return _tr('niet ingesteld', 'not configured');
+    }
+    if (minutes == 60) {
+      return _tr('ieder uur', 'every hour');
+    }
+    if (minutes % 60 == 0) {
+      final hours = minutes ~/ 60;
+      return _tr('iedere $hours uur', 'every $hours hour${hours == 1 ? '' : 's'}');
+    }
+    return _tr('elke $minutes min', 'every $minutes min');
+  }
+
+  Widget _buildDetailedProgressBar(
+    String label,
+    double progress,
+    String valueText,
+    Color color,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2260,11 +3041,19 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
           children: [
             Text(
               label,
-              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             Text(
               valueText,
-              style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: color,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -2340,7 +3129,10 @@ class _RankProgressBar extends StatelessWidget {
     final xpForNextRank = _getXPForRank(rank + 1);
     final xpNeededForNextRank = xpForNextRank - xpForCurrentRank;
     final xpProgressInCurrentRank = currentXP - xpForCurrentRank;
-    final progress = (xpProgressInCurrentRank / xpNeededForNextRank).clamp(0.0, 1.0);
+    final progress = (xpProgressInCurrentRank / xpNeededForNextRank).clamp(
+      0.0,
+      1.0,
+    );
 
     return Row(
       children: [
@@ -2348,9 +3140,17 @@ class _RankProgressBar extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [Colors.amber.shade700, Colors.amber.shade400]),
+            gradient: LinearGradient(
+              colors: [Colors.amber.shade700, Colors.amber.shade400],
+            ),
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(color: Colors.amber.withOpacity(0.3), blurRadius: 8, offset: const Offset(0, 2))],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.amber.withOpacity(0.3),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -2359,7 +3159,11 @@ class _RankProgressBar extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 '$rank',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
               ),
             ],
           ),
@@ -2375,22 +3179,36 @@ class _RankProgressBar extends StatelessWidget {
                 children: [
                   Text(
                     '$xpProgressInCurrentRank / $xpNeededForNextRank XP',
-                    style: TextStyle(fontSize: 11, color: Colors.grey[600], fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 4),
               Container(
                 height: 8,
-                decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(4)),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(4),
+                ),
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
                   widthFactor: progress,
                   child: Container(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Colors.amber.shade600, Colors.amber.shade400]),
+                      gradient: LinearGradient(
+                        colors: [Colors.amber.shade600, Colors.amber.shade400],
+                      ),
                       borderRadius: BorderRadius.circular(4),
-                      boxShadow: [BoxShadow(color: Colors.amber.withOpacity(0.4), blurRadius: 4)],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.amber.withOpacity(0.4),
+                          blurRadius: 4,
+                        ),
+                      ],
                     ),
                   ),
                 ),

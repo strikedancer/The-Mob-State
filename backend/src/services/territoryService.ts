@@ -42,6 +42,11 @@ async function getTerritoryConfig() {
     'TERRITORY_ANTI_FARM_REPEAT_TARGET_CAP',
     'TERRITORY_REWARD_CASH_MULTIPLIER_PERCENT',
     'TERRITORY_REWARD_XP_MULTIPLIER_PERCENT',
+    'TERRITORY_PASSIVE_INCOME_INTERVAL_MINUTES',
+    'TERRITORY_PASSIVE_INCOME_TIER_1_CASH',
+    'TERRITORY_PASSIVE_INCOME_TIER_2_CASH',
+    'TERRITORY_PASSIVE_INCOME_TIER_3_CASH',
+    'TERRITORY_PASSIVE_INCOME_TIER_4_CASH',
   ];
   const cfg = await getRuntimeConfig(keys);
   return {
@@ -62,6 +67,11 @@ async function getTerritoryConfig() {
     antiFarmRepeatTargetCap: Number(cfg['TERRITORY_ANTI_FARM_REPEAT_TARGET_CAP'] ?? 3),
     rewardCashMultiplierPercent: Number(cfg['TERRITORY_REWARD_CASH_MULTIPLIER_PERCENT'] ?? 110),
     rewardXpMultiplierPercent: Number(cfg['TERRITORY_REWARD_XP_MULTIPLIER_PERCENT'] ?? 110),
+    passiveIncomeIntervalMinutes: Number(cfg['TERRITORY_PASSIVE_INCOME_INTERVAL_MINUTES'] ?? 60),
+    passiveIncomeTier1Cash: Number(cfg['TERRITORY_PASSIVE_INCOME_TIER_1_CASH'] ?? 25000),
+    passiveIncomeTier2Cash: Number(cfg['TERRITORY_PASSIVE_INCOME_TIER_2_CASH'] ?? 50000),
+    passiveIncomeTier3Cash: Number(cfg['TERRITORY_PASSIVE_INCOME_TIER_3_CASH'] ?? 90000),
+    passiveIncomeTier4Cash: Number(cfg['TERRITORY_PASSIVE_INCOME_TIER_4_CASH'] ?? 140000),
   };
 }
 
@@ -69,10 +79,35 @@ async function getTerritoryConfig() {
 
 type TerritoryRow = { id: number; countryCode: string; displayNameNl: string; displayNameEn: string; svgAssetKey: string; enabled: number };
 type RegionRow = { id: number; countryCode: string; regionKey: string; nameNl: string; nameEn: string; svgElementId: string; valueTier: number; strategicTagsJson: string | null; neighborsJson: string | null; enabled: number };
-type ControlRow = { id: number; regionKey: string; ownerCrewId: number | null; controlJson: string | null; stability: number; lastDecayAt: Date | null; updatedAt: Date };
+type ControlRow = { id: number; regionKey: string; ownerCrewId: number | null; controlJson: string | null; stability: number; lastDecayAt: Date | null; lastIncomeAt: Date | null; updatedAt: Date };
 type ContestRow = { id: number; regionKey: string; status: string; attackerCrewId: number; defenderCrewId: number | null; startedAt: Date; activeAt: Date | null; lockdownAt: Date | null; resolveAt: Date | null; resolvedAt: Date | null; winnerCrewId: number | null; metadataJson: string | null };
 type SeasonRow = { id: number; seasonKey: string; status: string; startsAt: Date; endsAt: Date; rewardConfigJson: string | null };
 type MapContestRow = ContestRow & { attackerCrewName: string | null; defenderCrewName: string | null };
+type PassiveIncomeRegionRow = {
+  regionKey: string;
+  countryCode: string;
+  ownerCrewId: number;
+  valueTier: number;
+  lastIncomeAt: Date | null;
+};
+
+type TerritoryIncomeSnapshot = {
+  amountPerInterval: number;
+  intervalMinutes: number;
+  amountPerHour: number;
+  amountPerDay: number;
+};
+
+type TerritoryCrewEconomySummary = {
+  regionsOwned: number;
+  countriesOwned: number;
+  incomeIntervalMinutes: number;
+  passiveIncomePerInterval: number;
+  passiveIncomePerHour: number;
+  passiveIncomePerDay: number;
+  totalPassiveIncomeEarned: number;
+  crewBankBalance: number;
+};
 
 function buildContestSchedule(
   startedAt: Date,
@@ -106,6 +141,147 @@ function toNumeric(value: unknown): number {
   if (typeof value === 'bigint') return Number(value);
   const parsed = Number(value ?? 0);
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function getPassiveIncomeCashForTier(
+  tier: number,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): number {
+  switch (tier) {
+    case 1:
+      return Math.max(0, cfg.passiveIncomeTier1Cash);
+    case 2:
+      return Math.max(0, cfg.passiveIncomeTier2Cash);
+    case 3:
+      return Math.max(0, cfg.passiveIncomeTier3Cash);
+    default:
+      return Math.max(0, cfg.passiveIncomeTier4Cash);
+  }
+}
+
+function buildPassiveIncomeSnapshot(
+  tier: number,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): TerritoryIncomeSnapshot {
+  const intervalMinutes = Math.max(1, cfg.passiveIncomeIntervalMinutes);
+  const amountPerInterval = getPassiveIncomeCashForTier(tier, cfg);
+  const cyclesPerHour = 60 / intervalMinutes;
+  const amountPerHour = Math.round(amountPerInterval * cyclesPerHour);
+  return {
+    amountPerInterval,
+    intervalMinutes,
+    amountPerHour,
+    amountPerDay: amountPerHour * 24,
+  };
+}
+
+async function processPassiveTerritoryIncome(
+  now: Date,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): Promise<void> {
+  const intervalMinutes = Math.max(1, cfg.passiveIncomeIntervalMinutes);
+  const intervalMs = intervalMinutes * 60 * 1000;
+  const seasons = await prisma.$queryRawUnsafe<SeasonRow[]>(
+    `SELECT * FROM territory_seasons WHERE status = 'active' ORDER BY startsAt DESC LIMIT 1`,
+  );
+  const seasonKey = seasons[0]?.seasonKey ?? 'territory-open';
+
+  const rows = await prisma.$queryRawUnsafe<PassiveIncomeRegionRow[]>(
+    `SELECT tc.regionKey, tr.countryCode, tc.ownerCrewId, tr.valueTier, tc.lastIncomeAt
+     FROM territory_control tc
+     JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+     WHERE tc.ownerCrewId IS NOT NULL AND tr.enabled = 1`,
+  );
+
+  for (const row of rows) {
+    const lastIncomeAt = row.lastIncomeAt ?? now;
+    const elapsedMs = now.getTime() - lastIncomeAt.getTime();
+    const payoutCycles = Math.floor(elapsedMs / intervalMs);
+    if (payoutCycles <= 0) {
+      continue;
+    }
+
+    const amountPerCycle = getPassiveIncomeCashForTier(toNumeric(row.valueTier), cfg);
+    const payoutAmount = payoutCycles * amountPerCycle;
+    const newLastIncomeAt = new Date(lastIncomeAt.getTime() + (payoutCycles * intervalMs));
+
+    await prisma.$transaction(async (tx) => {
+      if (payoutAmount > 0) {
+        await tx.crew.update({
+          where: { id: toNumeric(row.ownerCrewId) },
+          data: { bankBalance: { increment: payoutAmount } },
+        });
+
+        await tx.$executeRawUnsafe(
+          `INSERT INTO territory_reward_log (seasonKey, crewId, playerId, rewardType, cashAmount, xpAmount, metadataJson)
+           VALUES (?, ?, NULL, 'passive_income', ?, 0, ?)`,
+          seasonKey,
+          toNumeric(row.ownerCrewId),
+          payoutAmount,
+          JSON.stringify({
+            regionKey: row.regionKey,
+            countryCode: row.countryCode,
+            valueTier: toNumeric(row.valueTier),
+            payoutCycles,
+            intervalMinutes,
+            source: 'territory_passive_income',
+          }),
+        );
+      }
+
+      await tx.$executeRawUnsafe(
+        `UPDATE territory_control
+         SET lastIncomeAt = ?, updatedAt = updatedAt
+         WHERE regionKey = ? AND ownerCrewId = ?`,
+        newLastIncomeAt,
+        row.regionKey,
+        toNumeric(row.ownerCrewId),
+      );
+    });
+  }
+}
+
+export async function getCrewEconomySummary(crewId: number): Promise<TerritoryCrewEconomySummary> {
+  await syncContestLifecycle();
+
+  const cfg = await getTerritoryConfig();
+  const [controlledRows, rewardRows, crew] = await Promise.all([
+    prisma.$queryRawUnsafe<Array<{ regionKey: string; countryCode: string; valueTier: number }>>(
+      `SELECT tr.regionKey, tr.countryCode, tr.valueTier
+       FROM territory_control tc
+       JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+       WHERE tc.ownerCrewId = ? AND tr.enabled = 1`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ totalCash: number }>>(
+      `SELECT COALESCE(SUM(cashAmount), 0) AS totalCash
+       FROM territory_reward_log
+       WHERE crewId = ? AND rewardType = 'passive_income'`,
+      crewId,
+    ),
+    prisma.crew.findUnique({
+      where: { id: crewId },
+      select: { bankBalance: true },
+    }),
+  ]);
+
+  const countriesOwned = new Set(controlledRows.map((row) => row.countryCode)).size;
+  const passiveIncomePerInterval = controlledRows.reduce((sum, row) => {
+    return sum + buildPassiveIncomeSnapshot(toNumeric(row.valueTier), cfg).amountPerInterval;
+  }, 0);
+  const cyclesPerHour = 60 / Math.max(1, cfg.passiveIncomeIntervalMinutes);
+  const passiveIncomePerHour = Math.round(passiveIncomePerInterval * cyclesPerHour);
+
+  return {
+    regionsOwned: controlledRows.length,
+    countriesOwned,
+    incomeIntervalMinutes: Math.max(1, cfg.passiveIncomeIntervalMinutes),
+    passiveIncomePerInterval,
+    passiveIncomePerHour,
+    passiveIncomePerDay: passiveIncomePerHour * 24,
+    totalPassiveIncomeEarned: toNumeric(rewardRows[0]?.totalCash ?? 0),
+    crewBankBalance: toNumeric(crew?.bankBalance ?? 0),
+  };
 }
 
 async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
@@ -152,6 +328,8 @@ async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
       }
     }
   }
+
+  await processPassiveTerritoryIncome(now, cfg);
 }
 
 export async function processPendingTerritoryContests(now: Date = new Date()): Promise<void> {
@@ -190,6 +368,10 @@ export async function getMapData(
     viewerContestRole: 'attacker' | 'defender' | null;
     viewerNextActionAt: Date | null;
     viewerCooldownSecondsRemaining: number;
+    passiveIncomeIntervalMinutes: number;
+    passiveIncomeCash: number;
+    passiveIncomeCashHourly: number;
+    passiveIncomeCashDaily: number;
   }>;
 }> {
   await syncContestLifecycle();
@@ -281,6 +463,7 @@ export async function getMapData(
       if (!ctrl.ownerCrewId) return 0;
       return Number(cpJson[String(ctrl.ownerCrewId)] ?? 0);
     })() : 0;
+    const incomeSnapshot = buildPassiveIncomeSnapshot(r.valueTier, cfg);
     return {
       ...r,
       ownerCrewId: ctrl?.ownerCrewId ?? null,
@@ -300,6 +483,10 @@ export async function getMapData(
       viewerContestRole,
       viewerNextActionAt: viewerCooldown?.nextActionAt ?? null,
       viewerCooldownSecondsRemaining: viewerCooldown?.secondsRemaining ?? 0,
+      passiveIncomeIntervalMinutes: incomeSnapshot.intervalMinutes,
+      passiveIncomeCash: incomeSnapshot.amountPerInterval,
+      passiveIncomeCashHourly: incomeSnapshot.amountPerHour,
+      passiveIncomeCashDaily: incomeSnapshot.amountPerDay,
     };
   });
 
@@ -532,10 +719,11 @@ export async function defendContest(playerId: number, crewId: number, contestId:
 export async function getCrewTerritory(crewId: number): Promise<{
   regions: Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlPercent: number; contestStatus: string | null }>;
   season: SeasonRow | null;
+  summary: TerritoryCrewEconomySummary;
 }> {
   await syncContestLifecycle();
 
-  const [controlled, seasons] = await Promise.all([
+  const [controlled, seasons, summary] = await Promise.all([
     prisma.$queryRawUnsafe<Array<{ regionKey: string; nameNl: string; nameEn: string; stability: number; controlJson: string | null; ownerCrewId: number | null }>>(
       `SELECT tc.regionKey, tr.nameNl, tr.nameEn, tc.stability, tc.controlJson, tc.ownerCrewId
        FROM territory_control tc
@@ -546,6 +734,7 @@ export async function getCrewTerritory(crewId: number): Promise<{
     prisma.$queryRawUnsafe<SeasonRow[]>(
       `SELECT * FROM territory_seasons WHERE status = 'active' ORDER BY startsAt DESC LIMIT 1`
     ),
+    getCrewEconomySummary(crewId),
   ]);
 
   // Active contests per region
@@ -575,6 +764,7 @@ export async function getCrewTerritory(crewId: number): Promise<{
       };
     }),
     season: seasons[0] ?? null,
+    summary,
   };
 }
 
@@ -643,7 +833,7 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
 
   if (winnerCrewId !== null) {
     await prisma.$executeRawUnsafe(
-      `UPDATE territory_control SET ownerCrewId = ?, controlJson = ?, stability = 100, updatedAt = NOW()
+      `UPDATE territory_control SET ownerCrewId = ?, controlJson = ?, stability = 100, lastIncomeAt = NOW(), updatedAt = NOW()
        WHERE regionKey = ?`,
       winnerCrewId,
       JSON.stringify({ [winnerCrewId]: 100 }),
@@ -664,7 +854,7 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
 export async function adminAssignRegion(regionKey: string, crewId: number | null): Promise<void> {
   await prisma.$executeRawUnsafe(
     `UPDATE territory_control
-     SET ownerCrewId = ?, controlJson = ?, stability = 100, updatedAt = NOW()
+     SET ownerCrewId = ?, controlJson = ?, stability = 100, lastIncomeAt = NOW(), updatedAt = NOW()
      WHERE regionKey = ?`,
     crewId,
     crewId ? JSON.stringify({ [crewId]: 100 }) : '{}',
@@ -674,7 +864,7 @@ export async function adminAssignRegion(regionKey: string, crewId: number | null
 
 export async function adminResetRegion(regionKey: string): Promise<void> {
   await prisma.$executeRawUnsafe(
-    `UPDATE territory_control SET ownerCrewId = NULL, controlJson = '{}', stability = 100 WHERE regionKey = ?`,
+    `UPDATE territory_control SET ownerCrewId = NULL, controlJson = '{}', stability = 100, lastIncomeAt = NOW() WHERE regionKey = ?`,
     regionKey,
   );
   await prisma.$executeRawUnsafe(

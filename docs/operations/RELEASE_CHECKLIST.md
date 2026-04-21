@@ -10,6 +10,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
+- [ ] Territory inkomsten zichtbaar gemaakt: de gebiedsmodal toont nu echte backend-bedragen per payout/per uur/per dag en het webdashboard toont voor crewleaders hoeveel gebieden en landen de crew bezit plus huidig en totaal territory-inkomen
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `backend/src/services/territoryService.ts`, `backend/src/routes/player.ts`, `client/lib/screens/territory_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/services/dashboard_service.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory crew-gate UX verduidelijkt: het scherm leest nu `GET /crews/mine`, toont de eigen crew in het detailpaneel en vervangt de kale `not_in_crew` fout door duidelijke NL/EN uitleg wanneer een speler nog geen crew heeft; aanvalsknoppen blijven verborgen tot de speler daadwerkelijk in een crew zit
   - Bestanden: `client/lib/services/territory_service.dart`, `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory gebiedslijnen extra zichtbaar gemaakt: SVG-regio borders renderen nu zwart met iets dikkere stroke zodat de grenzen ook op lichtgrijze/neutrale gebieden duidelijk leesbaar blijven

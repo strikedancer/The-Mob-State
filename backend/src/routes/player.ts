@@ -13,6 +13,7 @@ import { weaponSelectionService } from '../services/weaponSelectionService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from '../services/achievementService';
 import { existsCached } from '../services/redisClient';
 import * as crewWarService from '../services/crewWarService';
+import * as territoryService from '../services/territoryService';
 
 function emptyCrewWarHub() {
   return {
@@ -759,7 +760,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       return Math.max(0, Math.ceil((nextAllowedAt.getTime() - Date.now()) / 1000));
     };
 
-    const [shootingStats, gymStats, drugInventoryAgg, nightclubVenueCount, nightclubRevenueAgg, nightclubSeasonState, crewWarHub, playerCore, breakoutCount, hitsPlacedCount, travelCount] = await Promise.all([
+    const [shootingStats, gymStats, drugInventoryAgg, nightclubVenueCount, nightclubRevenueAgg, nightclubSeasonState, crewWarHub, playerCore, breakoutCount, hitsPlacedCount, travelCount, crewMembership] = await Promise.all([
       prisma.shootingRangeStats.findUnique({
         where: { playerId },
         select: { lastTrainedAt: true },
@@ -808,7 +809,22 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           },
         },
       }),
+      prisma.crewMember.findUnique({
+        where: { playerId },
+        select: { crewId: true, role: true },
+      }),
     ]);
+
+    const territoryLeaderStats = crewMembership?.role === 'leader'
+      ? await territoryService.getCrewEconomySummary(crewMembership.crewId).catch((error) => {
+          console.error('[Dashboard] Territory crew summary failed during dashboard stats load:', {
+            playerId,
+            crewId: crewMembership.crewId,
+            error,
+          });
+          return null;
+        })
+      : null;
 
     const cooldownPlayer = await prisma.player.findUnique({
       where: { id: playerId },
@@ -1025,6 +1041,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             : 0,
           phaseEndsInSeconds: crewWarPhaseEndsInSeconds,
         },
+        territoryLeaderStats,
         cooldowns,
       },
     });

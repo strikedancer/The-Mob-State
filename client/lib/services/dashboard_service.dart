@@ -59,6 +59,41 @@ class CrewWarDashboardSummary {
   }
 }
 
+class TerritoryLeaderDashboardSummary {
+  final int regionsOwned;
+  final int countriesOwned;
+  final int incomeIntervalMinutes;
+  final int passiveIncomePerInterval;
+  final int passiveIncomePerHour;
+  final int passiveIncomePerDay;
+  final int totalPassiveIncomeEarned;
+  final int crewBankBalance;
+
+  TerritoryLeaderDashboardSummary({
+    required this.regionsOwned,
+    required this.countriesOwned,
+    required this.incomeIntervalMinutes,
+    required this.passiveIncomePerInterval,
+    required this.passiveIncomePerHour,
+    required this.passiveIncomePerDay,
+    required this.totalPassiveIncomeEarned,
+    required this.crewBankBalance,
+  });
+
+  factory TerritoryLeaderDashboardSummary.fromJson(Map<String, dynamic> json) {
+    return TerritoryLeaderDashboardSummary(
+      regionsOwned: json['regionsOwned'] as int? ?? 0,
+      countriesOwned: json['countriesOwned'] as int? ?? 0,
+      incomeIntervalMinutes: json['incomeIntervalMinutes'] as int? ?? 0,
+      passiveIncomePerInterval: json['passiveIncomePerInterval'] as int? ?? 0,
+      passiveIncomePerHour: json['passiveIncomePerHour'] as int? ?? 0,
+      passiveIncomePerDay: json['passiveIncomePerDay'] as int? ?? 0,
+      totalPassiveIncomeEarned: json['totalPassiveIncomeEarned'] as int? ?? 0,
+      crewBankBalance: json['crewBankBalance'] as int? ?? 0,
+    );
+  }
+}
+
 class DashboardStats {
   final int crimeAttempts;
   final int breakoutCount;
@@ -82,6 +117,7 @@ class DashboardStats {
   final int jailTimeRemaining;
   final int bankBalance;
   final CrewWarDashboardSummary? crewWar;
+  final TerritoryLeaderDashboardSummary? territoryLeaderStats;
   final Map<String, int> cooldowns;
 
   DashboardStats({
@@ -107,6 +143,7 @@ class DashboardStats {
     required this.jailTimeRemaining,
     required this.bankBalance,
     this.crewWar,
+    this.territoryLeaderStats,
     required this.cooldowns,
   });
 
@@ -126,7 +163,7 @@ class DashboardStats {
       drugsTotalQuantity: json['drugsTotalQuantity'] as int? ?? 0,
       nightclubVenues: json['nightclubVenues'] as int? ?? 0,
       nightclubRevenueAllTime: json['nightclubRevenueAllTime'] as int? ?? 0,
-        travelCount: json['travelCount'] as int? ?? 0,
+      travelCount: json['travelCount'] as int? ?? 0,
       weapons: (json['weapons'] as List<dynamic>)
           .map((w) => WeaponInfo.fromJson(w as Map<String, dynamic>))
           .toList(),
@@ -140,6 +177,11 @@ class DashboardStats {
       crewWar: json['crewWar'] != null
           ? CrewWarDashboardSummary.fromJson(
               json['crewWar'] as Map<String, dynamic>,
+            )
+          : null,
+      territoryLeaderStats: json['territoryLeaderStats'] != null
+          ? TerritoryLeaderDashboardSummary.fromJson(
+              json['territoryLeaderStats'] as Map<String, dynamic>,
             )
           : null,
       cooldowns: Map<String, int>.from(json['cooldowns'] as Map),

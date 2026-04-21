@@ -39,6 +39,7 @@
   - Territory contest UX-fix: de regio-modal toont nu contest timers (acties starten, acties sluiten, contest eindigt), cooldown per actie en de opbrengstklasse van het gebied; actieve contest-acties zijn bovendien role-based opgesplitst zodat aanvallers geen verdediging meer zien en verdedigers geen aanvalsacties
   - Territory contest state/timer fix: bestaande contests met missende `activeAt`/`lockdownAt`/`resolveAt` worden nu automatisch aangevuld vanuit `startedAt` + runtime-config, zodat regio-modals geen `Onbekend`-timers meer tonen; de open modal volgt bovendien direct verse mapdata na starten/verdedigen zodat spelers niet pas na weg-navigeren de actuele gevechtsstatus zien
   - Territory modal preview-fix: de gebiedsmodal rendert nu ook een compacte preview van alleen het aangeklikte SVG-gebied via het bestaande regio-path, zodat spelers in de popup direct visueel zien welk gebied geselecteerd is zonder de volledige landkaart opnieuw te tonen; brede layouts tonen deze preview rechts naast de stats, smallere layouts stapelen hem onder de titel
+  - Territory income visibility + crewleader summary: gecontroleerde regio's keren nu server-authoritative passieve crew-bank inkomsten uit op basis van runtime-config per `valueTier`, loggen die payouts in `territory_reward_log`, tonen in de regio-modal echte bedragen per payout/per uur/per dag, en leveren in het crewleader-dashboard een samenvatting voor gebieden, landen, huidig inkomen en totaal verdiend territory-geld
   - Territory live-refresh fix: bij contest-start en verdedigen wordt de open regio-modal nu altijd direct ververst; als de eerste call fout terugkomt maar de contest al is aangemaakt, ziet de speler meteen de actuele conteststatus in plaats van pas na weg-navigeren. De modal berekent timerfallbacks bovendien lokaal vanuit `startedAt` + runtime-config als een timestamp in de payload nog ontbreekt
   - Territory live resolve fix: contest resolve dwingt punten nu eerst naar echte nummers voordat capture-percentages worden berekend, zodat neutrale regio's met alleen attacker-acties niet meer onterecht `winnerCrewId = NULL` eindigen; territory draait daarnaast nu ook via een minuut-cron zodat afhandeling en meldingen niet afhankelijk blijven van een latere map/overview read, en contest start/capture/loss versturen nu behalve push ook een inboxbericht
   - Territory admin/live API serialisatie-fix: `overview` en `leaderboard` normaliseren aggregate velden zoals `COUNT(...)` nu expliciet naar gewone numbers voordat Express JSON rendert, zodat admin/system logs geen `Do not know how to serialize a BigInt` meer krijgen op territory responses
@@ -70,6 +71,7 @@ Scope-afbakening:
 ## Change Rules
 - Preserve core fairness: free crews moeten competitief kunnen blijven zonder VIP-lock.
 - Territory scoring en ownership wijzigingen zijn server-authoritative.
+- Territory-inkomsten en totale territory-opbrengst moeten backend-authoritative zijn; UI mag geen tiertekst of geschatte placeholder-bedragen tonen wanneer echte serverwaarden beschikbaar zijn.
 - NL en EN copy synchroon voor alle nieuwe labels, flows, errors, meldingen en push/inbox events.
 - UI blijft bruikbaar op mobiel/tablet/desktop met 1 primaire verticale scrollflow onder sticky headers.
 
@@ -77,6 +79,7 @@ Scope-afbakening:
 - Territory -> Crew (roles, permissions, membership, crew identity)
 - Territory -> Crew Wars (optionele modifiers, season overlap, anti-snowball)
 - Territory -> Dashboard (live ownership samenvatting, hot contests)
+- Territory -> Crew economy (crew bank inkomsten en leader-statistieken)
 - Territory -> Notifications (contest alerts, ownership changes, season rewards)
 - Territory -> Travel (land-specifieke maps en country scope)
 - Territory -> Admin (settings, moderation, logs, force actions)
@@ -159,6 +162,11 @@ Verplichte keys:
 - `TERRITORY_ANTI_FARM_REPEAT_TARGET_CAP`
 - `TERRITORY_REWARD_CASH_MULTIPLIER_PERCENT`
 - `TERRITORY_REWARD_XP_MULTIPLIER_PERCENT`
+- `TERRITORY_PASSIVE_INCOME_INTERVAL_MINUTES`
+- `TERRITORY_PASSIVE_INCOME_TIER_1_CASH`
+- `TERRITORY_PASSIVE_INCOME_TIER_2_CASH`
+- `TERRITORY_PASSIVE_INCOME_TIER_3_CASH`
+- `TERRITORY_PASSIVE_INCOME_TIER_4_CASH`
 
 Harde regel:
 - Nieuwe territory setting keys worden eerst in admin runtime config toegevoegd en gevalideerd, nooit als hardcoded JSON settings file.
@@ -172,6 +180,7 @@ Harde regel:
 - `POST /territory/contest/defend`
 - `GET /territory/crew/:crewId`
 - `GET /territory/leaderboard`
+- `GET /player/dashboard-stats` bevat voor crewleaders ook territory economy samenvattingen uit gecontroleerde regio's en `territory_reward_log`
 
 Admin moderation:
 - `POST /admin/territory/contest/resolve`

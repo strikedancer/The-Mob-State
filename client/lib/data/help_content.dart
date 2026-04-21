@@ -315,8 +315,10 @@ const List<HelpTopic> helpTopics = [
     icon: Icons.group,
     titleNl: 'Vrienden',
     titleEn: 'Friends',
-    summaryNl: 'Beheer je vriendenlijst voor snellere samenwerking, profieldoorzoeken en social feedback.',
-    summaryEn: 'Manage your friends list for faster coordination, profile browsing and social feedback.',
+    summaryNl:
+        'Beheer je vriendenlijst voor snellere samenwerking, profieldoorzoeken en social feedback.',
+    summaryEn:
+        'Manage your friends list for faster coordination, profile browsing and social feedback.',
     howNl: [
       'Vriendenpagina toont drie lijsten: huidige vrienden, verstuurde verzoeken en ontvangen verzoeken.',
       'Je kunt vanuit een vriend direct een bericht sturen, profiel bekijken of samenwerking starten.',
@@ -352,7 +354,8 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Messages',
     summaryNl:
         'Je inbox met persoonlijke berichten van andere spelers en systeemberichten over beloningen, orders en game-events.',
-    summaryEn: 'Your inbox with personal player messages and system messages about rewards, orders and game events.',
+    summaryEn:
+        'Your inbox with personal player messages and system messages about rewards, orders and game events.',
     howNl: [
       'Berichten zijn onderverdeeld in persoonlijke gesprekken en The Mob State systeemberg.',
       'Systeemberichten worden automatisch gestuurd bij: crypto trades, order fills, leaderboard uitkeringen, heist-resultaten, jail-escapes en achievement-badges.',
@@ -386,8 +389,10 @@ const List<HelpTopic> helpTopics = [
     icon: Icons.inventory,
     titleNl: 'Inventaris',
     titleEn: 'Inventory',
-    summaryNl: 'Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.',
-    summaryEn: 'Manage everything you carry, store and equip: weapons, tools, vehicles, drugs and trade goods.',
+    summaryNl:
+        'Beheer alles wat je draagt, opslaat en inzet: wapens, tools, voertuigen, drugs en handelsgoederen.',
+    summaryEn:
+        'Manage everything you carry, store and equip: weapons, tools, vehicles, drugs and trade goods.',
     howNl: [
       'Je inventaris is verdeeld in carried items (bij je), opgeslagen items (in warehouse/crew storage) en actieve loadouts.',
       'Gewicht bepaalt je draagcapaciteit. Sommige crimes of reizen blokkeren als je te zwaar bent.',
@@ -468,7 +473,8 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Bank',
     summaryNl:
         'Zet geld op je bankrekening om rente te verdienen en cash buiten bereik van politie-confiscaties te houden.',
-    summaryEn: 'Deposit money to earn interest and keep cash beyond the reach of police confiscations.',
+    summaryEn:
+        'Deposit money to earn interest and keep cash beyond the reach of police confiscations.',
     howNl: [
       'Rente: 0.5% van je banksaldo per tick (elke 5 minuten). Voorbeeld: €10.000 op bank = €50 rente per tick = €600 per uur = €14.400 per dag.',
       'Storten en opnemen zijn allebei gratis en direct, zonder minimum of maximum limiet.',
@@ -586,7 +592,8 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Black Market',
     summaryNl:
         'Koop en verkoop illegale en schaarse goederen: wapens, munitie, drugs en materials die nergens anders verkrijgbaar zijn.',
-    summaryEn: 'Buy and sell illegal and scarce goods: weapons, ammo, drugs and materials unavailable elsewhere.',
+    summaryEn:
+        'Buy and sell illegal and scarce goods: weapons, ammo, drugs and materials unavailable elsewhere.',
     howNl: [
       'De zwarte markt is onderverdeeld in submarkten: Materials (grondstoffen), Weapons (vuurwapens en messen), Ammo (munitie per kaliber), Vehicles (illegale voertuigen).',
       'Prijzen en beschikbaarheid variëren sterk per land en per tijdstip. Een listing kan snel leeg zijn.',
@@ -843,7 +850,8 @@ const List<HelpTopic> helpTopics = [
     titleEn: 'Court',
     summaryNl:
         'Tijdens je straf kun je hoger beroep indienen of de rechter proberen om te kopen om sneller vrij te komen.',
-    summaryEn: 'During your sentence you can file an appeal or try to bribe the judge to get released sooner.',
+    summaryEn:
+        'During your sentence you can file an appeal or try to bribe the judge to get released sooner.',
     howNl: [
       'Als je vastzit zie je in de rechtbank je actieve veroordeling met resterende tijd, delict en rechterprofiel.',
       'Hoger beroep kost geld op basis van je huidige strafduur. Bij toekenning wordt je straf meestal met ongeveer 20-40% verlaagd.',
@@ -1366,10 +1374,10 @@ const List<HelpTopic> helpTopics = [
       'Territorium is crew-gebonden: je moet eerst een crew maken of joinen voordat de aanvalsknop beschikbaar wordt voor neutrale of vijandige gebieden.',
       'Elke regio kan door maximaal één crew tegelijk worden gecontroleerd. Eigenaarschap geeft passief inkomen per uur.',
       'Start een contest in een vrije regio door de contest-knop te gebruiken. De contest doorloopt voorbereiding (prep-tijd), actief (acties), en lockdown (afronding) automatisch.',
-      'Tijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt en wat de cooldown per actie is.',
+      'Tijdens een actieve contest laat de regio-modal nu ook zien wanneer acties starten, wanneer de contest eindigt, wat de cooldown per actie is en welk echt geldbedrag het gebied per payout, per uur en per dag oplevert.',
       'Als een contest net is gestart of een oudere contest nog ontbrekende tijdvelden had, vult het scherm de timing nu direct aan en ververst de modal meteen naar de actuele conteststatus zonder dat je eerst weg hoeft te navigeren.',
       'Aanvallers zien alleen aanvalsacties (intel, sabotage, inval) en verdedigers alleen verdedigingsacties (patrouille, bevoorrading, verdediging), zodat de modal niet meer verwarrende knoppen toont.',
-      'De waarde van een gebied toont nu ook de opbrengstklasse, zodat je direct ziet hoeveel passief inkomen en seizoenswaarde een regio ongeveer vertegenwoordigt.',
+      'De waarde van een gebied toont nu ook de echte Territory-opbrengst. Crew leaders zien op het dashboard bovendien hoeveel gebieden en landen hun crew bezit, hoeveel er nu verdiend wordt en hoeveel Territory al totaal heeft opgeleverd.',
       'Contests resulteren in eigendomsoverdracht en beloningen (geld, XP, prestiges). Verliezers krijgen ook partial xp voor deelname.',
       'Grote regio\'s (havens, hoofdsteden) geven meer passief inkomen maar triggeren ook meer tegenstanders en raid-pogingen.',
       'Seizoenale events geven bonus-beloningen en speciale challenges per regio\'s groep.',
@@ -1382,10 +1390,10 @@ const List<HelpTopic> helpTopics = [
       'Territory is crew-based: you must create or join a crew before the attack button becomes available for neutral or hostile regions.',
       'Each region can be controlled by at most one crew at a time. Ownership grants passive income per hour.',
       'Start a contest in an unclaimed region using the contest button. The contest automatically progresses through preparation (prep time), active (actions), and lockdown (resolution).',
-      'During an active contest the region modal now also shows when actions unlock, when the contest ends, and what the per-action cooldown is.',
+      'During an active contest the region modal now also shows when actions unlock, when the contest ends, what the per-action cooldown is, and the real cash amount the region pays per payout, per hour and per day.',
       'When a contest has just started or an older contest was still missing timing fields, the screen now fills those timers immediately and refreshes the modal to the latest contest state without requiring you to navigate away first.',
       'Attackers only see attacker actions (intel, sabotage, raid) and defenders only see defender actions (patrol, supply run, defense), so the modal no longer shows confusing mixed buttons.',
-      'A region now also shows its yield tier, so you can immediately see roughly how much passive income and seasonal value that area represents.',
+      'A region now also shows the real Territory yield. Crew leaders also see how many regions and countries their crew controls on the dashboard, how much the crew is currently earning, and how much Territory has earned in total so far.',
       'Contests result in ownership transfer and rewards (cash, XP, prestige). Losers also get partial xp for participation.',
       'Large regions (harbors, capitals) give more passive income but also trigger more opponents and raid attempts.',
       'Seasonal events give bonus rewards and special challenges per region group.',

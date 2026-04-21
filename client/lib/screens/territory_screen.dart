@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path_drawing/path_drawing.dart';
 
 import '../services/territory_service.dart';
+import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 
 // ---------------------------------------------------------------------------
@@ -331,29 +332,18 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
   }
 
-  String _valueTierYieldSummary(int tier) {
-    switch (tier) {
-      case 1:
-        return _t(
-          'Laag passief inkomen en kleine seizoenswaarde',
-          'Low passive income and modest seasonal value',
-        );
-      case 2:
-        return _t(
-          'Gemiddeld passief inkomen en seizoenswaarde',
-          'Average passive income and seasonal value',
-        );
-      case 3:
-        return _t(
-          'Hoog passief inkomen en sterke seizoenswaarde',
-          'High passive income and strong seasonal value',
-        );
-      default:
-        return _t(
-          'Top passief inkomen en maximale seizoenswaarde',
-          'Top passive income and maximum seasonal value',
-        );
+  String _incomeIntervalLabel(int minutes) {
+    if (minutes <= 0) {
+      return _t('Niet ingesteld', 'Not configured');
     }
+    if (minutes == 60) {
+      return _t('ieder uur', 'every hour');
+    }
+    if (minutes % 60 == 0) {
+      final hours = minutes ~/ 60;
+      return _t('iedere $hours uur', 'every $hours hour${hours == 1 ? '' : 's'}');
+    }
+    return _t('elke $minutes min', 'every $minutes min');
   }
 
   _SvgRegionShape? _shapeForRegion(Map<String, dynamic> region) {
@@ -1433,7 +1423,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final isDefender = contestRole == 'defender';
     final hasContest = contestId != null && contestStatus != null;
     final incomeTierLabel = _valueTierLabel(tier);
-    final incomeSummary = _valueTierYieldSummary(tier);
+    final passiveIncomeCash = (region['passiveIncomeCash'] as num?)?.toInt() ?? 0;
+    final passiveIncomeCashHourly =
+      (region['passiveIncomeCashHourly'] as num?)?.toInt() ?? passiveIncomeCash;
+    final passiveIncomeCashDaily =
+      (region['passiveIncomeCashDaily'] as num?)?.toInt() ?? (passiveIncomeCashHourly * 24);
+    final passiveIncomeIntervalMinutes =
+      (region['passiveIncomeIntervalMinutes'] as num?)?.toInt() ?? 60;
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -1455,9 +1451,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         _t('Controle', 'Control'),
         '${controlPercent.toStringAsFixed(controlPercent.truncateToDouble() == controlPercent ? 0 : 1)}%',
       ),
-      _detailRow(_t('Waarde', 'Value tier'), '⭐' * tier),
-      _detailRow(_t('Opbrengst', 'Yield'), incomeTierLabel),
-      _detailRow(_t('Levert op', 'Yields'), incomeSummary),
+      _detailRow(_t('Waarde', 'Value tier'), '$incomeTierLabel (${('⭐' * tier)})'),
+      _detailRow(
+        _t('Uitbetaling', 'Payout'),
+        '${formatCurrency(passiveIncomeCash)} · ${_incomeIntervalLabel(passiveIncomeIntervalMinutes)}',
+      ),
+      _detailRow(
+        _t('Opbrengst per uur', 'Income per hour'),
+        formatCurrency(passiveIncomeCashHourly),
+      ),
+      _detailRow(
+        _t('Opbrengst per dag', 'Income per day'),
+        formatCurrency(passiveIncomeCashDaily),
+      ),
       if (_myCrewName != null)
         _detailRow(_t('Jouw crew', 'Your crew'), _myCrewName!),
       if (contestStatus != null)
