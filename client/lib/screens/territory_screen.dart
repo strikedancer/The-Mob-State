@@ -822,70 +822,6 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     _mapTransformController.value = Matrix4.identity();
   }
 
-  void _zoomMapBy(double factor) {
-    final currentMatrix = _mapTransformController.value.clone();
-    final currentScale = currentMatrix.getMaxScaleOnAxis();
-    final targetScale = (currentScale * factor).clamp(1.0, 6.0);
-    final effectiveFactor = targetScale / currentScale;
-
-    if ((effectiveFactor - 1).abs() < 0.001) return;
-
-    final nextMatrix = currentMatrix.clone()..scale(effectiveFactor);
-    _mapTransformController.value = nextMatrix;
-  }
-
-  Widget _buildMapZoomControls() {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.94),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 12,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            tooltip: _t('Inzoomen', 'Zoom in'),
-            visualDensity: VisualDensity.compact,
-            onPressed: () => _zoomMapBy(1.25),
-            icon: const Icon(Icons.add),
-          ),
-          Container(
-            width: 28,
-            height: 1,
-            color: Theme.of(context).dividerColor.withValues(alpha: 0.45),
-          ),
-          IconButton(
-            tooltip: _t('Uitzoomen', 'Zoom out'),
-            visualDensity: VisualDensity.compact,
-            onPressed: () => _zoomMapBy(0.8),
-            icon: const Icon(Icons.remove),
-          ),
-          Container(
-            width: 28,
-            height: 1,
-            color: Theme.of(context).dividerColor.withValues(alpha: 0.45),
-          ),
-          IconButton(
-            tooltip: _t('Reset kaart', 'Reset map'),
-            visualDensity: VisualDensity.compact,
-            onPressed: _resetMapTransform,
-            icon: const Icon(Icons.center_focus_strong),
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<void> _showRegionDetailModal(Map<String, dynamic> region) async {
     if (_isRegionSheetOpen) return;
 
@@ -1311,6 +1247,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       ),
       body: TabBarView(
         controller: _tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: [_buildMapTab(), _buildLeaderboardTab(), _buildSeasonTab()],
       ),
     );
@@ -1367,7 +1304,6 @@ class _TerritoryScreenState extends State<TerritoryScreen>
               builder: (context, constraints) {
                 final maxWidth = constraints.maxWidth;
                 final isWideLayout = maxWidth >= 980;
-                final showZoomControls = maxWidth < 980;
                 final mapHeight = maxWidth >= 900
                     ? 420.0
                     : (maxWidth >= 600 ? 340.0 : 300.0);
@@ -1390,83 +1326,84 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                 maxScale: 6,
                                 panEnabled: true,
                                 scaleEnabled: true,
-                                constrained: true,
-                                boundaryMargin: const EdgeInsets.all(80),
-                                child: MouseRegion(
-                                  onHover: (event) => _handleMapHover(
-                                    event,
-                                    Size(mapWidth, mapHeight),
-                                    regions,
-                                  ),
-                                  onExit: (_) => _handleMapHoverExit(),
-                                  child: Listener(
-                                    behavior: HitTestBehavior.opaque,
-                                    onPointerDown: _handleMapPointerDown,
-                                    onPointerMove: _handleMapPointerMove,
-                                    onPointerUp: (event) => _handleMapPointerUp(
+                                constrained: false,
+                                boundaryMargin: EdgeInsets.symmetric(
+                                  horizontal: mapWidth,
+                                  vertical: mapHeight,
+                                ),
+                                child: SizedBox(
+                                  width: mapWidth,
+                                  height: mapHeight,
+                                  child: MouseRegion(
+                                    onHover: (event) => _handleMapHover(
                                       event,
                                       Size(mapWidth, mapHeight),
                                       regions,
                                     ),
-                                    onPointerCancel: _handleMapPointerCancel,
-                                    child: Stack(
-                                      children: [
-                                        Positioned.fill(
-                                          child: SvgPicture.string(
-                                            svgMarkup,
-                                            fit: BoxFit.contain,
-                                            placeholderBuilder: (_) => const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
+                                    onExit: (_) => _handleMapHoverExit(),
+                                    child: Listener(
+                                      behavior: HitTestBehavior.opaque,
+                                      onPointerDown: _handleMapPointerDown,
+                                      onPointerMove: _handleMapPointerMove,
+                                      onPointerUp: (event) => _handleMapPointerUp(
+                                        event,
+                                        Size(mapWidth, mapHeight),
+                                        regions,
+                                      ),
+                                      onPointerCancel: _handleMapPointerCancel,
+                                      child: Stack(
+                                        children: [
+                                          Positioned.fill(
+                                            child: SvgPicture.string(
+                                              svgMarkup,
+                                              fit: BoxFit.contain,
+                                              placeholderBuilder: (_) => const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        if (_mapTooltipLabel != null &&
-                                            _mapTooltipOffset != null)
-                                          Positioned(
-                                            left: (_mapTooltipOffset!.dx + 10)
-                                                .clamp(8, mapWidth - 180),
-                                            top: (_mapTooltipOffset!.dy - 36)
-                                                .clamp(8, mapHeight - 32),
-                                            child: Container(
-                                              constraints:
-                                                  const BoxConstraints(
-                                                    maxWidth: 170,
+                                          if (_mapTooltipLabel != null &&
+                                              _mapTooltipOffset != null)
+                                            Positioned(
+                                              left: (_mapTooltipOffset!.dx + 10)
+                                                  .clamp(8, mapWidth - 180),
+                                              top: (_mapTooltipOffset!.dy - 36)
+                                                  .clamp(8, mapHeight - 32),
+                                              child: Container(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                      maxWidth: 170,
+                                                    ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 6,
+                                                    ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black87,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Text(
+                                                  _mapTooltipLabel!,
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
                                                   ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 6,
-                                                  ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black87,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Text(
-                                                _mapTooltipLabel!,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          if (showZoomControls)
-                            Positioned(
-                              right: 10,
-                              top: 10,
-                              child: _buildMapZoomControls(),
-                            ),
                         ],
                       );
                     },
@@ -1484,8 +1421,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                     const SizedBox(height: 8),
                     Text(
                       _t(
-                        'Op mobiel kun je nu pinchen, slepen en de zoomknoppen gebruiken om in te zoomen voor kleine gebieden.',
-                        'On mobile you can now pinch, drag, and use the zoom buttons to zoom in on smaller regions.',
+                        'Op mobiel kun je met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen voor kleine gebieden.',
+                        'On mobile you can pinch in and out with two fingers and drag the zoomed map directly for smaller regions.',
                       ),
                       style: TextStyle(color: Colors.grey[700], fontSize: 12),
                     ),

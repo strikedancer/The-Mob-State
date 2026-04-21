@@ -10,7 +10,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 ## Pending Changes (nog NIET live)
 
 ### Frontend
-- [ ] Territory mobiele kaartzoom toegevoegd: de interactieve SVG ondersteunt nu pinch-zoom, pan en zichtbare zoom/reset-knoppen zodat kleine regio's op mobiel beter aantikbaar zijn
+- [ ] Territory mobiele kaartzoom toegevoegd: de interactieve SVG ondersteunt nu directe pinch-zoom en pan zonder zichtbare zoom/reset-knoppen zodat kleine regio's op mobiel beter aantikbaar zijn en ingezoomde kaartdelen verschoven kunnen worden
   - Bestanden: `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory inkomsten zichtbaar gemaakt: de gebiedsmodal toont nu echte backend-bedragen per payout/per uur/per dag en het webdashboard toont voor crewleaders hoeveel gebieden en landen de crew bezit plus huidig en totaal territory-inkomen
   - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `backend/src/services/territoryService.ts`, `backend/src/routes/player.ts`, `client/lib/screens/territory_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/services/dashboard_service.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
