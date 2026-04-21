@@ -231,6 +231,27 @@ Acceptatie-eis voor dit runbook:
 - Een PuTTY update-instructie is niet done zonder expliciete `--env-file .env.plesk` compose-commands.
 - Een productie-update is niet done zonder config-validatie en post-deploy logcheck.
 
+### Live Online Test Workflow (Verplicht Bij VPS-Only QA)
+
+Als de actuele bron van waarheid online/VPS is en niet lokaal, dan hoort de agent na relevante codewijzigingen niet te stoppen bij alleen lokale edits of een commit.
+
+Verplicht workflowpatroon:
+1. Wijziging lokaal afronden.
+2. Commit maken en pushen naar `main` alleen als dat operationeel de afgesproken live-flow is.
+3. Daarna via de geconfigureerde remote shell/PuTTY verbinding op de VPS `git pull origin main` uitvoeren in de projectmap.
+4. Vervolgens met `docker compose --env-file .env.plesk -f docker-compose.plesk.yml config` valideren.
+5. Alleen de relevante service(s) rebuilden/herstarten.
+6. Direct online logs controleren en pas daarna live QA of functionele verificatie doen.
+
+Voorbeelden van relevante services:
+- backend-wijziging -> rebuild `backend`
+- admin build/UI wijziging -> rebuild `admin`
+- client/web/PWA wijziging -> rebuild `client`
+
+Acceptatie-eis:
+- Bij online testen is een wijziging niet done zonder remote pull/build/logcheck op de VPS als de wijziging daar effect hoort te hebben.
+- De agent mag hiervoor een vooraf geconfigureerde PuTTY/SSH verbinding gebruiken, maar verbindingsdetails horen niet in repo-bestanden thuis; die worden alleen buiten de repository vastgelegd.
+
 Fallback bij API validation errors:
 - Gebruik de fallback payload variant uit `generate_school_narcotics_images_leonardo.py` (latest main).
 - Als nog steeds failing: log volledige Leonardo response payload in run-output en corrigeer request-schema, niet de key handling.
