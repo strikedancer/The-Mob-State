@@ -8,8 +8,8 @@ import {
   processPendingMurderCaseInvestigations,
 } from './hitlistService';
 import { processPendingCooldownExpiryNotifications } from './cooldownService';
+import { processPendingTerritoryContests } from './territoryService';
 import { processDueVehicleRepairCompletions } from './vehicleService';
-import { processPendingCooldownExpiryNotifications } from './cooldownService';
 
 const prisma = new PrismaClient();
 
@@ -68,6 +68,7 @@ export async function checkExpiredEvents(): Promise<void> {
             completedAt: now,
           },
         });
+          territoryContestProcessor: 'Every minute',
 
         console.log(
           `[CRON] Expired event ${event.id} (${event.title}) - ended ${event.participations.length} participations`
@@ -113,6 +114,9 @@ export async function updateLeaderboards(): Promise<void> {
 
     // Update stats for all three periods
     const periods: ('weekly' | 'monthly' | 'all_time')[] = ['weekly', 'monthly', 'all_time'];
+      cron.schedule('* * * * *', async () => {
+        await runTerritoryContestProcessor();
+      });
 
     for (const period of periods) {
       const periodStart = getPeriodStart(period);
@@ -424,6 +428,17 @@ export async function runVehicleRepairCompletionProcessor(): Promise<void> {
   }
 }
 
+export async function runTerritoryContestProcessor(): Promise<void> {
+  const now = new Date();
+
+  try {
+    await processPendingTerritoryContests(now);
+    lastJobExecutions['territoryContestProcessor'] = now;
+  } catch (error) {
+    console.error('[CRON ERROR] runTerritoryContestProcessor:', error);
+  }
+}
+
 export async function processPendingCooldownNotifications(): Promise<void> {
   const now = new Date();
 
@@ -450,6 +465,7 @@ export function getCronStatus() {
       drugProductionAutomation: 'Every minute',
       hitlistInvestigationProcessor: 'Every minute',
       vehicleRepairCompletionProcessor: 'Every minute',
+      territoryContestProcessor: 'Every minute',
       cryptoOrderProcessor: 'Every 30 seconds',
       eventScheduler: 'Every 5 minutes',
     },
@@ -495,6 +511,10 @@ export function initializeCronJobs(): void {
     await runVehicleRepairCompletionProcessor();
   });
 
+  cron.schedule('* * * * *', async () => {
+    await runTerritoryContestProcessor();
+  });
+
   cron.schedule('*/30 * * * * *', async () => {
     try {
       const result = await processOpenOrdersInBackground();
@@ -524,6 +544,7 @@ export function initializeCronJobs(): void {
   console.log('  - Drug Production Automation: Every minute');
   console.log('  - Hitlist Investigation Processor: Every minute');
   console.log('  - Vehicle Repair Completion Processor: Every minute');
+  console.log('  - Territory Contest Processor: Every minute');
   console.log('  - Crypto Order Processor: Every 30 seconds');
   console.log('  - Game Event Scheduler: Every 5 minutes');
 }

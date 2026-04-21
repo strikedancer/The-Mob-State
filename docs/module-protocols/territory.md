@@ -39,6 +39,7 @@
   - Territory contest UX-fix: de regio-modal toont nu contest timers (acties starten, acties sluiten, contest eindigt), cooldown per actie en de opbrengstklasse van het gebied; actieve contest-acties zijn bovendien role-based opgesplitst zodat aanvallers geen verdediging meer zien en verdedigers geen aanvalsacties
   - Territory contest state/timer fix: bestaande contests met missende `activeAt`/`lockdownAt`/`resolveAt` worden nu automatisch aangevuld vanuit `startedAt` + runtime-config, zodat regio-modals geen `Onbekend`-timers meer tonen; de open modal volgt bovendien direct verse mapdata na starten/verdedigen zodat spelers niet pas na weg-navigeren de actuele gevechtsstatus zien
   - Territory live-refresh fix: bij contest-start en verdedigen wordt de open regio-modal nu altijd direct ververst; als de eerste call fout terugkomt maar de contest al is aangemaakt, ziet de speler meteen de actuele conteststatus in plaats van pas na weg-navigeren. De modal berekent timerfallbacks bovendien lokaal vanuit `startedAt` + runtime-config als een timestamp in de payload nog ontbreekt
+  - Territory live resolve fix: contest resolve dwingt punten nu eerst naar echte nummers voordat capture-percentages worden berekend, zodat neutrale regio's met alleen attacker-acties niet meer onterecht `winnerCrewId = NULL` eindigen; territory draait daarnaast nu ook via een minuut-cron zodat afhandeling en meldingen niet afhankelijk blijven van een latere map/overview read, en contest start/capture/loss versturen nu behalve push ook een inboxbericht
   - Territory live start-fix: contest-start haalt de nieuw aangemaakte row nu via `LAST_INSERT_ID()` op in plaats van een exacte `startedAt` timestamp-match; hierdoor rollen starts op MariaDB `DATETIME`-kolommen zonder milliseconden niet meer stil terug. De attacker-actie `raid` gebruikt in de UI bovendien weer de correcte lowercase backend-action key
 - SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
 - Admin Vue-frontend territory sectie: ⏳ gepland
@@ -126,6 +127,7 @@ Scope-afbakening:
 - Geen file-based gameplay settings voor territory.
 - Alle territory settings zijn runtime-config keys in database (`runtime_config`) en beheerbaar via admin.
 - Resolve-momenten moeten transaction-safe zijn (geen dubbele ownership switch door race conditions).
+- Resolve-berekeningen moeten expliciet numeriek normaliseren op SQL aggregate-waarden (`SUM`, `COUNT`, bigint/decimal strings), zodat attacker-only contests niet stil als `no winner` eindigen door string-concatenatie of impliciete typecoercion.
 - Bij retries/idempotency: contest resolve en reward payout exact-once semantics.
 - Querys op region ownership moeten consistent zijn tussen map endpoint en leaderboard endpoint.
 
@@ -200,6 +202,7 @@ Admin moderation:
 
 ## Notifications & Messaging
 - Push/inbox events: contest started, contest under attack, region captured, region lost, season reward.
+- Territory resolve moet ook zonder actieve speler-read binnen maximaal circa 1 minuut verwerkt worden; tijdgestuurde contest-eindes mogen niet uitsluitend afhangen van map/overview/action requests.
 - Fire-and-forget dispatch; gameplay transactie mag niet falen door notificatieproblemen.
 - Copy parity NL/EN verplicht in UI + push + inbox.
 

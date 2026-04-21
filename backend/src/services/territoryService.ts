@@ -1,5 +1,7 @@
 import prisma from '../lib/prisma';
+import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
+import { translationService } from './translationService';
 
 // ---------------------------------------------------------------------------
 // Territory Service
@@ -99,6 +101,13 @@ function parseJson(v: string | null | undefined): Record<string, unknown> {
   try { return JSON.parse(v) as Record<string, unknown>; } catch { return {}; }
 }
 
+function toNumeric(value: unknown): number {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : 0;
+  if (typeof value === 'bigint') return Number(value);
+  const parsed = Number(value ?? 0);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
 async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
   const cfg = await getTerritoryConfig();
 
@@ -143,6 +152,10 @@ async function syncContestLifecycle(now: Date = new Date()): Promise<void> {
       }
     }
   }
+}
+
+export async function processPendingTerritoryContests(now: Date = new Date()): Promise<void> {
+  await syncContestLifecycle(now);
 }
 
 // ── Public API ──────────────────────────────────────────────────────────────
@@ -590,8 +603,8 @@ export async function resolveContest(contestId: number): Promise<{ winnerCrewId:
     contestId,
   );
 
-  const attackerPoints = tally.find(t => t.actorCrewId === contest.attackerCrewId)?.totalPoints ?? 0;
-  const defenderPoints = tally.find(t => t.actorCrewId === (contest.defenderCrewId ?? -1))?.totalPoints ?? 0;
+  const attackerPoints = toNumeric(tally.find(t => t.actorCrewId === contest.attackerCrewId)?.totalPoints ?? 0);
+  const defenderPoints = toNumeric(tally.find(t => t.actorCrewId === (contest.defenderCrewId ?? -1))?.totalPoints ?? 0);
   const totalPoints = attackerPoints + defenderPoints;
 
   let winnerCrewId: number | null = null;
@@ -705,10 +718,7 @@ async function _recalcContestControl(contestId: number, regionKey: string, actor
 }
 
 async function _notifyCrewContestStarted(crewId: number, regionKey: string, contestId: number): Promise<void> {
-  const players = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
-    'SELECT playerId AS id FROM crew_members WHERE crewId = ? LIMIT 50',
-    crewId,
-  );
+  const players = await _getCrewPlayers(crewId);
   for (const p of players) {
     await notificationService.sendToPlayer(
       p.id,
@@ -716,14 +726,29 @@ async function _notifyCrewContestStarted(crewId: number, regionKey: string, cont
       `Regio ${regionKey} wordt aangevallen (contest #${contestId}).`,
       { type: 'territory_contest_started', regionKey, contestId: String(contestId) },
     ).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      (language) => language === 'nl'
+        ? [
+            'Gebied aangevallen!',
+            '',
+            `Regio: ${regionKey}`,
+            `Contest: #${contestId}`,
+            'Een andere crew heeft een territoriumaanval gestart.',
+          ].join('\n')
+        : [
+            'Region under attack!',
+            '',
+            `Region: ${regionKey}`,
+            `Contest: #${contestId}`,
+            'Another crew has started a territory attack.',
+          ].join('\n'),
+    ).catch(() => {});
   }
 }
 
 async function _notifyCrewRegionCaptured(crewId: number, regionKey: string): Promise<void> {
-  const players = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
-    'SELECT playerId AS id FROM crew_members WHERE crewId = ? LIMIT 50',
-    crewId,
-  );
+  const players = await _getCrewPlayers(crewId);
   for (const p of players) {
     await notificationService.sendToPlayer(
       p.id,
@@ -731,14 +756,27 @@ async function _notifyCrewRegionCaptured(crewId: number, regionKey: string): Pro
       `Jullie crew heeft ${regionKey} veroverd. / Your crew captured ${regionKey}.`,
       { type: 'territory_captured', regionKey },
     ).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      (language) => language === 'nl'
+        ? [
+            'Gebied veroverd!',
+            '',
+            `Regio: ${regionKey}`,
+            'Jullie crew heeft deze regio succesvol overgenomen.',
+          ].join('\n')
+        : [
+            'Region captured!',
+            '',
+            `Region: ${regionKey}`,
+            'Your crew successfully captured this region.',
+          ].join('\n'),
+    ).catch(() => {});
   }
 }
 
 async function _notifyCrewRegionLost(crewId: number, regionKey: string): Promise<void> {
-  const players = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
-    'SELECT playerId AS id FROM crew_members WHERE crewId = ? LIMIT 50',
-    crewId,
-  );
+  const players = await _getCrewPlayers(crewId);
   for (const p of players) {
     await notificationService.sendToPlayer(
       p.id,
@@ -746,6 +784,44 @@ async function _notifyCrewRegionLost(crewId: number, regionKey: string): Promise
       `${regionKey} is overgenomen door een andere crew. / ${regionKey} was taken by another crew.`,
       { type: 'territory_lost', regionKey },
     ).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      (language) => language === 'nl'
+        ? [
+            'Gebied verloren!',
+            '',
+            `Regio: ${regionKey}`,
+            'Deze regio is overgenomen door een andere crew.',
+          ].join('\n')
+        : [
+            'Region lost!',
+            '',
+            `Region: ${regionKey}`,
+            'This region was taken by another crew.',
+          ].join('\n'),
+    ).catch(() => {});
   }
+}
+
+async function _getCrewPlayers(crewId: number): Promise<Array<{ id: number }>> {
+  return prisma.$queryRawUnsafe<Array<{ id: number }>>(
+    'SELECT playerId AS id FROM crew_members WHERE crewId = ? LIMIT 50',
+    crewId,
+  );
+}
+
+async function _sendTerritoryInboxMessage(
+  playerId: number,
+  buildMessage: (language: string) => string,
+): Promise<void> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { preferredLanguage: true },
+  });
+  const language = translationService.getPlayerLanguage(player ?? {});
+  await directMessageService.sendSystemMessage(playerId, buildMessage(language), {
+    sendPush: false,
+    senderName: 'Territory Control',
+  });
 }
 
