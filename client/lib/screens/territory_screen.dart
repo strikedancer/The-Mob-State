@@ -568,8 +568,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
       final id = _extractSvgAttr(tag, 'id');
       final d = _extractSvgAttr(tag, 'd');
-      if (id == null || id.trim().isEmpty || d == null || d.trim().isEmpty)
+      if (id == null || id.trim().isEmpty || d == null || d.trim().isEmpty) {
         continue;
+      }
 
       final name = _extractSvgAttr(tag, 'data-name')?.trim();
 
@@ -813,11 +814,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         },
       );
     } finally {
-      if (!mounted) return;
-      setState(() {
-        _isRegionSheetOpen = false;
-        _selectedRegion = null;
-      });
+      if (mounted) {
+        setState(() {
+          _isRegionSheetOpen = false;
+          _selectedRegion = null;
+        });
+      }
       _regionDetailNotifier.value = null;
     }
   }
@@ -1646,7 +1648,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                   children: [
                     Expanded(flex: 3, child: detailsColumn),
                     const SizedBox(width: 18),
-                    Expanded(flex: 2, child: regionPreview!),
+                    Expanded(flex: 2, child: regionPreview),
                   ],
                 )
               else
