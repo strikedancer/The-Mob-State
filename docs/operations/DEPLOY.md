@@ -27,6 +27,37 @@ Doel:
 - `git pull` overschrijft geen noodpatches meer in `docker-compose.plesk.yml`;
 - Firebase/Mollie/Leonardo blijven actief na volgende deploys.
 
+## PuTTY Update Flow (Standard)
+
+Als je mij later vraagt om een PuTTY update-command, dan is dit de vaste veilige volgorde voor productie:
+
+```bash
+cd /var/www/vhosts/themobstate.com/apps/mafia_game
+cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M)
+cp .env.plesk .env.plesk.bak-$(date +%F-%H%M)
+git pull origin main
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps backend
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
+```
+
+Alleen als `config` zonder fouten terugkomt, mag de rebuild door.
+
+Voor client of admin vervang je alleen de servicenaam:
+
+```bash
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps admin
+```
+
+Nooit doen:
+- geen inline secrets in `docker-compose.plesk.yml` plakken;
+- geen `docker compose down` als alleen 1 service aangepast hoeft te worden;
+- geen productiecompose draaien zonder `--env-file .env.plesk`.
+
+Opschonen na migratie:
+- als een oude `.env` nog bestaat van voor de `.env.plesk` migratie, hernoem die naar een backup zoals `.env.pre-plesk-migration-YYYY-MM-DD-HHMMSS` zodat operators niet meer per ongeluk de verkeerde env-file gebruiken.
+
 ## iOS PWA Update Consistency (Required)
 
 Voor iPhone users die de webapp op het beginscherm installeren, moet de client-nginx cache-policy strikt gescheiden zijn:

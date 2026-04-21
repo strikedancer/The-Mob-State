@@ -203,6 +203,34 @@ One-shot runbook (volgende keer in 1 keer uitvoeren):
 5. Controleer dat alle doelbestanden zijn gegenereerd (8/8 voor school narcotics set)
 6. Doe pas daarna de smoke test van de school/drugs flow
 
+### PuTTY / Plesk Update Runbook (Verplicht)
+
+Als de gebruiker vraagt om "geef command voor PuTTY om te updaten" op de VPS/Plesk stack, gebruik dan voortaan deze veilige standaardvolgorde en wijk daar niet licht van af:
+
+1. Maak eerst server-backups van `docker-compose.plesk.yml` en `.env.plesk`.
+2. Doe `git pull origin main` voordat secrets of compose-regels handmatig worden aangepast.
+3. Houd secrets uitsluitend in server-side `.env.plesk`, nooit inline in `docker-compose.plesk.yml`.
+4. Valideer altijd eerst met `docker compose --env-file .env.plesk -f docker-compose.plesk.yml config`.
+5. Rebuild daarna alleen de doelservice (`backend`, `client` of `admin`) met `--no-deps` waar passend, niet direct de hele stack als dat niet nodig is.
+6. Controleer direct de service-logs na deploy en bevestig expliciet de verwachte bootstrapregel bij kritieke integraties zoals Firebase Admin.
+7. Als een oude `.env` nog op de server staat na migratie naar `.env.plesk`, hernoem die naar een backupbestand zodat operators niet per ongeluk zonder `--env-file .env.plesk` blijven deployen.
+
+Standaardcommandoblok voor backend-updates via PuTTY:
+
+```bash
+cd /var/www/vhosts/themobstate.com/apps/mafia_game
+cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M)
+cp .env.plesk .env.plesk.bak-$(date +%F-%H%M)
+git pull origin main
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps backend
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
+```
+
+Acceptatie-eis voor dit runbook:
+- Een PuTTY update-instructie is niet done zonder expliciete `--env-file .env.plesk` compose-commands.
+- Een productie-update is niet done zonder config-validatie en post-deploy logcheck.
+
 Fallback bij API validation errors:
 - Gebruik de fallback payload variant uit `generate_school_narcotics_images_leonardo.py` (latest main).
 - Als nog steeds failing: log volledige Leonardo response payload in run-output en corrigeer request-schema, niet de key handling.

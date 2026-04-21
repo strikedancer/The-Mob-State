@@ -33,6 +33,7 @@ Aanbevolen Plesk workflow:
 2. Maak op de server een niet-getrackt `.env.plesk` bestand op basis van `.env.plesk.example`.
 3. Zet daar `FIREBASE_SERVICE_ACCOUNT_BASE64=...` of een van de andere Firebase env-varianten in.
 4. Run productie-commands voortaan als `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
+5. Als er nog een oude `.env` op de server staat van voor de migratie, hernoem die naar een backupbestand zodat toekomstige PuTTY commands niet ongemerkt op de verkeerde env-bron leunen.
 
 Zo overleven Firebase secrets toekomstige `git pull` runs zonder handmatige mergeconflicten in de compose-file.
 
