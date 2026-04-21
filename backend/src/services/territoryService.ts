@@ -422,7 +422,7 @@ export async function startContest(playerId: number, crewId: number, regionKey: 
   }
 
   return {
-    contestId,
+    contestId: toNumeric(contestId),
     status: 'preparing',
     activeAt,
     lockdownAt,
