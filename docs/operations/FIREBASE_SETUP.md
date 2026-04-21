@@ -27,6 +27,15 @@ Gebruik geen gecommit `firebase-service-account.json` in de container-image. Gee
 
 Voor `docker-compose.plesk.yml` hoort minimaal een van bovenstaande env-varianten aan de backend-service te worden doorgegeven. Alleen `FIREBASE_SERVICE_ACCOUNT_PATH=firebase-service-account.json` zetten zonder file-mount of env payload is onvoldoende en laat push live stil uitstaan.
 
+Aanbevolen Plesk workflow:
+
+1. Houd `docker-compose.plesk.yml` op placeholders zoals `${FIREBASE_SERVICE_ACCOUNT_BASE64:-}`.
+2. Maak op de server een niet-getrackt `.env.plesk` bestand op basis van `.env.plesk.example`.
+3. Zet daar `FIREBASE_SERVICE_ACCOUNT_BASE64=...` of een van de andere Firebase env-varianten in.
+4. Run productie-commands voortaan als `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
+
+Zo overleven Firebase secrets toekomstige `git pull` runs zonder handmatige mergeconflicten in de compose-file.
+
 In `backend/src/index.ts`, add after app initialization:
 
 ```typescript
@@ -176,9 +185,10 @@ All default to `true` (enabled).
 
 1. Check Firebase Admin is initialized (backend logs should show `[NotificationService] Firebase Admin SDK initialized`)
 2. If admin system logs show `Firebase Admin not initialized for push send`, verify the backend container actually receives one of `FIREBASE_SERVICE_ACCOUNT_JSON`, `FIREBASE_SERVICE_ACCOUNT_BASE64`, or the split Firebase env vars, or that the configured `FIREBASE_SERVICE_ACCOUNT_PATH` exists inside the container.
-2. Verify device token is registered (`SELECT * FROM player_devices WHERE playerId = X`)
-3. Check FCM token is valid (Firebase Console → Cloud Messaging → Send test message)
-4. Ensure notification preferences are enabled (`notifyFriendRequest = 1`)
+3. For Plesk deploys, verify you are using `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...` and not storing the secret inline in a tracked compose file.
+4. Verify device token is registered (`SELECT * FROM player_devices WHERE playerId = X`)
+5. Check FCM token is valid (Firebase Console → Cloud Messaging → Send test message)
+6. Ensure notification preferences are enabled (`notifyFriendRequest = 1`)
 
 ### Android notifications not showing
 

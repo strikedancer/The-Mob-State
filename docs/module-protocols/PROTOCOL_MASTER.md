@@ -192,7 +192,8 @@ Voor productie/VPS runs hoort de key via compose naar de backend-container te ga
 
 Verplicht:
 - Voeg `LEONARDO_API_KEY=${LEONARDO_API_KEY}` toe aan backend `environment` in `docker-compose.plesk.yml`.
-- Zet de echte waarde in de server-side `.env` die compose gebruikt (niet in git).
+- Zet de echte waarde in een server-side env-bestand dat niet in git staat, bij voorkeur `.env.plesk`, en gebruik dat bestand expliciet via `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
+- Productiesecrets of service-account payloads mogen nooit inline in een getrackte `docker-compose.plesk.yml` blijven staan; tracked compose-files zijn alleen voor placeholders en variabeleverwijzingen.
 
 One-shot runbook (volgende keer in 1 keer uitvoeren):
 1. `git pull origin main`

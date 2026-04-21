@@ -2,6 +2,31 @@
 
 This guide covers deploying the Mafia Game to a Linux VPS (Strato) using Docker.
 
+## Plesk Secrets (Required)
+
+Gebruik voor `docker-compose.plesk.yml` een server-side `.env.plesk` bestand dat niet in git staat.
+
+Eenmalig op de server:
+
+```bash
+cp .env.plesk.example .env.plesk
+nano .env.plesk
+```
+
+Zet production secrets zoals `MYSQL_PASSWORD`, `JWT_SECRET`, `LEONARDO_API_KEY` en `FIREBASE_SERVICE_ACCOUNT_BASE64` in `.env.plesk`, niet inline in `docker-compose.plesk.yml`.
+
+Gebruik Plesk compose commands daarna consequent zo:
+
+```bash
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build backend
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs -f backend
+```
+
+Doel:
+- secrets blijven server-side persistent staan;
+- `git pull` overschrijft geen noodpatches meer in `docker-compose.plesk.yml`;
+- Firebase/Mollie/Leonardo blijven actief na volgende deploys.
+
 ## iOS PWA Update Consistency (Required)
 
 Voor iPhone users die de webapp op het beginscherm installeren, moet de client-nginx cache-policy strikt gescheiden zijn:

@@ -51,6 +51,12 @@ badge_generation*.log
 .env.*
 !.env.example
 !.env.docker.example
+!.env.plesk.example
+
+# Firebase service accounts / local admin credentials
+firebase-service-account.json
+*-firebase-adminsdk-*.json
+firebase-adminsdk-*.json
 
 # Runtime files
 *.pid
