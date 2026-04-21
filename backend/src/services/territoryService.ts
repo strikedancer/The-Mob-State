@@ -590,6 +590,183 @@ export async function getOverview(): Promise<{
   };
 }
 
+export async function getAdminOverview(): Promise<{
+  config: Awaited<ReturnType<typeof getTerritoryConfig>>;
+  activeSeason: SeasonRow | null;
+  seasons: SeasonRow[];
+  countries: TerritoryRow[];
+  crews: Array<{ id: number; name: string }>;
+  leaderboard: Array<{ crewId: number; crewName: string; regionsOwned: number; totalControl: number }>;
+  summary: {
+    enabledCountries: number;
+    enabledRegions: number;
+    activeContests: number;
+    controlledRegions: number;
+  };
+  contests: Array<{
+    id: number;
+    regionKey: string;
+    regionNameNl: string;
+    countryCode: string;
+    status: string;
+    attackerCrewId: number;
+    attackerCrewName: string | null;
+    defenderCrewId: number | null;
+    defenderCrewName: string | null;
+    winnerCrewId: number | null;
+    winnerCrewName: string | null;
+    startedAt: Date;
+    activeAt: Date | null;
+    lockdownAt: Date | null;
+    resolveAt: Date | null;
+    resolvedAt: Date | null;
+  }>;
+  regions: Array<{
+    regionKey: string;
+    countryCode: string;
+    nameNl: string;
+    nameEn: string;
+    svgElementId: string;
+    valueTier: number;
+    ownerCrewId: number | null;
+    ownerCrewName: string | null;
+    stability: number;
+    activeContestId: number | null;
+    activeContestStatus: string | null;
+  }>;
+}> {
+  await syncContestLifecycle();
+
+  const [cfg, seasons, countries, crews, leaderboard, contestRows, regionRows] = await Promise.all([
+    getTerritoryConfig(),
+    prisma.$queryRawUnsafe<SeasonRow[]>(
+      `SELECT * FROM territory_seasons ORDER BY startsAt DESC LIMIT 8`,
+    ),
+    getCountries(),
+    prisma.$queryRawUnsafe<Array<{ id: number; name: string }>>(
+      `SELECT id, name FROM crews ORDER BY name ASC`,
+    ),
+    prisma.$queryRawUnsafe<Array<{ crewId: number; crewName: string; regionsOwned: number; totalControl: number }>>(
+      `SELECT c.id AS crewId, c.name AS crewName, COUNT(tc.id) AS regionsOwned, 0 AS totalControl
+       FROM territory_control tc
+       JOIN crews c ON c.id = tc.ownerCrewId
+       WHERE tc.ownerCrewId IS NOT NULL
+       GROUP BY c.id, c.name
+       ORDER BY regionsOwned DESC, c.name ASC
+       LIMIT 20`,
+    ),
+    prisma.$queryRawUnsafe<Array<{
+      id: number;
+      regionKey: string;
+      regionNameNl: string;
+      countryCode: string;
+      status: string;
+      attackerCrewId: number;
+      attackerCrewName: string | null;
+      defenderCrewId: number | null;
+      defenderCrewName: string | null;
+      winnerCrewId: number | null;
+      winnerCrewName: string | null;
+      startedAt: Date;
+      activeAt: Date | null;
+      lockdownAt: Date | null;
+      resolveAt: Date | null;
+      resolvedAt: Date | null;
+    }>>(
+      `SELECT tc.id,
+              tc.regionKey,
+              tr.nameNl AS regionNameNl,
+              tr.countryCode,
+              tc.status,
+              tc.attackerCrewId,
+              attacker.name AS attackerCrewName,
+              tc.defenderCrewId,
+              defender.name AS defenderCrewName,
+              tc.winnerCrewId,
+              winner.name AS winnerCrewName,
+              tc.startedAt,
+              tc.activeAt,
+              tc.lockdownAt,
+              tc.resolveAt,
+              tc.resolvedAt
+       FROM territory_contests tc
+       JOIN territory_regions tr ON tr.regionKey = tc.regionKey
+       LEFT JOIN crews attacker ON attacker.id = tc.attackerCrewId
+       LEFT JOIN crews defender ON defender.id = tc.defenderCrewId
+       LEFT JOIN crews winner ON winner.id = tc.winnerCrewId
+       ORDER BY tc.startedAt DESC
+       LIMIT 25`,
+    ),
+    prisma.$queryRawUnsafe<Array<{
+      regionKey: string;
+      countryCode: string;
+      nameNl: string;
+      nameEn: string;
+      svgElementId: string;
+      valueTier: number;
+      ownerCrewId: number | null;
+      ownerCrewName: string | null;
+      stability: number;
+      activeContestId: number | null;
+      activeContestStatus: string | null;
+    }>>(
+      `SELECT tr.regionKey,
+              tr.countryCode,
+              tr.nameNl,
+              tr.nameEn,
+              tr.svgElementId,
+              tr.valueTier,
+              ctrl.ownerCrewId,
+              owner.name AS ownerCrewName,
+              ctrl.stability,
+              contest.id AS activeContestId,
+              contest.status AS activeContestStatus
+       FROM territory_regions tr
+       LEFT JOIN territory_control ctrl ON ctrl.regionKey = tr.regionKey
+       LEFT JOIN crews owner ON owner.id = ctrl.ownerCrewId
+       LEFT JOIN territory_contests contest
+         ON contest.regionKey = tr.regionKey
+        AND contest.status NOT IN ('resolved', 'cancelled')
+       WHERE tr.enabled = 1
+       ORDER BY tr.countryCode ASC, tr.nameNl ASC`,
+    ),
+  ]);
+
+  return {
+    config: cfg,
+    activeSeason: seasons.find((season) => season.status === 'active') ?? null,
+    seasons,
+    countries,
+    crews: crews.map((crew) => ({ id: toNumeric(crew.id), name: crew.name })),
+    leaderboard: leaderboard.map((entry) => ({
+      crewId: toNumeric(entry.crewId),
+      crewName: entry.crewName,
+      regionsOwned: toNumeric(entry.regionsOwned),
+      totalControl: toNumeric(entry.totalControl),
+    })),
+    summary: {
+      enabledCountries: countries.length,
+      enabledRegions: regionRows.length,
+      activeContests: contestRows.filter((contest) => !['resolved', 'cancelled'].includes(contest.status)).length,
+      controlledRegions: regionRows.filter((region) => region.ownerCrewId != null).length,
+    },
+    contests: contestRows.map((contest) => ({
+      ...contest,
+      id: toNumeric(contest.id),
+      attackerCrewId: toNumeric(contest.attackerCrewId),
+      defenderCrewId: contest.defenderCrewId == null ? null : toNumeric(contest.defenderCrewId),
+      winnerCrewId: contest.winnerCrewId == null ? null : toNumeric(contest.winnerCrewId),
+    })),
+    regions: regionRows.map((region) => ({
+      ...region,
+      valueTier: toNumeric(region.valueTier),
+      ownerCrewId: region.ownerCrewId == null ? null : toNumeric(region.ownerCrewId),
+      stability: toNumeric(region.stability),
+      activeContestId: region.activeContestId == null ? null : toNumeric(region.activeContestId),
+    })),
+  };
+}
+
 export async function startContest(
   playerId: number,
   crewId: number,

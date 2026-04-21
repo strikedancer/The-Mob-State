@@ -205,6 +205,87 @@ export interface AdminTestPushResponse {
   deviceCount: number;
 }
 
+export interface AdminTerritoryOverview {
+  config: {
+    contestPrepMinutes: number;
+    contestActiveMinutes: number;
+    contestLockdownMinutes: number;
+    actionCooldownSeconds: number;
+    actionDailyCap: number;
+    captureThresholdPercent: number;
+    maxRegionsPerCrew: number;
+    maxConcurrentContestsPerCrew: number;
+    passiveIncomeIntervalMinutes: number;
+  };
+  activeSeason: {
+    seasonKey: string;
+    status: string;
+    startsAt: string;
+    endsAt: string;
+  } | null;
+  seasons: Array<{
+    seasonKey: string;
+    status: string;
+    startsAt: string;
+    endsAt: string;
+  }>;
+  countries: Array<{
+    id: number;
+    countryCode: string;
+    displayNameNl: string;
+    displayNameEn: string;
+    svgAssetKey: string;
+    enabled: number;
+  }>;
+  crews: Array<{
+    id: number;
+    name: string;
+  }>;
+  leaderboard: Array<{
+    crewId: number;
+    crewName: string;
+    regionsOwned: number;
+    totalControl: number;
+  }>;
+  summary: {
+    enabledCountries: number;
+    enabledRegions: number;
+    activeContests: number;
+    controlledRegions: number;
+  };
+  contests: Array<{
+    id: number;
+    regionKey: string;
+    regionNameNl: string;
+    countryCode: string;
+    status: string;
+    attackerCrewId: number;
+    attackerCrewName: string | null;
+    defenderCrewId: number | null;
+    defenderCrewName: string | null;
+    winnerCrewId: number | null;
+    winnerCrewName: string | null;
+    startedAt: string;
+    activeAt: string | null;
+    lockdownAt: string | null;
+    resolveAt: string | null;
+    resolvedAt: string | null;
+  }>;
+  regions: Array<{
+    regionKey: string;
+    countryCode: string;
+    nameNl: string;
+    nameEn: string;
+    svgElementId: string;
+    valueTier: number;
+    ownerCrewId: number | null;
+    ownerCrewName: string | null;
+    stability: number;
+    activeContestId: number | null;
+    activeContestStatus: string | null;
+  }>;
+}
+
 export interface ManagePlayerPayload {
   playerId: number;
   reason?: string;
@@ -1812,5 +1893,86 @@ export const adminService = {
 
     await ensureOk(response, 'Failed to update crew war status');
     return response.json();
+  },
+
+  async getTerritoryOverview(): Promise<AdminTerritoryOverview> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/territory/admin/overview`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    await ensureOk(response, 'Failed to fetch territory overview');
+    const payload = await response.json();
+    return payload.params;
+  },
+
+  async territoryAssignRegion(regionKey: string, crewId: number | null): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/territory/admin/region/assign`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ regionKey, crewId }),
+    });
+
+    await ensureOk(response, 'Failed to assign territory region');
+  },
+
+  async territoryResetRegion(regionKey: string): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/territory/admin/region/reset`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ regionKey }),
+    });
+
+    await ensureOk(response, 'Failed to reset territory region');
+  },
+
+  async territoryResolveContest(contestId: number): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/territory/admin/contest/resolve`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ contestId }),
+    });
+
+    await ensureOk(response, 'Failed to resolve territory contest');
+  },
+
+  async territoryStartSeason(payload: { seasonKey: string; startsAt: string; endsAt: string }): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/territory/admin/season/start`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    await ensureOk(response, 'Failed to start territory season');
+  },
+
+  async territoryCloseSeason(seasonKey: string): Promise<void> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/territory/admin/season/close`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ seasonKey }),
+    });
+
+    await ensureOk(response, 'Failed to close territory season');
   },
 };

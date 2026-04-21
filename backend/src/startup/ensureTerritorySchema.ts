@@ -95,6 +95,32 @@ function buildAutoRegions(countryCode: string, svgAssetKey: string): TerritorySe
   });
 }
 
+function validateTerritorySeedRegions(regions: TerritorySeedRegion[]): void {
+  const seenRegionKeys = new Set<string>();
+  const seenCountrySvgIds = new Set<string>();
+
+  for (const region of regions) {
+    if (!region.countryCode.trim() || !region.key.trim() || !region.svg.trim()) {
+      throw new Error(`Invalid territory seed metadata for ${region.countryCode}:${region.key || region.svg}`);
+    }
+
+    if (!region.nl.trim() || !region.en.trim()) {
+      throw new Error(`Missing territory seed name for ${region.countryCode}:${region.key}`);
+    }
+
+    if (seenRegionKeys.has(region.key)) {
+      throw new Error(`Duplicate territory region key detected: ${region.key}`);
+    }
+    seenRegionKeys.add(region.key);
+
+    const countrySvgKey = `${region.countryCode}:${region.svg}`.toLowerCase();
+    if (seenCountrySvgIds.has(countrySvgKey)) {
+      throw new Error(`Duplicate territory SVG mapping detected: ${countrySvgKey}`);
+    }
+    seenCountrySvgIds.add(countrySvgKey);
+  }
+}
+
 async function seedRuntimeConfigDefaults(): Promise<void> {
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS runtime_config (
@@ -335,6 +361,8 @@ export async function ensureTerritorySchema(): Promise<void> {
   });
 
   const allRegions = [...nlRegions, ...autoRegions];
+
+  validateTerritorySeedRegions(allRegions);
 
   for (const r of allRegions) {
     await prisma.$executeRawUnsafe(

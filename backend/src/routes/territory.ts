@@ -244,6 +244,18 @@ router.get('/leaderboard', authenticate, async (_req: AuthRequest, res: Response
 // ── Admin Endpoints ───────────────────────────────────────────────────────────
 
 /**
+ * GET /territory/admin/overview
+ */
+router.get('/admin/overview', adminAuthMiddleware, async (_req: AdminRequest, res: Response, next: NextFunction) => {
+  try {
+    const overview = await territoryService.getAdminOverview();
+    return res.json({ event: 'territory.admin.overview', params: overview });
+  } catch (error) {
+    return mapTerritoryError(error, res, next);
+  }
+});
+
+/**
  * POST /territory/admin/contest/resolve
  */
 router.post('/admin/contest/resolve', adminAuthMiddleware, async (req: AdminRequest, res: Response, next: NextFunction) => {

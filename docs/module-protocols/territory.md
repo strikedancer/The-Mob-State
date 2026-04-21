@@ -47,8 +47,11 @@
   - Territory admin/live API serialisatie-fix: `overview` en `leaderboard` normaliseren aggregate velden zoals `COUNT(...)` nu expliciet naar gewone numbers voordat Express JSON rendert, zodat admin/system logs geen `Do not know how to serialize a BigInt` meer krijgen op territory responses
   - Territory contest-start response-fix: ook de nieuw aangemaakte `contestId` uit `LAST_INSERT_ID()` wordt nu genormaliseerd naar een gewone number voordat de success-response teruggaat, zodat een eerste klik op `Aanvallen` niet stil een 500 geeft terwijl de contest al is gestart
   - Territory live start-fix: contest-start haalt de nieuw aangemaakte row nu via `LAST_INSERT_ID()` op in plaats van een exacte `startedAt` timestamp-match; hierdoor rollen starts op MariaDB `DATETIME`-kolommen zonder milliseconden niet meer stil terug. De attacker-actie `raid` gebruikt in de UI bovendien weer de correcte lowercase backend-action key
-- SVG stabiele region IDs: ⏳ gepland (mapping via database svgElementId)
-- Admin Vue-frontend territory sectie: ⏳ gepland
+- SVG stabiele region IDs: ✅ geïmplementeerd
+  - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
+- Admin frontend territory sectie: ✅ geïmplementeerd
+  - `backend/src/routes/territory.ts` + `backend/src/services/territoryService.ts` — admin overview endpoint toegevoegd voor territory moderatie, contest-overzicht, seizoenen, regio-eigendom en leaderboard
+  - `admin/src/components/TerritoryAdminPanel.tsx` + `admin/src/App.tsx` + `admin/src/services/adminService.ts` — admin tab voor Territory toegevoegd met region assign/reset, contest resolve, season start/close en live overzicht van contests/regio's
 
 ## Scope
 Crew-territoriumcontrole per land met kaartweergave (SVG), contest lifecycle, invloedspunten, seizoenen, rewards, anti-abuse, notificaties en admin-moderatie.
