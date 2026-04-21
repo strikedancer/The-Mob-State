@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart' show PointerHoverEvent;
 import 'package:flutter/material.dart';
@@ -22,9 +23,11 @@ class TerritoryScreen extends StatefulWidget {
   State<TerritoryScreen> createState() => _TerritoryScreenState();
 }
 
-class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProviderStateMixin {
+class _TerritoryScreenState extends State<TerritoryScreen>
+    with SingleTickerProviderStateMixin {
   final TerritoryService _service = TerritoryService();
-  static const String _fallbackNlMapSvgAsset = 'assets/images/maps/netherlandsLow.svg';
+  static const String _fallbackNlMapSvgAsset =
+      'assets/images/maps/netherlandsLow.svg';
   static const Map<String, String> _countryMapAssetFallbackByCode = {
     'nl': 'netherlandsLow.svg',
     'be': 'belgium.svg',
@@ -67,7 +70,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   String? _mapTooltipLabel;
   Offset? _mapTooltipOffset;
   Timer? _mapTooltipTimer;
-  final ValueNotifier<Map<String, dynamic>?> _regionDetailNotifier = ValueNotifier<Map<String, dynamic>?>(null);
+  final ValueNotifier<Map<String, dynamic>?> _regionDetailNotifier =
+      ValueNotifier<Map<String, dynamic>?>(null);
 
   // ── Selection ─────────────────────────────────────────────────────────────
   Map<String, dynamic>? _selectedRegion;
@@ -80,12 +84,15 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   bool get _hasCrew => _myCrewId != null;
   String _t(String nl, String en) => _isNl ? nl : en;
-  int get _actionCooldownSeconds => (_overview['config']?['actionCooldownSeconds'] as num?)?.toInt() ?? 0;
+  int get _actionCooldownSeconds =>
+      (_overview['config']?['actionCooldownSeconds'] as num?)?.toInt() ?? 0;
 
   String _countryDisplayName(Map<String, dynamic> country) {
     return _isNl
-        ? (country['displayNameNl'] as String? ?? (country['countryCode'] as String? ?? ''))
-        : (country['displayNameEn'] as String? ?? (country['countryCode'] as String? ?? ''));
+        ? (country['displayNameNl'] as String? ??
+              (country['countryCode'] as String? ?? ''))
+        : (country['displayNameEn'] as String? ??
+              (country['countryCode'] as String? ?? ''));
   }
 
   @override
@@ -103,7 +110,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     super.dispose();
   }
 
-  Future<void> _loadData({String? countryCode, bool reloadCountries = false}) async {
+  Future<void> _loadData({
+    String? countryCode,
+    bool reloadCountries = false,
+  }) async {
     setState(() => _isLoading = true);
 
     List<Map<String, dynamic>> countries = _countries;
@@ -122,7 +132,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           .whereType<String>()
           .toSet();
       if (!countryCodes.contains(targetCountryCode)) {
-        targetCountryCode = (countries.first['countryCode'] as String?)?.toLowerCase() ?? targetCountryCode;
+        targetCountryCode =
+            (countries.first['countryCode'] as String?)?.toLowerCase() ??
+            targetCountryCode;
       }
     }
 
@@ -137,20 +149,31 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
     final mapDataMap = mapData as Map<String, dynamic>;
     final mapCountry = mapDataMap['country'] as Map<String, dynamic>?;
-    final resolvedCountryCode = (mapCountry?['countryCode'] as String?)?.toLowerCase() ?? targetCountryCode;
+    final resolvedCountryCode =
+        (mapCountry?['countryCode'] as String?)?.toLowerCase() ??
+        targetCountryCode;
     final svgAssetKey = mapCountry?['svgAssetKey'] as String?;
-    final svgTemplate = await _loadSvgTemplateForCountry(resolvedCountryCode, svgAssetKey);
+    final svgTemplate = await _loadSvgTemplateForCountry(
+      resolvedCountryCode,
+      svgAssetKey,
+    );
     final parsedSvg = _parseSvgMap(svgTemplate);
     final myCrewMap = myCrew as Map<String, dynamic>?;
     final myCrewIdRaw = myCrewMap?['id'];
-    final myCrewId = myCrewIdRaw is num ? myCrewIdRaw.toInt() : int.tryParse(myCrewIdRaw?.toString() ?? '');
-    final regions = (mapDataMap['regions'] as List<dynamic>?) ?? const <dynamic>[];
+    final myCrewId = myCrewIdRaw is num
+        ? myCrewIdRaw.toInt()
+        : int.tryParse(myCrewIdRaw?.toString() ?? '');
+    final regions =
+        (mapDataMap['regions'] as List<dynamic>?) ?? const <dynamic>[];
     final selectedRegion = previousRegionKey == null
         ? null
-        : regions.whereType<Map<String, dynamic>>().cast<Map<String, dynamic>?>().firstWhere(
-              (region) => region?['regionKey'] == previousRegionKey,
-              orElse: () => null,
-            );
+        : regions
+              .whereType<Map<String, dynamic>>()
+              .cast<Map<String, dynamic>?>()
+              .firstWhere(
+                (region) => region?['regionKey'] == previousRegionKey,
+                orElse: () => null,
+              );
 
     if (!mounted) return;
     setState(() {
@@ -169,7 +192,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _mapTooltipLabel = null;
       _mapTooltipOffset = null;
       _selectedRegion = selectedRegion;
-      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
+      _renderedSvgMap = _renderSvgWithOwnership(
+        (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[],
+      );
       _isLoading = false;
     });
     _regionDetailNotifier.value = selectedRegion;
@@ -178,7 +203,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   bool _isMyCrewRegion(Map<String, dynamic> region) {
     if (_myCrewId == null) return false;
     final ownerCrewId = region['ownerCrewId'];
-    final resolvedOwnerCrewId = ownerCrewId is num ? ownerCrewId.toInt() : int.tryParse(ownerCrewId?.toString() ?? '');
+    final resolvedOwnerCrewId = ownerCrewId is num
+        ? ownerCrewId.toInt()
+        : int.tryParse(ownerCrewId?.toString() ?? '');
     return resolvedOwnerCrewId == _myCrewId;
   }
 
@@ -258,7 +285,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   }
 
   Map<String, dynamic>? _findRegionByKey(String regionKey) {
-    final regions = (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[];
+    final regions =
+        (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[];
     return regions
         .whereType<Map<String, dynamic>>()
         .cast<Map<String, dynamic>?>()
@@ -306,37 +334,87 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   String _valueTierYieldSummary(int tier) {
     switch (tier) {
       case 1:
-        return _t('Laag passief inkomen en kleine seizoenswaarde', 'Low passive income and modest seasonal value');
+        return _t(
+          'Laag passief inkomen en kleine seizoenswaarde',
+          'Low passive income and modest seasonal value',
+        );
       case 2:
-        return _t('Gemiddeld passief inkomen en seizoenswaarde', 'Average passive income and seasonal value');
+        return _t(
+          'Gemiddeld passief inkomen en seizoenswaarde',
+          'Average passive income and seasonal value',
+        );
       case 3:
-        return _t('Hoog passief inkomen en sterke seizoenswaarde', 'High passive income and strong seasonal value');
+        return _t(
+          'Hoog passief inkomen en sterke seizoenswaarde',
+          'High passive income and strong seasonal value',
+        );
       default:
-        return _t('Top passief inkomen en maximale seizoenswaarde', 'Top passive income and maximum seasonal value');
+        return _t(
+          'Top passief inkomen en maximale seizoenswaarde',
+          'Top passive income and maximum seasonal value',
+        );
     }
+  }
+
+  _SvgRegionShape? _shapeForRegion(Map<String, dynamic> region) {
+    final svgElementId = (region['svgElementId'] as String?)?.trim();
+    if (svgElementId == null || svgElementId.isEmpty) return null;
+
+    for (final shape in _svgRegionShapes) {
+      if (shape.id.toLowerCase() == svgElementId.toLowerCase()) {
+        return shape;
+      }
+    }
+    return null;
   }
 
   String _territoryErrorMessage(Object? rawEvent) {
     final event = rawEvent?.toString() ?? '';
     switch (event) {
       case 'error.not_in_crew':
-        return _t('Je moet eerst in een crew zitten om territorium aan te vallen.', 'You must join a crew before you can attack territory.');
+        return _t(
+          'Je moet eerst in een crew zitten om territorium aan te vallen.',
+          'You must join a crew before you can attack territory.',
+        );
       case 'territory.contest_already_active':
-        return _t('Voor dit gebied loopt al een contest. De kaart wordt ververst met de actuele status.', 'A contest is already running for this region. Refreshing the map to the latest state.');
+        return _t(
+          'Voor dit gebied loopt al een contest. De kaart wordt ververst met de actuele status.',
+          'A contest is already running for this region. Refreshing the map to the latest state.',
+        );
       case 'territory.crew_contest_limit_reached':
-        return _t('Je crew heeft al het maximum aantal gelijktijdige contests bereikt.', 'Your crew has already reached the concurrent contest limit.');
+        return _t(
+          'Je crew heeft al het maximum aantal gelijktijdige contests bereikt.',
+          'Your crew has already reached the concurrent contest limit.',
+        );
       case 'territory.regions_cap_reached':
-        return _t('Je crew bezit al het maximum aantal gebieden.', 'Your crew already owns the maximum number of regions.');
+        return _t(
+          'Je crew bezit al het maximum aantal gebieden.',
+          'Your crew already owns the maximum number of regions.',
+        );
       case 'territory.contest_not_active':
-        return _t('Deze contest is nog niet actief. Wacht tot de voorbereidingsfase voorbij is.', 'This contest is not active yet. Wait for the preparation phase to finish.');
+        return _t(
+          'Deze contest is nog niet actief. Wacht tot de voorbereidingsfase voorbij is.',
+          'This contest is not active yet. Wait for the preparation phase to finish.',
+        );
       case 'territory.action_cooldown':
-        return _t('Je moet even wachten voor je opnieuw een territory-actie kunt doen.', 'You need to wait before performing another territory action.');
+        return _t(
+          'Je moet even wachten voor je opnieuw een territory-actie kunt doen.',
+          'You need to wait before performing another territory action.',
+        );
       case 'territory.action_role_mismatch':
-        return _t('Deze actie hoort bij de andere kant van de contest.', 'This action belongs to the other side of the contest.');
+        return _t(
+          'Deze actie hoort bij de andere kant van de contest.',
+          'This action belongs to the other side of the contest.',
+        );
       case 'territory.daily_cap_reached':
-        return _t('Je hebt je dagelijkse limiet voor territory-acties bereikt.', 'You have reached your daily limit for territory actions.');
+        return _t(
+          'Je hebt je dagelijkse limiet voor territory-acties bereikt.',
+          'You have reached your daily limit for territory actions.',
+        );
       default:
-        return event.isEmpty ? _t('Onbekende territory-fout.', 'Unknown territory error.') : event;
+        return event.isEmpty
+            ? _t('Onbekende territory-fout.', 'Unknown territory error.')
+            : event;
     }
   }
 
@@ -355,21 +433,32 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     }
   }
 
-  Widget _buildInfoNotice(String text, {Color? borderColor, Color? backgroundColor, IconData icon = Icons.info_outline}) {
+  Widget _buildInfoNotice(
+    String text, {
+    Color? borderColor,
+    Color? backgroundColor,
+    IconData icon = Icons.info_outline,
+  }) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: backgroundColor ?? Colors.blueGrey.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: borderColor ?? Colors.blueGrey.withValues(alpha: 0.28)),
+        border: Border.all(
+          color: borderColor ?? Colors.blueGrey.withValues(alpha: 0.28),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 1),
-            child: Icon(icon, size: 16, color: borderColor ?? Colors.blueGrey.shade700),
+            child: Icon(
+              icon,
+              size: 16,
+              color: borderColor ?? Colors.blueGrey.shade700,
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -383,7 +472,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     );
   }
 
-  List<String> _buildMapAssetCandidates(String countryCode, String? svgAssetKey) {
+  List<String> _buildMapAssetCandidates(
+    String countryCode,
+    String? svgAssetKey,
+  ) {
     final candidates = <String>[];
 
     if (svgAssetKey != null && svgAssetKey.trim().isNotEmpty) {
@@ -391,7 +483,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       if (key.startsWith('assets/')) {
         candidates.add(key.toLowerCase().endsWith('.svg') ? key : '$key.svg');
       } else {
-        final normalized = key.toLowerCase().endsWith('.svg') ? key : '$key.svg';
+        final normalized = key.toLowerCase().endsWith('.svg')
+            ? key
+            : '$key.svg';
         candidates.add('assets/images/maps/$normalized');
       }
     }
@@ -405,7 +499,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     return candidates.toSet().toList(growable: false);
   }
 
-  Future<String?> _loadSvgTemplateForCountry(String countryCode, String? svgAssetKey) async {
+  Future<String?> _loadSvgTemplateForCountry(
+    String countryCode,
+    String? svgAssetKey,
+  ) async {
     final candidates = _buildMapAssetCandidates(countryCode, svgAssetKey);
     for (final candidate in candidates) {
       try {
@@ -426,7 +523,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     if (label != null && label.trim().isNotEmpty) {
       return label.trim();
     }
-    return (country['countryCode'] as String?)?.toUpperCase() ?? _selectedCountryCode.toUpperCase();
+    return (country['countryCode'] as String?)?.toUpperCase() ??
+        _selectedCountryCode.toUpperCase();
   }
 
   _SvgMapParseResult? _parseSvgMap(String? svg) {
@@ -445,7 +543,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         .split(RegExp(r'\s+'))
         .map((part) => double.tryParse(part))
         .toList();
-    if (viewBoxParts == null || viewBoxParts.length != 4 || viewBoxParts.any((v) => v == null)) {
+    if (viewBoxParts == null ||
+        viewBoxParts.length != 4 ||
+        viewBoxParts.any((v) => v == null)) {
       return null;
     }
 
@@ -455,7 +555,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final height = viewBoxParts[3]!;
     if (width <= 0 || height <= 0) return null;
 
-    final pathTagRegex = RegExp(r'<path\b[^>]*>', caseSensitive: false, dotAll: true);
+    final pathTagRegex = RegExp(
+      r'<path\b[^>]*>',
+      caseSensitive: false,
+      dotAll: true,
+    );
     final shapes = <_SvgRegionShape>[];
 
     for (final match in pathTagRegex.allMatches(svg)) {
@@ -464,7 +568,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
       final id = _extractSvgAttr(tag, 'id');
       final d = _extractSvgAttr(tag, 'd');
-      if (id == null || id.trim().isEmpty || d == null || d.trim().isEmpty) continue;
+      if (id == null || id.trim().isEmpty || d == null || d.trim().isEmpty)
+        continue;
 
       final name = _extractSvgAttr(tag, 'data-name')?.trim();
 
@@ -477,7 +582,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     }
 
     if (shapes.isEmpty) return null;
-    return _SvgMapParseResult(viewBox: Rect.fromLTWH(minX, minY, width, height), shapes: shapes);
+    return _SvgMapParseResult(
+      viewBox: Rect.fromLTWH(minX, minY, width, height),
+      shapes: shapes,
+    );
   }
 
   String? _extractSvgAttr(String tag, String attr) {
@@ -491,21 +599,33 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     required Rect viewBox,
   }) {
     final fitted = applyBoxFit(BoxFit.contain, viewBox.size, renderSize);
-    final destination = Alignment.center.inscribe(fitted.destination, Offset.zero & renderSize);
-    if (!destination.contains(local) || destination.width <= 0 || destination.height <= 0) {
+    final destination = Alignment.center.inscribe(
+      fitted.destination,
+      Offset.zero & renderSize,
+    );
+    if (!destination.contains(local) ||
+        destination.width <= 0 ||
+        destination.height <= 0) {
       return null;
     }
 
     final dx = (local.dx - destination.left) / destination.width;
     final dy = (local.dy - destination.top) / destination.height;
-    return Offset(viewBox.left + (dx * viewBox.width), viewBox.top + (dy * viewBox.height));
+    return Offset(
+      viewBox.left + (dx * viewBox.width),
+      viewBox.top + (dy * viewBox.height),
+    );
   }
 
   _SvgRegionShape? _findShapeAtLocalPoint(Offset local, Size renderSize) {
     final viewBox = _svgViewBox;
     if (viewBox == null || _svgRegionShapes.isEmpty) return null;
 
-    final svgPoint = _localToSvgPoint(local: local, renderSize: renderSize, viewBox: viewBox);
+    final svgPoint = _localToSvgPoint(
+      local: local,
+      renderSize: renderSize,
+      viewBox: viewBox,
+    );
     if (svgPoint == null) return null;
 
     for (var i = _svgRegionShapes.length - 1; i >= 0; i--) {
@@ -516,7 +636,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     return null;
   }
 
-  Map<String, dynamic>? _findRegionBySvgElementId(List<dynamic> regions, String svgElementId) {
+  Map<String, dynamic>? _findRegionBySvgElementId(
+    List<dynamic> regions,
+    String svgElementId,
+  ) {
     return regions
         .whereType<Map<String, dynamic>>()
         .cast<Map<String, dynamic>?>()
@@ -528,11 +651,20 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         );
   }
 
-  String _regionDisplayName(Map<String, dynamic>? region, _SvgRegionShape shape) {
+  String _regionDisplayName(
+    Map<String, dynamic>? region,
+    _SvgRegionShape shape,
+  ) {
     if (region == null) return shape.name ?? shape.id;
     return _isNl
-        ? (region['nameNl'] as String? ?? region['regionKey'] as String? ?? shape.name ?? shape.id)
-        : (region['nameEn'] as String? ?? region['regionKey'] as String? ?? shape.name ?? shape.id);
+        ? (region['nameNl'] as String? ??
+              region['regionKey'] as String? ??
+              shape.name ??
+              shape.id)
+        : (region['nameEn'] as String? ??
+              region['regionKey'] as String? ??
+              shape.name ??
+              shape.id);
   }
 
   void _updateHoveredRegion(String? svgElementId, {bool clearTooltip = false}) {
@@ -546,11 +678,17 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         _mapTooltipLabel = null;
         _mapTooltipOffset = null;
       }
-      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
+      _renderedSvgMap = _renderSvgWithOwnership(
+        (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[],
+      );
     });
   }
 
-  void _handleMapHover(PointerHoverEvent event, Size renderSize, List<dynamic> regions) {
+  void _handleMapHover(
+    PointerHoverEvent event,
+    Size renderSize,
+    List<dynamic> regions,
+  ) {
     final hit = _findShapeAtLocalPoint(event.localPosition, renderSize);
     if (hit == null) {
       _mapTooltipTimer?.cancel();
@@ -564,7 +702,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _hoveredSvgElementId = hit.id;
       _mapTooltipLabel = _regionDisplayName(matchedRegion, hit);
       _mapTooltipOffset = event.localPosition;
-      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
+      _renderedSvgMap = _renderSvgWithOwnership(
+        (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[],
+      );
     });
   }
 
@@ -573,7 +713,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     _updateHoveredRegion(null, clearTooltip: true);
   }
 
-  void _handleMapTap(TapDownDetails details, Size renderSize, List<dynamic> regions) {
+  void _handleMapTap(
+    TapDownDetails details,
+    Size renderSize,
+    List<dynamic> regions,
+  ) {
     final hit = _findShapeAtLocalPoint(details.localPosition, renderSize);
     if (hit == null) return;
 
@@ -588,7 +732,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       _hoveredSvgElementId = hit.id;
       _mapTooltipLabel = regionName;
       _mapTooltipOffset = details.localPosition;
-      _renderedSvgMap = _renderSvgWithOwnership((_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[]);
+      _renderedSvgMap = _renderSvgWithOwnership(
+        (_mapData['regions'] as List<dynamic>?) ?? const <dynamic>[],
+      );
     });
     if (matchedRegion != null) {
       _regionDetailNotifier.value = matchedRegion;
@@ -729,7 +875,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
   String _hexColorForRegion(Map<String, dynamic> region) {
     final contestStatus = (region['contestStatus'] as String?)?.toLowerCase();
-    if (contestStatus != null && contestStatus != 'resolved' && contestStatus != 'cancelled') {
+    if (contestStatus != null &&
+        contestStatus != 'resolved' &&
+        contestStatus != 'cancelled') {
       return '#F59E0B';
     }
 
@@ -738,7 +886,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       return '#D1D5DB';
     }
 
-    final crewId = ownerCrewId is num ? ownerCrewId.toInt() : int.tryParse(ownerCrewId.toString());
+    final crewId = ownerCrewId is num
+        ? ownerCrewId.toInt()
+        : int.tryParse(ownerCrewId.toString());
     if (crewId == null) {
       return '#D1D5DB';
     }
@@ -747,7 +897,6 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   }
 
   String _hexColorForCrewId(int crewId) {
-
     final palette = <String>[
       '#2563EB',
       '#059669',
@@ -778,7 +927,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       if (rawRegion is! Map<String, dynamic>) continue;
       final ownerCrewIdRaw = rawRegion['ownerCrewId'];
       final ownerCrewName = (rawRegion['ownerCrewName'] as String?)?.trim();
-      if (ownerCrewIdRaw == null || ownerCrewName == null || ownerCrewName.isEmpty) {
+      if (ownerCrewIdRaw == null ||
+          ownerCrewName == null ||
+          ownerCrewName.isEmpty) {
         continue;
       }
 
@@ -799,8 +950,14 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       ..sort((a, b) => a.label.toLowerCase().compareTo(b.label.toLowerCase()));
 
     return <_TerritoryLegendEntry>[
-      _TerritoryLegendEntry(label: _t('In strijd', 'Under contest'), colorHex: '#F59E0B'),
-      _TerritoryLegendEntry(label: _t('Neutraal', 'Neutral'), colorHex: '#D1D5DB'),
+      _TerritoryLegendEntry(
+        label: _t('In strijd', 'Under contest'),
+        colorHex: '#F59E0B',
+      ),
+      _TerritoryLegendEntry(
+        label: _t('Neutraal', 'Neutral'),
+        colorHex: '#D1D5DB',
+      ),
       ...crewEntries,
     ];
   }
@@ -811,7 +968,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.45)),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: 0.45),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -819,10 +978,16 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
           Container(
             width: 10,
             height: 10,
-            decoration: BoxDecoration(color: _colorFromHex(entry.colorHex), shape: BoxShape.circle),
+            decoration: BoxDecoration(
+              color: _colorFromHex(entry.colorHex),
+              shape: BoxShape.circle,
+            ),
           ),
           const SizedBox(width: 6),
-          Text(entry.label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+          Text(
+            entry.label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          ),
         ],
       ),
     );
@@ -836,7 +1001,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     required String strokeWidth,
   }) {
     final escapedId = RegExp.escape(elementId);
-    final tagRegex = RegExp('(<[^>]*\\bid="$escapedId"[^>]*>)', caseSensitive: false);
+    final tagRegex = RegExp(
+      '(<[^>]*\\bid="$escapedId"[^>]*>)',
+      caseSensitive: false,
+    );
 
     return svg.replaceFirstMapped(tagRegex, (match) {
       final tag = match.group(1) ?? '';
@@ -845,7 +1013,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         final styleRegex = RegExp('style="([^"]*)"', caseSensitive: false);
         return tag.replaceFirstMapped(styleRegex, (styleMatch) {
           var styleValue = styleMatch.group(1) ?? '';
-          if (RegExp(r'(^|;)\s*fill\s*:', caseSensitive: false).hasMatch(styleValue)) {
+          if (RegExp(
+            r'(^|;)\s*fill\s*:',
+            caseSensitive: false,
+          ).hasMatch(styleValue)) {
             styleValue = styleValue.replaceAllMapped(
               RegExp(r'(^|;)\s*fill\s*:[^;]*', caseSensitive: false),
               (m) => '${m.group(1) ?? ';'}fill:$fillHex',
@@ -857,7 +1028,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
             styleValue = '$styleValue fill:$fillHex;';
           }
 
-          if (RegExp(r'(^|;)\s*stroke\s*:', caseSensitive: false).hasMatch(styleValue)) {
+          if (RegExp(
+            r'(^|;)\s*stroke\s*:',
+            caseSensitive: false,
+          ).hasMatch(styleValue)) {
             styleValue = styleValue.replaceAllMapped(
               RegExp(r'(^|;)\s*stroke\s*:[^;]*', caseSensitive: false),
               (m) => '${m.group(1) ?? ';'}stroke:$strokeHex',
@@ -866,7 +1040,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
             styleValue = '$styleValue stroke:$strokeHex;';
           }
 
-          if (RegExp(r'(^|;)\s*stroke-width\s*:', caseSensitive: false).hasMatch(styleValue)) {
+          if (RegExp(
+            r'(^|;)\s*stroke-width\s*:',
+            caseSensitive: false,
+          ).hasMatch(styleValue)) {
             styleValue = styleValue.replaceAllMapped(
               RegExp(r'(^|;)\s*stroke-width\s*:[^;]*', caseSensitive: false),
               (m) => '${m.group(1) ?? ';'}stroke-width:$strokeWidth',
@@ -881,24 +1058,36 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
       var updatedTag = tag;
       if (RegExp('\\sfill="', caseSensitive: false).hasMatch(updatedTag)) {
-        updatedTag = updatedTag.replaceFirst(RegExp('fill="[^"]*"', caseSensitive: false), 'fill="$fillHex"');
+        updatedTag = updatedTag.replaceFirst(
+          RegExp('fill="[^"]*"', caseSensitive: false),
+          'fill="$fillHex"',
+        );
       } else {
         updatedTag = updatedTag.replaceFirst('>', ' fill="$fillHex">');
       }
 
       if (RegExp('\\sstroke="', caseSensitive: false).hasMatch(updatedTag)) {
-        updatedTag = updatedTag.replaceFirst(RegExp('stroke="[^"]*"', caseSensitive: false), 'stroke="$strokeHex"');
+        updatedTag = updatedTag.replaceFirst(
+          RegExp('stroke="[^"]*"', caseSensitive: false),
+          'stroke="$strokeHex"',
+        );
       } else {
         updatedTag = updatedTag.replaceFirst('>', ' stroke="$strokeHex">');
       }
 
-      if (RegExp('\\sstroke-width="', caseSensitive: false).hasMatch(updatedTag)) {
+      if (RegExp(
+        '\\sstroke-width="',
+        caseSensitive: false,
+      ).hasMatch(updatedTag)) {
         updatedTag = updatedTag.replaceFirst(
           RegExp('stroke-width="[^"]*"', caseSensitive: false),
           'stroke-width="$strokeWidth"',
         );
       } else {
-        updatedTag = updatedTag.replaceFirst('>', ' stroke-width="$strokeWidth">');
+        updatedTag = updatedTag.replaceFirst(
+          '>',
+          ' stroke-width="$strokeWidth">',
+        );
       }
 
       return updatedTag;
@@ -918,7 +1107,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         appBar: AppBar(title: Text(_t('Territorium', 'Territory'))),
         body: Center(
           child: Text(
-            _t('Territorium is momenteel niet beschikbaar.', 'Territory is currently unavailable.'),
+            _t(
+              'Territorium is momenteel niet beschikbaar.',
+              'Territory is currently unavailable.',
+            ),
             style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.center,
           ),
@@ -948,28 +1140,39 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                 _loadData(countryCode: countryCode);
               },
               itemBuilder: (context) => _countries
-                  .map(
-                    (country) {
-                      final countryCode = ((country['countryCode'] as String?) ?? '').toLowerCase();
-                      return PopupMenuItem<String>(
-                        value: countryCode,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              countryCode == _selectedCountryCode ? Icons.language : Icons.flag,
-                              size: 18,
+                  .map((country) {
+                    final countryCode =
+                        ((country['countryCode'] as String?) ?? '')
+                            .toLowerCase();
+                    return PopupMenuItem<String>(
+                      value: countryCode,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            countryCode == _selectedCountryCode
+                                ? Icons.language
+                                : Icons.flag,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: Text(
+                              _countryDisplayName(country),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(width: 8),
-                            Flexible(child: Text(_countryDisplayName(country), overflow: TextOverflow.ellipsis)),
-                          ],
-                        ),
-                      );
-                    },
-                  )
+                          ),
+                        ],
+                      ),
+                    );
+                  })
                   .toList(growable: false),
             ),
-          IconButton(icon: const Icon(Icons.refresh), tooltip: _t('Vernieuwen', 'Refresh'), onPressed: _loadData),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: _t('Vernieuwen', 'Refresh'),
+            onPressed: _loadData,
+          ),
         ],
       ),
       body: TabBarView(
@@ -1037,27 +1240,56 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                   height: mapHeight,
                   width: double.infinity,
                   child: MouseRegion(
-                    onHover: (event) => _handleMapHover(event, Size(isWideLayout ? maxWidth * 0.58 : maxWidth, mapHeight), regions),
+                    onHover: (event) => _handleMapHover(
+                      event,
+                      Size(
+                        isWideLayout ? maxWidth * 0.58 : maxWidth,
+                        mapHeight,
+                      ),
+                      regions,
+                    ),
                     onExit: (_) => _handleMapHoverExit(),
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTapDown: (details) => _handleMapTap(details, Size(isWideLayout ? maxWidth * 0.58 : maxWidth, mapHeight), regions),
+                      onTapDown: (details) => _handleMapTap(
+                        details,
+                        Size(
+                          isWideLayout ? maxWidth * 0.58 : maxWidth,
+                          mapHeight,
+                        ),
+                        regions,
+                      ),
                       child: Stack(
                         children: [
                           Positioned.fill(
                             child: SvgPicture.string(
                               svgMarkup,
                               fit: BoxFit.contain,
-                              placeholderBuilder: (_) => const Center(child: CircularProgressIndicator()),
+                              placeholderBuilder: (_) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
                             ),
                           ),
-                          if (_mapTooltipLabel != null && _mapTooltipOffset != null)
+                          if (_mapTooltipLabel != null &&
+                              _mapTooltipOffset != null)
                             Positioned(
-                              left: (_mapTooltipOffset!.dx + 10).clamp(8, (isWideLayout ? (maxWidth * 0.58) : maxWidth) - 180),
-                              top: (_mapTooltipOffset!.dy - 36).clamp(8, mapHeight - 32),
+                              left: (_mapTooltipOffset!.dx + 10).clamp(
+                                8,
+                                (isWideLayout ? (maxWidth * 0.58) : maxWidth) -
+                                    180,
+                              ),
+                              top: (_mapTooltipOffset!.dy - 36).clamp(
+                                8,
+                                mapHeight - 32,
+                              ),
                               child: Container(
-                                constraints: const BoxConstraints(maxWidth: 170),
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                constraints: const BoxConstraints(
+                                  maxWidth: 170,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 6,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.black87,
                                   borderRadius: BorderRadius.circular(8),
@@ -1066,7 +1298,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                                   _mapTooltipLabel!,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ),
@@ -1095,13 +1330,18 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                     const SizedBox(height: 12),
                     Text(
                       _t('Legenda', 'Legend'),
-                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Wrap(
                       spacing: 6,
                       runSpacing: 6,
-                      children: legendEntries.map(_buildLegendChip).toList(growable: false),
+                      children: legendEntries
+                          .map(_buildLegendChip)
+                          .toList(growable: false),
                     ),
                     const SizedBox(height: 12),
                     Text(
@@ -1109,7 +1349,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                         'Jouw crew: ${_myCrewName ?? '-'}',
                         'Your crew: ${_myCrewName ?? '-'}',
                       ),
-                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 );
@@ -1125,21 +1368,14 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
                           child: infoWidget,
                         ),
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: mapWidget,
-                      ),
+                      Expanded(flex: 3, child: mapWidget),
                     ],
                   );
                 }
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    mapWidget,
-                    const SizedBox(height: 8),
-                    infoWidget,
-                  ],
+                  children: [mapWidget, const SizedBox(height: 8), infoWidget],
                 );
               },
             ),
@@ -1149,8 +1385,13 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildRegionDetail(Map<String, dynamic> region, {VoidCallback? onClose}) {
-    final regionName = _isNl ? (region['nameNl'] as String? ?? '') : (region['nameEn'] as String? ?? '');
+  Widget _buildRegionDetail(
+    Map<String, dynamic> region, {
+    VoidCallback? onClose,
+  }) {
+    final regionName = _isNl
+        ? (region['nameNl'] as String? ?? '')
+        : (region['nameEn'] as String? ?? '');
     final ownerName = region['ownerCrewName'] as String?;
     final stability = (region['stability'] as num?)?.toInt() ?? 100;
     final controlPercent = (region['controlPercent'] as num?)?.toDouble() ?? 0;
@@ -1160,9 +1401,12 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final attackerCrewName = region['attackerCrewName'] as String?;
     final defenderCrewName = region['defenderCrewName'] as String?;
     final contestStartedAt = _parseApiDate(region['contestStartedAt']);
-    final prepMinutes = (_overview['config']?['contestPrepMinutes'] as num?)?.toInt() ?? 0;
-    final activeMinutes = (_overview['config']?['contestActiveMinutes'] as num?)?.toInt() ?? 0;
-    final lockdownMinutes = (_overview['config']?['contestLockdownMinutes'] as num?)?.toInt() ?? 0;
+    final prepMinutes =
+        (_overview['config']?['contestPrepMinutes'] as num?)?.toInt() ?? 0;
+    final activeMinutes =
+        (_overview['config']?['contestActiveMinutes'] as num?)?.toInt() ?? 0;
+    final lockdownMinutes =
+        (_overview['config']?['contestLockdownMinutes'] as num?)?.toInt() ?? 0;
     final contestActiveAt = _contestTimestampFromFallback(
       startedAt: contestStartedAt,
       primary: _parseApiDate(region['contestActiveAt']),
@@ -1178,7 +1422,8 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       primary: _parseApiDate(region['contestResolveAt']),
       offsetMinutes: prepMinutes + activeMinutes + lockdownMinutes,
     );
-    final viewerCooldownSecondsRemaining = (region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
+    final viewerCooldownSecondsRemaining =
+        (region['viewerCooldownSecondsRemaining'] as num?)?.toInt() ?? 0;
     final tier = (region['valueTier'] as num?)?.toInt() ?? 1;
     final isMyCrewRegion = _isMyCrewRegion(region);
     final contestHint = _contestHint(contestStatus);
@@ -1187,138 +1432,320 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     final hasContest = contestId != null && contestStatus != null;
     final incomeTierLabel = _valueTierLabel(tier);
     final incomeSummary = _valueTierYieldSummary(tier);
+    final regionShape = _shapeForRegion(region);
+    final regionPreview = regionShape == null
+        ? null
+        : _buildRegionPreviewCard(
+            region: region,
+            regionName: regionName,
+            regionShape: regionShape,
+            ownerName: ownerName,
+            contestStatus: contestStatus,
+          );
+
+    final detailContent = <Widget>[
+      _detailRow(
+        _t('Eigenaar', 'Owner'),
+        ownerName ?? _t('Neutraal', 'Neutral'),
+      ),
+      _detailRow(_t('Stabiliteit', 'Stability'), '$stability%'),
+      _detailRow(
+        _t('Controle', 'Control'),
+        '${controlPercent.toStringAsFixed(controlPercent.truncateToDouble() == controlPercent ? 0 : 1)}%',
+      ),
+      _detailRow(_t('Waarde', 'Value tier'), '⭐' * tier),
+      _detailRow(_t('Opbrengst', 'Yield'), incomeTierLabel),
+      _detailRow(_t('Levert op', 'Yields'), incomeSummary),
+      if (_myCrewName != null)
+        _detailRow(_t('Jouw crew', 'Your crew'), _myCrewName!),
+      if (contestStatus != null)
+        _detailRow(
+          _t('Contest status', 'Contest status'),
+          _displayContestStatus(contestStatus),
+        ),
+      if (attackerCrewName != null)
+        _detailRow(_t('Aanvaller', 'Attacker'), attackerCrewName),
+      if (defenderCrewName != null)
+        _detailRow(_t('Verdediger', 'Defender'), defenderCrewName),
+      if (contestRole != null)
+        _detailRow(
+          _t('Jouw rol', 'Your role'),
+          _displayContestRole(contestRole),
+        ),
+      if (contestStatus == 'preparing')
+        _detailRow(
+          _t('Acties starten over', 'Actions unlock in'),
+          _countdownLabel(contestActiveAt),
+        ),
+      if (contestStatus == 'active')
+        _detailRow(
+          _t('Acties sluiten over', 'Actions close in'),
+          _countdownLabel(contestLockdownAt),
+        ),
+      if (hasContest)
+        _detailRow(
+          _t('Contest eindigt over', 'Contest ends in'),
+          _countdownLabel(contestResolveAt),
+        ),
+      if (_actionCooldownSeconds > 0)
+        _detailRow(
+          _t('Cooldown per actie', 'Cooldown per action'),
+          _formatDuration(Duration(seconds: _actionCooldownSeconds)),
+        ),
+      if (viewerCooldownSecondsRemaining > 0)
+        _detailRow(
+          _t('Jouw cooldown', 'Your cooldown'),
+          _formatDuration(
+            Duration(seconds: viewerCooldownSecondsRemaining),
+          ),
+        ),
+      const SizedBox(height: 16),
+      if (!_hasCrew)
+        _buildInfoNotice(
+          _t(
+            'Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.',
+            'Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.',
+          ),
+          borderColor: Colors.orange.shade700,
+          backgroundColor: Colors.orange.withValues(alpha: 0.1),
+          icon: Icons.groups_rounded,
+        ),
+      if (contestHint != null) ...[
+        _buildInfoNotice(
+          contestHint,
+          borderColor: Colors.amber.shade700,
+          backgroundColor: Colors.amber.withValues(alpha: 0.1),
+          icon: Icons.schedule,
+        ),
+        const SizedBox(height: 12),
+      ],
+      if (contestStatus == null && isMyCrewRegion)
+        _buildInfoNotice(
+          _t(
+            'Je crew controleert dit gebied al.',
+            'Your crew already controls this region.',
+          ),
+          borderColor: Colors.green.shade700,
+          backgroundColor: Colors.green.withValues(alpha: 0.1),
+          icon: Icons.verified,
+        ),
+      if (contestStatus == 'preparing' && isDefender) ...[
+        _buildInfoNotice(
+          _t(
+            'Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.',
+            'Your crew is defending this region. Once the active phase starts, you will only see defensive actions.',
+          ),
+          borderColor: Colors.blue.shade700,
+          backgroundColor: Colors.blue.withValues(alpha: 0.1),
+          icon: Icons.shield,
+        ),
+        const SizedBox(height: 12),
+        _buildActionButton(
+          label: _t('Verdediging bevestigen', 'Confirm defense'),
+          icon: Icons.shield,
+          color: Colors.blue[700]!,
+          onTap: () => _joinDefense(contestId),
+        ),
+      ],
+      if (contestStatus == null && _hasCrew && !isMyCrewRegion)
+        _buildActionButton(
+          label: _t('Aanvallen', 'Attack'),
+          icon: Icons.gps_fixed,
+          color: Colors.red[700]!,
+          onTap: () => _confirmStartContest(region['regionKey'] as String),
+        ),
+      if (contestId != null && contestStatus == 'active') ...[
+        const SizedBox(height: 8),
+        Text(
+          isAttacker
+              ? _t('Aanvalsacties', 'Attacker actions')
+              : (isDefender
+                    ? _t('Verdedigingsacties', 'Defender actions')
+                    : _t('Contestacties', 'Contest actions')),
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            if (isAttacker) ...[
+              _smallActionButton(_t('Intel', 'Intel scan'), 'intel_scan', contestId),
+              _smallActionButton(_t('Sabotage', 'Sabotage'), 'sabotage', contestId),
+              _smallActionButton(_t('Inval', 'Raid'), 'raid', contestId),
+            ],
+            if (isDefender) ...[
+              _smallActionButton(_t('Patrouille', 'Patrol'), 'patrol', contestId),
+              _smallActionButton(_t('Bevoorrading', 'Supply run'), 'supply_run', contestId),
+              _smallActionButton(_t('Verdedigen', 'Defense'), 'defense', contestId),
+            ],
+          ],
+        ),
+      ],
+      if (contestId != null &&
+          contestStatus == 'active' &&
+          !isAttacker &&
+          !isDefender)
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: _buildInfoNotice(
+            _t(
+              'Je zit niet aan deze contest gekoppeld, dus je kunt hier geen acties uitvoeren.',
+              'You are not part of this contest, so you cannot perform actions here.',
+            ),
+            borderColor: Colors.blueGrey.shade600,
+            backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
+            icon: Icons.lock_outline,
+          ),
+        ),
+    ];
 
     return Padding(
       padding: const EdgeInsets.all(16),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideLayout = constraints.maxWidth >= 760 && regionPreview != null;
+          final detailsColumn = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (!isWideLayout && regionPreview != null) ...[
+                regionPreview,
+                const SizedBox(height: 16),
+              ],
+              ...detailContent,
+            ],
+          );
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      regionName,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  if (onClose != null)
+                    IconButton(
+                      icon: const Icon(Icons.close, size: 18),
+                      onPressed: onClose,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (isWideLayout)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 3, child: detailsColumn),
+                    const SizedBox(width: 18),
+                    Expanded(flex: 2, child: regionPreview!),
+                  ],
+                )
+              else
+                detailsColumn,
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildRegionPreviewCard({
+    required Map<String, dynamic> region,
+    required String regionName,
+    required _SvgRegionShape regionShape,
+    required String? ownerName,
+    required String? contestStatus,
+  }) {
+    final fillColor = _colorFromHex(_hexColorForRegion(region));
+    final accentColor = contestStatus != null &&
+            contestStatus != 'resolved' &&
+            contestStatus != 'cancelled'
+        ? Colors.amber.shade700
+        : fillColor;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: accentColor.withValues(alpha: 0.55)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(regionName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ),
-              if (onClose != null)
-                IconButton(
-                  icon: const Icon(Icons.close, size: 18),
-                  onPressed: onClose,
-                ),
-            ],
+          Text(
+            _t('Gebiedsweergave', 'Region preview'),
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
           ),
-          const SizedBox(height: 8),
-          _detailRow(_t('Eigenaar', 'Owner'), ownerName ?? _t('Neutraal', 'Neutral')),
-          _detailRow(_t('Stabiliteit', 'Stability'), '$stability%'),
-          _detailRow(_t('Controle', 'Control'), '${controlPercent.toStringAsFixed(controlPercent.truncateToDouble() == controlPercent ? 0 : 1)}%'),
-          _detailRow(_t('Waarde', 'Value tier'), '⭐' * tier),
-          _detailRow(_t('Opbrengst', 'Yield'), incomeTierLabel),
-          _detailRow(_t('Levert op', 'Yields'), incomeSummary),
-          if (_myCrewName != null) _detailRow(_t('Jouw crew', 'Your crew'), _myCrewName!),
-          if (contestStatus != null) _detailRow(_t('Contest status', 'Contest status'), _displayContestStatus(contestStatus)),
-          if (attackerCrewName != null) _detailRow(_t('Aanvaller', 'Attacker'), attackerCrewName),
-          if (defenderCrewName != null) _detailRow(_t('Verdediger', 'Defender'), defenderCrewName),
-          if (contestRole != null) _detailRow(_t('Jouw rol', 'Your role'), _displayContestRole(contestRole)),
-          if (contestStatus == 'preparing') _detailRow(_t('Acties starten over', 'Actions unlock in'), _countdownLabel(contestActiveAt)),
-          if (contestStatus == 'active') _detailRow(_t('Acties sluiten over', 'Actions close in'), _countdownLabel(contestLockdownAt)),
-          if (hasContest) _detailRow(_t('Contest eindigt over', 'Contest ends in'), _countdownLabel(contestResolveAt)),
-          if (_actionCooldownSeconds > 0) _detailRow(_t('Cooldown per actie', 'Cooldown per action'), _formatDuration(Duration(seconds: _actionCooldownSeconds))),
-          if (viewerCooldownSecondsRemaining > 0)
-            _detailRow(
-              _t('Jouw cooldown', 'Your cooldown'),
-              _formatDuration(Duration(seconds: viewerCooldownSecondsRemaining)),
+          const SizedBox(height: 4),
+          Text(
+            _t(
+              'Alleen het aangeklikte gebied, zonder de rest van de kaart.',
+              'Only the selected region, without the rest of the map.',
             ),
-          const SizedBox(height: 16),
-          if (!_hasCrew)
-            _buildInfoNotice(
-              _t(
-                'Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.',
-                'Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.',
-              ),
-              borderColor: Colors.orange.shade700,
-              backgroundColor: Colors.orange.withValues(alpha: 0.1),
-              icon: Icons.groups_rounded,
-            ),
-          if (contestHint != null) ...[
-            _buildInfoNotice(
-              contestHint,
-              borderColor: Colors.amber.shade700,
-              backgroundColor: Colors.amber.withValues(alpha: 0.1),
-              icon: Icons.schedule,
-            ),
-            const SizedBox(height: 12),
-          ],
-          if (contestStatus == null && isMyCrewRegion)
-            _buildInfoNotice(
-              _t('Je crew controleert dit gebied al.', 'Your crew already controls this region.'),
-              borderColor: Colors.green.shade700,
-              backgroundColor: Colors.green.withValues(alpha: 0.1),
-              icon: Icons.verified,
-            ),
-          if (contestStatus == 'preparing' && isDefender) ...[
-            _buildInfoNotice(
-              _t(
-                'Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.',
-                'Your crew is defending this region. Once the active phase starts, you will only see defensive actions.',
-              ),
-              borderColor: Colors.blue.shade700,
-              backgroundColor: Colors.blue.withValues(alpha: 0.1),
-              icon: Icons.shield,
-            ),
-            const SizedBox(height: 12),
-            _buildActionButton(
-              label: _t('Verdediging bevestigen', 'Confirm defense'),
-              icon: Icons.shield,
-              color: Colors.blue[700]!,
-              onTap: () => _joinDefense(contestId),
-            ),
-          ],
-          // Actions
-          if (contestStatus == null && _hasCrew && !isMyCrewRegion)
-            _buildActionButton(
-              label: _t('Aanvallen', 'Attack'),
-              icon: Icons.gps_fixed,
-              color: Colors.red[700]!,
-              onTap: () => _confirmStartContest(region['regionKey'] as String),
-            ),
-          if (contestId != null && contestStatus == 'active') ...[
-            const SizedBox(height: 8),
-            Text(
-              isAttacker
-                  ? _t('Aanvalsacties', 'Attacker actions')
-                  : (isDefender ? _t('Verdedigingsacties', 'Defender actions') : _t('Contestacties', 'Contest actions')),
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                if (isAttacker) ...[
-                  _smallActionButton(_t('Intel', 'Intel scan'), 'intel_scan', contestId),
-                  _smallActionButton(_t('Sabotage', 'Sabotage'), 'sabotage', contestId),
-                  _smallActionButton(_t('Inval', 'Raid'), 'raid', contestId),
-                ],
-                if (isDefender) ...[
-                  _smallActionButton(_t('Patrouille', 'Patrol'), 'patrol', contestId),
-                  _smallActionButton(_t('Bevoorrading', 'Supply run'), 'supply_run', contestId),
-                  _smallActionButton(_t('Verdedigen', 'Defense'), 'defense', contestId),
-                ],
-              ],
-            ),
-          ],
-          if (contestId != null && contestStatus == 'active' && !isAttacker && !isDefender)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: _buildInfoNotice(
-                _t(
-                  'Je zit niet aan deze contest gekoppeld, dus je kunt hier geen acties uitvoeren.',
-                  'You are not part of this contest, so you cannot perform actions here.',
+            style: TextStyle(color: Colors.grey[600], fontSize: 11.5),
+          ),
+          const SizedBox(height: 12),
+          AspectRatio(
+            aspectRatio: 1.0,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    accentColor.withValues(alpha: 0.14),
+                    Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
+                  ],
                 ),
-                borderColor: Colors.blueGrey.shade600,
-                backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
-                icon: Icons.lock_outline,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: Theme.of(context).dividerColor.withValues(alpha: 0.35),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: CustomPaint(
+                  painter: _RegionShapePainter(
+                    path: regionShape.path,
+                    fillColor: fillColor,
+                    strokeColor: Colors.black,
+                  ),
+                ),
               ),
             ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            regionName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            ownerName ?? _t('Neutraal gebied', 'Neutral territory'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.grey[700], fontSize: 12.5),
+          ),
         ],
       ),
     );
@@ -1329,7 +1756,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
-          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+          Text(
+            '$label: ',
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+          ),
           Expanded(child: Text(value, style: const TextStyle(fontSize: 13))),
         ],
       ),
@@ -1347,7 +1777,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       child: ElevatedButton.icon(
         icon: Icon(icon, size: 16),
         label: Text(label),
-        style: ElevatedButton.styleFrom(backgroundColor: color, foregroundColor: Colors.white),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Colors.white,
+        ),
         onPressed: _isActing ? null : onTap,
       ),
     );
@@ -1364,7 +1797,14 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
 
   Widget _buildLeaderboardTab() {
     if (_leaderboard.isEmpty) {
-      return Center(child: Text(_t('Nog geen territorium gecontroleerd.', 'No territory controlled yet.')));
+      return Center(
+        child: Text(
+          _t(
+            'Nog geen territorium gecontroleerd.',
+            'No territory controlled yet.',
+          ),
+        ),
+      );
     }
     return ListView.separated(
       padding: const EdgeInsets.all(16),
@@ -1374,7 +1814,10 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
         final entry = _leaderboard[i] as Map<String, dynamic>;
         return ListTile(
           leading: CircleAvatar(
-            child: Text('${i + 1}', style: const TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              '${i + 1}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           title: Text(entry['crewName'] as String? ?? ''),
           trailing: Text(
@@ -1391,7 +1834,11 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   Widget _buildSeasonTab() {
     final season = _overview['activeSeason'] as Map<String, dynamic>?;
     if (season == null) {
-      return Center(child: Text(_t('Geen actief seizoen gevonden.', 'No active season found.')));
+      return Center(
+        child: Text(
+          _t('Geen actief seizoen gevonden.', 'No active season found.'),
+        ),
+      );
     }
 
     final key = season['seasonKey'] as String? ?? '';
@@ -1425,7 +1872,12 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_t('Sluit je eerst aan bij een crew om territorium aan te vallen.', 'Join a crew first to attack territory.')),
+          content: Text(
+            _t(
+              'Sluit je eerst aan bij een crew om territorium aan te vallen.',
+              'Join a crew first to attack territory.',
+            ),
+          ),
           backgroundColor: Colors.orange,
           duration: const Duration(seconds: 4),
         ),
@@ -1437,10 +1889,21 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
       context: context,
       builder: (_) => AlertDialog(
         title: Text(_t('Aanvallen?', 'Attack?')),
-        content: Text(_t('Wil je een contest starten voor $regionKey?', 'Start a contest for $regionKey?')),
+        content: Text(
+          _t(
+            'Wil je een contest starten voor $regionKey?',
+            'Start a contest for $regionKey?',
+          ),
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(_t('Annuleer', 'Cancel'))),
-          ElevatedButton(onPressed: () => Navigator.pop(context, true), child: Text(_t('Aanvallen', 'Attack'))),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(_t('Annuleer', 'Cancel')),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(_t('Aanvallen', 'Attack')),
+          ),
         ],
       ),
     );
@@ -1452,7 +1915,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
     setState(() => _isActing = false);
 
     if (result['success'] == true) {
-      final contestStatus = _displayContestStatus((result['status'] as String?) ?? 'preparing');
+      final contestStatus = _displayContestStatus(
+        (result['status'] as String?) ?? 'preparing',
+      );
       await _reloadRegionState(regionKey);
       showTopRightFromSnackBar(
         context,
@@ -1535,7 +2000,9 @@ class _TerritoryScreenState extends State<TerritoryScreen> with SingleTickerProv
   Future<void> _joinDefense(int? contestId) async {
     if (contestId == null) return;
 
-    final regionKey = _regionDetailNotifier.value?['regionKey'] as String? ?? _selectedRegion?['regionKey'] as String?;
+    final regionKey =
+        _regionDetailNotifier.value?['regionKey'] as String? ??
+        _selectedRegion?['regionKey'] as String?;
 
     setState(() => _isActing = true);
     final result = await _service.defendContest(contestId);
@@ -1612,9 +2079,62 @@ class _SvgMapParseResult {
 }
 
 class _SvgRegionShape {
-  const _SvgRegionShape({required this.id, required this.name, required this.path});
+  const _SvgRegionShape({
+    required this.id,
+    required this.name,
+    required this.path,
+  });
 
   final String id;
   final String? name;
   final Path path;
+}
+
+class _RegionShapePainter extends CustomPainter {
+  const _RegionShapePainter({
+    required this.path,
+    required this.fillColor,
+    required this.strokeColor,
+  });
+
+  final Path path;
+  final Color fillColor;
+  final Color strokeColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final bounds = path.getBounds();
+    if (bounds.isEmpty || size.isEmpty) return;
+
+    final fittedWidth = size.width / bounds.width;
+    final fittedHeight = size.height / bounds.height;
+    final scale = math.min(fittedWidth, fittedHeight) * 0.82;
+    if (scale <= 0) return;
+
+    canvas.save();
+    canvas.translate(size.width / 2, size.height / 2);
+    canvas.scale(scale, scale);
+    canvas.translate(-bounds.center.dx, -bounds.center.dy);
+
+    canvas.drawShadow(path, Colors.black.withValues(alpha: 0.26), 12, false);
+
+    final fillPaint = Paint()
+      ..color = fillColor
+      ..style = PaintingStyle.fill;
+    final strokePaint = Paint()
+      ..color = strokeColor.withValues(alpha: 0.78)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.4 / scale;
+
+    canvas.drawPath(path, fillPaint);
+    canvas.drawPath(path, strokePaint);
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _RegionShapePainter oldDelegate) {
+    return oldDelegate.path != path ||
+        oldDelegate.fillColor != fillColor ||
+        oldDelegate.strokeColor != strokeColor;
+  }
 }

@@ -128,6 +128,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `backend/src/services/territoryService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory contest-start response-fix toegepast: `contestId` uit `LAST_INSERT_ID()` wordt nu ook naar een gewone number genormaliseerd, zodat de eerste aanvalsklik geen backend-500 meer geeft terwijl de contest al succesvol is aangemaakt
   - Bestanden: `backend/src/services/territoryService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Territory modal regio-preview toegevoegd: de gebiedsmodal toont nu ook een compacte visual van alleen het aangeklikte SVG-gebied in plaats van alleen tekst, met responsieve plaatsing rechts op brede layouts en gestapeld op smallere schermen
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory NL region mapping gelijkgetrokken met nieuwe `netherlandsLow.svg`: backend startup seed schrijft nu de echte SVG element ids (`NL-GR`, `NL-FR`, `NL-DR`, etc.) en update bestaande `territory_regions` rows op duplicate, zodat ownership-kleuren, hover-darkening en grenslijnen weer op de correcte Nederlandse gebieden renderen
   - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Territory country seed uitgebreid met Zuid-Afrika (`za`): startup bootstrap schrijft nu `southAfricaLow` als `svgAssetKey`, zodat `/territory/countries` en map-resolutie deze landkaart direct kunnen aanbieden
