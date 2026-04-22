@@ -2433,6 +2433,17 @@ function App() {
     setPreviewOffer(offer)
   }
 
+  const buildPremiumOfferPayload = (offer: CreatePremiumOfferPayload) => ({
+    ...offer,
+    key: offer.key.trim(),
+    titleNl: offer.titleNl.trim(),
+    titleEn: offer.titleEn.trim(),
+    moneyAmount: offer.rewardType === 'money' ? offer.moneyAmount : null,
+    ammoType: offer.rewardType === 'ammo' ? offer.ammoType : null,
+    ammoQuantity: offer.rewardType === 'ammo' ? offer.ammoQuantity : null,
+    creditAmount: offer.rewardType === 'credits' ? offer.creditAmount : null,
+  })
+
   const handleCreatePremiumOffer = async () => {
     try {
       if (!newPremiumOffer.key.trim()) {
@@ -2456,10 +2467,7 @@ function App() {
       }
 
       await adminService.createPremiumOffer({
-        ...newPremiumOffer,
-        key: newPremiumOffer.key.trim(),
-        titleNl: newPremiumOffer.titleNl.trim(),
-        titleEn: newPremiumOffer.titleEn.trim(),
+        ...buildPremiumOfferPayload(newPremiumOffer),
       })
 
       alert(`${t.createdOffer}: ${newPremiumOffer.key}`)
