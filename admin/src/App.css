@@ -399,6 +399,43 @@
   transform: translateY(-1px);
 }
 
+/* Stronger badge text contrast and explicit hover/focus states */
+.action-badge {
+  background: color-mix(in srgb, var(--bs-secondary-bg), white 8%);
+  color: color-mix(in srgb, var(--bs-body-color), black 10%);
+  font-weight: 600;
+  border: 1px solid color-mix(in srgb, var(--bs-border-color), transparent 20%);
+  transition: box-shadow 0.12s ease, transform 0.08s ease, background 0.12s ease;
+}
+
+.action-badge:hover,
+.action-badge:focus {
+  background: color-mix(in srgb, var(--bs-secondary-bg), white 4%);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08), 0 0 0 3px color-mix(in srgb, var(--bs-primary), transparent 86%);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* Dashboard cards and alerts: stronger border and keyboard-focus-visible */
+.dashboard-summary-card,
+.dashboard-panel,
+.dashboard-alert {
+  border-width: 1px;
+}
+
+.dashboard-summary-card:hover,
+.dashboard-panel:hover,
+.dashboard-alert:hover {
+  border-color: color-mix(in srgb, var(--bs-primary), transparent 40%);
+  box-shadow: 0 12px 36px rgba(14, 24, 40, 0.06);
+}
+
+.dashboard-summary-card:focus-within,
+.dashboard-panel:focus-within,
+.dashboard-alert:focus-within {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--bs-primary), transparent 86%);
+}
+
 .dashboard-live-badge {
   background: #e2e8f0;
   color: #0f172a;

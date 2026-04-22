@@ -1,0 +1,2354 @@
+{
+  "argentinaLow": [
+    {
+      "id": "AR-T",
+      "name": "Tucumán"
+    },
+    {
+      "id": "AR-V",
+      "name": "Tierra del Fuego"
+    },
+    {
+      "id": "AR-D",
+      "name": "San Luis"
+    },
+    {
+      "id": "AR-J",
+      "name": "San Juan"
+    },
+    {
+      "id": "AR-S",
+      "name": "Santa Fe"
+    },
+    {
+      "id": "AR-G",
+      "name": "Santiago del Estero"
+    },
+    {
+      "id": "AR-Z",
+      "name": "Santa Cruz"
+    },
+    {
+      "id": "AR-A",
+      "name": "Salta"
+    },
+    {
+      "id": "AR-R",
+      "name": "Río Negro"
+    },
+    {
+      "id": "AR-Q",
+      "name": "Neuquén"
+    },
+    {
+      "id": "AR-N",
+      "name": "Misiones"
+    },
+    {
+      "id": "AR-M",
+      "name": "Mendoza"
+    },
+    {
+      "id": "AR-F",
+      "name": "La Rioja"
+    },
+    {
+      "id": "AR-L",
+      "name": "La Pampa"
+    },
+    {
+      "id": "AR-Y",
+      "name": "Jujuy"
+    },
+    {
+      "id": "AR-P",
+      "name": "Formosa"
+    },
+    {
+      "id": "AR-E",
+      "name": "Entre Ríos"
+    },
+    {
+      "id": "AR-W",
+      "name": "Corrientes"
+    },
+    {
+      "id": "AR-X",
+      "name": "Cordoba"
+    },
+    {
+      "id": "AR-C",
+      "name": "Ciudad de Buenos Aires"
+    },
+    {
+      "id": "AR-U",
+      "name": "Chubut"
+    },
+    {
+      "id": "AR-H",
+      "name": "Chaco"
+    },
+    {
+      "id": "AR-K",
+      "name": "Catamarca"
+    },
+    {
+      "id": "AR-B",
+      "name": "Buenos Aires"
+    }
+  ],
+  "australiaLow": [
+    {
+      "id": "AU-NT",
+      "name": "Northern Territory"
+    },
+    {
+      "id": "AU-WA",
+      "name": "Western Australia"
+    },
+    {
+      "id": "AU-ACT",
+      "name": "Australian Capital Territory"
+    },
+    {
+      "id": "AU-NSW",
+      "name": "New South Wales"
+    },
+    {
+      "id": "AU-SA",
+      "name": "South Australia"
+    },
+    {
+      "id": "AU-VIC",
+      "name": "Victoria"
+    },
+    {
+      "id": "AU-QLD",
+      "name": "Queensland"
+    },
+    {
+      "id": "AU-TAS",
+      "name": "Tasmania"
+    }
+  ],
+  "belgium": [
+    {
+      "id": "BE-VAN",
+      "name": "Antwerpen"
+    },
+    {
+      "id": "BE-WBR",
+      "name": "Walloon Brabant"
+    },
+    {
+      "id": "BE-BRU",
+      "name": "Brussels Capital Region"
+    },
+    {
+      "id": "BE-WHT",
+      "name": "Hainaut"
+    },
+    {
+      "id": "BE-WLG",
+      "name": "Liège"
+    },
+    {
+      "id": "BE-VLI",
+      "name": "Limburg"
+    },
+    {
+      "id": "BE-WLX",
+      "name": "Luxembourg"
+    },
+    {
+      "id": "BE-VOV",
+      "name": "East Flanders"
+    },
+    {
+      "id": "BE-WNA",
+      "name": "Namur"
+    },
+    {
+      "id": "BE-VBR",
+      "name": "Flemish Brabant"
+    },
+    {
+      "id": "BE-VWV",
+      "name": "West Flanders"
+    }
+  ],
+  "brazilLow": [
+    {
+      "id": "BR-AC",
+      "name": "Acre"
+    },
+    {
+      "id": "BR-AL",
+      "name": "Alagoas"
+    },
+    {
+      "id": "BR-AM",
+      "name": "Amazonas"
+    },
+    {
+      "id": "BR-AP",
+      "name": "Amapá"
+    },
+    {
+      "id": "BR-BA",
+      "name": "Bahia"
+    },
+    {
+      "id": "BR-CE",
+      "name": "Ceará"
+    },
+    {
+      "id": "BR-DF",
+      "name": "Distrito Federal"
+    },
+    {
+      "id": "BR-ES",
+      "name": "Espírito Santo"
+    },
+    {
+      "id": "BR-GO",
+      "name": "Goiás"
+    },
+    {
+      "id": "BR-MA",
+      "name": "Maranhão"
+    },
+    {
+      "id": "BR-MG",
+      "name": "Minas Gerais"
+    },
+    {
+      "id": "BR-MS",
+      "name": "Mato Grosso do Sul"
+    },
+    {
+      "id": "BR-MT",
+      "name": "Mato Grosso"
+    },
+    {
+      "id": "BR-PA",
+      "name": "Pará"
+    },
+    {
+      "id": "BR-PB",
+      "name": "Paraíba"
+    },
+    {
+      "id": "BR-PE",
+      "name": "Pernambuco"
+    },
+    {
+      "id": "BR-PI",
+      "name": "Piauí"
+    },
+    {
+      "id": "BR-PR",
+      "name": "Paraná"
+    },
+    {
+      "id": "BR-RJ",
+      "name": "Rio de Janeiro"
+    },
+    {
+      "id": "BR-RN",
+      "name": "Rio Grande do Norte"
+    },
+    {
+      "id": "BR-RO",
+      "name": "Rondônia"
+    },
+    {
+      "id": "BR-RR",
+      "name": "Roraima"
+    },
+    {
+      "id": "BR-RS",
+      "name": "Rio Grande do Sul"
+    },
+    {
+      "id": "BR-SC",
+      "name": "Santa Catarina"
+    },
+    {
+      "id": "BR-SE",
+      "name": "Sergipe"
+    },
+    {
+      "id": "BR-SP",
+      "name": "São Paulo"
+    },
+    {
+      "id": "BR-TO",
+      "name": "Tocantins"
+    }
+  ],
+  "cafuego-Nederland": [
+    {
+      "id": "NL-DR",
+      "name": "Drenthe"
+    },
+    {
+      "id": "NL-FL",
+      "name": "Flevoland"
+    },
+    {
+      "id": "NL-FR",
+      "name": "Fryslân"
+    },
+    {
+      "id": "NL-GE",
+      "name": "Gelderland"
+    },
+    {
+      "id": "NL-GR",
+      "name": "Groningen"
+    },
+    {
+      "id": "NL-LI",
+      "name": "Limburg"
+    },
+    {
+      "id": "NL-NB",
+      "name": "Noord-Brabant"
+    },
+    {
+      "id": "NL-NH",
+      "name": "Noord-Holland"
+    },
+    {
+      "id": "NL-OV",
+      "name": "Overijssel"
+    },
+    {
+      "id": "NL-UT",
+      "name": "Utrecht"
+    },
+    {
+      "id": "NL-ZE",
+      "name": "Zeeland"
+    },
+    {
+      "id": "NL-ZH",
+      "name": "Zuid-Holland"
+    }
+  ],
+  "chinaLow": [
+    {
+      "id": "CN-AH",
+      "name": "Anhui"
+    },
+    {
+      "id": "CN-BJ",
+      "name": "Beijing"
+    },
+    {
+      "id": "CN-CQ",
+      "name": "Chongqing"
+    },
+    {
+      "id": "CN-FJ",
+      "name": "Fujian"
+    },
+    {
+      "id": "CN-GD",
+      "name": "Guangdong"
+    },
+    {
+      "id": "CN-GS",
+      "name": "Gansu"
+    },
+    {
+      "id": "CN-GX",
+      "name": "Guangxi Zhuang"
+    },
+    {
+      "id": "CN-GZ",
+      "name": "Guizhou"
+    },
+    {
+      "id": "CN-HA",
+      "name": "Henan"
+    },
+    {
+      "id": "CN-HB",
+      "name": "Hubei"
+    },
+    {
+      "id": "CN-HE",
+      "name": "Hebei"
+    },
+    {
+      "id": "CN-HI",
+      "name": "Hainan"
+    },
+    {
+      "id": "CN-HK",
+      "name": "Hong Kong"
+    },
+    {
+      "id": "CN-HL",
+      "name": "Heilongjiang"
+    },
+    {
+      "id": "CN-HN",
+      "name": "Hunan"
+    },
+    {
+      "id": "CN-JL",
+      "name": "Jilin"
+    },
+    {
+      "id": "CN-JS",
+      "name": "Jiangsu"
+    },
+    {
+      "id": "CN-JX",
+      "name": "Jiangxi"
+    },
+    {
+      "id": "CN-LN",
+      "name": "Liaoning"
+    },
+    {
+      "id": "CN-MO",
+      "name": "Macau"
+    },
+    {
+      "id": "CN-NM",
+      "name": "Nei Mongol"
+    },
+    {
+      "id": "CN-NX",
+      "name": "Ningxia Hui"
+    },
+    {
+      "id": "CN-QH",
+      "name": "Qinghai"
+    },
+    {
+      "id": "CN-SC",
+      "name": "Sichuan"
+    },
+    {
+      "id": "CN-SD",
+      "name": "Shandong"
+    },
+    {
+      "id": "CN-SH",
+      "name": "Shanghai"
+    },
+    {
+      "id": "CN-SN",
+      "name": "Shaanxi"
+    },
+    {
+      "id": "CN-SX",
+      "name": "Shanxi"
+    },
+    {
+      "id": "CN-TJ",
+      "name": "Tianjin"
+    },
+    {
+      "id": "CN-TW",
+      "name": "Taiwan"
+    },
+    {
+      "id": "CN-XJ",
+      "name": "Xinjiang Uygur"
+    },
+    {
+      "id": "CN-XZ",
+      "name": "Xizang (Tibet)"
+    },
+    {
+      "id": "CN-YN",
+      "name": "Yunnan"
+    },
+    {
+      "id": "CN-ZJ",
+      "name": "Zhejiang"
+    }
+  ],
+  "colombiaLow": [
+    {
+      "id": "CO-VID",
+      "name": "Vichada"
+    },
+    {
+      "id": "CO-VAU",
+      "name": "Vaupés"
+    },
+    {
+      "id": "CO-VAC",
+      "name": "Valle del Cauca"
+    },
+    {
+      "id": "CO-TOL",
+      "name": "Tolima"
+    },
+    {
+      "id": "CO-SUC",
+      "name": "Sucre"
+    },
+    {
+      "id": "CO-SAP",
+      "name": "San Andrés, Providencia y Santa Catalina"
+    },
+    {
+      "id": "CO-SAN",
+      "name": "Santander"
+    },
+    {
+      "id": "CO-RIS",
+      "name": "Risaralda"
+    },
+    {
+      "id": "CO-QUI",
+      "name": "Quindio"
+    },
+    {
+      "id": "CO-PUT",
+      "name": "Putumayo"
+    },
+    {
+      "id": "CO-NSA",
+      "name": "Norde de Santander"
+    },
+    {
+      "id": "CO-NAR",
+      "name": "Nariño"
+    },
+    {
+      "id": "CO-MET",
+      "name": "Meta"
+    },
+    {
+      "id": "CO-MAG",
+      "name": "Magdalena"
+    },
+    {
+      "id": "CO-LAG",
+      "name": "La Guajira"
+    },
+    {
+      "id": "CO-HUI",
+      "name": "Huila"
+    },
+    {
+      "id": "CO-GUV",
+      "name": "Guaviare"
+    },
+    {
+      "id": "CO-GUA",
+      "name": "Guainia"
+    },
+    {
+      "id": "CO-DC",
+      "name": "Distrito Capital de Bogotá"
+    },
+    {
+      "id": "CO-CUN",
+      "name": "Cundinamarca"
+    },
+    {
+      "id": "CO-COR",
+      "name": "Córdoba"
+    },
+    {
+      "id": "CO-CHO",
+      "name": "Chocó"
+    },
+    {
+      "id": "CO-CES",
+      "name": "Cesar"
+    },
+    {
+      "id": "CO-CAU",
+      "name": "Cauca"
+    },
+    {
+      "id": "CO-CAS",
+      "name": "Casanare"
+    },
+    {
+      "id": "CO-CAQ",
+      "name": "Caquetá"
+    },
+    {
+      "id": "CO-CAL",
+      "name": "Caldas"
+    },
+    {
+      "id": "CO-BOY",
+      "name": "Boyacá"
+    },
+    {
+      "id": "CO-BOL",
+      "name": "Bolívar"
+    },
+    {
+      "id": "CO-ATL",
+      "name": "Atlántico"
+    },
+    {
+      "id": "CO-ARA",
+      "name": "Arauca"
+    },
+    {
+      "id": "CO-ANT",
+      "name": "Antioquia"
+    },
+    {
+      "id": "CO-AMA",
+      "name": "Amazonas"
+    }
+  ],
+  "franceLow": [
+    {
+      "id": "FR-PAC",
+      "name": "Provence-Alpes-Côte d'Azur"
+    },
+    {
+      "id": "FR-PDL",
+      "name": "Pays de la Loire"
+    },
+    {
+      "id": "FR-OCC",
+      "name": "Occitanie"
+    },
+    {
+      "id": "FR-NAQ",
+      "name": "Nouvelle-Aquitaine"
+    },
+    {
+      "id": "FR-NOR",
+      "name": "Normandie"
+    },
+    {
+      "id": "FR-IDF",
+      "name": "Île-de-France"
+    },
+    {
+      "id": "FR-HDF",
+      "name": "Hauts-de-France"
+    },
+    {
+      "id": "FR-GES",
+      "name": "Grand Est"
+    },
+    {
+      "id": "FR-COR",
+      "name": "Corse"
+    },
+    {
+      "id": "FR-CVL",
+      "name": "Centre-Val de Loire"
+    },
+    {
+      "id": "FR-BRE",
+      "name": "Bretagne"
+    },
+    {
+      "id": "FR-BFC",
+      "name": "Bourgogne-Franche-Comté"
+    },
+    {
+      "id": "FR-ARA",
+      "name": "Auvergne-Rhône-Alpes"
+    }
+  ],
+  "germanyLow": [
+    {
+      "id": "DE-BB",
+      "name": "Brandenburg"
+    },
+    {
+      "id": "DE-BE",
+      "name": "Berlin"
+    },
+    {
+      "id": "DE-BW",
+      "name": "Baden-Württemberg"
+    },
+    {
+      "id": "DE-BY",
+      "name": "Bavaria"
+    },
+    {
+      "id": "DE-HB",
+      "name": "Bremen"
+    },
+    {
+      "id": "DE-HE",
+      "name": "Hesse"
+    },
+    {
+      "id": "DE-HH",
+      "name": "Hamburg"
+    },
+    {
+      "id": "DE-MV",
+      "name": "Mecklenburg-Western Pomerania"
+    },
+    {
+      "id": "DE-NI",
+      "name": "Lower Saxony"
+    },
+    {
+      "id": "DE-NW",
+      "name": "North Rhine-Westphalia"
+    },
+    {
+      "id": "DE-RP",
+      "name": "Rhineland-Palatinate"
+    },
+    {
+      "id": "DE-SH",
+      "name": "Schleswig-Holstein"
+    },
+    {
+      "id": "DE-SL",
+      "name": "Saarland"
+    },
+    {
+      "id": "DE-SN",
+      "name": "Saxony"
+    },
+    {
+      "id": "DE-ST",
+      "name": "Sachsen-Anhalt"
+    },
+    {
+      "id": "DE-TH",
+      "name": "Thuringia"
+    }
+  ],
+  "italyLow": [
+    {
+      "id": "FR-H",
+      "name": "Corse"
+    },
+    {
+      "id": "MT",
+      "name": "Malta"
+    },
+    {
+      "id": "SM",
+      "name": "San Marino"
+    },
+    {
+      "id": "VA",
+      "name": "Vatican City"
+    },
+    {
+      "id": "IT-21",
+      "name": "Piemonte"
+    },
+    {
+      "id": "IT-23",
+      "name": "Valle d'Aosta"
+    },
+    {
+      "id": "IT-25",
+      "name": "Lombardia"
+    },
+    {
+      "id": "IT-32",
+      "name": "Trentino-Alto Adige"
+    },
+    {
+      "id": "IT-34",
+      "name": "Veneto"
+    },
+    {
+      "id": "IT-36",
+      "name": "Friuli-Venezia Giulia"
+    },
+    {
+      "id": "IT-42",
+      "name": "Liguria"
+    },
+    {
+      "id": "IT-45",
+      "name": "Emilia-Romagna"
+    },
+    {
+      "id": "IT-52",
+      "name": "Toscana"
+    },
+    {
+      "id": "IT-55",
+      "name": "Umbria"
+    },
+    {
+      "id": "IT-57",
+      "name": "Marche"
+    },
+    {
+      "id": "IT-62",
+      "name": "Lazio"
+    },
+    {
+      "id": "IT-65",
+      "name": "Abruzzo"
+    },
+    {
+      "id": "IT-67",
+      "name": "Molise"
+    },
+    {
+      "id": "IT-72",
+      "name": "Campania"
+    },
+    {
+      "id": "IT-75",
+      "name": "Puglia"
+    },
+    {
+      "id": "IT-77",
+      "name": "Basilicata"
+    },
+    {
+      "id": "IT-78",
+      "name": "Calabria"
+    },
+    {
+      "id": "IT-82",
+      "name": "Sicilia"
+    },
+    {
+      "id": "IT-88",
+      "name": "Sardegna"
+    }
+  ],
+  "japanLow": [
+    {
+      "id": "JP-01",
+      "name": "Hokkaido"
+    },
+    {
+      "id": "JP-02",
+      "name": "Aomori"
+    },
+    {
+      "id": "JP-03",
+      "name": "Iwate"
+    },
+    {
+      "id": "JP-04",
+      "name": "Miyagi"
+    },
+    {
+      "id": "JP-05",
+      "name": "Akita"
+    },
+    {
+      "id": "JP-06",
+      "name": "Yamagata"
+    },
+    {
+      "id": "JP-07",
+      "name": "Fukushima"
+    },
+    {
+      "id": "JP-08",
+      "name": "Ibaraki"
+    },
+    {
+      "id": "JP-09",
+      "name": "Tochigi"
+    },
+    {
+      "id": "JP-10",
+      "name": "Gunma"
+    },
+    {
+      "id": "JP-12",
+      "name": "Chiba"
+    },
+    {
+      "id": "JP-17",
+      "name": "Ishikawa"
+    },
+    {
+      "id": "JP-18",
+      "name": "Fukui"
+    },
+    {
+      "id": "JP-28",
+      "name": "Hyogo"
+    },
+    {
+      "id": "JP-38",
+      "name": "Ehime"
+    },
+    {
+      "id": "JP-40",
+      "name": "Fukuoka"
+    },
+    {
+      "id": "JP-34",
+      "name": "Hiroshima"
+    },
+    {
+      "id": "JP-37",
+      "name": "Kagawa"
+    },
+    {
+      "id": "JP-14",
+      "name": "Kanagawa"
+    },
+    {
+      "id": "JP-13",
+      "name": "Tokyo"
+    },
+    {
+      "id": "JP-15",
+      "name": "Niigata"
+    },
+    {
+      "id": "JP-16",
+      "name": "Toyama"
+    },
+    {
+      "id": "JP-19",
+      "name": "Yamanashi"
+    },
+    {
+      "id": "JP-11",
+      "name": "Saitama"
+    },
+    {
+      "id": "JP-20",
+      "name": "Nagano"
+    },
+    {
+      "id": "JP-21",
+      "name": "Gifu"
+    },
+    {
+      "id": "JP-22",
+      "name": "Shizuoka"
+    },
+    {
+      "id": "JP-23",
+      "name": "Aichi"
+    },
+    {
+      "id": "JP-24",
+      "name": "Mie"
+    },
+    {
+      "id": "JP-25",
+      "name": "Shiga"
+    },
+    {
+      "id": "JP-26",
+      "name": "Kyoto"
+    },
+    {
+      "id": "JP-27",
+      "name": "Osaka"
+    },
+    {
+      "id": "JP-29",
+      "name": "Nara"
+    },
+    {
+      "id": "JP-30",
+      "name": "Wakayama"
+    },
+    {
+      "id": "JP-31",
+      "name": "Tottori"
+    },
+    {
+      "id": "JP-32",
+      "name": "Shimane"
+    },
+    {
+      "id": "JP-33",
+      "name": "Okayama"
+    },
+    {
+      "id": "JP-35",
+      "name": "Yamaguchi"
+    },
+    {
+      "id": "JP-36",
+      "name": "Tokushima"
+    },
+    {
+      "id": "JP-39",
+      "name": "Kochi"
+    },
+    {
+      "id": "JP-41",
+      "name": "Saga"
+    },
+    {
+      "id": "JP-42",
+      "name": "Nagasaki"
+    },
+    {
+      "id": "JP-43",
+      "name": "Kumamoto"
+    },
+    {
+      "id": "JP-45",
+      "name": "Miyazaki"
+    },
+    {
+      "id": "JP-44",
+      "name": "Oita"
+    },
+    {
+      "id": "JP-46",
+      "name": "Kagoshima"
+    },
+    {
+      "id": "JP-47",
+      "name": "Okinawa"
+    }
+  ],
+  "mexicoLow": [
+    {
+      "id": "MX-ZAC",
+      "name": "Zacatecas"
+    },
+    {
+      "id": "MX-YUC",
+      "name": "Yucatán"
+    },
+    {
+      "id": "MX-VER",
+      "name": "Veracruz"
+    },
+    {
+      "id": "MX-TLA",
+      "name": "Tlaxcala"
+    },
+    {
+      "id": "MX-TAM",
+      "name": "Tamaulipas"
+    },
+    {
+      "id": "MX-TAB",
+      "name": "Tabasco"
+    },
+    {
+      "id": "MX-SON",
+      "name": "Sonora"
+    },
+    {
+      "id": "MX-SIN",
+      "name": "Sinaloa"
+    },
+    {
+      "id": "MX-SLP",
+      "name": "San Luis Potosí"
+    },
+    {
+      "id": "MX-ROO",
+      "name": "Quintana Roo"
+    },
+    {
+      "id": "MX-QUE",
+      "name": "Querétaro"
+    },
+    {
+      "id": "MX-PUE",
+      "name": "Puebla"
+    },
+    {
+      "id": "MX-OAX",
+      "name": "Oaxaca"
+    },
+    {
+      "id": "MX-NLE",
+      "name": "Nuevo León"
+    },
+    {
+      "id": "MX-NAY",
+      "name": "Nayarit"
+    },
+    {
+      "id": "MX-MOR",
+      "name": "Morelos"
+    },
+    {
+      "id": "MX-MIC",
+      "name": "Michoacán"
+    },
+    {
+      "id": "MX-MEX",
+      "name": "México"
+    },
+    {
+      "id": "MX-JAL",
+      "name": "Jalisco"
+    },
+    {
+      "id": "MX-HID",
+      "name": "Hidalgo"
+    },
+    {
+      "id": "MX-GRO",
+      "name": "Guerrero"
+    },
+    {
+      "id": "MX-GUA",
+      "name": "Guanajuato"
+    },
+    {
+      "id": "MX-DUR",
+      "name": "Durango"
+    },
+    {
+      "id": "MX-CMX",
+      "name": "Ciudad de México"
+    },
+    {
+      "id": "MX-COL",
+      "name": "Colima"
+    },
+    {
+      "id": "MX-COA",
+      "name": "Coahuila"
+    },
+    {
+      "id": "MX-CHH",
+      "name": "Chihuahua"
+    },
+    {
+      "id": "MX-CHP",
+      "name": "Chiapas"
+    },
+    {
+      "id": "MX-CAM",
+      "name": "Campeche"
+    },
+    {
+      "id": "MX-BCS",
+      "name": "Baja California Sur"
+    },
+    {
+      "id": "MX-BCN",
+      "name": "Baja California"
+    },
+    {
+      "id": "MX-AGU",
+      "name": "Aguascalientes"
+    }
+  ],
+  "netherlandsLow": [
+    {
+      "id": "NL-DR",
+      "name": "Drenthe"
+    },
+    {
+      "id": "NL-FL",
+      "name": "Flevoland"
+    },
+    {
+      "id": "NL-FR",
+      "name": "Fryslân"
+    },
+    {
+      "id": "NL-GE",
+      "name": "Gelderland"
+    },
+    {
+      "id": "NL-GR",
+      "name": "Groningen"
+    },
+    {
+      "id": "NL-LI",
+      "name": "Limburg"
+    },
+    {
+      "id": "NL-NB",
+      "name": "Noord-Brabant"
+    },
+    {
+      "id": "NL-NH",
+      "name": "Noord-Holland"
+    },
+    {
+      "id": "NL-OV",
+      "name": "Overijssel"
+    },
+    {
+      "id": "NL-UT",
+      "name": "Utrecht"
+    },
+    {
+      "id": "NL-ZE",
+      "name": "Zeeland"
+    },
+    {
+      "id": "NL-ZH",
+      "name": "Zuid-Holland"
+    }
+  ],
+  "russiaLow": [
+    {
+      "id": "RU-ZAB",
+      "name": "Zabaykalsky"
+    },
+    {
+      "id": "RU-YEV",
+      "name": "Yevrey"
+    },
+    {
+      "id": "RU-YAR",
+      "name": "Yaroslavl"
+    },
+    {
+      "id": "RU-YAN",
+      "name": "Yamalo-Nenets"
+    },
+    {
+      "id": "RU-VOR",
+      "name": "Voronezh"
+    },
+    {
+      "id": "RU-VLG",
+      "name": "Vologda"
+    },
+    {
+      "id": "RU-VGG",
+      "name": "Volgograd"
+    },
+    {
+      "id": "RU-VLA",
+      "name": "Vladimir"
+    },
+    {
+      "id": "RU-ULY",
+      "name": "Ulyanovsk"
+    },
+    {
+      "id": "RU-UD",
+      "name": "Udmurt"
+    },
+    {
+      "id": "RU-TYU",
+      "name": "Tyumen"
+    },
+    {
+      "id": "RU-TVE",
+      "name": "Tver"
+    },
+    {
+      "id": "RU-TY",
+      "name": "Tuva"
+    },
+    {
+      "id": "RU-TUL",
+      "name": "Tula"
+    },
+    {
+      "id": "RU-TOM",
+      "name": "Tomsk"
+    },
+    {
+      "id": "RU-TA",
+      "name": "Tatarstan"
+    },
+    {
+      "id": "RU-TAM",
+      "name": "Tambov"
+    },
+    {
+      "id": "RU-SVE",
+      "name": "Sverdlovsk"
+    },
+    {
+      "id": "RU-STA",
+      "name": "Stavropol"
+    },
+    {
+      "id": "RU-SMO",
+      "name": "Smolensk"
+    },
+    {
+      "id": "RU-SAR",
+      "name": "Saratov"
+    },
+    {
+      "id": "RU-SAM",
+      "name": "Samara"
+    },
+    {
+      "id": "RU-SAK",
+      "name": "Sakhalin"
+    },
+    {
+      "id": "RU-SA",
+      "name": "Sakha"
+    },
+    {
+      "id": "RU-RYA",
+      "name": "Ryazan"
+    },
+    {
+      "id": "RU-ROS",
+      "name": "Rostov"
+    },
+    {
+      "id": "RU-PSK",
+      "name": "Pskov"
+    },
+    {
+      "id": "RU-PRI",
+      "name": "Primorsky"
+    },
+    {
+      "id": "RU-PER",
+      "name": "Perm"
+    },
+    {
+      "id": "RU-PNZ",
+      "name": "Penza"
+    },
+    {
+      "id": "RU-ORE",
+      "name": "Orenburg"
+    },
+    {
+      "id": "RU-ORL",
+      "name": "Oryol"
+    },
+    {
+      "id": "RU-OMS",
+      "name": "Omsk"
+    },
+    {
+      "id": "RU-NVS",
+      "name": "Novosibirsk"
+    },
+    {
+      "id": "RU-NGR",
+      "name": "Novgorod"
+    },
+    {
+      "id": "RU-SE",
+      "name": "North Ossetia-Alania"
+    },
+    {
+      "id": "RU-NIZ",
+      "name": "Nizhegorod"
+    },
+    {
+      "id": "RU-NEN",
+      "name": "Nenets"
+    },
+    {
+      "id": "RU-MUR",
+      "name": "Murmansk"
+    },
+    {
+      "id": "RU-MOS",
+      "name": "Moskva"
+    },
+    {
+      "id": "RU-MOW",
+      "name": "Moscow City"
+    },
+    {
+      "id": "RU-MO",
+      "name": "Mordovia"
+    },
+    {
+      "id": "RU-ME",
+      "name": "Mariy-El"
+    },
+    {
+      "id": "RU-MAG",
+      "name": "Magadan"
+    },
+    {
+      "id": "RU-LIP",
+      "name": "Lipetsk"
+    },
+    {
+      "id": "RU-LEN",
+      "name": "Leningrad"
+    },
+    {
+      "id": "RU-KRS",
+      "name": "Kursk"
+    },
+    {
+      "id": "RU-KGN",
+      "name": "Kurgan"
+    },
+    {
+      "id": "RU-KYA",
+      "name": "Krasnoyarsk"
+    },
+    {
+      "id": "RU-KDA",
+      "name": "Krasnodar"
+    },
+    {
+      "id": "RU-KOS",
+      "name": "Kostroma"
+    },
+    {
+      "id": "RU-KO",
+      "name": "Komi"
+    },
+    {
+      "id": "RU-KIR",
+      "name": "Kirov"
+    },
+    {
+      "id": "RU-KHM",
+      "name": "Khanty-Mansiysk"
+    },
+    {
+      "id": "RU-KK",
+      "name": "Khakassia"
+    },
+    {
+      "id": "RU-KHA",
+      "name": "Khabarovsk"
+    },
+    {
+      "id": "RU-KEM",
+      "name": "Kemerovo"
+    },
+    {
+      "id": "RU-KR",
+      "name": "Karelia"
+    },
+    {
+      "id": "RU-KC",
+      "name": "Karachay-Cherkess"
+    },
+    {
+      "id": "RU-KAM",
+      "name": "Kamchatka"
+    },
+    {
+      "id": "RU-KLU",
+      "name": "Kaluga"
+    },
+    {
+      "id": "RU-KL",
+      "name": "Kalmykia"
+    },
+    {
+      "id": "RU-KGD",
+      "name": "Kaliningrad"
+    },
+    {
+      "id": "RU-KB",
+      "name": "Kabardino-Balkar"
+    },
+    {
+      "id": "RU-IVA",
+      "name": "Ivanovo"
+    },
+    {
+      "id": "RU-IRK",
+      "name": "Irkutsk"
+    },
+    {
+      "id": "RU-IN",
+      "name": "Ingushetia"
+    },
+    {
+      "id": "RU-AL",
+      "name": "Altay"
+    },
+    {
+      "id": "RU-DA",
+      "name": "Dagestan"
+    },
+    {
+      "id": "RU-SPE",
+      "name": "St. Petersburg"
+    },
+    {
+      "id": "RU-CU",
+      "name": "Chuvash"
+    },
+    {
+      "id": "RU-CHU",
+      "name": "Chukotka"
+    },
+    {
+      "id": "RU-CHE",
+      "name": "Chelyabinsk"
+    },
+    {
+      "id": "RU-CE",
+      "name": "Chechnya"
+    },
+    {
+      "id": "RU-BU",
+      "name": "Buryatiya"
+    },
+    {
+      "id": "RU-BRY",
+      "name": "Bryansk"
+    },
+    {
+      "id": "RU-BEL",
+      "name": "Belgorod"
+    },
+    {
+      "id": "RU-BA",
+      "name": "Bashkortostan"
+    },
+    {
+      "id": "RU-AST",
+      "name": "Astrakhan"
+    },
+    {
+      "id": "RU-ARK",
+      "name": "Arkhangelsk"
+    },
+    {
+      "id": "RU-AMU",
+      "name": "Amur"
+    },
+    {
+      "id": "RU-ALT",
+      "name": "Altay Kray"
+    },
+    {
+      "id": "RU-AD",
+      "name": "Adygeya"
+    }
+  ],
+  "southAfricaLow": [
+    {
+      "id": "ZA-WC",
+      "name": "Western Cape"
+    },
+    {
+      "id": "ZA-NW",
+      "name": "North West"
+    },
+    {
+      "id": "ZA-KZN",
+      "name": "KwaZulu-Natal"
+    },
+    {
+      "id": "ZA-NC",
+      "name": "Northern Cape"
+    },
+    {
+      "id": "ZA-MP",
+      "name": "Mpumalanga"
+    },
+    {
+      "id": "ZA-LP",
+      "name": "Limpopo"
+    },
+    {
+      "id": "ZA-GP",
+      "name": "Gauteng"
+    },
+    {
+      "id": "ZA-FS",
+      "name": "Free State"
+    },
+    {
+      "id": "ZA-EC",
+      "name": "Eastern Cape"
+    },
+    {
+      "id": "LS",
+      "name": "Lesotho"
+    }
+  ],
+  "spainLow": [
+    {
+      "id": "ES-VC",
+      "name": "Valencia"
+    },
+    {
+      "id": "ES-PV",
+      "name": "País Vasco"
+    },
+    {
+      "id": "ES-IB",
+      "name": "Islas Baleares"
+    },
+    {
+      "id": "ES-NC",
+      "name": "Navarra"
+    },
+    {
+      "id": "ES-MC",
+      "name": "Murcia"
+    },
+    {
+      "id": "ES-MD",
+      "name": "Madrid"
+    },
+    {
+      "id": "ES-RI",
+      "name": "La Rioja"
+    },
+    {
+      "id": "ES-GA",
+      "name": "Galicia"
+    },
+    {
+      "id": "ES-EX",
+      "name": "Extremadura"
+    },
+    {
+      "id": "ES-CT",
+      "name": "Cataluña"
+    },
+    {
+      "id": "ES-CN",
+      "name": "Islas Canarias"
+    },
+    {
+      "id": "ES-CM",
+      "name": "Castilla-La Mancha"
+    },
+    {
+      "id": "ES-CL",
+      "name": "Castilla y León"
+    },
+    {
+      "id": "ES-CB",
+      "name": "Cantabria"
+    },
+    {
+      "id": "ES-AS",
+      "name": "Asturias"
+    },
+    {
+      "id": "ES-AR",
+      "name": "Aragón"
+    },
+    {
+      "id": "ES-AN",
+      "name": "Andalucía"
+    }
+  ],
+  "switzerlandLow": [
+    {
+      "id": "CH-AG",
+      "name": "Aargau"
+    },
+    {
+      "id": "CH-AI",
+      "name": "Appenzell Inner-Rhoden"
+    },
+    {
+      "id": "CH-AR",
+      "name": "Appenzell Ausser-Rhoden"
+    },
+    {
+      "id": "CH-BL",
+      "name": "Basel-Landschaft"
+    },
+    {
+      "id": "CH-BE",
+      "name": "Bern"
+    },
+    {
+      "id": "CH-BS",
+      "name": "Basel-Stadt"
+    },
+    {
+      "id": "CH-FR",
+      "name": "Fribourg"
+    },
+    {
+      "id": "CH-GE",
+      "name": "Genève"
+    },
+    {
+      "id": "CH-GL",
+      "name": "Glarus"
+    },
+    {
+      "id": "CH-GR",
+      "name": "Graubünden"
+    },
+    {
+      "id": "CH-JU",
+      "name": "Jura"
+    },
+    {
+      "id": "CH-LU",
+      "name": "Luzern"
+    },
+    {
+      "id": "CH-NE",
+      "name": "Neuchâtel"
+    },
+    {
+      "id": "CH-NW",
+      "name": "Nidwalden"
+    },
+    {
+      "id": "CH-OW",
+      "name": "Obwalden"
+    },
+    {
+      "id": "CH-SG",
+      "name": "Sankt Gallen"
+    },
+    {
+      "id": "CH-SH",
+      "name": "Schaffhausen"
+    },
+    {
+      "id": "CH-SO",
+      "name": "Solothurn"
+    },
+    {
+      "id": "CH-SZ",
+      "name": "Schwyz"
+    },
+    {
+      "id": "CH-TG",
+      "name": "Thurgau"
+    },
+    {
+      "id": "CH-TI",
+      "name": "Ticino"
+    },
+    {
+      "id": "CH-UR",
+      "name": "Uri"
+    },
+    {
+      "id": "CH-VD",
+      "name": "Vaud"
+    },
+    {
+      "id": "CH-VS",
+      "name": "Valais"
+    },
+    {
+      "id": "CH-ZG",
+      "name": "Zug"
+    },
+    {
+      "id": "CH-ZH",
+      "name": "Zürich"
+    },
+    {
+      "id": "IT-CO",
+      "name": "Campione d'Italia"
+    }
+  ],
+  "turkeyLow": [
+    {
+      "id": "TR-01",
+      "name": "Adana"
+    },
+    {
+      "id": "TR-02",
+      "name": "Adıyaman"
+    },
+    {
+      "id": "TR-03",
+      "name": "Afyon"
+    },
+    {
+      "id": "TR-04",
+      "name": "Ağrı"
+    },
+    {
+      "id": "TR-68",
+      "name": "Aksaray"
+    },
+    {
+      "id": "TR-05",
+      "name": "Amasya"
+    },
+    {
+      "id": "TR-06",
+      "name": "Ankara"
+    },
+    {
+      "id": "TR-07",
+      "name": "Antalya"
+    },
+    {
+      "id": "TR-75",
+      "name": "Ardahan"
+    },
+    {
+      "id": "TR-08",
+      "name": "Artvin"
+    },
+    {
+      "id": "TR-09",
+      "name": "Aydin"
+    },
+    {
+      "id": "TR-10",
+      "name": "Balıkesir"
+    },
+    {
+      "id": "TR-74",
+      "name": "Bartın"
+    },
+    {
+      "id": "TR-72",
+      "name": "Batman"
+    },
+    {
+      "id": "TR-69",
+      "name": "Bayburt"
+    },
+    {
+      "id": "TR-11",
+      "name": "Bilecik"
+    },
+    {
+      "id": "TR-12",
+      "name": "Bingöl"
+    },
+    {
+      "id": "TR-13",
+      "name": "Bitlis"
+    },
+    {
+      "id": "TR-14",
+      "name": "Bolu"
+    },
+    {
+      "id": "TR-15",
+      "name": "Burdur"
+    },
+    {
+      "id": "TR-16",
+      "name": "Bursa"
+    },
+    {
+      "id": "TR-17",
+      "name": "Çanakkale"
+    },
+    {
+      "id": "TR-18",
+      "name": "Çankırı"
+    },
+    {
+      "id": "TR-19",
+      "name": "Çorum"
+    },
+    {
+      "id": "TR-20",
+      "name": "Denizli"
+    },
+    {
+      "id": "TR-21",
+      "name": "Diyarbakır"
+    },
+    {
+      "id": "TR-81",
+      "name": "Düzce"
+    },
+    {
+      "id": "TR-22",
+      "name": "Edirne"
+    },
+    {
+      "id": "TR-23",
+      "name": "Elazığ"
+    },
+    {
+      "id": "TR-24",
+      "name": "Erzincan"
+    },
+    {
+      "id": "TR-25",
+      "name": "Erzurum"
+    },
+    {
+      "id": "TR-26",
+      "name": "Eskişehir"
+    },
+    {
+      "id": "TR-27",
+      "name": "Gaziantep"
+    },
+    {
+      "id": "TR-28",
+      "name": "Giresun"
+    },
+    {
+      "id": "TR-29",
+      "name": "Gümüşhane"
+    },
+    {
+      "id": "TR-30",
+      "name": "Hakkâri"
+    },
+    {
+      "id": "TR-31",
+      "name": "Hatay"
+    },
+    {
+      "id": "TR-33",
+      "name": "Mersin"
+    },
+    {
+      "id": "TR-76",
+      "name": "Iğdır"
+    },
+    {
+      "id": "TR-32",
+      "name": "Isparta"
+    },
+    {
+      "id": "TR-34",
+      "name": "İstanbul"
+    },
+    {
+      "id": "TR-35",
+      "name": "İzmir"
+    },
+    {
+      "id": "TR-46",
+      "name": "Kahramanmaraş"
+    },
+    {
+      "id": "TR-78",
+      "name": "Karabük"
+    },
+    {
+      "id": "TR-70",
+      "name": "Karaman"
+    },
+    {
+      "id": "TR-36",
+      "name": "Kars"
+    },
+    {
+      "id": "TR-37",
+      "name": "Kastamonu"
+    },
+    {
+      "id": "TR-38",
+      "name": "Kayseri"
+    },
+    {
+      "id": "TR-79",
+      "name": "Kilis"
+    },
+    {
+      "id": "TR-71",
+      "name": "Kırıkkale"
+    },
+    {
+      "id": "TR-39",
+      "name": "Kırklareli"
+    },
+    {
+      "id": "TR-40",
+      "name": "Kırşehir"
+    },
+    {
+      "id": "TR-41",
+      "name": "Kocaeli"
+    },
+    {
+      "id": "TR-42",
+      "name": "Konya"
+    },
+    {
+      "id": "TR-43",
+      "name": "Kütahya"
+    },
+    {
+      "id": "TR-44",
+      "name": "Malatya"
+    },
+    {
+      "id": "TR-45",
+      "name": "Manisa"
+    },
+    {
+      "id": "TR-47",
+      "name": "Mardin"
+    },
+    {
+      "id": "TR-48",
+      "name": "Muğla"
+    },
+    {
+      "id": "TR-49",
+      "name": "Muş"
+    },
+    {
+      "id": "TR-50",
+      "name": "Nevşehir"
+    },
+    {
+      "id": "TR-51",
+      "name": "Niğde"
+    },
+    {
+      "id": "TR-52",
+      "name": "Ordu"
+    },
+    {
+      "id": "TR-80",
+      "name": "Osmaniye"
+    },
+    {
+      "id": "TR-53",
+      "name": "Rize"
+    },
+    {
+      "id": "TR-54",
+      "name": "Sakarya"
+    },
+    {
+      "id": "TR-55",
+      "name": "Samsun"
+    },
+    {
+      "id": "TR-63",
+      "name": "Şanlıurfa"
+    },
+    {
+      "id": "TR-56",
+      "name": "Siirt"
+    },
+    {
+      "id": "TR-57",
+      "name": "Sinop"
+    },
+    {
+      "id": "TR-73",
+      "name": "Şırnak"
+    },
+    {
+      "id": "TR-58",
+      "name": "Sivas"
+    },
+    {
+      "id": "TR-59",
+      "name": "Tekirdağ"
+    },
+    {
+      "id": "TR-60",
+      "name": "Tokat"
+    },
+    {
+      "id": "TR-61",
+      "name": "Trabzon"
+    },
+    {
+      "id": "TR-62",
+      "name": "Tunceli"
+    },
+    {
+      "id": "TR-64",
+      "name": "Usak"
+    },
+    {
+      "id": "TR-65",
+      "name": "Van"
+    },
+    {
+      "id": "TR-77",
+      "name": "Yalova"
+    },
+    {
+      "id": "TR-66",
+      "name": "Yozgat"
+    },
+    {
+      "id": "TR-67",
+      "name": "Zonguldak"
+    }
+  ],
+  "ukLow": [
+    {
+      "id": "GB-SCT",
+      "name": "Scotland"
+    },
+    {
+      "id": "GB-UKC",
+      "name": "North East England"
+    },
+    {
+      "id": "GB-UKD",
+      "name": "North West England"
+    },
+    {
+      "id": "GB-UKE",
+      "name": "Yorkshire and the Humber"
+    },
+    {
+      "id": "GB-UKF",
+      "name": "East Midlands"
+    },
+    {
+      "id": "GB-UKG",
+      "name": "West Midlands"
+    },
+    {
+      "id": "GB-UKH",
+      "name": "East of England"
+    },
+    {
+      "id": "GB-UKI",
+      "name": "Greater London"
+    },
+    {
+      "id": "GB-UKJ",
+      "name": "South East England"
+    },
+    {
+      "id": "GB-UKK",
+      "name": "South West England"
+    },
+    {
+      "id": "GB-WLS",
+      "name": "Wales"
+    },
+    {
+      "id": "GB-NIR",
+      "name": "Northern Ireland"
+    },
+    {
+      "id": "GG",
+      "name": "Guernsey"
+    },
+    {
+      "id": "JE",
+      "name": "Jersey"
+    },
+    {
+      "id": "IM",
+      "name": "Isle of Man"
+    },
+    {
+      "id": "IE",
+      "name": "Ireland"
+    }
+  ],
+  "usaLow": [
+    {
+      "id": "US-AK",
+      "name": "Alaska"
+    },
+    {
+      "id": "US-AL",
+      "name": "Alabama"
+    },
+    {
+      "id": "US-AR",
+      "name": "Arkansas"
+    },
+    {
+      "id": "US-AZ",
+      "name": "Arizona"
+    },
+    {
+      "id": "US-CA",
+      "name": "California"
+    },
+    {
+      "id": "US-CO",
+      "name": "Colorado"
+    },
+    {
+      "id": "US-CT",
+      "name": "Connecticut"
+    },
+    {
+      "id": "US-DC",
+      "name": "District of Columbia"
+    },
+    {
+      "id": "US-DE",
+      "name": "Delaware"
+    },
+    {
+      "id": "US-FL",
+      "name": "Florida"
+    },
+    {
+      "id": "US-GA",
+      "name": "Georgia"
+    },
+    {
+      "id": "US-HI",
+      "name": "Hawaii"
+    },
+    {
+      "id": "US-IA",
+      "name": "Iowa"
+    },
+    {
+      "id": "US-ID",
+      "name": "Idaho"
+    },
+    {
+      "id": "US-IL",
+      "name": "Illinois"
+    },
+    {
+      "id": "US-IN",
+      "name": "Indiana"
+    },
+    {
+      "id": "US-KS",
+      "name": "Kansas"
+    },
+    {
+      "id": "US-KY",
+      "name": "Kentucky"
+    },
+    {
+      "id": "US-LA",
+      "name": "Louisiana"
+    },
+    {
+      "id": "US-MA",
+      "name": "Massachusetts"
+    },
+    {
+      "id": "US-MD",
+      "name": "Maryland"
+    },
+    {
+      "id": "US-ME",
+      "name": "Maine"
+    },
+    {
+      "id": "US-MI",
+      "name": "Michigan"
+    },
+    {
+      "id": "US-MN",
+      "name": "Minnesota"
+    },
+    {
+      "id": "US-MO",
+      "name": "Missouri"
+    },
+    {
+      "id": "US-MS",
+      "name": "Mississippi"
+    },
+    {
+      "id": "US-MT",
+      "name": "Montana"
+    },
+    {
+      "id": "US-NC",
+      "name": "North Carolina"
+    },
+    {
+      "id": "US-ND",
+      "name": "North Dakota"
+    },
+    {
+      "id": "US-NE",
+      "name": "Nebraska"
+    },
+    {
+      "id": "US-NH",
+      "name": "New Hampshire"
+    },
+    {
+      "id": "US-NJ",
+      "name": "New Jersey"
+    },
+    {
+      "id": "US-NM",
+      "name": "New Mexico"
+    },
+    {
+      "id": "US-NV",
+      "name": "Nevada"
+    },
+    {
+      "id": "US-NY",
+      "name": "New York"
+    },
+    {
+      "id": "US-OH",
+      "name": "Ohio"
+    },
+    {
+      "id": "US-OK",
+      "name": "Oklahoma"
+    },
+    {
+      "id": "US-OR",
+      "name": "Oregon"
+    },
+    {
+      "id": "US-PA",
+      "name": "Pennsylvania"
+    },
+    {
+      "id": "US-RI",
+      "name": "Rhode Island"
+    },
+    {
+      "id": "US-SC",
+      "name": "South Carolina"
+    },
+    {
+      "id": "US-SD",
+      "name": "South Dakota"
+    },
+    {
+      "id": "US-TN",
+      "name": "Tennessee"
+    },
+    {
+      "id": "US-TX",
+      "name": "Texas"
+    },
+    {
+      "id": "US-UT",
+      "name": "Utah"
+    },
+    {
+      "id": "US-VA",
+      "name": "Virginia"
+    },
+    {
+      "id": "US-VT",
+      "name": "Vermont"
+    },
+    {
+      "id": "US-WA",
+      "name": "Washington"
+    },
+    {
+      "id": "US-WI",
+      "name": "Wisconsin"
+    },
+    {
+      "id": "US-WV",
+      "name": "West Virginia"
+    },
+    {
+      "id": "US-WY",
+      "name": "Wyoming"
+    }
+  ]
+}

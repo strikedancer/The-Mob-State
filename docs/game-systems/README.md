@@ -28,6 +28,9 @@ Voor **specifieke implementatie-details**, zie the bijbehorende [module-protocol
 - [HQ_PROGRESSION_GUIDE.md](HQ_PROGRESSION_GUIDE.md) - Property ownership, crew HQ upgrades, space management
   - Module-protocols: [properties.md](../module-protocols/properties.md), [crew.md](../module-protocols/crew.md)
 
+- [TERRITORY_VISION.md](TERRITORY_VISION.md) - Doelontwerp voor de beste versie van Territory met Crew Wars- en Crew HQ-koppelingen
+  - Module-protocols: [territory.md](../module-protocols/territory.md), [crew-wars.md](../module-protocols/crew-wars.md), [crew.md](../module-protocols/crew.md)
+
 - [VIP_LEVELS_SYSTEM.md](VIP_LEVELS_SYSTEM.md) - VIP-exclusive building levels 10-14 + crew perks
   - Module-protocols: [crew.md](../module-protocols/crew.md), [properties.md](../module-protocols/properties.md)
 
@@ -69,6 +72,7 @@ Attachment: docs/module-protocols/PROTOCOL_MASTER.md
 | **VIP_MANAGEMENT.md** | prostitution | VIP recruitment + salaries |
 | **VIP_LEVELS_SYSTEM.md** | crew, properties | Exclusive building upgrades |
 | **HQ_PROGRESSION_GUIDE.md** | properties, crew | Property ownership, HQ strategy |
+| **TERRITORY_VISION.md** | territory, crew-wars, crew | Territory end-state, war coupling, HQ integration |
 | **TRADE_RISK_MECHANICS.md** | trade, travel | Volatility, spoilage, confiscation |
 
 ---

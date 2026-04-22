@@ -86,6 +86,7 @@ docs/
 1. Start met [game-systems/GAMEPLAY.md](game-systems/GAMEPLAY.md)
 2. Navigeer naar relevante game-system file
 3. Check module-protocols voor implementation details
+4. Voor de eindvisie op Territory + Crew Wars + Crew HQ: lees [game-systems/TERRITORY_VISION.md](game-systems/TERRITORY_VISION.md)
 
 ### DevOps / Release Manager
 1. Open [operations/RELEASE_CHECKLIST.md](operations/RELEASE_CHECKLIST.md)
@@ -132,6 +133,7 @@ docs/
 | Nightclub systeem | [game-systems/NIGHTCLUB_SYSTEM.md](game-systems/NIGHTCLUB_SYSTEM.md) |
 | Hitlist & moordslooptochten | [game-systems/HITLIST_SYSTEM.md](game-systems/HITLIST_SYSTEM.md) |
 | Properties & HQ | [game-systems/HQ_PROGRESSION_GUIDE.md](game-systems/HQ_PROGRESSION_GUIDE.md) |
+| Territory visie | [game-systems/TERRITORY_VISION.md](game-systems/TERRITORY_VISION.md) |
 | Trading & risk | [game-systems/TRADE_RISK_MECHANICS.md](game-systems/TRADE_RISK_MECHANICS.md) |
 
 ---
