@@ -143,7 +143,7 @@ class NotificationService {
         InitializationSettings(android: initializationSettingsAndroid);
 
     await _localNotifications.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: _onNotificationTap,
     );
 
@@ -261,10 +261,10 @@ class NotificationService {
       );
 
       await _localNotifications.show(
-        message.hashCode,
-        message.notification?.title ?? 'The Mob State',
-        message.notification?.body ?? '',
-        details,
+        id: message.hashCode,
+        title: message.notification?.title ?? 'The Mob State',
+        body: message.notification?.body ?? '',
+        notificationDetails: details,
         payload: message.data['type'],
       );
     }

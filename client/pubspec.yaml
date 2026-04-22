@@ -47,7 +47,7 @@ dependencies:
   intl: ^0.20.2
   
   # Secure storage for JWT tokens
-  flutter_secure_storage: ^9.0.0
+  flutter_secure_storage: ^10.0.0
   
   # Open external URLs (Stripe checkout, etc.)
   url_launcher: ^6.3.0
@@ -59,9 +59,9 @@ dependencies:
   shared_preferences: ^2.5.3
   
   # Push notifications (FCM)
-  firebase_core: ^3.8.1
-  firebase_messaging: ^15.1.5
-  flutter_local_notifications: ^18.0.1
+  firebase_core: ^4.7.0
+  firebase_messaging: ^16.2.0
+  flutter_local_notifications: ^21.0.0
   
   # JSON serialization
   json_annotation: ^4.9.0
