@@ -164,7 +164,7 @@ class _CrimeCardState extends State<CrimeCard> {
           .join(', ');
       final minQty = widget.crime.minDrugQuantity ?? 1;
       requirements.add(
-        '💊 ${l10n.tooltipCrimeRequiresDrugs} (min $minQty): $drugNames',
+        '💊 ${l10n.tooltipCrimeRequiresDrugs} (min ${minQty}g): $drugNames',
       );
     }
 

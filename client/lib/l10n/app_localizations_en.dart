@@ -365,7 +365,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
-    return 'You need at least ${quantity}x of: $drugs';
+    return 'You need at least ${quantity}g of: $drugs';
   }
 
   @override

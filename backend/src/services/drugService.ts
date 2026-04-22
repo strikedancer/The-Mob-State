@@ -782,7 +782,7 @@ class DrugService {
 
     return {
       success: true,
-      message: `${production.quantity}x ${drug?.displayName || production.drugType} (${qualityLabel}) opgehaald!${raidMessage}`,
+      message: `${production.quantity}g ${drug?.displayName || production.drugType} (${qualityLabel}) opgehaald!${raidMessage}`,
     };
   }
 
@@ -899,7 +899,7 @@ class DrugService {
 
     return {
       success: true,
-      message: `${quantity}x ${drug.displayName} (${qualityLabel}) verkocht voor €${totalEarnings.toLocaleString()}!`,
+      message: `${quantity}g ${drug.displayName} (${qualityLabel}) verkocht voor €${totalEarnings.toLocaleString()}!`,
       earnings: totalEarnings,
     };
   }

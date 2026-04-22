@@ -115,7 +115,7 @@
   "tooltipCrimeRequiresDrugs": "Drugs vereist",
   "tooltipCrimeHighValue": "Hoge prioriteit operatie",
   "tooltipCrimeRequiresViolence": "Geweld vereist",
-  "crimeErrorDrugsRequired": "Je hebt minimaal {quantity}x nodig van: {drugs}",
+  "crimeErrorDrugsRequired": "Je hebt minimaal {quantity}g nodig van: {drugs}",
   "@crimeErrorDrugsRequired": {
     "placeholders": {
       "quantity": {

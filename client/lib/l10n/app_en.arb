@@ -149,7 +149,7 @@
   "tooltipCrimeRequiresDrugs": "Drugs required",
   "tooltipCrimeHighValue": "High Value Operation",
   "tooltipCrimeRequiresViolence": "Violence Required",
-  "crimeErrorDrugsRequired": "You need at least {quantity}x of: {drugs}",
+  "crimeErrorDrugsRequired": "You need at least {quantity}g of: {drugs}",
   "@crimeErrorDrugsRequired": {
     "placeholders": {
       "quantity": {

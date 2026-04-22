@@ -366,7 +366,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
-    return 'Je hebt minimaal ${quantity}x nodig van: $drugs';
+    return 'Je hebt minimaal ${quantity}g nodig van: $drugs';
   }
 
   @override
