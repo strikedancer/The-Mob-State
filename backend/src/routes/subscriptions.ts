@@ -53,6 +53,8 @@ type PaymentMetadata = {
   productKey?: string;
 };
 
+type PaymentMetadataType = PaymentMetadata['type'];
+
 const premiumOfferRepo = (prisma as any).premiumOneTimeOffer as {
   findMany: (args: any) => Promise<PremiumOfferRecord[]>;
   findFirst: (args: any) => Promise<PremiumOfferRecord | null>;
@@ -204,6 +206,15 @@ function parsePaymentMetadata(raw: unknown): PaymentMetadata | null {
   }
 
   return null;
+}
+
+function isMollieNotFoundError(error: unknown): boolean {
+  if (!error || typeof error !== 'object') {
+    return false;
+  }
+
+  const statusCode = 'statusCode' in error ? (error as { statusCode?: unknown }).statusCode : undefined;
+  return statusCode === 404;
 }
 
 function formatOfferForCatalog(offer: PremiumOfferRecord) {
@@ -365,7 +376,14 @@ async function getOrCreateMollieCustomer(playerId: number, email: string | null 
   });
 
   if (player?.mollieCustomerId) {
-    return player.mollieCustomerId;
+    try {
+      await mollie.customers.get(player.mollieCustomerId);
+      return player.mollieCustomerId;
+    } catch (error) {
+      if (!isMollieNotFoundError(error)) {
+        throw error;
+      }
+    }
   }
 
   const customer = await mollie.customers.create({
@@ -556,7 +574,17 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
   });
 }
 
-async function reconcileRecentPaidTransactions(playerId: number): Promise<void> {
+function getRequestedPurchaseTypes(req: Request): PaymentMetadataType[] | undefined {
+  const purchase = String(req.query.purchase || '').trim().toLowerCase();
+
+  if (purchase === 'player_vip' || purchase === 'crew_vip' || purchase === 'one_time') {
+    return [purchase as PaymentMetadataType];
+  }
+
+  return undefined;
+}
+
+async function reconcileRecentPaidTransactions(playerId: number, purchaseTypes?: PaymentMetadataType[]): Promise<void> {
   const recentTransactions = await prisma.paymentTransaction.findMany({
     where: {
       playerId,
@@ -583,6 +611,10 @@ async function reconcileRecentPaidTransactions(playerId: number): Promise<void> 
     const metadata = parsePaymentMetadata(payment.metadata) || parsePaymentMetadata(transaction.metadataJson);
 
     if (!metadata?.playerId || !metadata.type) {
+      continue;
+    }
+
+    if (purchaseTypes && !purchaseTypes.includes(metadata.type)) {
       continue;
     }
 
@@ -927,7 +959,7 @@ router.post('/checkout/one-time', authenticate, async (req: Request, res: Respon
 router.get('/credits/overview', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const playerId = (req as any).player?.id as number;
-    await reconcileRecentPaidTransactions(playerId);
+    await reconcileRecentPaidTransactions(playerId, getRequestedPurchaseTypes(req));
     const overview = await getCreditOverview(playerId);
     return res.json(overview);
   } catch (error) {
@@ -984,7 +1016,7 @@ router.post('/credits/redeem', authenticate, async (req: Request, res: Response)
 router.get('/status', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const playerId = (req as any).player?.id as number;
-    await reconcileRecentPaidTransactions(playerId);
+    await reconcileRecentPaidTransactions(playerId, getRequestedPurchaseTypes(req));
     const [player, membership, pricing] = await Promise.all([
       prisma.player.findUnique({
         where: { id: playerId },
