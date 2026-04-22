@@ -91,6 +91,16 @@ type PassiveIncomeRegionRow = {
   lastIncomeAt: Date | null;
 };
 
+type PassiveIncomePayoutRow = {
+  regionKey: string;
+  countryCode: string;
+  ownerCrewId: number;
+  valueTier: number;
+  payoutCycles: number;
+  payoutAmount: number;
+  newLastIncomeAt: Date;
+};
+
 type TerritoryIncomeSnapshot = {
   amountPerInterval: number;
   intervalMinutes: number;
@@ -256,6 +266,8 @@ async function processPassiveTerritoryIncome(
      WHERE tc.ownerCrewId IS NOT NULL AND tr.enabled = 1`,
   );
 
+  const payoutsByCrew = new Map<number, { totalPayoutAmount: number; rows: PassiveIncomePayoutRow[] }>();
+
   for (const row of rows) {
     const lastIncomeAt = row.lastIncomeAt ?? now;
     const elapsedMs = now.getTime() - lastIncomeAt.getTime();
@@ -268,38 +280,59 @@ async function processPassiveTerritoryIncome(
     const payoutAmount = payoutCycles * amountPerCycle;
     const newLastIncomeAt = new Date(lastIncomeAt.getTime() + (payoutCycles * intervalMs));
 
-    await prisma.$transaction(async (tx) => {
-      if (payoutAmount > 0) {
-        await tx.crew.update({
-          where: { id: toNumeric(row.ownerCrewId) },
-          data: { bankBalance: { increment: payoutAmount } },
-        });
+    const ownerCrewId = toNumeric(row.ownerCrewId);
+    const crewPayout = payoutsByCrew.get(ownerCrewId) ?? { totalPayoutAmount: 0, rows: [] };
+    crewPayout.totalPayoutAmount += payoutAmount;
+    crewPayout.rows.push({
+      regionKey: row.regionKey,
+      countryCode: row.countryCode,
+      ownerCrewId,
+      valueTier: toNumeric(row.valueTier),
+      payoutCycles,
+      payoutAmount,
+      newLastIncomeAt,
+    });
+    payoutsByCrew.set(ownerCrewId, crewPayout);
+  }
 
+  for (const [ownerCrewId, crewPayout] of payoutsByCrew.entries()) {
+    await prisma.$transaction(async (tx) => {
+      if (crewPayout.totalPayoutAmount > 0) {
         await tx.$executeRawUnsafe(
-          `INSERT INTO territory_reward_log (seasonKey, crewId, playerId, rewardType, cashAmount, xpAmount, metadataJson)
-           VALUES (?, ?, NULL, 'passive_income', ?, 0, ?)`,
-          seasonKey,
-          toNumeric(row.ownerCrewId),
-          payoutAmount,
-          JSON.stringify({
-            regionKey: row.regionKey,
-            countryCode: row.countryCode,
-            valueTier: toNumeric(row.valueTier),
-            payoutCycles,
-            intervalMinutes,
-            source: 'territory_passive_income',
-          }),
+          `UPDATE crews SET bankBalance = bankBalance + ? WHERE id = ?`,
+          crewPayout.totalPayoutAmount,
+          ownerCrewId,
         );
       }
 
-      await tx.$executeRawUnsafe(
-        `UPDATE territory_control
-         SET lastIncomeAt = ?, updatedAt = updatedAt
-         WHERE regionKey = ? AND ownerCrewId = ?`,
-        newLastIncomeAt,
-        row.regionKey,
-        toNumeric(row.ownerCrewId),
-      );
+      for (const payout of crewPayout.rows) {
+        if (payout.payoutAmount > 0) {
+          await tx.$executeRawUnsafe(
+            `INSERT INTO territory_reward_log (seasonKey, crewId, playerId, rewardType, cashAmount, xpAmount, metadataJson)
+             VALUES (?, ?, NULL, 'passive_income', ?, 0, ?)`,
+            seasonKey,
+            ownerCrewId,
+            payout.payoutAmount,
+            JSON.stringify({
+              regionKey: payout.regionKey,
+              countryCode: payout.countryCode,
+              valueTier: payout.valueTier,
+              payoutCycles: payout.payoutCycles,
+              intervalMinutes,
+              source: 'territory_passive_income',
+            }),
+          );
+        }
+
+        await tx.$executeRawUnsafe(
+          `UPDATE territory_control
+           SET lastIncomeAt = ?, updatedAt = updatedAt
+           WHERE regionKey = ? AND ownerCrewId = ?`,
+          payout.newLastIncomeAt,
+          payout.regionKey,
+          ownerCrewId,
+        );
+      }
     });
   }
 }

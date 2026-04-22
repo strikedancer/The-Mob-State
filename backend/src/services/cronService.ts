@@ -25,6 +25,7 @@ const prisma = new PrismaClient();
 
 // Track job execution for debugging
 let lastJobExecutions: Record<string, Date> = {};
+let territoryContestProcessorRunning = false;
 
 /**
  * Check and end expired VIP events
@@ -431,11 +432,20 @@ export async function runVehicleRepairCompletionProcessor(): Promise<void> {
 export async function runTerritoryContestProcessor(): Promise<void> {
   const now = new Date();
 
+  if (territoryContestProcessorRunning) {
+    console.warn('[CRON] Skipping territoryContestProcessor: previous run still active');
+    return;
+  }
+
+  territoryContestProcessorRunning = true;
+
   try {
     await processPendingTerritoryContests(now);
     lastJobExecutions['territoryContestProcessor'] = now;
   } catch (error) {
     console.error('[CRON ERROR] runTerritoryContestProcessor:', error);
+  } finally {
+    territoryContestProcessorRunning = false;
   }
 }
 
