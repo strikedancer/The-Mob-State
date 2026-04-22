@@ -22,11 +22,22 @@ class AuthSessionException implements Exception {
 
 class AuthService {
   final ApiClient _apiClient;
+  static const Set<String> _terminalAuthReasons = {
+    'MISSING_TOKEN',
+    'INVALID_TOKEN',
+    'TOKEN_EXPIRED',
+    'SESSION_REPLACED',
+    'PLAYER_NOT_FOUND',
+  };
 
   AuthService({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
 
   // Public getter for apiClient
   ApiClient get apiClient => _apiClient;
+
+  Future<void> clearStoredSession() async {
+    await _apiClient.clearToken();
+  }
 
   /// Get device language code (en or nl)
   String _getDeviceLanguage() {
@@ -227,11 +238,19 @@ class AuthService {
         return Player.fromJson(playerData);
       }
 
-      if (response.statusCode == 401 || response.statusCode == 403) {
-        await _apiClient.clearToken();
+      if (response.statusCode == 401) {
+        final reason = _extractAuthReason(response.body);
+        throw AuthSessionException(
+          reason: reason,
+          unauthorized: _isTerminalAuthReason(reason),
+          statusCode: response.statusCode,
+        );
+      }
+
+      if (response.statusCode == 403) {
         throw AuthSessionException(
           reason: _extractAuthReason(response.body),
-          unauthorized: true,
+          unauthorized: false,
           statusCode: response.statusCode,
         );
       }
@@ -275,6 +294,10 @@ class AuthService {
     }
 
     return 'UNAUTHORIZED';
+  }
+
+  bool _isTerminalAuthReason(String reason) {
+    return _terminalAuthReasons.contains(reason);
   }
 
   Future<void> requestPasswordReset(String email) async {

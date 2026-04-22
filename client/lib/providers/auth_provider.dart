@@ -44,10 +44,12 @@ class AuthProvider with ChangeNotifier {
           }
         } on AuthSessionException catch (e) {
           if (e.unauthorized) {
+            await _authService.clearStoredSession();
             _isAuthenticated = false;
             _currentPlayer = null;
+            _error = null;
           } else {
-            _error = e.toString();
+            _error = e.reason;
           }
         }
       } else {
@@ -189,6 +191,7 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
     } on AuthSessionException catch (e) {
       if (e.unauthorized) {
+        await _authService.clearStoredSession();
         _currentPlayer = null;
         _isAuthenticated = false;
         _error = null;
@@ -196,7 +199,7 @@ class AuthProvider with ChangeNotifier {
         return;
       }
 
-      _error = e.toString();
+      _error = e.reason;
       notifyListeners();
     } catch (e) {
       _error = e.toString();
