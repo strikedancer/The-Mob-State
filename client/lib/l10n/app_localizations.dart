@@ -791,7 +791,7 @@ abstract class AppLocalizations {
   /// No description provided for @crimeErrorDrugsRequired.
   ///
   /// In en, this message translates to:
-  /// **'You need at least {quantity}x of: {drugs}'**
+  /// **'You need at least {quantity}g of: {drugs}'**
   String crimeErrorDrugsRequired(String quantity, String drugs);
 
   /// No description provided for @jobs.
