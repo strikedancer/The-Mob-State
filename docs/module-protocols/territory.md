@@ -79,6 +79,7 @@ Scope-afbakening:
 - Preserve core fairness: free crews moeten competitief kunnen blijven zonder VIP-lock.
 - Territory scoring en ownership wijzigingen zijn server-authoritative.
 - Territory-inkomsten en totale territory-opbrengst moeten backend-authoritative zijn; UI mag geen tiertekst of geschatte placeholder-bedragen tonen wanneer echte serverwaarden beschikbaar zijn.
+- Territory-passive income naar de crew-bank moet dezelfde cash-storage cap respecteren als normale crew deposits; volle cashopslag betekent geen verdere Territory-bijschrijving totdat er weer ruimte is.
 - NL en EN copy synchroon voor alle nieuwe labels, flows, errors, meldingen en push/inbox events.
 - UI blijft bruikbaar op mobiel/tablet/desktop met 1 primaire verticale scrollflow onder sticky headers.
 

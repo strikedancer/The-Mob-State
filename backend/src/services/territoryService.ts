@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { getCrewStorageCapacity } from './crewBuildingService';
 import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
 import { translationService } from './translationService';
@@ -478,31 +479,51 @@ async function processPassiveTerritoryIncome(
 
   for (const [ownerCrewId, crewPayout] of payoutsByCrew.entries()) {
     await prisma.$transaction(async (tx) => {
-      if (crewPayout.totalPayoutAmount > 0) {
+      const cashCapacity = await getCrewStorageCapacity(ownerCrewId, 'cash_storage');
+      const crew = await tx.crew.findUnique({
+        where: { id: ownerCrewId },
+        select: { bankBalance: true },
+      });
+
+      if (!crew) {
+        return;
+      }
+
+      let remainingPayoutCapacity = Math.max(0, cashCapacity - toNumeric(crew.bankBalance ?? 0));
+
+      if (remainingPayoutCapacity > 0 && crewPayout.totalPayoutAmount > 0) {
+        const creditedAmount = Math.min(crewPayout.totalPayoutAmount, remainingPayoutCapacity);
         await tx.$executeRawUnsafe(
           `UPDATE crews SET bankBalance = bankBalance + ? WHERE id = ?`,
-          crewPayout.totalPayoutAmount,
+          creditedAmount,
           ownerCrewId,
         );
+        remainingPayoutCapacity -= creditedAmount;
       }
 
       for (const payout of crewPayout.rows) {
-        if (payout.payoutAmount > 0) {
+        const creditedPayoutAmount = Math.min(payout.payoutAmount, remainingPayoutCapacity);
+        if (creditedPayoutAmount > 0) {
+          const creditedCycles = Math.min(
+            payout.payoutCycles,
+            Math.floor(creditedPayoutAmount / Math.max(1, getPassiveIncomeCashForTier(payout.valueTier, cfg))),
+          );
           await tx.$executeRawUnsafe(
             `INSERT INTO territory_reward_log (seasonKey, crewId, playerId, rewardType, cashAmount, xpAmount, metadataJson)
              VALUES (?, ?, NULL, 'passive_income', ?, 0, ?)`,
             seasonKey,
             ownerCrewId,
-            payout.payoutAmount,
+            creditedPayoutAmount,
             JSON.stringify({
               regionKey: payout.regionKey,
               countryCode: payout.countryCode,
               valueTier: payout.valueTier,
-              payoutCycles: payout.payoutCycles,
+              payoutCycles: creditedCycles,
               intervalMinutes,
               source: 'territory_passive_income',
             }),
           );
+          remainingPayoutCapacity -= creditedPayoutAmount;
         }
 
         await tx.$executeRawUnsafe(
