@@ -342,6 +342,13 @@ Voorbeelden:
 - **Shared rewards**: Verdeeld tussen crew members
 - **Teamwork bonus**: +10% success chance per extra member (max +30%)
 
+### Crew Wars
+- Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren en beide crews hebben minimaal 3 leden nodig.
+- **Territory War** en **Total War** gebruiken echte Territory-regio's als claimdoelen. Die war-doelen hebben nu ook strategische waarde: claimbonus, tick-punten en tags zoals haven, hoofdstad, industrie of logistiek.
+- War-targets worden niet meer alleen gekozen op regio-waarde, maar ook op strategische tags en aangrenzende druk van aanvaller en verdediger. Daardoor ontstaan in Territory Wars logischere frontlinies.
+- Een geclaimde war-regio levert tijdens de war periodieke `territory_tick` punten op. Strategisch sterkere regio's leveren meer tick-punten dan gewone gebieden.
+- In de War Room zie je per war-regio nu direct wie het gebied houdt en hoeveel claim-/tick-waarde het doel heeft, zodat crews hun calls beter kunnen plannen.
+
 ### Heists
 
 #### Small Bank Heist

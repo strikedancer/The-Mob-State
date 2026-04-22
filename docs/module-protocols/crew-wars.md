@@ -10,7 +10,6 @@ Scope-afbakening:
 - Discord-meldingen vallen onder Notifications/extern event transport en moeten via bestaande notificatieprincipes worden toegevoegd.
 
 ## Primary Frontend Entry
-- client/lib/screens/crew_war_screen.dart
 - client/lib/screens/crew_screen.dart
 - client/lib/screens/dashboard_screen.dart
 
@@ -48,6 +47,7 @@ Scope-afbakening:
 - Leaderboard en rewards moeten deterministisch herleidbaar zijn uit opgeslagen war actions.
 - UI moet live spanning geven zonder kritieke acties of statusinfo op mobiel te verbergen.
 - Territory War en Total War moeten hun claimbare gebieden tonen met echte Territory-regio-identiteit (regionKey + NL/EN naam), niet met abstracte labels zoals `docks` of `harbor`.
+- Territory-targets moeten, zodra strategische Territory-metadata beschikbaar is, dezelfde bronwaarden meenemen voor `strategicTags`, claimbonus, tick-waarde en adjacency-context in zowel war-selectie, war scoring als War Room UI; Crew Wars mag geen los tweede waarderingsmodel naast Territory introduceren.
 - Metadata parsing voor war hubs en territory targets moet op standaard JavaScript array-methodes gebaseerd zijn en tolerant blijven voor legacy of lege metadata; een parsefout in war metadata mag gekoppelde dashboard/player responses niet 500 laten gaan.
 
 ## War Lifecycle Guardrails
@@ -72,6 +72,7 @@ Scope-afbakening:
 ## Scoring & Balance Guardrails
 - Basispunten moeten per war type configureerbaar zijn.
 - Kill, assist, defense, territory tick en economy loot moeten als losse action records opgeslagen worden.
+- Territory claim- en tick-punten mogen strategisch variëren per doelregio, maar de bonusberekening moet server-side deterministisch blijven en uit opgeslagen territory target metadata herleidbaar zijn.
 - Combo- en streakbonussen moeten cap-gedreven zijn en resetten bij death/timeout/farm detectie.
 - Friendly fire, self-target loops, same-IP abuse, same-device clusters en repeated target farming leveren geen punten op.
 - Herhaalde punten op hetzelfde target binnen een korte window moeten diminishing returns of volledige blokkade krijgen.

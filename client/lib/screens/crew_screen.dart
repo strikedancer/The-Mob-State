@@ -81,7 +81,10 @@ class _CrewScreenState extends State<CrewScreen>
     'tab.storageHub': {'nl': 'Opslag', 'en': 'Storage'},
     'tab.members': {'nl': 'Leden', 'en': 'Members'},
     'tab.warRoom': {'nl': 'War Room', 'en': 'War Room'},
-    'tab.carStorage': {'nl': 'Auto/motor opslag', 'en': 'Car/Motorcycle Storage'},
+    'tab.carStorage': {
+      'nl': 'Auto/motor opslag',
+      'en': 'Car/Motorcycle Storage',
+    },
     'tab.boatStorage': {'nl': 'Haven', 'en': 'Boat Storage'},
     'tab.weaponStorage': {'nl': 'Wapen opslag', 'en': 'Weapon Storage'},
     'tab.ammoStorage': {'nl': 'Munitie opslag', 'en': 'Ammo Storage'},
@@ -110,8 +113,10 @@ class _CrewScreenState extends State<CrewScreen>
     'action.leaveCrew': {'nl': 'Crew Verlaten', 'en': 'Leave Crew'},
     'section.buildings': {'nl': 'HQ & Upgrades', 'en': 'HQ & Upgrades'},
     'hint.buildingsTabs': {
-      'nl': 'Open HQ & Upgrades om het HQ en alle crew-gebouwen centraal te beheren.',
-      'en': 'Open HQ & Upgrades to manage HQ and all crew buildings from one place.',
+      'nl':
+          'Open HQ & Upgrades om het HQ en alle crew-gebouwen centraal te beheren.',
+      'en':
+          'Open HQ & Upgrades to manage HQ and all crew buildings from one place.',
     },
     'section.crewStorage': {'nl': 'Crew Opslag', 'en': 'Crew Storage'},
     'state.noStorageData': {
@@ -170,14 +175,13 @@ class _CrewScreenState extends State<CrewScreen>
     'help.upgradeCost': {'nl': 'Kosten', 'en': 'Cost'},
     'help.close': {'nl': 'Sluiten', 'en': 'Close'},
     'help.showCaps': {'nl': 'Toon caps', 'en': 'Show caps'},
-    'section.upgradeHub': {
-      'nl': 'HQ & Upgrades',
-      'en': 'HQ & Upgrades',
-    },
+    'section.upgradeHub': {'nl': 'HQ & Upgrades', 'en': 'HQ & Upgrades'},
     'section.storageHub': {'nl': 'Opslag Hub', 'en': 'Storage Hub'},
     'hint.storageTab': {
-      'nl': 'Gebruik de opslag-tab voor stortingen, saldo en snelle opslagacties.',
-      'en': 'Use the Storage tab for deposits, balances and quick storage actions.',
+      'nl':
+          'Gebruik de opslag-tab voor stortingen, saldo en snelle opslagacties.',
+      'en':
+          'Use the Storage tab for deposits, balances and quick storage actions.',
     },
     'hint.upgradeHub': {
       'nl': 'Beheer hier het HQ en alle crew-upgrades op 1 plek.',
@@ -1051,13 +1055,13 @@ class _CrewScreenState extends State<CrewScreen>
               labelText: _tr(locale, 'Doelspeler', 'Target player'),
             ),
             items: opponents.map((opponent) {
-              final player = (opponent['player'] as Map?)?.cast<String, dynamic>();
-              final participant =
-                  (opponent['participant'] as Map?)?.cast<String, dynamic>();
+              final player = (opponent['player'] as Map?)
+                  ?.cast<String, dynamic>();
+              final participant = (opponent['participant'] as Map?)
+                  ?.cast<String, dynamic>();
               final role = (opponent['role'] ?? 'member').toString();
               final playerId = (opponent['playerId'] as num?)?.toInt() ?? 0;
-              final username =
-                  (player?['username'] ?? '#$playerId').toString();
+              final username = (player?['username'] ?? '#$playerId').toString();
               final kills = (participant?['kills'] as num?)?.toInt() ?? 0;
               final deaths = (participant?['deaths'] as num?)?.toInt() ?? 0;
               return DropdownMenuItem<int>(
@@ -1078,7 +1082,8 @@ class _CrewScreenState extends State<CrewScreen>
               child: Text(_tr(locale, 'Annuleren', 'Cancel')),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.of(dialogContext).pop(selectedPlayerId),
+              onPressed: () =>
+                  Navigator.of(dialogContext).pop(selectedPlayerId),
               child: Text(_tr(locale, 'Bevestigen', 'Confirm')),
             ),
           ],
@@ -1098,11 +1103,19 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  String _formatWarTerritoryOptionLabel(String locale, Map<String, dynamic> territory) {
-    final name = ((locale == 'nl' ? territory['nameNl'] : territory['nameEn']) ?? territory['regionKey'] ?? '-')
-        .toString();
+  String _formatWarTerritoryOptionLabel(
+    String locale,
+    Map<String, dynamic> territory,
+  ) {
+    final name =
+        ((locale == 'nl' ? territory['nameNl'] : territory['nameEn']) ??
+                territory['regionKey'] ??
+                '-')
+            .toString();
     final countryCode = (territory['countryCode'] as String?)?.toUpperCase();
-    final ownerCrewName = territory['currentHolderCrewName'] as String? ?? territory['ownerCrewName'] as String?;
+    final ownerCrewName =
+        territory['currentHolderCrewName'] as String? ??
+        territory['ownerCrewName'] as String?;
     final suffixParts = <String>[];
     if (countryCode != null && countryCode.isNotEmpty) {
       suffixParts.add(countryCode);
@@ -1112,6 +1125,43 @@ class _CrewScreenState extends State<CrewScreen>
     }
     if (suffixParts.isEmpty) return name;
     return '$name (${suffixParts.join(' • ')})';
+  }
+
+  String _formatWarTerritoryTagLabel(String locale, String tag) {
+    switch (tag.toLowerCase()) {
+      case 'capital':
+        return _tr(locale, 'Hoofdstad', 'Capital');
+      case 'harbor':
+        return _tr(locale, 'Haven', 'Harbor');
+      case 'industry':
+        return _tr(locale, 'Industrie', 'Industry');
+      case 'border':
+        return _tr(locale, 'Grens', 'Border');
+      case 'logistics':
+        return _tr(locale, 'Logistiek', 'Logistics');
+      default:
+        return tag;
+    }
+  }
+
+  String _formatWarTerritoryBonusSummary(
+    String locale,
+    Map<String, dynamic> territory,
+  ) {
+    final claimBonus = (territory['claimBonusPoints'] as num?)?.toInt() ?? 0;
+    final tickPoints = (territory['tickPoints'] as num?)?.toInt() ?? 4;
+    final strategicTags = (territory['strategicTags'] as List<dynamic>? ?? const [])
+        .map((tag) => _formatWarTerritoryTagLabel(locale, tag.toString()))
+        .where((tag) => tag.trim().isNotEmpty)
+        .toList();
+    final bonusParts = <String>[
+      '${_tr(locale, 'Claim', 'Claim')} +$claimBonus',
+      '${_tr(locale, 'Tick', 'Tick')} $tickPoints',
+    ];
+    if (strategicTags.isNotEmpty) {
+      bonusParts.add(strategicTags.join('/'));
+    }
+    return bonusParts.join(' • ');
   }
 
   Future<String?> _promptWarTerritory(
@@ -1131,7 +1181,9 @@ class _CrewScreenState extends State<CrewScreen>
                 .map(
                   (territory) => DropdownMenuItem<String>(
                     value: (territory['regionKey'] ?? '').toString(),
-                    child: Text(_formatWarTerritoryOptionLabel(locale, territory)),
+                    child: Text(
+                      '${_formatWarTerritoryOptionLabel(locale, territory)} • ${_formatWarTerritoryBonusSummary(locale, territory)}',
+                    ),
                   ),
                 )
                 .toList(),
@@ -3297,9 +3349,11 @@ class _CrewScreenState extends State<CrewScreen>
       orElse: () => <String, dynamic>{},
     );
     final cashBootstrapLimit =
-      cashStorageBuilding['nextUpgradeCost'] as int? ?? 0;
+        cashStorageBuilding['nextUpgradeCost'] as int? ?? 0;
     final canBootstrapDeposit =
-      !cashStorageOwned && cashBootstrapLimit > 0 && _myCrew!.bankBalance < cashBootstrapLimit;
+        !cashStorageOwned &&
+        cashBootstrapLimit > 0 &&
+        _myCrew!.bankBalance < cashBootstrapLimit;
 
     return RefreshIndicator(
       onRefresh: _loadData,
@@ -3395,12 +3449,12 @@ class _CrewScreenState extends State<CrewScreen>
                         Text(
                           cashStorageOwned
                               ? (locale == 'nl'
-                            ? 'Opslagcapaciteit: ${_money(_crewStorage?['capacities']?['cash'] ?? 0)}'
-                            : 'Storage capacity: ${_money(_crewStorage?['capacities']?['cash'] ?? 0)}')
-                          : canBootstrapDeposit
-                            ? (locale == 'nl'
-                              ? 'Starterstorting voor cash opslag: ${_money(_myCrew!.bankBalance)} / ${_money(cashBootstrapLimit)}'
-                              : 'Starter deposit for cash storage: ${_money(_myCrew!.bankBalance)} / ${_money(cashBootstrapLimit)}')
+                                    ? 'Opslagcapaciteit: ${_money(_crewStorage?['capacities']?['cash'] ?? 0)}'
+                                    : 'Storage capacity: ${_money(_crewStorage?['capacities']?['cash'] ?? 0)}')
+                              : canBootstrapDeposit
+                              ? (locale == 'nl'
+                                    ? 'Starterstorting voor cash opslag: ${_money(_myCrew!.bankBalance)} / ${_money(cashBootstrapLimit)}'
+                                    : 'Starter deposit for cash storage: ${_money(_myCrew!.bankBalance)} / ${_money(cashBootstrapLimit)}')
                               : (locale == 'nl'
                                     ? 'Koop eerst geldopslag om de crew bank te gebruiken'
                                     : 'Purchase cash storage first to use the crew bank'),
@@ -3411,7 +3465,8 @@ class _CrewScreenState extends State<CrewScreen>
                           children: [
                             Expanded(
                               child: OutlinedButton.icon(
-                                onPressed: (cashStorageOwned || canBootstrapDeposit)
+                                onPressed:
+                                    (cashStorageOwned || canBootstrapDeposit)
                                     ? () => _handleBankAction(deposit: true)
                                     : null,
                                 icon: const Icon(Icons.savings),
@@ -3563,8 +3618,9 @@ class _CrewScreenState extends State<CrewScreen>
                         else ...[
                           Text(
                             locale == 'nl'
-                              ? 'Auto''s & motoren: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}'
-                              : 'Cars & motorcycles: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}',
+                                ? 'Auto'
+                                      's & motoren: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}'
+                                : 'Cars & motorcycles: ${_crewStorage!['totals']['cars']} / ${_crewStorage!['capacities']['cars']}',
                           ),
                           Text(
                             locale == 'nl'
@@ -3583,8 +3639,8 @@ class _CrewScreenState extends State<CrewScreen>
                           ),
                           Text(
                             locale == 'nl'
-                              ? 'Geldopslag: ${_money(_crewStorage!['totals']['cash'])} / ${_money(cashStorageOwned ? _crewStorage!['capacities']['cash'] : cashBootstrapLimit)}'
-                              : 'Cash storage: ${_money(_crewStorage!['totals']['cash'])} / ${_money(cashStorageOwned ? _crewStorage!['capacities']['cash'] : cashBootstrapLimit)}',
+                                ? 'Geldopslag: ${_money(_crewStorage!['totals']['cash'])} / ${_money(cashStorageOwned ? _crewStorage!['capacities']['cash'] : cashBootstrapLimit)}'
+                                : 'Cash storage: ${_money(_crewStorage!['totals']['cash'])} / ${_money(cashStorageOwned ? _crewStorage!['capacities']['cash'] : cashBootstrapLimit)}',
                           ),
                           const SizedBox(height: 12),
                           Text(
@@ -3824,13 +3880,17 @@ class _CrewScreenState extends State<CrewScreen>
                 children: [
                   Text(
                     _t(locale, 'section.crewStorage'),
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     locale == 'nl'
-                      ? 'Auto''s & motoren: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}'
-                      : 'Cars & motorcycles: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
+                        ? 'Auto'
+                              's & motoren: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}'
+                        : 'Cars & motorcycles: ${totals?['cars'] ?? 0} / ${capacities?['cars'] ?? 0}',
                   ),
                   Text(
                     locale == 'nl'
@@ -3888,8 +3948,11 @@ class _CrewScreenState extends State<CrewScreen>
             icon: Icons.gavel,
             titleNl: 'Wapen opslag',
             titleEn: 'Weapon Storage',
-            value: '${totals?['weapons'] ?? 0} / ${capacities?['weapons'] ?? 0}',
-            onPressed: (capacities?['weapons'] as int? ?? 0) > 0 ? _depositWeapon : null,
+            value:
+                '${totals?['weapons'] ?? 0} / ${capacities?['weapons'] ?? 0}',
+            onPressed: (capacities?['weapons'] as int? ?? 0) > 0
+                ? _depositWeapon
+                : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
           ),
@@ -3898,7 +3961,9 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Munitie opslag',
             titleEn: 'Ammo Storage',
             value: '${totals?['ammo'] ?? 0} / ${capacities?['ammo'] ?? 0}',
-            onPressed: (capacities?['ammo'] as int? ?? 0) > 0 ? _depositAmmo : null,
+            onPressed: (capacities?['ammo'] as int? ?? 0) > 0
+                ? _depositAmmo
+                : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
           ),
@@ -3907,7 +3972,9 @@ class _CrewScreenState extends State<CrewScreen>
             titleNl: 'Drugs opslag',
             titleEn: 'Drug Storage',
             value: '${totals?['drugs'] ?? 0} / ${capacities?['drugs'] ?? 0}',
-            onPressed: (capacities?['drugs'] as int? ?? 0) > 0 ? _depositDrugs : null,
+            onPressed: (capacities?['drugs'] as int? ?? 0) > 0
+                ? _depositDrugs
+                : null,
             actionNl: 'Toevoegen',
             actionEn: 'Add',
           ),
@@ -4218,9 +4285,9 @@ class _CrewScreenState extends State<CrewScreen>
               <String, dynamic>{})
         : <String, dynamic>{};
     final opponentMembers =
-      (currentWar?['opponentMembers'] as List<dynamic>? ?? [])
-        .map((entry) => (entry as Map).cast<String, dynamic>())
-        .toList();
+        (currentWar?['opponentMembers'] as List<dynamic>? ?? [])
+            .map((entry) => (entry as Map).cast<String, dynamic>())
+            .toList();
     final territoryTargets =
         (metadata['territoryTargets'] as List<dynamic>? ?? [])
             .whereType<Map>()
@@ -4238,7 +4305,9 @@ class _CrewScreenState extends State<CrewScreen>
               },
             )
             .toList();
-    final territories = territoryTargets.isNotEmpty ? territoryTargets : legacyTerritories;
+    final territories = territoryTargets.isNotEmpty
+        ? territoryTargets
+        : legacyTerritories;
 
     Future<void> handleAction(String actionType) async {
       if (currentWar == null) return;
@@ -4461,8 +4530,10 @@ class _CrewScreenState extends State<CrewScreen>
                           currentWar['warType'] as String?,
                         ),
                       ),
-                      if ((currentWar['warType'] as String?) == 'territory_war' ||
-                          (currentWar['warType'] as String?) == 'total_war') ...[
+                      if ((currentWar['warType'] as String?) ==
+                              'territory_war' ||
+                          (currentWar['warType'] as String?) ==
+                              'total_war') ...[
                         const SizedBox(height: 12),
                         Text(
                           _tr(locale, 'War-gebieden', 'War territories'),
@@ -4473,16 +4544,30 @@ class _CrewScreenState extends State<CrewScreen>
                           spacing: 8,
                           runSpacing: 8,
                           children: territories.map<Widget>((territory) {
-                            final territoryKey = (territory['regionKey'] ?? '').toString();
-                            final currentHolderCrewId = territory['currentHolderCrewId'];
-                            final holderLabel = currentHolderCrewId == currentWar['attackerCrewId']
-                                ? ((currentWar['attackerCrew'] as Map?)?['name']?.toString() ?? '#${currentWar['attackerCrewId']}')
-                                : currentHolderCrewId == currentWar['defenderCrewId']
-                                    ? ((currentWar['defenderCrew'] as Map?)?['name']?.toString() ?? '#${currentWar['defenderCrewId']}')
-                                    : _tr(locale, 'Neutraal', 'Neutral');
+                            final territoryKey = (territory['regionKey'] ?? '')
+                                .toString();
+                            final currentHolderCrewId =
+                                territory['currentHolderCrewId'];
+                            final holderLabel =
+                                currentHolderCrewId ==
+                                    currentWar['attackerCrewId']
+                                ? ((currentWar['attackerCrew'] as Map?)?['name']
+                                          ?.toString() ??
+                                      '#${currentWar['attackerCrewId']}')
+                                : currentHolderCrewId ==
+                                      currentWar['defenderCrewId']
+                                ? ((currentWar['defenderCrew'] as Map?)?['name']
+                                          ?.toString() ??
+                                      '#${currentWar['defenderCrewId']}')
+                                : _tr(locale, 'Neutraal', 'Neutral');
                             return Chip(
-                              avatar: const Icon(Icons.place_outlined, size: 18),
-                              label: Text('${_formatWarTerritoryOptionLabel(locale, territory)} • $holderLabel'),
+                              avatar: const Icon(
+                                Icons.place_outlined,
+                                size: 18,
+                              ),
+                              label: Text(
+                                '${_formatWarTerritoryOptionLabel(locale, territory)} • $holderLabel • ${_formatWarTerritoryBonusSummary(locale, territory)}',
+                              ),
                             );
                           }).toList(),
                         ),
@@ -4498,14 +4583,15 @@ class _CrewScreenState extends State<CrewScreen>
                           spacing: 8,
                           runSpacing: 8,
                           children: opponentMembers.map((member) {
-                            final player =
-                                (member['player'] as Map?)?.cast<String, dynamic>();
+                            final player = (member['player'] as Map?)
+                                ?.cast<String, dynamic>();
                             final participant = (member['participant'] as Map?)
                                 ?.cast<String, dynamic>();
                             final playerId =
                                 (member['playerId'] as num?)?.toInt() ?? 0;
                             final username =
-                                (player?['username'] ?? '#$playerId').toString();
+                                (player?['username'] ?? '#$playerId')
+                                    .toString();
                             final role = _formatCrewWarRole(
                               locale,
                               (member['role'] ?? 'member').toString(),
@@ -5340,7 +5426,10 @@ class _CrewScreenState extends State<CrewScreen>
   String _getBuildingLabel(String buildingType, String locale) {
     const labels = {
       'hq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
-      'car_storage': {'nl': 'Auto/motor opslag', 'en': 'Car/Motorcycle Storage'},
+      'car_storage': {
+        'nl': 'Auto/motor opslag',
+        'en': 'Car/Motorcycle Storage',
+      },
       'boat_storage': {'nl': 'Haven', 'en': 'Boat Storage'},
       'weapon_storage': {'nl': 'Wapen opslag', 'en': 'Weapon Storage'},
       'ammo_storage': {'nl': 'Munitie opslag', 'en': 'Ammo Storage'},
