@@ -99,10 +99,6 @@ IconData _iconFor(_NotificationKind kind) {
 
 void showTopRightFromSnackBar(BuildContext context, SnackBar snackBar) {
   final overlay = Overlay.of(context, rootOverlay: true);
-  if (overlay == null) {
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    return;
-  }
 
   _topRightNotificationTimer?.cancel();
   _topRightNotificationEntry?.remove();

@@ -61,6 +61,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Prijslabels en benefit-teksten in NL en EN synchroon houden.
 - Gebruik onderscheid tussen abonnement, losse aankoop en credit redemption in copy.
 - Vermijd provider-jargon in player UI; gebruik heldere termen als `betaalpagina`, `abonnement`, `credits`.
+- Redirect-feedback voor `paid`, `success`, `cancelled`, `failed` en `expired` moet player-facing meertalig zijn en semantisch kloppen voor VIP versus losse aankoop/credits.
 
 ## When To Update This File
 Update bij nieuwe betaalproviders, nieuwe premium-producttypes, nieuwe entitlement-effecten, webhook- of refund-flows en admin-support uitbreidingen.

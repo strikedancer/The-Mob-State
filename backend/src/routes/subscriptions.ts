@@ -679,12 +679,21 @@ async function createMollieCheckout(options: {
   sequenceType?: 'first';
 }) {
   const mollie = getMollieClient();
-  const redirectBaseUrl = `${APP_URL}/?section=premium`;
+  const redirectParams = new URLSearchParams({
+    section: 'premium',
+    status: options.redirectStatus,
+    purchase: options.metadata.type,
+  });
+  const cancelParams = new URLSearchParams({
+    section: 'premium',
+    status: 'cancelled',
+    purchase: options.metadata.type,
+  });
   const payment = await mollie.payments.create({
     amount: { currency: 'EUR', value: options.amountValue },
     description: options.description,
-    redirectUrl: `${redirectBaseUrl}&status=${options.redirectStatus}`,
-    cancelUrl: `${redirectBaseUrl}&status=cancelled`,
+    redirectUrl: `${APP_URL}/?${redirectParams.toString()}`,
+    cancelUrl: `${APP_URL}/?${cancelParams.toString()}`,
     webhookUrl: MOLLIE_WEBHOOK_URL,
     customerId: options.customerId,
     sequenceType: options.sequenceType,

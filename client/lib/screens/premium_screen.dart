@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import '../utils/top_right_notification.dart';
 
 class PremiumScreen extends StatefulWidget {
   const PremiumScreen({super.key, this.embedded = false});
@@ -28,6 +29,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
   int _creditBalance = 0;
 
   bool get _isNl => (AppLocalizations.of(context)?.localeName ?? 'en') == 'nl';
+
+  void _showTopRightMessage(String message, Color backgroundColor) {
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(message),
+        backgroundColor: backgroundColor,
+      ),
+    );
+  }
 
   Future<void> _openCheckoutUrl(String checkoutUrl) async {
     final uri = Uri.parse(checkoutUrl);
@@ -105,21 +116,46 @@ class _PremiumScreenState extends State<PremiumScreen> {
   void _showRedirectFeedback() {
     if (!mounted) return;
     final status = Uri.base.queryParameters['status'];
+    final purchase = Uri.base.queryParameters['purchase'];
     if (status == null || status.isEmpty) return;
 
     String? message;
     Color color = Colors.green;
     if (status == 'paid' || status == 'success') {
-      message = _tr('Betaling ontvangen. Premiumstatus wordt ververst.', 'Payment received. Refreshing premium status.');
+      if (purchase == 'one_time') {
+        message = _tr(
+          'Aankoop ontvangen. Je credits en premium-overzicht worden ververst.',
+          'Purchase received. Refreshing your credits and premium overview.',
+        );
+      } else if (purchase == 'crew_vip') {
+        message = _tr(
+          'Crew VIP betaling ontvangen. Je premium-overzicht wordt ververst.',
+          'Crew VIP payment received. Refreshing your premium overview.',
+        );
+      } else {
+        message = _tr(
+          'VIP betaling ontvangen. Je premium-overzicht wordt ververst.',
+          'VIP payment received. Refreshing your premium overview.',
+        );
+      }
     } else if (status == 'cancelled') {
-      message = _tr('Betaling geannuleerd.', 'Payment cancelled.');
+      if (purchase == 'one_time') {
+        message = _tr('Aankoop geannuleerd.', 'Purchase cancelled.');
+      } else {
+        message = _tr('Betaling geannuleerd.', 'Payment cancelled.');
+      }
       color = Colors.orange;
+    } else if (status == 'failed' || status == 'expired') {
+      if (purchase == 'one_time') {
+        message = _tr('Aankoop mislukt of verlopen.', 'Purchase failed or expired.');
+      } else {
+        message = _tr('Betaling mislukt of verlopen.', 'Payment failed or expired.');
+      }
+      color = Colors.red;
     }
 
     if (message != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message), backgroundColor: color),
-      );
+      _showTopRightMessage(message, color);
     }
   }
 
@@ -153,11 +189,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
       await _openCheckoutUrl(checkoutUrl);
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(_tr('Openen van de betaalpagina mislukt.', 'Failed to open the payment page.')),
-          backgroundColor: Colors.red,
-        ),
+      _showTopRightMessage(
+        _tr('Openen van de betaalpagina mislukt.', 'Failed to open the payment page.'),
+        Colors.red,
       );
     } finally {
       if (mounted) {
@@ -169,16 +203,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
   Future<void> _redeemCreditItem(Map<String, dynamic> item) async {
     final effectType = (item['effectType'] ?? '').toString();
     if (effectType == 'VEHICLE_REPAIR_FINISH' || effectType == 'VEHICLE_TUNE_RESET') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            _tr(
-              'Dit item vereist een voertuigkeuze en wordt straks vanuit het voertuigen-scherm ingewisseld.',
-              'This item requires a vehicle selection and will be redeemed from the vehicle screen.',
-            ),
-          ),
-          backgroundColor: Colors.orange,
+      _showTopRightMessage(
+        _tr(
+          'Dit item vereist een voertuigkeuze en wordt straks vanuit het voertuigen-scherm ingewisseld.',
+          'This item requires a vehicle selection and will be redeemed from the vehicle screen.',
         ),
+        Colors.orange,
       );
       return;
     }
@@ -197,20 +227,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
       }
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text((payload['message'] ?? _tr('Credits ingewisseld.', 'Credits redeemed.')).toString()),
-          backgroundColor: Colors.green,
-        ),
+      _showTopRightMessage(
+        (payload['message'] ?? _tr('Credits ingewisseld.', 'Credits redeemed.')).toString(),
+        Colors.green,
       );
       await _loadData();
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(_tr('Credits inwisselen mislukt.', 'Failed to redeem credits.')),
-          backgroundColor: Colors.red,
-        ),
+      _showTopRightMessage(
+        _tr('Credits inwisselen mislukt.', 'Failed to redeem credits.'),
+        Colors.red,
       );
     } finally {
       if (mounted) {
