@@ -25,6 +25,7 @@ import 'screens/school_screen.dart';
 import 'screens/help_screen.dart';
 import 'screens/tune_shop_screen.dart';
 import 'screens/territory_screen.dart';
+import 'screens/premium_screen.dart';
 import 'widgets/mobile_web_sticky_player_header.dart';
 import 'services/notification_service.dart';
 
@@ -50,6 +51,10 @@ class MafiaGameApp extends StatelessWidget {
 
     if (path == '/auth/reset-password') {
       return ResetPasswordScreen(initialToken: Uri.base.queryParameters['token']);
+    }
+
+    if (path == '/premium') {
+      return const PremiumScreen();
     }
 
     return const AuthWrapper();
@@ -118,6 +123,7 @@ class MafiaGameApp extends StatelessWidget {
             '/help': (context) => const HelpScreen(),
             '/tune-shop': (context) => const TuneShopScreen(),
             '/territory': (context) => const TerritoryScreen(),
+            '/premium': (context) => const PremiumScreen(),
           },
         ),
       ),

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder, type AdminImageModuleOverviewResponse } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type CreditShopItem, type CreateCreditShopItemPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder, type AdminImageModuleOverviewResponse } from './services/adminService'
 import { CrewWarsAdminPanel } from './components/CrewWarsAdminPanel'
 import { TerritoryAdminPanel } from './components/TerritoryAdminPanel'
 
@@ -26,6 +26,10 @@ const HITLIST_LOOT_CASH_PERCENT_KEY = 'HITLIST_LOOT_CASH_PERCENT'
 const HITLIST_LOOT_ITEM_PERCENT_KEY = 'HITLIST_LOOT_ITEM_PERCENT'
 const HITLIST_LOOT_CASH_PERCENT_DEFAULT = '60'
 const HITLIST_LOOT_ITEM_PERCENT_DEFAULT = '50'
+const PREMIUM_PLAYER_VIP_PRICE_KEY = 'PREMIUM_PLAYER_VIP_PRICE_EUR'
+const PREMIUM_CREW_VIP_PRICE_KEY = 'PREMIUM_CREW_VIP_PRICE_EUR'
+const PREMIUM_PLAYER_VIP_PRICE_DEFAULT = '4.99'
+const PREMIUM_CREW_VIP_PRICE_DEFAULT = '9.99'
 type ActivitySort = 'date_desc' | 'date_asc' | 'type_asc' | 'type_desc'
 type ActivityTimezone = 'local' | 'utc'
 type SavedRecentActionsView = {
@@ -571,10 +575,27 @@ interface PremiumOfferPreview {
   titleEn: string
   imageUrl: string | null
   priceEurCents: number
-  rewardType: 'money' | 'ammo'
+  rewardType: 'money' | 'ammo' | 'credits'
   moneyAmount: number | null
   ammoType: string | null
   ammoQuantity: number | null
+  creditAmount: number | null
+}
+
+const defaultNewCreditShopItem: CreateCreditShopItemPayload = {
+  key: '',
+  titleNl: '',
+  titleEn: '',
+  descriptionNl: '',
+  descriptionEn: '',
+  creditCost: 10,
+  effectType: 'CASH_BUNDLE',
+  moneyAmount: 10000,
+  durationHours: 24,
+  actionType: 'crime',
+  metadataJson: '',
+  isActive: true,
+  sortOrder: 10,
 }
 
 const defaultNewVehicleForm: NewVehicleForm = {
@@ -608,6 +629,7 @@ const defaultNewPremiumOffer: CreatePremiumOfferPayload = {
   moneyAmount: 10000,
   ammoType: '9mm',
   ammoQuantity: 100,
+  creditAmount: 25,
   isActive: true,
   showPopupOnOpen: false,
   notifyAllPlayers: false,
@@ -806,7 +828,10 @@ function App() {
   // Premium offers state
   const [premiumOffers, setPremiumOffers] = useState<PremiumOffer[]>([])
   const [premiumOffersLoading, setPremiumOffersLoading] = useState(false)
+  const [creditShopItems, setCreditShopItems] = useState<CreditShopItem[]>([])
+  const [creditShopItemsLoading, setCreditShopItemsLoading] = useState(false)
   const [newPremiumOffer, setNewPremiumOffer] = useState<CreatePremiumOfferPayload>(defaultNewPremiumOffer)
+  const [newCreditShopItem, setNewCreditShopItem] = useState<CreateCreditShopItemPayload>(defaultNewCreditShopItem)
   const [previewOffer, setPreviewOffer] = useState<PremiumOfferPreview | null>(null)
   const [filterPopupOnly, setFilterPopupOnly] = useState(false)
 
@@ -998,7 +1023,7 @@ function App() {
   }, [isAuthenticated, activeTab])
 
   useEffect(() => {
-    if (isAuthenticated && activeTab === 'config') {
+    if (isAuthenticated && (activeTab === 'config' || activeTab === 'premium-offers')) {
       loadConfig()
     }
   }, [isAuthenticated, activeTab])
@@ -1018,6 +1043,7 @@ function App() {
   useEffect(() => {
     if (isAuthenticated && activeTab === 'premium-offers') {
       loadPremiumOffers()
+      loadCreditShopItems()
     }
   }, [isAuthenticated, activeTab])
 
@@ -1877,6 +1903,21 @@ function App() {
       setPremiumOffersLoading(false)
     }
   }
+
+  const loadCreditShopItems = async () => {
+    try {
+      setCreditShopItemsLoading(true)
+      const data = await adminService.getCreditShopItems()
+      setCreditShopItems(data.items || [])
+      setApiError('')
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load credit shop items:', err)
+      alert(l('Laden van credit shop items mislukt', 'Failed to load credit shop items'))
+    } finally {
+      setCreditShopItemsLoading(false)
+    }
+  }
   const loadNPCs = async () => {
     try {
       setNPCLoading(true)
@@ -2362,6 +2403,7 @@ function App() {
         moneyAmount: offer.rewardType === 'money' ? offer.moneyAmount : null,
         ammoType: offer.rewardType === 'ammo' ? offer.ammoType : null,
         ammoQuantity: offer.rewardType === 'ammo' ? offer.ammoQuantity : null,
+        creditAmount: offer.rewardType === 'credits' ? offer.creditAmount : null,
         isActive: offer.isActive,
         showPopupOnOpen: offer.showPopupOnOpen,
         sortOrder: offer.sortOrder,
@@ -2408,6 +2450,11 @@ function App() {
         return
       }
 
+      if (newPremiumOffer.rewardType === 'credits' && (!newPremiumOffer.creditAmount || newPremiumOffer.creditAmount <= 0)) {
+        alert(l('Credit hoeveelheid verplicht', 'Credit amount is required'))
+        return
+      }
+
       await adminService.createPremiumOffer({
         ...newPremiumOffer,
         key: newPremiumOffer.key.trim(),
@@ -2421,6 +2468,68 @@ function App() {
     } catch (err: any) {
       console.error('Failed to create premium offer:', err)
       alert(`${t.failedCreateOffer}: ${err.message || t.unknownError}`)
+    }
+  }
+
+  const updateCreditShopItemField = <K extends keyof CreditShopItem>(id: number, key: K, value: CreditShopItem[K]) => {
+    setCreditShopItems((prev) => prev.map((item) => (item.id === id ? { ...item, [key]: value } : item)))
+  }
+
+  const handleCreateCreditShopItem = async () => {
+    try {
+      if (!newCreditShopItem.key.trim()) {
+        alert(t.keyRequired)
+        return
+      }
+
+      await adminService.createCreditShopItem({
+        ...newCreditShopItem,
+        key: newCreditShopItem.key.trim(),
+        titleNl: newCreditShopItem.titleNl.trim(),
+        titleEn: newCreditShopItem.titleEn.trim(),
+      })
+      setNewCreditShopItem(defaultNewCreditShopItem)
+      await loadCreditShopItems()
+      alert(l('Credit shop item aangemaakt.', 'Credit shop item created.'))
+    } catch (err: any) {
+      console.error('Failed to create credit shop item:', err)
+      alert(`${l('Credit shop item aanmaken mislukt', 'Failed to create credit shop item')}: ${err.message || t.unknownError}`)
+    }
+  }
+
+  const handleSaveCreditShopItem = async (item: CreditShopItem) => {
+    try {
+      await adminService.updateCreditShopItem(item.id, {
+        titleNl: item.titleNl,
+        titleEn: item.titleEn,
+        descriptionNl: item.descriptionNl,
+        descriptionEn: item.descriptionEn,
+        creditCost: item.creditCost,
+        effectType: item.effectType,
+        moneyAmount: item.moneyAmount,
+        durationHours: item.durationHours,
+        actionType: item.actionType,
+        metadataJson: item.metadataJson,
+        isActive: item.isActive,
+        sortOrder: item.sortOrder,
+      })
+      await loadCreditShopItems()
+      alert(l('Credit shop item opgeslagen.', 'Credit shop item saved.'))
+    } catch (err: any) {
+      console.error('Failed to save credit shop item:', err)
+      alert(`${l('Credit shop item opslaan mislukt', 'Failed to save credit shop item')}: ${err.message || t.unknownError}`)
+    }
+  }
+
+  const handleDeleteCreditShopItem = async (item: CreditShopItem) => {
+    if (!window.confirm(l(`Credit shop item ${item.key} verwijderen?`, `Delete credit shop item ${item.key}?`))) return
+
+    try {
+      await adminService.deleteCreditShopItem(item.id)
+      await loadCreditShopItems()
+    } catch (err: any) {
+      console.error('Failed to delete credit shop item:', err)
+      alert(`${l('Credit shop item verwijderen mislukt', 'Failed to delete credit shop item')}: ${err.message || t.unknownError}`)
     }
   }
 
@@ -6966,7 +7075,33 @@ function App() {
           <>
             <h1>{t.premiumOffersTitle}</h1>
             <div className="config-warning">
-              {l('💡 Pas hier live prijzen en aantallen aan voor Mollie one-time aankopen. Geen backend wijziging nodig.', '💡 Manage live prices and quantities for Mollie one-time purchases here. No backend change needed.')}
+              {l('💡 Beheer hier VIP-prijzen, creditbundels en credit-shop items live vanuit admin.', '💡 Manage VIP pricing, credit bundles, and credit shop items live from admin here.')}
+            </div>
+
+            <div className="table-container" style={{ marginBottom: '1rem' }}>
+              <h3>{l('VIP abonnement prijzen', 'VIP subscription pricing')}</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                <div className="form-group">
+                  <label>{l('Speler VIP prijs (EUR)', 'Player VIP price (EUR)')}</label>
+                  <input
+                    type="text"
+                    value={editingConfig[PREMIUM_PLAYER_VIP_PRICE_KEY] ?? PREMIUM_PLAYER_VIP_PRICE_DEFAULT}
+                    onChange={(e) => setEditingConfig({ ...editingConfig, [PREMIUM_PLAYER_VIP_PRICE_KEY]: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>{l('Crew VIP prijs (EUR)', 'Crew VIP price (EUR)')}</label>
+                  <input
+                    type="text"
+                    value={editingConfig[PREMIUM_CREW_VIP_PRICE_KEY] ?? PREMIUM_CREW_VIP_PRICE_DEFAULT}
+                    onChange={(e) => setEditingConfig({ ...editingConfig, [PREMIUM_CREW_VIP_PRICE_KEY]: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="config-actions">
+                <button className="btn-small btn-success" onClick={handleSaveConfig}>{l('VIP prijzen opslaan', 'Save VIP prices')}</button>
+                <button className="btn-small" onClick={loadConfig}>{t.refresh}</button>
+              </div>
             </div>
 
             <div className="table-container" style={{ marginBottom: '1rem' }}>
@@ -7019,10 +7154,11 @@ function App() {
                   <label>{l('Type', 'Type')}</label>
                   <select
                     value={newPremiumOffer.rewardType}
-                    onChange={(e) => setNewPremiumOffer({ ...newPremiumOffer, rewardType: e.target.value as 'money' | 'ammo' })}
+                    onChange={(e) => setNewPremiumOffer({ ...newPremiumOffer, rewardType: e.target.value as 'money' | 'ammo' | 'credits' })}
                   >
                     <option value="money">{l('geld', 'money')}</option>
                     <option value="ammo">{l('munitie', 'ammo')}</option>
+                    <option value="credits">{l('credits', 'credits')}</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -7050,6 +7186,15 @@ function App() {
                     min="0"
                     value={newPremiumOffer.ammoQuantity ?? 0}
                     onChange={(e) => setNewPremiumOffer({ ...newPremiumOffer, ammoQuantity: parseInt(e.target.value || '0', 10) })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>{l('Credit hoeveelheid', 'Credit amount')}</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={newPremiumOffer.creditAmount ?? 0}
+                    onChange={(e) => setNewPremiumOffer({ ...newPremiumOffer, creditAmount: parseInt(e.target.value || '0', 10) })}
                   />
                 </div>
                 <div className="form-group">
@@ -7110,6 +7255,7 @@ function App() {
                       moneyAmount: newPremiumOffer.moneyAmount,
                       ammoType: newPremiumOffer.ammoType,
                       ammoQuantity: newPremiumOffer.ammoQuantity,
+                      creditAmount: newPremiumOffer.creditAmount,
                     })
                   }
                 >
@@ -7144,6 +7290,7 @@ function App() {
                     <th>{l('Money hoeveelheid', 'Money amount')}</th>
                     <th>{l('Ammo type', 'Ammo type')}</th>
                     <th>{l('Ammo aantal', 'Ammo qty')}</th>
+                    <th>{l('Credits', 'Credits')}</th>
                     <th>{l('Actief', 'Active')}</th>
                     <th>{l('Popup', 'Popup')}</th>
                     <th>{l('Sortering', 'Sort')}</th>
@@ -7195,10 +7342,11 @@ function App() {
                       <td>
                         <select
                           value={offer.rewardType}
-                          onChange={(e) => updatePremiumOfferField(offer.id, 'rewardType', e.target.value as 'money' | 'ammo')}
+                          onChange={(e) => updatePremiumOfferField(offer.id, 'rewardType', e.target.value as 'money' | 'ammo' | 'credits')}
                         >
                           <option value="money">{l('geld', 'money')}</option>
                           <option value="ammo">{l('munitie', 'ammo')}</option>
+                          <option value="credits">{l('credits', 'credits')}</option>
                         </select>
                       </td>
                       <td>
@@ -7222,6 +7370,14 @@ function App() {
                           min="0"
                           value={offer.ammoQuantity ?? 0}
                           onChange={(e) => updatePremiumOfferField(offer.id, 'ammoQuantity', parseInt(e.target.value || '0', 10))}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          min="0"
+                          value={offer.creditAmount ?? 0}
+                          onChange={(e) => updatePremiumOfferField(offer.id, 'creditAmount', parseInt(e.target.value || '0', 10))}
                         />
                       </td>
                       <td>
@@ -7283,7 +7439,9 @@ function App() {
                     <strong>{l('Beloning', 'Reward')}:</strong>{' '}
                     {previewOffer.rewardType === 'money'
                       ? `+€${previewOffer.moneyAmount ?? 0}`
-                      : `${previewOffer.ammoType ?? '-'} x${previewOffer.ammoQuantity ?? 0}`}
+                      : previewOffer.rewardType === 'credits'
+                        ? `+${previewOffer.creditAmount ?? 0} ${l('credits', 'credits')}`
+                        : `${previewOffer.ammoType ?? '-'} x${previewOffer.ammoQuantity ?? 0}`}
                   </p>
                   <div className="modal-actions">
                     <button className="btn-small" onClick={() => setPreviewOffer(null)}>{t.close}</button>
@@ -7385,6 +7543,111 @@ function App() {
                   >
                     {l('Open ticket', 'Open ticket')} #{editingSupportTodo.ticketId}
                   </button>
+
+              <div className="table-container" style={{ marginTop: '1rem' }}>
+                <h3>{l('Credit shop items', 'Credit shop items')}</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, minmax(120px, 1fr))', gap: '0.75rem', marginBottom: '1rem' }}>
+                  <div className="form-group">
+                    <label>{l('Sleutel', 'Key')}</label>
+                    <input value={newCreditShopItem.key} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, key: e.target.value })} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('NL titel', 'NL title')}</label>
+                    <input value={newCreditShopItem.titleNl} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, titleNl: e.target.value })} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('EN titel', 'EN title')}</label>
+                    <input value={newCreditShopItem.titleEn} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, titleEn: e.target.value })} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Credit kosten', 'Credit cost')}</label>
+                    <input type="number" min="1" value={newCreditShopItem.creditCost} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, creditCost: parseInt(e.target.value || '0', 10) })} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Effecttype', 'Effect type')}</label>
+                    <select value={newCreditShopItem.effectType} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, effectType: e.target.value as CreditShopItem['effectType'] })}>
+                      <option value="CASH_BUNDLE">CASH_BUNDLE</option>
+                      <option value="HIT_PROTECTION">HIT_PROTECTION</option>
+                      <option value="VEHICLE_REPAIR_FINISH">VEHICLE_REPAIR_FINISH</option>
+                      <option value="VEHICLE_TUNE_RESET">VEHICLE_TUNE_RESET</option>
+                      <option value="ACTION_COOLDOWN_RESET">ACTION_COOLDOWN_RESET</option>
+                      <option value="EVENT_BOOST">EVENT_BOOST</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Money hoeveelheid', 'Money amount')}</label>
+                    <input type="number" min="0" value={newCreditShopItem.moneyAmount ?? 0} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, moneyAmount: parseInt(e.target.value || '0', 10) })} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Duur (uur)', 'Duration (hours)')}</label>
+                    <input type="number" min="0" value={newCreditShopItem.durationHours ?? 0} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, durationHours: parseInt(e.target.value || '0', 10) })} />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Action type', 'Action type')}</label>
+                    <input value={newCreditShopItem.actionType ?? ''} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, actionType: e.target.value })} placeholder="crime" />
+                  </div>
+                  <div className="form-group">
+                    <label>{l('Sortering', 'Sort')}</label>
+                    <input type="number" min="0" value={newCreditShopItem.sortOrder} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, sortOrder: parseInt(e.target.value || '0', 10) })} />
+                  </div>
+                  <div className="form-group" style={{ alignSelf: 'end' }}>
+                    <label>
+                      <input type="checkbox" checked={newCreditShopItem.isActive} onChange={(e) => setNewCreditShopItem({ ...newCreditShopItem, isActive: e.target.checked })} /> {l('Actief', 'Active')}
+                    </label>
+                  </div>
+                </div>
+                <div className="config-actions">
+                  <button className="btn-small btn-success" onClick={handleCreateCreditShopItem}>{l('Credit item toevoegen', 'Add credit item')}</button>
+                  <button className="btn-small" onClick={loadCreditShopItems} disabled={creditShopItemsLoading}>{creditShopItemsLoading ? t.loading : t.refresh}</button>
+                </div>
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>{l('Sleutel', 'Key')}</th>
+                      <th>{l('NL titel', 'NL title')}</th>
+                      <th>{l('EN titel', 'EN title')}</th>
+                      <th>{l('Credits', 'Credits')}</th>
+                      <th>{l('Effect', 'Effect')}</th>
+                      <th>{l('Money', 'Money')}</th>
+                      <th>{l('Uren', 'Hours')}</th>
+                      <th>{l('Actie type', 'Action type')}</th>
+                      <th>{l('Actief', 'Active')}</th>
+                      <th>{l('Sortering', 'Sort')}</th>
+                      <th>{l('Actie', 'Action')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {creditShopItems.map((item) => (
+                      <tr key={item.id}>
+                        <td><strong>{item.key}</strong></td>
+                        <td><input value={item.titleNl} onChange={(e) => updateCreditShopItemField(item.id, 'titleNl', e.target.value)} /></td>
+                        <td><input value={item.titleEn} onChange={(e) => updateCreditShopItemField(item.id, 'titleEn', e.target.value)} /></td>
+                        <td><input type="number" min="1" value={item.creditCost} onChange={(e) => updateCreditShopItemField(item.id, 'creditCost', parseInt(e.target.value || '0', 10))} /></td>
+                        <td>
+                          <select value={item.effectType} onChange={(e) => updateCreditShopItemField(item.id, 'effectType', e.target.value as CreditShopItem['effectType'])}>
+                            <option value="CASH_BUNDLE">CASH_BUNDLE</option>
+                            <option value="HIT_PROTECTION">HIT_PROTECTION</option>
+                            <option value="VEHICLE_REPAIR_FINISH">VEHICLE_REPAIR_FINISH</option>
+                            <option value="VEHICLE_TUNE_RESET">VEHICLE_TUNE_RESET</option>
+                            <option value="ACTION_COOLDOWN_RESET">ACTION_COOLDOWN_RESET</option>
+                            <option value="EVENT_BOOST">EVENT_BOOST</option>
+                          </select>
+                        </td>
+                        <td><input type="number" min="0" value={item.moneyAmount ?? 0} onChange={(e) => updateCreditShopItemField(item.id, 'moneyAmount', parseInt(e.target.value || '0', 10))} /></td>
+                        <td><input type="number" min="0" value={item.durationHours ?? 0} onChange={(e) => updateCreditShopItemField(item.id, 'durationHours', parseInt(e.target.value || '0', 10))} /></td>
+                        <td><input value={item.actionType ?? ''} onChange={(e) => updateCreditShopItemField(item.id, 'actionType', e.target.value)} /></td>
+                        <td><input type="checkbox" checked={item.isActive} onChange={(e) => updateCreditShopItemField(item.id, 'isActive', e.target.checked)} /></td>
+                        <td><input type="number" min="0" value={item.sortOrder} onChange={(e) => updateCreditShopItemField(item.id, 'sortOrder', parseInt(e.target.value || '0', 10))} /></td>
+                        <td>
+                          <button className="btn-small btn-success" onClick={() => handleSaveCreditShopItem(item)}>{t.save}</button>
+                          {' '}
+                          <button className="btn-small btn-danger" onClick={() => handleDeleteCreditShopItem(item)}>{t.delete}</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
                 </div>
               )}
               <div className="form-group">

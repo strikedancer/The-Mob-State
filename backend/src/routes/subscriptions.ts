@@ -21,6 +21,7 @@ const MOLLIE_WEBHOOK_URL = process.env.MOLLIE_WEBHOOK_URL || `${APP_URL}/subscri
 const PLAYER_VIP_PRICE_EUR = process.env.MOLLIE_PLAYER_VIP_PRICE_EUR || '4.99';
 const CREW_VIP_PRICE_EUR = process.env.MOLLIE_CREW_VIP_PRICE_EUR || '9.99';
 const MAX_NON_VIP_BUILDING_LEVEL = 10;
+const PREMIUM_RUNTIME_KEYS = ['PREMIUM_PLAYER_VIP_PRICE_EUR', 'PREMIUM_CREW_VIP_PRICE_EUR'] as const;
 
 type PremiumOfferRecord = {
   id: number;
@@ -102,8 +103,27 @@ function extendVipExpiry(current: Date | null | undefined) {
   return addDays(base, 30);
 }
 
-function getVipPrice(type: 'player_vip' | 'crew_vip') {
-  return type === 'crew_vip' ? CREW_VIP_PRICE_EUR : PLAYER_VIP_PRICE_EUR;
+async function getPremiumPricing() {
+  const placeholders = PREMIUM_RUNTIME_KEYS.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+    `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+    ...PREMIUM_RUNTIME_KEYS,
+  );
+
+  const values = rows.reduce<Record<string, string>>((acc, row) => {
+    acc[row.configKey] = String(row.configValue ?? '').trim();
+    return acc;
+  }, {});
+
+  return {
+    playerVipPriceEur: values.PREMIUM_PLAYER_VIP_PRICE_EUR || PLAYER_VIP_PRICE_EUR,
+    crewVipPriceEur: values.PREMIUM_CREW_VIP_PRICE_EUR || CREW_VIP_PRICE_EUR,
+  };
+}
+
+async function getVipPrice(type: 'player_vip' | 'crew_vip') {
+  const pricing = await getPremiumPricing();
+  return type === 'crew_vip' ? pricing.crewVipPriceEur : pricing.playerVipPriceEur;
 }
 
 function getVipDescription(type: 'player_vip' | 'crew_vip', locale: 'nl' | 'en') {
@@ -518,7 +538,7 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
 
 async function ensureVipSubscription(metadata: PaymentMetadata, customerId: string) {
   const mollie = getMollieClient();
-  const price = getVipPrice(metadata.type);
+  const price = await getVipPrice(metadata.type);
   const startDate = toDateString(addDays(new Date(), 30));
 
   if (metadata.type === 'player_vip') {
@@ -616,10 +636,11 @@ router.post('/checkout/player-vip', authenticate, async (req: Request, res: Resp
     });
 
     const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
+    const vipPriceEur = await getVipPrice('player_vip');
     const payment = await createMollieCheckout({
       playerId,
       customerId,
-      amountValue: PLAYER_VIP_PRICE_EUR,
+      amountValue: vipPriceEur,
       description: getVipDescription('player_vip', 'en'),
       checkoutType: 'PLAYER_VIP',
       redirectStatus: 'success',
@@ -665,10 +686,11 @@ router.post('/checkout/crew-vip', authenticate, async (req: Request, res: Respon
     });
 
     const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
+    const vipPriceEur = await getVipPrice('crew_vip');
     const payment = await createMollieCheckout({
       playerId,
       customerId,
-      amountValue: CREW_VIP_PRICE_EUR,
+      amountValue: vipPriceEur,
       description: getVipDescription('crew_vip', 'en'),
       checkoutType: 'CREW_VIP',
       redirectStatus: 'success',
@@ -871,7 +893,7 @@ router.post('/credits/redeem', authenticate, async (req: Request, res: Response)
 router.get('/status', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const playerId = (req as any).player?.id as number;
-    const [player, membership] = await Promise.all([
+    const [player, membership, pricing] = await Promise.all([
       prisma.player.findUnique({
         where: { id: playerId },
         select: {
@@ -895,6 +917,7 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
           },
         },
       }),
+      getPremiumPricing(),
     ]);
 
     return res.json({
@@ -903,7 +926,7 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
         isVip: player?.isVip || false,
         expiresAt: player?.vipExpiresAt || null,
         subscriptionId: player?.mollieSubscriptionId || null,
-        monthlyPriceEur: PLAYER_VIP_PRICE_EUR,
+        monthlyPriceEur: pricing.playerVipPriceEur,
       },
       crewVip: membership
         ? {
@@ -911,7 +934,7 @@ router.get('/status', authenticate, async (req: Request, res: Response, next: Ne
             isVip: membership.crew.isVip,
             expiresAt: membership.crew.vipExpiresAt,
             subscriptionId: membership.crew.mollieSubscriptionId || null,
-            monthlyPriceEur: CREW_VIP_PRICE_EUR,
+            monthlyPriceEur: pricing.crewVipPriceEur,
           }
         : null,
       credits: {

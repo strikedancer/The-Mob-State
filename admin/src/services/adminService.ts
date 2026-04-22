@@ -43,10 +43,11 @@ export interface PremiumOffer {
   titleEn: string;
   imageUrl: string | null;
   priceEurCents: number;
-  rewardType: 'money' | 'ammo';
+  rewardType: 'money' | 'ammo' | 'credits';
   moneyAmount: number | null;
   ammoType: string | null;
   ammoQuantity: number | null;
+  creditAmount: number | null;
   isActive: boolean;
   showPopupOnOpen: boolean;
   sortOrder: number;
@@ -58,13 +59,47 @@ export interface CreatePremiumOfferPayload {
   titleEn: string;
   imageUrl: string | null;
   priceEurCents: number;
-  rewardType: 'money' | 'ammo';
+  rewardType: 'money' | 'ammo' | 'credits';
   moneyAmount: number | null;
   ammoType: string | null;
   ammoQuantity: number | null;
+  creditAmount: number | null;
   isActive: boolean;
   showPopupOnOpen: boolean;
   notifyAllPlayers: boolean;
+  sortOrder: number;
+}
+
+export interface CreditShopItem {
+  id: number;
+  key: string;
+  titleNl: string;
+  titleEn: string;
+  descriptionNl: string | null;
+  descriptionEn: string | null;
+  creditCost: number;
+  effectType: 'CASH_BUNDLE' | 'HIT_PROTECTION' | 'VEHICLE_REPAIR_FINISH' | 'VEHICLE_TUNE_RESET' | 'ACTION_COOLDOWN_RESET' | 'EVENT_BOOST';
+  moneyAmount: number | null;
+  durationHours: number | null;
+  actionType: string | null;
+  metadataJson: string | null;
+  isActive: boolean;
+  sortOrder: number;
+}
+
+export interface CreateCreditShopItemPayload {
+  key: string;
+  titleNl: string;
+  titleEn: string;
+  descriptionNl: string | null;
+  descriptionEn: string | null;
+  creditCost: number;
+  effectType: CreditShopItem['effectType'];
+  moneyAmount: number | null;
+  durationHours: number | null;
+  actionType: string | null;
+  metadataJson: string | null;
+  isActive: boolean;
   sortOrder: number;
 }
 
@@ -1478,6 +1513,73 @@ export const adminService = {
     if (!response.ok) {
       const error = await response.json().catch(() => ({ error: 'Failed to delete premium offer' }));
       throw new Error(error.error || 'Failed to delete premium offer');
+    }
+
+    return response.json();
+  },
+
+  async getCreditShopItems(): Promise<{ items: CreditShopItem[] }> {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/credit-shop-items`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch credit shop items');
+    return response.json();
+  },
+
+  async createCreditShopItem(payload: CreateCreditShopItemPayload) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/credit-shop-items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to create credit shop item' }));
+      throw new Error(error.error || 'Failed to create credit shop item');
+    }
+
+    return response.json();
+  },
+
+  async updateCreditShopItem(id: number, payload: Omit<CreateCreditShopItemPayload, 'key'>) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/credit-shop-items/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to update credit shop item' }));
+      throw new Error(error.error || 'Failed to update credit shop item');
+    }
+
+    return response.json();
+  },
+
+  async deleteCreditShopItem(id: number) {
+    const token = adminAuthService.getToken();
+    const response = await fetch(`${API_URL}/admin/credit-shop-items/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Failed to delete credit shop item' }));
+      throw new Error(error.error || 'Failed to delete credit shop item');
     }
 
     return response.json();

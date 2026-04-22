@@ -1633,4 +1633,45 @@ const List<HelpTopic> helpTopics = [
     ],
     protocolPath: 'docs/module-protocols/settings.md',
   ),
+  HelpTopic(
+    id: 'premium',
+    categoryNl: 'Basis',
+    categoryEn: 'Core',
+    icon: Icons.workspace_premium,
+    titleNl: 'Premium & Credits',
+    titleEn: 'Premium & Credits',
+    summaryNl:
+        'Koop en beheer hier Player VIP, Crew VIP en creditbundels. Dit overzicht toont ook je creditsaldo en alle beschikbare credit-items die je direct of contextueel kunt gebruiken.',
+    summaryEn:
+        'Buy and manage Player VIP, Crew VIP and credit bundles here. This overview also shows your credit balance and all available credit items you can use directly or contextually.',
+    howNl: [
+      'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.',
+      'Player VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.',
+      'VIP checkout opent de betaalpagina en landt daarna terug op `/premium`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.',
+      'Creditbundels koop je met echt geld. Na succesvolle betaling verschijnen de credits meteen in je wallet-overzicht.',
+      'Credit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.',
+      'Sommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm.',
+      'Prijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.',
+    ],
+    howEn: [
+      'Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.',
+      'Player VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew.',
+      'VIP checkout opens the payment page and then returns to `/premium`, so you immediately see whether the purchase succeeded and how long your VIP runs.',
+      'Credit bundles are bought with real money. After a successful payment the credits appear in your wallet overview right away.',
+      'Credit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.',
+      'Some credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead.',
+      'Prices and available items are managed live in admin. That means VIP prices, credit costs and the available offer can change without an app update.',
+    ],
+    tipsNl: [
+      'Controleer eerst je creditsaldo en vervaldatum voordat je opnieuw koopt; vaak is verlengen nuttiger dan blind stapelen.',
+      'Gebruik credits vooral op tijdkritische boosts of bescherming, niet automatisch op elke kleine versnelling.',
+      'Zit je nog niet in een crew, begin dan eerder met Player VIP of een creditbundel dan met Crew VIP.',
+    ],
+    tipsEn: [
+      'Check your credit balance and expiry date before buying again; extending is often better than stacking blindly.',
+      'Use credits mainly on time-critical boosts or protection, not automatically on every small shortcut.',
+      'If you are not in a crew yet, start with Player VIP or a credit bundle before Crew VIP.',
+    ],
+    protocolPath: 'docs/module-protocols/payments.md',
+  ),
 ];

@@ -31,6 +31,9 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Credits-balance moet altijd herleidbaar zijn via ledger-mutaties.
 - Checkout failure of webhook-delay mag geen halve grants of negatieve saldo's veroorzaken.
 - Bestaande gameplay-perks mogen niet gratis bereikbaar worden door premium regressies.
+- Player premium toegang hoort via een dedicated Premium & Credits scherm beschikbaar te zijn, niet alleen via verborgen crew-subflows.
+- Player VIP en Crew VIP prijzen moeten runtime-config-gestuurd blijven zodat admin ze live kan aanpassen zonder backend deploy.
+- Credit koopbundels en credit-redemption costs moeten admin-beheerbaar zijn via de premium adminflow en niet hardcoded in player UI.
 
 ## Backend Contract Guardrails
 - Nieuwe provider-velden en transaction-modellen moeten ook in Prisma bestaan vóór gebruik.

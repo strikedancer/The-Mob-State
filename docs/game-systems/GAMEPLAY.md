@@ -834,6 +834,16 @@ Bob: €300K counter-hit
 
 ## Formules & Berekeningen
 
+## Premium & Credits
+
+- Spelers hebben een aparte `Premium & Credits` pagina in het side menu en op de directe route `/premium`.
+- Dit scherm toont Player VIP, Crew VIP, creditbundels, je actuele creditsaldo en de actieve credit-items.
+- Player VIP is persoonlijk. Crew VIP werkt alleen als je in een crew zit en ondersteunt crew-perks en VIP-gated upgrades.
+- VIP- en credit-checkouts openen de betaalpagina en keren daarna terug naar het premium-overzicht, zodat de speler direct de uitkomst en vernieuwde status ziet.
+- Credit-items gebruiken wallet-credits in plaats van euro's. Admin beheert live welke items actief zijn, wat ze kosten en welk effecttype ze gebruiken.
+- Mogelijke credit-effecten zijn onder meer cash bundles, hit protection, cooldown resets, event boosts en context-gebonden voertuigacties.
+- VIP-prijzen en credit-kosten zijn runtime-config/admin-gestuurd en dus niet langer vaste clientwaarden.
+
 ### Arrest Chances
 ```javascript
 // Police arrest

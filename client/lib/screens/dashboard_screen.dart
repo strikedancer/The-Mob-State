@@ -54,6 +54,7 @@ import 'events_screen.dart';
 import 'help_screen.dart';
 import 'territory_screen.dart';
 import 'player_profile_screen.dart';
+import 'premium_screen.dart';
 import 'support_tickets_screen.dart';
 
 enum _WebSection {
@@ -68,6 +69,7 @@ enum _WebSection {
   travel,
   aviation,
   crew,
+  premium,
   friends,
   inventory,
   properties,
@@ -814,6 +816,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             badge: 0,
           ),
           (
+            icon: Icons.workspace_premium,
+            label: _tr('Premium & Credits', 'Premium & Credits'),
+            section: _WebSection.premium,
+            badge: 0,
+          ),
+          (
             icon: Icons.group,
             label: l10n.friends,
             section: _WebSection.friends,
@@ -1544,6 +1552,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return const AviationScreen();
       case _WebSection.crew:
         return const CrewScreen();
+      case _WebSection.premium:
+        return const PremiumScreen(embedded: true);
       case _WebSection.friends:
         return const FriendsScreen();
       case _WebSection.inventory:
