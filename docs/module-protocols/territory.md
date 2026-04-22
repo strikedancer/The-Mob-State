@@ -47,6 +47,7 @@
   - Territory admin/live API serialisatie-fix: `overview` en `leaderboard` normaliseren aggregate velden zoals `COUNT(...)` nu expliciet naar gewone numbers voordat Express JSON rendert, zodat admin/system logs geen `Do not know how to serialize a BigInt` meer krijgen op territory responses
   - Territory contest-start response-fix: ook de nieuw aangemaakte `contestId` uit `LAST_INSERT_ID()` wordt nu genormaliseerd naar een gewone number voordat de success-response teruggaat, zodat een eerste klik op `Aanvallen` niet stil een 500 geeft terwijl de contest al is gestart
   - Territory live start-fix: contest-start haalt de nieuw aangemaakte row nu via `LAST_INSERT_ID()` op in plaats van een exacte `startedAt` timestamp-match; hierdoor rollen starts op MariaDB `DATETIME`-kolommen zonder milliseconden niet meer stil terug. De attacker-actie `raid` gebruikt in de UI bovendien weer de correcte lowercase backend-action key
+  - Territory strategische regio-laag: regio-seed bewaart nu echte `strategicTagsJson` en `neighborsJson` voor Nederland, mapdata exposeert strategische rollen plus buursteun, en contest-actions krijgen nu regio- en adjacency-afhankelijke bonuspunten zodat havens, hoofdsteden, industrie- en grensregio's ook echt verschillend spelen
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -112,7 +113,7 @@ Scope-afbakening:
 - `nameNl`, `nameEn`
 - `svgElementId` (id in SVG)
 - `valueTier` (economy waarde)
-- `strategicTags` (harbor, border, capital, industry)
+- `strategicTags` (harbor, border, capital, industry, logistics)
 - `neighborsJson` (adjacency)
 
 ### Control
@@ -142,6 +143,7 @@ Scope-afbakening:
 - Resolve-berekeningen moeten expliciet numeriek normaliseren op SQL aggregate-waarden (`SUM`, `COUNT`, bigint/decimal strings), zodat attacker-only contests niet stil als `no winner` eindigen door string-concatenatie of impliciete typecoercion.
 - Bij retries/idempotency: contest resolve en reward payout exact-once semantics.
 - Querys op region ownership moeten consistent zijn tussen map endpoint en leaderboard endpoint.
+- Als `strategicTagsJson` of `neighborsJson` gebruikt worden voor scoring of action previews, moeten map endpoint, action response en modalinfo dezelfde bronwaarden gebruiken zodat UI-preview en server-authoritative punttoekenning niet uit elkaar lopen.
 
 ## Runtime Settings (Admin-Only, Database)
 Gebruik `runtime_config` (via admin config API) voor alle territory tuning.

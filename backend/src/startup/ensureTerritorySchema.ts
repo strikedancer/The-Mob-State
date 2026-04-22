@@ -61,6 +61,8 @@ type TerritorySeedRegion = {
   en: string;
   svg: string;
   tier: number;
+  strategicTags?: string[];
+  neighbors?: string[];
 };
 
 function normalizeTerritoryRegionKey(svgElementId: string): string {
@@ -91,8 +93,15 @@ function buildAutoRegions(countryCode: string, svgAssetKey: string): TerritorySe
       en: safeName,
       svg: seed.svg,
       tier: 2,
+      strategicTags: [],
+      neighbors: [],
     };
   });
+}
+
+function normalizeSeedList(values: string[] | undefined): string[] {
+  if (!values || values.length == 0) return [];
+  return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
 }
 
 function validateTerritorySeedRegions(regions: TerritorySeedRegion[]): void {
@@ -339,19 +348,59 @@ export async function ensureTerritorySchema(): Promise<void> {
 
   // ── Seed regions ──────────────────────────────────────────────────────────
   const nlRegions = [
-    { countryCode: 'nl', key: 'nl-groningen',     nl: 'Groningen',     en: 'Groningen',      svg: 'NL-GR', tier: 2 },
-    { countryCode: 'nl', key: 'nl-friesland',     nl: 'Friesland',     en: 'Friesland',      svg: 'NL-FR', tier: 1 },
-    { countryCode: 'nl', key: 'nl-drenthe',       nl: 'Drenthe',       en: 'Drenthe',        svg: 'NL-DR', tier: 1 },
-    { countryCode: 'nl', key: 'nl-overijssel',    nl: 'Overijssel',    en: 'Overijssel',     svg: 'NL-OV', tier: 2 },
-    { countryCode: 'nl', key: 'nl-flevoland',     nl: 'Flevoland',     en: 'Flevoland',      svg: 'NL-FL', tier: 1 },
-    { countryCode: 'nl', key: 'nl-gelderland',    nl: 'Gelderland',    en: 'Gelderland',     svg: 'NL-GE', tier: 2 },
-    { countryCode: 'nl', key: 'nl-utrecht',       nl: 'Utrecht',       en: 'Utrecht',        svg: 'NL-UT', tier: 3 },
-    { countryCode: 'nl', key: 'nl-noord-holland', nl: 'Noord-Holland', en: 'North Holland',  svg: 'NL-NH', tier: 3 },
-    { countryCode: 'nl', key: 'nl-zuid-holland',  nl: 'Zuid-Holland',  en: 'South Holland',  svg: 'NL-ZH', tier: 3 },
-    { countryCode: 'nl', key: 'nl-zeeland',       nl: 'Zeeland',       en: 'Zeeland',        svg: 'NL-ZE', tier: 1 },
-    { countryCode: 'nl', key: 'nl-noord-brabant', nl: 'Noord-Brabant', en: 'North Brabant',  svg: 'NL-NB', tier: 2 },
-    { countryCode: 'nl', key: 'nl-limburg',       nl: 'Limburg',       en: 'Limburg',        svg: 'NL-LI', tier: 2 },
-  ] satisfies TerritorySeedRegion[];
+    {
+      countryCode: 'nl', key: 'nl-groningen', nl: 'Groningen', en: 'Groningen', svg: 'NL-GR', tier: 2,
+      strategicTags: ['harbor', 'border'], neighbors: ['nl-friesland', 'nl-drenthe'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-friesland', nl: 'Friesland', en: 'Friesland', svg: 'NL-FR', tier: 1,
+      strategicTags: ['harbor'], neighbors: ['nl-groningen', 'nl-drenthe', 'nl-flevoland', 'nl-noord-holland'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-drenthe', nl: 'Drenthe', en: 'Drenthe', svg: 'NL-DR', tier: 1,
+      strategicTags: ['border'], neighbors: ['nl-groningen', 'nl-friesland', 'nl-overijssel'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-overijssel', nl: 'Overijssel', en: 'Overijssel', svg: 'NL-OV', tier: 2,
+      strategicTags: ['industry', 'border'], neighbors: ['nl-drenthe', 'nl-flevoland', 'nl-gelderland'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-flevoland', nl: 'Flevoland', en: 'Flevoland', svg: 'NL-FL', tier: 1,
+      strategicTags: ['logistics'], neighbors: ['nl-friesland', 'nl-overijssel', 'nl-gelderland', 'nl-utrecht', 'nl-noord-holland'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-gelderland', nl: 'Gelderland', en: 'Gelderland', svg: 'NL-GE', tier: 2,
+      strategicTags: ['industry', 'border'], neighbors: ['nl-overijssel', 'nl-flevoland', 'nl-utrecht', 'nl-zuid-holland', 'nl-noord-brabant', 'nl-limburg'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-utrecht', nl: 'Utrecht', en: 'Utrecht', svg: 'NL-UT', tier: 3,
+      strategicTags: ['capital', 'logistics'], neighbors: ['nl-flevoland', 'nl-gelderland', 'nl-noord-holland', 'nl-zuid-holland', 'nl-noord-brabant'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-noord-holland', nl: 'Noord-Holland', en: 'North Holland', svg: 'NL-NH', tier: 3,
+      strategicTags: ['capital', 'harbor'], neighbors: ['nl-friesland', 'nl-flevoland', 'nl-utrecht', 'nl-zuid-holland'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-zuid-holland', nl: 'Zuid-Holland', en: 'South Holland', svg: 'NL-ZH', tier: 3,
+      strategicTags: ['capital', 'harbor', 'industry'], neighbors: ['nl-noord-holland', 'nl-utrecht', 'nl-gelderland', 'nl-zeeland', 'nl-noord-brabant'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-zeeland', nl: 'Zeeland', en: 'Zeeland', svg: 'NL-ZE', tier: 1,
+      strategicTags: ['harbor'], neighbors: ['nl-zuid-holland', 'nl-noord-brabant'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-noord-brabant', nl: 'Noord-Brabant', en: 'North Brabant', svg: 'NL-NB', tier: 2,
+      strategicTags: ['industry', 'logistics'], neighbors: ['nl-zeeland', 'nl-zuid-holland', 'nl-utrecht', 'nl-gelderland', 'nl-limburg'],
+    },
+    {
+      countryCode: 'nl', key: 'nl-limburg', nl: 'Limburg', en: 'Limburg', svg: 'NL-LI', tier: 2,
+      strategicTags: ['border', 'logistics'], neighbors: ['nl-gelderland', 'nl-noord-brabant'],
+    },
+  ].map((region) => ({
+    ...region,
+    strategicTags: normalizeSeedList(region.strategicTags),
+    neighbors: normalizeSeedList(region.neighbors),
+  })) satisfies TerritorySeedRegion[];
 
   const autoRegions = countries.flatMap((country) => {
     if (country.code === 'nl') {
@@ -366,16 +415,25 @@ export async function ensureTerritorySchema(): Promise<void> {
 
   for (const r of allRegions) {
     await prisma.$executeRawUnsafe(
-      `INSERT INTO territory_regions (countryCode, regionKey, nameNl, nameEn, svgElementId, valueTier, enabled)
-       VALUES (?, ?, ?, ?, ?, ?, 1)
+      `INSERT INTO territory_regions (countryCode, regionKey, nameNl, nameEn, svgElementId, valueTier, strategicTagsJson, neighborsJson, enabled)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
        ON DUPLICATE KEY UPDATE
          countryCode = VALUES(countryCode),
          nameNl = VALUES(nameNl),
          nameEn = VALUES(nameEn),
          svgElementId = VALUES(svgElementId),
+         strategicTagsJson = VALUES(strategicTagsJson),
+         neighborsJson = VALUES(neighborsJson),
          valueTier = VALUES(valueTier),
          enabled = VALUES(enabled)`,
-      r.countryCode, r.key, r.nl, r.en, r.svg, r.tier,
+      r.countryCode,
+      r.key,
+      r.nl,
+      r.en,
+      r.svg,
+      r.tier,
+      JSON.stringify(normalizeSeedList(r.strategicTags)),
+      JSON.stringify(normalizeSeedList(r.neighbors)),
     );
 
     // Ensure a control row exists for each region (neutral by default)

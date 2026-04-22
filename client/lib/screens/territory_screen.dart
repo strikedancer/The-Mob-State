@@ -435,6 +435,39 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     return _t('elke $minutes min', 'every $minutes min');
   }
 
+  String _strategicTagLabel(String tag) {
+    switch (tag.toLowerCase()) {
+      case 'capital':
+        return _t('Bestuurlijk centrum', 'Administrative center');
+      case 'harbor':
+        return _t('Haven', 'Harbor');
+      case 'industry':
+        return _t('Industrie', 'Industry');
+      case 'border':
+        return _t('Grensregio', 'Border region');
+      case 'logistics':
+        return _t('Logistiek knooppunt', 'Logistics hub');
+      default:
+        return tag;
+    }
+  }
+
+  String _strategicBonusesLabel(List<dynamic> rawBonuses) {
+    final labels = <String>[];
+    for (final rawBonus in rawBonuses) {
+      if (rawBonus is! Map) continue;
+      final bonusPoints = (rawBonus['bonusPoints'] as num?)?.toInt() ?? 0;
+      if (bonusPoints <= 0) continue;
+      final label = _isNl
+          ? (rawBonus['labelNl'] as String?)
+          : (rawBonus['labelEn'] as String?);
+      final safeLabel = label?.trim();
+      if (safeLabel == null || safeLabel.isEmpty) continue;
+      labels.add('+$bonusPoints $safeLabel');
+    }
+    return labels.join(' · ');
+  }
+
   _SvgRegionShape? _shapeForRegion(Map<String, dynamic> region) {
     final svgElementId = (region['svgElementId'] as String?)?.trim();
     if (svgElementId == null || svgElementId.isEmpty) return null;
@@ -1629,6 +1662,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       (region['passiveIncomeCashDaily'] as num?)?.toInt() ?? (passiveIncomeCashHourly * 24);
     final passiveIncomeIntervalMinutes =
       (region['passiveIncomeIntervalMinutes'] as num?)?.toInt() ?? 60;
+    final strategicTags = ((region['strategicTags'] as List<dynamic>?) ?? const <dynamic>[])
+      .map((tag) => _strategicTagLabel(tag.toString()))
+      .where((tag) => tag.trim().isNotEmpty)
+      .toList(growable: false);
+    final adjacentOwnedRegions =
+      (region['adjacentOwnedRegions'] as num?)?.toInt() ?? 0;
+    final strategicActionBonuses =
+      (region['strategicActionBonuses'] as List<dynamic>?) ?? const <dynamic>[];
+    final strategicBonusesLabel = _strategicBonusesLabel(strategicActionBonuses);
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -1655,6 +1697,21 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         _t('Uitbetaling', 'Payout'),
         '${formatCurrency(passiveIncomeCash)} · ${_incomeIntervalLabel(passiveIncomeIntervalMinutes)}',
       ),
+      if (strategicTags.isNotEmpty)
+        _detailRow(
+          _t('Strategische rol', 'Strategic role'),
+          strategicTags.join(' · '),
+        ),
+      if (adjacentOwnedRegions > 0)
+        _detailRow(
+          _t('Aangrenzende eigen regio\'s', 'Adjacent owned regions'),
+          '$adjacentOwnedRegions',
+        ),
+      if (strategicBonusesLabel.isNotEmpty)
+        _detailRow(
+          _t('Actiebonussen', 'Action bonuses'),
+          strategicBonusesLabel,
+        ),
       _detailRow(
         _t('Opbrengst per uur', 'Income per hour'),
         formatCurrency(passiveIncomeCashHourly),

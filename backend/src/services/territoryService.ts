@@ -195,6 +195,17 @@ function parseJson(v: string | null | undefined): Record<string, unknown> {
   try { return JSON.parse(v) as Record<string, unknown>; } catch { return {}; }
 }
 
+function parseStringArray(value: string | null | undefined): string[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+    return [...new Set(parsed.map((entry) => String(entry ?? '').trim()).filter(Boolean))];
+  } catch {
+    return [];
+  }
+}
+
 function toNumeric(value: unknown): number {
   if (typeof value === 'number') return Number.isFinite(value) ? value : 0;
   if (typeof value === 'bigint') return Number(value);
@@ -246,6 +257,80 @@ function buildPassiveIncomeSnapshot(
     amountPerHour,
     amountPerDay: amountPerHour * 24,
   };
+}
+
+type StrategicActionBonus = {
+  actionType: string;
+  bonusPoints: number;
+  source: 'strategic-tag' | 'adjacency';
+  labelNl: string;
+  labelEn: string;
+};
+
+function buildStrategicActionBonuses(
+  region: RegionRow,
+  adjacentOwnedRegions: number,
+): StrategicActionBonus[] {
+  const bonuses: StrategicActionBonus[] = [];
+  const strategicTags = parseStringArray(region.strategicTagsJson).map((tag) => tag.toLowerCase());
+  const pushBonus = (
+    actionType: string,
+    bonusPoints: number,
+    labelNl: string,
+    labelEn: string,
+    source: 'strategic-tag' | 'adjacency' = 'strategic-tag',
+  ) => {
+    bonuses.push({ actionType, bonusPoints, source, labelNl, labelEn });
+  };
+
+  if (strategicTags.includes('capital')) {
+    pushBonus('defense', 2, 'Bestuurlijke kern', 'Administrative stronghold');
+    pushBonus('patrol', 1, 'Bestuurlijke kern', 'Administrative stronghold');
+  }
+  if (strategicTags.includes('harbor')) {
+    pushBonus('intel_scan', 1, 'Havenroutes', 'Harbor routes');
+    pushBonus('supply_run', 1, 'Havenroutes', 'Harbor routes');
+  }
+  if (strategicTags.includes('industry')) {
+    pushBonus('sabotage', 2, 'Industriele infrastructuur', 'Industrial infrastructure');
+    pushBonus('supply_run', 1, 'Industriele infrastructuur', 'Industrial infrastructure');
+  }
+  if (strategicTags.includes('border')) {
+    pushBonus('raid', 1, 'Grenscorridor', 'Border corridor');
+    pushBonus('patrol', 1, 'Grenscorridor', 'Border corridor');
+  }
+  if (strategicTags.includes('logistics')) {
+    pushBonus('supply_run', 2, 'Logistiek knooppunt', 'Logistics hub');
+    pushBonus('raid', 1, 'Logistiek knooppunt', 'Logistics hub');
+  }
+  if (adjacentOwnedRegions > 0) {
+    const adjacencyPoints = Math.min(2, adjacentOwnedRegions);
+    pushBonus('patrol', adjacencyPoints, 'Steun uit aangrenzende regio\'s', 'Support from adjacent regions', 'adjacency');
+    pushBonus('raid', adjacencyPoints, 'Steun uit aangrenzende regio\'s', 'Support from adjacent regions', 'adjacency');
+    pushBonus('defense', adjacencyPoints, 'Steun uit aangrenzende regio\'s', 'Support from adjacent regions', 'adjacency');
+  }
+
+  return bonuses;
+}
+
+function getActionBonusForType(bonuses: StrategicActionBonus[], actionType: string): number {
+  return bonuses
+    .filter((bonus) => bonus.actionType === actionType)
+    .reduce((sum, bonus) => sum + bonus.bonusPoints, 0);
+}
+
+async function getAdjacentOwnedRegionCount(region: RegionRow, crewId: number): Promise<number> {
+  const neighbors = parseStringArray(region.neighborsJson);
+  if (neighbors.length === 0) return 0;
+  const placeholders = neighbors.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+    `SELECT COUNT(*) AS cnt
+     FROM territory_control
+     WHERE ownerCrewId = ? AND regionKey IN (${placeholders})`,
+    crewId,
+    ...neighbors,
+  );
+  return toNumeric(rows[0]?.cnt ?? 0);
 }
 
 async function processPassiveTerritoryIncome(
@@ -468,6 +553,10 @@ export async function getMapData(
     passiveIncomeCash: number;
     passiveIncomeCashHourly: number;
     passiveIncomeCashDaily: number;
+    strategicTags: string[];
+    neighbors: string[];
+    adjacentOwnedRegions: number;
+    strategicActionBonuses: StrategicActionBonus[];
   }>;
 }> {
   await syncContestLifecycle();
@@ -560,6 +649,15 @@ export async function getMapData(
       return Number(cpJson[String(ctrl.ownerCrewId)] ?? 0);
     })() : 0;
     const incomeSnapshot = buildPassiveIncomeSnapshot(r.valueTier, cfg);
+    const strategicTags = parseStringArray(r.strategicTagsJson);
+    const neighbors = parseStringArray(r.neighborsJson);
+    const adjacentOwnedRegions = viewer?.viewerCrewId == null
+      ? 0
+      : neighbors.reduce((count, neighborKey) => {
+          const neighborControl = controlMap[neighborKey];
+          return count + (neighborControl?.ownerCrewId === viewer.viewerCrewId ? 1 : 0);
+        }, 0);
+    const strategicActionBonuses = buildStrategicActionBonuses(r, adjacentOwnedRegions);
     return {
       ...r,
       ownerCrewId: ctrl?.ownerCrewId ?? null,
@@ -583,6 +681,10 @@ export async function getMapData(
       passiveIncomeCash: incomeSnapshot.amountPerInterval,
       passiveIncomeCashHourly: incomeSnapshot.amountPerHour,
       passiveIncomeCashDaily: incomeSnapshot.amountPerDay,
+      strategicTags,
+      neighbors,
+      adjacentOwnedRegions,
+      strategicActionBonuses,
     };
   });
 
@@ -973,7 +1075,10 @@ export async function doAction(
     raid: 12,
     defense: 6,
   };
-  const pointsDelta = abuseFlagged ? 0 : (ACTION_POINTS[actionType] ?? 4);
+  const adjacentOwnedRegions = await getAdjacentOwnedRegionCount(contestRegion, crewId);
+  const strategicActionBonuses = buildStrategicActionBonuses(contestRegion, adjacentOwnedRegions);
+  const actionBonusPoints = getActionBonusForType(strategicActionBonuses, actionType);
+  const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
   const stabilityDelta = actionType === 'sabotage' ? -5 : (actionType === 'supply_run' ? 3 : 0);
 
   await prisma.$executeRawUnsafe(
@@ -987,6 +1092,16 @@ export async function doAction(
 
   return {
     pointsDelta,
+    adjacentOwnedRegions,
+    actionBonusPoints,
+    strategicActionBonuses: strategicActionBonuses
+      .filter((bonus) => bonus.actionType == actionType)
+      .map((bonus) => ({
+        bonusPoints: bonus.bonusPoints,
+        source: bonus.source,
+        labelNl: bonus.labelNl,
+        labelEn: bonus.labelEn,
+      })),
     message: abuseFlagged ? 'ANTI_FARM_LIMITED' : 'ACTION_OK',
   };
 }
