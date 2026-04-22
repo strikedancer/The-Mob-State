@@ -52,6 +52,11 @@ const TERRITORY_CONFIG_DEFAULTS: Record<string, string> = {
   TERRITORY_PASSIVE_INCOME_TIER_2_CASH: '50000',
   TERRITORY_PASSIVE_INCOME_TIER_3_CASH: '90000',
   TERRITORY_PASSIVE_INCOME_TIER_4_CASH: '140000',
+  TERRITORY_WAR_AFTERMATH_HOURS: '6',
+  TERRITORY_WAR_AFTERMATH_TARGET_ATTACK_BONUS: '3',
+  TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS: '1',
+  TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY: '20',
+  TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY: '10',
 };
 
 type TerritorySeedRegion = {
@@ -256,6 +261,30 @@ export async function ensureTerritorySchema(): Promise<void> {
       INDEX idx_territory_actions_actor (actorId),
       INDEX idx_territory_actions_crew (actorCrewId),
       INDEX idx_territory_actions_created (createdAt)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  // ── Temporary Region Effects ─────────────────────────────────────────────
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS territory_region_effects (
+      id INT NOT NULL AUTO_INCREMENT,
+      regionKey VARCHAR(60) NOT NULL,
+      effectType VARCHAR(32) NOT NULL,
+      sourceType VARCHAR(32) NOT NULL DEFAULT 'crew_war',
+      sourceId INT NULL,
+      favoredCrewId INT NULL,
+      affectedCrewId INT NULL,
+      metadataJson LONGTEXT NULL,
+      startsAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      endsAt DATETIME NOT NULL,
+      resolvedAt DATETIME NULL,
+      createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      INDEX idx_territory_region_effects_region (regionKey),
+      INDEX idx_territory_region_effects_type (effectType),
+      INDEX idx_territory_region_effects_source (sourceType, sourceId),
+      INDEX idx_territory_region_effects_active (endsAt, resolvedAt)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 

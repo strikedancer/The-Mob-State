@@ -676,18 +676,45 @@ export class NotificationService {
     playerId: number,
     warId: number,
     winnerCrewId: number,
+    winnerCrewName?: string | null,
+    territoryAftermath?: {
+      theaterRegionKey?: string | null;
+      affectedRegionKeys?: string[];
+      endsAt?: Date | string | null;
+    } | null,
     language?: Language
   ): Promise<void> {
     const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
     const title = resolvedLanguage === 'nl' ? 'Crew-oorlog afgelopen' : 'Crew war ended';
+    const affectedCount = territoryAftermath?.affectedRegionKeys?.length ?? 0;
+    const rawEndsAt = territoryAftermath?.endsAt;
+    const aftermathEndsAt = rawEndsAt instanceof Date
+      ? rawEndsAt
+      : (typeof rawEndsAt === 'string' ? new Date(rawEndsAt) : null);
+    const hasAftermath = affectedCount > 0 && aftermathEndsAt && !Number.isNaN(aftermathEndsAt.getTime());
+    const winnerLabel = winnerCrewName?.trim()
+      ? (resolvedLanguage === 'nl'
+          ? `${winnerCrewName} (#${winnerCrewId})`
+          : `${winnerCrewName} (#${winnerCrewId})`)
+      : `#${winnerCrewId}`;
+    const aftermathSuffix = hasAftermath
+      ? (resolvedLanguage === 'nl'
+          ? ` Tijdelijke oorlogsdruk is actief op ${affectedCount} Territory-regio${affectedCount === 1 ? '' : '\'s'} tot ${aftermathEndsAt.toLocaleString('nl-NL', { hour12: false })}.`
+          : ` Temporary war pressure is active on ${affectedCount} Territory region${affectedCount === 1 ? '' : 's'} until ${aftermathEndsAt.toLocaleString('en-GB', { hour12: false })}.`)
+      : '';
     const body = resolvedLanguage === 'nl'
-      ? `Oorlog #${warId} is afgerond. Winnende crew: #${winnerCrewId}.`
-      : `War #${warId} has been resolved. Winning crew: #${winnerCrewId}.`;
+      ? `Oorlog #${warId} is afgerond. Winnende crew: ${winnerLabel}.${aftermathSuffix}`
+      : `War #${warId} has been resolved. Winning crew: ${winnerLabel}.${aftermathSuffix}`;
 
     await this.sendToPlayer(playerId, title, body, {
       type: 'crew_war_ended',
       warId: String(warId),
       winnerCrewId: String(winnerCrewId),
+      winnerCrewName: winnerCrewName ?? '',
+      territoryAftermathActive: hasAftermath ? '1' : '0',
+      territoryAftermathRegionCount: String(affectedCount),
+      territoryAftermathEndsAt: aftermathEndsAt?.toISOString() ?? '',
+      territoryAftermathTheaterRegionKey: territoryAftermath?.theaterRegionKey ?? '',
     });
   }
 

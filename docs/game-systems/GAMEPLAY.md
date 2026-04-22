@@ -260,6 +260,7 @@ Voorbeelden:
 - Nederlandse Territory-regio's hebben nu ook strategische rollen zoals haven, hoofdstad, industrie, grensregio of logistiek knooppunt. Die rol beïnvloedt welke contest-actions in dat gebied extra punten opleveren.
 - Als jouw crew al aangrenzende regio's bezit, krijg je in contests extra buursteun. Daardoor zijn aangesloten gebieden makkelijker te verdedigen en waardevoller als samenhangend blok dan als losse eilanden.
 - De regio-modal toont nu niet alleen payout en status, maar ook de strategische rol, het aantal aangrenzende eigen regio's en welke actiebonussen daar actief zijn.
+- Na een gewonnen **Territory War** of **Total War** kunnen doelregio's tijdelijk **war pressure** krijgen. In de Territory-modal zie je dan extra oorlogsdruk, effectieve stabiliteit en hoe lang die tijdelijke nasleep nog actief blijft.
 - **Belangrijke regel**: bekijken mag in elk land, maar aanvallen, verdedigen en andere Territory-contestacties werken alleen in het land waar je speler zich op dat moment echt bevindt.
 - Voorbeeld: zit je in Nederland en open je de kaart van België, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar België reist.
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
@@ -348,6 +349,7 @@ Voorbeelden:
 - War-targets worden niet meer alleen gekozen op regio-waarde, maar ook op strategische tags en aangrenzende druk van aanvaller en verdediger. Daardoor ontstaan in Territory Wars logischere frontlinies.
 - Een geclaimde war-regio levert tijdens de war periodieke `territory_tick` punten op. Strategisch sterkere regio's leveren meer tick-punten dan gewone gebieden.
 - In de War Room zie je per war-regio nu direct wie het gebied houdt en hoeveel claim-/tick-waarde het doel heeft, zodat crews hun calls beter kunnen plannen.
+- Wint een crew zo'n war, dan laat dat tijdelijk sporen na in echte Territory-regio's rond het front. Daardoor kan de winnaar kort druk doorzetten op die regio's zonder dat de onderliggende Territory-stabiliteit permanent kapot blijft.
 
 ### Heists
 

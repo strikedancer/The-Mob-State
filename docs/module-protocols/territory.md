@@ -48,6 +48,7 @@
   - Territory contest-start response-fix: ook de nieuw aangemaakte `contestId` uit `LAST_INSERT_ID()` wordt nu genormaliseerd naar een gewone number voordat de success-response teruggaat, zodat een eerste klik op `Aanvallen` niet stil een 500 geeft terwijl de contest al is gestart
   - Territory live start-fix: contest-start haalt de nieuw aangemaakte row nu via `LAST_INSERT_ID()` op in plaats van een exacte `startedAt` timestamp-match; hierdoor rollen starts op MariaDB `DATETIME`-kolommen zonder milliseconden niet meer stil terug. De attacker-actie `raid` gebruikt in de UI bovendien weer de correcte lowercase backend-action key
   - Territory strategische regio-laag: regio-seed bewaart nu echte `strategicTagsJson` en `neighborsJson` voor Nederland, mapdata exposeert strategische rollen plus buursteun, en contest-actions krijgen nu regio- en adjacency-afhankelijke bonuspunten zodat havens, hoofdsteden, industrie- en grensregio's ook echt verschillend spelen
+  - Territory aftermath-laag: gewonnen `territory_war` en `total_war` kunnen nu tijdelijke `territory_region_effects` schrijven op echte Territory-regio's, zodat Theater-/doelregio's en aangrenzende vijandelijke regio's tijdelijk extra oorlogsdruk tonen zonder persistente `stability` permanent te vervuilen
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -144,6 +145,7 @@ Scope-afbakening:
 - Bij retries/idempotency: contest resolve en reward payout exact-once semantics.
 - Querys op region ownership moeten consistent zijn tussen map endpoint en leaderboard endpoint.
 - Als `strategicTagsJson` of `neighborsJson` gebruikt worden voor scoring of action previews, moeten map endpoint, action response en modalinfo dezelfde bronwaarden gebruiken zodat UI-preview en server-authoritative punttoekenning niet uit elkaar lopen.
+- Tijdelijke war-aftermath effecten mogen geen permanente mutatie op `territory_control.stability` zijn zolang stability geen autonome recovery-flow heeft; tijdelijke druk hoort in een aparte effectlaag met `startsAt`/`endsAt` te leven.
 
 ## Runtime Settings (Admin-Only, Database)
 Gebruik `runtime_config` (via admin config API) voor alle territory tuning.

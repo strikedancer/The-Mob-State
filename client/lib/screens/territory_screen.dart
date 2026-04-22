@@ -1671,6 +1671,15 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final strategicActionBonuses =
       (region['strategicActionBonuses'] as List<dynamic>?) ?? const <dynamic>[];
     final strategicBonusesLabel = _strategicBonusesLabel(strategicActionBonuses);
+    final effectiveStability =
+      (region['effectiveStability'] as num?)?.toInt() ?? stability;
+    final activeWarPressure = (region['activeWarPressure'] as Map?)?.cast<String, dynamic>();
+    final warPressureEndsAt = _parseApiDate(activeWarPressure?['endsAt']);
+    final warPressureBonus = (activeWarPressure?['attackBonusPoints'] as num?)?.toInt() ?? 0;
+    final warPressurePenalty = (activeWarPressure?['stabilityPenalty'] as num?)?.toInt() ?? 0;
+    final warPressureRegionRole = (activeWarPressure?['regionRole'] as String?) ?? 'target';
+    final warPressureCrewName = (activeWarPressure?['favoredCrewName'] as String?)
+      ?? activeWarPressure?['favoredCrewId']?.toString();
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -1688,6 +1697,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         ownerName ?? _t('Neutraal', 'Neutral'),
       ),
       _detailRow(_t('Stabiliteit', 'Stability'), '$stability%'),
+      if (effectiveStability != stability)
+        _detailRow(
+          _t('Effectieve stabiliteit', 'Effective stability'),
+          '$effectiveStability%',
+        ),
       _detailRow(
         _t('Controle', 'Control'),
         '${controlPercent.toStringAsFixed(controlPercent.truncateToDouble() == controlPercent ? 0 : 1)}%',
@@ -1711,6 +1725,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         _detailRow(
           _t('Actiebonussen', 'Action bonuses'),
           strategicBonusesLabel,
+        ),
+      if (activeWarPressure != null)
+        _detailRow(
+          _t('War pressure', 'War pressure'),
+          '${warPressureCrewName ?? _t('Onbekend', 'Unknown')} · +$warPressureBonus ${_t('aanvalsdruk', 'attack pressure')} · -$warPressurePenalty ${_t('stabiliteit', 'stability')} · ${warPressureRegionRole == 'theater' ? _t('theater-regio', 'theater region') : warPressureRegionRole == 'adjacent' ? _t('aangrenzende regio', 'adjacent region') : _t('doelregio', 'target region')}',
+        ),
+      if (activeWarPressure != null && warPressureEndsAt != null)
+        _detailRow(
+          _t('War pressure eindigt over', 'War pressure ends in'),
+          _countdownLabel(warPressureEndsAt),
         ),
       _detailRow(
         _t('Opbrengst per uur', 'Income per hour'),

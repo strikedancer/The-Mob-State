@@ -47,6 +47,11 @@ async function getTerritoryConfig() {
     'TERRITORY_PASSIVE_INCOME_TIER_2_CASH',
     'TERRITORY_PASSIVE_INCOME_TIER_3_CASH',
     'TERRITORY_PASSIVE_INCOME_TIER_4_CASH',
+    'TERRITORY_WAR_AFTERMATH_HOURS',
+    'TERRITORY_WAR_AFTERMATH_TARGET_ATTACK_BONUS',
+    'TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS',
+    'TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY',
+    'TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY',
   ];
   const cfg = await getRuntimeConfig(keys);
   return {
@@ -72,6 +77,11 @@ async function getTerritoryConfig() {
     passiveIncomeTier2Cash: Number(cfg['TERRITORY_PASSIVE_INCOME_TIER_2_CASH'] ?? 50000),
     passiveIncomeTier3Cash: Number(cfg['TERRITORY_PASSIVE_INCOME_TIER_3_CASH'] ?? 90000),
     passiveIncomeTier4Cash: Number(cfg['TERRITORY_PASSIVE_INCOME_TIER_4_CASH'] ?? 140000),
+    warAftermathHours: Number(cfg['TERRITORY_WAR_AFTERMATH_HOURS'] ?? 6),
+    warAftermathTargetAttackBonus: Number(cfg['TERRITORY_WAR_AFTERMATH_TARGET_ATTACK_BONUS'] ?? 3),
+    warAftermathAdjacentAttackBonus: Number(cfg['TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS'] ?? 1),
+    warAftermathTargetStabilityPenalty: Number(cfg['TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY'] ?? 20),
+    warAftermathAdjacentStabilityPenalty: Number(cfg['TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY'] ?? 10),
   };
 }
 
@@ -99,6 +109,34 @@ type PassiveIncomePayoutRow = {
   payoutCycles: number;
   payoutAmount: number;
   newLastIncomeAt: Date;
+};
+
+type RegionEffectRow = {
+  id: number;
+  regionKey: string;
+  effectType: string;
+  sourceType: string;
+  sourceId: number | null;
+  favoredCrewId: number | null;
+  affectedCrewId: number | null;
+  metadataJson: string | null;
+  startsAt: Date;
+  endsAt: Date;
+  resolvedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type ActiveWarPressureEffect = {
+  effectId: number;
+  sourceWarId: number | null;
+  favoredCrewId: number | null;
+  affectedCrewId: number | null;
+  attackBonusPoints: number;
+  stabilityPenalty: number;
+  regionRole: 'theater' | 'target' | 'adjacent';
+  startsAt: Date;
+  endsAt: Date;
 };
 
 type TerritoryIncomeSnapshot = {
@@ -262,10 +300,68 @@ function buildPassiveIncomeSnapshot(
 type StrategicActionBonus = {
   actionType: string;
   bonusPoints: number;
-  source: 'strategic-tag' | 'adjacency';
+  source: 'strategic-tag' | 'adjacency' | 'war-aftermath';
   labelNl: string;
   labelEn: string;
 };
+
+function parseWarPressureEffect(row: RegionEffectRow): ActiveWarPressureEffect | null {
+  if (row.effectType !== 'crew_war_aftermath') return null;
+  const metadata = parseJson(row.metadataJson);
+  const regionRoleRaw = String(metadata.regionRole ?? 'target').trim().toLowerCase();
+  const regionRole = regionRoleRaw === 'theater' || regionRoleRaw === 'adjacent' ? regionRoleRaw : 'target';
+  return {
+    effectId: row.id,
+    sourceWarId: row.sourceId == null ? null : Number(row.sourceId),
+    favoredCrewId: row.favoredCrewId == null ? null : Number(row.favoredCrewId),
+    affectedCrewId: row.affectedCrewId == null ? null : Number(row.affectedCrewId),
+    attackBonusPoints: Number(metadata.attackBonusPoints ?? 0),
+    stabilityPenalty: Number(metadata.stabilityPenalty ?? 0),
+    regionRole,
+    startsAt: row.startsAt,
+    endsAt: row.endsAt,
+  };
+}
+
+async function getActiveWarPressureEffects(regionKeys: string[], now: Date): Promise<Record<string, ActiveWarPressureEffect>> {
+  if (regionKeys.length === 0) return {};
+  const placeholders = regionKeys.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<RegionEffectRow[]>(
+    `SELECT *
+     FROM territory_region_effects
+     WHERE effectType = 'crew_war_aftermath'
+       AND resolvedAt IS NULL
+       AND startsAt <= ?
+       AND endsAt > ?
+       AND regionKey IN (${placeholders})
+     ORDER BY createdAt DESC`,
+    now,
+    now,
+    ...regionKeys,
+  );
+
+  const effectMap: Record<string, ActiveWarPressureEffect> = {};
+  for (const row of rows) {
+    const effect = parseWarPressureEffect(row);
+    if (!effect) continue;
+    const current = effectMap[row.regionKey];
+    if (!current || effect.stabilityPenalty > current.stabilityPenalty || effect.attackBonusPoints > current.attackBonusPoints) {
+      effectMap[row.regionKey] = effect;
+    }
+  }
+  return effectMap;
+}
+
+function buildWarPressureActionBonuses(effect: ActiveWarPressureEffect | null): StrategicActionBonus[] {
+  if (!effect || effect.attackBonusPoints <= 0) return [];
+  return ['intel_scan', 'sabotage', 'raid'].map((actionType) => ({
+    actionType,
+    bonusPoints: effect.attackBonusPoints,
+    source: 'war-aftermath' as const,
+    labelNl: 'Nasleep crew war',
+    labelEn: 'Crew war aftermath',
+  }));
+}
 
 function buildStrategicActionBonuses(
   region: RegionRow,
@@ -556,6 +652,17 @@ export async function getMapData(
     strategicTags: string[];
     neighbors: string[];
     adjacentOwnedRegions: number;
+    effectiveStability: number;
+    activeWarPressure: {
+      favoredCrewId: number | null;
+      favoredCrewName: string | null;
+      affectedCrewId: number | null;
+      affectedCrewName: string | null;
+      attackBonusPoints: number;
+      stabilityPenalty: number;
+      regionRole: 'theater' | 'target' | 'adjacent';
+      endsAt: Date;
+    } | null;
     strategicActionBonuses: StrategicActionBonus[];
   }>;
 }> {
@@ -592,8 +699,18 @@ export async function getMapData(
   const country = countries[0];
   if (!country) throw new Error('COUNTRY_NOT_FOUND');
 
+  const activeWarPressureByRegion = await getActiveWarPressureEffects(
+    regions.map((region) => region.regionKey),
+    now,
+  );
+
   // Build owner crew name lookup from crew ids
-  const ownerIds = [...new Set(controls.filter(c => c.ownerCrewId).map(c => c.ownerCrewId!))];
+  const ownerIds = [...new Set([
+    ...controls.filter(c => c.ownerCrewId).map(c => c.ownerCrewId!),
+    ...Object.values(activeWarPressureByRegion)
+      .flatMap((effect) => [effect.favoredCrewId, effect.affectedCrewId])
+      .filter((crewId): crewId is number => crewId !== null),
+  ])];
   let crewNames: Array<{ id: number; name: string }> = [];
   if (ownerIds.length > 0) {
     const placeholders = ownerIds.map(() => '?').join(',');
@@ -657,13 +774,28 @@ export async function getMapData(
           const neighborControl = controlMap[neighborKey];
           return count + (neighborControl?.ownerCrewId === viewer.viewerCrewId ? 1 : 0);
         }, 0);
-    const strategicActionBonuses = buildStrategicActionBonuses(r, adjacentOwnedRegions);
+    const rawWarPressure = activeWarPressureByRegion[r.regionKey] ?? null;
+    const activeWarPressure = rawWarPressure && (ctrl?.ownerCrewId === rawWarPressure.affectedCrewId || contest?.defenderCrewId === rawWarPressure.affectedCrewId)
+      ? {
+          ...rawWarPressure,
+          favoredCrewName: rawWarPressure.favoredCrewId == null ? null : (crewNameMap[rawWarPressure.favoredCrewId] ?? null),
+          affectedCrewName: rawWarPressure.affectedCrewId == null ? null : (crewNameMap[rawWarPressure.affectedCrewId] ?? null),
+        }
+      : null;
+    const strategicActionBonuses = [
+      ...buildStrategicActionBonuses(r, adjacentOwnedRegions),
+      ...(viewer?.viewerCrewId != null && activeWarPressure?.favoredCrewId === viewer.viewerCrewId
+        ? buildWarPressureActionBonuses(activeWarPressure)
+        : []),
+    ];
+    const effectiveStability = Math.max(0, (ctrl?.stability ?? 100) - (activeWarPressure?.stabilityPenalty ?? 0));
     return {
       ...r,
       ownerCrewId: ctrl?.ownerCrewId ?? null,
       ownerCrewName: ctrl?.ownerCrewId ? (crewNameMap[ctrl.ownerCrewId] ?? null) : null,
       controlPercent,
       stability: ctrl?.stability ?? 100,
+      effectiveStability,
       contestId: contest?.id ?? null,
       contestStatus: contest?.status ?? null,
       contestStartedAt: contest?.startedAt ?? null,
@@ -684,6 +816,7 @@ export async function getMapData(
       strategicTags,
       neighbors,
       adjacentOwnedRegions,
+      activeWarPressure,
       strategicActionBonuses,
     };
   });
@@ -1077,7 +1210,14 @@ export async function doAction(
   };
   const adjacentOwnedRegions = await getAdjacentOwnedRegionCount(contestRegion, crewId);
   const strategicActionBonuses = buildStrategicActionBonuses(contestRegion, adjacentOwnedRegions);
-  const actionBonusPoints = getActionBonusForType(strategicActionBonuses, actionType);
+  const activeWarPressure = (await getActiveWarPressureEffects([contest.regionKey], new Date()))[contest.regionKey] ?? null;
+  const warPressureApplies = activeWarPressure
+    && activeWarPressure.favoredCrewId === crewId
+    && attackerActions.has(actionType)
+    && contest.defenderCrewId === activeWarPressure.affectedCrewId;
+  const warPressureBonuses = warPressureApplies ? buildWarPressureActionBonuses(activeWarPressure) : [];
+  const allActionBonuses = [...strategicActionBonuses, ...warPressureBonuses];
+  const actionBonusPoints = getActionBonusForType(allActionBonuses, actionType);
   const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
   const stabilityDelta = actionType === 'sabotage' ? -5 : (actionType === 'supply_run' ? 3 : 0);
 
@@ -1094,7 +1234,7 @@ export async function doAction(
     pointsDelta,
     adjacentOwnedRegions,
     actionBonusPoints,
-    strategicActionBonuses: strategicActionBonuses
+    strategicActionBonuses: allActionBonuses
       .filter((bonus) => bonus.actionType == actionType)
       .map((bonus) => ({
         bonusPoints: bonus.bonusPoints,

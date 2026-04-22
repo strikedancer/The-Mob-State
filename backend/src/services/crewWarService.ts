@@ -70,6 +70,32 @@ function stringifyJson(value: Record<string, any>): string {
   return JSON.stringify(value ?? {});
 }
 
+async function getTerritoryWarAftermathConfig() {
+  const keys = [
+    'TERRITORY_WAR_AFTERMATH_HOURS',
+    'TERRITORY_WAR_AFTERMATH_TARGET_ATTACK_BONUS',
+    'TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS',
+    'TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY',
+    'TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY',
+  ];
+  const placeholders = keys.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+    `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+    ...keys,
+  );
+  const cfg = rows.reduce<Record<string, string>>((acc, row) => {
+    acc[row.configKey] = row.configValue;
+    return acc;
+  }, {});
+  return {
+    hours: Number(cfg.TERRITORY_WAR_AFTERMATH_HOURS ?? 6),
+    targetAttackBonus: Number(cfg.TERRITORY_WAR_AFTERMATH_TARGET_ATTACK_BONUS ?? 3),
+    adjacentAttackBonus: Number(cfg.TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS ?? 1),
+    targetStabilityPenalty: Number(cfg.TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY ?? 20),
+    adjacentStabilityPenalty: Number(cfg.TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY ?? 10),
+  };
+}
+
 function parseStringArray(value: unknown): string[] {
   if (typeof value !== 'string' || value.trim().length === 0) return [];
   try {
@@ -464,6 +490,114 @@ async function applyTerritoryTicks(war: NonNullable<CrewWarRecord>) {
   }
 }
 
+async function applyTerritoryWarAftermath(war: NonNullable<CrewWarRecord>, winnerCrewId: number | null) {
+  if (!winnerCrewId) return null;
+  if (war.warType !== 'territory_war' && war.warType !== 'total_war') return null;
+
+  const loserCrewId = winnerCrewId === war.attackerCrewId ? war.defenderCrewId : war.attackerCrewId;
+  if (!loserCrewId) return null;
+
+  const metadata = asJson(war.metadataJson);
+  const territoryTargets = getWarTerritoryTargetsFromMetadata(metadata);
+  if (territoryTargets.length === 0) return null;
+
+  const territoryState = (metadata.territories ?? {}) as Record<string, any>;
+  const winnerHeldTargets = territoryTargets.filter((target) => Number(territoryState[target.regionKey] ?? 0) === winnerCrewId);
+  const rankedTargets = (winnerHeldTargets.length > 0 ? winnerHeldTargets : territoryTargets).sort((left, right) => {
+    return (right.warPriorityScore ?? 0) - (left.warPriorityScore ?? 0)
+      || (right.tickPoints ?? 0) - (left.tickPoints ?? 0)
+      || left.regionKey.localeCompare(right.regionKey);
+  });
+  const theaterTarget = rankedTargets[0] ?? null;
+  if (!theaterTarget) return null;
+
+  const theaterRows = await prisma.$queryRawUnsafe<Array<{ regionKey: string; neighborsJson: string | null }>>(
+    'SELECT regionKey, neighborsJson FROM territory_regions WHERE regionKey = ? LIMIT 1',
+    theaterTarget.regionKey,
+  );
+  const theaterRow = theaterRows[0];
+  let theaterNeighbors: string[] = [];
+  if (theaterRow?.neighborsJson) {
+    try {
+      const parsed = JSON.parse(theaterRow.neighborsJson);
+      if (Array.isArray(parsed)) {
+        theaterNeighbors = [...new Set(parsed.map((entry) => String(entry ?? '').trim()).filter(Boolean))];
+      }
+    } catch {
+      theaterNeighbors = [];
+    }
+  }
+
+  const targetKeys = territoryTargets.map((target) => target.regionKey);
+  const candidateKeys = [...new Set([theaterTarget.regionKey, ...targetKeys, ...theaterNeighbors])];
+  if (candidateKeys.length === 0) return null;
+
+  const placeholders = candidateKeys.map(() => '?').join(', ');
+  const controlRows = await prisma.$queryRawUnsafe<Array<{ regionKey: string; ownerCrewId: number | null }>>(
+    `SELECT regionKey, ownerCrewId FROM territory_control WHERE regionKey IN (${placeholders})`,
+    ...candidateKeys,
+  );
+  const ownerMap = new Map(controlRows.map((row) => [row.regionKey, row.ownerCrewId]));
+
+  const cfg = await getTerritoryWarAftermathConfig();
+  const now = new Date();
+  const endsAt = new Date(now.getTime() + (Math.max(1, cfg.hours) * 60 * 60 * 1000));
+  const effectRows = [
+    ...targetKeys
+      .filter((regionKey) => ownerMap.get(regionKey) === loserCrewId)
+      .map((regionKey) => ({
+        regionKey,
+        regionRole: regionKey === theaterTarget.regionKey ? 'theater' : 'target',
+        attackBonusPoints: cfg.targetAttackBonus,
+        stabilityPenalty: cfg.targetStabilityPenalty,
+      })),
+    ...theaterNeighbors
+      .filter((regionKey) => ownerMap.get(regionKey) === loserCrewId && !targetKeys.includes(regionKey))
+      .map((regionKey) => ({
+        regionKey,
+        regionRole: 'adjacent' as const,
+        attackBonusPoints: cfg.adjacentAttackBonus,
+        stabilityPenalty: cfg.adjacentStabilityPenalty,
+      })),
+  ];
+
+  if (effectRows.length === 0) return null;
+
+  await prisma.$executeRawUnsafe(
+    `UPDATE territory_region_effects
+     SET resolvedAt = NOW()
+     WHERE effectType = 'crew_war_aftermath' AND sourceType = 'crew_war' AND sourceId = ? AND resolvedAt IS NULL`,
+    war.id,
+  );
+
+  for (const effect of effectRows) {
+    await prisma.$executeRawUnsafe(
+      `INSERT INTO territory_region_effects
+         (regionKey, effectType, sourceType, sourceId, favoredCrewId, affectedCrewId, metadataJson, startsAt, endsAt)
+       VALUES (?, 'crew_war_aftermath', 'crew_war', ?, ?, ?, ?, ?, ?)`,
+      effect.regionKey,
+      war.id,
+      winnerCrewId,
+      loserCrewId,
+      stringifyJson({
+        regionRole: effect.regionRole,
+        attackBonusPoints: effect.attackBonusPoints,
+        stabilityPenalty: effect.stabilityPenalty,
+      }),
+      now,
+      endsAt,
+    );
+  }
+
+  return {
+    theaterRegionKey: theaterTarget.regionKey,
+    affectedRegionKeys: effectRows.map((effect) => effect.regionKey),
+    favoredCrewId: winnerCrewId,
+    affectedCrewId: loserCrewId,
+    endsAt,
+  };
+}
+
 async function finalizeWar(war: NonNullable<CrewWarRecord>) {
   if (war.resolvedAt) return;
 
@@ -537,6 +671,15 @@ async function finalizeWar(war: NonNullable<CrewWarRecord>) {
   });
 
   const latestWar = await prisma.crewWar.findUnique({ where: { id: war.id } });
+  const territoryAftermath = latestWar?.winnerCrewId ? await applyTerritoryWarAftermath(war, latestWar.winnerCrewId) : null;
+  const crews = await prisma.crew.findMany({
+    where: { id: { in: [war.attackerCrewId, war.defenderCrewId] } },
+    select: { id: true, name: true },
+  });
+  const crewNameMap = crews.reduce<Record<number, string>>((acc, crew) => {
+    acc[crew.id] = crew.name;
+    return acc;
+  }, {});
   const memberRows = await prisma.crewMember.findMany({
     where: { crewId: { in: [war.attackerCrewId, war.defenderCrewId] } },
     include: { player: { select: { id: true, preferredLanguage: true } } },
@@ -548,6 +691,8 @@ async function finalizeWar(war: NonNullable<CrewWarRecord>) {
         member.player.id,
         latestWar.id,
         latestWar.winnerCrewId,
+        crewNameMap[latestWar.winnerCrewId] ?? null,
+        territoryAftermath,
       );
     }
   }
@@ -571,6 +716,7 @@ async function finalizeWar(war: NonNullable<CrewWarRecord>) {
     winnerCrewId: latestWar?.winnerCrewId,
     attackerCrewId: war.attackerCrewId,
     defenderCrewId: war.defenderCrewId,
+    territoryAftermath,
   });
 
   void discordWebhookService.sendCrewWarEvent('war_resolved', {
@@ -578,6 +724,7 @@ async function finalizeWar(war: NonNullable<CrewWarRecord>) {
     winnerCrewId: latestWar?.winnerCrewId,
     attackerCrewId: war.attackerCrewId,
     defenderCrewId: war.defenderCrewId,
+    territoryAftermath,
   });
 }
 
