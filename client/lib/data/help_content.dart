@@ -1647,7 +1647,7 @@ const List<HelpTopic> helpTopics = [
     howNl: [
       'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.',
       'Player VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.',
-      'VIP checkout opent de betaalpagina en landt daarna terug op `/premium`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.',
+      'VIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.',
       'Creditbundels koop je met echt geld. Na succesvolle betaling verschijnen de credits meteen in je wallet-overzicht.',
       'Credit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.',
       'Sommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm.',
@@ -1656,7 +1656,7 @@ const List<HelpTopic> helpTopics = [
     howEn: [
       'Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.',
       'Player VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew.',
-      'VIP checkout opens the payment page and then returns to `/premium`, so you immediately see whether the purchase succeeded and how long your VIP runs.',
+      'VIP checkout opens the payment page and then returns to the in-game `Premium & Credits` section, so you immediately see whether the purchase succeeded and how long your VIP runs.',
       'Credit bundles are bought with real money. After a successful payment the credits appear in your wallet overview right away.',
       'Credit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.',
       'Some credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead.',

@@ -101,6 +101,15 @@ enum _WebSection {
   achievements,
 }
 
+_WebSection _webSectionFromQueryParam(String? value) {
+  switch ((value ?? '').toLowerCase()) {
+    case 'premium':
+      return _WebSection.premium;
+    default:
+      return _WebSection.dashboard;
+  }
+}
+
 String _rankProgressLabel(BuildContext context, int rank) {
   final l10n = AppLocalizations.of(context)!;
   final baseLabel = l10n.localeName == 'nl' ? 'Rankvordering' : 'Rank Progress';
@@ -184,6 +193,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    _selectedWebSection = _webSectionFromQueryParam(Uri.base.queryParameters['section']);
     // Connect to event stream when dashboard opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);

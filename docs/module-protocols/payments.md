@@ -32,6 +32,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Checkout failure of webhook-delay mag geen halve grants of negatieve saldo's veroorzaken.
 - Bestaande gameplay-perks mogen niet gratis bereikbaar worden door premium regressies.
 - Player premium toegang hoort via een dedicated Premium & Credits scherm beschikbaar te zijn, niet alleen via verborgen crew-subflows.
+- Externe betaalredirects moeten na checkout terug landen in de ingesloten game-shell op de Premium & Credits sectie; een losse fullpage premium-route is geen voorkeursflow voor web/PWA.
 - Player VIP en Crew VIP prijzen moeten runtime-config-gestuurd blijven zodat admin ze live kan aanpassen zonder backend deploy.
 - Credit koopbundels en credit-redemption costs moeten admin-beheerbaar zijn via de premium adminflow en niet hardcoded in player UI.
 

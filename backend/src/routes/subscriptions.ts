@@ -186,6 +186,26 @@ function extractWebhookPaymentId(req: Request) {
   return null;
 }
 
+function parsePaymentMetadata(raw: unknown): PaymentMetadata | null {
+  if (!raw) {
+    return null;
+  }
+
+  if (typeof raw === 'string') {
+    try {
+      return JSON.parse(raw) as PaymentMetadata;
+    } catch {
+      return null;
+    }
+  }
+
+  if (typeof raw === 'object') {
+    return raw as PaymentMetadata;
+  }
+
+  return null;
+}
+
 function formatOfferForCatalog(offer: PremiumOfferRecord) {
   return {
     key: offer.key,
@@ -536,6 +556,66 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
   });
 }
 
+async function reconcileRecentPaidTransactions(playerId: number): Promise<void> {
+  const recentTransactions = await prisma.paymentTransaction.findMany({
+    where: {
+      playerId,
+      providerPaymentId: { not: null },
+      status: { in: ['OPEN', 'PENDING'] },
+      createdAt: { gte: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2) },
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+  });
+
+  if (!recentTransactions.length) {
+    return;
+  }
+
+  const mollie = getMollieClient();
+
+  for (const transaction of recentTransactions) {
+    if (!transaction.providerPaymentId) {
+      continue;
+    }
+
+    const payment = await mollie.payments.get(transaction.providerPaymentId);
+    const metadata = parsePaymentMetadata(payment.metadata) || parsePaymentMetadata(transaction.metadataJson);
+
+    if (!metadata?.playerId || !metadata.type) {
+      continue;
+    }
+
+    await upsertPaymentTransaction({
+      playerId: Number(metadata.playerId),
+      checkoutType: metadata.type === 'one_time' ? 'ONE_TIME' : metadata.type === 'crew_vip' ? 'CREW_VIP' : 'PLAYER_VIP',
+      productKey: metadata.productKey ?? null,
+      amountValue: payment.amount.value,
+      description: payment.description,
+      providerPaymentId: payment.id,
+      providerCustomerId: payment.customerId || null,
+      providerSubscriptionId: payment.subscriptionId || null,
+      status: mapMollieStatus(payment.status),
+      paidAt: payment.paidAt ? new Date(payment.paidAt) : null,
+      metadata,
+    });
+
+    if (payment.status === 'paid') {
+      if (metadata.type === 'one_time') {
+        await fulfillOneTimePurchase(payment.id, metadata);
+      } else {
+        const subscriptionId = payment.subscriptionId || (payment.customerId ? await ensureVipSubscription(metadata, payment.customerId) : undefined);
+        await activateVipFromMetadata(metadata, subscriptionId);
+      }
+      continue;
+    }
+
+    if ((payment.status === 'canceled' || payment.status === 'failed' || payment.status === 'expired') && payment.subscriptionId) {
+      await deactivateVipForSubscription(metadata, payment.subscriptionId);
+    }
+  }
+}
+
 async function ensureVipSubscription(metadata: PaymentMetadata, customerId: string) {
   const mollie = getMollieClient();
   const price = await getVipPrice(metadata.type);
@@ -599,11 +679,12 @@ async function createMollieCheckout(options: {
   sequenceType?: 'first';
 }) {
   const mollie = getMollieClient();
+  const redirectBaseUrl = `${APP_URL}/?section=premium`;
   const payment = await mollie.payments.create({
     amount: { currency: 'EUR', value: options.amountValue },
     description: options.description,
-    redirectUrl: `${APP_URL}/premium?status=${options.redirectStatus}`,
-    cancelUrl: `${APP_URL}/premium?status=cancelled`,
+    redirectUrl: `${redirectBaseUrl}&status=${options.redirectStatus}`,
+    cancelUrl: `${redirectBaseUrl}&status=cancelled`,
     webhookUrl: MOLLIE_WEBHOOK_URL,
     customerId: options.customerId,
     sequenceType: options.sequenceType,
@@ -837,6 +918,7 @@ router.post('/checkout/one-time', authenticate, async (req: Request, res: Respon
 router.get('/credits/overview', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const playerId = (req as any).player?.id as number;
+    await reconcileRecentPaidTransactions(playerId);
     const overview = await getCreditOverview(playerId);
     return res.json(overview);
   } catch (error) {
@@ -893,6 +975,7 @@ router.post('/credits/redeem', authenticate, async (req: Request, res: Response)
 router.get('/status', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const playerId = (req as any).player?.id as number;
+    await reconcileRecentPaidTransactions(playerId);
     const [player, membership, pricing] = await Promise.all([
       prisma.player.findUnique({
         where: { id: playerId },
