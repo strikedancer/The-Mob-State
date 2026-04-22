@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,6 +23,17 @@ class CrewScreen extends StatefulWidget {
 class _CrewScreenState extends State<CrewScreen>
     with SingleTickerProviderStateMixin {
   final List<Map<String, dynamic>> _oneTimeProducts = [];
+
+  Future<void> _openCheckoutUrl(String checkoutUrl) async {
+    final uri = Uri.parse(checkoutUrl);
+    final opened = kIsWeb
+        ? await launchUrl(uri, webOnlyWindowName: '_self')
+        : await launchUrl(uri, mode: LaunchMode.platformDefault);
+
+    if (!opened) {
+      throw Exception('checkout_launch_failed');
+    }
+  }
   static const List<String> _hqStyleOrder = [
     'camping',
     'rural',
@@ -1872,10 +1884,7 @@ class _CrewScreenState extends State<CrewScreen>
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         final checkoutUrl = data['url'] as String?;
         if (checkoutUrl != null) {
-          final uri = Uri.parse(checkoutUrl);
-          if (await canLaunchUrl(uri)) {
-            await launchUrl(uri, mode: LaunchMode.externalApplication);
-          }
+          await _openCheckoutUrl(checkoutUrl);
         }
       } else {
         final errData = response.statusCode != 200 && response.body.isNotEmpty

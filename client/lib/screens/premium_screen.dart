@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,6 +28,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
   int _creditBalance = 0;
 
   bool get _isNl => (AppLocalizations.of(context)?.localeName ?? 'en') == 'nl';
+
+  Future<void> _openCheckoutUrl(String checkoutUrl) async {
+    final uri = Uri.parse(checkoutUrl);
+    final opened = kIsWeb
+        ? await launchUrl(uri, webOnlyWindowName: '_self')
+        : await launchUrl(uri, mode: LaunchMode.platformDefault);
+
+    if (!opened) {
+      throw Exception('checkout_launch_failed');
+    }
+  }
 
   @override
   void initState() {
@@ -138,10 +150,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
         throw Exception('checkout_missing_url');
       }
 
-      final uri = Uri.parse(checkoutUrl);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      }
+      await _openCheckoutUrl(checkoutUrl);
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
