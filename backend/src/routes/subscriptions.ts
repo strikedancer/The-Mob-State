@@ -446,7 +446,7 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
   await prisma.$transaction(async (tx) => {
     const insertedRows = await tx.$executeRawUnsafe(
       `INSERT IGNORE INTO stripe_payment_fulfillments (stripeSessionId, playerId, productKey, payload, fulfilledAt)
-       VALUES (?, ?, ?, CAST(? AS JSON), NOW(3))`,
+       VALUES (?, ?, ?, ?, NOW(3))`,
       paymentId,
       playerId,
       productKey,
