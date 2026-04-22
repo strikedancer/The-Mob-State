@@ -25,6 +25,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Drug requirement thresholds must stay aligned with gram-based drug inventory quantities; do not surface legacy `x` units in requirement feedback.
 - Requirement failures for vehicle, weapon selection, weapon suitability and ammo must surface the concrete reason instead of collapsing into a generic internal error.
 - If a crime requires a weapon, the player must be able to see and change the active crime-weapon selection directly from the crime flow or through an explicit nearby CTA.
 - When a player is arrested after a weapon-based crime, the used crime weapon must be confiscated consistently with the arrest consequences shown to the player; if that was the last copy, the saved crime-weapon selection must no longer remain active.

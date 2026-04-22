@@ -23,6 +23,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Drug inventory and storage quantities are gram-based; capacity checks, weight totals and user-visible messages must stay aligned to grams.
 - Visibility of current productions in both Production flow and Facility context when players expect that summary.
 - Finished but uncollected productions must remain visible in the Production flow and still count against their facility slot until they are actually collected.
 - VIP auto-collect must be backed by a real background automation path; a toggle without server-side execution is not sufficient.
@@ -46,6 +47,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
+- Avoid legacy `x` or implicit unit wording for drug amounts in player-facing copy; use grams when referring to quantities.
 - If drugs upgrade gates change, keep School and Drugs terminology aligned in both Dutch and English (track/certification naming and gate labels).
 
 ## QA Checklist

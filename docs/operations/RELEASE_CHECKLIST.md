@@ -50,6 +50,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/territory_screen.dart`
 
 ### Documentation
+- [x] Drug quantity semantics and player copy aligned to grams across Travel, Drugs and Crimes: travel carry-weight checks, property drug storage totals and crime requirement messages now follow real gram quantities, with matching Help & Uitleg and protocol notes so 351 means 351g throughout the player-facing flow
+  - Bestanden: `backend/src/services/travelService.ts`, `backend/src/services/drugService.ts`, `backend/src/services/crimeService.ts`, `client/lib/widgets/crime_card.dart`, `client/lib/l10n/app_nl.arb`, `client/lib/l10n/app_en.arb`, `client/lib/data/help_content.dart`, `docs/module-protocols/travel.md`, `docs/module-protocols/drugs.md`, `docs/module-protocols/crimes.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Dashboard navigatie-guardrail aangescherpt: web-sidebar (`_buildWebMenuItems` + `_WebSection` switch) is nu expliciet de leidende bron voor module-navigatie; legacy tegel-grid geldt alleen nog als fallback en telt niet als enige oplevering
   - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [x] Territory systeem volledig uitgewerkt voor crew map-control (NL-first, multi-country ready): nieuw protocol beschrijft contest lifecycle, datamodel, API surface, anti-abuse, seizoenen, responsive map UX en i18n-eisen; alle territory tuning keys zijn expliciet vastgelegd als admin/runtime database settings (geen file-based gameplay settings)

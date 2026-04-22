@@ -23,11 +23,13 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Overweight and travel-blocking checks must use the real carried drug quantity in grams; do not reintroduce legacy `quantity * 100` conversions.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
+- If travel copy references carried drugs or weight, describe those quantities as grams so the UI matches inventory semantics.
 
 ## QA Checklist
 - Open the module on mobile width, tablet width and desktop width.
