@@ -392,14 +392,14 @@ export async function startJourney(playerId: number, destinationCountryId: strin
     throw new Error('ALREADY_IN_COUNTRY');
   }
 
-  // Check drug weight limit (max 1kg = 10 units @ 100g each)
+  // Drug inventory quantities are stored in grams; keep the travel gate in the same unit.
   const drugInventory = await prisma.drugInventory.findMany({
     where: { playerId },
   });
 
   let totalDrugWeight = 0;
   for (const item of drugInventory) {
-    totalDrugWeight += item.quantity * 100; // 100g per unit
+    totalDrugWeight += item.quantity;
   }
 
   const MAX_DRUG_WEIGHT_ON_TRAVEL = 1000; // 1kg in grams
