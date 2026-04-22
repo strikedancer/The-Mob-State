@@ -291,7 +291,6 @@ async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number)
       lastAmmoPurchaseAt: null,
       lastHospitalVisit: null,
       reputation: 0,
-      premiumCredits: 0,
       lastProstituteRecruitment: null,
       drugHeat: 0,
       autoCollectDrugs: false,
