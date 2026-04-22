@@ -222,6 +222,17 @@ export interface PlayerOverview {
       totalBet: number;
       totalPayout: number;
     };
+    premiumTransactions: Array<{
+      id: number;
+      checkoutType: 'PLAYER_VIP' | 'CREW_VIP' | 'ONE_TIME';
+      productKey: string | null;
+      status: 'OPEN' | 'PENDING' | 'PAID' | 'CANCELED' | 'FAILED' | 'EXPIRED';
+      amountValue: string;
+      providerPaymentId: string | null;
+      providerSubscriptionId: string | null;
+      paidAt: string | null;
+      createdAt: string;
+    }>;
     premiumFulfillments: Array<{
       id: number;
       stripeSessionId: string;

@@ -68,10 +68,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
     try {
       final apiClient = AuthService().apiClient;
+      final purchase = Uri.base.queryParameters['purchase'];
+      final purchaseSuffix = purchase == null || purchase.isEmpty
+          ? ''
+          : '?purchase=${Uri.encodeQueryComponent(purchase)}';
       final responses = await Future.wait([
-        apiClient.get('/subscriptions/status'),
+        apiClient.get('/subscriptions/status$purchaseSuffix'),
         apiClient.get('/subscriptions/checkout/one-time/catalog'),
-        apiClient.get('/subscriptions/credits/overview'),
+        apiClient.get('/subscriptions/credits/overview$purchaseSuffix'),
       ]);
 
       final statusResponse = responses[0];

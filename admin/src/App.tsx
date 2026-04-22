@@ -3234,17 +3234,19 @@ function App() {
     return b.playerId - a.playerId
   })
 
-  const filteredPremiumFulfillments = selectedPlayerOverview
-    ? selectedPlayerOverview.financial.premiumFulfillments.filter((entry) => isInDateRange(entry.fulfilledAt, financialDateRange))
+  const filteredPremiumTransactions = selectedPlayerOverview
+    ? selectedPlayerOverview.financial.premiumTransactions.filter((entry) => isInDateRange(entry.paidAt || entry.createdAt, financialDateRange))
     : []
 
-  const sortedPremiumFulfillments = [...filteredPremiumFulfillments].sort((a, b) => {
-    if (financialPremiumSort === 'date_asc') return new Date(a.fulfilledAt).getTime() - new Date(b.fulfilledAt).getTime()
-    if (financialPremiumSort === 'date_desc') return new Date(b.fulfilledAt).getTime() - new Date(a.fulfilledAt).getTime()
+  const sortedPremiumTransactions = [...filteredPremiumTransactions].sort((a, b) => {
+    const aWhen = new Date(a.paidAt || a.createdAt).getTime()
+    const bWhen = new Date(b.paidAt || b.createdAt).getTime()
+    if (financialPremiumSort === 'date_asc') return aWhen - bWhen
+    if (financialPremiumSort === 'date_desc') return bWhen - aWhen
     if (financialPremiumSort === 'id_asc') return a.id - b.id
     if (financialPremiumSort === 'id_desc') return b.id - a.id
-    if (financialPremiumSort === 'product_asc') return a.productKey.localeCompare(b.productKey)
-    return b.productKey.localeCompare(a.productKey)
+    if (financialPremiumSort === 'product_asc') return `${a.checkoutType}:${a.productKey || ''}`.localeCompare(`${b.checkoutType}:${b.productKey || ''}`)
+    return `${b.checkoutType}:${b.productKey || ''}`.localeCompare(`${a.checkoutType}:${a.productKey || ''}`)
   })
 
   const tabItems: Array<{ id: TabType; label: string; icon: string }> = [
@@ -4838,7 +4840,7 @@ function App() {
                       {/* Premium purchases */}
                       <div className="card mb-3">
                         <div className="card-header d-flex align-items-center gap-2">
-                          <h5 className="mb-0 flex-fill"><i className="ph-crown me-2" />{l('Premium aankopen', 'Premium purchases')}</h5>
+                          <h5 className="mb-0 flex-fill"><i className="ph-crown me-2" />{l('Premium betalingen', 'Premium payments')}</h5>
                           <select className="form-select form-select-sm" style={{ maxWidth: 200 }} value={financialPremiumSort} onChange={(e) => setFinancialPremiumSort(e.target.value as any)}>
                             <option value="date_desc">{l('Nieuwste eerst', 'Newest first')}</option>
                             <option value="date_asc">{l('Oudste eerst', 'Oldest first')}</option>
@@ -4846,17 +4848,21 @@ function App() {
                             <option value="product_desc">{l('Product Z-A', 'Product Z-A')}</option>
                           </select>
                         </div>
-                        {sortedPremiumFulfillments.length === 0
-                          ? <div className="card-body text-muted">{l('Geen aankopen.', 'No purchases.')}</div>
+                        {sortedPremiumTransactions.length === 0
+                          ? <div className="card-body text-muted">{l('Geen betalingen.', 'No payments.')}</div>
                           : <div className="table-responsive">
                               <table className="table table-hover mb-0">
-                                <thead><tr><th>ID</th><th>{l('Product', 'Product')}</th><th>{l('Session', 'Session')}</th><th>{l('Moment', 'When')}</th></tr></thead>
+                                <thead><tr><th>ID</th><th>{l('Type', 'Type')}</th><th>{l('Product', 'Product')}</th><th>{l('Status', 'Status')}</th><th>{l('Bedrag', 'Amount')}</th><th>{l('Betaling', 'Payment')}</th><th>{l('Moment', 'When')}</th></tr></thead>
                                 <tbody>
-                                  {sortedPremiumFulfillments.map((e) => (
+                                  {sortedPremiumTransactions.map((e) => (
                                     <tr key={e.id}>
-                                      <td>{e.id}</td><td><span className="badge bg-warning text-dark">{e.productKey}</span></td>
-                                      <td className="text-muted" style={{ fontSize: '0.75rem' }}>{e.stripeSessionId}</td>
-                                      <td className="text-muted" style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{new Date(e.fulfilledAt).toLocaleString()}</td>
+                                      <td>{e.id}</td>
+                                      <td><span className="badge bg-info text-dark">{e.checkoutType}</span></td>
+                                      <td><span className="badge bg-warning text-dark">{e.productKey || '-'}</span></td>
+                                      <td><span className="badge bg-secondary">{e.status}</span></td>
+                                      <td>€{e.amountValue}</td>
+                                      <td className="text-muted" style={{ fontSize: '0.75rem' }}>{e.providerSubscriptionId || e.providerPaymentId || '-'}</td>
+                                      <td className="text-muted" style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{new Date(e.paidAt || e.createdAt).toLocaleString()}</td>
                                     </tr>
                                   ))}
                                 </tbody>

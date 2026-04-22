@@ -1059,6 +1059,7 @@ router.get('/players/:playerId/overview', async (req, res) => {
       casinoAsOwner,
       casinoAsPlayerTotals,
       casinoAsOwnerTotals,
+      premiumTransactions,
       premiumFulfillments,
       weaponsContentRaw,
       ammoContentRaw,
@@ -1237,6 +1238,22 @@ router.get('/players/:playerId/overview', async (req, res) => {
           payout: true,
         },
       }),
+      prisma.paymentTransaction.findMany({
+        where: { playerId },
+        orderBy: [{ paidAt: 'desc' }, { createdAt: 'desc' }],
+        take: 30,
+        select: {
+          id: true,
+          checkoutType: true,
+          productKey: true,
+          status: true,
+          amountValue: true,
+          providerPaymentId: true,
+          providerSubscriptionId: true,
+          paidAt: true,
+          createdAt: true,
+        },
+      }),
       prisma.stripePaymentFulfillment.findMany({
         where: { playerId },
         orderBy: { fulfilledAt: 'desc' },
@@ -1409,6 +1426,7 @@ router.get('/players/:playerId/overview', async (req, res) => {
           totalBet: casinoAsOwnerTotals._sum.betAmount || 0,
           totalPayout: casinoAsOwnerTotals._sum.payout || 0,
         },
+        premiumTransactions,
         premiumFulfillments,
       },
     });
