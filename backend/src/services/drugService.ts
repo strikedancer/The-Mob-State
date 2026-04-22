@@ -1029,7 +1029,7 @@ class DrugService {
       return { success: false, message: 'Je hebt niet genoeg drugs om op te slaan' };
     }
 
-    // Check storage capacity (weight-based: 1 unit = 100g)
+    // Check storage capacity using gram-based quantities.
     const storageCapacity = await prisma.propertyStorageCapacity.findUnique({
       where: { propertyType: property.propertyType },
     });
@@ -1038,16 +1038,13 @@ class DrugService {
       where: { propertyId },
     });
 
-    // Calculate total weight in grams
+    // Quantities in player and property drug storage are stored in grams.
     let totalWeightGrams = 0;
     for (const item of currentStorage) {
-      const itemDef = this.drugs.get(item.drugType);
-      if (itemDef) {
-        totalWeightGrams += item.quantity * itemDef.weightPerUnit;
-      }
+      totalWeightGrams += item.quantity;
     }
 
-    const newWeightGrams = quantity * drugDef.weightPerUnit;
+    const newWeightGrams = quantity;
     const maxCapacityGrams = (storageCapacity?.maxSlots || 100) * 100; // slots * 100g per slot
 
     if (totalWeightGrams + newWeightGrams > maxCapacityGrams) {
@@ -1121,7 +1118,7 @@ class DrugService {
     const weightKg = (newWeightGrams / 1000).toFixed(1);
     return { 
       success: true, 
-      message: `${quantity}x ${drugType} (${weightKg}kg) opgeslagen in ${property.propertyType}` 
+      message: `${quantity}g ${drugType} (${weightKg}kg) opgeslagen in ${property.propertyType}` 
     };
   }
 
@@ -1231,7 +1228,7 @@ class DrugService {
 
     return { 
       success: true, 
-      message: `${quantity}x ${drugType} opgehaald uit ${property.propertyType}` 
+      message: `${quantity}g ${drugType} opgehaald uit ${property.propertyType}` 
     };
   }
 
@@ -1263,11 +1260,10 @@ class DrugService {
       where: { propertyId },
     });
 
-    // Calculate total weight in grams
+    // Property drug storage quantities are stored in grams.
     let totalWeightGrams = 0;
     const storageWithWeight = storage.map((item) => {
-      const drugDef = this.drugs.get(item.drugType);
-      const weightGrams = drugDef ? item.quantity * drugDef.weightPerUnit : item.quantity * 100;
+      const weightGrams = item.quantity;
       totalWeightGrams += weightGrams;
       return {
         ...item,
