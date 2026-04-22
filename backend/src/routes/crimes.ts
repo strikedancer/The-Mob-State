@@ -13,6 +13,33 @@ import { gameEventService } from '../services/gameEventService';
 
 const router = Router();
 
+function isExpectedCrimeRouteError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const { message } = error;
+  return [
+    'INVALID_CRIME_ID',
+    'LEVEL_TOO_LOW',
+    'NO_CRIMINAL_RECORD',
+    'VEHICLE_REQUIRED',
+    'VEHICLE_UNAVAILABLE',
+    'VEHICLE_NOT_FOUND',
+    'NOT_VEHICLE_OWNER',
+    'VEHICLE_BROKEN',
+    'NO_FUEL',
+    'WEAPON_REQUIRED',
+    'WEAPON_SELECTION_REQUIRED',
+    'WEAPON_BROKEN',
+    'NO_AMMO',
+  ].includes(message)
+    || message.startsWith('TOOL_REQUIRED')
+    || message.startsWith('TOOL_IN_STORAGE')
+    || message.startsWith('WEAPON_NOT_SUITABLE:')
+    || message.startsWith('DRUGS_REQUIRED');
+}
+
 /**
  * GET /crimes
  * Get all available crimes with player-specific success chances
@@ -284,7 +311,10 @@ router.post(
       cooldown: cooldownInfo,
     });
   } catch (error) {
-    console.error('[Crime Route] Error:', error);
+    if (!isExpectedCrimeRouteError(error)) {
+      console.error('[Crime Route] Error:', error);
+    }
+
     if (error instanceof Error) {
       if (error.message === 'INVALID_CRIME_ID') {
         return res.status(404).json({

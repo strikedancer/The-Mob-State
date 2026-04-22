@@ -155,7 +155,13 @@ router.post('/contest/start', authenticate, async (req: AuthRequest, res: Respon
       body.regionKey,
       req.player?.currentCountry,
     );
-    return res.json({ event: 'territory.contest_started', params: result });
+    return res.json({
+      event: 'territory.contest_started',
+      params: {
+        ...result,
+        contestId: Number(result.contestId),
+      },
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ event: 'error.validation', params: { issues: error.issues } });
