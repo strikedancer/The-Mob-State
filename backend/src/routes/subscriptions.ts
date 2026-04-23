@@ -323,17 +323,28 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
 
 async function listActivePremiumOffers() {
   await ensureDefaultCreditBundleOffers();
-  return premiumOfferRepo.findMany({
+  const offers = await premiumOfferRepo.findMany({
     where: { isActive: true },
     orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
   });
+  return offers.filter((offer) => !isLegacyBlockedOffer(offer));
 }
 
 async function getActivePremiumOfferByKey(key: string) {
   await ensureDefaultCreditBundleOffers();
-  return premiumOfferRepo.findFirst({
+  const offer = await premiumOfferRepo.findFirst({
     where: { key, isActive: true },
   });
+  return offer && !isLegacyBlockedOffer(offer) ? offer : null;
+}
+
+function isLegacyBlockedOffer(offer: PremiumOfferRecord): boolean {
+  // Hide legacy underpriced offer: 1000 credits for €1.99.
+  return (
+    offer.rewardType === 'credits' &&
+    (offer.creditAmount ?? 0) === 1000 &&
+    offer.priceEurCents === 199
+  );
 }
 
 async function downgradeCrewAfterVipExpiry(crewId: number): Promise<void> {

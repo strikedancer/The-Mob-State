@@ -36,6 +36,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Player VIP en Crew VIP prijzen moeten runtime-config-gestuurd blijven zodat admin ze live kan aanpassen zonder backend deploy.
 - Credit koopbundels en credit-redemption costs moeten admin-beheerbaar zijn via de premium adminflow en niet hardcoded in player UI.
 - Default creditbundels mogen server-side ge-seed worden voor een lege catalogus, maar key, prijs, credit-amount en beeldpad moeten stabiel en idempotent blijven.
+- Legacy offers met verouderde prijsstelling (zoals 1000 credits voor 1,99) mogen niet meer in de actieve player-catalogus of checkout terechtkomen; blokkeer of deactiveer deze server-side.
 - Premium/Credits tegelafbeeldingen blijven extern gehost onder `images/premium_tiles/...`; generator, backend-catalogus en client mapping moeten dezelfde vaste bestandsnamen delen.
 
 ## Backend Contract Guardrails

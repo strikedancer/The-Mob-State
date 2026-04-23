@@ -18,6 +18,14 @@
 - [Weapons & Ammo](#weapons--ammo)
 - [Hitlist & Moordslooptochten](#hitlist--moordslooptochten)
 - [Security & Bescherming](#security--bescherming)
+- [Premium & Credits](#premium--credits)
+
+---
+
+## Premium & Credits
+
+- De Premium/Credits shop gebruikt alleen actieve backend-catalogusoffers.
+- Legacy aanbiedingen met oude prijsstelling (zoals 1000 credits voor EUR 1.99) horen niet meer zichtbaar of afrekenbaar te zijn.
 
 ---
 
