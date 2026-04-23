@@ -416,10 +416,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
     final rawCandidates = <String>[
       '$origin/images/$suffix',
-      '$origin/assets/assets/images/$suffix',
       '$origin/assets/images/$suffix',
       WebAssetHelper.toPublicUrl('images/$suffix'),
-      WebAssetHelper.toPublicUrl('assets/assets/images/$suffix'),
       WebAssetHelper.toPublicUrl('assets/images/$suffix'),
       WebAssetHelper.toPublicUrl(imagePath),
     ];
@@ -478,11 +476,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
       return _buildWebNetworkChain(
         urls: _premiumTileWebCandidates(imagePath),
         index: 0,
-        fallback: WebAssetHelper.image(
-          imagePath,
-          fit: BoxFit.cover,
-          errorBuilder: fallback,
-        ),
+        fallback: fallback(context, Exception('premium_image_missing'), null),
       );
     }
 
