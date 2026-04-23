@@ -1376,9 +1376,9 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Territorium',
     titleEn: 'Territory',
     summaryNl:
-      'Claim en controleer geografische regio\'s voor passief inkomen, crew-prestige en strategische regiovoordelen. Territory combineert kaartcontrol met contests en seizoenale beloningen.',
+        'Claim en controleer geografische regio\'s voor passief inkomen, crew-prestige en strategische regiovoordelen. Territory combineert kaartcontrol met contests en seizoenale beloningen.',
     summaryEn:
-      'Claim and control geographical regions for passive income, crew prestige and strategic regional bonuses. Territory combines map control with contests and seasonal rewards.',
+        'Claim and control geographical regions for passive income, crew prestige and strategic regional bonuses. Territory combines map control with contests and seasonal rewards.',
     howNl: [
       'Territorium overzicht toont alle beschikbare landen en regio\'s per land. Klik op een land om de interactieve kaart te zien.',
       'Alle ondersteunde landen zijn nu volledig bekijkbaar via dezelfde interactieve kaartflow als Nederland.',
@@ -1652,6 +1652,7 @@ const List<HelpTopic> helpTopics = [
         'Buy and manage Player VIP, Crew VIP and credit bundles here. This overview also shows your credit balance and all available credit items you can use directly or contextually.',
     howNl: [
       'Open in het zijmenu de aparte pagina `Premium & Credits` om je VIP-status, vervaldatums, credit-saldo en koopopties te bekijken.',
+      'Op elke aankooptegel kun je linksboven op het `i`-icoon tikken/klikken voor de volledige uitleg en voordelen; de tegel zelf toont bewust alleen korte kerninfo en de koopknop.',
       'Player VIP is persoonlijk. Crew VIP geldt voor je crew en heeft alleen waarde als je al in een crew zit.',
       'VIP checkout opent de betaalpagina en landt daarna terug in de game op `Premium & Credits`, zodat je direct ziet of de aankoop is gelukt en tot wanneer je VIP loopt.',
       'Creditbundels koop je met echt geld. Na succesvolle betaling verschijnen de credits meteen in je wallet-overzicht.',
@@ -1661,6 +1662,7 @@ const List<HelpTopic> helpTopics = [
     ],
     howEn: [
       'Open the separate `Premium & Credits` page from the side menu to view your VIP status, expiry dates, credit balance and purchase options.',
+      'On each purchase tile, tap/click the `i` icon at the top-left for full details and benefits; the tile itself intentionally shows only short core info and the buy button.',
       'Player VIP is personal. Crew VIP applies to your crew and only has value when you are already in a crew.',
       'VIP checkout opens the payment page and then returns to the in-game `Premium & Credits` section, so you immediately see whether the purchase succeeded and how long your VIP runs.',
       'Credit bundles are bought with real money. After a successful payment the credits appear in your wallet overview right away.',

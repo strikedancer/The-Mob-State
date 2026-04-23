@@ -44,6 +44,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Voor Premium/Credits tegelafbeeldingen op web: gebruik een network fallback-keten met root-candidates (`/images/...`, `/assets/assets/images/...`, `/assets/images/...`) en cache-bust query zodat oudere 404-responses sneller herstellen na image-sync.
 - Voor Premium/Credits tegelafbeeldingen op web: geef directe network-load (`Image.network`) de voorkeur boven `Image.asset` fallback om ruis door `assets/assets/...` 404's te voorkomen wanneer images bewust extern gehost worden.
 - Bij elke Premium tile refresh moet de client cache-bust versie (`_premiumTilesCacheVersion` in `premium_screen.dart`) worden verhoogd, anders kan browser/PWA nog de vorige set tonen.
+- Voor Premium/Credits image-first tiles met weinig overlay-ruimte: toon alleen kernlabels/CTA op de tegel en verplaats uitgebreide uitleg naar een meertalige info-popup (`i`-icoon) met `SafeArea`, clamped afmetingen en scrollfallback.
 - Gebruik versie-bestandsnamen of expliciete cache-invalidering bij runtime image updates.
 - Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `firebase-messaging-sw.js` en `main.dart.js` met no-cache/must-revalidate gedrag.
 - Post-deploy cache-eis: hard refresh en indien nodig service worker unregister bij visuele regressies.

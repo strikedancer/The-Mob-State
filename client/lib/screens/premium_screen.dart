@@ -379,6 +379,85 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
+  Future<void> _showTileInfoDialog({
+    required String title,
+    required String body,
+  }) async {
+    if (!mounted) return;
+
+    final media = MediaQuery.of(context);
+    final maxWidth = media.size.width >= 900
+        ? 560.0
+        : media.size.width >= 600
+        ? 500.0
+        : media.size.width - 24;
+    final maxHeight = media.size.height * 0.72;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        final colorScheme = Theme.of(dialogContext).colorScheme;
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 20,
+          ),
+          backgroundColor: colorScheme.surface,
+          child: SafeArea(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: maxWidth,
+                maxHeight: maxHeight,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: Theme.of(dialogContext).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        IconButton(
+                          tooltip: _tr('Sluiten', 'Close'),
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          icon: const Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          body,
+                          style: Theme.of(dialogContext).textTheme.bodyMedium,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FilledButton(
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                        child: Text(_tr('Sluiten', 'Close')),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   String _imageRelativePath(String imagePath) {
     final normalized = WebAssetHelper.normalizeAssetPath(imagePath);
     if (normalized.startsWith('assets/images/')) {
@@ -565,8 +644,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
     String? primaryValue,
     String? secondaryValue,
     String? badgeLabel,
+    String? infoTitle,
+    String? infoBody,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
+    final resolvedInfoTitle = (infoTitle ?? title).trim();
+    final resolvedInfoBody = (infoBody ?? subtitle).trim();
 
     return Container(
       clipBehavior: Clip.antiAlias,
@@ -628,6 +711,30 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   ),
                 ),
               ),
+            if (resolvedInfoBody.isNotEmpty)
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Material(
+                  color: Colors.black.withOpacity(0.52),
+                  shape: const CircleBorder(),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: () => _showTileInfoDialog(
+                      title: resolvedInfoTitle,
+                      body: resolvedInfoBody,
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.info_outline,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             Positioned(
               left: 12,
               right: 12,
@@ -682,14 +789,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
                                 ),
                           ),
                         ],
-                        const SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          maxLines: compact ? 2 : 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: Colors.white.withOpacity(0.92)),
-                        ),
                         if (secondaryValue != null &&
                             secondaryValue.trim().isNotEmpty) ...[
                           const SizedBox(height: 4),
@@ -857,8 +956,15 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   ? _tr('Actief', 'Active')
                   : _tr('VIP', 'VIP'),
               actionLabel: playerVip['isVip'] == true
-                  ? _tr('Verlengen', 'Extend')
-                  : _tr('Abonneren', 'Subscribe'),
+                  ? _tr('Verleng VIP', 'Extend VIP')
+                  : _tr('Koop VIP', 'Buy VIP'),
+              infoTitle: _tr('Speler VIP voordelen', 'Player VIP benefits'),
+              infoBody: _tr(
+                'Speler VIP geeft exclusieve accountvoordelen zoals premium quality-of-life upgrades en extra profielstatus. '
+                    'Na aankoop zie je hier direct je actieve status en vervaldatum.',
+                'Player VIP gives exclusive account perks such as premium quality-of-life upgrades and extra profile status. '
+                    'After purchase, this screen immediately shows your active status and expiry date.',
+              ),
               onPressed: _processingCheckout
                   ? null
                   : () => _startCheckout('player_vip'),
@@ -892,8 +998,22 @@ class _PremiumScreenState extends State<PremiumScreen> {
               actionLabel: crewVip == null
                   ? _tr('Crew vereist', 'Crew required')
                   : (crewVip['isVip'] == true
-                        ? _tr('Verlengen', 'Extend')
-                        : _tr('Activeren', 'Activate')),
+                        ? _tr('Verleng Crew VIP', 'Extend Crew VIP')
+                        : _tr('Koop Crew VIP', 'Buy Crew VIP')),
+              infoTitle: _tr('Crew VIP voordelen', 'Crew VIP benefits'),
+              infoBody: crewVip == null
+                  ? _tr(
+                      'Je moet eerst lid zijn van een crew om Crew VIP te kopen. '
+                          'Crew VIP unlockt crew-gerichte voordelen en hogere upgrade-progressie.',
+                      'You must join a crew before buying Crew VIP. '
+                          'Crew VIP unlocks crew-focused perks and higher upgrade progression.',
+                    )
+                  : _tr(
+                      'Crew VIP geeft toegang tot extra crew-upgrades en gedeelde premium voordelen voor je crewflow. '
+                          'Na aankoop wordt de actieve status en vervaldatum direct bijgewerkt.',
+                      'Crew VIP grants access to extra crew upgrades and shared premium perks for your crew flow. '
+                          'After purchase, active status and expiry are updated immediately.',
+                    ),
               onPressed: crewVip == null || _processingCheckout
                   ? null
                   : () => _startCheckout('crew_vip'),
@@ -956,6 +1076,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
             'Instant credits for your premium wallet.',
           )
         : description.toString();
+    final bundleCta = _tr('Koop $amount credits', 'Buy $amount credits');
+    final bundlePrice = _oneTimePriceLabel(product['priceEur']);
 
     return _buildVisualTile(
       title: resolvedTitle,
@@ -964,11 +1086,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
       accent: accent,
       icon: Icons.token,
       primaryValue: _tr('$amount credits', '$amount credits'),
-      secondaryValue: _oneTimePriceLabel(product['priceEur']),
+      secondaryValue: bundlePrice,
       badgeLabel: isLargeOffer
           ? _tr('Top deal', 'Top deal')
           : _tr('Credits', 'Credits'),
-      actionLabel: _tr('Koop credits', 'Buy credits'),
+      actionLabel: bundleCta,
+      infoTitle: resolvedTitle,
+      infoBody: _tr(
+        '$bundleCta voor $bundlePrice.\n\n$resolvedDescription',
+        '$bundleCta for $bundlePrice.\n\n$resolvedDescription',
+      ),
       onPressed: _processingCheckout
           ? null
           : () => _startCheckout(
@@ -1025,6 +1152,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
               actionLabel: _creditBalance < cost
                   ? _tr('Niet genoeg credits', 'Not enough credits')
                   : _tr('Inwisselen', 'Redeem'),
+              infoTitle: resolvedTitle,
+              infoBody: _tr(
+                '$resolvedDescription\n\nThema: ${_creditItemThemeLabel(item)}\nKosten: $cost credits',
+                '$resolvedDescription\n\nTheme: ${_creditItemThemeLabel(item)}\nCost: $cost credits',
+              ),
               onPressed: disabled ? null : () => _redeemCreditItem(item),
             );
           }).toList(),

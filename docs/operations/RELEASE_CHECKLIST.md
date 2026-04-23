@@ -641,6 +641,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/premium_screen.dart`, `runtime/client-images/premium_tiles/*`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Premium/Credits cache-invalidation: na image-refresh `_premiumTilesCacheVersion` in `client/lib/screens/premium_screen.dart` verhogen en client opnieuw deployen zodat spelers niet op oude tile-cache blijven hangen
   - Bestanden: `client/lib/screens/premium_screen.dart`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Premium/Credits info-popup UX: lange uitlegtekst van tegels verplaatst naar linksboven `i`-icoon popup (NL/EN), terwijl tegel zelf kort en image-first blijft met duidelijke CTA zoals `Koop VIP`, `Koop Crew VIP`, `Koop 1000 credits`
+  - Bestanden: `client/lib/screens/premium_screen.dart`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Premium/Credits image generation workflow vastgelegd: nieuw Leonardo one-shot script met vaste 11 premium tile outputs + externe hosting runbook voor VPS, zodat stijlupdates herhaalbaar zijn en aankooptype per tile visueel duidelijk blijft
   - Bestanden: `backend/scripts/generate_premium_tiles_leonardo.py`, `docs/operations/PREMIUM_TILES_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Aviation i18n: `aircraft.json` bevat nu `name_en` + `description_en` voor alle 6 vliegtuigen; client toont juiste taal op basis van locale
