@@ -9,6 +9,7 @@
 - [Jobs Systeem](#jobs-systeem)
 - [Properties](#properties)
 - [Crews & Heists](#crews--heists)
+- [Crew Missions](#crew-missions)
 - [Bank Systeem](#bank-systeem)
 - [Travel & Countries](#travel--countries)
 - [Territory](#territory)
@@ -413,6 +414,22 @@ Voorbeelden:
   - Geen reward
 
 ---
+
+## Crew Missions
+
+### Overzicht
+- Crew Missions zijn co-op operations voor crews met role-based teamwork.
+- Er zijn 3 tiers (quick, coordinated, high-stakes) en geen harde dagcap.
+- Progression blijft non-pay-to-win: credits kunnen alleen tijd versnellen, niet power of reward multipliers toevoegen.
+
+### Phase 1
+- Phase 1 bevat 6 missies met exacte timers, rewards, fail-risico en cooldown skip-pricing.
+- Volledige specificatie: [CREW_MISSIONS_PHASE1_2026-04-23.md](CREW_MISSIONS_PHASE1_2026-04-23.md).
+
+### Credits skip logica (missions)
+- Mission cooldown skip rekent op resterende tijd met tier-rate per minuut.
+- Er wordt geen credits-kost berekend als er geen actieve cooldown is.
+- Skip wijzigt nooit success chance of payout multiplier.
 
 ## Bank Systeem
 

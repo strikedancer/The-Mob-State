@@ -3,6 +3,8 @@
 ## Scope
 Co-op crew missies met gezamenlijke objectives, role-based taken, risicofases, rewards en cooldown pacing.
 
+Phase 1 baseline: `docs/game-systems/CREW_MISSIONS_PHASE1_2026-04-23.md`
+
 Dit protocol is leidend voor:
 - missie-types en mission-flow
 - teamrollen en deelname-eisen
