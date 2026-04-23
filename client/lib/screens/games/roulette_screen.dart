@@ -260,9 +260,6 @@ class _RouletteScreenState extends State<RouletteScreen>
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final contentMaxWidth = width > 720 ? 620.0 : width - 24;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.game.name),
@@ -287,138 +284,130 @@ class _RouletteScreenState extends State<RouletteScreen>
             ),
           ),
           SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(12),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: contentMaxWidth),
-                  child: Column(
-                    children: [
-                      _buildRouletteTable(),
-                      const SizedBox(height: 16),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.black45,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.white24),
-                        ),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Kies je inzet',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              alignment: WrapAlignment.center,
-                              children: [
-                                _buildBetTypeButton('Rood', 'red', Colors.red),
-                                _buildBetTypeButton(
-                                  'Zwart',
-                                  'black',
-                                  Colors.black,
-                                ),
-                                _buildBetTypeButton(
-                                  'Even',
-                                  'even',
-                                  Colors.blue,
-                                ),
-                                _buildBetTypeButton(
-                                  'Oneven',
-                                  'odd',
-                                  Colors.orange,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+            child: _buildScaledGameCanvas(
+              width: 430,
+              height: 760,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    _buildRouletteTable(),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.white24),
                       ),
-                      const SizedBox(height: 12),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.black45,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.white24),
-                        ),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Inzet',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 16,
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Kies je inzet',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            alignment: WrapAlignment.center,
+                            children: [
+                              _buildBetTypeButton('Rood', 'red', Colors.red),
+                              _buildBetTypeButton(
+                                'Zwart',
+                                'black',
+                                Colors.black,
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'EUR ${formatCompactNumber(_betAmount)}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
+                              _buildBetTypeButton('Even', 'even', Colors.blue),
+                              _buildBetTypeButton(
+                                'Oneven',
+                                'odd',
+                                Colors.orange,
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: _getBetButtons(),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 14),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _isSpinning ? null : _spin,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.amber,
-                            foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.white24),
+                      ),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Inzet',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 15,
                             ),
                           ),
-                          child: _isSpinning
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text(
-                                  'DRAAI!',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                        ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'EUR ${formatCompactNumber(_betAmount)}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: _getBetButtons(),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 10),
-                      if (_result != 0 && !_isSpinning)
-                        Text(
-                          'Laatste resultaat: $_result',
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                    ),
+                    const Spacer(),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _isSpinning ? null : _spin,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                    ],
-                  ),
+                        child: _isSpinning
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'DRAAI!',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    if (_result != 0 && !_isSpinning)
+                      Text(
+                        'Laatste resultaat: $_result',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -428,116 +417,109 @@ class _RouletteScreenState extends State<RouletteScreen>
     );
   }
 
+  Widget _buildScaledGameCanvas({
+    required Widget child,
+    required double width,
+    required double height,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Center(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: SizedBox(width: width, height: height, child: child),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildRouletteTable() {
     final width = MediaQuery.of(context).size.width;
-    final wheelSize = width < 420 ? 220.0 : 280.0;
-    final frameSize = wheelSize + 64;
+    final wheelSize = width < 420 ? 220.0 : 270.0;
+    final frameSize = wheelSize + 86;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.brown.shade700, Colors.brown.shade900],
-        ),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF6E3F1A), width: 3),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black45,
-            blurRadius: 16,
-            offset: Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Center(
-        child: SizedBox(
-          width: frameSize,
-          height: frameSize,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Image-based decorative rim/frame around the wheel.
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/casino/roulette.png',
-                  width: frameSize,
-                  height: frameSize,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: frameSize,
-                    height: frameSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFF1B1B1B),
-                      border: Border.all(
-                        color: Colors.amber.shade700,
-                        width: 4,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
+    return SizedBox(
+      width: frameSize,
+      height: frameSize,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Top-down roulette table image, clipped round so no square box remains.
+          ClipOval(
+            child: Image.asset(
+              'assets/images/casino/roulette.png',
+              width: frameSize,
+              height: frameSize,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
                 width: frameSize,
                 height: frameSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.amber.shade700, width: 2.5),
+                  color: const Color(0xFF1B1B1B),
+                  border: Border.all(color: Colors.amber.shade700, width: 4),
                 ),
               ),
-              AnimatedBuilder(
-                animation: _spinAnimation,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: _spinAnimation.value * 2 * pi * 5,
-                    alignment: Alignment.center,
-                    child: child,
-                  );
-                },
-                child: Image.asset(
-                  'assets/images/casino/roulette_wheel.png',
-                  width: wheelSize,
-                  height: wheelSize,
-                  fit: BoxFit.contain,
-                  filterQuality: FilterQuality.high,
-                ),
-              ),
-              if (!_isSpinning && _result != 0)
-                Container(
-                  width: 84,
-                  height: 84,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black87,
-                    border: Border.all(color: Colors.amber, width: 2.5),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/casino/roulette_ball.png',
-                          width: 26,
-                          height: 26,
-                        ),
-                        Text(
-                          _result.toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
+            ),
           ),
-        ),
+          // Dedicated image rim around the wheel.
+          IgnorePointer(
+            child: Image.asset(
+              'assets/images/casino/roulette_rim.png',
+              width: frameSize,
+              height: frameSize,
+              fit: BoxFit.contain,
+            ),
+          ),
+          AnimatedBuilder(
+            animation: _spinAnimation,
+            builder: (context, child) {
+              return Transform.rotate(
+                angle: _spinAnimation.value * 2 * pi * 5,
+                alignment: Alignment.center,
+                child: child,
+              );
+            },
+            child: Image.asset(
+              'assets/images/casino/roulette_wheel.png',
+              width: wheelSize,
+              height: wheelSize,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
+            ),
+          ),
+          if (!_isSpinning && _result != 0)
+            Container(
+              width: 84,
+              height: 84,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.black87,
+                border: Border.all(color: Colors.amber, width: 2.5),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/casino/roulette_ball.png',
+                      width: 26,
+                      height: 26,
+                    ),
+                    Text(
+                      _result.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
