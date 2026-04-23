@@ -289,7 +289,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
     if (depositAmount == null || depositAmount < minDeposit) {
       if (mounted && depositAmount != null) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(l10n.minimumDeposit(minDeposit.toStringAsFixed(0))),
             backgroundColor: Colors.orange,
@@ -316,7 +317,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
         // Show success message
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(l10n.casinoBought),
               backgroundColor: Colors.green,
@@ -351,7 +353,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
         final reason = params['reason'] ?? l10n.unknownResponse;
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(content: Text(reason), backgroundColor: Colors.red),
           );
         }
@@ -371,7 +374,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
       print('[CasinoScreen] Purchase error: $e');
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(l10n.errorBuyCasino),
             backgroundColor: Colors.red,
@@ -412,21 +416,20 @@ class _CasinoScreenState extends State<CasinoScreen> {
     if (destination == null) return;
 
     setState(() => _gameRouteActive = true);
-    navigator
-        .push(MaterialPageRoute(builder: (_) => destination!))
-        .then((_) async {
-          if (!mounted) return;
-          setState(() => _gameRouteActive = false);
-          await _checkOwnership();
-        });
+    navigator.push(MaterialPageRoute(builder: (_) => destination!)).then((
+      _,
+    ) async {
+      if (!mounted) return;
+      setState(() => _gameRouteActive = false);
+      await _checkOwnership();
+    });
   }
 
   Widget _buildEmbeddedCasinoNavigator() {
     return Navigator(
       key: _gameNavigatorKey,
-      onGenerateRoute: (_) => MaterialPageRoute(
-        builder: (_) => _buildGameGrid(),
-      ),
+      onGenerateRoute: (_) =>
+          MaterialPageRoute(builder: (_) => _buildGameGrid()),
     );
   }
 
@@ -441,7 +444,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Row(children: [Text('🎰 '), Text(l10n.casino)])),
-      floatingActionButton: _isOwner && _casinoStats != null && !_gameRouteActive
+      floatingActionButton:
+          _isOwner && _casinoStats != null && !_gameRouteActive
           ? FloatingActionButton.extended(
               onPressed: () {
                 Navigator.push(
@@ -514,133 +518,179 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
   Widget _buildClosedCasino() {
     final l10n = AppLocalizations.of(context)!;
-    return Center(
-      child: Container(
-        margin: EdgeInsets.all(32),
-        padding: EdgeInsets.all(32),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.red[700]!, width: 3),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.lock, size: 80, color: Colors.red[400]),
-            SizedBox(height: 24),
-            Text(
-              l10n.casinoClosedTitle,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: 2,
-              ),
-              textAlign: TextAlign.center,
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isNarrow = constraints.maxWidth < 700;
+          final horizontalPadding = isNarrow ? 12.0 : 24.0;
+          final cardPadding = isNarrow ? 16.0 : 32.0;
+
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: 16,
             ),
-            SizedBox(height: 16),
-            if (_ownerInfo != null) ...[
-              Text(
-                l10n.casinoOwnedByLabel,
-                style: TextStyle(fontSize: 16, color: Colors.white70),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight - 32,
               ),
-              SizedBox(height: 8),
-              Text(
-                _ownerInfo!['username'] ?? l10n.unknown,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.amber,
-                ),
-              ),
-            ] else ...[
-              Text(
-                l10n.casinoNoOwner,
-                style: TextStyle(fontSize: 16, color: Colors.white70),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 24),
-              Text(
-                l10n.casinoPurchasePriceLabel,
-                style: TextStyle(fontSize: 18, color: Colors.white70),
-              ),
-              SizedBox(height: 8),
-              Text(
-                '€${_casinoPrice.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green[400],
-                ),
-              ),
-              SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _purchaseCasino,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[700],
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 860),
+                  child: Container(
+                    padding: EdgeInsets.all(cardPadding),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.red[700]!, width: 3),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.shopping_cart, size: 24),
-                      SizedBox(width: 8),
-                      Text(
-                        l10n.buyCasino,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.lock,
+                          size: isNarrow ? 60 : 80,
+                          color: Colors.red[400],
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 20),
+                        Text(
+                          l10n.casinoClosedTitle,
+                          style: TextStyle(
+                            fontSize: isNarrow ? 22 : 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 1.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        if (_ownerInfo != null) ...[
+                          Text(
+                            l10n.casinoOwnedByLabel,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _ownerInfo!['username'] ?? l10n.unknown,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ] else ...[
+                          Text(
+                            l10n.casinoNoOwner,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white70,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            l10n.casinoPurchasePriceLabel,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '€${_casinoPrice.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                            style: TextStyle(
+                              fontSize: isNarrow ? 26 : 32,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green[400],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: _purchaseCasino,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green[700],
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.shopping_cart, size: 24),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    l10n.buyCasino,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[900]!.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.info_outline,
+                                  color: Colors.blue[300],
+                                  size: 32,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  l10n.casinoOwnerInfo,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    height: 1.5,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.blue[900]!.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.info_outline, color: Colors.blue[300], size: 32),
-                    SizedBox(height: 8),
-                    Text(
-                      l10n.casinoOwnerInfo,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                        height: 1.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ],
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildGameGrid() {
     final screenWidth = MediaQuery.of(context).size.width;
-    // Calculate optimal number of columns based on screen width
-    // Each card should be between 250-350px wide for best appearance
-    final crossAxisCount = screenWidth < 600
+    final crossAxisCount = screenWidth < 560
+        ? 1
+        : screenWidth < 900
         ? 2
-        : (screenWidth / 300).floor().clamp(2, 4);
-    // Adjust aspect ratio based on screen size to prevent overflow
-    final aspectRatio = screenWidth < 600 ? 0.75 : 0.85;
+        : (screenWidth / 320).floor().clamp(2, 4);
+    final aspectRatio = screenWidth < 560
+        ? 1.18
+        : (screenWidth < 900 ? 0.95 : 0.9);
 
     return RefreshIndicator(
       onRefresh: _checkOwnershipAndLoadGames,

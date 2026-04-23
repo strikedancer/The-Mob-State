@@ -571,6 +571,7 @@ Elk land heeft unieke goods:
 ## Casino
 
 - Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout.
+- Casino hub, closed state en alle minigames moeten mobiel/tablet/desktop responsief blijven met 1 primaire verticale scrollflow; content mag niet vastlopen op kleine viewports.
 
 ### Games Available
 

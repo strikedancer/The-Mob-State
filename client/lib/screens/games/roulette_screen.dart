@@ -16,19 +16,39 @@ class RouletteScreen extends StatefulWidget {
   State<RouletteScreen> createState() => _RouletteScreenState();
 }
 
-class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProviderStateMixin {
+class _RouletteScreenState extends State<RouletteScreen>
+    with SingleTickerProviderStateMixin {
   final ApiClient _apiClient = ApiClient();
-  
+
   int _betAmount = 100;
   bool _isSpinning = false;
   String _betType = 'red';
   int? _betNumber;
   int _result = 0;
-  
+
   late AnimationController _spinController;
   late Animation<double> _spinAnimation;
 
-  final _redNumbers = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+  final _redNumbers = [
+    1,
+    3,
+    5,
+    7,
+    9,
+    12,
+    14,
+    16,
+    18,
+    19,
+    21,
+    23,
+    25,
+    27,
+    30,
+    32,
+    34,
+    36,
+  ];
 
   @override
   void initState() {
@@ -38,7 +58,7 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
       duration: Duration(seconds: 3),
       vsync: this,
     );
-    
+
     // Add easing curve for smooth deceleration
     _spinAnimation = CurvedAnimation(
       parent: _spinController,
@@ -63,14 +83,11 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
     _spinController.forward();
 
     try {
-      final response = await _apiClient.post(
-        '/casino/roulette/spin',
-        {
-          'betAmount': _betAmount,
-          'betType': _betType,
-          'betValue': _betNumber ?? (_betType == 'red' ? 'red' : _betType),
-        },
-      );
+      final response = await _apiClient.post('/casino/roulette/spin', {
+        'betAmount': _betAmount,
+        'betType': _betType,
+        'betValue': _betNumber ?? (_betType == 'red' ? 'red' : _betType),
+      });
       final data = jsonDecode(response.body);
 
       await Future.delayed(Duration(seconds: 3));
@@ -83,7 +100,8 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
           });
           String errorReason = data['params']['reason'] ?? 'Fout bij draaien';
           if (errorReason == 'CASINO_NOT_FOUND') {
-            errorReason = 'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
+            errorReason =
+                'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
           } else if (errorReason == 'INSUFFICIENT_FUNDS') {
             errorReason = 'Niet genoeg geld';
           } else if (errorReason == 'INSUFFICIENT_BANKROLL') {
@@ -92,12 +110,13 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
           _showError(errorReason);
           return;
         }
-        
+
         final params = data['params'];
         final won = params['won'] ?? false;
         final result = params['result'] ?? 0;
         final payout = params['payout'] ?? 0;
-        final profit = params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
+        final profit =
+            params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
         final casinoBankrupt = params['casinoBankrupt'] ?? false;
 
         setState(() {
@@ -130,7 +149,7 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
   void _showResultDialog(bool won, int payout, int profit, int result) {
     final isRed = _redNumbers.contains(result);
     final color = result == 0 ? 'groen' : (isRed ? 'rood' : 'zwart');
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -139,7 +158,9 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              won ? 'assets/images/casino/win_effect.png' : 'assets/images/casino/lose_effect.png',
+              won
+                  ? 'assets/images/casino/win_effect.png'
+                  : 'assets/images/casino/lose_effect.png',
               width: 200,
               height: 150,
               fit: BoxFit.contain,
@@ -191,7 +212,8 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
   }
 
   void _showError(String message) {
-    showTopRightFromSnackBar(context, 
+    showTopRightFromSnackBar(
+      context,
       SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
@@ -210,11 +232,8 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
               width: 300,
               height: 200,
               fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.warning,
-                color: Colors.red,
-                size: 100,
-              ),
+              errorBuilder: (context, error, stackTrace) =>
+                  Icon(Icons.warning, color: Colors.red, size: 100),
             ),
             SizedBox(height: 16),
             Text(
@@ -252,163 +271,212 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.red[900]!,
-              Colors.red[700]!,
-              Colors.black,
-            ],
+            colors: [Colors.red[900]!, Colors.red[700]!, Colors.black],
           ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Roulette Wheel
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Spinning wheel with smooth animation
-                  AnimatedBuilder(
-                    animation: _spinAnimation,
-                    builder: (context, child) {
-                      return Transform.rotate(
-                        angle: _spinAnimation.value * 2 * pi * 5,
-                        alignment: Alignment.center,
-                        child: child,
-                      );
-                    },
-                    child: Image.asset(
-                      'assets/images/casino/roulette_wheel.png',
-                      width: 300,
-                      height: 300,
-                      fit: BoxFit.contain,
-                      filterQuality: FilterQuality.high,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isNarrow = constraints.maxWidth < 430;
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 16,
+                ),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight - 32,
+                      maxWidth: 980,
                     ),
-                  ),
-                  // Ball indicator (optional - shows result number)
-                  if (!_isSpinning && _result != 0)
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black54,
-                        border: Border.all(color: Colors.amber, width: 3),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Roulette Wheel
+                        Stack(
+                          alignment: Alignment.center,
                           children: [
-                            Image.asset(
-                              'assets/images/casino/roulette_ball.png',
-                              width: 30,
-                              height: 30,
-                            ),
-                            Text(
-                              _result.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                            // Spinning wheel with smooth animation
+                            AnimatedBuilder(
+                              animation: _spinAnimation,
+                              builder: (context, child) {
+                                return Transform.rotate(
+                                  angle: _spinAnimation.value * 2 * pi * 5,
+                                  alignment: Alignment.center,
+                                  child: child,
+                                );
+                              },
+                              child: Image.asset(
+                                'assets/images/casino/roulette_wheel.png',
+                                width: isNarrow ? 240 : 300,
+                                height: isNarrow ? 240 : 300,
+                                fit: BoxFit.contain,
+                                filterQuality: FilterQuality.high,
                               ),
                             ),
+                            // Ball indicator (optional - shows result number)
+                            if (!_isSpinning && _result != 0)
+                              Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black54,
+                                  border: Border.all(
+                                    color: Colors.amber,
+                                    width: 3,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/casino/roulette_ball.png',
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                      Text(
+                                        _result.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                           ],
                         ),
-                      ),
-                    ),
-                ],
-              ),
-              SizedBox(height: 40),
+                        SizedBox(height: isNarrow ? 24 : 40),
 
-              // Bet Type Selection
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Kies je inzet',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    SizedBox(height: 15),
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        _buildBetTypeButton('Rood', 'red', Colors.red),
-                        _buildBetTypeButton('Zwart', 'black', Colors.black),
-                        _buildBetTypeButton('Even', 'even', Colors.blue),
-                        _buildBetTypeButton('Oneven', 'odd', Colors.orange),
+                        // Bet Type Selection
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Kies je inzet',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  _buildBetTypeButton(
+                                    'Rood',
+                                    'red',
+                                    Colors.red,
+                                  ),
+                                  _buildBetTypeButton(
+                                    'Zwart',
+                                    'black',
+                                    Colors.black,
+                                  ),
+                                  _buildBetTypeButton(
+                                    'Even',
+                                    'even',
+                                    Colors.blue,
+                                  ),
+                                  _buildBetTypeButton(
+                                    'Oneven',
+                                    'odd',
+                                    Colors.orange,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        // Bet Amount
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Inzet',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                '€${formatCompactNumber(_betAmount)}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: _getBetButtons(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 24),
+
+                        // Spin Button
+                        ElevatedButton(
+                          onPressed: _isSpinning ? null : _spin,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.amber,
+                            foregroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 60,
+                              vertical: 20,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: _isSpinning
+                              ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'DRAAI!',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-
-              // Bet Amount
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Inzet',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '€${formatCompactNumber(_betAmount)}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: _getBetButtons(),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30),
-
-              // Spin Button
-              ElevatedButton(
-                onPressed: _isSpinning ? null : _spin,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  foregroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: _isSpinning
-                    ? SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(
-                        'DRAAI!',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -447,13 +515,13 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
   List<Widget> _getBetButtons() {
     final minBet = widget.game.minBet;
     final maxBet = widget.game.maxBet;
-    
+
     // Generate bet amounts based on min and max
     List<int> amounts = [];
-    
+
     // Always add minBet
     amounts.add(minBet);
-    
+
     // Add intermediate values
     if (maxBet >= 100) amounts.add(100);
     if (maxBet >= 500) amounts.add(500);
@@ -463,22 +531,24 @@ class _RouletteScreenState extends State<RouletteScreen> with SingleTickerProvid
     if (maxBet >= 25000) amounts.add(25000);
     if (maxBet >= 50000) amounts.add(50000);
     if (maxBet >= 100000) amounts.add(100000);
-    
+
     // Always add maxBet if it's not already in the list
     if (!amounts.contains(maxBet)) {
       amounts.add(maxBet);
     }
-    
+
     // Remove duplicates and sort
     amounts = amounts.toSet().toList()..sort();
-    
+
     // Generate buttons
     return amounts.map((amount) {
       String label;
       if (amount >= 1000000) {
-        label = '€${(amount / 1000000).toStringAsFixed(amount % 1000000 == 0 ? 0 : 1)}M';
+        label =
+            '€${(amount / 1000000).toStringAsFixed(amount % 1000000 == 0 ? 0 : 1)}M';
       } else if (amount >= 1000) {
-        label = '€${(amount / 1000).toStringAsFixed(amount % 1000 == 0 ? 0 : 1)}K';
+        label =
+            '€${(amount / 1000).toStringAsFixed(amount % 1000 == 0 ? 0 : 1)}K';
       } else {
         label = '€$amount';
       }

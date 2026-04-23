@@ -17,7 +17,7 @@ class BlackjackScreen extends StatefulWidget {
 
 class _BlackjackScreenState extends State<BlackjackScreen> {
   final ApiClient _apiClient = ApiClient();
-  
+
   int _betAmount = 100;
   bool _isPlaying = false;
   List<int> _playerCards = [];
@@ -41,10 +41,10 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     });
 
     try {
-      final response = await _apiClient.post(
-        '/casino/blackjack/play',
-        {'betAmount': _betAmount, 'action': 'start'},
-      );
+      final response = await _apiClient.post('/casino/blackjack/play', {
+        'betAmount': _betAmount,
+        'action': 'start',
+      });
       final data = jsonDecode(response.body);
 
       if (data['event'] != null && data['params'] != null) {
@@ -55,7 +55,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           });
           String errorReason = data['params']['reason'] ?? 'Fout bij spelen';
           if (errorReason == 'CASINO_NOT_FOUND') {
-            errorReason = 'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
+            errorReason =
+                'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
           } else if (errorReason == 'INSUFFICIENT_FUNDS') {
             errorReason = 'Niet genoeg geld';
           } else if (errorReason == 'INSUFFICIENT_BANKROLL') {
@@ -64,17 +65,22 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           _showError(errorReason);
           return;
         }
-        
+
         final params = data['params'];
         print('🃏 Blackjack response params: $params');
         final won = params['won'] ?? false;
-        final playerCards = List<int>.from(params['playerHand'] ?? params['playerCards'] ?? []);
-        final dealerCards = List<int>.from(params['dealerHand'] ?? params['dealerCards'] ?? []);
+        final playerCards = List<int>.from(
+          params['playerHand'] ?? params['playerCards'] ?? [],
+        );
+        final dealerCards = List<int>.from(
+          params['dealerHand'] ?? params['dealerCards'] ?? [],
+        );
         print('🃏 Parsed cards - Player: $playerCards, Dealer: $dealerCards');
         final playerTotal = params['playerTotal'] ?? 0;
         final dealerTotal = params['dealerTotal'] ?? 0;
         final payout = params['payout'] ?? 0;
-        final profit = params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
+        final profit =
+            params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
         final casinoBankrupt = params['casinoBankrupt'] ?? false;
 
         setState(() {
@@ -112,7 +118,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     // Pick a random suit for display (we just cycle through for variety)
     final suits = ['hearts', 'diamonds', 'clubs', 'spades'];
     final suit = suits[cardValue % 4];
-    
+
     String filename;
     if (cardValue == 1) {
       filename = 'ace';
@@ -123,35 +129,44 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     } else {
       filename = cardValue.toString();
     }
-    
+
     return 'assets/images/casino/cards/$suit/${filename}_$suit.png';
   }
 
   Widget _buildCardRow(List<int> cards, String label, int total) {
     return Column(
       children: [
-        Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
         SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: cards.map((card) => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2),
-            child: Image.asset(
-              _getCardImage(card),
-              width: 40,
-              height: 60,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Container(
-                width: 40,
-                height: 60,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(4),
+          children: cards
+              .map(
+                (card) => Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2),
+                  child: Image.asset(
+                    _getCardImage(card),
+                    width: 40,
+                    height: 60,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: 40,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Center(
+                        child: Text('$card', style: TextStyle(fontSize: 10)),
+                      ),
+                    ),
+                  ),
                 ),
-                child: Center(child: Text('$card', style: TextStyle(fontSize: 10))),
-              ),
-            ),
-          )).toList(),
+              )
+              .toList(),
         ),
         SizedBox(height: 4),
         Text('Totaal: $total', style: TextStyle(fontSize: 12)),
@@ -159,11 +174,17 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     );
   }
 
-  void _showResultDialog(bool won, int payout, int profit, int playerTotal, int dealerTotal) {
-    String message = won 
+  void _showResultDialog(
+    bool won,
+    int payout,
+    int profit,
+    int playerTotal,
+    int dealerTotal,
+  ) {
+    String message = won
         ? 'Je hebt €${formatCompactNumber(payout)} gewonnen!'
         : 'Je hebt verloren';
-    
+
     if (playerTotal == 21) {
       message = '🎉 BLACKJACK! €${formatCompactNumber(payout)}';
     }
@@ -176,7 +197,9 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              won ? 'assets/images/casino/win_effect.png' : 'assets/images/casino/lose_effect.png',
+              won
+                  ? 'assets/images/casino/win_effect.png'
+                  : 'assets/images/casino/lose_effect.png',
               width: 200,
               height: 150,
               fit: BoxFit.contain,
@@ -225,7 +248,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   }
 
   void _showError(String message) {
-    showTopRightFromSnackBar(context, 
+    showTopRightFromSnackBar(
+      context,
       SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
@@ -244,11 +268,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
               width: 300,
               height: 200,
               fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.warning,
-                color: Colors.red,
-                size: 100,
-              ),
+              errorBuilder: (context, error, stackTrace) =>
+                  Icon(Icons.warning, color: Colors.red, size: 100),
             ),
             SizedBox(height: 16),
             Text(
@@ -294,95 +315,137 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Dealer Cards
-              if (_dealerCards.isNotEmpty) ...[
-                Text(
-                  'Dealer: $_dealerTotal',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 16,
                 ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _dealerCards.map((card) => _buildCard(card)).toList(),
-                ),
-                SizedBox(height: 30),
-              ],
-              
-              // Player Cards
-              if (_playerCards.isNotEmpty) ...[
-                Text(
-                  'Jij: $_playerTotal',
-                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _playerCards.map((card) => _buildCard(card)).toList(),
-                ),
-                SizedBox(height: 40),
-              ],
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight - 32,
+                      maxWidth: 980,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Dealer Cards
+                        if (_dealerCards.isNotEmpty) ...[
+                          Text(
+                            'Dealer: $_dealerTotal',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          SizedBox(height: 10),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: _dealerCards
+                                .map((card) => _buildCard(card))
+                                .toList(),
+                          ),
+                          SizedBox(height: 24),
+                        ],
 
-              // Bet Controls
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Inzet',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '€${formatCompactNumber(_betAmount)}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: _getBetButtons(),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30),
+                        // Player Cards
+                        if (_playerCards.isNotEmpty) ...[
+                          Text(
+                            'Jij: $_playerTotal',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: _playerCards
+                                .map((card) => _buildCard(card))
+                                .toList(),
+                          ),
+                          SizedBox(height: 30),
+                        ],
 
-              // Play Button
-              ElevatedButton(
-                onPressed: _isPlaying ? null : _play,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  foregroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                        // Bet Controls
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Inzet',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                '€${formatCompactNumber(_betAmount)}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: _getBetButtons(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 24),
+
+                        // Play Button
+                        ElevatedButton(
+                          onPressed: _isPlaying ? null : _play,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.amber,
+                            foregroundColor: Colors.black,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 60,
+                              vertical: 20,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: _isPlaying
+                              ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'SPELEN!',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                child: _isPlaying
-                    ? SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(
-                        'SPELEN!',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -394,9 +457,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       width: 60,
       height: 90,
       margin: EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Image.asset(
@@ -436,10 +497,10 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   List<Widget> _getBetButtons() {
     final minBet = widget.game.minBet;
     final maxBet = widget.game.maxBet;
-    
+
     List<int> amounts = [];
     amounts.add(minBet);
-    
+
     if (maxBet >= 100) amounts.add(100);
     if (maxBet >= 500) amounts.add(500);
     if (maxBet >= 1000) amounts.add(1000);
@@ -448,19 +509,21 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     if (maxBet >= 25000) amounts.add(25000);
     if (maxBet >= 50000) amounts.add(50000);
     if (maxBet >= 100000) amounts.add(100000);
-    
+
     if (!amounts.contains(maxBet)) {
       amounts.add(maxBet);
     }
-    
+
     amounts = amounts.toSet().toList()..sort();
-    
+
     return amounts.map((amount) {
       String label;
       if (amount >= 1000000) {
-        label = '€${(amount / 1000000).toStringAsFixed(amount % 1000000 == 0 ? 0 : 1)}M';
+        label =
+            '€${(amount / 1000000).toStringAsFixed(amount % 1000000 == 0 ? 0 : 1)}M';
       } else if (amount >= 1000) {
-        label = '€${(amount / 1000).toStringAsFixed(amount % 1000 == 0 ? 0 : 1)}K';
+        label =
+            '€${(amount / 1000).toStringAsFixed(amount % 1000 == 0 ? 0 : 1)}K';
       } else {
         label = '€$amount';
       }

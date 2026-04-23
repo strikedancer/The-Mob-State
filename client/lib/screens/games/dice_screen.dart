@@ -19,7 +19,7 @@ class DiceScreen extends StatefulWidget {
 
 class _DiceScreenState extends State<DiceScreen> {
   final ApiClient _apiClient = ApiClient();
-  
+
   int _betAmount = 100;
   bool _isRolling = false;
   String _prediction = 'high';
@@ -55,13 +55,10 @@ class _DiceScreenState extends State<DiceScreen> {
     });
 
     try {
-      final response = await _apiClient.post(
-        '/casino/dice/roll',
-        {
-          'betAmount': _betAmount,
-          'prediction': _prediction,
-        },
-      );
+      final response = await _apiClient.post('/casino/dice/roll', {
+        'betAmount': _betAmount,
+        'prediction': _prediction,
+      });
       final data = jsonDecode(response.body);
 
       await Future.delayed(Duration(seconds: 2));
@@ -75,7 +72,8 @@ class _DiceScreenState extends State<DiceScreen> {
           });
           String errorReason = data['params']['reason'] ?? 'Fout bij gooien';
           if (errorReason == 'CASINO_NOT_FOUND') {
-            errorReason = 'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
+            errorReason =
+                'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
           } else if (errorReason == 'INSUFFICIENT_FUNDS') {
             errorReason = 'Niet genoeg geld';
           } else if (errorReason == 'INSUFFICIENT_BANKROLL') {
@@ -84,14 +82,15 @@ class _DiceScreenState extends State<DiceScreen> {
           _showError(errorReason);
           return;
         }
-        
+
         final params = data['params'];
         final won = params['won'] ?? false;
         final dice1 = params['dice1'] ?? 1;
         final dice2 = params['dice2'] ?? 1;
         final total = params['total'] ?? 2;
         final payout = params['payout'] ?? 0;
-        final profit = params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
+        final profit =
+            params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
         final casinoBankrupt = params['casinoBankrupt'] ?? false;
 
         setState(() {
@@ -131,7 +130,9 @@ class _DiceScreenState extends State<DiceScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              won ? 'assets/images/casino/win_effect.png' : 'assets/images/casino/lose_effect.png',
+              won
+                  ? 'assets/images/casino/win_effect.png'
+                  : 'assets/images/casino/lose_effect.png',
               width: 200,
               height: 150,
               fit: BoxFit.contain,
@@ -183,7 +184,8 @@ class _DiceScreenState extends State<DiceScreen> {
   }
 
   void _showError(String message) {
-    showTopRightFromSnackBar(context, 
+    showTopRightFromSnackBar(
+      context,
       SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
@@ -202,11 +204,8 @@ class _DiceScreenState extends State<DiceScreen> {
               width: 300,
               height: 200,
               fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Icon(
-                Icons.warning,
-                color: Colors.red,
-                size: 100,
-              ),
+              errorBuilder: (context, error, stackTrace) =>
+                  Icon(Icons.warning, color: Colors.red, size: 100),
             ),
             SizedBox(height: 16),
             Text(
@@ -244,128 +243,160 @@ class _DiceScreenState extends State<DiceScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.blue[900]!,
-              Colors.blue[700]!,
-              Colors.indigo[900]!,
-            ],
+            colors: [Colors.blue[900]!, Colors.blue[700]!, Colors.indigo[900]!],
           ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Dice Display
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildDice(_dice1),
-                  SizedBox(width: 20),
-                  _buildDice(_dice2),
-                ],
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Totaal: ${_dice1 + _dice2}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isNarrow = constraints.maxWidth < 430;
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 16,
                 ),
-              ),
-              SizedBox(height: 40),
-
-              // Prediction Selection
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Voorspel',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight - 32,
+                      maxWidth: 980,
                     ),
-                    SizedBox(height: 15),
-                    Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildPredictionButton('Laag (2-6)', 'low'),
-                        SizedBox(width: 10),
-                        _buildPredictionButton('Hoog (8-12)', 'high'),
+                        // Dice Display
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 16,
+                          runSpacing: 16,
+                          children: [_buildDice(_dice1), _buildDice(_dice2)],
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          'Totaal: ${_dice1 + _dice2}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: isNarrow ? 24 : 40),
+
+                        // Prediction Selection
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Voorspel',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: [
+                                  _buildPredictionButton('Laag (2-6)', 'low'),
+                                  _buildPredictionButton('Hoog (8-12)', 'high'),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Laag/Hoog betaalt 2x • Exacte score betaalt 6x',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+                        // Bet Amount
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Inzet',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                '€${formatCompactNumber(_betAmount)}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: _getBetButtons(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 24),
+
+                        // Roll Button
+                        ElevatedButton(
+                          onPressed: _isRolling ? null : _roll,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.amber,
+                            foregroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 60,
+                              vertical: 20,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: _isRolling
+                              ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  'GOOI!',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Laag/Hoog betaalt 2x • Exacte score betaalt 6x',
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-
-              // Bet Amount
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Inzet',
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '€${formatCompactNumber(_betAmount)}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: _getBetButtons(),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30),
-
-              // Roll Button
-              ElevatedButton(
-                onPressed: _isRolling ? null : _roll,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  foregroundColor: Colors.black,
-                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: _isRolling
-                    ? SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(
-                        'GOOI!',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -411,13 +442,20 @@ class _DiceScreenState extends State<DiceScreen> {
 
   String _getDiceSymbol(int value) {
     switch (value) {
-      case 1: return '⚀';
-      case 2: return '⚁';
-      case 3: return '⚂';
-      case 4: return '⚃';
-      case 5: return '⚄';
-      case 6: return '⚅';
-      default: return '⚀';
+      case 1:
+        return '⚀';
+      case 2:
+        return '⚁';
+      case 3:
+        return '⚂';
+      case 4:
+        return '⚃';
+      case 5:
+        return '⚄';
+      case 6:
+        return '⚅';
+      default:
+        return '⚀';
     }
   }
 
@@ -450,10 +488,10 @@ class _DiceScreenState extends State<DiceScreen> {
   List<Widget> _getBetButtons() {
     final minBet = widget.game.minBet;
     final maxBet = widget.game.maxBet;
-    
+
     List<int> amounts = [];
     amounts.add(minBet);
-    
+
     if (maxBet >= 100) amounts.add(100);
     if (maxBet >= 500) amounts.add(500);
     if (maxBet >= 1000) amounts.add(1000);
@@ -462,19 +500,21 @@ class _DiceScreenState extends State<DiceScreen> {
     if (maxBet >= 25000) amounts.add(25000);
     if (maxBet >= 50000) amounts.add(50000);
     if (maxBet >= 100000) amounts.add(100000);
-    
+
     if (!amounts.contains(maxBet)) {
       amounts.add(maxBet);
     }
-    
+
     amounts = amounts.toSet().toList()..sort();
-    
+
     return amounts.map((amount) {
       String label;
       if (amount >= 1000000) {
-        label = '€${(amount / 1000000).toStringAsFixed(amount % 1000000 == 0 ? 0 : 1)}M';
+        label =
+            '€${(amount / 1000000).toStringAsFixed(amount % 1000000 == 0 ? 0 : 1)}M';
       } else if (amount >= 1000) {
-        label = '€${(amount / 1000).toStringAsFixed(amount % 1000 == 0 ? 0 : 1)}K';
+        label =
+            '€${(amount / 1000).toStringAsFixed(amount % 1000 == 0 ? 0 : 1)}K';
       } else {
         label = '€$amount';
       }
