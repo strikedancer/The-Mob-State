@@ -1661,6 +1661,7 @@ const List<HelpTopic> helpTopics = [
       'Credit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.',
       'Bij actieve cooldowns zie je op ondersteunde timeout-schermen ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.',
       'Sommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bijv. tijdens actieve reparatie op de voertuigkaart).',
+      'Bij contextknoppen zoals reparatie-versnellen wordt de actuele credit-kost direct op de knop/tooltip getoond.',
       'Prijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.',
     ],
     howEn: [
@@ -1672,6 +1673,7 @@ const List<HelpTopic> helpTopics = [
       'Credit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.',
       'On supported timeout screens you also get a direct speed-up button for active cooldowns, so you do not need to go back to Premium & Credits first.',
       'Some credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead (for example while a repair is active on a vehicle card).',
+      'For contextual buttons such as repair speed-up, the current credit cost is shown directly on the button/tooltip.',
       'Prices and available items are managed live in admin. That means VIP prices, credit costs and the available offer can change without an app update.',
     ],
     tipsNl: [

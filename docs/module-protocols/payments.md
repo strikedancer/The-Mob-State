@@ -40,6 +40,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Legacy offers met verouderde prijsstelling (zoals 1000 credits voor 1,99) mogen niet meer in de actieve player-catalogus of checkout terechtkomen; blokkeer of deactiveer deze server-side.
 - Premium/Credits tegelafbeeldingen blijven extern gehost onder `images/premium_tiles/...`; generator, backend-catalogus en client mapping moeten dezelfde vaste bestandsnamen delen.
 - Voor `ACTION_COOLDOWN_RESET` items geldt dynamische prijsstelling op basis van resterende cooldown en action-value; expose deze altijd als runtime `effectiveCreditCost` in de overview.
+- Dynamische cooldown-prijsstelling moet progressief maar mild blijven: korte cooldowns (zoals crime ~1-2 minuten) horen geen disproportioneel hoge creditprijs te krijgen.
 - Cooldown-reset redemptions moeten blokkeren zonder actieve cooldown (`ACTION_COOLDOWN_NOT_ACTIVE`) om creditverlies te voorkomen.
 - Ondersteunde gameplay-timeout overlays (crime, jobs, voertuig- en bootdiefstal, en andere actieve cooldown-schermen met matchende actionType) moeten een directe credit speed-up knop tonen; speler mag niet geforceerd worden eerst terug te navigeren naar `Premium & Credits`.
 - Voor `VEHICLE_REPAIR_FINISH` moet tijdens actieve reparatie op voertuigkaarten (garage/marina) een contextuele credits-knop beschikbaar zijn die dezelfde redeem-flow gebruikt met `vehicleInventoryId`.

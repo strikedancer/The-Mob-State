@@ -37,6 +37,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
   bool _showStealCooldownOverlay = false;
   Timer? _stealCooldownTimer;
   final Set<int> _repairCreditRedeemInProgress = <int>{};
+  int? _repairFinishCreditCost;
 
   String _tr(String nl, String en) {
     return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
@@ -131,7 +132,35 @@ class _MarinaScreenState extends State<MarinaScreen> {
       vehicleProvider.fetchInventory(),
       vehicleProvider.fetchMarinaStatus(currentCountry),
       _loadSelectedVehicle(),
+      _loadRepairFinishCreditCost(),
     ]);
+  }
+
+  Future<void> _loadRepairFinishCreditCost() async {
+    try {
+      final response = await _apiClient.get('/subscriptions/credits/overview');
+      if (response.statusCode != 200) {
+        return;
+      }
+
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final items = (data['items'] as List<dynamic>? ?? const [])
+          .whereType<Map<String, dynamic>>();
+      final repairItem = items.cast<Map<String, dynamic>?>().firstWhere(
+        (item) => item?['effectType'] == 'VEHICLE_REPAIR_FINISH',
+        orElse: () => null,
+      );
+
+      if (!mounted) return;
+      setState(() {
+        _repairFinishCreditCost = repairItem == null
+            ? null
+            : ((repairItem['effectiveCreditCost'] as num?)?.toInt() ??
+                  (repairItem['creditCost'] as num?)?.toInt());
+      });
+    } catch (_) {
+      // Keep UI operational even when premium endpoint is temporarily unavailable.
+    }
   }
 
   Future<void> _loadSelectedVehicle() async {
@@ -374,8 +403,12 @@ class _MarinaScreenState extends State<MarinaScreen> {
           ? () => _finishRepairWithCredits(boat)
           : null,
       finishRepairCreditsLabel: _tr(
-        'Versnel reparatie (credits)',
-        'Speed up repair (credits)',
+        _repairFinishCreditCost != null
+            ? 'Versnel reparatie (-$_repairFinishCreditCost credits)'
+            : 'Versnel reparatie (credits)',
+        _repairFinishCreditCost != null
+            ? 'Speed up repair (-$_repairFinishCreditCost credits)'
+            : 'Speed up repair (credits)',
       ),
       onSell: () => _sellVehicle(provider, boat.id),
       onScrap: () => _scrapVehicle(provider, boat.id),

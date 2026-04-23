@@ -263,9 +263,10 @@ function getActionResetCost(actionType: string, remainingSeconds: number, cooldo
   const normalizedCooldown = Math.max(1, cooldownSeconds || DEFAULT_ACTION_COOLDOWNS[actionType] || 1);
   const normalizedRemaining = Math.max(0, remainingSeconds);
   const remainingRatio = Math.max(0, Math.min(1, normalizedRemaining / normalizedCooldown));
-  const ratioFactor = 1 + remainingRatio * 1.2;
+  // Smoother scaling: short cooldowns should not spike to punishing credit costs.
+  const ratioFactor = 1 + remainingRatio * 0.35;
   const computed = Math.round(baseCost * valueWeight * ratioFactor);
-  const maxCost = Math.max(baseCost + 4, Math.round(baseCost * 3.5));
+  const maxCost = Math.max(baseCost + 6, Math.round(baseCost * 2.2));
   return Math.max(baseCost, Math.min(maxCost, computed));
 }
 
