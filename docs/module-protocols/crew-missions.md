@@ -54,6 +54,7 @@ UX/i18n baseline:
 - alle nieuwe labels/buttons/statussen in NL + EN
 - responsive layout via `SingleChildScrollView` + `Wrap` cards
 - permissiehint voor non-leader/co-leader zichtbaar in UI
+- `Help & Uitleg` crew-topic bijgewerkt zodat de nieuwe Crew Missions-tab en flow ook in NL/EN documentatie staat.
 
 ## Cross-Module Dependencies
 - Crew Missions -> Crew (leden, leader/officer permissies, HQ gates)
