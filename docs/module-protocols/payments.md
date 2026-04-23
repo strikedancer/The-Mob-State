@@ -29,6 +29,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 ## Must Preserve
 - VIP-status moet na succesvolle betaling direct consistent zijn in backend en client.
 - Credits-balance moet altijd herleidbaar zijn via ledger-mutaties.
+- Admin moet premium credits veilig handmatig kunnen toekennen voor support/correcties, met role-checks, limieten en audit trail.
 - Checkout failure of webhook-delay mag geen halve grants of negatieve saldo's veroorzaken.
 - Bestaande gameplay-perks mogen niet gratis bereikbaar worden door premium regressies.
 - Player premium toegang hoort via een dedicated Premium & Credits scherm beschikbaar te zijn, niet alleen via verborgen crew-subflows.
@@ -64,6 +65,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 7. Crew, hitlist/security en vehicle flows blijven correct na premium effect.
 8. Een lege premium-catalogus krijgt automatisch de verwachte default creditbundels (250 / 500 / 1000 / 2500) zonder duplicaten.
 9. Premium tiles laden op web correct via de externe runtime-route en tonen na een refresh de actuele cache-bust versie.
+10. Admin player-management kan premium credits set/add uitvoeren met correcte permissies (viewer blok, moderator limiet, super admin volledige limiet).
 
 ## i18n and Messaging
 - Prijslabels en benefit-teksten in NL en EN synchroon houden.

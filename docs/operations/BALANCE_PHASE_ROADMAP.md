@@ -70,3 +70,4 @@ Status (afgerond):
 ## Hotfix Notes (2026-04-23)
 - Jobs UI cooldown badge aligned with backend truth source.
 - `cooldownMinutes` in job payload is now derived from `calculateJobCooldown(maxEarnings)` so card tooltip timing matches real action cooldown.
+- Admin player management now supports controlled premium credit grants (`set.premiumCredits` / `add.premiumCredits`) with hard limits, moderator limits and audit snapshots.

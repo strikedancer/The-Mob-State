@@ -278,11 +278,13 @@ const playerManageSchema = z.object({
     rank: z.number().int().min(1).optional(),
     xp: z.number().int().min(0).optional(),
     health: z.number().int().min(0).max(100).optional(),
+    premiumCredits: z.number().int().min(0).optional(),
     currentCountry: z.string().min(2).optional(),
   }).optional(),
   add: z.object({
     money: z.number().int().optional(),
     xp: z.number().int().optional(),
+    premiumCredits: z.number().int().optional(),
   }).optional(),
   vip: z.object({
     enabled: z.boolean(),
@@ -1104,6 +1106,7 @@ router.get('/players/:playerId/overview', async (req, res) => {
           wantedLevel: true,
           fbiHeat: true,
           reputation: true,
+          premiumCredits: true,
           killCount: true,
           hitCount: true,
           inventory_slots_used: true,
@@ -1839,14 +1842,18 @@ router.post(
       const setMoney = set?.money;
       const setRank = set?.rank;
       const setXp = set?.xp;
+      const setPremiumCredits = set?.premiumCredits;
       const addMoney = add?.money;
       const addXp = add?.xp;
+      const addPremiumCredits = add?.premiumCredits;
       const isCriticalChange =
         (typeof setMoney === 'number' && Math.abs(setMoney - player.money) >= 500000) ||
         (typeof addMoney === 'number' && Math.abs(addMoney) >= 500000) ||
         (typeof setRank === 'number' && setRank !== player.rank) ||
         (typeof setXp === 'number' && Math.abs(setXp - player.xp) >= 10000) ||
         (typeof addXp === 'number' && Math.abs(addXp) >= 10000) ||
+        (typeof setPremiumCredits === 'number' && Math.abs(setPremiumCredits - player.premiumCredits) >= 5000) ||
+        (typeof addPremiumCredits === 'number' && Math.abs(addPremiumCredits) >= 1000) ||
         (vip?.enabled !== undefined && vip.enabled !== player.isVip);
 
       if (isCriticalChange && (!reason || reason.trim().length < 5)) {
@@ -1865,6 +1872,12 @@ router.post(
       if (typeof setXp === 'number' && Math.abs(setXp - player.xp) > 100000) {
         return res.status(400).json({ error: 'set.xp delta exceeds hard limit (100,000)' });
       }
+      if (typeof addPremiumCredits === 'number' && Math.abs(addPremiumCredits) > 10000) {
+        return res.status(400).json({ error: 'add.premiumCredits exceeds hard limit (10,000)' });
+      }
+      if (typeof setPremiumCredits === 'number' && Math.abs(setPremiumCredits - player.premiumCredits) > 50000) {
+        return res.status(400).json({ error: 'set.premiumCredits delta exceeds hard limit (50,000)' });
+      }
 
       if (adminRole === AdminRole.MODERATOR) {
         if (typeof addMoney === 'number' && Math.abs(addMoney) > 200000) {
@@ -1872,6 +1885,12 @@ router.post(
         }
         if (typeof setMoney === 'number' && Math.abs(setMoney - player.money) > 500000) {
           return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator set.money delta limit is 500,000' });
+        }
+        if (typeof addPremiumCredits === 'number' && Math.abs(addPremiumCredits) > 1000) {
+          return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator add.premiumCredits limit is 1,000' });
+        }
+        if (typeof setPremiumCredits === 'number' && Math.abs(setPremiumCredits - player.premiumCredits) > 5000) {
+          return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator set.premiumCredits delta limit is 5,000' });
         }
       }
 
@@ -1881,6 +1900,7 @@ router.post(
         rank: player.rank,
         xp: player.xp,
         health: player.health,
+        premiumCredits: player.premiumCredits,
         currentCountry: player.currentCountry,
         isVip: player.isVip,
         vipExpiresAt: player.vipExpiresAt,
@@ -1893,6 +1913,7 @@ router.post(
         if (set.rank !== undefined) playerUpdateData.rank = set.rank;
         if (set.xp !== undefined) playerUpdateData.xp = set.xp;
         if (set.health !== undefined) playerUpdateData.health = set.health;
+        if (set.premiumCredits !== undefined) playerUpdateData.premiumCredits = set.premiumCredits;
         if (set.currentCountry !== undefined) playerUpdateData.currentCountry = set.currentCountry;
       }
 
@@ -1902,6 +1923,12 @@ router.post(
 
       if (add?.xp !== undefined) {
         playerUpdateData.xp = Math.max(0, (playerUpdateData.xp ?? player.xp) + add.xp);
+      }
+      if (add?.premiumCredits !== undefined) {
+        playerUpdateData.premiumCredits = Math.max(
+          0,
+          (playerUpdateData.premiumCredits ?? player.premiumCredits) + add.premiumCredits,
+        );
       }
 
       if (vip) {
@@ -1971,6 +1998,7 @@ router.post(
           rank: result.rank,
           xp: result.xp,
           health: result.health,
+          premiumCredits: result.premiumCredits,
           currentCountry: result.currentCountry,
           isVip: result.isVip,
           vipExpiresAt: result.vipExpiresAt,
@@ -1989,6 +2017,7 @@ router.post(
           rank: result.rank,
           xp: result.xp,
           health: result.health,
+          premiumCredits: result.premiumCredits,
           currentCountry: result.currentCountry,
           isVip: result.isVip,
           vipExpiresAt: result.vipExpiresAt,

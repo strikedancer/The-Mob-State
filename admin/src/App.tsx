@@ -470,10 +470,12 @@ interface PlayerManageForm {
   setMoney: string
   setRank: string
   setXp: string
+  setPremiumCredits: string
   setHealth: string
   setCountry: string
   addMoney: string
   addXp: string
+  addPremiumCredits: string
   vipEnabled: boolean
   vipDays: string
   ammoType: string
@@ -772,10 +774,12 @@ function App() {
     setMoney: '',
     setRank: '',
     setXp: '',
+    setPremiumCredits: '',
     setHealth: '',
     setCountry: '',
     addMoney: '',
     addXp: '',
+    addPremiumCredits: '0',
     vipEnabled: false,
     vipDays: '7',
     ammoType: '9mm',
@@ -2618,10 +2622,12 @@ function App() {
         setMoney: String(overview.player.money),
         setRank: String(overview.player.rank),
         setXp: String(overview.player.xp),
+        setPremiumCredits: String(overview.player.premiumCredits ?? 0),
         setHealth: String(overview.player.health),
         setCountry: overview.player.currentCountry,
         addMoney: '0',
         addXp: '0',
+        addPremiumCredits: '0',
         vipEnabled: overview.player.isVip,
         vipDays: '7',
         ammoType: '9mm',
@@ -2651,8 +2657,10 @@ function App() {
     const setMoney = Number(playerManageForm.setMoney)
     const setRank = Number(playerManageForm.setRank)
     const setXp = Number(playerManageForm.setXp)
+    const setPremiumCredits = Number(playerManageForm.setPremiumCredits)
     const addMoney = Number(playerManageForm.addMoney)
     const addXp = Number(playerManageForm.addXp)
+    const addPremiumCredits = Number(playerManageForm.addPremiumCredits)
 
     const isCriticalChange = !!currentPlayer && (
       Math.abs(setMoney - currentPlayer.money) >= 500000 ||
@@ -2660,6 +2668,8 @@ function App() {
       setRank !== currentPlayer.rank ||
       Math.abs(setXp - currentPlayer.xp) >= 10000 ||
       Math.abs(addXp) >= 10000 ||
+      Math.abs(setPremiumCredits - (currentPlayer.premiumCredits ?? 0)) >= 5000 ||
+      Math.abs(addPremiumCredits) >= 1000 ||
       playerManageForm.vipEnabled !== currentPlayer.isVip
     )
 
@@ -2688,14 +2698,16 @@ function App() {
         money: Number(playerManageForm.setMoney),
         rank: Number(playerManageForm.setRank),
         xp: Number(playerManageForm.setXp),
+        premiumCredits: Math.max(0, Number(playerManageForm.setPremiumCredits)),
         health: Number(playerManageForm.setHealth),
         currentCountry: playerManageForm.setCountry,
       }
 
-      if (Number(playerManageForm.addMoney) !== 0 || Number(playerManageForm.addXp) !== 0) {
+      if (Number(playerManageForm.addMoney) !== 0 || Number(playerManageForm.addXp) !== 0 || Number(playerManageForm.addPremiumCredits) !== 0) {
         payload.add = {
           money: Number(playerManageForm.addMoney),
           xp: Number(playerManageForm.addXp),
+          premiumCredits: Number(playerManageForm.addPremiumCredits),
         }
       }
 
@@ -2721,15 +2733,17 @@ function App() {
       await adminService.managePlayer(payload)
       const refreshed = await adminService.getPlayerOverview(selectedPlayerId)
       setSelectedPlayerOverview(refreshed)
-      setPlayerManageForm((prev) => ({
+        setPlayerManageForm((prev) => ({
         ...prev,
         setMoney: String(refreshed.player.money),
         setRank: String(refreshed.player.rank),
         setXp: String(refreshed.player.xp),
+        setPremiumCredits: String(refreshed.player.premiumCredits ?? 0),
         setHealth: String(refreshed.player.health),
         setCountry: refreshed.player.currentCountry,
         addMoney: '0',
         addXp: '0',
+        addPremiumCredits: '0',
         ammoQuantity: '0',
       }))
       setPlayerManageReason('')
@@ -4406,6 +4420,7 @@ function App() {
                       { icon: 'ph-briefcase', label: l('Jobs', 'Jobs'), value: ov.stats.jobs.total.toLocaleString(), color: 'text-info' },
                       { icon: 'ph-airplane', label: l('Vluchten', 'Flights'), value: ov.stats.flights.total.toLocaleString(), color: 'text-primary' },
                       { icon: 'ph-handcuffs', label: l('Jail', 'Jailed'), value: ov.stats.crimes.jailed.toLocaleString(), color: 'text-warning' },
+                      { icon: 'ph-coins', label: l('Premium credits', 'Premium credits'), value: (pl.premiumCredits ?? 0).toLocaleString(), color: 'text-warning' },
                       { icon: 'ph-star', label: l('Reputatie', 'Reputation'), value: pl.reputation.toLocaleString(), color: 'text-warning' },
                       { icon: 'ph-crosshair', label: l('Kills', 'Kills'), value: pl.killCount.toLocaleString(), color: 'text-danger' },
                       { icon: 'ph-bullets', label: l('Munitie totaal', 'Total ammo'), value: ammoTotalRounds.toLocaleString(), color: 'text-primary' },
@@ -4458,6 +4473,7 @@ function App() {
                               [l('Rang', 'Rank'), pl.rank],
                               [l('XP', 'XP'), pl.xp.toLocaleString()],
                               [l('Geld', 'Money'), `€${pl.money.toLocaleString()}`],
+                              [l('Premium credits', 'Premium credits'), (pl.premiumCredits ?? 0).toLocaleString()],
                               [l('Gezondheid', 'Health'), `${pl.health}%`],
                               [l('Reputatie', 'Reputation'), pl.reputation],
                               [l('FBI Heat', 'FBI Heat'), pl.fbiHeat],
@@ -4854,10 +4870,21 @@ function App() {
                             <input className="form-control" type="number" value={playerManageForm.setXp} onChange={(e) => setPlayerManageForm({ ...playerManageForm, setXp: e.target.value })} />
                           </div>
                           <div className="col-md-4">
+                            <label className="form-label fw-semibold">{l('Stel premium credits in', 'Set premium credits')}</label>
+                            <input className="form-control" type="number" min={0} value={playerManageForm.setPremiumCredits} onChange={(e) => setPlayerManageForm({ ...playerManageForm, setPremiumCredits: e.target.value })} />
+                          </div>
+                          <div className="col-md-4">
                             <label className="form-label fw-semibold">{l('Voeg XP toe', 'Add XP')}</label>
                             <div className="input-group">
                               <span className="input-group-text">+</span>
                               <input className="form-control" type="number" value={playerManageForm.addXp} onChange={(e) => setPlayerManageForm({ ...playerManageForm, addXp: e.target.value })} />
+                            </div>
+                          </div>
+                          <div className="col-md-4">
+                            <label className="form-label fw-semibold">{l('Voeg premium credits toe', 'Add premium credits')}</label>
+                            <div className="input-group">
+                              <span className="input-group-text">+</span>
+                              <input className="form-control" type="number" value={playerManageForm.addPremiumCredits} onChange={(e) => setPlayerManageForm({ ...playerManageForm, addPremiumCredits: e.target.value })} />
                             </div>
                           </div>
                           <div className="col-md-4">

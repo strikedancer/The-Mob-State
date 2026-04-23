@@ -121,6 +121,7 @@ export interface PlayerOverview {
     wantedLevel: number;
     fbiHeat: number;
     reputation: number;
+    premiumCredits: number;
     killCount: number;
     hitCount: number;
     inventory_slots_used: number;
@@ -340,11 +341,13 @@ export interface ManagePlayerPayload {
     rank?: number;
     xp?: number;
     health?: number;
+    premiumCredits?: number;
     currentCountry?: string;
   };
   add?: {
     money?: number;
     xp?: number;
+    premiumCredits?: number;
   };
   vip?: {
     enabled: boolean;
