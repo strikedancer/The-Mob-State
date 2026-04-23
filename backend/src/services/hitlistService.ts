@@ -9,6 +9,7 @@ import { ammoFactoryService } from './ammoFactoryService';
 import weaponService from './weaponService';
 import { weaponSelectionService } from './weaponSelectionService';
 import { directMessageService } from './directMessageService';
+import { getActiveEventBoostEffects } from './premiumCreditsService';
 import fs from 'fs';
 import path from 'path';
 
@@ -1047,6 +1048,11 @@ export async function attemptHit(
     throw new Error('TARGET_UNDER_HIT_PROTECTION');
   }
 
+  const [attackerBoosts, targetBoosts] = await Promise.all([
+    getActiveEventBoostEffects(playerId),
+    getActiveEventBoostEffects(hit.targetId),
+  ]);
+
   const normalizedWeaponId = String(weaponId || '').trim();
   const weaponData = weaponService.getWeaponDefinition(normalizedWeaponId);
   if (!weaponData) {
@@ -1120,7 +1126,8 @@ export async function attemptHit(
     attackVolume *
     hitMultiplier *
     ammoQualityMultiplier *
-    conditionMultiplier;
+    conditionMultiplier *
+    (1 + attackerBoosts.hitAttackPct);
 
   const targetSelectedWeapon = await weaponSelectionService.getSelectedCrimeWeapon(
     hit.targetId,
@@ -1129,7 +1136,9 @@ export async function attemptHit(
     ? weaponService.getWeaponDefinition(String(targetSelectedWeapon.weaponId))
     : undefined;
   const targetWeaponDamage = targetWeapon?.damage || 0;
-  const targetDefense = getEffectiveArmor(targetSecurity) + ((targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE);
+  const targetDefense =
+    (getEffectiveArmor(targetSecurity) + ((targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE)) *
+    (1 + targetBoosts.hitDefensePct);
   const targetPower = targetWeaponDamage * 5 + targetDefense;
   const armorConditionLoss = calculateArmorConditionLoss(attackerPower);
 

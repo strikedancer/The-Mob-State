@@ -38,6 +38,9 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Default creditbundels mogen server-side ge-seed worden voor een lege catalogus, maar key, prijs, credit-amount en beeldpad moeten stabiel en idempotent blijven.
 - Legacy offers met verouderde prijsstelling (zoals 1000 credits voor 1,99) mogen niet meer in de actieve player-catalogus of checkout terechtkomen; blokkeer of deactiveer deze server-side.
 - Premium/Credits tegelafbeeldingen blijven extern gehost onder `images/premium_tiles/...`; generator, backend-catalogus en client mapping moeten dezelfde vaste bestandsnamen delen.
+- Voor `ACTION_COOLDOWN_RESET` items geldt dynamische prijsstelling op basis van resterende cooldown en action-value; expose deze altijd als runtime `effectiveCreditCost` in de overview.
+- Cooldown-reset redemptions moeten blokkeren zonder actieve cooldown (`ACTION_COOLDOWN_NOT_ACTIVE`) om creditverlies te voorkomen.
+- Tijdelijke `EVENT_BOOST` credit-items moeten capped side-grade boosts blijven; geen permanente statstacking of pay-to-win power creep.
 
 ## Backend Contract Guardrails
 - Nieuwe provider-velden en transaction-modellen moeten ook in Prisma bestaan vóór gebruik.

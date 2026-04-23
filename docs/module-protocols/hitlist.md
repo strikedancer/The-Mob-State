@@ -51,6 +51,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - Responsive usability without hiding critical actions
 - Loot reward percentages must be runtime-configurable via admin settings (`HITLIST_LOOT_CASH_PERCENT`, `HITLIST_LOOT_ITEM_PERCENT`) and not hardcoded in code or file-only env workflow
 - On successful hit, the murdered player must receive a hard progress reset (baseline restart) while preserving bank balance and crew leadership
+- Tijdelijke premium/combat boosts blijven side-grade: capped attack/defense modifiers zonder permanente statinflatie of pay-to-win top-tier power.
 
 ## Data Contract Requirements
 
@@ -360,4 +361,3 @@ await prisma.$transaction([
 - [crimes.md](crimes.md) - Murder as crime category
 - [security.md](security.md) - Armor/bodyguard mechanics
 - [crew.md](crew.md) - Crew hit mechanics
-

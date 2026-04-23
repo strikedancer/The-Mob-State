@@ -28,6 +28,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Crime pacing is reward-tier based, not flat-rate; low-reward crimes stay fast while high-reward crimes must pick up meaningfully longer cooldowns.
 - Soft balancing via sessie-gebaseerde diminishing returns is toegestaan zolang het geen harde daily/action cap wordt en transparant in telemetry zichtbaar blijft.
 - Reward-tier cooldown changes must stay aligned between backend enforcement, player help copy and any cooldown-reset premium items that reference the crime loop.
+- Tijdelijke premium boosts op crimes zijn toegestaan als side-grade, maar moeten hard capped blijven en mogen event-tier progression niet vervangen.
 - Drug requirement thresholds must stay aligned with gram-based drug inventory quantities; do not surface legacy `x` units in requirement feedback.
 - Requirement failures for vehicle, weapon selection, weapon suitability and ammo must surface the concrete reason instead of collapsing into a generic internal error.
 - If a crime requires a weapon, the player must be able to see and change the active crime-weapon selection directly from the crime flow or through an explicit nearby CTA.

@@ -33,6 +33,72 @@ type RedeemResult = {
   messageEn: string;
 };
 
+type ActionCooldownState = {
+  actionType: string;
+  cooldownSeconds: number;
+  elapsedSeconds: number;
+  remainingSeconds: number;
+  isActive: boolean;
+};
+
+type ActiveEventBoostEffects = {
+  crimeSuccessPct: number;
+  crimeRewardPct: number;
+  hitAttackPct: number;
+  hitDefensePct: number;
+  eventContributionPct: number;
+};
+
+const DEFAULT_ACTION_COOLDOWNS: Record<string, number> = {
+  crime: 90,
+  job: 900,
+  travel: 3600,
+  heist: 21600,
+  appeal: 14400,
+  vehicle_theft: 300,
+  motorcycle_theft: 240,
+  boat_theft: 600,
+  prison_escape: 600,
+  prison_jailbreak: 900,
+  prison_bail: 900,
+};
+
+const ACTION_RESET_BASE_COST: Record<string, number> = {
+  crime: 18,
+  job: 16,
+  vehicle_theft: 20,
+  motorcycle_theft: 16,
+  boat_theft: 24,
+  travel: 14,
+  heist: 34,
+  appeal: 18,
+  prison_escape: 18,
+  prison_jailbreak: 20,
+  prison_bail: 18,
+};
+
+const ACTION_RESET_VALUE_WEIGHT: Record<string, number> = {
+  crime: 1.0,
+  job: 1.05,
+  vehicle_theft: 1.1,
+  motorcycle_theft: 1.0,
+  boat_theft: 1.2,
+  travel: 0.95,
+  heist: 1.35,
+  appeal: 1.1,
+  prison_escape: 1.1,
+  prison_jailbreak: 1.15,
+  prison_bail: 1.05,
+};
+
+const EVENT_BOOST_CAPS: ActiveEventBoostEffects = {
+  crimeSuccessPct: 0.05,
+  crimeRewardPct: 0.08,
+  hitAttackPct: 0.04,
+  hitDefensePct: 0.04,
+  eventContributionPct: 0.15,
+};
+
 const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
   {
     key: 'cash_bundle_250k',
@@ -87,9 +153,180 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     actionType: 'crime',
     sortOrder: 50,
   },
+  {
+    key: 'job_cooldown_reset',
+    titleNl: 'Werk cooldown reset',
+    titleEn: 'Job cooldown reset',
+    descriptionNl: 'Maak je werkactie direct opnieuw beschikbaar.',
+    descriptionEn: 'Make your job action immediately available again.',
+    creditCost: 16,
+    effectType: 'ACTION_COOLDOWN_RESET',
+    actionType: 'job',
+    sortOrder: 51,
+  },
+  {
+    key: 'vehicle_theft_cooldown_reset',
+    titleNl: 'Auto theft cooldown reset',
+    titleEn: 'Car theft cooldown reset',
+    descriptionNl: 'Reset de cooldown van auto stelen direct.',
+    descriptionEn: 'Reset the car theft cooldown instantly.',
+    creditCost: 20,
+    effectType: 'ACTION_COOLDOWN_RESET',
+    actionType: 'vehicle_theft',
+    sortOrder: 52,
+  },
+  {
+    key: 'motorcycle_theft_cooldown_reset',
+    titleNl: 'Motor theft cooldown reset',
+    titleEn: 'Motorcycle theft cooldown reset',
+    descriptionNl: 'Reset de cooldown van motor stelen direct.',
+    descriptionEn: 'Reset the motorcycle theft cooldown instantly.',
+    creditCost: 16,
+    effectType: 'ACTION_COOLDOWN_RESET',
+    actionType: 'motorcycle_theft',
+    sortOrder: 53,
+  },
+  {
+    key: 'boat_theft_cooldown_reset',
+    titleNl: 'Boot theft cooldown reset',
+    titleEn: 'Boat theft cooldown reset',
+    descriptionNl: 'Reset de cooldown van boot stelen direct.',
+    descriptionEn: 'Reset the boat theft cooldown instantly.',
+    creditCost: 24,
+    effectType: 'ACTION_COOLDOWN_RESET',
+    actionType: 'boat_theft',
+    sortOrder: 54,
+  },
+  {
+    key: 'crime_focus_boost_2h',
+    titleNl: 'Crime Focus 2u',
+    titleEn: 'Crime Focus 2h',
+    descriptionNl: 'Tijdelijke focusboost voor crimes: iets hogere slaagkans en payout.',
+    descriptionEn: 'Temporary crime focus boost: slightly higher success chance and payout.',
+    creditCost: 45,
+    effectType: 'EVENT_BOOST',
+    durationHours: 2,
+    metadataJson: '{"boosts":{"crimeSuccessPct":0.03,"crimeRewardPct":0.05}}',
+    sortOrder: 60,
+  },
+  {
+    key: 'contract_tactics_boost_2h',
+    titleNl: 'Contract Tactics 2u',
+    titleEn: 'Contract Tactics 2h',
+    descriptionNl: 'Tijdelijke hitlist side-grade: kleine aanval- en verdedigingbonus.',
+    descriptionEn: 'Temporary hitlist side-grade: small attack and defense bonus.',
+    creditCost: 55,
+    effectType: 'EVENT_BOOST',
+    durationHours: 2,
+    metadataJson: '{"boosts":{"hitAttackPct":0.04,"hitDefensePct":0.02}}',
+    sortOrder: 61,
+  },
+  {
+    key: 'event_hustle_boost_4h',
+    titleNl: 'Event Hustle 4u',
+    titleEn: 'Event Hustle 4h',
+    descriptionNl: 'Tijdelijke event boost: meer bijdragepunten tijdens live events.',
+    descriptionEn: 'Temporary event boost: more contribution points during live events.',
+    creditCost: 60,
+    effectType: 'EVENT_BOOST',
+    durationHours: 4,
+    metadataJson: '{"boosts":{"eventContributionPct":0.15}}',
+    sortOrder: 62,
+  },
 ];
 
 const addHours = (date: Date, hours: number) => new Date(date.getTime() + hours * 60 * 60 * 1000);
+
+function parseJsonObject(value: string | null | undefined): Record<string, unknown> {
+  if (!value || !value.trim()) {
+    return {};
+  }
+  try {
+    const parsed = JSON.parse(value);
+    if (parsed && typeof parsed === 'object') {
+      return parsed as Record<string, unknown>;
+    }
+  } catch {
+    return {};
+  }
+  return {};
+}
+
+function toFiniteNumber(value: unknown, fallback: number): number {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function getActionResetCost(actionType: string, remainingSeconds: number, cooldownSeconds: number): number {
+  const baseCost = ACTION_RESET_BASE_COST[actionType] ?? 18;
+  const valueWeight = ACTION_RESET_VALUE_WEIGHT[actionType] ?? 1;
+  const normalizedCooldown = Math.max(1, cooldownSeconds || DEFAULT_ACTION_COOLDOWNS[actionType] || 1);
+  const normalizedRemaining = Math.max(0, remainingSeconds);
+  const remainingRatio = Math.max(0, Math.min(1, normalizedRemaining / normalizedCooldown));
+  const ratioFactor = 1 + remainingRatio * 1.2;
+  const computed = Math.round(baseCost * valueWeight * ratioFactor);
+  const maxCost = Math.max(baseCost + 4, Math.round(baseCost * 3.5));
+  return Math.max(baseCost, Math.min(maxCost, computed));
+}
+
+async function getActionCooldownState(
+  tx: any,
+  playerId: number,
+  actionType: string,
+): Promise<ActionCooldownState> {
+  const cooldown = await tx.actionCooldown.findUnique({
+    where: {
+      playerId_actionType: {
+        playerId,
+        actionType,
+      },
+    },
+    select: {
+      lastUsedAt: true,
+      cooldownSeconds: true,
+    },
+  });
+
+  const fallbackCooldown = DEFAULT_ACTION_COOLDOWNS[actionType] ?? 0;
+  if (!cooldown) {
+    return {
+      actionType,
+      cooldownSeconds: fallbackCooldown,
+      elapsedSeconds: fallbackCooldown,
+      remainingSeconds: 0,
+      isActive: false,
+    };
+  }
+
+  const cooldownSeconds = Math.max(
+    0,
+    toFiniteNumber(cooldown.cooldownSeconds, fallbackCooldown),
+  );
+  const elapsedSeconds = Math.max(
+    0,
+    Math.floor((Date.now() - new Date(cooldown.lastUsedAt).getTime()) / 1000),
+  );
+  const remainingSeconds = Math.max(0, cooldownSeconds - elapsedSeconds);
+
+  return {
+    actionType,
+    cooldownSeconds,
+    elapsedSeconds,
+    remainingSeconds,
+    isActive: remainingSeconds > 0,
+  };
+}
+
+function getNumericBoostValue(
+  source: Record<string, unknown>,
+  key: keyof ActiveEventBoostEffects,
+): number {
+  const boosts =
+    source.boosts && typeof source.boosts === 'object'
+      ? (source.boosts as Record<string, unknown>)
+      : source;
+  return Math.max(0, toFiniteNumber(boosts[key], 0));
+}
 
 async function updateCreditsBalance(
   tx: any,
@@ -223,10 +460,38 @@ export async function getCreditOverview(playerId: number) {
     }),
   ]);
 
+  const enrichedItems = await Promise.all(
+    items.map(async (item) => {
+      if (item.effectType !== 'ACTION_COOLDOWN_RESET') {
+        return item;
+      }
+
+      const actionType = item.actionType || 'crime';
+      const cooldownState = await getActionCooldownState(prisma, playerId, actionType);
+      const effectiveCost = getActionResetCost(
+        actionType,
+        cooldownState.remainingSeconds,
+        cooldownState.cooldownSeconds,
+      );
+
+      return {
+        ...item,
+        effectiveCreditCost: effectiveCost,
+        canRedeemNow: cooldownState.isActive,
+        unavailableReason: cooldownState.isActive ? null : 'ACTION_COOLDOWN_NOT_ACTIVE',
+        cooldownState: {
+          actionType,
+          cooldownSeconds: cooldownState.cooldownSeconds,
+          remainingSeconds: cooldownState.remainingSeconds,
+        },
+      };
+    }),
+  );
+
   return {
     balance: player?.premiumCredits ?? 0,
     hitProtectionExpiresAt: player?.hitProtectionExpiresAt ?? null,
-    items,
+    items: enrichedItems,
     entitlements,
   };
 }
@@ -256,9 +521,7 @@ export async function redeemCreditItem(
       throw new Error('PLAYER_NOT_FOUND');
     }
 
-    if (player.premiumCredits < item.creditCost) {
-      throw new Error('INSUFFICIENT_CREDITS');
-    }
+    let redeemCost = item.creditCost;
 
     let messageNl = 'Credits ingewisseld';
     let messageEn = 'Credits redeemed';
@@ -352,33 +615,56 @@ export async function redeemCreditItem(
         throw new Error('ACTION_TYPE_REQUIRED');
       }
 
+      const cooldownState = await getActionCooldownState(tx, playerId, actionType);
+      if (!cooldownState.isActive) {
+        throw new Error('ACTION_COOLDOWN_NOT_ACTIVE');
+      }
+
+      redeemCost = getActionResetCost(
+        actionType,
+        cooldownState.remainingSeconds,
+        cooldownState.cooldownSeconds,
+      );
+
+      if (player.premiumCredits < redeemCost) {
+        throw new Error('INSUFFICIENT_CREDITS');
+      }
+
       await tx.actionCooldown.deleteMany({
         where: { playerId, actionType },
       });
 
-      messageNl = `Cooldown voor ${actionType} gereset`;
-      messageEn = `Cooldown for ${actionType} reset`;
+      messageNl = `Cooldown voor ${actionType} gereset voor ${redeemCost} credits`;
+      messageEn = `Cooldown for ${actionType} reset for ${redeemCost} credits`;
     } else if (item.effectType === 'EVENT_BOOST') {
+      if (player.premiumCredits < redeemCost) {
+        throw new Error('INSUFFICIENT_CREDITS');
+      }
+
+      const itemMetadata = parseJsonObject(item.metadataJson);
       const durationHours = item.durationHours ?? 24;
       await createTimedCreditEntitlement(tx, playerId, item.key, 'EVENT_BOOST', durationHours, {
         source: 'credit_redemption',
-        metadataJson: item.metadataJson,
+        ...itemMetadata,
       });
 
       messageNl = 'Event boost geactiveerd';
       messageEn = 'Event boost activated';
+    } else if (player.premiumCredits < redeemCost) {
+      throw new Error('INSUFFICIENT_CREDITS');
     }
 
     const balance = await updateCreditsBalance(
       tx,
       playerId,
-      -item.creditCost,
+      -redeemCost,
       'REDEEM',
       item.key,
       JSON.stringify({
         effectType: item.effectType,
         vehicleInventoryId: options.vehicleInventoryId ?? null,
         actionType: item.actionType ?? options.actionType ?? null,
+        creditCost: redeemCost,
       }),
     );
 
@@ -389,4 +675,63 @@ export async function redeemCreditItem(
       messageEn,
     };
   });
+}
+
+export async function getActiveEventBoostEffects(
+  playerId: number,
+): Promise<ActiveEventBoostEffects> {
+  const activeEntitlements = await prisma.playerCreditEntitlement.findMany({
+    where: {
+      playerId,
+      effectType: 'EVENT_BOOST',
+      status: 'ACTIVE',
+      OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+    },
+    select: {
+      metadataJson: true,
+    },
+  });
+
+  const strongest: ActiveEventBoostEffects = {
+    crimeSuccessPct: 0,
+    crimeRewardPct: 0,
+    hitAttackPct: 0,
+    hitDefensePct: 0,
+    eventContributionPct: 0,
+  };
+
+  for (const entitlement of activeEntitlements) {
+    const metadata = parseJsonObject(entitlement.metadataJson);
+    strongest.crimeSuccessPct = Math.max(
+      strongest.crimeSuccessPct,
+      getNumericBoostValue(metadata, 'crimeSuccessPct'),
+    );
+    strongest.crimeRewardPct = Math.max(
+      strongest.crimeRewardPct,
+      getNumericBoostValue(metadata, 'crimeRewardPct'),
+    );
+    strongest.hitAttackPct = Math.max(
+      strongest.hitAttackPct,
+      getNumericBoostValue(metadata, 'hitAttackPct'),
+    );
+    strongest.hitDefensePct = Math.max(
+      strongest.hitDefensePct,
+      getNumericBoostValue(metadata, 'hitDefensePct'),
+    );
+    strongest.eventContributionPct = Math.max(
+      strongest.eventContributionPct,
+      getNumericBoostValue(metadata, 'eventContributionPct'),
+    );
+  }
+
+  return {
+    crimeSuccessPct: Math.min(strongest.crimeSuccessPct, EVENT_BOOST_CAPS.crimeSuccessPct),
+    crimeRewardPct: Math.min(strongest.crimeRewardPct, EVENT_BOOST_CAPS.crimeRewardPct),
+    hitAttackPct: Math.min(strongest.hitAttackPct, EVENT_BOOST_CAPS.hitAttackPct),
+    hitDefensePct: Math.min(strongest.hitDefensePct, EVENT_BOOST_CAPS.hitDefensePct),
+    eventContributionPct: Math.min(
+      strongest.eventContributionPct,
+      EVENT_BOOST_CAPS.eventContributionPct,
+    ),
+  };
 }

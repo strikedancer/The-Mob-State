@@ -1,6 +1,7 @@
 ﻿import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
+import { getActiveEventBoostEffects } from './premiumCreditsService';
 
 type JsonRecord = Record<string, unknown>;
 
@@ -429,6 +430,12 @@ class GameEventService {
   async recordContribution(playerId: number, category: string, amount: number = 1) {
     const now = new Date();
     try {
+      const activeBoosts = await getActiveEventBoostEffects(playerId);
+      const boostedAmount =
+        activeBoosts.eventContributionPct > 0
+          ? Math.max(1, Math.round(amount * (1 + activeBoosts.eventContributionPct)))
+          : amount;
+
       const activeEvents = await prisma.gameLiveEvent.findMany({
         where: {
           status: 'active',
@@ -458,11 +465,11 @@ class GameEventService {
               playerId,
               subjectType: 'player',
               subjectKey: String(playerId),
-              score: amount,
+              score: boostedAmount,
               lastContributionAt: now,
             },
             update: {
-              score: { increment: amount },
+              score: { increment: boostedAmount },
               lastContributionAt: now,
             },
           }),

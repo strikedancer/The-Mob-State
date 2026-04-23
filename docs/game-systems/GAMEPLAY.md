@@ -861,6 +861,9 @@ Bob: €300K counter-hit
 - Credit-items gebruiken wallet-credits in plaats van euro's. Admin beheert live welke items actief zijn, wat ze kosten en welk effecttype ze gebruiken.
 - Mogelijke credit-effecten zijn onder meer cash bundles, hit protection, cooldown resets, event boosts en context-gebonden voertuigacties.
 - VIP-prijzen en credit-kosten zijn runtime-config/admin-gestuurd en dus niet langer vaste clientwaarden.
+- Cooldown reset-items gebruiken een dynamische prijs (`effectiveCreditCost`): hoe waardevoller de actie en hoe meer resterende cooldown, hoe hoger de credit-kost.
+- Cooldown reset-items zijn alleen inwisselbaar bij een actieve cooldown; zonder actieve timer blijft het item zichtbaar maar geblokkeerd.
+- Tijdelijke premium boosts zijn bewust non pay-to-win en capped: kleine utility bonussen voor crime success/payout, hitlist attack/defense en event contribution, zonder event-reward tiers te overrulen.
 
 ### Arrest Chances
 ```javascript

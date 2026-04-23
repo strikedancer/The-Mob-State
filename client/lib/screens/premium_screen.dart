@@ -1146,14 +1146,21 @@ class _PremiumScreenState extends State<PremiumScreen> {
           minTileWidth: 240,
           maxColumns: 4,
           children: _creditItems.map((item) {
-            final cost = (item['creditCost'] as num?)?.toInt() ?? 0;
+            final fallbackCost = (item['creditCost'] as num?)?.toInt() ?? 0;
+            final effectiveCost =
+                (item['effectiveCreditCost'] as num?)?.toInt() ?? fallbackCost;
+            final canRedeemNow = item['canRedeemNow'] != false;
+            final unavailableReason = (item['unavailableReason'] ?? '')
+                .toString()
+                .trim();
             final title = _isNl
                 ? (item['titleNl'] ?? '')
                 : (item['titleEn'] ?? '');
             final description = _isNl
                 ? (item['descriptionNl'] ?? '')
                 : (item['descriptionEn'] ?? '');
-            final disabled = _processingRedeem || _creditBalance < cost;
+            final disabled =
+                _processingRedeem || _creditBalance < effectiveCost || !canRedeemNow;
             final effectType = (item['effectType'] ?? '').toString();
             final accent = _creditItemAccentColor(effectType);
             final resolvedTitle = title.toString().trim().isEmpty
@@ -1162,6 +1169,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
             final resolvedDescription = description.toString().trim().isEmpty
                 ? _tr('Direct premium voordeel.', 'Direct premium perk.')
                 : description.toString();
+            final actionLabel = !canRedeemNow &&
+                    unavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE'
+                ? _tr('Geen actieve cooldown', 'No active cooldown')
+                : (_creditBalance < effectiveCost
+                      ? _tr('Niet genoeg credits', 'Not enough credits')
+                      : _tr('Inwisselen', 'Redeem'));
 
             return _buildVisualTile(
               title: resolvedTitle,
@@ -1169,16 +1182,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
               imagePath: _creditItemImagePath(item),
               accent: accent,
               icon: Icons.auto_awesome,
-              primaryValue: _tr('$cost credits', '$cost credits'),
+              primaryValue: _tr(
+                '$effectiveCost credits',
+                '$effectiveCost credits',
+              ),
               secondaryValue: _creditItemThemeLabel(item),
               badgeLabel: _tr('Shop', 'Shop'),
-              actionLabel: _creditBalance < cost
-                  ? _tr('Niet genoeg credits', 'Not enough credits')
-                  : _tr('Inwisselen', 'Redeem'),
+              actionLabel: actionLabel,
               infoTitle: resolvedTitle,
               infoBody: _tr(
-                '$resolvedDescription\n\nThema: ${_creditItemThemeLabel(item)}\nKosten: $cost credits',
-                '$resolvedDescription\n\nTheme: ${_creditItemThemeLabel(item)}\nCost: $cost credits',
+                '$resolvedDescription\n\nThema: ${_creditItemThemeLabel(item)}\nKosten: $effectiveCost credits',
+                '$resolvedDescription\n\nTheme: ${_creditItemThemeLabel(item)}\nCost: $effectiveCost credits',
               ),
               onPressed: disabled ? null : () => _redeemCreditItem(item),
             );

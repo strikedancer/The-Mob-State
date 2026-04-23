@@ -19,6 +19,7 @@ import { serializeAchievementForClient } from './achievementService';
 import * as judgeService from './judgeService';
 import { notificationService } from './notificationService';
 import { economyBalanceService } from './economyBalanceService';
+import { getActiveEventBoostEffects } from './premiumCreditsService';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 
@@ -317,9 +318,15 @@ export const crimeService = {
       }
     }
 
+    const activeBoosts = await getActiveEventBoostEffects(playerId);
+
     // Normalize requirement field names for outcome engine compatibility
     const normalizedCrimeForOutcome = {
       ...crime,
+      baseSuccessChance: Math.min(
+        0.95,
+        crime.baseSuccessChance * (1 + activeBoosts.crimeSuccessPct),
+      ),
       requiresVehicle: crime.requiredVehicle,
       requiresWeapon: crime.requiredWeapon,
     };
@@ -350,6 +357,10 @@ export const crimeService = {
       'crime',
     );
     const sessionPayoutMultiplier = diminishingContext.multiplier;
+
+    if (success && reward > 0 && activeBoosts.crimeRewardPct > 0) {
+      reward = Math.max(1, Math.round(reward * (1 + activeBoosts.crimeRewardPct)));
+    }
 
     if (success && reward > 0 && sessionPayoutMultiplier < 1) {
       reward = economyBalanceService.applySoftDiminishing(

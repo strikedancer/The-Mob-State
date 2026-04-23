@@ -1090,6 +1090,7 @@ router.post('/credits/redeem', authenticate, async (req: Request, res: Response)
       VEHICLE_ID_REQUIRED: { status: 400, message: 'vehicleInventoryId is required' },
       REPAIR_JOB_NOT_FOUND: { status: 404, message: 'Repair job not found' },
       TUNE_COOLDOWN_NOT_ACTIVE: { status: 400, message: 'Tune cooldown not active' },
+      ACTION_COOLDOWN_NOT_ACTIVE: { status: 400, message: 'Action cooldown not active' },
       ACTION_TYPE_REQUIRED: { status: 400, message: 'actionType is required' },
       INVALID_CREDIT_ITEM_CONFIGURATION: { status: 400, message: 'Invalid credit item configuration' },
     };
