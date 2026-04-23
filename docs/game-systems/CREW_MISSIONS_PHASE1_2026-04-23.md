@@ -276,6 +276,23 @@ Beschikbare basis-endpoints:
 Schema bootstrap:
 - `ensureCrewMissionSchema` maakt mission tables automatisch aan bij backend startup.
 
+## Client integration status (Crew tab)
+
+Gekoppeld in `crew_screen.dart`:
+- Nieuwe tab `Crew Missions` (tussen War Room en Crews).
+- Overzicht via `/crew-missions/overview`.
+- Template-cards met mission image + fallback icon.
+- Active run actions:
+  - start (leader/co-leader)
+  - resolve (leader/co-leader zodra timer klaar is)
+  - claim rewards
+  - speedup cooldown met credits
+- Recente runs zichtbaar in dezelfde tab.
+
+Opmerking:
+- Speedup-kosten worden server-side berekend en afgedwongen.
+- In Phase 1 UI tonen we nog geen vooraf berekende prijsbadge op de knop.
+
 ## Acceptatiecriteria (Phase 1 done)
 
 - Alle 6 missies speelbaar.

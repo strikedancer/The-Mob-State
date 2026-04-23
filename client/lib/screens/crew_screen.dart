@@ -73,8 +73,11 @@ class _CrewScreenState extends State<CrewScreen>
   List<dynamic> _crewBuildings = [];
   Map<String, dynamic>? _crewStorage;
   Map<String, dynamic>? _crewWarHub;
+  Map<String, dynamic>? _crewMissionsOverview;
   bool _loading = true;
   bool _crewWarLoading = false;
+  bool _crewMissionsLoading = false;
+  bool _crewMissionActionLoading = false;
   String _selectedWarType = 'kill_war';
   int? _selectedWarTargetCrewId;
 
@@ -94,6 +97,7 @@ class _CrewScreenState extends State<CrewScreen>
     'tab.storageHub': {'nl': 'Opslag', 'en': 'Storage'},
     'tab.members': {'nl': 'Leden', 'en': 'Members'},
     'tab.warRoom': {'nl': 'War Room', 'en': 'War Room'},
+    'tab.crewMissions': {'nl': 'Crew Missies', 'en': 'Crew Missions'},
     'tab.carStorage': {
       'nl': 'Auto/motor opslag',
       'en': 'Car/Motorcycle Storage',
@@ -199,6 +203,75 @@ class _CrewScreenState extends State<CrewScreen>
     'hint.upgradeHub': {
       'nl': 'Beheer hier het HQ en alle crew-upgrades op 1 plek.',
       'en': 'Manage HQ and all crew upgrades from one place here.',
+    },
+    'section.crewMissions': {'nl': 'Crew Missies', 'en': 'Crew Missions'},
+    'state.crewMissionsEmpty': {
+      'nl': 'Nog geen crew missies beschikbaar',
+      'en': 'No crew missions available yet',
+    },
+    'state.crewMissionNoCrew': {
+      'nl': 'Join of maak een crew om missies te starten.',
+      'en': 'Join or create a crew to start missions.',
+    },
+    'action.startMission': {'nl': 'Start missie', 'en': 'Start mission'},
+    'action.resolveMission': {'nl': 'Rond missie af', 'en': 'Resolve mission'},
+    'action.claimRewards': {'nl': 'Claim rewards', 'en': 'Claim rewards'},
+    'action.speedupCooldown': {
+      'nl': 'Cooldown versnellen',
+      'en': 'Speed up cooldown',
+    },
+    'label.activeMission': {'nl': 'Actieve missie', 'en': 'Active mission'},
+    'label.recentMissions': {'nl': 'Recente missies', 'en': 'Recent missions'},
+    'label.missionDuration': {'nl': 'Duur', 'en': 'Duration'},
+    'label.missionCooldown': {'nl': 'Cooldown', 'en': 'Cooldown'},
+    'label.missionTier': {'nl': 'Tier', 'en': 'Tier'},
+    'label.missionRewards': {'nl': 'Rewards', 'en': 'Rewards'},
+    'label.missionStatus': {'nl': 'Status', 'en': 'Status'},
+    'label.cooldownActive': {'nl': 'Cooldown actief', 'en': 'Cooldown active'},
+    'status.missionLocked': {'nl': 'Vergrendeld', 'en': 'Locked'},
+    'status.inProgress': {'nl': 'Bezig', 'en': 'In progress'},
+    'status.completed': {'nl': 'Voltooid', 'en': 'Completed'},
+    'status.ready': {'nl': 'Klaar', 'en': 'Ready'},
+    'status.rewardsClaimed': {
+      'nl': 'Rewards geclaimd',
+      'en': 'Rewards claimed',
+    },
+    'state.missionActionBusy': {
+      'nl': 'Actie wordt verwerkt...',
+      'en': 'Action is being processed...',
+    },
+    'hint.missionLeaderOnly': {
+      'nl': 'Alleen leader/co-leader kan missies starten en resolven.',
+      'en': 'Only leader/co-leader can start and resolve missions.',
+    },
+    'hint.missionLockedTier2': {
+      'nl': 'Tier 2 vereist HQ 5+ en 2+ leden.',
+      'en': 'Tier 2 requires HQ 5+ and 2+ members.',
+    },
+    'hint.missionLockedTier3': {
+      'nl': 'Tier 3 vereist HQ 9+ en 3+ leden.',
+      'en': 'Tier 3 requires HQ 9+ and 3+ members.',
+    },
+    'hint.missionLockedDefault': {
+      'nl': 'Missie nog vergrendeld.',
+      'en': 'Mission is still locked.',
+    },
+    'message.missionOverviewLoadFailed': {
+      'nl': 'Crew missies laden mislukt.',
+      'en': 'Failed to load crew missions.',
+    },
+    'message.missionStarted': {'nl': 'Missie gestart', 'en': 'Mission started'},
+    'message.missionResolved': {
+      'nl': 'Missie afgerond',
+      'en': 'Mission resolved',
+    },
+    'message.missionRewardsClaimed': {
+      'nl': 'Rewards geclaimd',
+      'en': 'Rewards claimed',
+    },
+    'message.missionCooldownSpedUp': {
+      'nl': 'Cooldown versneld',
+      'en': 'Cooldown sped up',
     },
   };
 
@@ -719,10 +792,375 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
+  Map<String, dynamic> _decodeJsonBody(String body) {
+    final decoded = jsonDecode(body);
+    if (decoded is Map<String, dynamic>) {
+      return decoded;
+    }
+    return <String, dynamic>{};
+  }
+
+  String _crewMissionErrorMessage(String locale, String? event) {
+    switch (event) {
+      case 'error.not_in_crew':
+        return _t(locale, 'state.crewMissionNoCrew');
+      case 'error.mission_permission_denied':
+        return _t(locale, 'hint.missionLeaderOnly');
+      case 'error.mission_already_in_progress':
+        return _tr(
+          locale,
+          'Er is al een crew missie actief.',
+          'There is already an active crew mission.',
+        );
+      case 'error.mission_template_not_found':
+        return _tr(locale, 'Missie niet gevonden.', 'Mission not found.');
+      case 'error.mission_tier_locked':
+        return _tr(
+          locale,
+          'Deze tier is nog vergrendeld.',
+          'This tier is still locked.',
+        );
+      case 'error.mission_run_not_found':
+        return _tr(
+          locale,
+          'Missie run niet gevonden.',
+          'Mission run not found.',
+        );
+      case 'error.mission_already_resolved':
+        return _tr(
+          locale,
+          'Missie is al afgerond.',
+          'Mission is already resolved.',
+        );
+      case 'error.mission_not_completed':
+        return _tr(
+          locale,
+          'Missie is nog niet klaar.',
+          'Mission is not completed yet.',
+        );
+      case 'error.mission_rewards_already_claimed':
+        return _t(locale, 'status.rewardsClaimed');
+      case 'error.mission_cooldown_not_active':
+        return _tr(locale, 'Geen actieve cooldown.', 'No active cooldown.');
+      case 'error.insufficient_credits':
+        return _tr(locale, 'Onvoldoende credits.', 'Insufficient credits.');
+      default:
+        return _tr(locale, 'Actie mislukt', 'Action failed');
+    }
+  }
+
+  String _crewMissionLockedReason(String locale, String? reason) {
+    switch (reason) {
+      case 'TIER2_REQUIRES_HQ5_AND_2_MEMBERS':
+        return _t(locale, 'hint.missionLockedTier2');
+      case 'TIER3_REQUIRES_HQ9_AND_3_MEMBERS':
+        return _t(locale, 'hint.missionLockedTier3');
+      default:
+        return _t(locale, 'hint.missionLockedDefault');
+    }
+  }
+
+  int _secondsUntil(String? isoString) {
+    if (isoString == null || isoString.isEmpty) return 0;
+    try {
+      final target = DateTime.parse(isoString).toUtc();
+      final now = DateTime.now().toUtc();
+      final diff = target.difference(now).inSeconds;
+      return diff > 0 ? diff : 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  String _formatRemaining(int seconds, String locale) {
+    final mins = (seconds / 60).ceil();
+    if (mins < 1) {
+      return locale == 'nl' ? '<1 min' : '<1 min';
+    }
+    return locale == 'nl' ? '$mins min' : '$mins min';
+  }
+
+  Future<void> _loadCrewMissionsOverview({bool silent = false}) async {
+    if (_myCrew == null) {
+      if (mounted) {
+        setState(() {
+          _crewMissionsOverview = null;
+          _crewMissionsLoading = false;
+        });
+      }
+      return;
+    }
+
+    if (!silent && mounted) {
+      setState(() => _crewMissionsLoading = true);
+    }
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.get('/crew-missions/overview');
+      if (response.statusCode == 200) {
+        final data = _decodeJsonBody(response.body);
+        if (mounted) {
+          setState(() {
+            _crewMissionsOverview = data;
+          });
+        }
+      } else if (!silent && mounted) {
+        final locale = Localizations.localeOf(context).languageCode;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_t(locale, 'message.missionOverviewLoadFailed')),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (_) {
+      if (!silent && mounted) {
+        final locale = Localizations.localeOf(context).languageCode;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_t(locale, 'message.missionOverviewLoadFailed')),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _crewMissionsLoading = false);
+      }
+    }
+  }
+
+  Future<void> _startCrewMission(String missionKey) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_crewMissionActionLoading) return;
+    setState(() => _crewMissionActionLoading = true);
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crew-missions/start',
+        {'missionKey': missionKey},
+      );
+      if (!mounted) return;
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_t(locale, 'message.missionStarted')),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadCrewMissionsOverview(silent: true);
+      } else {
+        final data = response.body.isNotEmpty
+            ? _decodeJsonBody(response.body)
+            : <String, dynamic>{};
+        final event = data['event']?.toString();
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_crewMissionErrorMessage(locale, event)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                locale,
+                'Missie starten mislukt.',
+                'Failed to start mission.',
+              ),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _crewMissionActionLoading = false);
+      }
+    }
+  }
+
+  Future<void> _resolveCrewMission(int runId) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_crewMissionActionLoading) return;
+    setState(() => _crewMissionActionLoading = true);
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crew-missions/runs/$runId/resolve',
+        {},
+      );
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_t(locale, 'message.missionResolved')),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadCrewMissionsOverview(silent: true);
+      } else {
+        final data = response.body.isNotEmpty
+            ? _decodeJsonBody(response.body)
+            : <String, dynamic>{};
+        final event = data['event']?.toString();
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_crewMissionErrorMessage(locale, event)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                locale,
+                'Missie afronden mislukt.',
+                'Failed to resolve mission.',
+              ),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _crewMissionActionLoading = false);
+      }
+    }
+  }
+
+  Future<void> _claimCrewMissionRewards(int runId) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_crewMissionActionLoading) return;
+    setState(() => _crewMissionActionLoading = true);
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crew-missions/runs/$runId/claim',
+        {},
+      );
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_t(locale, 'message.missionRewardsClaimed')),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadCrewMissionsOverview(silent: true);
+        _loadData();
+      } else {
+        final data = response.body.isNotEmpty
+            ? _decodeJsonBody(response.body)
+            : <String, dynamic>{};
+        final event = data['event']?.toString();
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_crewMissionErrorMessage(locale, event)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                locale,
+                'Rewards claimen mislukt.',
+                'Failed to claim rewards.',
+              ),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _crewMissionActionLoading = false);
+      }
+    }
+  }
+
+  Future<void> _speedupCrewMissionCooldown(int runId) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_crewMissionActionLoading) return;
+    setState(() => _crewMissionActionLoading = true);
+    try {
+      final response = await AuthService().apiClient.post(
+        '/crew-missions/runs/$runId/speedup',
+        {},
+      );
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_t(locale, 'message.missionCooldownSpedUp')),
+            backgroundColor: Colors.green,
+          ),
+        );
+        await _loadCrewMissionsOverview(silent: true);
+      } else {
+        final data = response.body.isNotEmpty
+            ? _decodeJsonBody(response.body)
+            : <String, dynamic>{};
+        final event = data['event']?.toString();
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_crewMissionErrorMessage(locale, event)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                locale,
+                'Cooldown versnellen mislukt.',
+                'Failed to speed up cooldown.',
+              ),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _crewMissionActionLoading = false);
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 7, vsync: this);
+    _tabController = TabController(length: 8, vsync: this);
     _loadData();
   }
 
@@ -743,6 +1181,7 @@ class _CrewScreenState extends State<CrewScreen>
         futures.add(_loadCrewStats());
         futures.add(_loadCrewBuildings());
         futures.add(_loadCrewStorage());
+        futures.add(_loadCrewMissionsOverview(silent: true));
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         final currentPlayerId = authProvider.currentPlayer?.id ?? 0;
         final myMembership = _myCrew!.members.firstWhere(
@@ -3301,6 +3740,7 @@ class _CrewScreenState extends State<CrewScreen>
             Tab(text: _t(locale, 'tab.storageHub')),
             Tab(text: _t(locale, 'tab.members')),
             Tab(text: _t(locale, 'tab.warRoom')),
+            Tab(text: _t(locale, 'tab.crewMissions')),
             Tab(text: _t(locale, 'tab.allCrews')),
             Tab(icon: const Icon(Icons.chat), text: _t(locale, 'tab.chat')),
           ],
@@ -3316,6 +3756,7 @@ class _CrewScreenState extends State<CrewScreen>
                 _buildStorageManagementTab(),
                 _buildMembersTab(),
                 _buildCrewWarTab(),
+                _buildCrewMissionsTab(),
                 _buildAllCrewsTab(),
                 _buildChatTab(),
               ],
@@ -5484,6 +5925,401 @@ class _CrewScreenState extends State<CrewScreen>
     };
     final lang = locale == 'nl' ? 'nl' : 'en';
     return labels[buildingType]?[lang] ?? buildingType;
+  }
+
+  Widget _buildCrewMissionsTab() {
+    final locale = Localizations.localeOf(context).languageCode;
+
+    if (_myCrew == null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.flag_outlined, size: 56, color: Colors.grey),
+            const SizedBox(height: 12),
+            Text(
+              _t(locale, 'state.crewMissionNoCrew'),
+              style: const TextStyle(color: Colors.grey, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_crewMissionsLoading && _crewMissionsOverview == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final overview = _crewMissionsOverview ?? <String, dynamic>{};
+    final templates = (overview['templates'] as List<dynamic>? ?? [])
+        .whereType<Map<String, dynamic>>()
+        .toList();
+    final activeRun = overview['activeRun'] is Map<String, dynamic>
+        ? overview['activeRun'] as Map<String, dynamic>
+        : null;
+    final recentRuns = (overview['recentRuns'] as List<dynamic>? ?? [])
+        .whereType<Map<String, dynamic>>()
+        .toList();
+    final role = (overview['role'] ?? '').toString().toLowerCase();
+    final canManage = role == 'leader' || role == 'co_leader';
+
+    return RefreshIndicator(
+      onRefresh: () => _loadCrewMissionsOverview(),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      _t(locale, 'section.crewMissions'),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (_crewMissionsLoading)
+                      const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                  ],
+                ),
+                if (!canManage) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    _t(locale, 'hint.missionLeaderOnly'),
+                    style: const TextStyle(color: Colors.orange),
+                  ),
+                ],
+                const SizedBox(height: 12),
+                if (_crewMissionActionLoading)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Text(
+                      _t(locale, 'state.missionActionBusy'),
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                if (activeRun != null) ...[
+                  Text(
+                    _t(locale, 'label.activeMission'),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildActiveCrewMissionCard(activeRun, canManage, locale),
+                  const SizedBox(height: 16),
+                ],
+                if (templates.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      _t(locale, 'state.crewMissionsEmpty'),
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  )
+                else
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: templates
+                        .map(
+                          (template) => SizedBox(
+                            width: 340,
+                            child: _buildCrewMissionTemplateCard(
+                              template,
+                              locale: locale,
+                              canManage: canManage,
+                              hasActiveRun: activeRun != null,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                const SizedBox(height: 18),
+                Text(
+                  _t(locale, 'label.recentMissions'),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                if (recentRuns.isEmpty)
+                  Text(
+                    locale == 'nl' ? 'Nog geen historie.' : 'No history yet.',
+                    style: const TextStyle(color: Colors.grey),
+                  )
+                else
+                  ...recentRuns
+                      .take(6)
+                      .map((run) => _buildCrewMissionRunRow(run, locale)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCrewMissionTemplateCard(
+    Map<String, dynamic> template, {
+    required String locale,
+    required bool canManage,
+    required bool hasActiveRun,
+  }) {
+    final title = locale == 'nl'
+        ? (template['titleNl'] ?? template['missionKey'] ?? '').toString()
+        : (template['titleEn'] ?? template['missionKey'] ?? '').toString();
+    final description = locale == 'nl'
+        ? (template['descriptionNl'] ?? '').toString()
+        : (template['descriptionEn'] ?? '').toString();
+    final tier = (template['tier'] as num?)?.toInt() ?? 1;
+    final durationSeconds = (template['durationSeconds'] as num?)?.toInt() ?? 0;
+    final cooldownSeconds = (template['cooldownSeconds'] as num?)?.toInt() ?? 0;
+    final rewardCashMin = (template['rewardCashMin'] as num?)?.toInt() ?? 0;
+    final rewardCashMax = (template['rewardCashMax'] as num?)?.toInt() ?? 0;
+    final rewardCrewXp = (template['rewardCrewXp'] as num?)?.toInt() ?? 0;
+    final unlocked = template['unlocked'] == true;
+    final lockedReason = template['lockedReason']?.toString();
+    final missionKey = (template['missionKey'] ?? '').toString();
+    final imagePath = (template['imageCardPath'] ?? '').toString();
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: imagePath.isNotEmpty
+                ? WebAssetHelper.image(
+                    imagePath,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.black12,
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.image_not_supported),
+                    ),
+                  )
+                : Container(
+                    color: Colors.black12,
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.flag),
+                  ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text('${_t(locale, 'label.missionTier')} $tier'),
+                    ),
+                  ],
+                ),
+                if (description.isNotEmpty) ...[
+                  const SizedBox(height: 6),
+                  Text(
+                    description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+                const SizedBox(height: 8),
+                Text(
+                  '${_t(locale, 'label.missionDuration')}: ${_formatRemaining(durationSeconds, locale)}',
+                ),
+                Text(
+                  '${_t(locale, 'label.missionCooldown')}: ${_formatRemaining(cooldownSeconds, locale)}',
+                ),
+                Text(
+                  '${_t(locale, 'label.missionRewards')}: ${_money(rewardCashMin)} - ${_money(rewardCashMax)} + $rewardCrewXp XP',
+                ),
+                if (!unlocked) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    '${_t(locale, 'status.missionLocked')}: ${_crewMissionLockedReason(locale, lockedReason)}',
+                    style: const TextStyle(color: Colors.orange),
+                  ),
+                ],
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed:
+                        (!canManage ||
+                            !unlocked ||
+                            hasActiveRun ||
+                            missionKey.isEmpty ||
+                            _crewMissionActionLoading)
+                        ? null
+                        : () => _startCrewMission(missionKey),
+                    child: Text(_t(locale, 'action.startMission')),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActiveCrewMissionCard(
+    Map<String, dynamic> activeRun,
+    bool canManage,
+    String locale,
+  ) {
+    final runId = (activeRun['id'] as num?)?.toInt();
+    final title = locale == 'nl'
+        ? (activeRun['titleNl'] ?? activeRun['missionKey'] ?? '').toString()
+        : (activeRun['titleEn'] ?? activeRun['missionKey'] ?? '').toString();
+    final status = (activeRun['status'] ?? '').toString();
+    final endedInSeconds = _secondsUntil(activeRun['endsAt']?.toString());
+    final cooldownInSeconds = _secondsUntil(
+      activeRun['cooldownUntil']?.toString(),
+    );
+    final outcome = (activeRun['outcome'] ?? '').toString();
+    final progressPct = (activeRun['progressPct'] as num?)?.toInt() ?? 0;
+    final rewardCrewCash = (activeRun['rewardCrewCash'] as num?)?.toInt() ?? 0;
+    final rewardCrewXp = (activeRun['rewardCrewXp'] as num?)?.toInt() ?? 0;
+    final rewardPersonalXp =
+        (activeRun['rewardPersonalXp'] as num?)?.toInt() ?? 0;
+    final rewardsClaimedAt = activeRun['rewardsClaimedAt']?.toString();
+
+    final canResolve =
+        runId != null &&
+        canManage &&
+        status == 'in_progress' &&
+        endedInSeconds <= 0;
+    final canClaim =
+        runId != null && status == 'completed' && rewardsClaimedAt == null;
+    final canSpeedup = runId != null && cooldownInSeconds > 0;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '${_t(locale, 'label.missionStatus')}: ${status == 'completed' ? _t(locale, 'status.completed') : _t(locale, 'status.inProgress')}',
+            ),
+            Text('${_t(locale, 'label.level')}: ${activeRun['tier'] ?? '-'}'),
+            Text(
+              '${_t(locale, 'label.missionDuration')}: ${endedInSeconds > 0 ? _formatRemaining(endedInSeconds, locale) : _t(locale, 'status.ready')}',
+            ),
+            if (status == 'completed') ...[
+              Text('Outcome: ${outcome.isEmpty ? '-' : outcome}'),
+              Text(
+                '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} | Crew XP $rewardCrewXp | XP $rewardPersonalXp',
+              ),
+              Text('Progress: $progressPct%'),
+            ],
+            if (cooldownInSeconds > 0)
+              Text(
+                '${_t(locale, 'label.cooldownActive')}: ${_formatRemaining(cooldownInSeconds, locale)}',
+              ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if (canResolve)
+                  ElevatedButton(
+                    onPressed: _crewMissionActionLoading
+                        ? null
+                        : () => _resolveCrewMission(runId),
+                    child: Text(_t(locale, 'action.resolveMission')),
+                  ),
+                if (canClaim)
+                  ElevatedButton(
+                    onPressed: _crewMissionActionLoading
+                        ? null
+                        : () => _claimCrewMissionRewards(runId),
+                    child: Text(_t(locale, 'action.claimRewards')),
+                  ),
+                if (canSpeedup)
+                  OutlinedButton.icon(
+                    onPressed: _crewMissionActionLoading
+                        ? null
+                        : () => _speedupCrewMissionCooldown(runId),
+                    icon: const Icon(Icons.bolt),
+                    label: Text(_t(locale, 'action.speedupCooldown')),
+                  ),
+                if (rewardsClaimedAt != null)
+                  Chip(label: Text(_t(locale, 'status.rewardsClaimed'))),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCrewMissionRunRow(Map<String, dynamic> run, String locale) {
+    final title = locale == 'nl'
+        ? (run['titleNl'] ?? run['missionKey'] ?? '').toString()
+        : (run['titleEn'] ?? run['missionKey'] ?? '').toString();
+    final outcome = (run['outcome'] ?? '-').toString();
+    final rewardCrewCash = (run['rewardCrewCash'] as num?)?.toInt() ?? 0;
+    final cooldownInSeconds = _secondsUntil(run['cooldownUntil']?.toString());
+    final hasCooldown = cooldownInSeconds > 0;
+
+    return Card(
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(
+          '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome',
+        ),
+        trailing: hasCooldown
+            ? Text(
+                '${_t(locale, 'label.missionCooldown')}: ${_formatRemaining(cooldownInSeconds, locale)}',
+                style: const TextStyle(fontSize: 12),
+              )
+            : Text(
+                _t(locale, 'status.ready'),
+                style: const TextStyle(fontSize: 12, color: Colors.green),
+              ),
+      ),
+    );
   }
 
   Widget _buildAllCrewsTab() {

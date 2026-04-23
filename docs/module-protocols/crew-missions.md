@@ -38,6 +38,23 @@ Admin endpoints:
 - `GET /admin/crew-missions/runtime-config`
 - `PUT /admin/crew-missions/runtime-config`
 
+## Client UI Status (Phase 3 Basis)
+
+Geactiveerd in:
+- `client/lib/screens/crew_screen.dart` als extra tab `Crew Missions`
+
+Beschikbaar in de tab:
+- mission-overview load (`GET /crew-missions/overview`)
+- templates met image-first cards + icon fallback
+- active run card met status en timer
+- acties: `start`, `resolve`, `claim`, `speedup`
+- recente runs lijst
+
+UX/i18n baseline:
+- alle nieuwe labels/buttons/statussen in NL + EN
+- responsive layout via `SingleChildScrollView` + `Wrap` cards
+- permissiehint voor non-leader/co-leader zichtbaar in UI
+
 ## Cross-Module Dependencies
 - Crew Missions -> Crew (leden, leader/officer permissies, HQ gates)
 - Crew Missions -> Crimes/Jobs (action templates en risk profiles)
