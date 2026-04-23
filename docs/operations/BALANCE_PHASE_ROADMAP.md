@@ -50,3 +50,19 @@ Status (afgerond):
   - `eventContributionPct` max 15%
 - Boosts geïntegreerd in crimes (success/reward), hitlist combat (attack/defense) en live event contribution scoring.
 - Designregel behouden: utility en tempo-voordeel, geen top-end event reward vervanging.
+
+## Live Balance Baseline (2026-04-23)
+- Runtime settings:
+  - `ECON_SESSION_WINDOW_MINUTES=90`
+  - `ECON_DIMINISH_1_MIN_ATTEMPTS=12`, `ECON_DIMINISH_1_MULTIPLIER=0.98`
+  - `ECON_DIMINISH_2_MIN_ATTEMPTS=24`, `ECON_DIMINISH_2_MULTIPLIER=0.94`
+  - `ECON_DIMINISH_3_MIN_ATTEMPTS=36`, `ECON_DIMINISH_3_MULTIPLIER=0.90`
+  - `ECON_DIMINISH_4_MIN_ATTEMPTS=52`, `ECON_DIMINISH_4_MULTIPLIER=0.86`
+- 24h telemetry snapshot:
+  - crimes: attempts 18, success 66.7%, payout/min 68.33
+  - jobs: attempts 9, success 88.9%, payout/min 81.00
+  - vehicle theft: attempts 21, success 28.6%, jail 4.8%
+  - cooldown skips: 0
+- Conclusie:
+  - huidige curve is actief en werkt zonder hard caps;
+  - volgende tuningstap pas doen met grotere sample size (bijv. 72h) om overfit op lage aantallen te voorkomen.

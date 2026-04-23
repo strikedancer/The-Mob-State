@@ -23,6 +23,7 @@ Dit bestand is de enige bijlage, maar niet de enige bron.
 Verplichte regel:
 - Bij elke taak moeten alle relevante module-protocollen gelezen worden, inclusief afhankelijkheden.
 - Bij nieuwe systemen of modules is het verplicht om actief alle bestaande protocollen te scannen op mogelijke koppelingen, afhankelijkheden, overlap en regressierisico's; een nieuw systeem is niet klaar zonder expliciete protocol-impactcheck.
+- Bij elke wijziging aan progression, economy, rewards, cooldowns, premium credits of monetization is `docs/module-protocols/balance-economy.md` verplicht en mag deze nooit worden overgeslagen.
 
 Minimum output bij implementatie:
 - Noem welke protocollen zijn toegepast.
@@ -56,6 +57,7 @@ Acceptatie-eis:
 - Hitlist -> Crimes, Security, Crew, Dashboard, Admin
 - Crew Wars -> Crew, Hitlist, Crimes, Dashboard, Notifications, Payments, Achievements, Admin
 - Payments/Premium -> Crew, Hitlist/Security, Garage, TuneShop, Events, Dashboard, Admin
+- Economy/Progression wijzigingen -> Balance & Economy, Payments, Crimes, Hitlist, Dashboard, Admin
 - Travel -> Properties, Drugs, Nightclub, Smuggling, Admin
 - Admin -> Alle gameplay modules met logs, assets of economy-impact
 - Player-facing lists/avatars/namen -> Player Profile
@@ -153,6 +155,7 @@ Implementatievoorkeur:
 8. Verifieer dat alle nieuwe/gewijzigde player-facing teksten in NL en EN aanwezig zijn.
 9. Verifieer dat `Help & Uitleg` nog klopt voor de gewijzigde of nieuw toegevoegde module/flow.
 10. Bij nieuwe systemen of modules: bevestig dat alle relevante bestaande protocollen op koppelingen en regressierisico's zijn nagelopen.
+11. Bij economy/progression/monetization wijzigingen: bevestig expliciet dat `balance-economy.md` is toegepast en dat telemetry + runtime keys zijn meegecontroleerd.
 
 ## Flutter Analyze Hang Recovery (Windows)
 

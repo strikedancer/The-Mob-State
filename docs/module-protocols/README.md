@@ -22,6 +22,7 @@ De master protocol zorgt ervoor dat je:
 ## beschikbare Module Protocols
 
 ### Shared Cross-Cutting Protocols
+- [Balance & Economy](balance-economy.md) - Progression pacing, cooldown balancing, premium sinks en non-pay-to-win guardrails
 - [Frontend Platform](frontend-platform.md) - Flutter web/mobile/PWA shells, assets, embedded views en cachegedrag
 - [Notifications & Push](notifications.md) - Push pipeline, FCM/service worker en cooldown-signalen
 - [Player Profile](player-profile.md) - Profielnavigatie, privacy en profielinteracties
@@ -43,6 +44,7 @@ De master protocol zorgt ervoor dat je:
 - [Casino](casino.md) - Gokken & winsten
 - [Black Market](black-market.md) - Illegals trading
 - [Payments & Premium](payments.md) - Mollie checkout, VIP, credits en premium catalogus
+- [Balance & Economy](balance-economy.md) - Cross-loop balancing, runtime tuning en telemetry
 
 ### Activities & Crime
 - [Jobs](jobs.md) - Legale inkomsten
@@ -116,6 +118,7 @@ Voor schermen die meerdere API calls doen:
 ## Zie Ook
 
 - [PROTOCOL_MASTER.md](PROTOCOL_MASTER.md) - Workflow & Cross-Module Map
+- [Balance & Economy](balance-economy.md)
 - [docs/game-systems/](../game-systems/) - Game mechanics & system documentation
 - [PROTOCOL_TEMPLATE.md](PROTOCOL_TEMPLATE.md) - Template voor nieuwe modules
 - [Frontend Platform](frontend-platform.md)
