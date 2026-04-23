@@ -20,23 +20,14 @@ type CooldownSkipStats = {
   byActionType: Record<string, number>;
 };
 
-const SESSION_WINDOW_MINUTES = Number.parseInt(
-  process.env.ECON_SESSION_WINDOW_MINUTES || '60',
-  10,
-);
+type DiminishingStep = {
+  minAttempts: number;
+  multiplier: number;
+};
 
-const DIMINISHING_CURVE = [
-  { minAttempts: 0, multiplier: 1.0 },
-  { minAttempts: 8, multiplier: 0.96 },
-  { minAttempts: 16, multiplier: 0.9 },
-  { minAttempts: 26, multiplier: 0.84 },
-  { minAttempts: 40, multiplier: 0.78 },
-] as const;
-
-const VEHICLE_THEFT_COOLDOWN_SECONDS_BY_TYPE: Record<string, number> = {
-  car: 300,
-  motorcycle: 240,
-  boat: 600,
+type RuntimeBalanceConfig = {
+  sessionWindowMinutes: number;
+  curve: DiminishingStep[];
 };
 
 type CrimeDefinition = {
@@ -48,6 +39,29 @@ type JobDefinition = {
   id: string;
   maxEarnings: number;
 };
+
+export const ECON_RUNTIME_SETTING_DEFAULTS = {
+  ECON_SESSION_WINDOW_MINUTES: process.env.ECON_SESSION_WINDOW_MINUTES || '60',
+  ECON_DIMINISH_1_MIN_ATTEMPTS: process.env.ECON_DIMINISH_1_MIN_ATTEMPTS || '8',
+  ECON_DIMINISH_1_MULTIPLIER: process.env.ECON_DIMINISH_1_MULTIPLIER || '0.96',
+  ECON_DIMINISH_2_MIN_ATTEMPTS: process.env.ECON_DIMINISH_2_MIN_ATTEMPTS || '16',
+  ECON_DIMINISH_2_MULTIPLIER: process.env.ECON_DIMINISH_2_MULTIPLIER || '0.90',
+  ECON_DIMINISH_3_MIN_ATTEMPTS: process.env.ECON_DIMINISH_3_MIN_ATTEMPTS || '26',
+  ECON_DIMINISH_3_MULTIPLIER: process.env.ECON_DIMINISH_3_MULTIPLIER || '0.84',
+  ECON_DIMINISH_4_MIN_ATTEMPTS: process.env.ECON_DIMINISH_4_MIN_ATTEMPTS || '40',
+  ECON_DIMINISH_4_MULTIPLIER: process.env.ECON_DIMINISH_4_MULTIPLIER || '0.78',
+} as const;
+
+export const ECON_RUNTIME_SETTING_KEYS = Object.keys(ECON_RUNTIME_SETTING_DEFAULTS);
+
+const VEHICLE_THEFT_COOLDOWN_SECONDS_BY_TYPE: Record<string, number> = {
+  car: 300,
+  motorcycle: 240,
+  boat: 600,
+};
+
+const RUNTIME_CONFIG_CACHE_TTL_MS = 60_000;
+let runtimeConfigCache: { value: RuntimeBalanceConfig; expiresAt: number } | null = null;
 
 const toSafeNumber = (value: unknown): number => {
   const numeric = Number(value);
@@ -72,16 +86,6 @@ const getSessionWindowStart = (minutes: number): Date => {
   return new Date(now - minutes * 60_000);
 };
 
-const resolveDiminishingMultiplier = (attemptCount: number): number => {
-  let multiplier = 1;
-  for (const step of DIMINISHING_CURVE) {
-    if (attemptCount >= step.minAttempts) {
-      multiplier = step.multiplier;
-    }
-  }
-  return multiplier;
-};
-
 const toRatioSummary = (bucket: RatioBucket) => {
   const attempts = bucket.attempts;
   const cooldownMinutes = bucket.cooldownSeconds > 0 ? bucket.cooldownSeconds / 60 : 0;
@@ -104,10 +108,150 @@ const toRatioSummary = (bucket: RatioBucket) => {
   };
 };
 
+const parseRuntimeInteger = (
+  raw: string | undefined,
+  fallback: number,
+  min: number,
+  max: number,
+): number => {
+  const parsed = Number.parseInt(String(raw ?? ''), 10);
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(max, Math.max(min, parsed));
+};
+
+const parseRuntimeMultiplier = (raw: string | undefined, fallback: number): number => {
+  const parsed = Number.parseFloat(String(raw ?? ''));
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(1, Math.max(0.4, parsed));
+};
+
+const buildRuntimeConfig = (source: Record<string, string>): RuntimeBalanceConfig => {
+  const sessionWindowMinutes = parseRuntimeInteger(
+    source.ECON_SESSION_WINDOW_MINUTES,
+    Number.parseInt(ECON_RUNTIME_SETTING_DEFAULTS.ECON_SESSION_WINDOW_MINUTES, 10),
+    15,
+    240,
+  );
+
+  const steps: DiminishingStep[] = [
+    { minAttempts: 0, multiplier: 1 },
+    {
+      minAttempts: parseRuntimeInteger(
+        source.ECON_DIMINISH_1_MIN_ATTEMPTS,
+        Number.parseInt(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_1_MIN_ATTEMPTS, 10),
+        1,
+        500,
+      ),
+      multiplier: parseRuntimeMultiplier(
+        source.ECON_DIMINISH_1_MULTIPLIER,
+        Number.parseFloat(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_1_MULTIPLIER),
+      ),
+    },
+    {
+      minAttempts: parseRuntimeInteger(
+        source.ECON_DIMINISH_2_MIN_ATTEMPTS,
+        Number.parseInt(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_2_MIN_ATTEMPTS, 10),
+        1,
+        500,
+      ),
+      multiplier: parseRuntimeMultiplier(
+        source.ECON_DIMINISH_2_MULTIPLIER,
+        Number.parseFloat(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_2_MULTIPLIER),
+      ),
+    },
+    {
+      minAttempts: parseRuntimeInteger(
+        source.ECON_DIMINISH_3_MIN_ATTEMPTS,
+        Number.parseInt(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_3_MIN_ATTEMPTS, 10),
+        1,
+        500,
+      ),
+      multiplier: parseRuntimeMultiplier(
+        source.ECON_DIMINISH_3_MULTIPLIER,
+        Number.parseFloat(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_3_MULTIPLIER),
+      ),
+    },
+    {
+      minAttempts: parseRuntimeInteger(
+        source.ECON_DIMINISH_4_MIN_ATTEMPTS,
+        Number.parseInt(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_4_MIN_ATTEMPTS, 10),
+        1,
+        500,
+      ),
+      multiplier: parseRuntimeMultiplier(
+        source.ECON_DIMINISH_4_MULTIPLIER,
+        Number.parseFloat(ECON_RUNTIME_SETTING_DEFAULTS.ECON_DIMINISH_4_MULTIPLIER),
+      ),
+    },
+  ];
+
+  steps.sort((a, b) => a.minAttempts - b.minAttempts);
+  let previousThreshold = 0;
+  let previousMultiplier = 1;
+
+  for (let i = 1; i < steps.length; i += 1) {
+    const step = steps[i];
+    if (step.minAttempts <= previousThreshold) {
+      step.minAttempts = previousThreshold + 1;
+    }
+    if (step.multiplier > previousMultiplier) {
+      step.multiplier = previousMultiplier;
+    }
+    previousThreshold = step.minAttempts;
+    previousMultiplier = step.multiplier;
+  }
+
+  return { sessionWindowMinutes, curve: steps };
+};
+
+const loadRuntimeConfigValues = async (): Promise<Record<string, string>> => {
+  const placeholders = ECON_RUNTIME_SETTING_KEYS.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
+    `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
+    ...ECON_RUNTIME_SETTING_KEYS,
+  );
+
+  const merged: Record<string, string> = {
+    ...ECON_RUNTIME_SETTING_DEFAULTS,
+  };
+  for (const row of rows) {
+    merged[row.configKey] = String(row.configValue ?? '').trim();
+  }
+  return merged;
+};
+
+const getRuntimeBalanceConfig = async (): Promise<RuntimeBalanceConfig> => {
+  const now = Date.now();
+  if (runtimeConfigCache && runtimeConfigCache.expiresAt > now) {
+    return runtimeConfigCache.value;
+  }
+
+  try {
+    const values = await loadRuntimeConfigValues();
+    const value = buildRuntimeConfig(values);
+    runtimeConfigCache = { value, expiresAt: now + RUNTIME_CONFIG_CACHE_TTL_MS };
+    return value;
+  } catch {
+    const fallback = buildRuntimeConfig({ ...ECON_RUNTIME_SETTING_DEFAULTS });
+    runtimeConfigCache = { value: fallback, expiresAt: now + RUNTIME_CONFIG_CACHE_TTL_MS };
+    return fallback;
+  }
+};
+
+const resolveDiminishingMultiplier = (attemptCount: number, curve: DiminishingStep[]): number => {
+  let multiplier = 1;
+  for (const step of curve) {
+    if (attemptCount >= step.minAttempts) {
+      multiplier = step.multiplier;
+    }
+  }
+  return multiplier;
+};
+
 async function getRecentActionCount(
   playerId: number,
   actionType: SessionActionType,
-  sessionWindowMinutes: number = SESSION_WINDOW_MINUTES,
+  sessionWindowMinutes: number,
 ): Promise<number> {
   const from = getSessionWindowStart(sessionWindowMinutes);
 
@@ -177,22 +321,22 @@ export const economyBalanceService = {
   async getDiminishingContext(
     playerId: number,
     actionType: SessionActionType,
-    sessionWindowMinutes: number = SESSION_WINDOW_MINUTES,
   ): Promise<{
     attemptsInWindow: number;
     sessionWindowMinutes: number;
     multiplier: number;
   }> {
+    const runtimeConfig = await getRuntimeBalanceConfig();
     const attemptsInWindow = await getRecentActionCount(
       playerId,
       actionType,
-      sessionWindowMinutes,
+      runtimeConfig.sessionWindowMinutes,
     );
 
     return {
       attemptsInWindow,
-      sessionWindowMinutes,
-      multiplier: resolveDiminishingMultiplier(attemptsInWindow),
+      sessionWindowMinutes: runtimeConfig.sessionWindowMinutes,
+      multiplier: resolveDiminishingMultiplier(attemptsInWindow, runtimeConfig.curve),
     };
   },
 
@@ -202,18 +346,21 @@ export const economyBalanceService = {
     return Math.max(minimumValue, normalized);
   },
 
-  getDiminishingCurve() {
-    return DIMINISHING_CURVE.map((step) => ({
+  async getDiminishingCurve(): Promise<DiminishingStep[]> {
+    const runtimeConfig = await getRuntimeBalanceConfig();
+    return runtimeConfig.curve.map((step) => ({
       minAttempts: step.minAttempts,
       multiplier: step.multiplier,
     }));
   },
 
-  getSessionWindowMinutes() {
-    return SESSION_WINDOW_MINUTES;
+  async getSessionWindowMinutes(): Promise<number> {
+    const runtimeConfig = await getRuntimeBalanceConfig();
+    return runtimeConfig.sessionWindowMinutes;
   },
 
   async getTelemetry(windowHours: number = 24) {
+    const runtimeConfig = await getRuntimeBalanceConfig();
     const safeWindowHours = Math.min(168, Math.max(1, Math.floor(windowHours)));
     const from = new Date(Date.now() - safeWindowHours * 60 * 60 * 1000);
 
@@ -340,8 +487,11 @@ export const economyBalanceService = {
       windowHours: safeWindowHours,
       from: from.toISOString(),
       diminishing: {
-        sessionWindowMinutes: SESSION_WINDOW_MINUTES,
-        curve: this.getDiminishingCurve(),
+        sessionWindowMinutes: runtimeConfig.sessionWindowMinutes,
+        curve: runtimeConfig.curve.map((step) => ({
+          minAttempts: step.minAttempts,
+          multiplier: step.multiplier,
+        })),
       },
       loops: {
         crimes: toRatioSummary(crimeBucket),
@@ -352,3 +502,4 @@ export const economyBalanceService = {
     };
   },
 };
+

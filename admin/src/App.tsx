@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type CreditShopItem, type CreateCreditShopItemPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder, type AdminImageModuleOverviewResponse } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type CreditShopItem, type CreateCreditShopItemPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder, type AdminImageModuleOverviewResponse, type EconomyBalanceTelemetry } from './services/adminService'
 import { CrewWarsAdminPanel } from './components/CrewWarsAdminPanel'
 import { TerritoryAdminPanel } from './components/TerritoryAdminPanel'
 
@@ -30,6 +30,16 @@ const PREMIUM_PLAYER_VIP_PRICE_KEY = 'PREMIUM_PLAYER_VIP_PRICE_EUR'
 const PREMIUM_CREW_VIP_PRICE_KEY = 'PREMIUM_CREW_VIP_PRICE_EUR'
 const PREMIUM_PLAYER_VIP_PRICE_DEFAULT = '4.99'
 const PREMIUM_CREW_VIP_PRICE_DEFAULT = '9.99'
+const ECON_SESSION_WINDOW_MINUTES_KEY = 'ECON_SESSION_WINDOW_MINUTES'
+const ECON_DIMINISH_1_MIN_ATTEMPTS_KEY = 'ECON_DIMINISH_1_MIN_ATTEMPTS'
+const ECON_DIMINISH_1_MULTIPLIER_KEY = 'ECON_DIMINISH_1_MULTIPLIER'
+const ECON_DIMINISH_2_MIN_ATTEMPTS_KEY = 'ECON_DIMINISH_2_MIN_ATTEMPTS'
+const ECON_DIMINISH_2_MULTIPLIER_KEY = 'ECON_DIMINISH_2_MULTIPLIER'
+const ECON_DIMINISH_3_MIN_ATTEMPTS_KEY = 'ECON_DIMINISH_3_MIN_ATTEMPTS'
+const ECON_DIMINISH_3_MULTIPLIER_KEY = 'ECON_DIMINISH_3_MULTIPLIER'
+const ECON_DIMINISH_4_MIN_ATTEMPTS_KEY = 'ECON_DIMINISH_4_MIN_ATTEMPTS'
+const ECON_DIMINISH_4_MULTIPLIER_KEY = 'ECON_DIMINISH_4_MULTIPLIER'
+const ECON_DEFAULT_WINDOW_HOURS = 24
 type ActivitySort = 'date_desc' | 'date_asc' | 'type_asc' | 'type_desc'
 type ActivityTimezone = 'local' | 'utc'
 type SavedRecentActionsView = {
@@ -690,6 +700,7 @@ function App() {
     system: true,
     alerts: true,
     quickActions: true,
+    economy: true,
     trends: true,
     liveActivity: true,
     riskPlayers: true,
@@ -698,11 +709,17 @@ function App() {
     stats: string | null
     system: string | null
     overview: string | null
+    economy: string | null
   }>({
     stats: null,
     system: null,
     overview: null,
+    economy: null,
   })
+  const [economyTelemetry, setEconomyTelemetry] = useState<EconomyBalanceTelemetry | null>(null)
+  const [economyTelemetryLoading, setEconomyTelemetryLoading] = useState(false)
+  const [economyWindowHours, setEconomyWindowHours] = useState(ECON_DEFAULT_WINDOW_HOURS)
+  const [economyTuningSaving, setEconomyTuningSaving] = useState(false)
   const [error, setError] = useState('')
   const [apiError, setApiError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -927,6 +944,8 @@ function App() {
       loadStats()
       loadSystemHealth()
       loadDashboardOverview()
+      loadEconomyTelemetry(economyWindowHours)
+      loadConfig()
     }
   }, [isAuthenticated])
 
@@ -936,10 +955,11 @@ function App() {
     const timer = window.setInterval(() => {
       loadSystemHealth()
       loadDashboardOverview()
+      loadEconomyTelemetry(economyWindowHours)
     }, 30000)
 
     return () => window.clearInterval(timer)
-  }, [isAuthenticated, activeTab])
+  }, [isAuthenticated, activeTab, economyWindowHours])
 
   useEffect(() => {
     if (isAuthenticated && activeTab === 'players') {
@@ -1255,6 +1275,20 @@ function App() {
       console.error('Failed to load dashboard overview:', err)
     } finally {
       setDashboardOverviewLoading(false)
+    }
+  }
+
+  const loadEconomyTelemetry = async (hours: number = economyWindowHours) => {
+    try {
+      setEconomyTelemetryLoading(true)
+      const data = await adminService.getEconomyBalanceTelemetry(hours)
+      setEconomyTelemetry(data)
+      setDashboardLastUpdated((current) => ({ ...current, economy: new Date().toISOString() }))
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load economy telemetry:', err)
+    } finally {
+      setEconomyTelemetryLoading(false)
     }
   }
 
@@ -3025,6 +3059,18 @@ function App() {
     value.toLowerCase().includes(configSearch.toLowerCase())
   )
 
+  const economyTuning = useMemo(() => ({
+    sessionWindowMinutes: editingConfig[ECON_SESSION_WINDOW_MINUTES_KEY] ?? '60',
+    step1Attempts: editingConfig[ECON_DIMINISH_1_MIN_ATTEMPTS_KEY] ?? '8',
+    step1Multiplier: editingConfig[ECON_DIMINISH_1_MULTIPLIER_KEY] ?? '0.96',
+    step2Attempts: editingConfig[ECON_DIMINISH_2_MIN_ATTEMPTS_KEY] ?? '16',
+    step2Multiplier: editingConfig[ECON_DIMINISH_2_MULTIPLIER_KEY] ?? '0.90',
+    step3Attempts: editingConfig[ECON_DIMINISH_3_MIN_ATTEMPTS_KEY] ?? '26',
+    step3Multiplier: editingConfig[ECON_DIMINISH_3_MULTIPLIER_KEY] ?? '0.84',
+    step4Attempts: editingConfig[ECON_DIMINISH_4_MIN_ATTEMPTS_KEY] ?? '40',
+    step4Multiplier: editingConfig[ECON_DIMINISH_4_MULTIPLIER_KEY] ?? '0.78',
+  }), [editingConfig])
+
   const selectedProstitutionBalanceProfile: ProstitutionBalanceProfile = useMemo(() => {
     const raw = (editingConfig[PROSTITUTION_BALANCE_PROFILE_KEY] || 'normal').trim().toLowerCase()
     if (raw === 'casual' || raw === 'hardcore' || raw === 'normal') {
@@ -3122,6 +3168,83 @@ function App() {
       alert(l('Hitlist loot-instellingen opgeslagen.', 'Hitlist loot settings saved.'))
     } catch {
       // values remain staged in editingConfig for bulk save
+    }
+  }
+
+  const handleSaveEconomyTuning = async () => {
+    const sessionWindowMinutes = Number.parseInt(economyTuning.sessionWindowMinutes, 10)
+    const stepAttempts = [
+      Number.parseInt(economyTuning.step1Attempts, 10),
+      Number.parseInt(economyTuning.step2Attempts, 10),
+      Number.parseInt(economyTuning.step3Attempts, 10),
+      Number.parseInt(economyTuning.step4Attempts, 10),
+    ]
+    const stepMultipliers = [
+      Number.parseFloat(economyTuning.step1Multiplier),
+      Number.parseFloat(economyTuning.step2Multiplier),
+      Number.parseFloat(economyTuning.step3Multiplier),
+      Number.parseFloat(economyTuning.step4Multiplier),
+    ]
+
+    if (!Number.isFinite(sessionWindowMinutes) || sessionWindowMinutes < 15 || sessionWindowMinutes > 240) {
+      alert(l('Sessievenster moet tussen 15 en 240 minuten liggen.', 'Session window must be between 15 and 240 minutes.'))
+      return
+    }
+
+    for (let i = 0; i < stepAttempts.length; i += 1) {
+      if (!Number.isFinite(stepAttempts[i]) || stepAttempts[i] < 1 || stepAttempts[i] > 500) {
+        alert(l('Alle drempelwaardes moeten tussen 1 en 500 liggen.', 'All attempt thresholds must be between 1 and 500.'))
+        return
+      }
+    }
+
+    for (let i = 1; i < stepAttempts.length; i += 1) {
+      if (stepAttempts[i] <= stepAttempts[i - 1]) {
+        alert(l('Drempelwaardes moeten oplopend zijn.', 'Attempt thresholds must be strictly increasing.'))
+        return
+      }
+    }
+
+    for (let i = 0; i < stepMultipliers.length; i += 1) {
+      if (!Number.isFinite(stepMultipliers[i]) || stepMultipliers[i] < 0.4 || stepMultipliers[i] > 1) {
+        alert(l('Alle multipliers moeten tussen 0.40 en 1.00 liggen.', 'All multipliers must be between 0.40 and 1.00.'))
+        return
+      }
+    }
+
+    for (let i = 1; i < stepMultipliers.length; i += 1) {
+      if (stepMultipliers[i] > stepMultipliers[i - 1]) {
+        alert(l('Multipliers moeten gelijk of dalend zijn per stap.', 'Multipliers must be equal or lower per step.'))
+        return
+      }
+    }
+
+    const payload: Record<string, string> = {
+      [ECON_SESSION_WINDOW_MINUTES_KEY]: String(sessionWindowMinutes),
+      [ECON_DIMINISH_1_MIN_ATTEMPTS_KEY]: String(stepAttempts[0]),
+      [ECON_DIMINISH_1_MULTIPLIER_KEY]: stepMultipliers[0].toFixed(2),
+      [ECON_DIMINISH_2_MIN_ATTEMPTS_KEY]: String(stepAttempts[1]),
+      [ECON_DIMINISH_2_MULTIPLIER_KEY]: stepMultipliers[1].toFixed(2),
+      [ECON_DIMINISH_3_MIN_ATTEMPTS_KEY]: String(stepAttempts[2]),
+      [ECON_DIMINISH_3_MULTIPLIER_KEY]: stepMultipliers[2].toFixed(2),
+      [ECON_DIMINISH_4_MIN_ATTEMPTS_KEY]: String(stepAttempts[3]),
+      [ECON_DIMINISH_4_MULTIPLIER_KEY]: stepMultipliers[3].toFixed(2),
+    }
+
+    setEditingConfig((current) => ({
+      ...current,
+      ...payload,
+    }))
+
+    try {
+      setEconomyTuningSaving(true)
+      await adminService.updateConfig(payload)
+      await loadEconomyTelemetry(economyWindowHours)
+      alert(l('Economy tuning opgeslagen.', 'Economy tuning saved.'))
+    } catch {
+      alert(l('Opslaan van economy tuning mislukt.', 'Failed to save economy tuning.'))
+    } finally {
+      setEconomyTuningSaving(false)
     }
   }
 
@@ -3600,6 +3723,7 @@ function App() {
                         onClick={() => {
                           loadSystemHealth()
                           loadDashboardOverview()
+                          loadEconomyTelemetry(economyWindowHours)
                         }}
                       >
                         <i className="ph-arrows-clockwise me-1" />{l('Ververs status', 'Refresh status')}
@@ -3777,6 +3901,140 @@ function App() {
                         </div>
                       ))}
                       {!dashboardOverview && <div className="text-muted">{t.loading}</div>}
+                    </div>
+                  </div>}
+                </div>
+
+                <div className="card dashboard-panel mb-3">
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <div>
+                      <h5 className="mb-0 dashboard-section-title"><i className="ph-chart-line me-2" />{l('Economy balans', 'Economy balance')}</h5>
+                      <small className="text-muted">{formatDashboardUpdatedAt(dashboardLastUpdated.economy)}</small>
+                    </div>
+                    <div className="d-flex align-items-center gap-2">
+                      {economyTelemetryLoading && <small className="text-muted">{t.loading}</small>}
+                      <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => toggleDashboardSection('economy')}>
+                        <i className={`ph-caret-${dashboardSectionOpen.economy ? 'up' : 'down'}`} />
+                      </button>
+                    </div>
+                  </div>
+                  {dashboardSectionOpen.economy && <div className="card-body d-grid gap-3">
+                    <div className="d-flex flex-wrap align-items-end gap-2">
+                      <div>
+                        <label className="form-label mb-1 small">{l('Venster (uren)', 'Window (hours)')}</label>
+                        <input
+                          type="number"
+                          min={1}
+                          max={168}
+                          className="form-control form-control-sm"
+                          value={economyWindowHours}
+                          onChange={(event) => setEconomyWindowHours(Math.min(168, Math.max(1, Number.parseInt(event.target.value || '24', 10))))}
+                        />
+                      </div>
+                      <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => loadEconomyTelemetry(economyWindowHours)}>
+                        <i className="ph-arrows-clockwise me-1" />{l('Ververs telemetry', 'Refresh telemetry')}
+                      </button>
+                    </div>
+
+                    <div className="table-responsive">
+                      <table className="table table-sm align-middle mb-0">
+                        <thead>
+                          <tr>
+                            <th>{l('Loop', 'Loop')}</th>
+                            <th>{l('Payout/min', 'Payout/min')}</th>
+                            <th>{l('Fail-rate', 'Fail rate')}</th>
+                            <th>{l('Jail-rate', 'Jail rate')}</th>
+                            <th>{l('Cooldown (gem)', 'Avg cooldown')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[
+                            { key: 'crimes', label: l('Crimes', 'Crimes'), data: economyTelemetry?.loops.crimes },
+                            { key: 'jobs', label: l('Jobs', 'Jobs'), data: economyTelemetry?.loops.jobs },
+                            { key: 'vehicle', label: l('Vehicle theft', 'Vehicle theft'), data: economyTelemetry?.loops.vehicleTheft },
+                          ].map((item) => (
+                            <tr key={item.key}>
+                              <td>{item.label}</td>
+                              <td>€{(item.data?.payoutPerMinute ?? 0).toFixed(2)}</td>
+                              <td>{((item.data?.failRate ?? 0) * 100).toFixed(1)}%</td>
+                              <td>{((item.data?.jailRate ?? 0) * 100).toFixed(1)}%</td>
+                              <td>{Math.round(item.data?.averageCooldownSeconds ?? 0)}s</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="d-flex flex-wrap gap-2">
+                      <span className="badge bg-secondary">
+                        {l('Cooldown skips', 'Cooldown skips')}: {economyTelemetry?.cooldownSkips.total ?? 0}
+                      </span>
+                      <span className="badge bg-secondary">
+                        {l('Sessievenster', 'Session window')}: {economyTelemetry?.diminishing.sessionWindowMinutes ?? '-'}m
+                      </span>
+                    </div>
+
+                    <div className="border rounded p-3">
+                      <div className="fw-semibold mb-2">{l('Soft balancing tuning', 'Soft balancing tuning')}</div>
+                      <div className="row g-2 mb-2">
+                        <div className="col-6">
+                          <label className="form-label mb-1 small">ECON_SESSION_WINDOW_MINUTES</label>
+                          <input
+                            type="number"
+                            min={15}
+                            max={240}
+                            className="form-control form-control-sm"
+                            value={economyTuning.sessionWindowMinutes}
+                            onChange={(event) => setEditingConfig((current) => ({ ...current, [ECON_SESSION_WINDOW_MINUTES_KEY]: event.target.value }))}
+                          />
+                        </div>
+                      </div>
+                      {[1, 2, 3, 4].map((step) => {
+                        const attemptsKey = step === 1
+                          ? ECON_DIMINISH_1_MIN_ATTEMPTS_KEY
+                          : step === 2
+                            ? ECON_DIMINISH_2_MIN_ATTEMPTS_KEY
+                            : step === 3
+                              ? ECON_DIMINISH_3_MIN_ATTEMPTS_KEY
+                              : ECON_DIMINISH_4_MIN_ATTEMPTS_KEY
+                        const multiplierKey = step === 1
+                          ? ECON_DIMINISH_1_MULTIPLIER_KEY
+                          : step === 2
+                            ? ECON_DIMINISH_2_MULTIPLIER_KEY
+                            : step === 3
+                              ? ECON_DIMINISH_3_MULTIPLIER_KEY
+                              : ECON_DIMINISH_4_MULTIPLIER_KEY
+                        return (
+                          <div key={step} className="row g-2 mb-2">
+                            <div className="col-6">
+                              <label className="form-label mb-1 small">{`${attemptsKey}`}</label>
+                              <input
+                                type="number"
+                                min={1}
+                                max={500}
+                                className="form-control form-control-sm"
+                                value={editingConfig[attemptsKey] ?? ''}
+                                onChange={(event) => setEditingConfig((current) => ({ ...current, [attemptsKey]: event.target.value }))}
+                              />
+                            </div>
+                            <div className="col-6">
+                              <label className="form-label mb-1 small">{`${multiplierKey}`}</label>
+                              <input
+                                type="number"
+                                step="0.01"
+                                min={0.4}
+                                max={1}
+                                className="form-control form-control-sm"
+                                value={editingConfig[multiplierKey] ?? ''}
+                                onChange={(event) => setEditingConfig((current) => ({ ...current, [multiplierKey]: event.target.value }))}
+                              />
+                            </div>
+                          </div>
+                        )
+                      })}
+                      <button type="button" className="btn btn-primary btn-sm" disabled={economyTuningSaving} onClick={handleSaveEconomyTuning}>
+                        {economyTuningSaving ? t.loading : l('Opslaan en toepassen', 'Save and apply')}
+                      </button>
                     </div>
                   </div>}
                 </div>

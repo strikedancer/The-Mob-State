@@ -23,6 +23,7 @@ import { supportTicketService } from '../services/supportTicketService';
 import { systemLogService } from '../services/systemLogService';
 import * as crewWarService from '../services/crewWarService';
 import { economyBalanceService } from '../services/economyBalanceService';
+import { ECON_RUNTIME_SETTING_DEFAULTS, ECON_RUNTIME_SETTING_KEYS } from '../services/economyBalanceService';
 
 const router = express.Router();
 
@@ -40,6 +41,14 @@ const HITLIST_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   [HITLIST_LOOT_ITEM_PERCENT_KEY]: '50',
 };
 const HITLIST_RUNTIME_SETTING_KEYS = Object.keys(HITLIST_RUNTIME_SETTING_DEFAULTS);
+const RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
+  ...HITLIST_RUNTIME_SETTING_DEFAULTS,
+  ...ECON_RUNTIME_SETTING_DEFAULTS,
+};
+const RUNTIME_SETTING_KEYS = [
+  ...HITLIST_RUNTIME_SETTING_KEYS,
+  ...ECON_RUNTIME_SETTING_KEYS,
+];
 let runtimeConfigSchemaReady = false;
 
 const ensureRuntimeConfigSchema = async () => {
@@ -2904,8 +2913,8 @@ router.get('/config', async (req, res) => {
       console.debug('Config: .env file not found (expected in production), using process.env instead');
     }
 
-    const runtimeConfig = await loadRuntimeConfigValues(HITLIST_RUNTIME_SETTING_KEYS);
-    for (const [key, defaultValue] of Object.entries(HITLIST_RUNTIME_SETTING_DEFAULTS)) {
+    const runtimeConfig = await loadRuntimeConfigValues(RUNTIME_SETTING_KEYS);
+    for (const [key, defaultValue] of Object.entries(RUNTIME_SETTING_DEFAULTS)) {
       envVars[key] = runtimeConfig[key] ?? envVars[key] ?? defaultValue;
     }
 
@@ -2941,13 +2950,40 @@ router.put(
 
       for (const [key, value] of Object.entries(updatesRecord)) {
         const normalized = String(value ?? '').trim();
-        if (HITLIST_RUNTIME_SETTING_KEYS.includes(key)) {
+        if (RUNTIME_SETTING_KEYS.includes(key)) {
           const parsed = Number(normalized);
-          if (!Number.isFinite(parsed) || parsed < 0 || parsed > 100) {
+          if (!Number.isFinite(parsed)) {
             return res.status(400).json({
-              error: `${key} must be a number between 0 and 100`,
+              error: `${key} must be numeric`,
             });
           }
+
+          if (HITLIST_RUNTIME_SETTING_KEYS.includes(key)) {
+            if (parsed < 0 || parsed > 100) {
+              return res.status(400).json({
+                error: `${key} must be a number between 0 and 100`,
+              });
+            }
+          }
+
+          if (key === 'ECON_SESSION_WINDOW_MINUTES' && (parsed < 15 || parsed > 240)) {
+            return res.status(400).json({
+              error: `${key} must be between 15 and 240`,
+            });
+          }
+
+          if (key.includes('ECON_DIMINISH_') && key.includes('_MIN_ATTEMPTS') && (parsed < 1 || parsed > 500)) {
+            return res.status(400).json({
+              error: `${key} must be between 1 and 500`,
+            });
+          }
+
+          if (key.includes('ECON_DIMINISH_') && key.includes('_MULTIPLIER') && (parsed < 0.4 || parsed > 1)) {
+            return res.status(400).json({
+              error: `${key} must be between 0.4 and 1.0`,
+            });
+          }
+
           runtimeUpdates[key] = normalized;
         } else {
           envUpdates[key] = normalized;

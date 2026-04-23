@@ -14,9 +14,14 @@ Doel: progression pacing verbeteren zonder hard daily caps, met duidelijke credi
 - Add soft anti-abuse regels (diminishing returns per sessieblok) in plaats van hard action caps.
 - Tune reward/cooldown curves op basis van live data.
 
-Status (start):
+Status (afgerond):
 - Backend soft diminishing actief voor crimes, jobs en vehicle theft progression-reward.
-- Admin telemetry endpoint toegevoegd: `/api/admin/economy/balance-telemetry?hours=24`.
+- Runtime tuning keys toegevoegd via `runtime_config`:
+  - `ECON_SESSION_WINDOW_MINUTES`
+  - `ECON_DIMINISH_1..4_MIN_ATTEMPTS`
+  - `ECON_DIMINISH_1..4_MULTIPLIER`
+- Admin telemetry endpoint actief: `/api/admin/economy/balance-telemetry?hours=24`.
+- Admin dashboard toont economy ratios + tuning controls (live save/apply zonder backend deploy).
 
 ## Fase 3 - Credit sink design + fairness
 - Definieer credit sinks per loop (crime/job/vehicle/event) met duidelijke waarde per credit.

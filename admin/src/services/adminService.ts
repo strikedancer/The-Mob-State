@@ -444,6 +444,43 @@ export interface DashboardOverview {
   };
 }
 
+export interface EconomyLoopTelemetry {
+  attempts: number;
+  successes: number;
+  failures: number;
+  jailed: number;
+  successRate: number;
+  failRate: number;
+  jailRate: number;
+  payoutPerMinute: number;
+  xpPerMinute: number;
+  averageCooldownSeconds: number;
+  totalPayout: number;
+  totalXp: number;
+}
+
+export interface EconomyBalanceTelemetry {
+  generatedAt: string;
+  windowHours: number;
+  from: string;
+  diminishing: {
+    sessionWindowMinutes: number;
+    curve: Array<{
+      minAttempts: number;
+      multiplier: number;
+    }>;
+  };
+  loops: {
+    crimes: EconomyLoopTelemetry;
+    jobs: EconomyLoopTelemetry;
+    vehicleTheft: EconomyLoopTelemetry;
+  };
+  cooldownSkips: {
+    total: number;
+    byActionType: Record<string, number>;
+  };
+}
+
 export interface SupportTicketSummary {
   id: number;
   playerId: number;
@@ -820,6 +857,21 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to fetch dashboard overview');
+    return response.json();
+  },
+
+  async getEconomyBalanceTelemetry(hours = 24): Promise<EconomyBalanceTelemetry> {
+    const token = adminAuthService.getToken();
+    const query = new URLSearchParams({
+      hours: String(hours),
+    });
+    const response = await fetch(`${API_URL}/admin/economy/balance-telemetry?${query.toString()}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch economy balance telemetry');
     return response.json();
   },
 

@@ -33,6 +33,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Admin image-management moet ook modulegerichte discovery ondersteunen: operators moeten per module (zoals drugs/school/vehicles) afbeeldingen kunnen filteren en op bestandsnaam/pad kunnen zoeken.
 - Deploys met externe image-opslag moeten een expliciete image-root voor admin upload/listing instellen (bijv. `IMAGE_LIBRARY_ROOT_PATH`), zodat beheer niet afhankelijk is van toevallige container paden.
 - Runtime image-serving (`/assets/images`) moet dezelfde rootconfig gebruiken als admin image-management (`IMAGE_LIBRARY_ROOT_PATH`) zodat uploaden, vervangen en direct renderen altijd dezelfde storage aanspreken.
+- Economy balanspanelen in admin moeten ratio-metrics (payout/min, fail-rate, jail-rate, cooldown-skips) tonen en runtime tuning controls direct aan dezelfde backend-config keys koppelen.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
