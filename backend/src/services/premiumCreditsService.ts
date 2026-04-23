@@ -284,117 +284,6 @@ function getActionResetCost(actionType: string, remainingSeconds: number, cooldo
   return Math.max(baseCost, Math.min(maxCost, computed));
 }
 
-function getEducationRequiredXpForLevel(level: number): number {
-  const safeLevel = Math.max(0, Math.floor(level));
-  if (safeLevel <= 0) return 0;
-  if (safeLevel === 1) return 30;
-  return 30 + (safeLevel - 1) * 100;
-}
-
-function getEducationLevelForXp(totalXp: number): number {
-  const safeXp = Math.max(0, Math.floor(totalXp));
-  let level = 0;
-  while (safeXp >= getEducationRequiredXpForLevel(level + 1) && level < 100) {
-    level += 1;
-  }
-  return level;
-}
-
-function getSchoolCooldownSecondsForLevel(level: number): number {
-  const safeLevel = Math.max(0, Math.floor(level));
-  const baseSeconds = 90;
-  const perLevelSeconds = 180;
-  const highLevelExtraSeconds = safeLevel > 3 ? (safeLevel - 3) * 120 : 0;
-  return Math.min(2400, baseSeconds + safeLevel * perLevelSeconds + highLevelExtraSeconds);
-}
-
-function getSchoolCooldownSecondsFromParams(params: Record<string, unknown>): number {
-  const explicitCooldown = toFiniteNumber(params.cooldownSeconds, 0);
-  if (explicitCooldown > 0) {
-    return Math.floor(explicitCooldown);
-  }
-
-  const totalXp = toFiniteNumber(params.totalXp, 0);
-  const xpGain = toFiniteNumber(params.xpGain, 0);
-  if (totalXp <= 0 || xpGain <= 0) {
-    return DEFAULT_ACTION_COOLDOWNS.school;
-  }
-
-  const previousTotalXp = Math.max(0, totalXp - xpGain);
-  const previousLevel = getEducationLevelForXp(previousTotalXp);
-  return getSchoolCooldownSecondsForLevel(previousLevel);
-}
-
-async function getLegacySchoolCooldownState(
-  tx: any,
-  playerId: number,
-): Promise<ActionCooldownState> {
-  const latestTrackProgress = await tx.worldEvent.findFirst({
-    where: {
-      playerId,
-      eventKey: 'school.track_progress',
-    },
-    orderBy: { createdAt: 'desc' },
-    select: {
-      createdAt: true,
-      params: true,
-    },
-  });
-
-  const fallbackCooldown = DEFAULT_ACTION_COOLDOWNS.school;
-  if (!latestTrackProgress) {
-    return {
-      actionType: 'school',
-      cooldownSeconds: fallbackCooldown,
-      elapsedSeconds: fallbackCooldown,
-      remainingSeconds: 0,
-      isActive: false,
-    };
-  }
-
-  const params =
-    latestTrackProgress.params &&
-    typeof latestTrackProgress.params === 'object' &&
-    !Array.isArray(latestTrackProgress.params)
-      ? (latestTrackProgress.params as Record<string, unknown>)
-      : {};
-  const cooldownSeconds = getSchoolCooldownSecondsFromParams(params);
-  const elapsedSeconds = Math.max(
-    0,
-    Math.floor((Date.now() - new Date(latestTrackProgress.createdAt).getTime()) / 1000),
-  );
-  const remainingSeconds = Math.max(0, cooldownSeconds - elapsedSeconds);
-
-  if (remainingSeconds > 0) {
-    await tx.actionCooldown.upsert({
-      where: {
-        playerId_actionType: {
-          playerId,
-          actionType: 'school',
-        },
-      },
-      update: {
-        lastUsedAt: latestTrackProgress.createdAt,
-        cooldownSeconds,
-      },
-      create: {
-        playerId,
-        actionType: 'school',
-        lastUsedAt: latestTrackProgress.createdAt,
-        cooldownSeconds,
-      },
-    });
-  }
-
-  return {
-    actionType: 'school',
-    cooldownSeconds,
-    elapsedSeconds,
-    remainingSeconds,
-    isActive: remainingSeconds > 0,
-  };
-}
-
 async function getActionCooldownState(
   tx: any,
   playerId: number,
@@ -414,10 +303,6 @@ async function getActionCooldownState(
   });
 
   const fallbackCooldown = DEFAULT_ACTION_COOLDOWNS[actionType] ?? 0;
-  if (!cooldown && actionType === 'school') {
-    return getLegacySchoolCooldownState(tx, playerId);
-  }
-
   if (!cooldown) {
     return {
       actionType,

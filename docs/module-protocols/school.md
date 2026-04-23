@@ -38,6 +38,7 @@ Education tracks, certifications, gates, cooldowns and unlock dependencies.
 
 ## Cross-Module Effects
 - **School cooldown → Payments/Credits reset**: school training cooldown moet synchroon lopen met `actionCooldown` actionType `school`, zodat `ACTION_COOLDOWN_RESET` credit-items direct werken op school-timeouts (overlay + redeem-flow).
+  - Source of truth: school cooldown gebruikt alleen `actionCooldown`; legacy cooldown-afleiding uit `worldEvent` mag niet opnieuw geactiveerd worden omdat dit credit-reset en XP-doorstroom kan desynchroniseren.
   - Dependency files: `backend/src/services/educationService.ts`, `backend/src/services/premiumCreditsService.ts`, `client/lib/screens/school_screen.dart`, `client/lib/widgets/cooldown_overlay.dart`
   - Bij wijzigingen aan school cooldown berekening of event-params: verifieer dat premium overview `canRedeemNow` en `effectiveCreditCost` voor `school` correct blijven.
 - **Law track → Court appeals**: each law level adds +5% appeal success chance in `judgeService.appealSentence` (max +25% at level 5). Players who invest in the law track get a tangible advantage when contesting a jail sentence.

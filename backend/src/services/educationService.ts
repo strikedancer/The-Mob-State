@@ -2,7 +2,6 @@ import prisma from '../lib/prisma';
 import educationTracksData from '../../content/educationTracks.json';
 import { worldEventService } from './worldEventService';
 import { activityService } from './activityService';
-import { timeProvider } from '../utils/timeProvider';
 import * as cooldownService from './cooldownService';
 
 type EducationTrackId =
@@ -284,36 +283,8 @@ class EducationService {
     playerId: number,
     cooldownSeconds: number
   ): Promise<number> {
-    const actionCooldownRemaining = await cooldownService.checkCooldown(playerId, 'school');
-    if (actionCooldownRemaining > 0) {
-      return actionCooldownRemaining;
-    }
-
-    if (cooldownSeconds <= 0) {
-      return 0;
-    }
-
-    const latestTrackProgressEvents = await prisma.worldEvent.findMany({
-      where: {
-        playerId,
-        eventKey: 'school.track_progress',
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 150,
-      select: { createdAt: true, params: true },
-    });
-
-    const latestEvent = latestTrackProgressEvents[0];
-    if (!latestEvent) {
-      return 0;
-    }
-
-    const elapsedSeconds = Math.floor(
-      (timeProvider.now().getTime() - latestEvent.createdAt.getTime()) / 1000
-    );
-    const remaining = cooldownSeconds - elapsedSeconds;
-
-    return remaining > 0 ? remaining : 0;
+    if (cooldownSeconds <= 0) return 0;
+    return cooldownService.checkCooldown(playerId, 'school');
   }
 
   getTracks(): EducationTrackDefinition[] {
