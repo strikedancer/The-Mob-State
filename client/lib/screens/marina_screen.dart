@@ -36,6 +36,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
   int _stealCooldownSeconds = 0;
   bool _showStealCooldownOverlay = false;
   Timer? _stealCooldownTimer;
+  final Set<int> _repairCreditRedeemInProgress = <int>{};
 
   String _tr(String nl, String en) {
     return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
@@ -153,6 +154,154 @@ class _MarinaScreenState extends State<MarinaScreen> {
     }
   }
 
+  Future<void> _finishRepairWithCredits(VehicleInventoryItem boat) async {
+    final vehicleId = boat.id;
+    if (_repairCreditRedeemInProgress.contains(vehicleId)) {
+      return;
+    }
+
+    setState(() {
+      _repairCreditRedeemInProgress.add(vehicleId);
+    });
+
+    try {
+      final overviewResponse = await _apiClient.get(
+        '/subscriptions/credits/overview',
+      );
+      if (overviewResponse.statusCode != 200) {
+        throw Exception('CREDIT_OVERVIEW_FAILED');
+      }
+
+      final overviewData =
+          jsonDecode(overviewResponse.body) as Map<String, dynamic>;
+      final balance = (overviewData['balance'] as num?)?.toInt() ?? 0;
+      final items = (overviewData['items'] as List<dynamic>? ?? const [])
+          .whereType<Map<String, dynamic>>();
+      final repairItem = items.cast<Map<String, dynamic>?>().firstWhere(
+        (item) => item?['effectType'] == 'VEHICLE_REPAIR_FINISH',
+        orElse: () => null,
+      );
+
+      if (repairItem == null) {
+        if (!mounted) return;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                'Reparatie-versnelling is nu niet beschikbaar.',
+                'Repair speed-up is currently unavailable.',
+              ),
+            ),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+
+      final itemKey = (repairItem['key'] ?? '').toString();
+      final cost =
+          ((repairItem['effectiveCreditCost'] as num?)?.toInt() ??
+                  (repairItem['creditCost'] as num?)?.toInt() ??
+                  0)
+              .clamp(0, 999999);
+
+      if (itemKey.isEmpty) {
+        throw Exception('REPAIR_ITEM_KEY_MISSING');
+      }
+
+      if (balance < cost) {
+        if (!mounted) return;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              _tr(
+                'Onvoldoende credits voor reparatie-versnelling.',
+                'Not enough credits for repair speed-up.',
+              ),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      final redeemResponse = await _apiClient.post(
+        '/subscriptions/credits/redeem',
+        {'itemKey': itemKey, 'vehicleInventoryId': vehicleId},
+      );
+
+      final payload = redeemResponse.body.isNotEmpty
+          ? jsonDecode(redeemResponse.body) as Map<String, dynamic>
+          : <String, dynamic>{};
+
+      if (!mounted) return;
+
+      if (redeemResponse.statusCode != 200) {
+        final code = (payload['code'] ?? '').toString();
+        String message;
+        switch (code) {
+          case 'REPAIR_JOB_NOT_FOUND':
+            message = _tr(
+              'Deze reparatie is al afgerond of niet meer actief.',
+              'This repair is already completed or no longer active.',
+            );
+            break;
+          case 'INSUFFICIENT_CREDITS':
+            message = _tr(
+              'Onvoldoende credits voor reparatie-versnelling.',
+              'Not enough credits for repair speed-up.',
+            );
+            break;
+          default:
+            message = _tr(
+              'Reparatie versnellen mislukt.',
+              'Failed to speed up repair.',
+            );
+        }
+
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(message), backgroundColor: Colors.red),
+        );
+        await _loadData();
+        return;
+      }
+
+      final successMessage =
+          (payload['message'] ??
+                  _tr(
+                    'Voertuigreparatie direct afgerond.',
+                    'Vehicle repair completed instantly.',
+                  ))
+              .toString();
+
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(content: Text(successMessage), backgroundColor: Colors.green),
+      );
+      await _loadData();
+    } catch (e) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr('Reparatie versnellen mislukt.', 'Failed to speed up repair.'),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _repairCreditRedeemInProgress.remove(vehicleId);
+        });
+      }
+    }
+  }
+
   List<dynamic> _getSortedVehicles(VehicleProvider provider) {
     var vehicles = provider.boats;
 
@@ -219,6 +368,15 @@ class _MarinaScreenState extends State<MarinaScreen> {
       isSelectedForCrimes: _selectedVehicleId == boat.id,
       onRefuel: () => _refuelVehicle(provider, boat),
       onRepair: () => _repairVehicle(provider, boat),
+      onFinishRepairWithCredits:
+          boat.repairInProgress &&
+              !_repairCreditRedeemInProgress.contains(boat.id)
+          ? () => _finishRepairWithCredits(boat)
+          : null,
+      finishRepairCreditsLabel: _tr(
+        'Versnel reparatie (credits)',
+        'Speed up repair (credits)',
+      ),
       onSell: () => _sellVehicle(provider, boat.id),
       onScrap: () => _scrapVehicle(provider, boat.id),
       onList: () => _showListOnMarketDialog(provider, boat),

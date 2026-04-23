@@ -1660,7 +1660,7 @@ const List<HelpTopic> helpTopics = [
       'Creditbundels koop je met echt geld. Na succesvolle betaling verschijnen de credits meteen in je wallet-overzicht.',
       'Credit-items gebruiken wallet-credits in plaats van euro\'s. Denk aan hit protection, cooldown resets, event boosts of cash bundles, afhankelijk van wat admin live actief heeft gezet.',
       'Bij actieve cooldowns zie je op ondersteunde timeout-schermen ook direct een knop om met credits te versnellen; je hoeft daarvoor niet eerst terug naar Premium & Credits.',
-      'Sommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm.',
+      'Sommige credit-items werken direct vanuit dit scherm. Context-gebonden items, zoals bepaalde voertuigacties, gebruik je pas vanuit het juiste voertuigen- of garagescherm (bijv. tijdens actieve reparatie op de voertuigkaart).',
       'Prijzen en beschikbare items worden live in admin beheerd. VIP-prijzen, credit-kosten en het aanbod kunnen dus wijzigen zonder app-update.',
     ],
     howEn: [
@@ -1671,7 +1671,7 @@ const List<HelpTopic> helpTopics = [
       'Credit bundles are bought with real money. After a successful payment the credits appear in your wallet overview right away.',
       'Credit items use wallet credits instead of euros. Think of hit protection, cooldown resets, event boosts or cash bundles, depending on what admin currently has enabled live.',
       'On supported timeout screens you also get a direct speed-up button for active cooldowns, so you do not need to go back to Premium & Credits first.',
-      'Some credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead.',
+      'Some credit items work directly from this screen. Context-bound items, such as certain vehicle actions, are used from the correct vehicle or garage screen instead (for example while a repair is active on a vehicle card).',
       'Prices and available items are managed live in admin. That means VIP prices, credit costs and the available offer can change without an app update.',
     ],
     tipsNl: [

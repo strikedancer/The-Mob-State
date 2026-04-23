@@ -11,6 +11,8 @@ class VehicleCard extends StatelessWidget {
   final VoidCallback? onRepair;
   final VoidCallback? onRefuel;
   final VoidCallback? onList;
+  final VoidCallback? onFinishRepairWithCredits;
+  final String? finishRepairCreditsLabel;
   final VoidCallback? onSelectForCrimes;
   final VoidCallback? onDeselectForCrimes;
   final bool isSelectedForCrimes;
@@ -23,6 +25,8 @@ class VehicleCard extends StatelessWidget {
     this.onRepair,
     this.onRefuel,
     this.onList,
+    this.onFinishRepairWithCredits,
+    this.finishRepairCreditsLabel,
     this.onSelectForCrimes,
     this.onDeselectForCrimes,
     this.isSelectedForCrimes = false,
@@ -104,8 +108,8 @@ class VehicleCard extends StatelessWidget {
         final imageHeight = isSmallScreen
             ? 108.0
             : isMediumScreen
-                ? 132.0
-                : 168.0;
+            ? 132.0
+            : 168.0;
         final padding = isSmallScreen ? 8.0 : 12.0;
 
         return Card(
@@ -354,6 +358,15 @@ class VehicleCard extends StatelessWidget {
                           icon: Icons.build,
                           color: Colors.purple,
                           onPressed: vehicle.isBusy ? null : onRepair!,
+                        ),
+                      if (_isUnderRepair() && onFinishRepairWithCredits != null)
+                        _buildActionButton(
+                          label:
+                              finishRepairCreditsLabel ??
+                              'Versnel reparatie met credits',
+                          icon: Icons.flash_on,
+                          color: Colors.amber,
+                          onPressed: onFinishRepairWithCredits,
                         ),
                       if (onList != null && !vehicle.marketListing)
                         _buildActionButton(
