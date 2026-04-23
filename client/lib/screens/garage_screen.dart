@@ -354,6 +354,45 @@ class _GarageScreenState extends State<GarageScreen> {
     }
   }
 
+  Future<void> _repairInstantWithCredits(
+    VehicleProvider provider,
+    VehicleInventoryItem vehicle,
+  ) async {
+    if (vehicle.condition >= 100) {
+      if (!mounted) return;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr('Voertuig is niet beschadigd.', 'Vehicle is not damaged.'),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    if (!vehicle.repairInProgress) {
+      final started = await provider.repairVehicle(vehicle.id);
+      if (!mounted) return;
+      if (!started) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(
+              provider.error ??
+                  _tr('Reparatie starten mislukt.', 'Failed to start repair.'),
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+    }
+
+    await _finishRepairWithCredits(vehicle);
+  }
+
   List<dynamic> _getSortedVehicles(VehicleProvider provider) {
     var vehicles = _isMotorTab
         ? provider.inventory
@@ -419,18 +458,16 @@ class _GarageScreenState extends State<GarageScreen> {
       vehicle: vehicle,
       onRefuel: () => _refuelVehicle(provider, vehicle),
       onRepair: () => _repairVehicle(provider, vehicle),
-      onFinishRepairWithCredits:
-          vehicle.repairInProgress &&
-              !_repairCreditRedeemInProgress.contains(vehicle.id)
-          ? () => _finishRepairWithCredits(vehicle)
+      onFinishRepairWithCredits: vehicle.condition < 100
+          ? () => _repairInstantWithCredits(provider, vehicle)
           : null,
       finishRepairCreditsLabel: _tr(
         _repairFinishCreditCost != null
-            ? 'Versnel reparatie (-$_repairFinishCreditCost credits)'
-            : 'Versnel reparatie (credits)',
+            ? 'Repareer instant voor $_repairFinishCreditCost credits'
+            : 'Repareer instant met credits',
         _repairFinishCreditCost != null
-            ? 'Speed up repair (-$_repairFinishCreditCost credits)'
-            : 'Speed up repair (credits)',
+            ? 'Repair instantly for $_repairFinishCreditCost credits'
+            : 'Repair instantly with credits',
       ),
       onSell: () => _sellVehicle(provider, vehicle.id),
       onScrap: () => _scrapVehicle(provider, vehicle.id),

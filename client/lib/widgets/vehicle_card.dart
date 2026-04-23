@@ -359,7 +359,8 @@ class VehicleCard extends StatelessWidget {
                           color: Colors.purple,
                           onPressed: vehicle.isBusy ? null : onRepair!,
                         ),
-                      if (_isUnderRepair() && onFinishRepairWithCredits != null)
+                      if (vehicle.condition < 100 &&
+                          onFinishRepairWithCredits != null)
                         _buildActionButton(
                           label:
                               finishRepairCreditsLabel ??
