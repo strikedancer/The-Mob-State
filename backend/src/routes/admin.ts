@@ -24,6 +24,11 @@ import { systemLogService } from '../services/systemLogService';
 import * as crewWarService from '../services/crewWarService';
 import { economyBalanceService } from '../services/economyBalanceService';
 import { ECON_RUNTIME_SETTING_DEFAULTS, ECON_RUNTIME_SETTING_KEYS } from '../services/economyBalanceService';
+import {
+  crewMissionService,
+  CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
+  CREW_MISSION_RUNTIME_SETTING_KEYS,
+} from '../services/crewMissionService';
 
 const router = express.Router();
 
@@ -44,10 +49,12 @@ const HITLIST_RUNTIME_SETTING_KEYS = Object.keys(HITLIST_RUNTIME_SETTING_DEFAULT
 const RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   ...HITLIST_RUNTIME_SETTING_DEFAULTS,
   ...ECON_RUNTIME_SETTING_DEFAULTS,
+  ...CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
 };
 const RUNTIME_SETTING_KEYS = [
   ...HITLIST_RUNTIME_SETTING_KEYS,
   ...ECON_RUNTIME_SETTING_KEYS,
+  ...CREW_MISSION_RUNTIME_SETTING_KEYS,
 ];
 let runtimeConfigSchemaReady = false;
 
@@ -824,6 +831,54 @@ router.get('/economy/balance-telemetry', async (req, res) => {
   } catch (error) {
     console.error('Admin economy telemetry error:', error);
     return res.status(500).json({ error: 'Failed to fetch economy telemetry' });
+  }
+});
+
+router.get('/crew-missions/telemetry', async (req, res) => {
+  try {
+    const requestedHours = Number.parseInt(String(req.query.hours || '24'), 10);
+    const telemetry = await crewMissionService.getTelemetry(requestedHours);
+    return res.json(telemetry);
+  } catch (error) {
+    console.error('Admin crew missions telemetry error:', error);
+    return res.status(500).json({ error: 'Failed to fetch crew mission telemetry' });
+  }
+});
+
+router.get('/crew-missions/runtime-config', async (_req, res) => {
+  try {
+    const config = await crewMissionService.getRuntimeConfigView();
+    return res.json(config);
+  } catch (error) {
+    console.error('Admin crew missions runtime config error:', error);
+    return res.status(500).json({ error: 'Failed to fetch crew mission runtime config' });
+  }
+});
+
+router.put('/crew-missions/runtime-config', async (req, res) => {
+  try {
+    const parsed = z
+      .object({
+        updates: z.record(z.union([z.string(), z.number()])),
+      })
+      .parse(req.body ?? {});
+    const updated = await crewMissionService.updateRuntimeConfig(parsed.updates);
+    return res.json(updated);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ error: 'Validation failed', details: error.flatten() });
+    }
+    if (error instanceof Error && error.message.startsWith('INVALID_RUNTIME_KEY:')) {
+      return res.status(400).json({ error: 'Invalid runtime key', details: error.message });
+    }
+    if (error instanceof Error && error.message.startsWith('RUNTIME_VALUE_NOT_NUMERIC:')) {
+      return res.status(400).json({ error: 'Runtime value must be numeric', details: error.message });
+    }
+    if (error instanceof Error && error.message.startsWith('RUNTIME_OUT_OF_RANGE:')) {
+      return res.status(400).json({ error: 'Runtime value out of range', details: error.message });
+    }
+    console.error('Admin crew missions runtime config update error:', error);
+    return res.status(500).json({ error: 'Failed to update crew mission runtime config' });
   }
 });
 
@@ -3010,6 +3065,24 @@ router.put(
           if (key.includes('ECON_DIMINISH_') && key.includes('_MULTIPLIER') && (parsed < 0.4 || parsed > 1)) {
             return res.status(400).json({
               error: `${key} must be between 0.4 and 1.0`,
+            });
+          }
+
+          if (key.includes('CREW_MISSION_') && key.includes('CREDITS_PER_MINUTE') && (parsed < 1 || parsed > 20)) {
+            return res.status(400).json({
+              error: `${key} must be between 1 and 20`,
+            });
+          }
+
+          if (key === 'CREW_MISSION_REPEAT_WINDOW_MINUTES' && (parsed < 15 || parsed > 360)) {
+            return res.status(400).json({
+              error: `${key} must be between 15 and 360`,
+            });
+          }
+
+          if (key.includes('CREW_MISSION_REPEAT_') && key.includes('_MULTIPLIER') && (parsed < 0.5 || parsed > 1)) {
+            return res.status(400).json({
+              error: `${key} must be between 0.5 and 1.0`,
             });
           }
 

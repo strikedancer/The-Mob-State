@@ -260,6 +260,22 @@ Client paden:
 - skip usage
 - anomaly flags
 
+## Backend skeleton status (live basis)
+
+Beschikbare basis-endpoints:
+- `GET /crew-missions/overview`
+- `GET /crew-missions/templates`
+- `POST /crew-missions/start`
+- `POST /crew-missions/runs/:id/resolve`
+- `POST /crew-missions/runs/:id/claim`
+- `POST /crew-missions/runs/:id/speedup`
+- `GET /admin/crew-missions/telemetry`
+- `GET /admin/crew-missions/runtime-config`
+- `PUT /admin/crew-missions/runtime-config`
+
+Schema bootstrap:
+- `ensureCrewMissionSchema` maakt mission tables automatisch aan bij backend startup.
+
 ## Acceptatiecriteria (Phase 1 done)
 
 - Alle 6 missies speelbaar.

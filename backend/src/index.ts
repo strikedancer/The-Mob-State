@@ -14,6 +14,7 @@ import { ensureSupportSchema } from './startup/ensureSupportSchema';
 import { ensureCrewWarSchema } from './startup/ensureCrewWarSchema';
 import { ensureTerritorySchema } from './startup/ensureTerritorySchema';
 import { ensureCooldownSchema } from './startup/ensureCooldownSchema';
+import { ensureCrewMissionSchema } from './startup/ensureCrewMissionSchema';
 import path from 'path';
 import fs from 'fs';
 
@@ -50,6 +51,7 @@ async function startServer() {
   await ensureCrewWarSchema();
   await ensureTerritorySchema();
   await ensureCooldownSchema();
+  await ensureCrewMissionSchema();
 
   // Capture runtime errors into persistent system logs for admin monitoring
   systemLogService.installConsoleErrorCapture();

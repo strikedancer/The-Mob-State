@@ -21,6 +21,22 @@ Dit protocol is leidend voor:
 - `backend/src/services/crewMissionService.ts`
 - `backend/src/services/crewMissionBalanceService.ts`
 - `backend/src/services/notificationService.ts` (mission alerts/results)
+- `backend/src/startup/ensureCrewMissionSchema.ts`
+
+## Backend API Skeleton (Phase 2)
+
+Player endpoints:
+- `GET /crew-missions/overview`
+- `GET /crew-missions/templates`
+- `POST /crew-missions/start`
+- `POST /crew-missions/runs/:id/resolve`
+- `POST /crew-missions/runs/:id/claim`
+- `POST /crew-missions/runs/:id/speedup`
+
+Admin endpoints:
+- `GET /admin/crew-missions/telemetry`
+- `GET /admin/crew-missions/runtime-config`
+- `PUT /admin/crew-missions/runtime-config`
 
 ## Cross-Module Dependencies
 - Crew Missions -> Crew (leden, leader/officer permissies, HQ gates)
