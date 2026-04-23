@@ -637,6 +637,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Spelers zonder opleiding (geen `law` track) behouden 35% basiskans ongewijzigd (fallback naar 0)
 - [ ] Aviation image generation pipeline toegevoegd: nieuw Leonardo-script genereert aircraft cutouts (`cessna`, `king_air`, `gulfstream`, `cargo_737`, `citation_x`, `antonov`) plus aviation backgrounds (`aviation_bg_desktop/tablet/mobile`) direct naar externe runtime map `runtime/client-images/*`, zodat client build klein blijft
 - [ ] **VPS actie vereist**: script opnieuw draaien om de 2 nieuwe vliegtuigafbeeldingen te genereren (`citation_x.png` + `antonov.png`): `python3 backend/scripts/generate_aviation_images_leonardo.py --confirm-batch YES`
+- [ ] Premium/Credits external image-pad fix: premium tiles gebruiken nu expliciet runtime paths `images/premium_tiles/...` en de nieuwe tegelset staat in `runtime/client-images/premium_tiles/`, zodat de client niet meer afhankelijk is van gebundelde `assets/images` voor dit scherm
+  - Bestanden: `client/lib/screens/premium_screen.dart`, `runtime/client-images/premium_tiles/*`, `docs/module-protocols/frontend-platform.md`
 - [ ] Aviation i18n: `aircraft.json` bevat nu `name_en` + `description_en` voor alle 6 vliegtuigen; client toont juiste taal op basis van locale
   - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
 - [ ] Prison buyout/jailbreak transactiefix: `world_events.params` in prison flows wordt nu correct als JSON-string opgeslagen (`prison.buyout_success`, `prison.jailbreak_success`, cooldown-markers) i.p.v. object payloads, zodat buyout/jailbreak transacties niet meer kunnen falen op Prisma type mismatch

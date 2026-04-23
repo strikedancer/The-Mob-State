@@ -19,6 +19,9 @@ class PremiumScreen extends StatefulWidget {
 }
 
 class _PremiumScreenState extends State<PremiumScreen> {
+  // Premium tiles are hosted in runtime external images (/images/*).
+  static const String _premiumTilesBasePath = 'images/premium_tiles';
+
   bool _loading = true;
   bool _processingCheckout = false;
   bool _processingRedeem = false;
@@ -308,9 +311,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
   }
 
   String _offerImagePath(int amount) {
-    if (amount >= 1000) return 'assets/images/premium_tiles/credits_1000.png';
-    if (amount >= 500) return 'assets/images/premium_tiles/credits_medium.png';
-    return 'assets/images/premium_tiles/credits_small.png';
+    if (amount >= 1000) return '$_premiumTilesBasePath/credits_1000.png';
+    if (amount >= 500) return '$_premiumTilesBasePath/credits_medium.png';
+    return '$_premiumTilesBasePath/credits_small.png';
   }
 
   Color _creditItemAccentColor(String effectType) {
@@ -335,19 +338,19 @@ class _PremiumScreenState extends State<PremiumScreen> {
   String _creditItemImagePath(Map<String, dynamic> item) {
     switch ((item['effectType'] ?? '').toString()) {
       case 'CASH_BUNDLE':
-        return 'assets/images/premium_tiles/shop_cash_bundle.png';
+        return '$_premiumTilesBasePath/shop_cash_bundle.png';
       case 'HIT_PROTECTION':
-        return 'assets/images/premium_tiles/shop_hit_protection.png';
+        return '$_premiumTilesBasePath/shop_hit_protection.png';
       case 'VEHICLE_REPAIR_FINISH':
-        return 'assets/images/premium_tiles/shop_vehicle_repair.png';
+        return '$_premiumTilesBasePath/shop_vehicle_repair.png';
       case 'VEHICLE_TUNE_RESET':
-        return 'assets/images/premium_tiles/shop_tune_reset.png';
+        return '$_premiumTilesBasePath/shop_tune_reset.png';
       case 'ACTION_COOLDOWN_RESET':
-        return 'assets/images/premium_tiles/shop_cooldown_reset.png';
+        return '$_premiumTilesBasePath/shop_cooldown_reset.png';
       case 'EVENT_BOOST':
-        return 'assets/images/premium_tiles/shop_event_boost.png';
+        return '$_premiumTilesBasePath/shop_event_boost.png';
       default:
-        return 'assets/images/premium_tiles/credits_small.png';
+        return '$_premiumTilesBasePath/credits_small.png';
     }
   }
 
@@ -373,6 +376,51 @@ class _PremiumScreenState extends State<PremiumScreen> {
       default:
         return _tr('Premium', 'Premium');
     }
+  }
+
+  bool _isExternalRuntimeImagePath(String path) {
+    final normalized = path.trim();
+    return normalized.startsWith('images/') ||
+        normalized.startsWith('/images/');
+  }
+
+  Widget _buildTileImage({
+    required String imagePath,
+    required IconData icon,
+    required Color accent,
+    required Color fallbackBackground,
+  }) {
+    Widget fallback(
+      BuildContext context,
+      Object error,
+      StackTrace? stackTrace,
+    ) {
+      return Container(
+        color: fallbackBackground,
+        child: Icon(icon, size: 56, color: accent.withOpacity(0.75)),
+      );
+    }
+
+    // For explicit runtime image paths, prefer direct /images loading on web.
+    if (kIsWeb && _isExternalRuntimeImagePath(imagePath)) {
+      return Image.network(
+        WebAssetHelper.toPublicUrl(imagePath),
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return WebAssetHelper.image(
+            imagePath,
+            fit: BoxFit.cover,
+            errorBuilder: fallback,
+          );
+        },
+      );
+    }
+
+    return WebAssetHelper.image(
+      imagePath,
+      fit: BoxFit.cover,
+      errorBuilder: fallback,
+    );
   }
 
   Widget _buildSectionHeader({
@@ -475,15 +523,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            WebAssetHelper.image(
-              imagePath,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: colorScheme.surfaceContainerHighest,
-                  child: Icon(icon, size: 56, color: accent.withOpacity(0.75)),
-                );
-              },
+            _buildTileImage(
+              imagePath: imagePath,
+              icon: icon,
+              accent: accent,
+              fallbackBackground: colorScheme.surfaceContainerHighest,
             ),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -735,7 +779,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 'Exclusieve accountvoordelen, avatar unlocks en premium QoL.',
                 'Exclusive account perks, avatar unlocks and premium QoL.',
               ),
-              imagePath: 'assets/images/premium_tiles/player_vip.png',
+              imagePath: '$_premiumTilesBasePath/player_vip.png',
               accent: Colors.amber.shade700,
               icon: Icons.person,
               primaryValue: _priceLabel(playerVip['monthlyPriceEur']),
@@ -766,7 +810,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       'Voor crew-upgrades, side buildings level 11-15 en gedeelde perks.',
                       'For crew upgrades, side buildings level 11-15 and shared perks.',
                     ),
-              imagePath: 'assets/images/premium_tiles/crew_vip.png',
+              imagePath: '$_premiumTilesBasePath/crew_vip.png',
               accent: Colors.indigo.shade600,
               icon: Icons.groups,
               primaryValue: _priceLabel(crewVip?['monthlyPriceEur']),
