@@ -260,39 +260,52 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
         backgroundColor: Colors.purple[900],
         foregroundColor: Colors.white,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.purple[900]!,
-              Colors.purple[700]!,
-              Colors.red[900]!,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: _buildScaledGameCanvas(
-            width: 560,
-            height: 880,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildSlotMachine(),
-                  const SizedBox(height: 20),
-                  _buildBetControls(),
-                  const SizedBox(height: 14),
-                  _buildSpinButton(),
-                  const SizedBox(height: 14),
-                  _buildPaytable(),
-                ],
+      body: Stack(
+        children: [
+            Positioned.fill(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final isPortrait =
+                      constraints.maxHeight > constraints.maxWidth;
+                  return Image.asset(
+                    isPortrait
+                        ? 'assets/images/casino/casino_background_portrait.png'
+                        : 'assets/images/casino/casino_background_landscape.png',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        Container(color: const Color(0xFF1A1A1A)),
+                  );
+                },
               ),
             ),
-          ),
-        ),
+            Positioned.fill(
+              child: Container(color: Colors.black.withValues(alpha: 0.35)),
+            ),
+            SafeArea(
+              child: _buildScaledGameCanvas(
+                width: 560,
+                height: 880,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildSlotMachine(),
+                      const SizedBox(height: 20),
+                      _buildBetControls(),
+                      const SizedBox(height: 14),
+                      _buildSpinButton(),
+                      const SizedBox(height: 14),
+                      _buildPaytable(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
