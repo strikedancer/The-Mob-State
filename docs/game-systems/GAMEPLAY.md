@@ -362,6 +362,7 @@ Voorbeelden:
 - **Shared rewards**: Verdeeld tussen crew members
 - **Teamwork bonus**: +10% success chance per extra member (max +30%)
 - **HQ progression**: HQ-levels lopen door als globale reeks (L0 t/m L19) met oplopende upgradekosten zonder reset per stijltier. Als een stijltier op max staat en bijgebouwen voldoen aan de vereiste levels, gaat de volgende upgrade direct naar het volgende globale level.
+- **HQ & Upgrades visuals**: bijgebouw-afbeeldingen volgen altijd de level-tier van het bijgebouw zelf (niet de actuele HQ-stijl), zodat visuals en levelstatus consistent blijven.
 
 ### Crew Wars
 - Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren en beide crews hebben minimaal 3 leden nodig.

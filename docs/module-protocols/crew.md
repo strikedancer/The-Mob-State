@@ -32,6 +32,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Crew HQ and storage cards must show purchase and upgrade costs directly in the UI; price information may not be hidden behind failed actions.
 - Zodra een HQ-stijl zijn max-level bereikt, moet de UI direct een actie tonen om de volgende HQ-stijl te ontgrendelen (als die bestaat), in plaats van stil op "max level" te blijven hangen.
 - Crew/HQ images must use the shared platform-safe loading path with icon fallback so externally mounted web assets do not disappear silently.
+- Side-building image style selection must follow the side-building level tier (L1-2 camping, L3-4 rural, L5-7 city, L8-10 villa, L11-15 vip) and may not be derived from current HQ style.
 - Top-level crew navigation should stay grouped by management intent instead of exposing every storage type as a separate main tab.
 
 ## i18n and Messaging

@@ -3199,7 +3199,16 @@ class _CrewScreenState extends State<CrewScreen>
     if (type == 'hq') return _getCrewHqImagePath(style, level);
 
     final normalizedType = type.replaceAll('_storage', '').replaceAll('_', '_');
-    return 'assets/images/crew_buildings/$normalizedType/$style/lvl_$level.png';
+    final buildingStyle = _getCrewBuildingStyleForLevel(level);
+    return 'assets/images/crew_buildings/$normalizedType/$buildingStyle/lvl_$level.png';
+  }
+
+  String _getCrewBuildingStyleForLevel(int level) {
+    if (level <= 2) return 'camping';
+    if (level <= 4) return 'rural';
+    if (level <= 7) return 'city';
+    if (level <= 10) return 'villa';
+    return 'vip';
   }
 
   IconData _getCrewBuildingIcon(String? type) {
