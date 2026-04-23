@@ -238,143 +238,165 @@ class _DiceScreenState extends State<DiceScreen> {
         backgroundColor: Colors.blue[900],
         foregroundColor: Colors.white,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.blue[900]!, Colors.blue[700]!, Colors.indigo[900]!],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final isPortrait = constraints.maxHeight > constraints.maxWidth;
+                return Image.asset(
+                  isPortrait
+                      ? 'assets/images/casino/casino_background_portrait.png'
+                      : 'assets/images/casino/casino_background_landscape.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Container(color: const Color(0xFF0D2630)),
+                );
+              },
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: _buildScaledGameCanvas(
-            width: 620,
-            height: 880,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Dice Display
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 16,
-                    runSpacing: 16,
-                    children: [_buildDice(_dice1), _buildDice(_dice2)],
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Totaal: ${_dice1 + _dice2}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+          Positioned.fill(
+            child: Container(color: Colors.black.withValues(alpha: 0.30)),
+          ),
+          SafeArea(
+            child: _buildScaledGameCanvas(
+              width: 620,
+              height: 880,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Dice Display
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 16,
+                      runSpacing: 16,
+                      children: [_buildDice(_dice1), _buildDice(_dice2)],
                     ),
-                  ),
-                  const SizedBox(height: 26),
+                    SizedBox(height: 20),
+                    Text(
+                      'Totaal: ${_dice1 + _dice2}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 26),
 
-                  // Prediction Selection
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.black45,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Voorspel',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                        SizedBox(height: 15),
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: [
-                            _buildPredictionButton('Laag (2-6)', 'low'),
-                            _buildPredictionButton('Hoog (8-12)', 'high'),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Laag/Hoog betaalt 2x • Exacte score betaalt 6x',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  // Bet Amount
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.black45,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Inzet',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          '€${formatCompactNumber(_betAmount)}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
+                    // Prediction Selection
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Voorspel',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: _getBetButtons(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-
-                  // Roll Button
-                  ElevatedButton(
-                    onPressed: _isRolling ? null : _roll,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 60,
-                        vertical: 20,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: _isRolling
-                        ? SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : Text(
-                            'GOOI!',
+                          SizedBox(height: 15),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: [
+                              _buildPredictionButton('Laag (2-6)', 'low'),
+                              _buildPredictionButton('Hoog (8-12)', 'high'),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Laag/Hoog betaalt 2x • Exacte score betaalt 6x',
                             style: TextStyle(
-                              fontSize: 24,
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    // Bet Amount
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 8),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Inzet',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            '€${formatCompactNumber(_betAmount)}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                  ),
-                ],
+                          SizedBox(height: 20),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: _getBetButtons(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+
+                    // Roll Button
+                    ElevatedButton(
+                      onPressed: _isRolling ? null : _roll,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 60,
+                          vertical: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: _isRolling
+                          ? SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text(
+                              'GOOI!',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
