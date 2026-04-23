@@ -47,6 +47,10 @@ function generateSeed(): string {
   return randomBytes(16).toString('hex');
 }
 
+function serializeCasinoResult(result: unknown): string {
+  return JSON.stringify(result);
+}
+
 function formatCasinoName(countryId: string): string {
   return `Casino ${countryId
     .replace(/_/g, ' ')
@@ -198,7 +202,7 @@ export async function playSlots(
         betAmount,
         payout,
         ownerCut: 0, // No longer used with bankroll system
-        result: { reels: result },
+        result: serializeCasinoResult({ reels: result }),
         rngSeed: seed,
       },
     });
@@ -501,7 +505,7 @@ async function finalizeBlackjack(
         betAmount,
         payout,
         ownerCut: 0,
-        result: { playerHand, dealerHand, result },
+        result: serializeCasinoResult({ playerHand, dealerHand, result }),
         rngSeed: seed,
       },
     });
@@ -717,7 +721,7 @@ export async function playRoulette(
         betAmount,
         payout,
         ownerCut: 0,
-        result: { number, color, betType, betValue, won },
+        result: serializeCasinoResult({ number, color, betType, betValue, won }),
         rngSeed: seed,
       },
     });
@@ -898,7 +902,7 @@ export async function playDice(
         betAmount,
         payout,
         ownerCut: 0,
-        result: { dice1, dice2, total, prediction, won },
+        result: serializeCasinoResult({ dice1, dice2, total, prediction, won }),
         rngSeed: seed,
       },
     });
