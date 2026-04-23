@@ -308,9 +308,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
   }
 
   String _offerImagePath(int amount) {
-    if (amount >= 1000) return 'assets/images/crypto/icons/btc.png';
-    if (amount >= 500) return 'assets/images/crypto/icons/eth.png';
-    return 'assets/images/crypto/icons/ltc.png';
+    if (amount >= 1000) return 'assets/images/premium_tiles/credits_1000.png';
+    if (amount >= 500) return 'assets/images/premium_tiles/credits_medium.png';
+    return 'assets/images/premium_tiles/credits_small.png';
   }
 
   Color _creditItemAccentColor(String effectType) {
@@ -335,19 +335,19 @@ class _PremiumScreenState extends State<PremiumScreen> {
   String _creditItemImagePath(Map<String, dynamic> item) {
     switch ((item['effectType'] ?? '').toString()) {
       case 'CASH_BUNDLE':
-        return 'assets/images/ui/sell_icon.png';
+        return 'assets/images/premium_tiles/shop_cash_bundle.png';
       case 'HIT_PROTECTION':
-        return 'assets/images/backgrounds/courtroom_background.png';
+        return 'assets/images/premium_tiles/shop_hit_protection.png';
       case 'VEHICLE_REPAIR_FINISH':
-        return 'assets/images/backgrounds/garage_background.png';
+        return 'assets/images/premium_tiles/shop_vehicle_repair.png';
       case 'VEHICLE_TUNE_RESET':
-        return 'assets/images/backgrounds/tuneshop_bg_desktop.png';
+        return 'assets/images/premium_tiles/shop_tune_reset.png';
       case 'ACTION_COOLDOWN_RESET':
-        return 'assets/images/backgrounds/crime_background.png';
+        return 'assets/images/premium_tiles/shop_cooldown_reset.png';
       case 'EVENT_BOOST':
-        return 'assets/images/backgrounds/nightclub_hub_bg_desktop.png';
+        return 'assets/images/premium_tiles/shop_event_boost.png';
       default:
-        return 'assets/images/ui/crypto_hub_emblem.png';
+        return 'assets/images/premium_tiles/credits_small.png';
     }
   }
 
@@ -470,138 +470,159 @@ class _PremiumScreenState extends State<PremiumScreen> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 134,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                WebAssetHelper.image(
-                  imagePath,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: colorScheme.surfaceContainerHighest,
-                      child: Icon(
-                        icon,
-                        size: 44,
-                        color: accent.withOpacity(0.75),
-                      ),
-                    );
-                  },
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            WebAssetHelper.image(
+              imagePath,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: colorScheme.surfaceContainerHighest,
+                  child: Icon(icon, size: 56, color: accent.withOpacity(0.75)),
+                );
+              },
+            ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.08),
+                    Colors.black.withOpacity(0.68),
+                  ],
                 ),
-                DecoratedBox(
+              ),
+            ),
+            if (badgeLabel != null && badgeLabel.trim().isNotEmpty)
+              Positioned(
+                top: 10,
+                right: 10,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black.withOpacity(0.05),
-                        Colors.black.withOpacity(0.62),
+                    color: Colors.black.withOpacity(0.52),
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(color: Colors.white.withOpacity(0.35)),
+                  ),
+                  child: Text(
+                    badgeLabel,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            Positioned(
+              left: 12,
+              right: 12,
+              bottom: 12,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final compact = constraints.maxWidth < 225;
+                  return Container(
+                    padding: EdgeInsets.all(compact ? 10 : 12),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: Colors.white.withOpacity(0.2)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              icon,
+                              color: Colors.white,
+                              size: compact ? 16 : 18,
+                            ),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: Text(
+                                title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleSmall
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (primaryValue != null &&
+                            primaryValue.trim().isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            primaryValue,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                        ],
+                        const SizedBox(height: 4),
+                        Text(
+                          subtitle,
+                          maxLines: compact ? 2 : 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Colors.white.withOpacity(0.92)),
+                        ),
+                        if (secondaryValue != null &&
+                            secondaryValue.trim().isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            secondaryValue,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Colors.white.withOpacity(0.8),
+                                ),
+                          ),
+                        ],
+                        const SizedBox(height: 8),
+                        SizedBox(
+                          width: double.infinity,
+                          child: FilledButton(
+                            onPressed: onPressed,
+                            style: FilledButton.styleFrom(
+                              backgroundColor: accent,
+                              foregroundColor: Colors.white,
+                              minimumSize: Size.fromHeight(compact ? 34 : 38),
+                              padding: EdgeInsets.symmetric(
+                                vertical: compact ? 8 : 10,
+                              ),
+                            ),
+                            child: Text(
+                              actionLabel,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-                Positioned(
-                  left: 12,
-                  right: 12,
-                  bottom: 10,
-                  child: Row(
-                    children: [
-                      Icon(icon, color: Colors.white, size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (badgeLabel != null && badgeLabel.trim().isNotEmpty)
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.52),
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
-                        ),
-                      ),
-                      child: Text(
-                        badgeLabel,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
+                  );
+                },
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (primaryValue != null) ...[
-                  Text(
-                    primaryValue,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: accent,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                ],
-                Text(
-                  subtitle,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                if (secondaryValue != null &&
-                    secondaryValue.trim().isNotEmpty) ...[
-                  const SizedBox(height: 10),
-                  Text(
-                    secondaryValue,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: onPressed,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: accent,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: Text(actionLabel),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -714,7 +735,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 'Exclusieve accountvoordelen, avatar unlocks en premium QoL.',
                 'Exclusive account perks, avatar unlocks and premium QoL.',
               ),
-              imagePath: 'assets/images/avatars/vip_kingpin.png',
+              imagePath: 'assets/images/premium_tiles/player_vip.png',
               accent: Colors.amber.shade700,
               icon: Icons.person,
               primaryValue: _priceLabel(playerVip['monthlyPriceEur']),
@@ -745,7 +766,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       'Voor crew-upgrades, side buildings level 11-15 en gedeelde perks.',
                       'For crew upgrades, side buildings level 11-15 and shared perks.',
                     ),
-              imagePath: 'assets/images/crew_hq/vip/hq_l3.png',
+              imagePath: 'assets/images/premium_tiles/crew_vip.png',
               accent: Colors.indigo.shade600,
               icon: Icons.groups,
               primaryValue: _priceLabel(crewVip?['monthlyPriceEur']),
