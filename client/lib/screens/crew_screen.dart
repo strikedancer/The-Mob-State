@@ -34,6 +34,7 @@ class _CrewScreenState extends State<CrewScreen>
       throw Exception('checkout_launch_failed');
     }
   }
+
   static const List<String> _hqStyleOrder = [
     'camping',
     'rural',
@@ -1162,10 +1163,11 @@ class _CrewScreenState extends State<CrewScreen>
   ) {
     final claimBonus = (territory['claimBonusPoints'] as num?)?.toInt() ?? 0;
     final tickPoints = (territory['tickPoints'] as num?)?.toInt() ?? 4;
-    final strategicTags = (territory['strategicTags'] as List<dynamic>? ?? const [])
-        .map((tag) => _formatWarTerritoryTagLabel(locale, tag.toString()))
-        .where((tag) => tag.trim().isNotEmpty)
-        .toList();
+    final strategicTags =
+        (territory['strategicTags'] as List<dynamic>? ?? const [])
+            .map((tag) => _formatWarTerritoryTagLabel(locale, tag.toString()))
+            .where((tag) => tag.trim().isNotEmpty)
+            .toList();
     final bonusParts = <String>[
       '${_tr(locale, 'Claim', 'Claim')} +$claimBonus',
       '${_tr(locale, 'Tick', 'Tick')} $tickPoints',
@@ -4932,12 +4934,16 @@ class _CrewScreenState extends State<CrewScreen>
         level,
       );
       final displayCap = memberCap ?? 0;
+      final nextStyle = _getNextHqStyle();
+      final canUnlockNextStyle =
+          level != null && level >= maxLevel && nextStyle != null;
       final requiredSideLevel = _requiredSideBuildingLevelForHqUpgrade(
         building['style'] as String?,
         level,
       );
       final missingSideBuildings =
-          (level != null && level < maxLevel && nextCost != null)
+          (level != null &&
+              ((level < maxLevel && nextCost != null) || canUnlockNextStyle))
           ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, locale)
           : <String>[];
       final hqUpgradeBlockedBySideBuildings = missingSideBuildings.isNotEmpty;
@@ -5106,12 +5112,22 @@ class _CrewScreenState extends State<CrewScreen>
                           ? (isLeader && !hqUpgradeBlockedBySideBuildings
                                 ? () => _upgradeBuilding(type ?? '')
                                 : null)
+                          : canUnlockNextStyle
+                          ? (isLeader && !hqUpgradeBlockedBySideBuildings
+                                ? () => _purchaseBuilding(type ?? '')
+                                : null)
                           : null,
                       child: Text(
                         (level == null)
                             ? '${_t(locale, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
                             : (level < maxLevel && nextCost != null)
                             ? '${_t(locale, 'action.upgrade')} (${_money(nextCost)})'
+                            : canUnlockNextStyle
+                            ? _tr(
+                                locale,
+                                'Ontgrendel ${_localizedHqStyleLabel(locale, nextStyle)} (HQ)',
+                                'Unlock ${_localizedHqStyleLabel(locale, nextStyle)} (HQ)',
+                              )
                             : status,
                       ),
                     ),

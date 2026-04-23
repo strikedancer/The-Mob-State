@@ -361,6 +361,7 @@ Voorbeelden:
 - **Heists**: Toegang tot grote heists
 - **Shared rewards**: Verdeeld tussen crew members
 - **Teamwork bonus**: +10% success chance per extra member (max +30%)
+- **HQ progression**: als een HQ-stijl op max staat en bijgebouwen voldoen aan de vereiste levels, kan de leader direct de volgende HQ-stijl ontgrendelen vanuit HQ & Upgrades.
 
 ### Crew Wars
 - Crew Wars lopen via de **War Room** in het crew-scherm. Alleen leaders kunnen een war declareren en beide crews hebben minimaal 3 leden nodig.

@@ -28,6 +28,7 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Crew land-vehicle storage must accept both cars and motorcycles through the same crew storage path, while boats remain separate in boat storage.
 - Crew War actions that target an opponent player must offer a selectable list of enemy crew members in the War Room; players may not be forced to know or manually type raw player IDs.
 - Crew HQ and storage cards must show purchase and upgrade costs directly in the UI; price information may not be hidden behind failed actions.
+- Zodra een HQ-stijl zijn max-level bereikt, moet de UI direct een actie tonen om de volgende HQ-stijl te ontgrendelen (als die bestaat), in plaats van stil op "max level" te blijven hangen.
 - Crew/HQ images must use the shared platform-safe loading path with icon fallback so externally mounted web assets do not disappear silently.
 - Top-level crew navigation should stay grouped by management intent instead of exposing every storage type as a separate main tab.
 
