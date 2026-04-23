@@ -863,6 +863,7 @@ Bob: €300K counter-hit
 - VIP-prijzen en credit-kosten zijn runtime-config/admin-gestuurd en dus niet langer vaste clientwaarden.
 - Cooldown reset-items gebruiken een dynamische prijs (`effectiveCreditCost`): hoe waardevoller de actie en hoe meer resterende cooldown, hoe hoger de credit-kost.
 - Cooldown reset-items zijn alleen inwisselbaar bij een actieve cooldown; zonder actieve timer blijft het item zichtbaar maar geblokkeerd.
+- Op ondersteunde timeout-schermen staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren.
 - Tijdelijke premium boosts zijn bewust non pay-to-win en capped: kleine utility bonussen voor crime success/payout, hitlist attack/defense en event contribution, zonder event-reward tiers te overrulen.
 
 ### Arrest Chances

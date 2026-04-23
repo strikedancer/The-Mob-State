@@ -41,6 +41,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Premium/Credits tegelafbeeldingen blijven extern gehost onder `images/premium_tiles/...`; generator, backend-catalogus en client mapping moeten dezelfde vaste bestandsnamen delen.
 - Voor `ACTION_COOLDOWN_RESET` items geldt dynamische prijsstelling op basis van resterende cooldown en action-value; expose deze altijd als runtime `effectiveCreditCost` in de overview.
 - Cooldown-reset redemptions moeten blokkeren zonder actieve cooldown (`ACTION_COOLDOWN_NOT_ACTIVE`) om creditverlies te voorkomen.
+- Ondersteunde gameplay-timeout overlays (crime, jobs, voertuig- en bootdiefstal, en andere actieve cooldown-schermen met matchende actionType) moeten een directe credit speed-up knop tonen; speler mag niet geforceerd worden eerst terug te navigeren naar `Premium & Credits`.
 - Tijdelijke `EVENT_BOOST` credit-items moeten capped side-grade boosts blijven; geen permanente statstacking of pay-to-win power creep.
 
 ## Backend Contract Guardrails

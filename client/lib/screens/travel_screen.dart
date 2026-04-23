@@ -118,7 +118,6 @@ class _TravelScreenState extends State<TravelScreen> {
       }
     } catch (e) {
       setState(() {
-        final l10n = AppLocalizations.of(context)!;
         _error = 'Verbindingsfout';
         _isLoading = false;
       });
@@ -352,21 +351,22 @@ class _TravelScreenState extends State<TravelScreen> {
         return;
       }
 
-        final destinationCountryId =
+      final destinationCountryId =
           (data['destinationCountry'] as String?) ?? country.id;
-        final destinationCountryName = CountryHelper.getLocalizedCountryName(
+      final destinationCountryName = CountryHelper.getLocalizedCountryName(
         destinationCountryId,
         l10n,
         fallbackName: country.name,
-        );
-        final newCountryId =
-          (data['newCountry'] as String?) ?? (data['currentLocation'] as String?);
-        final isInTransitToDestination =
+      );
+      final newCountryId =
+          (data['newCountry'] as String?) ??
+          (data['currentLocation'] as String?);
+      final isInTransitToDestination =
           newCountryId != null && newCountryId != destinationCountryId;
-        final currentStopName = newCountryId != null
+      final currentStopName = newCountryId != null
           ? _resolveCountryName(newCountryId, l10n)
           : l10n.currentLocation;
-        final message = isInTransitToDestination
+      final message = isInTransitToDestination
           ? '${l10n.travelInTransitTo(destinationCountryName)}. ${l10n.travelNextStop(currentStopName)}'
           : l10n.travelSuccessTo(destinationCountryName);
 
@@ -382,7 +382,8 @@ class _TravelScreenState extends State<TravelScreen> {
       });
 
       if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(message),
             backgroundColor: Colors.blue,
@@ -559,7 +560,8 @@ class _TravelScreenState extends State<TravelScreen> {
       });
 
       if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(message + warningMessage),
             backgroundColor: warningMessage.isNotEmpty
@@ -679,7 +681,8 @@ class _TravelScreenState extends State<TravelScreen> {
       final data = jsonDecode(response.body);
       final messageKey = data['messageKey'] as String?;
       if (mounted) {
-        showTopRightFromSnackBar(context, 
+        showTopRightFromSnackBar(
+          context,
           SnackBar(
             content: Text(
               messageKey == 'travelJourneyCanceled'
@@ -886,6 +889,7 @@ class _TravelScreenState extends State<TravelScreen> {
       body: _cooldownSeconds != null && _cooldownSeconds! > 0
           ? CooldownOverlay(
               actionType: 'travel',
+              cooldownActionType: 'travel',
               remainingSeconds: _cooldownSeconds!,
               onExpired: () {
                 setState(() {

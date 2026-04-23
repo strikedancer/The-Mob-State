@@ -331,6 +331,9 @@ class _GarageScreenState extends State<GarageScreen> {
                   onTap: () {},
                   child: CooldownOverlay(
                     actionType: 'crime',
+                    cooldownActionType: _isMotorTab
+                        ? 'motorcycle_theft'
+                        : 'vehicle_theft',
                     remainingSeconds: _stealCooldownSeconds,
                     embedded: true,
                     resultMessage: _tr(
@@ -372,57 +375,59 @@ class _GarageScreenState extends State<GarageScreen> {
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
-        appBar: widget.embedded
-            ? null
-            : AppBar(
-                title: Text(_sectionTitle),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: _checkJailStatusAndLoadData,
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      _isMotorTab
-                          ? Icons.two_wheeler
-                          : Icons.directions_car_filled_outlined,
+          appBar: widget.embedded
+              ? null
+              : AppBar(
+                  title: Text(_sectionTitle),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: _checkJailStatusAndLoadData,
                     ),
-                    tooltip: _catalogTooltip,
-                    onPressed: () => _showAvailableVehicleCatalog(
-                      vehicleProvider,
-                      authProvider,
+                    IconButton(
+                      icon: Icon(
+                        _isMotorTab
+                            ? Icons.two_wheeler
+                            : Icons.directions_car_filled_outlined,
+                      ),
+                      tooltip: _catalogTooltip,
+                      onPressed: () => _showAvailableVehicleCatalog(
+                        vehicleProvider,
+                        authProvider,
+                      ),
                     ),
-                  ),
-                  PopupMenuButton<String>(
-                    icon: const Icon(Icons.sort),
-                    onSelected: (value) {
-                      setState(() {
-                        _sortBy = value;
-                      });
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'value',
-                        child: Text(AppLocalizations.of(context)!.byValue),
-                      ),
-                      PopupMenuItem(
-                        value: 'condition',
-                        child: Text(AppLocalizations.of(context)!.byCondition),
-                      ),
-                      PopupMenuItem(
-                        value: 'fuel',
-                        child: Text(AppLocalizations.of(context)!.byFuel),
-                      ),
-                      PopupMenuItem(
-                        value: 'name',
-                        child: Text(AppLocalizations.of(context)!.byName),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-        body: content,
-      ),
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.sort),
+                      onSelected: (value) {
+                        setState(() {
+                          _sortBy = value;
+                        });
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'value',
+                          child: Text(AppLocalizations.of(context)!.byValue),
+                        ),
+                        PopupMenuItem(
+                          value: 'condition',
+                          child: Text(
+                            AppLocalizations.of(context)!.byCondition,
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'fuel',
+                          child: Text(AppLocalizations.of(context)!.byFuel),
+                        ),
+                        PopupMenuItem(
+                          value: 'name',
+                          child: Text(AppLocalizations.of(context)!.byName),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+          body: content,
+        ),
       ],
     );
   }

@@ -300,7 +300,8 @@ class _JobsScreenState extends State<JobsScreen> {
         });
 
         if (mounted) {
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(message),
               backgroundColor: Colors.orange,
@@ -348,7 +349,8 @@ class _JobsScreenState extends State<JobsScreen> {
 
         // Keep cooldown UI embedded in this screen (no full-page route)
         if (cooldownSeconds != null && cooldownSeconds > 0) {
-          showTopRightFromSnackBar(context,
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(message),
               backgroundColor: eventKey.contains('completed')
@@ -358,7 +360,8 @@ class _JobsScreenState extends State<JobsScreen> {
           );
         } else {
           // No cooldown, just show snackbar
-          showTopRightFromSnackBar(context, 
+          showTopRightFromSnackBar(
+            context,
             SnackBar(
               content: Text(message),
               backgroundColor: eventKey.contains('success')
@@ -504,6 +507,7 @@ class _JobsScreenState extends State<JobsScreen> {
       body: _cooldownSeconds != null && _cooldownSeconds! > 0
           ? CooldownOverlay(
               actionType: 'job',
+              cooldownActionType: 'job',
               remainingSeconds: _cooldownSeconds!,
               embedded: true,
               onExpired: () {

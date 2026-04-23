@@ -304,6 +304,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
                   onTap: () {},
                   child: CooldownOverlay(
                     actionType: 'crime',
+                    cooldownActionType: 'boat_theft',
                     remainingSeconds: _stealCooldownSeconds,
                     embedded: true,
                     resultMessage: _tr(
@@ -341,53 +342,55 @@ class _MarinaScreenState extends State<MarinaScreen> {
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
-        appBar: widget.embedded
-            ? null
-            : AppBar(
-                title: Text(_sectionTitle),
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: _checkJailStatusAndLoadData,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.directions_boat_filled_outlined),
-                    tooltip: _tr('Beschikbare boten', 'Available boats'),
-                    onPressed: () => _showAvailableBoatCatalog(
-                      vehicleProvider,
-                      authProvider,
+          appBar: widget.embedded
+              ? null
+              : AppBar(
+                  title: Text(_sectionTitle),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      onPressed: _checkJailStatusAndLoadData,
                     ),
-                  ),
-                  PopupMenuButton<String>(
-                    icon: const Icon(Icons.sort),
-                    onSelected: (value) {
-                      setState(() {
-                        _sortBy = value;
-                      });
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: 'value',
-                        child: Text(AppLocalizations.of(context)!.byValue),
+                    IconButton(
+                      icon: const Icon(Icons.directions_boat_filled_outlined),
+                      tooltip: _tr('Beschikbare boten', 'Available boats'),
+                      onPressed: () => _showAvailableBoatCatalog(
+                        vehicleProvider,
+                        authProvider,
                       ),
-                      PopupMenuItem(
-                        value: 'condition',
-                        child: Text(AppLocalizations.of(context)!.byCondition),
-                      ),
-                      PopupMenuItem(
-                        value: 'fuel',
-                        child: Text(AppLocalizations.of(context)!.byFuel),
-                      ),
-                      PopupMenuItem(
-                        value: 'name',
-                        child: Text(AppLocalizations.of(context)!.byName),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-        body: content,
-      ),
+                    ),
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.sort),
+                      onSelected: (value) {
+                        setState(() {
+                          _sortBy = value;
+                        });
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'value',
+                          child: Text(AppLocalizations.of(context)!.byValue),
+                        ),
+                        PopupMenuItem(
+                          value: 'condition',
+                          child: Text(
+                            AppLocalizations.of(context)!.byCondition,
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'fuel',
+                          child: Text(AppLocalizations.of(context)!.byFuel),
+                        ),
+                        PopupMenuItem(
+                          value: 'name',
+                          child: Text(AppLocalizations.of(context)!.byName),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+          body: content,
+        ),
       ],
     );
   }
@@ -689,7 +692,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
               padding: const EdgeInsets.all(16),
               itemCount: sortedBoats.length,
               separatorBuilder: (context, index) => const SizedBox(height: 16),
-              itemBuilder: (context, index) => buildVehicleCard(sortedBoats[index]),
+              itemBuilder: (context, index) =>
+                  buildVehicleCard(sortedBoats[index]),
             );
           }
 
@@ -704,7 +708,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
               mainAxisSpacing: 16,
             ),
             itemCount: sortedBoats.length,
-            itemBuilder: (context, index) => buildVehicleCard(sortedBoats[index]),
+            itemBuilder: (context, index) =>
+                buildVehicleCard(sortedBoats[index]),
           );
         },
       ),

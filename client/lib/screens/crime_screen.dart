@@ -597,12 +597,22 @@ class _CrimeScreenState extends State<CrimeScreen> {
             print('[CrimeScreen] Player data: $playerData');
 
             authProvider.updatePlayerStats(
-              money: playerData['money'] == null ? null : readInt(playerData['money']),
+              money: playerData['money'] == null
+                  ? null
+                  : readInt(playerData['money']),
               xp: playerData['xp'] == null ? null : readInt(playerData['xp']),
-              rank: playerData['rank'] == null ? null : readInt(playerData['rank']),
-              health: playerData['health'] == null ? null : readInt(playerData['health']),
-              wantedLevel: playerData['wantedLevel'] == null ? null : readInt(playerData['wantedLevel']),
-              fbiHeat: playerData['fbiHeat'] == null ? null : readInt(playerData['fbiHeat']),
+              rank: playerData['rank'] == null
+                  ? null
+                  : readInt(playerData['rank']),
+              health: playerData['health'] == null
+                  ? null
+                  : readInt(playerData['health']),
+              wantedLevel: playerData['wantedLevel'] == null
+                  ? null
+                  : readInt(playerData['wantedLevel']),
+              fbiHeat: playerData['fbiHeat'] == null
+                  ? null
+                  : readInt(playerData['fbiHeat']),
             );
             print('[CrimeScreen] Player stats updated successfully');
             // Validate by refreshing to ensure XP is correct on server side
@@ -621,7 +631,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
         int? jailTimeMinutes;
         if (params.containsKey('jailed') && params['jailed'] == true) {
           wasJailed = true;
-            jailTimeMinutes = params['jailTime'] == null
+          jailTimeMinutes = params['jailTime'] == null
               ? null
               : readInt(params['jailTime']);
           if (jailTimeMinutes != null && jailTimeMinutes > 0) {
@@ -921,6 +931,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
           ? CooldownOverlay(
               embedded: kIsWeb,
               actionType: 'crime',
+              cooldownActionType: 'crime',
               remainingSeconds: _cooldownSeconds!,
               resultMessage: _cooldownResultMessage,
               isSuccess: _cooldownIsSuccess,

@@ -1,8 +1,10 @@
 // ignore_for_file: unused_element
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../models/cooldown_info.dart';
 import '../l10n/app_localizations.dart';
+import '../services/auth_service.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 
@@ -10,6 +12,7 @@ import '../utils/web_asset_helper.dart';
 /// Similar to JailOverlay but for action cooldowns
 class CooldownOverlay extends StatefulWidget {
   final String actionType; // 'crime', 'job', 'travel', 'heist', 'appeal'
+  final String? cooldownActionType; // technical type used for credit reset
   final int remainingSeconds;
   final VoidCallback? onExpired;
   final String? resultMessage; // Optional result message to show
@@ -19,6 +22,7 @@ class CooldownOverlay extends StatefulWidget {
   const CooldownOverlay({
     super.key,
     required this.actionType,
+    this.cooldownActionType,
     required this.remainingSeconds,
     this.onExpired,
     this.resultMessage,
@@ -34,6 +38,16 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
   late int _secondsLeft;
   Timer? _timer;
   late CooldownInfo _cooldownInfo;
+  bool _loadingCreditAction = false;
+  bool _redeemingCreditAction = false;
+  bool _canRedeemNow = false;
+  String? _cooldownResetItemKey;
+  int _cooldownResetCost = 0;
+  int _creditBalance = 0;
+  String? _cooldownUnavailableReason;
+
+  String get _effectiveCooldownActionType =>
+      (widget.cooldownActionType ?? widget.actionType).trim();
 
   @override
   void initState() {
@@ -44,6 +58,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
       remainingSeconds: widget.remainingSeconds,
     );
     _startCountdown();
+    _loadCooldownCreditAction();
   }
 
   void _startCountdown() {
@@ -69,6 +84,160 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     );
   }
 
+  String _tr(String nl, String en) => localeOf(context) == 'nl' ? nl : en;
+
+  String localeOf(BuildContext context) =>
+      AppLocalizations.of(context)?.localeName ?? 'en';
+
+  Future<void> _loadCooldownCreditAction() async {
+    final actionType = _effectiveCooldownActionType;
+    if (actionType.isEmpty) return;
+
+    setState(() {
+      _loadingCreditAction = true;
+      _cooldownResetItemKey = null;
+      _cooldownResetCost = 0;
+      _canRedeemNow = false;
+      _cooldownUnavailableReason = null;
+    });
+
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.get('/subscriptions/credits/overview');
+      if (response.statusCode != 200) return;
+
+      final payload = jsonDecode(response.body) as Map<String, dynamic>;
+      final items = (payload['items'] as List<dynamic>? ?? const [])
+          .whereType<Map<String, dynamic>>();
+      final match = items
+          .where((item) {
+            final effectType = (item['effectType'] ?? '').toString();
+            final itemActionType = (item['actionType'] ?? '').toString();
+            return effectType == 'ACTION_COOLDOWN_RESET' &&
+                itemActionType == actionType;
+          })
+          .cast<Map<String, dynamic>>()
+          .toList();
+
+      if (!mounted) return;
+      if (match.isEmpty) {
+        setState(() {
+          _creditBalance = (payload['balance'] as num?)?.toInt() ?? 0;
+        });
+        return;
+      }
+
+      final item = match.first;
+      final fallbackCost = (item['creditCost'] as num?)?.toInt() ?? 0;
+      final effectiveCost =
+          (item['effectiveCreditCost'] as num?)?.toInt() ?? fallbackCost;
+      setState(() {
+        _cooldownResetItemKey = (item['key'] ?? '').toString();
+        _cooldownResetCost = effectiveCost;
+        _canRedeemNow = item['canRedeemNow'] == true;
+        _cooldownUnavailableReason = (item['unavailableReason'] ?? '')
+            .toString();
+        _creditBalance = (payload['balance'] as num?)?.toInt() ?? 0;
+      });
+    } catch (_) {
+      // Keep overlay functional when credits endpoint is unavailable.
+    } finally {
+      if (mounted) {
+        setState(() {
+          _loadingCreditAction = false;
+        });
+      }
+    }
+  }
+
+  String _redeemDisabledReason() {
+    if (_cooldownResetItemKey == null || _cooldownResetItemKey!.isEmpty) {
+      return '';
+    }
+    if (_secondsLeft <= 0) {
+      return _tr('Cooldown is al klaar.', 'Cooldown already finished.');
+    }
+    if (_creditBalance < _cooldownResetCost) {
+      return _tr('Onvoldoende credits.', 'Not enough credits.');
+    }
+    if (!_canRedeemNow) {
+      if (_cooldownUnavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE') {
+        return _tr(
+          'Geen actieve cooldown om te resetten.',
+          'No active cooldown to reset.',
+        );
+      }
+      return _tr('Nu niet beschikbaar.', 'Not available right now.');
+    }
+    return '';
+  }
+
+  Future<void> _redeemCooldownWithCredits() async {
+    if (_redeemingCreditAction || _cooldownResetItemKey == null) return;
+    setState(() => _redeemingCreditAction = true);
+
+    try {
+      final apiClient = AuthService().apiClient;
+      final response = await apiClient.post('/subscriptions/credits/redeem', {
+        'itemKey': _cooldownResetItemKey,
+        'actionType': _effectiveCooldownActionType,
+      });
+
+      final payload = response.body.isNotEmpty
+          ? jsonDecode(response.body) as Map<String, dynamic>
+          : <String, dynamic>{};
+
+      if (!mounted) return;
+      if (response.statusCode != 200) {
+        final fallback = _tr(
+          'Versnellen met credits mislukt.',
+          'Failed to speed up with credits.',
+        );
+        final message = (payload['error'] ?? payload['message'] ?? fallback)
+            .toString();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message), backgroundColor: Colors.red),
+        );
+        await _loadCooldownCreditAction();
+        return;
+      }
+
+      final successMessage =
+          (payload['message'] ??
+                  _tr(
+                    'Cooldown direct afgerond.',
+                    'Cooldown finished instantly.',
+                  ))
+              .toString();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(successMessage), backgroundColor: Colors.green),
+      );
+
+      _timer?.cancel();
+      setState(() {
+        _secondsLeft = 0;
+      });
+      widget.onExpired?.call();
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _tr(
+              'Versnellen met credits mislukt.',
+              'Failed to speed up with credits.',
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _redeemingCreditAction = false);
+      }
+    }
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -91,6 +260,15 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     } else if (widget.actionType == 'school') {
       backgroundImagePath = 'assets/images/cooldown_school.png';
     }
+
+    final canShowCooldownCreditAction =
+        _cooldownResetItemKey != null && _cooldownResetItemKey!.isNotEmpty;
+    final redeemDisabledReason = _redeemDisabledReason();
+    final redeemDisabled =
+        _loadingCreditAction ||
+        _redeemingCreditAction ||
+        !canShowCooldownCreditAction ||
+        redeemDisabledReason.isNotEmpty;
 
     Widget timerChip({required bool compactWidth}) {
       return Container(
@@ -211,7 +389,9 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
             vertical: verticalMargin,
           ),
           elevation: 12,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
           clipBehavior: Clip.antiAlias,
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -356,7 +536,8 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                     ),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         _getWaitMessage(locale),
@@ -380,6 +561,96 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                             ? TextAlign.left
                                             : TextAlign.center,
                                       ),
+                                      if (_loadingCreditAction) ...[
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 14,
+                                              height: 14,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                _tr(
+                                                  'Credits-opties laden...',
+                                                  'Loading credit options...',
+                                                ),
+                                                style: TextStyle(
+                                                  color: Colors.grey[300],
+                                                  fontSize: compactWidth
+                                                      ? 12
+                                                      : 13,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ] else if (canShowCooldownCreditAction) ...[
+                                        const SizedBox(height: 10),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: ElevatedButton.icon(
+                                            onPressed: redeemDisabled
+                                                ? null
+                                                : _redeemCooldownWithCredits,
+                                            icon: _redeemingCreditAction
+                                                ? const SizedBox(
+                                                    width: 14,
+                                                    height: 14,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                          strokeWidth: 2,
+                                                          color: Colors.black,
+                                                        ),
+                                                  )
+                                                : const Icon(
+                                                    Icons.flash_on,
+                                                    size: 18,
+                                                  ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(
+                                                0xFFFFC107,
+                                              ),
+                                              foregroundColor: Colors.black,
+                                            ),
+                                            label: Text(
+                                              _tr(
+                                                'Versnel nu (-$_cooldownResetCost credits)',
+                                                'Speed up now (-$_cooldownResetCost credits)',
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          _tr(
+                                            'Saldo: $_creditBalance credits',
+                                            'Balance: $_creditBalance credits',
+                                          ),
+                                          style: TextStyle(
+                                            color: Colors.grey[300],
+                                            fontSize: compactWidth ? 11 : 12,
+                                          ),
+                                        ),
+                                        if (redeemDisabledReason
+                                            .isNotEmpty) ...[
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            redeemDisabledReason,
+                                            style: TextStyle(
+                                              color: Colors.orange[200],
+                                              fontSize: compactWidth ? 11 : 12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ],
                                     ],
                                   ),
                                 ),

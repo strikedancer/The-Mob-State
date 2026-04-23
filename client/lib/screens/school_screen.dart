@@ -276,9 +276,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
       case 'paramedic_cert':
         return l10n.educationCertParamedic;
       case 'hydroponic_specialist':
-        return isNl
-            ? 'Hydroponics Specialist'
-            : 'Hydroponics Specialist';
+        return isNl ? 'Hydroponics Specialist' : 'Hydroponics Specialist';
       case 'process_electrics_specialist':
         return isNl
             ? 'Process Electrics Specialist'
@@ -1129,6 +1127,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
       return CooldownOverlay(
         embedded: kIsWeb,
         actionType: 'school',
+        cooldownActionType: 'school',
         remainingSeconds: globalCooldownSeconds,
         onExpired: () {
           if (!mounted) return;
