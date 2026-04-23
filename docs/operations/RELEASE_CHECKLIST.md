@@ -639,6 +639,8 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
 - [ ] **VPS actie vereist**: script opnieuw draaien om de 2 nieuwe vliegtuigafbeeldingen te genereren (`citation_x.png` + `antonov.png`): `python3 backend/scripts/generate_aviation_images_leonardo.py --confirm-batch YES`
 - [ ] Premium/Credits external image-pad fix: premium tiles gebruiken runtime paths `images/premium_tiles/...`, loader gebruikt web network-candidates zonder `Image.asset` fallback (minder `assets/assets` ruis), en de tegelset staat in `runtime/client-images/premium_tiles/` zodat de client niet afhankelijk is van gebundelde `assets/images`
   - Bestanden: `client/lib/screens/premium_screen.dart`, `runtime/client-images/premium_tiles/*`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Premium/Credits image generation workflow vastgelegd: nieuw Leonardo one-shot script met vaste 11 premium tile outputs + externe hosting runbook voor VPS, zodat stijlupdates herhaalbaar zijn en aankooptype per tile visueel duidelijk blijft
+  - Bestanden: `backend/scripts/generate_premium_tiles_leonardo.py`, `docs/operations/PREMIUM_TILES_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Aviation i18n: `aircraft.json` bevat nu `name_en` + `description_en` voor alle 6 vliegtuigen; client toont juiste taal op basis van locale
   - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
 - [ ] Prison buyout/jailbreak transactiefix: `world_events.params` in prison flows wordt nu correct als JSON-string opgeslagen (`prison.buyout_success`, `prison.jailbreak_success`, cooldown-markers) i.p.v. object payloads, zodat buyout/jailbreak transacties niet meer kunnen falen op Prisma type mismatch
