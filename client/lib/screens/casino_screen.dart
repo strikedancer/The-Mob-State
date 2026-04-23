@@ -22,6 +22,8 @@ class CasinoScreen extends StatefulWidget {
 
 class _CasinoScreenState extends State<CasinoScreen> {
   final ApiClient _apiClient = ApiClient();
+  final GlobalKey<NavigatorState> _gameNavigatorKey =
+      GlobalKey<NavigatorState>();
   List<CasinoGame> _games = [];
   bool _isLoading = true;
   String? _error;
@@ -30,6 +32,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
   int _casinoPrice = 0;
   bool _isOwner = false;
   Map<String, dynamic>? _casinoStats;
+  bool _gameRouteActive = false;
 
   @override
   void initState() {
@@ -383,46 +386,48 @@ class _CasinoScreenState extends State<CasinoScreen> {
   }
 
   void _playGame(CasinoGame game) {
+    final navigator = _gameNavigatorKey.currentState;
+    if (navigator == null) {
+      return;
+    }
+
+    Widget? destination;
     switch (game.id) {
       case 'slots':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SlotMachineScreen(game: game),
-          ),
-        ).then((_) {
-          // Refresh ownership and stats when returning from game
-          _checkOwnership();
-        });
+        destination = SlotMachineScreen(game: game);
         break;
       case 'blackjack':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BlackjackScreen(game: game)),
-        ).then((_) {
-          // Refresh ownership and stats when returning from game
-          _checkOwnership();
-        });
+        destination = BlackjackScreen(game: game);
         break;
       case 'roulette':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => RouletteScreen(game: game)),
-        ).then((_) {
-          // Refresh ownership and stats when returning from game
-          _checkOwnership();
-        });
+        destination = RouletteScreen(game: game);
         break;
       case 'dice':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DiceScreen(game: game)),
-        ).then((_) {
-          // Refresh ownership and stats when returning from game
-          _checkOwnership();
-        });
+        destination = DiceScreen(game: game);
         break;
+      default:
+        destination = null;
     }
+
+    if (destination == null) return;
+
+    setState(() => _gameRouteActive = true);
+    navigator
+        .push(MaterialPageRoute(builder: (_) => destination!))
+        .then((_) async {
+          if (!mounted) return;
+          setState(() => _gameRouteActive = false);
+          await _checkOwnership();
+        });
+  }
+
+  Widget _buildEmbeddedCasinoNavigator() {
+    return Navigator(
+      key: _gameNavigatorKey,
+      onGenerateRoute: (_) => MaterialPageRoute(
+        builder: (_) => _buildGameGrid(),
+      ),
+    );
   }
 
   @override
@@ -436,7 +441,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Row(children: [Text('🎰 '), Text(l10n.casino)])),
-      floatingActionButton: _isOwner && _casinoStats != null
+      floatingActionButton: _isOwner && _casinoStats != null && !_gameRouteActive
           ? FloatingActionButton.extended(
               onPressed: () {
                 Navigator.push(
@@ -478,7 +483,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
               ? _buildError()
               : !_isOwned
               ? _buildClosedCasino()
-              : _buildGameGrid(),
+              : _buildEmbeddedCasinoNavigator(),
         ),
       ),
     );
