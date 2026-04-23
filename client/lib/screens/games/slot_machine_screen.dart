@@ -317,42 +317,116 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
   Widget _buildSlotMachine() {
     final width = MediaQuery.of(context).size.width;
     final isNarrow = width < 420;
-    final reelWidth = isNarrow ? 64.0 : 80.0;
-    final reelHeight = isNarrow ? 82.0 : 100.0;
-    final reelFontSize = isNarrow ? 38.0 : 50.0;
+    final reelFontSize = isNarrow ? 36.0 : 48.0;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      padding: EdgeInsets.all(isNarrow ? 12 : 20),
-      decoration: BoxDecoration(
-        color: Colors.amber[700],
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.amber[900]!, width: 4),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black45,
-            blurRadius: 15,
-            offset: Offset(0, 8),
-          ),
-        ],
+      constraints: const BoxConstraints(maxWidth: 430),
+      child: AspectRatio(
+        aspectRatio: 1.45,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Image.asset(
+                  'assets/images/casino/slot_machine.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.amber[700]!, Colors.amber[900]!],
+                      ),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: Colors.amber[900]!, width: 4),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.orange.shade900, width: 3),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black45,
+                      blurRadius: 16,
+                      offset: Offset(0, 8),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: const Alignment(0, -0.05),
+              child: FractionallySizedBox(
+                widthFactor: 0.66,
+                heightFactor: 0.33,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.38),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white24, width: 1.5),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: _reels
+                        .map((symbol) => _buildReelCell(symbol, reelFontSize))
+                        .toList(),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: _reels.map((symbol) {
-          return Container(
-            width: reelWidth,
-            height: reelHeight,
-            margin: EdgeInsets.symmetric(horizontal: isNarrow ? 4 : 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey[400]!, width: 2),
+    );
+  }
+
+  Widget _buildReelCell(String symbol, double fontSize) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Colors.grey.shade200],
+          ),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey.shade400, width: 1.5),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 6,
+              offset: Offset(0, 2),
             ),
-            child: Center(
-              child: Text(symbol, style: TextStyle(fontSize: reelFontSize)),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            symbol,
+            style: TextStyle(
+              fontSize: fontSize,
+              shadows: const [
+                Shadow(
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(0, 1),
+                ),
+              ],
             ),
-          );
-        }).toList(),
+          ),
+        ),
       ),
     );
   }
