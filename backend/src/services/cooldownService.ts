@@ -10,6 +10,7 @@ import { notificationService } from './notificationService';
 interface CooldownConfig {
   crime: number;     // seconds (base fallback)
   job: number;
+  school: number;
   travel: number;
   heist: number;
   appeal: number;
@@ -32,6 +33,7 @@ const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>([
 const COOLDOWN_PERIODS: CooldownConfig = {
   crime: 90,         // 1.5 minutes between crimes
   job: 900,          // 15 minutes between jobs
+  school: 90,        // dynamic via education flow, 90s fallback
   travel: 3600,      // 1 hour per travel leg
   heist: 21600,      // 6 hours between heists
   appeal: 14400,     // 4 hours between appeals

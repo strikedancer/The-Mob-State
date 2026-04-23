@@ -3,6 +3,7 @@ import educationTracksData from '../../content/educationTracks.json';
 import { worldEventService } from './worldEventService';
 import { activityService } from './activityService';
 import { timeProvider } from '../utils/timeProvider';
+import * as cooldownService from './cooldownService';
 
 type EducationTrackId =
   | 'aviation'
@@ -283,6 +284,11 @@ class EducationService {
     playerId: number,
     cooldownSeconds: number
   ): Promise<number> {
+    const actionCooldownRemaining = await cooldownService.checkCooldown(playerId, 'school');
+    if (actionCooldownRemaining > 0) {
+      return actionCooldownRemaining;
+    }
+
     if (cooldownSeconds <= 0) {
       return 0;
     }
@@ -466,9 +472,12 @@ class EducationService {
         trackId: track.id,
         xpGain,
         totalXp,
+        cooldownSeconds,
       },
       playerId
     );
+
+    await cooldownService.setCooldown(playerId, 'school', cooldownSeconds);
 
     this.logEducationActivity(
       playerId,
