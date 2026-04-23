@@ -929,6 +929,396 @@ export async function playDice(
   };
 }
 
+type BaccaratBetType = 'player' | 'banker' | 'tie';
+type BaccaratWinner = 'player' | 'banker' | 'tie';
+
+function drawBaccaratCard(): number {
+  const raw = secureRandom(13) + 1;
+  if (raw >= 10) return 0;
+  return raw;
+}
+
+function baccaratTotal(cards: number[]): number {
+  const sum = cards.reduce((acc, value) => acc + value, 0);
+  return sum % 10;
+}
+
+function determineBaccaratWinner(
+  playerTotal: number,
+  bankerTotal: number
+): BaccaratWinner {
+  if (playerTotal > bankerTotal) return 'player';
+  if (bankerTotal > playerTotal) return 'banker';
+  return 'tie';
+}
+
+function determineBaccaratPayout(
+  won: boolean,
+  betAmount: number,
+  betType: BaccaratBetType
+): number {
+  if (!won) return 0;
+
+  if (betType === 'player') {
+    return betAmount * 2;
+  }
+
+  if (betType === 'banker') {
+    return Math.floor(betAmount * 1.95);
+  }
+
+  return betAmount * 9;
+}
+
+/**
+ * Play baccarat with casino bankroll
+ */
+export async function playBaccarat(
+  playerId: number,
+  casinoId: string,
+  betAmount: number,
+  betType: BaccaratBetType
+): Promise<{
+  playerCards: number[];
+  bankerCards: number[];
+  playerTotal: number;
+  bankerTotal: number;
+  winner: BaccaratWinner;
+  won: boolean;
+  payout: number;
+  profit: number;
+  newBalance: number;
+  casinoBankrupt: boolean;
+}> {
+  const casino = await ensureCasinoProperty(casinoId);
+  if (!casino) throw new Error('CASINO_NOT_FOUND');
+  if (casino.propertyType !== 'casino') throw new Error('NOT_A_CASINO');
+
+  const ownership = await prisma.casinoOwnership.findUnique({
+    where: { casinoId },
+    select: { bankroll: true, ownerId: true },
+  });
+  if (!ownership) {
+    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { money: true },
+  });
+  if (!player) throw new Error('PLAYER_NOT_FOUND');
+  if (player.money < betAmount) throw new Error('INSUFFICIENT_FUNDS');
+  if (betAmount < 10) throw new Error('MIN_BET_10');
+
+  const playerCards = [drawBaccaratCard(), drawBaccaratCard()];
+  const bankerCards = [drawBaccaratCard(), drawBaccaratCard()];
+
+  let playerTotal = baccaratTotal(playerCards);
+  let bankerTotal = baccaratTotal(bankerCards);
+
+  if (playerTotal <= 5) {
+    playerCards.push(drawBaccaratCard());
+    playerTotal = baccaratTotal(playerCards);
+  }
+
+  if (bankerTotal <= 5) {
+    bankerCards.push(drawBaccaratCard());
+    bankerTotal = baccaratTotal(bankerCards);
+  }
+
+  const winner = determineBaccaratWinner(playerTotal, bankerTotal);
+  const won = winner === betType;
+  const payout = determineBaccaratPayout(won, betAmount, betType);
+  const seed = generateSeed();
+
+  if (won && ownership.bankroll < payout) {
+    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
+  }
+
+  let casinoBankrupt = false;
+  await prisma.$transaction(async (tx) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: { decrement: betAmount } },
+    });
+
+    await tx.casinoOwnership.update({
+      where: { casinoId },
+      data: {
+        bankroll: { increment: betAmount },
+        totalReceived: { increment: betAmount },
+      },
+    });
+
+    if (won) {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { increment: payout } },
+      });
+
+      await tx.casinoOwnership.update({
+        where: { casinoId },
+        data: {
+          bankroll: { decrement: payout },
+          totalPaidOut: { increment: payout },
+        },
+      });
+    }
+
+    await tx.casinoTransaction.create({
+      data: {
+        playerId,
+        casinoId,
+        ownerId: ownership.ownerId,
+        gameType: 'baccarat',
+        betAmount,
+        payout,
+        ownerCut: 0,
+        result: serializeCasinoResult({
+          playerCards,
+          bankerCards,
+          playerTotal,
+          bankerTotal,
+          winner,
+          betType,
+          won,
+        }),
+        rngSeed: seed,
+      },
+    });
+  });
+
+  casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casino.countryId);
+  await casinoOwnershipService.checkLowBalance(casino.countryId);
+
+  const newBalance = player.money - betAmount + payout;
+  const profit = payout - betAmount;
+
+  return {
+    playerCards,
+    bankerCards,
+    playerTotal,
+    bankerTotal,
+    winner,
+    won,
+    payout,
+    profit,
+    newBalance,
+    casinoBankrupt,
+  };
+}
+
+type PokerSuit = 'hearts' | 'diamonds' | 'clubs' | 'spades';
+type PokerRank = 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
+
+type PokerCard = {
+  suit: PokerSuit;
+  rank: PokerRank;
+};
+
+type VideoPokerHandRank =
+  | 'royal_flush'
+  | 'straight_flush'
+  | 'four_kind'
+  | 'full_house'
+  | 'flush'
+  | 'straight'
+  | 'three_kind'
+  | 'two_pair'
+  | 'jacks_or_better'
+  | 'none';
+
+function drawPokerHand(): PokerCard[] {
+  const suits: PokerSuit[] = ['hearts', 'diamonds', 'clubs', 'spades'];
+  const deck: PokerCard[] = [];
+  for (const suit of suits) {
+    for (let rank = 2 as PokerRank; rank <= 14; rank = (rank + 1) as PokerRank) {
+      deck.push({ suit, rank });
+    }
+  }
+
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = secureRandom(i + 1);
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+
+  return deck.slice(0, 5);
+}
+
+function evaluateVideoPokerHand(cards: PokerCard[]): VideoPokerHandRank {
+  const ranks = cards.map((card) => card.rank).sort((a, b) => a - b);
+  const suits = cards.map((card) => card.suit);
+  const rankCounts = new Map<number, number>();
+  for (const rank of ranks) {
+    rankCounts.set(rank, (rankCounts.get(rank) ?? 0) + 1);
+  }
+
+  const counts = [...rankCounts.values()].sort((a, b) => b - a);
+  const isFlush = suits.every((suit) => suit === suits[0]);
+  const uniqueRanks = [...new Set(ranks)];
+  const isWheel = JSON.stringify(ranks) === JSON.stringify([2, 3, 4, 5, 14]);
+  const isStraight =
+    uniqueRanks.length === 5 &&
+    (ranks[4] - ranks[0] === 4 || isWheel);
+
+  if (isFlush && JSON.stringify(ranks) === JSON.stringify([10, 11, 12, 13, 14])) {
+    return 'royal_flush';
+  }
+  if (isFlush && isStraight) return 'straight_flush';
+  if (counts[0] === 4) return 'four_kind';
+  if (counts[0] === 3 && counts[1] === 2) return 'full_house';
+  if (isFlush) return 'flush';
+  if (isStraight) return 'straight';
+  if (counts[0] === 3) return 'three_kind';
+  if (counts[0] === 2 && counts[1] === 2) return 'two_pair';
+
+  if (counts[0] === 2) {
+    const highPairRank = [...rankCounts.entries()]
+      .filter(([, count]) => count === 2)
+      .map(([rank]) => rank)
+      .sort((a, b) => b - a)[0];
+    if (highPairRank >= 11 || highPairRank === 14) {
+      return 'jacks_or_better';
+    }
+  }
+
+  return 'none';
+}
+
+function videoPokerMultiplier(rank: VideoPokerHandRank): number {
+  switch (rank) {
+    case 'royal_flush':
+      return 250;
+    case 'straight_flush':
+      return 50;
+    case 'four_kind':
+      return 25;
+    case 'full_house':
+      return 9;
+    case 'flush':
+      return 6;
+    case 'straight':
+      return 4;
+    case 'three_kind':
+      return 3;
+    case 'two_pair':
+      return 2;
+    case 'jacks_or_better':
+      return 1;
+    default:
+      return 0;
+  }
+}
+
+/**
+ * Play video poker (single-draw high hand)
+ */
+export async function playVideoPoker(
+  playerId: number,
+  casinoId: string,
+  betAmount: number
+): Promise<{
+  cards: PokerCard[];
+  handRank: VideoPokerHandRank;
+  won: boolean;
+  payout: number;
+  profit: number;
+  newBalance: number;
+  casinoBankrupt: boolean;
+}> {
+  const casino = await ensureCasinoProperty(casinoId);
+  if (!casino) throw new Error('CASINO_NOT_FOUND');
+  if (casino.propertyType !== 'casino') throw new Error('NOT_A_CASINO');
+
+  const ownership = await prisma.casinoOwnership.findUnique({
+    where: { casinoId },
+    select: { bankroll: true, ownerId: true },
+  });
+  if (!ownership) {
+    throw new AppError('NO_OWNER', 'Casino heeft geen eigenaar');
+  }
+
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { money: true },
+  });
+  if (!player) throw new Error('PLAYER_NOT_FOUND');
+  if (player.money < betAmount) throw new Error('INSUFFICIENT_FUNDS');
+  if (betAmount < 10) throw new Error('MIN_BET_10');
+
+  const cards = drawPokerHand();
+  const handRank = evaluateVideoPokerHand(cards);
+  const multiplier = videoPokerMultiplier(handRank);
+  const won = multiplier > 0;
+  const payout = won ? betAmount * (multiplier + 1) : 0;
+  const seed = generateSeed();
+
+  if (won && ownership.bankroll < payout) {
+    throw new AppError('INSUFFICIENT_BANKROLL', 'Casino kas te laag voor deze uitbetaling');
+  }
+
+  let casinoBankrupt = false;
+  await prisma.$transaction(async (tx) => {
+    await tx.player.update({
+      where: { id: playerId },
+      data: { money: { decrement: betAmount } },
+    });
+
+    await tx.casinoOwnership.update({
+      where: { casinoId },
+      data: {
+        bankroll: { increment: betAmount },
+        totalReceived: { increment: betAmount },
+      },
+    });
+
+    if (won) {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { increment: payout } },
+      });
+
+      await tx.casinoOwnership.update({
+        where: { casinoId },
+        data: {
+          bankroll: { decrement: payout },
+          totalPaidOut: { increment: payout },
+        },
+      });
+    }
+
+    await tx.casinoTransaction.create({
+      data: {
+        playerId,
+        casinoId,
+        ownerId: ownership.ownerId,
+        gameType: 'video_poker',
+        betAmount,
+        payout,
+        ownerCut: 0,
+        result: serializeCasinoResult({ cards, handRank, won }),
+        rngSeed: seed,
+      },
+    });
+  });
+
+  casinoBankrupt = await casinoOwnershipService.checkBankruptcy(casino.countryId);
+  await casinoOwnershipService.checkLowBalance(casino.countryId);
+
+  const newBalance = player.money - betAmount + payout;
+  const profit = payout - betAmount;
+
+  return {
+    cards,
+    handRank,
+    won,
+    payout,
+    profit,
+    newBalance,
+    casinoBankrupt,
+  };
+}
+
 /**
  * Get casino transaction history
  * @param casinoId - Casino property ID

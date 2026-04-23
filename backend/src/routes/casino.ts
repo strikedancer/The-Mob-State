@@ -48,6 +48,24 @@ router.get('/games', authenticate, async (_req: AuthRequest, res: Response) => {
       minBet: 10,
       maxBet: 5000,
       difficulty: 'easy'
+    },
+    {
+      id: 'baccarat',
+      name: 'Baccarat',
+      description: 'Zet in op speler, bankier of gelijkspel.',
+      icon: '🃁',
+      minBet: 10,
+      maxBet: 10000,
+      difficulty: 'medium'
+    },
+    {
+      id: 'video_poker',
+      name: 'Video Poker',
+      description: 'Trek 5 kaarten en scoor een sterke pokerhand.',
+      icon: '🃍',
+      minBet: 10,
+      maxBet: 10000,
+      difficulty: 'medium'
     }
   ];
   
@@ -498,6 +516,182 @@ router.post('/dice/roll', authenticate, async (req: AuthRequest, res: Response) 
  * POST /casino/:casinoId/slots
  * Play slot machine
  */
+router.post('/baccarat/play', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { betAmount, betType } = req.body;
+
+    if (!betAmount || typeof betAmount !== 'number' || betAmount <= 0) {
+      return res.status(400).json({
+        event: 'casino.error',
+        params: { reason: 'INVALID_BET_AMOUNT' },
+      });
+    }
+
+    if (!betType || !['player', 'banker', 'tie'].includes(String(betType))) {
+      return res.status(400).json({
+        event: 'casino.error',
+        params: { reason: 'INVALID_BET_TYPE' },
+      });
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: req.player!.id },
+      select: { currentCountry: true },
+    });
+
+    if (!player) {
+      return res.status(404).json({
+        event: 'casino.error',
+        params: { reason: 'PLAYER_NOT_FOUND' },
+      });
+    }
+
+    const casinoId = `casino_${player.currentCountry}`;
+    const result = await casinoService.playBaccarat(
+      req.player!.id,
+      casinoId,
+      betAmount,
+      betType
+    );
+
+    return res.status(200).json({
+      event: result.won ? 'casino.baccarat.win' : 'casino.baccarat.lose',
+      params: {
+        playerCards: result.playerCards,
+        bankerCards: result.bankerCards,
+        playerTotal: result.playerTotal,
+        bankerTotal: result.bankerTotal,
+        winner: result.winner,
+        won: result.won,
+        payout: result.payout,
+        profit: result.profit,
+        betAmount,
+        betType,
+        newBalance: result.newBalance,
+        casinoBankrupt: result.casinoBankrupt,
+      },
+    });
+  } catch (error) {
+    if (error instanceof AppError) {
+      return res.status(400).json({
+        event: 'casino.error',
+        params: { reason: error.message },
+      });
+    }
+
+    if (error instanceof Error) {
+      if (error.message === 'CASINO_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'casino.error',
+          params: { reason: 'CASINO_NOT_FOUND' },
+        });
+      }
+
+      if (error.message === 'INSUFFICIENT_FUNDS') {
+        return res.status(400).json({
+          event: 'casino.error',
+          params: { reason: 'INSUFFICIENT_FUNDS' },
+        });
+      }
+
+      if (error.message === 'MIN_BET_10') {
+        return res.status(400).json({
+          event: 'casino.error',
+          params: { reason: 'Minimum inzet is €10' },
+        });
+      }
+    }
+
+    console.error('Casino baccarat error:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: { reason: 'Er is een fout opgetreden' },
+    });
+  }
+});
+
+router.post('/video-poker/play', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { betAmount } = req.body;
+
+    if (!betAmount || typeof betAmount !== 'number' || betAmount <= 0) {
+      return res.status(400).json({
+        event: 'casino.error',
+        params: { reason: 'INVALID_BET_AMOUNT' },
+      });
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: req.player!.id },
+      select: { currentCountry: true },
+    });
+
+    if (!player) {
+      return res.status(404).json({
+        event: 'casino.error',
+        params: { reason: 'PLAYER_NOT_FOUND' },
+      });
+    }
+
+    const casinoId = `casino_${player.currentCountry}`;
+    const result = await casinoService.playVideoPoker(
+      req.player!.id,
+      casinoId,
+      betAmount
+    );
+
+    return res.status(200).json({
+      event: result.won ? 'casino.video_poker.win' : 'casino.video_poker.lose',
+      params: {
+        cards: result.cards,
+        handRank: result.handRank,
+        won: result.won,
+        payout: result.payout,
+        profit: result.profit,
+        betAmount,
+        newBalance: result.newBalance,
+        casinoBankrupt: result.casinoBankrupt,
+      },
+    });
+  } catch (error) {
+    if (error instanceof AppError) {
+      return res.status(400).json({
+        event: 'casino.error',
+        params: { reason: error.message },
+      });
+    }
+
+    if (error instanceof Error) {
+      if (error.message === 'CASINO_NOT_FOUND') {
+        return res.status(404).json({
+          event: 'casino.error',
+          params: { reason: 'CASINO_NOT_FOUND' },
+        });
+      }
+
+      if (error.message === 'INSUFFICIENT_FUNDS') {
+        return res.status(400).json({
+          event: 'casino.error',
+          params: { reason: 'INSUFFICIENT_FUNDS' },
+        });
+      }
+
+      if (error.message === 'MIN_BET_10') {
+        return res.status(400).json({
+          event: 'casino.error',
+          params: { reason: 'Minimum inzet is €10' },
+        });
+      }
+    }
+
+    console.error('Casino video poker error:', error);
+    return res.status(500).json({
+      event: 'error.internal',
+      params: { reason: 'Er is een fout opgetreden' },
+    });
+  }
+});
+
 router.post('/:casinoId/slots', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const casinoId = String(req.params.casinoId);
@@ -1062,4 +1256,3 @@ router.post('/withdraw/:countryId', authenticate, async (req: AuthRequest, res: 
 });
 
 export default router;
-

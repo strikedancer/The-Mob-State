@@ -524,11 +524,11 @@ const List<HelpTopic> helpTopics = [
     titleNl: 'Casino',
     titleEn: 'Casino',
     summaryNl:
-        'Gok met contant geld op slots, blackjack, roulette en dice. Hoge variantie: je kunt snel veel winnen of verliezen.',
+        'Gok met contant geld op slots, blackjack, roulette, dice, baccarat en video poker. Hoge variantie: je kunt snel veel winnen of verliezen.',
     summaryEn:
-        'Gamble with cash on slots, blackjack, roulette and dice. High variance: you can win or lose large amounts fast.',
+        'Gamble with cash on slots, blackjack, roulette, dice, baccarat and video poker. High variance: you can win or lose large amounts fast.',
     howNl: [
-      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie).',
+      'Beschikbare spellen: Slots (lage inzet, willekeurige uitbetaling), Blackjack (strategie telt), Roulette (buiten/binnenkansen met eigen odds), Dice (hoge variantie), Baccarat (speler/bankier/gelijkspel), Video Poker (5 kaarten, handrank uitbetaling).',
       'Elke game heeft een minimum inzet. Uitkeringsratio verschilt per speltype (bijv. roulette buiten kans ~1.97x, vol getal 35x).',
       'Casino gebruikt alleen contant geld, niet je banksaldo. Zorg dat je cash bij je hebt voor je speelt.',
       'Er is geen cooldown tussen rondes: je kunt onbeperkt snel achter elkaar spelen.',
@@ -536,7 +536,7 @@ const List<HelpTopic> helpTopics = [
       'Verloren inzetten zijn definitief weg; er is geen verzekering of terugkoop.',
     ],
     howEn: [
-      'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance).',
+      'Available games: Slots (low stake, random payout), Blackjack (strategy matters), Roulette (outside/inside bets with own odds), Dice (high variance), Baccarat (player/banker/tie), Video Poker (5-card hand-rank payouts).',
       'Each game has a minimum bet. Payout ratios differ per game type (e.g. roulette outside bet ~1.97x, single number 35x).',
       'Casino uses cash only, not your bank balance. Make sure you have cash before you play.',
       'There is no cooldown between rounds: you can play as fast as you want.',

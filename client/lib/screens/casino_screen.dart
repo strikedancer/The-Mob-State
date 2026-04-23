@@ -9,6 +9,8 @@ import 'games/slot_machine_screen.dart';
 import 'games/blackjack_screen.dart';
 import 'games/roulette_screen.dart';
 import 'games/dice_screen.dart';
+import 'games/baccarat_screen.dart';
+import 'games/video_poker_screen.dart';
 import 'casino_management_screen.dart';
 import '../widgets/education_requirements_dialog.dart';
 import '../utils/top_right_notification.dart';
@@ -409,6 +411,12 @@ class _CasinoScreenState extends State<CasinoScreen> {
       case 'dice':
         destination = DiceScreen(game: game);
         break;
+      case 'baccarat':
+        destination = BaccaratScreen(game: game);
+        break;
+      case 'video_poker':
+        destination = VideoPokerScreen(game: game);
+        break;
       default:
         destination = null;
     }
@@ -790,6 +798,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
       'blackjack': 'assets/images/casino/blackjack.png',
       'roulette': 'assets/images/casino/roulette.png',
       'dice': 'assets/images/casino/dice.png',
+      'baccarat': 'assets/images/casino/blackjack.png',
+      'video_poker': 'assets/images/casino/blackjack.png',
     };
 
     return Card(
@@ -970,6 +980,18 @@ class _CasinoScreenState extends State<CasinoScreen> {
         return l10n.casinoGameRouletteName;
       case 'dice':
         return l10n.casinoGameDiceName;
+      case 'baccarat':
+        return Localizations.localeOf(
+              context,
+            ).languageCode.toLowerCase().startsWith('nl')
+            ? 'Baccarat'
+            : 'Baccarat';
+      case 'video_poker':
+        return Localizations.localeOf(
+              context,
+            ).languageCode.toLowerCase().startsWith('nl')
+            ? 'Video Poker'
+            : 'Video Poker';
       default:
         return null;
     }
@@ -985,6 +1007,18 @@ class _CasinoScreenState extends State<CasinoScreen> {
         return l10n.casinoGameRouletteDesc;
       case 'dice':
         return l10n.casinoGameDiceDesc;
+      case 'baccarat':
+        return Localizations.localeOf(
+              context,
+            ).languageCode.toLowerCase().startsWith('nl')
+            ? 'Zet in op speler, bankier of gelijkspel met strategische odds.'
+            : 'Bet on player, banker, or tie with strategic odds.';
+      case 'video_poker':
+        return Localizations.localeOf(
+              context,
+            ).languageCode.toLowerCase().startsWith('nl')
+            ? 'Trek 5 kaarten en scoor combo’s tot Royal Flush.'
+            : 'Draw 5 cards and hit combos up to Royal Flush.';
       default:
         return null;
     }
