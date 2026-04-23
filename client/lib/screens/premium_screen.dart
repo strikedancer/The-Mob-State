@@ -21,7 +21,7 @@ class PremiumScreen extends StatefulWidget {
 class _PremiumScreenState extends State<PremiumScreen> {
   // Premium tiles are hosted in runtime external images (/images/*).
   static const String _premiumTilesBasePath = 'images/premium_tiles';
-  static const String _premiumTilesCacheVersion = '20260423a';
+  static const String _premiumTilesCacheVersion = '20260423b';
 
   bool _loading = true;
   bool _processingCheckout = false;
