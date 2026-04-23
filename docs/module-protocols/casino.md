@@ -7,6 +7,8 @@ Casino hub, minigames, betting flow and casino ownership or management data.
 - client/lib/screens/casino_screen.dart
 - client/lib/screens/games/baccarat_screen.dart
 - client/lib/screens/games/video_poker_screen.dart
+- client/assets/images/casino/baccarat.png
+- client/assets/images/casino/video_poker.png
 
 ## Change Rules
 - Preserve the core player loop and avoid hidden behavior changes.

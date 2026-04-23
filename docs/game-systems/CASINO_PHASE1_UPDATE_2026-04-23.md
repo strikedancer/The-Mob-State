@@ -36,9 +36,11 @@ Deze update voegt 2 nieuwe casinospellen toe:
 
 - Mobiel/tablet/desktop responsive via fit-to-screen canvas.
 - Kernactie, inzet en status blijven zonder verplichte verticale scroll zichtbaar in de minigame-view.
+- Nieuwe casino-tegelafbeeldingen toegevoegd:
+  - `client/assets/images/casino/baccarat.png`
+  - `client/assets/images/casino/video_poker.png`
 
 ## NL/EN dekking
 
 - Nieuwe game labels en beschrijvingen zijn uitgewerkt in NL en EN in de player flow.
 - `Help & Uitleg` casino-item is bijgewerkt met Baccarat en Video Poker in zowel NL als EN.
-

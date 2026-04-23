@@ -798,8 +798,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
       'blackjack': 'assets/images/casino/blackjack.png',
       'roulette': 'assets/images/casino/roulette.png',
       'dice': 'assets/images/casino/dice.png',
-      'baccarat': 'assets/images/casino/blackjack.png',
-      'video_poker': 'assets/images/casino/blackjack.png',
+      'baccarat': 'assets/images/casino/baccarat.png',
+      'video_poker': 'assets/images/casino/video_poker.png',
     };
 
     return Card(
