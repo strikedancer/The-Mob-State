@@ -571,7 +571,8 @@ Elk land heeft unieke goods:
 ## Casino
 
 - Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout.
-- Casino hub, closed state en alle minigames moeten mobiel/tablet/desktop responsief blijven met 1 primaire verticale scrollflow; content mag niet vastlopen op kleine viewports.
+- Casino hub en closed state moeten mobiel/tablet/desktop een robuuste verticale scrollflow houden.
+- Casino minigames moeten mobiel/tablet/desktop in één viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
 
 ### Games Available
 

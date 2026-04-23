@@ -273,43 +273,44 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
           ),
         ),
         child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 16,
-                ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight - 32,
-                      maxWidth: 980,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Slot Machine Display
-                        _buildSlotMachine(),
-                        const SizedBox(height: 24),
-                        // Bet Controls
-                        _buildBetControls(),
-                        const SizedBox(height: 20),
-                        // Spin Button
-                        _buildSpinButton(),
-                        const SizedBox(height: 20),
-                        // Paytable
-                        _buildPaytable(),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+          child: _buildScaledGameCanvas(
+            width: 560,
+            height: 880,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildSlotMachine(),
+                  const SizedBox(height: 20),
+                  _buildBetControls(),
+                  const SizedBox(height: 14),
+                  _buildSpinButton(),
+                  const SizedBox(height: 14),
+                  _buildPaytable(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildScaledGameCanvas({
+    required Widget child,
+    required double width,
+    required double height,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Center(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: SizedBox(width: width, height: height, child: child),
+          ),
+        );
+      },
     );
   }
 

@@ -443,7 +443,15 @@ class _CasinoScreenState extends State<CasinoScreen> {
         : 'assets/images/casino/casino_background_landscape.png';
 
     return Scaffold(
-      appBar: AppBar(title: Row(children: [Text('🎰 '), Text(l10n.casino)])),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            const Icon(Icons.casino),
+            const SizedBox(width: 8),
+            Text(l10n.casino),
+          ],
+        ),
+      ),
       floatingActionButton:
           _isOwner && _casinoStats != null && !_gameRouteActive
           ? FloatingActionButton.extended(
@@ -682,6 +690,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
   }
 
   Widget _buildGameGrid() {
+    final l10n = AppLocalizations.of(context)!;
     final screenWidth = MediaQuery.of(context).size.width;
     final crossAxisCount = screenWidth < 560
         ? 1
@@ -689,29 +698,79 @@ class _CasinoScreenState extends State<CasinoScreen> {
         ? 2
         : (screenWidth / 320).floor().clamp(2, 4);
     final aspectRatio = screenWidth < 560
-        ? 1.18
-        : (screenWidth < 900 ? 0.95 : 0.9);
+        ? 1.2
+        : (screenWidth < 900 ? 1.0 : 0.95);
 
     return RefreshIndicator(
       onRefresh: _checkOwnershipAndLoadGames,
       child: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 1200,
-          ), // Max width for large screens
-          child: GridView.builder(
-            padding: EdgeInsets.all(16),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              childAspectRatio: aspectRatio,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            ),
-            itemCount: _games.length,
-            itemBuilder: (context, index) {
-              final game = _games[index];
-              return _buildGameCard(game);
-            },
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.55),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.amber.withOpacity(0.65)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.casino, color: Colors.amber, size: 28),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.casino,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                Localizations.localeOf(context).languageCode
+                                        .toLowerCase()
+                                        .startsWith('nl')
+                                    ? 'Kies een spel en plaats je inzet'
+                                    : 'Choose a game and place your bet',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.8),
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: aspectRatio,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => _buildGameCard(_games[index]),
+                    childCount: _games.length,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -734,19 +793,31 @@ class _CasinoScreenState extends State<CasinoScreen> {
     };
 
     return Card(
-      elevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 6,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: InkWell(
         onTap: () => _playGame(game),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(18),
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.amber[700]!, Colors.amber[900]!],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.grey.shade900, Colors.black87],
             ),
+            border: Border.all(
+              color: Colors.amber.withOpacity(0.7),
+              width: 1.2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.45),
+                blurRadius: 14,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
           padding: EdgeInsets.all(isMobile ? 12 : 16),
           child: Column(
@@ -771,27 +842,27 @@ class _CasinoScreenState extends State<CasinoScreen> {
                 style: TextStyle(
                   fontSize: isMobile ? 16 : 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.amber.shade100,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: isMobile ? 4 : 8),
+              const SizedBox(height: 8),
               // Description
               Flexible(
                 child: Text(
                   localizedDescription,
                   style: TextStyle(
                     fontSize: isMobile ? 10 : 12,
-                    color: Colors.white70,
+                    color: Colors.white.withOpacity(0.82),
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              SizedBox(height: isMobile ? 4 : 8),
+              const SizedBox(height: 8),
               // Bet Range
               Container(
                 padding: EdgeInsets.symmetric(
@@ -799,13 +870,13 @@ class _CasinoScreenState extends State<CasinoScreen> {
                   vertical: isMobile ? 4 : 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black38,
+                  color: Colors.amber.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   '€${game.minBet} - €${game.maxBet}',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.amber.shade50,
                     fontSize: isMobile ? 10 : 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -814,6 +885,29 @@ class _CasinoScreenState extends State<CasinoScreen> {
               SizedBox(height: 4),
               // Difficulty
               _buildDifficultyBadge(game.difficulty, l10n, isMobile),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => _playGame(game),
+                  icon: const Icon(Icons.play_arrow),
+                  label: Text(
+                    Localizations.localeOf(
+                          context,
+                        ).languageCode.toLowerCase().startsWith('nl')
+                        ? 'Spelen'
+                        : 'Play',
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amber.shade700,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
