@@ -128,14 +128,17 @@ export async function purchaseCasino(playerId: number, countryId: string, initia
     await tx.property.upsert({
       where: { propertyId: casinoId },
       create: {
+        playerId,
         propertyId: casinoId,
         propertyType: 'casino',
         countryId: normalizedCountryId,
-        name: `Casino ${countryId}`,
-        price: price,
-        income: 0
+        purchasePrice: price,
       },
-      update: {}
+      update: {
+        playerId,
+        countryId: normalizedCountryId,
+        purchasePrice: price,
+      }
     });
 
     // Create ownership record with initial bankroll

@@ -43,6 +43,9 @@ docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120
 
 Alleen als `config` zonder fouten terugkomt, mag de rebuild door.
 
+Snelle check na backend deploy bij casino wijzigingen:
+- Als admin logs `PrismaClientValidationError` tonen met `purchasePrice is missing` tijdens casino-aankoop, controleer direct of `backend/src/services/casinoOwnershipService.ts` bij `property.upsert` het verplichte veld `purchasePrice` meestuurt en geen verouderde property velden gebruikt.
+
 Voor client of admin vervang je alleen de servicenaam:
 
 ```bash
