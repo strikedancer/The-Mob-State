@@ -726,4 +726,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - `npx prisma validate` en `npx prisma generate` succesvol na Mollie/credits schema-uitbreiding.
   - `npm run build` succesvol voor backend na vervanging van Stripe-route door Mollie-route.
   - Runtime payment-flow nog niet end-to-end geverifieerd tegen Mollie webhook omdat dit een geldige `MOLLIE_API_KEY` en publiek bereikbare `MOLLIE_WEBHOOK_URL` vereist.
+- Casino regressiefix (2026-04-23):
+  - `casino_screen.dart` purchase-flow geeft loading-state nu altijd vrij bij onverwachte backend-events (`error.internal`/onbekend event), zodat het scherm niet blijft hangen na koopactie.
+  - Dubbele stats-call na koop verwijderd; state refresh loopt nu via `checkOwnershipAndLoadGames()` als enige bron.
 - Deployment basis voorbereid voor Plesk + Docker zonder FTP-workflow; domeinen kunnen nu via Plesk reverse proxy naar localhost-containers wijzen.

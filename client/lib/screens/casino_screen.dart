@@ -296,6 +296,8 @@ class _CasinoScreenState extends State<CasinoScreen> {
       return;
     }
 
+    var reloadedScreenState = false;
+
     try {
       setState(() => _isLoading = true);
 
@@ -309,9 +311,6 @@ class _CasinoScreenState extends State<CasinoScreen> {
         // Refresh player data
         await authProvider.refreshPlayer();
 
-        // Load casino stats
-        await _loadCasinoStats();
-
         // Show success message
         if (mounted) {
           showTopRightFromSnackBar(context, 
@@ -324,6 +323,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
 
         // Reload ownership and games
         await _checkOwnershipAndLoadGames();
+        reloadedScreenState = true;
       } else if (data['event'] == 'casino.purchase.failed') {
         final params =
             (data['params'] as Map?)?.cast<String, dynamic>() ??
@@ -353,6 +353,16 @@ class _CasinoScreenState extends State<CasinoScreen> {
           );
         }
         setState(() => _isLoading = false);
+      } else {
+        if (mounted) {
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(l10n.unknownResponse),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
     } catch (e) {
       print('[CasinoScreen] Purchase error: $e');
@@ -365,7 +375,10 @@ class _CasinoScreenState extends State<CasinoScreen> {
           ),
         );
       }
-      setState(() => _isLoading = false);
+    } finally {
+      if (mounted && !reloadedScreenState) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 

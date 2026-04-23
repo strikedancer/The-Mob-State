@@ -23,6 +23,7 @@ Casino hub, minigames, betting flow and casino ownership or management data.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Purchase-flow mag nooit een permanente loading-state achterlaten; ook bij onverwachte backend-events of partial failures moet de UI fallbacken naar een bruikbare foutmelding en `_isLoading` vrijgeven.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
