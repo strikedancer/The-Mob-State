@@ -56,6 +56,7 @@ Acceptatie-eis:
 - Crimes/Vehicle Theft -> Garage, Inventory, Prison, Security, Court, Crew, Friends, Notifications, Admin
 - Hitlist -> Crimes, Security, Crew, Dashboard, Admin
 - Crew Wars -> Crew, Hitlist, Crimes, Dashboard, Notifications, Payments, Achievements, Admin
+- Crew Missions -> Crew, Crew Wars, Territory, Crimes, Jobs, Travel, Notifications, Payments, Inventory, Admin
 - Payments/Premium -> Crew, Hitlist/Security, Garage, TuneShop, Events, Dashboard, Admin
 - Economy/Progression wijzigingen -> Balance & Economy, Payments, Crimes, Hitlist, Dashboard, Admin
 - Travel -> Properties, Drugs, Nightclub, Smuggling, Admin
