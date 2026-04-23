@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate Premium & Credits tile images via Leonardo API.
 
-Outputs 11 themed 1024x1024 PNG files to:
+Outputs 12 themed 1024x1024 PNG files to:
   runtime/client-images/premium_tiles/
 
 Optional mirror target:
@@ -80,19 +80,19 @@ def _premium_assets(output_root: Path) -> List[dict]:
             ),
         },
         {
-            "name": "credits_small",
-            "out": output_root / "credits_small.png",
+            "name": "credits_250",
+            "out": output_root / "credits_250.png",
             "prompt": (
-                "Cinematic dark-mafia game tile art, small stack of casino chips and cash bundles on black desk, "
-                "entry-level premium currency purchase feel, warm gold highlights, centered composition, no text"
+                "Cinematic dark-mafia game tile art, compact envelope with a small stack of marked cash and metal tokens on a backroom table, "
+                "starter premium currency package theme, warm amber rim light, centered composition, no text"
             ),
         },
         {
-            "name": "credits_medium",
-            "out": output_root / "credits_medium.png",
+            "name": "credits_500",
+            "out": output_root / "credits_500.png",
             "prompt": (
-                "Cinematic dark-mafia game tile art, medium vault tray with money stacks, chips, and glowing token coins, "
-                "mid-tier premium currency package theme, dramatic lighting, centered composition, no text"
+                "Cinematic dark-mafia game tile art, medium stash tray with cash stacks, casino chips and glowing credit tokens, "
+                "mid-tier premium currency package theme, dramatic teal-amber lighting, centered composition, no text"
             ),
         },
         {
@@ -101,6 +101,14 @@ def _premium_assets(output_root: Path) -> List[dict]:
             "prompt": (
                 "Cinematic dark-mafia game tile art, open steel vault overflowing with cash, chips and premium coins, "
                 "high-value top deal bundle, rich gold and emerald reflections, centered composition, no text"
+            ),
+        },
+        {
+            "name": "credits_2500",
+            "out": output_root / "credits_2500.png",
+            "prompt": (
+                "Cinematic dark-mafia game tile art, elite vault room filled with stacked cash crates, premium tokens and guarded ledgers, "
+                "ultra-value premium currency package, powerful orange-gold cinematic lighting, centered composition, no text"
             ),
         },
         {
@@ -382,4 +390,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

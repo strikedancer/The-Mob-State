@@ -25,6 +25,8 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Crime pacing is reward-tier based, not flat-rate; low-reward crimes stay fast while high-reward crimes must pick up meaningfully longer cooldowns.
+- Reward-tier cooldown changes must stay aligned between backend enforcement, player help copy and any cooldown-reset premium items that reference the crime loop.
 - Drug requirement thresholds must stay aligned with gram-based drug inventory quantities; do not surface legacy `x` units in requirement feedback.
 - Requirement failures for vehicle, weapon selection, weapon suitability and ammo must surface the concrete reason instead of collapsing into a generic internal error.
 - If a crime requires a weapon, the player must be able to see and change the active crime-weapon selection directly from the crime flow or through an explicit nearby CTA.
@@ -44,6 +46,7 @@ Illegal action loop with rewards, failures, jail risk, cooldowns and supporting 
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
+- Verify crime cooldown duration matches the configured reward tier after a successful attempt.
 - Verify no text overflows or clipped buttons appear.
 - Verify weapon-required crimes clearly show which weapon is selected, block cleanly when no weapon is selected, and stay synced with Inventory after refresh/navigation.
 - Verify vehicle-required crimes only accept the selected crime vehicle when that vehicle is actually available in the player's current country and not in transit or market-listed.

@@ -14,11 +14,18 @@ interface CooldownConfig {
   heist: number;
   appeal: number;
   vehicle_theft: number;
+  motorcycle_theft: number;
   boat_theft: number;
   ammo: number;
 }
 
-const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>(['crime', 'job', 'vehicle_theft', 'boat_theft']);
+const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>([
+  'crime',
+  'job',
+  'vehicle_theft',
+  'motorcycle_theft',
+  'boat_theft',
+]);
 
 // Default cooldown periods (in seconds)
 // Designed for long-term retention (months of gameplay)
@@ -26,9 +33,10 @@ const COOLDOWN_PERIODS: CooldownConfig = {
   crime: 90,         // 1.5 minutes between crimes
   job: 900,          // 15 minutes between jobs
   travel: 3600,      // 1 hour per travel leg
-  heist: 21600,      // 6 hours between heists (max 4 heists/day)
-  appeal: 14400,     // 4 hours between appeals (max 6 appeals/day)
+  heist: 21600,      // 6 hours between heists
+  appeal: 14400,     // 4 hours between appeals
   vehicle_theft: 300, // 5 minutes between auto thefts
+  motorcycle_theft: 240, // 4 minutes between motorcycle thefts
   boat_theft: 600,   // 10 minutes between boat thefts
   ammo: 3600,        // 1 hour between ammo purchases
 };
@@ -57,6 +65,31 @@ export function calculateCrimeCooldown(maxReward: number): number {
   } else {
     return 3600;       // 1 hour
   }
+}
+
+/**
+ * Calculate dynamic cooldown for a job based on max earnings.
+ * Higher-paying jobs take longer to repeat.
+ *
+ * @param maxEarnings - Maximum payout for the job
+ * @returns Cooldown in seconds
+ */
+export function calculateJobCooldown(maxEarnings: number): number {
+  // Reward-based progression pacing for legal jobs.
+  // Keep loops endless, but make higher payout actions slower.
+  if (maxEarnings <= 200) {
+    return 180; // 3 minutes
+  } else if (maxEarnings <= 500) {
+    return 300; // 5 minutes
+  } else if (maxEarnings <= 1000) {
+    return 480; // 8 minutes
+  } else if (maxEarnings <= 2000) {
+    return 720; // 12 minutes
+  } else if (maxEarnings <= 4000) {
+    return 1020; // 17 minutes
+  }
+
+  return 1320; // 22 minutes
 }
 
 /**

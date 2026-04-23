@@ -60,6 +60,84 @@ const premiumOfferRepo = (prisma as any).premiumOneTimeOffer as {
   findFirst: (args: any) => Promise<PremiumOfferRecord | null>;
 };
 
+const DEFAULT_CREDIT_BUNDLE_OFFERS = [
+  {
+    key: 'credits_pack_250',
+    titleNl: '250 Credits',
+    titleEn: '250 Credits',
+    descriptionNl: 'Instappakket voor snelle premium acties en kleine boosts.',
+    descriptionEn: 'Entry package for quick premium actions and small boosts.',
+    imageUrl: 'images/premium_tiles/credits_250.png',
+    priceEurCents: 249,
+    rewardType: 'credits' as const,
+    creditAmount: 250,
+    sortOrder: 200,
+  },
+  {
+    key: 'credits_pack_500',
+    titleNl: '500 Credits',
+    titleEn: '500 Credits',
+    descriptionNl: 'Middenpakket voor regelmatige premium upgrades.',
+    descriptionEn: 'Mid package for regular premium upgrades.',
+    imageUrl: 'images/premium_tiles/credits_500.png',
+    priceEurCents: 449,
+    rewardType: 'credits' as const,
+    creditAmount: 500,
+    sortOrder: 210,
+  },
+  {
+    key: 'credits_pack_1000',
+    titleNl: '1000 Credits',
+    titleEn: '1000 Credits',
+    descriptionNl: 'Populaire bundel met sterke waarde per euro.',
+    descriptionEn: 'Popular bundle with strong value per euro.',
+    imageUrl: 'images/premium_tiles/credits_1000.png',
+    priceEurCents: 799,
+    rewardType: 'credits' as const,
+    creditAmount: 1000,
+    sortOrder: 220,
+  },
+  {
+    key: 'credits_pack_2500',
+    titleNl: '2500 Credits',
+    titleEn: '2500 Credits',
+    descriptionNl: 'Groot pakket voor actieve spelers en event-weken.',
+    descriptionEn: 'Large package for active players and event weeks.',
+    imageUrl: 'images/premium_tiles/credits_2500.png',
+    priceEurCents: 1799,
+    rewardType: 'credits' as const,
+    creditAmount: 2500,
+    sortOrder: 230,
+  },
+];
+
+async function ensureDefaultCreditBundleOffers(): Promise<void> {
+  await prisma.premiumOneTimeOffer.createMany({
+    data: DEFAULT_CREDIT_BUNDLE_OFFERS.map((offer) => ({
+      key: offer.key,
+      titleNl: offer.titleNl,
+      titleEn: offer.titleEn,
+      descriptionNl: offer.descriptionNl,
+      descriptionEn: offer.descriptionEn,
+      imageUrl: offer.imageUrl,
+      priceEurCents: offer.priceEurCents,
+      rewardType: offer.rewardType,
+      moneyAmount: null,
+      ammoType: null,
+      ammoQuantity: null,
+      creditAmount: offer.creditAmount,
+      rewardKey: null,
+      durationHours: null,
+      rewardValue: null,
+      metadataJson: null,
+      isActive: true,
+      showPopupOnOpen: false,
+      sortOrder: offer.sortOrder,
+    })),
+    skipDuplicates: true,
+  });
+}
+
 const centsToEuroValue = (cents: number): string => (cents / 100).toFixed(2);
 
 const mapMollieStatus = (status?: string) => {
@@ -244,6 +322,7 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
 }
 
 async function listActivePremiumOffers() {
+  await ensureDefaultCreditBundleOffers();
   return premiumOfferRepo.findMany({
     where: { isActive: true },
     orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
@@ -251,6 +330,7 @@ async function listActivePremiumOffers() {
 }
 
 async function getActivePremiumOfferByKey(key: string) {
+  await ensureDefaultCreditBundleOffers();
   return premiumOfferRepo.findFirst({
     where: { key, isActive: true },
   });

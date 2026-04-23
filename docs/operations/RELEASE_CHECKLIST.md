@@ -643,8 +643,10 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/premium_screen.dart`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Premium/Credits info-popup UX: lange uitlegtekst van tegels verplaatst naar linksboven `i`-icoon popup (NL/EN), terwijl tegel zelf kort en image-first blijft met duidelijke CTA zoals `Koop VIP`, `Koop Crew VIP`, `Koop 1000 credits`
   - Bestanden: `client/lib/screens/premium_screen.dart`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
-- [ ] Premium/Credits image generation workflow vastgelegd: nieuw Leonardo one-shot script met vaste 11 premium tile outputs + externe hosting runbook voor VPS, zodat stijlupdates herhaalbaar zijn en aankooptype per tile visueel duidelijk blijft
+- [ ] Premium/Credits image generation workflow vastgelegd: nieuw Leonardo one-shot script met vaste 12 premium tile outputs + externe hosting runbook voor VPS, zodat stijlupdates herhaalbaar zijn en aankooptype per tile visueel duidelijk blijft
   - Bestanden: `backend/scripts/generate_premium_tiles_leonardo.py`, `docs/operations/PREMIUM_TILES_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Balance & monetization roadmap in 4 fasen vastgelegd (zonder harde dagcaps, met non-pay-to-win gearguardrails)
+  - Bestand: `docs/operations/BALANCE_PHASE_ROADMAP.md`
 - [ ] Aviation i18n: `aircraft.json` bevat nu `name_en` + `description_en` voor alle 6 vliegtuigen; client toont juiste taal op basis van locale
   - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
 - [ ] Prison buyout/jailbreak transactiefix: `world_events.params` in prison flows wordt nu correct als JSON-string opgeslagen (`prison.buyout_success`, `prison.jailbreak_success`, cooldown-markers) i.p.v. object payloads, zodat buyout/jailbreak transacties niet meer kunnen falen op Prisma type mismatch

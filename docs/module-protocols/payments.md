@@ -35,6 +35,8 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Externe betaalredirects moeten na checkout terug landen in de ingesloten game-shell op de Premium & Credits sectie; een losse fullpage premium-route is geen voorkeursflow voor web/PWA.
 - Player VIP en Crew VIP prijzen moeten runtime-config-gestuurd blijven zodat admin ze live kan aanpassen zonder backend deploy.
 - Credit koopbundels en credit-redemption costs moeten admin-beheerbaar zijn via de premium adminflow en niet hardcoded in player UI.
+- Default creditbundels mogen server-side ge-seed worden voor een lege catalogus, maar key, prijs, credit-amount en beeldpad moeten stabiel en idempotent blijven.
+- Premium/Credits tegelafbeeldingen blijven extern gehost onder `images/premium_tiles/...`; generator, backend-catalogus en client mapping moeten dezelfde vaste bestandsnamen delen.
 
 ## Backend Contract Guardrails
 - Nieuwe provider-velden en transaction-modellen moeten ook in Prisma bestaan vóór gebruik.
@@ -56,6 +58,8 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 5. Webhook retry veroorzaakt geen dubbele grant.
 6. Admin/cataloguswijziging wordt correct teruggeleverd in player catalog endpoint.
 7. Crew, hitlist/security en vehicle flows blijven correct na premium effect.
+8. Een lege premium-catalogus krijgt automatisch de verwachte default creditbundels (250 / 500 / 1000 / 2500) zonder duplicaten.
+9. Premium tiles laden op web correct via de externe runtime-route en tonen na een refresh de actuele cache-bust versie.
 
 ## i18n and Messaging
 - Prijslabels en benefit-teksten in NL en EN synchroon houden.

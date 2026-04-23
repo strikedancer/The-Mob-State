@@ -21,7 +21,7 @@ class PremiumScreen extends StatefulWidget {
 class _PremiumScreenState extends State<PremiumScreen> {
   // Premium tiles are hosted in runtime external images (/images/*).
   static const String _premiumTilesBasePath = 'images/premium_tiles';
-  static const String _premiumTilesCacheVersion = '20260423b';
+  static const String _premiumTilesCacheVersion = '20260423c';
 
   bool _loading = true;
   bool _processingCheckout = false;
@@ -306,15 +306,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
   }
 
   Color _offerAccentColor(int amount) {
+    if (amount >= 2500) return Colors.deepOrange.shade700;
     if (amount >= 1000) return Colors.amber.shade700;
     if (amount >= 500) return Colors.teal.shade600;
-    return Colors.blue.shade600;
+    return Colors.indigo.shade600;
   }
 
   String _offerImagePath(int amount) {
+    if (amount >= 2500) return '$_premiumTilesBasePath/credits_2500.png';
     if (amount >= 1000) return '$_premiumTilesBasePath/credits_1000.png';
-    if (amount >= 500) return '$_premiumTilesBasePath/credits_medium.png';
-    return '$_premiumTilesBasePath/credits_small.png';
+    if (amount >= 500) return '$_premiumTilesBasePath/credits_500.png';
+    return '$_premiumTilesBasePath/credits_250.png';
   }
 
   Color _creditItemAccentColor(String effectType) {
@@ -351,7 +353,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
       case 'EVENT_BOOST':
         return '$_premiumTilesBasePath/shop_event_boost.png';
       default:
-        return '$_premiumTilesBasePath/credits_small.png';
+        return '$_premiumTilesBasePath/credits_250.png';
     }
   }
 
@@ -459,6 +461,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
   }
 
   String _imageRelativePath(String imagePath) {
+    if (_isAbsoluteUrl(imagePath)) {
+      final uri = Uri.tryParse(imagePath);
+      final fromPath = uri?.path ?? imagePath;
+      return fromPath.startsWith('/') ? fromPath.substring(1) : fromPath;
+    }
+
     final normalized = WebAssetHelper.normalizeAssetPath(imagePath);
     if (normalized.startsWith('assets/images/')) {
       return normalized.substring('assets/images/'.length);
@@ -485,6 +493,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
   }
 
   List<String> _premiumTileWebCandidates(String imagePath) {
+    if (_isAbsoluteUrl(imagePath)) {
+      return <String>[_withCacheVersion(imagePath)];
+    }
+
     final suffix = _imageRelativePath(imagePath);
     final base = Uri.base;
     final isDefaultPort =
@@ -510,6 +522,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
       }
     }
     return result;
+  }
+
+  bool _isAbsoluteUrl(String value) {
+    final uri = Uri.tryParse(value);
+    return uri != null && uri.hasScheme && uri.host.isNotEmpty;
   }
 
   Widget _buildWebNetworkChain({
@@ -1066,6 +1083,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
         ? (product['descriptionNl'] ?? '')
         : (product['descriptionEn'] ?? '');
     final accent = _offerAccentColor(amount);
+    final configuredImage = (product['imageUrl'] ?? '').toString().trim();
+    final imagePath = configuredImage.isNotEmpty
+        ? configuredImage
+        : _offerImagePath(amount);
     final isLargeOffer = amount >= 1000;
     final resolvedTitle = title.toString().trim().isEmpty
         ? _tr('Creditbundel', 'Credit bundle')
@@ -1082,14 +1103,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
     return _buildVisualTile(
       title: resolvedTitle,
       subtitle: resolvedDescription,
-      imagePath: _offerImagePath(amount),
+      imagePath: imagePath,
       accent: accent,
       icon: Icons.token,
       primaryValue: _tr('$amount credits', '$amount credits'),
       secondaryValue: bundlePrice,
-      badgeLabel: isLargeOffer
-          ? _tr('Top deal', 'Top deal')
-          : _tr('Credits', 'Credits'),
+      badgeLabel: amount >= 2500
+          ? _tr('Ultra deal', 'Ultra deal')
+          : (isLargeOffer
+                ? _tr('Top deal', 'Top deal')
+                : _tr('Credits', 'Credits')),
       actionLabel: bundleCta,
       infoTitle: resolvedTitle,
       infoBody: _tr(

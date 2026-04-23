@@ -755,6 +755,7 @@ export class NotificationService {
         crime: { en: 'crime', nl: 'misdaad' },
         job: { en: 'job', nl: 'werk' },
         vehicle_theft: { en: 'vehicle theft', nl: 'voertuig stelen' },
+        motorcycle_theft: { en: 'motorcycle theft', nl: 'motor stelen' },
         boat_theft: { en: 'boat theft', nl: 'boot stelen' },
         prostitute_recruit: { en: 'prostitute recruitment', nl: 'hoeren werven' },
       };

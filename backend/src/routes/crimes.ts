@@ -197,10 +197,12 @@ router.post(
       }
     }
 
-    // Check crime cooldown (fixed 90 seconds for all crimes)
+    const crimeCooldownSeconds = cooldownService.calculateCrimeCooldown(crime.maxReward);
+
+    // Check crime cooldown (dynamic based on crime reward tier)
     const remainingCooldown = await cooldownService.checkCooldown(
-      req.player!.id, 
-      'crime'
+      req.player!.id,
+      'crime',
     );
 
     if (remainingCooldown > 0) {
@@ -248,8 +250,12 @@ router.post(
       selectedWeapon?.weaponId,
     );
 
-    // Set cooldown after attempt (fixed 90 seconds for all crimes)
-    const cooldownInfo = await cooldownService.setCooldown(req.player!.id, 'crime');
+    // Set cooldown after attempt using reward-tier pacing
+    const cooldownInfo = await cooldownService.setCooldown(
+      req.player!.id,
+      'crime',
+      crimeCooldownSeconds,
+    );
 
     console.log('[Crime Route] Result:', JSON.stringify(result, null, 2));
     console.log('[Crime Route] Cooldown:', JSON.stringify(cooldownInfo, null, 2));

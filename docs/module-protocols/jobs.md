@@ -23,6 +23,8 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- Job pacing is reward-tier based; higher-paying jobs may not reuse a flat global cooldown if backend pacing has moved to dynamic cooldown seconds.
+- Job success/failure semantics in help copy must match the actual backend logic; do not document jobs as guaranteed success if the service can still fail.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -34,6 +36,8 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
+- Verify low-, mid- and high-tier jobs receive the expected cooldown duration based on max payout.
+- Verify failed jobs still return coherent player feedback and do not silently deduct money or health.
 - Verify no text overflows or clipped buttons appear.
 
 ## When To Update This File

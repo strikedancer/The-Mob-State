@@ -201,9 +201,8 @@ class JobService {
       );
     }
 
-    // Global job cooldown (15 min) is enforced by the route middleware (checkCooldown).
-    // Per-job cooldown is intentionally NOT enforced here — players should be able to
-    // repeat the same job once the global cooldown expires.
+    // Reward-based job cooldown pacing is enforced in the jobs route
+    // through cooldownService before and after workJob is executed.
 
     // Jobs have 85% success rate (safer than crimes)
     const successRoll = Math.random();

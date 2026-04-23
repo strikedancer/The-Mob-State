@@ -1,6 +1,5 @@
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
-import { checkCooldown } from '../middleware/checkCooldown';
 import { jobService } from '../services/jobService';
 import * as policeService from '../services/policeService';
 import * as cooldownService from '../services/cooldownService';
@@ -88,9 +87,36 @@ router.get('/history', authenticate, async (req: AuthRequest, res: Response) => 
  * POST /jobs/:jobId/work
  * Work a job (perform the job action)
  */
-router.post('/:jobId/work', authenticate, checkCooldown('job'), async (req: AuthRequest, res: Response) => {
+router.post('/:jobId/work', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const jobId = req.params.jobId as string;
+    const jobDefinition = jobService.getJobDefinition(jobId);
+
+    if (!jobDefinition) {
+      return res.status(400).json({
+        event: 'job.error',
+        params: { reason: 'INVALID_JOB_ID' },
+      });
+    }
+
+    const jobCooldownSeconds = cooldownService.calculateJobCooldown(
+      jobDefinition.maxEarnings,
+    );
+
+    const remainingCooldown = await cooldownService.checkCooldown(
+      req.player!.id,
+      'job',
+    );
+    if (remainingCooldown > 0) {
+      return res.status(429).json({
+        event: 'error.cooldown',
+        params: {
+          actionType: 'job',
+          remainingSeconds: remainingCooldown,
+          message: `You must wait ${remainingCooldown} seconds before performing this action again`,
+        },
+      });
+    }
 
     // Check if player is in intensive care
     const icuMinutes = await intensiveCareService.checkICUStatus(req.player!.id);
@@ -118,7 +144,11 @@ router.post('/:jobId/work', authenticate, checkCooldown('job'), async (req: Auth
     const result = await jobService.workJob(req.player!.id, jobId);
     
     // Set cooldown after job completion
-    const cooldownInfo = await cooldownService.setCooldown(req.player!.id, 'job');
+    const cooldownInfo = await cooldownService.setCooldown(
+      req.player!.id,
+      'job',
+      jobCooldownSeconds,
+    );
 
     return res.status(200).json({
       event: result.success ? 'job.completed' : 'job.failed',
