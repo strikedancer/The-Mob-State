@@ -388,6 +388,9 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
           wantedLevel: result.wantedLevel ?? 0,
           reputation: result.reputation ?? null,
           cooldownRemainingSeconds: result.cooldownRemainingSeconds ?? 0,
+          sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
+          sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
+          sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
         },
       });
     }
@@ -407,6 +410,9 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
         wantedLevel: result.wantedLevel ?? 0,
         xpGained: result.xpGained ?? 0,
         reputation: result.reputation ?? null,
+        sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
+        sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
+        sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
       },
       player: {
         xp: result.newXp ?? null,

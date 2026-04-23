@@ -18,6 +18,7 @@ import { getPlayerTool, degradeTool } from './vehicleToolService';
 import { serializeAchievementForClient } from './achievementService';
 import * as judgeService from './judgeService';
 import { notificationService } from './notificationService';
+import { economyBalanceService } from './economyBalanceService';
 
 const CRIMINAL_RECORD_WIPE_CRIME_ID = 'criminal_record_wipe';
 
@@ -112,6 +113,9 @@ export const crimeService = {
     vehicleChaseDamage?: number;
     newlyUnlockedAchievements?: any[];
     clearedRecordCount?: number;
+    sessionPayoutMultiplier?: number;
+    sessionAttemptsInWindow?: number;
+    sessionWindowMinutes?: number;
   }> {
     const crime = this.getCrimeDefinition(crimeId);
     if (!crime) {
@@ -335,12 +339,25 @@ export const crimeService = {
 
     // Map outcome engine result to existing format
     let success = crimeResult.success;
-    const reward = crimeResult.reward;
+    let reward = crimeResult.reward;
     let xpGained = crimeResult.xpGained;
     let xpLost = 0;
     let jailed = crimeResult.jailed;
     let jailTime = crimeResult.jailTime;
     const vehicleBroken = crimeResult.vehicleBrokeDown || false;
+    const diminishingContext = await economyBalanceService.getDiminishingContext(
+      playerId,
+      'crime',
+    );
+    const sessionPayoutMultiplier = diminishingContext.multiplier;
+
+    if (success && reward > 0 && sessionPayoutMultiplier < 1) {
+      reward = economyBalanceService.applySoftDiminishing(
+        reward,
+        sessionPayoutMultiplier,
+        1,
+      );
+    }
 
     // Handle XP loss on failure
     if (!success) {
@@ -819,6 +836,7 @@ export const crimeService = {
           reward,
           xpGained,
           clearedRecordCount,
+          sessionPayoutMultiplier,
         });
       });
 
@@ -835,6 +853,7 @@ export const crimeService = {
             reward,
             xpGained,
             clearedRecordCount,
+            sessionPayoutMultiplier,
           },
           true
         );
@@ -973,6 +992,9 @@ export const crimeService = {
       vehicleChaseDamage: result.vehicleChaseDamage,
       newlyUnlockedAchievements,
       clearedRecordCount,
+      sessionPayoutMultiplier,
+      sessionAttemptsInWindow: diminishingContext.attemptsInWindow,
+      sessionWindowMinutes: diminishingContext.sessionWindowMinutes,
       // weaponUsed: weaponUsed?.weaponId || null,
       // ammoConsumed,
     };

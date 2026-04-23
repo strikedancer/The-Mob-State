@@ -23,6 +23,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Gebruik timed repairs; geen instant click-pay-complete gedrag.
 - World-cap rotatie moet correct blijven: verkoop of sloop opent opnieuw beschikbaarheid voor die voertuigsoort.
 - Transport hoort niet meer in deze module; cross-country verplaatsing loopt via Smuggling Hub.
+- Balance-aanpassingen voor deze loop gebruiken soft pacing (bijv. sessie-diminishing) in plaats van harde actiecaps, en moeten zichtbaar blijven in economy-telemetrie.
 
 ## Event Rules
 - Politievoertuigen zijn event-only en moeten buiten actieve eventvensters niet stealbaar zijn.

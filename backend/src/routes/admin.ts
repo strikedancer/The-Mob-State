@@ -22,6 +22,7 @@ import { queueService } from '../queues/queueService';
 import { supportTicketService } from '../services/supportTicketService';
 import { systemLogService } from '../services/systemLogService';
 import * as crewWarService from '../services/crewWarService';
+import { economyBalanceService } from '../services/economyBalanceService';
 
 const router = express.Router();
 
@@ -801,6 +802,17 @@ router.get('/stats', async (_req, res) => {
   } catch (error) {
     console.error('Admin stats error:', error);
     res.status(500).json({ error: 'Failed to fetch stats' });
+  }
+});
+
+router.get('/economy/balance-telemetry', async (req, res) => {
+  try {
+    const requestedHours = Number.parseInt(String(req.query.hours || '24'), 10);
+    const telemetry = await economyBalanceService.getTelemetry(requestedHours);
+    return res.json(telemetry);
+  } catch (error) {
+    console.error('Admin economy telemetry error:', error);
+    return res.status(500).json({ error: 'Failed to fetch economy telemetry' });
   }
 });
 

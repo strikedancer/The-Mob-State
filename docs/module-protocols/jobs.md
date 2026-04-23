@@ -24,6 +24,7 @@ Legal work loop with payouts, requirements and cooldown-based progression.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Job pacing is reward-tier based; higher-paying jobs may not reuse a flat global cooldown if backend pacing has moved to dynamic cooldown seconds.
+- Soft balancing via sessieblokken (diminishing returns) mag alleen payout-rate afvlakken en mag nooit eindeloze progressieloops vervangen door harde caps.
 - Job success/failure semantics in help copy must match the actual backend logic; do not document jobs as guaranteed success if the service can still fail.
 
 ## i18n and Messaging

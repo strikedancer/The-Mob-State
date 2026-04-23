@@ -302,6 +302,9 @@ router.post(
         weaponConfiscated: result.weaponConfiscated,
         vehicleChaseDamage: result.vehicleChaseDamage,
         clearedRecordCount: result.clearedRecordCount,
+        sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
+        sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
+        sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
       },
       player: {
         money: result.newMoney,

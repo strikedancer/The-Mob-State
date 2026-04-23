@@ -80,6 +80,11 @@ Elke **5 minuten** gebeurt er automatisch:
 - **Bank Robbery/Kidnapping**: 5 minuten
 - **Heists**: Variabel (zie Heists sectie)
 
+### Crime Balans (Sessie)
+- Er geldt geen harde dagcap op crimes.
+- Bij veel herhalingen in een kort sessieblok kan de uitbetaling per poging licht afnemen (soft diminishing returns).
+- Cooldown blijft leidend; de loop blijft oneindig speelbaar.
+
 ### Wanted Level
 - **Range**: 0-100
 - **Increases bij**:
@@ -278,6 +283,11 @@ Voorbeelden:
 ---
 
 ## Jobs Systeem
+
+### Jobs Balans (Sessie)
+- Er geldt geen harde dagcap op jobs.
+- Bij veel herhalingen in een kort sessieblok kan de uitbetaling per job licht afnemen (soft diminishing returns).
+- Hogere payout-jobs houden langere cooldowns dan lagere payout-jobs.
 
 ### Job Types
 - **Warehouse Worker**: €100-€300/shift, XP: 5

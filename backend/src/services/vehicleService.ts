@@ -12,6 +12,7 @@ import { checkArrest, checkIfJailed } from './policeService';
 import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { applyReputationAction } from './reputationService';
+import { economyBalanceService } from './economyBalanceService';
 import {
   checkAndUnlockAchievements,
   serializeAchievementForClient,
@@ -849,6 +850,9 @@ export const vehicleService = {
     arrestedAfterTheft?: boolean;
     vehicleConfiscated?: boolean;
     cooldownRemainingSeconds?: number;
+    sessionPayoutMultiplier?: number;
+    sessionAttemptsInWindow?: number;
+    sessionWindowMinutes?: number;
   }> {
     console.log(`\n====== [STEAL FUNCTION START] vehicleId="${vehicleId}" ======`);
     
@@ -1044,6 +1048,12 @@ export const vehicleService = {
         cooldownRemainingSeconds: cooldownRemaining,
       };
     }
+
+    const diminishingContext = await economyBalanceService.getDiminishingContext(
+      playerId,
+      'vehicle_theft',
+    );
+    const sessionPayoutMultiplier = diminishingContext.multiplier;
 
     const vehicleWithMeta = withVehicleMeta(vehicleDef, vehicleType);
     const worldCount = await getWorldCountForVehicle(vehicleId);
@@ -1324,7 +1334,12 @@ export const vehicleService = {
       };
     }
 
-    const theftXpGained = calculateVehicleTheftXp(vehicleWithMeta, vehicleType);
+    const baseTheftXp = calculateVehicleTheftXp(vehicleWithMeta, vehicleType);
+    const theftXpGained = economyBalanceService.applySoftDiminishing(
+      baseTheftXp,
+      sessionPayoutMultiplier,
+      4,
+    );
 
     const xpUpdate = await prisma.player.update({
       where: { id: playerId },
@@ -1360,16 +1375,18 @@ export const vehicleService = {
 
     await logVehicleTheftActivity(
       `Succesvolle voertuigdiefstal: ${vehicleDef.name}`,
-      {
-        vehicleId,
-        vehicleName: vehicleDef.name,
-        vehicleType,
-        success: true,
-        xpGained: theftXpGained,
-        newXp: xpUpdate.xp,
-        newRank,
-      },
-    );
+        {
+          vehicleId,
+          vehicleName: vehicleDef.name,
+          vehicleType,
+          success: true,
+          xpGained: theftXpGained,
+          baseXpGained: baseTheftXp,
+          sessionPayoutMultiplier,
+          newXp: xpUpdate.xp,
+          newRank,
+        },
+      );
 
     return {
       success: true,
@@ -1380,6 +1397,9 @@ export const vehicleService = {
       newRank,
       reputation: newReputation,
       newlyUnlockedAchievements,
+      sessionPayoutMultiplier,
+      sessionAttemptsInWindow: diminishingContext.attemptsInWindow,
+      sessionWindowMinutes: diminishingContext.sessionWindowMinutes,
       vehicle: {
         ...stolenVehicle,
         definition: vehicleDef,

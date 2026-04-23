@@ -8,6 +8,7 @@ import { playerService } from './playerService';
 import { educationService } from './educationService';
 import config from '../config';
 import { serializeAchievementForClient } from './achievementService';
+import { economyBalanceService } from './economyBalanceService';
 
 interface JobDefinition {
   id: string;
@@ -207,6 +208,11 @@ class JobService {
     // Jobs have 85% success rate (safer than crimes)
     const successRoll = Math.random();
     const success = successRoll < 0.85;
+    const diminishingContext = await economyBalanceService.getDiminishingContext(
+      playerId,
+      'job',
+    );
+    const sessionPayoutMultiplier = diminishingContext.multiplier;
 
     let earnings = 0;
     let educationBonusPercent = 0;
@@ -221,6 +227,13 @@ class JobService {
       const salaryBonus = this.getEducationSalaryMultiplier(educationProfile, jobId);
       educationBonusPercent = salaryBonus.bonusPercent;
       earnings = Math.floor(baseEarnings * salaryBonus.multiplier);
+      if (sessionPayoutMultiplier < 1) {
+        earnings = economyBalanceService.applySoftDiminishing(
+          earnings,
+          sessionPayoutMultiplier,
+          1,
+        );
+      }
       xpGained = job.xpReward;
     } else {
       // Failure: Lose XP (5-10% of potential earnings as XP penalty)
@@ -295,6 +308,7 @@ class JobService {
             jobName: job.name,
             earnings,
             educationBonusPercent,
+            sessionPayoutMultiplier,
           },
           playerId
         );
@@ -312,6 +326,7 @@ class JobService {
             jobName: job.name,
             earnings,
             xpGained,
+            sessionPayoutMultiplier,
           },
           true
         );
@@ -355,6 +370,9 @@ class JobService {
       xpLost,
       player: result.player,
       newlyUnlockedAchievements,
+      sessionPayoutMultiplier,
+      sessionAttemptsInWindow: diminishingContext.attemptsInWindow,
+      sessionWindowMinutes: diminishingContext.sessionWindowMinutes,
     };
   }
 
