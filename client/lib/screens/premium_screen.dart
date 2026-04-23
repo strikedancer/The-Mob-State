@@ -21,6 +21,7 @@ class PremiumScreen extends StatefulWidget {
 class _PremiumScreenState extends State<PremiumScreen> {
   // Premium tiles are hosted in runtime external images (/images/*).
   static const String _premiumTilesBasePath = 'images/premium_tiles';
+  static const String _premiumTilesCacheVersion = '20260423a';
 
   bool _loading = true;
   bool _processingCheckout = false;
@@ -378,10 +379,82 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
-  bool _isExternalRuntimeImagePath(String path) {
-    final normalized = path.trim();
-    return normalized.startsWith('images/') ||
-        normalized.startsWith('/images/');
+  String _imageRelativePath(String imagePath) {
+    final normalized = WebAssetHelper.normalizeAssetPath(imagePath);
+    if (normalized.startsWith('assets/images/')) {
+      return normalized.substring('assets/images/'.length);
+    }
+    if (normalized.startsWith('assets/assets/images/')) {
+      return normalized.substring('assets/assets/images/'.length);
+    }
+    if (normalized.startsWith('images/')) {
+      return normalized.substring('images/'.length);
+    }
+    if (normalized.startsWith('/images/')) {
+      return normalized.substring('/images/'.length);
+    }
+    return normalized.startsWith('/') ? normalized.substring(1) : normalized;
+  }
+
+  String _withCacheVersion(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return url;
+
+    final nextQuery = Map<String, String>.from(uri.queryParameters);
+    nextQuery['v'] = _premiumTilesCacheVersion;
+    return uri.replace(queryParameters: nextQuery).toString();
+  }
+
+  List<String> _premiumTileWebCandidates(String imagePath) {
+    final suffix = _imageRelativePath(imagePath);
+    final base = Uri.base;
+    final isDefaultPort =
+        (base.scheme == 'https' && base.port == 443) ||
+        (base.scheme == 'http' && base.port == 80);
+    final host = isDefaultPort ? base.host : '${base.host}:${base.port}';
+    final origin = '${base.scheme}://$host';
+
+    final rawCandidates = <String>[
+      '$origin/images/$suffix',
+      '$origin/assets/assets/images/$suffix',
+      '$origin/assets/images/$suffix',
+      WebAssetHelper.toPublicUrl('images/$suffix'),
+      WebAssetHelper.toPublicUrl('assets/assets/images/$suffix'),
+      WebAssetHelper.toPublicUrl('assets/images/$suffix'),
+      WebAssetHelper.toPublicUrl(imagePath),
+    ];
+
+    final unique = <String>{};
+    final result = <String>[];
+    for (final url in rawCandidates) {
+      final resolved = _withCacheVersion(url);
+      if (unique.add(resolved)) {
+        result.add(resolved);
+      }
+    }
+    return result;
+  }
+
+  Widget _buildWebNetworkChain({
+    required List<String> urls,
+    required int index,
+    required Widget fallback,
+  }) {
+    if (index >= urls.length) {
+      return fallback;
+    }
+
+    return Image.network(
+      urls[index],
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        return _buildWebNetworkChain(
+          urls: urls,
+          index: index + 1,
+          fallback: fallback,
+        );
+      },
+    );
   }
 
   Widget _buildTileImage({
@@ -401,18 +474,15 @@ class _PremiumScreenState extends State<PremiumScreen> {
       );
     }
 
-    // For explicit runtime image paths, prefer direct /images loading on web.
-    if (kIsWeb && _isExternalRuntimeImagePath(imagePath)) {
-      return Image.network(
-        WebAssetHelper.toPublicUrl(imagePath),
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return WebAssetHelper.image(
-            imagePath,
-            fit: BoxFit.cover,
-            errorBuilder: fallback,
-          );
-        },
+    if (kIsWeb) {
+      return _buildWebNetworkChain(
+        urls: _premiumTileWebCandidates(imagePath),
+        index: 0,
+        fallback: WebAssetHelper.image(
+          imagePath,
+          fit: BoxFit.cover,
+          errorBuilder: fallback,
+        ),
       );
     }
 

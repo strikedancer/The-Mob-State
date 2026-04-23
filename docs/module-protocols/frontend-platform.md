@@ -41,6 +41,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Bij Docker builds waar `assets/images/` is uitgesloten, moeten gedeclareerde assetdirectories vooraf aangemaakt worden.
 - Images kunnen runtime extern gemount zijn; deploy-flow moet image sync (`rsync` of equivalent) borgen vóór rebuild.
 - Premium/Credits tegelafbeeldingen die regelmatig wijzigen moeten onder externe runtime-opslag blijven (`runtime/client-images/premium_tiles/`) en in de client via `images/premium_tiles/...` worden aangesproken.
+- Voor Premium/Credits tegelafbeeldingen op web: gebruik een network fallback-keten met root-candidates (`/images/...`, `/assets/assets/images/...`, `/assets/images/...`) en cache-bust query zodat oudere 404-responses sneller herstellen na image-sync.
 - Gebruik versie-bestandsnamen of expliciete cache-invalidering bij runtime image updates.
 - Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `firebase-messaging-sw.js` en `main.dart.js` met no-cache/must-revalidate gedrag.
 - Post-deploy cache-eis: hard refresh en indien nodig service worker unregister bij visuele regressies.
