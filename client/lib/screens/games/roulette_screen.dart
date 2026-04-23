@@ -431,6 +431,7 @@ class _RouletteScreenState extends State<RouletteScreen>
   Widget _buildRouletteTable() {
     final width = MediaQuery.of(context).size.width;
     final wheelSize = width < 420 ? 220.0 : 280.0;
+    final frameSize = wheelSize + 64;
 
     return Container(
       width: double.infinity,
@@ -452,17 +453,41 @@ class _RouletteScreenState extends State<RouletteScreen>
         ],
       ),
       child: Center(
-        child: Container(
-          width: wheelSize + 26,
-          height: wheelSize + 26,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: const Color(0xFF1B1B1B),
-            border: Border.all(color: Colors.amber.shade700, width: 3),
-          ),
+        child: SizedBox(
+          width: frameSize,
+          height: frameSize,
           child: Stack(
             alignment: Alignment.center,
             children: [
+              // Image-based decorative rim/frame around the wheel.
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/casino/roulette.png',
+                  width: frameSize,
+                  height: frameSize,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: frameSize,
+                    height: frameSize,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF1B1B1B),
+                      border: Border.all(
+                        color: Colors.amber.shade700,
+                        width: 4,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                width: frameSize,
+                height: frameSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.amber.shade700, width: 2.5),
+                ),
+              ),
               AnimatedBuilder(
                 animation: _spinAnimation,
                 builder: (context, child) {
