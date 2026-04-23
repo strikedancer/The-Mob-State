@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import 'dart:convert';
+import 'dart:math';
 import '../../services/api_client.dart';
 import '../../models/casino_game.dart';
 import '../../utils/formatters.dart';
@@ -38,6 +39,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       _isPlaying = true;
       _playerCards = [];
       _dealerCards = [];
+      _playerTotal = 0;
+      _dealerTotal = 0;
     });
 
     try {
@@ -48,7 +51,6 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       final data = jsonDecode(response.body);
 
       if (data['event'] != null && data['params'] != null) {
-        // Check for error event
         if (data['event'] == 'casino.error') {
           setState(() {
             _isPlaying = false;
@@ -67,7 +69,6 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
         }
 
         final params = data['params'];
-        print('🃏 Blackjack response params: $params');
         final won = params['won'] ?? false;
         final playerCards = List<int>.from(
           params['playerHand'] ?? params['playerCards'] ?? [],
@@ -75,7 +76,6 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
         final dealerCards = List<int>.from(
           params['dealerHand'] ?? params['dealerCards'] ?? [],
         );
-        print('🃏 Parsed cards - Player: $playerCards, Dealer: $dealerCards');
         final playerTotal = params['playerTotal'] ?? 0;
         final dealerTotal = params['dealerTotal'] ?? 0;
         final payout = params['payout'] ?? 0;
@@ -83,21 +83,26 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
             params['profit'] ?? (won ? payout - _betAmount : -_betAmount);
         final casinoBankrupt = params['casinoBankrupt'] ?? false;
 
+        await _animateDealSequence(
+          playerCards: playerCards,
+          dealerCards: dealerCards,
+        );
+
+        if (!mounted) return;
+
         setState(() {
-          _playerCards = playerCards;
-          _dealerCards = dealerCards;
           _playerTotal = playerTotal;
           _dealerTotal = dealerTotal;
           _isPlaying = false;
         });
 
         if (casinoBankrupt) {
-          await Future.delayed(Duration(milliseconds: 500));
+          await Future.delayed(const Duration(milliseconds: 500));
           _showBankruptcyDialog();
           return;
         }
 
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
         _showResultDialog(won, payout, profit, playerTotal, dealerTotal);
       } else {
         setState(() {
@@ -113,9 +118,55 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     }
   }
 
+  Future<void> _animateDealSequence({
+    required List<int> playerCards,
+    required List<int> dealerCards,
+  }) async {
+    if (!mounted) return;
+
+    setState(() {
+      _playerCards = [];
+      _dealerCards = [];
+      _playerTotal = 0;
+      _dealerTotal = 0;
+    });
+
+    final rounds = max(playerCards.length, dealerCards.length);
+
+    for (int i = 0; i < rounds; i++) {
+      if (!mounted) return;
+      if (i < playerCards.length) {
+        setState(() {
+          _playerCards = [..._playerCards, playerCards[i]];
+          _playerTotal = _calculateHandTotal(_playerCards);
+        });
+        await Future.delayed(const Duration(milliseconds: 260));
+      }
+
+      if (!mounted) return;
+      if (i < dealerCards.length) {
+        setState(() {
+          _dealerCards = [..._dealerCards, dealerCards[i]];
+          _dealerTotal = _calculateHandTotal(_dealerCards);
+        });
+        await Future.delayed(const Duration(milliseconds: 260));
+      }
+    }
+  }
+
+  int _calculateHandTotal(List<int> cards) {
+    int total = cards.fold(0, (sum, card) => sum + card);
+    int aces = cards.where((card) => card == 1).length;
+
+    while (aces > 0 && total + 10 <= 21) {
+      total += 10;
+      aces--;
+    }
+
+    return total;
+  }
+
   String _getCardImage(int cardValue) {
-    // Backend returns card values 1-10 (1=Ace, 2-9=number, 10=10/J/Q/K)
-    // Pick a random suit for display (we just cycle through for variety)
     final suits = ['hearts', 'diamonds', 'clubs', 'spades'];
     final suit = suits[cardValue % 4];
 
@@ -123,7 +174,6 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     if (cardValue == 1) {
       filename = 'ace';
     } else if (cardValue == 10) {
-      // For 10-value cards, randomly show 10, jack, queen, or king
       final faceCards = ['10', 'jack', 'queen', 'king'];
       filename = faceCards[DateTime.now().millisecondsSinceEpoch % 4];
     } else {
@@ -138,15 +188,15 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: cards
               .map(
                 (card) => Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
                   child: Image.asset(
                     _getCardImage(card),
                     width: 40,
@@ -160,7 +210,10 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Center(
-                        child: Text('$card', style: TextStyle(fontSize: 10)),
+                        child: Text(
+                          '$card',
+                          style: const TextStyle(fontSize: 10),
+                        ),
                       ),
                     ),
                   ),
@@ -168,8 +221,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
               )
               .toList(),
         ),
-        SizedBox(height: 4),
-        Text('Totaal: $total', style: TextStyle(fontSize: 12)),
+        const SizedBox(height: 4),
+        Text('Totaal: $total', style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -186,13 +239,13 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
         : 'Je hebt verloren';
 
     if (playerTotal == 21) {
-      message = '🎉 BLACKJACK! €${formatCompactNumber(payout)}';
+      message = 'BLACKJACK! €${formatCompactNumber(payout)}';
     }
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(won ? '🎉 Gewonnen!' : 'Verloren'),
+        title: Text(won ? 'Gewonnen!' : 'Verloren'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -209,17 +262,17 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
                 color: won ? Colors.amber : Colors.grey,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildCardRow(_playerCards, 'Jouw kaarten', playerTotal),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             _buildCardRow(_dealerCards, 'Dealer kaarten', dealerTotal),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               '${profit >= 0 ? AppLocalizations.of(context)!.profit : AppLocalizations.of(context)!.loss}: €${formatCompactNumber(profit.abs())}',
               style: TextStyle(
@@ -233,14 +286,14 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _play();
             },
-            child: Text('Opnieuw'),
+            child: const Text('Opnieuw'),
           ),
         ],
       ),
@@ -259,7 +312,10 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('Casino Failliet!', style: TextStyle(color: Colors.red)),
+        title: const Text(
+          'Casino Failliet!',
+          style: TextStyle(color: Colors.red),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -269,11 +325,11 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
               height: 200,
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) =>
-                  Icon(Icons.warning, color: Colors.red, size: 100),
+                  const Icon(Icons.warning, color: Colors.red, size: 100),
             ),
-            SizedBox(height: 16),
-            Text(
-              '🎰 Het casino is failliet gegaan!\n\n'
+            const SizedBox(height: 16),
+            const Text(
+              'Het casino is failliet gegaan!\n\n'
               'De eigenaar had niet genoeg geld in de kas om alle uitbetalingen te dekken.\n\n'
               'Het casino is nu gesloten en kan opnieuw gekocht worden.',
               textAlign: TextAlign.center,
@@ -287,7 +343,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
               Navigator.of(context).pop();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-            child: Text('Terug naar Casino'),
+            child: const Text('Terug naar Casino'),
           ),
         ],
       ),
@@ -298,139 +354,113 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('🃏 ${widget.game.name}'),
+        title: Text(widget.game.name),
         backgroundColor: Colors.green[900],
         foregroundColor: Colors.white,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.green[900]!,
-              Colors.green[700]!,
-              Colors.green[900]!,
-            ],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final isPortrait = constraints.maxHeight > constraints.maxWidth;
+                return Image.asset(
+                  isPortrait
+                      ? 'assets/images/casino/casino_background_portrait.png'
+                      : 'assets/images/casino/casino_background_landscape.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Container(color: const Color(0xFF113322)),
+                );
+              },
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: _buildScaledGameCanvas(
-            width: 620,
-            height: 880,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Dealer Cards
-                  if (_dealerCards.isNotEmpty) ...[
-                    Text(
-                      'Dealer: $_dealerTotal',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    SizedBox(height: 10),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: _dealerCards
-                          .map((card) => _buildCard(card))
-                          .toList(),
-                    ),
-                    SizedBox(height: 24),
-                  ],
-
-                  // Player Cards
-                  if (_playerCards.isNotEmpty) ...[
-                    Text(
-                      'Jij: $_playerTotal',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+          Positioned.fill(
+            child: Container(color: Colors.black.withValues(alpha: 0.32)),
+          ),
+          SafeArea(
+            child: _buildScaledGameCanvas(
+              width: 620,
+              height: 880,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildBlackjackTable(),
+                    const SizedBox(height: 24),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: _playerCards
-                          .map((card) => _buildCard(card))
-                          .toList(),
-                    ),
-                    SizedBox(height: 30),
-                  ],
-
-                  // Bet Controls
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.black45,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Inzet',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          '€${formatCompactNumber(_betAmount)}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: _getBetButtons(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-
-                  // Play Button
-                  ElevatedButton(
-                    onPressed: _isPlaying ? null : _play,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      foregroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 60,
-                        vertical: 20,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: _isPlaying
-                        ? SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : Text(
-                            'SPELEN!',
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Inzet',
                             style: TextStyle(
-                              fontSize: 24,
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            '€${formatCompactNumber(_betAmount)}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                  ),
-                ],
+                          const SizedBox(height: 20),
+                          Wrap(
+                            alignment: WrapAlignment.center,
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: _getBetButtons(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    ElevatedButton(
+                      onPressed: _isPlaying ? null : _play,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 60,
+                          vertical: 20,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: _isPlaying
+                          ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text(
+                              'SPELEN!',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -452,27 +482,101 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     );
   }
 
-  Widget _buildCard(int value) {
+  Widget _buildBlackjackTable() {
     return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.green.shade800, Colors.green.shade900],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFF7A4B1F), width: 4),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black45,
+            blurRadius: 18,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            'Dealer: $_dealerTotal',
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
+            children: _dealerCards
+                .asMap()
+                .entries
+                .map((entry) => _buildCard(entry.value, entry.key, 'dealer'))
+                .toList(),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Jij: $_playerTotal',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
+            children: _playerCards
+                .asMap()
+                .entries
+                .map((entry) => _buildCard(entry.value, entry.key, 'player'))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCard(int value, int index, String owner) {
+    return Container(
+      key: ValueKey('$owner-$index-$value'),
       width: 60,
       height: 90,
-      margin: EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.asset(
-          _getCardImage(value),
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey[400]!, width: 2),
-            ),
-            child: Center(
-              child: Text(
-                value.toString(),
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0.72, end: 1.0),
+        duration: const Duration(milliseconds: 280),
+        curve: Curves.easeOutBack,
+        builder: (context, scale, child) {
+          return Transform.scale(scale: scale, child: child);
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            _getCardImage(value),
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey[400]!, width: 2),
+              ),
+              child: Center(
+                child: Text(
+                  value.toString(),
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
@@ -488,7 +592,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected ? Colors.amber : Colors.white24,
         foregroundColor: isSelected ? Colors.black : Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       child: Text(label),
     );
