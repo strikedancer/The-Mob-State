@@ -368,6 +368,35 @@ class VehicleCard extends StatelessWidget {
                           icon: Icons.flash_on,
                           color: Colors.amber,
                           onPressed: onFinishRepairWithCredits,
+                          customIcon: SizedBox(
+                            width: isSmallScreen ? 16 : 22,
+                            height: isSmallScreen ? 16 : 22,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Center(
+                                  child: Icon(
+                                    Icons.build,
+                                    size: isSmallScreen ? 13 : 18,
+                                    color: onFinishRepairWithCredits != null
+                                        ? Colors.amber
+                                        : Colors.grey,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: -1,
+                                  bottom: -1,
+                                  child: Icon(
+                                    Icons.flash_on,
+                                    size: isSmallScreen ? 9 : 12,
+                                    color: onFinishRepairWithCredits != null
+                                        ? Colors.orangeAccent
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       if (onList != null && !vehicle.marketListing)
                         _buildActionButton(
@@ -523,6 +552,7 @@ class VehicleCard extends StatelessWidget {
     required IconData icon,
     required Color color,
     required VoidCallback? onPressed,
+    Widget? customIcon,
   }) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -532,7 +562,7 @@ class VehicleCard extends StatelessWidget {
         return Tooltip(
           message: label,
           child: IconButton(
-            icon: Icon(icon),
+            icon: customIcon ?? Icon(icon),
             color: onPressed != null ? color : Colors.grey,
             onPressed: onPressed,
             iconSize: iconSize,

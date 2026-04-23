@@ -44,6 +44,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Cooldown-reset redemptions moeten blokkeren zonder actieve cooldown (`ACTION_COOLDOWN_NOT_ACTIVE`) om creditverlies te voorkomen.
 - Ondersteunde gameplay-timeout overlays (crime, jobs, voertuig- en bootdiefstal, en andere actieve cooldown-schermen met matchende actionType) moeten een directe credit speed-up knop tonen; speler mag niet geforceerd worden eerst terug te navigeren naar `Premium & Credits`.
 - Voor `VEHICLE_REPAIR_FINISH` moet op beschadigde voertuigkaarten (garage/marina) een contextuele credits-knop zichtbaar zijn; de flow start indien nodig eerst reparatie en rondt daarna direct af via dezelfde redeem-flow met `vehicleInventoryId`.
+- Het instant-repair icoon op voertuigkaarten gebruikt een gecombineerde visual (steeksleutel + bliksem) zodat de actie herkenbaar blijft als reparatie én instant effect.
 - Tijdelijke `EVENT_BOOST` credit-items moeten capped side-grade boosts blijven; geen permanente statstacking of pay-to-win power creep.
 
 ## Backend Contract Guardrails
