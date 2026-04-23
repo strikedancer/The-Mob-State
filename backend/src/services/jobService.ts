@@ -9,6 +9,7 @@ import { educationService } from './educationService';
 import config from '../config';
 import { serializeAchievementForClient } from './achievementService';
 import { economyBalanceService } from './economyBalanceService';
+import { calculateJobCooldown } from './cooldownService';
 
 interface JobDefinition {
   id: string;
@@ -27,6 +28,17 @@ type PlayerEducationProfile = Awaited<
 
 class JobService {
   private jobs: JobDefinition[] = [];
+
+  private withComputedCooldown(job: JobDefinition): JobDefinition {
+    const computedMinutes = Math.max(
+      1,
+      Math.ceil(calculateJobCooldown(job.maxEarnings) / 60),
+    );
+    return {
+      ...job,
+      cooldownMinutes: computedMinutes,
+    };
+  }
 
   private getEducationSalaryMultiplier(
     profile: PlayerEducationProfile,
@@ -69,7 +81,7 @@ class JobService {
    * Get all available jobs
    */
   getAvailableJobs(): JobDefinition[] {
-    return this.jobs;
+    return this.jobs.map((job) => this.withComputedCooldown(job));
   }
 
   /**
@@ -83,7 +95,9 @@ class JobService {
    * Get jobs available for a specific player level
    */
   getJobsForLevel(playerLevel: number): JobDefinition[] {
-    return this.jobs.filter((job) => job.minLevel <= playerLevel);
+    return this.jobs
+      .filter((job) => job.minLevel <= playerLevel)
+      .map((job) => this.withComputedCooldown(job));
   }
 
   async getJobsForPlayer(playerId: number, playerRank: number): Promise<{

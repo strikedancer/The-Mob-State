@@ -66,3 +66,7 @@ Status (afgerond):
 - Conclusie:
   - huidige curve is actief en werkt zonder hard caps;
   - volgende tuningstap pas doen met grotere sample size (bijv. 72h) om overfit op lage aantallen te voorkomen.
+
+## Hotfix Notes (2026-04-23)
+- Jobs UI cooldown badge aligned with backend truth source.
+- `cooldownMinutes` in job payload is now derived from `calculateJobCooldown(maxEarnings)` so card tooltip timing matches real action cooldown.

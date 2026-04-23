@@ -255,6 +255,18 @@ Acceptatie-eis:
 - Bij online testen is een wijziging niet done zonder remote pull/build/logcheck op de VPS als de wijziging daar effect hoort te hebben.
 - De agent mag hiervoor een vooraf geconfigureerde PuTTY/SSH verbinding gebruiken, maar verbindingsdetails horen niet in repo-bestanden thuis; die worden alleen buiten de repository vastgelegd.
 
+### Commit/Push/Deploy Standaardflow (Verplicht Tenzij Expliciet Anders Gevraagd)
+
+Voor deze codebase geldt als standaard uitvoerflow na een functionele wijziging:
+1. Commit lokale wijzigingen.
+2. Push naar GitHub.
+3. Voer op VPS een `git pull origin main` uit.
+4. Rebuild/herstart de relevante service(s) met `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
+5. Controleer direct de service-logs.
+
+Verplichte uitzonderingsregel:
+- Alleen afwijken van deze flow als de gebruiker expliciet aangeeft dat iets lokaal-only, zonder commit, zonder push of zonder deploy moet blijven.
+
 Fallback bij API validation errors:
 - Gebruik de fallback payload variant uit `generate_school_narcotics_images_leonardo.py` (latest main).
 - Als nog steeds failing: log volledige Leonardo response payload in run-output en corrigeer request-schema, niet de key handling.
