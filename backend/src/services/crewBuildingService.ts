@@ -16,6 +16,8 @@ const styleOrder: CrewBuildingStyle[] = ['camping', 'rural', 'city', 'villa', 'v
 
 const MAX_STANDARD_BUILDING_LEVEL = 10;
 const MAX_VIP_BUILDING_LEVEL = 15;
+const HQ_GLOBAL_MAX_LEVEL = 19;
+const HQ_UPGRADE_GROWTH_MULTIPLIER = 1.55;
 const HQ_MEMBER_CAPS_BY_GLOBAL_LEVEL = [
   5,
   10,
@@ -38,6 +40,13 @@ const HQ_MEMBER_CAPS_BY_GLOBAL_LEVEL = [
   149,
   150,
 ] as const;
+const HQ_UPGRADE_COSTS_BY_GLOBAL_LEVEL = (() => {
+  const costs = [0, 75000, 250000, 900000];
+  for (let level = costs.length; level <= HQ_GLOBAL_MAX_LEVEL; level++) {
+    costs[level] = Math.round(costs[level - 1] * HQ_UPGRADE_GROWTH_MULTIPLIER);
+  }
+  return costs as number[];
+})();
 const starterStorageTypes: CrewBuildingType[] = [
   'car_storage',
   'boat_storage',
@@ -97,14 +106,14 @@ function getLevelDefinition(type: CrewBuildingType, level: number): BuildingLeve
   }
 
   if (type === 'hq') {
-    if (level === 4) {
-      return {
-        level: 4,
-        upgradeCost: 3000000,
-        memberCap: 32,
-      };
-    }
-    throw new Error('BUILDING_LEVEL_NOT_FOUND');
+    const normalizedLevel = Math.max(0, level);
+    return {
+      level: normalizedLevel,
+      upgradeCost: getHqUpgradeCostByGlobalLevel(normalizedLevel),
+      memberCap: HQ_MEMBER_CAPS_BY_GLOBAL_LEVEL[
+        Math.min(normalizedLevel, HQ_MEMBER_CAPS_BY_GLOBAL_LEVEL.length - 1)
+      ],
+    };
   }
 
   const baseLevels = [...def.levels].sort((a, b) => a.level - b.level);
@@ -180,6 +189,48 @@ function getHqGlobalLevel(style: CrewBuildingStyle | null, level: number | null)
   }
   const styleIndex = Math.max(0, styleOrder.indexOf(normalizedStyle));
   return styleIndex * 4 + normalizedLevel;
+}
+
+function getHqUpgradeCostByGlobalLevel(globalLevel: number): number {
+  const safeLevel = Math.max(0, globalLevel);
+  if (safeLevel < HQ_UPGRADE_COSTS_BY_GLOBAL_LEVEL.length) {
+    return HQ_UPGRADE_COSTS_BY_GLOBAL_LEVEL[safeLevel];
+  }
+
+  let cost = HQ_UPGRADE_COSTS_BY_GLOBAL_LEVEL[HQ_UPGRADE_COSTS_BY_GLOBAL_LEVEL.length - 1];
+  for (let level = HQ_UPGRADE_COSTS_BY_GLOBAL_LEVEL.length; level <= safeLevel; level++) {
+    cost = Math.round(cost * HQ_UPGRADE_GROWTH_MULTIPLIER);
+  }
+  return cost;
+}
+
+function getHqNextUpgradeCost(
+  style: CrewBuildingStyle | null,
+  level: number | null,
+  crewVip: boolean
+): number | null {
+  const normalizedStyle = style ?? 'camping';
+  if (level === null) {
+    return getHqUpgradeCostByGlobalLevel(0);
+  }
+
+  const normalizedLevel = Math.max(0, level);
+  const styleMax = getHqStyleMaxLevel(normalizedStyle, crewVip);
+  const currentGlobalLevel = getHqGlobalLevel(normalizedStyle, normalizedLevel);
+
+  if (normalizedLevel < styleMax) {
+    return getHqUpgradeCostByGlobalLevel(currentGlobalLevel + 1);
+  }
+
+  const nextStyle = getNextStyle(normalizedStyle);
+  if (!nextStyle) {
+    return null;
+  }
+  if (nextStyle === 'vip' && !crewVip) {
+    return null;
+  }
+
+  return getHqUpgradeCostByGlobalLevel(getHqGlobalLevel(nextStyle, 0));
 }
 
 function getHqMemberCap(style: CrewBuildingStyle | null, level: number | null): number {
@@ -441,6 +492,10 @@ export async function getCrewBuildingStatus(crewId: number) {
           : level < maxLevel && (type === 'hq' || level < allowedByHq)
               ? getLevelDefinition(type, level + 1)
               : null;
+      const nextUpgradeCost =
+        type === 'hq'
+          ? getHqNextUpgradeCost(style as CrewBuildingStyle | null, level, crewVip)
+          : (level === null || level < maxLevel ? nextLevelDef?.upgradeCost ?? null : null);
 
       return {
         type,
@@ -454,8 +509,7 @@ export async function getCrewBuildingStatus(crewId: number) {
             ? getHqMemberCap(style as CrewBuildingStyle | null, level)
             : levelDef?.memberCap ?? null,
         parkingSlots: levelDef?.parkingSlots ?? null,
-        nextUpgradeCost:
-          level === null || level < maxLevel ? nextLevelDef?.upgradeCost ?? null : null,
+        nextUpgradeCost,
         allowedLevelByHq: type === 'hq' ? maxLevel : allowedByHq,
         crewVip,
         imageKey: level !== null && style ? `${type}_${style}_lvl${level}` : null,
@@ -509,8 +563,12 @@ export async function purchaseCrewBuilding(
   }
 
   const purchaseLevel = type === 'hq' ? 0 : 1;
-  const levelDef = getLevelDefinition(type, 0);
-  const cost = levelDef.upgradeCost;
+  const cost =
+    type === 'hq'
+      ? existing
+        ? getHqUpgradeCostByGlobalLevel(getHqGlobalLevel(style, purchaseLevel))
+        : getHqUpgradeCostByGlobalLevel(0)
+      : getLevelDefinition(type, 0).upgradeCost;
 
   return prisma.$transaction(async (tx) => {
     const crew = await tx.crew.findUnique({
@@ -604,8 +662,12 @@ export async function upgradeCrewBuilding(
     }
   }
 
-  const nextLevelDef = getLevelDefinition(type, nextLevel);
-  const cost = nextLevelDef.upgradeCost;
+  const cost =
+    type === 'hq'
+      ? getHqUpgradeCostByGlobalLevel(
+          getHqGlobalLevel(current.style as CrewBuildingStyle | null, nextLevel)
+        )
+      : getLevelDefinition(type, nextLevel).upgradeCost;
 
   return prisma.$transaction(async (tx) => {
     const crew = await tx.crew.findUnique({

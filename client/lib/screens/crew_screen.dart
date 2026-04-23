@@ -462,8 +462,13 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   List<int> _getHqCostsByGlobalLevel() {
-    const baseCosts = [0, 75000, 250000, 900000];
-    return [for (final _ in _hqStyleOrder) ...baseCosts];
+    const globalMaxLevel = 19;
+    const growthMultiplier = 1.55;
+    final costs = <int>[0, 75000, 250000, 900000];
+    for (var level = costs.length; level <= globalMaxLevel; level++) {
+      costs.add((costs[level - 1] * growthMultiplier).round());
+    }
+    return costs;
   }
 
   int _requiredSideBuildingLevelForHqUpgrade(String? style, int? level) {
@@ -2446,6 +2451,14 @@ class _CrewScreenState extends State<CrewScreen>
     );
     final nextCost = building['nextUpgradeCost'] as int?;
     String selectedStyle = 'camping';
+    final hqCurrentStyle = building['style'] as String?;
+    final hqCurrentLevel = building['level'] as int?;
+    final hqCurrentGlobalLevel = isHq && hqCurrentLevel != null
+        ? _getHqGlobalLevel(hqCurrentStyle, hqCurrentLevel)
+        : null;
+    final targetDisplayLevel = isHq
+        ? ((hqCurrentGlobalLevel ?? -1) + 1).clamp(0, 19)
+        : purchaseLevel;
 
     if (isHq) {
       final nextStyle = _getNextHqStyle();
@@ -2481,19 +2494,16 @@ class _CrewScreenState extends State<CrewScreen>
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Text('${_t(locale, 'label.level')}: $purchaseLevel'),
+              if (isHq)
+                Text(
+                  '${_tr(locale, 'Volgend level', 'Next level')}: L$targetDisplayLevel',
+                )
+              else
+                Text('${_t(locale, 'label.level')}: $purchaseLevel'),
               if (nextCost != null) ...[
                 const SizedBox(height: 8),
                 Text('${_tr(locale, 'Kosten', 'Cost')}: ${_money(nextCost)}'),
               ],
-              const SizedBox(height: 12),
-              if (isHq)
-                Text(
-                  locale == 'nl'
-                      ? 'Volgende stijl ontgrendelen'
-                      : 'Unlock next style',
-                  style: const TextStyle(color: Colors.grey),
-                ),
               if (isHq)
                 DropdownButtonFormField<String>(
                   initialValue: selectedStyle,
@@ -2524,7 +2534,11 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text(locale == 'nl' ? 'Kopen' : 'Purchase'),
+              child: Text(
+                isHq && hqCurrentLevel != null
+                    ? _t(locale, 'action.upgrade')
+                    : (locale == 'nl' ? 'Kopen' : 'Purchase'),
+              ),
             ),
           ],
         ),
@@ -5123,11 +5137,7 @@ class _CrewScreenState extends State<CrewScreen>
                             : (level < maxLevel && nextCost != null)
                             ? '${_t(locale, 'action.upgrade')} (${_money(nextCost)})'
                             : canUnlockNextStyle
-                            ? _tr(
-                                locale,
-                                'Ontgrendel ${_localizedHqStyleLabel(locale, nextStyle)} (HQ)',
-                                'Unlock ${_localizedHqStyleLabel(locale, nextStyle)} (HQ)',
-                              )
+                            ? '${_t(locale, 'action.upgrade')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
                             : status,
                       ),
                     ),
@@ -5142,7 +5152,9 @@ class _CrewScreenState extends State<CrewScreen>
                 ],
               ),
               if (!isLeader &&
-                  ((level == null) || (level < maxLevel && nextCost != null)))
+                  ((level == null) ||
+                      (level < maxLevel && nextCost != null) ||
+                      canUnlockNextStyle))
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(

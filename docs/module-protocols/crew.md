@@ -25,6 +25,8 @@ Crew membership, HQ progression, storage, requests and crew coordination.
 - Responsive usability without pushing critical actions off-screen.
 - Fresh crews must start with Crew HQ and all crew storage buildings at level 1 so bank deposits, shared storage and upgrade flows work immediately without a manual bootstrap purchase.
 - Crew HQ member-cap progression must stay continuous across all HQ styles and levels; the cap overview may not reset per style and must scale through to the intended max of 150 members.
+- Crew HQ upgrade costs must stay continuous across all HQ styles and levels; upgrade prices may not reset per style tier and must keep increasing per next global level.
+- HQ progression CTA copy in `HQ & Upgrades` must stay level-based (upgrade to next level) instead of style-unlock wording.
 - Crew land-vehicle storage must accept both cars and motorcycles through the same crew storage path, while boats remain separate in boat storage.
 - Crew War actions that target an opponent player must offer a selectable list of enemy crew members in the War Room; players may not be forced to know or manually type raw player IDs.
 - Crew HQ and storage cards must show purchase and upgrade costs directly in the UI; price information may not be hidden behind failed actions.
