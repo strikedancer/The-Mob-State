@@ -1,0 +1,733 @@
+- Crew War / Territory koppeling gecontroleerd: War Room toont bij `territory_war` en `total_war` echte Territory-regio\'s als claim-doelen, inclusief bruikbare labels i.p.v. generieke placeholder-targets.
+# Release Checklist
+
+Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy uit te rollen.
+
+## Status
+- Release mode: **Batched deploy**
+- Laatste update: 2026-04-22
+
+## Pending Changes (nog NIET live)
+
+### Frontend
+- [x] Territory mobiele kaartzoom toegevoegd: de interactieve SVG ondersteunt nu directe pinch-zoom en pan zonder zichtbare zoom/reset-knoppen zodat kleine regio's op mobiel beter aantikbaar zijn en ingezoomde kaartdelen verschoven kunnen worden
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory inkomsten zichtbaar gemaakt: de gebiedsmodal toont nu echte backend-bedragen per payout/per uur/per dag en het webdashboard toont voor crewleaders hoeveel gebieden en landen de crew bezit plus huidig en totaal territory-inkomen
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `backend/src/services/territoryService.ts`, `backend/src/routes/player.ts`, `client/lib/screens/territory_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/services/dashboard_service.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory crew-gate UX verduidelijkt: het scherm leest nu `GET /crews/mine`, toont de eigen crew in het detailpaneel en vervangt de kale `not_in_crew` fout door duidelijke NL/EN uitleg wanneer een speler nog geen crew heeft; aanvalsknoppen blijven verborgen tot de speler daadwerkelijk in een crew zit
+  - Bestanden: `client/lib/services/territory_service.dart`, `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory gebiedslijnen extra zichtbaar gemaakt: SVG-regio borders renderen nu zwart met iets dikkere stroke zodat de grenzen ook op lichtgrijze/neutrale gebieden duidelijk leesbaar blijven
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory SVG renderer gegeneraliseerd voor multi-country betrouwbaarheid: kleuren/lijnen/hover worden nu op alle `path`-elementen toegepast met neutrale fallbackkleur als backend-regio mapping ontbreekt, zodat gebiedslijnen en hover-darkening niet meer wegvallen bij id-mismatches
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory map scroll + hover UX aangescherpt: de volledige map-tab gebruikt nu één primaire verticale scrollflow (kaart + regiogrid + detailpaneel) conform frontend-richtlijnen; SVG-regio's worden bij hover donkerder, tonen tooltip op hover/tap en forceren zichtbare grenslijnen (`stroke` + `stroke-width`) voor betere regio-afbakening
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory buildfix voor interactieve SVG map: ontbrekende private helpertypes (`_SvgMapParseResult`, `_SvgRegionShape`) plus expliciete Flutter pointer-event import toegevoegd zodat de nieuwe klikbare kaart en hover-tooltip flow compileert in Docker/web release builds
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory SVG pool uitgebreid met Zuid-Afrika: `southAfricaLow.svg` is vanuit de root dropzone naar de game maps-map gekopieerd en country fallback mapping bevat nu ook `za`, zodat de kaart direct als asset kan laden in Territory
+  - Bestanden: `client/assets/images/maps/southAfricaLow.svg`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory map UX verbeterd voor live gebruik: kaartweergave is vergroot, regio's zijn nu direct klikbaar op de SVG (path hit-test op `svgElementId`) en tonen een tooltip met gebiedsnaam; geselecteerde regio opent meteen detailpaneel, en detail-content is scrollbaar gemaakt op desktop/tablet layouts
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `client/pubspec.yaml`, `client/pubspec.lock`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory kaart-interactie opgeschoond: tikken op een regio opent nu een responsive modal-bottom-sheet met gebiedsinformatie en de aanvalsknop; het oude detailpaneel en de losse regiokaarten onder de SVG zijn verwijderd zodat de map-tab één primaire interactiestroom heeft
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory crew-validatie en desktop split-layout gecorrigeerd: contest-routes bepalen crew membership nu via de crew-membership lookup in plaats van een ontbrekende auth-payload `crewId`, en op brede schermen staat uitleg/legend links terwijl de SVG rechts rendert
+  - Bestanden: `backend/src/routes/territory.ts`, `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory desktop icon-compatibiliteit hersteld: algemene sidebar-iconstijl blijft ongewijzigd, maar Territory gebruikt op desktop/web nu `Icons.language` voor de sidebar-entry en landselector omdat die in deze shell wel zichtbaar rendert
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory regio-modal verduidelijkt: contest toont nu resterende prep/active/resolve-tijd, cooldown per actie, opbrengstklasse per gebied en gescheiden aanvaller/verdediger-acties zodat spelers niet langer de verkeerde knopset zien
+  - Bestanden: `backend/src/services/territoryService.ts`, `backend/src/routes/territory.ts`, `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory conteststatus ververst nu direct in de open regio-modal en oudere contests zonder opgeslagen tijdvensters krijgen automatisch afgeleide prep/active/resolve-tijden, zodat spelers geen foutmelding-plus-stale-state of `Onbekend` timers meer zien
+  - Bestanden: `backend/src/services/territoryService.ts`, `client/lib/screens/territory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory NL asset source gecorrigeerd: Nederland gebruikt nu direct `netherlandsLow.svg` (backend `svgAssetKey` + frontend fallback) in plaats van de legacy `cafuego-Nederland` alias
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory multi-country SVG batch verwerkt: alle aangeleverde landenkaarten uit de root dropzone zijn gekopieerd naar `client/assets/images/maps`, `cafuego-Nederland.svg` is vervangen door de nieuwe NL SVG (`netherlandsLow.svg` als source), en Territory UI laadt nu land-specifieke map-assets dynamisch op basis van backend `country.svgAssetKey` met fallback per country-code
+  - Bestanden: `client/assets/images/maps/cafuego-Nederland.svg`, `client/assets/images/maps/argentinaLow.svg`, `client/assets/images/maps/australiaLow.svg`, `client/assets/images/maps/belgium.svg`, `client/assets/images/maps/brazilLow.svg`, `client/assets/images/maps/chinaLow.svg`, `client/assets/images/maps/colombiaLow.svg`, `client/assets/images/maps/franceLow.svg`, `client/assets/images/maps/germanyLow.svg`, `client/assets/images/maps/italyLow.svg`, `client/assets/images/maps/japanLow.svg`, `client/assets/images/maps/mexicoLow.svg`, `client/assets/images/maps/netherlandsLow.svg`, `client/assets/images/maps/russiaLow.svg`, `client/assets/images/maps/spainLow.svg`, `client/assets/images/maps/switzerlandLow.svg`, `client/assets/images/maps/turkeyLow.svg`, `client/assets/images/maps/ukLow.svg`, `client/assets/images/maps/usaLow.svg`, `client/lib/screens/territory_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory map asset routing fix in client nginx: `/assets/assets/images/maps/*` en `/assets/images/maps/*` worden nu eerst uit de Flutter bundle geserveerd (try_files) voordat de algemene external-image alias pakt, zodat de ingebouwde `cafuego-Nederland.svg` niet meer 404't door runtime mount routing
+  - Bestanden: `client/docker/nginx.conf`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory schermnavigatie en visuals uitgebreid: nieuwe route `/territory` in main.dart, zichtbaar sidebar-icoon in dashboard (web-shell), help-entry in NL/EN, gekoppelde `cafuego-Nederland.svg` kaart met dynamische region-inkleuring op ownership/contest status, en een zichtbare map-legend met crew-naam ↔ kleur
+  - Bestanden: `client/lib/main.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/data/help_content.dart`, `client/lib/screens/territory_screen.dart`, `client/assets/images/maps/cafuego-Nederland.svg`, `client/pubspec.yaml`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory screen notification fix: showTopRightNotification calls gecorrigeerd naar showTopRightFromSnackBar SnackBar pattern om build-fout op te lossen
+  - Bestanden: `client/lib/screens/territory_screen.dart`
+
+### Documentation
+- [x] Drug quantity semantics and player copy aligned to grams across Travel, Drugs and Crimes: travel carry-weight checks, property drug storage totals and crime requirement messages now follow real gram quantities, with matching Help & Uitleg and protocol notes so 351 means 351g throughout the player-facing flow
+  - Bestanden: `backend/src/services/travelService.ts`, `backend/src/services/drugService.ts`, `backend/src/services/crimeService.ts`, `client/lib/widgets/crime_card.dart`, `client/lib/l10n/app_nl.arb`, `client/lib/l10n/app_en.arb`, `client/lib/data/help_content.dart`, `docs/module-protocols/travel.md`, `docs/module-protocols/drugs.md`, `docs/module-protocols/crimes.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Dashboard navigatie-guardrail aangescherpt: web-sidebar (`_buildWebMenuItems` + `_WebSection` switch) is nu expliciet de leidende bron voor module-navigatie; legacy tegel-grid geldt alleen nog als fallback en telt niet als enige oplevering
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory systeem volledig uitgewerkt voor crew map-control (NL-first, multi-country ready): nieuw protocol beschrijft contest lifecycle, datamodel, API surface, anti-abuse, seizoenen, responsive map UX en i18n-eisen; alle territory tuning keys zijn expliciet vastgelegd als admin/runtime database settings (geen file-based gameplay settings)
+  - Bestanden: `docs/module-protocols/territory.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory Fase 1 geïmplementeerd: DB-schema (7 tabellen + 12 NL provincies seed), service (contests, acties, anti-abuse, resolve, notificaties), routes (player + admin moderation), app.ts+index.ts bootstrap, Flutter service + responsive screen
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `backend/src/services/territoryService.ts`, `backend/src/routes/territory.ts`, `backend/src/app.ts`, `backend/src/index.ts`, `client/lib/services/territory_service.dart`, `client/lib/screens/territory_screen.dart`
+- [x] Build fix jail overlay: ontbrekende formatter import opgelost zodat web release build niet meer faalt op `formatAdaptiveDurationFromSeconds`
+  - Bestanden: `client/lib/widgets/jail_screen.dart`
+- [x] Territory permanent ingeschakeld: `TERRITORY_ENABLED` geforceerd op `1`, NL country seed staat op enabled en service behandelt territory runtime als always-on
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `backend/src/services/territoryService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Auth 401-diagnostiek uitgebreid voor spontane logout-meldingen: de auth-middleware logt nu route + reden (`MISSING_TOKEN`, `INVALID_TOKEN`, `TOKEN_EXPIRED`, `SESSION_REPLACED`, `PLAYER_NOT_FOUND`) en `/player/me` logt interne 500-fouten met spelercontext, zodat avondelijke sessie-uitval achteraf herleidbaar is
+  - Bestanden: `backend/src/middleware/authenticate.ts`, `backend/src/routes/player.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Auth sessie-uitval gehard: tijdelijke `/player/me` netwerk- of backendfouten loggen spelers niet langer lokaal uit; alleen expliciete auth-fouten zoals verlopen/vervangen/ongeldige tokens beëindigen nog de sessie. Backend login gebruikt nu ook de configureerbare JWT-expiry en schrijft weer een `auth.session.login` event voor consistente sessievervanging
+  - Bestanden: `backend/src/services/authService.ts`, `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Crypto pushmelding-taal gelijkgetrokken per speler: crypto marktnieuws/headlines worden nu per ontvanger opgebouwd op basis van `preferredLanguage`, zodat NL-spelers geen Engelse headline meer krijgen in dezelfde push/in-app melding
+  - Bestanden: `backend/src/services/cryptoService.ts`, `docs/module-protocols/crypto.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Admin dashboard info-kaarten verder leesbaar gemaakt: alerts en status-infoblokken hebben nu expliciete hover/focus contraststates en badges met sterkere tekstcontrast zodat kerninfo ook in dark mode en op lagere helderheid direct leesbaar blijft
+  - Bestanden: `admin/src/App.css`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Drugs faciliteiten apparatuur-afbeeldingen voorbereid voor Leonardo + externe hosting: apparatuur-rijen renderen nu image-first via `DRUG_FACILITY_IMAGE_BASE_URL` (met icon-fallback), inclusief one-shot generator-script en upload/runbook met 15 vaste bestandsnamen onder de client runtime image-route `/images/facilities/equipment`
+  - Bestanden: `client/lib/config/app_config.dart`, `client/lib/screens/drug_facility_screen.dart`, `backend/scripts/generate_drug_facility_equipment_images_leonardo.py`, `docs/operations/DRUG_FACILITY_EQUIPMENT_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Client nginx serveert nu ook compatibiliteitsroute voor oudere drugs image-URLs: cached of nog niet ververste web builds die nog `/game-assets/facilities/...` gebruiken krijgen dezelfde runtime-mounted equipment images terug, zodat avatars niet leeg blijven tijdens rollout/cache-overgang
+  - Bestanden: `client/docker/nginx.conf`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Drugs equipment avatar-loader probeert nu meerdere externe URL-routes per afbeelding (`configured base` -> `/images/facilities` -> `/game-assets/facilities`) zodat ronde upgrade-icons niet leeg blijven bij gedeeltelijk ververste frontend-cache of tijdelijke route-mismatch
+  - Bestanden: `client/lib/screens/drug_facility_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Drugs productie -> faciliteiten doorlink op web hersteld: de knop in Productie toont niet langer alleen een oranje waarschuwing, maar schakelt in de embedded Drugs Omgeving direct door naar de Faciliteiten-subview; buiten embedded context blijft normale schermnavigatie actief
+  - Bestanden: `client/lib/screens/drug_production_screen.dart`, `client/lib/screens/drug_environment_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Drug Faciliteiten apparatuur-upgrades visueel hersteld: backend `equipmentUpgrades.icon` waarden (zoals `lightbulb`, `soil`, `thermostat`, `biotech`) renderen nu als echte Material-icons i.p.v. platte tekst in de avatar, zodat upgrade-rijen weer direct herkenbaar zijn en niet meer als gebroken "geen image" ogen
+  - Bestanden: `client/lib/screens/drug_facility_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Drug Facilities web-subview en school image fallback gehard: de embedded faciliteiten-weergave toont niet langer een tweede interne `Drug Faciliteiten` appbar/terugknop (parent header blijft leidend), en school gate/track images vallen op web nu automatisch terug op `${origin}/game-assets/school` wanneer `SCHOOL_IMAGE_BASE_URL` niet expliciet is meegegeven
+  - Bestanden: `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/drug_environment_screen.dart`, `client/lib/config/app_config.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] PROTOCOL_MASTER aangevuld met vaste one-shot Leonardo workflow voor VPS/Docker: API-key handling en volgorde staan nu expliciet vast (compose env injectie via `docker-compose.plesk.yml`, ondersteunde env fallback-bronnen, verplichte verify/restart/run/check stappen) zodat image-generatie volgende keer in 1 run reproduceerbaar is
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Admin system logs uitgebreid voor live QA: het admin-scherm ondersteunt nu ook een `1 uur` filter en een gerichte wis-actie voor de huidige filterselectie, zodat testers oude systeemfouten snel kunnen opruimen zonder breder historisch logmateriaal kwijt te raken
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Admin live-test logging verbeterd en drugs productie-500 opgelost: `/drugs/productions` crasht niet meer door Dart-achtige array-calls in de incident-weergave, en `system.error` logs serialiseren nu echte `Error` details met naam, message en stack zodat System Logs in admin bruikbare foutinformatie tonen tijdens online testen
+  - Bestanden: `backend/src/services/drugService.ts`, `backend/src/services/systemLogService.ts`
+- [ ] Repo git-guard aangescherpt: de bestaande repo-local `pre-push` hook blokkeert nu directe pushes naar `main`/`master` standaard, met alleen een expliciete `ALLOW_MAIN_PUSH=1` override voor bewuste noodgevallen; workflow-documentatie stuurt nu standaard naar branch + pull request
+  - Bestanden: `.githooks/pre-push`, `GIT_WORKFLOW.md`
+- [x] Protocol-architectuur opgeschoond: `PROTOCOL_MASTER.md` is verder teruggebracht naar orchestrator-only documentatie; profielnavigatie/privacy, frontend platform/PWA-shell regels en notificatie-pipeline regels staan nu in eigen cross-cutting protocollen en de module-index verwijst daar expliciet naar
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/README.md`, `docs/module-protocols/player-profile.md`, `docs/module-protocols/frontend-platform.md`, `docs/module-protocols/notifications.md`, `docs/module-protocols/dashboard.md`, `docs/module-protocols/bank.md`, `docs/module-protocols/prison.md`, `docs/module-protocols/crypto.md`, `docs/module-protocols/messages.md`
+- [x] Harde meertaligheidseis aangescherpt in master protocol: alle nieuwe en gewijzigde tekst, meldingen, labels, dialogs, notificaties en admin/player UI-signalen moeten in dezelfde wijziging minimaal NL + EN bevatten; 1-talige oplevering geldt niet als done
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
+- [x] Push lifecycle guardrail toegevoegd: eerder toegestane web/PWA push moet na refresh, herstart of nieuwe build automatisch opnieuw aan het actuele device-token worden gekoppeld zonder handmatige re-enable door de speler
+  - Bestanden: `docs/module-protocols/notifications.md`
+- [x] Web push deploy-regressie gefixt: `firebase-messaging-sw.js` krijgt nu dezelfde no-cache service-worker policy als `flutter_service_worker.js`, web token-sync probeert na service-worker settle opnieuw het actuele FCM token op te halen, en backend tokenregistratie is idempotent/upsert-based zodat refreshes en token-rotatie niet stil op oude records blijven hangen
+  - Bestanden: `client/docker/nginx.conf`, `client/lib/services/notification_service.dart`, `backend/src/routes/notifications.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/frontend-platform.md`, `docs/module-protocols/notifications.md`, `docs/operations/DEPLOY.md`
+- [x] Territory contest-start gefixt voor live MariaDB: nieuwe contests worden nu transaction-safe teruggelezen via `LAST_INSERT_ID()` in plaats van een exacte `startedAt` timestamp-match, zodat neutrale regio-aanvallen niet stil rollbacken op `DATETIME` zonder milliseconden; de attacker-actie `raid` gebruikt in de Flutter UI weer de juiste lowercase action key
+  - Bestanden: `backend/src/services/territoryService.ts`, `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`
+- [ ] Mobiele/PWA build self-heal toegevoegd: de web shell berekent nu een build-fingerprint uit `version.json`, `flutter_bootstrap.js`, `main.dart.js` en beide service workers; bij een echte buildwissel unregistert de client precies één keer oude service workers, wist `CacheStorage` en laadt daarna hard opnieuw zodat nieuwe builds minder vaak vast blijven op oude mobile caches
+  - Bestanden: `client/web/index.html`, `docs/module-protocols/frontend-platform.md`, `docs/operations/DEPLOY.md`
+- [ ] Cooldown-expiry pushmeldingen persistent gemaakt: crimes, jobs en vehicle/boat theft slaan nu de effectieve cooldownduur en laatste notificatiestatus op in `action_cooldowns`, en een minuut-cron herstelt verlopen pushes na backend/container restarts zodat timer-meldingen online niet meer stil verdwijnen na deploys
+  - Bestanden: `backend/src/services/cooldownService.ts`, `backend/src/services/cronService.ts`, `backend/src/startup/ensureCooldownSchema.ts`, `backend/prisma/schema.prisma`, `docs/module-protocols/notifications.md`
+- [ ] Admin test-push toegevoegd voor live QA: in de spelerbeheer-tab kan admin nu een directe test push naar een geselecteerde speler sturen met eigen titel/body/data-type, inclusief auditlog en terugkoppeling van het aantal geregistreerde devices zodat online pushproblemen sneller te scheiden zijn van ontbrekende tokenregistratie
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/notifications.md`
+- [ ] Push delivery-diagnostiek gekoppeld aan Admin System Logs: ontbrekende player devices, FCM recipient-failures en route-excepties van admin test-pushes landen nu als `system.error` met playerId/device-count/error-codes in Admin > System Logs, zodat live QA stille pushproblemen direct kan herleiden zonder containerconsole
+  - Bestanden: `backend/src/services/notificationService.ts`, `backend/src/routes/admin.ts`, `docs/module-protocols/notifications.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Firebase Admin bootstrap gehard voor productiecontainers: de backend kan service-account credentials nu ook rechtstreeks uit env (`FIREBASE_SERVICE_ACCOUNT_JSON`, `FIREBASE_SERVICE_ACCOUNT_BASE64` of split env vars) lezen en `docker-compose.plesk.yml` geeft die runtime-waarden door, zodat live push niet meer afhankelijk is van een niet-gemount `firebase-service-account.json` pad in de image
+  - Bestanden: `backend/src/services/notificationService.ts`, `docker-compose.plesk.yml`, `docs/module-protocols/notifications.md`, `docs/operations/FIREBASE_SETUP.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Plesk secret-persistentie geborgd: tracked `.env.plesk` is vervangen door `.env.plesk.example`, productiecommands gebruiken voortaan een server-side `.env.plesk`, en Firebase/service secrets horen niet meer inline in `docker-compose.plesk.yml` zodat `git pull` ze niet opnieuw kan wegdrukken
+  - Bestanden: `.gitignore`, `.env.plesk.example`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/notifications.md`, `docs/operations/FIREBASE_SETUP.md`, `docs/operations/DEPLOY.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] PuTTY/Plesk update-runbook vastgelegd: productie-updates moeten voortaan via backup -> `git pull` -> `docker compose --env-file .env.plesk -f docker-compose.plesk.yml config` -> gerichte service rebuild -> logcheck lopen, en legacy `.env` bestanden moeten na migratie naar een backupnaam worden hernoemd om verkeerde env-bronnen te voorkomen
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/DEPLOY.md`, `docs/operations/FIREBASE_SETUP.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Web push foreground/resume hersteld: de webclient toont data-only push payloads nu ook in foreground met browser notifications en probeert bij app resume opnieuw de geautoriseerde pushsessie te syncen, zodat live web/PWA sessies minder snel op een stale token blijven hangen en admin test-pushes ook bij actieve tabs zichtbaar worden
+  - Bestanden: `client/lib/services/notification_service.dart`, `client/lib/main.dart`, `client/lib/services/web_notification_stub.dart`, `client/lib/services/web_notification_web.dart`, `docs/module-protocols/notifications.md`
+- [x] Dashboard Crew Wars statistiek-crash gefixt: Crew Wars metadata normaliseert territory-targets nu met geldige array-filtering in plaats van een niet-bestaande `.where(...)` runtime-call, en `/player/dashboard-stats` valt nu terug op een lege Crew Wars hub als die gekoppelde module toch nog faalt zodat dashboardstatistieken niet collectief op nul of 500 eindigen
+  - Bestanden: `backend/src/services/crewWarService.ts`, `backend/src/routes/player.ts`
+- [x] Harde Help & Uitleg-eis aangescherpt in master protocol: bij aanpassingen of nieuwe modules moet altijd gecontroleerd worden of de player-help nog klopt en moet help-content in dezelfde wijziging mee worden bijgewerkt als gedrag of uitleg verandert
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
+- [x] Harde protocol-koppelingseis aangescherpt in master protocol: bij nieuwe systemen of modules moeten altijd alle relevante bestaande protocollen worden nagelopen op koppelingen, overlap en regressierisico's voordat iets als done geldt
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Nieuw Crew Wars systeem gebootstrapt in protocol-laag: nieuw protocol voor war lifecycle, war types, scoring, VIP-balans, anti-abuse, rewards, seasons en Discord/notificatie-koppelingen toegevoegd en opgenomen in master dependency map + module-index
+  - Bestanden: `docs/module-protocols/crew-wars.md`, `docs/module-protocols/README.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+
+### Backend
+- [x] Territory contest lifecycle geautomatiseerd: backend synchroniseert contests nu automatisch van `preparing` naar `active`, daarna naar `lockdown` en tenslotte naar `resolved` op map/overview/action reads, zodat gestart territorium niet meer vast blijft hangen zonder handmatige admin-resolve
+  - Bestanden: `backend/src/services/territoryService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory live resolve hotfix toegepast: resolve normaliseert SQL puntentotalen nu naar echte nummers voordat capture-percentages worden berekend, zodat neutrale regio's met alleen attacker-acties correct ownership krijgen; territory contest-afhandeling draait bovendien elke minuut via cron en verstuurt naast push nu ook inboxberichten voor contest start/capture/loss
+  - Bestanden: `backend/src/services/territoryService.ts`, `backend/src/services/cronService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory BigInt response-fix toegepast: aggregate velden uit `overview` en `leaderboard` worden nu eerst naar gewone numbers genormaliseerd voordat de JSON-response teruggaat, zodat admin/system logs geen 500 `Do not know how to serialize a BigInt` meer tonen bij Territory API-calls
+  - Bestanden: `backend/src/services/territoryService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory contest-start response-fix toegepast: `contestId` uit `LAST_INSERT_ID()` wordt nu ook naar een gewone number genormaliseerd, zodat de eerste aanvalsklik geen backend-500 meer geeft terwijl de contest al succesvol is aangemaakt
+  - Bestanden: `backend/src/services/territoryService.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory modal regio-preview toegevoegd: de gebiedsmodal toont nu ook een compacte visual van alleen het aangeklikte SVG-gebied in plaats van alleen tekst, met responsieve plaatsing rechts op brede layouts en gestapeld op smallere schermen
+  - Bestanden: `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory NL region mapping gelijkgetrokken met nieuwe `netherlandsLow.svg`: backend startup seed schrijft nu de echte SVG element ids (`NL-GR`, `NL-FR`, `NL-DR`, etc.) en update bestaande `territory_regions` rows op duplicate, zodat ownership-kleuren, hover-darkening en grenslijnen weer op de correcte Nederlandse gebieden renderen
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory country seed uitgebreid met Zuid-Afrika (`za`): startup bootstrap schrijft nu `southAfricaLow` als `svgAssetKey`, zodat `/territory/countries` en map-resolutie deze landkaart direct kunnen aanbieden
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory country bootstrap uitgebreid: startup schema seed activeert nu alle beschikbare landen (`nl`, `be`, `ar`, `au`, `br`, `cn`, `co`, `fr`, `de`, `it`, `jp`, `mx`, `ru`, `es`, `ch`, `tr`, `gb`, `us`) met gekoppelde `svgAssetKey`, zodat de countries API en frontend country-switch direct met de nieuwe map-asset pool werken
+  - Bestanden: `backend/src/startup/ensureTerritorySchema.ts`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist moord-impact verzwaard naar harde reset: bij succesvolle hit krijgt het slachtoffer nu een progress-reset (bezittingen en voortgang terug naar baseline) in plaats van alleen verlies van contant geld en gedragen items, met behoud van banktegoed en crew-leiderschap; detective-notificatie en help-content zijn daarop bijgewerkt
+  - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Gevangenis self-acties hersteld: spelers kunnen zichzelf in de prison-flow weer uitkopen met borg en ook zelf een uitbraakpoging doen; nieuw endpoint `/player/prison/escape` verwerkt lage-kans ontsnapping met straftijdverlenging bij mislukking, en prison/jail UI toont deze acties nu weer expliciet voor de ingelogde gevangene
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`, `client/lib/screens/prison_screen.dart`, `client/lib/widgets/jail_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/prison.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Rugzak shop opgeschoond voor upgrades: zodra een speler al een rugzak bezit toont `/backpacks/available` geen lagere of gelijke tiers meer in `available`; alleen echte upgrades blijven zichtbaar in `canUpgradeTo`, zodat oude opties verdwijnen na aankoop van een betere versie
+  - Bestanden: `backend/src/services/backpackService.ts`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Docker productie-config gelijkgetrokken voor admin image-library: backend service mount nu expliciet dezelfde externe image-map als client (`CLIENT_EXTERNAL_IMAGES_PATH` -> `/client/images`) en forceert `IMAGE_LIBRARY_ROOT_PATH=/client/images`, zodat admin browse/upload/replace niet meer op een niet-gemounte fallbackpad uitkomt
+  - Bestanden: `docker-compose.plesk.yml`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Runtime image-serving gelijkgetrokken met externe image-root: `/assets/images` respecteert nu ook `IMAGE_LIBRARY_ROOT_PATH` met dezelfde fallback-paden als admin image-management, zodat extern beheerde afbeeldingsmappen niet per build in client hoeven te zitten en uploads direct zichtbaar zijn zonder padmismatch
+  - Bestanden: `backend/src/app.ts`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Admin image library productie-fix + modulezoekfunctie: image-root detectie ondersteunt nu extra Docker/build fallback-paden en expliciete `IMAGE_LIBRARY_ROOT_PATH` configuratie met duidelijke fout-hint als storage ontbreekt; daarnaast is een module-overzicht API + UI toegevoegd om afbeeldingen per module te filteren en op naam/pad te zoeken
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Admin image-beheersysteem toegevoegd voor extern opgeslagen server-images: nieuwe admin-tab ondersteunt mapnavigatie, preview, upload van nieuwe afbeeldingen en vervangen van bestaande bestanden; backend biedt beveiligde list/upload API op dezelfde image-storage root die runtime via `/assets/images` serveert
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/services/adminService.ts`, `admin/src/App.tsx`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Voertuigreparatie-slots aangescherpt en gereedmelding toegevoegd: gelijktijdige reparaties zijn nu gedeeld over auto/motor/boot (zonder VIP max 1, met VIP max 2) en afgeronde timed repairs sturen nu een NL/EN in-app + pushmelding dat het voertuig weer klaar is; cron verwerkt afgeronde repair-jobs nu elke minuut zodat meldingen niet wachten op handmatige schermrefresh
+  - Bestanden: `backend/src/services/vehicleService.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/cronService.ts`, `client/lib/providers/vehicle_provider.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/garage.md`, `docs/module-protocols/marina.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Garage reparatie-fout opgelost voor voertuigen met 0% conditie: de backend gebruikte een onjuiste fallback (`condition || 100`) waardoor `0` als `100` werd gelezen en reparatie onterecht werd geweigerd met `VEHICLE_NOT_BROKEN`; dit is nu null-safe gemaakt zodat 0%-voertuigen weer correct in reparatie kunnen
+  - Bestanden: `backend/src/services/vehicleService.ts`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist moordzaak-onderzoek is nu asynchroon met variabele wachttijd: na aanvraag komt detective-rapport niet direct; snelle aanvraag geeft kortere ETA, late aanvraag geeft langere ETA binnen het 24-uurs venster
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/services/cronService.ts`, `docs/module-protocols/hitlist.md`, `client/lib/data/help_content.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist killer buit-notificatie: na een succesvolle kill ontvangt de moordenaar direct een inboxbericht + push van Moordlijst Bureau / Hitlist Bureau met bounty, buit-geld (bedrag + %) en aantal buit-items; meertalig NL/EN op basis van `preferredLanguage` aanvaller
+  - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist plaatsing-notificatie toegevoegd voor doelwit: zodra een speler op de moordlijst wordt gezet ontvangt het doelwit direct een inboxbericht + push van Moordlijst Bureau / Hitlist Bureau met bountybedrag en waarschuwing
+  - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/data/help_content.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist slachtoffer-notificaties uitgebreid: bij succesvolle moord ontvangt het slachtoffer nu direct push + inboxbericht van Moordlijst Bureau, inclusief in-bericht knop om binnen 24 uur een detective-onderzoek te starten; Detective Bureau stuurt daarna een apart rapport met dadernaam bij succes of cold-case melding bij falen
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`, `client/lib/screens/chat_screen.dart`, `client/lib/widgets/message_bubble.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist loot percentages zijn nu admin-instelbaar via runtime database-config (geen file-only workflow): nieuwe keys `HITLIST_LOOT_CASH_PERCENT` en `HITLIST_LOOT_ITEM_PERCENT` worden via Admin Config opgeslagen en direct gebruikt bij loot-uitbetaling na succesvolle hits
+  - Bestanden: `backend/src/routes/admin.ts`, `backend/src/services/hitlistService.ts`, `admin/src/App.tsx`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist loot-mechaniek toegevoegd: bij succesvolle moord verliest het slachtoffer al het contante geld en alle gedragen inventory (goods, ammo, weapons, carried tools), terwijl de aanvaller naast bounty ook een deel van cash en items als buit ontvangt; resultaatmelding toont nu ontvangen buit in NL/EN
+  - Bestanden: `backend/src/services/hitlistService.ts`, `client/lib/screens/hitlist_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist runtime crash op moord-uitvoering opgelost: `weaponService` miste default export terwijl hitlist-service die als default importeerde, waardoor `getWeaponDefinition` op `undefined` werd aangeroepen; default export hersteld zodat gedeelde combat resolvers weer stabiel laden
+  - Bestanden: `backend/src/services/weaponService.ts`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist moordflow Prisma-validatiefout opgelost: backend selecteerde nog legacy `player.weapon` in target-query tijdens `/hitlist/attempt/:hitId`, wat runtime `PrismaClientValidationError` gaf; target weapon defense wordt nu schema-veilig bepaald via geselecteerd crime weapon i.p.v. niet-bestaand spelerkolomveld
+  - Bestanden: `backend/src/services/hitlistService.ts`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist moorddialog leesbaarheid gehard: het wapenstatistiekblok gebruikt nu expliciete contrastkleuren voor card-achtergrond, border, labels en waardes zodat info in light/dark themes en transparante overlays altijd goed leesbaar blijft
+  - Bestanden: `client/lib/screens/hitlist_screen.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist wapenlijst normaliseert decoded JSON maps nu expliciet naar string-keyed maps voordat bruikbare wapens worden gefilterd of gerenderd; omgevingen waar `weapons/inventory` als `Map<dynamic, dynamic>` decodeert laten daardoor pas gekochte wapens niet meer verdwijnen uit de moorddialoog
+  - Bestanden: `client/lib/screens/hitlist_screen.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist aanvalsdialoog parseert inventory-data nu toleranter: `quantity` en `condition` mogen als getal of string binnenkomen zonder dat pas gekochte wapens onterecht uit de selectie verdwijnen; zo blokkeert de client de moordflow niet meer met een valse "geen bruikbare wapens" melding
+  - Bestanden: `client/lib/screens/hitlist_screen.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist moordpoging wapenvalidatie gehard: aanvalsdialoog toont en verstuurt nu alleen bruikbare inventory-wapens (weaponId aanwezig, quantity > 0, condition > 0), backend normaliseert weaponId en geeft een aparte `WEAPON_BROKEN` fout i.p.v. generieke "niet in inventaris", zodat spelers met geldige wapens niet meer onterecht geblokkeerd worden
+  - Bestanden: `client/lib/screens/hitlist_screen.dart`, `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Hitlist detective-onderzoek omgezet naar async flow met wachttijd en detective-inbox: snel/gemiddeld/langzaam onderzoek geeft nu geen instant intel meer maar queue-bevestiging, waarna rapporten na respectievelijk 1 uur / 6 uur / 24 uur als bericht van `Detective Bureau` binnenkomen; prijsstelling verhoogd naar €1.000.000 / €500.000 / €250.000
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/services/cronService.ts`, `backend/src/services/directMessageService.ts`, `backend/src/routes/hitlist.ts`, `client/lib/screens/hitlist_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/hitlist.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Drugs-upgrades gekoppeld aan nieuwe Narcotica-opleiding: nieuwe school-track `narcotics` met certificaten (Hydroponics Specialist, Process Electrics Specialist, Clandestien Chemicus, Narco Grid Architect) gate nu stapsgewijs slot- en apparatuur-upgrades van drugsfaciliteiten; backend retourneert bij lock een gestructureerde `EDUCATION_REQUIREMENTS_NOT_MET` payload en de client toont daarvoor een opleidingseisen-dialog i.p.v. alleen een generieke foutmelding
+  - Bestanden: `backend/content/educationTracks.json`, `backend/src/services/educationService.ts`, `backend/src/services/drugFacilityService.ts`, `backend/src/routes/drugFacilities.ts`, `client/lib/services/drug_service.dart`, `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/school_screen.dart`, `client/lib/widgets/education_requirements_dialog.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/drugs.md`, `docs/module-protocols/school.md`, `docs/operations/SMOKE_TEST_NARCOTICS_EDUCATION_GATES.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] School/Narcotica images extern gehost voor minimale client build: school-scherm ondersteunt nu een runtime `SCHOOL_IMAGE_BASE_URL` (network-first met asset/emoji fallback), en er is een expliciete one-shot image-runbook met vaste bestandsnamen, uploadpaden en Leonardo-prompts om dubbele generation-rondes te voorkomen
+  - Bestanden: `client/lib/config/app_config.dart`, `client/lib/screens/school_screen.dart`, `docs/operations/SCHOOL_NARCOTICS_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Prostitutie cards auto-hoogte op mobiel: het prostitutie-overzicht volgt nu dezelfde responsieve strategie als voertuigschermen met een lijstlayout op smalle schermen en een adaptive grid op bredere schermen, zodat card-content niet meer visueel wordt afgekapt door vaste `mainAxisExtent`
+  - Bestanden: `client/lib/screens/prostitution_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Prostitutie bediening aangescherpt: `Werk 8 uur` schakelt nu uit tijdens de 8u rusttijd per recruit, batch-werk respecteert dezelfde beschikbaarheidscheck, kaartacties ondersteunen verplaatsen naar straat/RLD/nightclub, en het scherm toont nu een duidelijk opbrengstoverzicht per locatie (straat, RLD, nightclub) met totaal per uur
+  - Bestanden: `client/lib/screens/prostitution_screen.dart`, `client/lib/services/prostitution_service.dart`, `backend/src/services/prostituteService.ts`, `backend/src/services/nightclubService.ts`, `client/lib/data/help_content.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Prostitutie batch-werkknop toegevoegd: naast `Werven` staat nu een extra knop om alle beschikbare (niet-gearresteerde) hoeren in één keer een work-shift te laten doen, inclusief duidelijke statusmelding met aantal succesvol gestart en aantal mislukt
+  - Bestanden: `client/lib/screens/prostitution_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Prostitutie mobile scrollflow hersteld: de schermtitel (`Prostitutie`), sabotage-banner, werven-knop, housing waarschuwing, huisvestingsoverzicht en tabbladen staan nu in een meescrollende `NestedScrollView` header (niet sticky), zodat op mobiel/tablet weer 1 logische verticale flow ontstaat terwijl prostituee-cards zelf niet intern scrollen
+  - Bestanden: `client/lib/screens/prostitution_screen.dart`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Jail overlay borgknop en layout gehard: de gedeelde gevangenis-overlay haalt borgbedragen nu uit `/player/jail-status`, valt terug op strafduur-gebaseerde prijs als backup, verbergt de betaaloptie niet meer onterecht wanneer `wantedLevel` leeg of al gedaald is, en gebruikt nu een responsieve mobiele/tablet/desktop-layout met scroll-safe onderpaneel zodat de borgknop niet buiten beeld valt
+  - Bestanden: `client/lib/widgets/jail_screen.dart`, `client/lib/screens/travel_screen.dart`, `client/lib/data/help_content.dart`
+- [ ] Timeout overlay responsief gemaakt: de gedeelde cooldown-overlay gebruikt nu dezelfde mobiele/tablet/desktop guardrails met veilige kaartbreedte, stapelende header op smalle schermen, scroll-safe ondercontent en web-veilige asset fallback zodat timers en resultaatmeldingen niet buiten beeld of afgekapt raken in Crimes, Jobs, Travel, School, Garage en Marina
+  - Bestanden: `client/lib/widgets/cooldown_overlay.dart`
+- [ ] Overlay/dialog responsive standaard aangescherpt: PROTOCOL_MASTER en frontend-platform eisen nu expliciet dat alle nieuwe en aangepaste overlays/dialogs/modals safe-area, clamped breedte/hoogte en scrollfallback krijgen, terwijl de gedeelde ICU-, crime-result-, education-requirements- en transfer-modals naar een consistent responsive patroon zijn getrokken
+  - Bestanden: `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/frontend-platform.md`, `client/lib/widgets/responsive_modal.dart`, `client/lib/widgets/icu_overlay.dart`, `client/lib/widgets/crime_result_overlay.dart`, `client/lib/widgets/education_requirements_dialog.dart`, `client/lib/widgets/transfer_dialog.dart`
+- [ ] Mobiele shell-scroll consistent gemaakt: authenticated mobile-web routes renderen nu onder een centrale sticky player-statusheader, het dashboard valt op smalle webviewports terug naar de normale enkelvoudige scroll-layout in plaats van de embedded desktop-shell, en de protocolregels eisen nu expliciet één primaire verticale scrollflow onder sticky headers zonder losse inner scrollvensters
+  - Bestanden: `client/lib/main.dart`, `client/lib/widgets/mobile_web_sticky_player_header.dart`, `client/lib/screens/dashboard_screen.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/frontend-platform.md`
+- [ ] Mobiele dashboard-shell regressie hersteld: het dashboard gebruikt op web-smal weer de bestaande web-shell met title-logo, sidebar/drawer en dashboard-home in plaats van de losse tegel-startpagina, terwijl de globale sticky mobile header expliciet wordt overgeslagen op dashboard-routes zodat de bestaande dashboard-chrome bovenaan zichtbaar blijft
+  - Bestanden: `client/lib/widgets/mobile_web_sticky_player_header.dart`, `client/lib/screens/dashboard_screen.dart`
+- [ ] Responsive dialog follow-up uitgevoerd: tool-details, crew-chat delete-confirmatie en de belangrijkste Black Market dialogs (filteren, kopen, prijs aanpassen, delisten) gebruiken nu het gedeelde responsive dialog-patroon met clamped breedte en scrollfallback op kleine viewports
+  - Bestanden: `client/lib/widgets/tool_card.dart`, `client/lib/widgets/crew_chat_widget.dart`, `client/lib/screens/black_market_screen.dart`
+- [ ] Responsive core-shop en social follow-up uitgevoerd: rugzak-, materials-, property- en friend-confirmatiedialogs gebruiken nu hetzelfde responsive dialog-patroon, terwijl Tools, Properties en Friends tabweergaves swipe-conflicts op mobiel niet meer forceren bovenop de verticale content-scroll
+  - Bestanden: `client/lib/screens/backpack_shop_screen.dart`, `client/lib/screens/materials_shop_screen.dart`, `client/lib/screens/property_screen.dart`, `client/lib/screens/friends_screen.dart`, `client/lib/screens/tools_screen.dart`
+- [ ] Embedded weapon/ammo market tabs mobiel gehard: de interne wapen- en ammo-tabviews swipen op mobiel niet meer horizontaal tegen de verticale content-scroll in, zodat de Black Market-stack consistenter blijft op touch-devices
+  - Bestanden: `client/lib/screens/weapons_market_screen.dart`, `client/lib/screens/ammo_market_screen.dart`
+- [ ] Garage/Marina voertuigcards compacter gemaakt: garage-, marina- en motor-overzichten forceren op smallere schermen geen te hoge gridcellen meer maar schakelen naar inhoud-gestuurde lijsten, terwijl brede schermen een strakkere grid-ratio gebruiken en de gedeelde voertuigkaart minder verticale loze ruimte boven de content heeft
+  - Bestanden: `client/lib/screens/garage_screen.dart`, `client/lib/screens/marina_screen.dart`, `client/lib/widgets/vehicle_card.dart`
+- [ ] Vehicle Heist embedded scrollflow mobiel gecorrigeerd: in het dashboard-scrollgebied scrollen de lokale titelbalk en voertuig-tabs nu mee uit beeld, terwijl alleen de centrale dashboard statusbalk sticky blijft en de embedded garage- en marina-inhoud geen extra vaste tussenheaders meer opbouwt
+  - Bestanden: `client/lib/screens/vehicle_heist_screen.dart`, `client/lib/screens/garage_screen.dart`, `client/lib/screens/marina_screen.dart`
+- [ ] Crime vehicle-selectie en arrest-paden gehard tegen interne fouten: Crimes en Garage resolven nu dezelfde live `vehicle_inventory` selectie, de crimes-lijstloader gebruikt weer diezelfde resolver, en zowel crime-, police- als FBI-arrest flows plus client crime-event rendering laten niet-kritieke logging/notificatie- of numerieke cast-side-effects de response/UI niet meer omvallen bij zware crimes zoals `hijack_truck`
+  - Bestanden: `backend/src/services/vehicleToolService.ts`, `backend/src/routes/crimes.ts`, `backend/src/routes/garage.ts`, `backend/src/services/crimeService.ts`, `backend/src/services/policeService.ts`, `backend/src/services/fbiService.ts`, `client/lib/services/event_renderer.dart`
+- [ ] Crime requirement failures verduidelijkt en ammo-verbruik gehard: vehicle-required crimes resolven nu alleen een echt beschikbaar geselecteerd crime-voertuig uit het huidige land, requirement-fouten voor voertuig/wapen/ammo vallen niet meer terug op een generieke retry, en munitie wordt niet meer verbruikt wanneer een crime al op een harde startvoorwaarde afketst
+  - Bestanden: `backend/src/routes/crimes.ts`, `backend/src/routes/garage.ts`, `backend/src/services/crimeService.ts`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
+- [ ] Smuggling Hub hersteld en uitgebreid: live quotes en verzending ondersteunen nu weer consistente commerciële runs, plus een expliciete eigen-transportmodus met auto's, motoren, boten en vliegtuigen inclusief cargo-slot validatie, risicoreductie en confiscatiekans bij mislukking
+  - Bestanden: `backend/src/services/smugglingService.ts`, `backend/src/routes/smuggling.ts`, `client/lib/screens/smuggling_screen.dart`, `client/lib/services/smuggling_service.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/smuggling.md`
+- [ ] Settings cleanup + login UX hersteld: de verouderde video-toggle is uit Instellingen verwijderd, crypto push/in-app voorkeuren worden nu robuuster teruggelezen zodat uitgeschakelde sliders na heropenen niet meer terugspringen, en het login-scherm ondersteunt Enter om direct in te loggen
+  - Bestanden: `client/lib/screens/settings_screen.dart`, `client/lib/screens/login_screen.dart`, `backend/src/services/playerNotificationPreferenceService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/settings.md`
+- [ ] Drugs VIP auto-ophalen geactiveerd: de VIP toggle voor drugsproductie draait nu echt via een backend cron-job, zodat gereed product automatisch op de achtergrond wordt opgehaald in plaats van alleen een instelling in de UI op te slaan
+  - Bestanden: `backend/src/services/cronService.ts`, `backend/src/services/drugService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/drugs.md`
+- [ ] Drugs productie-zichtbaarheid hersteld: batches die klaar zijn maar nog niet opgehaald, blijven zichtbaar in het Productie-scherm en tellen in faciliteitsslots mee totdat ze echt zijn opgehaald; VIP auto-ophalen kijkt nu ook naar die ready output in plaats van ze stil te missen
+  - Bestanden: `backend/src/services/drugService.ts`, `backend/src/services/drugFacilityService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/drugs.md`
+- [ ] Ammo Factory ownership-load hersteld: read-only schermopeningen en travel-refreshes revoken geen fabriekseigendom meer; inactivity-cleanup gebeurt nu pas bij een echte overnamepoging in plaats van alleen door het scherm te bekijken
+  - Bestanden: `backend/src/services/ammoFactoryService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/ammo-factory.md`
+- [ ] Crime arrest-uitkomsten aangescherpt: als politie/FBI je na een ogenschijnlijk geslaagde crime alsnog pakt, komt de response niet meer als clean success terug, wordt de jail-state echt toegepast en worden tool/weapon/vehicle-consequenties alsnog consistent afgehandeld
+  - Bestanden: `backend/src/services/crimeService.ts`, `backend/src/routes/crimes.ts`, `client/lib/screens/crime_screen.dart`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
+- [ ] Vehicle theft arrest-flow gecorrigeerd: als je na een geslaagde steal direct wordt opgepakt, telt dat niet meer als succesmelding; de net gestolen auto/motor wordt meteen in beslag genomen en de jail-feedback toont dat expliciet
+  - Bestanden: `backend/src/services/vehicleService.ts`, `client/lib/screens/garage_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/garage.md`
+- [ ] Ammo Factory-flow aangescherpt: het factory-scherm embedt geen directe munitiemarkt meer en toont nu alleen een duidelijke verwijzing naar de ammo-tab van de Zwarte Markt voor koop/verkoop van kogels
+  - Bestanden: `client/lib/screens/ammo_factory_screen.dart`, `client/lib/screens/black_market_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/ammo-factory.md`
+- [ ] Arrestatie bij weapon-based crimes nu consistent gemaakt: als je tijdens een crime met geselecteerd wapen wordt opgepakt, wordt het gebruikte crime-wapen ook geconfisqueerd, wordt de opgeslagen selectie gewist als het je laatste exemplaar was, en meldt de crime-feedback dit expliciet
+  - Bestanden: `backend/src/services/crimeService.ts`, `backend/src/routes/crimes.ts`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`
+- [ ] Crime-wapen selectie hersteld: het opslaan en terugladen van de geselecteerde crime-weapon serializeert player-activity details nu correct als string-json, zodat selectie vanuit Crimes en Inventaris niet meer faalt met een generieke foutmelding
+  - Bestanden: `backend/src/services/weaponSelectionService.ts`
+- [ ] Crew navigatie professioneler gemaakt: het crew-scherm groepeert beheer nu in Overzicht, HQ & Upgrades, Opslag, Leden, War Room, Crews en Chat in plaats van losse storage-tabs, zodat management rustiger en schaalbaarder blijft
+  - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew starter-state hersteld: nieuwe crews starten nu direct met Crew HQ level 1 en alle opslaggebouwen op level 1, terwijl legacy crews in de oude lege startstaat automatisch naar dezelfde basis worden genormaliseerd zodat crew bank en gedeelde opslag meteen werken
+  - Bestanden: `backend/src/services/crewService.ts`, `backend/src/services/crewBuildingService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew HQ leden-cap progression hersteld: de cap-overview en backend member-cap logica lopen nu door over alle HQ-stijlen heen in plaats van per stijl terug te vallen naar 5/10/16/24, en schalen door tot maximaal 150 leden
+  - Bestanden: `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew building-cards tonen nu ook expliciete titels boven de afbeeldingen, zodat in HQ & Upgrades direct zichtbaar is of een kaart over Crew HQ, auto opslag, drugs opslag of een ander gebouwtype gaat
+  - Bestanden: `client/lib/screens/crew_screen.dart`
+- [ ] Crew HQ & Upgrades-layout compacter gemaakt: de zes opslagkaarten tonen nu op desktop een 3-koloms grid van 2 rijen terwijl de grote HQ-kaart bovenaan volbreed blijft staan
+  - Bestanden: `client/lib/screens/crew_screen.dart`
+- [ ] Crew auto-opslag ondersteunt nu ook motoren: motorfietsen gebruiken voortaan dezelfde crew landvoertuig-opslag als auto's, inclusief deposit-flow, smokkelmetadata en crew UI-labels
+  - Bestanden: `backend/src/services/crewStorageService.ts`, `backend/src/services/smugglingService.ts`, `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew War-doelacties gebruiken nu een tegenstanderlijst in de War Room: kill, mug, sabotage en raid kiezen een speler uit de enemy crew in plaats van een handmatig ingevoerde speler-ID
+  - Bestanden: `backend/src/services/crewWarService.ts`, `client/lib/screens/crew_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crew.md`
+- [ ] Crew building-prijzen nu ook zichtbaar op koopknoppen voor nog niet gekochte gebouwen doordat de building-status API weer een `nextUpgradeCost` teruggeeft voor niet-bezette slots
+  - Bestanden: `backend/src/services/crewBuildingService.ts`, `client/lib/screens/crew_screen.dart`
+- [ ] Nachtclub staffing self-healing toegevoegd: DJ- en beveiligingslijsten vullen zichzelf nu automatisch met een standaard roster als de live tabellen leeg zijn, zodat de selectors in het Nachtclub-scherm niet leeg blijven op omgevingen zonder seed-data
+  - Bestanden: `backend/src/services/nightclubService.ts`
+- [ ] Arrestatie-alerts toegevoegd: wanneer een speler wordt opgepakt sturen crimes, police/FBI, travel, vehicle theft en failed heists nu fire-and-forget pushmeldingen naar geaccepteerde vrienden en overige crewleden dat de speler vastzit en op hulp wacht, met overlap-dedupe voor ontvangers
+  - Bestanden: `backend/src/services/notificationService.ts`, `backend/src/services/crimeService.ts`, `backend/src/services/policeService.ts`, `backend/src/services/fbiService.ts`, `backend/src/services/travelService.ts`, `backend/src/services/vehicleService.ts`, `backend/src/services/heistService.ts`, `docs/module-protocols/notifications.md`, `docs/module-protocols/crimes.md`, `docs/module-protocols/prison.md`, `docs/module-protocols/crew.md`, `docs/module-protocols/friends.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Nieuwe late-game crime Strafblad Wissen toegevoegd: een succesvolle run wist nu het volledige zichtbare strafblad via een expunge-event in plaats van DB-records te verwijderen; court-record en appeal-logica negeren sindsdien alleen oudere convictions, terwijl nieuwe veroordelingen daarna weer normaal opbouwen
+  - Bestanden: `backend/content/crimes.json`, `backend/data/tools.json`, `backend/src/services/crimeService.ts`, `backend/src/services/judgeService.ts`, `backend/src/routes/crimes.ts`, `docs/module-protocols/crimes.md`, `docs/module-protocols/court.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Bank transacties hersteld: banktransactiebedragen worden nu correct uit opgeslagen world-event JSON geparsed in plaats van als string-object te mislukken naar `0`, en de bank API levert nu ook aparte samenvattingstellers voor stortingen, opnames, verzonden overboekingen en ontvangen overboekingen
+  - Bestanden: `backend/src/services/bankService.ts`, `backend/src/routes/bank.ts`, `client/lib/screens/bank_screen.dart`, `docs/module-protocols/bank.md`
+- [ ] Crew Wars member push coverage aangescherpt: ook automatische war lifecycle-transities (`started`, `lockdown`) sturen nu push/inbox naar alle betrokken crew members inclusief leaders, in plaats van alleen admin-handmatige of declare/resolve momenten
+  - Bestanden: `backend/src/services/crewWarService.ts`, `docs/module-protocols/crew-wars.md`
+- [ ] Crew Wars admin-control + notificatiefix: online backend-CORS accepteert nu ook `PATCH`, waardoor de vijf admin statusknoppen niet meer stuklopen op preflight, en admin-gestarte/status-gewijzigde wars sturen nu dezelfde Discord- en push/inbox-events als de gewone declare/lifecycle-flow
+  - Bestanden: `backend/src/app.ts`, `backend/src/services/crewWarService.ts`, `backend/src/services/notificationService.ts`, `client/lib/services/notification_service.dart`
+- [ ] Crew Wars backend live gezet: nieuw `/crew-wars` domein met war lifecycle, seasons, standings, actions, admin moderatie, startup schema-bootstrap en Discord/push koppelingen toegevoegd
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/src/startup/ensureCrewWarSchema.ts`, `backend/src/services/crewWarService.ts`, `backend/src/routes/crewWars.ts`, `backend/src/routes/admin.ts`, `backend/src/routes/player.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/discordWebhookService.ts`, `backend/src/services/achievementService.ts`, `backend/src/app.ts`, `backend/src/index.ts`
+- [ ] Crew Wars Discord transport deployment-klaar gemaakt: webhookconfiguratie staat nu in zowel het backend env-template als de lokale runtime-config en de transportlaag ondersteunt configureerbare event-types plus rate-limiting, zodat Discord fire-and-forget blijft zonder war flows te blokkeren of te spammen
+  - Bestanden: `backend/src/services/discordWebhookService.ts`, `backend/.env.example`, `backend/.env`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Security module hersteld en uitgebreid: armor-aankoop gebruikt weer `backend/content/security.json`, lijfwachten rekenen nu elke 24 uur systeemloon af en lopen weg bij wanbetaling, armor slijt na aanvallen waardoor effectieve bescherming afneemt en op 100% schade volledig verdwijnt, en hetzelfde onbeschadigde vest kan niet opnieuw gekocht worden terwijl armor als single active slot blijft werken
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`, `backend/src/startup/ensureSecuritySchema.ts`, `backend/src/index.ts`, `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260415061500_expand_player_security/migration.sql`
+- [ ] Support terminal-status todo guard: tickets kunnen nu niet meer naar `resolved`, `closed` of `archived` zolang gekoppelde todo's nog openstaan; dezelfde blokkade geldt voor reply-flow, settings-flow en lazy auto-archive
+  - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/routes/admin.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/support-tickets.md`
+- [ ] Support archive lifecycle fix: gearchiveerde tickets verdwijnen nu uit het speler Support-scherm, admins kunnen ticketstatussen zonder verplichte extra reply opslaan, en tickets met status `closed` worden na 3 dagen automatisch naar `archived` gezet via backend lazy auto-archive
+  - Bestanden: `backend/src/services/supportTicketService.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/module-protocols/support-tickets.md`
+- [ ] Support workflow professionalisering: tickets ondersteunen nu priority, assignee, source-module/referentie metadata, internal note vs public reply, reply templates, workflow-timestamps, archive-status en support analytics; todo's ondersteunen nu priority, owner, due date, module-koppeling en interne commenthistorie
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260414223000_expand_support_workflow/migration.sql`, `backend/src/startup/ensureSupportSchema.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/routes/admin.ts`, `backend/src/routes/tickets.ts`
+- [ ] Support tickets + todo workflow uitgebreid: player ticket endpoints bevatten nu ook verwijderen (`DELETE /tickets/:ticketId`), admin ticket endpoints bevatten nu ook verwijderen (`DELETE /admin/tickets/:ticketId`); startup schema-bootstrap blijft actief en admin-reply blijft gekoppeld aan speler inbox + push notificatie
+  - Bestanden: `backend/src/startup/ensureSupportSchema.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/routes/tickets.ts`, `backend/src/routes/admin.ts`, `backend/src/app.ts`, `backend/src/index.ts`
+- [ ] Admin speler-overzicht uitgebreid met combat-inventory details: `/admin/players/:playerId/overview` levert nu munitie- en wapen-namen + aantallen + totalen (`assetSummary`) zodat direct zichtbaar is welke wapens/munitie een speler heeft
+  - Bestand: `backend/src/routes/admin.ts`
+- [ ] Admin speler-overzicht telt nu ook opgeslagen property-wapens mee (house/apartment/mansion/penthouse/safehouse), niet alleen `weapon_inventory`; wapens-table toont ook locatie (`inventory` of `storage:...`) zodat verschillen direct te verklaren zijn
+  - Bestanden: `backend/src/routes/admin.ts`, `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+- [ ] Nachtclub terug in Eigendommen: nightclub verwijderd uit hiddenPropertyIds (backend + client) zodat spelers een nachtclub kunnen kopen via het Eigendommen-scherm (max 3 per land); aankoop maakt automatisch het nightclubVenue record aan
+  - Bestanden: `backend/src/services/propertyService.ts`, `client/lib/screens/property_screen.dart`
+- [ ] Properties upgrade-kosten per pand individueel: upgrade kosten schalen nu per pand op basis van aankoopvolgorde (appartement 1 = laagste upgrades, appartement 4 = duurste) i.p.v. alle panden dezelfde totaal-count multiplier
+  - Bestand: `backend/src/services/propertyService.ts`
+- [ ] School admin activity feed fix: school trainingen, level-ups en certificaten loggen nu direct naar `player_activities` (`SCHOOL_TRAINING`, `SCHOOL_LEVEL_UP`, `SCHOOL_CERTIFICATION_EARNED`) zodat ze zichtbaar zijn in Admin Recente Handelingen
+  - Bestand: `backend/src/services/educationService.ts`
+- [ ] Crypto admin activity feed uitgebreid: order-uitvoeringen en order-fouten loggen nu ook naar `player_activities` (`CRYPTO_ORDER_FILLED`, `CRYPTO_ORDER_FAILED`) naast buy/sell/place/cancel
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Admin reset-all permissie verruimd: globale spelers-reset is nu beschikbaar voor beheerrollen (viewer blijft geblokkeerd), zodat resetknop niet alleen super-admin zichtbaar/bruikbaar is
+  - Bestand: `backend/src/routes/admin.ts`
+- [ ] Prostitutie work-shift limiet: 8-uurs cooldown toegevoegd op handmatige `/prostitutes/:id/work-shift`; bij overwerken (te veel shifts binnen 24 uur) kan een prostituee uitgeput raken en weglopen
+  - Bestand: `backend/src/services/prostituteService.ts`
+- [ ] Prison lijst fix: `/player/prisoners` bevat nu ook de ingelogde speler (niet langer weggefilterd), zodat je jezelf ziet als je vastzit
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`
+- [ ] Properties prijs-escalatie: house/apartment aankoopprijs schaalt nu per land mee met aantal reeds bezeten residentiële panden; upgradekosten schalen ook mee per land op basis van portfolio-grootte
+  - Bestanden: `backend/src/services/propertyService.ts`, `backend/src/routes/properties.ts`
+- [ ] Crypto admin-traceability: crypto acties loggen nu naar `player_activities` (`CRYPTO_BUY`, `CRYPTO_SELL`, `CRYPTO_ORDER_PLACED`, `CRYPTO_ORDER_CANCELLED`) zodat Recente Handelingen in admin volledig zijn
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Admin reset uitgebreid: nieuwe endpoints voor speler-reset en globale reset van spelerprogress (`POST /admin/players/:playerId/reset`, `POST /admin/players/reset-all`)
+  - Bestand: `backend/src/routes/admin.ts`
+- [ ] Properties balancing + level-cap contract fix: appartement basisprijs verlaagd naar €75.000 en huis verhoogd naar €100.000 (appartement niet langer duurder dan huis); property API levert nu expliciet correct `maxLevel` (afgeleid uit upgrade-opties) zodat client geen foutieve `3/3` meer toont terwijl upgraden nog mogelijk is
+  - Bestanden: `backend/content/properties.json`, `backend/src/routes/properties.ts`
+- [ ] Reizen fix online/local parity: `travelRoute` wordt nu consistent als JSON-string opgeslagen/geparsed (ipv impliciete array-casts op `String` kolom), inclusief leg-status validatie; start-journey response levert nu ook `newCountry/newLocation` voor eenduidige client state
+  - Bestand: `backend/src/services/travelService.ts`
+- [ ] Prostitutie online/local schema-pariteit gefixt: backend startup voert nu idempotente schema-check uit voor ontbrekende `prostitutes` housing/nightclub kolommen + indexes (incl. backfill), zodat `/prostitutes` laden en `/prostitutes/recruit` niet meer 500'en bij onvolledige productie-migratie
+  - Bestanden: `backend/src/startup/ensureProstitutionSchema.ts`, `backend/src/index.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [x] Register endpoint hardening: expliciete server logging toegevoegd voor `/auth/register` failures + inputvalidatie voor e-mailformat
+  - Bestanden: `backend/src/routes/auth.ts`, `backend/src/services/authService.ts`
+- [ ] Subscriptions route opgeschoond: dubbele legacy Stripe-tail verwijderd uit Mollie-routebestand om duplicate exports/declarations te voorkomen
+  - Bestand: `backend/src/routes/subscriptions.ts`
+- [ ] Mollie premium foundation: Stripe checkout-route vervangen door Mollie player/crew VIP + one-time checkout, webhook-fulfillment, payment transaction logging, credits-overview en credit redemption endpoints
+  - Bestanden: `backend/src/routes/subscriptions.ts`, `backend/src/services/premiumCreditsService.ts`, `backend/src/app.ts`, `backend/package.json`
+- [ ] Premium schema uitgebreid voor Mollie + credits-wallet + entitlements + credit catalogus
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/add-mollie-premium-foundation.sql`
+- [ ] Hitlist respecteert premium moordbescherming via `hitProtectionExpiresAt`
+  - Bestanden: `backend/src/services/hitlistService.ts`, `backend/src/routes/hitlist.ts`
+- [ ] Crypto prijs-cron hardening: scheduled price updates gebruiken nu asset-bounds + mean reversion zodat `crypto_assets.current_price` niet meer uit `DECIMAL(24,8)` kan lopen en ontspoorde dev-prijzen automatisch terug binnen bandbreedte worden gezet
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Crypto notificatie hardening: in-app crypto world events serialiseren `params` nu als JSON-string zodat price/regime/news/order/mission/leaderboard notificaties geen Prisma schemafouten meer geven
+  - Bestand: `backend/src/services/notificationService.ts`
+- [ ] Register flow fix: `auth.session.login` world event schrijft `params` nu als JSON-string zodat nieuwe spelerregistratie niet meer 500't na succesvolle player-create
+  - Bestand: `backend/src/services/authService.ts`
+- [ ] Rechtbank backend geactiveerd: nieuwe `/trial` endpoints voor huidige straf, strafblad, hoger beroep en omkoping, plus compatibele `judgeService` op huidige `crime_attempts`/`jailRelease` model
+  - Bestanden: `backend/src/routes/trial.ts`, `backend/src/services/judgeService.ts`, `backend/src/app.ts`
+- [ ] Crypto buy/sell fix: `world_events.params` nu als JSON-string opgeslagen zodat trade world events de transactie niet meer rollbacken bij kopen/verkopen
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Crypto transaction history fix: `/crypto/transactions` summary gebruikt nu geldige JS aggregatie i.p.v. Dart-achtige `.where().fold()` zodat coin-popup details niet meer 500'en
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Vehicle theft uitgebreid: reputatie bij auto/motor/boot diefstal (success/fail/arrest) + response bevat `reputation`; daarnaast motor-diefstal achievements toegevoegd en unlocked feedback in theft response
+  - Bestanden: `backend/src/services/vehicleService.ts`, `backend/src/routes/vehicles.ts`, `backend/src/services/achievementService.ts`, `backend/src/utils/rankSystem.ts`
+- [ ] Profiel API uitgebreid met gevraagde zichtbare velden: crewnaam, rank, reputatie, status (levend/dood), online-status + tijd sinds laatst gezien, startdatum, VIP, likes, contant geld, bankgeld, aantal hoeren en aantal woningen
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Reputatie uitgebreid over modules: crimes + FBI arrest, heists, trade sell-profit, crew join/kick, hitlist claim en police raids; centrale `reputationService` toegevoegd
+  - Bestanden: `backend/src/routes/crimes.ts`, `backend/src/routes/heists.ts`, `backend/src/routes/trade.ts`, `backend/src/routes/crews.ts`, `backend/src/routes/hitlist.ts`, `backend/src/services/policeRaidService.ts`, `backend/src/services/reputationService.ts`, `backend/src/utils/rankSystem.ts`
+- [ ] Achievement rewards uitgebreid met reputatie-toekenning + NL/EN inboxregel
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Reputatie-systeem activeren: `calculateReputationChange()` aangeroepen na each crime (gepakt=-10, clean success=+5, failed-niet-gepakt=-2), DB-update via `GREATEST(0, reputation+delta)`, nieuw `reputation` veld in crime-response
+  - Bestand: `backend/src/routes/crimes.ts`
+- [ ] Profiel API privacy hardening: geen `currentCountry` lekken in publiek profiel + like-statistiek velden toegevoegd (`likesCount`, `viewerHasLiked`)
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Profiel endpoint hardening: geldige `playerId` check, 404 bij niet-bestaande speler i.p.v. 500, likes-fallback bij queryfout
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Nieuw endpoint: `POST /player/:playerId/profile/like` met 1x-like per spelerpaar
+  - Bestanden: `backend/src/routes/player.ts`, `backend/prisma/schema.prisma`, `backend/add-profile-likes.sql`
+- [ ] Fix `untouchable` achievement logica (7 dagen niet busted)
+  - Bestand: `backend/src/services/achievementService.ts
+- [ ] Achievement unlocks loggen als speleractie in admin-overzicht
+  - Bestanden: `backend/src/services/achievementService.ts`, `backend/src/services/activityService.ts`
+- [ ] Achievement unlocks sturen inbox-bericht met beloning via system-thread
+  - Bestanden: `backend/src/services/achievementService.ts`, `backend/src/services/directMessageService.ts`, `backend/src/routes/messages.ts`
+- [ ] Register flow: geen auto-login/token meer bij e-mail registratie (verificatie vereist)
+  - Bestanden: `backend/src/services/authService.ts`, `backend/src/routes/auth.ts`
+- [ ] Login blokkeren voor accounts met onbevestigde e-mail
+  - Bestanden: `backend/src/services/authService.ts`, `backend/src/routes/auth.ts`
+- [ ] E-mail links via env-config i.p.v. `localhost` (`API_BASE_URL` / `APP_BASE_URL`)
+  - Bestanden: `backend/src/services/emailService.ts`, `backend/src/config/index.ts`, `backend/.env.example`
+- [ ] Fix tool aankoop 500 (FK `player_tools.toolId`): sync `tools.json` tool naar `crime_tools` vóór aankoop
+  - Bestanden: `backend/src/services/toolService.ts`, `backend/src/routes/tools.ts`
+- [ ] Startup safeguard: synchroniseer alle tools uit `tools.json` naar `crime_tools` bij service-start
+  - Bestand: `backend/src/services/toolService.ts`
+- [ ] Jobs endpoint hardening: laat jobs niet falen door nevenfouten (world events/activity/achievement side-effects) + extra route logging
+  - Bestanden: `backend/src/services/jobService.ts`, `backend/src/routes/jobs.ts`
+- [ ] Systeemfout logging: automatische persistente `system.error` logs via `console.error`/process handlers voor admin inzage
+  - Bestanden: `backend/src/services/systemLogService.ts`, `backend/src/index.ts`
+- [ ] Admin API: nieuwe endpoints voor system logs en admin account beheer (list/create/update)
+  - Bestand: `backend/src/routes/admin.ts`
+- [ ] Achievement jobs tellen alleen succesvolle jobs (geen failures) voor unlock criteria
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Achievement inboxbericht taal consistent gemaakt (geen ENG/NL mix)
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Onterecht vrijgespeelde job achievements automatisch opschonen op basis van actuele success-only criteria
+  - Bestand: `backend/src/services/achievementService.ts`
+- [ ] Berichten unread endpoint gestandaardiseerd (`count` + `unreadCount`) voor consistente client badges
+  - Bestand: `backend/src/routes/messages.ts`
+- [ ] Push notificaties ook voor systeem-thread/inbox berichten
+  - Bestand: `backend/src/services/directMessageService.ts`
+- [ ] Single-session login enforced: nieuwe login maakt oudere JWT sessies ongeldig
+  - Bestanden: `backend/src/services/authService.ts`, `backend/src/middleware/authenticate.ts`
+- [ ] Red Light District herstel: idempotente auto-seed toegevoegd voor alle actieve landen zodat lege/missende `red_light_districts` data automatisch wordt aangevuld bij district reads/purchase
+  - Bestand: `backend/src/services/redLightDistrictService.ts`
+
+### Client (game)
+- [ ] Crime weapon-selectie zichtbaar gemaakt: spelers kunnen hun actieve crime-wapen nu direct bovenaan het Crimes-scherm kiezen, terwijl Inventaris dezelfde selectie gesynchroniseerd toont voor carried wapens
+  - Bestanden: `client/lib/screens/crime_screen.dart`, `client/lib/screens/inventory_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crimes.md`, `docs/module-protocols/inventory.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Help & Uitleg gesynchroniseerd voor arrestatie-alerts: crew-, vrienden- en gevangenis-uitleg vermelden nu dat vrienden en crewleden een pushmelding krijgen wanneer iemand wordt opgepakt en op hulp wacht
+  - Bestanden: `client/lib/data/help_content.dart`
+- [ ] Crime en rechtbank UX gesynchroniseerd voor strafblad-wipe: Crimes toont nu de late-game actie Strafblad Wissen met duidelijke tooltip en succes/foutfeedback, en Help & Uitleg legt uit dat volledige record-wipe via Crimes loopt terwijl de rechtbank alleen zaak-specifieke historie en omkoping beheert
+  - Bestanden: `client/lib/screens/crime_screen.dart`, `client/lib/widgets/crime_card.dart`, `client/lib/services/event_renderer.dart`, `client/lib/data/help_content.dart`
+- [ ] Rechtbank strafblad-historie gecorrigeerd: het strafblad toont nu blijvende veroordelingen ook na vrijlating, laat beroep- en mislukte omkoop-uitkomsten per zaak zien, en een geslaagde rechteromkoping verwijdert alleen de gekoppelde actuele veroordeling uit het strafblad
+  - Bestanden: `backend/src/services/judgeService.ts`, `backend/src/routes/trial.ts`, `client/lib/screens/court_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/court.md`
+- [ ] Auth reset-flow hersteld: scherm `Wachtwoord vergeten` doet nu een echte backend-call naar `/auth/request-password-reset` in plaats van een fake succesmelding, en de Flutter app kan resetlinks op `/auth/reset-password?token=...` nu direct openen en afhandelen met een nieuw wachtwoordscherm
+  - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/screens/forgot_password_screen.dart`, `client/lib/screens/reset_password_screen.dart`, `client/lib/main.dart`
+- [ ] Bank transactiedetails verrijkt: transactielijst toont nu bij overboekingen de tegenpartij, en stortingen/opnames/overboekingen ondersteunen een optionele omschrijving die ook voor de ontvanger zichtbaar is in diens transacties
+  - Bestanden: `backend/src/routes/bank.ts`, `backend/src/services/bankService.ts`, `client/lib/screens/bank_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/bank.md`
+- [ ] Crypto live-marktankers toegevoegd: de backend haalt nu echte marktprijzen op als anchor, cachet die en combineert ze met het bestaande game-algoritme voor regimes, nieuws en orderveiligheid; bij providerstoringen valt het systeem terug op cache en daarna op synthetische prijsbewegingen
+  - Bestanden: `backend/src/config/index.ts`, `backend/src/services/cryptoService.ts`, `client/lib/data/help_content.dart`, `docs/module-protocols/crypto.md`
+- [ ] Crypto order UX verduidelijkt: coin-popup heeft nu een `ALL`-actie om bij direct verkopen je volledige positie in te vullen, en open orders gebruiken een eigen hoeveelheidveld met expliciete uitleg zodat direct trade en orderinvoer niet meer door elkaar lopen
+  - Bestanden: `client/lib/screens/crypto_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/crypto.md`
+- [ ] Crew Wars player UX toegevoegd: Crew-scherm heeft nu een War Room-tab met declare/join/action flows, season leaderboard, current-war standings, war action feed, event-rendering en notificatie-routing; Help & Uitleg voor Crew is bijgewerkt
+  - Bestanden: `client/lib/screens/crew_screen.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/services/dashboard_service.dart`, `client/lib/services/event_renderer.dart`, `client/lib/services/notification_service.dart`, `client/lib/data/help_content.dart`
+- [ ] Security-scherm synced met nieuwe beveiligingsregels: toont nu bodyguard dagloon + volgende afschrijving, laat beschadigde armor met lagere actuele bescherming zien, behandelt armor expliciet als 1 gedragen slot met vervang-flow, en gebruikt contrastrijke styling zodat de actieve armor-kaart leesbaar blijft
+  - Bestanden: `client/lib/screens/security_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/security.md`
+- [ ] Push token lifecycle fix: bestaande sessies synchroniseren nu bij refresh/startup automatisch een al toegestane push-permissie opnieuw met het actuele FCM-token, zodat spelers na page refresh of nieuwe build niet opnieuw handmatig push hoeven aan te zetten
+  - Bestanden: `client/lib/services/notification_service.dart`, `client/lib/providers/auth_provider.dart`, `client/lib/screens/settings_screen.dart`, `docs/module-protocols/notifications.md`
+- [ ] Support replies ontkoppeld van speler-inbox: adminreacties op tickets komen niet langer als direct message in `Berichten`, maar uitsluitend in het Support-scherm zelf, met alleen optionele pushmelding en support-badge als signaal
+  - Bestanden: `backend/src/services/supportTicketService.ts`, `backend/src/services/notificationService.ts`, `backend/src/services/translationService.ts`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Support empty-state leesbaarheid verbeterd: de melding dat er nog geen tickets zijn gebruikt nu een contrastrijke donkere placeholder-kaart, zodat de tekst in de donkere Support-layout leesbaar blijft
+  - Bestand: `client/lib/screens/support_tickets_screen.dart`
+- [ ] Dashboard Support-badge toegevoegd: menu-item `Support` toont nu een badge bij nieuwe supportreacties of ticketstatus-updates sinds het laatste bezoek aan het supportoverzicht, en wist die badge weer zodra de speler Support opent
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/utils/support_badge_state.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`
+- [ ] Dashboard Vrienden-badge semantiek hersteld: menu-item `Vrienden` toont nu alleen nog openstaande ontvangen vriendschapsverzoeken via `/friends/pending`, niet langer ongelezen privéberichten uit `/messages/unread`
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Dashboard menu icon fix: Support heeft weer een expliciete menukaart met zichtbaar icon op mobiel, en Support/Luchtvaart gebruiken nu een robuuste iconbron die consistent toont in de dashboardnavigatie, ook online
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`
+- [ ] Support intake en opvolging uitgebreid: speler kan nu context meesturen via module, referentiecode, platform/locale metadata en optionele screenshot, krijgt na verzenden een duidelijk ticketnummer, ziet eigen tickets weer terug in het Support-scherm en kan daar rechtstreeks verder reageren; help-content is gesynchroniseerd met deze support-flow
+  - Bestanden: `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/support-tickets.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Support navigatie aangepast: knop `Melding / Contact` verwijderd uit Help & Uitleg; nieuw apart menu-item `Support` staat direct onder `Help & Uitleg` en opent het player ticket center als eigen scherm
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/support_tickets_screen.dart`, `client/lib/data/help_content.dart`
+- [ ] Player support reply-flow hersteld: supportreacties blijven via inbox + push gemeld, maar de speler kan tickets, status en volledige thread weer direct in het Support-scherm zien en daar antwoorden/verwijderen; het module-keuzemenu dekt nu veel meer spelonderdelen
+  - Bestand: `client/lib/screens/support_tickets_screen.dart`
+- [ ] Player support thread leesbaarheid verbeterd: gesprek-bubbels gebruiken nu expliciete contrastrijke donkere achtergronden en tekstkleuren, zodat afzender, tijd en inhoud in de donkere game-UI leesbaar blijven
+  - Bestand: `client/lib/screens/support_tickets_screen.dart`
+- [ ] Admin tickets kunnen nu verwijderd worden via de tickets-detailkaart
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
+- [ ] Support tickets uitgebreid met optionele screenshot/image upload voor spelers en attachment-weergave in admin ticketdetail
+  - Bestanden: `client/lib/screens/support_tickets_screen.dart`, `client/pubspec.yaml`, `backend/src/routes/tickets.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/startup/ensureSupportSchema.ts`, `backend/prisma/schema.prisma`
+- [ ] Support todo workflow losgetrokken naar centrale admin todo-pagina; todo's kunnen los of vanuit ticket worden aangemaakt en centraal worden bijgewerkt
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `backend/src/startup/ensureSupportSchema.ts`, `backend/prisma/schema.prisma`
+- [ ] Support todo beheer uitgebreid: bestaande todo's zijn nu aanklikbaar vanuit ticketdetail en centrale todo-pagina, status/opmerkingen zijn bewerkbaar en todo's kunnen verwijderd worden zonder ticketcontext te verliezen
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Admin ticketlijst verduidelijkt met spelernaam, onderwerp, aantal afbeeldingen, tijd, datum, status en directe delete-actie
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/services/supportTicketService.ts`
+- [ ] Admin attachment preview UX gefixt: klikken op ticketafbeeldingen opent nu een vergrote preview/lightbox in admin zelf, met aparte link naar het origineel, zonder terugval naar het dashboard
+  - Bestanden: `admin/src/App.tsx`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Web build-fix support scherm: ontbrekende import van `SupportTicketsScreen` hersteld in dashboard zodat Flutter web rebuild niet meer faalt met `The method 'SupportTicketsScreen' isn't defined`
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Admin tickets schema-drift fix: support startup-bootstrap voegt nu ontbrekende kolommen en indexes ook toe aan bestaande productie-tabellen, zodat `/admin/tickets` en ticket-detail niet meer 500'en op oudere databases
+  - Bestand: `backend/src/startup/ensureSupportSchema.ts`
+- [ ] Ticket-systeem Prisma-keten geformaliseerd: support-tabellen staan nu ook in `schema.prisma` en hebben een idempotente Prisma migration, zodat online deploys niet alleen op startup SQL-bootstrap leunen
+  - Bestanden: `backend/prisma/schema.prisma`, `backend/prisma/migrations/20260414103000_add_support_ticket_system/migration.sql`
+- [ ] Admin tickets BigInt-serialisatie fix: `COUNT(*)` velden in de admin ticketlijst worden nu naar gewone numbers genormaliseerd, zodat `/admin/tickets` niet meer 500't tijdens `res.json(...)`
+  - Bestand: `backend/src/services/supportTicketService.ts`
+- [ ] Property prijs-escalatie UI fix: property-scherm gebruikt nu `/properties/available/:country` (player-context) i.p.v. statische `/properties`, zodat oplopende house/apartment prijzen direct zichtbaar zijn na iedere aankoop
+  - Bestand: `client/lib/screens/property_screen.dart`
+- [ ] Properties copy-correctie: eigendommen-scherm en help-content claimen niet langer dat alle properties directe inkomsten opleveren; property cards tonen nu alleen relevante utility-info zoals opslag, wooncapaciteit, upgrades en nightclub-doorverwijzing
+  - Bestanden: `client/lib/screens/property_screen.dart`, `client/lib/widgets/property_card.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/properties.md`
+- [ ] Training cooldown timezone-fix: gym- en shooting-range schermen formatteren `nextTrainAt` nu eerst naar lokale tijd, zodat `Volgende sessie om` niet 2 uur achterloopt ten opzichte van de spelerklok
+  - Bestanden: `client/lib/screens/gym_screen.dart`, `client/lib/screens/shooting_range_screen.dart`
+- [ ] Drugs schermvolgorde aangepast: Operaties-kaarten tonen nu `Faciliteiten -> Productie -> Voorraad`
+  - Bestand: `client/lib/screens/drug_environment_screen.dart`
+- [ ] Prison UI opgeschoond: regel met beschikbaar saldo verwijderd en acties op je eigen prisoner-row uitgeschakeld; eigen row wordt gemarkeerd als `Jij/You`
+  - Bestand: `client/lib/screens/prison_screen.dart`
+
+### Admin
+- [ ] Crew Wars adminpanel toegevoegd: nieuw Crew Wars-tabblad met overview, declare-war formulier, live standings en handmatige statusacties voor moderation/control
+  - Bestanden: `admin/src/App.tsx`, `admin/src/components/CrewWarsAdminPanel.tsx`, `admin/src/services/adminService.ts`
+- [ ] Admin responsive fix: mobiele hamburger opent nu echt het sidemenu via React-state + overlay, sluit weer op overlay/Escape/tabwissel, topbar/page-header wrappen beter op smallere schermen, en admin-tabellen/modals gebruiken nu mobielere spacing, full-width acties en betrouwbare horizontale scroll
+  - Bestanden: `admin/src/App.tsx`, `admin/src/App.css`
+- [ ] Admin support ticket close-guard UX: ticketdetail toont nu expliciet dat open todo's `resolved`/`closed`/`archived` blokkeren en archiveeractie is disabled zolang gekoppelde todo's niet zijn afgerond
+  - Bestanden: `admin/src/App.tsx`
+- [ ] Admin support ticket/todo actie-fix: ticketdetail kan nu statuswijzigingen zonder reply opslaan, heeft een expliciete archiveeractie, en support todo updates gebruiken weer het juiste admin endpoint voor losse versus ticket-gekoppelde todo's
+  - Bestanden: `admin/src/App.tsx`
+- [ ] Admin ticket attachment lightbox fix: klikken op een ticketafbeelding opent de vergroting nu weer buiten tab-scope issues, omdat de attachment-modal globaal rendert en een preview/origineel fallback gebruikt
+  - Bestanden: `admin/src/App.tsx`
+- [ ] Admin ticket attachment modal styling hersteld: `modal-overlay` en `admin-modal` styles staan weer in de admin stylesheets, zodat klikken op support-bijlagen ook visueel echt een overlay/lightbox opent in plaats van inline onder de pagina te renderen
+  - Bestanden: `admin/src/App.css`
+- [ ] Admin support todo interaction fix: bewerken werkt nu ook vanuit de centrale todo-tab omdat de editor-modal niet langer alleen binnen de tickets-tab rendert; afvinken/heropenen geeft direct zichtbare statusfeedback en refresht daarna ticket- en todo-overzichten opnieuw
+  - Bestanden: `admin/src/App.tsx`
+- [ ] Support status/analytics follow-up fix: admin reply-templates/type-switches sturen tickets nu weer correct naar bijvoorbeeld `waiting_player`, en support analytics verversen direct na reply- of ticketstatus-updates zodat tellers niet blijven hangen op oude waarden
+  - Bestanden: `admin/src/App.tsx`, `backend/src/services/supportTicketService.ts`
+- [ ] Support operations upgrade in admin: tickets-tab toont nu analytics, priority, assignee, leeftijd en laatste actor; admins kunnen ticketinstellingen wijzigen, public replies of internal notes plaatsen met templates, en support todo's centraal beheren met priority, assignee, due date, module-link en interne comments
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`, `backend/src/routes/admin.ts`, `backend/src/services/supportTicketService.ts`
+- [ ] Admin support todo build-fix: kapotte JSX in de gekoppelde todo-tabel hersteld zodat `npm run build` weer slaagt en de Docker admin image niet meer stopt met `JSX expressions must have one parent element`
+  - Bestand: `admin/src/App.tsx`
+- [ ] Nieuw Tickets & Todo beheer in adminpanel: aparte tickets-tab met ticketlijst/filtering, thread-details, admin-reply acties en geïntegreerde todo-lijst per ticket (aanmaken + status-prioriteit updates) met NL/EN labels
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+- [ ] Admin spelerdetail uitgebreid: Overview toont nu expliciet munitie- en wapentotalen bovenaan, plus tabellen met leesbare naam + ID + aantallen, zodat direct zichtbaar is welke wapens/munitie een speler bezit
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+- [ ] Reset-knoppen altijd zichtbaar: reset speler en reset alle spelers gebruiken nu expliciete `admin-reset-btn` styling zodat tekst/icon niet meer alleen bij hover zichtbaar zijn
+  - Bestanden: `admin/src/App.tsx`, `admin/src/App.css`
+- [ ] Web/PWA scroll hardening: dashboard section-container + Help + Storage gebruiken nu expliciete `ScrollConfiguration` met brede `dragDevices` set zodat touch-scroll op mobiel web niet wordt geblokkeerd in embedded weergaven
+  - Bestanden: `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/help_screen.dart`, `client/lib/screens/storage_tab.dart`
+- [ ] Mobile scroll fix: Inventory > Storage gebruikt nu één doorlopende pagina-scroll (geen vaste header + geneste onder-scroll), zodat content op mobiele schermen volledig bereikbaar blijft; Help/Uitleg compacte layout gebruikt nu ook een single-scroll body onder de filters
+  - Bestanden: `client/lib/screens/storage_tab.dart`, `client/lib/screens/help_screen.dart`
+- [ ] Property opslag wapens hotfix (apartment/house): weapon-list in opslag detail toont nu robuust entries met fallback keys (`weaponId`/`id`/`drugType`) en withdraw gebruikt altijd een geldige weapon-id; backend verrijkt weapon-opslag met namen en ondersteunt legacy opslagkeys (`weapon:` en `weapon_`)
+  - Bestanden: `client/lib/screens/storage_tab.dart`, `backend/src/services/propertyStorageService.ts`
+- [ ] Inventory carried-tab hotfix: wapens op "op zak" gebruiken nu gedeelde weapon-inventory uit parent-screen + robuuste response parsing (`weapons`/`inventory`/`weaponInventory`) zodat wapens niet verdwijnen terwijl tools wel zichtbaar zijn
+  - Bestanden: `client/lib/screens/inventory_screen.dart`, `client/lib/screens/carried_inventory_tab.dart`
+- [ ] External image routing hotfix (nginx): image-locaties gebruiken nu prefix `alias /mnt/external-images/` voor `/images/*`, `/assets/assets/images/*`, `/assets/images/*` en `/assets/image/*`; dit voorkomt globale 404-regressie door foutieve `try_files /mnt/external-images/...` resolutie
+  - Bestand: `client/docker/nginx.conf`
+- [ ] Client Docker build pubspec fix: wanneer `assets/images/` via `.dockerignore` is uitgesloten, maakt Dockerfile nu automatisch alle `flutter.assets` directories uit `pubspec.yaml` aan vóór `flutter build web`, zodat build niet faalt met `unable to find directory entry in pubspec.yaml`
+  - Bestand: `client/Dockerfile`
+- [ ] Web image helper route-hardening v3: `WebAssetHelper.image(...)` probeert op web nu meerdere network fallback-routes (`images/...`, `assets/assets/images/...`, `assets/images/...`) na een asset-miss, zodat voertuig- en catalogusafbeeldingen blijven laden bij proxy/nginx routevariaties
+  - Bestand: `client/lib/utils/web_asset_helper.dart`
+- [ ] Web image helper path-normalisatie v4: `WebAssetHelper` normaliseert runtime image-strings nu vooraf (incl. `/assets/...`, `images/...`, `assets/assets/images/...` en dubbele segmenten zoals `vehicles/vehicles/...`) voordat asset + network fallback worden geprobeerd
+  - Bestand: `client/lib/utils/web_asset_helper.dart`
+- [ ] Black market + drugs web image fix: schermen gebruiken nu `WebAssetHelper.image(...)` i.p.v. directe `Image.asset(...)` voor voertuig/drug/facility visuals, zodat images ook laden wanneer `assets/images` niet in de web `AssetManifest` zitten (Docker external-images setup)
+  - Bestanden: `client/lib/screens/black_market_screen.dart`, `client/lib/screens/drug_facility_screen.dart`, `client/lib/screens/drug_production_screen.dart`, `client/lib/screens/drug_inventory_screen.dart`
+- [ ] Voertuig stelen + garage + marina web image fix: `OverlayImage`/`OverlayImageBuilder` gebruikt nu intern `WebAssetHelper.image(...)` zodat voertuigafbeeldingen (auto, motor, boot) en catalogi ook laden op web; garage- en marina-achtergronden omgezet van `DecorationImage(AssetImage(...))` naar `Stack+Positioned.fill+WebAssetHelper.image(...)` met network fallback
+  - Bestanden: `client/lib/widgets/overlay_image.dart`, `client/lib/screens/garage_screen.dart`, `client/lib/screens/marina_screen.dart`
+- [ ] Hotfix web build compile error (garage/marina): ontbrekende afsluitende `]` in `Stack(children: [...])` hersteld na background-refactor, waardoor Flutter web build weer compileert
+  - Bestanden: `client/lib/screens/garage_screen.dart`, `client/lib/screens/marina_screen.dart`
+- [ ] Push permissie-flow online hersteld: Settings bevat nu expliciete "Push inschakelen" actie met browser/iPhone permission request + server token-registratie status, zodat web/homescreen gebruikers opnieuw meldingen kunnen activeren
+  - Bestanden: `client/lib/screens/settings_screen.dart`, `client/lib/services/notification_service.dart`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Dubbele web push notificatie fix: web-tokens ontvangen nu data-only FCM berichten (geen `notification` key), waardoor FCM de notificatie niet automatisch toont én de service worker hem ook niet opnieuw toont; service worker leest titel/body uit `payload.data` als fallback
+  - Bestanden: `backend/src/services/notificationService.ts`, `client/web/firebase-messaging-sw.js`
+- [ ] Crypto marktmeldingen gefilterd op actieve portfolio: `notifyAllPlayersMarketRegime` en `notifyAllPlayersMarketNews` sturen nu alleen naar spelers met `quantity > 0` in `crypto_holdings`; spelers zonder crypto-portfolio ontvangen geen ongeplande marktmeldingen meer
+  - Bestand: `backend/src/services/cryptoService.ts`
+- [ ] Player profiel like-fix online: `profile_likes` tabel wordt nu runtime idempotent aangemaakt in player-routes zodat profiel-like niet meer faalt op productie met schema-drift
+  - Bestand: `backend/src/routes/player.ts`
+- [ ] Crime jail->cooldown flow fix: na borg-betaling wordt state opnieuw gevalideerd via jail+cooldown check, zodat scherm niet blijft hangen op jail overlay en cooldown overlay direct kan overnemen
+  - Bestand: `client/lib/screens/crime_screen.dart`
+- [ ] Overlay mobile readability fix: jail/cooldown overlays gebruiken compactere spacing/typografie op kleine schermen en tonen release/cooldown feedback betrouwbaarder via top-right snackbar
+  - Bestanden: `client/lib/widgets/jail_screen.dart`, `client/lib/widgets/cooldown_overlay.dart`
+- [ ] Help mobiel scroll fix: replaced `SingleChildScrollView` met `ListView` in compacte layout zodat de screen automatisch oneindige hoogte aanneemt en correct scrolle wanneer ingebed in Expanded container (bijv. dashboard webview); `SingleChildScrollView` paste zich aan content-hoogte aan waardoor scroll werd geblokkeerd
+  - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Inventory TabBarView scroll hardening: voorkomen van nested scroll conflicts door TabBarView naar Column-level te verplaatsen met `NeverScrollableScrollPhysics()` zodat elke tab (Carried/Storage/Loadouts) onafhankelijk zijn scroll afhandelt (StorageTab heeft ListView, CarriedTab kan gescrold worden)
+  - Bestand: `client/lib/screens/inventory_screen.dart`
+- [ ] Help screen embedded scroll fix: verwijderd inner ScrollConfiguration in embedded mode (dashboard) zodat dashboard's outer ScrollConfiguration niet wordt overschreven; standalone help page behoudt eigen ScrollConfiguration
+  - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Help mobiel UX refactor: topic-kaartenlijst vervangen door vaste onderwerp-dropdown + inline detail-content (samenvatting + hoe-werkt-dit + tips) in dezelfde ListView, zodat de volledige help-content als één geheel scrollbaar is op mobiel
+  - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Help header vereenvoudigd: in Help & Uitleg zijn subtiteltekst en badges (`Meertalig`, `Mobiel, tablet en desktop`, `Gebaseerd op actuele modules`) verwijderd; header toont nu alleen icon + titel `Spelhandleiding`
+  - Bestand: `client/lib/screens/help_screen.dart`
+- [ ] Chat tijdzone fix: chat- en conversatie-timestamps worden nu lokaal gerenderd via `DateTime.parse(...).toLocal()` zodat berichttijden online niet meer ~2 uur achterlopen
+  - Bestanden: `client/lib/models/direct_message.dart`, `client/lib/models/crew_message.dart`
+- [ ] Jail/bail direct-refresh fix: eigen borgbetaling (`/player/pay-bail`) gebruikt geen prison cooldown meer en jail overlay forceert direct release-refresh (timer stop + player refresh), zodat geld en vrijlating meteen zichtbaar zijn
+  - Bestanden: `backend/src/routes/player.ts`, `client/lib/widgets/jail_screen.dart`
+- [ ] School XP/level altijd 0 bug: `event.params` in `getPlayerEducationProfile` werd niet geparsed (raw JSON-string i.p.v. object), waardoor `trackId`/`xpGain`/`newLevel` altijd `undefined` waren; fix: `JSON.parse(event.params)` toegevoegd. Zelfde fix in `achievementService.ts` voor `educationLevel` snapshot
+  - Bestanden: `backend/src/services/educationService.ts`, `backend/src/services/achievementService.ts`
+- [ ] Dynamische borgprijs fix: borg tijdens celstraf schaalt nu met resterende jailtijd (tijd-base) naast wanted-level base, zodat lange straffen (bijv. 2 uur) duurder zijn dan korte straffen (bijv. 10 min)
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`, `client/lib/widgets/jail_screen.dart`
+- [ ] Login desktop fallback hardening: login achtergrond valt nu ook terug op de alternatieve (mobile/desktop) static image wanneer de primaire desktop/mobile chain faalt
+  - Bestand: `client/lib/screens/login_screen.dart`
+- [ ] Web dashboard same-page refresh: opnieuw klikken op dezelfde web-sectie forceert nu content remount via refresh-seed key, zodat menu-click op huidige pagina toch een refresh doet
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Images volledig uit Docker-build verwijderd: Dockerfile verwijdert `build/web/assets/assets/images/` na flutter build; nginx serveert alle image-routes (`/images/*`, `/assets/assets/images/*`, `/assets/images/*`) uitsluitend uit externe runtime mount (`/mnt/external-images`) zonder bundled fallback; Docker-image daalt van ~4.3GB naar klein
+  - Bestanden: `client/Dockerfile`, `client/docker/nginx.conf`, `docs/module-protocols/PROTOCOL_MASTER.md`
+  - Vereiste server-stap vóór rebuild: `rsync -av --delete client/assets/images/ runtime/client-images/`
+- [ ] iOS homescreen/PWA update fix: client-nginx cache-policy opgesplitst zodat app-shell/service-worker bestanden `no-cache` krijgen en assets immutable blijven; hierdoor pakt iPhone beginscherm-app nieuwe releases zonder opnieuw toevoegen
+  - Bestanden: `client/docker/nginx.conf`, `docs/module-protocols/PROTOCOL_MASTER.md`, `docs/operations/DEPLOY.md`
+- [ ] Reizen UX/state fix: na reisstart wordt nu transit-status getoond (onderweg + volgende stop) i.p.v. direct "gereisd naar bestemming", en player-country wordt na start/volgende leg altijd server-authentiek ververst
+  - Bestand: `client/lib/screens/travel_screen.dart`
+- [ ] Deploy hardening (assets): runbook geüpdatet met verplichte Git LFS hydrate-stap op server (`git lfs pull` + `git lfs checkout`) en post-deploy service-worker/cache reset-check voor web visuals
+  - Bestanden: `docs/operations/DEPLOY.md`, `docs/module-protocols/PROTOCOL_MASTER.md`
+- [ ] Web helper hardening v2: `WebAssetHelper` rendert op web nu asset-first (`Image.asset`/`AssetImage`) met network fallback, zodat volledige image-renders niet blokkeren door route/proxy afwijkingen
+  - Bestand: `client/lib/utils/web_asset_helper.dart`
+- [ ] Jobs image fail-safe: job cards (open + locked) gebruiken nu web-safe image loader met visuele fallback zodat ontbrekende job-assets geen broken image meer tonen op productie
+  - Bestanden: `client/lib/widgets/job_card.dart`, `client/lib/screens/jobs_screen.dart`
+- [ ] Web image routing centralisatie: `WebAssetHelper` routeert gameplay-assets nu via stabiele `/images/*` URL en client-nginx mapt `/images/*` naar Flutter bundle (`/assets/assets/images/*`) zodat crimes/jobs/avatars/badges consistent laden online
+  - Bestanden: `client/lib/utils/web_asset_helper.dart`, `client/docker/nginx.conf`
+- [ ] Login background web hardening v3: static public fallback toegevoegd via `web/images/backgrounds/*` en login fallback gebruikt nu expliciete network-load van `images/backgrounds/*` wanneer Flutter asset-resolving faalt
+  - Bestanden: `client/lib/screens/login_screen.dart`, `client/web/images/backgrounds/login_background.png`, `client/web/images/backgrounds/login_background_mobile.png`
+- [ ] Login background web hardening v2: canonical Flutter web pad (`assets/assets/images/...`) toegevoegd in fallback-keten en WebAssetHelper resolve't `assets/images/...` nu naar de echte web-outputlocatie
+  - Bestanden: `client/lib/utils/web_asset_helper.dart`, `client/lib/screens/login_screen.dart`
+- [ ] Web subpath fix login background: `WebAssetHelper.toPublicUrl()` gebruikt nu base-relative paden i.p.v. root-absolute (`/assets/...`), zodat login background fallback ook werkt wanneer de app niet op domein-root draait
+  - Bestand: `client/lib/utils/web_asset_helper.dart`
+- [ ] Web asset-path fix: login/rechtbank backgrounds gebruiken weer `assets/images/...` (Flutter bundle key) + nginx-compat alias toegevoegd voor legacy `/assets/images/*` en typo `/assets/image/*` routes
+  - Bestanden: `client/lib/screens/login_screen.dart`, `client/lib/screens/court_screen.dart`, `client/docker/nginx.conf`
+- [ ] Login background rendering hardened: fallback-keten toegevoegd (`assets/images/...` -> `images/...` -> directe `/assets/images/...` URL -> gradient) zodat mobile login-screen niet meer zwart wordt bij asset-key drift/cache
+  - Bestand: `client/lib/screens/login_screen.dart`
+- [ ] Web-safe asset loader uitgerold voor avatars en crimes: Flutter web gebruikt nu directe HTTPS asset-URLs i.p.v. breekbare `AssetImage`/verkeerde `Image.network('assets/...')` combinaties op kritieke schermen
+  - Bestanden: `client/lib/utils/web_asset_helper.dart`, `client/lib/utils/avatar_helper.dart`, `client/lib/widgets/crime_card.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/screens/friends_screen.dart`, `client/lib/screens/chat_screen.dart`, `client/lib/screens/player_profile_screen.dart`, `client/lib/screens/activity_feed_screen.dart`, `client/lib/widgets/message_bubble.dart`, `client/lib/widgets/conversation_card.dart`, `client/lib/widgets/hit_card.dart`
+- [ ] Build-fix na asset-helper refactor: ontbrekende `AvatarHelper` import hersteld in dashboard zodat web build weer compileert
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] HTTPS hardening client-nginx: CSP (`upgrade-insecure-requests; block-all-mixed-content`) + HSTS + `X-Content-Type-Options` toegevoegd om mixed-content meldingen te voorkomen
+  - Bestand: `client/docker/nginx.conf`
+- [ ] Premium kaart voorbereid op Mollie-fase 1: player VIP prijs naar €4,99/mnd en cataloguslabels tonen nu ook credits/event boosts
+  - Bestand: `client/lib/screens/crew_screen.dart`
+- [ ] Plesk Docker productie-stack toegevoegd: backend, client, admin, MariaDB en Redis draaien via `docker-compose.plesk.yml` met Plesk als reverse proxy/SSL-laag
+  - Bestanden: `docker-compose.plesk.yml`, `.env.docker.example`, `backend/Dockerfile`, `client/Dockerfile`, `admin/Dockerfile`
+  - Docker fix: backend image verwacht geen gecommit `firebase-service-account.json` meer; Firebase initialisatie blijft optioneel via env/path op runtime.
+- [ ] Rechtbank UI compleet gemaakt: echte sentence/record data uit `/trial/*` met acties voor hoger beroep en omkoping, inclusief pull-to-refresh en foutstatussen
+  - Bestand: `client/lib/screens/court_screen.dart`
+- [ ] Rechtbank UI polish: professionele, beter leesbare layout met cinematic achtergrond (landscape + mobile portrait), contrast-overlay, responsive max-width, partial API rendering en backend-consistente beroep-copy (dynamische kosten + 20-40% reductie)
+  - Bestanden: `client/lib/screens/court_screen.dart`, `client/assets/images/backgrounds/courtroom_background.png`, `client/assets/images/backgrounds/courtroom_background_mobile.png`
+- [ ] Rechtbank help-content gesynchroniseerd met actuele gameplay (hoger beroep + omkoping, NL/EN parity)
+  - Bestand: `client/lib/data/help_content.dart`
+- [ ] Drugs productie UX-optimalisatie: bij succesvol ophalen wordt alleen de betreffende actieve productie-card lokaal verwijderd en facility/productie counters op de achtergrond gesynchroniseerd (geen full-screen reload)
+  - Bestand: `client/lib/screens/drug_production_screen.dart`
+- [ ] Achievements crashfix: `achievementData` parser accepteert nu zowel Map als String payload (incl. single-quote varianten) om TypeError te voorkomen
+  - Bestand: `client/lib/models/achievement.dart`
+- [ ] Motor-achievement badges genereren via Leonardo API: two_wheel_bandit en bike_cartel (transparante PNG, 1024 source voor mobile/tablet/desktop scherpte)
+  - Bestanden: `client/assets/images/achievements/badges/vehicles/two_wheel_bandit.png`, `client/assets/images/achievements/badges/vehicles/bike_cartel.png`, `backend/scripts/generate_motor_achievement_badges_leonardo.py`
+- [ ] Spelerprofiel UI toont volledige overzichtsvelden (crew, rank, reputatie, status, online, startdatum, VIP, likes, cash, bank, hoeren, woningen)
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] Spelerprofiel UI heringedeeld in compacte secties `Identiteit` en `Economie` voor snellere scanbaarheid in embedded bottom sheet
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] Profiel UI herbouwd naar compacte game-stijl met embedded modus voor contextschermen
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] Hitlist profielopen werkt als embedded bottom sheet i.p.v. fullpage navigatie
+  - Bestand: `client/lib/screens/hitlist_screen.dart`
+- [ ] Profiel bevat 1x-like actie voor andere spelers met live tellerweergave
+  - Bestand: `client/lib/screens/player_profile_screen.dart`
+- [ ] 6 crypto shield badges genereren en valideren via Leonardo.ai API flow (transparante PNG + alpha QA)
+  - Bestanden: `generate_crypto_badges_leonardo.py`, `LEONARDO_IMAGE_GENERATION_PROTOCOL.md`
+- [ ] Achievement badge asset pad gefixt naar `assets/images/...`
+  - Bestand: `client/lib/screens/achievements_screen.dart`
+- [ ] Unlock notificaties tonen badge-afbeeldingen met fallback
+  - Bestand: `client/lib/utils/achievement_notifier.dart`
+- [ ] Registratieflow aangepast voor “verificatie vereist” zonder dashboard redirect
+  - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`, `client/lib/screens/login_screen.dart`
+- [ ] Inbox system-thread zichtbaar in berichten en niet beantwoordbaar
+  - Bestand: `client/lib/screens/chat_screen.dart`
+- [ ] Inbox system-thread krijgt visuele achievement/systeem-markering in lijst en chat-header
+  - Bestanden: `client/lib/widgets/conversation_card.dart`, `client/lib/screens/chat_screen.dart`
+- [ ] Berichten unread badge op avatar toegevoegd (web + mobile topbar)
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Dashboard unread teller gebruikt dedicated `/messages/unread` endpoint (sneller/stabieler)
+  - Bestand: `client/lib/screens/dashboard_screen.dart`
+- [ ] Dashboard statistiekencard gebruikt weer echte live tellers: hardcoded nullen zijn vervangen door backenddata voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels zodat het home-dashboard niet meer misleidend leeg oogt
+  - Bestanden: `backend/src/routes/player.ts`, `client/lib/services/dashboard_service.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Territory contest-start en verdedigen verversen de open modal nu direct; als de eerste API-call fout terugstuurt maar de contest al bestaat, toont de UI meteen de actuele gevechtsstatus. Contesttimers vallen lokaal terug op `startedAt` + runtime-config zodat regio-modals geen `Onbekend` meer tonen tijdens voorbereiding
+  - Bestanden: `backend/src/services/territoryService.ts`, `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Auth-state logout propagatie verbeterd bij 401/403 (forced logout na sessie-vervanging)
+  - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`
+- [x] Admin UI: tab “System Logs” toegevoegd voor runtime backend fouten
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+- [x] Admin UI: “System Logs” uitgebreid met filters op bron + zoekveld (melding/details)
+  - Bestand: `admin/src/App.tsx`
+- [x] Admin UI: “System Logs” uitgebreid met datumfilter (24u/7d/30d/all)
+  - Bestand: `admin/src/App.tsx`
+- [x] Admin UI: tab “Admins” toegevoegd voor admin aanmaken/rol wijzigen/activeren-deactiveren
+  - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
+- [ ] Rechtbank hoger beroep schaalbaar met rechten-niveau: `law` track level voegt +5% succeskans per level toe aan hoger beroep (max +25% bij level 5); basiskans stijgt daarmee van 35% naar max 60% vóór verdere aanpassingen (eerdere veroordelingen, wanted level, FBI heat); hard cap verhoogd van 70% naar 85%
+  - Bestand: `backend/src/services/judgeService.ts`
+  - Spelers zonder opleiding (geen `law` track) behouden 35% basiskans ongewijzigd (fallback naar 0)
+- [ ] Aviation image generation pipeline toegevoegd: nieuw Leonardo-script genereert aircraft cutouts (`cessna`, `king_air`, `gulfstream`, `cargo_737`, `citation_x`, `antonov`) plus aviation backgrounds (`aviation_bg_desktop/tablet/mobile`) direct naar externe runtime map `runtime/client-images/*`, zodat client build klein blijft
+- [ ] **VPS actie vereist**: script opnieuw draaien om de 2 nieuwe vliegtuigafbeeldingen te genereren (`citation_x.png` + `antonov.png`): `python3 backend/scripts/generate_aviation_images_leonardo.py --confirm-batch YES`
+- [ ] Premium/Credits external image-pad fix: premium tiles gebruiken runtime paths `images/premium_tiles/...`, loader gebruikt web network-candidates zonder `Image.asset` fallback (minder `assets/assets` ruis), en de tegelset staat in `runtime/client-images/premium_tiles/` zodat de client niet afhankelijk is van gebundelde `assets/images`
+  - Bestanden: `client/lib/screens/premium_screen.dart`, `runtime/client-images/premium_tiles/*`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Premium/Credits cache-invalidation: na image-refresh `_premiumTilesCacheVersion` in `client/lib/screens/premium_screen.dart` verhogen en client opnieuw deployen zodat spelers niet op oude tile-cache blijven hangen
+  - Bestanden: `client/lib/screens/premium_screen.dart`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Premium/Credits info-popup UX: lange uitlegtekst van tegels verplaatst naar linksboven `i`-icoon popup (NL/EN), terwijl tegel zelf kort en image-first blijft met duidelijke CTA zoals `Koop VIP`, `Koop Crew VIP`, `Koop 1000 credits`
+  - Bestanden: `client/lib/screens/premium_screen.dart`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [ ] Premium/Credits image generation workflow vastgelegd: nieuw Leonardo one-shot script met vaste 12 premium tile outputs + externe hosting runbook voor VPS, zodat stijlupdates herhaalbaar zijn en aankooptype per tile visueel duidelijk blijft
+  - Bestanden: `backend/scripts/generate_premium_tiles_leonardo.py`, `docs/operations/PREMIUM_TILES_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
+- [x] Balance & monetization roadmap in 4 fasen vastgelegd (zonder harde dagcaps, met non-pay-to-win gearguardrails)
+  - Bestand: `docs/operations/BALANCE_PHASE_ROADMAP.md`
+- [ ] Aviation i18n: `aircraft.json` bevat nu `name_en` + `description_en` voor alle 6 vliegtuigen; client toont juiste taal op basis van locale
+  - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
+- [ ] Prison buyout/jailbreak transactiefix: `world_events.params` in prison flows wordt nu correct als JSON-string opgeslagen (`prison.buyout_success`, `prison.jailbreak_success`, cooldown-markers) i.p.v. object payloads, zodat buyout/jailbreak transacties niet meer kunnen falen op Prisma type mismatch
+  - Bestanden: `backend/src/services/policeService.ts`, `backend/src/routes/player.ts`
+- [ ] **[ONTWERP GEREED — IMPLEMENTATIE VEREIST]** Aviatie-systeem: privévliegtuigen kopen, reistijdbonus en eigen-voertuig smokkelkanaal
+  - Vliegtuigtypes: Cessna 172 (€250k, 20 slots, −15% reistijd), King Air (€750k, 50 slots, −25%), Gulfstream G200 (€2,5M, 80 slots, −35%), Boeing 737 Cargo (€10M, 200 slots, −30%)
+  - Gating via bestaande `aviation` education track: **alle pilot-opleidingen verplicht vóór aankoop** (aviation level 5 + alle certificaten), server-side afgedwongen in `aviationService.purchaseAircraft`
+  - Cargo-slot systeem: auto=10, motor=5, boot=∞ (past niet in vliegtuig), drugs/wapen/handelswaar=1-2
+  - Smokkelkanaal uitgebreid: eigen vliegtuig/auto/motor/boot als kanaalopties met risicoreductie + confiscatierisico
+  - Travel bonus zichtbaar in Travel scherm vóór vertrek
+  - Vliegtuigafbeeldingen via Leonardo.ai API, opgeslagen in externe mount `runtime/client-images/aircraft/`
+  - Nieuwe bestanden vereist: `backend/content/aircraft.json`, `backend/src/services/aviationService.ts`, `backend/src/routes/aviation.ts`, `backend/add-aviation-tables.sql`, `client/lib/screens/aviation_screen.dart`, `backend/scripts/generate_aircraft_images_leonardo.py`
+  - Prisma model `PlayerAircraft` vereist migration
+  - Protocollen bijgewerkt: `docs/module-protocols/aviation.md`, `school.md`, `smuggling.md`, `travel.md`, `README.md`, `PROTOCOL_MASTER.md`
+## Deploy Plan (wanneer we live gaan)
+
+### 1) API deploy
+1. Push wijzigingen naar GitHub.
+2. SSH naar VPS, ga naar repo-root en run: `git pull`
+3. Maak `.env` aan op basis van `.env.docker.example` en vul productie-waarden in.
+4. Run: `docker compose -f docker-compose.plesk.yml up -d --build`
+5. Run: `docker compose -f docker-compose.plesk.yml exec backend npx prisma migrate deploy`
+
+### 2) Client deploy
+1. Geen lokale build of FTP meer nodig; client en admin bouwen mee in `docker compose -f docker-compose.plesk.yml up -d --build`.
+2. Zet in Plesk reverse proxy targets naar `127.0.0.1:8080` voor `themobstate.com`, `127.0.0.1:3000` voor `api.themobstate.com` en `127.0.0.1:8081` voor `admin.themobstate.com`.
+
+### 3) Post-deploy checks
+- [ ] Hard refresh / service worker cache refresh
+- [ ] Nieuwe speler test: `untouchable` mag niet direct unlocken
+- [ ] Achievement scherm toont custom badges (geen emoji fallback)
+- [ ] Achievement unlock popup toont badge image
+- [ ] Register met e-mail: géén auto-login, melding om e-mail te verifiëren
+- [ ] Verify-link in mail wijst naar `https://api.themobstate.com/auth/verify-email?...`
+- [ ] Login vóór verificatie geeft correcte blokkade/melding
+- [ ] Tool shop test: `POST /tools/buy/bolt_cutter` geeft geen 500 meer en aankoop slaagt
+- [ ] Achievement unlock verschijnt in admin bij “Recente handelingen” met type `ACHIEVEMENT`
+- [ ] Achievement unlock maakt inbox-bericht aan met titel/beloning
+- [ ] System-thread in berichten is leesbaar maar niet replybaar
+- [ ] System-thread toont trophy/system styling in inboxlijst en detailvenster
+- [ ] Achievement inbox-bericht start met duidelijke titelregel `🏆 Achievement Unlocked`
+- [ ] Jobs test: `POST /jobs/:jobId/work` geeft geen 500 meer door side-effect fouten en retourneert consistente `job.completed` / `job.failed`
+- [ ] Admin test: in “System Logs” verschijnen backend fouten met bron/melding/timestamp
+- [ ] Admin test: in “System Logs” werken source filter en tekstzoeker op melding/details
+- [ ] Admin test: in “System Logs” werkt datumfilter correct voor 24u/7d/30d/all
+- [ ] Admin test: als SUPER_ADMIN kan je admin aanmaken, rol wijzigen en account activeren/deactiveren
+- [ ] Achievement test: 5-job achievement unlockt niet meer op mislukte jobs
+- [ ] Achievement inbox test: bericht bevat consistente taal (geen gemixte labels)
+- [ ] Berichtentest: nieuw bericht toont direct unread badge bij menu-item + avatar badge (web en mobile)
+- [ ] Push test: nieuw systeem- of direct bericht triggert push notificatie op geregistreerd device
+- [ ] Single-session test: inloggen op mobiel terwijl laptop actief is => laptop sessie wordt bij eerstvolgende API-call uitgelogd (`SESSION_REPLACED`)
+- [ ] RLD test: `/red-light-districts/country/{currentCountry}` geeft district terug (geen 404 bij verse/lege DB)
+- [ ] RLD test: in RLD-scherm verschijnt weer koopoptie voor niet-gekocht district in huidig land
+- [ ] Drugs productie test: bij `Ophalen/Collect` verdwijnt alleen de juiste productiecard direct, zonder globale spinner/volledige content reload
+- [ ] Register test: `POST /auth/register` geeft token + player terug en maakt geen backend 500 meer na player-create
+- [ ] Crypto test: scheduled prijsupdate verwerkt alle assets zonder `Out of range value for column 'current_price'` in backend logs
+- [ ] Crypto test: ontspoorde `current_price` waarden worden teruggebracht binnen geloofwaardige asset-bandbreedte en marktdata blijft bruikbaar in crypto-scherm
+- [ ] Crypto test: in-app crypto notificaties schrijven geen `Expected String, provided Object` fouten meer naar `world_events.params`
+- [ ] Rechtbank test: `/trial/current-sentence` geeft actieve straf terug (of `sentence: null`) zonder 500
+- [ ] Rechtbank test: `/trial/record` toont veroordelingenhistorie in UI (ook wanneer speler niet vastzit)
+- [ ] Rechtbank test: hoger beroep verwerkt kosten + cooldown en past resterende straf alleen aan bij succes
+- [ ] Rechtbank test: omkoping trekt bedrag altijd af en laat speler alleen bij succes direct vrij
+- [ ] Rechtbank UI test: nieuwe background + overlay blijft goed leesbaar op mobile en desktop
+- [ ] Rechtbank UI test: portrait/landscape wissel kiest automatisch juiste background variant zonder layout regressie
+
+## Notes
+- Bestaande foutief ontgrendelde achievements in DB blijven bestaan totdat handmatig opgeschoond.
+- Voeg vanaf nu elke nieuwe wijziging toe onder “Pending Changes”.
+- Protocol bootstrap uitgevoerd voor nieuw betaalsysteem: `docs/module-protocols/payments.md` toegevoegd en index/master geüpdatet.
+- Lokale QA uitgevoerd op 2026-04-11 (dev):
+  - `/trial/current-sentence` gaf zowel `sentence: null` (niet vast) als actieve sentence zonder 500.
+  - `/trial/record` gaf stabiele payload met historiekvelden.
+  - `POST /trial/appeal` verwerkte kosten en gaf cooldown blokkade op directe retry (`429`).
+  - `POST /trial/bribe` gaf zowel success- als failure-uitkomst en saldo daalde in beide paden.
+  - Web build validatie: beide courtroom backgrounds gebundeld in output (`courtroom_background.png` + `courtroom_background_mobile.png`).
+- Lokale QA uitgevoerd op 2026-04-11 (payments foundation):
+  - `npx prisma validate` en `npx prisma generate` succesvol na Mollie/credits schema-uitbreiding.
+  - `npm run build` succesvol voor backend na vervanging van Stripe-route door Mollie-route.
+  - Runtime payment-flow nog niet end-to-end geverifieerd tegen Mollie webhook omdat dit een geldige `MOLLIE_API_KEY` en publiek bereikbare `MOLLIE_WEBHOOK_URL` vereist.
+- Casino regressiefix (2026-04-23):
+  - `casino_screen.dart` purchase-flow geeft loading-state nu altijd vrij bij onverwachte backend-events (`error.internal`/onbekend event), zodat het scherm niet blijft hangen na koopactie.
+  - Dubbele stats-call na koop verwijderd; state refresh loopt nu via `checkOwnershipAndLoadGames()` als enige bron.
+- Deployment basis voorbereid voor Plesk + Docker zonder FTP-workflow; domeinen kunnen nu via Plesk reverse proxy naar localhost-containers wijzen.
+
