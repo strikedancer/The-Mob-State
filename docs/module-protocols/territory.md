@@ -52,6 +52,8 @@
   - Territory bonus-label UX-fix: de regio-modal maakt nu expliciet dat `Actiebonussen` contestpunten per actie verhogen (niet de €-uitbetaling), en groepeert bonussen per actietype zodat dubbele bronlabels niet meer verwarrend als één lange regel verschijnen
   - Territory bonus-formule UX-fix: de regio-modal toont nu per actietype expliciet `basispunten + bonuspunten = totale contestpunten`, inclusief bronverdeling, zodat spelers direct zien waarom payout-bedragen gelijk blijven.
   - Territory progression-koppeling: contest-caps schalen nu mee met HQ global level (runtime-tunable), en actiebonussen kunnen nu naast regio/war pressure ook uit crew mission level en crew bijgebouwen komen (weapon/ammo/car/boat/drug storage), zodat crew progression en map-control elkaar logisch versterken
+  - Territory HQ action-gates: geavanceerde contest-acties kunnen nu per actietype een minimaal HQ global level vereisen (runtime keys), met server-side enforcement en expliciete NL/EN lock-tekst in de regio-modal.
+  - Territory admin telemetry: admin-overzicht bevat nu 24u economy/progression metrics voor reward per minuut, contest winrate per HQ-band, region growth per crew-size en bonus usage per HQ/building tier.
   - Territory pacing update: `TERRITORY_ACTION_DAILY_CAP` ondersteunt nu expliciet `0` als "geen harde dagcap", zodat actieve crews oneindig kunnen doorspelen binnen cooldown/anti-farm guardrails
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
@@ -196,6 +198,12 @@ Verplichte keys:
 - `TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL`
 - `TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL`
 - `TERRITORY_BUILDING_ACTION_BONUS_CAP`
+- `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_PATROL`
+- `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_INTEL_SCAN`
+- `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SABOTAGE`
+- `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN`
+- `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID`
+- `TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE`
 
 Harde regel:
 - Nieuwe territory setting keys worden eerst in admin runtime config toegevoegd en gevalideerd, nooit als hardcoded JSON settings file.
@@ -266,6 +274,8 @@ Admin moderation:
 8. Dashboard en Crew screen tonen territory state consistent.
 9. Settings wijziging via admin config werkt direct (runtime) waar toegestaan.
 10. Multi-country browse: alle enabled landen renderen interactieve regio's; action endpoints blokkeren correct buiten de huidige Travel-locatie.
+11. HQ-locked actions tonen expliciet `vereist HQ level X` in NL/EN en server-side rejects blijven consistent met dezelfde locklogica.
+12. Admin telemetry toont valide 24u waarden voor reward/min, winrate per HQ-band, growth per crew-size en bonus usage per HQ/building tier.
 
 ## When To Update This File
 Update bij nieuwe action types, scoring model veranderingen, nieuwe admin moderation actions, season wijzigingen, anti-abuse regels, of onboardingflow voor extra landen.

@@ -46,15 +46,40 @@ const HITLIST_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   [HITLIST_LOOT_ITEM_PERCENT_KEY]: '50',
 };
 const HITLIST_RUNTIME_SETTING_KEYS = Object.keys(HITLIST_RUNTIME_SETTING_DEFAULTS);
+const TERRITORY_RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
+  TERRITORY_HQ_REGION_CAP_PER_LEVEL: '0.2',
+  TERRITORY_HQ_REGION_CAP_BONUS_CAP: '3',
+  TERRITORY_HQ_CONTEST_CAP_PER_LEVEL: '0.1',
+  TERRITORY_HQ_CONTEST_CAP_BONUS_CAP: '2',
+  TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL: '0.12',
+  TERRITORY_HQ_ACTION_POINT_BONUS_CAP: '2',
+  TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_PER_LEVEL: '0.1',
+  TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_CAP: '2',
+  TERRITORY_WEAPON_STORAGE_DEFENSE_BONUS_PER_LEVEL: '0.18',
+  TERRITORY_AMMO_STORAGE_DEFENSE_BONUS_PER_LEVEL: '0.16',
+  TERRITORY_CAR_STORAGE_RAID_BONUS_PER_LEVEL: '0.15',
+  TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL: '0.15',
+  TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL: '0.15',
+  TERRITORY_BUILDING_ACTION_BONUS_CAP: '3',
+  TERRITORY_ACTION_UNLOCK_HQ_LEVEL_PATROL: '0',
+  TERRITORY_ACTION_UNLOCK_HQ_LEVEL_INTEL_SCAN: '2',
+  TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SABOTAGE: '6',
+  TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN: '2',
+  TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID: '8',
+  TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE: '4',
+};
+const TERRITORY_RUNTIME_SETTING_KEYS = Object.keys(TERRITORY_RUNTIME_SETTING_DEFAULTS);
 const RUNTIME_SETTING_DEFAULTS: Record<string, string> = {
   ...HITLIST_RUNTIME_SETTING_DEFAULTS,
   ...ECON_RUNTIME_SETTING_DEFAULTS,
   ...CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
+  ...TERRITORY_RUNTIME_SETTING_DEFAULTS,
 };
 const RUNTIME_SETTING_KEYS = [
   ...HITLIST_RUNTIME_SETTING_KEYS,
   ...ECON_RUNTIME_SETTING_KEYS,
   ...CREW_MISSION_RUNTIME_SETTING_KEYS,
+  ...TERRITORY_RUNTIME_SETTING_KEYS,
 ];
 let runtimeConfigSchemaReady = false;
 
@@ -3083,6 +3108,24 @@ router.put(
           if (key.includes('CREW_MISSION_REPEAT_') && key.includes('_MULTIPLIER') && (parsed < 0.5 || parsed > 1)) {
             return res.status(400).json({
               error: `${key} must be between 0.5 and 1.0`,
+            });
+          }
+
+          if (key.startsWith('TERRITORY_ACTION_UNLOCK_HQ_LEVEL_') && (parsed < 0 || parsed > 40)) {
+            return res.status(400).json({
+              error: `${key} must be between 0 and 40`,
+            });
+          }
+
+          if (key.startsWith('TERRITORY_') && key.endsWith('_PER_LEVEL') && (parsed < 0 || parsed > 5)) {
+            return res.status(400).json({
+              error: `${key} must be between 0 and 5`,
+            });
+          }
+
+          if (key.startsWith('TERRITORY_') && key.endsWith('_CAP') && (parsed < 0 || parsed > 50)) {
+            return res.status(400).json({
+              error: `${key} must be between 0 and 50`,
             });
           }
 

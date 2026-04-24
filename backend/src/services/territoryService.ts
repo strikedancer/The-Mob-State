@@ -67,8 +67,22 @@ async function getTerritoryConfig() {
     'TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL',
     'TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL',
     'TERRITORY_BUILDING_ACTION_BONUS_CAP',
+    'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_PATROL',
+    'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_INTEL_SCAN',
+    'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SABOTAGE',
+    'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN',
+    'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID',
+    'TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE',
   ];
   const cfg = await getRuntimeConfig(keys);
+  const actionUnlockHqLevels = {
+    patrol: Number(cfg['TERRITORY_ACTION_UNLOCK_HQ_LEVEL_PATROL'] ?? 0),
+    intel_scan: Number(cfg['TERRITORY_ACTION_UNLOCK_HQ_LEVEL_INTEL_SCAN'] ?? 2),
+    sabotage: Number(cfg['TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SABOTAGE'] ?? 6),
+    supply_run: Number(cfg['TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN'] ?? 2),
+    raid: Number(cfg['TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID'] ?? 8),
+    defense: Number(cfg['TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE'] ?? 4),
+  } as const;
   return {
     enabled: true,
     contestPrepMinutes: Number(cfg['TERRITORY_CONTEST_PREP_MINUTES'] ?? 30),
@@ -111,6 +125,13 @@ async function getTerritoryConfig() {
     boatStorageSupplyBonusPerLevel: Number(cfg['TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL'] ?? 0.15),
     drugStorageSabotageBonusPerLevel: Number(cfg['TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL'] ?? 0.15),
     buildingActionBonusCap: Number(cfg['TERRITORY_BUILDING_ACTION_BONUS_CAP'] ?? 3),
+    actionUnlockHqLevels,
+    actionUnlockHqLevelPatrol: actionUnlockHqLevels.patrol,
+    actionUnlockHqLevelIntelScan: actionUnlockHqLevels.intel_scan,
+    actionUnlockHqLevelSabotage: actionUnlockHqLevels.sabotage,
+    actionUnlockHqLevelSupplyRun: actionUnlockHqLevels.supply_run,
+    actionUnlockHqLevelRaid: actionUnlockHqLevels.raid,
+    actionUnlockHqLevelDefense: actionUnlockHqLevels.defense,
   };
 }
 
@@ -346,6 +367,49 @@ type CrewTerritoryProgression = {
   };
 };
 
+type TerritoryAdminTelemetry = {
+  windowHours: number;
+  rewardPerMinute: {
+    totalCash: number;
+    totalXp: number;
+    totalRewards: number;
+    cashPerMinute: number;
+    rewardsPerMinute: number;
+    byValueTier: Array<{
+      valueTier: number;
+      cashAmount: number;
+      rewards: number;
+      cashPerMinute: number;
+    }>;
+  };
+  contestWinrateByHqBand: Array<{
+    hqBand: string;
+    contests: number;
+    wins: number;
+    winratePercent: number;
+  }>;
+  regionGrowthByCrewSize: Array<{
+    crewSizeBand: string;
+    crews: number;
+    totalRegionsCaptured: number;
+    avgRegionsCaptured: number;
+  }>;
+  bonusUsageByTier: {
+    hqBand: Array<{
+      hqBand: string;
+      actions: number;
+      totalBonusPoints: number;
+      avgBonusPoints: number;
+    }>;
+    buildingTier: Array<{
+      buildingTier: string;
+      actions: number;
+      totalBonusPoints: number;
+      avgBonusPoints: number;
+    }>;
+  };
+};
+
 function parseWarPressureEffect(row: RegionEffectRow): ActiveWarPressureEffect | null {
   if (row.effectType !== 'crew_war_aftermath') return null;
   const metadata = parseJson(row.metadataJson);
@@ -485,6 +549,31 @@ function getScaledBonus(level: number, perLevel: number, cap: number): number {
   const safeCap = Number.isFinite(cap) ? Math.max(0, cap) : 0;
   const raw = Math.floor(level * perLevel);
   return Math.max(0, Math.min(raw, safeCap));
+}
+
+function hqLevelBand(level: number): string {
+  if (level <= 0) return 'L0';
+  if (level <= 5) return 'L1-5';
+  if (level <= 10) return 'L6-10';
+  if (level <= 15) return 'L11-15';
+  if (level <= 20) return 'L16-20';
+  return 'L21+';
+}
+
+function crewSizeBand(size: number): string {
+  if (size <= 1) return '1';
+  if (size <= 5) return '2-5';
+  if (size <= 10) return '6-10';
+  if (size <= 20) return '11-20';
+  return '21+';
+}
+
+function buildingTierBand(maxBuildingLevel: number): string {
+  if (maxBuildingLevel <= 0) return 'L0';
+  if (maxBuildingLevel <= 3) return 'L1-3';
+  if (maxBuildingLevel <= 7) return 'L4-7';
+  if (maxBuildingLevel <= 11) return 'L8-11';
+  return 'L12+';
 }
 
 async function getCrewTerritoryProgression(crewId: number): Promise<CrewTerritoryProgression> {
@@ -878,6 +967,15 @@ export async function getMapData(
       endsAt: Date;
     } | null;
     strategicActionBonuses: StrategicActionBonus[];
+    viewerHqGlobalLevel: number;
+    actionUnlockHqLevels: {
+      patrol: number;
+      intel_scan: number;
+      sabotage: number;
+      supply_run: number;
+      raid: number;
+      defense: number;
+    };
   }>;
 }> {
   await syncContestLifecycle();
@@ -1036,6 +1134,8 @@ export async function getMapData(
       adjacentOwnedRegions,
       activeWarPressure,
       strategicActionBonuses,
+      viewerHqGlobalLevel: viewerCrewProgression?.hqGlobalLevel ?? 0,
+      actionUnlockHqLevels: { ...cfg.actionUnlockHqLevels },
     };
   });
 
@@ -1073,6 +1173,256 @@ export async function getOverview(): Promise<{
       regionsOwned: toNumeric(entry.regionsOwned),
       totalControl: toNumeric(entry.totalControl),
     })),
+  };
+}
+
+export async function getAdminTelemetry(hoursInput: number = 24): Promise<TerritoryAdminTelemetry> {
+  await syncContestLifecycle();
+
+  const cfg = await getTerritoryConfig();
+  const windowHours = Math.max(1, Math.min(168, Math.floor(Number(hoursInput) || 24)));
+  const minutes = windowHours * 60;
+
+  const [rewardTotalsRows, rewardByTierRows, contestRows, growthRows, bonusRows] = await Promise.all([
+    prisma.$queryRawUnsafe<Array<{ totalCash: number; totalXp: number; totalRewards: number }>>(
+      `SELECT COALESCE(SUM(cashAmount), 0) AS totalCash,
+              COALESCE(SUM(xpAmount), 0) AS totalXp,
+              COUNT(*) AS totalRewards
+       FROM territory_reward_log
+       WHERE createdAt >= DATE_SUB(NOW(), INTERVAL ? HOUR)`,
+      windowHours,
+    ),
+    prisma.$queryRawUnsafe<Array<{ valueTier: number; cashAmount: number; rewards: number }>>(
+      `SELECT COALESCE(CAST(JSON_UNQUOTE(JSON_EXTRACT(metadataJson, '$.valueTier')) AS UNSIGNED), 0) AS valueTier,
+              COALESCE(SUM(cashAmount), 0) AS cashAmount,
+              COUNT(*) AS rewards
+       FROM territory_reward_log
+       WHERE createdAt >= DATE_SUB(NOW(), INTERVAL ? HOUR)
+       GROUP BY valueTier
+       ORDER BY valueTier ASC`,
+      windowHours,
+    ),
+    prisma.$queryRawUnsafe<Array<{ winnerCrewId: number | null; attackerCrewId: number; hqStyle: string | null; hqLevel: number | null }>>(
+      `SELECT tc.winnerCrewId,
+              tc.attackerCrewId,
+              hq.style AS hqStyle,
+              hq.level AS hqLevel
+       FROM territory_contests tc
+       LEFT JOIN crew_hq_buildings hq ON hq.crewId = tc.attackerCrewId
+       WHERE tc.status = 'resolved'
+         AND tc.resolvedAt IS NOT NULL
+         AND tc.resolvedAt >= DATE_SUB(NOW(), INTERVAL ? HOUR)`,
+      windowHours,
+    ),
+    prisma.$queryRawUnsafe<Array<{ crewId: number; capturedRegions: number; crewSize: number }>>(
+      `SELECT tc.winnerCrewId AS crewId,
+              COUNT(*) AS capturedRegions,
+              COUNT(DISTINCT cm.playerId) AS crewSize
+       FROM territory_contests tc
+       LEFT JOIN crew_members cm ON cm.crewId = tc.winnerCrewId
+       WHERE tc.status = 'resolved'
+         AND tc.resolvedAt IS NOT NULL
+         AND tc.resolvedAt >= DATE_SUB(NOW(), INTERVAL ? HOUR)
+         AND tc.winnerCrewId IS NOT NULL
+       GROUP BY tc.winnerCrewId`,
+      windowHours,
+    ),
+    prisma.$queryRawUnsafe<Array<{
+      actionType: string;
+      hqStyle: string | null;
+      hqLevel: number | null;
+      missionLevel: number | null;
+      carLevel: number | null;
+      boatLevel: number | null;
+      weaponLevel: number | null;
+      ammoLevel: number | null;
+      drugLevel: number | null;
+    }>>(
+      `SELECT a.actionType,
+              hq.style AS hqStyle,
+              hq.level AS hqLevel,
+              c.missionLevel,
+              car.level AS carLevel,
+              boat.level AS boatLevel,
+              weapon.level AS weaponLevel,
+              ammo.level AS ammoLevel,
+              drug.level AS drugLevel
+       FROM territory_actions a
+       LEFT JOIN crews c ON c.id = a.actorCrewId
+       LEFT JOIN crew_hq_buildings hq ON hq.crewId = a.actorCrewId
+       LEFT JOIN crew_car_storage_buildings car ON car.crewId = a.actorCrewId
+       LEFT JOIN crew_boat_storage_buildings boat ON boat.crewId = a.actorCrewId
+       LEFT JOIN crew_weapon_storage_buildings weapon ON weapon.crewId = a.actorCrewId
+       LEFT JOIN crew_ammo_storage_buildings ammo ON ammo.crewId = a.actorCrewId
+       LEFT JOIN crew_drug_storage_buildings drug ON drug.crewId = a.actorCrewId
+       WHERE a.createdAt >= DATE_SUB(NOW(), INTERVAL ? HOUR)`,
+      windowHours,
+    ),
+  ]);
+
+  const rewardTotals = rewardTotalsRows[0] ?? { totalCash: 0, totalXp: 0, totalRewards: 0 };
+  const totalCash = toNumeric(rewardTotals.totalCash ?? 0);
+  const totalXp = toNumeric(rewardTotals.totalXp ?? 0);
+  const totalRewards = toNumeric(rewardTotals.totalRewards ?? 0);
+
+  const rewardByTier = rewardByTierRows.map((row) => {
+    const tier = Math.max(0, toNumeric(row.valueTier ?? 0));
+    const cash = toNumeric(row.cashAmount ?? 0);
+    const rewards = toNumeric(row.rewards ?? 0);
+    return {
+      valueTier: tier,
+      cashAmount: cash,
+      rewards,
+      cashPerMinute: Number((cash / Math.max(1, minutes)).toFixed(2)),
+    };
+  });
+
+  const winrateMap = new Map<string, { contests: number; wins: number }>();
+  for (const row of contestRows) {
+    const hqGlobalLevel = getHqGlobalLevelForTerritory(row.hqStyle, toNumeric(row.hqLevel ?? 0));
+    const band = hqLevelBand(hqGlobalLevel);
+    const current = winrateMap.get(band) ?? { contests: 0, wins: 0 };
+    current.contests += 1;
+    if (row.winnerCrewId != null && toNumeric(row.winnerCrewId) === toNumeric(row.attackerCrewId)) {
+      current.wins += 1;
+    }
+    winrateMap.set(band, current);
+  }
+  const contestWinrateByHqBand = [...winrateMap.entries()]
+    .map(([hqBand, stats]) => ({
+      hqBand,
+      contests: stats.contests,
+      wins: stats.wins,
+      winratePercent: stats.contests <= 0 ? 0 : Number(((stats.wins / stats.contests) * 100).toFixed(1)),
+    }))
+    .sort((a, b) => a.hqBand.localeCompare(b.hqBand));
+
+  const growthBandMap = new Map<string, { crews: number; totalRegionsCaptured: number }>();
+  for (const row of growthRows) {
+    const sizeBand = crewSizeBand(Math.max(1, toNumeric(row.crewSize ?? 0)));
+    const current = growthBandMap.get(sizeBand) ?? { crews: 0, totalRegionsCaptured: 0 };
+    current.crews += 1;
+    current.totalRegionsCaptured += toNumeric(row.capturedRegions ?? 0);
+    growthBandMap.set(sizeBand, current);
+  }
+  const regionGrowthByCrewSize = [...growthBandMap.entries()]
+    .map(([crewSizeBandLabel, stats]) => ({
+      crewSizeBand: crewSizeBandLabel,
+      crews: stats.crews,
+      totalRegionsCaptured: stats.totalRegionsCaptured,
+      avgRegionsCaptured: stats.crews <= 0 ? 0 : Number((stats.totalRegionsCaptured / stats.crews).toFixed(2)),
+    }))
+    .sort((a, b) => a.crewSizeBand.localeCompare(b.crewSizeBand));
+
+  const hqUsageMap = new Map<string, { actions: number; totalBonusPoints: number }>();
+  const buildingUsageMap = new Map<string, { actions: number; totalBonusPoints: number }>();
+
+  for (const row of bonusRows) {
+    const progression: CrewTerritoryProgression = {
+      missionLevel: Math.max(1, toNumeric(row.missionLevel ?? 1)),
+      hqGlobalLevel: getHqGlobalLevelForTerritory(row.hqStyle, toNumeric(row.hqLevel ?? 0)),
+      buildingLevels: {
+        carStorage: Math.max(0, toNumeric(row.carLevel ?? 0)),
+        boatStorage: Math.max(0, toNumeric(row.boatLevel ?? 0)),
+        weaponStorage: Math.max(0, toNumeric(row.weaponLevel ?? 0)),
+        ammoStorage: Math.max(0, toNumeric(row.ammoLevel ?? 0)),
+        drugStorage: Math.max(0, toNumeric(row.drugLevel ?? 0)),
+      },
+    };
+    const actionType = String(row.actionType ?? '').trim().toLowerCase();
+    if (!actionType) continue;
+
+    const hqBonus = getScaledBonus(
+      progression.hqGlobalLevel,
+      cfg.hqActionPointBonusPerLevel,
+      cfg.hqActionPointBonusCap,
+    );
+
+    let buildingBonus = 0;
+    if (actionType === 'defense') {
+      buildingBonus = Math.min(
+        Math.max(0, cfg.buildingActionBonusCap),
+        getScaledBonus(progression.buildingLevels.weaponStorage, cfg.weaponStorageDefenseBonusPerLevel, cfg.buildingActionBonusCap)
+          + getScaledBonus(progression.buildingLevels.ammoStorage, cfg.ammoStorageDefenseBonusPerLevel, cfg.buildingActionBonusCap),
+      );
+    } else if (actionType === 'raid') {
+      buildingBonus = getScaledBonus(
+        progression.buildingLevels.carStorage,
+        cfg.carStorageRaidBonusPerLevel,
+        cfg.buildingActionBonusCap,
+      );
+    } else if (actionType === 'supply_run') {
+      buildingBonus = getScaledBonus(
+        progression.buildingLevels.boatStorage,
+        cfg.boatStorageSupplyBonusPerLevel,
+        cfg.buildingActionBonusCap,
+      );
+    } else if (actionType === 'sabotage') {
+      buildingBonus = getScaledBonus(
+        progression.buildingLevels.drugStorage,
+        cfg.drugStorageSabotageBonusPerLevel,
+        cfg.buildingActionBonusCap,
+      );
+    }
+
+    if (hqBonus > 0) {
+      const band = hqLevelBand(progression.hqGlobalLevel);
+      const current = hqUsageMap.get(band) ?? { actions: 0, totalBonusPoints: 0 };
+      current.actions += 1;
+      current.totalBonusPoints += hqBonus;
+      hqUsageMap.set(band, current);
+    }
+
+    if (buildingBonus > 0) {
+      const maxBuildingLevel = Math.max(
+        progression.buildingLevels.carStorage,
+        progression.buildingLevels.boatStorage,
+        progression.buildingLevels.weaponStorage,
+        progression.buildingLevels.ammoStorage,
+        progression.buildingLevels.drugStorage,
+      );
+      const band = buildingTierBand(maxBuildingLevel);
+      const current = buildingUsageMap.get(band) ?? { actions: 0, totalBonusPoints: 0 };
+      current.actions += 1;
+      current.totalBonusPoints += buildingBonus;
+      buildingUsageMap.set(band, current);
+    }
+  }
+
+  const hqBandUsage = [...hqUsageMap.entries()]
+    .map(([hqBandLabel, stats]) => ({
+      hqBand: hqBandLabel,
+      actions: stats.actions,
+      totalBonusPoints: stats.totalBonusPoints,
+      avgBonusPoints: stats.actions <= 0 ? 0 : Number((stats.totalBonusPoints / stats.actions).toFixed(2)),
+    }))
+    .sort((a, b) => a.hqBand.localeCompare(b.hqBand));
+
+  const buildingTierUsage = [...buildingUsageMap.entries()]
+    .map(([buildingTierLabel, stats]) => ({
+      buildingTier: buildingTierLabel,
+      actions: stats.actions,
+      totalBonusPoints: stats.totalBonusPoints,
+      avgBonusPoints: stats.actions <= 0 ? 0 : Number((stats.totalBonusPoints / stats.actions).toFixed(2)),
+    }))
+    .sort((a, b) => a.buildingTier.localeCompare(b.buildingTier));
+
+  return {
+    windowHours,
+    rewardPerMinute: {
+      totalCash,
+      totalXp,
+      totalRewards,
+      cashPerMinute: Number((totalCash / Math.max(1, minutes)).toFixed(2)),
+      rewardsPerMinute: Number((totalRewards / Math.max(1, minutes)).toFixed(3)),
+      byValueTier: rewardByTier,
+    },
+    contestWinrateByHqBand,
+    regionGrowthByCrewSize,
+    bonusUsageByTier: {
+      hqBand: hqBandUsage,
+      buildingTier: buildingTierUsage,
+    },
   };
 }
 
@@ -1120,10 +1470,11 @@ export async function getAdminOverview(): Promise<{
     activeContestId: number | null;
     activeContestStatus: string | null;
   }>;
+  telemetry: TerritoryAdminTelemetry;
 }> {
   await syncContestLifecycle();
 
-  const [cfg, seasons, countries, crews, leaderboard, contestRows, regionRows] = await Promise.all([
+  const [cfg, seasons, countries, crews, leaderboard, contestRows, regionRows, telemetry] = await Promise.all([
     getTerritoryConfig(),
     prisma.$queryRawUnsafe<SeasonRow[]>(
       `SELECT * FROM territory_seasons ORDER BY startsAt DESC LIMIT 8`,
@@ -1216,6 +1567,7 @@ export async function getAdminOverview(): Promise<{
        WHERE tr.enabled = 1
        ORDER BY tr.countryCode ASC, tr.nameNl ASC`,
     ),
+    getAdminTelemetry(24),
   ]);
 
   return {
@@ -1250,6 +1602,7 @@ export async function getAdminOverview(): Promise<{
       stability: toNumeric(region.stability),
       activeContestId: region.activeContestId == null ? null : toNumeric(region.activeContestId),
     })),
+    telemetry,
   };
 }
 
@@ -1384,6 +1737,13 @@ export async function doAction(
 
   const validActions = ['patrol', 'intel_scan', 'sabotage', 'supply_run', 'raid', 'defense'];
   if (!validActions.includes(actionType)) throw new Error('INVALID_ACTION_TYPE');
+  const requiredHqLevel = Math.max(
+    0,
+    Math.floor(cfg.actionUnlockHqLevels[actionType as keyof typeof cfg.actionUnlockHqLevels] ?? 0),
+  );
+  if (crewProgression.hqGlobalLevel < requiredHqLevel) {
+    throw new Error('HQ_LEVEL_REQUIRED');
+  }
 
   const contests = await prisma.$queryRawUnsafe<ContestRow[]>(
     'SELECT * FROM territory_contests WHERE id = ? LIMIT 1',

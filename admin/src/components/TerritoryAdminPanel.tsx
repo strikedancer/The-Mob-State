@@ -20,6 +20,12 @@ type TerritoryProgressionTuningForm = {
   boatStorageSupplyBonusPerLevel: string
   drugStorageSabotageBonusPerLevel: string
   buildingActionBonusCap: string
+  actionUnlockHqLevelPatrol: string
+  actionUnlockHqLevelIntelScan: string
+  actionUnlockHqLevelSabotage: string
+  actionUnlockHqLevelSupplyRun: string
+  actionUnlockHqLevelRaid: string
+  actionUnlockHqLevelDefense: string
 }
 
 const tr = (locale: 'nl' | 'en', nl: string, en: string) => (locale === 'nl' ? nl : en)
@@ -56,6 +62,12 @@ export function TerritoryAdminPanel({ locale }: Props) {
     boatStorageSupplyBonusPerLevel: '0.15',
     drugStorageSabotageBonusPerLevel: '0.15',
     buildingActionBonusCap: '3',
+    actionUnlockHqLevelPatrol: '0',
+    actionUnlockHqLevelIntelScan: '2',
+    actionUnlockHqLevelSabotage: '6',
+    actionUnlockHqLevelSupplyRun: '2',
+    actionUnlockHqLevelRaid: '8',
+    actionUnlockHqLevelDefense: '4',
   })
 
   const loadOverview = async () => {
@@ -78,6 +90,12 @@ export function TerritoryAdminPanel({ locale }: Props) {
         boatStorageSupplyBonusPerLevel: String(nextOverview.config.boatStorageSupplyBonusPerLevel ?? 0.15),
         drugStorageSabotageBonusPerLevel: String(nextOverview.config.drugStorageSabotageBonusPerLevel ?? 0.15),
         buildingActionBonusCap: String(nextOverview.config.buildingActionBonusCap ?? 3),
+        actionUnlockHqLevelPatrol: String(nextOverview.config.actionUnlockHqLevelPatrol ?? 0),
+        actionUnlockHqLevelIntelScan: String(nextOverview.config.actionUnlockHqLevelIntelScan ?? 2),
+        actionUnlockHqLevelSabotage: String(nextOverview.config.actionUnlockHqLevelSabotage ?? 6),
+        actionUnlockHqLevelSupplyRun: String(nextOverview.config.actionUnlockHqLevelSupplyRun ?? 2),
+        actionUnlockHqLevelRaid: String(nextOverview.config.actionUnlockHqLevelRaid ?? 8),
+        actionUnlockHqLevelDefense: String(nextOverview.config.actionUnlockHqLevelDefense ?? 4),
       })
 
       if (!selectedRegionKey && nextOverview.regions.length > 0) {
@@ -230,6 +248,12 @@ export function TerritoryAdminPanel({ locale }: Props) {
       TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL: progressionTuning.boatStorageSupplyBonusPerLevel,
       TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL: progressionTuning.drugStorageSabotageBonusPerLevel,
       TERRITORY_BUILDING_ACTION_BONUS_CAP: progressionTuning.buildingActionBonusCap,
+      TERRITORY_ACTION_UNLOCK_HQ_LEVEL_PATROL: progressionTuning.actionUnlockHqLevelPatrol,
+      TERRITORY_ACTION_UNLOCK_HQ_LEVEL_INTEL_SCAN: progressionTuning.actionUnlockHqLevelIntelScan,
+      TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SABOTAGE: progressionTuning.actionUnlockHqLevelSabotage,
+      TERRITORY_ACTION_UNLOCK_HQ_LEVEL_SUPPLY_RUN: progressionTuning.actionUnlockHqLevelSupplyRun,
+      TERRITORY_ACTION_UNLOCK_HQ_LEVEL_RAID: progressionTuning.actionUnlockHqLevelRaid,
+      TERRITORY_ACTION_UNLOCK_HQ_LEVEL_DEFENSE: progressionTuning.actionUnlockHqLevelDefense,
     }
 
     try {
@@ -289,6 +313,12 @@ export function TerritoryAdminPanel({ locale }: Props) {
               ['boatStorageSupplyBonusPerLevel', 'Bootopslag supply +/level', 'Boat storage supply +/level'],
               ['drugStorageSabotageBonusPerLevel', 'Drugsopslag sabotage +/level', 'Drug storage sabotage +/level'],
               ['buildingActionBonusCap', 'Bijgebouw bonus max', 'Building bonus cap'],
+              ['actionUnlockHqLevelPatrol', 'Unlock patrol vanaf HQ', 'Unlock patrol from HQ'],
+              ['actionUnlockHqLevelIntelScan', 'Unlock intel vanaf HQ', 'Unlock intel from HQ'],
+              ['actionUnlockHqLevelSabotage', 'Unlock sabotage vanaf HQ', 'Unlock sabotage from HQ'],
+              ['actionUnlockHqLevelSupplyRun', 'Unlock supply vanaf HQ', 'Unlock supply from HQ'],
+              ['actionUnlockHqLevelRaid', 'Unlock raid vanaf HQ', 'Unlock raid from HQ'],
+              ['actionUnlockHqLevelDefense', 'Unlock defense vanaf HQ', 'Unlock defense from HQ'],
             ].map(([key, nlLabel, enLabel]) => (
               <div className="col-md-6 col-xl-3" key={key}>
                 <label className="form-label fw-semibold">{tr(locale, nlLabel, enLabel)}</label>
@@ -316,6 +346,84 @@ export function TerritoryAdminPanel({ locale }: Props) {
             >
               {tr(locale, 'Opslaan en live toepassen', 'Save and apply live')}
             </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-header"><h5 className="mb-0">{tr(locale, 'Territory telemetry (24u)', 'Territory telemetry (24h)')}</h5></div>
+        <div className="card-body d-flex flex-column gap-3">
+          <div className="row g-3">
+            <div className="col-md-3"><div className="border rounded p-2"><div className="small text-muted">{tr(locale, 'Cash/min', 'Cash/min')}</div><div className="fw-bold">{overview?.telemetry?.rewardPerMinute.cashPerMinute ?? 0}</div></div></div>
+            <div className="col-md-3"><div className="border rounded p-2"><div className="small text-muted">{tr(locale, 'Rewards/min', 'Rewards/min')}</div><div className="fw-bold">{overview?.telemetry?.rewardPerMinute.rewardsPerMinute ?? 0}</div></div></div>
+            <div className="col-md-3"><div className="border rounded p-2"><div className="small text-muted">{tr(locale, 'Totaal cash', 'Total cash')}</div><div className="fw-bold">{overview?.telemetry?.rewardPerMinute.totalCash ?? 0}</div></div></div>
+            <div className="col-md-3"><div className="border rounded p-2"><div className="small text-muted">{tr(locale, 'Totaal rewards', 'Total rewards')}</div><div className="fw-bold">{overview?.telemetry?.rewardPerMinute.totalRewards ?? 0}</div></div></div>
+          </div>
+
+          <div className="row g-3">
+            <div className="col-xl-6">
+              <h6 className="mb-2">{tr(locale, 'Winrate per HQ-band', 'Winrate by HQ band')}</h6>
+              <div className="table-responsive">
+                <table className="table table-sm mb-0">
+                  <thead><tr><th>{tr(locale, 'HQ band', 'HQ band')}</th><th>{tr(locale, 'Contests', 'Contests')}</th><th>{tr(locale, 'Wins', 'Wins')}</th><th>{tr(locale, 'Winrate', 'Winrate')}</th></tr></thead>
+                  <tbody>
+                    {(overview?.telemetry?.contestWinrateByHqBand ?? []).map((entry) => (
+                      <tr key={entry.hqBand}>
+                        <td>{entry.hqBand}</td><td>{entry.contests}</td><td>{entry.wins}</td><td>{entry.winratePercent}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="col-xl-6">
+              <h6 className="mb-2">{tr(locale, 'Region growth per crew-size', 'Region growth per crew-size')}</h6>
+              <div className="table-responsive">
+                <table className="table table-sm mb-0">
+                  <thead><tr><th>{tr(locale, 'Crew size', 'Crew size')}</th><th>{tr(locale, 'Crews', 'Crews')}</th><th>{tr(locale, 'Captures', 'Captures')}</th><th>{tr(locale, 'Gemiddeld', 'Average')}</th></tr></thead>
+                  <tbody>
+                    {(overview?.telemetry?.regionGrowthByCrewSize ?? []).map((entry) => (
+                      <tr key={entry.crewSizeBand}>
+                        <td>{entry.crewSizeBand}</td><td>{entry.crews}</td><td>{entry.totalRegionsCaptured}</td><td>{entry.avgRegionsCaptured}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div className="row g-3">
+            <div className="col-xl-6">
+              <h6 className="mb-2">{tr(locale, 'Bonus usage: HQ tier', 'Bonus usage: HQ tier')}</h6>
+              <div className="table-responsive">
+                <table className="table table-sm mb-0">
+                  <thead><tr><th>{tr(locale, 'HQ band', 'HQ band')}</th><th>{tr(locale, 'Acties', 'Actions')}</th><th>{tr(locale, 'Bonus totaal', 'Bonus total')}</th><th>{tr(locale, 'Gem./actie', 'Avg/action')}</th></tr></thead>
+                  <tbody>
+                    {(overview?.telemetry?.bonusUsageByTier?.hqBand ?? []).map((entry) => (
+                      <tr key={entry.hqBand}>
+                        <td>{entry.hqBand}</td><td>{entry.actions}</td><td>{entry.totalBonusPoints}</td><td>{entry.avgBonusPoints}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="col-xl-6">
+              <h6 className="mb-2">{tr(locale, 'Bonus usage: building tier', 'Bonus usage: building tier')}</h6>
+              <div className="table-responsive">
+                <table className="table table-sm mb-0">
+                  <thead><tr><th>{tr(locale, 'Building tier', 'Building tier')}</th><th>{tr(locale, 'Acties', 'Actions')}</th><th>{tr(locale, 'Bonus totaal', 'Bonus total')}</th><th>{tr(locale, 'Gem./actie', 'Avg/action')}</th></tr></thead>
+                  <tbody>
+                    {(overview?.telemetry?.bonusUsageByTier?.buildingTier ?? []).map((entry) => (
+                      <tr key={entry.buildingTier}>
+                        <td>{entry.buildingTier}</td><td>{entry.actions}</td><td>{entry.totalBonusPoints}</td><td>{entry.avgBonusPoints}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>

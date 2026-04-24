@@ -63,6 +63,7 @@ function mapTerritoryError(error: unknown, res: Response, next: NextFunction) {
     CONTEST_NOT_JOINABLE:           [409, 'territory.contest_not_joinable'],
     NOT_IN_CONTEST:                 [403, 'territory.not_in_contest'],
     ACTION_ROLE_MISMATCH:           [403, 'territory.action_role_mismatch'],
+    HQ_LEVEL_REQUIRED:              [403, 'territory.hq_level_required'],
     ACTION_COOLDOWN:                [429, 'territory.action_cooldown'],
     DAILY_CAP_REACHED:              [429, 'territory.daily_cap_reached'],
     INVALID_ACTION_TYPE:            [400, 'territory.invalid_action_type'],

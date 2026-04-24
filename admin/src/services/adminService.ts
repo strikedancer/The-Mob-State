@@ -277,6 +277,12 @@ export interface AdminTerritoryOverview {
     boatStorageSupplyBonusPerLevel?: number;
     drugStorageSabotageBonusPerLevel?: number;
     buildingActionBonusCap?: number;
+    actionUnlockHqLevelPatrol?: number;
+    actionUnlockHqLevelIntelScan?: number;
+    actionUnlockHqLevelSabotage?: number;
+    actionUnlockHqLevelSupplyRun?: number;
+    actionUnlockHqLevelRaid?: number;
+    actionUnlockHqLevelDefense?: number;
   };
   activeSeason: {
     seasonKey: string;
@@ -313,6 +319,48 @@ export interface AdminTerritoryOverview {
     enabledRegions: number;
     activeContests: number;
     controlledRegions: number;
+  };
+  telemetry?: {
+    windowHours: number;
+    rewardPerMinute: {
+      totalCash: number;
+      totalXp: number;
+      totalRewards: number;
+      cashPerMinute: number;
+      rewardsPerMinute: number;
+      byValueTier: Array<{
+        valueTier: number;
+        cashAmount: number;
+        rewards: number;
+        cashPerMinute: number;
+      }>;
+    };
+    contestWinrateByHqBand: Array<{
+      hqBand: string;
+      contests: number;
+      wins: number;
+      winratePercent: number;
+    }>;
+    regionGrowthByCrewSize: Array<{
+      crewSizeBand: string;
+      crews: number;
+      totalRegionsCaptured: number;
+      avgRegionsCaptured: number;
+    }>;
+    bonusUsageByTier: {
+      hqBand: Array<{
+        hqBand: string;
+        actions: number;
+        totalBonusPoints: number;
+        avgBonusPoints: number;
+      }>;
+      buildingTier: Array<{
+        buildingTier: string;
+        actions: number;
+        totalBonusPoints: number;
+        avgBonusPoints: number;
+      }>;
+    };
   };
   contests: Array<{
     id: number;

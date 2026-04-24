@@ -493,6 +493,28 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
   }
 
+  Map<String, int> _actionUnlockHqLevels(Map<String, dynamic> region) {
+    final raw = region['actionUnlockHqLevels'];
+    if (raw is! Map) {
+      return const <String, int>{
+        'patrol': 0,
+        'intel_scan': 0,
+        'sabotage': 0,
+        'supply_run': 0,
+        'raid': 0,
+        'defense': 0,
+      };
+    }
+    return <String, int>{
+      'patrol': (raw['patrol'] as num?)?.toInt() ?? 0,
+      'intel_scan': (raw['intel_scan'] as num?)?.toInt() ?? 0,
+      'sabotage': (raw['sabotage'] as num?)?.toInt() ?? 0,
+      'supply_run': (raw['supply_run'] as num?)?.toInt() ?? 0,
+      'raid': (raw['raid'] as num?)?.toInt() ?? 0,
+      'defense': (raw['defense'] as num?)?.toInt() ?? 0,
+    };
+  }
+
   int _actionBasePoints(String rawActionType) {
     switch (rawActionType.toLowerCase()) {
       case 'patrol':
@@ -655,6 +677,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         return _t(
           'Deze actie hoort bij de andere kant van de contest.',
           'This action belongs to the other side of the contest.',
+        );
+      case 'territory.hq_level_required':
+        return _t(
+          'Je HQ-level is nog te laag voor deze territory-actie.',
+          'Your HQ level is too low for this territory action.',
         );
       case 'territory.daily_cap_reached':
         return _t(
@@ -1816,6 +1843,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final strategicActionBonuses =
         (region['strategicActionBonuses'] as List<dynamic>?) ??
         const <dynamic>[];
+    final viewerHqGlobalLevel =
+        (region['viewerHqGlobalLevel'] as num?)?.toInt() ?? 0;
+    final actionUnlockHqLevels = _actionUnlockHqLevels(region);
     final strategicBonusesLabel = _strategicBonusesByActionLabel(
       strategicActionBonuses,
     );
@@ -1843,6 +1873,20 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             ownerName: ownerName,
             contestStatus: contestStatus,
           );
+    final attackerActions = const <String>['intel_scan', 'sabotage', 'raid'];
+    final defenderActions = const <String>['patrol', 'supply_run', 'defense'];
+    final lockedAttackerActions = attackerActions
+        .where((actionType) {
+          final required = actionUnlockHqLevels[actionType] ?? 0;
+          return required > viewerHqGlobalLevel;
+        })
+        .toList(growable: false);
+    final lockedDefenderActions = defenderActions
+        .where((actionType) {
+          final required = actionUnlockHqLevels[actionType] ?? 0;
+          return required > viewerHqGlobalLevel;
+        })
+        .toList(growable: false);
 
     final detailContent = <Widget>[
       _detailRow(
@@ -1928,6 +1972,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           _t('Jouw rol', 'Your role'),
           _displayContestRole(contestRole),
         ),
+      _detailRow(_t('Jouw HQ level', 'Your HQ level'), '$viewerHqGlobalLevel'),
       if (contestStatus == 'preparing')
         _detailRow(
           _t('Acties starten over', 'Actions unlock in'),
@@ -2045,33 +2090,75 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                 _t('Intel', 'Intel scan'),
                 'intel_scan',
                 contestId,
+                requiredHqLevel: actionUnlockHqLevels['intel_scan'] ?? 0,
+                viewerHqLevel: viewerHqGlobalLevel,
               ),
               _smallActionButton(
                 _t('Sabotage', 'Sabotage'),
                 'sabotage',
                 contestId,
+                requiredHqLevel: actionUnlockHqLevels['sabotage'] ?? 0,
+                viewerHqLevel: viewerHqGlobalLevel,
               ),
-              _smallActionButton(_t('Inval', 'Raid'), 'raid', contestId),
+              _smallActionButton(
+                _t('Inval', 'Raid'),
+                'raid',
+                contestId,
+                requiredHqLevel: actionUnlockHqLevels['raid'] ?? 0,
+                viewerHqLevel: viewerHqGlobalLevel,
+              ),
             ],
             if (isDefender) ...[
               _smallActionButton(
                 _t('Patrouille', 'Patrol'),
                 'patrol',
                 contestId,
+                requiredHqLevel: actionUnlockHqLevels['patrol'] ?? 0,
+                viewerHqLevel: viewerHqGlobalLevel,
               ),
               _smallActionButton(
                 _t('Bevoorrading', 'Supply run'),
                 'supply_run',
                 contestId,
+                requiredHqLevel: actionUnlockHqLevels['supply_run'] ?? 0,
+                viewerHqLevel: viewerHqGlobalLevel,
               ),
               _smallActionButton(
                 _t('Verdedigen', 'Defense'),
                 'defense',
                 contestId,
+                requiredHqLevel: actionUnlockHqLevels['defense'] ?? 0,
+                viewerHqLevel: viewerHqGlobalLevel,
               ),
             ],
           ],
         ),
+        if (isAttacker && lockedAttackerActions.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: _buildInfoNotice(
+              _t(
+                'Vereist hoger HQ-level voor: ${lockedAttackerActions.map(_actionTypeLabel).join(', ')}.',
+                'Higher HQ level required for: ${lockedAttackerActions.map(_actionTypeLabel).join(', ')}.',
+              ),
+              borderColor: Colors.orange.shade700,
+              backgroundColor: Colors.orange.withValues(alpha: 0.12),
+              icon: Icons.lock_outline,
+            ),
+          ),
+        if (isDefender && lockedDefenderActions.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: _buildInfoNotice(
+              _t(
+                'Vereist hoger HQ-level voor: ${lockedDefenderActions.map(_actionTypeLabel).join(', ')}.',
+                'Higher HQ level required for: ${lockedDefenderActions.map(_actionTypeLabel).join(', ')}.',
+              ),
+              borderColor: Colors.orange.shade700,
+              backgroundColor: Colors.orange.withValues(alpha: 0.12),
+              icon: Icons.lock_outline,
+            ),
+          ),
       ],
       if (contestId != null &&
           contestStatus == 'active' &&
@@ -2297,11 +2384,32 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     );
   }
 
-  Widget _smallActionButton(String label, String actionType, int contestId) {
-    return OutlinedButton(
-      onPressed: _isActing ? null : () => _doAction(contestId, actionType),
-      child: Text(label, style: const TextStyle(fontSize: 12)),
+  Widget _smallActionButton(
+    String label,
+    String actionType,
+    int contestId, {
+    required int requiredHqLevel,
+    required int viewerHqLevel,
+  }) {
+    final isLocked = requiredHqLevel > viewerHqLevel;
+    final buttonLabel = isLocked
+        ? '$label (${_t('vereist HQ', 'requires HQ')} $requiredHqLevel)'
+        : label;
+    final tooltipMessage = isLocked
+        ? _t(
+            'Vereist HQ level $requiredHqLevel. Huidig HQ level: $viewerHqLevel.',
+            'Requires HQ level $requiredHqLevel. Current HQ level: $viewerHqLevel.',
+          )
+        : '';
+    final button = OutlinedButton(
+      onPressed: _isActing || isLocked
+          ? null
+          : () => _doAction(contestId, actionType),
+      child: Text(buttonLabel, style: const TextStyle(fontSize: 12)),
     );
+
+    if (!isLocked) return button;
+    return Tooltip(message: tooltipMessage, child: button);
   }
 
   // â”€â”€ Leaderboard Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
