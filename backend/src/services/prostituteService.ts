@@ -811,11 +811,6 @@ export const prostituteService = {
       return { canRecruit: true };
     }
 
-    const player = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: { isVip: true, vipExpiresAt: true },
-    });
-
     const now = new Date();
     const cooldownMs = applyVipTimeoutReductionMs(
       RECRUITMENT_COOLDOWN_MINUTES * 60 * 1000,
@@ -834,9 +829,7 @@ export const prostituteService = {
   /**
    * Recruit a new prostitute
    */
-  async recruitProstitute(
-    playerId: number
-  ): Promise<{
+  async recruitProstitute(playerId: number): Promise<{
     success: boolean;
     message: string;
     prostitute?: any;
@@ -872,6 +865,11 @@ export const prostituteService = {
         cooldownRemaining: cooldownCheck.cooldownRemaining,
       };
     }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { isVip: true, vipExpiresAt: true },
+    });
 
     const now = new Date();
     const hasActiveVip =
