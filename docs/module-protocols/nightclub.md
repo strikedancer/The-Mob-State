@@ -32,6 +32,8 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
 - DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
+- Rival-targeting UX in nightclub must be name-first (search by player username), never forcing players to input or know numeric player IDs.
+- Ops/management additions (resident DJ, events, upgrades, incident response, rival actions, alerts) must expose clear per-action cost/impact in NL+EN before confirmation.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -50,6 +52,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Verify a live environment with empty DJ/security tables still shows hireable staff because backend bootstrap/fallback repopulates the availability lists.
 - Verify mobile drug-storage selector keeps gram counts readable (no clipped labels) and quantity shortcuts respect available stock.
 - Verify expired DJ contracts clear automatically and a new DJ can be hired immediately after shift end.
+- Verify rival actions can be triggered by searching/selecting player name and never require playerId entry.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

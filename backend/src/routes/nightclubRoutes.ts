@@ -106,7 +106,7 @@ router.get('/:venueId/stats', authenticate, async (req: Request, res: Response) 
     const venueId = parseInt(req.params.venueId);
 
     const stats = await nightclubService.getVenueStats(venueId);
-    
+
     if (!stats) {
       return res.status(404).json({ success: false, message: 'Nachtclub niet gevonden' });
     }
@@ -168,6 +168,37 @@ router.post('/:venueId/dj/hire', authenticate, async (req: Request, res: Respons
   }
 });
 
+/**
+ * POST /:venueId/dj/resident
+ * Body: { djId, days }
+ */
+router.post('/:venueId/dj/resident', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { djId, days } = req.body;
+
+    if (!djId || !days) {
+      return res.status(400).json({ success: false, message: 'Missing djId or days' });
+    }
+
+    const result = await nightclubService.hireResidentDJContract(
+      playerId,
+      venueId,
+      Number(djId),
+      Number(days)
+    );
+
+    if (result.success) {
+      return res.json(result);
+    }
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
 // ═══════════════════════════════════════════════════════════════════════════════════════
 // SECURITY MANAGEMENT
 // ═══════════════════════════════════════════════════════════════════════════════════════
@@ -213,6 +244,124 @@ router.post('/:venueId/security/hire', authenticate, async (req: Request, res: R
     } else {
       res.status(400).json(result);
     }
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/events/schedule
+ * Body: { eventType, startsAt }
+ */
+router.post('/:venueId/events/schedule', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { eventType, startsAt } = req.body;
+
+    if (!eventType || !startsAt) {
+      return res.status(400).json({ success: false, message: 'Missing eventType or startsAt' });
+    }
+
+    const result = await nightclubService.scheduleEvent(
+      playerId,
+      venueId,
+      String(eventType),
+      new Date(startsAt)
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/upgrades/marketing
+ * Body: { amount }
+ */
+router.post('/:venueId/upgrades/marketing', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { amount } = req.body;
+    if (!amount) {
+      return res.status(400).json({ success: false, message: 'Missing amount' });
+    }
+
+    const result = await nightclubService.investInMarketing(playerId, venueId, Number(amount));
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/incidents/respond
+ * Body: { actionType: 'bribe'|'lockdown'|'counterintel' }
+ */
+router.post('/:venueId/incidents/respond', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { actionType } = req.body;
+    if (!actionType) {
+      return res.status(400).json({ success: false, message: 'Missing actionType' });
+    }
+
+    const result = await nightclubService.respondToIncident(
+      playerId,
+      venueId,
+      String(actionType) as 'bribe' | 'lockdown' | 'counterintel'
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * GET /rivals/search?name=...
+ * Search rivals by player name (never by playerId)
+ */
+router.get('/rivals/search', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const name = (req.query.name ?? '').toString();
+    const result = await nightclubService.searchRivalNightclubs(playerId, name);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/rivals/action
+ * Body: { targetName, actionType: 'sabotage'|'promo_war' }
+ */
+router.post('/:venueId/rivals/action', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { targetName, actionType } = req.body;
+    if (!targetName || !actionType) {
+      return res.status(400).json({ success: false, message: 'Missing targetName or actionType' });
+    }
+    const result = await nightclubService.executeRivalAction(
+      playerId,
+      venueId,
+      String(targetName),
+      String(actionType) as 'sabotage' | 'promo_war'
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
   } catch (err) {
     res.status(500).json({ success: false, message: (err as any).message });
   }
@@ -292,7 +441,11 @@ router.post('/:venueId/prostitutes/assign', authenticate, async (req: Request, r
       return res.status(400).json({ success: false, message: 'Missing prostituteId' });
     }
 
-    const result = await nightclubService.assignProstituteToVenue(playerId, venueId, Number(prostituteId));
+    const result = await nightclubService.assignProstituteToVenue(
+      playerId,
+      venueId,
+      Number(prostituteId)
+    );
     if (result.success) {
       return res.json(result);
     }
@@ -318,7 +471,11 @@ router.post('/:venueId/prostitutes/unassign', authenticate, async (req: Request,
       return res.status(400).json({ success: false, message: 'Missing prostituteId' });
     }
 
-    const result = await nightclubService.unassignProstituteFromVenue(playerId, venueId, Number(prostituteId));
+    const result = await nightclubService.unassignProstituteFromVenue(
+      playerId,
+      venueId,
+      Number(prostituteId)
+    );
     if (result.success) {
       return res.json(result);
     }

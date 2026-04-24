@@ -72,6 +72,22 @@ class NightclubService {
     }
   }
 
+  Future<Map<String, dynamic>> hireResidentDj({
+    required int venueId,
+    required int djId,
+    required int days,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/dj/resident',
+        {'djId': djId, 'days': days},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<List<dynamic>> getAvailableSecurity() async {
     try {
       final response = await _apiClient.get('/nightclub/security/available');
@@ -91,10 +107,88 @@ class NightclubService {
     required DateTime shiftDate,
   }) async {
     try {
-      final response = await _apiClient.post('/nightclub/$venueId/security/hire', {
-        'guardId': guardId,
-        'shiftDate': shiftDate.toIso8601String(),
-      });
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/security/hire',
+        {'guardId': guardId, 'shiftDate': shiftDate.toIso8601String()},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> scheduleEvent({
+    required int venueId,
+    required String eventType,
+    required DateTime startsAt,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/events/schedule',
+        {'eventType': eventType, 'startsAt': startsAt.toIso8601String()},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> investMarketing({
+    required int venueId,
+    required int amount,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/upgrades/marketing',
+        {'amount': amount},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> respondIncident({
+    required int venueId,
+    required String actionType,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/incidents/respond',
+        {'actionType': actionType},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<List<dynamic>> searchRivalsByName(String name) async {
+    try {
+      final encoded = Uri.encodeQueryComponent(name);
+      final response = await _apiClient.get(
+        '/nightclub/rivals/search?name=$encoded',
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        return List<dynamic>.from(data['data'] ?? const []);
+      }
+      return const [];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  Future<Map<String, dynamic>> rivalAction({
+    required int venueId,
+    required String targetName,
+    required String actionType,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/rivals/action',
+        {'targetName': targetName, 'actionType': actionType},
+      );
       return json.decode(response.body) as Map<String, dynamic>;
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
@@ -108,11 +202,10 @@ class NightclubService {
     required int quantity,
   }) async {
     try {
-      final response = await _apiClient.post('/nightclub/$venueId/drugs/store', {
-        'drugType': drugType,
-        'quality': quality,
-        'quantity': quantity,
-      });
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/drugs/store',
+        {'drugType': drugType, 'quality': quality, 'quantity': quantity},
+      );
       return json.decode(response.body) as Map<String, dynamic>;
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
@@ -121,7 +214,9 @@ class NightclubService {
 
   Future<List<dynamic>> getAssignableProstitutes(int venueId) async {
     try {
-      final response = await _apiClient.get('/nightclub/$venueId/prostitutes/available');
+      final response = await _apiClient.get(
+        '/nightclub/$venueId/prostitutes/available',
+      );
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as Map<String, dynamic>;
         return List<dynamic>.from(data['data'] ?? const []);
@@ -137,9 +232,10 @@ class NightclubService {
     required int prostituteId,
   }) async {
     try {
-      final response = await _apiClient.post('/nightclub/$venueId/prostitutes/assign', {
-        'prostituteId': prostituteId,
-      });
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/prostitutes/assign',
+        {'prostituteId': prostituteId},
+      );
       return json.decode(response.body) as Map<String, dynamic>;
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
@@ -151,9 +247,10 @@ class NightclubService {
     required int prostituteId,
   }) async {
     try {
-      final response = await _apiClient.post('/nightclub/$venueId/prostitutes/unassign', {
-        'prostituteId': prostituteId,
-      });
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/prostitutes/unassign',
+        {'prostituteId': prostituteId},
+      );
       return json.decode(response.body) as Map<String, dynamic>;
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
@@ -165,7 +262,9 @@ class NightclubService {
     int limit = 10,
   }) async {
     try {
-      final response = await _apiClient.get('/nightclub/leaderboard?scope=$scope&limit=$limit');
+      final response = await _apiClient.get(
+        '/nightclub/leaderboard?scope=$scope&limit=$limit',
+      );
       if (response.statusCode == 200) {
         return json.decode(response.body) as Map<String, dynamic>;
       }
