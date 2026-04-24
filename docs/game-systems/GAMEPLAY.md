@@ -275,6 +275,7 @@ Voorbeelden:
 - Als jouw crew al aangrenzende regio's bezit, krijg je in contests extra buursteun. Daardoor zijn aangesloten gebieden makkelijker te verdedigen en waardevoller als samenhangend blok dan als losse eilanden.
 - De regio-modal toont nu niet alleen payout en status, maar ook de strategische rol, het aantal aangrenzende eigen regio's en welke actiebonussen daar actief zijn.
 - `Actiebonussen` in de Territory-modal gelden alleen voor contestpunten per actie (bijv. raid/patrol/defense) en niet voor de passieve €-uitbetaling van het gebied.
+- De Territory-modal toont per actie ook de formule `basis + bonus = totaal contestpunten`, zodat de impact van actiebonussen direct zichtbaar is zonder verwarring met cash payout.
 - Naast regio- en war-pressure bonussen kunnen Territory-actiebonussen nu ook komen uit crew progression: HQ global level, crew mission level en bijgebouwen (weapon/ammo/car/boat/drug storage).
 - Contest-limieten voor tegelijk actieve aanvallen en max. gebieden per crew kunnen nu beperkt opschalen met HQ global level (server-authoritative runtime tuning).
 - Territory heeft standaard geen harde dagcap meer op acties (`TERRITORY_ACTION_DAILY_CAP = 0`); pacing blijft onder controle via cooldown + anti-farm.

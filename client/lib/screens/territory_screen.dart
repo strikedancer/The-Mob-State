@@ -493,6 +493,25 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
   }
 
+  int _actionBasePoints(String rawActionType) {
+    switch (rawActionType.toLowerCase()) {
+      case 'patrol':
+        return 4;
+      case 'intel_scan':
+        return 3;
+      case 'sabotage':
+        return 8;
+      case 'supply_run':
+        return 5;
+      case 'raid':
+        return 12;
+      case 'defense':
+        return 6;
+      default:
+        return 4;
+    }
+  }
+
   String _strategicBonusesByActionLabel(List<dynamic> rawBonuses) {
     final orderedActionTypes = <String>[
       'patrol',
@@ -571,10 +590,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         sourceTypeLabel,
         sourceLabel,
       ].where((entry) => entry.trim().isNotEmpty).join(' | ');
+      final basePoints = _actionBasePoints(actionType);
+      final totalPointsWithBase = basePoints + totalPoints;
+      final pointsLogicLabel = _t(
+        'basis $basePoints + bonus $totalPoints = $totalPointsWithBase contestpunten',
+        'base $basePoints + bonus $totalPoints = $totalPointsWithBase contest points',
+      );
       actionLabels.add(
         details.isEmpty
-            ? '${_actionTypeLabel(actionType)}: +$totalPoints'
-            : '${_actionTypeLabel(actionType)}: +$totalPoints ($details)',
+            ? '${_actionTypeLabel(actionType)}: $pointsLogicLabel'
+            : '${_actionTypeLabel(actionType)}: $pointsLogicLabel ($details)',
       );
     }
 
@@ -2240,6 +2265,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '$label: ',
