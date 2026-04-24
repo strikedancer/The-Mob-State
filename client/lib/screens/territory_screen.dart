@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart'
-  show
-    PointerCancelEvent,
-    PointerDownEvent,
-    PointerHoverEvent,
-    PointerMoveEvent,
-    PointerUpEvent;
+    show
+        PointerCancelEvent,
+        PointerDownEvent,
+        PointerHoverEvent,
+        PointerMoveEvent,
+        PointerUpEvent;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 
 // ---------------------------------------------------------------------------
-// TerritoryScreen — Responsive crew territory map (NL-first)
+// TerritoryScreen â€” Responsive crew territory map (NL-first)
 // Layout: desktop = split (map | side panel), tablet = stacked collapsible,
 //         mobile  = map card + action bottom sheet.
 // ---------------------------------------------------------------------------
@@ -111,7 +111,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   bool _isLoading = true;
   bool _isTerritoryEnabled = false;
 
-  // ── Data ──────────────────────────────────────────────────────────────────
+  // â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Map<String, dynamic> _mapData = {};
   List<Map<String, dynamic>> _countries = [];
   List<dynamic> _leaderboard = [];
@@ -136,12 +136,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   int _activeMapPointers = 0;
   int _maxMapPointersDuringGesture = 0;
 
-  // ── Selection ─────────────────────────────────────────────────────────────
+  // â”€â”€ Selection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   Map<String, dynamic>? _selectedRegion;
   bool _isActing = false;
   bool _isRegionSheetOpen = false;
 
-  // ── Tabs ──────────────────────────────────────────────────────────────────
+  // â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   late TabController _tabController;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
@@ -430,7 +430,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
     if (minutes % 60 == 0) {
       final hours = minutes ~/ 60;
-      return _t('iedere $hours uur', 'every $hours hour${hours == 1 ? '' : 's'}');
+      return _t(
+        'iedere $hours uur',
+        'every $hours hour${hours == 1 ? '' : 's'}',
+      );
     }
     return _t('elke $minutes min', 'every $minutes min');
   }
@@ -452,20 +455,87 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
   }
 
-  String _strategicBonusesLabel(List<dynamic> rawBonuses) {
-    final labels = <String>[];
+  String _actionTypeLabel(String rawActionType) {
+    switch (rawActionType.toLowerCase()) {
+      case 'patrol':
+        return _t('Patrouille', 'Patrol');
+      case 'intel_scan':
+        return _t('Intel scan', 'Intel scan');
+      case 'sabotage':
+        return _t('Sabotage', 'Sabotage');
+      case 'supply_run':
+        return _t('Bevoorrading', 'Supply run');
+      case 'raid':
+        return _t('Inval', 'Raid');
+      case 'defense':
+        return _t('Verdedigen', 'Defense');
+      default:
+        return rawActionType;
+    }
+  }
+
+  String _strategicBonusesByActionLabel(List<dynamic> rawBonuses) {
+    final orderedActionTypes = <String>[
+      'patrol',
+      'intel_scan',
+      'sabotage',
+      'supply_run',
+      'raid',
+      'defense',
+    ];
+    final pointsByAction = <String, int>{};
+    final sourcesByAction = <String, Map<String, int>>{};
+
     for (final rawBonus in rawBonuses) {
       if (rawBonus is! Map) continue;
+      final actionType = (rawBonus['actionType'] as String?)
+          ?.trim()
+          .toLowerCase();
+      if (actionType == null || actionType.isEmpty) continue;
       final bonusPoints = (rawBonus['bonusPoints'] as num?)?.toInt() ?? 0;
       if (bonusPoints <= 0) continue;
-      final label = _isNl
-          ? (rawBonus['labelNl'] as String?)
-          : (rawBonus['labelEn'] as String?);
-      final safeLabel = label?.trim();
-      if (safeLabel == null || safeLabel.isEmpty) continue;
-      labels.add('+$bonusPoints $safeLabel');
+      final sourceLabel =
+          (_isNl
+                  ? (rawBonus['labelNl'] as String?)
+                  : (rawBonus['labelEn'] as String?))
+              ?.trim();
+      if (sourceLabel == null || sourceLabel.isEmpty) continue;
+
+      pointsByAction.update(
+        actionType,
+        (current) => current + bonusPoints,
+        ifAbsent: () => bonusPoints,
+      );
+      final sourceMap = sourcesByAction.putIfAbsent(
+        actionType,
+        () => <String, int>{},
+      );
+      sourceMap.update(
+        sourceLabel,
+        (current) => current + bonusPoints,
+        ifAbsent: () => bonusPoints,
+      );
     }
-    return labels.join(' · ');
+
+    if (pointsByAction.isEmpty) return '';
+
+    final actionLabels = <String>[];
+    for (final actionType in orderedActionTypes) {
+      final totalPoints = pointsByAction[actionType];
+      if (totalPoints == null || totalPoints <= 0) continue;
+      final sourceMap = sourcesByAction[actionType] ?? const <String, int>{};
+      final sourceLabel = sourceMap.entries
+          .where((entry) => entry.value > 0)
+          .map((entry) => '+${entry.value} ${entry.key}')
+          .join(', ');
+      actionLabels.add(
+        sourceLabel.isEmpty
+            ? '${_actionTypeLabel(actionType)}: +$totalPoints'
+            : '${_actionTypeLabel(actionType)}: +$totalPoints ($sourceLabel)',
+      );
+    }
+
+    return actionLabels.join(' · ');
   }
 
   _SvgRegionShape? _shapeForRegion(Map<String, dynamic> region) {
@@ -1277,7 +1347,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     });
   }
 
-  // ── Build ─────────────────────────────────────────────────────────────────
+  // â”€â”€ Build â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   @override
   Widget build(BuildContext context) {
@@ -1366,7 +1436,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     );
   }
 
-  // ── Map Tab ───────────────────────────────────────────────────────────────
+  // â”€â”€ Map Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildMapTab() {
     final regions = (_mapData['regions'] as List<dynamic>?) ?? [];
@@ -1458,11 +1528,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                       behavior: HitTestBehavior.opaque,
                                       onPointerDown: _handleMapPointerDown,
                                       onPointerMove: _handleMapPointerMove,
-                                      onPointerUp: (event) => _handleMapPointerUp(
-                                        event,
-                                        Size(mapWidth, mapHeight),
-                                        regions,
-                                      ),
+                                      onPointerUp: (event) =>
+                                          _handleMapPointerUp(
+                                            event,
+                                            Size(mapWidth, mapHeight),
+                                            regions,
+                                          ),
                                       onPointerCancel: _handleMapPointerCancel,
                                       child: Stack(
                                         children: [
@@ -1470,10 +1541,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                             child: SvgPicture.string(
                                               svgMarkup,
                                               fit: BoxFit.contain,
-                                              placeholderBuilder: (_) => const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
+                                              placeholderBuilder: (_) =>
+                                                  const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
                                             ),
                                           ),
                                           if (_mapTooltipLabel != null &&
@@ -1501,7 +1573,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                                                 child: Text(
                                                   _mapTooltipLabel!,
                                                   maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12,
@@ -1655,31 +1728,43 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     );
     final hasContest = contestId != null && contestStatus != null;
     final incomeTierLabel = _valueTierLabel(tier);
-    final passiveIncomeCash = (region['passiveIncomeCash'] as num?)?.toInt() ?? 0;
+    final passiveIncomeCash =
+        (region['passiveIncomeCash'] as num?)?.toInt() ?? 0;
     final passiveIncomeCashHourly =
-      (region['passiveIncomeCashHourly'] as num?)?.toInt() ?? passiveIncomeCash;
+        (region['passiveIncomeCashHourly'] as num?)?.toInt() ??
+        passiveIncomeCash;
     final passiveIncomeCashDaily =
-      (region['passiveIncomeCashDaily'] as num?)?.toInt() ?? (passiveIncomeCashHourly * 24);
+        (region['passiveIncomeCashDaily'] as num?)?.toInt() ??
+        (passiveIncomeCashHourly * 24);
     final passiveIncomeIntervalMinutes =
-      (region['passiveIncomeIntervalMinutes'] as num?)?.toInt() ?? 60;
-    final strategicTags = ((region['strategicTags'] as List<dynamic>?) ?? const <dynamic>[])
-      .map((tag) => _strategicTagLabel(tag.toString()))
-      .where((tag) => tag.trim().isNotEmpty)
-      .toList(growable: false);
+        (region['passiveIncomeIntervalMinutes'] as num?)?.toInt() ?? 60;
+    final strategicTags =
+        ((region['strategicTags'] as List<dynamic>?) ?? const <dynamic>[])
+            .map((tag) => _strategicTagLabel(tag.toString()))
+            .where((tag) => tag.trim().isNotEmpty)
+            .toList(growable: false);
     final adjacentOwnedRegions =
-      (region['adjacentOwnedRegions'] as num?)?.toInt() ?? 0;
+        (region['adjacentOwnedRegions'] as num?)?.toInt() ?? 0;
     final strategicActionBonuses =
-      (region['strategicActionBonuses'] as List<dynamic>?) ?? const <dynamic>[];
-    final strategicBonusesLabel = _strategicBonusesLabel(strategicActionBonuses);
+        (region['strategicActionBonuses'] as List<dynamic>?) ??
+        const <dynamic>[];
+    final strategicBonusesLabel = _strategicBonusesByActionLabel(
+      strategicActionBonuses,
+    );
     final effectiveStability =
-      (region['effectiveStability'] as num?)?.toInt() ?? stability;
-    final activeWarPressure = (region['activeWarPressure'] as Map?)?.cast<String, dynamic>();
+        (region['effectiveStability'] as num?)?.toInt() ?? stability;
+    final activeWarPressure = (region['activeWarPressure'] as Map?)
+        ?.cast<String, dynamic>();
     final warPressureEndsAt = _parseApiDate(activeWarPressure?['endsAt']);
-    final warPressureBonus = (activeWarPressure?['attackBonusPoints'] as num?)?.toInt() ?? 0;
-    final warPressurePenalty = (activeWarPressure?['stabilityPenalty'] as num?)?.toInt() ?? 0;
-    final warPressureRegionRole = (activeWarPressure?['regionRole'] as String?) ?? 'target';
-    final warPressureCrewName = (activeWarPressure?['favoredCrewName'] as String?)
-      ?? activeWarPressure?['favoredCrewId']?.toString();
+    final warPressureBonus =
+        (activeWarPressure?['attackBonusPoints'] as num?)?.toInt() ?? 0;
+    final warPressurePenalty =
+        (activeWarPressure?['stabilityPenalty'] as num?)?.toInt() ?? 0;
+    final warPressureRegionRole =
+        (activeWarPressure?['regionRole'] as String?) ?? 'target';
+    final warPressureCrewName =
+        (activeWarPressure?['favoredCrewName'] as String?) ??
+        activeWarPressure?['favoredCrewId']?.toString();
     final regionShape = _shapeForRegion(region);
     final regionPreview = regionShape == null
         ? null
@@ -1706,15 +1791,18 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         _t('Controle', 'Control'),
         '${controlPercent.toStringAsFixed(controlPercent.truncateToDouble() == controlPercent ? 0 : 1)}%',
       ),
-      _detailRow(_t('Waarde', 'Value tier'), '$incomeTierLabel (${('⭐' * tier)})'),
+      _detailRow(
+        _t('Waarde', 'Value tier'),
+        '$incomeTierLabel (${('â­' * tier)})',
+      ),
       _detailRow(
         _t('Uitbetaling', 'Payout'),
-        '${formatCurrency(passiveIncomeCash)} · ${_incomeIntervalLabel(passiveIncomeIntervalMinutes)}',
+        '${formatCurrency(passiveIncomeCash)} Â· ${_incomeIntervalLabel(passiveIncomeIntervalMinutes)}',
       ),
       if (strategicTags.isNotEmpty)
         _detailRow(
           _t('Strategische rol', 'Strategic role'),
-          strategicTags.join(' · '),
+          strategicTags.join(' Â· '),
         ),
       if (adjacentOwnedRegions > 0)
         _detailRow(
@@ -1726,10 +1814,22 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           _t('Actiebonussen', 'Action bonuses'),
           strategicBonusesLabel,
         ),
+      if (strategicBonusesLabel.isNotEmpty)
+        _detailRow(
+          _t('Bonus uitleg', 'Bonus info'),
+          _t(
+            'Deze bonussen verhogen alleen je contestpunten per actie. De €-uitbetaling van het gebied blijft gelijk.',
+            'These bonuses only increase your contest points per action. The region € payout stays the same.',
+          ),
+        ),
       if (activeWarPressure != null)
         _detailRow(
           _t('War pressure', 'War pressure'),
-          '${warPressureCrewName ?? _t('Onbekend', 'Unknown')} · +$warPressureBonus ${_t('aanvalsdruk', 'attack pressure')} · -$warPressurePenalty ${_t('stabiliteit', 'stability')} · ${warPressureRegionRole == 'theater' ? _t('theater-regio', 'theater region') : warPressureRegionRole == 'adjacent' ? _t('aangrenzende regio', 'adjacent region') : _t('doelregio', 'target region')}',
+          '${warPressureCrewName ?? _t('Onbekend', 'Unknown')} Â· +$warPressureBonus ${_t('aanvalsdruk', 'attack pressure')} Â· -$warPressurePenalty ${_t('stabiliteit', 'stability')} Â· ${warPressureRegionRole == 'theater'
+              ? _t('theater-regio', 'theater region')
+              : warPressureRegionRole == 'adjacent'
+              ? _t('aangrenzende regio', 'adjacent region')
+              : _t('doelregio', 'target region')}',
         ),
       if (activeWarPressure != null && warPressureEndsAt != null)
         _detailRow(
@@ -1783,9 +1883,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (viewerCooldownSecondsRemaining > 0)
         _detailRow(
           _t('Jouw cooldown', 'Your cooldown'),
-          _formatDuration(
-            Duration(seconds: viewerCooldownSecondsRemaining),
-          ),
+          _formatDuration(Duration(seconds: viewerCooldownSecondsRemaining)),
         ),
       const SizedBox(height: 16),
       if (!_hasCrew)
@@ -1827,7 +1925,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           backgroundColor: Colors.green.withValues(alpha: 0.1),
           icon: Icons.verified,
         ),
-      if (contestStatus == 'preparing' && isDefender && canActInSelectedCountry) ...[
+      if (contestStatus == 'preparing' &&
+          isDefender &&
+          canActInSelectedCountry) ...[
         _buildInfoNotice(
           _t(
             'Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.',
@@ -1845,14 +1945,19 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           onTap: () => _joinDefense(contestId),
         ),
       ],
-      if (contestStatus == null && _hasCrew && !isMyCrewRegion && canActInSelectedCountry)
+      if (contestStatus == null &&
+          _hasCrew &&
+          !isMyCrewRegion &&
+          canActInSelectedCountry)
         _buildActionButton(
           label: _t('Aanvallen', 'Attack'),
           icon: Icons.gps_fixed,
           color: Colors.red[700]!,
           onTap: () => _confirmStartContest(region['regionKey'] as String),
         ),
-      if (contestId != null && contestStatus == 'active' && canActInSelectedCountry) ...[
+      if (contestId != null &&
+          contestStatus == 'active' &&
+          canActInSelectedCountry) ...[
         const SizedBox(height: 8),
         Text(
           isAttacker
@@ -1868,14 +1973,34 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           runSpacing: 8,
           children: [
             if (isAttacker) ...[
-              _smallActionButton(_t('Intel', 'Intel scan'), 'intel_scan', contestId),
-              _smallActionButton(_t('Sabotage', 'Sabotage'), 'sabotage', contestId),
+              _smallActionButton(
+                _t('Intel', 'Intel scan'),
+                'intel_scan',
+                contestId,
+              ),
+              _smallActionButton(
+                _t('Sabotage', 'Sabotage'),
+                'sabotage',
+                contestId,
+              ),
               _smallActionButton(_t('Inval', 'Raid'), 'raid', contestId),
             ],
             if (isDefender) ...[
-              _smallActionButton(_t('Patrouille', 'Patrol'), 'patrol', contestId),
-              _smallActionButton(_t('Bevoorrading', 'Supply run'), 'supply_run', contestId),
-              _smallActionButton(_t('Verdedigen', 'Defense'), 'defense', contestId),
+              _smallActionButton(
+                _t('Patrouille', 'Patrol'),
+                'patrol',
+                contestId,
+              ),
+              _smallActionButton(
+                _t('Bevoorrading', 'Supply run'),
+                'supply_run',
+                contestId,
+              ),
+              _smallActionButton(
+                _t('Verdedigen', 'Defense'),
+                'defense',
+                contestId,
+              ),
             ],
           ],
         ),
@@ -1897,7 +2022,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             icon: Icons.lock_outline,
           ),
         ),
-      if (contestId != null && contestStatus == 'active' && !canActInSelectedCountry)
+      if (contestId != null &&
+          contestStatus == 'active' &&
+          !canActInSelectedCountry)
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: _buildInfoNotice(
@@ -1916,7 +2043,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       padding: const EdgeInsets.all(16),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isWideLayout = constraints.maxWidth >= 760 && regionPreview != null;
+          final isWideLayout =
+              constraints.maxWidth >= 760 && regionPreview != null;
           final detailsColumn = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -1978,7 +2106,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     required String? contestStatus,
   }) {
     final fillColor = _colorFromHex(_hexColorForRegion(region));
-    final accentColor = contestStatus != null &&
+    final accentColor =
+        contestStatus != null &&
             contestStatus != 'resolved' &&
             contestStatus != 'cancelled'
         ? Colors.amber.shade700
@@ -2024,7 +2153,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                   end: Alignment.bottomRight,
                   colors: [
                     accentColor.withValues(alpha: 0.14),
-                    Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
+                    Theme.of(context).colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.55),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(14),
@@ -2105,7 +2235,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     );
   }
 
-  // ── Leaderboard Tab ────────────────────────────────────────────────────────
+  // â”€â”€ Leaderboard Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildLeaderboardTab() {
     if (_leaderboard.isEmpty) {
@@ -2141,7 +2271,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     );
   }
 
-  // ── Season Tab ─────────────────────────────────────────────────────────────
+  // â”€â”€ Season Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Widget _buildSeasonTab() {
     final season = _overview['activeSeason'] as Map<String, dynamic>?;
@@ -2177,7 +2307,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     );
   }
 
-  // ── Actions ────────────────────────────────────────────────────────────────
+  // â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Future<void> _confirmStartContest(String regionKey) async {
     if (!_hasCrew) {
