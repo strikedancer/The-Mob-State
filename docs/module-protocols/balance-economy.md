@@ -28,6 +28,8 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
   - event rewards blijven top-end progression
   - tijdelijke boosts blijven capped
 - Cooldown reset-items mogen geen credits verbranden zonder actieve cooldown.
+- Player VIP timeout-voordelen moeten side-grade blijven: vaste reductie op actie-timeouts (geen jail-time reductie) en geen bypass van risk loops.
+- Periodieke VIP-credit grants (bijv. wekelijks) moeten beperkt, voorspelbaar en ledger-traceerbaar blijven zodat monetization geen pay-to-win escalatie veroorzaakt.
 - Alle economy-aanpassingen moeten traceerbaar zijn via telemetry en runtime settings.
 - Voor Territory geldt: gebruik `TERRITORY_ACTION_DAILY_CAP=0` als default om de cap uit te zetten; begrenzing loopt daar via cooldown + anti-farm.
 

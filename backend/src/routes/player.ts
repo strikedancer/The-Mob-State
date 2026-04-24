@@ -10,10 +10,18 @@ import config from '../config';
 import { weaponService } from '../services/weaponService';
 import { vehicleService } from '../services/vehicleService';
 import { weaponSelectionService } from '../services/weaponSelectionService';
-import { checkAndUnlockAchievements, serializeAchievementForClient } from '../services/achievementService';
+import {
+  checkAndUnlockAchievements,
+  serializeAchievementForClient,
+} from '../services/achievementService';
 import { existsCached } from '../services/redisClient';
 import * as crewWarService from '../services/crewWarService';
 import * as territoryService from '../services/territoryService';
+import {
+  applyVipTimeoutReductionMs,
+  applyVipTimeoutReductionSeconds,
+  isVipStatusActive,
+} from '../services/vipBenefitsService';
 
 function emptyCrewWarHub() {
   return {
@@ -41,7 +49,9 @@ async function ensureProfileLikesTable(): Promise<void> {
     return profileLikesTablePromise;
   }
 
-  profileLikesTablePromise = prisma.$executeRawUnsafe(`
+  profileLikesTablePromise = prisma
+    .$executeRawUnsafe(
+      `
     CREATE TABLE IF NOT EXISTS profile_likes (
       id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       sourcePlayerId INT NOT NULL,
@@ -53,9 +63,11 @@ async function ensureProfileLikesTable(): Promise<void> {
       INDEX idx_profile_likes_target (targetPlayerId),
       INDEX idx_profile_likes_source (sourcePlayerId)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-  `).then(() => {
-    profileLikesTableReady = true;
-  });
+  `
+    )
+    .then(() => {
+      profileLikesTableReady = true;
+    });
 
   return profileLikesTablePromise;
 }
@@ -124,9 +136,10 @@ router.get('/jail-status', authenticate, async (req: AuthRequest, res: Response)
     const playerId = req.player!.id;
     const remainingTime = await policeService.checkIfJailed(playerId);
     const player = await playerService.getPlayer(playerId);
-    const bailAmount = remainingTime > 0
-      ? policeService.calculateJailBail(player.wantedLevel || 0, remainingTime)
-      : 0;
+    const bailAmount =
+      remainingTime > 0
+        ? policeService.calculateJailBail(player.wantedLevel || 0, remainingTime)
+        : 0;
 
     return res.status(200).json({
       jailed: remainingTime > 0,
@@ -145,7 +158,7 @@ router.get('/jail-status', authenticate, async (req: AuthRequest, res: Response)
 router.post('/pay-bail', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = req.player!.id;
-    
+
     // Check if player is in jail
     const jailTime = await policeService.checkIfJailed(playerId);
     if (jailTime === 0) {
@@ -157,10 +170,7 @@ router.post('/pay-bail', authenticate, async (req: AuthRequest, res: Response) =
 
     // Get player data for bail calculation
     const player = await playerService.getPlayer(playerId);
-    const bail = policeService.calculateJailBail(
-      player.wantedLevel || 0,
-      jailTime,
-    );
+    const bail = policeService.calculateJailBail(player.wantedLevel || 0, jailTime);
 
     if (player.money < bail) {
       return res.status(400).json({
@@ -235,12 +245,12 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     // Get crew info if player is in a crew (via crewMembership)
     let crewName = null;
     let crewRole = null;
-    
+
     const crewMembership = await prisma.crewMember.findUnique({
       where: { playerId: playerId },
       include: { crew: true },
     });
-    
+
     if (crewMembership) {
       crewName = crewMembership.crew.name;
       crewRole = crewMembership.role;
@@ -287,7 +297,7 @@ router.get('/:playerId/profile', authenticate, async (req: AuthRequest, res: Res
     const lastSeenAt = player.lastTickAt ?? player.updatedAt ?? player.createdAt;
     const secondsSinceLastSeen = Math.max(
       0,
-      Math.floor((nowMs - new Date(lastSeenAt).getTime()) / 1000),
+      Math.floor((nowMs - new Date(lastSeenAt).getTime()) / 1000)
     );
 
     if (!isOnlineNow) {
@@ -382,10 +392,7 @@ router.post('/:playerId/profile/like', authenticate, async (req: AuthRequest, re
       likesCount,
     });
   } catch (error) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === 'P2002'
-    ) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       const targetPlayerId = parseInt(req.params.playerId as string, 10);
       const likesCount = await prisma.profileLike.count({
         where: { targetPlayerId },
@@ -447,7 +454,7 @@ router.post('/jailbreak/:targetId', authenticate, async (req: AuthRequest, res: 
     if (result.success) {
       try {
         const achievementResults = await checkAndUnlockAchievements(rescuerId);
-        newlyUnlockedAchievements = achievementResults.map(r =>
+        newlyUnlockedAchievements = achievementResults.map((r) =>
           serializeAchievementForClient(r.achievement)
         );
       } catch (err) {
@@ -455,9 +462,9 @@ router.post('/jailbreak/:targetId', authenticate, async (req: AuthRequest, res: 
       }
     }
 
-    const eventKey = result.success 
-      ? 'jailbreak.success' 
-      : result.rescuerCaught 
+    const eventKey = result.success
+      ? 'jailbreak.success'
+      : result.rescuerCaught
         ? 'jailbreak.caught'
         : 'jailbreak.failed';
 
@@ -611,7 +618,7 @@ router.post('/prison/buyout/:targetId', authenticate, async (req: AuthRequest, r
     let newlyUnlockedAchievements: any[] = [];
     try {
       const achievementResults = await checkAndUnlockAchievements(buyerId);
-      newlyUnlockedAchievements = achievementResults.map(r =>
+      newlyUnlockedAchievements = achievementResults.map((r) =>
         serializeAchievementForClient(r.achievement)
       );
     } catch (err) {
@@ -683,7 +690,7 @@ router.get('/list', authenticate, async (req: AuthRequest, res: Response) => {
     });
 
     // Map rank to level for frontend compatibility
-    const playersWithLevel = players.map(player => ({
+    const playersWithLevel = players.map((player) => ({
       ...player,
       level: player.rank, // In this game, rank IS the level
     }));
@@ -706,10 +713,10 @@ router.put('/language', authenticate, async (req: AuthRequest, res: Response) =>
   console.log('[PUT /player/language] Received request');
   console.log('[PUT /player/language] Body:', req.body);
   console.log('[PUT /player/language] Player:', req.player?.username);
-  
+
   try {
     const { language } = req.body;
-    
+
     // Validate language
     if (!language || !['en', 'nl'].includes(language)) {
       console.log('[PUT /player/language] Invalid language:', language);
@@ -730,7 +737,9 @@ router.put('/language', authenticate, async (req: AuthRequest, res: Response) =>
       },
     });
 
-    console.log(`[PlayerService] Updated language for ${updatedPlayer.username}: ${updatedPlayer.preferredLanguage}`);
+    console.log(
+      `[PlayerService] Updated language for ${updatedPlayer.username}: ${updatedPlayer.preferredLanguage}`
+    );
 
     return res.status(200).json({
       event: 'language.updated',
@@ -760,7 +769,20 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       return Math.max(0, Math.ceil((nextAllowedAt.getTime() - Date.now()) / 1000));
     };
 
-    const [shootingStats, gymStats, drugInventoryAgg, nightclubVenueCount, nightclubRevenueAgg, nightclubSeasonState, crewWarHub, playerCore, breakoutCount, hitsPlacedCount, travelCount, crewMembership] = await Promise.all([
+    const [
+      shootingStats,
+      gymStats,
+      drugInventoryAgg,
+      nightclubVenueCount,
+      nightclubRevenueAgg,
+      nightclubSeasonState,
+      crewWarHub,
+      playerCore,
+      breakoutCount,
+      hitsPlacedCount,
+      travelCount,
+      crewMembership,
+    ] = await Promise.all([
       prisma.shootingRangeStats.findUnique({
         where: { playerId },
         select: { lastTrainedAt: true },
@@ -815,50 +837,66 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       }),
     ]);
 
-    const territoryLeaderStats = crewMembership?.role === 'leader'
-      ? await territoryService.getCrewEconomySummary(crewMembership.crewId).catch((error) => {
-          console.error('[Dashboard] Territory crew summary failed during dashboard stats load:', {
-            playerId,
-            crewId: crewMembership.crewId,
-            error,
-          });
-          return null;
-        })
-      : null;
+    const territoryLeaderStats =
+      crewMembership?.role === 'leader'
+        ? await territoryService.getCrewEconomySummary(crewMembership.crewId).catch((error) => {
+            console.error(
+              '[Dashboard] Territory crew summary failed during dashboard stats load:',
+              {
+                playerId,
+                crewId: crewMembership.crewId,
+                error,
+              }
+            );
+            return null;
+          })
+        : null;
 
     const cooldownPlayer = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { lastProstituteRecruitment: true, lastHospitalVisit: true },
+      select: {
+        lastProstituteRecruitment: true,
+        lastHospitalVisit: true,
+        isVip: true,
+        vipExpiresAt: true,
+      },
     });
+    const vipCooldownActive = isVipStatusActive(cooldownPlayer);
+    const trainingCooldownMs = applyVipTimeoutReductionMs(60 * 60 * 1000, vipCooldownActive);
+    const prostituteRecruitCooldownSeconds = applyVipTimeoutReductionSeconds(
+      PROSTITUTE_RECRUITMENT_COOLDOWN_SECONDS,
+      vipCooldownActive
+    );
+    const hospitalCooldownMs = applyVipTimeoutReductionMs(
+      config.hospitalCooldownMinutes * 60 * 1000,
+      vipCooldownActive
+    );
 
     cooldowns.shooting_range = toRemainingSeconds(
       shootingStats?.lastTrainedAt
-        ? new Date(shootingStats.lastTrainedAt.getTime() + 60 * 60 * 1000)
-        : null,
+        ? new Date(shootingStats.lastTrainedAt.getTime() + trainingCooldownMs)
+        : null
     );
 
     cooldowns.gym = toRemainingSeconds(
       gymStats?.lastTrainedAt
-        ? new Date(gymStats.lastTrainedAt.getTime() + 60 * 60 * 1000)
-        : null,
+        ? new Date(gymStats.lastTrainedAt.getTime() + trainingCooldownMs)
+        : null
     );
 
     cooldowns.prostitute_recruit = toRemainingSeconds(
       cooldownPlayer?.lastProstituteRecruitment
         ? new Date(
             cooldownPlayer.lastProstituteRecruitment.getTime() +
-              PROSTITUTE_RECRUITMENT_COOLDOWN_SECONDS * 1000,
+              prostituteRecruitCooldownSeconds * 1000
           )
-        : null,
+        : null
     );
 
     cooldowns.hospital = toRemainingSeconds(
       cooldownPlayer?.lastHospitalVisit
-        ? new Date(
-            cooldownPlayer.lastHospitalVisit.getTime() +
-              config.hospitalCooldownMinutes * 60 * 1000,
-          )
-        : null,
+        ? new Date(cooldownPlayer.lastHospitalVisit.getTime() + hospitalCooldownMs)
+        : null
     );
 
     cooldowns.nightclub = toRemainingSeconds(nightclubSeasonState?.seasonEndAt ?? null);
@@ -872,7 +910,7 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
 
     // Get successful crimes count
     const successfulCrimes = await prisma.crimeAttempt.count({
-      where: { 
+      where: {
         playerId,
         success: true,
       },
@@ -946,15 +984,13 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         })
       : null;
 
-    const selectedCrimeWeapon = await weaponSelectionService.getSelectedCrimeWeapon(
-      playerId,
-    );
+    const selectedCrimeWeapon = await weaponSelectionService.getSelectedCrimeWeapon(playerId);
 
     const currentCrewWar = crewWarHub.currentWar;
     const myCrewId = crewWarHub.myCrewId;
     const currentStanding =
       currentCrewWar && myCrewId
-        ? currentCrewWar.standings.find((standing: any) => standing.crewId === myCrewId) ?? null
+        ? (currentCrewWar.standings.find((standing: any) => standing.crewId === myCrewId) ?? null)
         : null;
     const opponentCrew =
       currentCrewWar && myCrewId
@@ -964,13 +1000,13 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         : null;
     const seasonRankEntry =
       myCrewId != null
-        ? crewWarHub.seasonLeaderboard.find((entry: any) => entry.crewId === myCrewId) ?? null
+        ? (crewWarHub.seasonLeaderboard.find((entry: any) => entry.crewId === myCrewId) ?? null)
         : null;
     const phaseEndsAt = currentCrewWar
       ? currentCrewWar.status === 'preparing'
         ? currentCrewWar.activeFrom
         : currentCrewWar.status === 'active'
-          ? currentCrewWar.lockDownFrom ?? currentCrewWar.endTime
+          ? (currentCrewWar.lockDownFrom ?? currentCrewWar.endTime)
           : currentCrewWar.endTime
       : null;
     const crewWarPhaseEndsInSeconds = phaseEndsAt

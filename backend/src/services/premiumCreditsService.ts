@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { isVipStatusActive } from './vipBenefitsService';
 
 type CreditCatalogItem = {
   key: string;
@@ -101,6 +102,10 @@ const EVENT_BOOST_CAPS: ActiveEventBoostEffects = {
   hitDefensePct: 0.04,
   eventContributionPct: 0.15,
 };
+
+const VIP_WEEKLY_STIPEND_CREDITS = 100;
+const VIP_WEEKLY_STIPEND_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000;
+const VIP_WEEKLY_STIPEND_REASON_KEY = 'vip_weekly_stipend';
 
 const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
   {
@@ -271,10 +276,17 @@ function toFiniteNumber(value: unknown, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
-function getActionResetCost(actionType: string, remainingSeconds: number, cooldownSeconds: number): number {
+function getActionResetCost(
+  actionType: string,
+  remainingSeconds: number,
+  cooldownSeconds: number
+): number {
   const baseCost = ACTION_RESET_BASE_COST[actionType] ?? 18;
   const valueWeight = ACTION_RESET_VALUE_WEIGHT[actionType] ?? 1;
-  const normalizedCooldown = Math.max(1, cooldownSeconds || DEFAULT_ACTION_COOLDOWNS[actionType] || 1);
+  const normalizedCooldown = Math.max(
+    1,
+    cooldownSeconds || DEFAULT_ACTION_COOLDOWNS[actionType] || 1
+  );
   const normalizedRemaining = Math.max(0, remainingSeconds);
   const remainingRatio = Math.max(0, Math.min(1, normalizedRemaining / normalizedCooldown));
   // Smoother scaling: short cooldowns should not spike to punishing credit costs.
@@ -287,7 +299,7 @@ function getActionResetCost(actionType: string, remainingSeconds: number, cooldo
 async function getActionCooldownState(
   tx: any,
   playerId: number,
-  actionType: string,
+  actionType: string
 ): Promise<ActionCooldownState> {
   const cooldown = await tx.actionCooldown.findUnique({
     where: {
@@ -313,13 +325,10 @@ async function getActionCooldownState(
     };
   }
 
-  const cooldownSeconds = Math.max(
-    0,
-    toFiniteNumber(cooldown.cooldownSeconds, fallbackCooldown),
-  );
+  const cooldownSeconds = Math.max(0, toFiniteNumber(cooldown.cooldownSeconds, fallbackCooldown));
   const elapsedSeconds = Math.max(
     0,
-    Math.floor((Date.now() - new Date(cooldown.lastUsedAt).getTime()) / 1000),
+    Math.floor((Date.now() - new Date(cooldown.lastUsedAt).getTime()) / 1000)
   );
   const remainingSeconds = Math.max(0, cooldownSeconds - elapsedSeconds);
 
@@ -334,7 +343,7 @@ async function getActionCooldownState(
 
 function getNumericBoostValue(
   source: Record<string, unknown>,
-  key: keyof ActiveEventBoostEffects,
+  key: keyof ActiveEventBoostEffects
 ): number {
   const boosts =
     source.boosts && typeof source.boosts === 'object'
@@ -349,7 +358,7 @@ async function updateCreditsBalance(
   delta: number,
   reasonType: 'PURCHASE' | 'REDEEM' | 'REFUND' | 'ADMIN_ADJUSTMENT',
   reasonKey?: string,
-  metadataJson?: string,
+  metadataJson?: string
 ) {
   const player = await tx.player.findUnique({
     where: { id: playerId },
@@ -388,7 +397,7 @@ export async function grantPurchasedCredits(
   tx: any,
   playerId: number,
   amount: number,
-  productKey: string,
+  productKey: string
 ) {
   return updateCreditsBalance(
     tx,
@@ -396,7 +405,7 @@ export async function grantPurchasedCredits(
     amount,
     'PURCHASE',
     productKey,
-    JSON.stringify({ source: 'premium_checkout', amount }),
+    JSON.stringify({ source: 'premium_checkout', amount })
   );
 }
 
@@ -407,7 +416,7 @@ export async function createTimedCreditEntitlement(
   effectType: 'HIT_PROTECTION' | 'EVENT_BOOST',
   durationHours: number,
   metadata: Record<string, unknown> = {},
-  expiresAtOverride?: Date,
+  expiresAtOverride?: Date
 ) {
   const now = new Date();
   const expiresAt = expiresAtOverride ?? addHours(now, durationHours);
@@ -448,13 +457,14 @@ export async function ensureDefaultCreditCatalog() {
           metadataJson: item.metadataJson ?? null,
           sortOrder: item.sortOrder,
         },
-      }),
-    ),
+      })
+    )
   );
 }
 
 export async function getCreditOverview(playerId: number) {
   await ensureDefaultCreditCatalog();
+  await grantWeeklyVipCreditsIfDue(playerId);
 
   const [player, items, entitlements] = await Promise.all([
     prisma.player.findUnique({
@@ -486,7 +496,7 @@ export async function getCreditOverview(playerId: number) {
       const effectiveCost = getActionResetCost(
         actionType,
         cooldownState.remainingSeconds,
-        cooldownState.cooldownSeconds,
+        cooldownState.cooldownSeconds
       );
 
       return {
@@ -500,7 +510,7 @@ export async function getCreditOverview(playerId: number) {
           remainingSeconds: cooldownState.remainingSeconds,
         },
       };
-    }),
+    })
   );
 
   return {
@@ -511,10 +521,79 @@ export async function getCreditOverview(playerId: number) {
   };
 }
 
+export async function grantWeeklyVipCreditsIfDue(playerId: number): Promise<{
+  granted: boolean;
+  balance: number;
+}> {
+  return prisma.$transaction(async (tx) => {
+    const player = await tx.player.findUnique({
+      where: { id: playerId },
+      select: {
+        isVip: true,
+        vipExpiresAt: true,
+        premiumCredits: true,
+      },
+    });
+
+    if (!player) {
+      throw new Error('PLAYER_NOT_FOUND');
+    }
+
+    if (!isVipStatusActive(player)) {
+      return {
+        granted: false,
+        balance: player.premiumCredits,
+      };
+    }
+
+    const now = new Date();
+    const latestWeeklyGrant = await tx.playerCreditTransaction.findFirst({
+      where: {
+        playerId,
+        reasonKey: VIP_WEEKLY_STIPEND_REASON_KEY,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        createdAt: true,
+      },
+    });
+
+    if (
+      latestWeeklyGrant &&
+      now.getTime() - latestWeeklyGrant.createdAt.getTime() < VIP_WEEKLY_STIPEND_INTERVAL_MS
+    ) {
+      return {
+        granted: false,
+        balance: player.premiumCredits,
+      };
+    }
+
+    const balance = await updateCreditsBalance(
+      tx,
+      playerId,
+      VIP_WEEKLY_STIPEND_CREDITS,
+      'ADMIN_ADJUSTMENT',
+      VIP_WEEKLY_STIPEND_REASON_KEY,
+      JSON.stringify({
+        source: 'player_vip_weekly_stipend',
+        intervalDays: 7,
+        amount: VIP_WEEKLY_STIPEND_CREDITS,
+      })
+    );
+
+    return {
+      granted: true,
+      balance,
+    };
+  });
+}
+
 export async function redeemCreditItem(
   playerId: number,
   itemKey: string,
-  options: RedeemOptions = {},
+  options: RedeemOptions = {}
 ): Promise<RedeemResult> {
   await ensureDefaultCreditCatalog();
 
@@ -573,7 +652,7 @@ export async function redeemCreditItem(
         'HIT_PROTECTION',
         durationHours,
         { source: 'credit_redemption' },
-        expiresAt,
+        expiresAt
       );
 
       messageNl = 'Moordbescherming geactiveerd';
@@ -586,7 +665,7 @@ export async function redeemCreditItem(
       const jobs = await tx.$queryRawUnsafe<any[]>(
         `SELECT id, target_condition FROM vehicle_repair_jobs WHERE player_id = ? AND vehicle_inventory_id = ? AND status = 'in_progress' LIMIT 1`,
         playerId,
-        options.vehicleInventoryId,
+        options.vehicleInventoryId
       );
 
       const job = jobs[0];
@@ -596,7 +675,7 @@ export async function redeemCreditItem(
 
       await tx.$executeRawUnsafe(
         `UPDATE vehicle_repair_jobs SET status = 'completed', completed_at = NOW(3), completes_at = NOW(3) WHERE id = ?`,
-        job.id,
+        job.id
       );
       await tx.vehicleInventory.update({
         where: { id: options.vehicleInventoryId },
@@ -615,7 +694,7 @@ export async function redeemCreditItem(
          SET tune_cooldown_until = NULL, updated_at = NOW(3)
          WHERE player_id = ? AND vehicle_inventory_id = ? AND tune_cooldown_until IS NOT NULL AND tune_cooldown_until > UTC_TIMESTAMP()`,
         playerId,
-        options.vehicleInventoryId,
+        options.vehicleInventoryId
       );
 
       if (!updated) {
@@ -638,7 +717,7 @@ export async function redeemCreditItem(
       redeemCost = getActionResetCost(
         actionType,
         cooldownState.remainingSeconds,
-        cooldownState.cooldownSeconds,
+        cooldownState.cooldownSeconds
       );
 
       if (player.premiumCredits < redeemCost) {
@@ -680,7 +759,7 @@ export async function redeemCreditItem(
         vehicleInventoryId: options.vehicleInventoryId ?? null,
         actionType: item.actionType ?? options.actionType ?? null,
         creditCost: redeemCost,
-      }),
+      })
     );
 
     return {
@@ -693,7 +772,7 @@ export async function redeemCreditItem(
 }
 
 export async function getActiveEventBoostEffects(
-  playerId: number,
+  playerId: number
 ): Promise<ActiveEventBoostEffects> {
   const activeEntitlements = await prisma.playerCreditEntitlement.findMany({
     where: {
@@ -719,23 +798,23 @@ export async function getActiveEventBoostEffects(
     const metadata = parseJsonObject(entitlement.metadataJson);
     strongest.crimeSuccessPct = Math.max(
       strongest.crimeSuccessPct,
-      getNumericBoostValue(metadata, 'crimeSuccessPct'),
+      getNumericBoostValue(metadata, 'crimeSuccessPct')
     );
     strongest.crimeRewardPct = Math.max(
       strongest.crimeRewardPct,
-      getNumericBoostValue(metadata, 'crimeRewardPct'),
+      getNumericBoostValue(metadata, 'crimeRewardPct')
     );
     strongest.hitAttackPct = Math.max(
       strongest.hitAttackPct,
-      getNumericBoostValue(metadata, 'hitAttackPct'),
+      getNumericBoostValue(metadata, 'hitAttackPct')
     );
     strongest.hitDefensePct = Math.max(
       strongest.hitDefensePct,
-      getNumericBoostValue(metadata, 'hitDefensePct'),
+      getNumericBoostValue(metadata, 'hitDefensePct')
     );
     strongest.eventContributionPct = Math.max(
       strongest.eventContributionPct,
-      getNumericBoostValue(metadata, 'eventContributionPct'),
+      getNumericBoostValue(metadata, 'eventContributionPct')
     );
   }
 
@@ -746,7 +825,7 @@ export async function getActiveEventBoostEffects(
     hitDefensePct: Math.min(strongest.hitDefensePct, EVENT_BOOST_CAPS.hitDefensePct),
     eventContributionPct: Math.min(
       strongest.eventContributionPct,
-      EVENT_BOOST_CAPS.eventContributionPct,
+      EVENT_BOOST_CAPS.eventContributionPct
     ),
   };
 }

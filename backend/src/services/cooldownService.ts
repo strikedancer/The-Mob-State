@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import { timeProvider } from '../utils/timeProvider';
 import { notificationService } from './notificationService';
+import { applyVipTimeoutReductionSeconds, isVipStatusActive } from './vipBenefitsService';
 
 /**
  * Cooldown Service
@@ -8,7 +9,7 @@ import { notificationService } from './notificationService';
  */
 
 interface CooldownConfig {
-  crime: number;     // seconds (base fallback)
+  crime: number; // seconds (base fallback)
   job: number;
   school: number;
   travel: number;
@@ -31,16 +32,16 @@ const NOTIFY_ACTIONS = new Set<keyof CooldownConfig>([
 // Default cooldown periods (in seconds)
 // Designed for long-term retention (months of gameplay)
 const COOLDOWN_PERIODS: CooldownConfig = {
-  crime: 90,         // 1.5 minutes between crimes
-  job: 900,          // 15 minutes between jobs
-  school: 90,        // dynamic via education flow, 90s fallback
-  travel: 3600,      // 1 hour per travel leg
-  heist: 21600,      // 6 hours between heists
-  appeal: 14400,     // 4 hours between appeals
+  crime: 90, // 1.5 minutes between crimes
+  job: 900, // 15 minutes between jobs
+  school: 90, // dynamic via education flow, 90s fallback
+  travel: 3600, // 1 hour per travel leg
+  heist: 21600, // 6 hours between heists
+  appeal: 14400, // 4 hours between appeals
   vehicle_theft: 300, // 5 minutes between auto thefts
   motorcycle_theft: 240, // 4 minutes between motorcycle thefts
-  boat_theft: 600,   // 10 minutes between boat thefts
-  ammo: 3600,        // 1 hour between ammo purchases
+  boat_theft: 600, // 10 minutes between boat thefts
+  ammo: 3600, // 1 hour between ammo purchases
 };
 
 /**
@@ -55,17 +56,17 @@ export function calculateCrimeCooldown(maxReward: number): number {
   // €2000-10000: 15 min (large crimes like burglary)
   // €10000-30000: 30 min (major crimes like jewelry heist)
   // €30000+: 1 hour (top tier crimes like bank robbery)
-  
+
   if (maxReward <= 500) {
-    return 90;         // 1.5 minutes
+    return 90; // 1.5 minutes
   } else if (maxReward <= 2000) {
-    return 300;        // 5 minutes
+    return 300; // 5 minutes
   } else if (maxReward <= 10000) {
-    return 900;        // 15 minutes
+    return 900; // 15 minutes
   } else if (maxReward <= 30000) {
-    return 1800;       // 30 minutes
+    return 1800; // 30 minutes
   } else {
-    return 3600;       // 1 hour
+    return 3600; // 1 hour
   }
 }
 
@@ -142,14 +143,14 @@ export async function getCooldown(
   actionType: keyof CooldownConfig
 ): Promise<{ remainingSeconds: number; actionType: string } | null> {
   const remainingSeconds = await checkCooldown(playerId, actionType);
-  
+
   if (remainingSeconds > 0) {
     return {
       remainingSeconds,
       actionType,
     };
   }
-  
+
   return null;
 }
 
@@ -166,7 +167,18 @@ export async function setCooldown(
   customCooldown?: number
 ): Promise<{ remainingSeconds: number; actionType: string }> {
   const now = timeProvider.now();
-  const cooldownPeriod = customCooldown ?? COOLDOWN_PERIODS[actionType];
+  const baseCooldownPeriod = customCooldown ?? COOLDOWN_PERIODS[actionType];
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: {
+      isVip: true,
+      vipExpiresAt: true,
+    },
+  });
+  const cooldownPeriod = applyVipTimeoutReductionSeconds(
+    baseCooldownPeriod,
+    isVipStatusActive(player, now)
+  );
 
   await prisma.actionCooldown.upsert({
     where: {
@@ -233,7 +245,7 @@ export async function getPlayerCooldowns(playerId: number): Promise<Record<strin
   for (const cooldown of cooldowns) {
     const actionType = cooldown.actionType as keyof CooldownConfig;
     const cooldownPeriod = cooldown.cooldownSeconds ?? COOLDOWN_PERIODS[actionType];
-    
+
     if (!cooldownPeriod) continue; // Skip unknown action types
 
     const elapsedSeconds = Math.floor((now.getTime() - cooldown.lastUsedAt.getTime()) / 1000);
@@ -249,7 +261,7 @@ export async function getPlayerCooldowns(playerId: number): Promise<Record<strin
 
 export async function processCooldownExpiryNotification(
   playerId: number,
-  actionType: keyof CooldownConfig,
+  actionType: keyof CooldownConfig
 ): Promise<boolean> {
   if (!NOTIFY_ACTIONS.has(actionType)) {
     return false;
@@ -289,10 +301,7 @@ export async function processCooldownExpiryNotification(
     where: {
       playerId,
       actionType,
-      OR: [
-        { lastNotifiedAt: null },
-        { lastNotifiedAt: { lt: dueAt } },
-      ],
+      OR: [{ lastNotifiedAt: null }, { lastNotifiedAt: { lt: dueAt } }],
     },
     data: {
       lastNotifiedAt: now,
@@ -323,7 +332,7 @@ export async function processPendingCooldownExpiryNotifications(): Promise<numbe
   for (const cooldown of cooldowns) {
     const sent = await processCooldownExpiryNotification(
       cooldown.playerId,
-      cooldown.actionType as keyof CooldownConfig,
+      cooldown.actionType as keyof CooldownConfig
     );
     if (sent) {
       sentCount += 1;

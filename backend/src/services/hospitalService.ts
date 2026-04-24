@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import config from '../config';
+import { applyVipTimeoutReductionMs, isVipStatusActive } from './vipBenefitsService';
 
 export const hospitalService = {
   /**
@@ -8,7 +9,7 @@ export const hospitalService = {
    */
   async heal(
     playerId: number,
-    treatmentType: 'standard' | 'intensive' = 'standard',
+    treatmentType: 'standard' | 'intensive' = 'standard'
   ): Promise<{
     healthRestored: number;
     cost: number;
@@ -18,7 +19,14 @@ export const hospitalService = {
   }> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { id: true, health: true, money: true, lastHospitalVisit: true },
+      select: {
+        id: true,
+        health: true,
+        money: true,
+        lastHospitalVisit: true,
+        isVip: true,
+        vipExpiresAt: true,
+      },
     });
 
     if (!player) {
@@ -31,8 +39,11 @@ export const hospitalService = {
     }
 
     // Check cooldown
+    const cooldownMs = applyVipTimeoutReductionMs(
+      config.hospitalCooldownMinutes * 60 * 1000,
+      isVipStatusActive(player)
+    );
     if (player.lastHospitalVisit) {
-      const cooldownMs = config.hospitalCooldownMinutes * 60 * 1000;
       const timeSinceLastVisit = Date.now() - player.lastHospitalVisit.getTime();
       if (timeSinceLastVisit < cooldownMs) {
         const remainingMinutes = Math.ceil((cooldownMs - timeSinceLastVisit) / 60000);
@@ -128,21 +139,36 @@ export const hospitalService = {
   }> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { lastHospitalVisit: true },
+      select: {
+        lastHospitalVisit: true,
+        isVip: true,
+        vipExpiresAt: true,
+      },
     });
 
     if (!player) throw new Error('PLAYER_NOT_FOUND');
 
-    const cooldownMs = config.hospitalCooldownMinutes * 60 * 1000;
+    const cooldownMs = applyVipTimeoutReductionMs(
+      config.hospitalCooldownMinutes * 60 * 1000,
+      isVipStatusActive(player)
+    );
     if (player.lastHospitalVisit) {
       const elapsed = Date.now() - player.lastHospitalVisit.getTime();
       if (elapsed < cooldownMs) {
         const remainingSeconds = Math.ceil((cooldownMs - elapsed) / 1000);
-        return { onCooldown: true, remainingSeconds, cooldownMinutes: config.hospitalCooldownMinutes };
+        return {
+          onCooldown: true,
+          remainingSeconds,
+          cooldownMinutes: Math.ceil(cooldownMs / 60000),
+        };
       }
     }
 
-    return { onCooldown: false, remainingSeconds: 0, cooldownMinutes: config.hospitalCooldownMinutes };
+    return {
+      onCooldown: false,
+      remainingSeconds: 0,
+      cooldownMinutes: Math.ceil(cooldownMs / 60000),
+    };
   },
 
   /**

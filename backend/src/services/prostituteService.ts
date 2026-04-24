@@ -5,6 +5,11 @@ import { activityService } from './activityService';
 import { propertyService } from './propertyService';
 import { increaseFBIHeat } from './fbiService';
 import { notificationService } from './notificationService';
+import {
+  applyVipTimeoutReductionMs,
+  applyVipTimeoutReductionSeconds,
+  isVipStatusActive,
+} from './vipBenefitsService';
 
 const RECRUITMENT_COOLDOWN_MINUTES = 5;
 const RECRUITMENT_SUCCESS_CHANCE = 0.75; // 75% kans op succesvolle werving
@@ -29,45 +34,48 @@ type ProstitutionBalanceProfile = 'casual' | 'normal' | 'hardcore';
 
 const PROSTITUTION_BALANCE_PROFILE_ENV = 'PROSTITUTION_BALANCE_PROFILE';
 
-const PROSTITUTION_BALANCE_PRESETS: Record<ProstitutionBalanceProfile, {
-  betrayalBaseChance: number;
-  betrayalPerLostCrew: number;
-  betrayalNightclubLossBonus: number;
-  betrayalMaxChance: number;
-  seizureBase: number;
-  seizurePerLoss: number;
-  seizureNightclubBonus: number;
-  seizureMin: number;
-  seizureMax: number;
-  licenseBaseChance: number;
-  licensePerLoss: number;
-  licenseNightclubBonus: number;
-  licenseMin: number;
-  licenseMax: number;
-  wantedBase: number;
-  wantedPerLoss: number;
-  wantedNightclubBonus: number;
-  wantedLicenseBonus: number;
-  fbiBase: number;
-  fbiPerLoss: number;
-  fbiNightclubBonus: number;
-  fbiLicenseBonus: number;
-  jailBaseMinutes: number;
-  jailPerLossMinutes: number;
-  jailNightclubBonusMinutes: number;
-  jailLicenseBonusMinutes: number;
-  housingGraceDays: number;
-  housingAtRiskDays: number;
-  housingBonusPerUpgradeLevel: number;
-  housingBonusMax: number;
-  happinessBaseWithHousing: number;
-  happinessBaseWithoutHousing: number;
-  happinessPerUpgradeLevel: number;
-  happinessOverduePenalty: number;
-  happinessAtRiskPenalty: number;
-  happinessBustedPenalty: number;
-  happinessEarningsStep: number;
-}> = {
+const PROSTITUTION_BALANCE_PRESETS: Record<
+  ProstitutionBalanceProfile,
+  {
+    betrayalBaseChance: number;
+    betrayalPerLostCrew: number;
+    betrayalNightclubLossBonus: number;
+    betrayalMaxChance: number;
+    seizureBase: number;
+    seizurePerLoss: number;
+    seizureNightclubBonus: number;
+    seizureMin: number;
+    seizureMax: number;
+    licenseBaseChance: number;
+    licensePerLoss: number;
+    licenseNightclubBonus: number;
+    licenseMin: number;
+    licenseMax: number;
+    wantedBase: number;
+    wantedPerLoss: number;
+    wantedNightclubBonus: number;
+    wantedLicenseBonus: number;
+    fbiBase: number;
+    fbiPerLoss: number;
+    fbiNightclubBonus: number;
+    fbiLicenseBonus: number;
+    jailBaseMinutes: number;
+    jailPerLossMinutes: number;
+    jailNightclubBonusMinutes: number;
+    jailLicenseBonusMinutes: number;
+    housingGraceDays: number;
+    housingAtRiskDays: number;
+    housingBonusPerUpgradeLevel: number;
+    housingBonusMax: number;
+    happinessBaseWithHousing: number;
+    happinessBaseWithoutHousing: number;
+    happinessPerUpgradeLevel: number;
+    happinessOverduePenalty: number;
+    happinessAtRiskPenalty: number;
+    happinessBustedPenalty: number;
+    happinessEarningsStep: number;
+  }
+> = {
   casual: {
     betrayalBaseChance: 0.06,
     betrayalPerLostCrew: 0.03,
@@ -76,13 +84,13 @@ const PROSTITUTION_BALANCE_PRESETS: Record<ProstitutionBalanceProfile, {
     seizureBase: 0.25,
     seizurePerLoss: 0.06,
     seizureNightclubBonus: 0.06,
-    seizureMin: 0.20,
+    seizureMin: 0.2,
     seizureMax: 0.55,
     licenseBaseChance: 0.05,
     licensePerLoss: 0.04,
     licenseNightclubBonus: 0.07,
     licenseMin: 0.05,
-    licenseMax: 0.30,
+    licenseMax: 0.3,
     wantedBase: 4,
     wantedPerLoss: 2,
     wantedNightclubBonus: 2,
@@ -108,19 +116,19 @@ const PROSTITUTION_BALANCE_PRESETS: Record<ProstitutionBalanceProfile, {
     happinessEarningsStep: 0.003,
   },
   normal: {
-    betrayalBaseChance: 0.10,
+    betrayalBaseChance: 0.1,
     betrayalPerLostCrew: 0.05,
     betrayalNightclubLossBonus: 0.15,
     betrayalMaxChance: 0.55,
     seizureBase: 0.35,
-    seizurePerLoss: 0.10,
-    seizureNightclubBonus: 0.10,
+    seizurePerLoss: 0.1,
+    seizureNightclubBonus: 0.1,
     seizureMin: 0.35,
-    seizureMax: 0.80,
-    licenseBaseChance: 0.10,
+    seizureMax: 0.8,
+    licenseBaseChance: 0.1,
     licensePerLoss: 0.08,
     licenseNightclubBonus: 0.12,
-    licenseMin: 0.10,
+    licenseMin: 0.1,
     licenseMax: 0.55,
     wantedBase: 6,
     wantedPerLoss: 3,
@@ -155,12 +163,12 @@ const PROSTITUTION_BALANCE_PRESETS: Record<ProstitutionBalanceProfile, {
     seizurePerLoss: 0.12,
     seizureNightclubBonus: 0.12,
     seizureMin: 0.45,
-    seizureMax: 0.90,
+    seizureMax: 0.9,
     licenseBaseChance: 0.16,
-    licensePerLoss: 0.10,
+    licensePerLoss: 0.1,
     licenseNightclubBonus: 0.16,
     licenseMin: 0.16,
-    licenseMax: 0.70,
+    licenseMax: 0.7,
     wantedBase: 8,
     wantedPerLoss: 4,
     wantedNightclubBonus: 5,
@@ -209,17 +217,37 @@ function getProstitutionEconomyPreset() {
 
 // Tier-based earnings (for districts)
 const TIER_MULTIPLIERS = {
-  1: { gross: 75, rent: 20 },   // Basic: €75/h gross, €20/h rent
-  2: { gross: 100, rent: 30 },  // Luxury: €100/h gross, €30/h rent
-  3: { gross: 150, rent: 50 }   // VIP: €150/h gross, €50/h rent
+  1: { gross: 75, rent: 20 }, // Basic: €75/h gross, €20/h rent
+  2: { gross: 100, rent: 30 }, // Luxury: €100/h gross, €30/h rent
+  3: { gross: 150, rent: 50 }, // VIP: €150/h gross, €50/h rent
 };
 
 const PROSTITUTE_NAMES = [
-  'Scarlett', 'Ruby', 'Diamond', 'Crystal', 'Sapphire',
-  'Jade', 'Amber', 'Pearl', 'Candy', 'Angel',
-  'Destiny', 'Cherry', 'Raven', 'Luna', 'Star',
-  'Honey', 'Tiffany', 'Jasmine', 'Bella', 'Venus',
-  'Roxanne', 'Ginger', 'Misty', 'Aurora', 'Chloe'
+  'Scarlett',
+  'Ruby',
+  'Diamond',
+  'Crystal',
+  'Sapphire',
+  'Jade',
+  'Amber',
+  'Pearl',
+  'Candy',
+  'Angel',
+  'Destiny',
+  'Cherry',
+  'Raven',
+  'Luna',
+  'Star',
+  'Honey',
+  'Tiffany',
+  'Jasmine',
+  'Bella',
+  'Venus',
+  'Roxanne',
+  'Ginger',
+  'Misty',
+  'Aurora',
+  'Chloe',
 ];
 
 const RECRUITMENT_FAILURE_REASONS = [
@@ -227,14 +255,14 @@ const RECRUITMENT_FAILURE_REASONS = [
   'Een rivaliserende pooier was je net voor',
   'De politie controleerde de buurt onverwacht',
   'Je contactpersoon bleek onbetrouwbaar',
-  'De deal klapte op het laatste moment'
+  'De deal klapte op het laatste moment',
 ];
 
 const RECRUITMENT_LOSS_REASONS = [
   'werd opgepakt tijdens een politie-inval',
   'is overgelopen naar een rivaliserende crew',
   'is spoorloos verdwenen na een conflict',
-  'is gevlucht na intimidatie in de buurt'
+  'is gevlucht na intimidatie in de buurt',
 ];
 
 function isVipProstitute(variant: number): boolean {
@@ -285,8 +313,8 @@ function getVipHousingBonusPerProperty(): number {
 }
 
 function getResidentialCapacityFromProperty(definition: any, upgradeLevel: number): number {
-  const hasResidentialFeature = Array.isArray(definition?.features)
-    && definition.features.includes('residential');
+  const hasResidentialFeature =
+    Array.isArray(definition?.features) && definition.features.includes('residential');
 
   if (!hasResidentialFeature) {
     return 0;
@@ -308,9 +336,7 @@ function parseActivityDetails(details: unknown): Record<string, unknown> {
   if (typeof details === 'string') {
     try {
       const parsed = JSON.parse(details);
-      return parsed && typeof parsed === 'object'
-        ? parsed as Record<string, unknown>
-        : {};
+      return parsed && typeof parsed === 'object' ? (parsed as Record<string, unknown>) : {};
     } catch {
       return {};
     }
@@ -339,9 +365,9 @@ export const prostituteService = {
     const lossWeight = Math.min(lost.length, 4);
     const hadNightclubWorkerLoss = lost.some((item) => typeof item.nightclubVenueId === 'number');
     const chance = Math.min(
-      preset.betrayalBaseChance
-        + (lossWeight * preset.betrayalPerLostCrew)
-        + (hadNightclubWorkerLoss ? preset.betrayalNightclubLossBonus : 0),
+      preset.betrayalBaseChance +
+        lossWeight * preset.betrayalPerLostCrew +
+        (hadNightclubWorkerLoss ? preset.betrayalNightclubLossBonus : 0),
       preset.betrayalMaxChance
     );
 
@@ -350,13 +376,17 @@ export const prostituteService = {
     }
 
     const seizureSeverity = clamp(
-      preset.seizureBase + (lossWeight * preset.seizurePerLoss) + (hadNightclubWorkerLoss ? preset.seizureNightclubBonus : 0),
+      preset.seizureBase +
+        lossWeight * preset.seizurePerLoss +
+        (hadNightclubWorkerLoss ? preset.seizureNightclubBonus : 0),
       preset.seizureMin,
       preset.seizureMax
     );
 
     const licenseRevocationChance = clamp(
-      preset.licenseBaseChance + (lossWeight * preset.licensePerLoss) + (hadNightclubWorkerLoss ? preset.licenseNightclubBonus : 0),
+      preset.licenseBaseChance +
+        lossWeight * preset.licensePerLoss +
+        (hadNightclubWorkerLoss ? preset.licenseNightclubBonus : 0),
       preset.licenseMin,
       preset.licenseMax
     );
@@ -424,45 +454,51 @@ export const prostituteService = {
       }
     });
 
-    const wantedIncrease = preset.wantedBase
-      + (lossWeight * preset.wantedPerLoss)
-      + (hadNightclubWorkerLoss ? preset.wantedNightclubBonus : 0)
-      + (nightclubLicensesRevoked > 0 ? preset.wantedLicenseBonus : 0);
-    const fbiIncrease = preset.fbiBase
-      + (lossWeight * preset.fbiPerLoss)
-      + (hadNightclubWorkerLoss ? preset.fbiNightclubBonus : 0)
-      + (nightclubLicensesRevoked > 0 ? preset.fbiLicenseBonus : 0);
-    const jailMinutes = preset.jailBaseMinutes
-      + (lossWeight * preset.jailPerLossMinutes)
-      + (hadNightclubWorkerLoss ? preset.jailNightclubBonusMinutes : 0)
-      + (nightclubLicensesRevoked > 0 ? preset.jailLicenseBonusMinutes : 0);
+    const wantedIncrease =
+      preset.wantedBase +
+      lossWeight * preset.wantedPerLoss +
+      (hadNightclubWorkerLoss ? preset.wantedNightclubBonus : 0) +
+      (nightclubLicensesRevoked > 0 ? preset.wantedLicenseBonus : 0);
+    const fbiIncrease =
+      preset.fbiBase +
+      lossWeight * preset.fbiPerLoss +
+      (hadNightclubWorkerLoss ? preset.fbiNightclubBonus : 0) +
+      (nightclubLicensesRevoked > 0 ? preset.fbiLicenseBonus : 0);
+    const jailMinutes =
+      preset.jailBaseMinutes +
+      lossWeight * preset.jailPerLossMinutes +
+      (hadNightclubWorkerLoss ? preset.jailNightclubBonusMinutes : 0) +
+      (nightclubLicensesRevoked > 0 ? preset.jailLicenseBonusMinutes : 0);
 
     await increaseWantedLevel(playerId, wantedIncrease);
     await increaseFBIHeat(playerId, fbiIncrease);
     await jailPlayer(playerId, jailMinutes);
 
-    const message = nightclubLicensesRevoked > 0
-      ? `Verraad! Ex-crew lekte je nightclub stash. Een vergunning is ingetrokken en je voorraad is deels in beslag genomen.`
-      : `Verraad! Ex-crew lekte je stash. Politie/FBI hebben een deel van je nightclub voorraad in beslag genomen.`;
+    const message =
+      nightclubLicensesRevoked > 0
+        ? `Verraad! Ex-crew lekte je nightclub stash. Een vergunning is ingetrokken en je voorraad is deels in beslag genomen.`
+        : `Verraad! Ex-crew lekte je stash. Politie/FBI hebben een deel van je nightclub voorraad in beslag genomen.`;
 
-    await activityService.logActivity(
-      playerId,
-      'PROSTITUTE_BETRAYAL_RAID',
-      message,
-      {
-        balanceProfile: profile,
-        betrayalChance: chance,
-        seizureSeverity,
-        lostCrewCount: lost.length,
-        lostCrew: lost.map((item) => item.name),
-        seizedDrugsGrams,
-        nightclubLicensesRevoked,
-        wantedIncrease,
-        fbiIncrease,
-        jailMinutes,
-      },
-      true
-    ).catch(() => {});
+    await activityService
+      .logActivity(
+        playerId,
+        'PROSTITUTE_BETRAYAL_RAID',
+        message,
+        {
+          balanceProfile: profile,
+          betrayalChance: chance,
+          seizureSeverity,
+          lostCrewCount: lost.length,
+          lostCrew: lost.map((item) => item.name),
+          seizedDrugsGrams,
+          nightclubLicensesRevoked,
+          wantedIncrease,
+          fbiIncrease,
+          jailMinutes,
+        },
+        true
+      )
+      .catch(() => {});
 
     return {
       triggered: true,
@@ -496,19 +532,21 @@ export const prostituteService = {
       return sum + getResidentialCapacityFromProperty(definition, property.upgradeLevel);
     }, 0);
 
-    const averageResidentialUpgrade = residential.length > 0
-      ? residential.reduce((sum, item) => sum + item.upgradeLevel, 0) / residential.length
-      : 0;
+    const averageResidentialUpgrade =
+      residential.length > 0
+        ? residential.reduce((sum, item) => sum + item.upgradeLevel, 0) / residential.length
+        : 0;
 
     const economyPreset = getProstitutionEconomyPreset();
     // Housing quality bonus from upgrades scales per selected profile.
-    const housingHappinessBonusPercent = residential.length > 0
-      ? clamp(
-        (averageResidentialUpgrade - 1) * economyPreset.housingBonusPerUpgradeLevel,
-        0,
-        economyPreset.housingBonusMax
-      )
-      : 0;
+    const housingHappinessBonusPercent =
+      residential.length > 0
+        ? clamp(
+            (averageResidentialUpgrade - 1) * economyPreset.housingBonusPerUpgradeLevel,
+            0,
+            economyPreset.housingBonusMax
+          )
+        : 0;
 
     return {
       totalCapacity,
@@ -524,13 +562,18 @@ export const prostituteService = {
   ): number {
     const economyPreset = getProstitutionEconomyPreset();
     const now = new Date();
-    let score = averageResidentialUpgrade > 0
-      ? economyPreset.happinessBaseWithHousing + ((averageResidentialUpgrade - 1) * economyPreset.happinessPerUpgradeLevel)
-      : economyPreset.happinessBaseWithoutHousing;
+    let score =
+      averageResidentialUpgrade > 0
+        ? economyPreset.happinessBaseWithHousing +
+          (averageResidentialUpgrade - 1) * economyPreset.happinessPerUpgradeLevel
+        : economyPreset.happinessBaseWithoutHousing;
 
     if (prostitute.housingPaidUntil && prostitute.housingPaidUntil < now) {
       score -= economyPreset.happinessOverduePenalty;
-    } else if (prostitute.housingPaidUntil && prostitute.housingPaidUntil <= addDays(now, economyPreset.housingAtRiskDays)) {
+    } else if (
+      prostitute.housingPaidUntil &&
+      prostitute.housingPaidUntil <= addDays(now, economyPreset.housingAtRiskDays)
+    ) {
       score -= economyPreset.happinessAtRiskPenalty;
     }
 
@@ -566,8 +609,7 @@ export const prostituteService = {
       select: { isVip: true, vipExpiresAt: true },
     });
     const isVip =
-      player?.isVip === true &&
-      (!player.vipExpiresAt || player.vipExpiresAt > new Date());
+      player?.isVip === true && (!player.vipExpiresAt || player.vipExpiresAt > new Date());
 
     const vipBonusPerProperty = getVipHousingBonusPerProperty();
     const vipTotalBonus = isVip ? vipBonusPerProperty * residentialStats.residentialProperties : 0;
@@ -618,10 +660,7 @@ export const prostituteService = {
         lastWorkedAt: true,
         recruitedAt: true,
       },
-      orderBy: [
-        { lastWorkedAt: 'asc' },
-        { recruitedAt: 'asc' },
-      ],
+      orderBy: [{ lastWorkedAt: 'asc' }, { recruitedAt: 'asc' }],
     });
 
     const overflowCount = Math.max(0, allOwned.length - capacity.totalCapacity);
@@ -668,16 +707,18 @@ export const prostituteService = {
       });
     });
 
-    await activityService.logActivity(
-      playerId,
-      'PROSTITUTE_HOUSING_EVICTION',
-      `Housing expired for ${overdue.length} prostitute(s)`,
-      {
-        evictedCount: overdue.length,
-        evictedNames: combined.map((item) => item.name),
-      },
-      true
-    ).catch(() => {});
+    await activityService
+      .logActivity(
+        playerId,
+        'PROSTITUTE_HOUSING_EVICTION',
+        `Housing expired for ${overdue.length} prostitute(s)`,
+        {
+          evictedCount: overdue.length,
+          evictedNames: combined.map((item) => item.name),
+        },
+        true
+      )
+      .catch(() => {});
 
     return {
       evictedCount: combined.length,
@@ -707,14 +748,20 @@ export const prostituteService = {
     const residentialStats = await this.getResidentialPortfolioStats(playerId);
 
     const atRiskCount = prostitutes.filter(
-      (item) => item.housingPaidUntil && item.housingPaidUntil >= now && item.housingPaidUntil <= atRiskCutoff
+      (item) =>
+        item.housingPaidUntil &&
+        item.housingPaidUntil >= now &&
+        item.housingPaidUntil <= atRiskCutoff
     ).length;
     const safeCount = prostitutes.filter(
       (item) => item.housingPaidUntil && item.housingPaidUntil > atRiskCutoff
     ).length;
 
     return {
-      totalWeeklyRent: prostitutes.reduce((sum, item) => sum + (item.housingRentPerDay * economyPreset.housingGraceDays), 0),
+      totalWeeklyRent: prostitutes.reduce(
+        (sum, item) => sum + item.housingRentPerDay * economyPreset.housingGraceDays,
+        0
+      ),
       atRiskCount,
       safeCount,
       graceDays: economyPreset.housingGraceDays,
@@ -734,10 +781,16 @@ export const prostituteService = {
   /**
    * Check if player can recruit a prostitute
    */
-  async canRecruit(playerId: number): Promise<{ canRecruit: boolean; cooldownRemaining?: number; jailRemaining?: number }> {
+  async canRecruit(
+    playerId: number
+  ): Promise<{ canRecruit: boolean; cooldownRemaining?: number; jailRemaining?: number }> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { lastProstituteRecruitment: true }
+      select: {
+        lastProstituteRecruitment: true,
+        isVip: true,
+        vipExpiresAt: true,
+      },
     });
 
     if (!player) {
@@ -758,9 +811,18 @@ export const prostituteService = {
       return { canRecruit: true };
     }
 
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { isVip: true, vipExpiresAt: true },
+    });
+
     const now = new Date();
-    const cooldownEnd = new Date(player.lastProstituteRecruitment.getTime() + RECRUITMENT_COOLDOWN_MINUTES * 60 * 1000);
-    
+    const cooldownMs = applyVipTimeoutReductionMs(
+      RECRUITMENT_COOLDOWN_MINUTES * 60 * 1000,
+      isVipStatusActive(player, now)
+    );
+    const cooldownEnd = new Date(player.lastProstituteRecruitment.getTime() + cooldownMs);
+
     if (now < cooldownEnd) {
       const remainingMs = cooldownEnd.getTime() - now.getTime();
       return { canRecruit: false, cooldownRemaining: Math.ceil(remainingMs / 1000) };
@@ -772,7 +834,16 @@ export const prostituteService = {
   /**
    * Recruit a new prostitute
    */
-  async recruitProstitute(playerId: number): Promise<{ success: boolean; message: string; prostitute?: any; cooldownRemaining?: number; newlyUnlockedAchievements?: any[]; lostProstitute?: { id: number; name: string; reason: string } }> {
+  async recruitProstitute(
+    playerId: number
+  ): Promise<{
+    success: boolean;
+    message: string;
+    prostitute?: any;
+    cooldownRemaining?: number;
+    newlyUnlockedAchievements?: any[];
+    lostProstitute?: { id: number; name: string; reason: string };
+  }> {
     const economyPreset = getProstitutionEconomyPreset();
     await this.processHousingUpkeep(playerId);
 
@@ -780,7 +851,7 @@ export const prostituteService = {
     if (remainingJailTime > 0) {
       return {
         success: false,
-        message: 'Je kunt geen prostituees werven vanuit de gevangenis'
+        message: 'Je kunt geen prostituees werven vanuit de gevangenis',
       };
     }
 
@@ -798,39 +869,38 @@ export const prostituteService = {
       return {
         success: false,
         message: 'Je moet nog wachten voordat je weer kunt werven',
-        cooldownRemaining: cooldownCheck.cooldownRemaining
+        cooldownRemaining: cooldownCheck.cooldownRemaining,
       };
     }
+
+    const now = new Date();
+    const hasActiveVip =
+      player?.isVip === true && (!player.vipExpiresAt || player.vipExpiresAt > now);
+    const recruitCooldownMs = applyVipTimeoutReductionMs(
+      RECRUITMENT_COOLDOWN_MINUTES * 60 * 1000,
+      hasActiveVip
+    );
 
     // Cooldown starts on attempt (both success and failure)
     await prisma.player.update({
       where: { id: playerId },
-      data: { lastProstituteRecruitment: new Date() }
+      data: { lastProstituteRecruitment: now },
     });
 
     // Stuur pushmelding wanneer cooldown afloopt
     setTimeout(() => {
-      notificationService.sendCooldownExpiredNotification(playerId, 'prostitute_recruit').catch(() => {});
-    }, RECRUITMENT_COOLDOWN_MINUTES * 60 * 1000);
-
-    // Get player VIP status
-    const player = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: { isVip: true, vipExpiresAt: true }
-    });
+      notificationService
+        .sendCooldownExpiredNotification(playerId, 'prostitute_recruit')
+        .catch(() => {});
+    }, recruitCooldownMs);
 
     // Settle existing earnings first
     await this.settleEarnings(playerId);
 
-    const hasActiveVip =
-      player?.isVip === true &&
-      (!player.vipExpiresAt || player.vipExpiresAt > new Date());
-
     // Recruitment can fail
     if (Math.random() > RECRUITMENT_SUCCESS_CHANCE) {
-      const failureReason = RECRUITMENT_FAILURE_REASONS[
-        Math.floor(Math.random() * RECRUITMENT_FAILURE_REASONS.length)
-      ];
+      const failureReason =
+        RECRUITMENT_FAILURE_REASONS[Math.floor(Math.random() * RECRUITMENT_FAILURE_REASONS.length)];
 
       const currentProstitutes = await prisma.prostitute.findMany({
         where: { playerId },
@@ -843,9 +913,8 @@ export const prostituteService = {
 
       if (currentProstitutes.length > 0 && Math.random() < RECRUITMENT_LOSS_ON_FAILURE_CHANCE) {
         const lost = currentProstitutes[Math.floor(Math.random() * currentProstitutes.length)];
-        const lossReason = RECRUITMENT_LOSS_REASONS[
-          Math.floor(Math.random() * RECRUITMENT_LOSS_REASONS.length)
-        ];
+        const lossReason =
+          RECRUITMENT_LOSS_REASONS[Math.floor(Math.random() * RECRUITMENT_LOSS_REASONS.length)];
 
         if (lost.redLightRoomId) {
           await prisma.redLightRoom.update({
@@ -900,9 +969,10 @@ export const prostituteService = {
 
     // Random name and variant
     const randomName = PROSTITUTE_NAMES[Math.floor(Math.random() * PROSTITUTE_NAMES.length)];
-    const randomVariant = hasActiveVip && Math.random() < VIP_PROSTITUTE_RECRUIT_CHANCE
-      ? Math.floor(Math.random() * 5) + 6 // VIP variants 6-10
-      : Math.floor(Math.random() * 5) + 1; // Normal variants 1-5
+    const randomVariant =
+      hasActiveVip && Math.random() < VIP_PROSTITUTE_RECRUIT_CHANCE
+        ? Math.floor(Math.random() * 5) + 6 // VIP variants 6-10
+        : Math.floor(Math.random() * 5) + 1; // Normal variants 1-5
 
     const prostitute = await prisma.prostitute.create({
       data: {
@@ -913,7 +983,7 @@ export const prostituteService = {
         housingRentPerDay: getHousingRentPerDay(randomVariant),
         housingPaidUntil: addDays(new Date(), economyPreset.housingGraceDays),
         lastWorkedAt: new Date(),
-      }
+      },
     });
 
     // Check for achievement unlocks and get newly unlocked ones
@@ -921,8 +991,8 @@ export const prostituteService = {
     try {
       const achievementResults = await checkAndUnlockAchievements(playerId);
       newlyUnlockedAchievements = achievementResults
-        .filter(r => r.newlyUnlocked)
-        .map(r => serializeAchievementForClient(r.achievement));
+        .filter((r) => r.newlyUnlocked)
+        .map((r) => serializeAchievementForClient(r.achievement));
     } catch (err) {
       console.error('[Achievement Check] Error after recruit:', err);
     }
@@ -944,7 +1014,7 @@ export const prostituteService = {
       success: true,
       message: `Je hebt ${randomName} geworven!`,
       prostitute,
-      newlyUnlockedAchievements
+      newlyUnlockedAchievements,
     };
   },
 
@@ -964,13 +1034,13 @@ export const prostituteService = {
             redLightDistrict: {
               select: {
                 id: true,
-                countryCode: true
-              }
-            }
-          }
-        }
+                countryCode: true,
+              },
+            },
+          },
+        },
       },
-      orderBy: { recruitedAt: 'desc' }
+      orderBy: { recruitedAt: 'desc' },
     });
 
     return prostitutes.map((prostitute) => {
@@ -978,7 +1048,9 @@ export const prostituteService = {
         prostitute,
         residentialStats.averageResidentialUpgrade
       );
-      const happinessEarningsMultiplier = Number((1 + ((happinessScore - 50) * economyPreset.happinessEarningsStep)).toFixed(3));
+      const happinessEarningsMultiplier = Number(
+        (1 + (happinessScore - 50) * economyPreset.happinessEarningsStep).toFixed(3)
+      );
 
       return {
         ...prostitute,
@@ -1001,10 +1073,10 @@ export const prostituteService = {
       include: {
         redLightRoom: {
           include: {
-            redLightDistrict: true
-          }
-        }
-      }
+            redLightDistrict: true,
+          },
+        },
+      },
     });
 
     let totalEarnings = 0;
@@ -1020,7 +1092,7 @@ export const prostituteService = {
       if (prostitute.isBusted && prostitute.bustedUntil && now >= prostitute.bustedUntil) {
         await prisma.prostitute.update({
           where: { id: prostitute.id },
-          data: { isBusted: false, bustedUntil: null }
+          data: { isBusted: false, bustedUntil: null },
         });
       }
 
@@ -1030,7 +1102,7 @@ export const prostituteService = {
       if (prostitute.location === 'nightclub') {
         await prisma.prostitute.update({
           where: { id: prostitute.id },
-          data: { lastEarningsAt: now }
+          data: { lastEarningsAt: now },
         });
         continue;
       }
@@ -1052,7 +1124,8 @@ export const prostituteService = {
       if (prostitute.location === 'redlight' && prostitute.redLightRoom) {
         // In red light district - use tier-based earnings
         const tier = prostitute.redLightRoom.tier || 1;
-        const tierConfig = TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
+        const tierConfig =
+          TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
 
         const grossEarnings = Math.floor(tierConfig.gross * fullHoursElapsed * levelBonus);
         rentPaid = Math.floor(tierConfig.rent * fullHoursElapsed);
@@ -1062,7 +1135,7 @@ export const prostituteService = {
         if (prostitute.redLightRoom.redLightDistrict.ownerId) {
           await prisma.player.update({
             where: { id: prostitute.redLightRoom.redLightDistrict.ownerId },
-            data: { money: { increment: rentPaid } }
+            data: { money: { increment: rentPaid } },
           });
         }
       } else {
@@ -1077,16 +1150,16 @@ export const prostituteService = {
       // Update prostitute (no auto-XP: XP only gained via explicit work-shift)
       await prisma.prostitute.update({
         where: { id: prostitute.id },
-        data: { 
-          lastEarningsAt: settledUntil
-        }
+        data: {
+          lastEarningsAt: settledUntil,
+        },
       });
 
       // Update room lastEarningsAt if in red light
       if (prostitute.redLightRoomId) {
         await prisma.redLightRoom.update({
           where: { id: prostitute.redLightRoomId },
-          data: { lastEarningsAt: settledUntil }
+          data: { lastEarningsAt: settledUntil },
         });
       }
     }
@@ -1095,7 +1168,7 @@ export const prostituteService = {
     if (totalEarnings > 0) {
       await prisma.player.update({
         where: { id: playerId },
-        data: { money: { increment: totalEarnings } }
+        data: { money: { increment: totalEarnings } },
       });
     }
 
@@ -1113,7 +1186,7 @@ export const prostituteService = {
   ): Promise<{ success: boolean; message: string }> {
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { currentCountry: true }
+      select: { currentCountry: true },
     });
 
     if (!player) {
@@ -1124,8 +1197,8 @@ export const prostituteService = {
     const prostitute = await prisma.prostitute.findFirst({
       where: {
         id: prostituteId,
-        playerId
-      }
+        playerId,
+      },
     });
 
     if (!prostitute) {
@@ -1143,7 +1216,7 @@ export const prostituteService = {
     if (prostitute.location === 'nightclub' || prostitute.nightclubVenueId) {
       return {
         success: false,
-        message: 'Deze prostituee werkt in een nachtclub. Haal haar daar eerst weg.'
+        message: 'Deze prostituee werkt in een nachtclub. Haal haar daar eerst weg.',
       };
     }
 
@@ -1156,10 +1229,10 @@ export const prostituteService = {
               select: {
                 id: true,
                 ownerId: true,
-                countryCode: true
-              }
-            }
-          }
+                countryCode: true,
+              },
+            },
+          },
         })
       : null;
 
@@ -1169,8 +1242,8 @@ export const prostituteService = {
         select: {
           id: true,
           ownerId: true,
-          countryCode: true
-        }
+          countryCode: true,
+        },
       });
 
       if (!district) {
@@ -1184,7 +1257,8 @@ export const prostituteService = {
       if (player.currentCountry !== district.countryCode) {
         return {
           success: false,
-          message: 'Je kunt alleen prostituees plaatsen in het Red Light District van je huidige land'
+          message:
+            'Je kunt alleen prostituees plaatsen in het Red Light District van je huidige land',
         };
       }
 
@@ -1192,7 +1266,7 @@ export const prostituteService = {
         where: {
           redLightDistrictId: district.id,
           occupied: false,
-          prostitute: null
+          prostitute: null,
         },
         orderBy: { roomNumber: 'asc' },
         include: {
@@ -1201,10 +1275,10 @@ export const prostituteService = {
             select: {
               id: true,
               ownerId: true,
-              countryCode: true
-            }
-          }
-        }
+              countryCode: true,
+            },
+          },
+        },
       });
 
       if (availableRoom) {
@@ -1212,27 +1286,27 @@ export const prostituteService = {
       } else {
         // Check room count limit (3 million rooms per district)
         const roomCount = await prisma.redLightRoom.count({
-          where: { redLightDistrictId: district.id }
+          where: { redLightDistrictId: district.id },
         });
 
         if (roomCount >= 3000000) {
           return {
             success: false,
-            message: 'Maximum aantal kamers (3.000.000) bereikt voor dit district'
+            message: 'Maximum aantal kamers (3.000.000) bereikt voor dit district',
           };
         }
 
         const lastRoom = await prisma.redLightRoom.findFirst({
           where: { redLightDistrictId: district.id },
           orderBy: { roomNumber: 'desc' },
-          select: { roomNumber: true }
+          select: { roomNumber: true },
         });
 
         const nextRoomNumber = (lastRoom?.roomNumber ?? 0) + 1;
         room = await prisma.redLightRoom.create({
           data: {
             redLightDistrictId: district.id,
-            roomNumber: nextRoomNumber
+            roomNumber: nextRoomNumber,
           },
           include: {
             prostitute: true,
@@ -1240,10 +1314,10 @@ export const prostituteService = {
               select: {
                 id: true,
                 ownerId: true,
-                countryCode: true
-              }
-            }
-          }
+                countryCode: true,
+              },
+            },
+          },
         });
       }
     }
@@ -1263,7 +1337,8 @@ export const prostituteService = {
     if (player.currentCountry !== room.redLightDistrict.countryCode) {
       return {
         success: false,
-        message: 'Je kunt alleen prostituees plaatsen in het Red Light District van je huidige land'
+        message:
+          'Je kunt alleen prostituees plaatsen in het Red Light District van je huidige land',
       };
     }
 
@@ -1276,16 +1351,16 @@ export const prostituteService = {
       data: {
         location: 'redlight',
         redLightRoomId: room.id,
-        lastEarningsAt: new Date()
-      }
+        lastEarningsAt: new Date(),
+      },
     });
 
     await prisma.redLightRoom.update({
       where: { id: room.id },
-      data: { 
+      data: {
         occupied: true,
-        lastEarningsAt: new Date()
-      }
+        lastEarningsAt: new Date(),
+      },
     });
 
     return { success: true, message: 'Prostituee verplaatst naar Red Light District' };
@@ -1301,9 +1376,9 @@ export const prostituteService = {
     const prostitute = await prisma.prostitute.findFirst({
       where: {
         id: prostituteId,
-        playerId
+        playerId,
       },
-      include: { redLightRoom: true }
+      include: { redLightRoom: true },
     });
 
     if (!prostitute) {
@@ -1321,7 +1396,7 @@ export const prostituteService = {
     if (prostitute.redLightRoomId) {
       await prisma.redLightRoom.update({
         where: { id: prostitute.redLightRoomId },
-        data: { occupied: false }
+        data: { occupied: false },
       });
     }
 
@@ -1333,8 +1408,8 @@ export const prostituteService = {
         redLightRoomId: null,
         nightclubVenueId: null,
         nightclubAssignedAt: null,
-        lastEarningsAt: new Date()
-      }
+        lastEarningsAt: new Date(),
+      },
     });
 
     return { success: true, message: 'Prostituee verplaatst naar de straat' };
@@ -1351,10 +1426,10 @@ export const prostituteService = {
       include: {
         redLightRoom: {
           include: {
-            redLightDistrict: true
-          }
-        }
-      }
+            redLightDistrict: true,
+          },
+        },
+      },
     });
 
     const now = new Date();
@@ -1379,17 +1454,20 @@ export const prostituteService = {
       if (prostitute.location === 'nightclub') {
         continue;
       }
-      
+
       if (prostitute.location === 'redlight' && prostitute.redLightRoom) {
         const tier = prostitute.redLightRoom.tier || 1;
-        const tierConfig = TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
-        
+        const tierConfig =
+          TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
+
         const grossEarnings = Math.floor(tierConfig.gross * hoursElapsed * levelBonus);
         const rentPaid = Math.floor(tierConfig.rent * hoursElapsed);
         potentialEarnings += Math.floor((grossEarnings - rentPaid) * vipMultiplier);
         redlightCount++;
       } else {
-        potentialEarnings += Math.floor(STREET_EARNINGS_PER_HOUR * hoursElapsed * levelBonus * vipMultiplier);
+        potentialEarnings += Math.floor(
+          STREET_EARNINGS_PER_HOUR * hoursElapsed * levelBonus * vipMultiplier
+        );
         streetCount++;
       }
     }
@@ -1402,8 +1480,8 @@ export const prostituteService = {
       potentialEarnings,
       hourlyRate: {
         street: STREET_EARNINGS_PER_HOUR,
-        redlight: TIER_MULTIPLIERS[1].gross - TIER_MULTIPLIERS[1].rent // Net earnings tier 1
-      }
+        redlight: TIER_MULTIPLIERS[1].gross - TIER_MULTIPLIERS[1].rent, // Net earnings tier 1
+      },
     };
   },
 
@@ -1419,9 +1497,9 @@ export const prostituteService = {
       select: { id: true },
       where: {
         prostitutes: {
-          some: {} // Only players with at least one prostitute
-        }
-      }
+          some: {}, // Only players with at least one prostitute
+        },
+      },
     });
 
     let totalEarningsSettled = 0;
@@ -1468,10 +1546,10 @@ export const prostituteService = {
       include: {
         redLightRoom: {
           include: {
-            redLightDistrict: true
-          }
-        }
-      }
+            redLightDistrict: true,
+          },
+        },
+      },
     });
 
     if (!prostitute) {
@@ -1480,7 +1558,14 @@ export const prostituteService = {
 
     if (prostitute.lastWorkedAt) {
       const elapsedSeconds = Math.floor((now.getTime() - prostitute.lastWorkedAt.getTime()) / 1000);
-      const cooldownSeconds = WORK_SHIFT_COOLDOWN_HOURS * 60 * 60;
+      const playerVipStatus = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { isVip: true, vipExpiresAt: true },
+      });
+      const cooldownSeconds = applyVipTimeoutReductionSeconds(
+        WORK_SHIFT_COOLDOWN_HOURS * 60 * 60,
+        isVipStatusActive(playerVipStatus, now)
+      );
       const remainingSeconds = cooldownSeconds - elapsedSeconds;
       if (remainingSeconds > 0) {
         const remainingHours = Math.floor(remainingSeconds / 3600);
@@ -1492,7 +1577,9 @@ export const prostituteService = {
       }
     }
 
-    const fatigueWindowStart = new Date(now.getTime() - (WORK_SHIFT_FATIGUE_WINDOW_HOURS * 60 * 60 * 1000));
+    const fatigueWindowStart = new Date(
+      now.getTime() - WORK_SHIFT_FATIGUE_WINDOW_HOURS * 60 * 60 * 1000
+    );
     const recentShiftActivities = await prisma.playerActivity.findMany({
       where: {
         playerId,
@@ -1512,25 +1599,27 @@ export const prostituteService = {
     if (recentShiftsForThisProstitute >= WORK_SHIFT_MAX_IN_WINDOW) {
       const extraShifts = Math.max(0, recentShiftsForThisProstitute - WORK_SHIFT_MAX_IN_WINDOW);
       const runawayChance = clamp(
-        OVERWORK_BASE_RUNAWAY_CHANCE + (extraShifts * OVERWORK_EXTRA_SHIFT_CHANCE),
+        OVERWORK_BASE_RUNAWAY_CHANCE + extraShifts * OVERWORK_EXTRA_SHIFT_CHANCE,
         OVERWORK_BASE_RUNAWAY_CHANCE,
-        0.9,
+        0.9
       );
 
       if (Math.random() < runawayChance) {
         await prisma.prostitute.delete({ where: { id: prostituteId } });
-        await activityService.logActivity(
-          playerId,
-          'PROSTITUTE_RAN_AWAY',
-          `${prostitute.name} is weggelopen door oververmoeidheid na te veel shifts`,
-          {
-            prostituteId,
-            prostituteName: prostitute.name,
-            shiftsLast24h: recentShiftsForThisProstitute,
-            runawayChance,
-          },
-          true,
-        ).catch(() => {});
+        await activityService
+          .logActivity(
+            playerId,
+            'PROSTITUTE_RAN_AWAY',
+            `${prostitute.name} is weggelopen door oververmoeidheid na te veel shifts`,
+            {
+              prostituteId,
+              prostituteName: prostitute.name,
+              shiftsLast24h: recentShiftsForThisProstitute,
+              runawayChance,
+            },
+            true
+          )
+          .catch(() => {});
 
         return {
           success: false,
@@ -1560,7 +1649,8 @@ export const prostituteService = {
     // Calculate earnings based on location
     if (location === 'redlight' && prostitute.redLightRoom) {
       const tier = prostitute.redLightRoom.tier || 1;
-      const tierConfig = TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
+      const tierConfig =
+        TIER_MULTIPLIERS[tier as keyof typeof TIER_MULTIPLIERS] || TIER_MULTIPLIERS[1];
 
       const grossEarnings = Math.floor(tierConfig.gross * WORK_SHIFT_HOURS * levelBonus);
       rentPaid = Math.floor(tierConfig.rent * WORK_SHIFT_HOURS);
@@ -1570,15 +1660,19 @@ export const prostituteService = {
       if (prostitute.redLightRoom.redLightDistrict.ownerId) {
         await prisma.player.update({
           where: { id: prostitute.redLightRoom.redLightDistrict.ownerId },
-          data: { money: { increment: rentPaid } }
+          data: { money: { increment: rentPaid } },
         });
       }
     } else if (location === 'nightclub') {
       // Nightclub work (earnings set by nightclub owner, here we use street rate as base)
-      earnings = Math.floor(STREET_EARNINGS_PER_HOUR * WORK_SHIFT_HOURS * levelBonus * vipMultiplier);
+      earnings = Math.floor(
+        STREET_EARNINGS_PER_HOUR * WORK_SHIFT_HOURS * levelBonus * vipMultiplier
+      );
     } else {
       // Street
-      earnings = Math.floor(STREET_EARNINGS_PER_HOUR * WORK_SHIFT_HOURS * levelBonus * vipMultiplier);
+      earnings = Math.floor(
+        STREET_EARNINGS_PER_HOUR * WORK_SHIFT_HOURS * levelBonus * vipMultiplier
+      );
     }
 
     earnings = Math.max(0, earnings - housingRentPaid);
@@ -1593,7 +1687,7 @@ export const prostituteService = {
       prostitute,
       residentialStats.averageResidentialUpgrade
     );
-    const happinessMultiplier = 1 + ((happinessScore - 50) * economyPreset.happinessEarningsStep);
+    const happinessMultiplier = 1 + (happinessScore - 50) * economyPreset.happinessEarningsStep;
     earnings = Math.floor(earnings * happinessMultiplier);
 
     // Update prostitute: add earnings, XP, level
@@ -1605,33 +1699,35 @@ export const prostituteService = {
         lastEarningsAt: now,
         lastWorkedAt: now,
         housingPaidUntil: addDays(now, economyPreset.housingGraceDays),
-      }
+      },
     });
 
     // Add earnings to player
     if (earnings > 0) {
       await prisma.player.update({
         where: { id: playerId },
-        data: { money: { increment: earnings } }
+        data: { money: { increment: earnings } },
       });
     }
 
     // Log activity
-    await activityService.logActivity(
-      playerId,
-      'PROSTITUTE_WORK_SHIFT',
-      `${prostitute.name} werkte een shift op ${location}`,
-      {
-        prostituteId,
-        prostituteName: prostitute.name,
-        location,
-        earnedMoney: earnings,
-        xpGained,
-        newLevel,
-        leveledUp,
-      },
-      true,
-    ).catch(() => {}); // Non-blocking
+    await activityService
+      .logActivity(
+        playerId,
+        'PROSTITUTE_WORK_SHIFT',
+        `${prostitute.name} werkte een shift op ${location}`,
+        {
+          prostituteId,
+          prostituteName: prostitute.name,
+          location,
+          earnedMoney: earnings,
+          xpGained,
+          newLevel,
+          leveledUp,
+        },
+        true
+      )
+      .catch(() => {}); // Non-blocking
 
     return {
       success: true,
@@ -1641,7 +1737,7 @@ export const prostituteService = {
       earnings,
       xpGained,
       newLevel,
-      leveledUp
+      leveledUp,
     };
-  }
+  },
 };

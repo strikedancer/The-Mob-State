@@ -4,6 +4,7 @@ import prisma from '../lib/prisma';
 import { ammoService } from '../services/ammoService';
 import {
   createTimedCreditEntitlement,
+  grantWeeklyVipCreditsIfDue,
   getCreditOverview,
   grantPurchasedCredits,
   redeemCreditItem,
@@ -21,7 +22,10 @@ const MOLLIE_WEBHOOK_URL = process.env.MOLLIE_WEBHOOK_URL || `${APP_URL}/subscri
 const PLAYER_VIP_PRICE_EUR = process.env.MOLLIE_PLAYER_VIP_PRICE_EUR || '4.99';
 const CREW_VIP_PRICE_EUR = process.env.MOLLIE_CREW_VIP_PRICE_EUR || '9.99';
 const MAX_NON_VIP_BUILDING_LEVEL = 10;
-const PREMIUM_RUNTIME_KEYS = ['PREMIUM_PLAYER_VIP_PRICE_EUR', 'PREMIUM_CREW_VIP_PRICE_EUR'] as const;
+const PREMIUM_RUNTIME_KEYS = [
+  'PREMIUM_PLAYER_VIP_PRICE_EUR',
+  'PREMIUM_CREW_VIP_PRICE_EUR',
+] as const;
 
 type PremiumOfferRecord = {
   id: number;
@@ -187,7 +191,7 @@ async function getPremiumPricing() {
   const placeholders = PREMIUM_RUNTIME_KEYS.map(() => '?').join(', ');
   const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
     `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
-    ...PREMIUM_RUNTIME_KEYS,
+    ...PREMIUM_RUNTIME_KEYS
   );
 
   const values = rows.reduce<Record<string, string>>((acc, row) => {
@@ -216,9 +220,7 @@ function getVipDescription(type: 'player_vip' | 'crew_vip', locale: 'nl' | 'en')
 
 function buildRewardSummary(offer: PremiumOfferRecord, locale: 'nl' | 'en') {
   if (offer.rewardType === 'money') {
-    return locale === 'nl'
-      ? `+â‚¬${offer.moneyAmount ?? 0}`
-      : `+â‚¬${offer.moneyAmount ?? 0}`;
+    return locale === 'nl' ? `+â‚¬${offer.moneyAmount ?? 0}` : `+â‚¬${offer.moneyAmount ?? 0}`;
   }
 
   if (offer.rewardType === 'ammo') {
@@ -291,7 +293,8 @@ function isMollieNotFoundError(error: unknown): boolean {
     return false;
   }
 
-  const statusCode = 'statusCode' in error ? (error as { statusCode?: unknown }).statusCode : undefined;
+  const statusCode =
+    'statusCode' in error ? (error as { statusCode?: unknown }).statusCode : undefined;
   return statusCode === 404;
 }
 
@@ -304,18 +307,19 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
     descriptionEn: offer.descriptionEn,
     imageUrl: offer.imageUrl,
     priceEur: centsToEuroValue(offer.priceEurCents),
-    reward: offer.rewardType === 'money'
-      ? { type: 'money', amount: offer.moneyAmount ?? 0 }
-      : offer.rewardType === 'ammo'
-      ? { type: 'ammo', ammoType: offer.ammoType ?? '', quantity: offer.ammoQuantity ?? 0 }
-      : offer.rewardType === 'credits'
-      ? { type: 'credits', amount: offer.creditAmount ?? 0 }
-      : {
-          type: 'event_boost',
-          key: offer.rewardKey ?? offer.key,
-          durationHours: offer.durationHours ?? 0,
-          value: offer.rewardValue ?? 0,
-        },
+    reward:
+      offer.rewardType === 'money'
+        ? { type: 'money', amount: offer.moneyAmount ?? 0 }
+        : offer.rewardType === 'ammo'
+          ? { type: 'ammo', ammoType: offer.ammoType ?? '', quantity: offer.ammoQuantity ?? 0 }
+          : offer.rewardType === 'credits'
+            ? { type: 'credits', amount: offer.creditAmount ?? 0 }
+            : {
+                type: 'event_boost',
+                key: offer.rewardKey ?? offer.key,
+                durationHours: offer.durationHours ?? 0,
+                value: offer.rewardValue ?? 0,
+              },
     rewardSummaryNl: buildRewardSummary(offer, 'nl'),
     rewardSummaryEn: buildRewardSummary(offer, 'en'),
   };
@@ -383,7 +387,10 @@ async function downgradeCrewAfterVipExpiry(crewId: number): Promise<void> {
   });
 }
 
-async function activateVipFromMetadata(metadata: PaymentMetadata, subscriptionId?: string): Promise<void> {
+async function activateVipFromMetadata(
+  metadata: PaymentMetadata,
+  subscriptionId?: string
+): Promise<void> {
   const playerId = parseInt(metadata.playerId || '', 10);
   if (!playerId) return;
 
@@ -397,7 +404,8 @@ async function activateVipFromMetadata(metadata: PaymentMetadata, subscriptionId
     data: {
       isVip: true,
       vipExpiresAt: extendVipExpiry(player?.vipExpiresAt),
-      mollieSubscriptionId: metadata.type === 'player_vip' ? subscriptionId || undefined : undefined,
+      mollieSubscriptionId:
+        metadata.type === 'player_vip' ? subscriptionId || undefined : undefined,
     },
   });
 
@@ -421,7 +429,10 @@ async function activateVipFromMetadata(metadata: PaymentMetadata, subscriptionId
   }
 }
 
-async function deactivateVipForSubscription(metadata: PaymentMetadata, subscriptionId?: string): Promise<void> {
+async function deactivateVipForSubscription(
+  metadata: PaymentMetadata,
+  subscriptionId?: string
+): Promise<void> {
   const playerId = parseInt(metadata.playerId || '', 10);
   if (metadata.type === 'player_vip' && playerId) {
     await prisma.player.update({
@@ -458,7 +469,10 @@ async function deactivateVipForSubscription(metadata: PaymentMetadata, subscript
   }
 }
 
-async function getOrCreateMollieCustomer(playerId: number, email: string | null | undefined): Promise<string> {
+async function getOrCreateMollieCustomer(
+  playerId: number,
+  email: string | null | undefined
+): Promise<string> {
   const mollie = getMollieClient();
 
   const player = await prisma.player.findUnique({
@@ -559,7 +573,7 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
       paymentId,
       playerId,
       productKey,
-      JSON.stringify(metadata),
+      JSON.stringify(metadata)
     );
 
     if (Number(insertedRows) === 0) {
@@ -660,13 +674,15 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
         source: 'premium_checkout',
         rewardValue: product.rewardValue ?? 0,
         metadataJson: product.metadataJson,
-      },
+      }
     );
   });
 }
 
 function getRequestedPurchaseTypes(req: Request): PaymentMetadataType[] | undefined {
-  const purchase = String(req.query.purchase || '').trim().toLowerCase();
+  const purchase = String(req.query.purchase || '')
+    .trim()
+    .toLowerCase();
 
   if (purchase === 'player_vip' || purchase === 'crew_vip' || purchase === 'one_time') {
     return [purchase as PaymentMetadataType];
@@ -675,7 +691,10 @@ function getRequestedPurchaseTypes(req: Request): PaymentMetadataType[] | undefi
   return undefined;
 }
 
-async function reconcileRecentPaidTransactions(playerId: number, purchaseTypes?: PaymentMetadataType[]): Promise<void> {
+async function reconcileRecentPaidTransactions(
+  playerId: number,
+  purchaseTypes?: PaymentMetadataType[]
+): Promise<void> {
   const recentTransactions = await prisma.paymentTransaction.findMany({
     where: {
       playerId,
@@ -699,7 +718,8 @@ async function reconcileRecentPaidTransactions(playerId: number, purchaseTypes?:
     }
 
     const payment = await mollie.payments.get(transaction.providerPaymentId);
-    const metadata = parsePaymentMetadata(payment.metadata) || parsePaymentMetadata(transaction.metadataJson);
+    const metadata =
+      parsePaymentMetadata(payment.metadata) || parsePaymentMetadata(transaction.metadataJson);
 
     if (!metadata?.playerId || !metadata.type) {
       continue;
@@ -711,7 +731,12 @@ async function reconcileRecentPaidTransactions(playerId: number, purchaseTypes?:
 
     await upsertPaymentTransaction({
       playerId: Number(metadata.playerId),
-      checkoutType: metadata.type === 'one_time' ? 'ONE_TIME' : metadata.type === 'crew_vip' ? 'CREW_VIP' : 'PLAYER_VIP',
+      checkoutType:
+        metadata.type === 'one_time'
+          ? 'ONE_TIME'
+          : metadata.type === 'crew_vip'
+            ? 'CREW_VIP'
+            : 'PLAYER_VIP',
       productKey: metadata.productKey ?? null,
       amountValue: payment.amount.value,
       description: payment.description,
@@ -727,13 +752,22 @@ async function reconcileRecentPaidTransactions(playerId: number, purchaseTypes?:
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
-        const subscriptionId = payment.subscriptionId || (payment.customerId ? await ensureVipSubscription(metadata, payment.customerId) : undefined);
+        const subscriptionId =
+          payment.subscriptionId ||
+          (payment.customerId
+            ? await ensureVipSubscription(metadata, payment.customerId)
+            : undefined);
         await activateVipFromMetadata(metadata, subscriptionId);
       }
       continue;
     }
 
-    if ((payment.status === 'canceled' || payment.status === 'failed' || payment.status === 'expired') && payment.subscriptionId) {
+    if (
+      (payment.status === 'canceled' ||
+        payment.status === 'failed' ||
+        payment.status === 'expired') &&
+      payment.subscriptionId
+    ) {
       await deactivateVipForSubscription(metadata, payment.subscriptionId);
     }
   }
@@ -840,92 +874,100 @@ async function createMollieCheckout(options: {
   return payment;
 }
 
-router.post('/checkout/player-vip', authenticate, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const playerId = (req as any).player?.id as number;
-    const player = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: { email: true },
-    });
+router.post(
+  '/checkout/player-vip',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { email: true },
+      });
 
-    const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
-    const vipPriceEur = await getVipPrice('player_vip');
-    const payment = await createMollieCheckout({
-      playerId,
-      customerId,
-      amountValue: vipPriceEur,
-      description: getVipDescription('player_vip', 'en'),
-      checkoutType: 'PLAYER_VIP',
-      redirectStatus: 'success',
-      sequenceType: 'first',
-      metadata: {
-        type: 'player_vip',
-        playerId: String(playerId),
-      },
-    });
+      const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
+      const vipPriceEur = await getVipPrice('player_vip');
+      const payment = await createMollieCheckout({
+        playerId,
+        customerId,
+        amountValue: vipPriceEur,
+        description: getVipDescription('player_vip', 'en'),
+        checkoutType: 'PLAYER_VIP',
+        redirectStatus: 'success',
+        sequenceType: 'first',
+        metadata: {
+          type: 'player_vip',
+          playerId: String(playerId),
+        },
+      });
 
-    const checkoutUrl = payment.getCheckoutUrl?.() || null;
-    if (!checkoutUrl) {
-      return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
+      const checkoutUrl = payment.getCheckoutUrl?.() || null;
+      if (!checkoutUrl) {
+        return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
+      }
+
+      return res.json({ url: checkoutUrl, provider: 'mollie' });
+    } catch (error: unknown) {
+      console.error('[Mollie] checkout/player-vip error:', error);
+      return next(error);
     }
-
-    return res.json({ url: checkoutUrl, provider: 'mollie' });
-  } catch (error: unknown) {
-    console.error('[Mollie] checkout/player-vip error:', error);
-    return next(error);
   }
-});
+);
 
-router.post('/checkout/crew-vip', authenticate, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const playerId = (req as any).player?.id as number;
-    const { crewId } = req.body as { crewId: number };
+router.post(
+  '/checkout/crew-vip',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      const { crewId } = req.body as { crewId: number };
 
-    if (!crewId || isNaN(Number(crewId))) {
-      return res.status(400).json({ event: 'error.invalid_crew_id', params: {} });
+      if (!crewId || isNaN(Number(crewId))) {
+        return res.status(400).json({ event: 'error.invalid_crew_id', params: {} });
+      }
+
+      const membership = await prisma.crewMember.findFirst({
+        where: { crewId: Number(crewId), playerId, role: 'leader' },
+      });
+
+      if (!membership) {
+        return res.status(403).json({ event: 'error.not_crew_leader', params: {} });
+      }
+
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { email: true },
+      });
+
+      const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
+      const vipPriceEur = await getVipPrice('crew_vip');
+      const payment = await createMollieCheckout({
+        playerId,
+        customerId,
+        amountValue: vipPriceEur,
+        description: getVipDescription('crew_vip', 'en'),
+        checkoutType: 'CREW_VIP',
+        redirectStatus: 'success',
+        sequenceType: 'first',
+        metadata: {
+          type: 'crew_vip',
+          playerId: String(playerId),
+          crewId: String(crewId),
+        },
+      });
+
+      const checkoutUrl = payment.getCheckoutUrl?.() || null;
+      if (!checkoutUrl) {
+        return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
+      }
+
+      return res.json({ url: checkoutUrl, provider: 'mollie' });
+    } catch (error: unknown) {
+      console.error('[Mollie] checkout/crew-vip error:', error);
+      return next(error);
     }
-
-    const membership = await prisma.crewMember.findFirst({
-      where: { crewId: Number(crewId), playerId, role: 'leader' },
-    });
-
-    if (!membership) {
-      return res.status(403).json({ event: 'error.not_crew_leader', params: {} });
-    }
-
-    const player = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: { email: true },
-    });
-
-    const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
-    const vipPriceEur = await getVipPrice('crew_vip');
-    const payment = await createMollieCheckout({
-      playerId,
-      customerId,
-      amountValue: vipPriceEur,
-      description: getVipDescription('crew_vip', 'en'),
-      checkoutType: 'CREW_VIP',
-      redirectStatus: 'success',
-      sequenceType: 'first',
-      metadata: {
-        type: 'crew_vip',
-        playerId: String(playerId),
-        crewId: String(crewId),
-      },
-    });
-
-    const checkoutUrl = payment.getCheckoutUrl?.() || null;
-    if (!checkoutUrl) {
-      return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
-    }
-
-    return res.json({ url: checkoutUrl, provider: 'mollie' });
-  } catch (error: unknown) {
-    console.error('[Mollie] checkout/crew-vip error:', error);
-    return next(error);
   }
-});
+);
 
 router.get('/checkout/one-time/catalog', authenticate, async (_req: Request, res: Response) => {
   const products = await listActivePremiumOffers();
@@ -947,7 +989,7 @@ router.get('/checkout/one-time/popup', authenticate, async (req: Request, res: R
      WHERE o.isActive = 1 AND o.showPopupOnOpen = 1 AND s.id IS NULL
      ORDER BY o.sortOrder ASC, o.id ASC
      LIMIT 1`,
-    playerId,
+    playerId
   );
 
   if (!offer || offer.length === 0) {
@@ -983,80 +1025,94 @@ router.post('/checkout/one-time/popup/seen', authenticate, async (req: Request, 
   await prisma.$executeRawUnsafe(
     `INSERT IGNORE INTO player_premium_popup_seen (playerId, offerId, seenAt) VALUES (?, ?, NOW(3))`,
     playerId,
-    offer.id,
+    offer.id
   );
 
   return res.json({ success: true });
 });
 
-router.post('/checkout/one-time', authenticate, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const playerId = (req as any).player?.id as number;
-    const { productKey } = req.body as { productKey?: string };
+router.post(
+  '/checkout/one-time',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      const { productKey } = req.body as { productKey?: string };
 
-    if (!productKey) {
-      return res.status(400).json({ event: 'error.invalid_product_key', params: {} });
+      if (!productKey) {
+        return res.status(400).json({ event: 'error.invalid_product_key', params: {} });
+      }
+
+      const product = await getActivePremiumOfferByKey(productKey);
+      if (!product) {
+        return res.status(400).json({ event: 'error.invalid_product_key', params: {} });
+      }
+
+      if (product.rewardType === 'money' && (!product.moneyAmount || product.moneyAmount <= 0)) {
+        return res.status(400).json({ event: 'error.invalid_product_configuration', params: {} });
+      }
+
+      if (
+        product.rewardType === 'ammo' &&
+        (!product.ammoType || !product.ammoQuantity || product.ammoQuantity <= 0)
+      ) {
+        return res.status(400).json({ event: 'error.invalid_product_configuration', params: {} });
+      }
+
+      if (
+        product.rewardType === 'credits' &&
+        (!product.creditAmount || product.creditAmount <= 0)
+      ) {
+        return res.status(400).json({ event: 'error.invalid_product_configuration', params: {} });
+      }
+
+      const player = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { email: true },
+      });
+
+      const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
+      const payment = await createMollieCheckout({
+        playerId,
+        customerId,
+        amountValue: centsToEuroValue(product.priceEurCents),
+        description: product.titleEn,
+        checkoutType: 'ONE_TIME',
+        redirectStatus: 'paid',
+        metadata: {
+          type: 'one_time',
+          playerId: String(playerId),
+          productKey: product.key,
+        },
+      });
+
+      const checkoutUrl = payment.getCheckoutUrl?.() || null;
+      if (!checkoutUrl) {
+        return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
+      }
+
+      return res.json({ url: checkoutUrl, provider: 'mollie' });
+    } catch (error: unknown) {
+      console.error('[Mollie] checkout/one-time error:', error);
+      return next(error);
     }
-
-    const product = await getActivePremiumOfferByKey(productKey);
-    if (!product) {
-      return res.status(400).json({ event: 'error.invalid_product_key', params: {} });
-    }
-
-    if (product.rewardType === 'money' && (!product.moneyAmount || product.moneyAmount <= 0)) {
-      return res.status(400).json({ event: 'error.invalid_product_configuration', params: {} });
-    }
-
-    if (product.rewardType === 'ammo' && (!product.ammoType || !product.ammoQuantity || product.ammoQuantity <= 0)) {
-      return res.status(400).json({ event: 'error.invalid_product_configuration', params: {} });
-    }
-
-    if (product.rewardType === 'credits' && (!product.creditAmount || product.creditAmount <= 0)) {
-      return res.status(400).json({ event: 'error.invalid_product_configuration', params: {} });
-    }
-
-    const player = await prisma.player.findUnique({
-      where: { id: playerId },
-      select: { email: true },
-    });
-
-    const customerId = await getOrCreateMollieCustomer(playerId, player?.email);
-    const payment = await createMollieCheckout({
-      playerId,
-      customerId,
-      amountValue: centsToEuroValue(product.priceEurCents),
-      description: product.titleEn,
-      checkoutType: 'ONE_TIME',
-      redirectStatus: 'paid',
-      metadata: {
-        type: 'one_time',
-        playerId: String(playerId),
-        productKey: product.key,
-      },
-    });
-
-    const checkoutUrl = payment.getCheckoutUrl?.() || null;
-    if (!checkoutUrl) {
-      return res.status(500).json({ event: 'error.payment_creation_failed', params: {} });
-    }
-
-    return res.json({ url: checkoutUrl, provider: 'mollie' });
-  } catch (error: unknown) {
-    console.error('[Mollie] checkout/one-time error:', error);
-    return next(error);
   }
-});
+);
 
-router.get('/credits/overview', authenticate, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const playerId = (req as any).player?.id as number;
-    await reconcileRecentPaidTransactions(playerId, getRequestedPurchaseTypes(req));
-    const overview = await getCreditOverview(playerId);
-    return res.json(overview);
-  } catch (error) {
-    return next(error);
+router.get(
+  '/credits/overview',
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const playerId = (req as any).player?.id as number;
+      await reconcileRecentPaidTransactions(playerId, getRequestedPurchaseTypes(req));
+      const overview = await getCreditOverview(playerId);
+      return res.json(overview);
+    } catch (error) {
+      return next(error);
+    }
   }
-});
+);
 
 router.post('/credits/redeem', authenticate, async (req: Request, res: Response) => {
   try {
@@ -1092,7 +1148,10 @@ router.post('/credits/redeem', authenticate, async (req: Request, res: Response)
       TUNE_COOLDOWN_NOT_ACTIVE: { status: 400, message: 'Tune cooldown not active' },
       ACTION_COOLDOWN_NOT_ACTIVE: { status: 400, message: 'Action cooldown not active' },
       ACTION_TYPE_REQUIRED: { status: 400, message: 'actionType is required' },
-      INVALID_CREDIT_ITEM_CONFIGURATION: { status: 400, message: 'Invalid credit item configuration' },
+      INVALID_CREDIT_ITEM_CONFIGURATION: {
+        status: 400,
+        message: 'Invalid credit item configuration',
+      },
     };
 
     const mapped = messageMap[error?.message || ''];
@@ -1108,6 +1167,7 @@ router.post('/credits/redeem', authenticate, async (req: Request, res: Response)
 router.get('/status', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const playerId = (req as any).player?.id as number;
+    await grantWeeklyVipCreditsIfDue(playerId);
     await reconcileRecentPaidTransactions(playerId, getRequestedPurchaseTypes(req));
     const [player, membership, pricing] = await Promise.all([
       prisma.player.findUnique({
@@ -1181,7 +1241,12 @@ router.post('/webhook', async (req: Request, res: Response) => {
 
     await upsertPaymentTransaction({
       playerId: Number(metadata.playerId),
-      checkoutType: metadata.type === 'one_time' ? 'ONE_TIME' : metadata.type === 'crew_vip' ? 'CREW_VIP' : 'PLAYER_VIP',
+      checkoutType:
+        metadata.type === 'one_time'
+          ? 'ONE_TIME'
+          : metadata.type === 'crew_vip'
+            ? 'CREW_VIP'
+            : 'PLAYER_VIP',
       productKey: metadata.productKey ?? null,
       amountValue: payment.amount.value,
       description: payment.description,
@@ -1197,12 +1262,21 @@ router.post('/webhook', async (req: Request, res: Response) => {
       if (metadata.type === 'one_time') {
         await fulfillOneTimePurchase(payment.id, metadata);
       } else {
-        const subscriptionId = payment.subscriptionId || (payment.customerId ? await ensureVipSubscription(metadata, payment.customerId) : undefined);
+        const subscriptionId =
+          payment.subscriptionId ||
+          (payment.customerId
+            ? await ensureVipSubscription(metadata, payment.customerId)
+            : undefined);
         await activateVipFromMetadata(metadata, subscriptionId);
       }
     }
 
-    if ((payment.status === 'canceled' || payment.status === 'failed' || payment.status === 'expired') && payment.subscriptionId) {
+    if (
+      (payment.status === 'canceled' ||
+        payment.status === 'failed' ||
+        payment.status === 'expired') &&
+      payment.subscriptionId
+    ) {
       await deactivateVipForSubscription(metadata, payment.subscriptionId);
     }
 
@@ -1214,4 +1288,3 @@ router.post('/webhook', async (req: Request, res: Response) => {
 });
 
 export default router;
-

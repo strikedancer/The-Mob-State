@@ -50,7 +50,10 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 - Consistent formatting for money, timers, bounty amounts
 - Responsive usability without hiding critical actions
 - Loot reward percentages must be runtime-configurable via admin settings (`HITLIST_LOOT_CASH_PERCENT`, `HITLIST_LOOT_ITEM_PERCENT`) and not hardcoded in code or file-only env workflow
-- On successful hit, the murdered player must receive a hard progress reset (baseline restart) while preserving bank balance and crew leadership
+- On successful hit, kill-reset behavior must branch by VIP status:
+- Active Player VIP: victim keeps bank + crypto + education + achievements, rank is halved, on-hand cash resets to a fixed restart amount, and assets/inventory/drugs are wiped.
+- No active Player VIP: victim receives a full progression reset (including bank/crypto/education/achievements) to baseline.
+- Killer loot remains limited to a configurable share of victim on-hand cash and carried inventory, never bank balance.
 - Tijdelijke premium/combat boosts blijven side-grade: capped attack/defense modifiers zonder permanente statinflatie of pay-to-win top-tier power.
 
 ## Data Contract Requirements

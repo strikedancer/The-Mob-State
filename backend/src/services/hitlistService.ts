@@ -1,15 +1,17 @@
 /**
  * Hit List Service - Phase C.4
- * 
+ *
  * Handles hit list creation, bounties, combat, and security system
  */
 
 import prisma from '../lib/prisma';
+import { getXPForRank } from '../config';
 import { ammoFactoryService } from './ammoFactoryService';
 import weaponService from './weaponService';
 import { weaponSelectionService } from './weaponSelectionService';
 import { directMessageService } from './directMessageService';
 import { getActiveEventBoostEffects } from './premiumCreditsService';
+import { isVipStatusActive } from './vipBenefitsService';
 import fs from 'fs';
 import path from 'path';
 
@@ -25,6 +27,7 @@ const HITLIST_LOOT_CASH_PERCENT_KEY = 'HITLIST_LOOT_CASH_PERCENT';
 const HITLIST_LOOT_ITEM_PERCENT_KEY = 'HITLIST_LOOT_ITEM_PERCENT';
 const HITLIST_LOOT_CASH_PERCENT_DEFAULT = 60;
 const HITLIST_LOOT_ITEM_PERCENT_DEFAULT = 50;
+const VIP_KILL_RECOVERY_CASH = 500_000;
 
 interface HitLootSettings {
   cashShare: number;
@@ -136,7 +139,7 @@ async function getHitLootSettings(): Promise<HitLootSettings> {
         WHERE configKey IN (?, ?)
       `,
       HITLIST_LOOT_CASH_PERCENT_KEY,
-      HITLIST_LOOT_ITEM_PERCENT_KEY,
+      HITLIST_LOOT_ITEM_PERCENT_KEY
     );
 
     const valueMap = rows.reduce<Record<string, string>>((acc, row) => {
@@ -146,11 +149,11 @@ async function getHitLootSettings(): Promise<HitLootSettings> {
 
     const cashPercent = parseLootPercent(
       valueMap[HITLIST_LOOT_CASH_PERCENT_KEY],
-      HITLIST_LOOT_CASH_PERCENT_DEFAULT,
+      HITLIST_LOOT_CASH_PERCENT_DEFAULT
     );
     const itemPercent = parseLootPercent(
       valueMap[HITLIST_LOOT_ITEM_PERCENT_KEY],
-      HITLIST_LOOT_ITEM_PERCENT_DEFAULT,
+      HITLIST_LOOT_ITEM_PERCENT_DEFAULT
     );
 
     return {
@@ -213,6 +216,7 @@ function buildMurderCaseNotification(
   language: 'nl' | 'en',
   caseInfo: MurderCaseActionResult,
   victimUsername: string,
+  vipProtectionApplied: boolean
 ): string {
   const marker = `[[hitlist_murder_case:${caseInfo.caseId}:${caseInfo.expiresAt}]]`;
 
@@ -220,7 +224,9 @@ function buildMurderCaseNotification(
     return [
       'Moordlijst melding',
       `${victimUsername}, je bent zojuist vermoord via de moordlijst.`,
-      'Je accountprogress is hard gereset naar basisstatus, maar je banktegoed en crew-leiderschap blijven behouden.',
+      vipProtectionApplied
+        ? 'VIP actief: je behoudt bank, crypto, opleidingen en prestaties. Je rank is gehalveerd en je start opnieuw met €500.000 cash.'
+        : 'Geen VIP actief: je accountprogress is volledig gereset naar basisstatus.',
       'Je kunt binnen 24 uur een detective-onderzoek starten via de knop in dit bericht.',
       'Detective Bureau stuurt daarna een nieuw rapport en kan de moordenaar mogelijk identificeren.',
       marker,
@@ -230,14 +236,32 @@ function buildMurderCaseNotification(
   return [
     'Hitlist notice',
     `${victimUsername}, you were just killed through the hitlist.`,
-    'Your account progress was hard-reset to baseline status, but your bank balance and crew leadership are preserved.',
+    vipProtectionApplied
+      ? 'VIP active: you keep bank, crypto, education and achievements. Your rank is halved and you restart with €500,000 cash.'
+      : 'No active VIP: your account progression was fully reset to baseline.',
     'You can start a detective investigation within 24 hours using the button in this message.',
     'Detective Bureau will then send a follow-up report and may identify the killer.',
     marker,
   ].join('\n');
 }
 
-async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number): Promise<void> {
+async function resetKilledPlayerProgressInTransaction(
+  tx: any,
+  playerId: number
+): Promise<{ vipProtectionApplied: boolean }> {
+  const victim = await tx.player.findUnique({
+    where: { id: playerId },
+    select: {
+      rank: true,
+      isVip: true,
+      vipExpiresAt: true,
+    },
+  });
+  if (!victim) {
+    throw new Error('TARGET_NOT_FOUND');
+  }
+
+  const vipProtectionApplied = isVipStatusActive(victim);
   const crewMembership = await tx.crewMember.findUnique({
     where: { playerId },
     select: { crewId: true, role: true },
@@ -252,52 +276,111 @@ async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number)
   await tx.ammoInventory.deleteMany({ where: { playerId } });
   await tx.weaponInventory.deleteMany({ where: { playerId } });
   await tx.playerTools.deleteMany({ where: { playerId } });
+  await tx.toolLoadouts.deleteMany({ where: { playerId } }).catch(() => undefined);
   await tx.property.deleteMany({ where: { playerId } });
   await tx.prostitute.deleteMany({ where: { playerId } });
+  await tx.casinoOwnership.deleteMany({ where: { ownerId: playerId } });
+  await tx.drugInventory.deleteMany({ where: { playerId } });
+  const ownedFacilities = await tx.drugFacility
+    .findMany({
+      where: { playerId },
+      select: { id: true },
+    })
+    .catch(() => [] as Array<{ id: number }>);
+  if (ownedFacilities.length > 0) {
+    await tx.drugFacilityUpgrade
+      .deleteMany({
+        where: {
+          facilityId: { in: ownedFacilities.map((facility) => facility.id) },
+        },
+      })
+      .catch(() => undefined);
+  }
+  await tx.drugFacility.deleteMany({ where: { playerId } }).catch(() => undefined);
   await tx.drugProduction.deleteMany({ where: { playerId } });
   await tx.productionMaterial.deleteMany({ where: { playerId } });
-  await tx.playerActivity.deleteMany({ where: { playerId } });
-  await tx.worldEvent.deleteMany({ where: { playerId } });
-  await tx.crypto_orders.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_transactions.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_holdings.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_mission_progress.deleteMany({ where: { player_id: playerId } });
-  await tx.crypto_leaderboard_rewards.deleteMany({ where: { player_id: playerId } });
-  await tx.playerBackpack.deleteMany({ where: { playerId } }).catch(() => undefined);
-  await tx.playerSelectedVehicle.deleteMany({ where: { playerId } }).catch(() => undefined);
 
-  await tx.player.update({
-    where: { id: playerId },
-    data: {
-      money: 0,
-      health: 100,
-      hunger: 100,
-      thirst: 100,
-      rank: 1,
-      xp: 0,
-      currentCountry: 'netherlands',
-      fbiHeat: 0,
-      wantedLevel: 0,
-      travelingTo: null,
-      travelRoute: null,
-      currentTravelLeg: 0,
-      travelStartedAt: null,
-      killCount: 0,
-      isHunted: false,
-      hitCount: 0,
-      jailRelease: null,
-      intensiveCareUntil: null,
-      inventory_slots_used: 0,
-      max_inventory_slots: 5,
-      lastAmmoPurchaseAt: null,
-      lastHospitalVisit: null,
-      reputation: 0,
-      lastProstituteRecruitment: null,
-      drugHeat: 0,
-      autoCollectDrugs: false,
-      lastDrugActionAt: null,
-    },
-  });
+  if (vipProtectionApplied) {
+    const halvedRank = Math.max(1, Math.floor(Math.max(1, victim.rank) / 2));
+    await tx.player.update({
+      where: { id: playerId },
+      data: {
+        money: VIP_KILL_RECOVERY_CASH,
+        health: 100,
+        hunger: 100,
+        thirst: 100,
+        rank: halvedRank,
+        xp: getXPForRank(halvedRank),
+        currentCountry: 'netherlands',
+        fbiHeat: 0,
+        wantedLevel: 0,
+        travelingTo: null,
+        travelRoute: null,
+        currentTravelLeg: 0,
+        travelStartedAt: null,
+        isHunted: false,
+        jailRelease: null,
+        intensiveCareUntil: null,
+        inventory_slots_used: 0,
+        lastAmmoPurchaseAt: null,
+        lastHospitalVisit: null,
+        lastProstituteRecruitment: null,
+        drugHeat: 0,
+        autoCollectDrugs: false,
+        lastDrugActionAt: null,
+      },
+    });
+  } else {
+    await tx.playerActivity.deleteMany({ where: { playerId } });
+    await tx.worldEvent.deleteMany({ where: { playerId } });
+    await tx.prostitutionAchievement.deleteMany({ where: { playerId } });
+    await tx.crypto_orders.deleteMany({ where: { player_id: playerId } });
+    await tx.crypto_transactions.deleteMany({ where: { player_id: playerId } });
+    await tx.crypto_holdings.deleteMany({ where: { player_id: playerId } });
+    await tx.crypto_mission_progress.deleteMany({ where: { player_id: playerId } });
+    await tx.crypto_leaderboard_rewards.deleteMany({ where: { player_id: playerId } });
+    await tx.bankAccount.updateMany({
+      where: { playerId },
+      data: { balance: 0 },
+    });
+    await tx.playerBackpack.deleteMany({ where: { playerId } }).catch(() => undefined);
+    await tx.inventoryUpgrades.deleteMany({ where: { playerId } }).catch(() => undefined);
+    await tx.playerSelectedVehicle.deleteMany({ where: { playerId } }).catch(() => undefined);
+
+    await tx.player.update({
+      where: { id: playerId },
+      data: {
+        money: 0,
+        health: 100,
+        hunger: 100,
+        thirst: 100,
+        rank: 1,
+        xp: 0,
+        currentCountry: 'netherlands',
+        fbiHeat: 0,
+        wantedLevel: 0,
+        travelingTo: null,
+        travelRoute: null,
+        currentTravelLeg: 0,
+        travelStartedAt: null,
+        killCount: 0,
+        isHunted: false,
+        hitCount: 0,
+        jailRelease: null,
+        intensiveCareUntil: null,
+        inventory_slots_used: 0,
+        max_inventory_slots: 5,
+        lastAmmoPurchaseAt: null,
+        lastHospitalVisit: null,
+        reputation: 0,
+        premiumCredits: 0,
+        lastProstituteRecruitment: null,
+        drugHeat: 0,
+        autoCollectDrugs: false,
+        lastDrugActionAt: null,
+      },
+    });
+  }
 
   // Keep crew ownership stable for leaders so crew systems do not orphan or break.
   if (wasCrewLeader && crewMembership) {
@@ -314,12 +397,16 @@ async function resetKilledPlayerProgressInTransaction(tx: any, playerId: number)
       },
     });
   }
+
+  return {
+    vipProtectionApplied,
+  };
 }
 
 function buildMurderCaseReport(
   language: 'nl' | 'en',
   solved: boolean,
-  killerUsername: string,
+  killerUsername: string
 ): string {
   if (language === 'nl') {
     if (solved) {
@@ -373,7 +460,7 @@ function getMurderCaseReportDelayMs(caseDetails: MurderCaseDetails, requestedAt:
 
 function buildMurderCaseQueuedMessage(
   language: 'nl' | 'en',
-  resolveAt: Date,
+  resolveAt: Date
 ): { message: string; etaMinutes: number } {
   const etaMinutes = Math.max(1, Math.ceil((resolveAt.getTime() - Date.now()) / 60000));
   const resolveAtIso = resolveAt.toISOString();
@@ -398,7 +485,7 @@ function buildMurderCaseQueuedMessage(
 function buildHitPlacedOnMeMessage(
   language: 'nl' | 'en',
   placedByUsername: string,
-  bounty: number,
+  bounty: number
 ): string {
   if (language === 'nl') {
     return [
@@ -421,7 +508,7 @@ function buildKillerSuccessMessage(
   language: 'nl' | 'en',
   victimUsername: string,
   bounty: number,
-  loot: HitLootSummary,
+  loot: HitLootSummary
 ): string {
   if (language === 'nl') {
     const lines = [
@@ -429,7 +516,9 @@ function buildKillerSuccessMessage(
       `Bounty ontvangen: €${bounty.toLocaleString('nl-NL')}`,
     ];
     if (loot.cashAwarded > 0) {
-      lines.push(`Contant geld buit: €${loot.cashAwarded.toLocaleString('nl-NL')} (${loot.cashTaken > 0 ? Math.round((loot.cashAwarded / loot.cashTaken) * 100) : 0}% van ${loot.cashTaken.toLocaleString('nl-NL')})`);
+      lines.push(
+        `Contant geld buit: €${loot.cashAwarded.toLocaleString('nl-NL')} (${loot.cashTaken > 0 ? Math.round((loot.cashAwarded / loot.cashTaken) * 100) : 0}% van ${loot.cashTaken.toLocaleString('nl-NL')})`
+      );
     }
     if (loot.itemsAwarded > 0) {
       lines.push(`Items buit: ${loot.itemsAwarded} voorwerp(en) overgenomen.`);
@@ -443,7 +532,9 @@ function buildKillerSuccessMessage(
     `Bounty received: €${bounty.toLocaleString('en-US')}`,
   ];
   if (loot.cashAwarded > 0) {
-    lines.push(`Cash looted: €${loot.cashAwarded.toLocaleString('en-US')} (${loot.cashTaken > 0 ? Math.round((loot.cashAwarded / loot.cashTaken) * 100) : 0}% of €${loot.cashTaken.toLocaleString('en-US')})`);
+    lines.push(
+      `Cash looted: €${loot.cashAwarded.toLocaleString('en-US')} (${loot.cashTaken > 0 ? Math.round((loot.cashAwarded / loot.cashTaken) * 100) : 0}% of €${loot.cashTaken.toLocaleString('en-US')})`
+    );
   }
   if (loot.itemsAwarded > 0) {
     lines.push(`Items looted: ${loot.itemsAwarded} item(s) transferred to your inventory.`);
@@ -456,6 +547,7 @@ async function createMurderCaseForVictim(
   victimId: number,
   killerId: number,
   hitId: number,
+  vipProtectionApplied: boolean
 ): Promise<MurderCaseActionResult | null> {
   const [victim, killer] = await Promise.all([
     prisma.player.findUnique({
@@ -508,14 +600,21 @@ async function createMurderCaseForVictim(
     },
   });
 
-  const language: 'nl' | 'en' = victim.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+  const language: 'nl' | 'en' = victim.preferredLanguage?.toLowerCase().startsWith('nl')
+    ? 'nl'
+    : 'en';
   await directMessageService.sendSystemMessage(
     victimId,
-    buildMurderCaseNotification(language, { caseId: activity.id, expiresAt: caseDetails.expiresAt }, victim.username),
+    buildMurderCaseNotification(
+      language,
+      { caseId: activity.id, expiresAt: caseDetails.expiresAt },
+      victim.username,
+      vipProtectionApplied
+    ),
     {
       senderName: language === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau',
       sendPush: true,
-    },
+    }
   );
 
   return {
@@ -533,7 +632,7 @@ async function transferHitLoot(
   tx: any,
   killerId: number,
   victimId: number,
-  lootSettings: HitLootSettings,
+  lootSettings: HitLootSettings
 ): Promise<HitLootSummary> {
   const summary: HitLootSummary = {
     cashTaken: 0,
@@ -716,19 +815,27 @@ function getArmorConditionValue(condition?: number | null): number {
   return Math.max(0, Math.min(100, normalized));
 }
 
-function getEffectiveArmor(security?: Pick<PlayerSecurityState, 'armor' | 'armorCondition'> | null): number {
+function getEffectiveArmor(
+  security?: Pick<PlayerSecurityState, 'armor' | 'armorCondition'> | null
+): number {
   if (!security || !security.armor) {
     return 0;
   }
 
-  return Math.max(0, Math.round(security.armor * (getArmorConditionValue(security.armorCondition) / 100)));
+  return Math.max(
+    0,
+    Math.round(security.armor * (getArmorConditionValue(security.armorCondition) / 100))
+  );
 }
 
 function calculateArmorConditionLoss(attackerPower: number): number {
   return Math.max(6, Math.min(35, Math.round(Math.sqrt(Math.max(1, attackerPower)) * 1.5)));
 }
 
-async function settleBodyguardUpkeep(db: any, playerId: number): Promise<PlayerSecurityState | null> {
+async function settleBodyguardUpkeep(
+  db: any,
+  playerId: number
+): Promise<PlayerSecurityState | null> {
   const security = await db.playerSecurity.findUnique({
     where: { playerId },
   });
@@ -804,7 +911,7 @@ async function settleBodyguardUpkeep(db: any, playerId: number): Promise<PlayerS
 async function applyArmorWearInTransaction(
   tx: any,
   targetSecurity: PlayerSecurityState | null,
-  conditionLoss: number,
+  conditionLoss: number
 ) {
   if (!targetSecurity || !targetSecurity.armor || conditionLoss <= 0) {
     return;
@@ -896,14 +1003,16 @@ export async function placeHit(
   });
 
   try {
-    const language: 'nl' | 'en' = target.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+    const language: 'nl' | 'en' = target.preferredLanguage?.toLowerCase().startsWith('nl')
+      ? 'nl'
+      : 'en';
     await directMessageService.sendSystemMessage(
       targetId,
       buildHitPlacedOnMeMessage(language, player.username, bounty),
       {
         senderName: language === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau',
         sendPush: true,
-      },
+      }
     );
   } catch (error) {
     console.error('[Hitlist] Failed to send hit placed notification:', error);
@@ -993,7 +1102,7 @@ export async function getActiveHits(pageSize = 20, offset = 0): Promise<any[]> {
     },
   });
 
-  return hits.map(hit => ({
+  return hits.map((hit) => ({
     ...hit,
     target: hit.target
       ? {
@@ -1129,15 +1238,13 @@ export async function attemptHit(
     conditionMultiplier *
     (1 + attackerBoosts.hitAttackPct);
 
-  const targetSelectedWeapon = await weaponSelectionService.getSelectedCrimeWeapon(
-    hit.targetId,
-  );
+  const targetSelectedWeapon = await weaponSelectionService.getSelectedCrimeWeapon(hit.targetId);
   const targetWeapon = targetSelectedWeapon?.weaponId
     ? weaponService.getWeaponDefinition(String(targetSelectedWeapon.weaponId))
     : undefined;
   const targetWeaponDamage = targetWeapon?.damage || 0;
   const targetDefense =
-    (getEffectiveArmor(targetSecurity) + ((targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE)) *
+    (getEffectiveArmor(targetSecurity) + (targetSecurity?.bodyguards || 0) * BODYGUARD_DEFENSE) *
     (1 + targetBoosts.hitDefensePct);
   const targetPower = targetWeaponDamage * 5 + targetDefense;
   const armorConditionLoss = calculateArmorConditionLoss(attackerPower);
@@ -1147,9 +1254,7 @@ export async function attemptHit(
   const attackerWins = Math.random() < winChance;
 
   const bounty =
-    hit.counterBounty && hit.counterBounty > hit.bounty
-      ? hit.counterBounty
-      : hit.bounty;
+    hit.counterBounty && hit.counterBounty > hit.bounty ? hit.counterBounty : hit.bounty;
   const isCounterReversal = !!(hit.counterBounty && hit.counterBounty > hit.bounty);
 
   const originalPlacer = await prisma.player.findUnique({
@@ -1160,6 +1265,7 @@ export async function attemptHit(
   if (attackerWins) {
     const victimId = isCounterReversal ? hit.placedById : hit.targetId;
     const lootSettings = await getHitLootSettings();
+    let vipProtectionApplied = false;
     let lootSummary: HitLootSummary = {
       cashTaken: 0,
       cashAwarded: 0,
@@ -1187,7 +1293,8 @@ export async function attemptHit(
         },
       });
 
-      await resetKilledPlayerProgressInTransaction(tx, victimId);
+      const resetOutcome = await resetKilledPlayerProgressInTransaction(tx, victimId);
+      vipProtectionApplied = resetOutcome.vipProtectionApplied;
 
       await tx.hitList.update({
         where: { id: hitId },
@@ -1204,7 +1311,7 @@ export async function attemptHit(
     );
 
     try {
-      await createMurderCaseForVictim(victimId, playerId, hitId);
+      await createMurderCaseForVictim(victimId, playerId, hitId, vipProtectionApplied);
     } catch (error) {
       console.error('[Hitlist] Failed to create murder case notification:', error);
     }
@@ -1215,12 +1322,14 @@ export async function attemptHit(
         select: { username: true },
       });
       if (victim) {
-        const killerLang: 'nl' | 'en' = attacker.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+        const killerLang: 'nl' | 'en' = attacker.preferredLanguage?.toLowerCase().startsWith('nl')
+          ? 'nl'
+          : 'en';
         const senderName = killerLang === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau';
         await directMessageService.sendSystemMessage(
           playerId,
           buildKillerSuccessMessage(killerLang, victim.username, bounty, lootSummary),
-          { senderName, sendPush: true },
+          { senderName, sendPush: true }
         );
       }
     } catch (error) {
@@ -1287,7 +1396,10 @@ interface InvestigationQueueRow {
   reportArmor: number | null;
 }
 
-const INVESTIGATION_TIER_CONFIG: Record<InvestigationTier, { cost: number; delayMs: number; nlLabel: string; enLabel: string }> = {
+const INVESTIGATION_TIER_CONFIG: Record<
+  InvestigationTier,
+  { cost: number; delayMs: number; nlLabel: string; enLabel: string }
+> = {
   quick: {
     cost: 1_000_000,
     delayMs: 60 * 60 * 1000,
@@ -1478,7 +1590,7 @@ export async function investigateHit(
 function buildInvestigationMessage(
   language: 'nl' | 'en',
   investigation: InvestigationQueueRow,
-  targetUsername: string,
+  targetUsername: string
 ): string {
   const validUntil = investigation.reportValidUntil?.toISOString() ?? '';
   const country = investigation.reportCountry ?? (language === 'nl' ? 'Onbekend' : 'Unknown');
@@ -1554,15 +1666,20 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
         select: { preferredLanguage: true },
       });
 
-      const security = target ? await settleBodyguardUpkeep(prisma, target ? row.targetId : 0) : null;
+      const security = target
+        ? await settleBodyguardUpkeep(prisma, target ? row.targetId : 0)
+        : null;
       const now = new Date();
       const validUntil = new Date(now.getTime() + 3 * 60 * 60 * 1000);
-      const language: 'nl' | 'en' = receiver?.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+      const language: 'nl' | 'en' = receiver?.preferredLanguage?.toLowerCase().startsWith('nl')
+        ? 'nl'
+        : 'en';
 
       if (!hit || hit.status !== 'ACTIVE' || !target) {
-        const cancelledMessage = language === 'nl'
-          ? 'Detective Bureau: onderzoek gesloten omdat de hit niet meer actief is.'
-          : 'Detective Bureau: investigation was closed because the hit is no longer active.';
+        const cancelledMessage =
+          language === 'nl'
+            ? 'Detective Bureau: onderzoek gesloten omdat de hit niet meer actief is.'
+            : 'Detective Bureau: investigation was closed because the hit is no longer active.';
 
         await directMessageService.sendSystemMessage(row.playerId, cancelledMessage, {
           senderName: 'Detective Bureau',
@@ -1590,11 +1707,7 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
         status: 'completed',
       };
 
-      const reportMessage = buildInvestigationMessage(
-        language,
-        updatedRow,
-        target.username,
-      );
+      const reportMessage = buildInvestigationMessage(language, updatedRow, target.username);
 
       await directMessageService.sendSystemMessage(row.playerId, reportMessage, {
         senderName: 'Detective Bureau',
@@ -1623,7 +1736,7 @@ export async function processPendingInvestigations(limit = 50): Promise<number> 
 
 export async function requestMurderCaseInvestigation(
   playerId: number,
-  caseId: number,
+  caseId: number
 ): Promise<{
   success: true;
   caseId: number;
@@ -1669,7 +1782,9 @@ export async function requestMurderCaseInvestigation(
   const now = new Date();
   const reportDelayMs = getMurderCaseReportDelayMs(caseDetails, now);
   const resolveAt = new Date(now.getTime() + reportDelayMs);
-  const language: 'nl' | 'en' = activity.player?.preferredLanguage?.toLowerCase().startsWith('nl') ? 'nl' : 'en';
+  const language: 'nl' | 'en' = activity.player?.preferredLanguage?.toLowerCase().startsWith('nl')
+    ? 'nl'
+    : 'en';
 
   const updatedDetails: MurderCaseDetails = {
     ...caseDetails,
@@ -1753,7 +1868,9 @@ export async function processPendingMurderCaseInvestigations(limit = 100): Promi
       }
 
       const solved = Math.random() < MURDER_CASE_SOLVE_CHANCE;
-      const language: 'nl' | 'en' = activity.player?.preferredLanguage?.toLowerCase().startsWith('nl')
+      const language: 'nl' | 'en' = activity.player?.preferredLanguage
+        ?.toLowerCase()
+        .startsWith('nl')
         ? 'nl'
         : 'en';
 
@@ -1777,7 +1894,7 @@ export async function processPendingMurderCaseInvestigations(limit = 100): Promi
         {
           senderName: 'Detective Bureau',
           sendPush: true,
-        },
+        }
       );
 
       processed += 1;
@@ -1843,10 +1960,7 @@ export async function cancelHit(playerId: number, hitId: number): Promise<any> {
   return { success: true };
 }
 
-export async function buyBodyguards(
-  playerId: number,
-  quantity: number
-): Promise<any> {
+export async function buyBodyguards(playerId: number, quantity: number): Promise<any> {
   const cost = quantity * 10000; // €10k per bodyguard
 
   const security = await settleBodyguardUpkeep(prisma, playerId);
@@ -1872,9 +1986,10 @@ export async function buyBodyguards(
       where: { playerId },
       data: {
         bodyguards: security.bodyguards + quantity,
-        bodyguardUpkeepDueAt: security.bodyguards > 0
-          ? security.bodyguardUpkeepDueAt
-          : new Date(Date.now() + DAY_IN_MS),
+        bodyguardUpkeepDueAt:
+          security.bodyguards > 0
+            ? security.bodyguardUpkeepDueAt
+            : new Date(Date.now() + DAY_IN_MS),
       },
     });
   } else {
@@ -1893,10 +2008,7 @@ export async function buyBodyguards(
   };
 }
 
-export async function buyArmor(
-  playerId: number,
-  armorId: string
-): Promise<any> {
+export async function buyArmor(playerId: number, armorId: string): Promise<any> {
   const armor = getArmorDefinition(armorId);
 
   await settleBodyguardUpkeep(prisma, playerId);
@@ -1960,9 +2072,7 @@ export async function buyArmor(
   };
 }
 
-export async function getSecurityStatus(
-  playerId: number
-): Promise<any> {
+export async function getSecurityStatus(playerId: number): Promise<any> {
   const security = await settleBodyguardUpkeep(prisma, playerId);
 
   if (!security) {

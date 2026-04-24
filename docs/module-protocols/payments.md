@@ -35,6 +35,8 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 - Player premium toegang hoort via een dedicated Premium & Credits scherm beschikbaar te zijn, niet alleen via verborgen crew-subflows.
 - Externe betaalredirects moeten na checkout terug landen in de ingesloten game-shell op de Premium & Credits sectie; een losse fullpage premium-route is geen voorkeursflow voor web/PWA.
 - Player VIP en Crew VIP prijzen moeten runtime-config-gestuurd blijven zodat admin ze live kan aanpassen zonder backend deploy.
+- Player VIP voordelen met economy-impact (zoals cooldown-reductie of periodieke credit grants) moeten via backendregels afdwingbaar blijven en in de player copy expliciet vermeld worden.
+- Wekelijkse Player VIP-credit grants moeten ledger-traceerbaar zijn via `player_credit_transactions` (reasonKey + metadata), zodat support/admin uitbetaling kan herleiden.
 - Credit koopbundels en credit-redemption costs moeten admin-beheerbaar zijn via de premium adminflow en niet hardcoded in player UI.
 - Default creditbundels mogen server-side ge-seed worden voor een lege catalogus, maar key, prijs, credit-amount en beeldpad moeten stabiel en idempotent blijven.
 - Legacy offers met verouderde prijsstelling (zoals 1000 credits voor 1,99) mogen niet meer in de actieve player-catalogus of checkout terechtkomen; blokkeer of deactiveer deze server-side.

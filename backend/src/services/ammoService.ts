@@ -1,6 +1,7 @@
 import prisma from '../lib/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { applyVipTimeoutReductionMs, isVipStatusActive } from './vipBenefitsService';
 
 interface AmmoDefinition {
   type: string;
@@ -85,7 +86,14 @@ class AmmoService {
     ammoType: string,
     boxes: number,
     countryId: string
-  ): Promise<{ success: boolean; error?: string; totalCost?: number; roundsPurchased?: number; quality?: number; nextAvailableAt?: string }> {
+  ): Promise<{
+    success: boolean;
+    error?: string;
+    totalCost?: number;
+    roundsPurchased?: number;
+    quality?: number;
+    nextAvailableAt?: string;
+  }> {
     const ammo = this.getAmmoDefinition(ammoType);
 
     if (!ammo) {
@@ -100,7 +108,12 @@ class AmmoService {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true, lastAmmoPurchaseAt: true },
+      select: {
+        money: true,
+        lastAmmoPurchaseAt: true,
+        isVip: true,
+        vipExpiresAt: true,
+      },
     });
 
     if (!player) {
@@ -108,11 +121,16 @@ class AmmoService {
     }
 
     // Check ammo purchase cooldown (30 minutes)
-    const AMMO_PURCHASE_COOLDOWN_MS = 30 * 60 * 1000;
+    const AMMO_PURCHASE_COOLDOWN_MS = applyVipTimeoutReductionMs(
+      30 * 60 * 1000,
+      isVipStatusActive(player)
+    );
     if (player.lastAmmoPurchaseAt) {
       const timeSinceLastPurchase = Date.now() - player.lastAmmoPurchaseAt.getTime();
       if (timeSinceLastPurchase < AMMO_PURCHASE_COOLDOWN_MS) {
-        const nextAvailableAt = new Date(player.lastAmmoPurchaseAt.getTime() + AMMO_PURCHASE_COOLDOWN_MS);
+        const nextAvailableAt = new Date(
+          player.lastAmmoPurchaseAt.getTime() + AMMO_PURCHASE_COOLDOWN_MS
+        );
         return {
           success: false,
           error: 'PURCHASE_COOLDOWN_ACTIVE',
@@ -160,7 +178,7 @@ class AmmoService {
     }
 
     const newQuality = existing
-      ? ((existing.quality * currentQuantity) + (quality * roundsPurchased)) / newQuantity
+      ? (existing.quality * currentQuantity + quality * roundsPurchased) / newQuantity
       : quality;
 
     // Update or create inventory
@@ -261,8 +279,10 @@ class AmmoService {
     ammoType: string,
     quantity: number
   ): Promise<{ success: boolean; error?: string }> {
-    console.log(`[AmmoService] consumeAmmo called - playerId: ${playerId}, ammoType: ${ammoType}, quantity: ${quantity}`);
-    
+    console.log(
+      `[AmmoService] consumeAmmo called - playerId: ${playerId}, ammoType: ${ammoType}, quantity: ${quantity}`
+    );
+
     const existing = await prisma.ammoInventory.findUnique({
       where: {
         playerId_ammoType: {
@@ -272,16 +292,20 @@ class AmmoService {
       },
     });
 
-    console.log(`[AmmoService] Current ammo: playerId: ${playerId}, ammoType: ${ammoType}, current quantity: ${existing?.quantity ?? 'NONE'}`);
+    console.log(
+      `[AmmoService] Current ammo: playerId: ${playerId}, ammoType: ${ammoType}, current quantity: ${existing?.quantity ?? 'NONE'}`
+    );
 
     if (!existing || existing.quantity < quantity) {
-      console.log(`[AmmoService] INSUFFICIENT_AMMO - needed: ${quantity}, have: ${existing?.quantity ?? 0}`);
+      console.log(
+        `[AmmoService] INSUFFICIENT_AMMO - needed: ${quantity}, have: ${existing?.quantity ?? 0}`
+      );
       return { success: false, error: 'INSUFFICIENT_AMMO' };
     }
 
     const newQuantity = existing.quantity - quantity;
     console.log(`[AmmoService] Subtracting ${quantity} from ${existing.quantity} = ${newQuantity}`);
-    
+
     if (newQuantity === 0) {
       console.log(`[AmmoService] Deleting ammo record as newQuantity is 0`);
       await prisma.ammoInventory.delete({
