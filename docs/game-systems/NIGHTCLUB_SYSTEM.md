@@ -460,3 +460,4 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 - Drugs-opslag UI gebruikt nu gram-first labels (`250g • cocaine (B)`), een expliciete "Beschikbaar/Available" indicator en quick-select chips (`10g/25g/50g/100g/250g/MAX`) zodat mobiele spelers direct zien hoeveel gram verplaatst kan worden.
 - DJ-contract cleanup gebeurt server-side zodra een contract verlopen is; stale `currentDJId` blokkeert hierdoor geen nieuwe DJ-hire meer.
 - Runtime status `djActive` volgt actieve shift-data in plaats van alleen de venue pointer, zodat UI en backendstatus synchroon blijven.
+- Het nightclub-overzicht gebruikt nu één gecentraliseerd `Nightclub Intelligence` panel i.p.v. aparte Overview/Revenue/Risk tabs, met dezelfde informatieblokken in één verticale flow voor snellere mobiele bediening.

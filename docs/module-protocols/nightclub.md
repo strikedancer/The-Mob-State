@@ -31,6 +31,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Live staffing selectors must never depend on manual seed steps alone; DJ/security availability data needs a production-safe bootstrap or fallback so empty staff tables do not leave selectors blank.
 - Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
 - DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
+- If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

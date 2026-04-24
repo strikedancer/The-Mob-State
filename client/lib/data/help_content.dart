@@ -711,6 +711,7 @@ const List<HelpTopic> helpTopics = [
         'Run a nightclub as part of your criminal empire. Manage staff, security and supply for passive and active income with a dedicated season leaderboard.',
     howNl: [
       'De nachtclub heeft meerdere schermen: Hub (overzicht revenue en bezoekers), DJs (boek entertainers voor hogere bezoekerscores), Beveiliging (bewakers verlagen incidentrisico), Supply (alcohol en andere voorraden) en Season Summary.',
+      'In het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.',
       'Revenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.',
       'DJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.',
       'Incidenten (vechtpartijen, diefstal) kunnen optreden als je beveiliging tekortschiet. Dit schaadt bezoekers-score en inkomst.',
@@ -722,6 +723,7 @@ const List<HelpTopic> helpTopics = [
     ],
     howEn: [
       'The nightclub has multiple screens: Hub (revenue and visitor overview), DJs (book entertainers for higher visitor scores), Security (guards lower incident risk), Supply (alcohol and other stock) and Season Summary.',
+      'The nightclub screen now includes one central Intelligence section combining overview, revenue trends and risk logs without tab switching.',
       'Revenue is generated per tick based on DJ quality, occupancy and supply availability. Missing supply directly reduces income.',
       'DJ contracts end automatically at the configured end time; after that you must book again for new boosts.',
       'Incidents (fights, theft) can occur when security is insufficient. This damages visitor score and income.',

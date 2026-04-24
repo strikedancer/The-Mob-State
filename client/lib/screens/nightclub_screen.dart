@@ -52,7 +52,6 @@ class _NightclubScreenState extends State<NightclubScreen>
   int _storeQuantity = 10;
   late final TextEditingController _storeQuantityController;
   late final TabController _managementTabController;
-  late final TabController _insightTabController;
 
   List<Map<String, dynamic>> _storeDrugOptions() {
     final byKey = <String, Map<String, dynamic>>{};
@@ -350,7 +349,6 @@ class _NightclubScreenState extends State<NightclubScreen>
     super.initState();
     _storeQuantityController = TextEditingController(text: '$_storeQuantity');
     _managementTabController = TabController(length: 4, vsync: this);
-    _insightTabController = TabController(length: 3, vsync: this);
     _load();
     _startPolling();
   }
@@ -360,7 +358,6 @@ class _NightclubScreenState extends State<NightclubScreen>
     _pollTimer?.cancel();
     _storeQuantityController.dispose();
     _managementTabController.dispose();
-    _insightTabController.dispose();
     super.dispose();
   }
 
@@ -891,7 +888,7 @@ class _NightclubScreenState extends State<NightclubScreen>
                           const SizedBox(height: 12),
                           _operationsDeckCard(),
                           const SizedBox(height: 12),
-                          _insightTabs(),
+                          _nightclubIntelligenceCard(),
                           const SizedBox(height: 12),
                           _managementTabs(),
                         ],
@@ -949,7 +946,7 @@ class _NightclubScreenState extends State<NightclubScreen>
     final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
     final crowd = (data['crowdSize'] as num?)?.toInt() ?? 0;
 
-    return Card(
+    return _mafiaPanel(
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -1013,16 +1010,7 @@ class _NightclubScreenState extends State<NightclubScreen>
         : (riskRatioRaw > 1 ? 1.0 : riskRatioRaw);
     final vibe = _localizedVibe((data['crowdVibe'] ?? 'chill').toString());
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xAA0B132B), Color(0xAA1B263B), Color(0xAA2E1A47)],
-        ),
-        border: Border.all(color: Colors.white24),
-      ),
+    return _mafiaPanel(
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -1069,6 +1057,28 @@ class _NightclubScreenState extends State<NightclubScreen>
     );
   }
 
+  Widget _mafiaPanel({required Widget child}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xCC110A0A), Color(0xCC24120A), Color(0xCC16110E)],
+        ),
+        border: Border.all(color: const Color(0x66D4A24D)),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x66000000),
+            blurRadius: 16,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
   Widget _progressRow(
     String title,
     String value,
@@ -1111,358 +1121,32 @@ class _NightclubScreenState extends State<NightclubScreen>
     );
   }
 
-  Widget _statsCard() {
-    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
-    final crowd = (data['crowdSize'] as num?)?.toInt() ?? 0;
-    final revenueToday = (data['revenueToday'] as num?)?.toInt() ?? 0;
-    final revenueAllTime = (data['revenueAllTime'] as num?)?.toInt() ?? 0;
-    final inventoryValue = (data['inventoryValue'] as num?)?.toInt() ?? 0;
-    final djActive = data['djActive'] == true;
-    final thefts = ((data['thefts'] as List<dynamic>?) ?? const []).length;
-    final prostitution =
-        (data['prostitution'] as Map<String, dynamic>?) ?? const {};
-    final staffCap = (prostitution['staffCap'] ?? 0).toString();
-    final staffCount = (prostitution['assignedCount'] ?? 0).toString();
-    final vipActive = prostitution['isVipBoostActive'] == true;
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _t.nightclubLiveStatistics,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                _kpiChip(_t.nightclubKpiCrowd, '$crowd%'),
-                _kpiChip(
-                  _t.nightclubKpiVibe,
-                  _localizedVibe((data['crowdVibe'] ?? 'chill').toString()),
-                ),
-                _kpiChip(_t.nightclubKpiToday, '€$revenueToday'),
-                _kpiChip(_t.nightclubKpiAllTime, '€$revenueAllTime'),
-                _kpiChip(_t.nightclubKpiStock, '€$inventoryValue'),
-                _kpiChip(
-                  _t.nightclubKpiDj,
-                  djActive ? _t.nightclubStatusActive : _t.nightclubStatusOff,
-                ),
-                _kpiChip(_t.nightclubKpiThefts, '$thefts'),
-                _kpiChip(_t.nightclubKpiStaff, '$staffCount/$staffCap'),
-                _kpiChip(
-                  _t.nightclubKpiSalesBoost,
-                  'x${(prostitution['salesBoost'] ?? 1)}',
-                ),
-                _kpiChip(
-                  _t.nightclubKpiPriceBoost,
-                  'x${(prostitution['priceBoost'] ?? 1)}',
-                ),
-                _kpiChip(
-                  _t.nightclubKpiVipBonus,
-                  vipActive ? _t.nightclubStatusActive : _t.nightclubStatusOff,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _kpiChip(String label, String value) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        color: const Color(0x33241A0F),
+        border: Border.all(color: const Color(0x55D4A24D)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: Theme.of(context).textTheme.bodySmall),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w700)),
+          Text(
+            label,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFFFE3A0),
+            ),
+          ),
         ],
-      ),
-    );
-  }
-
-  Widget _trendCard() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _t.nightclubRevenueTrend,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 90,
-              child: CustomPaint(
-                painter: _SparklinePainter(_revenueTrend),
-                child: Container(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _leaderboardCard() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    _t.nightclubLeaderboardTitle,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                DropdownButton<String>(
-                  value: _leaderboardScope,
-                  items: [
-                    DropdownMenuItem(
-                      value: 'country',
-                      child: Text(_t.nightclubLeaderboardCountry),
-                    ),
-                    DropdownMenuItem(
-                      value: 'global',
-                      child: Text(_t.nightclubLeaderboardGlobal),
-                    ),
-                  ],
-                  onChanged: (v) async {
-                    if (v == null) return;
-                    setState(() => _leaderboardScope = v);
-                    await _load(silent: true);
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            if (_leaderboard.isEmpty) Text(_t.nightclubLeaderboardEmpty),
-            ..._leaderboard.map((entry) {
-              final map = entry as Map<String, dynamic>;
-              final rank = map['rank'] ?? '-';
-              final owner = map['ownerUsername'] ?? 'unknown';
-              final country = map['country'] ?? '-';
-              final score = map['score'] ?? 0;
-              final revenue24h = map['revenue24h'] ?? 0;
-              final crowdSize = map['crowdSize'] ?? 0;
-              final staffCount = map['staffCount'] ?? 0;
-              return ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                leading: CircleAvatar(
-                  radius: 14,
-                  child: Text(
-                    '$rank',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                title: Text('$owner • $country'),
-                subtitle: Text(
-                  '${_t.nightclubLeaderboardRevenue24h}: €$revenue24h | ${_t.nightclubKpiCrowd}: $crowdSize% | ${_t.nightclubKpiStaff}: $staffCount',
-                ),
-                trailing: Text(
-                  '★$score',
-                  style: const TextStyle(fontWeight: FontWeight.w700),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _seasonCard() {
-    final data = _seasonSummary ?? const {};
-    final leaderboard =
-        (data['currentLeaderboard'] as List<dynamic>?) ?? const [];
-    final rewards = (data['recentRewards'] as List<dynamic>?) ?? const [];
-    final totalRewards = data['yourTotalSeasonRewards'] ?? 0;
-    final endAt = DateTime.tryParse((data['seasonEndAt'] ?? '').toString());
-    final now = DateTime.now().toUtc();
-    final remaining = endAt != null ? endAt.difference(now) : const Duration();
-    final remainingText = remaining.isNegative
-        ? _t.nightclubSeasonProcessing
-        : '${remaining.inDays}d ${remaining.inHours % 24}h ${remaining.inMinutes % 60}m';
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _t.nightclubSeasonTitle,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 6),
-            Text('${_t.nightclubSeasonResetIn}: $remainingText'),
-            Text('${_t.nightclubSeasonYourRewards}: €$totalRewards'),
-            const SizedBox(height: 10),
-            Text(
-              _t.nightclubSeasonCurrentTop5,
-              style: const TextStyle(fontWeight: FontWeight.w700),
-            ),
-            if (leaderboard.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: Text(_t.nightclubSeasonEmpty),
-              ),
-            ...leaderboard.take(5).map((entry) {
-              final map = entry as Map<String, dynamic>;
-              return ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                leading: CircleAvatar(
-                  radius: 12,
-                  child: Text(
-                    '${map['rank'] ?? '-'}',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                title: Text(
-                  '${map['ownerUsername'] ?? 'unknown'} • ${map['country'] ?? '-'}',
-                ),
-                subtitle: Text(
-                  '${_t.nightclubSeasonWeekRevenue}: €${map['weeklyRevenue'] ?? 0} | ${_t.nightclubSeasonScore}: ${map['score'] ?? 0}',
-                ),
-              );
-            }),
-            const SizedBox(height: 8),
-            Text(
-              _t.nightclubSeasonRecentPayouts,
-              style: const TextStyle(fontWeight: FontWeight.w700),
-            ),
-            if (rewards.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: Text(_t.nightclubSeasonNoPayouts),
-              ),
-            ...rewards.take(5).map((entry) {
-              final map = entry as Map<String, dynamic>;
-              return ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(
-                  Icons.workspace_premium,
-                  size: 18,
-                  color: Colors.amber.shade700,
-                ),
-                title: Text(
-                  '#${map['rank'] ?? '-'} ${map['username'] ?? 'unknown'}',
-                ),
-                trailing: Text(
-                  '€${map['rewardAmount'] ?? 0}',
-                  style: const TextStyle(fontWeight: FontWeight.w700),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _salesLogCard() {
-    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
-    final sales = ((data['recentSales'] as List<dynamic>?) ?? const []);
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _t.nightclubSalesTitle,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            if (sales.isEmpty) Text(_t.nightclubSalesEmpty),
-            ...sales.take(8).map((s) {
-              final map = s as Map<String, dynamic>;
-              return ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.point_of_sale, size: 18),
-                title: Text(
-                  '${map['drugType']} (${map['quality']}) x${map['quantitySold']}g',
-                ),
-                subtitle: Text(
-                  '${_t.nightclubKpiVibe}: ${_localizedVibe((map['crowdVibe'] ?? '').toString())}',
-                ),
-                trailing: Text('€${map['totalRevenue']}'),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _theftLogCard() {
-    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
-    final thefts = ((data['thefts'] as List<dynamic>?) ?? const []);
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _t.nightclubTheftTitle,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            if (thefts.isEmpty) Text(_t.nightclubTheftEmpty),
-            ...thefts.take(8).map((t) {
-              final map = t as Map<String, dynamic>;
-              return ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(
-                  Icons.warning_amber_rounded,
-                  size: 18,
-                  color: Colors.orange,
-                ),
-                title: Text(
-                  '${_localizedTheftType((map['theftType'] ?? '').toString())} - ${map['drugType']} (${map['quality']})',
-                ),
-                subtitle: Text(
-                  '${_t.nightclubTheftLoss}: ${map['quantityStolen']}g',
-                ),
-                trailing: Text('€${map['valueLost']}'),
-              );
-            }),
-          ],
-        ),
       ),
     );
   }
@@ -1484,7 +1168,7 @@ class _NightclubScreenState extends State<NightclubScreen>
     final vipAssignedCount = prostitution['vipAssignedCount'] ?? 0;
     final vipActive = prostitution['isVipBoostActive'] == true;
 
-    return Card(
+    return _mafiaPanel(
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -1751,7 +1435,7 @@ class _NightclubScreenState extends State<NightclubScreen>
       (activeShift?['shiftEndAt'] ?? '').toString(),
     );
 
-    return Card(
+    return _mafiaPanel(
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -1840,7 +1524,7 @@ class _NightclubScreenState extends State<NightclubScreen>
       (activeShift?['shiftEndAt'] ?? '').toString(),
     );
 
-    return Card(
+    return _mafiaPanel(
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -1921,7 +1605,7 @@ class _NightclubScreenState extends State<NightclubScreen>
       (sum, row) => sum + ((row['quantity'] as num?)?.toInt() ?? 0),
     );
 
-    return Card(
+    return _mafiaPanel(
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -2166,7 +1850,7 @@ class _NightclubScreenState extends State<NightclubScreen>
     final compact = _isCompactLayout();
     final tabBodyHeight = (screenHeight * 0.62).clamp(420.0, 780.0);
 
-    return Card(
+    return _mafiaPanel(
       child: Padding(
         padding: EdgeInsets.all(compact ? 8 : 12),
         child: Column(
@@ -2182,6 +1866,9 @@ class _NightclubScreenState extends State<NightclubScreen>
               isScrollable: true,
               tabAlignment: TabAlignment.start,
               labelStyle: _tabLabelStyle(),
+              labelColor: const Color(0xFFFFE3A0),
+              unselectedLabelColor: Colors.white70,
+              indicatorColor: const Color(0xFFD4A24D),
               labelPadding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12),
               tabs: [
                 Tab(
@@ -2233,76 +1920,232 @@ class _NightclubScreenState extends State<NightclubScreen>
     );
   }
 
-  Widget _insightTabs() {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final compact = _isCompactLayout();
-    final tabBodyHeight = (screenHeight * 0.56).clamp(360.0, 700.0);
+  Widget _nightclubIntelligenceCard() {
+    final statsData = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
+    final crowd = (statsData['crowdSize'] as num?)?.toInt() ?? 0;
+    final revenueToday = (statsData['revenueToday'] as num?)?.toInt() ?? 0;
+    final revenueAllTime = (statsData['revenueAllTime'] as num?)?.toInt() ?? 0;
+    final inventoryValue = (statsData['inventoryValue'] as num?)?.toInt() ?? 0;
+    final djActive = statsData['djActive'] == true;
+    final sales = (statsData['recentSales'] as List<dynamic>?) ?? const [];
+    final thefts = (statsData['thefts'] as List<dynamic>?) ?? const [];
+    final prostitution =
+        (statsData['prostitution'] as Map<String, dynamic>?) ?? const {};
+    final staffCap = (prostitution['staffCap'] ?? 0).toString();
+    final staffCount = (prostitution['assignedCount'] ?? 0).toString();
+    final vipActive = prostitution['isVipBoostActive'] == true;
+    final season = _seasonSummary ?? const {};
+    final seasonLeaders =
+        (season['currentLeaderboard'] as List<dynamic>?) ?? const [];
+    final endAt = DateTime.tryParse((season['seasonEndAt'] ?? '').toString());
+    final now = DateTime.now().toUtc();
+    final remaining = endAt != null ? endAt.difference(now) : const Duration();
+    final remainingText = remaining.isNegative
+        ? _t.nightclubSeasonProcessing
+        : '${remaining.inDays}d ${remaining.inHours % 24}h ${remaining.inMinutes % 60}m';
 
-    return Card(
+    return _mafiaPanel(
       child: Padding(
-        padding: EdgeInsets.all(compact ? 8 : 12),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              _l('Nachtclub Overzicht', 'Nightclub Overview'),
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            TabBar(
-              controller: _insightTabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              labelStyle: _tabLabelStyle(),
-              labelPadding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12),
-              tabs: [
-                Tab(
-                  text: _l('Overzicht', 'Overview'),
-                  icon: Icon(Icons.dashboard, size: _tabIconSize()),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    _l('Nightclub Intelligence', 'Nightclub Intelligence'),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Color(0xFFFFE3A0),
+                    ),
+                  ),
                 ),
-                Tab(
-                  text: _l('Omzet', 'Revenue'),
-                  icon: Icon(Icons.euro, size: _tabIconSize()),
-                ),
-                Tab(
-                  text: _l('Risico', 'Risk'),
-                  icon: Icon(Icons.warning_amber_rounded, size: _tabIconSize()),
+                DropdownButton<String>(
+                  value: _leaderboardScope,
+                  dropdownColor: const Color(0xFF1A130E),
+                  style: const TextStyle(color: Colors.white),
+                  items: [
+                    DropdownMenuItem(
+                      value: 'country',
+                      child: Text(_t.nightclubLeaderboardCountry),
+                    ),
+                    DropdownMenuItem(
+                      value: 'global',
+                      child: Text(_t.nightclubLeaderboardGlobal),
+                    ),
+                  ],
+                  onChanged: (v) async {
+                    if (v == null) return;
+                    setState(() => _leaderboardScope = v);
+                    await _load(silent: true);
+                  },
                 ),
               ],
             ),
             const SizedBox(height: 10),
+            _intelligenceSectionTitle(
+              _l('Live statistieken', 'Live statistics'),
+              Icons.bar_chart_rounded,
+            ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _kpiChip(_t.nightclubKpiCrowd, '$crowd%'),
+                _kpiChip(
+                  _t.nightclubKpiVibe,
+                  _localizedVibe(
+                    (statsData['crowdVibe'] ?? 'chill').toString(),
+                  ),
+                ),
+                _kpiChip(_t.nightclubKpiToday, '€$revenueToday'),
+                _kpiChip(_t.nightclubKpiAllTime, '€$revenueAllTime'),
+                _kpiChip(_t.nightclubKpiStock, '€$inventoryValue'),
+                _kpiChip(
+                  _t.nightclubKpiDj,
+                  djActive ? _t.nightclubStatusActive : _t.nightclubStatusOff,
+                ),
+                _kpiChip(_t.nightclubKpiThefts, '${thefts.length}'),
+                _kpiChip(_t.nightclubKpiStaff, '$staffCount/$staffCap'),
+                _kpiChip(
+                  _t.nightclubKpiVipBonus,
+                  vipActive ? _t.nightclubStatusActive : _t.nightclubStatusOff,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            _intelligenceSectionTitle(
+              _t.nightclubRevenueTrend,
+              Icons.show_chart,
+            ),
             SizedBox(
-              height: tabBodyHeight,
-              child: TabBarView(
-                controller: _insightTabController,
-                children: [
-                  ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      _statsCard(),
-                      const SizedBox(height: 10),
-                      _seasonCard(),
-                    ],
-                  ),
-                  ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      _trendCard(),
-                      const SizedBox(height: 10),
-                      _salesLogCard(),
-                      const SizedBox(height: 10),
-                      _leaderboardCard(),
-                    ],
-                  ),
-                  ListView(
-                    padding: EdgeInsets.zero,
-                    children: [_theftLogCard()],
-                  ),
-                ],
+              height: 90,
+              child: CustomPaint(
+                painter: _SparklinePainter(_revenueTrend),
+                child: Container(),
               ),
             ),
+            const SizedBox(height: 10),
+            _intelligenceSectionTitle(
+              _l('Seizoen status', 'Season status'),
+              Icons.workspace_premium,
+            ),
+            Text('${_t.nightclubSeasonResetIn}: $remainingText'),
+            Text(
+              '${_t.nightclubSeasonYourRewards}: €${season['yourTotalSeasonRewards'] ?? 0}',
+            ),
+            if (seasonLeaders.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              ...seasonLeaders.take(3).map((entry) {
+                final map = entry as Map<String, dynamic>;
+                return ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  leading: CircleAvatar(
+                    radius: 12,
+                    child: Text('${map['rank'] ?? '-'}'),
+                  ),
+                  title: Text(
+                    '${map['ownerUsername'] ?? 'unknown'} • ${map['country'] ?? '-'}',
+                  ),
+                  trailing: Text(
+                    '€${map['weeklyRevenue'] ?? 0}',
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                );
+              }),
+            ],
+            const SizedBox(height: 10),
+            _intelligenceSectionTitle(
+              _t.nightclubLeaderboardTitle,
+              Icons.leaderboard,
+            ),
+            if (_leaderboard.isEmpty) Text(_t.nightclubLeaderboardEmpty),
+            ..._leaderboard.take(5).map((entry) {
+              final map = entry as Map<String, dynamic>;
+              return ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                leading: CircleAvatar(
+                  radius: 12,
+                  child: Text('${map['rank'] ?? '-'}'),
+                ),
+                title: Text('${map['ownerUsername'] ?? 'unknown'}'),
+                subtitle: Text(
+                  '${_t.nightclubLeaderboardRevenue24h}: €${map['revenue24h'] ?? 0}',
+                ),
+                trailing: Text(
+                  '★${map['score'] ?? 0}',
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+              );
+            }),
+            const SizedBox(height: 10),
+            _intelligenceSectionTitle(
+              _t.nightclubSalesTitle,
+              Icons.point_of_sale,
+            ),
+            if (sales.isEmpty) Text(_t.nightclubSalesEmpty),
+            ...sales.take(4).map((raw) {
+              final map = raw as Map<String, dynamic>;
+              return ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  '${map['drugType']} (${map['quality']}) x${map['quantitySold']}g',
+                ),
+                subtitle: Text(
+                  '${_t.nightclubKpiVibe}: ${_localizedVibe((map['crowdVibe'] ?? '').toString())}',
+                ),
+                trailing: Text('€${map['totalRevenue'] ?? 0}'),
+              );
+            }),
+            const SizedBox(height: 10),
+            _intelligenceSectionTitle(
+              _t.nightclubTheftTitle,
+              Icons.warning_amber_rounded,
+            ),
+            if (thefts.isEmpty) Text(_t.nightclubTheftEmpty),
+            ...thefts.take(4).map((raw) {
+              final map = raw as Map<String, dynamic>;
+              return ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(
+                  Icons.warning_amber_rounded,
+                  size: 18,
+                  color: Colors.orangeAccent,
+                ),
+                title: Text(
+                  '${_localizedTheftType((map['theftType'] ?? '').toString())} • ${map['drugType']}',
+                ),
+                subtitle: Text('${map['quantityStolen'] ?? 0}g'),
+                trailing: Text('€${map['valueLost'] ?? 0}'),
+              );
+            }),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _intelligenceSectionTitle(String text, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: const Color(0xFFD4A24D)),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFFFE3A0),
+            ),
+          ),
+        ],
       ),
     );
   }
