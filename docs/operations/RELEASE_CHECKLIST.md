@@ -620,17 +620,17 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestand: `client/lib/screens/dashboard_screen.dart`
 - [ ] Dashboard statistiekencard gebruikt weer echte live tellers: hardcoded nullen zijn vervangen door backenddata voor uitbraken, moorden, hitlist-opdrachten, reizen en kogels zodat het home-dashboard niet meer misleidend leeg oogt
   - Bestanden: `backend/src/routes/player.ts`, `client/lib/services/dashboard_service.dart`, `client/lib/screens/dashboard_screen.dart`, `client/lib/data/help_content.dart`, `docs/module-protocols/dashboard.md`, `docs/operations/RELEASE_CHECKLIST.md`
-- [ ] Territory contest-start en verdedigen verversen de open modal nu direct; als de eerste API-call fout terugstuurt maar de contest al bestaat, toont de UI meteen de actuele gevechtsstatus. Contesttimers vallen lokaal terug op `startedAt` + runtime-config zodat regio-modals geen `Onbekend` meer tonen tijdens voorbereiding
+- [x] Territory contest-start en verdedigen verversen de open modal nu direct; als de eerste API-call fout terugstuurt maar de contest al bestaat, toont de UI meteen de actuele gevechtsstatus. Contesttimers vallen lokaal terug op `startedAt` + runtime-config zodat regio-modals geen `Onbekend` meer tonen tijdens voorbereiding
   - Bestanden: `backend/src/services/territoryService.ts`, `client/lib/screens/territory_screen.dart`, `docs/module-protocols/territory.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Auth-state logout propagatie verbeterd bij 401/403 (forced logout na sessie-vervanging)
   - Bestanden: `client/lib/services/auth_service.dart`, `client/lib/providers/auth_provider.dart`
-- [ ] Admin UI: tab “System Logs” toegevoegd voor runtime backend fouten
+- [x] Admin UI: tab “System Logs” toegevoegd voor runtime backend fouten
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
-- [ ] Admin UI: “System Logs” uitgebreid met filters op bron + zoekveld (melding/details)
+- [x] Admin UI: “System Logs” uitgebreid met filters op bron + zoekveld (melding/details)
   - Bestand: `admin/src/App.tsx`
-- [ ] Admin UI: “System Logs” uitgebreid met datumfilter (24u/7d/30d/all)
+- [x] Admin UI: “System Logs” uitgebreid met datumfilter (24u/7d/30d/all)
   - Bestand: `admin/src/App.tsx`
-- [ ] Admin UI: tab “Admins” toegevoegd voor admin aanmaken/rol wijzigen/activeren-deactiveren
+- [x] Admin UI: tab “Admins” toegevoegd voor admin aanmaken/rol wijzigen/activeren-deactiveren
   - Bestanden: `admin/src/App.tsx`, `admin/src/services/adminService.ts`
 - [ ] Rechtbank hoger beroep schaalbaar met rechten-niveau: `law` track level voegt +5% succeskans per level toe aan hoger beroep (max +25% bij level 5); basiskans stijgt daarmee van 35% naar max 60% vóór verdere aanpassingen (eerdere veroordelingen, wanted level, FBI heat); hard cap verhoogd van 70% naar 85%
   - Bestand: `backend/src/services/judgeService.ts`
@@ -645,7 +645,7 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - Bestanden: `client/lib/screens/premium_screen.dart`, `docs/module-protocols/frontend-platform.md`, `docs/operations/RELEASE_CHECKLIST.md`
 - [ ] Premium/Credits image generation workflow vastgelegd: nieuw Leonardo one-shot script met vaste 12 premium tile outputs + externe hosting runbook voor VPS, zodat stijlupdates herhaalbaar zijn en aankooptype per tile visueel duidelijk blijft
   - Bestanden: `backend/scripts/generate_premium_tiles_leonardo.py`, `docs/operations/PREMIUM_TILES_IMAGE_EXTERNAL_GUIDE.md`, `docs/operations/RELEASE_CHECKLIST.md`
-- [ ] Balance & monetization roadmap in 4 fasen vastgelegd (zonder harde dagcaps, met non-pay-to-win gearguardrails)
+- [x] Balance & monetization roadmap in 4 fasen vastgelegd (zonder harde dagcaps, met non-pay-to-win gearguardrails)
   - Bestand: `docs/operations/BALANCE_PHASE_ROADMAP.md`
 - [ ] Aviation i18n: `aircraft.json` bevat nu `name_en` + `description_en` voor alle 6 vliegtuigen; client toont juiste taal op basis van locale
   - Bestand: `backend/scripts/generate_aviation_images_leonardo.py`
@@ -730,3 +730,4 @@ Gebruik dit bestand om wijzigingen te bundelen en later in 1 productie-deploy ui
   - `casino_screen.dart` purchase-flow geeft loading-state nu altijd vrij bij onverwachte backend-events (`error.internal`/onbekend event), zodat het scherm niet blijft hangen na koopactie.
   - Dubbele stats-call na koop verwijderd; state refresh loopt nu via `checkOwnershipAndLoadGames()` als enige bron.
 - Deployment basis voorbereid voor Plesk + Docker zonder FTP-workflow; domeinen kunnen nu via Plesk reverse proxy naar localhost-containers wijzen.
+
