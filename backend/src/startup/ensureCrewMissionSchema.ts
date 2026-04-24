@@ -1,5 +1,17 @@
 import prisma from '../lib/prisma';
 
+async function columnExists(tableName: string, columnName: string): Promise<boolean> {
+  const rows = await prisma.$queryRaw<Array<{ count: number }>>`
+    SELECT COUNT(*) AS count
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = ${tableName}
+      AND COLUMN_NAME = ${columnName}
+  `;
+
+  return Number(rows?.[0]?.count ?? 0) > 0;
+}
+
 export async function ensureCrewMissionSchema(): Promise<void> {
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS crew_mission_templates (
@@ -42,6 +54,7 @@ export async function ensureCrewMissionSchema(): Promise<void> {
       endsAt DATETIME NOT NULL,
       resolvedAt DATETIME NULL,
       cooldownUntil DATETIME NULL,
+      cooldownNotifiedAt DATETIME NULL,
       outcome VARCHAR(20) NULL,
       progressPct INT NOT NULL DEFAULT 0,
       successRoll DECIMAL(8,6) NULL,
@@ -62,6 +75,18 @@ export async function ensureCrewMissionSchema(): Promise<void> {
       INDEX idx_crew_mission_runs_created (createdAt)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
+
+  const hasCooldownNotifiedAt = await columnExists(
+    'crew_mission_runs',
+    'cooldownNotifiedAt',
+  );
+  if (!hasCooldownNotifiedAt) {
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE crew_mission_runs
+      ADD COLUMN cooldownNotifiedAt DATETIME NULL
+    `);
+    console.log('[StartupSchema] Added column crew_mission_runs.cooldownNotifiedAt');
+  }
 
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS crew_mission_contributions (

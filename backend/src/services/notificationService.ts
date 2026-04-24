@@ -718,6 +718,132 @@ export class NotificationService {
     });
   }
 
+  public async sendCrewMissionStartedNotification(
+    playerId: number,
+    runId: number,
+    crewName: string,
+    missionTitleNl: string,
+    missionTitleEn: string,
+    startedByUsername: string,
+    endsAt: Date | string,
+    language?: Language
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const missionTitle = resolvedLanguage === 'nl' ? missionTitleNl : missionTitleEn;
+    const parsedEndsAt = endsAt instanceof Date ? endsAt : new Date(endsAt);
+    const endsAtText = Number.isNaN(parsedEndsAt.getTime())
+      ? ''
+      : parsedEndsAt.toLocaleString(resolvedLanguage === 'nl' ? 'nl-NL' : 'en-GB', { hour12: false });
+
+    const title = resolvedLanguage === 'nl'
+      ? 'Crew missie gestart'
+      : 'Crew mission started';
+    const body = resolvedLanguage === 'nl'
+      ? `${startedByUsername} heeft "${missionTitle}" gestart voor ${crewName}.${endsAtText ? ` Eindigt rond ${endsAtText}.` : ''}`
+      : `${startedByUsername} started "${missionTitle}" for ${crewName}.${endsAtText ? ` Ends around ${endsAtText}.` : ''}`;
+
+    await this.createInAppWorldEvent(playerId, 'crew.mission.started', {
+      runId,
+      crewName,
+      missionTitle,
+      startedByUsername,
+      endsAt: parsedEndsAt.toISOString(),
+    });
+
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'crew_mission_started',
+      runId: String(runId),
+      crewName,
+      missionTitle,
+      startedByUsername,
+      endsAt: parsedEndsAt.toISOString(),
+    });
+  }
+
+  public async sendCrewMissionResolvedNotification(
+    playerId: number,
+    runId: number,
+    crewName: string,
+    missionTitleNl: string,
+    missionTitleEn: string,
+    outcome: 'success' | 'partial' | 'fail',
+    rewardCrewCash: number,
+    rewardCrewXp: number,
+    cooldownUntil?: Date | string | null,
+    language?: Language
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const missionTitle = resolvedLanguage === 'nl' ? missionTitleNl : missionTitleEn;
+    const outcomeLabel = resolvedLanguage === 'nl'
+      ? (outcome === 'success' ? 'Succes' : outcome === 'partial' ? 'Gedeeltelijk' : 'Mislukt')
+      : (outcome === 'success' ? 'Success' : outcome === 'partial' ? 'Partial' : 'Failed');
+    const parsedCooldownUntil = cooldownUntil
+      ? (cooldownUntil instanceof Date ? cooldownUntil : new Date(cooldownUntil))
+      : null;
+    const cooldownText = parsedCooldownUntil && !Number.isNaN(parsedCooldownUntil.getTime())
+      ? parsedCooldownUntil.toLocaleString(resolvedLanguage === 'nl' ? 'nl-NL' : 'en-GB', { hour12: false })
+      : '';
+
+    const title = resolvedLanguage === 'nl'
+      ? `Crew missie ${outcome === 'success' ? 'geslaagd' : outcome === 'partial' ? 'afgerond' : 'mislukt'}`
+      : `Crew mission ${outcome === 'success' ? 'succeeded' : outcome === 'partial' ? 'completed' : 'failed'}`;
+    const body = resolvedLanguage === 'nl'
+      ? `"${missionTitle}" (${crewName}) - ${outcomeLabel}. Reward: €${Math.round(rewardCrewCash).toLocaleString('nl-NL')} en ${Math.round(rewardCrewXp)} crew XP.${cooldownText ? ` Cooldown tot ${cooldownText}.` : ''}`
+      : `"${missionTitle}" (${crewName}) - ${outcomeLabel}. Reward: €${Math.round(rewardCrewCash).toLocaleString('en-GB')} and ${Math.round(rewardCrewXp)} crew XP.${cooldownText ? ` Cooldown until ${cooldownText}.` : ''}`;
+
+    await this.createInAppWorldEvent(playerId, 'crew.mission.resolved', {
+      runId,
+      crewName,
+      missionTitle,
+      outcome,
+      rewardCrewCash: Math.round(rewardCrewCash),
+      rewardCrewXp: Math.round(rewardCrewXp),
+      cooldownUntil: parsedCooldownUntil?.toISOString() ?? null,
+    });
+
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'crew_mission_resolved',
+      runId: String(runId),
+      crewName,
+      missionTitle,
+      outcome,
+      rewardCrewCash: String(Math.round(rewardCrewCash)),
+      rewardCrewXp: String(Math.round(rewardCrewXp)),
+      cooldownUntil: parsedCooldownUntil?.toISOString() ?? '',
+    });
+  }
+
+  public async sendCrewMissionCooldownReadyNotification(
+    playerId: number,
+    runId: number,
+    crewName: string,
+    missionTitleNl: string,
+    missionTitleEn: string,
+    language?: Language
+  ): Promise<void> {
+    const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
+    const missionTitle = resolvedLanguage === 'nl' ? missionTitleNl : missionTitleEn;
+    const title = resolvedLanguage === 'nl'
+      ? 'Crew missie cooldown klaar'
+      : 'Crew mission cooldown ready';
+    const body = resolvedLanguage === 'nl'
+      ? `"${missionTitle}" voor ${crewName} is weer beschikbaar.`
+      : `"${missionTitle}" for ${crewName} is available again.`;
+
+    await this.createInAppWorldEvent(playerId, 'crew.mission.cooldown_ready', {
+      runId,
+      crewName,
+      missionTitle,
+    });
+
+    await this.sendToPlayer(playerId, title, body, {
+      type: 'crew_mission_cooldown_ready',
+      runId: String(runId),
+      crewName,
+      missionTitle,
+    });
+  }
+
   public async sendCasinoLowBalanceNotification(
     playerId: number,
     casinoName: string,

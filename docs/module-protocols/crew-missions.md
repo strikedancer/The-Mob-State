@@ -58,6 +58,14 @@ UX/i18n baseline:
 - permissiehint voor non-leader/co-leader zichtbaar in UI
 - `Help & Uitleg` crew-topic bijgewerkt zodat de nieuwe Crew Missions-tab en flow ook in NL/EN documentatie staat.
 
+## Notification Status (Phase 4 Basis)
+
+Ingebouwd voor Crew Missions:
+- push + in-app event bij mission start
+- push + in-app event bij mission result (success/partial/fail)
+- push + in-app event bij cooldown ready
+- cooldown-ready dispatch via persistente cron-scan (`processPendingCrewMissionCooldownReadyNotifications`) i.p.v. alleen in-memory timer
+
 ## Cross-Module Dependencies
 - Crew Missions -> Crew (leden, leader/officer permissies, HQ gates)
 - Crew Missions -> Crimes/Jobs (action templates en risk profiles)

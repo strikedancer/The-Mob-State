@@ -296,6 +296,8 @@ Opmerking:
 - Speedup-kosten worden server-side berekend en afgedwongen.
 - In Phase 1 UI tonen we nog geen vooraf berekende prijsbadge op de knop.
 - Help-content (Crew topic) is bijgewerkt voor de nieuwe Crew Missions-tab en actions.
+- Mission notifications (start/result/cooldown-ready) lopen nu via push + in-app world events.
+- Cooldown-ready notificaties worden persistent verwerkt via cron-scan op due runs.
 
 ## Acceptatiecriteria (Phase 1 done)
 

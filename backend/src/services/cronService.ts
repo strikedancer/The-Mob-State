@@ -8,6 +8,7 @@ import {
   processPendingMurderCaseInvestigations,
 } from './hitlistService';
 import { processPendingCooldownExpiryNotifications } from './cooldownService';
+import { processPendingCrewMissionCooldownReadyNotifications } from './crewMissionService';
 import { processPendingTerritoryContests } from './territoryService';
 import { processDueVehicleRepairCompletions } from './vehicleService';
 
@@ -254,9 +255,14 @@ export async function processPendingCooldownNotifications(): Promise<void> {
   const now = new Date();
 
   try {
-    const sentCount = await processPendingCooldownExpiryNotifications();
-    if (sentCount > 0) {
-      console.log(`[CRON] Sent ${sentCount} pending cooldown expiry notifications`);
+    const [sentCount, missionSentCount] = await Promise.all([
+      processPendingCooldownExpiryNotifications(),
+      processPendingCrewMissionCooldownReadyNotifications(),
+    ]);
+    if (sentCount > 0 || missionSentCount > 0) {
+      console.log(
+        `[CRON] Sent cooldown notifications: generic=${sentCount} crewMissions=${missionSentCount}`,
+      );
     }
     lastJobExecutions['cooldownNotifications'] = now;
   } catch (error) {
@@ -453,9 +459,14 @@ export async function processPendingCooldownNotifications(): Promise<void> {
   const now = new Date();
 
   try {
-    const sentCount = await processPendingCooldownExpiryNotifications();
-    if (sentCount > 0) {
-      console.log(`[CRON JOB] cooldownNotifications sent=${sentCount}`);
+    const [sentCount, missionSentCount] = await Promise.all([
+      processPendingCooldownExpiryNotifications(),
+      processPendingCrewMissionCooldownReadyNotifications(),
+    ]);
+    if (sentCount > 0 || missionSentCount > 0) {
+      console.log(
+        `[CRON JOB] cooldownNotifications sentGeneric=${sentCount} sentCrewMissions=${missionSentCount}`,
+      );
     }
     lastJobExecutions['cooldownNotifications'] = now;
   } catch (error) {

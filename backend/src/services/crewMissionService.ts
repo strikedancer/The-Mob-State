@@ -1,4 +1,5 @@
 import prisma from '../lib/prisma';
+import { notificationService } from './notificationService';
 
 type CrewMissionTier = 1 | 2 | 3;
 type CrewMissionOutcome = 'success' | 'partial' | 'fail';
@@ -359,6 +360,121 @@ function getTierUnlockReason(tier: CrewMissionTier): string {
   return 'TIER1_REQUIRES_HQ1';
 }
 
+async function getCrewMemberIds(crewId: number): Promise<number[]> {
+  const members = await prisma.crewMember.findMany({
+    where: { crewId },
+    select: { playerId: true },
+  });
+  return members.map((member) => member.playerId);
+}
+
+async function sendCrewMissionStartedNotifications(
+  crewId: number,
+  run: CrewMissionRun,
+  startedByPlayerId: number,
+): Promise<void> {
+  const [crew, startedBy, memberIds] = await Promise.all([
+    prisma.crew.findUnique({
+      where: { id: crewId },
+      select: { name: true },
+    }),
+    prisma.player.findUnique({
+      where: { id: startedByPlayerId },
+      select: { username: true },
+    }),
+    getCrewMemberIds(crewId),
+  ]);
+
+  if (memberIds.length === 0) {
+    return;
+  }
+
+  const crewName = crew?.name ?? `#${crewId}`;
+  const starterName = startedBy?.username ?? `#${startedByPlayerId}`;
+
+  await Promise.allSettled(
+    memberIds.map((playerId) =>
+      notificationService.sendCrewMissionStartedNotification(
+        playerId,
+        run.id,
+        crewName,
+        run.titleNl,
+        run.titleEn,
+        starterName,
+        run.endsAt,
+      ),
+    ),
+  );
+}
+
+async function sendCrewMissionResolvedNotifications(
+  crewId: number,
+  run: CrewMissionRun,
+): Promise<void> {
+  const [crew, memberIds] = await Promise.all([
+    prisma.crew.findUnique({
+      where: { id: crewId },
+      select: { name: true },
+    }),
+    getCrewMemberIds(crewId),
+  ]);
+
+  if (memberIds.length === 0 || !run.outcome) {
+    return;
+  }
+
+  const crewName = crew?.name ?? `#${crewId}`;
+
+  await Promise.allSettled(
+    memberIds.map((playerId) =>
+      notificationService.sendCrewMissionResolvedNotification(
+        playerId,
+        run.id,
+        crewName,
+        run.titleNl,
+        run.titleEn,
+        run.outcome,
+        run.rewardCrewCash,
+        run.rewardCrewXp,
+        run.cooldownUntil,
+      ),
+    ),
+  );
+}
+
+async function sendCrewMissionCooldownReadyNotifications(
+  crewId: number,
+  runId: number,
+  missionTitleNl: string,
+  missionTitleEn: string,
+): Promise<void> {
+  const [crew, memberIds] = await Promise.all([
+    prisma.crew.findUnique({
+      where: { id: crewId },
+      select: { name: true },
+    }),
+    getCrewMemberIds(crewId),
+  ]);
+
+  if (memberIds.length === 0) {
+    return;
+  }
+
+  const crewName = crew?.name ?? `#${crewId}`;
+
+  await Promise.allSettled(
+    memberIds.map((playerId) =>
+      notificationService.sendCrewMissionCooldownReadyNotification(
+        playerId,
+        runId,
+        crewName,
+        missionTitleNl,
+        missionTitleEn,
+      ),
+    ),
+  );
+}
+
 async function getActiveRunForCrew(crewId: number): Promise<CrewMissionRun | null> {
   const rows = await prisma.$queryRawUnsafe<CrewMissionRun[]>(
     `
@@ -688,7 +804,13 @@ export const crewMissionService = {
       );
     }
 
-    return this.getRun(playerId, runId);
+    const createdRun = await this.getRun(playerId, runId);
+
+    void sendCrewMissionStartedNotifications(membership.crewId, createdRun, playerId).catch((error) => {
+      console.error('[Crew Missions] Failed to send mission started notifications:', error);
+    });
+
+    return createdRun;
   },
 
   async getRun(playerId: number, runId: number) {
@@ -792,7 +914,13 @@ export const crewMissionService = {
       run.id,
     );
 
-    return this.getRun(playerId, run.id);
+    const resolvedRun = await this.getRun(playerId, run.id);
+
+    void sendCrewMissionResolvedNotifications(membership.crewId, resolvedRun).catch((error) => {
+      console.error('[Crew Missions] Failed to send mission resolved notifications:', error);
+    });
+
+    return resolvedRun;
   },
 
   async claimRewards(playerId: number, runId: number) {
@@ -939,7 +1067,7 @@ export const crewMissionService = {
       await tx.$executeRawUnsafe(
         `
           UPDATE crew_mission_runs
-          SET cooldownUntil = ?, updatedAt = NOW(3)
+          SET cooldownUntil = ?, cooldownNotifiedAt = NOW(3), updatedAt = NOW(3)
           WHERE id = ?
         `,
         new Date(),
@@ -1154,3 +1282,63 @@ export const crewMissionService = {
     return this.getRuntimeConfigView();
   },
 };
+
+export async function processPendingCrewMissionCooldownReadyNotifications(
+  limit = 100,
+): Promise<number> {
+  const safeLimit = clamp(toInt(limit, 100), 1, 500);
+  const now = new Date();
+
+  const dueRuns = await prisma.$queryRawUnsafe<Array<{
+    id: number;
+    crewId: number;
+    titleNl: string;
+    titleEn: string;
+  }>>(
+    `
+      SELECT
+        r.id,
+        r.crewId,
+        t.titleNl,
+        t.titleEn
+      FROM crew_mission_runs r
+      INNER JOIN crew_mission_templates t ON t.id = r.templateId
+      WHERE r.status = 'completed'
+        AND r.cooldownUntil IS NOT NULL
+        AND r.cooldownUntil <= ?
+        AND r.cooldownNotifiedAt IS NULL
+      ORDER BY r.cooldownUntil ASC
+      LIMIT ?
+    `,
+    now,
+    safeLimit,
+  );
+
+  let sentCount = 0;
+
+  for (const run of dueRuns) {
+    const updateResult = await prisma.$executeRawUnsafe(
+      `
+        UPDATE crew_mission_runs
+        SET cooldownNotifiedAt = ?, updatedAt = NOW(3)
+        WHERE id = ? AND cooldownNotifiedAt IS NULL
+      `,
+      now,
+      run.id,
+    );
+
+    if (Number(updateResult) <= 0) {
+      continue;
+    }
+
+    await sendCrewMissionCooldownReadyNotifications(
+      run.crewId,
+      run.id,
+      run.titleNl,
+      run.titleEn,
+    );
+    sentCount += 1;
+  }
+
+  return sentCount;
+}
