@@ -284,6 +284,7 @@ Gekoppeld in `crew_screen.dart`:
 - Overzicht via `/crew-missions/overview`.
 - Template-cards met mission image + fallback icon.
 - Role-assign dialog bij start met rollen per crewlid (`planner`, `enforcer`, `logistics`, `tech`).
+- Active run + recente runs tonen contribution breakdown per rol/speler (incl. payout multiplier indien van toepassing).
 - Active run actions:
   - start (leader/co-leader)
   - resolve (leader/co-leader zodra timer klaar is)

@@ -62,6 +62,17 @@ type MissionContributionRow = {
   contributionScore: number;
 };
 
+type MissionContributionViewRow = {
+  runId: number;
+  playerId: number;
+  roleKey: string;
+  contributionScore: number;
+  payoutMultiplier: number | null;
+  rewardCash: number | null;
+  rewardXp: number | null;
+  username: string | null;
+};
+
 type RuntimeCrewMissionConfig = {
   t1CreditsPerMinute: number;
   t2CreditsPerMinute: number;
@@ -366,6 +377,57 @@ async function getCrewMemberIds(crewId: number): Promise<number[]> {
     select: { playerId: true },
   });
   return members.map((member) => member.playerId);
+}
+
+async function getMissionContributionsByRunIds(
+  runIds: number[],
+): Promise<Record<number, MissionContributionViewRow[]>> {
+  const safeRunIds = Array.from(
+    new Set(runIds.map((id) => toInt(id, 0)).filter((id) => id > 0)),
+  );
+  if (safeRunIds.length === 0) {
+    return {};
+  }
+
+  const placeholders = safeRunIds.map(() => '?').join(', ');
+  const rows = await prisma.$queryRawUnsafe<MissionContributionViewRow[]>(
+    `
+      SELECT
+        c.runId,
+        c.playerId,
+        c.roleKey,
+        c.contributionScore,
+        c.payoutMultiplier,
+        c.rewardCash,
+        c.rewardXp,
+        p.username
+      FROM crew_mission_contributions c
+      LEFT JOIN players p ON p.id = c.playerId
+      WHERE c.runId IN (${placeholders})
+      ORDER BY c.runId ASC, c.contributionScore DESC, c.id ASC
+    `,
+    ...safeRunIds,
+  );
+
+  const byRunId: Record<number, MissionContributionViewRow[]> = {};
+  for (const row of rows) {
+    const normalized: MissionContributionViewRow = {
+      runId: toInt(row.runId),
+      playerId: toInt(row.playerId),
+      roleKey: String(row.roleKey || ''),
+      contributionScore: toFloat(row.contributionScore, 1),
+      payoutMultiplier: row.payoutMultiplier === null ? null : toFloat(row.payoutMultiplier, 1),
+      rewardCash: row.rewardCash === null ? null : toInt(row.rewardCash, 0),
+      rewardXp: row.rewardXp === null ? null : toInt(row.rewardXp, 0),
+      username: row.username ?? null,
+    };
+    if (!byRunId[normalized.runId]) {
+      byRunId[normalized.runId] = [];
+    }
+    byRunId[normalized.runId].push(normalized);
+  }
+
+  return byRunId;
 }
 
 async function sendCrewMissionStartedNotifications(
@@ -685,6 +747,12 @@ export const crewMissionService = {
       membership.crewId,
     );
 
+    const normalizedRecentRuns = recentRunsRaw.map(normalizeRunRow);
+    const contributionMap = await getMissionContributionsByRunIds([
+      ...(activeRun ? [activeRun.id] : []),
+      ...normalizedRecentRuns.map((run) => run.id),
+    ]);
+
     return {
       crewId: membership.crewId,
       role: membership.role,
@@ -702,8 +770,16 @@ export const crewMissionService = {
           lockedReason: unlocked ? null : getTierUnlockReason(template.tier),
         };
       }),
-      activeRun,
-      recentRuns: recentRunsRaw.map(normalizeRunRow),
+      activeRun: activeRun
+        ? {
+            ...activeRun,
+            missionContributions: contributionMap[activeRun.id] ?? [],
+          }
+        : null,
+      recentRuns: normalizedRecentRuns.map((run) => ({
+        ...run,
+        missionContributions: contributionMap[run.id] ?? [],
+      })),
       serverTime: now.toISOString(),
     };
   },
@@ -819,7 +895,11 @@ export const crewMissionService = {
     if (!run) {
       throw new Error('MISSION_RUN_NOT_FOUND');
     }
-    return run;
+    const contributionMap = await getMissionContributionsByRunIds([run.id]);
+    return {
+      ...run,
+      missionContributions: contributionMap[run.id] ?? [],
+    };
   },
 
   async resolveMission(

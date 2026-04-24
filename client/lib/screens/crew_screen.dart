@@ -238,6 +238,12 @@ class _CrewScreenState extends State<CrewScreen>
     'label.missionRewards': {'nl': 'Rewards', 'en': 'Rewards'},
     'label.missionStatus': {'nl': 'Status', 'en': 'Status'},
     'label.cooldownActive': {'nl': 'Cooldown actief', 'en': 'Cooldown active'},
+    'label.roleContributions': {
+      'nl': 'Rolbijdragen',
+      'en': 'Role contributions',
+    },
+    'label.contribution': {'nl': 'bijdrage', 'en': 'contribution'},
+    'label.multiplier': {'nl': 'multiplier', 'en': 'multiplier'},
     'status.missionLocked': {'nl': 'Vergrendeld', 'en': 'Locked'},
     'status.inProgress': {'nl': 'Bezig', 'en': 'In progress'},
     'status.completed': {'nl': 'Voltooid', 'en': 'Completed'},
@@ -1004,6 +1010,32 @@ class _CrewScreenState extends State<CrewScreen>
       default:
         return _t(locale, 'label.roleNone');
     }
+  }
+
+  List<Map<String, dynamic>> _extractMissionContributions(
+    Map<String, dynamic> run,
+  ) {
+    final raw = run['missionContributions'];
+    if (raw is! List) return const [];
+    final parsed = raw
+        .whereType<Map>()
+        .map((item) => item.cast<String, dynamic>())
+        .toList();
+    parsed.sort((a, b) {
+      final aScore = (a['contributionScore'] as num?)?.toDouble() ?? 0;
+      final bScore = (b['contributionScore'] as num?)?.toDouble() ?? 0;
+      return bScore.compareTo(aScore);
+    });
+    return parsed;
+  }
+
+  String _formatContributionValue(num? value) {
+    if (value == null) return '0';
+    final v = value.toDouble();
+    if ((v - v.roundToDouble()).abs() < 0.01) {
+      return v.toStringAsFixed(0);
+    }
+    return v.toStringAsFixed(2);
   }
 
   Future<void> _openCrewMissionRoleAssignDialog(String missionKey) async {
@@ -2116,11 +2148,17 @@ class _CrewScreenState extends State<CrewScreen>
     final locale = Localizations.localeOf(context).languageCode;
     try {
       final apiClient = AuthService().apiClient;
-      final response = await apiClient.post('/crew-wars/$warId/actions', {
-        'actionType': actionType,
-        if (targetPlayerId != null) 'targetPlayerId': targetPlayerId,
-        if (territoryKey != null) 'territoryKey': territoryKey,
-      });
+      final payload = <String, dynamic>{'actionType': actionType};
+      if (targetPlayerId != null) {
+        payload['targetPlayerId'] = targetPlayerId;
+      }
+      if (territoryKey != null) {
+        payload['territoryKey'] = territoryKey;
+      }
+      final response = await apiClient.post(
+        '/crew-wars/$warId/actions',
+        payload,
+      );
 
       if (response.statusCode == 200) {
         await _loadData();
@@ -5338,8 +5376,6 @@ class _CrewScreenState extends State<CrewScreen>
                           spacing: 8,
                           runSpacing: 8,
                           children: territories.map<Widget>((territory) {
-                            final territoryKey = (territory['regionKey'] ?? '')
-                                .toString();
                             final currentHolderCrewId =
                                 territory['currentHolderCrewId'];
                             final holderLabel =
@@ -6537,6 +6573,7 @@ class _CrewScreenState extends State<CrewScreen>
     final rewardPersonalXp =
         (activeRun['rewardPersonalXp'] as num?)?.toInt() ?? 0;
     final rewardsClaimedAt = activeRun['rewardsClaimedAt']?.toString();
+    final missionContributions = _extractMissionContributions(activeRun);
 
     final canResolve =
         runId != null &&
@@ -6582,6 +6619,37 @@ class _CrewScreenState extends State<CrewScreen>
                 '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} | Crew XP $rewardCrewXp | XP $rewardPersonalXp',
               ),
               Text('Progress: $progressPct%'),
+            ],
+            if (missionContributions.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(
+                _t(locale, 'label.roleContributions'),
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: missionContributions.take(6).map((row) {
+                  final playerId = (row['playerId'] as num?)?.toInt();
+                  final username = (row['username'] ?? '').toString().trim();
+                  final roleKey = (row['roleKey'] ?? 'none').toString();
+                  final contributionScore = (row['contributionScore'] as num?)
+                      ?.toDouble();
+                  final payoutMultiplier = (row['payoutMultiplier'] as num?)
+                      ?.toDouble();
+                  final chipTitle = username.isNotEmpty
+                      ? username
+                      : '#${playerId ?? 0}';
+                  final chipText =
+                      '$chipTitle • ${_crewRoleLabel(locale, roleKey)} • ${_t(locale, 'label.contribution')} ${_formatContributionValue(contributionScore)}${payoutMultiplier != null && (payoutMultiplier - 1).abs() > 0.01 ? ' • ${_t(locale, 'label.multiplier')} x${_formatContributionValue(payoutMultiplier)}' : ''}';
+                  return Chip(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: VisualDensity.compact,
+                    label: Text(chipText),
+                  );
+                }).toList(),
+              ),
             ],
             if (cooldownInSeconds > 0)
               Text(
@@ -6638,12 +6706,31 @@ class _CrewScreenState extends State<CrewScreen>
     final rewardCrewCash = (run['rewardCrewCash'] as num?)?.toInt() ?? 0;
     final cooldownInSeconds = _secondsUntil(run['cooldownUntil']?.toString());
     final hasCooldown = cooldownInSeconds > 0;
+    final missionContributions = _extractMissionContributions(run);
+    final contributionsPreview = missionContributions
+        .take(3)
+        .map((row) {
+          final username = (row['username'] ?? '').toString().trim();
+          final playerId = (row['playerId'] as num?)?.toInt();
+          final roleKey = (row['roleKey'] ?? 'none').toString();
+          final contributionScore = (row['contributionScore'] as num?)
+              ?.toDouble();
+          final displayName = username.isNotEmpty
+              ? username
+              : '#${playerId ?? 0}';
+          return '$displayName (${_crewRoleLabel(locale, roleKey)} ${_formatContributionValue(contributionScore)})';
+        })
+        .join(' • ');
 
     return Card(
       child: ListTile(
         title: Text(title),
         subtitle: Text(
-          '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome',
+          missionContributions.isEmpty
+              ? '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome'
+              : '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome\n${_t(locale, 'label.roleContributions')}: $contributionsPreview',
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
         ),
         trailing: hasCooldown
             ? Text(

@@ -49,6 +49,7 @@ Beschikbaar in de tab:
 - templates met image-first cards + icon fallback
 - role-assign dialog bij start (planner/enforcer/logistics/tech per crewlid)
 - active run card met status en timer
+- active/recent run tonen role-contribution breakdown per speler (score + payout multiplier waar relevant)
 - acties: `start`, `resolve`, `claim`, `speedup`
 - speedup quote + confirm-dialog met exacte creditsprijs vooraf
 - recente runs lijst
