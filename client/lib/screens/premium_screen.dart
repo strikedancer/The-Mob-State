@@ -1097,11 +1097,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
             'Instant credits for your premium wallet.',
           )
         : description.toString();
+    final cleanedTitle = resolvedTitle
+        .replaceFirst(RegExp(r'^\s*[0-9][0-9\.,\s]*\s*'), '')
+        .trim();
+    final cardTitle = cleanedTitle.isEmpty
+        ? _tr('Credits', 'Credits')
+        : cleanedTitle;
     final bundleCta = _tr('Koop $amount credits', 'Buy $amount credits');
     final bundlePrice = _oneTimePriceLabel(product['priceEur']);
 
     return _buildVisualTile(
-      title: resolvedTitle,
+      title: cardTitle,
       subtitle: resolvedDescription,
       imagePath: imagePath,
       accent: accent,
@@ -1160,7 +1166,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 ? (item['descriptionNl'] ?? '')
                 : (item['descriptionEn'] ?? '');
             final disabled =
-                _processingRedeem || _creditBalance < effectiveCost || !canRedeemNow;
+                _processingRedeem ||
+                _creditBalance < effectiveCost ||
+                !canRedeemNow;
             final effectType = (item['effectType'] ?? '').toString();
             final accent = _creditItemAccentColor(effectType);
             final resolvedTitle = title.toString().trim().isEmpty
@@ -1169,7 +1177,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
             final resolvedDescription = description.toString().trim().isEmpty
                 ? _tr('Direct premium voordeel.', 'Direct premium perk.')
                 : description.toString();
-            final actionLabel = !canRedeemNow &&
+            final actionLabel =
+                !canRedeemNow &&
                     unavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE'
                 ? _tr('Geen actieve cooldown', 'No active cooldown')
                 : (_creditBalance < effectiveCost
