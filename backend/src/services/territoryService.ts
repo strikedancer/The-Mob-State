@@ -53,6 +53,20 @@ async function getTerritoryConfig() {
     'TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS',
     'TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY',
     'TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY',
+    'TERRITORY_HQ_REGION_CAP_PER_LEVEL',
+    'TERRITORY_HQ_REGION_CAP_BONUS_CAP',
+    'TERRITORY_HQ_CONTEST_CAP_PER_LEVEL',
+    'TERRITORY_HQ_CONTEST_CAP_BONUS_CAP',
+    'TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL',
+    'TERRITORY_HQ_ACTION_POINT_BONUS_CAP',
+    'TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_PER_LEVEL',
+    'TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_CAP',
+    'TERRITORY_WEAPON_STORAGE_DEFENSE_BONUS_PER_LEVEL',
+    'TERRITORY_AMMO_STORAGE_DEFENSE_BONUS_PER_LEVEL',
+    'TERRITORY_CAR_STORAGE_RAID_BONUS_PER_LEVEL',
+    'TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL',
+    'TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL',
+    'TERRITORY_BUILDING_ACTION_BONUS_CAP',
   ];
   const cfg = await getRuntimeConfig(keys);
   return {
@@ -83,6 +97,20 @@ async function getTerritoryConfig() {
     warAftermathAdjacentAttackBonus: Number(cfg['TERRITORY_WAR_AFTERMATH_ADJACENT_ATTACK_BONUS'] ?? 1),
     warAftermathTargetStabilityPenalty: Number(cfg['TERRITORY_WAR_AFTERMATH_TARGET_STABILITY_PENALTY'] ?? 20),
     warAftermathAdjacentStabilityPenalty: Number(cfg['TERRITORY_WAR_AFTERMATH_ADJACENT_STABILITY_PENALTY'] ?? 10),
+    hqRegionCapPerLevel: Number(cfg['TERRITORY_HQ_REGION_CAP_PER_LEVEL'] ?? 0.2),
+    hqRegionCapBonusCap: Number(cfg['TERRITORY_HQ_REGION_CAP_BONUS_CAP'] ?? 3),
+    hqContestCapPerLevel: Number(cfg['TERRITORY_HQ_CONTEST_CAP_PER_LEVEL'] ?? 0.1),
+    hqContestCapBonusCap: Number(cfg['TERRITORY_HQ_CONTEST_CAP_BONUS_CAP'] ?? 2),
+    hqActionPointBonusPerLevel: Number(cfg['TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL'] ?? 0.12),
+    hqActionPointBonusCap: Number(cfg['TERRITORY_HQ_ACTION_POINT_BONUS_CAP'] ?? 2),
+    crewMissionActionPointBonusPerLevel: Number(cfg['TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_PER_LEVEL'] ?? 0.1),
+    crewMissionActionPointBonusCap: Number(cfg['TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_CAP'] ?? 2),
+    weaponStorageDefenseBonusPerLevel: Number(cfg['TERRITORY_WEAPON_STORAGE_DEFENSE_BONUS_PER_LEVEL'] ?? 0.18),
+    ammoStorageDefenseBonusPerLevel: Number(cfg['TERRITORY_AMMO_STORAGE_DEFENSE_BONUS_PER_LEVEL'] ?? 0.16),
+    carStorageRaidBonusPerLevel: Number(cfg['TERRITORY_CAR_STORAGE_RAID_BONUS_PER_LEVEL'] ?? 0.15),
+    boatStorageSupplyBonusPerLevel: Number(cfg['TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL'] ?? 0.15),
+    drugStorageSabotageBonusPerLevel: Number(cfg['TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL'] ?? 0.15),
+    buildingActionBonusCap: Number(cfg['TERRITORY_BUILDING_ACTION_BONUS_CAP'] ?? 3),
   };
 }
 
@@ -301,9 +329,21 @@ function buildPassiveIncomeSnapshot(
 type StrategicActionBonus = {
   actionType: string;
   bonusPoints: number;
-  source: 'strategic-tag' | 'adjacency' | 'war-aftermath';
+  source: 'strategic-tag' | 'adjacency' | 'war-aftermath' | 'hq-level' | 'crew-mission-level' | 'crew-building';
   labelNl: string;
   labelEn: string;
+};
+
+type CrewTerritoryProgression = {
+  missionLevel: number;
+  hqGlobalLevel: number;
+  buildingLevels: {
+    carStorage: number;
+    boatStorage: number;
+    weaponStorage: number;
+    ammoStorage: number;
+    drugStorage: number;
+  };
 };
 
 function parseWarPressureEffect(row: RegionEffectRow): ActiveWarPressureEffect | null {
@@ -414,6 +454,159 @@ function getActionBonusForType(bonuses: StrategicActionBonus[], actionType: stri
   return bonuses
     .filter((bonus) => bonus.actionType === actionType)
     .reduce((sum, bonus) => sum + bonus.bonusPoints, 0);
+}
+
+function normalizeHqStyle(style: string | null | undefined): 'camping' | 'rural' | 'city' | 'villa' | 'vip' {
+  const normalized = String(style ?? 'camping').trim().toLowerCase();
+  if (normalized === 'landelijk') return 'rural';
+  if (normalized === 'stad') return 'city';
+  if (normalized === 'camping' || normalized === 'rural' || normalized === 'city' || normalized === 'villa' || normalized === 'vip') {
+    return normalized;
+  }
+  return 'camping';
+}
+
+function getHqGlobalLevelForTerritory(styleRaw: string | null | undefined, levelRaw: number | null | undefined): number {
+  const style = normalizeHqStyle(styleRaw);
+  const level = Math.max(0, Math.floor(Number(levelRaw ?? 0)));
+  const baseByStyle: Record<'camping' | 'rural' | 'city' | 'villa' | 'vip', number> = {
+    camping: 0,
+    rural: 4,
+    city: 8,
+    villa: 12,
+    vip: 16,
+  };
+  return baseByStyle[style] + level;
+}
+
+function getScaledBonus(level: number, perLevel: number, cap: number): number {
+  if (!Number.isFinite(level) || level <= 0) return 0;
+  if (!Number.isFinite(perLevel) || perLevel <= 0) return 0;
+  const safeCap = Number.isFinite(cap) ? Math.max(0, cap) : 0;
+  const raw = Math.floor(level * perLevel);
+  return Math.max(0, Math.min(raw, safeCap));
+}
+
+async function getCrewTerritoryProgression(crewId: number): Promise<CrewTerritoryProgression> {
+  const [
+    crewRows,
+    hqRows,
+    carRows,
+    boatRows,
+    weaponRows,
+    ammoRows,
+    drugRows,
+  ] = await Promise.all([
+    prisma.$queryRawUnsafe<Array<{ missionLevel: number | null }>>(
+      `SELECT missionLevel FROM crews WHERE id = ? LIMIT 1`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ style: string | null; level: number | null }>>(
+      `SELECT style, level FROM crew_hq_buildings WHERE crewId = ? LIMIT 1`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ level: number | null }>>(
+      `SELECT level FROM crew_car_storage_buildings WHERE crewId = ? LIMIT 1`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ level: number | null }>>(
+      `SELECT level FROM crew_boat_storage_buildings WHERE crewId = ? LIMIT 1`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ level: number | null }>>(
+      `SELECT level FROM crew_weapon_storage_buildings WHERE crewId = ? LIMIT 1`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ level: number | null }>>(
+      `SELECT level FROM crew_ammo_storage_buildings WHERE crewId = ? LIMIT 1`,
+      crewId,
+    ),
+    prisma.$queryRawUnsafe<Array<{ level: number | null }>>(
+      `SELECT level FROM crew_drug_storage_buildings WHERE crewId = ? LIMIT 1`,
+      crewId,
+    ),
+  ]);
+
+  const hqStyle = hqRows[0]?.style ?? 'camping';
+  const hqLevel = toNumeric(hqRows[0]?.level ?? 0);
+  return {
+    missionLevel: Math.max(1, toNumeric(crewRows[0]?.missionLevel ?? 1)),
+    hqGlobalLevel: getHqGlobalLevelForTerritory(hqStyle, hqLevel),
+    buildingLevels: {
+      carStorage: Math.max(0, toNumeric(carRows[0]?.level ?? 0)),
+      boatStorage: Math.max(0, toNumeric(boatRows[0]?.level ?? 0)),
+      weaponStorage: Math.max(0, toNumeric(weaponRows[0]?.level ?? 0)),
+      ammoStorage: Math.max(0, toNumeric(ammoRows[0]?.level ?? 0)),
+      drugStorage: Math.max(0, toNumeric(drugRows[0]?.level ?? 0)),
+    },
+  };
+}
+
+function buildProgressionActionBonuses(
+  progression: CrewTerritoryProgression | null,
+  cfg: Awaited<ReturnType<typeof getTerritoryConfig>>,
+): StrategicActionBonus[] {
+  if (!progression) return [];
+
+  const bonuses: StrategicActionBonus[] = [];
+  const pushBonus = (
+    actionType: string,
+    bonusPoints: number,
+    source: StrategicActionBonus['source'],
+    labelNl: string,
+    labelEn: string,
+  ) => {
+    if (bonusPoints <= 0) return;
+    bonuses.push({ actionType, bonusPoints, source, labelNl, labelEn });
+  };
+
+  const hqBonus = getScaledBonus(
+    progression.hqGlobalLevel,
+    cfg.hqActionPointBonusPerLevel,
+    cfg.hqActionPointBonusCap,
+  );
+  for (const actionType of ['patrol', 'intel_scan', 'sabotage', 'supply_run', 'raid', 'defense']) {
+    pushBonus(actionType, hqBonus, 'hq-level', 'HQ niveau', 'HQ level');
+  }
+
+  const missionBonus = getScaledBonus(
+    progression.missionLevel,
+    cfg.crewMissionActionPointBonusPerLevel,
+    cfg.crewMissionActionPointBonusCap,
+  );
+  for (const actionType of ['patrol', 'intel_scan', 'supply_run']) {
+    pushBonus(actionType, missionBonus, 'crew-mission-level', 'Crew missie level', 'Crew mission level');
+  }
+
+  const defenseBuildingBonus = Math.min(
+    Math.max(0, cfg.buildingActionBonusCap),
+    getScaledBonus(progression.buildingLevels.weaponStorage, cfg.weaponStorageDefenseBonusPerLevel, cfg.buildingActionBonusCap)
+      + getScaledBonus(progression.buildingLevels.ammoStorage, cfg.ammoStorageDefenseBonusPerLevel, cfg.buildingActionBonusCap),
+  );
+  pushBonus('defense', defenseBuildingBonus, 'crew-building', 'Wapen + munitie opslag', 'Weapon + ammo storage');
+
+  const raidBonus = getScaledBonus(
+    progression.buildingLevels.carStorage,
+    cfg.carStorageRaidBonusPerLevel,
+    cfg.buildingActionBonusCap,
+  );
+  pushBonus('raid', raidBonus, 'crew-building', 'Auto-opslag logistiek', 'Vehicle storage logistics');
+
+  const supplyBonus = getScaledBonus(
+    progression.buildingLevels.boatStorage,
+    cfg.boatStorageSupplyBonusPerLevel,
+    cfg.buildingActionBonusCap,
+  );
+  pushBonus('supply_run', supplyBonus, 'crew-building', 'Haven-opslag support', 'Harbor storage support');
+
+  const sabotageBonus = getScaledBonus(
+    progression.buildingLevels.drugStorage,
+    cfg.drugStorageSabotageBonusPerLevel,
+    cfg.buildingActionBonusCap,
+  );
+  pushBonus('sabotage', sabotageBonus, 'crew-building', 'Drugslab ervaring', 'Drug lab experience');
+
+  return bonuses;
 }
 
 async function getAdjacentOwnedRegionCount(region: RegionRow, crewId: number): Promise<number> {
@@ -691,6 +884,9 @@ export async function getMapData(
 
   const cfg = await getTerritoryConfig();
   const now = new Date();
+  const viewerCrewProgression = viewer?.viewerCrewId
+    ? await getCrewTerritoryProgression(viewer.viewerCrewId)
+    : null;
 
   const [countries, regions, controls, contests] = await Promise.all([
     prisma.$queryRawUnsafe<TerritoryRow[]>(
@@ -805,6 +1001,7 @@ export async function getMapData(
       : null;
     const strategicActionBonuses = [
       ...buildStrategicActionBonuses(r, adjacentOwnedRegions),
+      ...buildProgressionActionBonuses(viewerCrewProgression, cfg),
       ...(viewer?.viewerCrewId != null && activeWarPressure?.favoredCrewId === viewer.viewerCrewId
         ? buildWarPressureActionBonuses(activeWarPressure)
         : []),
@@ -1072,6 +1269,15 @@ export async function startContest(
 
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
+  const crewProgression = await getCrewTerritoryProgression(crewId);
+  const effectiveMaxRegionsPerCrew = Math.max(
+    cfg.maxRegionsPerCrew,
+    cfg.maxRegionsPerCrew + getScaledBonus(crewProgression.hqGlobalLevel, cfg.hqRegionCapPerLevel, cfg.hqRegionCapBonusCap),
+  );
+  const effectiveMaxContestsPerCrew = Math.max(
+    cfg.maxConcurrentContestsPerCrew,
+    cfg.maxConcurrentContestsPerCrew + getScaledBonus(crewProgression.hqGlobalLevel, cfg.hqContestCapPerLevel, cfg.hqContestCapBonusCap),
+  );
 
   // Validate region exists and is enabled
   const regions = await prisma.$queryRawUnsafe<RegionRow[]>(
@@ -1094,7 +1300,7 @@ export async function startContest(
      WHERE attackerCrewId = ? AND status NOT IN ('resolved', 'cancelled')`,
     crewId,
   );
-  if (Number(crewContests[0]?.cnt ?? 0) >= cfg.maxConcurrentContestsPerCrew) {
+  if (Number(crewContests[0]?.cnt ?? 0) >= effectiveMaxContestsPerCrew) {
     throw new Error('CREW_CONTEST_LIMIT_REACHED');
   }
 
@@ -1103,7 +1309,7 @@ export async function startContest(
     `SELECT COUNT(*) AS cnt FROM territory_control WHERE ownerCrewId = ?`,
     crewId,
   );
-  if (Number(ownedCount[0]?.cnt ?? 0) >= cfg.maxRegionsPerCrew) {
+  if (Number(ownedCount[0]?.cnt ?? 0) >= effectiveMaxRegionsPerCrew) {
     throw new Error('REGIONS_CAP_REACHED');
   }
 
@@ -1158,11 +1364,23 @@ export async function doAction(
   contestId: number,
   actionType: string,
   currentCountry: string | null | undefined,
-): Promise<{ pointsDelta: number; message: string }> {
+): Promise<{
+  pointsDelta: number;
+  adjacentOwnedRegions: number;
+  actionBonusPoints: number;
+  strategicActionBonuses: Array<{
+    bonusPoints: number;
+    source: StrategicActionBonus['source'];
+    labelNl: string;
+    labelEn: string;
+  }>;
+  message: string;
+}> {
   await syncContestLifecycle();
 
   const cfg = await getTerritoryConfig();
   if (!cfg.enabled) throw new Error('TERRITORY_DISABLED');
+  const crewProgression = await getCrewTerritoryProgression(crewId);
 
   const validActions = ['patrol', 'intel_scan', 'sabotage', 'supply_run', 'raid', 'defense'];
   if (!validActions.includes(actionType)) throw new Error('INVALID_ACTION_TYPE');
@@ -1237,7 +1455,8 @@ export async function doAction(
     && attackerActions.has(actionType)
     && contest.defenderCrewId === activeWarPressure.affectedCrewId;
   const warPressureBonuses = warPressureApplies ? buildWarPressureActionBonuses(activeWarPressure) : [];
-  const allActionBonuses = [...strategicActionBonuses, ...warPressureBonuses];
+  const progressionBonuses = buildProgressionActionBonuses(crewProgression, cfg);
+  const allActionBonuses = [...strategicActionBonuses, ...progressionBonuses, ...warPressureBonuses];
   const actionBonusPoints = getActionBonusForType(allActionBonuses, actionType);
   const pointsDelta = abuseFlagged ? 0 : ((ACTION_POINTS[actionType] ?? 4) + actionBonusPoints);
   const stabilityDelta = actionType === 'sabotage' ? -5 : (actionType === 'supply_run' ? 3 : 0);

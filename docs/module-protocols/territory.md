@@ -50,6 +50,7 @@
   - Territory strategische regio-laag: regio-seed bewaart nu echte `strategicTagsJson` en `neighborsJson` voor Nederland, mapdata exposeert strategische rollen plus buursteun, en contest-actions krijgen nu regio- en adjacency-afhankelijke bonuspunten zodat havens, hoofdsteden, industrie- en grensregio's ook echt verschillend spelen
   - Territory aftermath-laag: gewonnen `territory_war` en `total_war` kunnen nu tijdelijke `territory_region_effects` schrijven op echte Territory-regio's, zodat Theater-/doelregio's en aangrenzende vijandelijke regio's tijdelijk extra oorlogsdruk tonen zonder persistente `stability` permanent te vervuilen
   - Territory bonus-label UX-fix: de regio-modal maakt nu expliciet dat `Actiebonussen` contestpunten per actie verhogen (niet de €-uitbetaling), en groepeert bonussen per actietype zodat dubbele bronlabels niet meer verwarrend als één lange regel verschijnen
+  - Territory progression-koppeling: contest-caps schalen nu mee met HQ global level (runtime-tunable), en actiebonussen kunnen nu naast regio/war pressure ook uit crew mission level en crew bijgebouwen komen (weapon/ammo/car/boat/drug storage), zodat crew progression en map-control elkaar logisch versterken
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -179,6 +180,20 @@ Verplichte keys:
 - `TERRITORY_PASSIVE_INCOME_TIER_2_CASH`
 - `TERRITORY_PASSIVE_INCOME_TIER_3_CASH`
 - `TERRITORY_PASSIVE_INCOME_TIER_4_CASH`
+- `TERRITORY_HQ_REGION_CAP_PER_LEVEL`
+- `TERRITORY_HQ_REGION_CAP_BONUS_CAP`
+- `TERRITORY_HQ_CONTEST_CAP_PER_LEVEL`
+- `TERRITORY_HQ_CONTEST_CAP_BONUS_CAP`
+- `TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL`
+- `TERRITORY_HQ_ACTION_POINT_BONUS_CAP`
+- `TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_PER_LEVEL`
+- `TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_CAP`
+- `TERRITORY_WEAPON_STORAGE_DEFENSE_BONUS_PER_LEVEL`
+- `TERRITORY_AMMO_STORAGE_DEFENSE_BONUS_PER_LEVEL`
+- `TERRITORY_CAR_STORAGE_RAID_BONUS_PER_LEVEL`
+- `TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL`
+- `TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL`
+- `TERRITORY_BUILDING_ACTION_BONUS_CAP`
 
 Harde regel:
 - Nieuwe territory setting keys worden eerst in admin runtime config toegevoegd en gevalideerd, nooit als hardcoded JSON settings file.
