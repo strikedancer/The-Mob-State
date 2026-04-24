@@ -30,6 +30,13 @@
 
 ---
 
+## Dashboard
+
+- Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie, status en quick actions.
+- Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
+
+---
+
 ## Basis Mechanics
 
 ### Speler Stats

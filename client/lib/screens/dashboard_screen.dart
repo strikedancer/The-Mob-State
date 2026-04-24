@@ -133,6 +133,13 @@ String _killProgressLabel(BuildContext context) {
   return l10n.localeName == 'nl' ? 'Moordvordering' : 'Kill Progress';
 }
 
+const Color _dashboardGold = Color(0xFFFFB347);
+const Color _dashboardBgStart = Color(0xFF160707);
+const Color _dashboardBgMid = Color(0xFF261010);
+const Color _dashboardBgEnd = Color(0xFF100505);
+const Color _dashboardPanelDark = Color(0xFF1B1212);
+const Color _dashboardPanelLight = Color(0xFF2A1A1A);
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -193,7 +200,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedWebSection = _webSectionFromQueryParam(Uri.base.queryParameters['section']);
+    _selectedWebSection = _webSectionFromQueryParam(
+      Uri.base.queryParameters['section'],
+    );
     // Connect to event stream when dashboard opens
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
@@ -491,8 +500,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              border: Border(bottom: BorderSide(color: Colors.amber[600]!)),
+              gradient: const LinearGradient(
+                colors: [_dashboardPanelLight, _dashboardPanelDark],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              border: Border(
+                bottom: BorderSide(color: _dashboardGold, width: 1),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.35),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Row(
               children: [
@@ -700,9 +722,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     width: 230,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
+                      gradient: const LinearGradient(
+                        colors: [_dashboardPanelLight, _dashboardPanelDark],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
                       border: Border(
-                        right: BorderSide(color: Colors.amber[600]!),
+                        right: BorderSide(
+                          color: _dashboardGold.withOpacity(0.6),
+                        ),
                       ),
                     ),
                     child: ListView(
@@ -717,25 +745,49 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         _buildCompactStatusBar(context, player, countryName),
                         const SizedBox(height: 12),
                         Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: ScrollConfiguration(
-                              behavior: ScrollConfiguration.of(context)
-                                  .copyWith(
-                                    dragDevices: {
-                                      PointerDeviceKind.touch,
-                                      PointerDeviceKind.mouse,
-                                      PointerDeviceKind.stylus,
-                                      PointerDeviceKind.invertedStylus,
-                                      PointerDeviceKind.trackpad,
-                                      PointerDeviceKind.unknown,
-                                    },
-                                  ),
-                              child: KeyedSubtree(
-                                key: ValueKey(
-                                  '${_selectedWebSection.name}-$_webSectionRefreshSeed',
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [
+                                  _dashboardBgStart,
+                                  _dashboardBgMid,
+                                  _dashboardBgEnd,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: _dashboardGold.withOpacity(0.45),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.4),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 8),
                                 ),
-                                child: _buildWebContent(context),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: ScrollConfiguration(
+                                behavior: ScrollConfiguration.of(context)
+                                    .copyWith(
+                                      dragDevices: {
+                                        PointerDeviceKind.touch,
+                                        PointerDeviceKind.mouse,
+                                        PointerDeviceKind.stylus,
+                                        PointerDeviceKind.invertedStylus,
+                                        PointerDeviceKind.trackpad,
+                                        PointerDeviceKind.unknown,
+                                      },
+                                    ),
+                                child: KeyedSubtree(
+                                  key: ValueKey(
+                                    '${_selectedWebSection.name}-$_webSectionRefreshSeed',
+                                  ),
+                                  child: _buildWebContent(context),
+                                ),
                               ),
                             ),
                           ),
@@ -749,9 +801,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     width: 240,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
+                      gradient: const LinearGradient(
+                        colors: [_dashboardPanelLight, _dashboardPanelDark],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
                       border: Border(
-                        left: BorderSide(color: Colors.amber[600]!),
+                        left: BorderSide(
+                          color: _dashboardGold.withOpacity(0.6),
+                        ),
                       ),
                     ),
                     child: _buildActionsPanel(context, l10n),
@@ -999,31 +1057,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .map(
           (item) => Padding(
             padding: const EdgeInsets.only(bottom: 6),
-            child: ListTile(
-              selected: _selectedWebSection == item.section,
-              leading: Icon(item.icon),
-              title: Text(
-                item.label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              trailing: item.badge > 0
-                  ? CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Colors.red,
-                      child: Text(
-                        item.badge > 99 ? '99+' : '${item.badge}',
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: Colors.white,
-                        ),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              decoration: BoxDecoration(
+                gradient: _selectedWebSection == item.section
+                    ? LinearGradient(
+                        colors: [
+                          _dashboardGold.withOpacity(0.22),
+                          _dashboardGold.withOpacity(0.08),
+                        ],
+                      )
+                    : const LinearGradient(
+                        colors: [_dashboardPanelLight, _dashboardPanelDark],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       ),
-                    )
-                  : null,
-              onTap: () {
-                onBeforeNavigate?.call();
-                _selectWebSection(item.section);
-              },
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: _selectedWebSection == item.section
+                      ? _dashboardGold.withOpacity(0.9)
+                      : Colors.white.withOpacity(0.08),
+                ),
+              ),
+              child: ListTile(
+                selected: _selectedWebSection == item.section,
+                leading: Icon(
+                  item.icon,
+                  color: _selectedWebSection == item.section
+                      ? _dashboardGold
+                      : Colors.white70,
+                ),
+                title: Text(
+                  item.label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: _selectedWebSection == item.section
+                        ? Colors.white
+                        : Colors.white70,
+                    fontWeight: _selectedWebSection == item.section
+                        ? FontWeight.w700
+                        : FontWeight.w500,
+                  ),
+                ),
+                trailing: item.badge > 0
+                    ? CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Colors.red,
+                        child: Text(
+                          item.badge > 99 ? '99+' : '${item.badge}',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : null,
+                onTap: () {
+                  onBeforeNavigate?.call();
+                  _selectWebSection(item.section);
+                },
+              ),
             ),
           ),
         )
@@ -1036,9 +1130,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: [
         Text(
           'Quick Actions',
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: _dashboardGold,
+            letterSpacing: 0.2,
+          ),
         ),
         const SizedBox(height: 16),
         Expanded(
@@ -1145,21 +1241,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          border: Border.all(color: color.withOpacity(0.3)),
-          borderRadius: BorderRadius.circular(8),
+          gradient: LinearGradient(
+            colors: [color.withOpacity(0.26), color.withOpacity(0.08)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          border: Border.all(color: color.withOpacity(0.45)),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(6),
+                gradient: LinearGradient(
+                  colors: [color, color.withOpacity(0.65)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(icon, color: Colors.white, size: 24),
             ),
@@ -1173,12 +1284,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade400),
+                    style: TextStyle(fontSize: 12, color: Colors.white70),
                   ),
                 ],
               ),
@@ -1388,8 +1500,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
-        borderRadius: BorderRadius.circular(8),
+        gradient: const LinearGradient(
+          colors: [_dashboardPanelLight, _dashboardPanelDark],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: _dashboardGold.withOpacity(0.5)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.32),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1492,7 +1616,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildTopInfoItem(String text, Color color) {
     return Text(
       text,
-      style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600),
+      style: TextStyle(
+        color: color,
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0.2,
+      ),
     );
   }
 
@@ -1511,16 +1640,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           style: const TextStyle(
             color: Colors.white,
             fontSize: 11,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 4),
         ClipRRect(
-          borderRadius: BorderRadius.circular(3),
+          borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: progress,
-            minHeight: 8,
-            backgroundColor: Colors.grey.shade700,
+            minHeight: 9,
+            backgroundColor: Colors.white.withOpacity(0.14),
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),
@@ -2479,6 +2608,25 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     );
   }
 
+  BoxDecoration _panelDecoration({Color accent = _dashboardGold}) {
+    return BoxDecoration(
+      gradient: const LinearGradient(
+        colors: [_dashboardPanelLight, _dashboardPanelDark],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: accent.withOpacity(0.45)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.28),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -2506,13 +2654,25 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
 
     if (_loading) {
       return Container(
-        color: Colors.grey.shade900,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [_dashboardBgStart, _dashboardBgMid, _dashboardBgEnd],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: const Center(child: CircularProgressIndicator()),
       );
     }
 
     return Container(
-      color: Colors.grey.shade900,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [_dashboardBgStart, _dashboardBgMid, _dashboardBgEnd],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: LayoutBuilder(
@@ -2525,10 +2685,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               return Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade800,
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: _panelDecoration(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -2615,10 +2772,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade800,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    decoration: _panelDecoration(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -2713,10 +2867,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade800,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    decoration: _panelDecoration(accent: Colors.blueGrey),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -2755,10 +2906,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               return Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade800,
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                decoration: _panelDecoration(accent: Colors.deepOrange),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -2902,22 +3050,32 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       ),
                       _buildInfoRow(
                         _tr('Verdient nu per uur', 'Earning now per hour'),
-                        formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerHour),
+                        formatCurrency(
+                          _stats!.territoryLeaderStats!.passiveIncomePerHour,
+                        ),
                         Colors.green.shade300,
                       ),
                       _buildInfoRow(
                         _tr('Verdient nu per dag', 'Earning now per day'),
-                        formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerDay),
+                        formatCurrency(
+                          _stats!.territoryLeaderStats!.passiveIncomePerDay,
+                        ),
                         Colors.green.shade300,
                       ),
                       _buildInfoRow(
                         _tr('Totaal verdiend', 'Total earned'),
-                        formatCurrency(_stats!.territoryLeaderStats!.totalPassiveIncomeEarned),
+                        formatCurrency(
+                          _stats!
+                              .territoryLeaderStats!
+                              .totalPassiveIncomeEarned,
+                        ),
                         Colors.amber.shade300,
                       ),
                       _buildInfoRow(
                         _tr('Crew bank', 'Crew bank'),
-                        formatCurrency(_stats!.territoryLeaderStats!.crewBankBalance),
+                        formatCurrency(
+                          _stats!.territoryLeaderStats!.crewBankBalance,
+                        ),
                         Colors.white,
                       ),
                     ],
@@ -2961,7 +3119,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
           Text(
             value,
             style: TextStyle(
@@ -2985,7 +3146,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
           Text(
             displayText,
             style: TextStyle(
@@ -3042,7 +3206,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     }
     if (minutes % 60 == 0) {
       final hours = minutes ~/ 60;
-      return _tr('iedere $hours uur', 'every $hours hour${hours == 1 ? '' : 's'}');
+      return _tr(
+        'iedere $hours uur',
+        'every $hours hour${hours == 1 ? '' : 's'}',
+      );
     }
     return _tr('elke $minutes min', 'every $minutes min');
   }
@@ -3079,11 +3246,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ),
         const SizedBox(height: 8),
         ClipRRect(
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(6),
           child: LinearProgressIndicator(
             value: progress,
             minHeight: 24,
-            backgroundColor: Colors.grey.shade700,
+            backgroundColor: Colors.white.withOpacity(0.12),
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),
