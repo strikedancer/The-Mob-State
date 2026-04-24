@@ -209,6 +209,13 @@ Admin moet minimaal kunnen zien:
 - Gemiddelde duration
 - Reward per minute per tier
 - Credit skip usage per tier
+- Contribution-overzicht:
+  - totale assignments
+  - unieke contributors
+  - gemiddelde contribution score
+  - gemiddelde payout multiplier + reduced payout count
+  - breakdown per role (`planner`, `enforcer`, `logistics`, `tech`)
+  - top contributors (assignments/score/multiplier/xp)
 - Top anomaly flags
 
 Verplicht endpointset:
@@ -226,6 +233,7 @@ Verplicht endpointset:
 7. Controleer notifications/inbox op start, reminder en result.
 8. Controleer admin telemetry op live data na tests.
 9. Controleer dat mission economy geen pay-to-win escalatie veroorzaakt.
+10. Draai regressie-guard `backend/test-crew-mission-cooldown-guard.js` en bevestig dat een completed run met actieve cooldown nog steeds als blokkerende active run geldt.
 
 ## Must Preserve
 

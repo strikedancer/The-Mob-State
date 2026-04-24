@@ -484,6 +484,65 @@ export interface EconomyBalanceTelemetry {
   };
 }
 
+export interface CrewMissionRoleTelemetry {
+  roleKey: string;
+  assignments: number;
+  distinctPlayers: number;
+  avgContributionScore: number;
+  avgPayoutMultiplier: number;
+  avgRewardXp: number;
+}
+
+export interface CrewMissionTopContributorTelemetry {
+  playerId: number;
+  username: string;
+  assignments: number;
+  avgContributionScore: number;
+  avgPayoutMultiplier: number;
+  totalRewardXp: number;
+}
+
+export interface CrewMissionTelemetry {
+  windowHours: number;
+  summary: {
+    started: number;
+    completed: number;
+    successCount: number;
+    partialCount: number;
+    failCount: number;
+    successRate: number;
+    rewardCrewCash: number;
+    rewardCrewXp: number;
+    rewardPersonalXp: number;
+  };
+  byMission: Array<{
+    missionKey: string;
+    tier: number;
+    started: number;
+    completed: number;
+    successCount: number;
+    partialCount: number;
+    failCount: number;
+    rewardCrewCash: number;
+    payoutPerMinute: number;
+  }>;
+  speedups: {
+    total: number;
+    byTier: Record<string, number>;
+  };
+  contributions: {
+    assignments: number;
+    distinctPlayers: number;
+    avgContributionScore: number;
+    avgPayoutMultiplier: number;
+    reducedPayoutCount: number;
+    totalRewardXp: number;
+    byRole: CrewMissionRoleTelemetry[];
+    topContributors: CrewMissionTopContributorTelemetry[];
+  };
+  serverTime: string;
+}
+
 export interface SupportTicketSummary {
   id: number;
   playerId: number;
@@ -875,6 +934,21 @@ export const adminService = {
     });
 
     await ensureOk(response, 'Failed to fetch economy balance telemetry');
+    return response.json();
+  },
+
+  async getCrewMissionTelemetry(hours = 24): Promise<CrewMissionTelemetry> {
+    const token = adminAuthService.getToken();
+    const query = new URLSearchParams({
+      hours: String(hours),
+    });
+    const response = await fetch(`${API_URL}/admin/crew-missions/telemetry?${query.toString()}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    await ensureOk(response, 'Failed to fetch crew mission telemetry');
     return response.json();
   },
 

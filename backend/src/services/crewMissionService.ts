@@ -135,8 +135,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 28,
     failPenaltyPct: 0.08,
     sortOrder: 10,
-    imageCardPath: 'images/crimes/smuggling_crime.png',
-    imageScenePath: 'images/crimes/smuggling_crime.png',
+    imageCardPath: 'images/crew_missions/cards/safehouse_supply_run.png',
+    imageScenePath: 'images/crew_missions/scenes/safehouse_supply_run.png',
   },
   {
     missionKey: 'street_intel_sweep',
@@ -154,8 +154,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 32,
     failPenaltyPct: 0.1,
     sortOrder: 20,
-    imageCardPath: 'images/crimes/hack_account_crime.png',
-    imageScenePath: 'images/crimes/hack_account_crime.png',
+    imageCardPath: 'images/crew_missions/cards/street_intel_sweep.png',
+    imageScenePath: 'images/crew_missions/scenes/street_intel_sweep.png',
   },
   {
     missionKey: 'armory_smuggle_chain',
@@ -173,8 +173,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 52,
     failPenaltyPct: 0.14,
     sortOrder: 30,
-    imageCardPath: 'images/crimes/rob_armored_truck_crime.png',
-    imageScenePath: 'images/crimes/rob_armored_truck_crime.png',
+    imageCardPath: 'images/crew_missions/cards/armory_smuggle_chain.png',
+    imageScenePath: 'images/crew_missions/scenes/armory_smuggle_chain.png',
   },
   {
     missionKey: 'port_hijack_window',
@@ -192,8 +192,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 60,
     failPenaltyPct: 0.16,
     sortOrder: 40,
-    imageCardPath: 'images/crimes/hijack_truck_crime.png',
-    imageScenePath: 'images/crimes/hijack_truck_crime.png',
+    imageCardPath: 'images/crew_missions/cards/port_hijack_window.png',
+    imageScenePath: 'images/crew_missions/scenes/port_hijack_window.png',
   },
   {
     missionKey: 'casino_ledger_raid',
@@ -211,8 +211,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 105,
     failPenaltyPct: 0.2,
     sortOrder: 50,
-    imageCardPath: 'images/crimes/casino_heist_crime.png',
-    imageScenePath: 'images/crimes/casino_heist_crime.png',
+    imageCardPath: 'images/crew_missions/cards/casino_ledger_raid.png',
+    imageScenePath: 'images/crew_missions/scenes/casino_ledger_raid.png',
   },
   {
     missionKey: 'federal_convoy_break',
@@ -230,8 +230,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 130,
     failPenaltyPct: 0.24,
     sortOrder: 60,
-    imageCardPath: 'images/crimes/bank_robbery_crime.png',
-    imageScenePath: 'images/crimes/bank_robbery_crime.png',
+    imageCardPath: 'images/crew_missions/cards/federal_convoy_break.png',
+    imageScenePath: 'images/crew_missions/scenes/federal_convoy_break.png',
   },
 ];
 
@@ -1197,7 +1197,7 @@ export const crewMissionService = {
     const safeHours = clamp(toInt(hours, 24), 1, 168);
     const from = new Date(Date.now() - safeHours * 60 * 60 * 1000);
 
-    const [summaryRows, byMissionRows, speedupRows] = await Promise.all([
+    const [summaryRows, byMissionRows, speedupRows, contributionSummaryRows, byRoleRows, topContributorRows] = await Promise.all([
       prisma.$queryRawUnsafe<Array<{
         started: number;
         completed: number;
@@ -1263,6 +1263,78 @@ export const crewMissionService = {
           createdAt: true,
         },
       }),
+      prisma.$queryRawUnsafe<Array<{
+        assignments: number;
+        distinctPlayers: number;
+        avgContributionScore: number;
+        avgPayoutMultiplier: number;
+        reducedPayoutCount: number;
+        totalRewardXp: number;
+      }>>(
+        `
+          SELECT
+            COUNT(*) AS assignments,
+            COUNT(DISTINCT c.playerId) AS distinctPlayers,
+            AVG(c.contributionScore) AS avgContributionScore,
+            AVG(COALESCE(c.payoutMultiplier, 1)) AS avgPayoutMultiplier,
+            SUM(CASE WHEN COALESCE(c.payoutMultiplier, 1) < 1 THEN 1 ELSE 0 END) AS reducedPayoutCount,
+            SUM(COALESCE(c.rewardXp, 0)) AS totalRewardXp
+          FROM crew_mission_contributions c
+          INNER JOIN crew_mission_runs r ON r.id = c.runId
+          WHERE r.startedAt >= ?
+        `,
+        from,
+      ),
+      prisma.$queryRawUnsafe<Array<{
+        roleKey: string;
+        assignments: number;
+        distinctPlayers: number;
+        avgContributionScore: number;
+        avgPayoutMultiplier: number;
+        avgRewardXp: number;
+      }>>(
+        `
+          SELECT
+            c.roleKey,
+            COUNT(*) AS assignments,
+            COUNT(DISTINCT c.playerId) AS distinctPlayers,
+            AVG(c.contributionScore) AS avgContributionScore,
+            AVG(COALESCE(c.payoutMultiplier, 1)) AS avgPayoutMultiplier,
+            AVG(COALESCE(c.rewardXp, 0)) AS avgRewardXp
+          FROM crew_mission_contributions c
+          INNER JOIN crew_mission_runs r ON r.id = c.runId
+          WHERE r.startedAt >= ?
+          GROUP BY c.roleKey
+          ORDER BY assignments DESC, c.roleKey ASC
+        `,
+        from,
+      ),
+      prisma.$queryRawUnsafe<Array<{
+        playerId: number;
+        username: string | null;
+        assignments: number;
+        avgContributionScore: number;
+        avgPayoutMultiplier: number;
+        totalRewardXp: number;
+      }>>(
+        `
+          SELECT
+            c.playerId,
+            p.username,
+            COUNT(*) AS assignments,
+            AVG(c.contributionScore) AS avgContributionScore,
+            AVG(COALESCE(c.payoutMultiplier, 1)) AS avgPayoutMultiplier,
+            SUM(COALESCE(c.rewardXp, 0)) AS totalRewardXp
+          FROM crew_mission_contributions c
+          INNER JOIN crew_mission_runs r ON r.id = c.runId
+          LEFT JOIN players p ON p.id = c.playerId
+          WHERE r.startedAt >= ?
+          GROUP BY c.playerId, p.username
+          ORDER BY assignments DESC, avgContributionScore DESC, c.playerId ASC
+          LIMIT 12
+        `,
+        from,
+      ),
     ]);
 
     const summary = summaryRows[0] || {
@@ -1274,6 +1346,14 @@ export const crewMissionService = {
       rewardCrewCash: 0,
       rewardCrewXp: 0,
       rewardPersonalXp: 0,
+    };
+    const contributionSummary = contributionSummaryRows[0] || {
+      assignments: 0,
+      distinctPlayers: 0,
+      avgContributionScore: 0,
+      avgPayoutMultiplier: 1,
+      reducedPayoutCount: 0,
+      totalRewardXp: 0,
     };
 
     const speedupsByTier: Record<string, number> = { tier1: 0, tier2: 0, tier3: 0 };
@@ -1325,6 +1405,30 @@ export const crewMissionService = {
       speedups: {
         total: speedupRows.length,
         byTier: speedupsByTier,
+      },
+      contributions: {
+        assignments: toInt(contributionSummary.assignments),
+        distinctPlayers: toInt(contributionSummary.distinctPlayers),
+        avgContributionScore: Number(toFloat(contributionSummary.avgContributionScore, 0).toFixed(3)),
+        avgPayoutMultiplier: Number(toFloat(contributionSummary.avgPayoutMultiplier, 1).toFixed(3)),
+        reducedPayoutCount: toInt(contributionSummary.reducedPayoutCount),
+        totalRewardXp: toInt(contributionSummary.totalRewardXp),
+        byRole: byRoleRows.map((row) => ({
+          roleKey: String(row.roleKey || '').trim().toLowerCase(),
+          assignments: toInt(row.assignments),
+          distinctPlayers: toInt(row.distinctPlayers),
+          avgContributionScore: Number(toFloat(row.avgContributionScore, 0).toFixed(3)),
+          avgPayoutMultiplier: Number(toFloat(row.avgPayoutMultiplier, 1).toFixed(3)),
+          avgRewardXp: Number(toFloat(row.avgRewardXp, 0).toFixed(2)),
+        })),
+        topContributors: topContributorRows.map((row) => ({
+          playerId: toInt(row.playerId),
+          username: row.username || `#${toInt(row.playerId)}`,
+          assignments: toInt(row.assignments),
+          avgContributionScore: Number(toFloat(row.avgContributionScore, 0).toFixed(3)),
+          avgPayoutMultiplier: Number(toFloat(row.avgPayoutMultiplier, 1).toFixed(3)),
+          totalRewardXp: toInt(row.totalRewardXp),
+        })),
       },
       serverTime: new Date().toISOString(),
     };

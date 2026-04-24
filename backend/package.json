@@ -15,6 +15,7 @@
     "check": "npm run typecheck && npm run lint && npm run format:check",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:crypto-orders": "node test-crypto-orders.js",
+    "test:crew-mission-cooldown-guard": "node test-crew-mission-cooldown-guard.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",

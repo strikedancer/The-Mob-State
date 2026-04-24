@@ -312,3 +312,22 @@ Opmerking:
 - Geen pay-to-win reward advantage.
 - Image cards/scenes laden op web/mobile met icon fallback.
 - Admin telemetry toont live Phase 1 data.
+
+## Addendum 2026-04-24 (Phase 1.1)
+
+Doorgevoerd:
+- Cooldown start-guard regressietest toegevoegd: `backend/test-crew-mission-cooldown-guard.js`.
+- Admin telemetry uitgebreid met contribution inzichten:
+  - assignments totaal
+  - unieke contributors
+  - gemiddelde contribution score
+  - payout multiplier gemiddeld + reduced payout count
+  - role-breakdown (`planner`, `enforcer`, `logistics`, `tech`)
+  - top contributors.
+- Externe image-structuur voor crew missions definitief gemaakt:
+  - `runtime/client-images/crew_missions/cards/`
+  - `runtime/client-images/crew_missions/scenes/`
+  - mission seeds wijzen naar `images/crew_missions/...`.
+
+Opmerking:
+- De regressietest vereist een bereikbare MySQL/Prisma database.

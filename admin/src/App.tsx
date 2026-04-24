@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type CreditShopItem, type CreateCreditShopItemPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder, type AdminImageModuleOverviewResponse, type EconomyBalanceTelemetry } from './services/adminService'
+import { adminAuthService, adminService, type PremiumOffer, type CreatePremiumOfferPayload, type CreditShopItem, type CreateCreditShopItemPayload, type PlayerOverview, type SystemLogEntry, type AdminAccount, type GameEventTemplate, type GameEventSchedule, type GameLiveEvent, type CreateGameEventTemplatePayload, type CreateGameEventSchedulePayload, type CreateGameLiveEventPayload, type RecentActivityItem, type SystemHealthDetails, type DashboardOverview, type SupportTicketSummary, type SupportTicketDetailResponse, type SupportTicketTodo, type SupportTicketAttachment, type SupportReplyTemplate, type SupportAnalyticsResponse, type SupportTicketTodoComment, type AdminImageLibraryFile, type AdminImageLibraryFolder, type AdminImageModuleOverviewResponse, type EconomyBalanceTelemetry, type CrewMissionTelemetry } from './services/adminService'
 import { CrewWarsAdminPanel } from './components/CrewWarsAdminPanel'
 import { TerritoryAdminPanel } from './components/TerritoryAdminPanel'
 
@@ -712,14 +712,18 @@ function App() {
     system: string | null
     overview: string | null
     economy: string | null
+    crewMissions: string | null
   }>({
     stats: null,
     system: null,
     overview: null,
     economy: null,
+    crewMissions: null,
   })
   const [economyTelemetry, setEconomyTelemetry] = useState<EconomyBalanceTelemetry | null>(null)
   const [economyTelemetryLoading, setEconomyTelemetryLoading] = useState(false)
+  const [crewMissionTelemetry, setCrewMissionTelemetry] = useState<CrewMissionTelemetry | null>(null)
+  const [crewMissionTelemetryLoading, setCrewMissionTelemetryLoading] = useState(false)
   const [economyWindowHours, setEconomyWindowHours] = useState(ECON_DEFAULT_WINDOW_HOURS)
   const [economyTuningSaving, setEconomyTuningSaving] = useState(false)
   const [error, setError] = useState('')
@@ -949,6 +953,7 @@ function App() {
       loadSystemHealth()
       loadDashboardOverview()
       loadEconomyTelemetry(economyWindowHours)
+      loadCrewMissionTelemetry(economyWindowHours)
       loadConfig()
     }
   }, [isAuthenticated])
@@ -960,6 +965,7 @@ function App() {
       loadSystemHealth()
       loadDashboardOverview()
       loadEconomyTelemetry(economyWindowHours)
+      loadCrewMissionTelemetry(economyWindowHours)
     }, 30000)
 
     return () => window.clearInterval(timer)
@@ -1293,6 +1299,20 @@ function App() {
       console.error('Failed to load economy telemetry:', err)
     } finally {
       setEconomyTelemetryLoading(false)
+    }
+  }
+
+  const loadCrewMissionTelemetry = async (hours: number = economyWindowHours) => {
+    try {
+      setCrewMissionTelemetryLoading(true)
+      const data = await adminService.getCrewMissionTelemetry(hours)
+      setCrewMissionTelemetry(data)
+      setDashboardLastUpdated((current) => ({ ...current, crewMissions: new Date().toISOString() }))
+    } catch (err) {
+      if (handleUnauthorized(err)) return
+      console.error('Failed to load crew mission telemetry:', err)
+    } finally {
+      setCrewMissionTelemetryLoading(false)
     }
   }
 
@@ -3738,6 +3758,7 @@ function App() {
                           loadSystemHealth()
                           loadDashboardOverview()
                           loadEconomyTelemetry(economyWindowHours)
+                          loadCrewMissionTelemetry(economyWindowHours)
                         }}
                       >
                         <i className="ph-arrows-clockwise me-1" />{l('Ververs status', 'Refresh status')}
@@ -3986,6 +4007,61 @@ function App() {
                       <span className="badge bg-secondary">
                         {l('Sessievenster', 'Session window')}: {economyTelemetry?.diminishing.sessionWindowMinutes ?? '-'}m
                       </span>
+                    </div>
+
+                    <div className="border rounded p-3">
+                      <div className="d-flex align-items-center justify-content-between gap-2 mb-2">
+                        <div className="fw-semibold">{l('Crew mission bijdragen', 'Crew mission contributions')}</div>
+                        <div className="d-flex align-items-center gap-2">
+                          {crewMissionTelemetryLoading && <small className="text-muted">{t.loading}</small>}
+                          <small className="text-muted">{formatDashboardUpdatedAt(dashboardLastUpdated.crewMissions)}</small>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary btn-sm"
+                            onClick={() => loadCrewMissionTelemetry(economyWindowHours)}
+                          >
+                            <i className="ph-arrows-clockwise me-1" />{l('Ververs', 'Refresh')}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="d-flex flex-wrap gap-2 mb-2">
+                        <span className="badge bg-secondary">{l('Assignments', 'Assignments')}: {crewMissionTelemetry?.contributions.assignments ?? 0}</span>
+                        <span className="badge bg-secondary">{l('Unieke spelers', 'Unique players')}: {crewMissionTelemetry?.contributions.distinctPlayers ?? 0}</span>
+                        <span className="badge bg-secondary">{l('Gem. bijdrage', 'Avg contribution')}: {(crewMissionTelemetry?.contributions.avgContributionScore ?? 0).toFixed(3)}</span>
+                        <span className="badge bg-secondary">{l('Gem. multiplier', 'Avg multiplier')}: {(crewMissionTelemetry?.contributions.avgPayoutMultiplier ?? 1).toFixed(3)}x</span>
+                        <span className="badge bg-secondary">{l('Gereduceerde payouts', 'Reduced payouts')}: {crewMissionTelemetry?.contributions.reducedPayoutCount ?? 0}</span>
+                      </div>
+
+                      <div className="table-responsive">
+                        <table className="table table-sm align-middle mb-0">
+                          <thead>
+                            <tr>
+                              <th>{l('Rol', 'Role')}</th>
+                              <th>{l('Assignments', 'Assignments')}</th>
+                              <th>{l('Spelers', 'Players')}</th>
+                              <th>{l('Gem. bijdrage', 'Avg contribution')}</th>
+                              <th>{l('Gem. multiplier', 'Avg multiplier')}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(crewMissionTelemetry?.contributions.byRole ?? []).map((role) => (
+                              <tr key={role.roleKey}>
+                                <td>{role.roleKey}</td>
+                                <td>{role.assignments}</td>
+                                <td>{role.distinctPlayers}</td>
+                                <td>{role.avgContributionScore.toFixed(3)}</td>
+                                <td>{role.avgPayoutMultiplier.toFixed(3)}x</td>
+                              </tr>
+                            ))}
+                            {(!crewMissionTelemetry?.contributions.byRole || crewMissionTelemetry.contributions.byRole.length === 0) && (
+                              <tr>
+                                <td colSpan={5} className="text-muted">{l('Nog geen data in dit venster.', 'No data in this window yet.')}</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
 
                     <div className="border rounded p-3">
