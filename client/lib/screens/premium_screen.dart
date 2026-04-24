@@ -667,6 +667,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final resolvedInfoTitle = (infoTitle ?? title).trim();
     final resolvedInfoBody = (infoBody ?? subtitle).trim();
+    final hasTitle = title.trim().isNotEmpty;
 
     return Container(
       clipBehavior: Clip.antiAlias,
@@ -770,28 +771,29 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              icon,
-                              color: Colors.white,
-                              size: compact ? 16 : 18,
-                            ),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.titleSmall
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                        if (hasTitle)
+                          Row(
+                            children: [
+                              Icon(
+                                icon,
+                                color: Colors.white,
+                                size: compact ? 16 : 18,
                               ),
-                            ),
-                          ],
-                        ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.titleSmall
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
                         if (primaryValue != null &&
                             primaryValue.trim().isNotEmpty) ...[
                           const SizedBox(height: 4),
@@ -1097,17 +1099,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
             'Instant credits for your premium wallet.',
           )
         : description.toString();
-    final cleanedTitle = resolvedTitle
-        .replaceFirst(RegExp(r'^\s*[0-9][0-9\.,\s]*\s*'), '')
-        .trim();
-    final cardTitle = cleanedTitle.isEmpty
-        ? _tr('Credits', 'Credits')
-        : cleanedTitle;
     final bundleCta = _tr('Koop $amount credits', 'Buy $amount credits');
     final bundlePrice = _oneTimePriceLabel(product['priceEur']);
 
     return _buildVisualTile(
-      title: cardTitle,
+      title: '',
       subtitle: resolvedDescription,
       imagePath: imagePath,
       accent: accent,
