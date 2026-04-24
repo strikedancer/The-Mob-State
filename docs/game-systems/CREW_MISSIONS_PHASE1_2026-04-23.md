@@ -283,6 +283,7 @@ Gekoppeld in `crew_screen.dart`:
 - Nieuwe tab `Crew Missions` (tussen War Room en Crews).
 - Overzicht via `/crew-missions/overview`.
 - Template-cards met mission image + fallback icon.
+- Role-assign dialog bij start met rollen per crewlid (`planner`, `enforcer`, `logistics`, `tech`).
 - Active run actions:
   - start (leader/co-leader)
   - resolve (leader/co-leader zodra timer klaar is)

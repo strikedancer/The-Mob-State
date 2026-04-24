@@ -47,6 +47,7 @@ Geactiveerd in:
 Beschikbaar in de tab:
 - mission-overview load (`GET /crew-missions/overview`)
 - templates met image-first cards + icon fallback
+- role-assign dialog bij start (planner/enforcer/logistics/tech per crewlid)
 - active run card met status en timer
 - acties: `start`, `resolve`, `claim`, `speedup`
 - speedup quote + confirm-dialog met exacte creditsprijs vooraf

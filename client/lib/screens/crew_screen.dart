@@ -216,6 +216,10 @@ class _CrewScreenState extends State<CrewScreen>
       'en': 'Join or create a crew to start missions.',
     },
     'action.startMission': {'nl': 'Start missie', 'en': 'Start mission'},
+    'action.configureAndStartMission': {
+      'nl': 'Configureer & start',
+      'en': 'Configure & start',
+    },
     'action.resolveMission': {'nl': 'Rond missie af', 'en': 'Resolve mission'},
     'action.claimRewards': {'nl': 'Claim rewards', 'en': 'Claim rewards'},
     'action.speedupCooldown': {
@@ -249,6 +253,29 @@ class _CrewScreenState extends State<CrewScreen>
     'hint.missionLeaderOnly': {
       'nl': 'Alleen leader/co-leader kan missies starten en resolven.',
       'en': 'Only leader/co-leader can start and resolve missions.',
+    },
+    'dialog.roleAssignTitle': {'nl': 'Rollen toewijzen', 'en': 'Assign roles'},
+    'dialog.roleAssignSubtitle': {
+      'nl': 'Kies per crewlid een rol voor deze missie.',
+      'en': 'Choose a mission role per crew member.',
+    },
+    'label.roleNone': {'nl': 'Niet meedoen', 'en': 'Not assigned'},
+    'label.rolePlanner': {'nl': 'Planner', 'en': 'Planner'},
+    'label.roleEnforcer': {'nl': 'Enforcer', 'en': 'Enforcer'},
+    'label.roleLogistics': {'nl': 'Logistics', 'en': 'Logistics'},
+    'label.roleTech': {'nl': 'Tech', 'en': 'Tech'},
+    'hint.roleBonus': {
+      'nl': 'Elke unieke rol: +3% success chance, -2% duur (max +12% / -8%).',
+      'en':
+          'Each unique role: +3% success chance, -2% duration (max +12% / -8%).',
+    },
+    'state.roleAssignNoMembers': {
+      'nl': 'Geen crewleden gevonden.',
+      'en': 'No crew members found.',
+    },
+    'state.roleAssignPickOne': {
+      'nl': 'Kies minimaal 1 rol.',
+      'en': 'Select at least 1 role.',
     },
     'hint.missionLockedTier2': {
       'nl': 'Tier 2 vereist HQ 5+ en 2+ leden.',
@@ -964,15 +991,178 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  Future<void> _startCrewMission(String missionKey) async {
+  String _crewRoleLabel(String locale, String roleKey) {
+    switch (roleKey) {
+      case 'planner':
+        return _t(locale, 'label.rolePlanner');
+      case 'enforcer':
+        return _t(locale, 'label.roleEnforcer');
+      case 'logistics':
+        return _t(locale, 'label.roleLogistics');
+      case 'tech':
+        return _t(locale, 'label.roleTech');
+      default:
+        return _t(locale, 'label.roleNone');
+    }
+  }
+
+  Future<void> _openCrewMissionRoleAssignDialog(String missionKey) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_myCrew == null) return;
+    final members = _myCrew!.members;
+    if (members.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(_t(locale, 'state.roleAssignNoMembers')),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final currentPlayerId = authProvider.currentPlayer?.id ?? 0;
+    final roleByPlayerId = <int, String>{};
+    for (final member in members) {
+      roleByPlayerId[member.playerId] = member.playerId == currentPlayerId
+          ? 'planner'
+          : 'none';
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            final selectedCount = roleByPlayerId.values
+                .where((value) => value != 'none')
+                .length;
+
+            return AlertDialog(
+              title: Text(_t(locale, 'dialog.roleAssignTitle')),
+              content: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 560,
+                  maxHeight: MediaQuery.of(context).size.height * 0.72,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _t(locale, 'dialog.roleAssignSubtitle'),
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        _t(locale, 'hint.roleBonus'),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      ...members.map((member) {
+                        final username =
+                            member.playerInfo?.username ??
+                            '#${member.playerId}';
+                        final currentRole =
+                            roleByPlayerId[member.playerId] ?? 'none';
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  username,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              DropdownButton<String>(
+                                value: currentRole,
+                                items:
+                                    const [
+                                      'none',
+                                      'planner',
+                                      'enforcer',
+                                      'logistics',
+                                      'tech',
+                                    ].map((role) {
+                                      return DropdownMenuItem<String>(
+                                        value: role,
+                                        child: Text(
+                                          _crewRoleLabel(locale, role),
+                                        ),
+                                      );
+                                    }).toList(),
+                                onChanged: (value) {
+                                  if (value == null) return;
+                                  setDialogState(() {
+                                    roleByPlayerId[member.playerId] = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                      if (selectedCount == 0)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            _t(locale, 'state.roleAssignPickOne'),
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(_t(locale, 'action.cancel')),
+                ),
+                ElevatedButton(
+                  onPressed: selectedCount == 0
+                      ? null
+                      : () => Navigator.of(context).pop(true),
+                  child: Text(_t(locale, 'action.configureAndStartMission')),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (confirmed != true) return;
+
+    final assignments = <Map<String, dynamic>>[];
+    roleByPlayerId.forEach((playerId, roleKey) {
+      if (roleKey == 'none') return;
+      assignments.add({'playerId': playerId, 'roleKey': roleKey});
+    });
+
+    await _startCrewMissionWithAssignments(missionKey, assignments);
+  }
+
+  Future<void> _startCrewMissionWithAssignments(
+    String missionKey,
+    List<Map<String, dynamic>> assignments,
+  ) async {
     final locale = Localizations.localeOf(context).languageCode;
     if (_crewMissionActionLoading) return;
     setState(() => _crewMissionActionLoading = true);
     try {
-      final response = await AuthService().apiClient.post(
-        '/crew-missions/start',
-        {'missionKey': missionKey},
-      );
+      final response = await AuthService().apiClient
+          .post('/crew-missions/start', {
+            'missionKey': missionKey,
+            if (assignments.isNotEmpty) 'assignments': assignments,
+          });
       if (!mounted) return;
 
       if (response.statusCode == 201 || response.statusCode == 200) {
@@ -6314,7 +6504,7 @@ class _CrewScreenState extends State<CrewScreen>
                             missionKey.isEmpty ||
                             _crewMissionActionLoading)
                         ? null
-                        : () => _startCrewMission(missionKey),
+                        : () => _openCrewMissionRoleAssignDialog(missionKey),
                     child: Text(_t(locale, 'action.startMission')),
                   ),
                 ),
