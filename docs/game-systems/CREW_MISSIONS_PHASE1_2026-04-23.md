@@ -285,6 +285,7 @@ Gekoppeld in `crew_screen.dart`:
 - Template-cards met mission image + fallback icon.
 - Role-assign dialog bij start met rollen per crewlid (`planner`, `enforcer`, `logistics`, `tech`).
 - Active run + recente runs tonen contribution breakdown per rol/speler (incl. payout multiplier indien van toepassing).
+- Mission card images gebruiken nu een robuuste fallbackketen: extern crew_missions pad eerst, daarna bestaande crimes/casino assets.
 - Active run actions:
   - start (leader/co-leader)
   - resolve (leader/co-leader zodra timer klaar is)

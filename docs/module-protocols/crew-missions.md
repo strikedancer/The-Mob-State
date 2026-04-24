@@ -47,6 +47,7 @@ Geactiveerd in:
 Beschikbaar in de tab:
 - mission-overview load (`GET /crew-missions/overview`)
 - templates met image-first cards + icon fallback
+- runtime external mission imagepad met extra client-fallback naar bestaande crime/casino images bij ontbrekende bestanden
 - role-assign dialog bij start (planner/enforcer/logistics/tech per crewlid)
 - active run card met status en timer
 - active/recent run tonen role-contribution breakdown per speler (score + payout multiplier waar relevant)

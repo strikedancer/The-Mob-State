@@ -135,8 +135,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 28,
     failPenaltyPct: 0.08,
     sortOrder: 10,
-    imageCardPath: 'images/crew_missions/cards/safehouse_supply_run.png',
-    imageScenePath: 'images/crew_missions/scenes/safehouse_supply_run.png',
+    imageCardPath: 'images/crimes/smuggling_crime.png',
+    imageScenePath: 'images/crimes/smuggling_crime.png',
   },
   {
     missionKey: 'street_intel_sweep',
@@ -154,8 +154,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 32,
     failPenaltyPct: 0.1,
     sortOrder: 20,
-    imageCardPath: 'images/crew_missions/cards/street_intel_sweep.png',
-    imageScenePath: 'images/crew_missions/scenes/street_intel_sweep.png',
+    imageCardPath: 'images/crimes/hack_account_crime.png',
+    imageScenePath: 'images/crimes/hack_account_crime.png',
   },
   {
     missionKey: 'armory_smuggle_chain',
@@ -173,8 +173,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 52,
     failPenaltyPct: 0.14,
     sortOrder: 30,
-    imageCardPath: 'images/crew_missions/cards/armory_smuggle_chain.png',
-    imageScenePath: 'images/crew_missions/scenes/armory_smuggle_chain.png',
+    imageCardPath: 'images/crimes/rob_armored_truck_crime.png',
+    imageScenePath: 'images/crimes/rob_armored_truck_crime.png',
   },
   {
     missionKey: 'port_hijack_window',
@@ -192,8 +192,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 60,
     failPenaltyPct: 0.16,
     sortOrder: 40,
-    imageCardPath: 'images/crew_missions/cards/port_hijack_window.png',
-    imageScenePath: 'images/crew_missions/scenes/port_hijack_window.png',
+    imageCardPath: 'images/crimes/hijack_truck_crime.png',
+    imageScenePath: 'images/crimes/hijack_truck_crime.png',
   },
   {
     missionKey: 'casino_ledger_raid',
@@ -211,8 +211,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 105,
     failPenaltyPct: 0.2,
     sortOrder: 50,
-    imageCardPath: 'images/crew_missions/cards/casino_ledger_raid.png',
-    imageScenePath: 'images/crew_missions/scenes/casino_ledger_raid.png',
+    imageCardPath: 'images/crimes/casino_heist_crime.png',
+    imageScenePath: 'images/crimes/casino_heist_crime.png',
   },
   {
     missionKey: 'federal_convoy_break',
@@ -230,8 +230,8 @@ const MISSION_SEEDS: MissionSeed[] = [
     rewardPersonalXp: 130,
     failPenaltyPct: 0.24,
     sortOrder: 60,
-    imageCardPath: 'images/crew_missions/cards/federal_convoy_break.png',
-    imageScenePath: 'images/crew_missions/scenes/federal_convoy_break.png',
+    imageCardPath: 'images/crimes/bank_robbery_crime.png',
+    imageScenePath: 'images/crimes/bank_robbery_crime.png',
   },
 ];
 

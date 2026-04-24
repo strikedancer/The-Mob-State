@@ -1038,6 +1038,25 @@ class _CrewScreenState extends State<CrewScreen>
     return v.toStringAsFixed(2);
   }
 
+  String _crewMissionFallbackImagePath(String missionKey) {
+    switch (missionKey) {
+      case 'safehouse_supply_run':
+        return 'images/crimes/smuggling_crime.png';
+      case 'street_intel_sweep':
+        return 'images/crimes/hack_account_crime.png';
+      case 'armory_smuggle_chain':
+        return 'images/crimes/rob_armored_truck_crime.png';
+      case 'port_hijack_window':
+        return 'images/crimes/hijack_truck_crime.png';
+      case 'casino_ledger_raid':
+        return 'images/crimes/casino_heist_crime.png';
+      case 'federal_convoy_break':
+        return 'images/crimes/bank_robbery_crime.png';
+      default:
+        return 'images/casino/casino_background_landscape.png';
+    }
+  }
+
   Future<void> _openCrewMissionRoleAssignDialog(String missionKey) async {
     final locale = Localizations.localeOf(context).languageCode;
     if (_myCrew == null) return;
@@ -6451,6 +6470,7 @@ class _CrewScreenState extends State<CrewScreen>
     final lockedReason = template['lockedReason']?.toString();
     final missionKey = (template['missionKey'] ?? '').toString();
     final imagePath = (template['imageCardPath'] ?? '').toString();
+    final fallbackPath = _crewMissionFallbackImagePath(missionKey);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -6463,16 +6483,28 @@ class _CrewScreenState extends State<CrewScreen>
                 ? WebAssetHelper.image(
                     imagePath,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: Colors.black12,
-                      alignment: Alignment.center,
-                      child: const Icon(Icons.image_not_supported),
-                    ),
+                    errorBuilder: (context, error, stackTrace) =>
+                        WebAssetHelper.image(
+                          fallbackPath,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                                color: Colors.black12,
+                                alignment: Alignment.center,
+                                child: const Icon(Icons.image_not_supported),
+                              ),
+                        ),
                   )
                 : Container(
                     color: Colors.black12,
-                    alignment: Alignment.center,
-                    child: const Icon(Icons.flag),
+                    child: WebAssetHelper.image(
+                      fallbackPath,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        alignment: Alignment.center,
+                        child: const Icon(Icons.flag),
+                      ),
+                    ),
                   ),
           ),
           Padding(
