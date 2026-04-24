@@ -1496,164 +1496,286 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final wantedProgress = (wantedLevel / 5.0).clamp(0.0, 1.0);
     final fbiHeat = (player.fbiHeat ?? 0).toDouble();
     final fbiProgress = (fbiHeat / 100.0).clamp(0.0, 1.0);
+    final securityProgress = 0.0;
 
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 1100;
+
+        final topTracks = compact
+            ? Column(
+                children: [
+                  _buildStatusTrackCard(
+                    context: context,
+                    icon: Icons.trending_up_rounded,
+                    label: _rankProgressLabel(context, player.rank),
+                    progress: rankProgress,
+                    valueText: '${(rankProgress * 100).toStringAsFixed(0)}%',
+                    color: Colors.amber.shade700,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildStatusTrackCard(
+                    context: context,
+                    icon: Icons.favorite_rounded,
+                    label: AppLocalizations.of(context)!.health,
+                    progress: healthProgress,
+                    valueText: '${player.health}%',
+                    color: player.health > 50
+                        ? Colors.green
+                        : (player.health > 25 ? Colors.orange : Colors.red),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildStatusTrackCard(
+                    context: context,
+                    icon: Icons.shield_rounded,
+                    label: AppLocalizations.of(context)!.security,
+                    progress: securityProgress,
+                    valueText: '0%',
+                    color: Colors.blueGrey,
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: _buildStatusTrackCard(
+                      context: context,
+                      icon: Icons.trending_up_rounded,
+                      label: _rankProgressLabel(context, player.rank),
+                      progress: rankProgress,
+                      valueText: '${(rankProgress * 100).toStringAsFixed(0)}%',
+                      color: Colors.amber.shade700,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildStatusTrackCard(
+                      context: context,
+                      icon: Icons.favorite_rounded,
+                      label: AppLocalizations.of(context)!.health,
+                      progress: healthProgress,
+                      valueText: '${player.health}%',
+                      color: player.health > 50
+                          ? Colors.green
+                          : (player.health > 25 ? Colors.orange : Colors.red),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildStatusTrackCard(
+                      context: context,
+                      icon: Icons.shield_rounded,
+                      label: AppLocalizations.of(context)!.security,
+                      progress: securityProgress,
+                      valueText: '0%',
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                ],
+              );
+
+        final lowerTracks = compact
+            ? Column(
+                children: [
+                  _buildStatusTrackCard(
+                    context: context,
+                    icon: Icons.local_police_rounded,
+                    label: 'Wanted',
+                    progress: wantedProgress,
+                    valueText: '${wantedLevel.toInt()}/5',
+                    color: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildStatusTrackCard(
+                    context: context,
+                    icon: Icons.gpp_bad_rounded,
+                    label: 'FBI',
+                    progress: fbiProgress,
+                    valueText: '${fbiHeat.toInt()}%',
+                    color: fbiHeat > 0 ? Colors.deepPurple : Colors.blueGrey,
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: _buildStatusTrackCard(
+                      context: context,
+                      icon: Icons.local_police_rounded,
+                      label: 'Wanted',
+                      progress: wantedProgress,
+                      valueText: '${wantedLevel.toInt()}/5',
+                      color: wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildStatusTrackCard(
+                      context: context,
+                      icon: Icons.gpp_bad_rounded,
+                      label: 'FBI',
+                      progress: fbiProgress,
+                      valueText: '${fbiHeat.toInt()}%',
+                      color: fbiHeat > 0 ? Colors.deepPurple : Colors.blueGrey,
+                    ),
+                  ),
+                ],
+              );
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [_dashboardPanelLight, _dashboardPanelDark],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: _dashboardGold.withOpacity(0.55)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.32),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              topTracks,
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _buildStatusBadge(
+                    icon: Icons.euro_rounded,
+                    text:
+                        '${_cashLabel(context)} ${formatCurrency(player.money)}',
+                    color: Colors.green.shade300,
+                  ),
+                  _buildStatusBadge(
+                    icon: Icons.workspace_premium_rounded,
+                    text: _getRankTitle(player.rank),
+                    color: Colors.amber.shade300,
+                  ),
+                  _buildStatusBadge(
+                    icon: Icons.mail_rounded,
+                    text: _newMessagesLabel(context, _unreadCount),
+                    color: Colors.white70,
+                  ),
+                  _buildStatusBadge(
+                    icon: Icons.flag_rounded,
+                    text:
+                        '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
+                    color: Colors.white70,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              lowerTracks,
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildStatusTrackCard({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required double progress,
+    required String valueText,
+    required Color color,
+  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [_dashboardPanelLight, _dashboardPanelDark],
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.06),
+            Colors.black.withOpacity(0.12),
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: _dashboardGold.withOpacity(0.5)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.32),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.white.withOpacity(0.08)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // First row: 3 main progress bars
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Icon(icon, size: 14, color: color),
+              const SizedBox(width: 6),
               Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  _rankProgressLabel(context, player.rank),
-                  rankProgress,
-                  '${(rankProgress * 100).toStringAsFixed(0)}%',
-                  Colors.amber.shade700,
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  AppLocalizations.of(context)!.health,
-                  healthProgress,
-                  '${player.health}%',
-                  player.health > 50
-                      ? Colors.green
-                      : (player.health > 25 ? Colors.orange : Colors.red),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  AppLocalizations.of(context)!.security,
-                  0.0,
-                  '0%',
-                  Colors.blueGrey,
+              const SizedBox(width: 6),
+              Text(
+                valueText,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          // Second row: Info + Wanted + FBI
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Wrap(
-                  spacing: 12,
-                  runSpacing: 4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    _buildTopInfoItem(
-                      '${_cashLabel(context)} ${formatCurrency(player.money)}',
-                      Colors.green.shade300,
-                    ),
-                    _buildTopInfoItem(
-                      _getRankTitle(player.rank),
-                      Colors.amber.shade300,
-                    ),
-                    _buildTopInfoItem(
-                      _newMessagesLabel(context, _unreadCount),
-                      Colors.white70,
-                    ),
-                    _buildTopInfoItem(
-                      '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
-                      Colors.white70,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  'Wanted',
-                  wantedProgress,
-                  '${wantedLevel.toInt()}/5',
-                  wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildLargeProgressBar(
-                  context,
-                  'FBI',
-                  fbiProgress,
-                  '${fbiHeat.toInt()}%',
-                  fbiHeat > 0 ? Colors.deepPurple : Colors.blueGrey,
-                ),
-              ),
-            ],
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor: Colors.white.withOpacity(0.14),
+              valueColor: AlwaysStoppedAnimation<Color>(color),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTopInfoItem(String text, Color color) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: color,
-        fontSize: 11,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0.2,
+  Widget _buildStatusBadge({
+    required IconData icon,
+    required String text,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.06),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
-    );
-  }
-
-  Widget _buildLargeProgressBar(
-    BuildContext context,
-    String label,
-    double progress,
-    String valueText,
-    Color color,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '$label: $valueText',
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 11,
-            fontWeight: FontWeight.w600,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: LinearProgressIndicator(
-            value: progress,
-            minHeight: 9,
-            backgroundColor: Colors.white.withOpacity(0.14),
-            valueColor: AlwaysStoppedAnimation<Color>(color),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
