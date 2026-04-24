@@ -127,6 +127,8 @@ Regels:
 - Actieve spelers mogen sneller vorderen, maar met diminishing returns bij spam.
 - Core unlocks via crew progress, niet via betaalmuur.
 - Premium mag alleen utility geven (bijv. extra reroll of planning slot), nooit exclusieve top reward power.
+- Crew mission XP is functioneel en bouwt een crew mission level op; levelprogressie en bonus moeten zichtbaar zijn in de Crew Missions UI.
+- Crew mission level mag alleen utility/efficiency voordelen geven (bijv. lichte cash-bonus op crew mission claims), geen directe pay-to-win success- of combatboost.
 
 ## Reward Model (Balance-First)
 
@@ -140,6 +142,7 @@ Verdeling:
 - Basis reward voor alle deelnemers
 - Prestatiebonus op contribution score
 - Anti-carry guardrail: minimale deelname vereist voor volle payout
+- Crew mission level-bonus op cash rewards moet klein en getuned blijven via runtime config met cap.
 
 Fail/partial outcomes:
 - Geen all-or-nothing

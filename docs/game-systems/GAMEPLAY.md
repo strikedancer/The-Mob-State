@@ -427,6 +427,12 @@ Voorbeelden:
 - Phase 1 bevat 6 missies met exacte timers, rewards, fail-risico en cooldown skip-pricing.
 - Volledige specificatie: [CREW_MISSIONS_PHASE1_2026-04-23.md](CREW_MISSIONS_PHASE1_2026-04-23.md).
 
+### Crew Mission XP & Level
+- Crew Missions geven naast persoonlijke XP ook **crew mission XP** aan de crew.
+- Deze XP bouwt een **crew mission level** op (zichtbaar in de Crew Missions-tab).
+- Hoger crew mission level geeft een kleine bonus op mission crew-cash rewards.
+- Deze bonus is utility/progression en blijft bewust beperkt (geen direct pay-to-win gevechtsvoordeel).
+
 ### Credits skip logica (missions)
 - Mission cooldown skip rekent op resterende tijd met tier-rate per minuut.
 - Er wordt geen credits-kost berekend als er geen actieve cooldown is.

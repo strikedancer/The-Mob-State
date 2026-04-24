@@ -444,6 +444,8 @@ model Crew {
   stripeSubscriptionId  String?                    @db.VarChar(255)
   name                  String                     @unique @db.VarChar(50)
   bankBalance           Int                        @default(0)
+  missionXp             Int                        @default(0)
+  missionLevel          Int                        @default(1)
   createdAt             DateTime                   @default(now())
   isVip                 Boolean                    @default(false)
   vipExpiresAt          DateTime?

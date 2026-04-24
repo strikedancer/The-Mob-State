@@ -236,6 +236,19 @@ class _CrewScreenState extends State<CrewScreen>
     'label.missionCooldown': {'nl': 'Cooldown', 'en': 'Cooldown'},
     'label.missionTier': {'nl': 'Tier', 'en': 'Tier'},
     'label.missionRewards': {'nl': 'Rewards', 'en': 'Rewards'},
+    'label.crewMissionProgress': {
+      'nl': 'Crew missieprogressie',
+      'en': 'Crew mission progression',
+    },
+    'label.crewMissionXp': {'nl': 'Crew missie XP', 'en': 'Crew mission XP'},
+    'label.crewMissionLevelBonus': {
+      'nl': 'Crew cash bonus',
+      'en': 'Crew cash bonus',
+    },
+    'label.crewMissionNextLevelBonus': {
+      'nl': 'Volgende level bonus',
+      'en': 'Next level bonus',
+    },
     'label.missionStatus': {'nl': 'Status', 'en': 'Status'},
     'label.cooldownActive': {'nl': 'Cooldown actief', 'en': 'Cooldown active'},
     'label.roleContributions': {
@@ -6341,6 +6354,9 @@ class _CrewScreenState extends State<CrewScreen>
     final recentRuns = (overview['recentRuns'] as List<dynamic>? ?? [])
         .whereType<Map<String, dynamic>>()
         .toList();
+    final crewProgress = overview['crewProgress'] is Map<String, dynamic>
+        ? overview['crewProgress'] as Map<String, dynamic>
+        : null;
     final role = (overview['role'] ?? '').toString().toLowerCase();
     final canManage = role == 'leader' || role == 'co_leader';
 
@@ -6390,6 +6406,10 @@ class _CrewScreenState extends State<CrewScreen>
                       style: const TextStyle(color: Colors.grey),
                     ),
                   ),
+                if (crewProgress != null) ...[
+                  _buildCrewMissionProgressCard(crewProgress, locale),
+                  const SizedBox(height: 16),
+                ],
                 if (activeRun != null) ...[
                   Text(
                     _t(locale, 'label.activeMission'),
@@ -6449,6 +6469,66 @@ class _CrewScreenState extends State<CrewScreen>
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCrewMissionProgressCard(
+    Map<String, dynamic> crewProgress,
+    String locale,
+  ) {
+    final level = (crewProgress['level'] as num?)?.toInt() ?? 1;
+    final totalXp = (crewProgress['totalXp'] as num?)?.toInt() ?? 0;
+    final xpIntoLevel = (crewProgress['xpIntoLevel'] as num?)?.toInt() ?? 0;
+    final xpForNextLevel =
+        (crewProgress['xpForNextLevel'] as num?)?.toInt() ?? 1;
+    final progressPct = (crewProgress['progressPct'] as num?)?.toDouble() ?? 0;
+    final cashRewardBonusPct =
+        (crewProgress['cashRewardBonusPct'] as num?)?.toDouble() ?? 0;
+    final nextLevelCashRewardBonusPct =
+        (crewProgress['nextLevelCashRewardBonusPct'] as num?)?.toDouble() ??
+        cashRewardBonusPct;
+    final progressValue = progressPct.clamp(0, 100) / 100;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _t(locale, 'label.crewMissionProgress'),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 12,
+              runSpacing: 6,
+              children: [
+                Text('${_t(locale, 'label.level')}: $level'),
+                Text('${_t(locale, 'label.crewMissionXp')}: $totalXp'),
+                Text(
+                  '${_t(locale, 'label.crewMissionLevelBonus')}: +${cashRewardBonusPct.toStringAsFixed(cashRewardBonusPct % 1 == 0 ? 0 : 1)}%',
+                ),
+                Text(
+                  '${_t(locale, 'label.crewMissionNextLevelBonus')}: +${nextLevelCashRewardBonusPct.toStringAsFixed(nextLevelCashRewardBonusPct % 1 == 0 ? 0 : 1)}%',
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            LinearProgressIndicator(
+              value: progressValue,
+              minHeight: 8,
+              borderRadius: BorderRadius.circular(999),
+              backgroundColor: Colors.white12,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '$xpIntoLevel / $xpForNextLevel XP',
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ],
         ),
       ),
     );

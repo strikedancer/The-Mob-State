@@ -76,16 +76,31 @@ export async function ensureCrewMissionSchema(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
-  const hasCooldownNotifiedAt = await columnExists(
-    'crew_mission_runs',
-    'cooldownNotifiedAt',
-  );
+  const hasCooldownNotifiedAt = await columnExists('crew_mission_runs', 'cooldownNotifiedAt');
   if (!hasCooldownNotifiedAt) {
     await prisma.$executeRawUnsafe(`
       ALTER TABLE crew_mission_runs
       ADD COLUMN cooldownNotifiedAt DATETIME NULL
     `);
     console.log('[StartupSchema] Added column crew_mission_runs.cooldownNotifiedAt');
+  }
+
+  const hasCrewMissionXp = await columnExists('crews', 'missionXp');
+  if (!hasCrewMissionXp) {
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE crews
+      ADD COLUMN missionXp INT NOT NULL DEFAULT 0
+    `);
+    console.log('[StartupSchema] Added column crews.missionXp');
+  }
+
+  const hasCrewMissionLevel = await columnExists('crews', 'missionLevel');
+  if (!hasCrewMissionLevel) {
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE crews
+      ADD COLUMN missionLevel INT NOT NULL DEFAULT 1
+    `);
+    console.log('[StartupSchema] Added column crews.missionLevel');
   }
 
   await prisma.$executeRawUnsafe(`

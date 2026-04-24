@@ -81,6 +81,10 @@ type RuntimeCrewMissionConfig = {
   repeat2Multiplier: number;
   repeat3Multiplier: number;
   repeat4Multiplier: number;
+  crewLevelBaseXp: number;
+  crewLevelStepXp: number;
+  crewLevelCashBonusPerLevelPct: number;
+  crewLevelCashBonusCapPct: number;
 };
 
 type MissionSeed = {
@@ -111,11 +115,15 @@ const CREW_MISSION_RUNTIME_SETTING_DEFAULTS = {
   CREW_MISSION_REPEAT_2_MULTIPLIER: process.env.CREW_MISSION_REPEAT_2_MULTIPLIER || '0.93',
   CREW_MISSION_REPEAT_3_MULTIPLIER: process.env.CREW_MISSION_REPEAT_3_MULTIPLIER || '0.86',
   CREW_MISSION_REPEAT_4_MULTIPLIER: process.env.CREW_MISSION_REPEAT_4_MULTIPLIER || '0.80',
+  CREW_MISSION_CREW_LEVEL_BASE_XP: process.env.CREW_MISSION_CREW_LEVEL_BASE_XP || '400',
+  CREW_MISSION_CREW_LEVEL_STEP_XP: process.env.CREW_MISSION_CREW_LEVEL_STEP_XP || '150',
+  CREW_MISSION_CREW_LEVEL_CASH_BONUS_PER_LEVEL_PCT:
+    process.env.CREW_MISSION_CREW_LEVEL_CASH_BONUS_PER_LEVEL_PCT || '1.0',
+  CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT:
+    process.env.CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT || '15.0',
 } as const;
 
-export const CREW_MISSION_RUNTIME_SETTING_KEYS = Object.keys(
-  CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
-);
+export const CREW_MISSION_RUNTIME_SETTING_KEYS = Object.keys(CREW_MISSION_RUNTIME_SETTING_DEFAULTS);
 export { CREW_MISSION_RUNTIME_SETTING_DEFAULTS };
 
 const MISSION_SEEDS: MissionSeed[] = [
@@ -258,7 +266,10 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
-function computeHqGlobalLevel(style: string | null | undefined, level: number | null | undefined): number {
+function computeHqGlobalLevel(
+  style: string | null | undefined,
+  level: number | null | undefined
+): number {
   const normalizedStyle = (style || 'camping').toLowerCase();
   const normalizedLevel = Math.max(0, level ?? 0);
   if (normalizedStyle === 'vip') {
@@ -286,7 +297,7 @@ async function getRuntimeConfig(): Promise<RuntimeCrewMissionConfig> {
     const placeholders = CREW_MISSION_RUNTIME_SETTING_KEYS.map(() => '?').join(', ');
     const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
       `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
-      ...CREW_MISSION_RUNTIME_SETTING_KEYS,
+      ...CREW_MISSION_RUNTIME_SETTING_KEYS
     );
 
     for (const row of rows) {
@@ -304,6 +315,80 @@ async function getRuntimeConfig(): Promise<RuntimeCrewMissionConfig> {
     repeat2Multiplier: clamp(toFloat(defaults.CREW_MISSION_REPEAT_2_MULTIPLIER, 0.93), 0.5, 1),
     repeat3Multiplier: clamp(toFloat(defaults.CREW_MISSION_REPEAT_3_MULTIPLIER, 0.86), 0.5, 1),
     repeat4Multiplier: clamp(toFloat(defaults.CREW_MISSION_REPEAT_4_MULTIPLIER, 0.8), 0.5, 1),
+    crewLevelBaseXp: clamp(toInt(defaults.CREW_MISSION_CREW_LEVEL_BASE_XP, 400), 100, 20000),
+    crewLevelStepXp: clamp(toInt(defaults.CREW_MISSION_CREW_LEVEL_STEP_XP, 150), 10, 5000),
+    crewLevelCashBonusPerLevelPct: clamp(
+      toFloat(defaults.CREW_MISSION_CREW_LEVEL_CASH_BONUS_PER_LEVEL_PCT, 1),
+      0,
+      10
+    ),
+    crewLevelCashBonusCapPct: clamp(
+      toFloat(defaults.CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT, 15),
+      0,
+      100
+    ),
+  };
+}
+
+type CrewMissionProgress = {
+  level: number;
+  totalXp: number;
+  xpIntoLevel: number;
+  xpForNextLevel: number;
+  progressPct: number;
+  cashRewardBonusPct: number;
+  nextLevelCashRewardBonusPct: number;
+};
+
+function xpNeededForCrewMissionNextLevel(
+  level: number,
+  cfg: Pick<RuntimeCrewMissionConfig, 'crewLevelBaseXp' | 'crewLevelStepXp'>
+): number {
+  const safeLevel = Math.max(1, level);
+  return Math.max(100, cfg.crewLevelBaseXp + (safeLevel - 1) * cfg.crewLevelStepXp);
+}
+
+function getCrewMissionCashBonusPct(
+  level: number,
+  cfg: Pick<RuntimeCrewMissionConfig, 'crewLevelCashBonusPerLevelPct' | 'crewLevelCashBonusCapPct'>
+): number {
+  if (level <= 1) return 0;
+  const raw = (level - 1) * cfg.crewLevelCashBonusPerLevelPct;
+  return clamp(raw, 0, cfg.crewLevelCashBonusCapPct);
+}
+
+function computeCrewMissionProgress(
+  totalXpRaw: number,
+  cfg: Pick<
+    RuntimeCrewMissionConfig,
+    | 'crewLevelBaseXp'
+    | 'crewLevelStepXp'
+    | 'crewLevelCashBonusPerLevelPct'
+    | 'crewLevelCashBonusCapPct'
+  >
+): CrewMissionProgress {
+  const totalXp = Math.max(0, Math.trunc(totalXpRaw));
+  let level = 1;
+  let xpInLevel = totalXp;
+  let needed = xpNeededForCrewMissionNextLevel(level, cfg);
+
+  while (xpInLevel >= needed && level < 250) {
+    xpInLevel -= needed;
+    level += 1;
+    needed = xpNeededForCrewMissionNextLevel(level, cfg);
+  }
+
+  const currentBonus = getCrewMissionCashBonusPct(level, cfg);
+  const nextBonus = getCrewMissionCashBonusPct(level + 1, cfg);
+
+  return {
+    level,
+    totalXp,
+    xpIntoLevel: xpInLevel,
+    xpForNextLevel: needed,
+    progressPct: needed > 0 ? clamp((xpInLevel / needed) * 100, 0, 100) : 100,
+    cashRewardBonusPct: currentBonus,
+    nextLevelCashRewardBonusPct: nextBonus,
   };
 }
 
@@ -317,7 +402,7 @@ async function upsertRuntimeConfigValues(updates: Record<string, string>): Promi
         ON DUPLICATE KEY UPDATE configValue = VALUES(configValue)
       `,
       key,
-      String(value),
+      String(value)
     );
   }
 }
@@ -340,22 +425,47 @@ function ensureMissionManagerRole(role: string): void {
   }
 }
 
-async function getCrewContext(crewId: number): Promise<{ hqGlobalLevel: number; memberCount: number }> {
-  const [hq, memberCount] = await Promise.all([
+async function getCrewContext(
+  crewId: number,
+  cfg: RuntimeCrewMissionConfig
+): Promise<{ hqGlobalLevel: number; memberCount: number; crewProgress: CrewMissionProgress }> {
+  const [hq, memberCount, crew] = await Promise.all([
     prisma.crewHqBuilding.findUnique({
       where: { crewId },
       select: { style: true, level: true },
     }),
     prisma.crewMember.count({ where: { crewId } }),
+    prisma.crew.findUnique({
+      where: { id: crewId },
+      select: { missionXp: true, missionLevel: true },
+    }),
   ]);
+
+  const storedXp = Math.max(0, toInt(crew?.missionXp, 0));
+  const computedProgress = computeCrewMissionProgress(storedXp, cfg);
+  const normalizedLevel = Math.max(toInt(crew?.missionLevel, 1), computedProgress.level);
+  const crewProgress =
+    normalizedLevel === computedProgress.level
+      ? computedProgress
+      : {
+          ...computedProgress,
+          level: normalizedLevel,
+          cashRewardBonusPct: getCrewMissionCashBonusPct(normalizedLevel, cfg),
+          nextLevelCashRewardBonusPct: getCrewMissionCashBonusPct(normalizedLevel + 1, cfg),
+        };
 
   return {
     hqGlobalLevel: computeHqGlobalLevel(hq?.style, hq?.level),
     memberCount,
+    crewProgress,
   };
 }
 
-function missionTierUnlocked(tier: CrewMissionTier, hqGlobalLevel: number, memberCount: number): boolean {
+function missionTierUnlocked(
+  tier: CrewMissionTier,
+  hqGlobalLevel: number,
+  memberCount: number
+): boolean {
   if (tier === 1) {
     return hqGlobalLevel >= 1;
   }
@@ -380,11 +490,9 @@ async function getCrewMemberIds(crewId: number): Promise<number[]> {
 }
 
 async function getMissionContributionsByRunIds(
-  runIds: number[],
+  runIds: number[]
 ): Promise<Record<number, MissionContributionViewRow[]>> {
-  const safeRunIds = Array.from(
-    new Set(runIds.map((id) => toInt(id, 0)).filter((id) => id > 0)),
-  );
+  const safeRunIds = Array.from(new Set(runIds.map((id) => toInt(id, 0)).filter((id) => id > 0)));
   if (safeRunIds.length === 0) {
     return {};
   }
@@ -406,7 +514,7 @@ async function getMissionContributionsByRunIds(
       WHERE c.runId IN (${placeholders})
       ORDER BY c.runId ASC, c.contributionScore DESC, c.id ASC
     `,
-    ...safeRunIds,
+    ...safeRunIds
   );
 
   const byRunId: Record<number, MissionContributionViewRow[]> = {};
@@ -433,7 +541,7 @@ async function getMissionContributionsByRunIds(
 async function sendCrewMissionStartedNotifications(
   crewId: number,
   run: CrewMissionRun,
-  startedByPlayerId: number,
+  startedByPlayerId: number
 ): Promise<void> {
   const [crew, startedBy, memberIds] = await Promise.all([
     prisma.crew.findUnique({
@@ -463,15 +571,15 @@ async function sendCrewMissionStartedNotifications(
         run.titleNl,
         run.titleEn,
         starterName,
-        run.endsAt,
-      ),
-    ),
+        run.endsAt
+      )
+    )
   );
 }
 
 async function sendCrewMissionResolvedNotifications(
   crewId: number,
-  run: CrewMissionRun,
+  run: CrewMissionRun
 ): Promise<void> {
   const [crew, memberIds] = await Promise.all([
     prisma.crew.findUnique({
@@ -498,9 +606,9 @@ async function sendCrewMissionResolvedNotifications(
         run.outcome,
         run.rewardCrewCash,
         run.rewardCrewXp,
-        run.cooldownUntil,
-      ),
-    ),
+        run.cooldownUntil
+      )
+    )
   );
 }
 
@@ -508,7 +616,7 @@ async function sendCrewMissionCooldownReadyNotifications(
   crewId: number,
   runId: number,
   missionTitleNl: string,
-  missionTitleEn: string,
+  missionTitleEn: string
 ): Promise<void> {
   const [crew, memberIds] = await Promise.all([
     prisma.crew.findUnique({
@@ -531,9 +639,9 @@ async function sendCrewMissionCooldownReadyNotifications(
         runId,
         crewName,
         missionTitleNl,
-        missionTitleEn,
-      ),
-    ),
+        missionTitleEn
+      )
+    )
   );
 }
 
@@ -556,7 +664,7 @@ async function getActiveRunForCrew(crewId: number): Promise<CrewMissionRun | nul
       ORDER BY r.id DESC
       LIMIT 1
     `,
-    crewId,
+    crewId
   );
 
   if (!rows[0]) return null;
@@ -582,9 +690,14 @@ function normalizeRunRow(row: CrewMissionRun): CrewMissionRun {
   };
 }
 
-function computeRoleBonuses(roleKeys: string[]): { successBonus: number; durationReduction: number } {
+function computeRoleBonuses(roleKeys: string[]): {
+  successBonus: number;
+  durationReduction: number;
+} {
   const uniqueValidRoles = Array.from(
-    new Set(roleKeys.map((role) => role.toLowerCase()).filter((role) => ROLE_KEYS.includes(role as any))),
+    new Set(
+      roleKeys.map((role) => role.toLowerCase()).filter((role) => ROLE_KEYS.includes(role as any))
+    )
   );
 
   const successBonus = clamp(uniqueValidRoles.length * 0.03, 0, MAX_ROLE_SUCCESS_BONUS);
@@ -607,7 +720,7 @@ function getRepeatMultiplier(previousRunsInWindow: number, cfg: RuntimeCrewMissi
 
 function computeCooldownSpeedupCost(
   run: Pick<CrewMissionRun, 'tier' | 'cooldownUntil'>,
-  cfg: RuntimeCrewMissionConfig,
+  cfg: RuntimeCrewMissionConfig
 ): { remainingMinutes: number; credits: number; tierRate: number } {
   if (!run.cooldownUntil || run.cooldownUntil.getTime() <= Date.now()) {
     throw new Error('MISSION_COOLDOWN_NOT_ACTIVE');
@@ -615,10 +728,14 @@ function computeCooldownSpeedupCost(
 
   const remainingMinutes = Math.max(
     1,
-    Math.ceil((run.cooldownUntil.getTime() - Date.now()) / 60000),
+    Math.ceil((run.cooldownUntil.getTime() - Date.now()) / 60000)
   );
   const tierRate =
-    run.tier === 1 ? cfg.t1CreditsPerMinute : run.tier === 2 ? cfg.t2CreditsPerMinute : cfg.t3CreditsPerMinute;
+    run.tier === 1
+      ? cfg.t1CreditsPerMinute
+      : run.tier === 2
+        ? cfg.t2CreditsPerMinute
+        : cfg.t3CreditsPerMinute;
   const credits = clamp(Math.ceil(remainingMinutes * tierRate), 6, 240);
 
   return { remainingMinutes, credits, tierRate };
@@ -635,7 +752,7 @@ async function getMissionTemplates(): Promise<CrewMissionTemplate[]> {
       FROM crew_mission_templates
       WHERE isActive = 1
       ORDER BY sortOrder ASC, id ASC
-    `,
+    `
   );
 
   return rows.map((row) => ({
@@ -669,7 +786,7 @@ async function fetchRunForCrew(crewId: number, runId: number): Promise<CrewMissi
       LIMIT 1
     `,
     runId,
-    crewId,
+    crewId
   );
   if (!rows[0]) return null;
   return normalizeRunRow(rows[0]);
@@ -718,7 +835,7 @@ async function ensureSeededTemplates(): Promise<void> {
       seed.failPenaltyPct,
       seed.sortOrder,
       seed.imageCardPath,
-      seed.imageScenePath,
+      seed.imageScenePath
     );
   }
 }
@@ -727,10 +844,11 @@ export const crewMissionService = {
   async getOverview(playerId: number) {
     await ensureSeededTemplates();
     const membership = await getCrewMembership(playerId);
+    const runtimeConfig = await getRuntimeConfig();
     const [templates, activeRun, crewContext] = await Promise.all([
       getMissionTemplates(),
       getActiveRunForCrew(membership.crewId),
-      getCrewContext(membership.crewId),
+      getCrewContext(membership.crewId, runtimeConfig),
     ]);
 
     const now = new Date();
@@ -748,7 +866,7 @@ export const crewMissionService = {
         ORDER BY r.id DESC
         LIMIT 15
       `,
-      membership.crewId,
+      membership.crewId
     );
 
     const normalizedRecentRuns = recentRunsRaw.map(normalizeRunRow);
@@ -762,11 +880,12 @@ export const crewMissionService = {
       role: membership.role,
       hqGlobalLevel: crewContext.hqGlobalLevel,
       memberCount: crewContext.memberCount,
+      crewProgress: crewContext.crewProgress,
       templates: templates.map((template) => {
         const unlocked = missionTierUnlocked(
           template.tier,
           crewContext.hqGlobalLevel,
-          crewContext.memberCount,
+          crewContext.memberCount
         );
         return {
           ...template,
@@ -791,20 +910,25 @@ export const crewMissionService = {
   async startMission(
     playerId: number,
     missionKey: string,
-    assignments: Array<{ playerId: number; roleKey: string }> = [],
+    assignments: Array<{ playerId: number; roleKey: string }> = []
   ) {
     await ensureSeededTemplates();
     const membership = await getCrewMembership(playerId);
     ensureMissionManagerRole(membership.role);
+    const runtimeConfig = await getRuntimeConfig();
 
     const [templates, crewContext, activeRun] = await Promise.all([
       getMissionTemplates(),
-      getCrewContext(membership.crewId),
+      getCrewContext(membership.crewId, runtimeConfig),
       getActiveRunForCrew(membership.crewId),
     ]);
 
     if (activeRun) {
-      if (activeRun.status === 'completed' && activeRun.cooldownUntil && activeRun.cooldownUntil.getTime() > Date.now()) {
+      if (
+        activeRun.status === 'completed' &&
+        activeRun.cooldownUntil &&
+        activeRun.cooldownUntil.getTime() > Date.now()
+      ) {
         throw new Error('MISSION_COOLDOWN_ACTIVE');
       }
       throw new Error('MISSION_ALREADY_IN_PROGRESS');
@@ -841,7 +965,7 @@ export const crewMissionService = {
     const roleBonuses = computeRoleBonuses(validAssignments.map((item) => item.roleKey));
     const computedDurationSeconds = Math.max(
       60,
-      Math.round(template.durationSeconds * (1 - roleBonuses.durationReduction)),
+      Math.round(template.durationSeconds * (1 - roleBonuses.durationReduction))
     );
     const successChance = clamp(template.successChance + roleBonuses.successBonus, 0.2, 0.95);
     const endsAt = new Date(now.getTime() + computedDurationSeconds * 1000);
@@ -861,12 +985,12 @@ export const crewMissionService = {
       JSON.stringify({
         roles: validAssignments,
         roleBonus: roleBonuses,
-      }),
+      })
     );
 
     const latest = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
       `SELECT id FROM crew_mission_runs WHERE crewId = ? ORDER BY id DESC LIMIT 1`,
-      membership.crewId,
+      membership.crewId
     );
     if (!latest[0]) {
       throw new Error('MISSION_START_FAILED');
@@ -883,15 +1007,17 @@ export const crewMissionService = {
         `,
         runId,
         item.playerId,
-        item.roleKey,
+        item.roleKey
       );
     }
 
     const createdRun = await this.getRun(playerId, runId);
 
-    void sendCrewMissionStartedNotifications(membership.crewId, createdRun, playerId).catch((error) => {
-      console.error('[Crew Missions] Failed to send mission started notifications:', error);
-    });
+    void sendCrewMissionStartedNotifications(membership.crewId, createdRun, playerId).catch(
+      (error) => {
+        console.error('[Crew Missions] Failed to send mission started notifications:', error);
+      }
+    );
 
     return createdRun;
   },
@@ -912,7 +1038,7 @@ export const crewMissionService = {
   async resolveMission(
     playerId: number,
     runId: number,
-    options?: { outcome?: CrewMissionOutcome; progressPct?: number },
+    options?: { outcome?: CrewMissionOutcome; progressPct?: number }
   ) {
     const membership = await getCrewMembership(playerId);
     ensureMissionManagerRole(membership.role);
@@ -935,7 +1061,7 @@ export const crewMissionService = {
       `,
       run.crewId,
       run.templateId,
-      windowStart,
+      windowStart
     );
     const previousCount = Number(previousRows?.[0]?.count ?? 0);
     const repeatMultiplier = getRepeatMultiplier(previousCount, runtimeConfig);
@@ -944,11 +1070,15 @@ export const crewMissionService = {
     const roll = Math.random();
     const autoOutcome: CrewMissionOutcome = roll <= (run.successChance ?? 0.5) ? 'success' : 'fail';
     const outcome = forcedOutcome ?? autoOutcome;
-    const progressPct = clamp(toInt(options?.progressPct, outcome === 'partial' ? 70 : outcome === 'success' ? 100 : 35), 0, 100);
+    const progressPct = clamp(
+      toInt(options?.progressPct, outcome === 'partial' ? 70 : outcome === 'success' ? 100 : 35),
+      0,
+      100
+    );
 
     const templateRows = await prisma.$queryRawUnsafe<CrewMissionTemplate[]>(
       `SELECT * FROM crew_mission_templates WHERE id = ? LIMIT 1`,
-      run.templateId,
+      run.templateId
     );
     const template = templateRows[0];
     if (!template) {
@@ -959,12 +1089,9 @@ export const crewMissionService = {
     const baseCrewXp = toInt(template.rewardCrewXp);
     const basePersonalXp = toInt(template.rewardPersonalXp);
 
-    const outcomeFactor =
-      outcome === 'success' ? 1 : outcome === 'partial' ? 0.65 : 0;
-    const crewXpFactor =
-      outcome === 'success' ? 1 : outcome === 'partial' ? 0.7 : 0;
-    const personalXpFactor =
-      outcome === 'success' ? 1 : outcome === 'partial' ? 1 : 0.4;
+    const outcomeFactor = outcome === 'success' ? 1 : outcome === 'partial' ? 0.65 : 0;
+    const crewXpFactor = outcome === 'success' ? 1 : outcome === 'partial' ? 0.7 : 0;
+    const personalXpFactor = outcome === 'success' ? 1 : outcome === 'partial' ? 1 : 0.4;
 
     const rewardCrewCash = Math.round(baseCash * repeatMultiplier * outcomeFactor);
     const rewardCrewXp = Math.round(baseCrewXp * repeatMultiplier * crewXpFactor);
@@ -998,7 +1125,7 @@ export const crewMissionService = {
       rewardCrewCash,
       rewardCrewXp,
       rewardPersonalXp,
-      run.id,
+      run.id
     );
 
     const resolvedRun = await this.getRun(playerId, run.id);
@@ -1012,6 +1139,7 @@ export const crewMissionService = {
 
   async claimRewards(playerId: number, runId: number) {
     const membership = await getCrewMembership(playerId);
+    const runtimeConfig = await getRuntimeConfig();
     const run = await fetchRunForCrew(membership.crewId, runId);
     if (!run) {
       throw new Error('MISSION_RUN_NOT_FOUND');
@@ -1029,25 +1157,55 @@ export const crewMissionService = {
         FROM crew_mission_contributions
         WHERE runId = ?
       `,
-      run.id,
+      run.id
     );
 
     const rowsToUse =
       contributionRows.length > 0
         ? contributionRows
-        : [{ id: 0, runId: run.id, playerId: run.startedByPlayerId, roleKey: 'planner', contributionScore: 1 }];
+        : [
+            {
+              id: 0,
+              runId: run.id,
+              playerId: run.startedByPlayerId,
+              roleKey: 'planner',
+              contributionScore: 1,
+            },
+          ];
 
     const avgContribution =
       rowsToUse.reduce((sum, row) => sum + toFloat(row.contributionScore, 1), 0) / rowsToUse.length;
     const floorThreshold = avgContribution * 0.55;
 
+    const rewardCrewXp = Math.max(0, toInt(run.rewardCrewXp, 0));
+
     await prisma.$transaction(async (tx) => {
-      if (run.rewardCrewCash > 0) {
-        await tx.crew.update({
-          where: { id: run.crewId },
-          data: { bankBalance: { increment: run.rewardCrewCash } },
-        });
+      const crew = await tx.crew.findUnique({
+        where: { id: run.crewId },
+        select: { missionXp: true, missionLevel: true },
+      });
+      if (!crew) {
+        throw new Error('CREW_NOT_FOUND');
       }
+
+      const currentProgress = computeCrewMissionProgress(toInt(crew.missionXp, 0), runtimeConfig);
+      const normalizedCrewLevel = Math.max(toInt(crew.missionLevel, 1), currentProgress.level);
+      const cashBonusPct = getCrewMissionCashBonusPct(normalizedCrewLevel, runtimeConfig);
+      const boostedCrewCash = Math.round(
+        Math.max(0, run.rewardCrewCash) * (1 + cashBonusPct / 100)
+      );
+      const newCrewXp = Math.max(0, toInt(crew.missionXp, 0)) + rewardCrewXp;
+      const newProgress = computeCrewMissionProgress(newCrewXp, runtimeConfig);
+      const targetCrewLevel = Math.max(normalizedCrewLevel, newProgress.level);
+
+      await tx.crew.update({
+        where: { id: run.crewId },
+        data: {
+          bankBalance: { increment: boostedCrewCash },
+          missionXp: newCrewXp,
+          missionLevel: targetCrewLevel,
+        },
+      });
 
       for (const row of rowsToUse) {
         const contribution = toFloat(row.contributionScore, 1);
@@ -1070,7 +1228,7 @@ export const crewMissionService = {
             `,
             payoutMultiplier,
             playerXp,
-            row.id,
+            row.id
           );
         } else {
           await tx.$executeRawUnsafe(
@@ -1084,7 +1242,7 @@ export const crewMissionService = {
             row.roleKey,
             contribution,
             payoutMultiplier,
-            playerXp,
+            playerXp
           );
         }
       }
@@ -1092,12 +1250,18 @@ export const crewMissionService = {
       await tx.$executeRawUnsafe(
         `
           UPDATE crew_mission_runs
-          SET rewardsClaimedAt = ?, rewardsClaimedByPlayerId = ?, updatedAt = NOW(3)
+          SET rewardsClaimedAt = ?,
+              rewardsClaimedByPlayerId = ?,
+              rewardCrewCash = ?,
+              rewardCrewXp = ?,
+              updatedAt = NOW(3)
           WHERE id = ?
         `,
         new Date(),
         playerId,
-        run.id,
+        boostedCrewCash,
+        rewardCrewXp,
+        run.id
       );
     });
 
@@ -1158,7 +1322,7 @@ export const crewMissionService = {
           WHERE id = ?
         `,
         new Date(),
-        run.id,
+        run.id
       );
 
       return { balanceAfter };
@@ -1197,17 +1361,26 @@ export const crewMissionService = {
     const safeHours = clamp(toInt(hours, 24), 1, 168);
     const from = new Date(Date.now() - safeHours * 60 * 60 * 1000);
 
-    const [summaryRows, byMissionRows, speedupRows, contributionSummaryRows, byRoleRows, topContributorRows] = await Promise.all([
-      prisma.$queryRawUnsafe<Array<{
-        started: number;
-        completed: number;
-        successCount: number;
-        partialCount: number;
-        failCount: number;
-        rewardCrewCash: number;
-        rewardCrewXp: number;
-        rewardPersonalXp: number;
-      }>>(
+    const [
+      summaryRows,
+      byMissionRows,
+      speedupRows,
+      contributionSummaryRows,
+      byRoleRows,
+      topContributorRows,
+    ] = await Promise.all([
+      prisma.$queryRawUnsafe<
+        Array<{
+          started: number;
+          completed: number;
+          successCount: number;
+          partialCount: number;
+          failCount: number;
+          rewardCrewCash: number;
+          rewardCrewXp: number;
+          rewardPersonalXp: number;
+        }>
+      >(
         `
           SELECT
             COUNT(*) AS started,
@@ -1221,19 +1394,21 @@ export const crewMissionService = {
           FROM crew_mission_runs
           WHERE startedAt >= ?
         `,
-        from,
+        from
       ),
-      prisma.$queryRawUnsafe<Array<{
-        missionKey: string;
-        tier: number;
-        started: number;
-        completed: number;
-        successCount: number;
-        partialCount: number;
-        failCount: number;
-        rewardCrewCash: number;
-        durationSeconds: number;
-      }>>(
+      prisma.$queryRawUnsafe<
+        Array<{
+          missionKey: string;
+          tier: number;
+          started: number;
+          completed: number;
+          successCount: number;
+          partialCount: number;
+          failCount: number;
+          rewardCrewCash: number;
+          durationSeconds: number;
+        }>
+      >(
         `
           SELECT
             t.missionKey,
@@ -1251,7 +1426,7 @@ export const crewMissionService = {
           GROUP BY t.missionKey, t.tier
           ORDER BY t.tier ASC, t.missionKey ASC
         `,
-        from,
+        from
       ),
       prisma.playerCreditTransaction.findMany({
         where: {
@@ -1263,14 +1438,16 @@ export const crewMissionService = {
           createdAt: true,
         },
       }),
-      prisma.$queryRawUnsafe<Array<{
-        assignments: number;
-        distinctPlayers: number;
-        avgContributionScore: number;
-        avgPayoutMultiplier: number;
-        reducedPayoutCount: number;
-        totalRewardXp: number;
-      }>>(
+      prisma.$queryRawUnsafe<
+        Array<{
+          assignments: number;
+          distinctPlayers: number;
+          avgContributionScore: number;
+          avgPayoutMultiplier: number;
+          reducedPayoutCount: number;
+          totalRewardXp: number;
+        }>
+      >(
         `
           SELECT
             COUNT(*) AS assignments,
@@ -1283,16 +1460,18 @@ export const crewMissionService = {
           INNER JOIN crew_mission_runs r ON r.id = c.runId
           WHERE r.startedAt >= ?
         `,
-        from,
+        from
       ),
-      prisma.$queryRawUnsafe<Array<{
-        roleKey: string;
-        assignments: number;
-        distinctPlayers: number;
-        avgContributionScore: number;
-        avgPayoutMultiplier: number;
-        avgRewardXp: number;
-      }>>(
+      prisma.$queryRawUnsafe<
+        Array<{
+          roleKey: string;
+          assignments: number;
+          distinctPlayers: number;
+          avgContributionScore: number;
+          avgPayoutMultiplier: number;
+          avgRewardXp: number;
+        }>
+      >(
         `
           SELECT
             c.roleKey,
@@ -1307,16 +1486,18 @@ export const crewMissionService = {
           GROUP BY c.roleKey
           ORDER BY assignments DESC, c.roleKey ASC
         `,
-        from,
+        from
       ),
-      prisma.$queryRawUnsafe<Array<{
-        playerId: number;
-        username: string | null;
-        assignments: number;
-        avgContributionScore: number;
-        avgPayoutMultiplier: number;
-        totalRewardXp: number;
-      }>>(
+      prisma.$queryRawUnsafe<
+        Array<{
+          playerId: number;
+          username: string | null;
+          assignments: number;
+          avgContributionScore: number;
+          avgPayoutMultiplier: number;
+          totalRewardXp: number;
+        }>
+      >(
         `
           SELECT
             c.playerId,
@@ -1333,7 +1514,7 @@ export const crewMissionService = {
           ORDER BY assignments DESC, avgContributionScore DESC, c.playerId ASC
           LIMIT 12
         `,
-        from,
+        from
       ),
     ]);
 
@@ -1409,12 +1590,16 @@ export const crewMissionService = {
       contributions: {
         assignments: toInt(contributionSummary.assignments),
         distinctPlayers: toInt(contributionSummary.distinctPlayers),
-        avgContributionScore: Number(toFloat(contributionSummary.avgContributionScore, 0).toFixed(3)),
+        avgContributionScore: Number(
+          toFloat(contributionSummary.avgContributionScore, 0).toFixed(3)
+        ),
         avgPayoutMultiplier: Number(toFloat(contributionSummary.avgPayoutMultiplier, 1).toFixed(3)),
         reducedPayoutCount: toInt(contributionSummary.reducedPayoutCount),
         totalRewardXp: toInt(contributionSummary.totalRewardXp),
         byRole: byRoleRows.map((row) => ({
-          roleKey: String(row.roleKey || '').trim().toLowerCase(),
+          roleKey: String(row.roleKey || '')
+            .trim()
+            .toLowerCase(),
           assignments: toInt(row.assignments),
           distinctPlayers: toInt(row.distinctPlayers),
           avgContributionScore: Number(toFloat(row.avgContributionScore, 0).toFixed(3)),
@@ -1461,7 +1646,30 @@ export const crewMissionService = {
       if (key === 'CREW_MISSION_REPEAT_WINDOW_MINUTES' && (asNumber < 15 || asNumber > 360)) {
         throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
       }
-      if (key.includes('MULTIPLIER') && (asNumber < 0.5 || asNumber > 1)) {
+      if (
+        (key === 'CREW_MISSION_REPEAT_2_MULTIPLIER' ||
+          key === 'CREW_MISSION_REPEAT_3_MULTIPLIER' ||
+          key === 'CREW_MISSION_REPEAT_4_MULTIPLIER') &&
+        (asNumber < 0.5 || asNumber > 1)
+      ) {
+        throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+      }
+      if (key === 'CREW_MISSION_CREW_LEVEL_BASE_XP' && (asNumber < 100 || asNumber > 20000)) {
+        throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+      }
+      if (key === 'CREW_MISSION_CREW_LEVEL_STEP_XP' && (asNumber < 10 || asNumber > 5000)) {
+        throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+      }
+      if (
+        key === 'CREW_MISSION_CREW_LEVEL_CASH_BONUS_PER_LEVEL_PCT' &&
+        (asNumber < 0 || asNumber > 10)
+      ) {
+        throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
+      }
+      if (
+        key === 'CREW_MISSION_CREW_LEVEL_CASH_BONUS_CAP_PCT' &&
+        (asNumber < 0 || asNumber > 100)
+      ) {
         throw new Error(`RUNTIME_OUT_OF_RANGE:${key}`);
       }
       normalized[key] = asString;
@@ -1475,17 +1683,19 @@ export const crewMissionService = {
 };
 
 export async function processPendingCrewMissionCooldownReadyNotifications(
-  limit = 100,
+  limit = 100
 ): Promise<number> {
   const safeLimit = clamp(toInt(limit, 100), 1, 500);
   const now = new Date();
 
-  const dueRuns = await prisma.$queryRawUnsafe<Array<{
-    id: number;
-    crewId: number;
-    titleNl: string;
-    titleEn: string;
-  }>>(
+  const dueRuns = await prisma.$queryRawUnsafe<
+    Array<{
+      id: number;
+      crewId: number;
+      titleNl: string;
+      titleEn: string;
+    }>
+  >(
     `
       SELECT
         r.id,
@@ -1502,7 +1712,7 @@ export async function processPendingCrewMissionCooldownReadyNotifications(
       LIMIT ?
     `,
     now,
-    safeLimit,
+    safeLimit
   );
 
   let sentCount = 0;
@@ -1515,19 +1725,14 @@ export async function processPendingCrewMissionCooldownReadyNotifications(
         WHERE id = ? AND cooldownNotifiedAt IS NULL
       `,
       now,
-      run.id,
+      run.id
     );
 
     if (Number(updateResult) <= 0) {
       continue;
     }
 
-    await sendCrewMissionCooldownReadyNotifications(
-      run.crewId,
-      run.id,
-      run.titleNl,
-      run.titleEn,
-    );
+    await sendCrewMissionCooldownReadyNotifications(run.crewId, run.id, run.titleNl, run.titleEn);
     sentCount += 1;
   }
 
