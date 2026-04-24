@@ -300,6 +300,32 @@ router.post('/:venueId/upgrades/marketing', authenticate, async (req: Request, r
 });
 
 /**
+ * POST /:venueId/upgrades/apply
+ * Body: { upgradeType: 'sound_rig'|'vip_lounge'|'surveillance' }
+ */
+router.post('/:venueId/upgrades/apply', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { upgradeType } = req.body;
+    if (!upgradeType) {
+      return res.status(400).json({ success: false, message: 'Missing upgradeType' });
+    }
+
+    const result = await nightclubService.applyUpgrade(
+      playerId,
+      venueId,
+      String(upgradeType) as 'sound_rig' | 'vip_lounge' | 'surveillance'
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
  * POST /:venueId/incidents/respond
  * Body: { actionType: 'bribe'|'lockdown'|'counterintel' }
  */

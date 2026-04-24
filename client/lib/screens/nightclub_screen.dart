@@ -53,6 +53,7 @@ class _NightclubScreenState extends State<NightclubScreen>
   int _residentDays = 7;
   String _selectedEventType = 'deep_house_night';
   int _marketingAmount = 50000;
+  String _selectedUpgradeType = 'sound_rig';
   String? _selectedRivalName;
   List<dynamic> _rivalSearchResults = const [];
   late final TextEditingController _storeQuantityController;
@@ -896,6 +897,16 @@ class _NightclubScreenState extends State<NightclubScreen>
       result,
       _l('Marketing upgrade mislukt', 'Marketing upgrade failed'),
     );
+    await _load();
+  }
+
+  Future<void> _applyUpgradeTreeChoice() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.applyUpgrade(
+      venueId: _venueId!,
+      upgradeType: _selectedUpgradeType,
+    );
+    _showResultMessage(result, _l('Upgrade mislukt', 'Upgrade failed'));
     await _load();
   }
 
@@ -2038,6 +2049,12 @@ class _NightclubScreenState extends State<NightclubScreen>
     final morale = (operations['morale'] as Map<String, dynamic>?) ?? const {};
     final upgrades =
         (operations['upgrades'] as Map<String, dynamic>?) ?? const {};
+    final soundRig =
+        (upgrades['soundRig'] as Map<String, dynamic>?) ?? const {};
+    final vipLounge =
+        (upgrades['vipLounge'] as Map<String, dynamic>?) ?? const {};
+    final surveillance =
+        (upgrades['surveillance'] as Map<String, dynamic>?) ?? const {};
     final alerts = (operations['alerts'] as List<dynamic>?) ?? const [];
     final eventTemplates =
         (operations['eventTemplates'] as List<dynamic>?) ?? const [];
@@ -2165,17 +2182,70 @@ class _NightclubScreenState extends State<NightclubScreen>
               children: [
                 _kpiChip(
                   _l('Sound rig', 'Sound rig'),
-                  'Lv ${((upgrades['soundRig'] as Map<String, dynamic>?)?['level'] ?? 1)}',
+                  'Lv ${soundRig['level'] ?? 1}',
                 ),
                 _kpiChip(
                   _l('VIP lounge', 'VIP lounge'),
-                  'Lv ${((upgrades['vipLounge'] as Map<String, dynamic>?)?['level'] ?? 1)}',
+                  'Lv ${vipLounge['level'] ?? 1}',
                 ),
                 _kpiChip(
                   _l('Surveillance', 'Surveillance'),
-                  'Lv ${((upgrades['surveillance'] as Map<String, dynamic>?)?['level'] ?? 1)}',
+                  'Lv ${surveillance['level'] ?? 1}',
                 ),
               ],
+            ),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              value: _selectedUpgradeType,
+              items: [
+                DropdownMenuItem(
+                  value: 'sound_rig',
+                  child: Text(
+                    '${_l('Sound rig', 'Sound rig')} (${soundRig['nextCost'] != null ? '€${soundRig['nextCost']}' : _l('MAX', 'MAX')})',
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 'vip_lounge',
+                  child: Text(
+                    '${_l('VIP lounge', 'VIP lounge')} (${vipLounge['nextCost'] != null ? '€${vipLounge['nextCost']}' : _l('MAX', 'MAX')})',
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 'surveillance',
+                  child: Text(
+                    '${_l('Surveillance', 'Surveillance')} (${surveillance['nextCost'] != null ? '€${surveillance['nextCost']}' : _l('MAX', 'MAX')})',
+                  ),
+                ),
+              ],
+              onChanged: (v) {
+                if (v == null) return;
+                setState(() => _selectedUpgradeType = v);
+              },
+              decoration: InputDecoration(
+                labelText: _l('Kies upgrade', 'Choose upgrade'),
+              ),
+            ),
+            const SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: () {
+                final selected = _selectedUpgradeType == 'sound_rig'
+                    ? soundRig
+                    : _selectedUpgradeType == 'vip_lounge'
+                    ? vipLounge
+                    : surveillance;
+                if (selected['nextCost'] == null) {
+                  _showResultMessage({
+                    'message': _l(
+                      'Deze upgrade zit al op max level.',
+                      'This upgrade is already max level.',
+                    ),
+                  }, _l('Upgrade al maximaal', 'Upgrade already maxed'));
+                  return;
+                }
+                _applyUpgradeTreeChoice();
+              },
+              icon: const Icon(Icons.upgrade),
+              label: Text(_l('Upgrade nu', 'Upgrade now')),
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<int>(

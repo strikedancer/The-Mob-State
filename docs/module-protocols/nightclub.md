@@ -34,6 +34,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
 - Rival-targeting UX in nightclub must be name-first (search by player username), never forcing players to input or know numeric player IDs.
 - Ops/management additions (resident DJ, events, upgrades, incident response, rival actions, alerts) must expose clear per-action cost/impact in NL+EN before confirmation.
+- Upgrade tree entries in Ops Lab must be actionable (select + purchase), not read-only status chips; players need an explicit upgrade action path per upgrade type.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

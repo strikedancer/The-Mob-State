@@ -462,4 +462,5 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 - Runtime status `djActive` volgt actieve shift-data in plaats van alleen de venue pointer, zodat UI en backendstatus synchroon blijven.
 - Het nightclub-overzicht gebruikt nu één gecentraliseerd `Nightclub Intelligence` panel i.p.v. aparte Overview/Revenue/Risk tabs, met dezelfde informatieblokken in één verticale flow voor snellere mobiele bediening.
 - Ops Lab bevat nu 7 live managementfeatures: resident DJ contracts, event planning, upgrade-investeringen, incident responses, morale/fatigue indicators, rival actions en operation alerts.
+- Upgrade tree is nu actiegedreven: spelers kiezen in Ops Lab expliciet een upgrade-type (Sound Rig/VIP Lounge/Surveillance) en kopen level-upgrades met directe cost-preview.
 - Rival acties zijn username-first: spelers zoeken rival clubs op naam en kiezen acties zonder playerId invoer.

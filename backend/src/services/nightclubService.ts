@@ -128,6 +128,12 @@ class NightclubService {
     10: 7500,
   };
   private readonly RESIDENT_CONTRACT_DISCOUNT = 0.12;
+  private readonly UPGRADE_EVENT_PREFIX = 'upgrade_';
+  private readonly UPGRADE_COSTS: Record<'sound_rig' | 'vip_lounge' | 'surveillance', number[]> = {
+    sound_rig: [60000, 125000, 240000],
+    vip_lounge: [85000, 165000, 300000],
+    surveillance: [70000, 145000, 270000],
+  };
 
   private readonly EVENT_TEMPLATES: Record<
     string,
@@ -602,31 +608,83 @@ class NightclubService {
     return venue;
   }
 
+  private async getVenueUpgradeLevels(venueId: number): Promise<{
+    sound_rig: number;
+    vip_lounge: number;
+    surveillance: number;
+  }> {
+    const events = await prisma.nightclubEvent.findMany({
+      where: {
+        venueId,
+        eventType: {
+          in: [
+            `${this.UPGRADE_EVENT_PREFIX}sound_rig`,
+            `${this.UPGRADE_EVENT_PREFIX}vip_lounge`,
+            `${this.UPGRADE_EVENT_PREFIX}surveillance`,
+          ],
+        },
+      },
+      select: { eventType: true },
+    });
+
+    const levels = {
+      sound_rig: 0,
+      vip_lounge: 0,
+      surveillance: 0,
+    };
+
+    for (const row of events) {
+      if (row.eventType === `${this.UPGRADE_EVENT_PREFIX}sound_rig`) levels.sound_rig += 1;
+      if (row.eventType === `${this.UPGRADE_EVENT_PREFIX}vip_lounge`) levels.vip_lounge += 1;
+      if (row.eventType === `${this.UPGRADE_EVENT_PREFIX}surveillance`) levels.surveillance += 1;
+    }
+
+    return {
+      sound_rig: Math.min(3, levels.sound_rig),
+      vip_lounge: Math.min(3, levels.vip_lounge),
+      surveillance: Math.min(3, levels.surveillance),
+    };
+  }
+
   private buildUpgradeSnapshot(input: {
-    revenueAllTime: number;
-    marketingSpend: number;
+    levels: {
+      sound_rig: number;
+      vip_lounge: number;
+      surveillance: number;
+    };
     staffAssigned: number;
     staffCap: number;
   }) {
-    const soundLevel = input.revenueAllTime >= 900000 ? 3 : input.revenueAllTime >= 300000 ? 2 : 1;
-    const vipLoungeLevel =
-      input.marketingSpend >= 220000 ? 3 : input.marketingSpend >= 90000 ? 2 : 1;
-    const surveillanceLevel = input.staffCap >= 8 ? 3 : input.staffCap >= 6 ? 2 : 1;
+    const soundLevel = Math.max(1, Math.min(3, input.levels.sound_rig || 1));
+    const vipLoungeLevel = Math.max(1, Math.min(3, input.levels.vip_lounge || 1));
+    const surveillanceLevel = Math.max(1, Math.min(3, input.levels.surveillance || 1));
+
+    const soundNextCost =
+      soundLevel >= 3 ? null : this.UPGRADE_COSTS.sound_rig[Math.max(0, soundLevel - 1)];
+    const vipNextCost =
+      vipLoungeLevel >= 3 ? null : this.UPGRADE_COSTS.vip_lounge[Math.max(0, vipLoungeLevel - 1)];
+    const surveillanceNextCost =
+      surveillanceLevel >= 3
+        ? null
+        : this.UPGRADE_COSTS.surveillance[Math.max(0, surveillanceLevel - 1)];
 
     return {
       soundRig: {
         level: soundLevel,
-        nextRevenueTarget: soundLevel >= 3 ? null : soundLevel === 2 ? 900000 : 300000,
+        key: 'sound_rig',
+        nextCost: soundNextCost,
         effect: `+${(soundLevel * 6).toFixed(0)}% crowd stability`,
       },
       vipLounge: {
         level: vipLoungeLevel,
-        nextMarketingTarget: vipLoungeLevel >= 3 ? null : vipLoungeLevel === 2 ? 220000 : 90000,
+        key: 'vip_lounge',
+        nextCost: vipNextCost,
         effect: `+${(vipLoungeLevel * 5).toFixed(0)}% high-spend visitors`,
       },
       surveillance: {
         level: surveillanceLevel,
-        nextStaffCapTarget: surveillanceLevel >= 3 ? null : surveillanceLevel === 2 ? 8 : 6,
+        key: 'surveillance',
+        nextCost: surveillanceNextCost,
         effect: `-${(surveillanceLevel * 7).toFixed(0)}% theft chance`,
       },
       staffing: {
@@ -1460,6 +1518,100 @@ class NightclubService {
     };
   }
 
+  async applyUpgrade(
+    playerId: number,
+    venueId: number,
+    upgradeType: 'sound_rig' | 'vip_lounge' | 'surveillance'
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    const levels = await this.getVenueUpgradeLevels(venueId);
+    const currentLevel = levels[upgradeType];
+    if (currentLevel >= 3) {
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          'Upgrade zit al op max level',
+          'Upgrade is already max level'
+        ),
+      };
+    }
+
+    const cost = this.UPGRADE_COSTS[upgradeType][currentLevel];
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    if (!player || player.money < cost) {
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          `Onvoldoende cash voor upgrade (â‚¬${cost.toLocaleString()})`,
+          `Not enough cash for upgrade (â‚¬${cost.toLocaleString()})`
+        ),
+      };
+    }
+
+    const nextLevel = currentLevel + 1;
+    const readableLabel =
+      upgradeType === 'sound_rig'
+        ? this.localize(language, 'Sound Rig', 'Sound Rig')
+        : upgradeType === 'vip_lounge'
+          ? this.localize(language, 'VIP Lounge', 'VIP Lounge')
+          : this.localize(language, 'Surveillance', 'Surveillance');
+
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: cost } },
+      }),
+      prisma.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.UPGRADE_EVENT_PREFIX}${upgradeType}`,
+          eventName: `Upgrade ${readableLabel} Lv${nextLevel}`,
+          startsAt: new Date(),
+          endsAt: new Date(),
+          expectedVisitors: 0,
+          investment: cost,
+          actualVisitors: 0,
+          eventSuccess: true,
+          revenue: 0,
+        },
+      }),
+    ]);
+
+    await activityService.logActivity(
+      playerId,
+      'NIGHTCLUB_UPGRADE_PURCHASE',
+      this.localize(
+        language,
+        `Upgrade gekocht: ${readableLabel} Lv${nextLevel} (â‚¬${cost.toLocaleString()})`,
+        `Upgrade purchased: ${readableLabel} Lv${nextLevel} (â‚¬${cost.toLocaleString()})`
+      ),
+      { venueId, upgradeType, nextLevel, cost },
+      false
+    );
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        `${readableLabel} geÃ¼pgraded naar level ${nextLevel}.`,
+        `${readableLabel} upgraded to level ${nextLevel}.`
+      ),
+    };
+  }
+
   async respondToIncident(
     playerId: number,
     venueId: number,
@@ -1698,6 +1850,7 @@ class NightclubService {
    * Calculate current crowd state based on DJ, security, time, and events
    */
   private async calculateCrowdState(venueId: number): Promise<CrowdState> {
+    const upgradeLevels = await this.getVenueUpgradeLevels(venueId);
     const venue = await prisma.nightclubVenue.findUnique({
       where: { id: venueId },
       include: {
@@ -1742,6 +1895,14 @@ class NightclubService {
     if (venue.events.length > 0) {
       size = Math.min(100, size + 15);
       vibe = this.improveVibe(vibe);
+    }
+
+    // Upgrade effect: Sound rig improves crowd retention and vibe floor.
+    if (upgradeLevels.sound_rig > 0) {
+      size = Math.min(100, size + upgradeLevels.sound_rig * 2);
+      if (upgradeLevels.sound_rig >= 2 && vibe === 'chill') {
+        vibe = 'normal';
+      }
     }
 
     // Time of day effect (peak hours 22:00-02:00)
@@ -1833,6 +1994,7 @@ class NightclubService {
     if (venueInventory.length === 0) return;
 
     const crowdState = await this.calculateCrowdState(venueId);
+    const upgradeLevels = await this.getVenueUpgradeLevels(venueId);
     const securityReduction = await this.getCurrentSecurityReduction(venueId);
     const staffingLimits = await this.getStaffingLimits(venue.playerId);
     const prostitutionBoost = await this.getActiveProstituteBoost(
@@ -1889,7 +2051,10 @@ class NightclubService {
       const unitPrice = Math.floor(
         inventory.basePrice * Math.min(this.MAX_MARGIN, Math.max(this.MIN_MARGIN, margin))
       );
-      const boostedUnitPrice = Math.floor(unitPrice * prostitutionBoost.priceBoost);
+      const vipLoungeMultiplier = 1 + upgradeLevels.vip_lounge * 0.04;
+      const boostedUnitPrice = Math.floor(
+        unitPrice * prostitutionBoost.priceBoost * vipLoungeMultiplier
+      );
       const totalRevenue = boostedUnitPrice * quantitySold;
 
       // Record the sale
@@ -1954,6 +2119,7 @@ class NightclubService {
     for (const venue of venues) {
       const crowdState = await this.calculateCrowdState(venue.id);
       const securityShift = venue.securityShifts[0];
+      const upgradeLevels = await this.getVenueUpgradeLevels(venue.id);
 
       // Base theft chance: 15% per minute in raging environment
       let theftChance = 0.15 * (crowdState.size / 100);
@@ -1961,6 +2127,9 @@ class NightclubService {
       // Security reduces chance
       if (securityShift) {
         theftChance *= 1 - securityShift.theftReduction;
+      }
+      if (upgradeLevels.surveillance > 0) {
+        theftChance *= 1 - upgradeLevels.surveillance * 0.08;
       }
 
       if (Math.random() < theftChance && venue.inventory.length > 0) {
@@ -2217,9 +2386,9 @@ class NightclubService {
       (activeDjShift ? 0.08 : -0.05);
     const morale = Number(Math.max(0.6, Math.min(1.25, moraleRaw)).toFixed(2));
     const fatigue = Number((1.35 - morale).toFixed(2));
+    const upgradeLevels = await this.getVenueUpgradeLevels(venueId);
     const upgradeTree = this.buildUpgradeSnapshot({
-      revenueAllTime: Number(venue.totalRevenueAllTime ?? 0),
-      marketingSpend: venue.marketingSpend ?? 0,
+      levels: upgradeLevels,
       staffAssigned,
       staffCap: staffingLimits.staffCap,
     });

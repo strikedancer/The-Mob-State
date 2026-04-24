@@ -148,6 +148,21 @@ class NightclubService {
     }
   }
 
+  Future<Map<String, dynamic>> applyUpgrade({
+    required int venueId,
+    required String upgradeType,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/upgrades/apply',
+        {'upgradeType': upgradeType},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> respondIncident({
     required int venueId,
     required String actionType,
