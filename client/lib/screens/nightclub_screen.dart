@@ -50,6 +50,7 @@ class _NightclubScreenState extends State<NightclubScreen>
   int? _selectedProstituteId;
   String? _selectedDrugKey;
   int _storeQuantity = 10;
+  late final TextEditingController _storeQuantityController;
   late final TabController _managementTabController;
   late final TabController _insightTabController;
 
@@ -284,17 +285,22 @@ class _NightclubScreenState extends State<NightclubScreen>
   AppLocalizations get _t => AppLocalizations.of(context)!;
 
   String _backgroundAsset(double width) {
-    if (width >= 1200)
+    if (width >= 1200) {
       return 'assets/images/backgrounds/nightclub_hub_bg_desktop.png';
-    if (width >= 700)
+    }
+    if (width >= 700) {
       return 'assets/images/backgrounds/nightclub_hub_bg_tablet.png';
+    }
     return 'assets/images/backgrounds/nightclub_hub_bg_mobile.png';
   }
 
   String _emblemAsset(double width) {
-    if (width >= 1200)
+    if (width >= 1200) {
       return 'assets/images/ui/nightclub_hub_emblem_desktop.png';
-    if (width >= 700) return 'assets/images/ui/nightclub_hub_emblem_tablet.png';
+    }
+    if (width >= 700) {
+      return 'assets/images/ui/nightclub_hub_emblem_tablet.png';
+    }
     return 'assets/images/ui/nightclub_hub_emblem_mobile.png';
   }
 
@@ -311,9 +317,38 @@ class _NightclubScreenState extends State<NightclubScreen>
     );
   }
 
+  Map<String, dynamic>? _selectedStoreOption(
+    List<Map<String, dynamic>> options,
+  ) {
+    if (_selectedDrugKey == null) return null;
+    for (final option in options) {
+      if (option['key'] == _selectedDrugKey) {
+        return option;
+      }
+    }
+    return null;
+  }
+
+  int _selectedStoreMax(List<Map<String, dynamic>> options) {
+    final selected = _selectedStoreOption(options);
+    return (selected?['quantity'] as int?) ?? 0;
+  }
+
+  void _setStoreQuantityValue(int value) {
+    final next = value < 1 ? 1 : value;
+    _storeQuantity = next;
+    if (_storeQuantityController.text != '$next') {
+      _storeQuantityController.text = '$next';
+      _storeQuantityController.selection = TextSelection.collapsed(
+        offset: _storeQuantityController.text.length,
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _storeQuantityController = TextEditingController(text: '$_storeQuantity');
     _managementTabController = TabController(length: 4, vsync: this);
     _insightTabController = TabController(length: 3, vsync: this);
     _load();
@@ -323,6 +358,7 @@ class _NightclubScreenState extends State<NightclubScreen>
   @override
   void dispose() {
     _pollTimer?.cancel();
+    _storeQuantityController.dispose();
     _managementTabController.dispose();
     _insightTabController.dispose();
     super.dispose();
@@ -548,6 +584,10 @@ class _NightclubScreenState extends State<NightclubScreen>
               if (_selectedDrugKey == null ||
                   !availableKeys.contains(_selectedDrugKey)) {
                 _selectedDrugKey = storeOptions.first['key'] as String;
+              }
+              final maxStore = _selectedStoreMax(storeOptions);
+              if (maxStore > 0 && _storeQuantity > maxStore) {
+                _setStoreQuantityValue(maxStore);
               }
             }
           });
@@ -849,6 +889,8 @@ class _NightclubScreenState extends State<NightclubScreen>
                           const SizedBox(height: 12),
                           _venueSelectorCard(),
                           const SizedBox(height: 12),
+                          _operationsDeckCard(),
+                          const SizedBox(height: 12),
                           _insightTabs(),
                           const SizedBox(height: 12),
                           _managementTabs(),
@@ -947,6 +989,125 @@ class _NightclubScreenState extends State<NightclubScreen>
           ],
         ),
       ),
+    );
+  }
+
+  Widget _operationsDeckCard() {
+    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
+    final crowdRaw = (data['crowdSize'] as num?)?.toDouble() ?? 0;
+    final crowd = crowdRaw < 0 ? 0.0 : (crowdRaw > 100 ? 100.0 : crowdRaw);
+    final inventoryValue = (data['inventoryValue'] as num?)?.toInt() ?? 0;
+    final revenueToday = (data['revenueToday'] as num?)?.toInt() ?? 0;
+    final thefts = ((data['thefts'] as List<dynamic>?) ?? const []).length;
+    final prostitution =
+        (data['prostitution'] as Map<String, dynamic>?) ?? const {};
+    final staffCap = ((prostitution['staffCap'] as num?)?.toInt() ?? 0);
+    final staffCount = ((prostitution['assignedCount'] as num?)?.toInt() ?? 0);
+    final staffingRatioRaw = staffCap > 0 ? (staffCount / staffCap) : 0.0;
+    final staffingRatio = staffingRatioRaw < 0
+        ? 0.0
+        : (staffingRatioRaw > 1 ? 1.0 : staffingRatioRaw);
+    final riskRatioRaw = thefts / 10;
+    final riskRatio = riskRatioRaw < 0
+        ? 0.0
+        : (riskRatioRaw > 1 ? 1.0 : riskRatioRaw);
+    final vibe = _localizedVibe((data['crowdVibe'] ?? 'chill').toString());
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xAA0B132B), Color(0xAA1B263B), Color(0xAA2E1A47)],
+        ),
+        border: Border.all(color: Colors.white24),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _l('Nightclub Command Deck', 'Nightclub Command Deck'),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _kpiChip(_l('Vibe', 'Vibe'), vibe),
+                _kpiChip(_l('Crowd', 'Crowd'), '${crowd.toStringAsFixed(0)}%'),
+                _kpiChip(
+                  _l('Omzet vandaag', 'Revenue today'),
+                  '€$revenueToday',
+                ),
+                _kpiChip(_l('Stockwaarde', 'Stock value'), '€$inventoryValue'),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _progressRow(
+              _l('Crew bezetting', 'Crew occupancy'),
+              '$staffCount/$staffCap',
+              staffingRatio,
+              Colors.cyanAccent,
+            ),
+            const SizedBox(height: 8),
+            _progressRow(
+              _l('Operationeel risico', 'Operational risk'),
+              _l('$thefts incidenten (24h)', '$thefts incidents (24h)'),
+              riskRatio,
+              riskRatio >= 0.6 ? Colors.redAccent : Colors.orangeAccent,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _progressRow(
+    String title,
+    String value,
+    double valueRatio,
+    Color accentColor,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+              ),
+            ),
+            Text(
+              value,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(999),
+          child: LinearProgressIndicator(
+            value: valueRatio.clamp(0, 1).toDouble(),
+            minHeight: 8,
+            backgroundColor: Colors.white24,
+            color: accentColor,
+          ),
+        ),
+      ],
     );
   }
 
@@ -1620,6 +1781,7 @@ class _NightclubScreenState extends State<NightclubScreen>
                 ),
               ),
             DropdownButtonFormField<int>(
+              isExpanded: true,
               value: _selectedDjId,
               items: _djs
                   .map(
@@ -1708,6 +1870,7 @@ class _NightclubScreenState extends State<NightclubScreen>
                 ),
               ),
             DropdownButtonFormField<int>(
+              isExpanded: true,
               value: _selectedGuardId,
               items: _guards
                   .map(
@@ -1747,6 +1910,8 @@ class _NightclubScreenState extends State<NightclubScreen>
 
   Widget _storeCard() {
     final options = _storeDrugOptions();
+    final selected = _selectedStoreOption(options);
+    final selectedMax = _selectedStoreMax(options);
     final storedAll = _nightclubStoredDrugs();
     final stored = storedAll
         .where((row) => ((row['quantity'] as num?)?.toInt() ?? 0) > 0)
@@ -1768,6 +1933,7 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
+              isExpanded: true,
               value: options.any((o) => o['key'] == _selectedDrugKey)
                   ? _selectedDrugKey
                   : null,
@@ -1784,20 +1950,49 @@ class _NightclubScreenState extends State<NightclubScreen>
                             fallbackIcon: Icons.science,
                           ),
                           const SizedBox(width: 8),
-                          _dropdownItemLabel(
-                            '${o['drugName']} (${o['quality']}) - ${o['quantity']}g',
+                          Expanded(
+                            child: Text(
+                              '${o['quantity']}g • ${o['drugName']} (${o['quality']})',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   )
                   .toList(),
-              onChanged: (v) => setState(() => _selectedDrugKey = v),
+              onChanged: (v) {
+                setState(() {
+                  _selectedDrugKey = v;
+                  final max = _selectedStoreMax(options);
+                  if (max > 0 && _storeQuantity > max) {
+                    _setStoreQuantityValue(max);
+                  }
+                });
+              },
               decoration: InputDecoration(labelText: _t.nightclubChooseStock),
             ),
+            if (selected != null) ...[
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _kpiChip(
+                    _l('Geselecteerd', 'Selected'),
+                    '${selected['drugName']} (${selected['quality']})',
+                  ),
+                  _kpiChip(
+                    _l('Beschikbaar', 'Available'),
+                    '${selected['quantity']}g',
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 8),
-            TextFormField(
-              initialValue: _storeQuantity.toString(),
+            TextField(
+              controller: _storeQuantityController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(labelText: _t.nightclubAmountGrams),
               onChanged: (v) {
@@ -1807,9 +2002,40 @@ class _NightclubScreenState extends State<NightclubScreen>
                 }
               },
             ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                for (final amount in const [10, 25, 50, 100, 250])
+                  ActionChip(
+                    label: Text('${amount}g'),
+                    onPressed: () {
+                      final max = _selectedStoreMax(options);
+                      final target = max > 0 ? amount.clamp(1, max) : amount;
+                      setState(() => _setStoreQuantityValue(target));
+                    },
+                  ),
+                ActionChip(
+                  label: Text(_l('MAX', 'MAX')),
+                  onPressed: selectedMax > 0
+                      ? () =>
+                            setState(() => _setStoreQuantityValue(selectedMax))
+                      : null,
+                ),
+              ],
+            ),
             const SizedBox(height: 10),
             FilledButton.icon(
-              onPressed: _selectedDrugKey == null ? null : _storeDrugs,
+              onPressed: _selectedDrugKey == null || selectedMax <= 0
+                  ? null
+                  : () {
+                      final clamped = _storeQuantity.clamp(1, selectedMax);
+                      if (clamped != _storeQuantity) {
+                        setState(() => _setStoreQuantityValue(clamped));
+                      }
+                      _storeDrugs();
+                    },
               icon: const Icon(Icons.inventory_2),
               label: Text(_t.nightclubStoreButton),
             ),

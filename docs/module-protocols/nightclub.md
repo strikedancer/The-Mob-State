@@ -29,6 +29,8 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Stable dropdown behavior after async refreshes (no duplicate values, no invalid selected value).
 - Resilient screen load: one slow/failing API call may not block the whole nightclub screen.
 - Live staffing selectors must never depend on manual seed steps alone; DJ/security availability data needs a production-safe bootstrap or fallback so empty staff tables do not leave selectors blank.
+- Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
+- DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -45,6 +47,8 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Verify image selectors render with correct fallback icon when image reference is missing or invalid.
 - Simulate one failing/sluggish nightclub endpoint and verify the screen still opens with partial data.
 - Verify a live environment with empty DJ/security tables still shows hireable staff because backend bootstrap/fallback repopulates the availability lists.
+- Verify mobile drug-storage selector keeps gram counts readable (no clipped labels) and quantity shortcuts respect available stock.
+- Verify expired DJ contracts clear automatically and a new DJ can be hired immediately after shift end.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

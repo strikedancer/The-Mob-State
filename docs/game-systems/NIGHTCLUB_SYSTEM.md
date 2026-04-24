@@ -453,3 +453,10 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 - Prostitutie-overzichtskaarten gebruiken op web/tablet nu een responsive `Wrap` met dynamisch berekende kaartbreedte in plaats van een vaste `GridView` `childAspectRatio`.
 - Doel: cardhoogte volgt content automatisch zodat onderzijde (housing/progress/knoppen) niet wordt afgekapt.
 - Guardrail: geen vaste tile-ratio afdwingen op content-heavy cards in deze flow.
+
+## UI + Runtime Addendum 2026-04-24 (Nightclub Ops Deck)
+
+- Nightclub scherm toont nu een `Command Deck` boven de tabblokken met operationele KPI's (crowd, vibe, omzet, stockwaarde, staffing en incident-risico) voor snellere managementbeslissingen.
+- Drugs-opslag UI gebruikt nu gram-first labels (`250g • cocaine (B)`), een expliciete "Beschikbaar/Available" indicator en quick-select chips (`10g/25g/50g/100g/250g/MAX`) zodat mobiele spelers direct zien hoeveel gram verplaatst kan worden.
+- DJ-contract cleanup gebeurt server-side zodra een contract verlopen is; stale `currentDJId` blokkeert hierdoor geen nieuwe DJ-hire meer.
+- Runtime status `djActive` volgt actieve shift-data in plaats van alleen de venue pointer, zodat UI en backendstatus synchroon blijven.
