@@ -548,7 +548,11 @@ async function getActiveRunForCrew(crewId: number): Promise<CrewMissionRun | nul
         t.missionKey, t.tier, t.titleNl, t.titleEn
       FROM crew_mission_runs r
       INNER JOIN crew_mission_templates t ON t.id = r.templateId
-      WHERE r.crewId = ? AND r.status = 'in_progress'
+      WHERE r.crewId = ?
+        AND (
+          r.status = 'in_progress'
+          OR (r.status = 'completed' AND r.cooldownUntil IS NOT NULL AND r.cooldownUntil > NOW(3))
+        )
       ORDER BY r.id DESC
       LIMIT 1
     `,
@@ -800,6 +804,9 @@ export const crewMissionService = {
     ]);
 
     if (activeRun) {
+      if (activeRun.status === 'completed' && activeRun.cooldownUntil && activeRun.cooldownUntil.getTime() > Date.now()) {
+        throw new Error('MISSION_COOLDOWN_ACTIVE');
+      }
       throw new Error('MISSION_ALREADY_IN_PROGRESS');
     }
 

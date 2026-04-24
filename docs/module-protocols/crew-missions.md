@@ -154,6 +154,7 @@ Cooldown per tier:
 - Tier 3: lang
 
 Belangrijk:
+- Een actieve crew-missie cooldown blokkeert het starten van een nieuwe crew-missie tot cooldown-expiry of speedup.
 - Cooldown timeouts worden geprijsd via dezelfde economy-ratio als andere action loops.
 - Geen vaste credit-prijs los van resterende tijd.
 - `credits per minuut` moet consistent zijn met crimes/jobs/vehicle/school skip-logica.

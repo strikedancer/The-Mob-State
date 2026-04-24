@@ -38,6 +38,10 @@ function mapMissionErrorToResponse(error: unknown, res: any): boolean {
     res.status(400).json({ event: 'error.mission_already_in_progress', params: {} });
     return true;
   }
+  if (message === 'MISSION_COOLDOWN_ACTIVE') {
+    res.status(400).json({ event: 'error.mission_cooldown_active', params: {} });
+    return true;
+  }
   if (message === 'MISSION_TEMPLATE_NOT_FOUND') {
     res.status(404).json({ event: 'error.mission_template_not_found', params: {} });
     return true;

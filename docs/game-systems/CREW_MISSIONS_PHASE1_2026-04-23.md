@@ -286,6 +286,7 @@ Gekoppeld in `crew_screen.dart`:
 - Role-assign dialog bij start met rollen per crewlid (`planner`, `enforcer`, `logistics`, `tech`).
 - Active run + recente runs tonen contribution breakdown per rol/speler (incl. payout multiplier indien van toepassing).
 - Mission card images gebruiken nu een robuuste fallbackketen: extern crew_missions pad eerst, daarna bestaande crimes/casino assets.
+- Cooldown-gating is hard: tijdens een actieve missie-cooldown kan geen nieuwe missie gestart worden (alleen wachten of speedup).
 - Active run actions:
   - start (leader/co-leader)
   - resolve (leader/co-leader zodra timer klaar is)

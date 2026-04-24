@@ -873,6 +873,12 @@ class _CrewScreenState extends State<CrewScreen>
           'Er is al een crew missie actief.',
           'There is already an active crew mission.',
         );
+      case 'error.mission_cooldown_active':
+        return _tr(
+          locale,
+          'Er loopt nog een missie-cooldown. Wacht tot deze klaar is of versnel met credits.',
+          'A mission cooldown is still active. Wait for it to finish or speed it up with credits.',
+        );
       case 'error.mission_template_not_found':
         return _tr(locale, 'Missie niet gevonden.', 'Mission not found.');
       case 'error.mission_tier_locked':
