@@ -176,6 +176,25 @@ router.post('/runs/:id/claim', authenticate, async (req: AuthRequest, res) => {
   }
 });
 
+router.get('/runs/:id/speedup-quote', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const runId = Number.parseInt(String(req.params.id), 10);
+    if (!Number.isFinite(runId)) {
+      return res.status(400).json({ event: 'error.invalid_run_id', params: {} });
+    }
+    const quote = await crewMissionService.getSpeedupQuote(req.player!.id, runId);
+    return res.json({
+      event: 'crew_missions.cooldown_speedup_quote',
+      params: { runId, credits: quote.credits },
+      ...quote,
+    });
+  } catch (error) {
+    if (mapMissionErrorToResponse(error, res)) return;
+    console.error('[Crew Missions] speedup quote error:', error);
+    return res.status(500).json({ event: 'error.internal', params: {} });
+  }
+});
+
 router.post('/runs/:id/speedup', authenticate, async (req: AuthRequest, res) => {
   try {
     const runId = Number.parseInt(String(req.params.id), 10);

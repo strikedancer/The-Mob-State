@@ -31,6 +31,7 @@ Player endpoints:
 - `POST /crew-missions/start`
 - `POST /crew-missions/runs/:id/resolve`
 - `POST /crew-missions/runs/:id/claim`
+- `GET /crew-missions/runs/:id/speedup-quote`
 - `POST /crew-missions/runs/:id/speedup`
 
 Admin endpoints:
@@ -48,6 +49,7 @@ Beschikbaar in de tab:
 - templates met image-first cards + icon fallback
 - active run card met status en timer
 - acties: `start`, `resolve`, `claim`, `speedup`
+- speedup quote + confirm-dialog met exacte creditsprijs vooraf
 - recente runs lijst
 
 UX/i18n baseline:

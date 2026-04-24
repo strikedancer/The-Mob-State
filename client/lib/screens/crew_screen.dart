@@ -74,6 +74,8 @@ class _CrewScreenState extends State<CrewScreen>
   Map<String, dynamic>? _crewStorage;
   Map<String, dynamic>? _crewWarHub;
   Map<String, dynamic>? _crewMissionsOverview;
+  final Map<int, Map<String, dynamic>> _crewMissionSpeedupQuotes = {};
+  final Set<int> _crewMissionSpeedupQuoteLoading = <int>{};
   bool _loading = true;
   bool _crewWarLoading = false;
   bool _crewMissionsLoading = false;
@@ -220,6 +222,10 @@ class _CrewScreenState extends State<CrewScreen>
       'nl': 'Cooldown versnellen',
       'en': 'Speed up cooldown',
     },
+    'action.confirmSpeedupCooldown': {
+      'nl': 'Bevestig versnellen',
+      'en': 'Confirm speed up',
+    },
     'label.activeMission': {'nl': 'Actieve missie', 'en': 'Active mission'},
     'label.recentMissions': {'nl': 'Recente missies', 'en': 'Recent missions'},
     'label.missionDuration': {'nl': 'Duur', 'en': 'Duration'},
@@ -273,6 +279,21 @@ class _CrewScreenState extends State<CrewScreen>
       'nl': 'Cooldown versneld',
       'en': 'Cooldown sped up',
     },
+    'message.missionSpeedupQuoteFailed': {
+      'nl': 'Kon speedup-prijs niet ophalen.',
+      'en': 'Could not load speedup price.',
+    },
+    'dialog.speedupTitle': {
+      'nl': 'Cooldown versnellen?',
+      'en': 'Speed up cooldown?',
+    },
+    'dialog.speedupBody': {
+      'nl': 'Direct afronden kost {credits} credits ({minutes} min resterend).',
+      'en': 'Instant finish costs {credits} credits ({minutes} min remaining).',
+    },
+    'label.credits': {'nl': 'credits', 'en': 'credits'},
+    'state.loadingPrice': {'nl': 'Prijs laden...', 'en': 'Loading price...'},
+    'action.cancel': {'nl': 'Annuleren', 'en': 'Cancel'},
   };
 
   static const Map<String, List<int>> _buildingCapacityByLevel = {
@@ -732,6 +753,13 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   String _tr(String locale, String nl, String en) => locale == 'nl' ? nl : en;
+  String _tParam(String locale, String key, Map<String, String> params) {
+    var text = _t(locale, key);
+    params.forEach((paramKey, paramValue) {
+      text = text.replaceAll('{$paramKey}', paramValue);
+    });
+    return text;
+  }
 
   String _money(num amount) => formatCurrency(amount);
 
@@ -886,6 +914,8 @@ class _CrewScreenState extends State<CrewScreen>
         setState(() {
           _crewMissionsOverview = null;
           _crewMissionsLoading = false;
+          _crewMissionSpeedupQuotes.clear();
+          _crewMissionSpeedupQuoteLoading.clear();
         });
       }
       return;
@@ -902,6 +932,8 @@ class _CrewScreenState extends State<CrewScreen>
         if (mounted) {
           setState(() {
             _crewMissionsOverview = data;
+            _crewMissionSpeedupQuotes.clear();
+            _crewMissionSpeedupQuoteLoading.clear();
           });
         }
       } else if (!silent && mounted) {
@@ -1000,6 +1032,7 @@ class _CrewScreenState extends State<CrewScreen>
       if (!mounted) return;
 
       if (response.statusCode == 200) {
+        _crewMissionSpeedupQuotes.remove(runId);
         showTopRightFromSnackBar(
           context,
           SnackBar(
@@ -1098,6 +1131,102 @@ class _CrewScreenState extends State<CrewScreen>
       if (mounted) {
         setState(() => _crewMissionActionLoading = false);
       }
+    }
+  }
+
+  Future<Map<String, dynamic>?> _loadCrewMissionSpeedupQuote(
+    int runId, {
+    bool silent = true,
+  }) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_crewMissionSpeedupQuoteLoading.contains(runId)) {
+      return _crewMissionSpeedupQuotes[runId];
+    }
+
+    _crewMissionSpeedupQuoteLoading.add(runId);
+    try {
+      final response = await AuthService().apiClient.get(
+        '/crew-missions/runs/$runId/speedup-quote',
+      );
+      if (response.statusCode == 200) {
+        final data = _decodeJsonBody(response.body);
+        if (mounted) {
+          setState(() {
+            _crewMissionSpeedupQuotes[runId] = data;
+          });
+        } else {
+          _crewMissionSpeedupQuotes[runId] = data;
+        }
+        return data;
+      }
+
+      if (!silent && mounted) {
+        final data = response.body.isNotEmpty
+            ? _decodeJsonBody(response.body)
+            : <String, dynamic>{};
+        final event = data['event']?.toString();
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_crewMissionErrorMessage(locale, event)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return null;
+    } catch (_) {
+      if (!silent && mounted) {
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(
+            content: Text(_t(locale, 'message.missionSpeedupQuoteFailed')),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return null;
+    } finally {
+      _crewMissionSpeedupQuoteLoading.remove(runId);
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  Future<void> _confirmSpeedupCrewMissionCooldown(int runId) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    if (_crewMissionActionLoading) return;
+
+    final quote = await _loadCrewMissionSpeedupQuote(runId, silent: false);
+    if (!mounted || quote == null) return;
+
+    final credits = (quote['credits'] as num?)?.toInt() ?? 0;
+    final remainingMinutes = (quote['remainingMinutes'] as num?)?.toInt() ?? 0;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(_t(locale, 'dialog.speedupTitle')),
+        content: Text(
+          _tParam(locale, 'dialog.speedupBody', {
+            'credits': credits.toString(),
+            'minutes': remainingMinutes.toString(),
+          }),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(_t(locale, 'action.cancel')),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(_t(locale, 'action.confirmSpeedupCooldown')),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await _speedupCrewMissionCooldown(runId);
     }
   }
 
@@ -6227,6 +6356,17 @@ class _CrewScreenState extends State<CrewScreen>
     final canClaim =
         runId != null && status == 'completed' && rewardsClaimedAt == null;
     final canSpeedup = runId != null && cooldownInSeconds > 0;
+    final speedupQuote = runId == null
+        ? null
+        : _crewMissionSpeedupQuotes[runId];
+    final speedupCredits = (speedupQuote?['credits'] as num?)?.toInt();
+    final speedupMinutes = (speedupQuote?['remainingMinutes'] as num?)?.toInt();
+    final speedupLoading =
+        runId != null && _crewMissionSpeedupQuoteLoading.contains(runId);
+
+    if (canSpeedup && speedupQuote == null && !speedupLoading) {
+      Future.microtask(() => _loadCrewMissionSpeedupQuote(runId));
+    }
 
     return Card(
       child: Padding(
@@ -6278,11 +6418,17 @@ class _CrewScreenState extends State<CrewScreen>
                   ),
                 if (canSpeedup)
                   OutlinedButton.icon(
-                    onPressed: _crewMissionActionLoading
+                    onPressed: _crewMissionActionLoading || speedupLoading
                         ? null
-                        : () => _speedupCrewMissionCooldown(runId),
+                        : () => _confirmSpeedupCrewMissionCooldown(runId),
                     icon: const Icon(Icons.bolt),
-                    label: Text(_t(locale, 'action.speedupCooldown')),
+                    label: Text(
+                      speedupLoading
+                          ? _t(locale, 'state.loadingPrice')
+                          : speedupCredits == null
+                          ? _t(locale, 'action.speedupCooldown')
+                          : '${_t(locale, 'action.speedupCooldown')} ($speedupCredits ${_t(locale, 'label.credits')}${speedupMinutes != null ? ', ${speedupMinutes}m' : ''})',
+                    ),
                   ),
                 if (rewardsClaimedAt != null)
                   Chip(label: Text(_t(locale, 'status.rewardsClaimed'))),

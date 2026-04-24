@@ -423,6 +423,25 @@ function getRepeatMultiplier(previousRunsInWindow: number, cfg: RuntimeCrewMissi
   return cfg.repeat4Multiplier;
 }
 
+function computeCooldownSpeedupCost(
+  run: Pick<CrewMissionRun, 'tier' | 'cooldownUntil'>,
+  cfg: RuntimeCrewMissionConfig,
+): { remainingMinutes: number; credits: number; tierRate: number } {
+  if (!run.cooldownUntil || run.cooldownUntil.getTime() <= Date.now()) {
+    throw new Error('MISSION_COOLDOWN_NOT_ACTIVE');
+  }
+
+  const remainingMinutes = Math.max(
+    1,
+    Math.ceil((run.cooldownUntil.getTime() - Date.now()) / 60000),
+  );
+  const tierRate =
+    run.tier === 1 ? cfg.t1CreditsPerMinute : run.tier === 2 ? cfg.t2CreditsPerMinute : cfg.t3CreditsPerMinute;
+  const credits = clamp(Math.ceil(remainingMinutes * tierRate), 6, 240);
+
+  return { remainingMinutes, credits, tierRate };
+}
+
 async function getMissionTemplates(): Promise<CrewMissionTemplate[]> {
   const rows = await prisma.$queryRawUnsafe<CrewMissionTemplate[]>(
     `
@@ -877,18 +896,10 @@ export const crewMissionService = {
       throw new Error('MISSION_RUN_NOT_FOUND');
     }
 
-    if (!run.cooldownUntil || run.cooldownUntil.getTime() <= Date.now()) {
-      throw new Error('MISSION_COOLDOWN_NOT_ACTIVE');
-    }
-
     const cfg = await getRuntimeConfig();
-    const remainingMinutes = Math.max(
-      1,
-      Math.ceil((run.cooldownUntil.getTime() - Date.now()) / 60000),
-    );
-    const tierRate =
-      run.tier === 1 ? cfg.t1CreditsPerMinute : run.tier === 2 ? cfg.t2CreditsPerMinute : cfg.t3CreditsPerMinute;
-    const creditCost = clamp(Math.ceil(remainingMinutes * tierRate), 6, 240);
+    const quote = computeCooldownSpeedupCost(run, cfg);
+    const creditCost = quote.credits;
+    const remainingMinutes = quote.remainingMinutes;
 
     const result = await prisma.$transaction(async (tx) => {
       const player = await tx.player.findUnique({
@@ -943,6 +954,27 @@ export const crewMissionService = {
       creditsSpent: creditCost,
       balanceAfter: result.balanceAfter,
       cooldownUntil: new Date().toISOString(),
+    };
+  },
+
+  async getSpeedupQuote(playerId: number, runId: number) {
+    const membership = await getCrewMembership(playerId);
+    const run = await fetchRunForCrew(membership.crewId, runId);
+    if (!run) {
+      throw new Error('MISSION_RUN_NOT_FOUND');
+    }
+
+    const cfg = await getRuntimeConfig();
+    const quote = computeCooldownSpeedupCost(run, cfg);
+    return {
+      runId: run.id,
+      tier: run.tier,
+      missionKey: run.missionKey,
+      remainingMinutes: quote.remainingMinutes,
+      credits: quote.credits,
+      tierRate: quote.tierRate,
+      cooldownUntil: run.cooldownUntil?.toISOString() ?? null,
+      serverTime: new Date().toISOString(),
     };
   },
 

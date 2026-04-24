@@ -268,6 +268,7 @@ Beschikbare basis-endpoints:
 - `POST /crew-missions/start`
 - `POST /crew-missions/runs/:id/resolve`
 - `POST /crew-missions/runs/:id/claim`
+- `GET /crew-missions/runs/:id/speedup-quote`
 - `POST /crew-missions/runs/:id/speedup`
 - `GET /admin/crew-missions/telemetry`
 - `GET /admin/crew-missions/runtime-config`
@@ -286,6 +287,8 @@ Gekoppeld in `crew_screen.dart`:
   - start (leader/co-leader)
   - resolve (leader/co-leader zodra timer klaar is)
   - claim rewards
+  - speedup quote (exacte credits + resterende minuten)
+  - confirm-dialog voor speedup
   - speedup cooldown met credits
 - Recente runs zichtbaar in dezelfde tab.
 
