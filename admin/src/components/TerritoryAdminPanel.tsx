@@ -5,6 +5,23 @@ type Props = {
   locale: 'nl' | 'en'
 }
 
+type TerritoryProgressionTuningForm = {
+  hqRegionCapPerLevel: string
+  hqRegionCapBonusCap: string
+  hqContestCapPerLevel: string
+  hqContestCapBonusCap: string
+  hqActionPointBonusPerLevel: string
+  hqActionPointBonusCap: string
+  crewMissionActionPointBonusPerLevel: string
+  crewMissionActionPointBonusCap: string
+  weaponStorageDefenseBonusPerLevel: string
+  ammoStorageDefenseBonusPerLevel: string
+  carStorageRaidBonusPerLevel: string
+  boatStorageSupplyBonusPerLevel: string
+  drugStorageSabotageBonusPerLevel: string
+  buildingActionBonusCap: string
+}
+
 const tr = (locale: 'nl' | 'en', nl: string, en: string) => (locale === 'nl' ? nl : en)
 
 const formatDate = (value: string | null, locale: 'nl' | 'en') => {
@@ -24,12 +41,44 @@ export function TerritoryAdminPanel({ locale }: Props) {
   const [seasonKey, setSeasonKey] = useState('')
   const [seasonStartsAt, setSeasonStartsAt] = useState('')
   const [seasonEndsAt, setSeasonEndsAt] = useState('')
+  const [progressionTuning, setProgressionTuning] = useState<TerritoryProgressionTuningForm>({
+    hqRegionCapPerLevel: '0.2',
+    hqRegionCapBonusCap: '3',
+    hqContestCapPerLevel: '0.1',
+    hqContestCapBonusCap: '2',
+    hqActionPointBonusPerLevel: '0.12',
+    hqActionPointBonusCap: '2',
+    crewMissionActionPointBonusPerLevel: '0.1',
+    crewMissionActionPointBonusCap: '2',
+    weaponStorageDefenseBonusPerLevel: '0.18',
+    ammoStorageDefenseBonusPerLevel: '0.16',
+    carStorageRaidBonusPerLevel: '0.15',
+    boatStorageSupplyBonusPerLevel: '0.15',
+    drugStorageSabotageBonusPerLevel: '0.15',
+    buildingActionBonusCap: '3',
+  })
 
   const loadOverview = async () => {
     try {
       setLoading(true)
       const nextOverview = await adminService.getTerritoryOverview()
       setOverview(nextOverview)
+      setProgressionTuning({
+        hqRegionCapPerLevel: String(nextOverview.config.hqRegionCapPerLevel ?? 0.2),
+        hqRegionCapBonusCap: String(nextOverview.config.hqRegionCapBonusCap ?? 3),
+        hqContestCapPerLevel: String(nextOverview.config.hqContestCapPerLevel ?? 0.1),
+        hqContestCapBonusCap: String(nextOverview.config.hqContestCapBonusCap ?? 2),
+        hqActionPointBonusPerLevel: String(nextOverview.config.hqActionPointBonusPerLevel ?? 0.12),
+        hqActionPointBonusCap: String(nextOverview.config.hqActionPointBonusCap ?? 2),
+        crewMissionActionPointBonusPerLevel: String(nextOverview.config.crewMissionActionPointBonusPerLevel ?? 0.1),
+        crewMissionActionPointBonusCap: String(nextOverview.config.crewMissionActionPointBonusCap ?? 2),
+        weaponStorageDefenseBonusPerLevel: String(nextOverview.config.weaponStorageDefenseBonusPerLevel ?? 0.18),
+        ammoStorageDefenseBonusPerLevel: String(nextOverview.config.ammoStorageDefenseBonusPerLevel ?? 0.16),
+        carStorageRaidBonusPerLevel: String(nextOverview.config.carStorageRaidBonusPerLevel ?? 0.15),
+        boatStorageSupplyBonusPerLevel: String(nextOverview.config.boatStorageSupplyBonusPerLevel ?? 0.15),
+        drugStorageSabotageBonusPerLevel: String(nextOverview.config.drugStorageSabotageBonusPerLevel ?? 0.15),
+        buildingActionBonusCap: String(nextOverview.config.buildingActionBonusCap ?? 3),
+      })
 
       if (!selectedRegionKey && nextOverview.regions.length > 0) {
         setSelectedRegionKey(nextOverview.regions[0].regionKey)
@@ -156,6 +205,45 @@ export function TerritoryAdminPanel({ locale }: Props) {
     }
   }
 
+  const handleSaveProgressionTuning = async () => {
+    const numericEntries = Object.entries(progressionTuning).map(([key, value]) => ({
+      key,
+      value: Number.parseFloat(value),
+    }))
+    if (numericEntries.some((entry) => !Number.isFinite(entry.value) || entry.value < 0)) {
+      window.alert(tr(locale, 'Vul alleen geldige positieve getallen in.', 'Use valid non-negative numbers only.'))
+      return
+    }
+
+    const payload: Record<string, string> = {
+      TERRITORY_HQ_REGION_CAP_PER_LEVEL: progressionTuning.hqRegionCapPerLevel,
+      TERRITORY_HQ_REGION_CAP_BONUS_CAP: progressionTuning.hqRegionCapBonusCap,
+      TERRITORY_HQ_CONTEST_CAP_PER_LEVEL: progressionTuning.hqContestCapPerLevel,
+      TERRITORY_HQ_CONTEST_CAP_BONUS_CAP: progressionTuning.hqContestCapBonusCap,
+      TERRITORY_HQ_ACTION_POINT_BONUS_PER_LEVEL: progressionTuning.hqActionPointBonusPerLevel,
+      TERRITORY_HQ_ACTION_POINT_BONUS_CAP: progressionTuning.hqActionPointBonusCap,
+      TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_PER_LEVEL: progressionTuning.crewMissionActionPointBonusPerLevel,
+      TERRITORY_CREW_MISSION_LEVEL_ACTION_POINT_BONUS_CAP: progressionTuning.crewMissionActionPointBonusCap,
+      TERRITORY_WEAPON_STORAGE_DEFENSE_BONUS_PER_LEVEL: progressionTuning.weaponStorageDefenseBonusPerLevel,
+      TERRITORY_AMMO_STORAGE_DEFENSE_BONUS_PER_LEVEL: progressionTuning.ammoStorageDefenseBonusPerLevel,
+      TERRITORY_CAR_STORAGE_RAID_BONUS_PER_LEVEL: progressionTuning.carStorageRaidBonusPerLevel,
+      TERRITORY_BOAT_STORAGE_SUPPLY_BONUS_PER_LEVEL: progressionTuning.boatStorageSupplyBonusPerLevel,
+      TERRITORY_DRUG_STORAGE_SABOTAGE_BONUS_PER_LEVEL: progressionTuning.drugStorageSabotageBonusPerLevel,
+      TERRITORY_BUILDING_ACTION_BONUS_CAP: progressionTuning.buildingActionBonusCap,
+    }
+
+    try {
+      setSubmitting(true)
+      await adminService.updateConfig(payload)
+      await loadOverview()
+      window.alert(tr(locale, 'Territory progression tuning opgeslagen.', 'Territory progression tuning saved.'))
+    } catch (error) {
+      window.alert(`${tr(locale, 'Opslaan mislukt', 'Save failed')}: ${(error as Error).message}`)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div className="d-flex flex-column gap-3">
       <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -173,6 +261,63 @@ export function TerritoryAdminPanel({ locale }: Props) {
         <div className="col-md-3"><div className="card h-100"><div className="card-body"><div className="text-muted small">{tr(locale, 'Regio’s actief', 'Active regions')}</div><div className="fw-bold fs-4">{overview?.summary.enabledRegions ?? 0}</div></div></div></div>
         <div className="col-md-3"><div className="card h-100"><div className="card-body"><div className="text-muted small">{tr(locale, 'Actieve contests', 'Active contests')}</div><div className="fw-bold fs-4">{overview?.summary.activeContests ?? 0}</div></div></div></div>
         <div className="col-md-3"><div className="card h-100"><div className="card-body"><div className="text-muted small">{tr(locale, 'Gecontroleerde regio’s', 'Controlled regions')}</div><div className="fw-bold fs-4">{overview?.summary.controlledRegions ?? 0}</div></div></div></div>
+      </div>
+
+      <div className="card">
+        <div className="card-header"><h5 className="mb-0">{tr(locale, 'Progression tuning', 'Progression tuning')}</h5></div>
+        <div className="card-body">
+          <div className="small text-muted mb-3">
+            {tr(
+              locale,
+              'Koppel Territory-groei aan HQ, crew missielevel en bijgebouwen. Alle waarden zijn runtime en direct live.',
+              'Couple Territory growth to HQ, crew mission level and side buildings. All values are runtime and apply live.',
+            )}
+          </div>
+          <div className="row g-3">
+            {[
+              ['hqRegionCapPerLevel', 'HQ region cap +/level', 'HQ region cap +/level'],
+              ['hqRegionCapBonusCap', 'HQ region cap bonus max', 'HQ region cap bonus cap'],
+              ['hqContestCapPerLevel', 'HQ contest cap +/level', 'HQ contest cap +/level'],
+              ['hqContestCapBonusCap', 'HQ contest cap bonus max', 'HQ contest cap bonus cap'],
+              ['hqActionPointBonusPerLevel', 'HQ actiepunten +/level', 'HQ action points +/level'],
+              ['hqActionPointBonusCap', 'HQ actiebonus max', 'HQ action bonus cap'],
+              ['crewMissionActionPointBonusPerLevel', 'Crew missie +/level', 'Crew mission +/level'],
+              ['crewMissionActionPointBonusCap', 'Crew missiebonus max', 'Crew mission bonus cap'],
+              ['weaponStorageDefenseBonusPerLevel', 'Wapenopslag defense +/level', 'Weapon storage defense +/level'],
+              ['ammoStorageDefenseBonusPerLevel', 'Munitieopslag defense +/level', 'Ammo storage defense +/level'],
+              ['carStorageRaidBonusPerLevel', 'Auto-opslag raid +/level', 'Car storage raid +/level'],
+              ['boatStorageSupplyBonusPerLevel', 'Bootopslag supply +/level', 'Boat storage supply +/level'],
+              ['drugStorageSabotageBonusPerLevel', 'Drugsopslag sabotage +/level', 'Drug storage sabotage +/level'],
+              ['buildingActionBonusCap', 'Bijgebouw bonus max', 'Building bonus cap'],
+            ].map(([key, nlLabel, enLabel]) => (
+              <div className="col-md-6 col-xl-3" key={key}>
+                <label className="form-label fw-semibold">{tr(locale, nlLabel, enLabel)}</label>
+                <input
+                  className="form-control"
+                  value={progressionTuning[key as keyof TerritoryProgressionTuningForm]}
+                  onChange={(event) => {
+                    const value = event.target.value
+                    const fieldKey = key as keyof TerritoryProgressionTuningForm
+                    setProgressionTuning((current) => ({
+                      ...current,
+                      [fieldKey]: value,
+                    }))
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="d-flex justify-content-end mt-3">
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={loading || submitting}
+              onClick={() => void handleSaveProgressionTuning()}
+            >
+              {tr(locale, 'Opslaan en live toepassen', 'Save and apply live')}
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="row g-3">

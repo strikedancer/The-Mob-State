@@ -1423,13 +1423,15 @@ export async function doAction(
   );
   if (Number(recentActions[0]?.cnt ?? 0) > 0) throw new Error('ACTION_COOLDOWN');
 
-  // Daily cap check
-  const todayActions = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
-    `SELECT COUNT(*) AS cnt FROM territory_actions
-     WHERE actorId = ? AND createdAt > DATE_SUB(NOW(), INTERVAL 24 HOUR)`,
-    playerId,
-  );
-  if (Number(todayActions[0]?.cnt ?? 0) >= cfg.actionDailyCap) throw new Error('DAILY_CAP_REACHED');
+  // Daily cap check (0 or negative disables hard daily cap)
+  if (cfg.actionDailyCap > 0) {
+    const todayActions = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(
+      `SELECT COUNT(*) AS cnt FROM territory_actions
+       WHERE actorId = ? AND createdAt > DATE_SUB(NOW(), INTERVAL 24 HOUR)`,
+      playerId,
+    );
+    if (Number(todayActions[0]?.cnt ?? 0) >= cfg.actionDailyCap) throw new Error('DAILY_CAP_REACHED');
+  }
 
   // Anti-farm: repeated target crew limit
   const antiFarmCount = await prisma.$queryRawUnsafe<Array<{ cnt: number }>>(

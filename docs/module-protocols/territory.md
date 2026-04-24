@@ -51,6 +51,7 @@
   - Territory aftermath-laag: gewonnen `territory_war` en `total_war` kunnen nu tijdelijke `territory_region_effects` schrijven op echte Territory-regio's, zodat Theater-/doelregio's en aangrenzende vijandelijke regio's tijdelijk extra oorlogsdruk tonen zonder persistente `stability` permanent te vervuilen
   - Territory bonus-label UX-fix: de regio-modal maakt nu expliciet dat `Actiebonussen` contestpunten per actie verhogen (niet de €-uitbetaling), en groepeert bonussen per actietype zodat dubbele bronlabels niet meer verwarrend als één lange regel verschijnen
   - Territory progression-koppeling: contest-caps schalen nu mee met HQ global level (runtime-tunable), en actiebonussen kunnen nu naast regio/war pressure ook uit crew mission level en crew bijgebouwen komen (weapon/ammo/car/boat/drug storage), zodat crew progression en map-control elkaar logisch versterken
+  - Territory pacing update: `TERRITORY_ACTION_DAILY_CAP` ondersteunt nu expliciet `0` als "geen harde dagcap", zodat actieve crews oneindig kunnen doorspelen binnen cooldown/anti-farm guardrails
 - SVG stabiele region IDs: ✅ geïmplementeerd
   - `backend/src/startup/ensureTerritorySchema.ts` — regio-seed valideert nu verplichte namen, unieke `regionKey` waarden en unieke `countryCode + svgElementId` mappings voordat de bootstrap schrijft, zodat de database-mapping rond stabiele SVG ids niet stil kan driften
 - Admin frontend territory sectie: ✅ geïmplementeerd
@@ -197,6 +198,7 @@ Verplichte keys:
 
 Harde regel:
 - Nieuwe territory setting keys worden eerst in admin runtime config toegevoegd en gevalideerd, nooit als hardcoded JSON settings file.
+- `TERRITORY_ACTION_DAILY_CAP <= 0` betekent "geen harde dagcap"; gebruik dit als default voor non-pay-to-win loop pacing.
 
 ## API Surface (Minimum)
 - `GET /territory/countries`

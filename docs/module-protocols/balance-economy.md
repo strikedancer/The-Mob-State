@@ -29,6 +29,7 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
   - tijdelijke boosts blijven capped
 - Cooldown reset-items mogen geen credits verbranden zonder actieve cooldown.
 - Alle economy-aanpassingen moeten traceerbaar zijn via telemetry en runtime settings.
+- Voor Territory geldt: gebruik `TERRITORY_ACTION_DAILY_CAP=0` als default om de cap uit te zetten; begrenzing loopt daar via cooldown + anti-farm.
 
 ## Runtime Keys (Leidend)
 - `ECON_SESSION_WINDOW_MINUTES`

@@ -474,6 +474,25 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
   }
 
+  String _bonusSourceLabel(String rawSource) {
+    switch (rawSource.toLowerCase()) {
+      case 'strategic-tag':
+        return _t('Strategische regio', 'Strategic region');
+      case 'adjacency':
+        return _t('Aangrenzende steun', 'Adjacent support');
+      case 'war-aftermath':
+        return _t('War pressure', 'War pressure');
+      case 'hq-level':
+        return _t('HQ level', 'HQ level');
+      case 'crew-mission-level':
+        return _t('Crew missielevel', 'Crew mission level');
+      case 'crew-building':
+        return _t('Crew bijgebouwen', 'Crew side buildings');
+      default:
+        return _t('Overig', 'Other');
+    }
+  }
+
   String _strategicBonusesByActionLabel(List<dynamic> rawBonuses) {
     final orderedActionTypes = <String>[
       'patrol',
@@ -484,7 +503,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       'defense',
     ];
     final pointsByAction = <String, int>{};
-    final sourcesByAction = <String, Map<String, int>>{};
+    final sourceLabelsByAction = <String, Map<String, int>>{};
+    final sourceTypesByAction = <String, Map<String, int>>{};
 
     for (final rawBonus in rawBonuses) {
       if (rawBonus is! Map) continue;
@@ -499,6 +519,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                   ? (rawBonus['labelNl'] as String?)
                   : (rawBonus['labelEn'] as String?))
               ?.trim();
+      final sourceType = (rawBonus['source'] as String?)?.trim().toLowerCase();
       if (sourceLabel == null || sourceLabel.isEmpty) continue;
 
       pointsByAction.update(
@@ -506,15 +527,26 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         (current) => current + bonusPoints,
         ifAbsent: () => bonusPoints,
       );
-      final sourceMap = sourcesByAction.putIfAbsent(
+      final sourceLabelMap = sourceLabelsByAction.putIfAbsent(
         actionType,
         () => <String, int>{},
       );
-      sourceMap.update(
+      sourceLabelMap.update(
         sourceLabel,
         (current) => current + bonusPoints,
         ifAbsent: () => bonusPoints,
       );
+      if (sourceType != null && sourceType.isNotEmpty) {
+        final sourceTypeMap = sourceTypesByAction.putIfAbsent(
+          actionType,
+          () => <String, int>{},
+        );
+        sourceTypeMap.update(
+          sourceType,
+          (current) => current + bonusPoints,
+          ifAbsent: () => bonusPoints,
+        );
+      }
     }
 
     if (pointsByAction.isEmpty) return '';
@@ -523,19 +555,30 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     for (final actionType in orderedActionTypes) {
       final totalPoints = pointsByAction[actionType];
       if (totalPoints == null || totalPoints <= 0) continue;
-      final sourceMap = sourcesByAction[actionType] ?? const <String, int>{};
-      final sourceLabel = sourceMap.entries
+      final sourceLabelMap =
+          sourceLabelsByAction[actionType] ?? const <String, int>{};
+      final sourceLabel = sourceLabelMap.entries
           .where((entry) => entry.value > 0)
           .map((entry) => '+${entry.value} ${entry.key}')
           .join(', ');
+      final sourceTypeMap =
+          sourceTypesByAction[actionType] ?? const <String, int>{};
+      final sourceTypeLabel = sourceTypeMap.entries
+          .where((entry) => entry.value > 0)
+          .map((entry) => '+${entry.value} ${_bonusSourceLabel(entry.key)}')
+          .join(', ');
+      final details = [
+        sourceTypeLabel,
+        sourceLabel,
+      ].where((entry) => entry.trim().isNotEmpty).join(' | ');
       actionLabels.add(
-        sourceLabel.isEmpty
+        details.isEmpty
             ? '${_actionTypeLabel(actionType)}: +$totalPoints'
-            : '${_actionTypeLabel(actionType)}: +$totalPoints ($sourceLabel)',
+            : '${_actionTypeLabel(actionType)}: +$totalPoints ($details)',
       );
     }
 
-    return actionLabels.join(' · ');
+    return actionLabels.join('\n');
   }
 
   _SvgRegionShape? _shapeForRegion(Map<String, dynamic> region) {

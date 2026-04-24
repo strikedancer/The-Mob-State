@@ -263,6 +263,20 @@ export interface AdminTerritoryOverview {
     maxRegionsPerCrew: number;
     maxConcurrentContestsPerCrew: number;
     passiveIncomeIntervalMinutes: number;
+    hqRegionCapPerLevel?: number;
+    hqRegionCapBonusCap?: number;
+    hqContestCapPerLevel?: number;
+    hqContestCapBonusCap?: number;
+    hqActionPointBonusPerLevel?: number;
+    hqActionPointBonusCap?: number;
+    crewMissionActionPointBonusPerLevel?: number;
+    crewMissionActionPointBonusCap?: number;
+    weaponStorageDefenseBonusPerLevel?: number;
+    ammoStorageDefenseBonusPerLevel?: number;
+    carStorageRaidBonusPerLevel?: number;
+    boatStorageSupplyBonusPerLevel?: number;
+    drugStorageSabotageBonusPerLevel?: number;
+    buildingActionBonusCap?: number;
   };
   activeSeason: {
     seasonKey: string;
