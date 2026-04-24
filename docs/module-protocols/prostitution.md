@@ -44,6 +44,7 @@ Deze waarden sturen housing capaciteit/risico en weekhuur in de prostitutieflow.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
 - Verify no text overflows or clipped buttons appear.
+- Verify prostitute cards in `Mijn Prostituees` are never bottom-clipped; card height must follow content (auto height) on web/tablet/desktop.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

@@ -447,3 +447,9 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 **Version:** 1.0
 **Last Updated:** 2026-03-30
 **Status:** Production Ready (Backend)
+
+## UI Addendum 2026-04-24
+
+- Prostitutie-overzichtskaarten gebruiken op web/tablet nu een responsive `Wrap` met dynamisch berekende kaartbreedte in plaats van een vaste `GridView` `childAspectRatio`.
+- Doel: cardhoogte volgt content automatisch zodat onderzijde (housing/progress/knoppen) niet wordt afgekapt.
+- Guardrail: geen vaste tile-ratio afdwingen op content-heavy cards in deze flow.

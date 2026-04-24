@@ -45,8 +45,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
-  int get _availableWorkCount =>
-      _prostitutes.where(_canStartWorkShift).length;
+  int get _availableWorkCount => _prostitutes.where(_canStartWorkShift).length;
 
   bool _isNightclubProstitute(Prostitute prostitute) =>
       prostitute.location == 'nightclub';
@@ -325,7 +324,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 final venueLabel = id == null
                     ? _tr('Nightclub', 'Nightclub')
                     : _tr('Nightclub #$id', 'Nightclub #$id');
-                final country = venue['country']?.toString() ??
+                final country =
+                    venue['country']?.toString() ??
                     _tr('Onbekend land', 'Unknown country');
                 return ListTile(
                   enabled: id != null,
@@ -425,9 +425,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Future<void> _executeWorkShiftForAllAvailable() async {
     if (_isWorkingAll) return;
 
-    final available = _prostitutes
-        .where(_canStartWorkShift)
-        .toList();
+    final available = _prostitutes.where(_canStartWorkShift).toList();
 
     if (available.isEmpty) {
       if (!mounted) return;
@@ -453,7 +451,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
     for (final prostitute in available) {
       final location = _resolveWorkLocation(prostitute);
-      final result = await _service.workShift(prostitute.id, location: location);
+      final result = await _service.workShift(
+        prostitute.id,
+        location: location,
+      );
       if (result['success'] == true) {
         successCount++;
       } else {
@@ -769,7 +770,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                                   : _jailSeconds != null && _jailSeconds! > 0
                                   ? '${l10n.jail} (${_formatCooldown(_jailSeconds!)})'
                                   : _cooldownSeconds != null &&
-                                      _cooldownSeconds! > 0
+                                        _cooldownSeconds! > 0
                                   ? '${l10n.prostitutionRecruit} (${_formatCooldown(_cooldownSeconds!)})'
                                   : l10n.prostitutionRecruit,
                             ),
@@ -883,18 +884,33 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             );
           }
 
-          return GridView.builder(
+          const spacing = 12.0;
+          final targetCardWidth = constraints.maxWidth >= 1200 ? 280.0 : 320.0;
+          final estimatedColumns =
+              ((constraints.maxWidth + spacing) / (targetCardWidth + spacing))
+                  .floor()
+                  .clamp(1, 6);
+          final cardWidth =
+              (constraints.maxWidth - (estimatedColumns - 1) * spacing) /
+              estimatedColumns;
+
+          return ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: constraints.maxWidth >= 1200 ? 280 : 320,
-              childAspectRatio: constraints.maxWidth >= 1200 ? 0.72 : 0.62,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            ),
-            itemCount: _prostitutes.length,
-            itemBuilder: (context, index) =>
-                _buildProstituteCard(_prostitutes[index]),
+            children: [
+              Wrap(
+                spacing: spacing,
+                runSpacing: spacing,
+                children: _prostitutes
+                    .map(
+                      (prostitute) => SizedBox(
+                        width: cardWidth,
+                        child: _buildProstituteCard(prostitute),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
           );
         },
       ),
@@ -935,7 +951,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 _tr('Plekken', 'Slots'),
                 '${_housingSummary!.occupiedSlots}/${_housingSummary!.totalCapacity}',
               ),
-              _buildHousingChip(_tr('Vrij', 'Free'), '${_housingSummary!.freeSlots}'),
+              _buildHousingChip(
+                _tr('Vrij', 'Free'),
+                '${_housingSummary!.freeSlots}',
+              ),
               _buildHousingChip(
                 _tr('Woningen', 'Homes'),
                 '${_housingSummary!.residentialProperties}',
@@ -956,7 +975,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 _tr('Risico', 'At risk'),
                 '${_housingSummary!.atRiskCount}',
               ),
-              _buildHousingChip(_tr('Veilig', 'Safe'), '${_housingSummary!.safeCount}'),
+              _buildHousingChip(
+                _tr('Veilig', 'Safe'),
+                '${_housingSummary!.safeCount}',
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -976,7 +998,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                   'Verraad actief: ${_housingSummary!.seizedDrugsGrams}g drugs in beslag genomen, ${_housingSummary!.nightclubLicensesRevoked} nightclub vergunning(en) kwijt.',
                   'Betrayal triggered: ${_housingSummary!.seizedDrugsGrams}g drugs seized, ${_housingSummary!.nightclubLicensesRevoked} nightclub license(s) revoked.',
                 ),
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -1034,7 +1059,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr('Opbrengst inzicht (actieve hoeren)', 'Earnings insight (active prostitutes)'),
+            _tr(
+              'Opbrengst inzicht (actieve hoeren)',
+              'Earnings insight (active prostitutes)',
+            ),
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
           ),
           const SizedBox(height: 6),
@@ -1225,285 +1253,278 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
           ),
           // Info section
           Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                    Text(
-                      prostitute.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  prostitute.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (isBusted)
+                  Text(
+                    l10n.prostitutionBusted,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
                     ),
-                    if (isBusted)
-                      Text(
-                        l10n.prostitutionBusted,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    else
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  )
+                else
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                _isNightclubProstitute(prostitute)
-                                    ? Icons.local_bar
-                                    : prostitute.isInRedLight
-                                    ? Icons.business
-                                    : Icons.location_on,
-                                size: 12,
+                          Icon(
+                            _isNightclubProstitute(prostitute)
+                                ? Icons.local_bar
+                                : prostitute.isInRedLight
+                                ? Icons.business
+                                : Icons.location_on,
+                            size: 12,
+                            color: Colors.grey.shade400,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              _isNightclubProstitute(prostitute)
+                                  ? _tr('Nachtclub', 'Nightclub')
+                                  : prostitute.isInRedLight
+                                  ? l10n.prostitutionRedLight
+                                  : l10n.prostitutionStreet,
+                              style: TextStyle(
+                                fontSize: 10,
                                 color: Colors.grey.shade400,
                               ),
-                              const SizedBox(width: 4),
-                              Expanded(
-                                child: Text(
-                                  _isNightclubProstitute(prostitute)
-                                      ? _tr('Nachtclub', 'Nightclub')
-                                      : prostitute.isInRedLight
-                                      ? l10n.prostitutionRedLight
-                                      : l10n.prostitutionStreet,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              Text(
-                                'XP: $currentLevelXp/100',
-                                style: TextStyle(
-                                  fontSize: 9,
-                                  color: Colors.blue.shade300,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 2),
-                          Wrap(
-                            spacing: 6,
-                            runSpacing: 0,
-                            children: [
-                              if (!prostitute.isInRedLight &&
-                                  !_isNightclubProstitute(prostitute) &&
-                                  !isBusted)
-                                TextButton(
-                                  onPressed: () =>
-                                      _moveProstituteToCurrentCountryRld(
-                                        prostitute,
-                                      ),
-                                  style: TextButton.styleFrom(
-                                    minimumSize: const Size(0, 22),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 0,
-                                    ),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    visualDensity: VisualDensity.compact,
-                                  ),
-                                  child: Text(
-                                    l10n.prostitutionMoveToRldShort,
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: Theme.of(context).colorScheme.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              if ((prostitute.isInRedLight ||
-                                      _isNightclubProstitute(prostitute)) &&
-                                  !isBusted)
-                                TextButton(
-                                  onPressed: () => _moveProstituteToStreet(
-                                    prostitute,
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    minimumSize: const Size(0, 22),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 0,
-                                    ),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    visualDensity: VisualDensity.compact,
-                                  ),
-                                  child: Text(
-                                    _tr('Naar straat', 'To street'),
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              if (!_isNightclubProstitute(prostitute) && !isBusted)
-                                TextButton(
-                                  onPressed: () =>
-                                      _assignProstituteToNightclub(prostitute),
-                                  style: TextButton.styleFrom(
-                                    minimumSize: const Size(0, 22),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 0,
-                                    ),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    visualDensity: VisualDensity.compact,
-                                  ),
-                                  child: Text(
-                                    _tr('Naar nightclub', 'To nightclub'),
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            '€${(hourlyEarnings * prostitute.happinessEarningsMultiplier).toStringAsFixed(0)}/uur',
-                            style: const TextStyle(
-                              color: Colors.green,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const SizedBox(height: 3),
                           Text(
-                            _tr(
-                              'Geluk $happinessLabel (${prostitute.happinessScore}%) • Opbrengst ${prostitute.happinessEarningsBonusPercent >= 0 ? '+' : ''}${prostitute.happinessEarningsBonusPercent}%',
-                              'Happiness $happinessLabel (${prostitute.happinessScore}%) • Yield ${prostitute.happinessEarningsBonusPercent >= 0 ? '+' : ''}${prostitute.happinessEarningsBonusPercent}%',
-                            ),
+                            'XP: $currentLevelXp/100',
                             style: TextStyle(
-                              fontSize: 10,
-                              color: prostitute.happinessScore >= 70
-                                  ? Colors.lightGreenAccent
-                                  : Colors.orangeAccent,
+                              fontSize: 9,
+                              color: Colors.blue.shade300,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: prostitute.isHousingAtRisk
-                                  ? Colors.orange.withOpacity(0.18)
-                                  : Colors.blue.withOpacity(0.14),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: prostitute.isHousingAtRisk
-                                    ? Colors.orangeAccent
-                                    : Colors.blueAccent,
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 0,
+                        children: [
+                          if (!prostitute.isInRedLight &&
+                              !_isNightclubProstitute(prostitute) &&
+                              !isBusted)
+                            TextButton(
+                              onPressed: () =>
+                                  _moveProstituteToCurrentCountryRld(
+                                    prostitute,
+                                  ),
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(0, 22),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 0,
+                                ),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                visualDensity: VisualDensity.compact,
+                              ),
+                              child: Text(
+                                l10n.prostitutionMoveToRldShort,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _tr(
-                                    'Huisvesting: $housingLabel',
-                                    'Housing: $housingLabel',
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                          if ((prostitute.isInRedLight ||
+                                  _isNightclubProstitute(prostitute)) &&
+                              !isBusted)
+                            TextButton(
+                              onPressed: () =>
+                                  _moveProstituteToStreet(prostitute),
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(0, 22),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 0,
                                 ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  _tr(
-                                    'Weekhuur €${prostitute.weeklyHousingCost}',
-                                    'Weekly rent €${prostitute.weeklyHousingCost}',
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.white70,
-                                  ),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                visualDensity: VisualDensity.compact,
+                              ),
+                              child: Text(
+                                _tr('Naar straat', 'To street'),
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ],
+                              ),
                             ),
+                          if (!_isNightclubProstitute(prostitute) && !isBusted)
+                            TextButton(
+                              onPressed: () =>
+                                  _assignProstituteToNightclub(prostitute),
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(0, 22),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 0,
+                                ),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                visualDensity: VisualDensity.compact,
+                              ),
+                              child: Text(
+                                _tr('Naar nightclub', 'To nightclub'),
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '€${(hourlyEarnings * prostitute.happinessEarningsMultiplier).toStringAsFixed(0)}/uur',
+                        style: const TextStyle(
+                          color: Colors.green,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        _tr(
+                          'Geluk $happinessLabel (${prostitute.happinessScore}%) • Opbrengst ${prostitute.happinessEarningsBonusPercent >= 0 ? '+' : ''}${prostitute.happinessEarningsBonusPercent}%',
+                          'Happiness $happinessLabel (${prostitute.happinessScore}%) • Yield ${prostitute.happinessEarningsBonusPercent >= 0 ? '+' : ''}${prostitute.happinessEarningsBonusPercent}%',
+                        ),
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: prostitute.happinessScore >= 70
+                              ? Colors.lightGreenAccent
+                              : Colors.orangeAccent,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: prostitute.isHousingAtRisk
+                              ? Colors.orange.withOpacity(0.18)
+                              : Colors.blue.withOpacity(0.14),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: prostitute.isHousingAtRisk
+                                ? Colors.orangeAccent
+                                : Colors.blueAccent,
                           ),
-                          if (!isBusted) ...[
-                            const SizedBox(height: 6),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton.icon(
-                                onPressed: canWorkNow
-                                    ? () => _executeWorkShift(prostitute)
-                                    : null,
-                                icon: const Icon(Icons.work, size: 14),
-                                label: Text(
-                                  shiftRemaining == null
-                                      ? _tr('Werk 8 uur', 'Work 8h')
-                                      : _tr(
-                                          'Rust ${_formatDurationHoursMinutes(shiftRemaining)}',
-                                          'Rest ${_formatDurationHoursMinutes(shiftRemaining)}',
-                                        ),
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue.shade700,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 6,
-                                  ),
-                                  minimumSize: const Size(0, 28),
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _tr(
+                                'Huisvesting: $housingLabel',
+                                'Housing: $housingLabel',
+                              ),
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            if (shiftRemaining != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text(
-                                  _tr(
-                                    'Volgende shift over ${_formatDurationHoursMinutes(shiftRemaining)}',
-                                    'Next shift in ${_formatDurationHoursMinutes(shiftRemaining)}',
-                                  ),
-                                  style: const TextStyle(
-                                    fontSize: 9,
-                                    color: Colors.white70,
-                                  ),
-                                ),
+                            const SizedBox(height: 2),
+                            Text(
+                              _tr(
+                                'Weekhuur €${prostitute.weeklyHousingCost}',
+                                'Weekly rent €${prostitute.weeklyHousingCost}',
                               ),
-                            const SizedBox(height: 4),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(4),
-                              child: LinearProgressIndicator(
-                                value: prostitute.levelProgress,
-                                minHeight: 6,
-                                backgroundColor: Colors.black38,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.blue.shade600,
-                                ),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Colors.white70,
                               ),
                             ),
                           ],
-                        ],
+                        ),
                       ),
-                  ],
-                ),
-              ),
+                      if (!isBusted) ...[
+                        const SizedBox(height: 6),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: canWorkNow
+                                ? () => _executeWorkShift(prostitute)
+                                : null,
+                            icon: const Icon(Icons.work, size: 14),
+                            label: Text(
+                              shiftRemaining == null
+                                  ? _tr('Werk 8 uur', 'Work 8h')
+                                  : _tr(
+                                      'Rust ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                      'Rest ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                    ),
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue.shade700,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              minimumSize: const Size(0, 28),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+                        ),
+                        if (shiftRemaining != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text(
+                              _tr(
+                                'Volgende shift over ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                'Next shift in ${_formatDurationHoursMinutes(shiftRemaining)}',
+                              ),
+                              style: const TextStyle(
+                                fontSize: 9,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ),
+                        const SizedBox(height: 4),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: LinearProgressIndicator(
+                            value: prostitute.levelProgress,
+                            minHeight: 6,
+                            backgroundColor: Colors.black38,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.blue.shade600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+              ],
+            ),
+          ),
         ],
       ),
     );
