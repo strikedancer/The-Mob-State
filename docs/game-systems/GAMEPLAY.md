@@ -34,7 +34,6 @@
 
 - Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie, status en quick actions.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
-- De bovenste statusbalk toont progress en accountstatus in compacte segmenten met iconen, en schakelt op smallere schermen automatisch naar een gestapelde responsive variant.
 
 ---
 
