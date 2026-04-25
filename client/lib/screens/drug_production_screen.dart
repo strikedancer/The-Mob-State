@@ -463,7 +463,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
             ElevatedButton.icon(
               onPressed: () => Navigator.pop(dialogContext, true),
               icon: const Icon(Icons.flash_on),
-              child: Text(_tr('Kopen', 'Buy')),
+              label: Text(_tr('Kopen', 'Buy')),
             ),
           ],
         );

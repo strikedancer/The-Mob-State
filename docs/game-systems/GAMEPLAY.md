@@ -1036,7 +1036,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - âœ… Aviation system
 - âœ… Casino (blackjack, slots, roulette)
 - âœ… Weapons & ammo system
-- âœ… VIP quick-buy in Drug Production (one-click missing materials with confirmation modal)
+- âœ… VIP quick-buy in Drug Production (one-click missing materials with cost confirmation modal)
 
 ### Planned Features
 - â³ Court & Judge system
