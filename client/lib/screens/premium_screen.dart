@@ -980,23 +980,25 @@ class _PremiumScreenState extends State<PremiumScreen> {
               infoTitle: _tr('Speler VIP voordelen', 'Player VIP benefits'),
               infoBody: _tr(
                 'Player VIP voordelen:\n'
-                    '• 10% kortere timeout/cooldowns op acties (gevangenistijd blijft gelijk).\n'
-                    '• Bij moord verlies je contant geld, maar je herstart met €500.000 cash.\n'
-                    '• Je rank wordt gehalveerd in plaats van volledige reset.\n'
-                    '• Opleidingen en vrijgespeelde achievements blijven behouden.\n'
-                    '• Banksaldo en crypto blijven behouden.\n'
-                    '• Eigendommen, voertuigen, prostituees, gedragen inventaris en opgeslagen items worden wel verwijderd.\n'
-                    '• Drugsprogress en drugsvoorraad worden gereset.\n'
-                    '• Je ontvangt wekelijks 100 premium credits zolang VIP actief is.',
+                    '- 10% kortere timeout/cooldowns op acties (gevangenistijd blijft gelijk).\n'
+                    '- In Drugs Productie krijg je een VIP bliksemknop op de productiekaart om ontbrekende materialen in 1 klik te kopen (na kostenbevestiging).\n'
+                    '- Bij moord verlies je contant geld, maar je herstart met EUR 500.000 cash.\n'
+                    '- Je rank wordt gehalveerd in plaats van volledige reset.\n'
+                    '- Opleidingen en vrijgespeelde achievements blijven behouden.\n'
+                    '- Banksaldo en crypto blijven behouden.\n'
+                    '- Eigendommen, voertuigen, prostituees, gedragen inventaris en opgeslagen items worden wel verwijderd.\n'
+                    '- Drugsprogress en drugsvoorraad worden gereset.\n'
+                    '- Je ontvangt wekelijks 100 premium credits zolang VIP actief is.',
                 'Player VIP benefits:\n'
-                    '• 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n'
-                    '• On death, you lose on-hand cash but restart with €500,000 cash.\n'
-                    '• Your rank is halved instead of a full reset.\n'
-                    '• Education progress and unlocked achievements are preserved.\n'
-                    '• Bank balance and crypto are preserved.\n'
-                    '• Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n'
-                    '• Drug progress and drug stock are reset.\n'
-                    '• You receive 100 premium credits weekly while VIP is active.',
+                    '- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n'
+                    '- In Drug Production, you get a VIP lightning button on each production card to buy missing materials in one click (after cost confirmation).\n'
+                    '- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n'
+                    '- Your rank is halved instead of a full reset.\n'
+                    '- Education progress and unlocked achievements are preserved.\n'
+                    '- Bank balance and crypto are preserved.\n'
+                    '- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n'
+                    '- Drug progress and drug stock are reset.\n'
+                    '- You receive 100 premium credits weekly while VIP is active.',
               ),
               onPressed: _processingCheckout
                   ? null
