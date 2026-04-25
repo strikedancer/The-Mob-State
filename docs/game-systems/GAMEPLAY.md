@@ -936,6 +936,16 @@ Bob: â‚¬300K counter-hit
 - De instant-repair knop gebruikt een gecombineerd icoon (steeksleutel + bliksem) om de actie visueel duidelijk te maken zonder extra tekstdruk op de kaart.
 - Tijdelijke premium boosts zijn bewust non pay-to-win en capped: kleine utility bonussen voor crime success/payout, hitlist attack/defense en event contribution, zonder event-reward tiers te overrulen.
 
+### Vehicle Ops Expansion (2026-Q2)
+- Vehicle Ops bevat nu naast hotspot/crew/chop ook:
+  - Counter-Intercept missies (retaliatie op recente intercepts)
+  - Crew Matchmaking met seizoensladder per voertuigtype
+  - Country modifiers (inflatie/corruptie/havenstaking) die payout en risico dynamisch beïnvloeden
+  - Contracts board met standard/high-risk contracts en weekly legendary contracts
+  - Insurance claim review + dispute flow (contest met bonus of afwijzingsrisico)
+- Alle flows blijven soft-capped via cooldown + risk loops (geen hard daily cap).
+- Ops-telemetry is uitgebreid met vehicle-type en region map-layers voor admin balancing.
+
 ### Arrest Chances
 ```javascript
 // Police arrest

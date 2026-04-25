@@ -3,16 +3,20 @@
 Overkoepelende regels staan in [Steel Voertuig Protocol](steel_voertuig.md).
 
 ## Scope
+
 Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country availability catalog, car and motorcycle progression, and world-cap rotation rules.
 
 ## Primary Frontend Entry
+
 - client/lib/screens/vehicle_heist_screen.dart (tab: Auto)
 - client/lib/screens/garage_screen.dart (embedded tab content)
 
 ## Change Rules
+
 - Preserve the core player loop and avoid hidden behavior changes.
 
 ## Event Rules
+
 - Rank-gate voor event-politieauto's in deze flow is rank 15.
 - Police vehicle events are global vehicle events: when active, event-only police cars and police motorcycles are both stealable during the same window.
 - Event-only vehicle caps are intentionally higher than 1 (rotation-friendly), so multiple players can obtain them per active event window.
@@ -20,6 +24,10 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
+- Car and motorcycle storage caps are separate by design: car theft checks garage car capacity, motorcycle theft checks motorcycle storage capacity.
+- Vehicle Ops mechanics (hotspot run, crew op, parts market, category heat, chop contract, police pattern) must stay balanced as side loops and remain visible with clear feedback in Garage/Vehicle Heist UI.
+- Advanced ops mechanics (hotspot PvP intercept windows, crew-role modifiers, per-type ops reputation unlocks, regional blacklist locks, contraband insurance) must never silently bypass risk loops or cooldown pacing.
+- Vehicle Ops uitbreiding bevat ook counter-intercept recovery runs, crew matchmaking ladders per season, country modifiers, contracts board inclusief weekly legendary contracts en insurance dispute flows; deze moeten zichtbaar blijven in Garage/Vehicle Heist UX.
 - A theft that ends in an immediate arrest must resolve as an arrest outcome, not a success outcome: the just-stolen vehicle is confiscated, the player goes to jail, and the feedback must say so clearly.
 - Direct vehicle transport does not belong here anymore. Cross-country movement must route through the Smuggling Hub flow.
 - Theft outcome videos are legacy and should not be reintroduced without a deliberate design decision.
@@ -36,6 +44,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Event-only police vehicles can only appear during active rotation windows and must never leak into normal availability outside those windows.
 
 ## Check Before Editing
+
 - What is the player trying to achieve in this screen or loop?
 - Which timers, locks, rank gates or country rules affect the flow?
 - Does this module send notifications, inbox messages, rewards or achievements?
@@ -45,6 +54,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Does this change keep police event windows and category rotation intact (car vs motorcycle windows)?
 
 ## Must Preserve
+
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
@@ -53,11 +63,13 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Catalog and owned inventory views must stay visually distinct so players do not confuse available street cars with owned cars.
 
 ## i18n and Messaging
+
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
 - If this module emits notifications, push messages or inbox events, keep the wording aligned across all channels.
 - If player behavior changes, update the player help entry for this module.
 
 ## Asset Rules
+
 - Car and motorcycle images must follow the shared Leonardo workflow in [LEONARDO_IMAGE_GENERATION_PROTOCOL.md](c:/xampp/htdocs/mafia_game/LEONARDO_IMAGE_GENERATION_PROTOCOL.md).
 - Every vehicle requires at least 3 state variants: new, dirty and damaged.
 - Generate responsive derivatives for each variant: mobile, tablet and desktop.
@@ -68,6 +80,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
   - backend/scripts/prepare_vehicle_image_placeholders.py
 
 ## QA Checklist
+
 - Open the module on mobile width, tablet width and desktop width.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
@@ -81,5 +94,5 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Verify a vehicle theft that ends in arrest does not show a success message, places the player in jail, and confirms that the stolen vehicle was confiscated.
 
 ## When To Update This File
-Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.
 
+Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

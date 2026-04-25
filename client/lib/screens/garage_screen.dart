@@ -153,7 +153,10 @@ class _GarageScreenState extends State<GarageScreen> {
 
     await Future.wait([
       vehicleProvider.fetchInventory(),
-      vehicleProvider.fetchGarageStatus(currentCountry),
+      vehicleProvider.fetchGarageStatus(
+        currentCountry,
+        vehicleType: widget.vehicleType,
+      ),
       _loadSelectedVehicle(),
       _loadRepairFinishCreditCost(),
     ]);
@@ -665,6 +668,19 @@ class _GarageScreenState extends State<GarageScreen> {
     AuthProvider authProvider,
   ) {
     final garageStatus = vehicleProvider.garageStatus!;
+    final capacityTitle = _isMotorTab
+        ? _tr('Motorstalling Capaciteit', 'Motorcycle Storage Capacity')
+        : AppLocalizations.of(context)!.garageCapacity;
+    final capacitySubtitle = _isMotorTab
+        ? _tr(
+            'Motoren in opslag: ${garageStatus.capacity}/${garageStatus.totalCapacity}',
+            'Motorcycles stored: ${garageStatus.capacity}/${garageStatus.totalCapacity}',
+          )
+        : AppLocalizations.of(context)!.garageVehiclesCount(
+            garageStatus.capacity.toString(),
+            garageStatus.totalCapacity.toString(),
+          );
+    final requiredRank = _isMotorTab ? 7 : 5;
     const goldColor = Color(0xFFD4AF37);
 
     return LayoutBuilder(
@@ -696,7 +712,7 @@ class _GarageScreenState extends State<GarageScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.garageCapacity,
+                            capacityTitle,
                             style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(
                                   color: goldColor,
@@ -706,10 +722,7 @@ class _GarageScreenState extends State<GarageScreen> {
                                 ),
                           ),
                           Text(
-                            AppLocalizations.of(context)!.garageVehiclesCount(
-                              garageStatus.capacity.toString(),
-                              garageStatus.totalCapacity.toString(),
-                            ),
+                            capacitySubtitle,
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: Colors.white54,
@@ -717,7 +730,9 @@ class _GarageScreenState extends State<GarageScreen> {
                                 ),
                           ),
                           Text(
-                            AppLocalizations.of(context)!.rankRequired(5),
+                            AppLocalizations.of(
+                              context,
+                            )!.rankRequired(requiredRank),
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
                                   color: Colors.orangeAccent,

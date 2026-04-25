@@ -23,11 +23,16 @@ const router = Router();
 router.get('/status/:location', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const { location } = req.params;
-    const status = await garageService.getGarageStatus(req.player!.id, location as string);
+    const requestedVehicleType = req.query.vehicleType?.toString();
+    const status = await garageService.getGarageStatus(
+      req.player!.id,
+      location as string,
+      requestedVehicleType,
+    );
 
     return res.status(200).json({
       event: 'garage.status',
-      params: { location },
+      params: { location, vehicleType: requestedVehicleType ?? 'car' },
       status,
     });
   } catch (error) {

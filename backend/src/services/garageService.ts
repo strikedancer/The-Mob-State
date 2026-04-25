@@ -5,11 +5,38 @@
 
 import prisma from '../lib/prisma';
 
+type GarageVehicleType = 'car' | 'motorcycle' | 'road';
+
+const normalizeGarageVehicleType = (value?: string): GarageVehicleType => {
+  const normalized = (value ?? '').toString().trim().toLowerCase();
+  if (normalized === 'motorcycle' || normalized === 'motor' || normalized === 'bike') {
+    return 'motorcycle';
+  }
+  if (normalized === 'road' || normalized === 'all') {
+    return 'road';
+  }
+  return 'car';
+};
+
+const calculateMotorcycleCapacity = (carTotalCapacity: number): number => {
+  // Keep motorcycle storage meaningfully separate without exploding total economy capacity.
+  return Math.max(2, Math.ceil(carTotalCapacity * 0.4));
+};
+
+export const getGarageCapacities = (carTotalCapacity: number) => {
+  const motorcycleTotalCapacity = calculateMotorcycleCapacity(carTotalCapacity);
+  return {
+    carTotalCapacity,
+    motorcycleTotalCapacity,
+    roadTotalCapacity: carTotalCapacity + motorcycleTotalCapacity,
+  };
+};
+
 export const garageService = {
   /**
    * Get or create garage for player in a location
    */
-  async getGarageStatus(playerId: number, location: string) {
+  async getGarageStatus(playerId: number, location: string, vehicleType?: string) {
     // Try to find existing garage
     let garage = await prisma.garage.findFirst({
       where: {
@@ -45,6 +72,8 @@ export const garageService = {
       garage.upgrades.length > 0 ? garage.upgrades[0].capacityBonus : 0;
     const totalCapacity = garage.capacity + upgradeBonus;
 
+    const selectedType = normalizeGarageVehicleType(vehicleType);
+
     // Get vehicles stored in this garage
     const storedVehicles = await prisma.vehicleInventory.findMany({
       where: {
@@ -54,12 +83,34 @@ export const garageService = {
       },
     });
 
+    const carStoredCount = storedVehicles.filter((v) => v.vehicleType === 'car').length;
+    const motorcycleStoredCount = storedVehicles.filter((v) => v.vehicleType === 'motorcycle').length;
+    const capacities = getGarageCapacities(totalCapacity);
+
+    const selectedStoredCount = selectedType === 'motorcycle'
+      ? motorcycleStoredCount
+      : selectedType === 'road'
+        ? (carStoredCount + motorcycleStoredCount)
+        : carStoredCount;
+    const selectedTotalCapacity = selectedType === 'motorcycle'
+      ? capacities.motorcycleTotalCapacity
+      : selectedType === 'road'
+        ? capacities.roadTotalCapacity
+        : capacities.carTotalCapacity;
+
     return {
       garageId: garage.id,
-      capacity: storedVehicles.length,
-      totalCapacity,
+      capacity: selectedStoredCount,
+      totalCapacity: selectedTotalCapacity,
       currentUpgradeLevel: garage.upgrades.length > 0 ? garage.upgrades[0].upgradeLevel : 0,
-      storedCount: storedVehicles.length,
+      storedCount: selectedStoredCount,
+      selectedVehicleType: selectedType,
+      carStoredCount,
+      motorcycleStoredCount,
+      carTotalCapacity: capacities.carTotalCapacity,
+      motorcycleTotalCapacity: capacities.motorcycleTotalCapacity,
+      roadStoredCount: carStoredCount + motorcycleStoredCount,
+      roadTotalCapacity: capacities.roadTotalCapacity,
       storedVehicles,
     };
   },

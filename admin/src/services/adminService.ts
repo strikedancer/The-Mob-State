@@ -2,24 +2,30 @@ const resolveApiUrl = (): string => {
   const envUrl = import.meta.env.VITE_ADMIN_API_URL?.trim();
   if (envUrl) return envUrl;
 
-  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+  if (typeof window !== "undefined" && window.location.protocol === "https:") {
     return `https://${window.location.hostname}:3443`;
   }
 
-  return 'http://localhost:3000';
+  return "http://localhost:3000";
 };
 
 const API_URL = resolveApiUrl();
 
-const parseErrorMessage = async (response: Response, fallback: string): Promise<string> => {
+const parseErrorMessage = async (
+  response: Response,
+  fallback: string,
+): Promise<string> => {
   const payload = await response.json().catch(() => null as any);
   return payload?.message || payload?.error || fallback;
 };
 
-const ensureOk = async (response: Response, fallback: string): Promise<void> => {
+const ensureOk = async (
+  response: Response,
+  fallback: string,
+): Promise<void> => {
   if (response.status === 401) {
     adminAuthService.logout();
-    throw new Error('UNAUTHORIZED');
+    throw new Error("UNAUTHORIZED");
   }
 
   if (!response.ok) {
@@ -43,7 +49,7 @@ export interface PremiumOffer {
   titleEn: string;
   imageUrl: string | null;
   priceEurCents: number;
-  rewardType: 'money' | 'ammo' | 'credits';
+  rewardType: "money" | "ammo" | "credits";
   moneyAmount: number | null;
   ammoType: string | null;
   ammoQuantity: number | null;
@@ -59,7 +65,7 @@ export interface CreatePremiumOfferPayload {
   titleEn: string;
   imageUrl: string | null;
   priceEurCents: number;
-  rewardType: 'money' | 'ammo' | 'credits';
+  rewardType: "money" | "ammo" | "credits";
   moneyAmount: number | null;
   ammoType: string | null;
   ammoQuantity: number | null;
@@ -78,7 +84,13 @@ export interface CreditShopItem {
   descriptionNl: string | null;
   descriptionEn: string | null;
   creditCost: number;
-  effectType: 'CASH_BUNDLE' | 'HIT_PROTECTION' | 'VEHICLE_REPAIR_FINISH' | 'VEHICLE_TUNE_RESET' | 'ACTION_COOLDOWN_RESET' | 'EVENT_BOOST';
+  effectType:
+    | "CASH_BUNDLE"
+    | "HIT_PROTECTION"
+    | "VEHICLE_REPAIR_FINISH"
+    | "VEHICLE_TUNE_RESET"
+    | "ACTION_COOLDOWN_RESET"
+    | "EVENT_BOOST";
   moneyAmount: number | null;
   durationHours: number | null;
   actionType: string | null;
@@ -94,7 +106,7 @@ export interface CreateCreditShopItemPayload {
   descriptionNl: string | null;
   descriptionEn: string | null;
   creditCost: number;
-  effectType: CreditShopItem['effectType'];
+  effectType: CreditShopItem["effectType"];
   moneyAmount: number | null;
   durationHours: number | null;
   actionType: string | null;
@@ -225,9 +237,9 @@ export interface PlayerOverview {
     };
     premiumTransactions: Array<{
       id: number;
-      checkoutType: 'PLAYER_VIP' | 'CREW_VIP' | 'ONE_TIME';
+      checkoutType: "PLAYER_VIP" | "CREW_VIP" | "ONE_TIME";
       productKey: string | null;
-      status: 'OPEN' | 'PENDING' | 'PAID' | 'CANCELED' | 'FAILED' | 'EXPIRED';
+      status: "OPEN" | "PENDING" | "PAID" | "CANCELED" | "FAILED" | "EXPIRED";
       amountValue: string;
       providerPaymentId: string | null;
       providerSubscriptionId: string | null;
@@ -454,18 +466,18 @@ export interface PlayerRecentActivitiesResponse {
 }
 
 export interface SystemHealthDetails {
-  status: 'ok' | 'degraded' | 'down';
+  status: "ok" | "degraded" | "down";
   timestamp: string;
   uptime: number;
   environment: string;
   responseTimeMs: number;
   components: {
-    api: { status: 'ok' | 'degraded' | 'down' };
-    database: { status: 'ok' | 'degraded' | 'down'; error?: string | null };
-    redis: { status: 'ok' | 'degraded' | 'down' };
-    queue: { status: 'ok' | 'degraded' | 'down' };
+    api: { status: "ok" | "degraded" | "down" };
+    database: { status: "ok" | "degraded" | "down"; error?: string | null };
+    redis: { status: "ok" | "degraded" | "down" };
+    queue: { status: "ok" | "degraded" | "down" };
     cron: {
-      status: 'ok' | 'degraded' | 'down';
+      status: "ok" | "degraded" | "down";
       jobs: Record<string, string>;
       lastExecutions: Record<string, string>;
     };
@@ -474,13 +486,13 @@ export interface SystemHealthDetails {
 
 export interface DashboardOverview {
   alerts: Array<{
-    severity: 'danger' | 'warning' | 'info';
+    severity: "danger" | "warning" | "info";
     title: string;
     description: string;
   }>;
   activityFeed: Array<{
     id: string;
-    type: 'audit' | 'system';
+    type: "audit" | "system";
     title: string;
     description: string;
     createdAt: string;
@@ -605,14 +617,65 @@ export interface CrewMissionTelemetry {
   serverTime: string;
 }
 
+export interface VehicleOpsTelemetry {
+  windowHours: number;
+  from: string;
+  to: string;
+  totals: {
+    events: number;
+    attempts: number;
+    successes: number;
+    failures: number;
+    moneyIn: number;
+    moneyOut: number;
+  };
+  byActionType: Record<
+    string,
+    {
+      attempts: number;
+      successes: number;
+      failures: number;
+      moneyIn: number;
+      moneyOut: number;
+    }
+  >;
+  mapLayers: {
+    byVehicleType: Record<
+      string,
+      {
+        attempts: number;
+        successes: number;
+        failures: number;
+      }
+    >;
+    byRegion: Record<
+      string,
+      {
+        attempts: number;
+        successes: number;
+        failures: number;
+      }
+    >;
+  };
+}
+
 export interface SupportTicketSummary {
   id: number;
   playerId: number;
   username: string;
   category: string;
   subject: string;
-  status: 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived';
-  priority: 'low' | 'normal' | 'high' | 'urgent';
+  status:
+    | "new"
+    | "open"
+    | "triage"
+    | "in_progress"
+    | "waiting_player"
+    | "blocked"
+    | "resolved"
+    | "closed"
+    | "archived";
+  priority: "low" | "normal" | "high" | "urgent";
   sourceModule?: string | null;
   referenceCode?: string | null;
   assignedAdminId?: number | null;
@@ -625,14 +688,14 @@ export interface SupportTicketSummary {
   attachmentCount: number;
   openTodoCount: number;
   ageHours?: number;
-  lastMessageBy?: 'player' | 'admin' | 'none';
+  lastMessageBy?: "player" | "admin" | "none";
 }
 
 export interface SupportTicketMessage {
   id: number;
   ticketId: number;
-  senderType: 'player' | 'admin' | 'system';
-  messageType?: 'public_reply' | 'internal_note';
+  senderType: "player" | "admin" | "system";
+  messageType?: "public_reply" | "internal_note";
   message: string;
   createdAt: string;
   playerId?: number | null;
@@ -656,8 +719,8 @@ export interface SupportTicketTodo {
   ticketId: number | null;
   title: string;
   description: string | null;
-  status: 'open' | 'in_progress' | 'blocked' | 'done';
-  priority?: 'low' | 'normal' | 'high' | 'urgent';
+  status: "open" | "in_progress" | "blocked" | "done";
+  priority?: "low" | "normal" | "high" | "urgent";
   moduleKey?: string | null;
   dueAt?: string | null;
   assignedAdminId?: number | null;
@@ -666,7 +729,17 @@ export interface SupportTicketTodo {
   updatedAt: string;
   resolvedAt: string | null;
   ticketSubject?: string | null;
-  ticketStatus?: 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived' | null;
+  ticketStatus?:
+    | "new"
+    | "open"
+    | "triage"
+    | "in_progress"
+    | "waiting_player"
+    | "blocked"
+    | "resolved"
+    | "closed"
+    | "archived"
+    | null;
   playerUsername?: string | null;
   comments?: SupportTicketTodoComment[];
 }
@@ -696,7 +769,7 @@ export interface SupportReplyTemplate {
   labelEn: string;
   bodyNl: string;
   bodyEn: string;
-  suggestedStatus: SupportTicketSummary['status'];
+  suggestedStatus: SupportTicketSummary["status"];
 }
 
 export interface SupportAnalyticsResponse {
@@ -724,7 +797,7 @@ export interface SystemLogEntry {
 }
 
 export interface SystemLogFilters {
-  dateRange?: '1h' | '24h' | '7d' | '30d' | 'all';
+  dateRange?: "1h" | "24h" | "7d" | "30d" | "all";
   source?: string;
   search?: string;
 }
@@ -732,7 +805,7 @@ export interface SystemLogFilters {
 export interface AdminAccount {
   id: number;
   username: string;
-  role: 'SUPER_ADMIN' | 'MODERATOR' | 'VIEWER';
+  role: "SUPER_ADMIN" | "MODERATOR" | "VIEWER";
   isActive: boolean;
   createdAt: string;
   lastLoginAt: string | null;
@@ -840,8 +913,14 @@ export interface AdminCrewWarStanding {
 export interface AdminCrewWarDetail {
   id: number;
   seasonId?: number | null;
-  warType: 'kill_war' | 'economy_war' | 'territory_war' | 'total_war';
-  status: 'preparing' | 'active' | 'lockdown' | 'resolved' | 'archived' | 'cancelled';
+  warType: "kill_war" | "economy_war" | "territory_war" | "total_war";
+  status:
+    | "preparing"
+    | "active"
+    | "lockdown"
+    | "resolved"
+    | "archived"
+    | "cancelled";
   attackerCrewId: number;
   defenderCrewId: number;
   winnerCrewId?: number | null;
@@ -936,30 +1015,30 @@ export interface AdminImageModuleOverviewResponse {
 export const adminAuthService = {
   async login(username: string, password: string): Promise<AdminLoginResponse> {
     const response = await fetch(`${API_URL}/admin/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
 
     if (!response.ok) {
-      throw new Error('Login failed');
+      throw new Error("Login failed");
     }
 
     const data = await response.json();
-    localStorage.setItem('admin_token', data.token);
+    localStorage.setItem("admin_token", data.token);
     if (data?.admin?.role) {
-      localStorage.setItem('admin_role', data.admin.role);
+      localStorage.setItem("admin_role", data.admin.role);
     }
     return data;
   },
 
   logout() {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_role');
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_role");
   },
 
   getToken() {
-    return localStorage.getItem('admin_token');
+    return localStorage.getItem("admin_token");
   },
 
   isAuthenticated() {
@@ -967,7 +1046,11 @@ export const adminAuthService = {
   },
 
   getAdminRole() {
-    return localStorage.getItem('admin_role') as 'SUPER_ADMIN' | 'MODERATOR' | 'VIEWER' | null;
+    return localStorage.getItem("admin_role") as
+      | "SUPER_ADMIN"
+      | "MODERATOR"
+      | "VIEWER"
+      | null;
   },
 };
 
@@ -976,26 +1059,31 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/dashboard-overview`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch dashboard overview');
+    await ensureOk(response, "Failed to fetch dashboard overview");
     return response.json();
   },
 
-  async getEconomyBalanceTelemetry(hours = 24): Promise<EconomyBalanceTelemetry> {
+  async getEconomyBalanceTelemetry(
+    hours = 24,
+  ): Promise<EconomyBalanceTelemetry> {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({
       hours: String(hours),
     });
-    const response = await fetch(`${API_URL}/admin/economy/balance-telemetry?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/economy/balance-telemetry?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch economy balance telemetry');
+    await ensureOk(response, "Failed to fetch economy balance telemetry");
     return response.json();
   },
 
@@ -1004,13 +1092,34 @@ export const adminService = {
     const query = new URLSearchParams({
       hours: String(hours),
     });
-    const response = await fetch(`${API_URL}/admin/crew-missions/telemetry?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/crew-missions/telemetry?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch crew mission telemetry');
+    await ensureOk(response, "Failed to fetch crew mission telemetry");
+    return response.json();
+  },
+
+  async getVehicleOpsTelemetry(hours = 24): Promise<VehicleOpsTelemetry> {
+    const token = adminAuthService.getToken();
+    const query = new URLSearchParams({
+      hours: String(hours),
+    });
+    const response = await fetch(
+      `${API_URL}/admin/vehicle-ops/telemetry?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    await ensureOk(response, "Failed to fetch vehicle ops telemetry");
     return response.json();
   },
 
@@ -1018,11 +1127,11 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/health/details`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch system health details');
+    await ensureOk(response, "Failed to fetch system health details");
     return response.json();
   },
 
@@ -1030,42 +1139,48 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/stats`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch stats');
+    await ensureOk(response, "Failed to fetch stats");
 
     return response.json();
   },
 
-  async getPlayers(page = 1, limit = 20, search = '') {
+  async getPlayers(page = 1, limit = 20, search = "") {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({
       page: String(page),
       limit: String(limit),
       search,
     });
-    const response = await fetch(`${API_URL}/admin/players?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/players?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch players');
+    await ensureOk(response, "Failed to fetch players");
 
     return response.json();
   },
 
   async getAuditLogs(page = 1, limit = 50) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/audit-logs?page=${page}&limit=${limit}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/audit-logs?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch audit logs');
+    await ensureOk(response, "Failed to fetch audit logs");
 
     return response.json();
   },
@@ -1075,17 +1190,20 @@ export const adminService = {
     const query = new URLSearchParams({
       page: String(page),
       limit: String(limit),
-      dateRange: filters.dateRange || '7d',
-      source: filters.source || 'all',
-      search: filters.search || '',
+      dateRange: filters.dateRange || "7d",
+      source: filters.source || "all",
+      search: filters.search || "",
     });
-    const response = await fetch(`${API_URL}/admin/system-logs?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/system-logs?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch system logs');
+    await ensureOk(response, "Failed to fetch system logs");
 
     return response.json();
   },
@@ -1093,19 +1211,19 @@ export const adminService = {
   async clearSystemLogs(filters: SystemLogFilters = {}) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/system-logs`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        dateRange: filters.dateRange || '7d',
-        source: filters.source || 'all',
-        search: filters.search || '',
+        dateRange: filters.dateRange || "7d",
+        source: filters.source || "all",
+        search: filters.search || "",
       }),
     });
 
-    await ensureOk(response, 'Failed to clear system logs');
+    await ensureOk(response, "Failed to clear system logs");
 
     return response.json();
   },
@@ -1114,43 +1232,54 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/admins`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch admins');
+    await ensureOk(response, "Failed to fetch admins");
 
     return response.json();
   },
 
-  async createAdmin(payload: { username: string; password: string; role: 'SUPER_ADMIN' | 'MODERATOR' | 'VIEWER' }) {
+  async createAdmin(payload: {
+    username: string;
+    password: string;
+    role: "SUPER_ADMIN" | "MODERATOR" | "VIEWER";
+  }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/admins`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to create admin');
+    await ensureOk(response, "Failed to create admin");
 
     return response.json();
   },
 
-  async updateAdmin(adminId: number, payload: { role?: 'SUPER_ADMIN' | 'MODERATOR' | 'VIEWER'; isActive?: boolean; password?: string }) {
+  async updateAdmin(
+    adminId: number,
+    payload: {
+      role?: "SUPER_ADMIN" | "MODERATOR" | "VIEWER";
+      isActive?: boolean;
+      password?: string;
+    },
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/admins/${adminId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to update admin');
+    await ensureOk(response, "Failed to update admin");
 
     return response.json();
   },
@@ -1158,15 +1287,15 @@ export const adminService = {
   async banPlayer(playerId: number, reason: string, duration?: number) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/ban`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ playerId, reason, duration }),
     });
 
-    await ensureOk(response, 'Failed to ban player');
+    await ensureOk(response, "Failed to ban player");
 
     return response.json();
   },
@@ -1174,16 +1303,16 @@ export const adminService = {
   async unbanPlayer(playerId: number) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/unban`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ playerId }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to unban player');
+      throw new Error("Failed to unban player");
     }
 
     return response.json();
@@ -1192,48 +1321,57 @@ export const adminService = {
   async editPlayer(playerId: number, updates: any) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/edit`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ playerId, updates }),
     });
 
-    await ensureOk(response, 'Failed to edit player');
+    await ensureOk(response, "Failed to edit player");
 
     return response.json();
   },
 
   async getPlayerOverview(playerId: number): Promise<PlayerOverview> {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/players/${playerId}/overview`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/overview`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch player overview');
+    await ensureOk(response, "Failed to fetch player overview");
 
     return response.json();
   },
 
-  async sendPlayerTestPush(playerId: number, payload: {
-    title: string;
-    body: string;
-    dataType?: string;
-  }): Promise<AdminTestPushResponse> {
+  async sendPlayerTestPush(
+    playerId: number,
+    payload: {
+      title: string;
+      body: string;
+      dataType?: string;
+    },
+  ): Promise<AdminTestPushResponse> {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/players/${playerId}/test-push`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/players/${playerId}/test-push`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    });
+    );
 
-    await ensureOk(response, 'Failed to send test push');
+    await ensureOk(response, "Failed to send test push");
 
     return response.json();
   },
@@ -1242,90 +1380,96 @@ export const adminService = {
     playerId: number;
     page?: number;
     limit?: number;
-    dateRange?: '24h' | '7d' | '30d' | 'all';
+    dateRange?: "24h" | "7d" | "30d" | "all";
     typeFilter?: string;
     search?: string;
-    sort?: 'date_desc' | 'date_asc' | 'type_asc' | 'type_desc';
+    sort?: "date_desc" | "date_asc" | "type_asc" | "type_desc";
   }): Promise<PlayerRecentActivitiesResponse> {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({
       page: String(params.page ?? 1),
       limit: String(params.limit ?? 10),
-      dateRange: params.dateRange ?? '7d',
-      typeFilter: params.typeFilter ?? 'all',
-      search: params.search ?? '',
-      sort: params.sort ?? 'date_desc',
+      dateRange: params.dateRange ?? "7d",
+      typeFilter: params.typeFilter ?? "all",
+      search: params.search ?? "",
+      sort: params.sort ?? "date_desc",
     });
 
-    const response = await fetch(`${API_URL}/admin/players/${params.playerId}/recent-activities?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/players/${params.playerId}/recent-activities?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch recent activities');
+    await ensureOk(response, "Failed to fetch recent activities");
 
     return response.json();
   },
 
   async exportPlayerRecentActivities(params: {
     playerId: number;
-    dateRange?: '24h' | '7d' | '30d' | 'all';
+    dateRange?: "24h" | "7d" | "30d" | "all";
     typeFilter?: string;
     search?: string;
-    sort?: 'date_desc' | 'date_asc' | 'type_asc' | 'type_desc';
+    sort?: "date_desc" | "date_asc" | "type_asc" | "type_desc";
   }): Promise<Blob> {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({
-      dateRange: params.dateRange ?? '7d',
-      typeFilter: params.typeFilter ?? 'all',
-      search: params.search ?? '',
-      sort: params.sort ?? 'date_desc',
+      dateRange: params.dateRange ?? "7d",
+      typeFilter: params.typeFilter ?? "all",
+      search: params.search ?? "",
+      sort: params.sort ?? "date_desc",
     });
 
-    const response = await fetch(`${API_URL}/admin/players/${params.playerId}/recent-activities/export?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/players/${params.playerId}/recent-activities/export?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to export recent activities');
+    await ensureOk(response, "Failed to export recent activities");
     return response.blob();
   },
 
   async bulkPlayerAction(payload: {
     playerIds: number[];
-    action: 'warn' | 'ban_temp' | 'add_money';
+    action: "warn" | "ban_temp" | "add_money";
     reason: string;
     durationHours?: number;
     amount?: number;
   }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/bulk-action`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to execute bulk action');
+    await ensureOk(response, "Failed to execute bulk action");
     return response.json();
   },
 
   async managePlayer(payload: ManagePlayerPayload) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/manage`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to manage player');
+    await ensureOk(response, "Failed to manage player");
 
     return response.json();
   },
@@ -1333,54 +1477,71 @@ export const adminService = {
   async resetPlayerProgress(playerId: number, reason?: string) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/${playerId}/reset`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ reason }),
     });
 
-    await ensureOk(response, 'Failed to reset player progress');
+    await ensureOk(response, "Failed to reset player progress");
     return response.json();
   },
 
   async resetAllPlayersProgress(reason?: string) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/players/reset-all`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ reason }),
     });
 
-    await ensureOk(response, 'Failed to reset all players progress');
+    await ensureOk(response, "Failed to reset all players progress");
     return response.json();
   },
 
-  async getTickets(status: 'all' | 'new' | 'open' | 'triage' | 'in_progress' | 'waiting_player' | 'blocked' | 'resolved' | 'closed' | 'archived' = 'all'): Promise<{ tickets: SupportTicketSummary[] }> {
+  async getTickets(
+    status:
+      | "all"
+      | "new"
+      | "open"
+      | "triage"
+      | "in_progress"
+      | "waiting_player"
+      | "blocked"
+      | "resolved"
+      | "closed"
+      | "archived" = "all",
+  ): Promise<{ tickets: SupportTicketSummary[] }> {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/tickets?status=${encodeURIComponent(status)}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/tickets?status=${encodeURIComponent(status)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch tickets');
+    await ensureOk(response, "Failed to fetch tickets");
     return response.json();
   },
 
-  async getTicketDetail(ticketId: number): Promise<SupportTicketDetailResponse> {
+  async getTicketDetail(
+    ticketId: number,
+  ): Promise<SupportTicketDetailResponse> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/${ticketId}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch ticket detail');
+    await ensureOk(response, "Failed to fetch ticket detail");
     return response.json();
   },
 
@@ -1388,178 +1549,249 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-analytics`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch support analytics');
+    await ensureOk(response, "Failed to fetch support analytics");
     return response.json();
   },
 
-  async getSupportReplyTemplates(): Promise<{ templates: SupportReplyTemplate[] }> {
+  async getSupportReplyTemplates(): Promise<{
+    templates: SupportReplyTemplate[];
+  }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-reply-templates`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch support reply templates');
+    await ensureOk(response, "Failed to fetch support reply templates");
     return response.json();
   },
 
-  async replyToTicket(ticketId: number, payload: { message?: string; templateKey?: string; messageType?: 'public_reply' | 'internal_note'; status?: SupportTicketSummary['status'] }) {
+  async replyToTicket(
+    ticketId: number,
+    payload: {
+      message?: string;
+      templateKey?: string;
+      messageType?: "public_reply" | "internal_note";
+      status?: SupportTicketSummary["status"];
+    },
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/${ticketId}/reply`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to reply to ticket');
+    await ensureOk(response, "Failed to reply to ticket");
     return response.json();
   },
 
-  async updateTicket(ticketId: number, payload: { assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; status?: SupportTicketSummary['status']; archive?: boolean }) {
+  async updateTicket(
+    ticketId: number,
+    payload: {
+      assignedAdminId?: number | null;
+      priority?: "low" | "normal" | "high" | "urgent";
+      status?: SupportTicketSummary["status"];
+      archive?: boolean;
+    },
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/${ticketId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to update ticket');
+    await ensureOk(response, "Failed to update ticket");
     return response.json();
   },
 
-  async createTicketTodo(ticketId: number, payload: { title: string; description?: string; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
+  async createTicketTodo(
+    ticketId: number,
+    payload: {
+      title: string;
+      description?: string;
+      assignedAdminId?: number | null;
+      priority?: "low" | "normal" | "high" | "urgent";
+      dueAt?: string | null;
+      moduleKey?: string | null;
+    },
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/${ticketId}/todos`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to create ticket todo');
+    await ensureOk(response, "Failed to create ticket todo");
     return response.json();
   },
 
-  async getSupportTodos(status: 'all' | 'open' | 'in_progress' | 'blocked' | 'done' = 'all'): Promise<{ todos: SupportTicketTodo[] }> {
+  async getSupportTodos(
+    status: "all" | "open" | "in_progress" | "blocked" | "done" = "all",
+  ): Promise<{ todos: SupportTicketTodo[] }> {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/support-todos?status=${encodeURIComponent(status)}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/support-todos?status=${encodeURIComponent(status)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch support todos');
+    await ensureOk(response, "Failed to fetch support todos");
     return response.json();
   },
 
-  async createSupportTodo(payload: { title: string; description?: string; ticketId?: number | null; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
+  async createSupportTodo(payload: {
+    title: string;
+    description?: string;
+    ticketId?: number | null;
+    assignedAdminId?: number | null;
+    priority?: "low" | "normal" | "high" | "urgent";
+    dueAt?: string | null;
+    moduleKey?: string | null;
+  }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-todos`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to create support todo');
+    await ensureOk(response, "Failed to create support todo");
     return response.json();
   },
 
-  async updateSupportTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'in_progress' | 'blocked' | 'done'; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
+  async updateSupportTodo(
+    todoId: number,
+    payload: {
+      title?: string;
+      description?: string | null;
+      status?: "open" | "in_progress" | "blocked" | "done";
+      assignedAdminId?: number | null;
+      priority?: "low" | "normal" | "high" | "urgent";
+      dueAt?: string | null;
+      moduleKey?: string | null;
+    },
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-todos/${todoId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to update support todo');
+    await ensureOk(response, "Failed to update support todo");
     return response.json();
   },
 
-  async updateTicketTodo(todoId: number, payload: { title?: string; description?: string | null; status?: 'open' | 'in_progress' | 'blocked' | 'done'; assignedAdminId?: number | null; priority?: 'low' | 'normal' | 'high' | 'urgent'; dueAt?: string | null; moduleKey?: string | null }) {
+  async updateTicketTodo(
+    todoId: number,
+    payload: {
+      title?: string;
+      description?: string | null;
+      status?: "open" | "in_progress" | "blocked" | "done";
+      assignedAdminId?: number | null;
+      priority?: "low" | "normal" | "high" | "urgent";
+      dueAt?: string | null;
+      moduleKey?: string | null;
+    },
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/todos/${todoId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to update ticket todo');
+    await ensureOk(response, "Failed to update ticket todo");
     return response.json();
   },
 
   async deleteSupportTodo(todoId: number) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/support-todos/${todoId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to delete support todo');
+    await ensureOk(response, "Failed to delete support todo");
     return response.json();
   },
 
-  async getSupportTodoComments(todoId: number): Promise<{ comments: SupportTicketTodoComment[] }> {
+  async getSupportTodoComments(
+    todoId: number,
+  ): Promise<{ comments: SupportTicketTodoComment[] }> {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/support-todos/${todoId}/comments`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/support-todos/${todoId}/comments`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch support todo comments');
+    await ensureOk(response, "Failed to fetch support todo comments");
     return response.json();
   },
 
   async createSupportTodoComment(todoId: number, payload: { comment: string }) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/support-todos/${todoId}/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/support-todos/${todoId}/comments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    });
+    );
 
-    await ensureOk(response, 'Failed to create support todo comment');
+    await ensureOk(response, "Failed to create support todo comment");
     return response.json();
   },
 
   async deleteTicket(ticketId: number) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tickets/${ticketId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to delete ticket');
+    await ensureOk(response, "Failed to delete ticket");
     return response.json();
   },
 
@@ -1567,11 +1799,11 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/config`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch config');
+    await ensureOk(response, "Failed to fetch config");
 
     return response.json();
   },
@@ -1579,33 +1811,36 @@ export const adminService = {
   async updateConfig(updates: Record<string, string>) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/config`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ updates }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update config');
+      throw new Error("Failed to update config");
     }
 
     return response.json();
   },
 
-  async getImageLibrary(folder = ''): Promise<AdminImageLibraryResponse> {
+  async getImageLibrary(folder = ""): Promise<AdminImageLibraryResponse> {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({
       folder,
     });
-    const response = await fetch(`${API_URL}/admin/image-library?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/image-library?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch image library');
+    await ensureOk(response, "Failed to fetch image library");
     return response.json();
   },
 
@@ -1618,37 +1853,44 @@ export const adminService = {
   }): Promise<{ message: string; file: AdminImageLibraryFile }> {
     const token = adminAuthService.getToken();
     const formData = new FormData();
-    formData.append('file', payload.file);
-    if (payload.folder) formData.append('folder', payload.folder);
-    if (payload.fileName) formData.append('fileName', payload.fileName);
-    if (payload.replacePath) formData.append('replacePath', payload.replacePath);
-    if (payload.overwrite) formData.append('overwrite', 'true');
+    formData.append("file", payload.file);
+    if (payload.folder) formData.append("folder", payload.folder);
+    if (payload.fileName) formData.append("fileName", payload.fileName);
+    if (payload.replacePath)
+      formData.append("replacePath", payload.replacePath);
+    if (payload.overwrite) formData.append("overwrite", "true");
 
     const response = await fetch(`${API_URL}/admin/image-library/upload`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     });
 
-    await ensureOk(response, 'Failed to upload image file');
+    await ensureOk(response, "Failed to upload image file");
     return response.json();
   },
 
-  async getImageLibraryModules(module = 'all', search = ''): Promise<AdminImageModuleOverviewResponse> {
+  async getImageLibraryModules(
+    module = "all",
+    search = "",
+  ): Promise<AdminImageModuleOverviewResponse> {
     const token = adminAuthService.getToken();
     const query = new URLSearchParams({
       module,
       search,
     });
-    const response = await fetch(`${API_URL}/admin/image-library/modules?${query.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/image-library/modules?${query.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
-    await ensureOk(response, 'Failed to fetch image module overview');
+    await ensureOk(response, "Failed to fetch image module overview");
     return response.json();
   },
 
@@ -1656,29 +1898,34 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/premium-offers`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch premium offers');
+    await ensureOk(response, "Failed to fetch premium offers");
 
     return response.json();
   },
 
-  async updatePremiumOffer(id: number, payload: Omit<PremiumOffer, 'id' | 'key'> & { key?: string }) {
+  async updatePremiumOffer(
+    id: number,
+    payload: Omit<PremiumOffer, "id" | "key"> & { key?: string },
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/premium-offers/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to update premium offer' }));
-      throw new Error(error.error || 'Failed to update premium offer');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to update premium offer" }));
+      throw new Error(error.error || "Failed to update premium offer");
     }
 
     return response.json();
@@ -1687,17 +1934,19 @@ export const adminService = {
   async createPremiumOffer(payload: CreatePremiumOfferPayload) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/premium-offers`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to create premium offer' }));
-      throw new Error(error.error || 'Failed to create premium offer');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to create premium offer" }));
+      throw new Error(error.error || "Failed to create premium offer");
     }
 
     return response.json();
@@ -1706,15 +1955,17 @@ export const adminService = {
   async deletePremiumOffer(id: number) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/premium-offers/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to delete premium offer' }));
-      throw new Error(error.error || 'Failed to delete premium offer');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to delete premium offer" }));
+      throw new Error(error.error || "Failed to delete premium offer");
     }
 
     return response.json();
@@ -1724,47 +1975,54 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/credit-shop-items`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    await ensureOk(response, 'Failed to fetch credit shop items');
+    await ensureOk(response, "Failed to fetch credit shop items");
     return response.json();
   },
 
   async createCreditShopItem(payload: CreateCreditShopItemPayload) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/credit-shop-items`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to create credit shop item' }));
-      throw new Error(error.error || 'Failed to create credit shop item');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to create credit shop item" }));
+      throw new Error(error.error || "Failed to create credit shop item");
     }
 
     return response.json();
   },
 
-  async updateCreditShopItem(id: number, payload: Omit<CreateCreditShopItemPayload, 'key'>) {
+  async updateCreditShopItem(
+    id: number,
+    payload: Omit<CreateCreditShopItemPayload, "key">,
+  ) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/credit-shop-items/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to update credit shop item' }));
-      throw new Error(error.error || 'Failed to update credit shop item');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to update credit shop item" }));
+      throw new Error(error.error || "Failed to update credit shop item");
     }
 
     return response.json();
@@ -1773,15 +2031,17 @@ export const adminService = {
   async deleteCreditShopItem(id: number) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/credit-shop-items/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to delete credit shop item' }));
-      throw new Error(error.error || 'Failed to delete credit shop item');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to delete credit shop item" }));
+      throw new Error(error.error || "Failed to delete credit shop item");
     }
 
     return response.json();
@@ -1791,48 +2051,55 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/vehicles`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch vehicles');
+      throw new Error("Failed to fetch vehicles");
     }
 
     return response.json();
   },
 
-  async addVehicle(payload: { category: 'cars' | 'boats'; vehicle: any }) {
+  async addVehicle(payload: { category: "cars" | "boats"; vehicle: any }) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/vehicles`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to add vehicle' }));
-      throw new Error(error.error || 'Failed to add vehicle');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to add vehicle" }));
+      throw new Error(error.error || "Failed to add vehicle");
     }
 
     return response.json();
   },
 
-  async deleteVehicle(category: 'cars' | 'boats', vehicleId: string) {
+  async deleteVehicle(category: "cars" | "boats", vehicleId: string) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/vehicles/${category}/${encodeURIComponent(vehicleId)}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/vehicles/${category}/${encodeURIComponent(vehicleId)}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Failed to delete vehicle' }));
-      throw new Error(error.error || 'Failed to delete vehicle');
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Failed to delete vehicle" }));
+      throw new Error(error.error || "Failed to delete vehicle");
     }
 
     return response.json();
@@ -1843,12 +2110,12 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/npcs`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch NPCs');
+      throw new Error("Failed to fetch NPCs");
     }
 
     return response.json();
@@ -1858,12 +2125,12 @@ export const adminService = {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/npcs/${npcId}/stats`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch NPC stats');
+      throw new Error("Failed to fetch NPC stats");
     }
 
     return response.json();
@@ -1872,16 +2139,16 @@ export const adminService = {
   async createNPC(username: string, activityLevel: string) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/npcs`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ username, activityLevel }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to create NPC');
+      throw new Error("Failed to create NPC");
     }
 
     return response.json();
@@ -1890,17 +2157,17 @@ export const adminService = {
   async simulateNPC(npcId: number, hours: number = 1) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/npcs/${npcId}/simulate`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ hours }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to simulate NPC');
+      throw new Error(error.message || "Failed to simulate NPC");
     }
 
     return response.json();
@@ -1909,120 +2176,189 @@ export const adminService = {
   // ─── Aircraft ─────────────────────────────────────────────────────────────
   async getAircraft() {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/aircraft`, { headers: { 'Authorization': `Bearer ${token}` } });
-    if (!response.ok) throw new Error('Failed to fetch aircraft');
+    const response = await fetch(`${API_URL}/admin/aircraft`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error("Failed to fetch aircraft");
     return response.json();
   },
 
   async addAircraft(payload: any) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/aircraft`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(payload),
     });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   async updateAircraft(aircraftId: string, payload: any) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/aircraft/${encodeURIComponent(aircraftId)}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify(payload),
-    });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    const response = await fetch(
+      `${API_URL}/admin/aircraft/${encodeURIComponent(aircraftId)}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   async deleteAircraft(aircraftId: string) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/aircraft/${encodeURIComponent(aircraftId)}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    const response = await fetch(
+      `${API_URL}/admin/aircraft/${encodeURIComponent(aircraftId)}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   // ─── Tools ────────────────────────────────────────────────────────────────
   async getTools() {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/tools`, { headers: { 'Authorization': `Bearer ${token}` } });
-    if (!response.ok) throw new Error('Failed to fetch tools');
+    const response = await fetch(`${API_URL}/admin/tools`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error("Failed to fetch tools");
     return response.json();
   },
 
   async addTool(payload: any) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/tools`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(payload),
     });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   async updateTool(toolId: string, payload: any) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/tools/${encodeURIComponent(toolId)}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify(payload),
-    });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    const response = await fetch(
+      `${API_URL}/admin/tools/${encodeURIComponent(toolId)}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   async deleteTool(toolId: string) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/tools/${encodeURIComponent(toolId)}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    const response = await fetch(
+      `${API_URL}/admin/tools/${encodeURIComponent(toolId)}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   // ─── Crimes ───────────────────────────────────────────────────────────────
   async getCrimes() {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/crimes`, { headers: { 'Authorization': `Bearer ${token}` } });
-    if (!response.ok) throw new Error('Failed to fetch crimes');
+    const response = await fetch(`${API_URL}/admin/crimes`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error("Failed to fetch crimes");
     return response.json();
   },
 
   async addCrime(payload: any) {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/crimes`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(payload),
     });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   async updateCrime(crimeId: string, payload: any) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/crimes/${encodeURIComponent(crimeId)}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify(payload),
-    });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    const response = await fetch(
+      `${API_URL}/admin/crimes/${encodeURIComponent(crimeId)}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
   async deleteCrime(crimeId: string) {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/crimes/${encodeURIComponent(crimeId)}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
-    if (!response.ok) { const e = await response.json().catch(() => ({ error: 'Failed' })); throw new Error(e.error); }
+    const response = await fetch(
+      `${API_URL}/admin/crimes/${encodeURIComponent(crimeId)}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    if (!response.ok) {
+      const e = await response.json().catch(() => ({ error: "Failed" }));
+      throw new Error(e.error);
+    }
     return response.json();
   },
 
@@ -2030,253 +2366,282 @@ export const adminService = {
   async getEventTemplates(): Promise<{ templates: GameEventTemplate[] }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/game-events/templates`, {
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    await ensureOk(response, 'Failed to fetch event templates');
+    await ensureOk(response, "Failed to fetch event templates");
     return response.json();
   },
 
-  async createEventTemplate(payload: CreateGameEventTemplatePayload): Promise<{ template: GameEventTemplate }> {
+  async createEventTemplate(
+    payload: CreateGameEventTemplatePayload,
+  ): Promise<{ template: GameEventTemplate }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/game-events/templates`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to create event template');
+    await ensureOk(response, "Failed to create event template");
     return response.json();
   },
 
-  async updateEventTemplate(id: number, payload: Partial<CreateGameEventTemplatePayload>): Promise<{ template: GameEventTemplate }> {
+  async updateEventTemplate(
+    id: number,
+    payload: Partial<CreateGameEventTemplatePayload>,
+  ): Promise<{ template: GameEventTemplate }> {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/game-events/templates/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/game-events/templates/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    });
+    );
 
-    await ensureOk(response, 'Failed to update event template');
+    await ensureOk(response, "Failed to update event template");
     return response.json();
   },
 
   async getEventSchedules(): Promise<{ schedules: GameEventSchedule[] }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/game-events/schedules`, {
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    await ensureOk(response, 'Failed to fetch event schedules');
+    await ensureOk(response, "Failed to fetch event schedules");
     return response.json();
   },
 
-  async createEventSchedule(payload: CreateGameEventSchedulePayload): Promise<{ schedule: GameEventSchedule }> {
+  async createEventSchedule(
+    payload: CreateGameEventSchedulePayload,
+  ): Promise<{ schedule: GameEventSchedule }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/game-events/schedules`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to create event schedule');
+    await ensureOk(response, "Failed to create event schedule");
     return response.json();
   },
 
-  async updateEventSchedule(id: number, payload: Partial<CreateGameEventSchedulePayload>): Promise<{ schedule: GameEventSchedule }> {
+  async updateEventSchedule(
+    id: number,
+    payload: Partial<CreateGameEventSchedulePayload>,
+  ): Promise<{ schedule: GameEventSchedule }> {
     const token = adminAuthService.getToken();
-    const response = await fetch(`${API_URL}/admin/game-events/schedules/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+    const response = await fetch(
+      `${API_URL}/admin/game-events/schedules/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    });
+    );
 
-    await ensureOk(response, 'Failed to update event schedule');
+    await ensureOk(response, "Failed to update event schedule");
     return response.json();
   },
 
-  async getLiveEvents(status?: string): Promise<{ liveEvents: GameLiveEvent[] }> {
+  async getLiveEvents(
+    status?: string,
+  ): Promise<{ liveEvents: GameLiveEvent[] }> {
     const token = adminAuthService.getToken();
-    const suffix = status ? `?status=${encodeURIComponent(status)}` : '';
+    const suffix = status ? `?status=${encodeURIComponent(status)}` : "";
     const response = await fetch(`${API_URL}/admin/game-events/live${suffix}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    await ensureOk(response, 'Failed to fetch live events');
+    await ensureOk(response, "Failed to fetch live events");
     return response.json();
   },
 
-  async createLiveEvent(payload: CreateGameLiveEventPayload): Promise<{ liveEvent: GameLiveEvent }> {
+  async createLiveEvent(
+    payload: CreateGameLiveEventPayload,
+  ): Promise<{ liveEvent: GameLiveEvent }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/game-events/live`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to create live event');
+    await ensureOk(response, "Failed to create live event");
     return response.json();
   },
 
   async updateLiveEvent(
     id: number,
-    payload: Partial<Pick<CreateGameLiveEventPayload, 'status' | 'startedAt' | 'endsAt'>> & { resolvedAt?: string | null },
+    payload: Partial<
+      Pick<CreateGameLiveEventPayload, "status" | "startedAt" | "endsAt">
+    > & { resolvedAt?: string | null },
   ): Promise<{ liveEvent: GameLiveEvent }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/game-events/live/${id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to update live event');
+    await ensureOk(response, "Failed to update live event");
     return response.json();
   },
 
   async getCrewWarsOverview(): Promise<AdminCrewWarOverview> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/crew-wars/overview`, {
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    await ensureOk(response, 'Failed to fetch crew wars overview');
+    await ensureOk(response, "Failed to fetch crew wars overview");
     return response.json();
   },
 
   async declareCrewWar(payload: {
     attackerCrewId: number;
     defenderCrewId: number;
-    warType: 'kill_war' | 'economy_war' | 'territory_war' | 'total_war';
+    warType: "kill_war" | "economy_war" | "territory_war" | "total_war";
     startsInMinutes?: number;
   }): Promise<{ war: AdminCrewWarDetail }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/crew-wars/declare`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to declare crew war');
+    await ensureOk(response, "Failed to declare crew war");
     return response.json();
   },
 
   async updateCrewWarStatus(
     warId: number,
-    action: 'start_now' | 'enter_lockdown' | 'resolve' | 'archive' | 'cancel',
+    action: "start_now" | "enter_lockdown" | "resolve" | "archive" | "cancel",
   ): Promise<{ war: AdminCrewWarDetail }> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/admin/crew-wars/${warId}/status`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ action }),
     });
 
-    await ensureOk(response, 'Failed to update crew war status');
+    await ensureOk(response, "Failed to update crew war status");
     return response.json();
   },
 
   async getTerritoryOverview(): Promise<AdminTerritoryOverview> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/territory/admin/overview`, {
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
-    await ensureOk(response, 'Failed to fetch territory overview');
+    await ensureOk(response, "Failed to fetch territory overview");
     const payload = await response.json();
     return payload.params;
   },
 
-  async territoryAssignRegion(regionKey: string, crewId: number | null): Promise<void> {
+  async territoryAssignRegion(
+    regionKey: string,
+    crewId: number | null,
+  ): Promise<void> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/territory/admin/region/assign`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ regionKey, crewId }),
     });
 
-    await ensureOk(response, 'Failed to assign territory region');
+    await ensureOk(response, "Failed to assign territory region");
   },
 
   async territoryResetRegion(regionKey: string): Promise<void> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/territory/admin/region/reset`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ regionKey }),
     });
 
-    await ensureOk(response, 'Failed to reset territory region');
+    await ensureOk(response, "Failed to reset territory region");
   },
 
   async territoryResolveContest(contestId: number): Promise<void> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/territory/admin/contest/resolve`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ contestId }),
     });
 
-    await ensureOk(response, 'Failed to resolve territory contest');
+    await ensureOk(response, "Failed to resolve territory contest");
   },
 
-  async territoryStartSeason(payload: { seasonKey: string; startsAt: string; endsAt: string }): Promise<void> {
+  async territoryStartSeason(payload: {
+    seasonKey: string;
+    startsAt: string;
+    endsAt: string;
+  }): Promise<void> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/territory/admin/season/start`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
-    await ensureOk(response, 'Failed to start territory season');
+    await ensureOk(response, "Failed to start territory season");
   },
 
   async territoryCloseSeason(seasonKey: string): Promise<void> {
     const token = adminAuthService.getToken();
     const response = await fetch(`${API_URL}/territory/admin/season/close`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ seasonKey }),
     });
 
-    await ensureOk(response, 'Failed to close territory season');
+    await ensureOk(response, "Failed to close territory season");
   },
 };

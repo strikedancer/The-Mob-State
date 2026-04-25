@@ -22,7 +22,10 @@ class VehicleProvider with ChangeNotifier {
   int? _lastStealBailAmount;
   int _lastStealXpGained = 0;
   Map<String, dynamic>? _policeVehicleEvent;
+  Map<String, dynamic>? _vehicleOpsIntelligence;
+  bool _vehicleOpsLoading = false;
   Map<String, int> _tuningParts = {'car': 0, 'motorcycle': 0, 'boat': 0};
+  String _garageStatusVehicleType = 'car';
   List<Map<String, dynamic>> _tuningVehicles = [];
   bool _isLoading = false;
   String? _error;
@@ -41,6 +44,8 @@ class VehicleProvider with ChangeNotifier {
   int? get lastStealBailAmount => _lastStealBailAmount;
   int get lastStealXpGained => _lastStealXpGained;
   Map<String, dynamic>? get policeVehicleEvent => _policeVehicleEvent;
+  Map<String, dynamic>? get vehicleOpsIntelligence => _vehicleOpsIntelligence;
+  bool get vehicleOpsLoading => _vehicleOpsLoading;
   Map<String, int> get tuningParts => _tuningParts;
   List<Map<String, dynamic>> get tuningVehicles => _tuningVehicles;
   bool get isLoading => _isLoading;
@@ -97,6 +102,21 @@ class VehicleProvider with ChangeNotifier {
       'Content-Type': 'application/json',
       if (token != null) 'Authorization': 'Bearer $token',
     };
+  }
+
+  String _normalizeOpsType(String vehicleType) {
+    final normalized = vehicleType.toLowerCase().trim();
+    if (normalized == 'motor' ||
+        normalized == 'motorbike' ||
+        normalized == 'bike') {
+      return 'motorcycle';
+    }
+    if (normalized == 'boot' || normalized == 'ship') {
+      return 'boat';
+    }
+    return normalized == 'boat'
+        ? 'boat'
+        : (normalized == 'motorcycle' ? 'motorcycle' : 'car');
   }
 
   /// Fetch player's vehicle inventory
@@ -246,6 +266,283 @@ class VehicleProvider with ChangeNotifier {
     } catch (e) {
       _error = 'Er is een fout opgetreden';
       notifyListeners();
+    }
+  }
+
+  Future<void> fetchVehicleOpsIntelligence({String vehicleType = 'car'}) async {
+    try {
+      _vehicleOpsLoading = true;
+      notifyListeners();
+      final normalizedType = _normalizeOpsType(vehicleType);
+      final headers = await _getHeaders();
+      final uri = Uri.parse(
+        '$baseUrl/vehicles/ops/intelligence',
+      ).replace(queryParameters: {'vehicleType': normalizedType});
+      final response = await http.get(uri, headers: headers);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>;
+        _vehicleOpsIntelligence = data['intelligence'] is Map<String, dynamic>
+            ? data['intelligence'] as Map<String, dynamic>
+            : null;
+        _error = null;
+      } else {
+        _error = 'Kon voertuig intelligence niet laden';
+      }
+    } catch (e) {
+      _error = 'Er is een fout opgetreden';
+    } finally {
+      _vehicleOpsLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<Map<String, dynamic>> runVehicleHotspotOp({
+    required String vehicleType,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/hotspot-run'),
+        headers: headers,
+        body: json.encode({'vehicleType': _normalizeOpsType(vehicleType)}),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      if (success) {
+        await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      }
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> runVehicleCrewOp({
+    required String vehicleType,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/crew-run'),
+        headers: headers,
+        body: json.encode({'vehicleType': _normalizeOpsType(vehicleType)}),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      if (success) {
+        await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      }
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> buyOpsVehicleParts({
+    required String partsType,
+    required int quantity,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/parts/buy'),
+        headers: headers,
+        body: json.encode({
+          'partsType': _normalizeOpsType(partsType),
+          'quantity': quantity,
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      if (success) {
+        final partsData = (data['parts'] as Map<String, dynamic>?) ?? const {};
+        _tuningParts = {
+          'car':
+              (partsData['car'] as num?)?.toInt() ?? _tuningParts['car'] ?? 0,
+          'motorcycle':
+              (partsData['motorcycle'] as num?)?.toInt() ??
+              _tuningParts['motorcycle'] ??
+              0,
+          'boat':
+              (partsData['boat'] as num?)?.toInt() ?? _tuningParts['boat'] ?? 0,
+        };
+        await fetchVehicleOpsIntelligence(vehicleType: partsType);
+      }
+      notifyListeners();
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> claimVehicleChopContract({
+    required String vehicleType,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/chop-contract/claim'),
+        headers: headers,
+        body: json.encode({'vehicleType': _normalizeOpsType(vehicleType)}),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      if (success) {
+        await fetchInventory();
+        await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      }
+      notifyListeners();
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> purchaseOpsInsurance({
+    required String vehicleType,
+    required String tier,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/insurance/purchase'),
+        headers: headers,
+        body: json.encode({
+          'vehicleType': _normalizeOpsType(vehicleType),
+          'tier': tier.toLowerCase() == 'pro' ? 'pro' : 'basic',
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      if (success) {
+        await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      }
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> runVehicleCounterIntercept({
+    required String vehicleType,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/counter-intercept-run'),
+        headers: headers,
+        body: json.encode({'vehicleType': _normalizeOpsType(vehicleType)}),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> runVehicleCrewMatch({
+    required String vehicleType,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/crew-match-run'),
+        headers: headers,
+        body: json.encode({'vehicleType': _normalizeOpsType(vehicleType)}),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> runVehicleOpsContract({
+    required String vehicleType,
+    String? contractId,
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/contract-run'),
+        headers: headers,
+        body: json.encode({
+          'vehicleType': _normalizeOpsType(vehicleType),
+          if (contractId != null && contractId.isNotEmpty)
+            'contractId': contractId,
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> resolveVehicleInsuranceClaim({
+    required String vehicleType,
+    required int claimId,
+    String action = 'accept',
+  }) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.post(
+        Uri.parse('$baseUrl/vehicles/ops/insurance/claim/resolve'),
+        headers: headers,
+        body: json.encode({
+          'vehicleType': _normalizeOpsType(vehicleType),
+          'claimId': claimId,
+          'action': action.toLowerCase() == 'contest' ? 'contest' : 'accept',
+        }),
+      );
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      final params = (data['params'] as Map<String, dynamic>? ?? const {});
+      final success = (params['success'] == true);
+      await fetchVehicleOpsIntelligence(vehicleType: vehicleType);
+      return {'success': success, 'params': params};
+    } catch (_) {
+      return {
+        'success': false,
+        'params': {'message': 'REQUEST_FAILED'},
+      };
     }
   }
 
@@ -610,13 +907,20 @@ class VehicleProvider with ChangeNotifier {
   }
 
   /// Fetch garage status
-  Future<void> fetchGarageStatus(String location) async {
+  Future<void> fetchGarageStatus(
+    String location, {
+    String vehicleType = 'car',
+  }) async {
     try {
+      final normalizedVehicleType = vehicleType == 'motorcycle'
+          ? 'motorcycle'
+          : (vehicleType == 'road' ? 'road' : 'car');
+      _garageStatusVehicleType = normalizedVehicleType;
       final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/garage/status/$location'),
-        headers: headers,
-      );
+      final uri = Uri.parse(
+        '$baseUrl/garage/status/$location',
+      ).replace(queryParameters: {'vehicleType': normalizedVehicleType});
+      final response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -643,7 +947,10 @@ class VehicleProvider with ChangeNotifier {
 
       if (response.statusCode == 200 && data['event'] == 'garage.upgraded') {
         // Refresh garage status
-        await fetchGarageStatus(location);
+        await fetchGarageStatus(
+          location,
+          vehicleType: _garageStatusVehicleType,
+        );
         return true;
       } else {
         _error = _getErrorMessage(data['params']?['reason']?.toString());

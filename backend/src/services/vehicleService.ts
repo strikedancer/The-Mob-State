@@ -13,10 +13,8 @@ import { activityService } from './activityService';
 import { notificationService } from './notificationService';
 import { applyReputationAction } from './reputationService';
 import { economyBalanceService } from './economyBalanceService';
-import {
-  checkAndUnlockAchievements,
-  serializeAchievementForClient,
-} from './achievementService';
+import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
+import { getGarageCapacities } from './garageService';
 
 const COUNTRY_ALIASES: Record<string, string> = {
   united_kingdom: 'uk',
@@ -42,9 +40,19 @@ const normalizeCountryId = (countryId: string): string => {
 };
 
 // Debug: log vehicle data structure on import
-console.log('[VehicleService Init] Cars:', vehiclesData.cars?.length ?? 0, 'Boats:', vehiclesData.boats?.length ?? 0);
+console.log(
+  '[VehicleService Init] Cars:',
+  vehiclesData.cars?.length ?? 0,
+  'Boats:',
+  vehiclesData.boats?.length ?? 0
+);
 if (!vehiclesData.cars || !vehiclesData.boats) {
-  console.error('[VehicleService Init] WARNING: vehicles.json structure issue! Cars array exists:', !!vehiclesData.cars, 'Boats array exists:', !!vehiclesData.boats);
+  console.error(
+    '[VehicleService Init] WARNING: vehicles.json structure issue! Cars array exists:',
+    !!vehiclesData.cars,
+    'Boats array exists:',
+    !!vehiclesData.boats
+  );
 }
 
 export interface VehicleStats {
@@ -109,6 +117,50 @@ type PlayerVehiclePartsRow = {
   boat_parts: number | bigint;
 };
 
+type PlayerVehicleHeatRow = {
+  player_id: number;
+  car_heat: number | bigint;
+  motorcycle_heat: number | bigint;
+  boat_heat: number | bigint;
+  updated_at: Date;
+};
+
+type PlayerVehicleOpsProfileRow = {
+  player_id: number;
+  car_rep: number | bigint;
+  motorcycle_rep: number | bigint;
+  boat_rep: number | bigint;
+  insurance_vehicle_type: string | null;
+  insurance_tier: string | null;
+  insurance_expires_at: Date | null;
+  updated_at: Date;
+};
+
+type VehicleOpsType = 'car' | 'motorcycle' | 'boat';
+
+type VehicleOpsSeasonRow = {
+  season_key: string;
+  player_id: number;
+  vehicle_type: string;
+  points: number | bigint;
+  wins: number | bigint;
+  losses: number | bigint;
+  updated_at: Date;
+};
+
+type VehicleOpsInsuranceClaimRow = {
+  id: number;
+  player_id: number;
+  vehicle_type: string;
+  claim_type: string;
+  status: string;
+  payout_amount: number | bigint;
+  risk_score: number | bigint;
+  context_json: string | null;
+  created_at: Date;
+  updated_at: Date;
+};
+
 type VehicleTuningRow = {
   id: number;
   player_id: number;
@@ -121,6 +173,10 @@ type VehicleTuningRow = {
 
 let repairJobsReady = false;
 let tuneTablesReady = false;
+let vehicleHeatTableReady = false;
+let vehicleOpsProfileReady = false;
+let vehicleOpsSeasonReady = false;
+let vehicleOpsInsuranceClaimReady = false;
 
 const TUNE_MAX_LEVEL = 10;
 const STANDARD_CONCURRENT_REPAIR_LIMIT = 1;
@@ -177,7 +233,10 @@ const tuneStatBonusPerLevelMap: Record<'speed' | 'stealth' | 'armor', number> = 
   armor: 0.04,
 };
 
-const calculateVehicleTheftXp = (vehicle: Vehicle, vehicleType: 'car' | 'boat' | 'motorcycle'): number => {
+const calculateVehicleTheftXp = (
+  vehicle: Vehicle,
+  vehicleType: 'car' | 'boat' | 'motorcycle'
+): number => {
   const baseXpByType: Record<'car' | 'boat' | 'motorcycle', number> = {
     car: 16,
     motorcycle: 14,
@@ -200,10 +259,29 @@ const calculateVehicleTheftXp = (vehicle: Vehicle, vehicleType: 'car' | 'boat' |
   return Math.max(10, rawXp);
 };
 
-const normalizeVehicleType = (vehicleType: string | null | undefined): 'car' | 'boat' | 'motorcycle' => {
+const normalizeVehicleType = (
+  vehicleType: string | null | undefined
+): 'car' | 'boat' | 'motorcycle' => {
   const normalized = (vehicleType ?? '').toString().trim().toLowerCase();
   if (['boat', 'boats', 'boot', 'ship', 'yacht'].includes(normalized)) return 'boat';
-  if (['motorcycle', 'motorcycles', 'motor', 'motorbike', 'bike'].includes(normalized)) return 'motorcycle';
+  if (['motorcycle', 'motorcycles', 'motor', 'motorbike', 'bike'].includes(normalized))
+    return 'motorcycle';
+  return 'car';
+};
+
+const normalizeOpsVehicleType = (vehicleType: string | null | undefined): VehicleOpsType => {
+  const normalized = normalizeVehicleType(vehicleType);
+  return normalized;
+};
+
+const formatOpsVehicleLabel = (vehicleType: VehicleOpsType, language: 'nl' | 'en'): string => {
+  if (language === 'nl') {
+    if (vehicleType === 'motorcycle') return 'motor';
+    if (vehicleType === 'boat') return 'boot';
+    return 'auto';
+  }
+  if (vehicleType === 'motorcycle') return 'motorcycle';
+  if (vehicleType === 'boat') return 'boat';
   return 'car';
 };
 
@@ -218,7 +296,7 @@ const getPoliceVehicleEventStatusForTime = (now: Date): PoliceVehicleEventStatus
   const minuteInCycle = minutes % cycleMinutes;
 
   if (minuteInCycle < activeMinutes) {
-    const remaining = ((activeMinutes - minuteInCycle - 1) * 60) + (60 - now.getUTCSeconds());
+    const remaining = (activeMinutes - minuteInCycle - 1) * 60 + (60 - now.getUTCSeconds());
     return {
       active: true,
       // null during active windows means the event applies to all vehicle categories.
@@ -228,12 +306,533 @@ const getPoliceVehicleEventStatusForTime = (now: Date): PoliceVehicleEventStatus
     };
   }
 
-  const startsInSeconds = ((cycleMinutes - minuteInCycle - 1) * 60) + (60 - now.getUTCSeconds());
+  const startsInSeconds = (cycleMinutes - minuteInCycle - 1) * 60 + (60 - now.getUTCSeconds());
   return {
     active: false,
     activeCategory: null,
     remainingSeconds: 0,
     startsInSeconds: Math.max(1, startsInSeconds),
+  };
+};
+
+const getDynamicPolicePatternForTime = (
+  now: Date
+): {
+  code: 'standard' | 'port_lockdown' | 'bike_sweep' | 'city_grid';
+  nameNl: string;
+  nameEn: string;
+  riskMultiplierByType: Record<VehicleOpsType, number>;
+  summaryNl: string;
+  summaryEn: string;
+} => {
+  const utcDay = now.getUTCDay();
+  const utcHour = now.getUTCHours();
+
+  if (utcDay === 5 || utcDay === 6) {
+    return {
+      code: 'bike_sweep',
+      nameNl: 'Weekend Bike Sweep',
+      nameEn: 'Weekend Bike Sweep',
+      riskMultiplierByType: { car: 1.04, motorcycle: 1.16, boat: 1.02 },
+      summaryNl: 'In het weekend controleert politie extra op motorverkeer.',
+      summaryEn: 'On weekends, police focus more on motorcycle traffic.',
+    };
+  }
+
+  if (utcHour >= 4 && utcHour < 9) {
+    return {
+      code: 'port_lockdown',
+      nameNl: 'Haven Lockdown',
+      nameEn: 'Port Lockdown',
+      riskMultiplierByType: { car: 1.03, motorcycle: 1.02, boat: 1.18 },
+      summaryNl: 'Vroege uren hebben strikte havencontroles voor boten.',
+      summaryEn: 'Early hours have strict port checks for boats.',
+    };
+  }
+
+  if (utcHour >= 16 && utcHour < 21) {
+    return {
+      code: 'city_grid',
+      nameNl: 'City Grid Patrols',
+      nameEn: 'City Grid Patrols',
+      riskMultiplierByType: { car: 1.14, motorcycle: 1.1, boat: 1.0 },
+      summaryNl: 'Spitsblokkades maken stadsdiefstal risicovoller.',
+      summaryEn: 'Rush-hour roadblocks make city theft riskier.',
+    };
+  }
+
+  return {
+    code: 'standard',
+    nameNl: 'Standaard Patroon',
+    nameEn: 'Standard Pattern',
+    riskMultiplierByType: { car: 1, motorcycle: 1, boat: 1 },
+    summaryNl: 'Normale politiepatronen zonder extra druk.',
+    summaryEn: 'Normal police patterns without extra pressure.',
+  };
+};
+
+const classifyHeatLevel = (heat: number): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' => {
+  if (heat >= 80) return 'CRITICAL';
+  if (heat >= 55) return 'HIGH';
+  if (heat >= 30) return 'MEDIUM';
+  return 'LOW';
+};
+
+const getHeatSuccessPenalty = (heat: number): number => {
+  return Math.min(0.22, Math.max(0, heat) * 0.0025);
+};
+
+const hotspotActionTypeForVehicle = (
+  vehicleType: VehicleOpsType
+): 'vehicle_hotspot_op' | 'motorcycle_hotspot_op' | 'boat_hotspot_op' => {
+  if (vehicleType === 'motorcycle') return 'motorcycle_hotspot_op';
+  if (vehicleType === 'boat') return 'boat_hotspot_op';
+  return 'vehicle_hotspot_op';
+};
+
+const crewActionTypeForVehicle = (
+  vehicleType: VehicleOpsType
+): 'vehicle_crew_op' | 'motorcycle_crew_op' | 'boat_crew_op' => {
+  if (vehicleType === 'motorcycle') return 'motorcycle_crew_op';
+  if (vehicleType === 'boat') return 'boat_crew_op';
+  return 'vehicle_crew_op';
+};
+
+const chopActionTypeForVehicle = (
+  vehicleType: VehicleOpsType
+): 'vehicle_chop_contract' | 'motorcycle_chop_contract' | 'boat_chop_contract' => {
+  if (vehicleType === 'motorcycle') return 'motorcycle_chop_contract';
+  if (vehicleType === 'boat') return 'boat_chop_contract';
+  return 'vehicle_chop_contract';
+};
+
+const crewMatchActionTypeForVehicle = (
+  vehicleType: VehicleOpsType
+): 'vehicle_crew_match' | 'motorcycle_crew_match' | 'boat_crew_match' => {
+  if (vehicleType === 'motorcycle') return 'motorcycle_crew_match';
+  if (vehicleType === 'boat') return 'boat_crew_match';
+  return 'vehicle_crew_match';
+};
+
+const counterInterceptActionTypeForVehicle = (
+  vehicleType: VehicleOpsType
+): 'vehicle_counter_intercept' | 'motorcycle_counter_intercept' | 'boat_counter_intercept' => {
+  if (vehicleType === 'motorcycle') return 'motorcycle_counter_intercept';
+  if (vehicleType === 'boat') return 'boat_counter_intercept';
+  return 'vehicle_counter_intercept';
+};
+
+const opsContractActionTypeForVehicle = (
+  vehicleType: VehicleOpsType
+): 'vehicle_ops_contract' | 'motorcycle_ops_contract' | 'boat_ops_contract' => {
+  if (vehicleType === 'motorcycle') return 'motorcycle_ops_contract';
+  if (vehicleType === 'boat') return 'boat_ops_contract';
+  return 'vehicle_ops_contract';
+};
+
+const getVehicleOpsSeasonKey = (now: Date): string => {
+  const quarter = Math.floor(now.getUTCMonth() / 3) + 1;
+  return `${now.getUTCFullYear()}-Q${quarter}`;
+};
+
+const getPartsMarketPrices = (
+  now: Date,
+  heatByType: Record<VehicleOpsType, number>
+): Record<VehicleOpsType, number> => {
+  const minuteFactor = Math.sin((now.getUTCMinutes() / 60) * Math.PI * 2);
+  const base: Record<VehicleOpsType, number> = {
+    car: 1450,
+    motorcycle: 1180,
+    boat: 2350,
+  };
+
+  const quote: Record<VehicleOpsType, number> = {
+    car: 0,
+    motorcycle: 0,
+    boat: 0,
+  };
+  (['car', 'motorcycle', 'boat'] as VehicleOpsType[]).forEach((type) => {
+    const heatPremium = 1 + Math.min(0.2, heatByType[type] * 0.002);
+    const wave = 1 + minuteFactor * 0.08;
+    quote[type] = Math.max(300, Math.round(base[type] * heatPremium * wave));
+  });
+  return quote;
+};
+
+const getChopContractForVehicleType = (
+  vehicleType: VehicleOpsType,
+  now: Date
+): {
+  contractId: string;
+  rewardMoney: number;
+  expiresAt: Date;
+  minCondition: number;
+  requiredCount: number;
+} => {
+  const halfDaySlot = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}-${now.getUTCHours() < 12 ? 'A' : 'B'}`;
+  const expiresAt = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours() < 12 ? 12 : 24,
+      0,
+      0,
+      0
+    )
+  );
+
+  if (vehicleType === 'motorcycle') {
+    return {
+      contractId: `chop-${vehicleType}-${halfDaySlot}`,
+      rewardMoney: 34000,
+      expiresAt,
+      minCondition: 30,
+      requiredCount: 1,
+    };
+  }
+  if (vehicleType === 'boat') {
+    return {
+      contractId: `chop-${vehicleType}-${halfDaySlot}`,
+      rewardMoney: 62000,
+      expiresAt,
+      minCondition: 40,
+      requiredCount: 1,
+    };
+  }
+  return {
+    contractId: `chop-${vehicleType}-${halfDaySlot}`,
+    rewardMoney: 42000,
+    expiresAt,
+    minCondition: 35,
+    requiredCount: 1,
+  };
+};
+
+const isHotspotInterceptionWindow = (now: Date): boolean => {
+  const minute = now.getUTCMinutes();
+  const hour = now.getUTCHours();
+  return hour % 2 === 0 && minute < 20;
+};
+
+const getRegionalBlacklistEvent = (
+  vehicleType: VehicleOpsType,
+  countryId: string,
+  now: Date
+): {
+  active: boolean;
+  eventCode: string | null;
+  reasonNl: string | null;
+  reasonEn: string | null;
+  endsAt: string | null;
+} => {
+  const country = normalizeCountryId((countryId || '').toLowerCase());
+  const hour = now.getUTCHours();
+  const day = now.getUTCDay();
+  const nextHour = new Date(now);
+  nextHour.setUTCMinutes(0, 0, 0);
+  nextHour.setUTCHours(hour + 1);
+
+  if (
+    vehicleType === 'boat' &&
+    ['netherlands', 'belgium', 'france'].includes(country) &&
+    hour >= 5 &&
+    hour < 9
+  ) {
+    return {
+      active: true,
+      eventCode: 'PORT_LOCKDOWN',
+      reasonNl: 'Regionale havenblokkade: boottargets tijdelijk gesloten.',
+      reasonEn: 'Regional port lockdown: boat targets are temporarily closed.',
+      endsAt: nextHour.toISOString(),
+    };
+  }
+
+  if (
+    vehicleType === 'motorcycle' &&
+    ['germany', 'united_kingdom', 'spain', 'italy'].includes(country) &&
+    (day === 5 || day === 6) &&
+    hour >= 19 &&
+    hour < 23
+  ) {
+    return {
+      active: true,
+      eventCode: 'WEEKEND_BIKE_SWEEP',
+      reasonNl: 'Weekend bike sweep: motorraids tijdelijk geblokkeerd.',
+      reasonEn: 'Weekend bike sweep: motorcycle raids temporarily blocked.',
+      endsAt: nextHour.toISOString(),
+    };
+  }
+
+  if (
+    vehicleType === 'car' &&
+    ['usa', 'mexico', 'brazil'].includes(country) &&
+    hour >= 16 &&
+    hour < 18
+  ) {
+    return {
+      active: true,
+      eventCode: 'CITY_GRID_LOCK',
+      reasonNl: 'City grid lockdown: autodiefstal tijdelijk geblokkeerd.',
+      reasonEn: 'City grid lockdown: car theft temporarily blocked.',
+      endsAt: nextHour.toISOString(),
+    };
+  }
+
+  return {
+    active: false,
+    eventCode: null,
+    reasonNl: null,
+    reasonEn: null,
+    endsAt: null,
+  };
+};
+
+const getCountryOpsModifiers = (
+  countryId: string,
+  vehicleType: VehicleOpsType,
+  now: Date
+): {
+  countryId: string;
+  modifierCode: string;
+  nameNl: string;
+  nameEn: string;
+  payoutMultiplier: number;
+  riskDelta: number;
+  partsPriceMultiplier: number;
+} => {
+  const country = normalizeCountryId((countryId || '').toLowerCase());
+  const hour = now.getUTCHours();
+  const day = now.getUTCDay();
+
+  if (
+    vehicleType === 'boat' &&
+    ['netherlands', 'belgium', 'france'].includes(country) &&
+    hour < 10
+  ) {
+    return {
+      countryId: country,
+      modifierCode: 'HARBOR_STRIKE',
+      nameNl: 'Havenstaking',
+      nameEn: 'Harbor Strike',
+      payoutMultiplier: 1.18,
+      riskDelta: 0.06,
+      partsPriceMultiplier: 1.2,
+    };
+  }
+
+  if (['colombia', 'mexico', 'brazil'].includes(country) && day >= 1 && day <= 5) {
+    return {
+      countryId: country,
+      modifierCode: 'CORRUPTION_WAVE',
+      nameNl: 'Corruptiegolf',
+      nameEn: 'Corruption Wave',
+      payoutMultiplier: 1.12,
+      riskDelta: 0.04,
+      partsPriceMultiplier: 1.08,
+    };
+  }
+
+  if (['germany', 'united_kingdom', 'italy'].includes(country) && hour >= 15 && hour <= 20) {
+    return {
+      countryId: country,
+      modifierCode: 'INFLATION_SPIKE',
+      nameNl: 'Inflatiepiek',
+      nameEn: 'Inflation Spike',
+      payoutMultiplier: 1.07,
+      riskDelta: 0.01,
+      partsPriceMultiplier: 1.14,
+    };
+  }
+
+  return {
+    countryId: country,
+    modifierCode: 'BASELINE',
+    nameNl: 'Stabiel Klimaat',
+    nameEn: 'Stable Climate',
+    payoutMultiplier: 1,
+    riskDelta: 0,
+    partsPriceMultiplier: 1,
+  };
+};
+
+const getVehicleOpsContractsBoard = (
+  vehicleType: VehicleOpsType,
+  now: Date,
+  repLevel: number,
+  countryId: string
+): Array<{
+  contractId: string;
+  tier: 'standard' | 'high_risk' | 'legendary';
+  titleNl: string;
+  titleEn: string;
+  rewardMoney: number;
+  failChance: number;
+  minRepLevel: number;
+  expiresAt: string;
+  countryTag: string;
+}> => {
+  const daySlot = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+  const weekSlot = `${now.getUTCFullYear()}-W${Math.ceil((now.getUTCDate() + now.getUTCDay()) / 7)}`;
+  const country = normalizeCountryId((countryId || '').toLowerCase()) || 'global';
+  const nextDay = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0)
+  );
+  const nextWeek = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + (7 - now.getUTCDay()),
+      0,
+      0,
+      0,
+      0
+    )
+  );
+
+  const baseReward = vehicleType === 'boat' ? 52000 : vehicleType === 'motorcycle' ? 28000 : 36000;
+  const rareReward = vehicleType === 'boat' ? 88000 : vehicleType === 'motorcycle' ? 51000 : 64000;
+  const legendaryReward =
+    vehicleType === 'boat' ? 180000 : vehicleType === 'motorcycle' ? 120000 : 145000;
+
+  const board = [
+    {
+      contractId: `ops-standard-${vehicleType}-${country}-${daySlot}`,
+      tier: 'standard' as const,
+      titleNl: 'Standaard Routecontract',
+      titleEn: 'Standard Route Contract',
+      rewardMoney: baseReward,
+      failChance: 0.2,
+      minRepLevel: 0,
+      expiresAt: nextDay.toISOString(),
+      countryTag: country,
+    },
+    {
+      contractId: `ops-highrisk-${vehicleType}-${country}-${daySlot}`,
+      tier: 'high_risk' as const,
+      titleNl: 'High-Risk Overname',
+      titleEn: 'High-Risk Takeover',
+      rewardMoney: rareReward,
+      failChance: 0.3,
+      minRepLevel: 1,
+      expiresAt: nextDay.toISOString(),
+      countryTag: country,
+    },
+  ];
+
+  const legendaryEligible = repLevel >= 2 && (now.getUTCDay() === 5 || now.getUTCDay() === 6);
+  if (legendaryEligible) {
+    board.push({
+      contractId: `ops-legendary-${vehicleType}-${weekSlot}`,
+      tier: 'legendary',
+      titleNl: 'Legendarische Zwarte Route',
+      titleEn: 'Legendary Black Route',
+      rewardMoney: legendaryReward,
+      failChance: 0.36,
+      minRepLevel: 2,
+      expiresAt: nextWeek.toISOString(),
+      countryTag: 'global',
+    });
+  }
+
+  return board;
+};
+
+const getVehicleOpsRepLevel = (rep: number): number => {
+  if (rep >= 550) return 4;
+  if (rep >= 300) return 3;
+  if (rep >= 120) return 2;
+  if (rep >= 40) return 1;
+  return 0;
+};
+
+const getOpsRepPerks = (vehicleType: VehicleOpsType, level: number, isNl: boolean): string[] => {
+  const packs: Record<VehicleOpsType, string[][]> = {
+    car: [
+      [],
+      [isNl ? 'Level 1: +2% hotspot payout auto' : 'Level 1: +2% car hotspot payout'],
+      [isNl ? 'Level 2: -3% faalkans auto hotspot' : 'Level 2: -3% car hotspot fail chance'],
+      [isNl ? 'Level 3: +5% chop contract payout auto' : 'Level 3: +5% car chop contract payout'],
+      [isNl ? 'Level 4: +4% diefstalslagingskans auto' : 'Level 4: +4% car theft success chance'],
+    ],
+    motorcycle: [
+      [],
+      [isNl ? 'Level 1: +2% hotspot payout motor' : 'Level 1: +2% motorcycle hotspot payout'],
+      [
+        isNl
+          ? 'Level 2: -3% faalkans motor hotspot'
+          : 'Level 2: -3% motorcycle hotspot fail chance',
+      ],
+      [
+        isNl
+          ? 'Level 3: +5% chop contract payout motor'
+          : 'Level 3: +5% motorcycle chop contract payout',
+      ],
+      [
+        isNl
+          ? 'Level 4: +4% diefstalslagingskans motor'
+          : 'Level 4: +4% motorcycle theft success chance',
+      ],
+    ],
+    boat: [
+      [],
+      [isNl ? 'Level 1: +2% hotspot payout boot' : 'Level 1: +2% boat hotspot payout'],
+      [isNl ? 'Level 2: -3% faalkans boot hotspot' : 'Level 2: -3% boat hotspot fail chance'],
+      [isNl ? 'Level 3: +5% chop contract payout boot' : 'Level 3: +5% boat chop contract payout'],
+      [isNl ? 'Level 4: +4% diefstalslagingskans boot' : 'Level 4: +4% boat theft success chance'],
+    ],
+  };
+
+  const perks: string[] = [];
+  for (let i = 1; i <= Math.min(4, level); i += 1) {
+    perks.push(...packs[vehicleType][i]);
+  }
+  return perks;
+};
+
+const getCrewRoleOpsBonus = (
+  role: string | null | undefined
+): {
+  roleCode: string;
+  roleNameNl: string;
+  roleNameEn: string;
+  failChanceDelta: number;
+  payoutMultiplier: number;
+} => {
+  const normalized = (role ?? '').toLowerCase();
+  if (normalized.includes('leader')) {
+    return {
+      roleCode: 'leader',
+      roleNameNl: 'Leader',
+      roleNameEn: 'Leader',
+      failChanceDelta: -0.03,
+      payoutMultiplier: 1.06,
+    };
+  }
+  if (normalized.includes('co') || normalized.includes('captain')) {
+    return {
+      roleCode: 'captain',
+      roleNameNl: 'Captain',
+      roleNameEn: 'Captain',
+      failChanceDelta: -0.02,
+      payoutMultiplier: 1.04,
+    };
+  }
+  if (normalized.includes('strateg') || normalized.includes('planner')) {
+    return {
+      roleCode: 'planner',
+      roleNameNl: 'Planner',
+      roleNameEn: 'Planner',
+      failChanceDelta: -0.025,
+      payoutMultiplier: 1.03,
+    };
+  }
+  return {
+    roleCode: 'operative',
+    roleNameNl: 'Operative',
+    roleNameEn: 'Operative',
+    failChanceDelta: 0,
+    payoutMultiplier: 1,
   };
 };
 
@@ -256,17 +855,17 @@ const maxAvailabilityForVehicle = (vehicle: Vehicle): number => {
 
   switch (rarity) {
     case 'common':
-      return isBoat ? 24 : (isMotorcycle ? 50 : 60);
+      return isBoat ? 24 : isMotorcycle ? 50 : 60;
     case 'uncommon':
-      return isBoat ? 16 : (isMotorcycle ? 34 : 40);
+      return isBoat ? 16 : isMotorcycle ? 34 : 40;
     case 'rare':
-      return isBoat ? 10 : (isMotorcycle ? 20 : 22);
+      return isBoat ? 10 : isMotorcycle ? 20 : 22;
     case 'epic':
-      return isBoat ? 6 : (isMotorcycle ? 11 : 12);
+      return isBoat ? 6 : isMotorcycle ? 11 : 12;
     case 'legendary':
       return isBoat ? 3 : 5;
     default:
-      return isBoat ? 12 : (isMotorcycle ? 24 : 30);
+      return isBoat ? 12 : isMotorcycle ? 24 : 30;
   }
 };
 
@@ -274,15 +873,15 @@ const repairDurationSecondsForVehicle = (vehicle: Vehicle, currentCondition: num
   const damagePercent = Math.max(0, 100 - currentCondition);
   const isBoat = vehicle.vehicleCategory === 'boat';
   const isMotorcycle = vehicle.vehicleCategory === 'motorcycle';
-  const baseSeconds = isBoat ? 20 * 60 : (isMotorcycle ? 8 * 60 : 12 * 60);
-  const damageSeconds = damagePercent * (isBoat ? 120 : (isMotorcycle ? 70 : 90));
+  const baseSeconds = isBoat ? 20 * 60 : isMotorcycle ? 8 * 60 : 12 * 60;
+  const damageSeconds = damagePercent * (isBoat ? 120 : isMotorcycle ? 70 : 90);
   const valueSeconds = Math.min(
     6 * 60 * 60,
-    Math.floor(vehicle.baseValue / (isBoat ? 120 : (isMotorcycle ? 260 : 200)))
+    Math.floor(vehicle.baseValue / (isBoat ? 120 : isMotorcycle ? 260 : 200))
   );
 
   return Math.max(
-    isBoat ? 30 * 60 : (isMotorcycle ? 10 * 60 : 15 * 60),
+    isBoat ? 30 * 60 : isMotorcycle ? 10 * 60 : 15 * 60,
     Math.min(12 * 60 * 60, Math.round(baseSeconds + damageSeconds + valueSeconds))
   );
 };
@@ -379,7 +978,395 @@ async function ensurePlayerPartsRow(playerId: number) {
   `;
 }
 
-async function getPlayerPartsInventory(playerId: number): Promise<{ car: number; motorcycle: number; boat: number }> {
+async function ensureVehicleHeatTable() {
+  if (vehicleHeatTableReady) return;
+
+  await prisma.$executeRaw`
+    CREATE TABLE IF NOT EXISTS player_vehicle_heat (
+      player_id INT NOT NULL,
+      car_heat INT NOT NULL DEFAULT 0,
+      motorcycle_heat INT NOT NULL DEFAULT 0,
+      boat_heat INT NOT NULL DEFAULT 0,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (player_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `;
+
+  vehicleHeatTableReady = true;
+}
+
+async function ensurePlayerVehicleHeatRow(playerId: number) {
+  await ensureVehicleHeatTable();
+  await prisma.$executeRaw`
+    INSERT INTO player_vehicle_heat (player_id, car_heat, motorcycle_heat, boat_heat)
+    VALUES (${playerId}, 0, 0, 0)
+    ON DUPLICATE KEY UPDATE player_id = player_id
+  `;
+}
+
+async function ensureVehicleOpsProfileTable() {
+  if (vehicleOpsProfileReady) return;
+
+  await prisma.$executeRaw`
+    CREATE TABLE IF NOT EXISTS player_vehicle_ops_profile (
+      player_id INT NOT NULL,
+      car_rep INT NOT NULL DEFAULT 0,
+      motorcycle_rep INT NOT NULL DEFAULT 0,
+      boat_rep INT NOT NULL DEFAULT 0,
+      insurance_vehicle_type VARCHAR(20) NULL,
+      insurance_tier VARCHAR(20) NULL,
+      insurance_expires_at DATETIME NULL,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (player_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `;
+
+  vehicleOpsProfileReady = true;
+}
+
+async function ensurePlayerVehicleOpsProfileRow(playerId: number) {
+  await ensureVehicleOpsProfileTable();
+  await prisma.$executeRaw`
+    INSERT INTO player_vehicle_ops_profile (
+      player_id,
+      car_rep,
+      motorcycle_rep,
+      boat_rep,
+      insurance_vehicle_type,
+      insurance_tier,
+      insurance_expires_at
+    )
+    VALUES (${playerId}, 0, 0, 0, NULL, NULL, NULL)
+    ON DUPLICATE KEY UPDATE player_id = player_id
+  `;
+}
+
+async function getPlayerVehicleOpsProfile(playerId: number): Promise<{
+  carRep: number;
+  motorcycleRep: number;
+  boatRep: number;
+  insuranceVehicleType: string | null;
+  insuranceTier: string | null;
+  insuranceExpiresAt: Date | null;
+}> {
+  await ensurePlayerVehicleOpsProfileRow(playerId);
+
+  const rows = await prisma.$queryRaw<PlayerVehicleOpsProfileRow[]>`
+    SELECT player_id, car_rep, motorcycle_rep, boat_rep,
+           insurance_vehicle_type, insurance_tier, insurance_expires_at, updated_at
+    FROM player_vehicle_ops_profile
+    WHERE player_id = ${playerId}
+    LIMIT 1
+  `;
+  const row = rows[0];
+  return {
+    carRep: Number(row?.car_rep ?? 0),
+    motorcycleRep: Number(row?.motorcycle_rep ?? 0),
+    boatRep: Number(row?.boat_rep ?? 0),
+    insuranceVehicleType: row?.insurance_vehicle_type ?? null,
+    insuranceTier: row?.insurance_tier ?? null,
+    insuranceExpiresAt: row?.insurance_expires_at ? new Date(row.insurance_expires_at) : null,
+  };
+}
+
+async function addVehicleOpsRep(playerId: number, vehicleType: VehicleOpsType, amount: number) {
+  const safeAmount = Math.max(0, Math.floor(amount));
+  if (safeAmount <= 0) return;
+  await ensurePlayerVehicleOpsProfileRow(playerId);
+
+  if (vehicleType === 'boat') {
+    await prisma.$executeRaw`
+      UPDATE player_vehicle_ops_profile
+      SET boat_rep = LEAST(9999, boat_rep + ${safeAmount})
+      WHERE player_id = ${playerId}
+    `;
+    return;
+  }
+  if (vehicleType === 'motorcycle') {
+    await prisma.$executeRaw`
+      UPDATE player_vehicle_ops_profile
+      SET motorcycle_rep = LEAST(9999, motorcycle_rep + ${safeAmount})
+      WHERE player_id = ${playerId}
+    `;
+    return;
+  }
+  await prisma.$executeRaw`
+    UPDATE player_vehicle_ops_profile
+    SET car_rep = LEAST(9999, car_rep + ${safeAmount})
+    WHERE player_id = ${playerId}
+  `;
+}
+
+async function ensureVehicleOpsSeasonTable() {
+  if (vehicleOpsSeasonReady) return;
+  await prisma.$executeRaw`
+    CREATE TABLE IF NOT EXISTS player_vehicle_ops_season (
+      season_key VARCHAR(16) NOT NULL,
+      player_id INT NOT NULL,
+      vehicle_type VARCHAR(20) NOT NULL,
+      points INT NOT NULL DEFAULT 1000,
+      wins INT NOT NULL DEFAULT 0,
+      losses INT NOT NULL DEFAULT 0,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (season_key, player_id, vehicle_type),
+      INDEX idx_vehicle_ops_season_board (season_key, vehicle_type, points),
+      INDEX idx_vehicle_ops_season_player (player_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `;
+  vehicleOpsSeasonReady = true;
+}
+
+async function ensureVehicleOpsSeasonRow(
+  playerId: number,
+  vehicleType: VehicleOpsType,
+  seasonKey: string
+) {
+  await ensureVehicleOpsSeasonTable();
+  await prisma.$executeRaw`
+    INSERT INTO player_vehicle_ops_season (
+      season_key,
+      player_id,
+      vehicle_type,
+      points,
+      wins,
+      losses
+    )
+    VALUES (${seasonKey}, ${playerId}, ${vehicleType}, 1000, 0, 0)
+    ON DUPLICATE KEY UPDATE player_id = player_id
+  `;
+}
+
+async function getVehicleOpsSeasonStats(
+  playerId: number,
+  vehicleType: VehicleOpsType,
+  seasonKey: string
+) {
+  await ensureVehicleOpsSeasonRow(playerId, vehicleType, seasonKey);
+  const rows = await prisma.$queryRaw<VehicleOpsSeasonRow[]>`
+    SELECT season_key, player_id, vehicle_type, points, wins, losses, updated_at
+    FROM player_vehicle_ops_season
+    WHERE season_key = ${seasonKey}
+      AND player_id = ${playerId}
+      AND vehicle_type = ${vehicleType}
+    LIMIT 1
+  `;
+  const row = rows[0];
+  return {
+    seasonKey,
+    points: Number(row?.points ?? 1000),
+    wins: Number(row?.wins ?? 0),
+    losses: Number(row?.losses ?? 0),
+  };
+}
+
+async function updateVehicleOpsSeasonStats(
+  playerId: number,
+  vehicleType: VehicleOpsType,
+  seasonKey: string,
+  deltaPoints: number,
+  deltaWins: number,
+  deltaLosses: number
+) {
+  await ensureVehicleOpsSeasonRow(playerId, vehicleType, seasonKey);
+  await prisma.$executeRaw`
+    UPDATE player_vehicle_ops_season
+    SET points = GREATEST(0, points + ${deltaPoints}),
+        wins = GREATEST(0, wins + ${deltaWins}),
+        losses = GREATEST(0, losses + ${deltaLosses})
+    WHERE season_key = ${seasonKey}
+      AND player_id = ${playerId}
+      AND vehicle_type = ${vehicleType}
+  `;
+}
+
+async function getVehicleOpsSeasonTop(
+  vehicleType: VehicleOpsType,
+  seasonKey: string,
+  limit: number
+): Promise<
+  Array<{
+    playerId: number;
+    username: string;
+    points: number;
+    wins: number;
+    losses: number;
+  }>
+> {
+  await ensureVehicleOpsSeasonTable();
+  const rows = await prisma.$queryRaw<
+    Array<{
+      player_id: number;
+      username: string;
+      points: number | bigint;
+      wins: number | bigint;
+      losses: number | bigint;
+    }>
+  >`
+    SELECT s.player_id, p.username, s.points, s.wins, s.losses
+    FROM player_vehicle_ops_season s
+    INNER JOIN players p ON p.id = s.player_id
+    WHERE s.season_key = ${seasonKey}
+      AND s.vehicle_type = ${vehicleType}
+    ORDER BY s.points DESC, s.wins DESC, s.updated_at ASC
+    LIMIT ${Math.max(1, Math.min(25, Math.floor(limit)))}
+  `;
+  return rows.map((row) => ({
+    playerId: row.player_id,
+    username: row.username,
+    points: Number(row.points ?? 0),
+    wins: Number(row.wins ?? 0),
+    losses: Number(row.losses ?? 0),
+  }));
+}
+
+async function ensureVehicleOpsInsuranceClaimsTable() {
+  if (vehicleOpsInsuranceClaimReady) return;
+  await prisma.$executeRaw`
+    CREATE TABLE IF NOT EXISTS player_vehicle_ops_insurance_claims (
+      id INT NOT NULL AUTO_INCREMENT,
+      player_id INT NOT NULL,
+      vehicle_type VARCHAR(20) NOT NULL,
+      claim_type VARCHAR(40) NOT NULL,
+      status VARCHAR(20) NOT NULL DEFAULT 'REVIEW',
+      payout_amount INT NOT NULL DEFAULT 0,
+      risk_score INT NOT NULL DEFAULT 0,
+      context_json TEXT NULL,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id),
+      INDEX idx_vehicle_ops_claims_player (player_id, status, created_at),
+      INDEX idx_vehicle_ops_claims_vehicle (vehicle_type, status)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `;
+  vehicleOpsInsuranceClaimReady = true;
+}
+
+async function createVehicleInsuranceClaim(params: {
+  playerId: number;
+  vehicleType: VehicleOpsType;
+  claimType: string;
+  payoutAmount: number;
+  riskScore: number;
+  context: Record<string, unknown>;
+}): Promise<number> {
+  await ensureVehicleOpsInsuranceClaimsTable();
+  const result = await prisma.$executeRaw`
+    INSERT INTO player_vehicle_ops_insurance_claims (
+      player_id,
+      vehicle_type,
+      claim_type,
+      status,
+      payout_amount,
+      risk_score,
+      context_json
+    ) VALUES (
+      ${params.playerId},
+      ${params.vehicleType},
+      ${params.claimType},
+      'REVIEW',
+      ${Math.max(0, Math.floor(params.payoutAmount))},
+      ${Math.max(0, Math.floor(params.riskScore))},
+      ${JSON.stringify(params.context)}
+    )
+  `;
+  return Number(result ?? 0);
+}
+
+async function getOpenVehicleInsuranceClaims(playerId: number, vehicleType: VehicleOpsType) {
+  await ensureVehicleOpsInsuranceClaimsTable();
+  const rows = await prisma.$queryRaw<VehicleOpsInsuranceClaimRow[]>`
+    SELECT id, player_id, vehicle_type, claim_type, status, payout_amount, risk_score, context_json, created_at, updated_at
+    FROM player_vehicle_ops_insurance_claims
+    WHERE player_id = ${playerId}
+      AND vehicle_type = ${vehicleType}
+      AND status = 'REVIEW'
+    ORDER BY created_at DESC
+    LIMIT 5
+  `;
+  return rows.map((row) => ({
+    id: Number(row.id),
+    claimType: row.claim_type,
+    status: row.status,
+    payoutAmount: Number(row.payout_amount ?? 0),
+    riskScore: Number(row.risk_score ?? 0),
+    createdAt:
+      row.created_at instanceof Date
+        ? row.created_at.toISOString()
+        : new Date(row.created_at).toISOString(),
+  }));
+}
+
+async function getPlayerVehicleHeatSnapshot(playerId: number): Promise<{
+  car: number;
+  motorcycle: number;
+  boat: number;
+}> {
+  await ensurePlayerVehicleHeatRow(playerId);
+
+  const rows = await prisma.$queryRaw<PlayerVehicleHeatRow[]>`
+    SELECT player_id, car_heat, motorcycle_heat, boat_heat, updated_at
+    FROM player_vehicle_heat
+    WHERE player_id = ${playerId}
+    LIMIT 1
+  `;
+  const row = rows[0];
+  const now = Date.now();
+  const updatedAtMs = row?.updated_at ? new Date(row.updated_at).getTime() : now;
+  const elapsedHours = Math.max(0, Math.floor((now - updatedAtMs) / (60 * 60 * 1000)));
+  const decayPerHour = 6;
+
+  const baseCar = Number(row?.car_heat ?? 0);
+  const baseMotorcycle = Number(row?.motorcycle_heat ?? 0);
+  const baseBoat = Number(row?.boat_heat ?? 0);
+
+  const car = Math.max(0, baseCar - elapsedHours * decayPerHour);
+  const motorcycle = Math.max(0, baseMotorcycle - elapsedHours * decayPerHour);
+  const boat = Math.max(0, baseBoat - elapsedHours * decayPerHour);
+
+  if (elapsedHours > 0 && (car !== baseCar || motorcycle !== baseMotorcycle || boat !== baseBoat)) {
+    await prisma.$executeRaw`
+      UPDATE player_vehicle_heat
+      SET car_heat = ${car},
+          motorcycle_heat = ${motorcycle},
+          boat_heat = ${boat},
+          updated_at = UTC_TIMESTAMP()
+      WHERE player_id = ${playerId}
+    `;
+  }
+
+  return { car, motorcycle, boat };
+}
+
+async function increasePlayerVehicleHeat(
+  playerId: number,
+  vehicleType: VehicleOpsType,
+  amount: number
+) {
+  const safeAmount = Math.max(0, Math.floor(amount));
+  if (safeAmount <= 0) return;
+
+  const snapshot = await getPlayerVehicleHeatSnapshot(playerId);
+  const nextCar = vehicleType === 'car' ? Math.min(100, snapshot.car + safeAmount) : snapshot.car;
+  const nextMotorcycle =
+    vehicleType === 'motorcycle'
+      ? Math.min(100, snapshot.motorcycle + safeAmount)
+      : snapshot.motorcycle;
+  const nextBoat =
+    vehicleType === 'boat' ? Math.min(100, snapshot.boat + safeAmount) : snapshot.boat;
+
+  await prisma.$executeRaw`
+    UPDATE player_vehicle_heat
+    SET car_heat = ${nextCar},
+        motorcycle_heat = ${nextMotorcycle},
+        boat_heat = ${nextBoat},
+        updated_at = UTC_TIMESTAMP()
+    WHERE player_id = ${playerId}
+  `;
+}
+
+async function getPlayerPartsInventory(
+  playerId: number
+): Promise<{ car: number; motorcycle: number; boat: number }> {
   await ensurePlayerPartsRow(playerId);
 
   const rows = await prisma.$queryRaw<PlayerVehiclePartsRow[]>`
@@ -397,12 +1384,20 @@ async function getPlayerPartsInventory(playerId: number): Promise<{ car: number;
   };
 }
 
-async function getVehicleTuningMap(playerId: number, inventoryIds: number[]): Promise<Map<number, {
-  speed: number;
-  stealth: number;
-  armor: number;
-  tuneCooldownUntil: Date | null;
-}>> {
+async function getVehicleTuningMap(
+  playerId: number,
+  inventoryIds: number[]
+): Promise<
+  Map<
+    number,
+    {
+      speed: number;
+      stealth: number;
+      armor: number;
+      tuneCooldownUntil: Date | null;
+    }
+  >
+> {
   await ensureTuneTables();
   if (inventoryIds.length === 0) return new Map();
 
@@ -426,7 +1421,10 @@ async function getVehicleTuningMap(playerId: number, inventoryIds: number[]): Pr
   );
 }
 
-async function getVehicleTuningLevels(playerId: number, inventoryId: number): Promise<{ speed: number; stealth: number; armor: number }> {
+async function getVehicleTuningLevels(
+  playerId: number,
+  inventoryId: number
+): Promise<{ speed: number; stealth: number; armor: number }> {
   const tuningMap = await getVehicleTuningMap(playerId, [inventoryId]);
   return tuningMap.get(inventoryId) ?? { speed: 0, stealth: 0, armor: 0 };
 }
@@ -441,7 +1439,11 @@ const getTotalTuneLevel = (levels: { speed: number; stealth: number; armor: numb
   return (levels.speed ?? 0) + (levels.stealth ?? 0) + (levels.armor ?? 0);
 };
 
-const getTuneValueMultiplier = (levels: { speed: number; stealth: number; armor: number }): number => {
+const getTuneValueMultiplier = (levels: {
+  speed: number;
+  stealth: number;
+  armor: number;
+}): number => {
   const totalLevel = getTotalTuneLevel(levels);
   return 1 + totalLevel * 0.03;
 };
@@ -451,9 +1453,15 @@ const getTunedStats = (
   levels: { speed: number; stealth: number; armor: number }
 ): VehicleStats => {
   return {
-    speed: Math.round((baseStats.speed ?? 0) * (1 + (levels.speed ?? 0) * tuneStatBonusPerLevelMap.speed)),
-    stealth: Math.round((baseStats.stealth ?? 0) * (1 + (levels.stealth ?? 0) * tuneStatBonusPerLevelMap.stealth)),
-    armor: Math.round((baseStats.armor ?? 0) * (1 + (levels.armor ?? 0) * tuneStatBonusPerLevelMap.armor)),
+    speed: Math.round(
+      (baseStats.speed ?? 0) * (1 + (levels.speed ?? 0) * tuneStatBonusPerLevelMap.speed)
+    ),
+    stealth: Math.round(
+      (baseStats.stealth ?? 0) * (1 + (levels.stealth ?? 0) * tuneStatBonusPerLevelMap.stealth)
+    ),
+    armor: Math.round(
+      (baseStats.armor ?? 0) * (1 + (levels.armor ?? 0) * tuneStatBonusPerLevelMap.armor)
+    ),
     cargo: baseStats.cargo,
   };
 };
@@ -497,14 +1505,15 @@ const getTuneUpgradeCost = (
 
 async function processCompletedRepairJobs(playerId?: number) {
   await ensureRepairJobsTable();
-  const dueJobs = playerId == null
-    ? await prisma.$queryRaw<RepairJobRow[]>`
+  const dueJobs =
+    playerId == null
+      ? await prisma.$queryRaw<RepairJobRow[]>`
         SELECT *
         FROM vehicle_repair_jobs
         WHERE status = 'in_progress'
           AND completes_at <= UTC_TIMESTAMP()
       `
-    : await prisma.$queryRaw<RepairJobRow[]>`
+      : await prisma.$queryRaw<RepairJobRow[]>`
         SELECT *
         FROM vehicle_repair_jobs
         WHERE player_id = ${playerId}
@@ -516,15 +1525,17 @@ async function processCompletedRepairJobs(playerId?: number) {
 
   const inventoryIds = dueJobs.map((job) => job.vehicle_inventory_id);
   const vehiclesByInventoryId = new Map(
-    (await prisma.vehicleInventory.findMany({
-      where: { id: { in: inventoryIds } },
-      select: {
-        id: true,
-        playerId: true,
-        vehicleId: true,
-        vehicleType: true,
-      },
-    })).map((vehicle) => [vehicle.id, vehicle])
+    (
+      await prisma.vehicleInventory.findMany({
+        where: { id: { in: inventoryIds } },
+        select: {
+          id: true,
+          playerId: true,
+          vehicleId: true,
+          vehicleType: true,
+        },
+      })
+    ).map((vehicle) => [vehicle.id, vehicle])
   );
 
   const completedJobs: Array<{
@@ -695,9 +1706,7 @@ async function getWorldVehicleCounts(): Promise<Map<string, number>> {
     GROUP BY vehicleId
   `;
 
-  return new Map(
-    rows.map((row) => [row.vehicleId, Number(row.total)])
-  );
+  return new Map(rows.map((row) => [row.vehicleId, Number(row.total)]));
 }
 
 async function getWorldCountForVehicle(vehicleId: string): Promise<number> {
@@ -708,7 +1717,7 @@ async function getWorldCountForVehicle(vehicleId: string): Promise<number> {
 const withVehicleMeta = (
   vehicle: Vehicle,
   vehicleCategory: 'car' | 'boat' | 'motorcycle',
-  worldCount = 0,
+  worldCount = 0
 ): Vehicle => {
   const normalized: Vehicle = {
     ...vehicle,
@@ -736,9 +1745,9 @@ export const vehicleService = {
       boatsCount: vehiclesData.boats?.length,
       motorcyclesCount: (vehiclesData as any).motorcycles?.length ?? 0,
       carsKeys: vehiclesData.cars ? Object.keys(vehiclesData.cars[0] || {}) : [],
-      boatsKeys: vehiclesData.boats ? Object.keys(vehiclesData.boats[0] || {}) : []
+      boatsKeys: vehiclesData.boats ? Object.keys(vehiclesData.boats[0] || {}) : [],
     });
-    
+
     return {
       cars: (vehiclesData.cars as unknown as Vehicle[]).map((vehicle) =>
         withVehicleMeta(vehicle, 'car')
@@ -762,16 +1771,17 @@ export const vehicleService = {
       ...(((vehiclesData as any).motorcycles ?? []) as any[]),
     ] as unknown as Vehicle[];
     const normalizedVehicleId = (vehicleId ?? '').toString().trim().toLowerCase();
-    const vehicle = allVehicles.find((v) => (v.id ?? '').toString().trim().toLowerCase() === normalizedVehicleId);
-    if (!vehicle) return undefined;
-    const isCar = (vehiclesData.cars as unknown as Vehicle[])
-      .some((v) => (v.id ?? '').toString().trim().toLowerCase() === normalizedVehicleId);
-    const isBoat = (vehiclesData.boats as unknown as Vehicle[])
-      .some((v) => (v.id ?? '').toString().trim().toLowerCase() === normalizedVehicleId);
-    return withVehicleMeta(
-      vehicle,
-      isCar ? 'car' : (isBoat ? 'boat' : 'motorcycle')
+    const vehicle = allVehicles.find(
+      (v) => (v.id ?? '').toString().trim().toLowerCase() === normalizedVehicleId
     );
+    if (!vehicle) return undefined;
+    const isCar = (vehiclesData.cars as unknown as Vehicle[]).some(
+      (v) => (v.id ?? '').toString().trim().toLowerCase() === normalizedVehicleId
+    );
+    const isBoat = (vehiclesData.boats as unknown as Vehicle[]).some(
+      (v) => (v.id ?? '').toString().trim().toLowerCase() === normalizedVehicleId
+    );
+    return withVehicleMeta(vehicle, isCar ? 'car' : isBoat ? 'boat' : 'motorcycle');
   },
 
   /**
@@ -786,24 +1796,27 @@ export const vehicleService = {
     const canExposeVehicle = (vehicle: Vehicle, category: 'car' | 'boat' | 'motorcycle') => {
       if (!isEventOnlyVehicle(vehicle)) return true;
       const categoryAllowed =
-        policeEventStatus.activeCategory == null ||
-        policeEventStatus.activeCategory === category;
+        policeEventStatus.activeCategory == null || policeEventStatus.activeCategory === category;
       return policeEventStatus.active && categoryAllowed;
     };
 
     const cars = (vehiclesData.cars as unknown as Vehicle[])
       .filter((v) => {
         if (!canExposeVehicle(v, 'car')) return false;
+        const lock = getRegionalBlacklistEvent('car', normalizedCountry, new Date());
+        if (lock.active) return false;
         if (isExtendedCountry) return true;
         const availability = v.availableInCountries?.map(normalizeCountryId) ?? [];
         return availability.includes(normalizedCountry);
       })
       .map((v) => withVehicleMeta(v, 'car', worldCounts.get(v.id) ?? 0))
       .filter((v) => (v.remainingWorldAvailability ?? 1) > 0);
-      
+
     const boats = (vehiclesData.boats as unknown as Vehicle[])
       .filter((v) => {
         if (!canExposeVehicle(v, 'boat')) return false;
+        const lock = getRegionalBlacklistEvent('boat', normalizedCountry, new Date());
+        if (lock.active) return false;
         if (isExtendedCountry) return true;
         const availability = v.availableInCountries?.map(normalizeCountryId) ?? [];
         return availability.includes(normalizedCountry);
@@ -811,21 +1824,1385 @@ export const vehicleService = {
       .map((v) => withVehicleMeta(v, 'boat', worldCounts.get(v.id) ?? 0))
       .filter((v) => (v.remainingWorldAvailability ?? 1) > 0);
 
-    const motorcycles = ((((vehiclesData as any).motorcycles ?? []) as Vehicle[])
+    const motorcycles = (((vehiclesData as any).motorcycles ?? []) as Vehicle[])
       .filter((v) => {
         if (!canExposeVehicle(v, 'motorcycle')) return false;
+        const lock = getRegionalBlacklistEvent('motorcycle', normalizedCountry, new Date());
+        if (lock.active) return false;
         if (isExtendedCountry) return true;
         const availability = v.availableInCountries?.map(normalizeCountryId) ?? [];
         return availability.includes(normalizedCountry);
       })
       .map((v) => withVehicleMeta(v, 'motorcycle', worldCounts.get(v.id) ?? 0))
-      .filter((v) => (v.remainingWorldAvailability ?? 1) > 0));
-      
+      .filter((v) => (v.remainingWorldAvailability ?? 1) > 0);
+
     return [...cars, ...motorcycles, ...boats];
   },
 
   getPoliceVehicleEventStatus(): PoliceVehicleEventStatus {
     return getPoliceVehicleEventStatusForTime(new Date());
+  },
+
+  async getVehicleOpsIntelligence(playerId: number, requestedType: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const now = new Date();
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { id: true, currentCountry: true },
+    });
+    if (!player) throw new Error('PLAYER_NOT_FOUND');
+    const heatSnapshot = await getPlayerVehicleHeatSnapshot(playerId);
+    const profile = await getPlayerVehicleOpsProfile(playerId);
+    const heatByType: Record<VehicleOpsType, number> = {
+      car: heatSnapshot.car,
+      motorcycle: heatSnapshot.motorcycle,
+      boat: heatSnapshot.boat,
+    };
+    const selectedHeat = heatByType[vehicleType];
+    const policePattern = getDynamicPolicePatternForTime(now);
+    const partsMarketPrices = getPartsMarketPrices(now, heatByType);
+    const hotspotCooldown = await checkCooldown(playerId, hotspotActionTypeForVehicle(vehicleType));
+    const crewCooldown = await checkCooldown(playerId, crewActionTypeForVehicle(vehicleType));
+    const crewMatchCooldown = await checkCooldown(
+      playerId,
+      crewMatchActionTypeForVehicle(vehicleType)
+    );
+    const counterInterceptCooldown = await checkCooldown(
+      playerId,
+      counterInterceptActionTypeForVehicle(vehicleType)
+    );
+    const opsContractCooldown = await checkCooldown(
+      playerId,
+      opsContractActionTypeForVehicle(vehicleType)
+    );
+    const chopCooldown = await checkCooldown(playerId, chopActionTypeForVehicle(vehicleType));
+    const chopContract = getChopContractForVehicleType(vehicleType, now);
+    const blacklist = getRegionalBlacklistEvent(vehicleType, player.currentCountry ?? '', now);
+    const crewMember = await prisma.crewMember.findUnique({
+      where: { playerId },
+      include: {
+        crew: {
+          include: {
+            members: {
+              select: { playerId: true },
+            },
+          },
+        },
+      },
+    });
+    const crewSize = crewMember?.crew?.members?.length ?? 0;
+    const roleBonus = getCrewRoleOpsBonus(crewMember?.role);
+    const repValue =
+      vehicleType === 'motorcycle'
+        ? profile.motorcycleRep
+        : vehicleType === 'boat'
+          ? profile.boatRep
+          : profile.carRep;
+    const repLevel = getVehicleOpsRepLevel(repValue);
+    const seasonKey = getVehicleOpsSeasonKey(now);
+    const seasonStats = await getVehicleOpsSeasonStats(playerId, vehicleType, seasonKey);
+    const seasonTop = await getVehicleOpsSeasonTop(vehicleType, seasonKey, 10);
+    const countryModifier = getCountryOpsModifiers(player.currentCountry ?? '', vehicleType, now);
+    const contractsBoard = getVehicleOpsContractsBoard(
+      vehicleType,
+      now,
+      repLevel,
+      player.currentCountry ?? ''
+    );
+    const openInsuranceClaims = await getOpenVehicleInsuranceClaims(playerId, vehicleType);
+    const theftSuccessBonus = repLevel >= 4 ? 0.04 : 0;
+    const hotspotPayoutBonus = repLevel >= 1 ? 0.02 : 0;
+    const hotspotFailReduction = repLevel >= 2 ? 0.03 : 0;
+    const chopPayoutBonus = repLevel >= 3 ? 0.05 : 0;
+    const insuranceActive =
+      profile.insuranceVehicleType === vehicleType &&
+      profile.insuranceExpiresAt != null &&
+      profile.insuranceExpiresAt.getTime() > now.getTime();
+
+    return {
+      vehicleType,
+      generatedAt: now.toISOString(),
+      hotspots: [
+        {
+          id: `hotspot-${vehicleType}-primary`,
+          nameNl:
+            vehicleType === 'motorcycle'
+              ? 'Smalle Steeg Raid'
+              : vehicleType === 'boat'
+                ? 'Dokkade Intercept'
+                : 'Binnenstad Boost',
+          nameEn:
+            vehicleType === 'motorcycle'
+              ? 'Narrow Alley Raid'
+              : vehicleType === 'boat'
+                ? 'Dockside Intercept'
+                : 'Inner City Boost',
+          rewardMin: vehicleType === 'motorcycle' ? 9000 : vehicleType === 'boat' ? 18000 : 11000,
+          rewardMax: vehicleType === 'motorcycle' ? 21000 : vehicleType === 'boat' ? 39000 : 28000,
+          cooldownSeconds:
+            vehicleType === 'motorcycle' ? 1500 : vehicleType === 'boat' ? 2400 : 1800,
+          cooldownRemainingSeconds: hotspotCooldown,
+          riskMultiplier: Number(
+            (policePattern.riskMultiplierByType[vehicleType] * (1 + selectedHeat / 140)).toFixed(3)
+          ),
+          interceptionWindowActive: isHotspotInterceptionWindow(now),
+          payoutBonusPct: Math.round(hotspotPayoutBonus * 100),
+          failReductionPct: Math.round(hotspotFailReduction * 100),
+        },
+      ],
+      categoryHeat: {
+        current: selectedHeat,
+        level: classifyHeatLevel(selectedHeat),
+        decayPerHour: 6,
+        nextHourEstimate: Math.max(0, selectedHeat - 6),
+      },
+      policePattern: {
+        code: policePattern.code,
+        nameNl: policePattern.nameNl,
+        nameEn: policePattern.nameEn,
+        summaryNl: policePattern.summaryNl,
+        summaryEn: policePattern.summaryEn,
+        riskMultiplier: policePattern.riskMultiplierByType[vehicleType],
+      },
+      partsMarket: {
+        prices: {
+          car: Math.max(
+            300,
+            Math.round(partsMarketPrices.car * countryModifier.partsPriceMultiplier)
+          ),
+          motorcycle: Math.max(
+            300,
+            Math.round(partsMarketPrices.motorcycle * countryModifier.partsPriceMultiplier)
+          ),
+          boat: Math.max(
+            300,
+            Math.round(partsMarketPrices.boat * countryModifier.partsPriceMultiplier)
+          ),
+        },
+        trend:
+          partsMarketPrices[vehicleType] >=
+          (vehicleType === 'boat' ? 2350 : vehicleType === 'motorcycle' ? 1180 : 1450)
+            ? 'up'
+            : 'down',
+        refreshInSeconds: Math.max(30, 60 - now.getUTCSeconds()),
+      },
+      crewOp: {
+        available: !!crewMember,
+        requiresCrew: !crewMember,
+        crewName: crewMember?.crew?.name ?? null,
+        crewSize,
+        playerRoleCode: roleBonus.roleCode,
+        playerRoleNameNl: roleBonus.roleNameNl,
+        playerRoleNameEn: roleBonus.roleNameEn,
+        roleFailReductionPct: Math.round(Math.max(0, -roleBonus.failChanceDelta) * 100),
+        rolePayoutBonusPct: Math.round(Math.max(0, roleBonus.payoutMultiplier - 1) * 100),
+        cooldownRemainingSeconds: crewCooldown,
+        rewardPersonalMin:
+          vehicleType === 'boat' ? 21000 : vehicleType === 'motorcycle' ? 12000 : 15000,
+        rewardPersonalMax:
+          vehicleType === 'boat' ? 42000 : vehicleType === 'motorcycle' ? 26000 : 32000,
+        crewBankSharePct: 30,
+      },
+      chopContract: {
+        id: chopContract.contractId,
+        vehicleType,
+        vehicleTypeLabelNl: formatOpsVehicleLabel(vehicleType, 'nl'),
+        vehicleTypeLabelEn: formatOpsVehicleLabel(vehicleType, 'en'),
+        requiredCount: chopContract.requiredCount,
+        minCondition: chopContract.minCondition,
+        rewardMoney: chopContract.rewardMoney,
+        expiresAt: chopContract.expiresAt.toISOString(),
+        cooldownRemainingSeconds: chopCooldown,
+      },
+      opsReputation: {
+        value: repValue,
+        level: repLevel,
+        perksNl: getOpsRepPerks(vehicleType, repLevel, true),
+        perksEn: getOpsRepPerks(vehicleType, repLevel, false),
+        unlockBonuses: {
+          theftSuccessBonusPct: Math.round(theftSuccessBonus * 100),
+          hotspotPayoutBonusPct: Math.round(hotspotPayoutBonus * 100),
+          hotspotFailReductionPct: Math.round(hotspotFailReduction * 100),
+          chopPayoutBonusPct: Math.round(chopPayoutBonus * 100),
+        },
+      },
+      regionalBlacklist: blacklist,
+      countryModifier: {
+        code: countryModifier.modifierCode,
+        nameNl: countryModifier.nameNl,
+        nameEn: countryModifier.nameEn,
+        payoutMultiplier: countryModifier.payoutMultiplier,
+        riskDeltaPct: Math.round(countryModifier.riskDelta * 100),
+        partsPriceMultiplier: countryModifier.partsPriceMultiplier,
+      },
+      hotspotInterception: {
+        activeWindow: isHotspotInterceptionWindow(now),
+        summaryNl: 'Tijdens actieve windows kan een rival speler je hotspot payout onderscheppen.',
+        summaryEn:
+          'During active windows, a rival player can intercept part of your hotspot payout.',
+      },
+      contrabandInsurance: {
+        active: insuranceActive,
+        tier: insuranceActive ? profile.insuranceTier : null,
+        vehicleType: insuranceActive ? profile.insuranceVehicleType : null,
+        expiresAt: insuranceActive ? (profile.insuranceExpiresAt?.toISOString() ?? null) : null,
+        offers: [
+          {
+            tier: 'basic',
+            durationHours: 12,
+            price: vehicleType === 'boat' ? 22000 : vehicleType === 'motorcycle' ? 14000 : 17000,
+            failCoveragePct: 30,
+          },
+          {
+            tier: 'pro',
+            durationHours: 24,
+            price: vehicleType === 'boat' ? 46000 : vehicleType === 'motorcycle' ? 29000 : 36000,
+            failCoveragePct: 50,
+          },
+        ],
+        openClaims: openInsuranceClaims,
+      },
+      contractsBoard: {
+        cooldownRemainingSeconds: opsContractCooldown,
+        contracts: contractsBoard,
+      },
+      crewMatchmaking: {
+        cooldownRemainingSeconds: crewMatchCooldown,
+        seasonKey,
+        current: seasonStats,
+        top: seasonTop,
+      },
+      counterIntercept: {
+        cooldownRemainingSeconds: counterInterceptCooldown,
+        summaryNl: 'Counter-intercept laat je recent verlies deels terughalen bij rival ops.',
+        summaryEn: 'Counter-intercept lets you recover part of recent losses from rival ops.',
+      },
+    };
+  },
+
+  async runVehicleHotspotOp(playerId: number, requestedType: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const cooldownType = hotspotActionTypeForVehicle(vehicleType);
+    const cooldownRemainingSeconds = await checkCooldown(playerId, cooldownType);
+    if (cooldownRemainingSeconds > 0) {
+      return {
+        success: false,
+        message: 'HOTSPOT_COOLDOWN',
+        cooldownRemainingSeconds,
+      };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { id: true, currentCountry: true, wantedLevel: true, money: true },
+    });
+    if (!player) {
+      throw new Error('PLAYER_NOT_FOUND');
+    }
+    const blacklist = getRegionalBlacklistEvent(
+      vehicleType,
+      player.currentCountry ?? '',
+      new Date()
+    );
+    if (blacklist.active) {
+      return {
+        success: false,
+        message: 'REGIONAL_BLACKLIST_ACTIVE',
+        reasonNl: blacklist.reasonNl,
+        reasonEn: blacklist.reasonEn,
+        endsAt: blacklist.endsAt,
+      };
+    }
+
+    const remainingJailTime = await checkIfJailed(playerId);
+    if (remainingJailTime > 0) {
+      return {
+        success: false,
+        message: 'PLAYER_JAILED',
+        remainingJailTime,
+      };
+    }
+
+    const countryModifier = getCountryOpsModifiers(
+      player.currentCountry ?? '',
+      vehicleType,
+      new Date()
+    );
+    const heat = await getPlayerVehicleHeatSnapshot(playerId);
+    const profile = await getPlayerVehicleOpsProfile(playerId);
+    const repValue =
+      vehicleType === 'motorcycle'
+        ? profile.motorcycleRep
+        : vehicleType === 'boat'
+          ? profile.boatRep
+          : profile.carRep;
+    const repLevel = getVehicleOpsRepLevel(repValue);
+    const hotspotPayoutBonus = repLevel >= 1 ? 0.02 : 0;
+    const hotspotFailReduction = repLevel >= 2 ? 0.03 : 0;
+    const insuranceActive =
+      profile.insuranceVehicleType === vehicleType &&
+      profile.insuranceExpiresAt != null &&
+      profile.insuranceExpiresAt.getTime() > Date.now();
+    const insuranceCoveragePct =
+      insuranceActive && profile.insuranceTier === 'pro' ? 0.5 : insuranceActive ? 0.3 : 0;
+    const selectedHeat =
+      vehicleType === 'motorcycle'
+        ? heat.motorcycle
+        : vehicleType === 'boat'
+          ? heat.boat
+          : heat.car;
+    const pattern = getDynamicPolicePatternForTime(new Date());
+    const baseRisk = vehicleType === 'boat' ? 0.36 : vehicleType === 'motorcycle' ? 0.27 : 0.3;
+    const heatRisk = Math.min(0.2, selectedHeat * 0.003);
+    const patternRisk = Math.max(0, pattern.riskMultiplierByType[vehicleType] - 1);
+    const failChance = Math.min(
+      0.9,
+      Math.max(
+        0.05,
+        baseRisk + heatRisk + patternRisk + countryModifier.riskDelta - hotspotFailReduction
+      )
+    );
+    const success = Math.random() > failChance;
+
+    await setCooldown(playerId, cooldownType);
+
+    if (!success) {
+      await increasePlayerVehicleHeat(playerId, vehicleType, 8);
+      const insurancePayout =
+        insuranceCoveragePct > 0
+          ? Math.round(
+              (vehicleType === 'boat' ? 28000 : vehicleType === 'motorcycle' ? 15000 : 19000) *
+                insuranceCoveragePct
+            )
+          : 0;
+      if (insurancePayout > 0) {
+        await createVehicleInsuranceClaim({
+          playerId,
+          vehicleType,
+          claimType: 'HOTSPOT_FAIL',
+          payoutAmount: insurancePayout,
+          riskScore: Math.round(failChance * 100),
+          context: {
+            country: player.currentCountry ?? null,
+            riskDelta: countryModifier.riskDelta,
+            pattern: pattern.code,
+          },
+        });
+      }
+      const updatedOnFail = await prisma.player.update({
+        where: { id: playerId },
+        data: {
+          money: insurancePayout > 0 ? { increment: insurancePayout } : undefined,
+          wantedLevel: Math.min(100, Math.round((player.wantedLevel ?? 0) + 3)),
+        },
+        select: { money: true },
+      });
+      await activityService.logActivity(
+        playerId,
+        'VEHICLE_OPS_HOTSPOT',
+        `Hotspot ${vehicleType} failed`,
+        {
+          success: false,
+          vehicleType,
+          insurancePayout,
+          failChance,
+          country: player.currentCountry ?? null,
+          modifierCode: countryModifier.modifierCode,
+        },
+        true
+      );
+      return {
+        success: false,
+        message: 'HOTSPOT_FAILED',
+        insurancePayout,
+        newMoney: updatedOnFail.money,
+        cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+        riskLevel: failChance,
+      };
+    }
+
+    const rewardMin = vehicleType === 'boat' ? 18000 : vehicleType === 'motorcycle' ? 9000 : 11000;
+    const rewardMax = vehicleType === 'boat' ? 39000 : vehicleType === 'motorcycle' ? 21000 : 28000;
+    const baseReward = rewardMin + Math.floor(Math.random() * (rewardMax - rewardMin + 1));
+    let rewardMoney = Math.round(
+      baseReward * (1 + hotspotPayoutBonus) * countryModifier.payoutMultiplier
+    );
+    let interceptedByPlayerId: number | null = null;
+    let interceptedAmount = 0;
+    if (isHotspotInterceptionWindow(new Date()) && Math.random() < 0.2) {
+      const candidates = await prisma.player.findMany({
+        where: {
+          id: { not: playerId },
+          currentCountry: player.currentCountry ?? undefined,
+          isBanned: false,
+        },
+        select: { id: true },
+        take: 50,
+      });
+      if (candidates.length > 0) {
+        const actorCrew = await prisma.crewMember.findUnique({
+          where: { playerId },
+          select: { crewId: true },
+        });
+        let eligible = candidates.map((c) => c.id);
+        if (actorCrew?.crewId) {
+          const sameCrewRows = await prisma.crewMember.findMany({
+            where: {
+              crewId: actorCrew.crewId,
+              playerId: { in: eligible },
+            },
+            select: { playerId: true },
+          });
+          const sameCrewIds = new Set(sameCrewRows.map((r) => r.playerId));
+          eligible = eligible.filter((id) => !sameCrewIds.has(id));
+        }
+        if (eligible.length > 0) {
+          interceptedByPlayerId = eligible[Math.floor(Math.random() * eligible.length)];
+          interceptedAmount = Math.max(1, Math.round(rewardMoney * 0.25));
+          rewardMoney = Math.max(1, rewardMoney - interceptedAmount);
+        }
+      }
+    }
+
+    const txActions: Promise<unknown>[] = [
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { increment: rewardMoney } },
+        select: { money: true },
+      }),
+    ];
+    if (interceptedByPlayerId != null && interceptedAmount > 0) {
+      txActions.push(
+        prisma.player.update({
+          where: { id: interceptedByPlayerId },
+          data: { money: { increment: interceptedAmount } },
+        })
+      );
+    }
+    const [updatedPlayer] = (await prisma.$transaction(txActions)) as Array<{ money: number }>;
+    await increasePlayerVehicleHeat(playerId, vehicleType, 5);
+    await addVehicleOpsRep(playerId, vehicleType, 18);
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_HOTSPOT',
+      `Hotspot ${vehicleType} success`,
+      {
+        success: true,
+        vehicleType,
+        rewardMoney,
+        interceptedByPlayerId,
+        interceptedAmount,
+        hotspotPayoutBonusPct: Math.round(hotspotPayoutBonus * 100),
+        country: player.currentCountry ?? null,
+        modifierCode: countryModifier.modifierCode,
+      },
+      true
+    );
+    if (interceptedByPlayerId != null && interceptedAmount > 0) {
+      await activityService.logActivity(
+        interceptedByPlayerId,
+        'VEHICLE_OPS_INTERCEPT',
+        `Intercepted hotspot payout (${formatOpsVehicleLabel(vehicleType, 'en')})`,
+        {
+          success: true,
+          vehicleType,
+          interceptedFromPlayerId: playerId,
+          amount: interceptedAmount,
+          country: player.currentCountry ?? null,
+        },
+        false
+      );
+    }
+
+    return {
+      success: true,
+      message: 'HOTSPOT_SUCCESS',
+      rewardMoney,
+      interceptedByPlayerId,
+      interceptedAmount,
+      newMoney: updatedPlayer.money,
+      cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+    };
+  },
+
+  async runVehicleCrewOp(playerId: number, requestedType: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const cooldownType = crewActionTypeForVehicle(vehicleType);
+    const cooldownRemainingSeconds = await checkCooldown(playerId, cooldownType);
+    if (cooldownRemainingSeconds > 0) {
+      return {
+        success: false,
+        message: 'CREW_OP_COOLDOWN',
+        cooldownRemainingSeconds,
+      };
+    }
+
+    const crewMember = await prisma.crewMember.findUnique({
+      where: { playerId },
+      include: {
+        crew: {
+          include: {
+            members: { select: { playerId: true } },
+          },
+        },
+      },
+    });
+    if (!crewMember?.crew) {
+      return {
+        success: false,
+        message: 'CREW_REQUIRED',
+      };
+    }
+    const playerRow = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const blacklist = getRegionalBlacklistEvent(
+      vehicleType,
+      playerRow?.currentCountry ?? '',
+      new Date()
+    );
+    if (blacklist.active) {
+      return {
+        success: false,
+        message: 'REGIONAL_BLACKLIST_ACTIVE',
+        reasonNl: blacklist.reasonNl,
+        reasonEn: blacklist.reasonEn,
+        endsAt: blacklist.endsAt,
+      };
+    }
+    const roleBonus = getCrewRoleOpsBonus(crewMember.role);
+    const profile = await getPlayerVehicleOpsProfile(playerId);
+    const countryModifier = getCountryOpsModifiers(
+      playerRow?.currentCountry ?? '',
+      vehicleType,
+      new Date()
+    );
+    const repValue =
+      vehicleType === 'motorcycle'
+        ? profile.motorcycleRep
+        : vehicleType === 'boat'
+          ? profile.boatRep
+          : profile.carRep;
+    const repLevel = getVehicleOpsRepLevel(repValue);
+
+    await setCooldown(playerId, cooldownType);
+
+    const crewSize = Math.max(1, crewMember.crew.members.length);
+    const rewardMin = vehicleType === 'boat' ? 30000 : vehicleType === 'motorcycle' ? 17000 : 22000;
+    const rewardMax = vehicleType === 'boat' ? 62000 : vehicleType === 'motorcycle' ? 34000 : 47000;
+    const rawReward = rewardMin + Math.floor(Math.random() * (rewardMax - rewardMin + 1));
+    const scaledReward = Math.round(
+      rawReward *
+        Math.min(1.35, 1 + (crewSize - 1) * 0.05) *
+        roleBonus.payoutMultiplier *
+        (repLevel >= 1 ? 1.02 : 1) *
+        countryModifier.payoutMultiplier
+    );
+    const crewBankShare = Math.round(scaledReward * 0.3);
+    const personalShare = scaledReward - crewBankShare;
+
+    const failChance = Math.max(
+      0.08,
+      0.32 -
+        Math.min(0.12, (crewSize - 1) * 0.02) +
+        roleBonus.failChanceDelta +
+        countryModifier.riskDelta
+    );
+    const success = Math.random() > failChance;
+
+    if (!success) {
+      await increasePlayerVehicleHeat(playerId, vehicleType, 7);
+      await activityService.logActivity(
+        playerId,
+        'VEHICLE_OPS_CREW',
+        `Crew op ${vehicleType} failed`,
+        {
+          success: false,
+          vehicleType,
+          roleCode: roleBonus.roleCode,
+          country: playerRow?.currentCountry ?? null,
+          modifierCode: countryModifier.modifierCode,
+        },
+        true
+      );
+      return {
+        success: false,
+        message: 'CREW_OP_FAILED',
+        cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+      };
+    }
+
+    const [updatedPlayer] = await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { increment: personalShare } },
+        select: { money: true },
+      }),
+      prisma.crew.update({
+        where: { id: crewMember.crewId },
+        data: { bankBalance: { increment: crewBankShare } },
+      }),
+    ]);
+    await increasePlayerVehicleHeat(playerId, vehicleType, 4);
+    await addVehicleOpsRep(playerId, vehicleType, 15);
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_CREW',
+      `Crew op ${vehicleType} success`,
+      {
+        success: true,
+        vehicleType,
+        personalShare,
+        crewBankShare,
+        roleCode: roleBonus.roleCode,
+        country: playerRow?.currentCountry ?? null,
+        modifierCode: countryModifier.modifierCode,
+      },
+      true
+    );
+
+    return {
+      success: true,
+      message: 'CREW_OP_SUCCESS',
+      personalShare,
+      crewBankShare,
+      roleCode: roleBonus.roleCode,
+      roleNameNl: roleBonus.roleNameNl,
+      roleNameEn: roleBonus.roleNameEn,
+      newMoney: updatedPlayer.money,
+      cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+      crewName: crewMember.crew.name,
+    };
+  },
+
+  async buyVehiclePartsFromOpsMarket(playerId: number, requestedType: string, quantity: number) {
+    const partsType = normalizeOpsVehicleType(requestedType);
+    const safeQuantity = Math.max(1, Math.min(100, Math.floor(quantity)));
+    const heatSnapshot = await getPlayerVehicleHeatSnapshot(playerId);
+    const prices = getPartsMarketPrices(new Date(), {
+      car: heatSnapshot.car,
+      motorcycle: heatSnapshot.motorcycle,
+      boat: heatSnapshot.boat,
+    });
+    const unitPrice = prices[partsType];
+    const totalCost = unitPrice * safeQuantity;
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { id: true, money: true, currentCountry: true },
+    });
+    if (!player) throw new Error('PLAYER_NOT_FOUND');
+    if ((player.money ?? 0) < totalCost) {
+      return {
+        success: false,
+        message: 'INSUFFICIENT_FUNDS',
+        unitPrice,
+        totalCost,
+      };
+    }
+
+    await ensurePlayerPartsRow(playerId);
+    const [updatedPlayer] = await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: {
+          money: { decrement: totalCost },
+        },
+        select: { money: true },
+      }),
+      (async () => {
+        if (partsType === 'boat') {
+          await prisma.$executeRaw`
+            UPDATE player_vehicle_parts
+            SET boat_parts = boat_parts + ${safeQuantity}
+            WHERE player_id = ${playerId}
+          `;
+        } else if (partsType === 'motorcycle') {
+          await prisma.$executeRaw`
+            UPDATE player_vehicle_parts
+            SET motorcycle_parts = motorcycle_parts + ${safeQuantity}
+            WHERE player_id = ${playerId}
+          `;
+        } else {
+          await prisma.$executeRaw`
+            UPDATE player_vehicle_parts
+            SET car_parts = car_parts + ${safeQuantity}
+            WHERE player_id = ${playerId}
+          `;
+        }
+      })(),
+    ]);
+
+    const parts = await getPlayerPartsInventory(playerId);
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_PARTS',
+      `Bought ${safeQuantity} ${partsType} parts`,
+      {
+        success: true,
+        vehicleType: partsType,
+        quantity: safeQuantity,
+        unitPrice,
+        totalCost,
+        country: player.currentCountry ?? null,
+      },
+      false
+    );
+    return {
+      success: true,
+      message: 'PARTS_PURCHASED',
+      unitPrice,
+      quantity: safeQuantity,
+      totalCost,
+      newMoney: updatedPlayer.money,
+      parts,
+      partsType,
+    };
+  },
+
+  async claimVehicleChopContract(playerId: number, requestedType: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const cooldownType = chopActionTypeForVehicle(vehicleType);
+    const cooldownRemainingSeconds = await checkCooldown(playerId, cooldownType);
+    if (cooldownRemainingSeconds > 0) {
+      return {
+        success: false,
+        message: 'CHOP_CONTRACT_COOLDOWN',
+        cooldownRemainingSeconds,
+      };
+    }
+
+    const contract = getChopContractForVehicleType(vehicleType, new Date());
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const blacklist = getRegionalBlacklistEvent(
+      vehicleType,
+      player?.currentCountry ?? '',
+      new Date()
+    );
+    if (blacklist.active) {
+      return {
+        success: false,
+        message: 'REGIONAL_BLACKLIST_ACTIVE',
+        reasonNl: blacklist.reasonNl,
+        reasonEn: blacklist.reasonEn,
+        endsAt: blacklist.endsAt,
+      };
+    }
+    const candidate = await prisma.vehicleInventory.findFirst({
+      where: {
+        playerId,
+        vehicleType,
+        marketListing: false,
+        transportStatus: null,
+        repairInProgress: false,
+        condition: {
+          gte: contract.minCondition,
+        },
+      },
+      orderBy: [{ condition: 'asc' }, { id: 'asc' }],
+    });
+
+    if (!candidate) {
+      return {
+        success: false,
+        message: 'NO_ELIGIBLE_VEHICLE',
+        minCondition: contract.minCondition,
+      };
+    }
+
+    await setCooldown(playerId, cooldownType);
+    const [updatedPlayer] = await prisma.$transaction([
+      prisma.vehicleInventory.delete({
+        where: { id: candidate.id },
+      }),
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { increment: contract.rewardMoney } },
+        select: { money: true },
+      }),
+    ]);
+
+    await increasePlayerVehicleHeat(playerId, vehicleType, 4);
+    await addVehicleOpsRep(playerId, vehicleType, 12);
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_CHOP',
+      `Claimed chop contract for ${vehicleType}`,
+      {
+        success: true,
+        vehicleType,
+        rewardMoney: contract.rewardMoney,
+        removedInventoryId: candidate.id,
+        country: player?.currentCountry ?? null,
+      },
+      true
+    );
+
+    return {
+      success: true,
+      message: 'CHOP_CONTRACT_CLAIMED',
+      rewardMoney: contract.rewardMoney,
+      removedInventoryId: candidate.id,
+      newMoney: updatedPlayer.money,
+      cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+    };
+  },
+
+  async purchaseContrabandInsurance(playerId: number, requestedType: string, tier: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const normalizedTier = (tier || '').toLowerCase() === 'pro' ? 'pro' : 'basic';
+    const price =
+      normalizedTier === 'pro'
+        ? vehicleType === 'boat'
+          ? 46000
+          : vehicleType === 'motorcycle'
+            ? 29000
+            : 36000
+        : vehicleType === 'boat'
+          ? 22000
+          : vehicleType === 'motorcycle'
+            ? 14000
+            : 17000;
+    const durationHours = normalizedTier === 'pro' ? 24 : 12;
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + durationHours * 60 * 60 * 1000);
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true, currentCountry: true },
+    });
+    if (!player) throw new Error('PLAYER_NOT_FOUND');
+    if ((player.money ?? 0) < price) {
+      return {
+        success: false,
+        message: 'INSUFFICIENT_FUNDS',
+        price,
+      };
+    }
+
+    await ensurePlayerVehicleOpsProfileRow(playerId);
+    const [updatedPlayer] = await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: price } },
+        select: { money: true },
+      }),
+      prisma.$executeRaw`
+        UPDATE player_vehicle_ops_profile
+        SET insurance_vehicle_type = ${vehicleType},
+            insurance_tier = ${normalizedTier},
+            insurance_expires_at = ${expiresAt}
+        WHERE player_id = ${playerId}
+      `,
+    ]);
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_INSURANCE',
+      `Purchased ${normalizedTier} insurance for ${vehicleType}`,
+      {
+        success: true,
+        vehicleType,
+        tier: normalizedTier,
+        price,
+        expiresAt: expiresAt.toISOString(),
+        country: player.currentCountry ?? null,
+      },
+      false
+    );
+
+    return {
+      success: true,
+      message: 'INSURANCE_PURCHASED',
+      price,
+      tier: normalizedTier,
+      vehicleType,
+      expiresAt: expiresAt.toISOString(),
+      newMoney: updatedPlayer.money,
+    };
+  },
+
+  async runVehicleCounterIntercept(playerId: number, requestedType: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const cooldownType = counterInterceptActionTypeForVehicle(vehicleType);
+    const cooldownRemainingSeconds = await checkCooldown(playerId, cooldownType);
+    if (cooldownRemainingSeconds > 0) {
+      return {
+        success: false,
+        message: 'COUNTER_INTERCEPT_COOLDOWN',
+        cooldownRemainingSeconds,
+      };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { id: true, currentCountry: true },
+    });
+    if (!player) throw new Error('PLAYER_NOT_FOUND');
+
+    const recentInterceptLogs = await prisma.playerActivity.findMany({
+      where: {
+        activityType: 'VEHICLE_OPS_INTERCEPT',
+        createdAt: {
+          gte: new Date(Date.now() - 48 * 60 * 60 * 1000),
+        },
+      },
+      select: {
+        playerId: true,
+        details: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 200,
+    });
+
+    let rivalTargetId: number | null = null;
+    for (const log of recentInterceptLogs) {
+      try {
+        const parsed =
+          typeof log.details === 'string'
+            ? ((JSON.parse(log.details || '{}') as Record<string, unknown>) ?? {})
+            : {};
+        const interceptedFrom = Number(parsed.interceptedFromPlayerId ?? 0);
+        const interceptedType = String(parsed.vehicleType ?? 'car');
+        if (
+          interceptedFrom === playerId &&
+          normalizeOpsVehicleType(interceptedType) === vehicleType
+        ) {
+          rivalTargetId = log.playerId;
+          break;
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    if (!rivalTargetId) {
+      return {
+        success: false,
+        message: 'NO_RECENT_INTERCEPT_TARGET',
+      };
+    }
+
+    await setCooldown(playerId, cooldownType);
+
+    const countryModifier = getCountryOpsModifiers(
+      player.currentCountry ?? '',
+      vehicleType,
+      new Date()
+    );
+    const successChance = Math.max(0.2, Math.min(0.82, 0.56 - countryModifier.riskDelta));
+    const success = Math.random() <= successChance;
+    if (!success) {
+      await increasePlayerVehicleHeat(playerId, vehicleType, 6);
+      await activityService.logActivity(
+        playerId,
+        'VEHICLE_OPS_COUNTER_INTERCEPT',
+        `Counter-intercept ${vehicleType} failed`,
+        {
+          success: false,
+          vehicleType,
+          rivalTargetId,
+          country: player.currentCountry ?? null,
+        },
+        true
+      );
+      return {
+        success: false,
+        message: 'COUNTER_INTERCEPT_FAILED',
+        cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+      };
+    }
+
+    const stolenBack = Math.round(
+      (vehicleType === 'boat' ? 36000 : vehicleType === 'motorcycle' ? 21000 : 28000) *
+        countryModifier.payoutMultiplier
+    );
+    const [updatedActor] = (await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { increment: stolenBack } },
+        select: { money: true },
+      }),
+      prisma.player.update({
+        where: { id: rivalTargetId },
+        data: { money: { decrement: Math.min(stolenBack, 25000) } },
+      }),
+    ])) as Array<{ money: number }>;
+
+    await increasePlayerVehicleHeat(playerId, vehicleType, 3);
+    await addVehicleOpsRep(playerId, vehicleType, 12);
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_COUNTER_INTERCEPT',
+      `Counter-intercept ${vehicleType} success`,
+      {
+        success: true,
+        vehicleType,
+        rivalTargetId,
+        rewardMoney: stolenBack,
+        country: player.currentCountry ?? null,
+      },
+      true
+    );
+
+    return {
+      success: true,
+      message: 'COUNTER_INTERCEPT_SUCCESS',
+      rivalTargetId,
+      rewardMoney: stolenBack,
+      newMoney: updatedActor.money,
+      cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+    };
+  },
+
+  async runVehicleCrewMatch(playerId: number, requestedType: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const cooldownType = crewMatchActionTypeForVehicle(vehicleType);
+    const cooldownRemainingSeconds = await checkCooldown(playerId, cooldownType);
+    if (cooldownRemainingSeconds > 0) {
+      return {
+        success: false,
+        message: 'CREW_MATCH_COOLDOWN',
+        cooldownRemainingSeconds,
+      };
+    }
+
+    const actorCrew = await prisma.crewMember.findUnique({
+      where: { playerId },
+      include: { crew: { include: { members: { select: { playerId: true } } } } },
+    });
+    if (!actorCrew?.crew) {
+      return {
+        success: false,
+        message: 'CREW_REQUIRED',
+      };
+    }
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const seasonKey = getVehicleOpsSeasonKey(new Date());
+    const actorStats = await getVehicleOpsSeasonStats(playerId, vehicleType, seasonKey);
+    const actorPoints = actorStats.points;
+
+    const candidates = await prisma.crewMember.findMany({
+      where: {
+        playerId: { not: playerId },
+      },
+      include: {
+        player: {
+          select: {
+            id: true,
+            username: true,
+            currentCountry: true,
+            isBanned: true,
+          },
+        },
+      },
+      take: 120,
+    });
+    const actorCrewId = actorCrew.crewId;
+    const eligible = candidates.filter(
+      (row) =>
+        row.crewId !== actorCrewId &&
+        row.player?.isBanned !== true &&
+        row.player?.currentCountry === (player?.currentCountry ?? null)
+    );
+    if (eligible.length === 0) {
+      return {
+        success: false,
+        message: 'NO_CREW_MATCH_OPPONENT',
+      };
+    }
+
+    const sampled = eligible[Math.floor(Math.random() * eligible.length)];
+    const rivalPlayerId = sampled.playerId;
+    const rivalName = sampled.player?.username ?? `Player ${rivalPlayerId}`;
+    const rivalStats = await getVehicleOpsSeasonStats(rivalPlayerId, vehicleType, seasonKey);
+
+    await setCooldown(playerId, cooldownType);
+    const countryModifier = getCountryOpsModifiers(
+      player?.currentCountry ?? '',
+      vehicleType,
+      new Date()
+    );
+    const diff = Math.max(-350, Math.min(350, rivalStats.points - actorPoints));
+    const baseChance = 0.5 + diff / 1600;
+    const successChance = Math.max(0.18, Math.min(0.84, baseChance - countryModifier.riskDelta));
+    const win = Math.random() <= successChance;
+
+    const winnerDelta = win ? 26 : -18;
+    const loserDelta = win ? -18 : 24;
+    await updateVehicleOpsSeasonStats(
+      playerId,
+      vehicleType,
+      seasonKey,
+      winnerDelta,
+      win ? 1 : 0,
+      win ? 0 : 1
+    );
+    await updateVehicleOpsSeasonStats(
+      rivalPlayerId,
+      vehicleType,
+      seasonKey,
+      loserDelta,
+      win ? 0 : 1,
+      win ? 1 : 0
+    );
+
+    const rewardMoney = win
+      ? Math.round(
+          (vehicleType === 'boat' ? 34000 : vehicleType === 'motorcycle' ? 19000 : 26000) *
+            countryModifier.payoutMultiplier
+        )
+      : Math.round(
+          (vehicleType === 'boat' ? 9000 : vehicleType === 'motorcycle' ? 6000 : 7500) *
+            countryModifier.payoutMultiplier
+        );
+    const updatedPlayer = await prisma.player.update({
+      where: { id: playerId },
+      data: { money: { increment: rewardMoney } },
+      select: { money: true },
+    });
+    await addVehicleOpsRep(playerId, vehicleType, win ? 16 : 8);
+    await increasePlayerVehicleHeat(playerId, vehicleType, win ? 4 : 6);
+
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_CREW_MATCH',
+      `Crew match ${vehicleType} ${win ? 'won' : 'lost'}`,
+      {
+        success: win,
+        vehicleType,
+        seasonKey,
+        rivalPlayerId,
+        rivalName,
+        rewardMoney,
+        country: player?.currentCountry ?? null,
+      },
+      true
+    );
+
+    return {
+      success: true,
+      message: win ? 'CREW_MATCH_WON' : 'CREW_MATCH_LOST',
+      seasonKey,
+      rivalPlayerId,
+      rivalName,
+      rewardMoney,
+      pointsDelta: winnerDelta,
+      newMoney: updatedPlayer.money,
+      cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+      leaderboard: await getVehicleOpsSeasonTop(vehicleType, seasonKey, 10),
+    };
+  },
+
+  async runVehicleOpsContract(playerId: number, requestedType: string, contractId?: string) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    const cooldownType = opsContractActionTypeForVehicle(vehicleType);
+    const cooldownRemainingSeconds = await checkCooldown(playerId, cooldownType);
+    if (cooldownRemainingSeconds > 0) {
+      return {
+        success: false,
+        message: 'OPS_CONTRACT_COOLDOWN',
+        cooldownRemainingSeconds,
+      };
+    }
+
+    const now = new Date();
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { currentCountry: true },
+    });
+    const profile = await getPlayerVehicleOpsProfile(playerId);
+    const repValue =
+      vehicleType === 'motorcycle'
+        ? profile.motorcycleRep
+        : vehicleType === 'boat'
+          ? profile.boatRep
+          : profile.carRep;
+    const repLevel = getVehicleOpsRepLevel(repValue);
+    const board = getVehicleOpsContractsBoard(
+      vehicleType,
+      now,
+      repLevel,
+      player?.currentCountry ?? ''
+    );
+    const contract = board.find((item) => item.contractId === contractId) ?? board[0];
+    if (!contract) {
+      return {
+        success: false,
+        message: 'NO_CONTRACT_AVAILABLE',
+      };
+    }
+    if (repLevel < contract.minRepLevel) {
+      return {
+        success: false,
+        message: 'OPS_CONTRACT_REP_REQUIRED',
+        minRepLevel: contract.minRepLevel,
+      };
+    }
+
+    const countryModifier = getCountryOpsModifiers(player?.currentCountry ?? '', vehicleType, now);
+    const failChance = Math.max(
+      0.06,
+      Math.min(0.92, contract.failChance + countryModifier.riskDelta)
+    );
+    const success = Math.random() > failChance;
+    await setCooldown(playerId, cooldownType);
+
+    if (!success) {
+      await increasePlayerVehicleHeat(
+        playerId,
+        vehicleType,
+        contract.tier === 'legendary' ? 11 : 8
+      );
+      await activityService.logActivity(
+        playerId,
+        'VEHICLE_OPS_CONTRACT',
+        `Ops contract ${contract.contractId} failed`,
+        {
+          success: false,
+          vehicleType,
+          contractId: contract.contractId,
+          tier: contract.tier,
+          country: player?.currentCountry ?? null,
+        },
+        true
+      );
+      return {
+        success: false,
+        message: 'OPS_CONTRACT_FAILED',
+        contractId: contract.contractId,
+        cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+      };
+    }
+
+    const rewardMoney = Math.round(contract.rewardMoney * countryModifier.payoutMultiplier);
+    const updatedPlayer = await prisma.player.update({
+      where: { id: playerId },
+      data: { money: { increment: rewardMoney } },
+      select: { money: true },
+    });
+    await addVehicleOpsRep(
+      playerId,
+      vehicleType,
+      contract.tier === 'legendary' ? 30 : contract.tier === 'high_risk' ? 20 : 14
+    );
+    await increasePlayerVehicleHeat(playerId, vehicleType, contract.tier === 'legendary' ? 7 : 4);
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_CONTRACT',
+      `Ops contract ${contract.contractId} completed`,
+      {
+        success: true,
+        vehicleType,
+        contractId: contract.contractId,
+        tier: contract.tier,
+        rewardMoney,
+        country: player?.currentCountry ?? null,
+      },
+      true
+    );
+
+    return {
+      success: true,
+      message: 'OPS_CONTRACT_COMPLETED',
+      contractId: contract.contractId,
+      tier: contract.tier,
+      rewardMoney,
+      newMoney: updatedPlayer.money,
+      cooldownRemainingSeconds: await checkCooldown(playerId, cooldownType),
+    };
+  },
+
+  async resolveVehicleInsuranceClaim(
+    playerId: number,
+    requestedType: string,
+    claimId: number,
+    action: string
+  ) {
+    const vehicleType = normalizeOpsVehicleType(requestedType);
+    await ensureVehicleOpsInsuranceClaimsTable();
+    const rows = await prisma.$queryRaw<VehicleOpsInsuranceClaimRow[]>`
+      SELECT id, player_id, vehicle_type, claim_type, status, payout_amount, risk_score, context_json, created_at, updated_at
+      FROM player_vehicle_ops_insurance_claims
+      WHERE id = ${claimId}
+        AND player_id = ${playerId}
+        AND vehicle_type = ${vehicleType}
+      LIMIT 1
+    `;
+    const claim = rows[0];
+    if (!claim) {
+      return {
+        success: false,
+        message: 'CLAIM_NOT_FOUND',
+      };
+    }
+    if (claim.status !== 'REVIEW') {
+      return {
+        success: false,
+        message: 'CLAIM_ALREADY_RESOLVED',
+      };
+    }
+
+    const normalizedAction = (action || '').toLowerCase() === 'contest' ? 'contest' : 'accept';
+    if (normalizedAction === 'accept') {
+      await prisma.$executeRaw`
+        UPDATE player_vehicle_ops_insurance_claims
+        SET status = 'SETTLED'
+        WHERE id = ${claimId}
+      `;
+      return {
+        success: true,
+        message: 'CLAIM_SETTLED',
+      };
+    }
+
+    const riskScore = Number(claim.risk_score ?? 0);
+    const winChance = Math.max(0.15, Math.min(0.75, 0.62 - riskScore / 220));
+    const won = Math.random() <= winChance;
+    const payoutAmount = Number(claim.payout_amount ?? 0);
+    const bonus = won ? Math.round(payoutAmount * 0.2) : 0;
+    const fine = won ? 0 : Math.round(Math.min(payoutAmount * 0.12, 15000));
+
+    await prisma.$transaction([
+      prisma.$executeRaw`
+        UPDATE player_vehicle_ops_insurance_claims
+        SET status = ${won ? 'APPROVED' : 'REJECTED'}
+        WHERE id = ${claimId}
+      `,
+      prisma.player.update({
+        where: { id: playerId },
+        data: {
+          money: won ? { increment: bonus } : { decrement: fine },
+        },
+      }),
+    ]);
+
+    await activityService.logActivity(
+      playerId,
+      'VEHICLE_OPS_INSURANCE_DISPUTE',
+      `Insurance dispute ${won ? 'approved' : 'rejected'} (${vehicleType})`,
+      {
+        success: won,
+        vehicleType,
+        claimId,
+        bonus,
+        fine,
+      },
+      false
+    );
+
+    return {
+      success: true,
+      message: won ? 'CLAIM_CONTEST_APPROVED' : 'CLAIM_CONTEST_REJECTED',
+      bonus,
+      fine,
+    };
   },
 
   /**
@@ -855,7 +3232,7 @@ export const vehicleService = {
     sessionWindowMinutes?: number;
   }> {
     console.log(`\n====== [STEAL FUNCTION START] vehicleId="${vehicleId}" ======`);
-    
+
     // Get player data
     const player = await prisma.player.findUnique({
       where: { id: playerId },
@@ -892,13 +3269,17 @@ export const vehicleService = {
     // Determine vehicle type - simple and unambiguous
     const carMatch = vehiclesData.cars.find((c: any) => c.id === vehicleId);
     const boatMatch = vehiclesData.boats.find((b: any) => b.id === vehicleId);
-    const motorcycleMatch = (((vehiclesData as any).motorcycles ?? []) as any[]).find((m: any) => m.id === vehicleId);
-    
-    console.log(`[DETECT] carMatch: ${carMatch ? carMatch.name : 'NO'}, boatMatch: ${boatMatch ? boatMatch.name : 'NO'}`);
-    
+    const motorcycleMatch = (((vehiclesData as any).motorcycles ?? []) as any[]).find(
+      (m: any) => m.id === vehicleId
+    );
+
+    console.log(
+      `[DETECT] carMatch: ${carMatch ? carMatch.name : 'NO'}, boatMatch: ${boatMatch ? boatMatch.name : 'NO'}`
+    );
+
     let vehicleType: 'car' | 'boat' | 'motorcycle';
     let vehicleDef: any;
-    
+
     if (carMatch && !boatMatch && !motorcycleMatch) {
       vehicleType = 'car';
       vehicleDef = carMatch;
@@ -936,29 +3317,52 @@ export const vehicleService = {
       }
     }
 
+    const regionalBlacklist = getRegionalBlacklistEvent(
+      vehicleType,
+      player.currentCountry ?? '',
+      new Date()
+    );
+    if (regionalBlacklist.active) {
+      return {
+        success: false,
+        message: regionalBlacklist.reasonNl ?? 'Regionale blokkade actief voor dit voertuigtype.',
+      };
+    }
+
+    const opsProfile = await getPlayerVehicleOpsProfile(playerId);
+    const opsRepValue =
+      vehicleType === 'motorcycle'
+        ? opsProfile.motorcycleRep
+        : vehicleType === 'boat'
+          ? opsProfile.boatRep
+          : opsProfile.carRep;
+    const opsRepLevel = getVehicleOpsRepLevel(opsRepValue);
+    const theftRepBonus = opsRepLevel >= 4 ? 0.04 : 0;
+    const theftInsuranceActive =
+      opsProfile.insuranceVehicleType === vehicleType &&
+      opsProfile.insuranceExpiresAt != null &&
+      opsProfile.insuranceExpiresAt.getTime() > Date.now();
+    const theftInsuranceCoverage =
+      theftInsuranceActive && opsProfile.insuranceTier === 'pro'
+        ? 0.25
+        : theftInsuranceActive
+          ? 0.15
+          : 0;
+
     const logVehicleTheftActivity = async (
       description: string,
-      details: Record<string, unknown>,
+      details: Record<string, unknown>
     ) => {
       try {
-        await activityService.logActivity(
-          playerId,
-          'VEHICLE_THEFT',
-          description,
-          details,
-          true,
-        );
+        await activityService.logActivity(playerId, 'VEHICLE_THEFT', description, details, true);
       } catch (error) {
         console.error('[VehicleService] Failed to log vehicle theft activity', error);
       }
     };
 
-    const applyVehicleArrest = async (
-      jailTime: number,
-      confiscatedInventoryId?: number,
-    ) => {
+    const applyVehicleArrest = async (jailTime: number, confiscatedInventoryId?: number) => {
       const now = new Date();
-      const jailReleaseTime = new Date(now.getTime() + (jailTime * 60 * 1000));
+      const jailReleaseTime = new Date(now.getTime() + jailTime * 60 * 1000);
 
       await prisma.$transaction(async (tx) => {
         if (confiscatedInventoryId != null) {
@@ -1001,7 +3405,7 @@ export const vehicleService = {
           jailTime,
           jailedUntil: jailReleaseTime.toISOString(),
         },
-        true,
+        true
       );
 
       void notificationService.sendArrestAwaitingHelpNotifications(
@@ -1016,7 +3420,7 @@ export const vehicleService = {
     if (vehicleType === 'car' && player.rank < 5) {
       return {
         success: false,
-        message: 'Je moet minimaal rank 5 zijn om auto\'s te stelen',
+        message: "Je moet minimaal rank 5 zijn om auto's te stelen",
       };
     }
 
@@ -1035,13 +3439,17 @@ export const vehicleService = {
     }
 
     // Check cooldown
-    const cooldownType = vehicleType === 'car'
-      ? 'vehicle_theft'
-      : (vehicleType === 'boat' ? 'boat_theft' : 'motorcycle_theft');
+    const cooldownType =
+      vehicleType === 'car'
+        ? 'vehicle_theft'
+        : vehicleType === 'boat'
+          ? 'boat_theft'
+          : 'motorcycle_theft';
     const cooldownRemaining = await checkCooldown(playerId, cooldownType);
     if (cooldownRemaining > 0) {
       const minutes = Math.ceil(cooldownRemaining / 60);
-      const vehicleTypeName = vehicleType === 'car' ? 'auto' : (vehicleType === 'boat' ? 'boot' : 'motor');
+      const vehicleTypeName =
+        vehicleType === 'car' ? 'auto' : vehicleType === 'boat' ? 'boot' : 'motor';
       return {
         success: false,
         message: `Je moet nog ${minutes} minuten wachten voordat je weer een ${vehicleTypeName} kunt stelen`,
@@ -1051,7 +3459,7 @@ export const vehicleService = {
 
     const diminishingContext = await economyBalanceService.getDiminishingContext(
       playerId,
-      'vehicle_theft',
+      'vehicle_theft'
     );
     const sessionPayoutMultiplier = diminishingContext.multiplier;
 
@@ -1093,20 +3501,26 @@ export const vehicleService = {
       }
 
       const capacityBonus = garage.upgrades[0]?.capacityBonus || 0;
-      const totalCapacity = garage.capacity + capacityBonus;
+      const carTotalCapacity = garage.capacity + capacityBonus;
+      const { motorcycleTotalCapacity } = getGarageCapacities(carTotalCapacity);
 
-      const currentCars = await prisma.vehicleInventory.count({
+      const currentVehicleCountForType = await prisma.vehicleInventory.count({
         where: {
           playerId,
           currentLocation: player.currentCountry!,
-          vehicleType: { in: ['car', 'motorcycle'] },
+          vehicleType,
         },
       });
 
-      if (currentCars >= totalCapacity) {
+      const selectedTotalCapacity =
+        vehicleType === 'motorcycle' ? motorcycleTotalCapacity : carTotalCapacity;
+
+      if (currentVehicleCountForType >= selectedTotalCapacity) {
+        const storageLabel = vehicleType === 'motorcycle' ? 'motorstalling' : 'garage';
+        const typeLabel = vehicleType === 'motorcycle' ? 'motor' : 'auto';
         return {
           success: false,
-          message: `Je garage is vol! Capaciteit: ${currentCars}/${totalCapacity}`,
+          message: `Je ${storageLabel} is vol voor ${typeLabel}s! Capaciteit: ${currentVehicleCountForType}/${selectedTotalCapacity}`,
         };
       }
     } else {
@@ -1153,25 +3567,25 @@ export const vehicleService = {
     // Calculate success chance based on vehicle rarity/price
     // Cheaper vehicles = easier to steal, expensive vehicles = harder
     let successChance = 0.7; // Base 70% for average vehicles
-    
+
     if (vehicleDef.baseValue < 10000) {
       // Very cheap vehicles (< €10k): 75-85% success
       successChance = 0.75 + Math.random() * 0.1;
     } else if (vehicleDef.baseValue < 30000) {
       // Cheap vehicles (€10k-30k): 60-75% success
-      successChance = 0.60 + Math.random() * 0.15;
+      successChance = 0.6 + Math.random() * 0.15;
     } else if (vehicleDef.baseValue < 75000) {
       // Mid-range vehicles (€30k-75k): 45-60% success
       successChance = 0.45 + Math.random() * 0.15;
     } else if (vehicleDef.baseValue < 150000) {
       // Expensive vehicles (€75k-150k): 30-45% success
-      successChance = 0.30 + Math.random() * 0.15;
+      successChance = 0.3 + Math.random() * 0.15;
     } else if (vehicleDef.baseValue < 300000) {
       // Very expensive vehicles (€150k-300k): 20-30% success
-      successChance = 0.20 + Math.random() * 0.10;
+      successChance = 0.2 + Math.random() * 0.1;
     } else if (vehicleDef.baseValue < 500000) {
       // Ultra rare supercars (€300k-500k): 10-18% success
-      successChance = 0.10 + Math.random() * 0.08;
+      successChance = 0.1 + Math.random() * 0.08;
     } else if (vehicleDef.baseValue < 700000) {
       // Exotic supercars (€500k-700k): 5-10% success
       successChance = 0.05 + Math.random() * 0.05;
@@ -1185,21 +3599,57 @@ export const vehicleService = {
       // Legendary vehicles (€2M+): 0.1-1.5% success
       successChance = 0.001 + Math.random() * 0.014;
     }
-    
+
     // Small rank bonus (max +10%)
-    const rankBonus = Math.min(0.10, player.rank * 0.005);
+    const rankBonus = Math.min(0.1, player.rank * 0.005);
     successChance = Math.min(0.95, successChance + rankBonus);
+
+    // Per-category heat and dynamic police patterns make repeated activity riskier.
+    const heatSnapshot = await getPlayerVehicleHeatSnapshot(playerId);
+    const selectedHeat =
+      vehicleType === 'motorcycle'
+        ? heatSnapshot.motorcycle
+        : vehicleType === 'boat'
+          ? heatSnapshot.boat
+          : heatSnapshot.car;
+    const policePattern = getDynamicPolicePatternForTime(new Date());
+    const heatPenalty = getHeatSuccessPenalty(selectedHeat);
+    const patternPenalty = Math.max(
+      0,
+      (policePattern.riskMultiplierByType[vehicleType] - 1) * 0.18
+    );
+    successChance = Math.max(0.01, successChance - heatPenalty - patternPenalty + theftRepBonus);
 
     const success = Math.random() < successChance;
 
     if (!success) {
+      await increasePlayerVehicleHeat(playerId, vehicleType, 7);
+      const insurancePayout =
+        theftInsuranceCoverage > 0
+          ? Math.round((vehicleDef.baseValue as number) * theftInsuranceCoverage * 0.18)
+          : 0;
+      if (insurancePayout > 0) {
+        await createVehicleInsuranceClaim({
+          playerId,
+          vehicleType,
+          claimType: 'THEFT_FAIL',
+          payoutAmount: insurancePayout,
+          riskScore: Math.round((1 - successChance) * 100),
+          context: {
+            country: player.currentCountry ?? null,
+            vehicleId,
+            vehicleName: vehicleDef.name,
+          },
+        });
+      }
       // Failed steal - increase wanted level
       const updatedPlayer = await prisma.player.update({
         where: { id: playerId },
         data: {
+          money: insurancePayout > 0 ? { increment: insurancePayout } : undefined,
           wantedLevel: Math.min(5, (player.wantedLevel || 0) + 1),
         },
-        select: { wantedLevel: true },
+        select: { wantedLevel: true, money: true },
       });
 
       // Set cooldown even on failed theft
@@ -1207,15 +3657,11 @@ export const vehicleService = {
 
       // Check if player gets arrested after failed steal
       const arrestResult = await checkArrest(playerId);
-      
+
       if (arrestResult.arrested) {
         await applyVehicleArrest(arrestResult.jailTime!);
 
-        const newReputation = await applyReputationAction(
-          playerId,
-          'vehicle_theft_arrest',
-          false,
-        );
+        const newReputation = await applyReputationAction(playerId, 'vehicle_theft_arrest', false);
 
         await logVehicleTheftActivity(
           `Mislukte voertuigdiefstal: opgepakt tijdens poging (${vehicleDef.name})`,
@@ -1227,7 +3673,7 @@ export const vehicleService = {
             arrested: true,
             jailTime: arrestResult.jailTime,
             bail: arrestResult.bail,
-          },
+          }
         );
 
         return {
@@ -1241,11 +3687,7 @@ export const vehicleService = {
         };
       }
 
-      const newReputation = await applyReputationAction(
-        playerId,
-        'vehicle_theft',
-        false,
-      );
+      const newReputation = await applyReputationAction(playerId, 'vehicle_theft', false);
 
       await logVehicleTheftActivity(
         `Mislukte voertuigdiefstal: gesnapt tijdens poging (${vehicleDef.name})`,
@@ -1256,12 +3698,28 @@ export const vehicleService = {
           success: false,
           arrested: false,
           wantedLevel: updatedPlayer.wantedLevel,
+        }
+      );
+      await activityService.logActivity(
+        playerId,
+        'VEHICLE_OPS_THEFT',
+        `Vehicle theft ${vehicleType} failed`,
+        {
+          success: false,
+          vehicleType,
+          insurancePayout,
+          opsRepLevel,
+          country: player.currentCountry ?? null,
         },
+        true
       );
 
       return {
         success: false,
-        message: 'Je werd gesnapt tijdens de poging! Wanted level verhoogd.',
+        message:
+          insurancePayout > 0
+            ? `Je werd gesnapt tijdens de poging! Wanted level verhoogd. Insurance payout: €${insurancePayout}.`
+            : 'Je werd gesnapt tijdens de poging! Wanted level verhoogd.',
         arrested: false,
         wantedLevel: updatedPlayer.wantedLevel,
         reputation: newReputation,
@@ -1283,6 +3741,7 @@ export const vehicleService = {
     });
 
     // Small wanted level increase even on success
+    await increasePlayerVehicleHeat(playerId, vehicleType, 4);
     const postSuccessPlayer = await prisma.player.update({
       where: { id: playerId },
       data: {
@@ -1296,7 +3755,7 @@ export const vehicleService = {
 
     // Check if player gets arrested even after successful steal (lower chance)
     const arrestResult = await checkArrest(playerId);
-    
+
     if (arrestResult.arrested) {
       // Player got arrested during the getaway, so the stolen vehicle is seized.
       await applyVehicleArrest(arrestResult.jailTime!, stolenVehicle.id);
@@ -1304,7 +3763,7 @@ export const vehicleService = {
       const postArrestReputation = await applyReputationAction(
         playerId,
         'vehicle_theft_arrest',
-        false,
+        false
       );
 
       await logVehicleTheftActivity(
@@ -1318,7 +3777,7 @@ export const vehicleService = {
           vehicleConfiscated: true,
           jailTime: arrestResult.jailTime,
           bail: arrestResult.bail,
-        },
+        }
       );
 
       return {
@@ -1338,7 +3797,7 @@ export const vehicleService = {
     const theftXpGained = economyBalanceService.applySoftDiminishing(
       baseTheftXp,
       sessionPayoutMultiplier,
-      4,
+      4
     );
 
     const xpUpdate = await prisma.player.update({
@@ -1363,30 +3822,36 @@ export const vehicleService = {
       newRank = rankUpdate.rank;
     }
 
-    const newReputation = await applyReputationAction(
+    const newReputation = await applyReputationAction(playerId, 'vehicle_theft', true);
+    await addVehicleOpsRep(playerId, vehicleType, 9);
+    await activityService.logActivity(
       playerId,
-      'vehicle_theft',
-      true,
+      'VEHICLE_OPS_THEFT',
+      `Vehicle theft ${vehicleType} success`,
+      {
+        success: true,
+        vehicleType,
+        opsRepLevel,
+        country: player.currentCountry ?? null,
+      },
+      true
     );
 
-    const newlyUnlockedAchievements = (
-      await checkAndUnlockAchievements(playerId)
-    ).map(({ achievement }) => serializeAchievementForClient(achievement));
+    const newlyUnlockedAchievements = (await checkAndUnlockAchievements(playerId)).map(
+      ({ achievement }) => serializeAchievementForClient(achievement)
+    );
 
-    await logVehicleTheftActivity(
-      `Succesvolle voertuigdiefstal: ${vehicleDef.name}`,
-        {
-          vehicleId,
-          vehicleName: vehicleDef.name,
-          vehicleType,
-          success: true,
-          xpGained: theftXpGained,
-          baseXpGained: baseTheftXp,
-          sessionPayoutMultiplier,
-          newXp: xpUpdate.xp,
-          newRank,
-        },
-      );
+    await logVehicleTheftActivity(`Succesvolle voertuigdiefstal: ${vehicleDef.name}`, {
+      vehicleId,
+      vehicleName: vehicleDef.name,
+      vehicleType,
+      success: true,
+      xpGained: theftXpGained,
+      baseXpGained: baseTheftXp,
+      sessionPayoutMultiplier,
+      newXp: xpUpdate.xp,
+      newRank,
+    });
 
     return {
       success: true,
@@ -1424,7 +3889,10 @@ export const vehicleService = {
 
     let tuningMap = new Map<number, { speed: number; stealth: number; armor: number }>();
     try {
-      tuningMap = await getVehicleTuningMap(playerId, inventory.map((item) => item.id));
+      tuningMap = await getVehicleTuningMap(
+        playerId,
+        inventory.map((item) => item.id)
+      );
     } catch (error) {
       // Keep inventory endpoint functional even if tuning metadata query fails.
       console.error('[VehicleService] getPlayerInventory tuningMap failed:', error);
@@ -1435,7 +3903,9 @@ export const vehicleService = {
       const definition = this.getVehicleById(item.vehicleId);
       const repairJob = activeRepairJobs.get(item.id);
       const tuningLevels = tuningMap.get(item.id) ?? { speed: 0, stealth: 0, armor: 0 };
-      const tunedStats = definition?.stats ? getTunedStats(definition.stats, tuningLevels) : undefined;
+      const tunedStats = definition?.stats
+        ? getTunedStats(definition.stats, tuningLevels)
+        : undefined;
       const tunedDefinition = definition
         ? {
             ...definition,
@@ -1676,10 +4146,12 @@ export const vehicleService = {
     }
 
     const conditionMultiplier = Math.max(0.1, (inventoryItem.condition || 0) / 100);
-    const chopShopMultiplier = 1 + Math.min(0.20, facilityUpgradeLevel * 0.02);
+    const chopShopMultiplier = 1 + Math.min(0.2, facilityUpgradeLevel * 0.02);
     const tuningLevels = await getVehicleTuningLevels(playerId, inventoryId);
     const tuneMultiplier = getTuneValueMultiplier(tuningLevels);
-    const scrapPrice = Math.floor(baseValue * 0.35 * conditionMultiplier * chopShopMultiplier * tuneMultiplier);
+    const scrapPrice = Math.floor(
+      baseValue * 0.35 * conditionMultiplier * chopShopMultiplier * tuneMultiplier
+    );
     const partsGained = vehicleDef
       ? calculatePartsYield(vehicleDef, inventoryItem.condition ?? 100)
       : calculateLegacyPartsYield(vehicleType, inventoryItem.condition ?? 100, baseValue);
@@ -1787,8 +4259,7 @@ export const vehicleService = {
       const meetsSpeed = !requirements.minSpeed || def.stats.speed >= requirements.minSpeed;
       const meetsArmor = !requirements.minArmor || def.stats.armor >= requirements.minArmor;
       const meetsCargo = !requirements.minCargo || def.stats.cargo >= requirements.minCargo;
-      const meetsStealth =
-        !requirements.minStealth || def.stats.stealth >= requirements.minStealth;
+      const meetsStealth = !requirements.minStealth || def.stats.stealth >= requirements.minStealth;
 
       return meetsSpeed && meetsArmor && meetsCargo && meetsStealth;
     });
@@ -1903,13 +4374,14 @@ export const vehicleService = {
     // Calculate new fuel as percentage
     const newFuelLiters = currentFuelLiters + actualFuelToAdd;
     const newFuelPercentage = (newFuelLiters / vehicleDef.fuelCapacity) * 100;
-    
-    // If we're filling up with the full tank amount, ensure fuel is exactly 100%
-    const finalFuelPercentage = actualFuelToAdd >= maxFuelToAdd 
-      ? 100 
-      : Math.min(100, Math.round(newFuelPercentage));
 
-    console.log(`[Refuel] Vehicle ${vehicleId}: ${fuelPercentage}% + ${actualFuelToAdd}L = ${finalFuelPercentage}% (capacity: ${vehicleDef.fuelCapacity}L)`);
+    // If we're filling up with the full tank amount, ensure fuel is exactly 100%
+    const finalFuelPercentage =
+      actualFuelToAdd >= maxFuelToAdd ? 100 : Math.min(100, Math.round(newFuelPercentage));
+
+    console.log(
+      `[Refuel] Vehicle ${vehicleId}: ${fuelPercentage}% + ${actualFuelToAdd}L = ${finalFuelPercentage}% (capacity: ${vehicleDef.fuelCapacity}L)`
+    );
 
     // Update vehicle fuel and player money
     const [updatedVehicle, updatedPlayer] = await prisma.$transaction([
@@ -2036,7 +4508,7 @@ export const vehicleService = {
     }
 
     const baseRepairSeconds = repairDurationSecondsForVehicle(vehicleDef, currentCondition);
-    const reductionFactor = Math.max(0.65, 1 - (facilityUpgradeLevel * 0.04));
+    const reductionFactor = Math.max(0.65, 1 - facilityUpgradeLevel * 0.04);
     const repairDurationSeconds = Math.max(5 * 60, Math.round(baseRepairSeconds * reductionFactor));
     const repairCompletesAt = new Date(Date.now() + repairDurationSeconds * 1000);
 
@@ -2111,7 +4583,10 @@ export const vehicleService = {
     });
     const activeRepairJobs = await getActiveRepairJobs(playerId);
 
-    const tuningMap = await getVehicleTuningMap(playerId, inventory.map((item) => item.id));
+    const tuningMap = await getVehicleTuningMap(
+      playerId,
+      inventory.map((item) => item.id)
+    );
 
     const vehicles = inventory
       .map((item) => {
@@ -2119,33 +4594,72 @@ export const vehicleService = {
         if (!definition) return null;
 
         const vehicleType = normalizeVehicleType(item.vehicleType);
-        const tuningState = tuningMap.get(item.id) ?? { speed: 0, stealth: 0, armor: 0, tuneCooldownUntil: null };
-        const levels = { speed: tuningState.speed, stealth: tuningState.stealth, armor: tuningState.armor };
+        const tuningState = tuningMap.get(item.id) ?? {
+          speed: 0,
+          stealth: 0,
+          armor: 0,
+          tuneCooldownUntil: null,
+        };
+        const levels = {
+          speed: tuningState.speed,
+          stealth: tuningState.stealth,
+          armor: tuningState.armor,
+        };
         const tunedStats = getTunedStats(definition.stats, levels);
         const tunedValueMultiplier = getTuneValueMultiplier(levels);
-        const estimatedValue = Math.floor(definition.baseValue * (item.condition / 100) * tunedValueMultiplier);
+        const estimatedValue = Math.floor(
+          definition.baseValue * (item.condition / 100) * tunedValueMultiplier
+        );
         const repairJob = activeRepairJobs.get(item.id);
-        const tuneCooldownRemainingSeconds = getTuneCooldownRemainingSeconds(tuningState.tuneCooldownUntil);
-        const locked = Boolean(item.transportStatus) || Boolean(repairJob) || tuneCooldownRemainingSeconds > 0;
+        const tuneCooldownRemainingSeconds = getTuneCooldownRemainingSeconds(
+          tuningState.tuneCooldownUntil
+        );
+        const locked =
+          Boolean(item.transportStatus) || Boolean(repairJob) || tuneCooldownRemainingSeconds > 0;
         const lockReason = item.transportStatus
           ? 'VEHICLE_IN_TRANSIT'
-          : (repairJob ? 'VEHICLE_REPAIR_IN_PROGRESS' : (tuneCooldownRemainingSeconds > 0 ? 'TUNE_COOLDOWN_ACTIVE' : null));
+          : repairJob
+            ? 'VEHICLE_REPAIR_IN_PROGRESS'
+            : tuneCooldownRemainingSeconds > 0
+              ? 'TUNE_COOLDOWN_ACTIVE'
+              : null;
         const conditionImage =
           item.condition >= 100
-            ? (definition.imageNew || definition.imageDirty || definition.imageDamaged || definition.image)
+            ? definition.imageNew ||
+              definition.imageDirty ||
+              definition.imageDamaged ||
+              definition.image
             : item.condition >= 70
-                ? (definition.imageDirty || definition.imageNew || definition.imageDamaged || definition.image)
-                : (definition.imageDamaged || definition.imageDirty || definition.imageNew || definition.image);
+              ? definition.imageDirty ||
+                definition.imageNew ||
+                definition.imageDamaged ||
+                definition.image
+              : definition.imageDamaged ||
+                definition.imageDirty ||
+                definition.imageNew ||
+                definition.image;
 
-        const speedCost = levels.speed >= TUNE_MAX_LEVEL
-          ? { nextLevel: TUNE_MAX_LEVEL, partsCost: 0, moneyCost: 0, maxed: true }
-          : { ...getTuneUpgradeCost(definition, vehicleType, 'speed', levels.speed), maxed: false };
-        const stealthCost = levels.stealth >= TUNE_MAX_LEVEL
-          ? { nextLevel: TUNE_MAX_LEVEL, partsCost: 0, moneyCost: 0, maxed: true }
-          : { ...getTuneUpgradeCost(definition, vehicleType, 'stealth', levels.stealth), maxed: false };
-        const armorCost = levels.armor >= TUNE_MAX_LEVEL
-          ? { nextLevel: TUNE_MAX_LEVEL, partsCost: 0, moneyCost: 0, maxed: true }
-          : { ...getTuneUpgradeCost(definition, vehicleType, 'armor', levels.armor), maxed: false };
+        const speedCost =
+          levels.speed >= TUNE_MAX_LEVEL
+            ? { nextLevel: TUNE_MAX_LEVEL, partsCost: 0, moneyCost: 0, maxed: true }
+            : {
+                ...getTuneUpgradeCost(definition, vehicleType, 'speed', levels.speed),
+                maxed: false,
+              };
+        const stealthCost =
+          levels.stealth >= TUNE_MAX_LEVEL
+            ? { nextLevel: TUNE_MAX_LEVEL, partsCost: 0, moneyCost: 0, maxed: true }
+            : {
+                ...getTuneUpgradeCost(definition, vehicleType, 'stealth', levels.stealth),
+                maxed: false,
+              };
+        const armorCost =
+          levels.armor >= TUNE_MAX_LEVEL
+            ? { nextLevel: TUNE_MAX_LEVEL, partsCost: 0, moneyCost: 0, maxed: true }
+            : {
+                ...getTuneUpgradeCost(definition, vehicleType, 'armor', levels.armor),
+                maxed: false,
+              };
 
         return {
           inventoryId: item.id,
@@ -2194,14 +4708,19 @@ export const vehicleService = {
     if (!inventoryItem) throw new Error('VEHICLE_NOT_FOUND');
     if (inventoryItem.playerId !== playerId) throw new Error('NOT_OWNER');
     if (inventoryItem.transportStatus) throw new Error('VEHICLE_IN_TRANSIT');
-    if (await hasRepairInProgress(playerId, inventoryId)) throw new Error('VEHICLE_REPAIR_IN_PROGRESS');
+    if (await hasRepairInProgress(playerId, inventoryId))
+      throw new Error('VEHICLE_REPAIR_IN_PROGRESS');
 
     const vehicleDef = this.getVehicleById(inventoryItem.vehicleId);
     if (!vehicleDef) throw new Error('INVALID_VEHICLE');
 
     const vehicleType = normalizeVehicleType(inventoryItem.vehicleType);
-    const tuningState = (await getVehicleTuningMap(playerId, [inventoryId])).get(inventoryId)
-      ?? { speed: 0, stealth: 0, armor: 0, tuneCooldownUntil: null };
+    const tuningState = (await getVehicleTuningMap(playerId, [inventoryId])).get(inventoryId) ?? {
+      speed: 0,
+      stealth: 0,
+      armor: 0,
+      tuneCooldownUntil: null,
+    };
     const cooldownRemainingSeconds = getTuneCooldownRemainingSeconds(tuningState.tuneCooldownUntil);
     if (cooldownRemainingSeconds > 0) {
       throw new Error(`TUNE_COOLDOWN_ACTIVE:${cooldownRemainingSeconds}`);
@@ -2321,7 +4840,10 @@ export const vehicleService = {
 
     const newLevels = await getVehicleTuningLevels(playerId, inventoryId);
     const partsAfter = await getPlayerPartsInventory(playerId);
-    const updatedPlayer = await prisma.player.findUnique({ where: { id: playerId }, select: { money: true } });
+    const updatedPlayer = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
 
     return {
       newMoney: updatedPlayer?.money ?? 0,

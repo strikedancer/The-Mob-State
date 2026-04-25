@@ -356,6 +356,237 @@ router.get('/available/:country', authenticate, async (req: AuthRequest, res: Re
 });
 
 /**
+ * GET /vehicles/ops/intelligence
+ * Vehicle Ops intelligence panel for hotspot, parts market, crew op, heat and chop contracts.
+ */
+router.get('/ops/intelligence', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = req.query.vehicleType?.toString() ?? 'car';
+    const intelligence = await vehicleService.getVehicleOpsIntelligence(
+      req.player!.id,
+      vehicleType
+    );
+    return res.status(200).json({
+      event: 'vehicles.ops.intelligence',
+      params: { vehicleType: intelligence.vehicleType },
+      intelligence,
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/hotspot-run', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+    const result = await vehicleService.runVehicleHotspotOp(req.player!.id, vehicleType);
+    return res.status(200).json({
+      event: result.success ? 'vehicles.ops.hotspot.success' : 'vehicles.ops.hotspot.failed',
+      params: result,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
+      return res.status(404).json({
+        event: 'vehicles.error',
+        params: { reason: 'PLAYER_NOT_FOUND' },
+      });
+    }
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/crew-run', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+    const result = await vehicleService.runVehicleCrewOp(req.player!.id, vehicleType);
+    return res.status(200).json({
+      event: result.success ? 'vehicles.ops.crew.success' : 'vehicles.ops.crew.failed',
+      params: result,
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/parts/buy', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const partsType = (req.body?.partsType as string | undefined) ?? 'car';
+    const quantity = Number(req.body?.quantity ?? 1);
+    const result = await vehicleService.buyVehiclePartsFromOpsMarket(
+      req.player!.id,
+      partsType,
+      quantity
+    );
+    return res.status(200).json({
+      event: result.success ? 'vehicles.ops.parts.purchased' : 'vehicles.ops.parts.failed',
+      params: result,
+      parts: result.success ? result.parts : undefined,
+      player: result.success ? { money: result.newMoney } : undefined,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
+      return res.status(404).json({
+        event: 'vehicles.error',
+        params: { reason: 'PLAYER_NOT_FOUND' },
+      });
+    }
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/chop-contract/claim', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+    const result = await vehicleService.claimVehicleChopContract(req.player!.id, vehicleType);
+    return res.status(200).json({
+      event: result.success
+        ? 'vehicles.ops.chop_contract.claimed'
+        : 'vehicles.ops.chop_contract.failed',
+      params: result,
+      player: result.success ? { money: result.newMoney } : undefined,
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/insurance/purchase', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+    const tier = (req.body?.tier as string | undefined) ?? 'basic';
+    const result = await vehicleService.purchaseContrabandInsurance(
+      req.player!.id,
+      vehicleType,
+      tier
+    );
+    return res.status(200).json({
+      event: result.success ? 'vehicles.ops.insurance.purchased' : 'vehicles.ops.insurance.failed',
+      params: result,
+      player: result.success ? { money: result.newMoney } : undefined,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
+      return res.status(404).json({
+        event: 'vehicles.error',
+        params: { reason: 'PLAYER_NOT_FOUND' },
+      });
+    }
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/counter-intercept-run', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+    const result = await vehicleService.runVehicleCounterIntercept(req.player!.id, vehicleType);
+    return res.status(200).json({
+      event: result.success
+        ? 'vehicles.ops.counter_intercept.success'
+        : 'vehicles.ops.counter_intercept.failed',
+      params: result,
+      player: result.success ? { money: result.newMoney } : undefined,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'PLAYER_NOT_FOUND') {
+      return res.status(404).json({
+        event: 'vehicles.error',
+        params: { reason: 'PLAYER_NOT_FOUND' },
+      });
+    }
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/crew-match-run', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+    const result = await vehicleService.runVehicleCrewMatch(req.player!.id, vehicleType);
+    return res.status(200).json({
+      event: result.success ? 'vehicles.ops.crew_match.success' : 'vehicles.ops.crew_match.failed',
+      params: result,
+      player: result.success ? { money: result.newMoney } : undefined,
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post('/ops/contract-run', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+    const contractId = req.body?.contractId?.toString();
+    const result = await vehicleService.runVehicleOpsContract(
+      req.player!.id,
+      vehicleType,
+      contractId
+    );
+    return res.status(200).json({
+      event: result.success ? 'vehicles.ops.contract.success' : 'vehicles.ops.contract.failed',
+      params: result,
+      player: result.success ? { money: result.newMoney } : undefined,
+    });
+  } catch {
+    return res.status(500).json({
+      event: 'error.internal',
+      params: {},
+    });
+  }
+});
+
+router.post(
+  '/ops/insurance/claim/resolve',
+  authenticate,
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const vehicleType = (req.body?.vehicleType as string | undefined) ?? 'car';
+      const claimId = Number(req.body?.claimId ?? 0);
+      const action = req.body?.action?.toString() ?? 'accept';
+      const result = await vehicleService.resolveVehicleInsuranceClaim(
+        req.player!.id,
+        vehicleType,
+        claimId,
+        action
+      );
+      return res.status(200).json({
+        event: result.success
+          ? 'vehicles.ops.insurance.claim.resolved'
+          : 'vehicles.ops.insurance.claim.failed',
+        params: result,
+      });
+    } catch {
+      return res.status(500).json({
+        event: 'error.internal',
+        params: {},
+      });
+    }
+  }
+);
+
+/**
  * POST /vehicles/steal/:vehicleId
  * Steal a vehicle from the streets
  */
@@ -451,7 +682,6 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
     });
   }
 });
-
 
 /**
  * GET /vehicles/inventory
@@ -593,100 +823,120 @@ router.get('/tuning/overview', authenticate, async (req: AuthRequest, res: Respo
  * POST /vehicles/tuning/:inventoryId/upgrade
  * Upgrade speed/stealth/armor for a vehicle
  */
-router.post('/tuning/:inventoryId/upgrade', authenticate, async (req: AuthRequest, res: Response) => {
-  try {
-    const inventoryId = parseInt(req.params.inventoryId as string, 10);
-    const stat = (req.body?.stat as string | undefined)?.toLowerCase();
+router.post(
+  '/tuning/:inventoryId/upgrade',
+  authenticate,
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const inventoryId = parseInt(req.params.inventoryId as string, 10);
+      const stat = (req.body?.stat as string | undefined)?.toLowerCase();
 
-    if (isNaN(inventoryId)) {
-      return res.status(400).json({
-        event: 'vehicles.error',
-        params: { reason: 'INVALID_INVENTORY_ID' },
-      });
-    }
+      if (isNaN(inventoryId)) {
+        return res.status(400).json({
+          event: 'vehicles.error',
+          params: { reason: 'INVALID_INVENTORY_ID' },
+        });
+      }
 
-    if (!stat || !['speed', 'stealth', 'armor'].includes(stat)) {
-      return res.status(400).json({
-        event: 'vehicles.error',
-        params: { reason: 'INVALID_TUNE_STAT' },
-      });
-    }
+      if (!stat || !['speed', 'stealth', 'armor'].includes(stat)) {
+        return res.status(400).json({
+          event: 'vehicles.error',
+          params: { reason: 'INVALID_TUNE_STAT' },
+        });
+      }
 
-    const result = await vehicleService.upgradeVehicleTuning(
-      req.player!.id,
-      inventoryId,
-      stat as 'speed' | 'stealth' | 'armor'
-    );
-
-    return res.status(200).json({
-      event: 'vehicles.tuning_upgraded',
-      params: {
+      const result = await vehicleService.upgradeVehicleTuning(
+        req.player!.id,
         inventoryId,
-        stat,
-        ...result.upgradeCost,
-      },
-      parts: result.parts,
-      tuningLevels: result.tuningLevels,
-      player: {
-        money: result.newMoney,
-      },
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      if (error.message === 'VEHICLE_NOT_FOUND') {
-        return res.status(404).json({ event: 'vehicles.error', params: { reason: 'VEHICLE_NOT_FOUND' } });
-      }
-      if (error.message === 'NOT_OWNER') {
-        return res.status(403).json({ event: 'vehicles.error', params: { reason: 'NOT_OWNER' } });
-      }
-      if (error.message === 'VEHICLE_IN_TRANSIT') {
-        return res.status(400).json({ event: 'vehicles.error', params: { reason: 'VEHICLE_IN_TRANSIT' } });
-      }
-      if (error.message === 'VEHICLE_REPAIR_IN_PROGRESS') {
-        return res.status(400).json({ event: 'vehicles.error', params: { reason: 'VEHICLE_REPAIR_IN_PROGRESS' } });
-      }
-      if (error.message === 'INSUFFICIENT_FUNDS') {
-        return res.status(400).json({ event: 'vehicles.error', params: { reason: 'INSUFFICIENT_FUNDS' } });
-      }
-      if (error.message === 'INSUFFICIENT_PARTS') {
-        return res.status(400).json({ event: 'vehicles.error', params: { reason: 'INSUFFICIENT_PARTS' } });
-      }
-      if (error.message === 'TUNE_STAT_MAXED') {
-        return res.status(400).json({ event: 'vehicles.error', params: { reason: 'TUNE_STAT_MAXED' } });
-      }
-      if (error.message.startsWith('TUNE_COOLDOWN_ACTIVE')) {
-        const seconds = Number(error.message.split(':')[1] ?? 0);
-        return res.status(400).json({
-          event: 'vehicles.error',
-          params: {
-            reason: 'TUNE_COOLDOWN_ACTIVE',
-            cooldownRemainingSeconds: Number.isFinite(seconds) ? Math.max(0, seconds) : 0,
-          },
-        });
-      }
-      if (error.message.startsWith('TUNE_CONCURRENCY_LIMIT_REACHED')) {
-        const [, maxConcurrentRaw, activeConcurrentRaw, vipRaw] = error.message.split(':');
-        const maxConcurrent = Number(maxConcurrentRaw ?? 0);
-        const activeConcurrent = Number(activeConcurrentRaw ?? 0);
-        const isVipActive = vipRaw === '1';
-        return res.status(400).json({
-          event: 'vehicles.error',
-          params: {
-            reason: 'TUNE_CONCURRENCY_LIMIT_REACHED',
-            maxConcurrent: Number.isFinite(maxConcurrent) ? Math.max(0, maxConcurrent) : 0,
-            activeConcurrent: Number.isFinite(activeConcurrent) ? Math.max(0, activeConcurrent) : 0,
-            isVipActive,
-          },
-        });
-      }
-      if (error.message === 'INVALID_VEHICLE') {
-        return res.status(400).json({ event: 'vehicles.error', params: { reason: 'INVALID_VEHICLE' } });
-      }
-    }
+        stat as 'speed' | 'stealth' | 'armor'
+      );
 
-    return res.status(500).json({ event: 'error.internal', params: {} });
+      return res.status(200).json({
+        event: 'vehicles.tuning_upgraded',
+        params: {
+          inventoryId,
+          stat,
+          ...result.upgradeCost,
+        },
+        parts: result.parts,
+        tuningLevels: result.tuningLevels,
+        player: {
+          money: result.newMoney,
+        },
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'VEHICLE_NOT_FOUND') {
+          return res
+            .status(404)
+            .json({ event: 'vehicles.error', params: { reason: 'VEHICLE_NOT_FOUND' } });
+        }
+        if (error.message === 'NOT_OWNER') {
+          return res.status(403).json({ event: 'vehicles.error', params: { reason: 'NOT_OWNER' } });
+        }
+        if (error.message === 'VEHICLE_IN_TRANSIT') {
+          return res
+            .status(400)
+            .json({ event: 'vehicles.error', params: { reason: 'VEHICLE_IN_TRANSIT' } });
+        }
+        if (error.message === 'VEHICLE_REPAIR_IN_PROGRESS') {
+          return res
+            .status(400)
+            .json({ event: 'vehicles.error', params: { reason: 'VEHICLE_REPAIR_IN_PROGRESS' } });
+        }
+        if (error.message === 'INSUFFICIENT_FUNDS') {
+          return res
+            .status(400)
+            .json({ event: 'vehicles.error', params: { reason: 'INSUFFICIENT_FUNDS' } });
+        }
+        if (error.message === 'INSUFFICIENT_PARTS') {
+          return res
+            .status(400)
+            .json({ event: 'vehicles.error', params: { reason: 'INSUFFICIENT_PARTS' } });
+        }
+        if (error.message === 'TUNE_STAT_MAXED') {
+          return res
+            .status(400)
+            .json({ event: 'vehicles.error', params: { reason: 'TUNE_STAT_MAXED' } });
+        }
+        if (error.message.startsWith('TUNE_COOLDOWN_ACTIVE')) {
+          const seconds = Number(error.message.split(':')[1] ?? 0);
+          return res.status(400).json({
+            event: 'vehicles.error',
+            params: {
+              reason: 'TUNE_COOLDOWN_ACTIVE',
+              cooldownRemainingSeconds: Number.isFinite(seconds) ? Math.max(0, seconds) : 0,
+            },
+          });
+        }
+        if (error.message.startsWith('TUNE_CONCURRENCY_LIMIT_REACHED')) {
+          const [, maxConcurrentRaw, activeConcurrentRaw, vipRaw] = error.message.split(':');
+          const maxConcurrent = Number(maxConcurrentRaw ?? 0);
+          const activeConcurrent = Number(activeConcurrentRaw ?? 0);
+          const isVipActive = vipRaw === '1';
+          return res.status(400).json({
+            event: 'vehicles.error',
+            params: {
+              reason: 'TUNE_CONCURRENCY_LIMIT_REACHED',
+              maxConcurrent: Number.isFinite(maxConcurrent) ? Math.max(0, maxConcurrent) : 0,
+              activeConcurrent: Number.isFinite(activeConcurrent)
+                ? Math.max(0, activeConcurrent)
+                : 0,
+              isVipActive,
+            },
+          });
+        }
+        if (error.message === 'INVALID_VEHICLE') {
+          return res
+            .status(400)
+            .json({ event: 'vehicles.error', params: { reason: 'INVALID_VEHICLE' } });
+        }
+      }
+
+      return res.status(500).json({ event: 'error.internal', params: {} });
+    }
   }
-});
+);
 
 /**
  * POST /vehicles/sell-stolen/:inventoryId
@@ -835,7 +1085,8 @@ router.post('/transport/:inventoryId', authenticate, async (req: AuthRequest, re
           event: 'vehicles.transport_disabled',
           params: {
             reason: 'USE_SMUGGLING_HUB',
-            message: 'Direct transport is verwijderd. Gebruik de Smokkel Hub voor voertuigverplaatsing.',
+            message:
+              'Direct transport is verwijderd. Gebruik de Smokkel Hub voor voertuigverplaatsing.',
           },
         });
       }

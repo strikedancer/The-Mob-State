@@ -23,7 +23,10 @@ import { supportTicketService } from '../services/supportTicketService';
 import { systemLogService } from '../services/systemLogService';
 import * as crewWarService from '../services/crewWarService';
 import { economyBalanceService } from '../services/economyBalanceService';
-import { ECON_RUNTIME_SETTING_DEFAULTS, ECON_RUNTIME_SETTING_KEYS } from '../services/economyBalanceService';
+import {
+  ECON_RUNTIME_SETTING_DEFAULTS,
+  ECON_RUNTIME_SETTING_KEYS,
+} from '../services/economyBalanceService';
 import {
   crewMissionService,
   CREW_MISSION_RUNTIME_SETTING_DEFAULTS,
@@ -108,7 +111,7 @@ const loadRuntimeConfigValues = async (keys: string[]): Promise<Record<string, s
   const placeholders = keys.map(() => '?').join(', ');
   const rows = await prisma.$queryRawUnsafe<Array<{ configKey: string; configValue: string }>>(
     `SELECT configKey, configValue FROM runtime_config WHERE configKey IN (${placeholders})`,
-    ...keys,
+    ...keys
   );
 
   return rows.reduce<Record<string, string>>((acc, row) => {
@@ -132,7 +135,7 @@ const upsertRuntimeConfigValues = async (updates: Record<string, string>) => {
         ON DUPLICATE KEY UPDATE configValue = VALUES(configValue)
       `,
       key,
-      value,
+      value
     );
   }
 };
@@ -230,8 +233,8 @@ const getFilteredSystemLogs = async (filters: {
     new Set(
       normalizedLogs
         .map((entry) => String(entry.params.source || '').trim())
-        .filter((source) => source.length > 0),
-    ),
+        .filter((source) => source.length > 0)
+    )
   ).sort((a, b) => a.localeCompare(b));
 
   const searchNeedle = filters.search.trim().toLowerCase();
@@ -249,7 +252,11 @@ const getFilteredSystemLogs = async (filters: {
       return true;
     }
 
-    return message.includes(searchNeedle) || details.includes(searchNeedle) || source.toLowerCase().includes(searchNeedle);
+    return (
+      message.includes(searchNeedle) ||
+      details.includes(searchNeedle) ||
+      source.toLowerCase().includes(searchNeedle)
+    );
   });
 
   return { filteredLogs, sources };
@@ -305,40 +312,55 @@ const grantVipSchema = z.object({
 const playerManageSchema = z.object({
   playerId: z.number().int().positive(),
   reason: z.string().min(5).max(500).optional(),
-  set: z.object({
-    money: z.number().int().optional(),
-    rank: z.number().int().min(1).optional(),
-    xp: z.number().int().min(0).optional(),
-    health: z.number().int().min(0).max(100).optional(),
-    premiumCredits: z.number().int().min(0).optional(),
-    currentCountry: z.string().min(2).optional(),
-  }).optional(),
-  add: z.object({
-    money: z.number().int().optional(),
-    xp: z.number().int().optional(),
-    premiumCredits: z.number().int().optional(),
-  }).optional(),
-  vip: z.object({
-    enabled: z.boolean(),
-    days: z.number().int().positive().max(365).optional(),
-  }).optional(),
-  ammo: z.object({
-    ammoType: z.string().min(2).max(50),
-    quantity: z.number().int().positive(),
-  }).optional(),
-  tool: z.object({
-    toolId: z.string().min(2).max(50),
-    quantity: z.number().int().positive().default(1),
-    durability: z.number().int().min(1).max(100).default(100),
-    location: z.string().min(1).max(50).default('carried'),
-  }).optional(),
+  set: z
+    .object({
+      money: z.number().int().optional(),
+      rank: z.number().int().min(1).optional(),
+      xp: z.number().int().min(0).optional(),
+      health: z.number().int().min(0).max(100).optional(),
+      premiumCredits: z.number().int().min(0).optional(),
+      currentCountry: z.string().min(2).optional(),
+    })
+    .optional(),
+  add: z
+    .object({
+      money: z.number().int().optional(),
+      xp: z.number().int().optional(),
+      premiumCredits: z.number().int().optional(),
+    })
+    .optional(),
+  vip: z
+    .object({
+      enabled: z.boolean(),
+      days: z.number().int().positive().max(365).optional(),
+    })
+    .optional(),
+  ammo: z
+    .object({
+      ammoType: z.string().min(2).max(50),
+      quantity: z.number().int().positive(),
+    })
+    .optional(),
+  tool: z
+    .object({
+      toolId: z.string().min(2).max(50),
+      quantity: z.number().int().positive().default(1),
+      durability: z.number().int().min(1).max(100).default(100),
+      location: z.string().min(1).max(50).default('carried'),
+    })
+    .optional(),
 });
 
 const bulkPlayerActionSchema = z.object({
   playerIds: z.array(z.number().int().positive()).min(1).max(200),
   action: z.enum(['warn', 'ban_temp', 'add_money']),
   reason: z.string().min(5).max(500),
-  durationHours: z.number().int().min(1).max(24 * 365).optional(),
+  durationHours: z
+    .number()
+    .int()
+    .min(1)
+    .max(24 * 365)
+    .optional(),
   amount: z.number().int().positive().optional(),
 });
 
@@ -346,14 +368,28 @@ const resetPlayerProgressSchema = z.object({
   reason: z.string().min(5).max(500).optional(),
 });
 
-const adminTicketReplySchema = z.object({
-  message: z.string().trim().min(1).max(2000).optional(),
-  templateKey: z.string().trim().min(1).max(80).optional(),
-  messageType: z.enum(['public_reply', 'internal_note']).optional(),
-  status: z.enum(['new', 'open', 'triage', 'in_progress', 'waiting_player', 'blocked', 'resolved', 'closed', 'archived']).optional(),
-}).refine((value) => Boolean(value.message?.trim() || value.templateKey), {
-  message: 'Message or templateKey is required',
-});
+const adminTicketReplySchema = z
+  .object({
+    message: z.string().trim().min(1).max(2000).optional(),
+    templateKey: z.string().trim().min(1).max(80).optional(),
+    messageType: z.enum(['public_reply', 'internal_note']).optional(),
+    status: z
+      .enum([
+        'new',
+        'open',
+        'triage',
+        'in_progress',
+        'waiting_player',
+        'blocked',
+        'resolved',
+        'closed',
+        'archived',
+      ])
+      .optional(),
+  })
+  .refine((value) => Boolean(value.message?.trim() || value.templateKey), {
+    message: 'Message or templateKey is required',
+  });
 
 const adminTicketTodoSchema = z.object({
   ticketId: z.number().int().positive().optional().nullable(),
@@ -365,26 +401,59 @@ const adminTicketTodoSchema = z.object({
   moduleKey: z.string().trim().max(80).optional().nullable(),
 });
 
-const adminTicketTodoUpdateSchema = z.object({
-  title: z.string().trim().min(3).max(255).optional(),
-  description: z.string().trim().max(2000).nullable().optional(),
-  status: z.enum(['open', 'in_progress', 'blocked', 'done']).optional(),
-  assignedAdminId: z.number().int().positive().nullable().optional(),
-  priority: z.enum(['low', 'normal', 'high', 'urgent']).optional(),
-  dueAt: z.string().datetime().nullable().optional(),
-  moduleKey: z.string().trim().max(80).nullable().optional(),
-}).refine((value) => value.title !== undefined || value.description !== undefined || value.status !== undefined || value.assignedAdminId !== undefined || value.priority !== undefined || value.dueAt !== undefined || value.moduleKey !== undefined, {
-  message: 'At least one todo field must be provided',
-});
+const adminTicketTodoUpdateSchema = z
+  .object({
+    title: z.string().trim().min(3).max(255).optional(),
+    description: z.string().trim().max(2000).nullable().optional(),
+    status: z.enum(['open', 'in_progress', 'blocked', 'done']).optional(),
+    assignedAdminId: z.number().int().positive().nullable().optional(),
+    priority: z.enum(['low', 'normal', 'high', 'urgent']).optional(),
+    dueAt: z.string().datetime().nullable().optional(),
+    moduleKey: z.string().trim().max(80).nullable().optional(),
+  })
+  .refine(
+    (value) =>
+      value.title !== undefined ||
+      value.description !== undefined ||
+      value.status !== undefined ||
+      value.assignedAdminId !== undefined ||
+      value.priority !== undefined ||
+      value.dueAt !== undefined ||
+      value.moduleKey !== undefined,
+    {
+      message: 'At least one todo field must be provided',
+    }
+  );
 
-const adminTicketUpdateSchema = z.object({
-  assignedAdminId: z.number().int().positive().nullable().optional(),
-  priority: z.enum(['low', 'normal', 'high', 'urgent']).optional(),
-  status: z.enum(['new', 'open', 'triage', 'in_progress', 'waiting_player', 'blocked', 'resolved', 'closed', 'archived']).optional(),
-  archive: z.boolean().optional(),
-}).refine((value) => value.assignedAdminId !== undefined || value.priority !== undefined || value.status !== undefined || value.archive !== undefined, {
-  message: 'At least one ticket field must be provided',
-});
+const adminTicketUpdateSchema = z
+  .object({
+    assignedAdminId: z.number().int().positive().nullable().optional(),
+    priority: z.enum(['low', 'normal', 'high', 'urgent']).optional(),
+    status: z
+      .enum([
+        'new',
+        'open',
+        'triage',
+        'in_progress',
+        'waiting_player',
+        'blocked',
+        'resolved',
+        'closed',
+        'archived',
+      ])
+      .optional(),
+    archive: z.boolean().optional(),
+  })
+  .refine(
+    (value) =>
+      value.assignedAdminId !== undefined ||
+      value.priority !== undefined ||
+      value.status !== undefined ||
+      value.archive !== undefined,
+    {
+      message: 'At least one ticket field must be provided',
+    }
+  );
 
 const supportTodoCommentSchema = z.object({
   comment: z.string().trim().min(1).max(4000),
@@ -496,7 +565,10 @@ const aircraftSchema = z.object({
 });
 
 const toolSchema = z.object({
-  id: z.string().min(2).regex(/^[a-z0-9_]+$/),
+  id: z
+    .string()
+    .min(2)
+    .regex(/^[a-z0-9_]+$/),
   name: z.string().min(1),
   type: z.string().min(1),
   basePrice: z.number().int().positive(),
@@ -507,25 +579,30 @@ const toolSchema = z.object({
   image: z.string().optional(),
 });
 
-const crimeSchema = z.object({
-  id: z.string().min(2).regex(/^[a-z0-9_]+$/),
-  name: z.string().min(1),
-  description: z.string().min(1),
-  minLevel: z.number().int().min(1),
-  baseSuccessChance: z.number().min(0).max(1),
-  minReward: z.number().int().positive(),
-  maxReward: z.number().int().positive(),
-  xpReward: z.number().int().positive(),
-  minXpReward: z.number().int().positive().optional(),
-  maxXpReward: z.number().int().positive().optional(),
-  jailTime: z.number().int().positive(),
-  requiredVehicle: z.boolean(),
-  requiredVehicleType: z.enum(['car', 'boat', 'aircraft']).nullable().optional(),
-  breakdownChance: z.number().min(0).max(1),
-  requiredTools: z.array(z.string()).optional(),
-  requiredWeapon: z.boolean().optional(),
-  isFederal: z.boolean().optional(),
-}).passthrough();
+const crimeSchema = z
+  .object({
+    id: z
+      .string()
+      .min(2)
+      .regex(/^[a-z0-9_]+$/),
+    name: z.string().min(1),
+    description: z.string().min(1),
+    minLevel: z.number().int().min(1),
+    baseSuccessChance: z.number().min(0).max(1),
+    minReward: z.number().int().positive(),
+    maxReward: z.number().int().positive(),
+    xpReward: z.number().int().positive(),
+    minXpReward: z.number().int().positive().optional(),
+    maxXpReward: z.number().int().positive().optional(),
+    jailTime: z.number().int().positive(),
+    requiredVehicle: z.boolean(),
+    requiredVehicleType: z.enum(['car', 'boat', 'aircraft']).nullable().optional(),
+    breakdownChance: z.number().min(0).max(1),
+    requiredTools: z.array(z.string()).optional(),
+    requiredWeapon: z.boolean().optional(),
+    isFederal: z.boolean().optional(),
+  })
+  .passthrough();
 
 const updatePremiumOfferSchema = z.object({
   titleNl: z.string().min(1).max(120),
@@ -549,7 +626,11 @@ const updatePremiumOfferSchema = z.object({
 });
 
 const createPremiumOfferSchema = z.object({
-  key: z.string().min(2).max(64).regex(/^[a-z0-9_\-]+$/),
+  key: z
+    .string()
+    .min(2)
+    .max(64)
+    .regex(/^[a-z0-9_\-]+$/),
   titleNl: z.string().min(1).max(120),
   titleEn: z.string().min(1).max(120),
   descriptionNl: z.string().max(5000).nullable().optional(),
@@ -581,7 +662,11 @@ const creditShopEffectTypeSchema = z.enum([
 ]);
 
 const createCreditShopItemSchema = z.object({
-  key: z.string().min(2).max(64).regex(/^[a-z0-9_\-]+$/),
+  key: z
+    .string()
+    .min(2)
+    .max(64)
+    .regex(/^[a-z0-9_\-]+$/),
   titleNl: z.string().min(1).max(120),
   titleEn: z.string().min(1).max(120),
   descriptionNl: z.string().max(5000).nullable().optional(),
@@ -599,7 +684,11 @@ const createCreditShopItemSchema = z.object({
 const updateCreditShopItemSchema = createCreditShopItemSchema.omit({ key: true });
 
 const createAdminSchema = z.object({
-  username: z.string().min(3).max(50).regex(/^[a-zA-Z0-9_\-.]+$/),
+  username: z
+    .string()
+    .min(3)
+    .max(50)
+    .regex(/^[a-zA-Z0-9_\-.]+$/),
   password: z.string().min(8).max(128),
   role: z.nativeEnum(AdminRole).default(AdminRole.VIEWER),
 });
@@ -615,13 +704,21 @@ const adminUpdateCrewWarStatusSchema = z.object({
   action: z.enum(['start_now', 'enter_lockdown', 'resolve', 'archive', 'cancel']),
 });
 
-const updateAdminSchema = z.object({
-  role: z.nativeEnum(AdminRole).optional(),
-  isActive: z.boolean().optional(),
-  password: z.string().min(8).max(128).optional(),
-}).refine((payload) => payload.role !== undefined || payload.isActive !== undefined || payload.password !== undefined, {
-  message: 'At least one field must be provided',
-});
+const updateAdminSchema = z
+  .object({
+    role: z.nativeEnum(AdminRole).optional(),
+    isActive: z.boolean().optional(),
+    password: z.string().min(8).max(128).optional(),
+  })
+  .refine(
+    (payload) =>
+      payload.role !== undefined ||
+      payload.isActive !== undefined ||
+      payload.password !== undefined,
+    {
+      message: 'At least one field must be provided',
+    }
+  );
 
 // Use process.cwd() for more reliable path resolution in Docker
 const vehiclesFilePath = path.join(process.cwd(), 'content/vehicles.json');
@@ -651,7 +748,9 @@ const imageLibraryUpload = multer({
 });
 
 const normalizeImageLibraryPath = (raw: unknown): string => {
-  const value = String(raw ?? '').trim().replace(/\\/g, '/');
+  const value = String(raw ?? '')
+    .trim()
+    .replace(/\\/g, '/');
   if (!value) return '';
   return value
     .split('/')
@@ -705,7 +804,13 @@ const deriveImageModuleFromPath = (relativePath: string): string => {
 
   if (normalized.includes('facilit') || normalized.includes('drug')) return 'drugs';
   if (normalized.includes('school') || normalized.includes('narcot')) return 'school';
-  if (normalized.includes('vehicle') || normalized.includes('car') || normalized.includes('boat') || normalized.includes('motor')) return 'vehicles';
+  if (
+    normalized.includes('vehicle') ||
+    normalized.includes('car') ||
+    normalized.includes('boat') ||
+    normalized.includes('motor')
+  )
+    return 'vehicles';
   if (normalized.includes('avatar') || normalized.includes('profile')) return 'avatars';
   if (normalized.includes('crew')) return 'crew';
   if (normalized.includes('property') || normalized.includes('housing')) return 'properties';
@@ -718,13 +823,23 @@ const deriveImageModuleFromPath = (relativePath: string): string => {
 const collectImageFilesRecursive = async (
   rootPath: string,
   currentRelativePath = '',
-  bucket: Array<{ path: string; name: string; sizeBytes: number; updatedAt: string; module: string }> = [],
-): Promise<Array<{ path: string; name: string; sizeBytes: number; updatedAt: string; module: string }>> => {
+  bucket: Array<{
+    path: string;
+    name: string;
+    sizeBytes: number;
+    updatedAt: string;
+    module: string;
+  }> = []
+): Promise<
+  Array<{ path: string; name: string; sizeBytes: number; updatedAt: string; module: string }>
+> => {
   const currentAbsolutePath = joinImageLibraryPath(rootPath, currentRelativePath);
   const entries = await fs.readdir(currentAbsolutePath, { withFileTypes: true });
 
   for (const entry of entries) {
-    const childRelativePath = normalizeImageLibraryPath(path.posix.join(currentRelativePath, entry.name));
+    const childRelativePath = normalizeImageLibraryPath(
+      path.posix.join(currentRelativePath, entry.name)
+    );
     if (entry.isDirectory()) {
       await collectImageFilesRecursive(rootPath, childRelativePath, bucket);
       continue;
@@ -870,6 +985,134 @@ router.get('/crew-missions/telemetry', async (req, res) => {
   }
 });
 
+router.get('/vehicle-ops/telemetry', async (req, res) => {
+  try {
+    const requestedHours = Number.parseInt(String(req.query.hours || '24'), 10);
+    const safeHours = Number.isFinite(requestedHours)
+      ? Math.min(168, Math.max(1, requestedHours))
+      : 24;
+    const since = new Date(Date.now() - safeHours * 60 * 60 * 1000);
+    const trackedTypes = [
+      'VEHICLE_OPS_HOTSPOT',
+      'VEHICLE_OPS_CREW',
+      'VEHICLE_OPS_CREW_MATCH',
+      'VEHICLE_OPS_PARTS',
+      'VEHICLE_OPS_CHOP',
+      'VEHICLE_OPS_INSURANCE',
+      'VEHICLE_OPS_INSURANCE_DISPUTE',
+      'VEHICLE_OPS_INTERCEPT',
+      'VEHICLE_OPS_COUNTER_INTERCEPT',
+      'VEHICLE_OPS_CONTRACT',
+      'VEHICLE_OPS_THEFT',
+    ];
+    const logs = await prisma.playerActivity.findMany({
+      where: {
+        createdAt: { gte: since },
+        activityType: { in: trackedTypes },
+      },
+      select: {
+        activityType: true,
+        details: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const metrics: Record<
+      string,
+      {
+        attempts: number;
+        successes: number;
+        failures: number;
+        moneyIn: number;
+        moneyOut: number;
+      }
+    > = {};
+    const byVehicleType: Record<string, { attempts: number; successes: number; failures: number }> =
+      {};
+    const byRegion: Record<string, { attempts: number; successes: number; failures: number }> = {};
+    trackedTypes.forEach((key) => {
+      metrics[key] = {
+        attempts: 0,
+        successes: 0,
+        failures: 0,
+        moneyIn: 0,
+        moneyOut: 0,
+      };
+    });
+
+    for (const log of logs) {
+      const bucket = metrics[log.activityType];
+      if (!bucket) continue;
+      bucket.attempts += 1;
+
+      let parsed: Record<string, unknown> = {};
+      try {
+        parsed =
+          typeof log.details === 'string'
+            ? ((JSON.parse(log.details || '{}') as Record<string, unknown>) ?? {})
+            : ((log.details as Record<string, unknown>) ?? {});
+      } catch {
+        parsed = {};
+      }
+      const success = parsed.success === true;
+      if (success) {
+        bucket.successes += 1;
+      } else {
+        bucket.failures += 1;
+      }
+      const vehicleType = String(parsed.vehicleType ?? 'unknown').toLowerCase();
+      if (!byVehicleType[vehicleType]) {
+        byVehicleType[vehicleType] = { attempts: 0, successes: 0, failures: 0 };
+      }
+      byVehicleType[vehicleType].attempts += 1;
+      if (success) byVehicleType[vehicleType].successes += 1;
+      if (!success) byVehicleType[vehicleType].failures += 1;
+
+      const region = String(parsed.country ?? parsed.currentCountry ?? 'unknown').toLowerCase();
+      if (!byRegion[region]) {
+        byRegion[region] = { attempts: 0, successes: 0, failures: 0 };
+      }
+      byRegion[region].attempts += 1;
+      if (success) byRegion[region].successes += 1;
+      if (!success) byRegion[region].failures += 1;
+
+      const inKeys = ['rewardMoney', 'personalShare', 'amount', 'insurancePayout'];
+      const outKeys = ['totalCost', 'price'];
+      for (const key of inKeys) {
+        const value = Number(parsed[key] ?? 0);
+        if (Number.isFinite(value) && value > 0) bucket.moneyIn += value;
+      }
+      for (const key of outKeys) {
+        const value = Number(parsed[key] ?? 0);
+        if (Number.isFinite(value) && value > 0) bucket.moneyOut += value;
+      }
+    }
+
+    return res.json({
+      windowHours: safeHours,
+      from: since.toISOString(),
+      to: new Date().toISOString(),
+      totals: {
+        events: logs.length,
+        attempts: Object.values(metrics).reduce((sum, m) => sum + m.attempts, 0),
+        successes: Object.values(metrics).reduce((sum, m) => sum + m.successes, 0),
+        failures: Object.values(metrics).reduce((sum, m) => sum + m.failures, 0),
+        moneyIn: Object.values(metrics).reduce((sum, m) => sum + m.moneyIn, 0),
+        moneyOut: Object.values(metrics).reduce((sum, m) => sum + m.moneyOut, 0),
+      },
+      byActionType: metrics,
+      mapLayers: {
+        byVehicleType,
+        byRegion,
+      },
+    });
+  } catch (error) {
+    console.error('Admin vehicle ops telemetry error:', error);
+    return res.status(500).json({ error: 'Failed to fetch vehicle ops telemetry' });
+  }
+});
+
 router.get('/crew-missions/runtime-config', async (_req, res) => {
   try {
     const config = await crewMissionService.getRuntimeConfigView();
@@ -897,7 +1140,9 @@ router.put('/crew-missions/runtime-config', async (req, res) => {
       return res.status(400).json({ error: 'Invalid runtime key', details: error.message });
     }
     if (error instanceof Error && error.message.startsWith('RUNTIME_VALUE_NOT_NUMERIC:')) {
-      return res.status(400).json({ error: 'Runtime value must be numeric', details: error.message });
+      return res
+        .status(400)
+        .json({ error: 'Runtime value must be numeric', details: error.message });
     }
     if (error instanceof Error && error.message.startsWith('RUNTIME_OUT_OF_RANGE:')) {
       return res.status(400).json({ error: 'Runtime value out of range', details: error.message });
@@ -921,73 +1166,98 @@ router.get('/dashboard-overview', async (_req, res) => {
       return !Number.isNaN(date.getTime()) && now - date.getTime() <= 15 * 60 * 1000;
     });
 
-    const [recentAuditLogs, recentSystemErrors, activePlayers, recentRegistrations, riskyPlayers] = await Promise.all([
-      prisma.auditLog.findMany({
-        orderBy: { createdAt: 'desc' },
-        take: 8,
-        include: {
-          admin: {
-            select: {
-              username: true,
+    const [recentAuditLogs, recentSystemErrors, activePlayers, recentRegistrations, riskyPlayers] =
+      await Promise.all([
+        prisma.auditLog.findMany({
+          orderBy: { createdAt: 'desc' },
+          take: 8,
+          include: {
+            admin: {
+              select: {
+                username: true,
+              },
             },
           },
-        },
-      }),
-      prisma.worldEvent.findMany({
-        where: {
-          eventKey: 'system.error',
-          createdAt: { gte: oneDayAgo },
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 8,
-        select: {
-          id: true,
-          eventKey: true,
-          params: true,
-          createdAt: true,
-        },
-      }),
-      prisma.player.findMany({
-        where: { updatedAt: { gte: sevenDaysAgo } },
-        select: { updatedAt: true, createdAt: true },
-      }),
-      prisma.player.findMany({
-        where: { createdAt: { gte: sevenDaysAgo } },
-        select: { createdAt: true },
-      }),
-      prisma.player.findMany({
-        orderBy: [{ wantedLevel: 'desc' }, { fbiHeat: 'desc' }, { money: 'desc' }],
-        take: 12,
-        select: {
-          id: true,
-          username: true,
-          money: true,
-          rank: true,
-          health: true,
-          isBanned: true,
-          wantedLevel: true,
-          fbiHeat: true,
-          updatedAt: true,
-          currentCountry: true,
-        },
-      }),
-    ]);
+        }),
+        prisma.worldEvent.findMany({
+          where: {
+            eventKey: 'system.error',
+            createdAt: { gte: oneDayAgo },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 8,
+          select: {
+            id: true,
+            eventKey: true,
+            params: true,
+            createdAt: true,
+          },
+        }),
+        prisma.player.findMany({
+          where: { updatedAt: { gte: sevenDaysAgo } },
+          select: { updatedAt: true, createdAt: true },
+        }),
+        prisma.player.findMany({
+          where: { createdAt: { gte: sevenDaysAgo } },
+          select: { createdAt: true },
+        }),
+        prisma.player.findMany({
+          orderBy: [{ wantedLevel: 'desc' }, { fbiHeat: 'desc' }, { money: 'desc' }],
+          take: 12,
+          select: {
+            id: true,
+            username: true,
+            money: true,
+            rank: true,
+            health: true,
+            isBanned: true,
+            wantedLevel: true,
+            fbiHeat: true,
+            updatedAt: true,
+            currentCountry: true,
+          },
+        }),
+      ]);
 
-    const alerts: Array<{ severity: 'danger' | 'warning' | 'info'; title: string; description: string }> = [];
+    const alerts: Array<{
+      severity: 'danger' | 'warning' | 'info';
+      title: string;
+      description: string;
+    }> = [];
     if (!redisOk) {
-      alerts.push({ severity: 'warning', title: 'Redis degraded', description: 'Caching and presence tracking are unavailable.' });
+      alerts.push({
+        severity: 'warning',
+        title: 'Redis degraded',
+        description: 'Caching and presence tracking are unavailable.',
+      });
     }
     if (!queueOk) {
-      alerts.push({ severity: 'warning', title: 'Queue unavailable', description: 'Background jobs are disabled because Redis queue is unavailable.' });
+      alerts.push({
+        severity: 'warning',
+        title: 'Queue unavailable',
+        description: 'Background jobs are disabled because Redis queue is unavailable.',
+      });
     }
     if (!cronFresh) {
-      alerts.push({ severity: 'warning', title: 'Cron stale', description: 'No recent cron execution was detected in the last 15 minutes.' });
+      alerts.push({
+        severity: 'warning',
+        title: 'Cron stale',
+        description: 'No recent cron execution was detected in the last 15 minutes.',
+      });
     }
     if (recentSystemErrors.length > 0) {
-      alerts.push({ severity: 'danger', title: 'Recent system errors', description: `${recentSystemErrors.length} system errors were captured in the last 24 hours.` });
+      alerts.push({
+        severity: 'danger',
+        title: 'Recent system errors',
+        description: `${recentSystemErrors.length} system errors were captured in the last 24 hours.`,
+      });
     }
     if (alerts.length === 0) {
-      alerts.push({ severity: 'info', title: 'No active alerts', description: 'All critical platform checks look healthy right now.' });
+      alerts.push({
+        severity: 'info',
+        title: 'No active alerts',
+        description: 'All critical platform checks look healthy right now.',
+      });
     }
 
     const activityFeed = [
@@ -1001,12 +1271,13 @@ router.get('/dashboard-overview', async (_req, res) => {
       ...recentSystemErrors.map((entry) => {
         const eventParams = parseWorldEventParams(entry.params);
         return {
-        id: `error-${entry.id}`,
-        type: 'system',
-        title: 'System error',
-        description: String(eventParams.message || eventParams.details || 'Runtime error'),
-        createdAt: entry.createdAt,
-      }}),
+          id: `error-${entry.id}`,
+          type: 'system',
+          title: 'System error',
+          description: String(eventParams.message || eventParams.details || 'Runtime error'),
+          createdAt: entry.createdAt,
+        };
+      }),
     ]
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 10);
@@ -1028,9 +1299,15 @@ router.get('/dashboard-overview', async (_req, res) => {
     };
 
     const trends = {
-      activePlayers: buildSeries(activePlayers.map((player) => player.updatedAt.toISOString().slice(0, 10))),
-      registrations: buildSeries(recentRegistrations.map((player) => player.createdAt.toISOString().slice(0, 10))),
-      adminActions: buildSeries(recentAuditLogs.map((entry) => entry.createdAt.toISOString().slice(0, 10))),
+      activePlayers: buildSeries(
+        activePlayers.map((player) => player.updatedAt.toISOString().slice(0, 10))
+      ),
+      registrations: buildSeries(
+        recentRegistrations.map((player) => player.createdAt.toISOString().slice(0, 10))
+      ),
+      adminActions: buildSeries(
+        recentAuditLogs.map((entry) => entry.createdAt.toISOString().slice(0, 10))
+      ),
     };
 
     const riskPlayers = riskyPlayers
@@ -1103,9 +1380,7 @@ router.get('/players', async (req, res) => {
       prisma.player.count({ where }),
     ]);
 
-    const onlineFlags = await Promise.all(
-      players.map(p => existsCached(`online:${p.id}`))
-    );
+    const onlineFlags = await Promise.all(players.map((p) => existsCached(`online:${p.id}`)));
 
     const playersWithOnline = players.map((p, i) => ({
       ...p,
@@ -1394,7 +1669,9 @@ router.get('/players/:playerId/overview', async (req, res) => {
     const ammoNameByType = new Map<string, string>();
 
     try {
-      const weaponsPayload = JSON.parse(weaponsContentRaw) as { weapons?: Array<{ id?: string; name?: string }> };
+      const weaponsPayload = JSON.parse(weaponsContentRaw) as {
+        weapons?: Array<{ id?: string; name?: string }>;
+      };
       for (const weapon of weaponsPayload.weapons || []) {
         if (weapon.id && weapon.name) {
           weaponNameById.set(weapon.id, weapon.name);
@@ -1405,7 +1682,9 @@ router.get('/players/:playerId/overview', async (req, res) => {
     }
 
     try {
-      const ammoPayload = JSON.parse(ammoContentRaw) as { ammo?: Array<{ type?: string; name?: string }> };
+      const ammoPayload = JSON.parse(ammoContentRaw) as {
+        ammo?: Array<{ type?: string; name?: string }>;
+      };
       for (const ammo of ammoPayload.ammo || []) {
         if (ammo.type && ammo.name) {
           ammoNameByType.set(ammo.type, ammo.name);
@@ -1523,7 +1802,8 @@ router.get('/players/:playerId/overview', async (req, res) => {
         casinoAsPlayerTotals: {
           totalBet: casinoAsPlayerTotals._sum.betAmount || 0,
           totalPayout: casinoAsPlayerTotals._sum.payout || 0,
-          netResult: (casinoAsPlayerTotals._sum.payout || 0) - (casinoAsPlayerTotals._sum.betAmount || 0),
+          netResult:
+            (casinoAsPlayerTotals._sum.payout || 0) - (casinoAsPlayerTotals._sum.betAmount || 0),
         },
         casinoAsOwnerTotals: {
           totalOwnerCut: casinoAsOwnerTotals._sum.ownerCut || 0,
@@ -1559,7 +1839,9 @@ router.post(
 
       const adminRole = req.admin?.role;
       if (!adminRole || adminRole === AdminRole.VIEWER) {
-        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot send test pushes' });
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot send test pushes' });
       }
 
       const player = await prisma.player.findUnique({
@@ -1576,25 +1858,24 @@ router.post(
       });
 
       if (deviceCount === 0) {
-        await systemLogService.logError('AdminTestPush', 'Admin test push requested for player without registered devices', {
-          adminId: req.admin?.id ?? null,
-          playerId: parsed.playerId,
-          title: parsed.title,
-          dataType: parsed.dataType?.trim() || 'admin_test_push',
-        });
+        await systemLogService.logError(
+          'AdminTestPush',
+          'Admin test push requested for player without registered devices',
+          {
+            adminId: req.admin?.id ?? null,
+            playerId: parsed.playerId,
+            title: parsed.title,
+            dataType: parsed.dataType?.trim() || 'admin_test_push',
+          }
+        );
       }
 
-      await notificationService.sendToPlayer(
-        parsed.playerId,
-        parsed.title,
-        parsed.body,
-        {
-          type: parsed.dataType?.trim() || 'admin_test_push',
-          source: 'admin_test_push',
-          playerId: String(parsed.playerId),
-          adminId: String(req.admin?.id ?? ''),
-        },
-      );
+      await notificationService.sendToPlayer(parsed.playerId, parsed.title, parsed.body, {
+        type: parsed.dataType?.trim() || 'admin_test_push',
+        source: 'admin_test_push',
+        playerId: String(parsed.playerId),
+        adminId: String(req.admin?.id ?? ''),
+      });
 
       return res.json({
         message: deviceCount > 0 ? 'Test push queued' : 'No registered devices found for player',
@@ -1616,7 +1897,7 @@ router.post(
       console.error('Admin test push error:', error);
       return res.status(500).json({ error: 'Failed to send test push' });
     }
-  },
+  }
 );
 
 /**
@@ -1700,7 +1981,7 @@ router.get('/players/:playerId/recent-activities', async (req, res) => {
         acc.totalXp += getActivityXpAmount(row.details);
         return acc;
       },
-      { totalMoney: 0, totalXp: 0 },
+      { totalMoney: 0, totalXp: 0 }
     );
 
     const trendMap = new Map<string, { date: string; count: number; money: number; xp: number }>();
@@ -1788,18 +2069,23 @@ router.get('/players/:playerId/recent-activities/export', async (req, res) => {
     });
 
     const header = ['id', 'type', 'description', 'money', 'xp', 'createdAt'];
-    const lines = rows.map((row) => [
-      toCsvValue(row.id),
-      toCsvValue(row.activityType),
-      toCsvValue(row.description),
-      toCsvValue(getActivityMoneyAmount(row.details)),
-      toCsvValue(getActivityXpAmount(row.details)),
-      toCsvValue(row.createdAt.toISOString()),
-    ].join(','));
+    const lines = rows.map((row) =>
+      [
+        toCsvValue(row.id),
+        toCsvValue(row.activityType),
+        toCsvValue(row.description),
+        toCsvValue(getActivityMoneyAmount(row.details)),
+        toCsvValue(getActivityXpAmount(row.details)),
+        toCsvValue(row.createdAt.toISOString()),
+      ].join(',')
+    );
 
     const csv = [header.join(','), ...lines].join('\n');
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', `attachment; filename="player_${playerId}_recent_activities.csv"`);
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="player_${playerId}_recent_activities.csv"`
+    );
     return res.send(csv);
   } catch (error) {
     console.error('Admin recent activities export error:', error);
@@ -1812,15 +2098,21 @@ router.post(
   auditLog({ action: 'BULK_PLAYER_ACTION', targetType: 'Player' }),
   async (req: AdminRequest, res) => {
     try {
-      const { playerIds, action, reason, durationHours, amount } = bulkPlayerActionSchema.parse(req.body);
+      const { playerIds, action, reason, durationHours, amount } = bulkPlayerActionSchema.parse(
+        req.body
+      );
       const adminRole = req.admin?.role;
 
       if (!adminRole || adminRole === AdminRole.VIEWER) {
-        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot perform bulk actions' });
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot perform bulk actions' });
       }
 
       if (action === 'add_money' && adminRole === AdminRole.MODERATOR && (amount || 0) > 200000) {
-        return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator can add max 200,000 per player' });
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Moderator can add max 200,000 per player' });
       }
 
       let affected = 0;
@@ -1905,7 +2197,9 @@ router.post(
       const { playerId, reason, set, add, vip, ammo, tool } = playerManageSchema.parse(req.body);
       const adminRole = req.admin?.role;
       if (!adminRole || adminRole === AdminRole.VIEWER) {
-        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot manage players' });
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot manage players' });
       }
 
       const player = await prisma.player.findUnique({ where: { id: playerId } });
@@ -1915,7 +2209,9 @@ router.post(
 
       if (adminRole === AdminRole.MODERATOR) {
         if (set?.rank !== undefined || vip !== undefined) {
-          return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator cannot change rank or VIP state' });
+          return res
+            .status(403)
+            .json({ error: 'FORBIDDEN', message: 'Moderator cannot change rank or VIP state' });
         }
       }
 
@@ -1932,12 +2228,15 @@ router.post(
         (typeof setRank === 'number' && setRank !== player.rank) ||
         (typeof setXp === 'number' && Math.abs(setXp - player.xp) >= 10000) ||
         (typeof addXp === 'number' && Math.abs(addXp) >= 10000) ||
-        (typeof setPremiumCredits === 'number' && Math.abs(setPremiumCredits - player.premiumCredits) >= 5000) ||
+        (typeof setPremiumCredits === 'number' &&
+          Math.abs(setPremiumCredits - player.premiumCredits) >= 5000) ||
         (typeof addPremiumCredits === 'number' && Math.abs(addPremiumCredits) >= 1000) ||
         (vip?.enabled !== undefined && vip.enabled !== player.isVip);
 
       if (isCriticalChange && (!reason || reason.trim().length < 5)) {
-        return res.status(400).json({ error: 'Reason is required for critical changes (min. 5 characters)' });
+        return res
+          .status(400)
+          .json({ error: 'Reason is required for critical changes (min. 5 characters)' });
       }
 
       if (typeof addMoney === 'number' && Math.abs(addMoney) > 2000000) {
@@ -1955,22 +2254,39 @@ router.post(
       if (typeof addPremiumCredits === 'number' && Math.abs(addPremiumCredits) > 10000) {
         return res.status(400).json({ error: 'add.premiumCredits exceeds hard limit (10,000)' });
       }
-      if (typeof setPremiumCredits === 'number' && Math.abs(setPremiumCredits - player.premiumCredits) > 50000) {
-        return res.status(400).json({ error: 'set.premiumCredits delta exceeds hard limit (50,000)' });
+      if (
+        typeof setPremiumCredits === 'number' &&
+        Math.abs(setPremiumCredits - player.premiumCredits) > 50000
+      ) {
+        return res
+          .status(400)
+          .json({ error: 'set.premiumCredits delta exceeds hard limit (50,000)' });
       }
 
       if (adminRole === AdminRole.MODERATOR) {
         if (typeof addMoney === 'number' && Math.abs(addMoney) > 200000) {
-          return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator add.money limit is 200,000' });
+          return res
+            .status(403)
+            .json({ error: 'FORBIDDEN', message: 'Moderator add.money limit is 200,000' });
         }
         if (typeof setMoney === 'number' && Math.abs(setMoney - player.money) > 500000) {
-          return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator set.money delta limit is 500,000' });
+          return res
+            .status(403)
+            .json({ error: 'FORBIDDEN', message: 'Moderator set.money delta limit is 500,000' });
         }
         if (typeof addPremiumCredits === 'number' && Math.abs(addPremiumCredits) > 1000) {
-          return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator add.premiumCredits limit is 1,000' });
+          return res
+            .status(403)
+            .json({ error: 'FORBIDDEN', message: 'Moderator add.premiumCredits limit is 1,000' });
         }
-        if (typeof setPremiumCredits === 'number' && Math.abs(setPremiumCredits - player.premiumCredits) > 5000) {
-          return res.status(403).json({ error: 'FORBIDDEN', message: 'Moderator set.premiumCredits delta limit is 5,000' });
+        if (
+          typeof setPremiumCredits === 'number' &&
+          Math.abs(setPremiumCredits - player.premiumCredits) > 5000
+        ) {
+          return res.status(403).json({
+            error: 'FORBIDDEN',
+            message: 'Moderator set.premiumCredits delta limit is 5,000',
+          });
         }
       }
 
@@ -2007,7 +2323,7 @@ router.post(
       if (add?.premiumCredits !== undefined) {
         playerUpdateData.premiumCredits = Math.max(
           0,
-          (playerUpdateData.premiumCredits ?? player.premiumCredits) + add.premiumCredits,
+          (playerUpdateData.premiumCredits ?? player.premiumCredits) + add.premiumCredits
         );
       }
 
@@ -2019,9 +2335,10 @@ router.post(
       }
 
       const result = await prisma.$transaction(async (tx) => {
-        const updatedPlayer = Object.keys(playerUpdateData).length > 0
-          ? await tx.player.update({ where: { id: playerId }, data: playerUpdateData })
-          : player;
+        const updatedPlayer =
+          Object.keys(playerUpdateData).length > 0
+            ? await tx.player.update({ where: { id: playerId }, data: playerUpdateData })
+            : player;
 
         if (ammo) {
           await tx.ammoInventory.upsert({
@@ -2120,7 +2437,9 @@ router.post(
     try {
       const adminRole = req.admin?.role;
       if (!adminRole || adminRole === AdminRole.VIEWER) {
-        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot reset players' });
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot reset players' });
       }
 
       const playerId = Number(req.params.playerId);
@@ -2129,7 +2448,10 @@ router.post(
       }
 
       const { reason } = resetPlayerProgressSchema.parse(req.body || {});
-      const target = await prisma.player.findUnique({ where: { id: playerId }, select: { id: true, username: true } });
+      const target = await prisma.player.findUnique({
+        where: { id: playerId },
+        select: { id: true, username: true },
+      });
       if (!target) {
         return res.status(404).json({ error: 'Player not found' });
       }
@@ -2156,7 +2478,7 @@ router.post(
       console.error('Admin reset player error:', error);
       return res.status(500).json({ error: 'Failed to reset player progress' });
     }
-  },
+  }
 );
 
 router.post(
@@ -2166,7 +2488,9 @@ router.post(
     try {
       const adminRole = req.admin?.role;
       if (!adminRole || adminRole === AdminRole.VIEWER) {
-        return res.status(403).json({ error: 'FORBIDDEN', message: 'Viewer role cannot reset players' });
+        return res
+          .status(403)
+          .json({ error: 'FORBIDDEN', message: 'Viewer role cannot reset players' });
       }
 
       const { reason } = resetPlayerProgressSchema.parse(req.body || {});
@@ -2194,7 +2518,7 @@ router.post(
       console.error('Admin reset all players error:', error);
       return res.status(500).json({ error: 'Failed to reset all player progress' });
     }
-  },
+  }
 );
 
 router.get('/tickets', async (req: AdminRequest, res) => {
@@ -2372,7 +2696,13 @@ router.post('/tickets/:ticketId/todos', async (req: AdminRequest, res) => {
 router.get('/support-todos', async (req: AdminRequest, res) => {
   try {
     const statusParam = String(req.query.status || 'all');
-    const status = statusParam === 'open' || statusParam === 'in_progress' || statusParam === 'blocked' || statusParam === 'done' ? statusParam : 'all';
+    const status =
+      statusParam === 'open' ||
+      statusParam === 'in_progress' ||
+      statusParam === 'blocked' ||
+      statusParam === 'done'
+        ? statusParam
+        : 'all';
     const todos = await supportTicketService.listTodos(status);
     return res.json({ todos });
   } catch (error) {
@@ -2657,7 +2987,10 @@ router.delete(
           source: filters.source,
           search: filters.search,
         };
-        return res.json({ message: 'No system logs matched the selected filters', deletedCount: 0 });
+        return res.json({
+          message: 'No system logs matched the selected filters',
+          deletedCount: 0,
+        });
       }
 
       const result = await prisma.worldEvent.deleteMany({
@@ -2682,7 +3015,7 @@ router.delete(
       console.error('Admin clear system logs error:', error);
       return res.status(500).json({ error: 'Failed to clear system logs' });
     }
-  },
+  }
 );
 
 /**
@@ -2758,10 +3091,7 @@ router.post(
         return res.status(400).json({ error: 'Invalid input', details: error.errors });
       }
 
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === 'P2002'
-      ) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         return res.status(409).json({ error: 'Username already exists' });
       }
 
@@ -2881,9 +3211,7 @@ router.post(
       }
 
       // Calculate ban expiry
-      const bannedUntil = duration
-        ? new Date(Date.now() + duration * 60 * 60 * 1000)
-        : null; // null = permanent
+      const bannedUntil = duration ? new Date(Date.now() + duration * 60 * 60 * 1000) : null; // null = permanent
 
       // Update player with ban info
       const updatedPlayer = await prisma.player.update({
@@ -2925,7 +3253,7 @@ router.post(
   async (req, res) => {
     try {
       const playerId = parseInt(req.body.playerId);
-      
+
       const updatedPlayer = await prisma.player.update({
         where: { id: playerId },
         data: {
@@ -3003,11 +3331,11 @@ router.get('/config', async (req, res) => {
     // Read the .env file from application root (may not exist in Docker production)
     const envPath = path.join(process.cwd(), '.env');
     let envVars: Record<string, string> = {};
-    
+
     try {
       const envContent = await fs.readFile(envPath, 'utf-8');
       // Parse .env file into key-value pairs
-      envContent.split('\n').forEach(line => {
+      envContent.split('\n').forEach((line) => {
         const trimmed = line.trim();
         if (trimmed && !trimmed.startsWith('#')) {
           const [key, ...valueParts] = trimmed.split('=');
@@ -3019,7 +3347,9 @@ router.get('/config', async (req, res) => {
     } catch (fileError) {
       // .env file may not exist in production Docker containers (env vars injected via docker-compose)
       // This is expected and not an error condition
-      console.debug('Config: .env file not found (expected in production), using process.env instead');
+      console.debug(
+        'Config: .env file not found (expected in production), using process.env instead'
+      );
     }
 
     const runtimeConfig = await loadRuntimeConfigValues(RUNTIME_SETTING_KEYS);
@@ -3034,7 +3364,10 @@ router.get('/config', async (req, res) => {
     });
   } catch (error) {
     console.error('Admin get config error:', error);
-    res.status(500).json({ error: 'Failed to fetch config', details: error instanceof Error ? error.message : String(error) });
+    res.status(500).json({
+      error: 'Failed to fetch config',
+      details: error instanceof Error ? error.message : String(error),
+    });
   }
 });
 
@@ -3081,19 +3414,31 @@ router.put(
             });
           }
 
-          if (key.includes('ECON_DIMINISH_') && key.includes('_MIN_ATTEMPTS') && (parsed < 1 || parsed > 500)) {
+          if (
+            key.includes('ECON_DIMINISH_') &&
+            key.includes('_MIN_ATTEMPTS') &&
+            (parsed < 1 || parsed > 500)
+          ) {
             return res.status(400).json({
               error: `${key} must be between 1 and 500`,
             });
           }
 
-          if (key.includes('ECON_DIMINISH_') && key.includes('_MULTIPLIER') && (parsed < 0.4 || parsed > 1)) {
+          if (
+            key.includes('ECON_DIMINISH_') &&
+            key.includes('_MULTIPLIER') &&
+            (parsed < 0.4 || parsed > 1)
+          ) {
             return res.status(400).json({
               error: `${key} must be between 0.4 and 1.0`,
             });
           }
 
-          if (key.includes('CREW_MISSION_') && key.includes('CREDITS_PER_MINUTE') && (parsed < 1 || parsed > 20)) {
+          if (
+            key.includes('CREW_MISSION_') &&
+            key.includes('CREDITS_PER_MINUTE') &&
+            (parsed < 1 || parsed > 20)
+          ) {
             return res.status(400).json({
               error: `${key} must be between 1 and 20`,
             });
@@ -3105,7 +3450,11 @@ router.put(
             });
           }
 
-          if (key.includes('CREW_MISSION_REPEAT_') && key.includes('_MULTIPLIER') && (parsed < 0.5 || parsed > 1)) {
+          if (
+            key.includes('CREW_MISSION_REPEAT_') &&
+            key.includes('_MULTIPLIER') &&
+            (parsed < 0.5 || parsed > 1)
+          ) {
             return res.status(400).json({
               error: `${key} must be between 0.5 and 1.0`,
             });
@@ -3117,7 +3466,11 @@ router.put(
             });
           }
 
-          if (key.startsWith('TERRITORY_') && key.endsWith('_PER_LEVEL') && (parsed < 0 || parsed > 5)) {
+          if (
+            key.startsWith('TERRITORY_') &&
+            key.endsWith('_PER_LEVEL') &&
+            (parsed < 0 || parsed > 5)
+          ) {
             return res.status(400).json({
               error: `${key} must be between 0 and 5`,
             });
@@ -3155,7 +3508,7 @@ router.put(
         const lines = envContent.split('\n');
         const existingKeys = new Set<string>();
 
-        const updatedLines = lines.map(line => {
+        const updatedLines = lines.map((line) => {
           const trimmed = line.trim();
           if (trimmed && !trimmed.startsWith('#')) {
             const [key] = trimmed.split('=');
@@ -3197,144 +3550,156 @@ router.put(
  * GET /api/admin/image-library
  * List image folders/files from server image storage
  */
-router.get('/image-library', requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR), async (req, res) => {
-  try {
-    const rootPath = await resolveImageLibraryRoot();
-    const folder = normalizeImageLibraryPath(req.query.folder);
-    assertSafeImageLibraryPath(folder);
+router.get(
+  '/image-library',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  async (req, res) => {
+    try {
+      const rootPath = await resolveImageLibraryRoot();
+      const folder = normalizeImageLibraryPath(req.query.folder);
+      assertSafeImageLibraryPath(folder);
 
-    const currentPath = joinImageLibraryPath(rootPath, folder);
-    const entries = await fs.readdir(currentPath, { withFileTypes: true });
+      const currentPath = joinImageLibraryPath(rootPath, folder);
+      const entries = await fs.readdir(currentPath, { withFileTypes: true });
 
-    const folders = entries
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => {
-        const relativePath = normalizeImageLibraryPath(path.posix.join(folder, entry.name));
-        return {
-          name: entry.name,
-          path: relativePath,
-        };
-      })
-      .sort((a, b) => a.name.localeCompare(b.name));
-
-    const filesRaw = await Promise.all(
-      entries
-        .filter((entry) => entry.isFile())
-        .map(async (entry) => {
+      const folders = entries
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => {
           const relativePath = normalizeImageLibraryPath(path.posix.join(folder, entry.name));
-          const absolutePath = joinImageLibraryPath(rootPath, relativePath);
-          const stat = await fs.stat(absolutePath);
           return {
             name: entry.name,
             path: relativePath,
-            sizeBytes: stat.size,
-            updatedAt: stat.mtime.toISOString(),
-            url: buildImageLibraryUrl(req, relativePath),
           };
         })
-    );
+        .sort((a, b) => a.name.localeCompare(b.name));
 
-    const files = filesRaw.sort((a, b) => a.name.localeCompare(b.name));
+      const filesRaw = await Promise.all(
+        entries
+          .filter((entry) => entry.isFile())
+          .map(async (entry) => {
+            const relativePath = normalizeImageLibraryPath(path.posix.join(folder, entry.name));
+            const absolutePath = joinImageLibraryPath(rootPath, relativePath);
+            const stat = await fs.stat(absolutePath);
+            return {
+              name: entry.name,
+              path: relativePath,
+              sizeBytes: stat.size,
+              updatedAt: stat.mtime.toISOString(),
+              url: buildImageLibraryUrl(req, relativePath),
+            };
+          })
+      );
 
-    const parentFolder = folder.includes('/')
-      ? folder.slice(0, folder.lastIndexOf('/'))
-      : '';
+      const files = filesRaw.sort((a, b) => a.name.localeCompare(b.name));
 
-    return res.json({
-      root: rootPath,
-      folder,
-      parentFolder,
-      folders,
-      files,
-    });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
+      const parentFolder = folder.includes('/') ? folder.slice(0, folder.lastIndexOf('/')) : '';
 
-    if (message === 'INVALID_IMAGE_PATH') {
-      return res.status(400).json({ error: 'Invalid image folder path' });
-    }
-
-    if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
-      return res.status(503).json({
-        error: 'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
-        checkedPaths: imageLibraryPathCandidates.filter(Boolean),
+      return res.json({
+        root: rootPath,
+        folder,
+        parentFolder,
+        folders,
+        files,
       });
-    }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
 
-    if ((error as NodeJS.ErrnoException)?.code === 'ENOENT') {
-      return res.status(404).json({ error: 'Folder not found' });
-    }
+      if (message === 'INVALID_IMAGE_PATH') {
+        return res.status(400).json({ error: 'Invalid image folder path' });
+      }
 
-    console.error('Admin get image library error:', error);
-    return res.status(500).json({ error: 'Failed to load image library' });
+      if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
+        return res.status(503).json({
+          error:
+            'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
+          checkedPaths: imageLibraryPathCandidates.filter(Boolean),
+        });
+      }
+
+      if ((error as NodeJS.ErrnoException)?.code === 'ENOENT') {
+        return res.status(404).json({ error: 'Folder not found' });
+      }
+
+      console.error('Admin get image library error:', error);
+      return res.status(500).json({ error: 'Failed to load image library' });
+    }
   }
-});
+);
 
 /**
  * GET /api/admin/image-library/modules
  * List modules and search images across the full image library
  */
-router.get('/image-library/modules', requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR), async (req, res) => {
-  try {
-    const rootPath = await resolveImageLibraryRoot();
-    const moduleFilterRaw = String(req.query.module ?? 'all').trim().toLowerCase();
-    const moduleFilter = moduleFilterRaw.length > 0 ? moduleFilterRaw : 'all';
-    const searchFilter = String(req.query.search ?? '').trim().toLowerCase();
+router.get(
+  '/image-library/modules',
+  requireAdminRole(AdminRole.SUPER_ADMIN, AdminRole.MODERATOR),
+  async (req, res) => {
+    try {
+      const rootPath = await resolveImageLibraryRoot();
+      const moduleFilterRaw = String(req.query.module ?? 'all')
+        .trim()
+        .toLowerCase();
+      const moduleFilter = moduleFilterRaw.length > 0 ? moduleFilterRaw : 'all';
+      const searchFilter = String(req.query.search ?? '')
+        .trim()
+        .toLowerCase();
 
-    const allFiles = await collectImageFilesRecursive(rootPath);
+      const allFiles = await collectImageFilesRecursive(rootPath);
 
-    const moduleCounts = allFiles.reduce<Record<string, number>>((acc, file) => {
-      acc[file.module] = (acc[file.module] ?? 0) + 1;
-      return acc;
-    }, {});
+      const moduleCounts = allFiles.reduce<Record<string, number>>((acc, file) => {
+        acc[file.module] = (acc[file.module] ?? 0) + 1;
+        return acc;
+      }, {});
 
-    const modules = Object.entries(moduleCounts)
-      .map(([module, count]) => ({ module, count }))
-      .sort((a, b) => a.module.localeCompare(b.module));
+      const modules = Object.entries(moduleCounts)
+        .map(([module, count]) => ({ module, count }))
+        .sort((a, b) => a.module.localeCompare(b.module));
 
-    const filteredFiles = allFiles.filter((file) => {
-      if (moduleFilter !== 'all' && file.module !== moduleFilter) {
-        return false;
-      }
+      const filteredFiles = allFiles.filter((file) => {
+        if (moduleFilter !== 'all' && file.module !== moduleFilter) {
+          return false;
+        }
 
-      if (!searchFilter) {
-        return true;
-      }
+        if (!searchFilter) {
+          return true;
+        }
 
-      const searchable = `${file.name} ${file.path} ${file.module}`.toLowerCase();
-      return searchable.includes(searchFilter);
-    });
-
-    const files = filteredFiles
-      .sort((a, b) => a.path.localeCompare(b.path))
-      .slice(0, 1000)
-      .map((file) => ({
-        ...file,
-        url: buildImageLibraryUrl(req, file.path),
-      }));
-
-    return res.json({
-      root: rootPath,
-      moduleFilter,
-      search: searchFilter,
-      modules,
-      totalMatches: filteredFiles.length,
-      files,
-    });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
-
-    if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
-      return res.status(503).json({
-        error: 'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
-        checkedPaths: imageLibraryPathCandidates.filter(Boolean),
+        const searchable = `${file.name} ${file.path} ${file.module}`.toLowerCase();
+        return searchable.includes(searchFilter);
       });
-    }
 
-    console.error('Admin get image modules error:', error);
-    return res.status(500).json({ error: 'Failed to load image module overview' });
+      const files = filteredFiles
+        .sort((a, b) => a.path.localeCompare(b.path))
+        .slice(0, 1000)
+        .map((file) => ({
+          ...file,
+          url: buildImageLibraryUrl(req, file.path),
+        }));
+
+      return res.json({
+        root: rootPath,
+        moduleFilter,
+        search: searchFilter,
+        modules,
+        totalMatches: filteredFiles.length,
+        files,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'UNKNOWN_ERROR';
+
+      if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
+        return res.status(503).json({
+          error:
+            'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
+          checkedPaths: imageLibraryPathCandidates.filter(Boolean),
+        });
+      }
+
+      console.error('Admin get image modules error:', error);
+      return res.status(500).json({ error: 'Failed to load image module overview' });
+    }
   }
-});
+);
 
 /**
  * POST /api/admin/image-library/upload
@@ -3419,7 +3784,8 @@ router.post(
 
       if (message === 'IMAGE_LIBRARY_UNAVAILABLE') {
         return res.status(503).json({
-          error: 'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
+          error:
+            'Image library storage is unavailable on this server. Configure IMAGE_LIBRARY_ROOT_PATH to the mounted image directory and restart backend.',
           checkedPaths: imageLibraryPathCandidates.filter(Boolean),
         });
       }
@@ -3485,13 +3851,17 @@ router.post(
         return res.status(400).json({ error: 'moneyAmount is required for money rewards' });
       }
       if (input.rewardType === 'ammo' && (!data.ammoType || !data.ammoQuantity)) {
-        return res.status(400).json({ error: 'ammoType and ammoQuantity are required for ammo rewards' });
+        return res
+          .status(400)
+          .json({ error: 'ammoType and ammoQuantity are required for ammo rewards' });
       }
       if (input.rewardType === 'credits' && !data.creditAmount) {
         return res.status(400).json({ error: 'creditAmount is required for credit rewards' });
       }
       if (input.rewardType === 'event_boost' && (!data.rewardKey || !data.durationHours)) {
-        return res.status(400).json({ error: 'rewardKey and durationHours are required for event boost rewards' });
+        return res
+          .status(400)
+          .json({ error: 'rewardKey and durationHours are required for event boost rewards' });
       }
 
       const offer = await prisma.premiumOneTimeOffer.create({ data });
@@ -3563,13 +3933,17 @@ router.put(
         return res.status(400).json({ error: 'moneyAmount is required for money rewards' });
       }
       if (input.rewardType === 'ammo' && (!data.ammoType || !data.ammoQuantity)) {
-        return res.status(400).json({ error: 'ammoType and ammoQuantity are required for ammo rewards' });
+        return res
+          .status(400)
+          .json({ error: 'ammoType and ammoQuantity are required for ammo rewards' });
       }
       if (input.rewardType === 'credits' && !data.creditAmount) {
         return res.status(400).json({ error: 'creditAmount is required for credit rewards' });
       }
       if (input.rewardType === 'event_boost' && (!data.rewardKey || !data.durationHours)) {
-        return res.status(400).json({ error: 'rewardKey and durationHours are required for event boost rewards' });
+        return res
+          .status(400)
+          .json({ error: 'rewardKey and durationHours are required for event boost rewards' });
       }
 
       const offer = await prisma.premiumOneTimeOffer.update({
@@ -3916,12 +4290,8 @@ router.get('/players/vip/list', async (_req, res) => {
 
     // Separate active and expired VIP
     const now = new Date();
-    const active = vipPlayers.filter(
-      p => !p.vipExpiresAt || p.vipExpiresAt > now
-    );
-    const expired = vipPlayers.filter(
-      p => p.vipExpiresAt && p.vipExpiresAt <= now
-    );
+    const active = vipPlayers.filter((p) => !p.vipExpiresAt || p.vipExpiresAt > now);
+    const expired = vipPlayers.filter((p) => p.vipExpiresAt && p.vipExpiresAt <= now);
 
     res.json({
       success: true,
@@ -3981,7 +4351,9 @@ router.post(
 
       const exists = allVehicles.some((entry) => entry.id === normalizedVehicle.id);
       if (exists) {
-        return res.status(400).json({ error: `Vehicle with id \"${normalizedVehicle.id}\" already exists` });
+        return res
+          .status(400)
+          .json({ error: `Vehicle with id \"${normalizedVehicle.id}\" already exists` });
       }
 
       vehicles[category].push(normalizedVehicle);
@@ -4020,7 +4392,9 @@ router.delete(
 
       const vehicles = await readVehiclesFile();
       const beforeCount = vehicles[categoryParam].length;
-      vehicles[categoryParam] = vehicles[categoryParam].filter((vehicle) => vehicle.id !== vehicleId);
+      vehicles[categoryParam] = vehicles[categoryParam].filter(
+        (vehicle) => vehicle.id !== vehicleId
+      );
 
       if (vehicles[categoryParam].length === beforeCount) {
         return res.status(404).json({ error: 'Vehicle not found' });
@@ -4047,7 +4421,10 @@ router.get('/aircraft', async (_req, res) => {
     res.json({ success: true, aircraft: list });
   } catch (error) {
     console.error('Admin get aircraft error:', error);
-    res.status(500).json({ error: 'Failed to fetch aircraft', details: error instanceof Error ? error.message : String(error) });
+    res.status(500).json({
+      error: 'Failed to fetch aircraft',
+      details: error instanceof Error ? error.message : String(error),
+    });
   }
 });
 
@@ -4065,7 +4442,8 @@ router.post(
       await writeAircraftFile(list);
       res.json({ success: true, aircraft });
     } catch (error) {
-      if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      if (error instanceof z.ZodError)
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
       console.error('Admin add aircraft error:', error);
       res.status(500).json({ error: 'Failed to add aircraft' });
     }
@@ -4086,7 +4464,8 @@ router.put(
       await writeAircraftFile(list);
       res.json({ success: true, aircraft: list[idx] });
     } catch (error) {
-      if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      if (error instanceof z.ZodError)
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
       console.error('Admin update aircraft error:', error);
       res.status(500).json({ error: 'Failed to update aircraft' });
     }
@@ -4124,26 +4503,23 @@ router.get('/tools', async (_req, res) => {
   }
 });
 
-router.post(
-  '/tools',
-  auditLog({ action: 'ADD_TOOL', targetType: 'Tool' }),
-  async (req, res) => {
-    try {
-      const tool = toolSchema.parse(req.body);
-      const tools = await readToolsFile();
-      if (tools.some((t) => t.id === tool.id)) {
-        return res.status(400).json({ error: `Tool with id "${tool.id}" already exists` });
-      }
-      tools.push(tool);
-      await writeToolsFile(tools);
-      res.json({ success: true, tool });
-    } catch (error) {
-      if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid input', details: error.errors });
-      console.error('Admin add tool error:', error);
-      res.status(500).json({ error: 'Failed to add tool' });
+router.post('/tools', auditLog({ action: 'ADD_TOOL', targetType: 'Tool' }), async (req, res) => {
+  try {
+    const tool = toolSchema.parse(req.body);
+    const tools = await readToolsFile();
+    if (tools.some((t) => t.id === tool.id)) {
+      return res.status(400).json({ error: `Tool with id "${tool.id}" already exists` });
     }
+    tools.push(tool);
+    await writeToolsFile(tools);
+    res.json({ success: true, tool });
+  } catch (error) {
+    if (error instanceof z.ZodError)
+      return res.status(400).json({ error: 'Invalid input', details: error.errors });
+    console.error('Admin add tool error:', error);
+    res.status(500).json({ error: 'Failed to add tool' });
   }
-);
+});
 
 router.put(
   '/tools/:toolId',
@@ -4159,7 +4535,8 @@ router.put(
       await writeToolsFile(tools);
       res.json({ success: true, tool: tools[idx] });
     } catch (error) {
-      if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      if (error instanceof z.ZodError)
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
       console.error('Admin update tool error:', error);
       res.status(500).json({ error: 'Failed to update tool' });
     }
@@ -4197,26 +4574,23 @@ router.get('/crimes', async (_req, res) => {
   }
 });
 
-router.post(
-  '/crimes',
-  auditLog({ action: 'ADD_CRIME', targetType: 'Crime' }),
-  async (req, res) => {
-    try {
-      const crime = crimeSchema.parse(req.body);
-      const crimes = await readCrimesFile();
-      if (crimes.some((c) => c.id === crime.id)) {
-        return res.status(400).json({ error: `Crime with id "${crime.id}" already exists` });
-      }
-      crimes.push(crime);
-      await writeCrimesFile(crimes);
-      res.json({ success: true, crime });
-    } catch (error) {
-      if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid input', details: error.errors });
-      console.error('Admin add crime error:', error);
-      res.status(500).json({ error: 'Failed to add crime' });
+router.post('/crimes', auditLog({ action: 'ADD_CRIME', targetType: 'Crime' }), async (req, res) => {
+  try {
+    const crime = crimeSchema.parse(req.body);
+    const crimes = await readCrimesFile();
+    if (crimes.some((c) => c.id === crime.id)) {
+      return res.status(400).json({ error: `Crime with id "${crime.id}" already exists` });
     }
+    crimes.push(crime);
+    await writeCrimesFile(crimes);
+    res.json({ success: true, crime });
+  } catch (error) {
+    if (error instanceof z.ZodError)
+      return res.status(400).json({ error: 'Invalid input', details: error.errors });
+    console.error('Admin add crime error:', error);
+    res.status(500).json({ error: 'Failed to add crime' });
   }
-);
+});
 
 router.put(
   '/crimes/:crimeId',
@@ -4232,7 +4606,8 @@ router.put(
       await writeCrimesFile(crimes);
       res.json({ success: true, crime: crimes[idx] });
     } catch (error) {
-      if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid input', details: error.errors });
+      if (error instanceof z.ZodError)
+        return res.status(400).json({ error: 'Invalid input', details: error.errors });
       console.error('Admin update crime error:', error);
       res.status(500).json({ error: 'Failed to update crime' });
     }
@@ -4278,7 +4653,9 @@ router.post(
       res.json({ war });
     } catch (error) {
       console.error('Admin declare crew war error:', error);
-      res.status(400).json({ error: error instanceof Error ? error.message : 'Failed to declare crew war' });
+      res
+        .status(400)
+        .json({ error: error instanceof Error ? error.message : 'Failed to declare crew war' });
     }
   }
 );
@@ -4315,7 +4692,9 @@ router.patch(
       return res.json({ war });
     } catch (error) {
       console.error('Admin update crew war status error:', error);
-      return res.status(400).json({ error: error instanceof Error ? error.message : 'Failed to update crew war status' });
+      return res.status(400).json({
+        error: error instanceof Error ? error.message : 'Failed to update crew war status',
+      });
     }
   }
 );

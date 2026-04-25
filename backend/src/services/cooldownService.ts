@@ -18,6 +18,24 @@ interface CooldownConfig {
   vehicle_theft: number;
   motorcycle_theft: number;
   boat_theft: number;
+  vehicle_hotspot_op: number;
+  motorcycle_hotspot_op: number;
+  boat_hotspot_op: number;
+  vehicle_crew_op: number;
+  motorcycle_crew_op: number;
+  boat_crew_op: number;
+  vehicle_crew_match: number;
+  motorcycle_crew_match: number;
+  boat_crew_match: number;
+  vehicle_chop_contract: number;
+  motorcycle_chop_contract: number;
+  boat_chop_contract: number;
+  vehicle_counter_intercept: number;
+  motorcycle_counter_intercept: number;
+  boat_counter_intercept: number;
+  vehicle_ops_contract: number;
+  motorcycle_ops_contract: number;
+  boat_ops_contract: number;
   ammo: number;
 }
 
@@ -41,6 +59,24 @@ const COOLDOWN_PERIODS: CooldownConfig = {
   vehicle_theft: 300, // 5 minutes between auto thefts
   motorcycle_theft: 240, // 4 minutes between motorcycle thefts
   boat_theft: 600, // 10 minutes between boat thefts
+  vehicle_hotspot_op: 1800, // 30 minutes
+  motorcycle_hotspot_op: 1500, // 25 minutes
+  boat_hotspot_op: 2400, // 40 minutes
+  vehicle_crew_op: 2700, // 45 minutes
+  motorcycle_crew_op: 2400, // 40 minutes
+  boat_crew_op: 3300, // 55 minutes
+  vehicle_crew_match: 3600, // 60 minutes
+  motorcycle_crew_match: 3300, // 55 minutes
+  boat_crew_match: 4200, // 70 minutes
+  vehicle_chop_contract: 14400, // 4 hours
+  motorcycle_chop_contract: 12600, // 3.5 hours
+  boat_chop_contract: 18000, // 5 hours
+  vehicle_counter_intercept: 7200, // 2 hours
+  motorcycle_counter_intercept: 6600, // 1h50
+  boat_counter_intercept: 8400, // 2h20
+  vehicle_ops_contract: 10800, // 3 hours
+  motorcycle_ops_contract: 9600, // 2h40
+  boat_ops_contract: 12600, // 3h30
   ammo: 3600, // 1 hour between ammo purchases
 };
 
