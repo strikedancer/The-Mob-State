@@ -134,6 +134,8 @@ class NightclubService {
   private readonly HEAT_EVENT_PREFIX = 'heat_cooldown_';
   private readonly SMUGGLING_EVENT_PREFIX = 'smuggling_route_';
   private readonly COUNTER_INTEL_EVENT_PREFIX = 'counter_intel_';
+  private readonly HOSPITALITY_STOCK_EVENT_PREFIX = 'hospitality_stock_';
+  private readonly HOSPITALITY_PRICING_EVENT_PREFIX = 'hospitality_pricing_';
   private readonly UPGRADE_COSTS: Record<'sound_rig' | 'vip_lounge' | 'surveillance', number[]> = {
     sound_rig: [60000, 125000, 240000],
     vip_lounge: [85000, 165000, 300000],
@@ -235,6 +237,82 @@ class NightclubService {
       minGrams: 100,
       maxGrams: 220,
       quality: 'A',
+    },
+  };
+  private readonly HOSPITALITY_STOCK_PACKS: Record<
+    'beer_crates' | 'premium_bottles' | 'street_food' | 'vip_catering',
+    {
+      nl: string;
+      en: string;
+      cost: number;
+      servicePoints: number;
+      spoilageHours: number;
+      category: 'drinks' | 'food';
+    }
+  > = {
+    beer_crates: {
+      nl: 'Bierkratten',
+      en: 'Beer crates',
+      cost: 28000,
+      servicePoints: 35,
+      spoilageHours: 48,
+      category: 'drinks',
+    },
+    premium_bottles: {
+      nl: 'Premium flessen',
+      en: 'Premium bottles',
+      cost: 64000,
+      servicePoints: 55,
+      spoilageHours: 72,
+      category: 'drinks',
+    },
+    street_food: {
+      nl: 'Street food batch',
+      en: 'Street food batch',
+      cost: 22000,
+      servicePoints: 26,
+      spoilageHours: 24,
+      category: 'food',
+    },
+    vip_catering: {
+      nl: 'VIP catering',
+      en: 'VIP catering',
+      cost: 76000,
+      servicePoints: 62,
+      spoilageHours: 18,
+      category: 'food',
+    },
+  };
+  private readonly HOSPITALITY_PRICING_MODES: Record<
+    'budget' | 'balanced' | 'premium',
+    {
+      nl: string;
+      en: string;
+      drinksMargin: number;
+      foodMargin: number;
+      crowdPenalty: number;
+    }
+  > = {
+    budget: {
+      nl: 'Budgetprijzen',
+      en: 'Budget pricing',
+      drinksMargin: 0.95,
+      foodMargin: 0.95,
+      crowdPenalty: 0,
+    },
+    balanced: {
+      nl: 'Gebalanceerd',
+      en: 'Balanced',
+      drinksMargin: 1.08,
+      foodMargin: 1.06,
+      crowdPenalty: 1,
+    },
+    premium: {
+      nl: 'Premium menu',
+      en: 'Premium menu',
+      drinksMargin: 1.2,
+      foodMargin: 1.14,
+      crowdPenalty: 4,
     },
   };
 
@@ -2190,6 +2268,188 @@ class NightclubService {
     };
   }
 
+  private async getHospitalitySnapshot(venueId: number) {
+    const now = new Date();
+    const stockEvents = await prisma.nightclubEvent.findMany({
+      where: {
+        venueId,
+        eventType: { startsWith: this.HOSPITALITY_STOCK_EVENT_PREFIX },
+        endsAt: { gte: now },
+      },
+      orderBy: { startsAt: 'desc' },
+      take: 24,
+      select: { eventType: true, startsAt: true, endsAt: true, investment: true, expectedVisitors: true },
+    });
+    const pricingEvent = await prisma.nightclubEvent.findFirst({
+      where: {
+        venueId,
+        eventType: { startsWith: this.HOSPITALITY_PRICING_EVENT_PREFIX },
+      },
+      orderBy: { startsAt: 'desc' },
+      select: { eventType: true, startsAt: true },
+    });
+
+    const pricingKey =
+      pricingEvent?.eventType?.replace(this.HOSPITALITY_PRICING_EVENT_PREFIX, '') ?? 'balanced';
+    const pricingMode =
+      this.HOSPITALITY_PRICING_MODES[
+        pricingKey as 'budget' | 'balanced' | 'premium'
+      ] ?? this.HOSPITALITY_PRICING_MODES.balanced;
+
+    let drinksPoints = 0;
+    let foodPoints = 0;
+    for (const row of stockEvents) {
+      const packKey = row.eventType.replace(this.HOSPITALITY_STOCK_EVENT_PREFIX, '');
+      const pack =
+        this.HOSPITALITY_STOCK_PACKS[
+          packKey as 'beer_crates' | 'premium_bottles' | 'street_food' | 'vip_catering'
+        ];
+      if (!pack) continue;
+      if (pack.category === 'drinks') drinksPoints += pack.servicePoints;
+      if (pack.category === 'food') foodPoints += pack.servicePoints;
+    }
+
+    const totalPoints = drinksPoints + foodPoints;
+    const serviceLevel = Math.max(0, Math.min(100, totalPoints));
+    const stockStatus =
+      serviceLevel >= 70 ? 'strong' : serviceLevel >= 35 ? 'stable' : serviceLevel > 0 ? 'low' : 'empty';
+    const spoilageRiskPct = Math.max(0, Math.min(85, Math.round((foodPoints > 0 ? 22 : 48) - serviceLevel * 0.2)));
+
+    return {
+      pricingKey,
+      pricingMode,
+      drinksPoints,
+      foodPoints,
+      serviceLevel,
+      stockStatus,
+      spoilageRiskPct,
+      activeStocksCount: stockEvents.length,
+      stockOptions: Object.entries(this.HOSPITALITY_STOCK_PACKS).map(([key, value]) => ({
+        key,
+        labelNl: value.nl,
+        labelEn: value.en,
+        cost: value.cost,
+        servicePoints: value.servicePoints,
+        spoilageHours: value.spoilageHours,
+        category: value.category,
+      })),
+      pricingOptions: Object.entries(this.HOSPITALITY_PRICING_MODES).map(([key, value]) => ({
+        key,
+        labelNl: value.nl,
+        labelEn: value.en,
+        drinksMargin: value.drinksMargin,
+        foodMargin: value.foodMargin,
+        crowdPenalty: value.crowdPenalty,
+      })),
+    };
+  }
+
+  async purchaseHospitalityStock(
+    playerId: number,
+    venueId: number,
+    packType: 'beer_crates' | 'premium_bottles' | 'street_food' | 'vip_catering'
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+    const pack = this.HOSPITALITY_STOCK_PACKS[packType];
+    if (!pack) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onbekende voorraadset', 'Unknown stock pack'),
+      };
+    }
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    if (!player || player.money < pack.cost) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onvoldoende cash voor stock', 'Not enough cash for stock'),
+      };
+    }
+
+    const startsAt = new Date();
+    const endsAt = new Date(startsAt.getTime() + pack.spoilageHours * 60 * 60 * 1000);
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: pack.cost } },
+      }),
+      prisma.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.HOSPITALITY_STOCK_EVENT_PREFIX}${packType}`,
+          eventName: this.localize(language, pack.nl, pack.en),
+          startsAt,
+          endsAt,
+          expectedVisitors: pack.servicePoints,
+          investment: pack.cost,
+          eventSuccess: true,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        `${pack.nl} aangevuld. Service boost actief.`,
+        `${pack.en} stocked. Service boost active.`
+      ),
+    };
+  }
+
+  async setHospitalityPricingMode(
+    playerId: number,
+    venueId: number,
+    pricingMode: 'budget' | 'balanced' | 'premium'
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+    const mode = this.HOSPITALITY_PRICING_MODES[pricingMode];
+    if (!mode) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onbekende pricing mode', 'Unknown pricing mode'),
+      };
+    }
+
+    await prisma.nightclubEvent.create({
+      data: {
+        venueId,
+        eventType: `${this.HOSPITALITY_PRICING_EVENT_PREFIX}${pricingMode}`,
+        eventName: this.localize(language, mode.nl, mode.en),
+        startsAt: new Date(),
+        endsAt: new Date(),
+        expectedVisitors: 0,
+        investment: 0,
+        eventSuccess: true,
+      },
+    });
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        `Pricing aangepast naar ${mode.nl}.`,
+        `Pricing changed to ${mode.en}.`
+      ),
+    };
+  }
+
   async applyUpgrade(
     playerId: number,
     venueId: number,
@@ -2523,6 +2783,7 @@ class NightclubService {
    */
   private async calculateCrowdState(venueId: number): Promise<CrowdState> {
     const upgradeLevels = await this.getVenueUpgradeLevels(venueId);
+    const hospitality = await this.getHospitalitySnapshot(venueId);
     const venue = await prisma.nightclubVenue.findUnique({
       where: { id: venueId },
       include: {
@@ -2588,6 +2849,14 @@ class NightclubService {
       if (upgradeLevels.sound_rig >= 2 && vibe === 'chill') {
         vibe = 'normal';
       }
+    }
+
+    // Bar & kitchen service improves retention; aggressive pricing lowers retention.
+    if (hospitality.serviceLevel > 0) {
+      size = Math.min(100, size + Math.floor(hospitality.serviceLevel / 18));
+    }
+    if (hospitality.pricingMode.crowdPenalty > 0) {
+      size = Math.max(8, size - hospitality.pricingMode.crowdPenalty);
     }
 
     // Time of day effect (peak hours 22:00-02:00)
@@ -2680,6 +2949,7 @@ class NightclubService {
 
     const crowdState = await this.calculateCrowdState(venueId);
     const upgradeLevels = await this.getVenueUpgradeLevels(venueId);
+    const hospitality = await this.getHospitalitySnapshot(venueId);
     const securityReduction = await this.getCurrentSecurityReduction(venueId);
     const staffingLimits = await this.getStaffingLimits(venue.playerId);
     const prostitutionBoost = await this.getActiveProstituteBoost(
@@ -2737,8 +3007,11 @@ class NightclubService {
         inventory.basePrice * Math.min(this.MAX_MARGIN, Math.max(this.MIN_MARGIN, margin))
       );
       const vipLoungeMultiplier = 1 + upgradeLevels.vip_lounge * 0.04;
+      const hospitalityMultiplier =
+        ((hospitality.pricingMode.drinksMargin + hospitality.pricingMode.foodMargin) / 2) *
+        (1 + hospitality.serviceLevel / 400);
       const boostedUnitPrice = Math.floor(
-        unitPrice * prostitutionBoost.priceBoost * vipLoungeMultiplier
+        unitPrice * prostitutionBoost.priceBoost * vipLoungeMultiplier * hospitalityMultiplier
       );
       const totalRevenue = boostedUnitPrice * quantitySold;
 
@@ -2805,6 +3078,7 @@ class NightclubService {
       const crowdState = await this.calculateCrowdState(venue.id);
       const securityShift = venue.securityShifts[0];
       const upgradeLevels = await this.getVenueUpgradeLevels(venue.id);
+      const hospitality = await this.getHospitalitySnapshot(venue.id);
       const [heatCooldownActive, counterIntelActive] = await Promise.all([
         prisma.nightclubEvent.findFirst({
           where: {
@@ -2839,6 +3113,11 @@ class NightclubService {
       }
       if (counterIntelActive) {
         theftChance *= 0.78;
+      }
+      if (hospitality.stockStatus === 'empty') {
+        theftChance *= 1.12;
+      } else if (hospitality.stockStatus === 'strong') {
+        theftChance *= 0.92;
       }
 
       if (Math.random() < theftChance && venue.inventory.length > 0) {
@@ -3128,6 +3407,7 @@ class NightclubService {
       activeCounterIntelEvent,
       latestSmugglingEvent,
       timeline,
+      hospitality,
     ] = await Promise.all([
       prisma.nightclubEvent.findFirst({
         where: {
@@ -3169,6 +3449,7 @@ class NightclubService {
         orderBy: { startsAt: 'desc' },
       }),
       this.buildOperationsTimeline(venueId),
+      this.getHospitalitySnapshot(venueId),
     ]);
     const supplierKey =
       activeSupplierEvent?.eventType?.replace(this.SUPPLIER_EVENT_PREFIX, '') ?? null;
@@ -3363,6 +3644,22 @@ class NightclubService {
               crowdBoost: value.crowdBoost,
               spendBoost: value.spendBoost,
             })),
+          },
+          hospitality: {
+            serviceLevel: hospitality.serviceLevel,
+            stockStatus: hospitality.stockStatus,
+            spoilageRiskPct: hospitality.spoilageRiskPct,
+            drinksPoints: hospitality.drinksPoints,
+            foodPoints: hospitality.foodPoints,
+            activeStocksCount: hospitality.activeStocksCount,
+            pricingKey: hospitality.pricingKey,
+            pricingLabelNl: hospitality.pricingMode.nl,
+            pricingLabelEn: hospitality.pricingMode.en,
+            drinksMargin: hospitality.pricingMode.drinksMargin,
+            foodMargin: hospitality.pricingMode.foodMargin,
+            crowdPenalty: hospitality.pricingMode.crowdPenalty,
+            stockOptions: hospitality.stockOptions,
+            pricingOptions: hospitality.pricingOptions,
           },
           dynamicCalendar: {
             today: calendar.today,

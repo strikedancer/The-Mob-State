@@ -407,6 +407,60 @@ router.post('/:venueId/ops/counter-intel', authenticate, async (req: Request, re
 });
 
 /**
+ * POST /:venueId/ops/hospitality/stock
+ * Body: { packType: 'beer_crates'|'premium_bottles'|'street_food'|'vip_catering' }
+ */
+router.post('/:venueId/ops/hospitality/stock', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { packType } = req.body;
+    if (!packType) {
+      return res.status(400).json({ success: false, message: 'Missing packType' });
+    }
+    const result = await nightclubService.purchaseHospitalityStock(
+      playerId,
+      venueId,
+      String(packType) as 'beer_crates' | 'premium_bottles' | 'street_food' | 'vip_catering'
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/ops/hospitality/pricing
+ * Body: { pricingMode: 'budget'|'balanced'|'premium' }
+ */
+router.post(
+  '/:venueId/ops/hospitality/pricing',
+  authenticate,
+  async (req: Request, res: Response) => {
+    try {
+      const playerId = (req as AuthRequest).player?.id;
+      if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+      const venueId = parseInt(req.params.venueId);
+      const { pricingMode } = req.body;
+      if (!pricingMode) {
+        return res.status(400).json({ success: false, message: 'Missing pricingMode' });
+      }
+      const result = await nightclubService.setHospitalityPricingMode(
+        playerId,
+        venueId,
+        String(pricingMode) as 'budget' | 'balanced' | 'premium'
+      );
+      if (result.success) return res.json(result);
+      return res.status(400).json(result);
+    } catch (err) {
+      res.status(500).json({ success: false, message: (err as any).message });
+    }
+  }
+);
+
+/**
  * POST /:venueId/upgrades/apply
  * Body: { upgradeType: 'sound_rig'|'vip_lounge'|'surveillance' }
  */

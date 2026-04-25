@@ -279,6 +279,36 @@ class NightclubService {
     }
   }
 
+  Future<Map<String, dynamic>> buyHospitalityStock({
+    required int venueId,
+    required String packType,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/hospitality/stock',
+        {'packType': packType},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> setHospitalityPricing({
+    required int venueId,
+    required String pricingMode,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/hospitality/pricing',
+        {'pricingMode': pricingMode},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> storeDrugs({
     required int venueId,
     required String drugType,

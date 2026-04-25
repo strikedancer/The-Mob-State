@@ -57,6 +57,8 @@ class _NightclubScreenState extends State<NightclubScreen>
   String _selectedSupplierContract = 'street';
   String _selectedPromoterProfile = 'street_hype';
   String _selectedSmugglingRoute = 'harbor';
+  String _selectedHospitalityPack = 'beer_crates';
+  String _selectedHospitalityPricing = 'balanced';
   String? _selectedRivalName;
   List<dynamic> _rivalSearchResults = const [];
   late final TextEditingController _storeQuantityController;
@@ -1010,6 +1012,32 @@ class _NightclubScreenState extends State<NightclubScreen>
     _showResultMessage(
       result,
       _l('Counter-intel mislukt', 'Counter-intel failed'),
+    );
+    await _load();
+  }
+
+  Future<void> _buyHospitalityStock() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.buyHospitalityStock(
+      venueId: _venueId!,
+      packType: _selectedHospitalityPack,
+    );
+    _showResultMessage(
+      result,
+      _l('Hospitality stock mislukt', 'Hospitality stock failed'),
+    );
+    await _load();
+  }
+
+  Future<void> _setHospitalityPricingMode() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.setHospitalityPricing(
+      venueId: _venueId!,
+      pricingMode: _selectedHospitalityPricing,
+    );
+    _showResultMessage(
+      result,
+      _l('Hospitality pricing mislukt', 'Hospitality pricing failed'),
     );
     await _load();
   }
@@ -2133,6 +2161,8 @@ class _NightclubScreenState extends State<NightclubScreen>
         (expansion['reputationSeason'] as Map<String, dynamic>?) ?? const {};
     final counterIntel =
         (expansion['counterIntel'] as Map<String, dynamic>?) ?? const {};
+    final hospitality =
+        (expansion['hospitality'] as Map<String, dynamic>?) ?? const {};
     final timeline = (expansion['timeline'] as List<dynamic>?) ?? const [];
 
     String formatDate(dynamic value) {
@@ -2150,7 +2180,7 @@ class _NightclubScreenState extends State<NightclubScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _l('Operations Lab (10 systemen)', 'Operations Lab (10 systems)'),
+              _l('Operations Lab (11 systemen)', 'Operations Lab (11 systems)'),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -2548,7 +2578,83 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('9) Rival clubs + counter-intel', '9) Rival clubs + counter-intel'),
+              _l('9) Bar & Kitchen management', '9) Bar & Kitchen management'),
+              Icons.restaurant_menu,
+            ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _kpiChip(
+                  _l('Service level', 'Service level'),
+                  '${hospitality['serviceLevel'] ?? 0}%',
+                ),
+                _kpiChip(
+                  _l('Stock status', 'Stock status'),
+                  (hospitality['stockStatus'] ?? '-').toString(),
+                ),
+                _kpiChip(
+                  _l('Bederfrisico', 'Spoilage risk'),
+                  '${hospitality['spoilageRiskPct'] ?? 0}%',
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            DropdownButtonFormField<String>(
+              value: _selectedHospitalityPack,
+              items: ((hospitality['stockOptions'] as List<dynamic>?) ?? const []).map((raw) {
+                final map = raw as Map<String, dynamic>;
+                final key = (map['key'] ?? '').toString();
+                final label = Localizations.localeOf(context).languageCode == 'nl'
+                    ? (map['labelNl'] ?? key).toString()
+                    : (map['labelEn'] ?? key).toString();
+                return DropdownMenuItem(
+                  value: key,
+                  child: Text('$label • €${map['cost'] ?? 0}'),
+                );
+              }).toList(),
+              onChanged: (v) {
+                if (v == null) return;
+                setState(() => _selectedHospitalityPack = v);
+              },
+              decoration: InputDecoration(
+                labelText: _l('Drank/Food voorraad', 'Drinks/Food stock'),
+              ),
+            ),
+            const SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: _buyHospitalityStock,
+              icon: const Icon(Icons.local_bar),
+              label: Text(_l('Voorraad inkopen', 'Buy stock')),
+            ),
+            const SizedBox(height: 6),
+            DropdownButtonFormField<String>(
+              value: _selectedHospitalityPricing,
+              items: ((hospitality['pricingOptions'] as List<dynamic>?) ?? const []).map((raw) {
+                final map = raw as Map<String, dynamic>;
+                final key = (map['key'] ?? '').toString();
+                final label = Localizations.localeOf(context).languageCode == 'nl'
+                    ? (map['labelNl'] ?? key).toString()
+                    : (map['labelEn'] ?? key).toString();
+                return DropdownMenuItem(value: key, child: Text(label));
+              }).toList(),
+              onChanged: (v) {
+                if (v == null) return;
+                setState(() => _selectedHospitalityPricing = v);
+              },
+              decoration: InputDecoration(
+                labelText: _l('Menu pricing mode', 'Menu pricing mode'),
+              ),
+            ),
+            const SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: _setHospitalityPricingMode,
+              icon: const Icon(Icons.price_change),
+              label: Text(_l('Pricing toepassen', 'Apply pricing')),
+            ),
+            const SizedBox(height: 12),
+            _intelligenceSectionTitle(
+              _l('10) Rival clubs + counter-intel', '10) Rival clubs + counter-intel'),
               Icons.sports_mma,
             ),
             TextField(
@@ -2612,7 +2718,7 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('10) Operations timeline', '10) Operations timeline'),
+              _l('11) Operations timeline', '11) Operations timeline'),
               Icons.timeline,
             ),
             if (timeline.isEmpty)
