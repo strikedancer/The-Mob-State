@@ -24,6 +24,7 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
 - Overweight and travel-blocking checks must use the real carried drug quantity in grams; do not reintroduce legacy `quantity * 100` conversions.
+- Directe routes (1 etappe) mogen nooit in een in-transit state blijven hangen; na cooldown moet de reis als afgerond gelden zonder extra "Verder"/"Annuleren" stap.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

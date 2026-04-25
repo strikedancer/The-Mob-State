@@ -50,6 +50,12 @@
 
 ---
 
+## Reizen
+
+- Bij een directe route (1 etappe) wordt de reis na de cooldown meteen als afgerond behandeld. De speler krijgt dan niet alsnog een extra stap met "Verder" of "Reis annuleren".
+
+---
+
 ## Basis Mechanics
 
 ### Speler Stats

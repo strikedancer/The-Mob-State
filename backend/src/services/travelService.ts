@@ -424,15 +424,18 @@ export async function startJourney(playerId: number, destinationCountryId: strin
     throw new Error('INSUFFICIENT_MONEY');
   }
 
+  const isSingleLegJourney = totalLegs <= 1;
+  const firstStop = route.path[1] || destinationCountryId;
+
   // Deduct cost for first leg
   const updatedPlayer = await prisma.player.update({
     where: { id: playerId },
     data: {
-      currentCountry: route.path[1], // Move to first waypoint
-      currentTravelLeg: 1,
-      travelingTo: destinationCountryId,
-      travelRoute: serializeRoute(route.path),
-      travelStartedAt: new Date(),
+      currentCountry: firstStop, // Move to first waypoint (or destination on direct trip)
+      currentTravelLeg: isSingleLegJourney ? 0 : 1,
+      travelingTo: isSingleLegJourney ? null : destinationCountryId,
+      travelRoute: isSingleLegJourney ? null : serializeRoute(route.path),
+      travelStartedAt: isSingleLegJourney ? null : new Date(),
       money: player.money - baseCostPerLeg,
     },
   });
@@ -465,25 +468,31 @@ export async function startJourney(playerId: number, destinationCountryId: strin
   await activityService.logActivity(
     playerId,
     'TRAVEL_START',
-    `Started journey to ${destCountry.name}: ${routeDescription}`,
+    isSingleLegJourney
+      ? `Traveled to ${destCountry.name}`
+      : `Started journey to ${destCountry.name}: ${routeDescription}`,
     {
       destination: destinationCountryId,
       route: route.path,
       totalLegs,
       legsCost: baseCostPerLeg,
       totalCost,
+      direct: isSingleLegJourney,
     },
     true
   );
 
   // Create world event
   await worldEventService.createEvent(
-    'travel.journey_started',
+    isSingleLegJourney ? 'travel.arrived' : 'travel.journey_started',
     {
       playerId,
+      fromCountry: player.currentCountry,
+      toCountry: destinationCountryId,
       destination: destinationCountryId,
       route: route.path,
       totalLegs,
+      direct: isSingleLegJourney,
     },
     playerId
   );
@@ -502,7 +511,9 @@ export async function startJourney(playerId: number, destinationCountryId: strin
     remainingMoney: updatedPlayer.money,
     legsCompleted: 1,
     totalLegs,
-    nextLeg: route.path[2] || destinationCountryId,
+    nextLeg: isSingleLegJourney
+      ? destinationCountryId
+      : (route.path[2] || destinationCountryId),
   };
 }
 
