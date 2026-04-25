@@ -1,6 +1,6 @@
-# Mafia Game - Gameplay Handleiding
+﻿# Mafia Game - Gameplay Handleiding
 
-## 📋 Inhoudsopgave
+## ðŸ“‹ Inhoudsopgave
 - [Basis Mechanics](#basis-mechanics)
 - [Crime Systeem](#crime-systeem)
 - [Wanted Level & Politie](#wanted-level--politie)
@@ -129,27 +129,27 @@ Elke **5 minuten** gebeurt er automatisch:
 #### Beginner Crimes (Level 1)
 - **Zakkenrollen** (Pickpocket)
   - Success chance: 70%
-  - Reward: €50-€200
+  - Reward: â‚¬50-â‚¬200
   - XP: 10
   - Jail time bij arrest: 5 minuten
 
 - **Winkeldiefstal** (Shoplift)
   - Success chance: 65%
-  - Reward: €100-€300
+  - Reward: â‚¬100-â‚¬300
   - XP: 15
   - Jail time bij arrest: 10 minuten
 
 #### Medium Crimes (Level 5-10)
 - **Inbraak** (Burglary)
   - Success chance: 55%
-  - Reward: €300-€800
+  - Reward: â‚¬300-â‚¬800
   - XP: 25
   - Jail time bij arrest: 15 minuten
   - Vehicle required: Nee
 
 - **Auto Diefstal** (Car Theft)
   - Success chance: 50%
-  - Reward: €500-€1,500
+  - Reward: â‚¬500-â‚¬1,500
   - XP: 30
   - Jail time bij arrest: 20 minuten
   - Vehicle required: Ja
@@ -158,14 +158,14 @@ Elke **5 minuten** gebeurt er automatisch:
 #### Advanced Crimes (Level 15+)
 - **Gewapende Overval** (Armed Robbery)
   - Success chance: 45%
-  - Reward: €1,000-€3,000
+  - Reward: â‚¬1,000-â‚¬3,000
   - XP: 40
   - Jail time bij arrest: 30 minuten
   - Vehicle required: Ja
 
 - **Bank Robbery**
   - Success chance: 30%
-  - Reward: €5,000-€15,000
+  - Reward: â‚¬5,000-â‚¬15,000
   - XP: 75
   - Jail time bij arrest: 60 minuten
   - Vehicle required: Ja
@@ -200,15 +200,15 @@ Voorbeelden:
 
 #### Bail Amount
 ```
-bail = wantedLevel * €1,000
+bail = wantedLevel * â‚¬1,000
 
 Voorbeelden:
-- Wanted level 5: €5,000 bail
-- Wanted level 10: €10,000 bail
+- Wanted level 5: â‚¬5,000 bail
+- Wanted level 10: â‚¬10,000 bail
 ```
 
 ### Politie Bribe
-- **Cost**: €500-€2,000 (afhankelijk van wanted level)
+- **Cost**: â‚¬500-â‚¬2,000 (afhankelijk van wanted level)
 - **Success chance**: 40-60%
 - **Bij succes**: 
   - Wanted level -1 tot -5
@@ -222,7 +222,7 @@ Voorbeelden:
 - **Success chance**: 30-50% (afhankelijk van helper rank)
 - **Bij succes**: 
   - Target vrij
-  - Helper €500-€2,000 reward
+  - Helper â‚¬500-â‚¬2,000 reward
 - **Bij falen**:
   - Helper gaat ook naar jail (30-60 minuten)
   - Target blijft in jail
@@ -239,11 +239,11 @@ Voorbeelden:
 ### Federal Arrest
 - **Arrest chance**: min((fbiHeat / 30) * 100, 95%)
 - **Federal jail time**: fbiHeat * 15 minuten
-- **Federal bail**: fbiHeat * €5,000
+- **Federal bail**: fbiHeat * â‚¬5,000
 
 ### Witness Protection (FBI Deal)
 - **Beschikbaar bij**: FBI Heat > 20
-- **Kosten**: €10,000-€50,000
+- **Kosten**: â‚¬10,000-â‚¬50,000
 - **Effect**: 
   - FBI Heat volledig gereset
   - Wanted level -50%
@@ -257,12 +257,12 @@ Voorbeelden:
 - **Maximum HP**: 100
 - **Health damage**: 5-15 HP per crime
 - **Passive healing**: +5 HP per 5 minuten (alleen als HP > 0)
-- **Death**: Bij 0 HP → Intensive Care (ICU)
+- **Death**: Bij 0 HP â†’ Intensive Care (ICU)
 
 ### Hospital Behandeling
 
 #### Normale Behandeling
-- **Kosten**: €10,000
+- **Kosten**: â‚¬10,000
 - **Healing**: +30 HP (max 100)
 - **Cooldown**: 60 minuten
 - **Beschikbaar**: Altijd (ook bij 0 HP)
@@ -288,7 +288,7 @@ Voorbeelden:
 1. **Preventie**: Monitor je HP constant
 2. **Emergency Room**: Gebruik gratis EHBO bij < 10 HP
 3. **Passive Healing**: Wacht 5 minuten tussen crimes voor +5 HP
-4. **Paid Treatment**: €10k voor +30 HP (1x per uur)
+4. **Paid Treatment**: â‚¬10k voor +30 HP (1x per uur)
 5. **Vermijd ICU**: 3 uur lockout is lang!
 
 ---
@@ -298,10 +298,10 @@ Voorbeelden:
 ### Territory Kaarten & Landregels
 - Je kunt alle ondersteunde Territory-landen bekijken via de interactieve kaart, niet alleen Nederland.
 - Elke regio toont ownership, stability, control en contestinformatie zodra je de regio opent.
-- Nederlandse Territory-regio's hebben nu ook strategische rollen zoals haven, hoofdstad, industrie, grensregio of logistiek knooppunt. Die rol beïnvloedt welke contest-actions in dat gebied extra punten opleveren.
+- Nederlandse Territory-regio's hebben nu ook strategische rollen zoals haven, hoofdstad, industrie, grensregio of logistiek knooppunt. Die rol beÃ¯nvloedt welke contest-actions in dat gebied extra punten opleveren.
 - Als jouw crew al aangrenzende regio's bezit, krijg je in contests extra buursteun. Daardoor zijn aangesloten gebieden makkelijker te verdedigen en waardevoller als samenhangend blok dan als losse eilanden.
 - De regio-modal toont nu niet alleen payout en status, maar ook de strategische rol, het aantal aangrenzende eigen regio's en welke actiebonussen daar actief zijn.
-- `Actiebonussen` in de Territory-modal gelden alleen voor contestpunten per actie (bijv. raid/patrol/defense) en niet voor de passieve €-uitbetaling van het gebied.
+- `Actiebonussen` in de Territory-modal gelden alleen voor contestpunten per actie (bijv. raid/patrol/defense) en niet voor de passieve â‚¬-uitbetaling van het gebied.
 - De Territory-modal toont per actie ook de formule `basis + bonus = totaal contestpunten`, zodat de impact van actiebonussen direct zichtbaar is zonder verwarring met cash payout.
 - Naast regio- en war-pressure bonussen kunnen Territory-actiebonussen nu ook komen uit crew progression: HQ global level, crew mission level en bijgebouwen (weapon/ammo/car/boat/drug storage).
 - Contest-limieten voor tegelijk actieve aanvallen en max. gebieden per crew kunnen nu beperkt opschalen met HQ global level (server-authoritative runtime tuning).
@@ -310,7 +310,7 @@ Voorbeelden:
 - Territory-passive income kan nooit meer in de crew-bank storten dan de huidige cashopslag-capaciteit. Is de crew-bank vol, dan stopt Territory met bijschrijven tot er weer ruimte is.
 - Na een gewonnen **Territory War** of **Total War** kunnen doelregio's tijdelijk **war pressure** krijgen. In de Territory-modal zie je dan extra oorlogsdruk, effectieve stabiliteit en hoe lang die tijdelijke nasleep nog actief blijft.
 - **Belangrijke regel**: bekijken mag in elk land, maar aanvallen, verdedigen en andere Territory-contestacties werken alleen in het land waar je speler zich op dat moment echt bevindt.
-- Voorbeeld: zit je in Nederland en open je de kaart van België, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar België reist.
+- Voorbeeld: zit je in Nederland en open je de kaart van BelgiÃ«, dan kun je Belgische regio's wel inspecteren maar niet aanvallen of aan een Belgische contest meedoen totdat je eerst naar BelgiÃ« reist.
 - Territory blijft crew-gebonden: zonder crew kun je geen neutrale of vijandige regio's aanvallen.
 - Op mobiel ondersteunt de Territory-kaart pinch-zoom en pannen zodat kleine regio's bruikbaar blijven.
 
@@ -324,11 +324,11 @@ Voorbeelden:
 - Hogere payout-jobs houden langere cooldowns dan lagere payout-jobs.
 
 ### Job Types
-- **Warehouse Worker**: €100-€300/shift, XP: 5
-- **Delivery Driver**: €200-€500/shift, XP: 10
-- **Security Guard**: €300-€700/shift, XP: 15
-- **Accountant**: €500-€1,200/shift, XP: 25
-- **Manager**: €800-€2,000/shift, XP: 40
+- **Warehouse Worker**: â‚¬100-â‚¬300/shift, XP: 5
+- **Delivery Driver**: â‚¬200-â‚¬500/shift, XP: 10
+- **Security Guard**: â‚¬300-â‚¬700/shift, XP: 15
+- **Accountant**: â‚¬500-â‚¬1,200/shift, XP: 25
+- **Manager**: â‚¬800-â‚¬2,000/shift, XP: 40
 
 ### Job Requirements
 - **Health**: Minimum 10 HP
@@ -351,20 +351,20 @@ Voorbeelden:
 ### Property Types
 
 #### Low-End Properties
-- **Garage**: €50,000 - Income: €100/tick
-- **Small Apartment**: €75,000 - Income: €150/tick
-- **Store**: €100,000 - Income: €200/tick
+- **Garage**: â‚¬50,000 - Income: â‚¬100/tick
+- **Small Apartment**: â‚¬75,000 - Income: â‚¬150/tick
+- **Store**: â‚¬100,000 - Income: â‚¬200/tick
 
 #### Mid-Range Properties
-- **Large Apartment**: €250,000 - Income: €500/tick
-- **Restaurant**: €400,000 - Income: €800/tick
-- **Warehouse**: €600,000 - Income: €1,200/tick
+- **Large Apartment**: â‚¬250,000 - Income: â‚¬500/tick
+- **Restaurant**: â‚¬400,000 - Income: â‚¬800/tick
+- **Warehouse**: â‚¬600,000 - Income: â‚¬1,200/tick
 
 #### High-End Properties
-- **Office Building**: €1,000,000 - Income: €2,500/tick
-- **Nightclub**: €1,500,000 - Income: €4,000/tick
-- **Casino**: €3,000,000 - Income: €8,000/tick
-- **Mansion**: €5,000,000 - Income: €15,000/tick
+- **Office Building**: â‚¬1,000,000 - Income: â‚¬2,500/tick
+- **Nightclub**: â‚¬1,500,000 - Income: â‚¬4,000/tick
+- **Casino**: â‚¬3,000,000 - Income: â‚¬8,000/tick
+- **Mansion**: â‚¬5,000,000 - Income: â‚¬15,000/tick
 
 ### Property Mechanics
 - **Income**: Elke tick (5 minuten) krijg je income
@@ -374,7 +374,7 @@ Voorbeelden:
 
 ### Property Liquidation
 - **Sell price**: 70% van aankoopprijs
-- **Example**: Casino kopen €3M → verkopen €2.1M
+- **Example**: Casino kopen â‚¬3M â†’ verkopen â‚¬2.1M
 - **No cooldown**: Direct verkopen mogelijk
 
 ---
@@ -384,7 +384,7 @@ Voorbeelden:
 ### Crew System
 
 #### Crew Creation
-- **Cost**: €10,000
+- **Cost**: â‚¬10,000
 - **Max members**: 10 spelers
 - **Leader permissions**: 
   - Invite/kick members
@@ -411,28 +411,28 @@ Voorbeelden:
 #### Small Bank Heist
 - **Required crew size**: 2 spelers
 - **Base success**: 40%
-- **Potential reward**: €10,000-€30,000
+- **Potential reward**: â‚¬10,000-â‚¬30,000
 - **XP**: 100 per speler
 - **Cooldown**: 30 minuten
 
 #### Jewelry Store Heist
 - **Required crew size**: 3 spelers
 - **Base success**: 35%
-- **Potential reward**: €20,000-€50,000
+- **Potential reward**: â‚¬20,000-â‚¬50,000
 - **XP**: 150 per speler
 - **Cooldown**: 45 minuten
 
 #### Casino Heist
 - **Required crew size**: 4 spelers
 - **Base success**: 25%
-- **Potential reward**: €50,000-€150,000
+- **Potential reward**: â‚¬50,000-â‚¬150,000
 - **XP**: 300 per speler
 - **Cooldown**: 2 uur
 
 #### Federal Reserve Heist
 - **Required crew size**: 5 spelers
 - **Base success**: 15%
-- **Potential reward**: €100,000-€500,000
+- **Potential reward**: â‚¬100,000-â‚¬500,000
 - **XP**: 500 per speler
 - **Cooldown**: 6 uur
 - **FBI Heat**: +20 bij poging
@@ -481,13 +481,13 @@ Voorbeelden:
 ### Transacties
 
 #### Deposit (Storten)
-- **Minimum**: €1
+- **Minimum**: â‚¬1
 - **Maximum**: Je huidige cash
 - **Fee**: Geen kosten
 - **Instant**: Direct verwerkt
 
 #### Withdraw (Opnemen)
-- **Minimum**: €1
+- **Minimum**: â‚¬1
 - **Maximum**: Je bank balance
 - **Fee**: Geen kosten
 - **Instant**: Direct verwerkt
@@ -496,13 +496,13 @@ Voorbeelden:
 ```
 interest = balance * 0.005 (0.5%)
 
-Per tick: €10,000 → €50 rente
-Per uur (12 ticks): €10,000 → €600 rente
-Per dag (288 ticks): €10,000 → €14,400 rente
+Per tick: â‚¬10,000 â†’ â‚¬50 rente
+Per uur (12 ticks): â‚¬10,000 â†’ â‚¬600 rente
+Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 ```
 
 ### Bank Robbery (Crime)
-- **Target**: Random andere speler met > €10,000
+- **Target**: Random andere speler met > â‚¬10,000
 - **Success chance**: 30%
 - **Steal amount**: 10-30% van target balance
 - **Consequences**: High wanted level increase
@@ -527,9 +527,9 @@ Per dag (288 ticks): €10,000 → €14,400 rente
 - **Brazil**
 
 ### Travel Costs
-- **Neighboring countries**: €500-€2,000
-- **Europe → Americas**: €5,000-€10,000
-- **Long distance**: €10,000-€20,000
+- **Neighboring countries**: â‚¬500-â‚¬2,000
+- **Europe â†’ Americas**: â‚¬5,000-â‚¬10,000
+- **Long distance**: â‚¬10,000-â‚¬20,000
 
 ### Travel Requirements
 - **Not in jail**: Kan niet reizen vanuit jail
@@ -558,13 +558,13 @@ Elk land heeft unieke goods:
 ### Trade Mechanics
 
 #### Buying
-- **Price**: Base price × market fluctuation
+- **Price**: Base price Ã— market fluctuation
 - **Quantity**: Onbeperkt (als je geld hebt)
 - **Inventory**: Opgeslagen in je inventory
 - **Location locked**: Kan alleen kopen in specifiek land
 
 #### Selling
-- **Price**: Base price × market fluctuation
+- **Price**: Base price Ã— market fluctuation
 - **Location**: Verkopen in ander land dan kopen
 - **Profit margins**: 20-300% mogelijk
 - **Inventory**: Direct verkocht
@@ -590,7 +590,7 @@ Elk land heeft unieke goods:
 
 #### Customs Inspection
 - **Chance**: 10% base
-- **Bribe option**: €1,000-€5,000
+- **Bribe option**: â‚¬1,000-â‚¬5,000
 - **If caught**: 50% goods loss
 
 ---
@@ -600,20 +600,20 @@ Elk land heeft unieke goods:
 ### Aircraft Types
 
 #### Small Plane
-- **Cost**: €100,000
+- **Cost**: â‚¬100,000
 - **Capacity**: 2 passengers
 - **Range**: 1,000 km
 - **Speed**: Fast travel (instant)
 
 #### Private Jet
-- **Cost**: €500,000
+- **Cost**: â‚¬500,000
 - **Capacity**: 8 passengers
 - **Range**: 5,000 km
 - **Speed**: Very fast (instant)
 - **Luxury bonus**: +10% trade profits
 
 #### Cargo Plane
-- **Cost**: €1,000,000
+- **Cost**: â‚¬1,000,000
 - **Capacity**: 50 passengers
 - **Range**: 10,000 km
 - **Trade bonus**: 2x inventory capacity
@@ -630,24 +630,24 @@ Elk land heeft unieke goods:
 
 - Casino-games openen binnen de bestaande game-content (dashboard shell) en niet als losse fullpage route buiten de hoofdlayout.
 - Casino hub en closed state moeten mobiel/tablet/desktop een robuuste verticale scrollflow houden.
-- Casino minigames moeten mobiel/tablet/desktop in één viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
+- Casino minigames moeten mobiel/tablet/desktop in Ã©Ã©n viewport speelbaar blijven: kernactie, inzet en status zichtbaar zonder verplichte verticale scroll.
 
 ### Games Available
 
 #### Blackjack
-- **Bet range**: €100-€10,000
+- **Bet range**: â‚¬100-â‚¬10,000
 - **House edge**: ~1% (with perfect play)
 - **Rules**: Standard blackjack
 - **Dealer stands**: Soft 17
 
 #### Slots
-- **Bet range**: €10-€1,000
-- **Jackpot**: Progressive (starts €10,000)
+- **Bet range**: â‚¬10-â‚¬1,000
+- **Jackpot**: Progressive (starts â‚¬10,000)
 - **Payout**: 75-95% RTP
 - **Bonuses**: Free spins mogelijk
 
 #### Roulette
-- **Bet range**: €50-€5,000
+- **Bet range**: â‚¬50-â‚¬5,000
 - **Bet types**: 
   - Single number (35:1)
   - Red/Black (1:1)
@@ -655,7 +655,7 @@ Elk land heeft unieke goods:
   - Column (2:1)
 
 ### Casino Limits
-- **Maximum win per session**: €100,000
+- **Maximum win per session**: â‚¬100,000
 - **Maximum loss per session**: Je totale geld
 - **Cooldown**: Geen cooldown
 - **Cheating detection**: Banned bij verdachte patronen
@@ -667,27 +667,27 @@ Elk land heeft unieke goods:
 ### Weapon Types
 
 #### Pistol
-- **Cost**: €500
+- **Cost**: â‚¬500
 - **Ammo capacity**: 15 rounds
 - **Damage**: Low
 - **Crime bonus**: +5% armed robbery success
 
 #### Shotgun
-- **Cost**: €1,500
+- **Cost**: â‚¬1,500
 - **Ammo capacity**: 8 rounds
 - **Damage**: High
 - **Crime bonus**: +10% bank robbery success
 
 #### Rifle
-- **Cost**: €3,000
+- **Cost**: â‚¬3,000
 - **Ammo capacity**: 30 rounds
 - **Damage**: Very high
 - **Crime bonus**: +15% heist success
 
 ### Ammo System
-- **Pistol ammo**: €10 per round
-- **Shotgun ammo**: €25 per round
-- **Rifle ammo**: €50 per round
+- **Pistol ammo**: â‚¬10 per round
+- **Shotgun ammo**: â‚¬25 per round
+- **Rifle ammo**: â‚¬50 per round
 - **Auto-consume**: Gebruikt tijdens gewapende crimes
 - **Restock**: Kopen bij weapon shop
 
@@ -698,37 +698,37 @@ Elk land heeft unieke goods:
 ### Basismechanica
 
 **Hit Plaatsen:**
-- Betaal bounty (€50K - €50M)
+- Betaal bounty (â‚¬50K - â‚¬50M)
 - Geld wordt onmiddellijk afgetrokken
 - Target is voortaan "HUNTED"
 - Hit verschijnt op globale lijst
 
 **Detective Inhuren:**
-- Kosten: €25K (24h), €50K (6h), €100K (1h)
+- Kosten: â‚¬25K (24h), â‚¬50K (6h), â‚¬100K (1h)
 - Je leert target's land + regio
 - Geldig 3 uur lang
 - Kan niet twee tegelijk op zelfde target
 
 **Murder Attempt:**
 - Beide spelers moeten in hetzelfde land zijn
-- Combat-based (weapon + ammo → damage)
+- Combat-based (weapon + ammo â†’ damage)
 - Attacker Power vs Target Defense
 - Winner krijgt bounty, loser krijgt -5 reputation
 
 ### Counter-Bounty System
 
 Target kan **hoger bedrag** plaatsen:
-- Minimaal: Original +€10K
+- Minimaal: Original +â‚¬10K
 - Effect: **Attacker en defender verwisselen rollen!**
 - Originele plaatser is NU het doelwit
-- Kan chain-escalate (bijv. €100K → €200K → €300K)
+- Kan chain-escalate (bijv. â‚¬100K â†’ â‚¬200K â†’ â‚¬300K)
 
 **Voorbeeld:**
 ```
-Alice: €200K hit op Bob
-Bob: €300K counter-hit
+Alice: â‚¬200K hit op Bob
+Bob: â‚¬300K counter-hit
 
-→ NU is Alice het doelwit (€300K bounty)
+â†’ NU is Alice het doelwit (â‚¬300K bounty)
 ```
 
 ### Bounty Escalation
@@ -741,17 +741,17 @@ Bob: €300K counter-hit
 
 ### Beschermingsopties
 
-**Bodyguards (€10K/stuk)**
+**Bodyguards (â‚¬10K/stuk)**
 - +10 defense per bodyguard
 - Verhoogt win chance
 
 **Armor Types**
-- Kevlar (€25K, +15 defense)
-- Combat (€50K, +30 defense, duurtste)
-- Tactical (€100K, +50 defense, rare)
+- Kevlar (â‚¬25K, +15 defense)
+- Combat (â‚¬50K, +30 defense, duurtste)
+- Tactical (â‚¬100K, +50 defense, rare)
 - Slijtage: -5% per 24 uur
 
-**Premium Protection (Betaalde Dienst - €4.99 voor 24 uur)**
+**Premium Protection (Betaalde Dienst - â‚¬4.99 voor 24 uur)**
 - ENKEL MET ECHT GELD (niet in-game geld!)
 - Volledige immuniteit tegen aanvallen
 - Toon "PREMIUM PROTECTED" indicator in profiel
@@ -759,12 +759,12 @@ Bob: €300K counter-hit
 - 7-dag cooldown tussen purchases
 - 100% refund als niet gebruikt
 
-**Hit Insurance (€200K/maand)**
+**Hit Insurance (â‚¬200K/maand)**
 - Auto-payout van bounty (jij sterft niet)
 - Insurance betaalt attacker (ik overleef)
 - Max 3 maanden vooruitbetaald
 
-**Witness Protection (€300K voor 48h)**
+**Witness Protection (â‚¬300K voor 48h)**
 - Verdwijn voor 48 uur
 - Niet aanvalbaar
 - Kan stilletjes geld verdienen
@@ -773,7 +773,7 @@ Bob: €300K counter-hit
 ### Crew Hits
 
 **Hoe werkt:**
-- Crew A zet hit op Crew B (€500K - €50M)
+- Crew A zet hit op Crew B (â‚¬500K - â‚¬50M)
 - Target: Heel crew (alle members)
 - Completion: 3+ members dood OF leader dood
 - Bounty: Verdeeld onder killers
@@ -781,7 +781,7 @@ Bob: €300K counter-hit
 ### Aanval Mislukking Penalties
 
 **Attacker loses:**
-- €25K herstelskosten
+- â‚¬25K herstelskosten
 - -5 reputatie
 - Target krijgt notification wie aanviel
 
@@ -800,7 +800,7 @@ Bob: €300K counter-hit
 ## Security & Bescherming
 
 ### Bodyguard System
-- **Kosten**: €10,000 per bodyguard
+- **Kosten**: â‚¬10,000 per bodyguard
 - **Effect**: +10 defense per guard
 - **Schaal**: Unlimited (maar DIM returns)
 - **Maintenance**: Betaal maandelijks (automation)
@@ -808,36 +808,36 @@ Bob: €300K counter-hit
 ### Armor
 
 #### Kevlar Armor
-- **Cost**: €25,000
+- **Cost**: â‚¬25,000
 - **Defense**: +15
 - **Durability**: 100%
 - **Wear rate**: -5% per 24h
-- **Repair cost**: €5,000
+- **Repair cost**: â‚¬5,000
 
 #### Combat Armor
-- **Cost**: €50,000
+- **Cost**: â‚¬50,000
 - **Defense**: +30
 - **Durability**: 100%
 - **Wear rate**: -5% per 24h
-- **Repair cost**: €10,000
+- **Repair cost**: â‚¬10,000
 
 #### Tactical Armor
-- **Cost**: €100,000
+- **Cost**: â‚¬100,000
 - **Defense**: +50
 - **Durability**: 100%
 - **Wear rate**: -7% per 24h (sneller slijt)
-- **Repair cost**: €15,000
+- **Repair cost**: â‚¬15,000
 
 ### Protection Modes
 
 #### Safe House
-- **Cost**: Gratis 1h, €10K/h daarna
+- **Cost**: Gratis 1h, â‚¬10K/h daarna
 - **Effect**: Veilig (niet aanvalbaar), maar can't do crimes
 - **Max**: 6h per dag
 - **Use case**: Hide when hunted + pasief geld verdienen
 
 #### Premium Protection (Betaalde Dienst)
-- **Cost**: €4.99 (ECHT GELD - betaalde dienst, niet in-game geld!)
+- **Cost**: â‚¬4.99 (ECHT GELD - betaalde dienst, niet in-game geld!)
 - **Effect**: IMMUNE tegen ALLE aanvallen
 - **Duration**: 24 uur
 - **Cooldown**: 7 dagen tussen purchases
@@ -845,14 +845,14 @@ Bob: €300K counter-hit
 - **Use case**: Emergency escape bij critical hits
 
 #### Hit Insurance
-- **Cost**: €200,000/maand
+- **Cost**: â‚¬200,000/maand
 - **Auto-payout**: Insurance betaalt bounty
 - **Benefit**: Jij sterft niet, speler bevonden betaald
 - **Claim**: Unlimited per maand
 - **Use case**: Passive protection zonder timing
 
 #### Witness Protection
-- **Cost**: €300,000 voor 48h
+- **Cost**: â‚¬300,000 voor 48h
 - **Effect**: Verdwijn uit game (offline mode)
 - **Activity**: Stillete money earn (jobs, properties)
 - **Visibility**: Naam hidden, kunnen niet aangevallen
@@ -861,19 +861,19 @@ Bob: €300K counter-hit
 ### Recommended Strategy
 
 **Casual Player (Low Bounty Risk):**
-- Bodyguards: 2-3 (€20K-€30K)
+- Bodyguards: 2-3 (â‚¬20K-â‚¬30K)
 - Kevlar Armor: 1
 - Safe House: When hunted
 
 **Mid-Tier Player (Medium Bounty Risk):**
-- Bodyguards: 5-10 (€50K-€100K)
-- Combat Armor (€50K)
-- Hit Insurance: €200K/month
+- Bodyguards: 5-10 (â‚¬50K-â‚¬100K)
+- Combat Armor (â‚¬50K)
+- Hit Insurance: â‚¬200K/month
 - Premium Protection: When needed
 
 **High-Stakes Player (Mega Bounty Risk):**
-- Bodyguards: 20+ (€200K+)
-- Tactical Armor (€100K)
+- Bodyguards: 20+ (â‚¬200K+)
+- Tactical Armor (â‚¬100K)
 - Hit Insurance + Witness Protection
 - Premium Protection on standby
 
@@ -882,7 +882,7 @@ Bob: €300K counter-hit
 ## Tips & Strategies
 
 ### Beginner Strategy
-1. **Start met jobs**: Verdien eerste €10,000 safe
+1. **Start met jobs**: Verdien eerste â‚¬10,000 safe
 2. **Koop garage**: Eerste property voor passief inkomen
 3. **Low-level crimes**: Pickpocket/shoplift voor XP
 4. **Monitor health**: Gebruik emergency room bij < 10 HP
@@ -904,11 +904,11 @@ Bob: €300K counter-hit
 5. **Risk management**: Balance crimes vs jail time
 
 ### Avoid Deze Fouten
-1. ❌ **Alle geld cash houden**: Bank rente is gratis geld
-2. ❌ **Health negeren**: ICU kost 3 uur lockout
-3. ❌ **Te hoog wanted level**: 90% arrest chance bij 18+
-4. ❌ **Geen cooldowns checken**: Verspilde clicks
-5. ❌ **Solo high-level heists**: Crew needed voor succes
+1. âŒ **Alle geld cash houden**: Bank rente is gratis geld
+2. âŒ **Health negeren**: ICU kost 3 uur lockout
+3. âŒ **Te hoog wanted level**: 90% arrest chance bij 18+
+4. âŒ **Geen cooldowns checken**: Verspilde clicks
+5. âŒ **Solo high-level heists**: Crew needed voor succes
 
 ---
 
@@ -928,7 +928,7 @@ Bob: €300K counter-hit
 - Cooldown reset-items zijn alleen inwisselbaar bij een actieve cooldown; zonder actieve timer blijft het item zichtbaar maar geblokkeerd.
 - Player VIP geeft 10% kortere actie-timeouts/cooldowns op gameplay-actions; gevangenistijd (`jailRelease`) blijft ongewijzigd.
 - Player VIP krijgt wekelijks 100 premium credits (ledger-traceerbaar via credit-transacties).
-- Kill-reset met actieve Player VIP: contant geld reset naar €500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
+- Kill-reset met actieve Player VIP: contant geld reset naar â‚¬500.000, rank wordt gehalveerd, bank/crypto/opleidingen/achievements blijven behouden; assets, inventory en drugsvoorraad worden gewist.
 - Kill-reset zonder actieve Player VIP: volledige progression reset naar baseline (incl. bank/crypto/opleidingen/achievements).
 - Op ondersteunde timeout-schermen (crime, jobs, school, voertuig- en bootdiefstal) staat een directe `versnel met credits` knop, zodat spelers een actieve cooldown contextueel kunnen resetten zonder eerst naar `Premium & Credits` te navigeren.
 - Voor school geldt: een credit-speedup reset alleen de cooldowntimer; XP wordt verdiend bij de trainingsactie zelf. Na reset start je direct een nieuwe training voor extra XP.
@@ -957,10 +957,10 @@ jailTime = fbiHeat * 15 minuten
 ### Bail Costs
 ```javascript
 // Police bail
-bail = wantedLevel * €1,000
+bail = wantedLevel * â‚¬1,000
 
 // FBI bail
-bail = fbiHeat * €5,000
+bail = fbiHeat * â‚¬5,000
 ```
 
 ### Bank Interest
@@ -969,7 +969,7 @@ bail = fbiHeat * €5,000
 interest = balance * 0.005
 
 // Annual rate (equivalent)
-annual_rate ≈ 500% (compounding every 5 min)
+annual_rate â‰ˆ 500% (compounding every 5 min)
 ```
 
 ### Crime Success
@@ -995,13 +995,13 @@ healing = 5 HP (if health > 0 && health < 100)
 ## Game Balance
 
 ### Income Sources (per uur)
-- **Jobs**: €1,200-€6,000/uur (safe)
-- **Low crimes**: €3,000-€10,000/uur (medium risk)
-- **High crimes**: €20,000-€100,000/uur (high risk)
-- **Properties**: €500-€50,000/uur (passive)
+- **Jobs**: â‚¬1,200-â‚¬6,000/uur (safe)
+- **Low crimes**: â‚¬3,000-â‚¬10,000/uur (medium risk)
+- **High crimes**: â‚¬20,000-â‚¬100,000/uur (high risk)
+- **Properties**: â‚¬500-â‚¬50,000/uur (passive)
 - **Bank interest**: Variabel (compound growth)
-- **Heists**: €50,000-€500,000 (high risk, cooldown)
-- **Trade**: €10,000-€200,000 (moderate risk)
+- **Heists**: â‚¬50,000-â‚¬500,000 (high risk, cooldown)
+- **Trade**: â‚¬10,000-â‚¬200,000 (moderate risk)
 
 ### Time Sinks
 - **Jail time**: 5-180 minuten
@@ -1021,29 +1021,30 @@ healing = 5 HP (if health > 0 && health < 100)
 ## Changelog & Updates
 
 ### Current Version Features
-- ✅ Crime system with health damage
-- ✅ Wanted level & police arrests
-- ✅ FBI heat system
-- ✅ Health, hunger, thirst mechanics
-- ✅ Hospital with emergency room
-- ✅ Intensive Care (ICU) system
-- ✅ Jobs system
-- ✅ Properties & passive income
-- ✅ Crews & heists
-- ✅ Bank accounts with interest
-- ✅ International travel
-- ✅ Trade market with risks
-- ✅ Aviation system
-- ✅ Casino (blackjack, slots, roulette)
-- ✅ Weapons & ammo system
+- âœ… Crime system with health damage
+- âœ… Wanted level & police arrests
+- âœ… FBI heat system
+- âœ… Health, hunger, thirst mechanics
+- âœ… Hospital with emergency room
+- âœ… Intensive Care (ICU) system
+- âœ… Jobs system
+- âœ… Properties & passive income
+- âœ… Crews & heists
+- âœ… Bank accounts with interest
+- âœ… International travel
+- âœ… Trade market with risks
+- âœ… Aviation system
+- âœ… Casino (blackjack, slots, roulette)
+- âœ… Weapons & ammo system
+- âœ… VIP quick-buy in Drug Production (one-click missing materials with confirmation modal)
 
 ### Planned Features
-- ⏳ Court & Judge system
-- ⏳ Gang wars
-- ⏳ Drug production facilities
-- ⏳ Money laundering
-- ⏳ Stock market
-- ⏳ Real estate development
+- â³ Court & Judge system
+- â³ Gang wars
+- â³ Drug production facilities
+- â³ Money laundering
+- â³ Stock market
+- â³ Real estate development
 
 ---
 
@@ -1055,3 +1056,4 @@ Voor vragen, bugs, of suggesties:
 - Wiki: [Link]
 
 **Laatst bijgewerkt**: 30 januari 2026
+

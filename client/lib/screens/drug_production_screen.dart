@@ -12,10 +12,7 @@ import '../utils/web_asset_helper.dart';
 class DrugProductionScreen extends StatefulWidget {
   final VoidCallback? onOpenFacilitiesRequested;
 
-  const DrugProductionScreen({
-    super.key,
-    this.onOpenFacilitiesRequested,
-  });
+  const DrugProductionScreen({super.key, this.onOpenFacilitiesRequested});
 
   @override
   State<DrugProductionScreen> createState() => _DrugProductionScreenState();
@@ -35,6 +32,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   DrugStats? _stats;
   bool _togglingAutoCollect = false;
   bool _showIncidentLegend = true;
+  String? _vipQuickBuyingDrugId;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
@@ -351,6 +349,161 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
         : '${_tr('Tekort', 'Missing')}: ${missing.join(', ')}';
   }
 
+  List<_MissingMaterialLine> _getMissingMaterialLines(DrugDefinition drug) {
+    final lines = <_MissingMaterialLine>[];
+
+    for (final entry in drug.materials.entries) {
+      final materialId = entry.key;
+      final required = entry.value;
+
+      final playerMaterial = _playerMaterials.firstWhere(
+        (m) => m.materialId == materialId,
+        orElse: () => PlayerMaterial(
+          id: 0,
+          materialId: materialId,
+          name: '',
+          description: '',
+          quantity: 0,
+          price: 0,
+        ),
+      );
+
+      final missing = required - playerMaterial.quantity;
+      if (missing <= 0) continue;
+
+      final materialDef = _materialDefinitions.firstWhere(
+        (m) => m.id == materialId,
+        orElse: () => MaterialDefinition(
+          id: materialId,
+          name: _getMaterialName(materialId),
+          description: '',
+          price: 0,
+          category: '',
+        ),
+      );
+
+      lines.add(
+        _MissingMaterialLine(
+          name: _getMaterialName(materialId),
+          quantity: missing,
+          unitPrice: materialDef.price,
+        ),
+      );
+    }
+
+    return lines;
+  }
+
+  Future<void> _handleVipQuickBuyMaterials(DrugDefinition drug) async {
+    if (_stats?.isVip != true) return;
+
+    final missingLines = _getMissingMaterialLines(drug);
+    if (missingLines.isEmpty) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            _tr(
+              'Je hebt al genoeg materialen voor ${drug.displayName}',
+              'You already have enough materials for ${drug.displayName}',
+            ),
+          ),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final totalCost = missingLines.fold<int>(
+      0,
+      (sum, line) => sum + line.lineCost,
+    );
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(_tr('VIP snelle aankoop', 'VIP quick purchase')),
+          content: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 520, maxHeight: 420),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _tr(
+                      'Koop in één klik alle ontbrekende materialen voor ${drug.displayName}?',
+                      'Buy all missing materials for ${drug.displayName} in one click?',
+                    ),
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 10),
+                  ...missingLines.map(
+                    (line) => Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Text(
+                        '${line.quantity}x ${line.name} • €${line.lineCost.toString()}',
+                      ),
+                    ),
+                  ),
+                  const Divider(height: 18),
+                  Text(
+                    '${_tr('Totaal', 'Total')}: €${totalCost.toString()}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(_tr('Annuleren', 'Cancel')),
+            ),
+            ElevatedButton.icon(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              icon: const Icon(Icons.flash_on),
+              child: Text(_tr('Kopen', 'Buy')),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true) return;
+
+    setState(() {
+      _vipQuickBuyingDrugId = drug.id;
+    });
+    try {
+      final result = await _drugService.buyMissingMaterialsForDrug(drug.id);
+      if (!mounted) return;
+
+      final success = result['success'] == true;
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(
+            (result['message'] as String?) ??
+                (success
+                    ? _tr('Aankoop voltooid', 'Purchase completed')
+                    : _tr('Aankoop mislukt', 'Purchase failed')),
+          ),
+          backgroundColor: success ? Colors.green : Colors.red,
+        ),
+      );
+      if (success) {
+        await _loadData();
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _vipQuickBuyingDrugId = null;
+        });
+      }
+    }
+  }
+
   Future<void> _startProduction(DrugDefinition drug) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
@@ -608,10 +761,11 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                   alignment: isMobile
                       ? Alignment.topCenter
                       : Alignment.centerRight,
-                  errorBuilder: (context, error, stackTrace) => WebAssetHelper.image(
-                    'assets/images/backgrounds/crime_background.png',
-                    fit: BoxFit.cover,
-                  ),
+                  errorBuilder: (context, error, stackTrace) =>
+                      WebAssetHelper.image(
+                        'assets/images/backgrounds/crime_background.png',
+                        fit: BoxFit.cover,
+                      ),
                 ),
               ),
               Positioned.fill(
@@ -1206,6 +1360,41 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                               ),
                                                         ),
                                                       ),
+                                                      if (_stats?.isVip == true)
+                                                        Tooltip(
+                                                          message: hasMaterials
+                                                              ? _tr(
+                                                                  'Alle materialen aanwezig',
+                                                                  'All materials available',
+                                                                )
+                                                              : _tr(
+                                                                  'VIP: koop ontbrekende materialen in 1 klik',
+                                                                  'VIP: buy missing materials in one click',
+                                                                ),
+                                                          child: IconButton(
+                                                            visualDensity:
+                                                                VisualDensity
+                                                                    .compact,
+                                                            icon: Icon(
+                                                              Icons.flash_on,
+                                                              color:
+                                                                  hasMaterials
+                                                                  ? Colors
+                                                                        .greenAccent
+                                                                  : Colors
+                                                                        .amberAccent,
+                                                            ),
+                                                            onPressed:
+                                                                hasMaterials ||
+                                                                    _vipQuickBuyingDrugId ==
+                                                                        drug.id
+                                                                ? null
+                                                                : () =>
+                                                                      _handleVipQuickBuyMaterials(
+                                                                        drug,
+                                                                      ),
+                                                          ),
+                                                        ),
                                                     ],
                                                   ),
                                                   const SizedBox(height: 8),
@@ -1526,4 +1715,18 @@ class _KpiChip extends StatelessWidget {
       ),
     );
   }
+}
+
+class _MissingMaterialLine {
+  final String name;
+  final int quantity;
+  final int unitPrice;
+
+  const _MissingMaterialLine({
+    required this.name,
+    required this.quantity,
+    required this.unitPrice,
+  });
+
+  int get lineCost => quantity * unitPrice;
 }

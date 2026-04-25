@@ -2,6 +2,7 @@ import prisma from '../lib/prisma';
 import fs from 'fs';
 import path from 'path';
 import { drugFacilityService } from './drugFacilityService';
+import { isVipStatusActive } from './vipBenefitsService';
 
 interface DrugDefinition {
   id: string;
@@ -176,6 +177,129 @@ class DrugService {
     return {
       success: true,
       message: `${quantity}x ${material.name} gekocht voor €${totalCost.toLocaleString()}`,
+    };
+  }
+
+  async buyMissingMaterialsForDrug(
+    playerId: number,
+    drugId: string,
+  ): Promise<{
+    success: boolean;
+    message: string;
+    totalCost?: number;
+    purchased?: Array<{ materialId: string; name: string; quantity: number; unitPrice: number; lineCost: number }>;
+  }> {
+    const drug = this.drugs.get(drugId);
+    if (!drug) {
+      return { success: false, message: 'Onbekende drug / Unknown drug' };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true, isVip: true, vipExpiresAt: true },
+    });
+
+    if (!player) {
+      return { success: false, message: 'Speler niet gevonden / Player not found' };
+    }
+
+    if (!isVipStatusActive(player)) {
+      return { success: false, message: 'Deze snelle aankoop is alleen beschikbaar voor VIP-spelers / This quick purchase is only available for VIP players' };
+    }
+
+    const currentMaterials = await prisma.productionMaterial.findMany({
+      where: { playerId },
+      select: { materialId: true, quantity: true },
+    });
+
+    const currentMap: Record<string, number> = {};
+    for (const row of currentMaterials) {
+      currentMap[row.materialId] = row.quantity;
+    }
+
+    const purchaseLines: Array<{
+      materialId: string;
+      name: string;
+      quantity: number;
+      unitPrice: number;
+      lineCost: number;
+    }> = [];
+    let totalCost = 0;
+
+    for (const [materialId, requiredQty] of Object.entries(drug.materials)) {
+      const availableQty = currentMap[materialId] ?? 0;
+      const missingQty = Math.max(0, requiredQty - availableQty);
+      if (missingQty <= 0) {
+        continue;
+      }
+
+      const materialDef = this.materials.get(materialId);
+      if (!materialDef) {
+        return { success: false, message: `Onbekend materiaal / Unknown material: ${materialId}` };
+      }
+
+      const lineCost = materialDef.price * missingQty;
+      totalCost += lineCost;
+      purchaseLines.push({
+        materialId,
+        name: materialDef.name,
+        quantity: missingQty,
+        unitPrice: materialDef.price,
+        lineCost,
+      });
+    }
+
+    if (purchaseLines.length === 0) {
+      return {
+        success: false,
+        message: 'Je hebt al genoeg materialen voor deze productie / You already have enough materials for this production',
+        totalCost: 0,
+        purchased: [],
+      };
+    }
+
+    if (player.money < totalCost) {
+      return {
+        success: false,
+        message: `Onvoldoende cash / Insufficient cash. Nodig / Required: €${totalCost.toLocaleString()}, beschikbaar / available: €${player.money.toLocaleString()}`,
+        totalCost,
+        purchased: purchaseLines,
+      };
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.player.update({
+        where: { id: playerId },
+        data: {
+          money: { decrement: totalCost },
+        },
+      });
+
+      for (const line of purchaseLines) {
+        await tx.productionMaterial.upsert({
+          where: {
+            playerId_materialId: {
+              playerId,
+              materialId: line.materialId,
+            },
+          },
+          update: {
+            quantity: { increment: line.quantity },
+          },
+          create: {
+            playerId,
+            materialId: line.materialId,
+            quantity: line.quantity,
+          },
+        });
+      }
+    });
+
+    return {
+      success: true,
+      message: `VIP snelle aankoop voltooid / VIP quick purchase completed for ${drug.displayName}: €${totalCost.toLocaleString()}`,
+      totalCost,
+      purchased: purchaseLines,
     };
   }
 

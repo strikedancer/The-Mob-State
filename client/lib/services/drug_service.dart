@@ -101,6 +101,20 @@ class DrugService {
     }
   }
 
+  Future<Map<String, dynamic>> buyMissingMaterialsForDrug(String drugId) async {
+    try {
+      final response = await _apiClient.post('/drugs/materials/buy-missing', {
+        'drugId': drugId,
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return json.decode(response.body);
+      }
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   // Start production
   Future<Map<String, dynamic>> startProduction(
     String drugId,
@@ -264,8 +278,8 @@ class DrugService {
         'success': false,
         ...((data is Map<String, dynamic>) ? data : <String, dynamic>{}),
         'message': (data is Map<String, dynamic>)
-        ? (data['message'] ?? 'Fout')
-        : 'Fout',
+            ? (data['message'] ?? 'Fout')
+            : 'Fout',
       };
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};
@@ -289,8 +303,8 @@ class DrugService {
         'success': false,
         ...((data is Map<String, dynamic>) ? data : <String, dynamic>{}),
         'message': (data is Map<String, dynamic>)
-        ? (data['message'] ?? 'Fout')
-        : 'Fout',
+            ? (data['message'] ?? 'Fout')
+            : 'Fout',
       };
     } catch (e) {
       return {'success': false, 'message': 'Error: $e'};

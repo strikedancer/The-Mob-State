@@ -83,6 +83,31 @@ router.post('/materials/buy/:materialId', authenticate, async (req: AuthRequest,
 });
 
 /**
+ * @route   POST /drugs/materials/buy-missing
+ * @desc    VIP quick-buy all missing materials for one drug batch
+ * @access  Private
+ */
+router.post('/materials/buy-missing', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const { drugId } = req.body;
+
+    if (!drugId || typeof drugId !== 'string') {
+      return res.status(400).json({ success: false, message: 'Drug type vereist / Drug type required' });
+    }
+
+    const result = await drugService.buyMissingMaterialsForDrug(req.player!.id, drugId);
+    if (result.success) {
+      return res.json(result);
+    }
+
+    return res.status(400).json(result);
+  } catch (error: any) {
+    console.error('Error buying missing materials:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+/**
  * @route   POST /drugs/start-production
  * @desc    Start drug production
  * @access  Private
