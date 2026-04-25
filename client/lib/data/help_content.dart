@@ -712,7 +712,7 @@ const List<HelpTopic> helpTopics = [
     howNl: [
       'De nachtclub heeft meerdere schermen: Hub (overzicht revenue en bezoekers), DJs (boek entertainers voor hogere bezoekerscores), Beveiliging (bewakers verlagen incidentrisico), Supply (alcohol en andere voorraden) en Season Summary.',
       'In het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.',
-      'In Ops Lab kun je nu 7 operationele systemen gebruiken: resident DJ-contracten, live events, upgrade-tree, incident responses, staff morale, rival acties en realtime alerts.',
+      'In Ops Lab gebruik je nu 10 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, rival sabotage + counter-intel en operations timeline.',
       'De upgrade-tree is interactief: kies expliciet Sound Rig, VIP Lounge of Surveillance en koop direct het volgende level met zichtbare upgrade-kosten.',
       'Revenue wordt gegenereerd per tick op basis van DJ-kwaliteit, bezettingsgraad en supply-beschikbaarheid. Mis je supply dan daalt je inkomst direct.',
       'DJ-contracten lopen automatisch af op de ingestelde eindtijd; daarna moet je opnieuw boeken voor nieuwe boosts.',
@@ -727,7 +727,7 @@ const List<HelpTopic> helpTopics = [
     howEn: [
       'The nightclub has multiple screens: Hub (revenue and visitor overview), DJs (book entertainers for higher visitor scores), Security (guards lower incident risk), Supply (alcohol and other stock) and Season Summary.',
       'The nightclub screen now includes one central Intelligence section combining overview, revenue trends and risk logs without tab switching.',
-      'Ops Lab now includes 7 operational systems: resident DJ contracts, live events, upgrade tree, incident responses, staff morale, rival actions and real-time alerts.',
+      'Ops Lab now includes 10 systems: resident DJ, dynamic event calendar, upgrade tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, rival sabotage + counter-intel, and an operations timeline.',
       'The upgrade tree is interactive: explicitly choose Sound Rig, VIP Lounge or Surveillance and buy the next level directly with visible upgrade costs.',
       'Revenue is generated per tick based on DJ quality, occupancy and supply availability. Missing supply directly reduces income.',
       'DJ contracts end automatically at the configured end time; after that you must book again for new boosts.',

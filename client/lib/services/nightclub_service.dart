@@ -210,6 +210,75 @@ class NightclubService {
     }
   }
 
+  Future<Map<String, dynamic>> activateSupplierContract({
+    required int venueId,
+    required String contractType,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/supplier-contract',
+        {'contractType': contractType},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> hirePromoter({
+    required int venueId,
+    required String profileType,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/promoter',
+        {'profileType': profileType},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> runHeatCooldown({required int venueId}) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/heat-cooldown',
+        {},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> runSmugglingRoute({
+    required int venueId,
+    required String routeType,
+  }) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/smuggling-route',
+        {'routeType': routeType},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> runCounterIntel({required int venueId}) async {
+    try {
+      final response = await _apiClient.post(
+        '/nightclub/$venueId/ops/counter-intel',
+        {},
+      );
+      return json.decode(response.body) as Map<String, dynamic>;
+    } catch (e) {
+      return {'success': false, 'message': 'Error: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> storeDrugs({
     required int venueId,
     required String drugType,

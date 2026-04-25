@@ -129,10 +129,113 @@ class NightclubService {
   };
   private readonly RESIDENT_CONTRACT_DISCOUNT = 0.12;
   private readonly UPGRADE_EVENT_PREFIX = 'upgrade_';
+  private readonly SUPPLIER_EVENT_PREFIX = 'supplier_contract_';
+  private readonly PROMOTER_EVENT_PREFIX = 'promoter_profile_';
+  private readonly HEAT_EVENT_PREFIX = 'heat_cooldown_';
+  private readonly SMUGGLING_EVENT_PREFIX = 'smuggling_route_';
+  private readonly COUNTER_INTEL_EVENT_PREFIX = 'counter_intel_';
   private readonly UPGRADE_COSTS: Record<'sound_rig' | 'vip_lounge' | 'surveillance', number[]> = {
     sound_rig: [60000, 125000, 240000],
     vip_lounge: [85000, 165000, 300000],
     surveillance: [70000, 145000, 270000],
+  };
+  private readonly SUPPLIER_CONTRACTS: Record<
+    'street' | 'cartel' | 'clean',
+    { nl: string; en: string; durationHours: number; cost: number; reliability: number; stockBoost: number }
+  > = {
+    street: {
+      nl: 'Street Connect',
+      en: 'Street Connect',
+      durationHours: 48,
+      cost: 55000,
+      reliability: 0.62,
+      stockBoost: 12,
+    },
+    cartel: {
+      nl: 'Cartel Pipeline',
+      en: 'Cartel Pipeline',
+      durationHours: 72,
+      cost: 110000,
+      reliability: 0.86,
+      stockBoost: 26,
+    },
+    clean: {
+      nl: 'Clean Front Supplier',
+      en: 'Clean Front Supplier',
+      durationHours: 60,
+      cost: 85000,
+      reliability: 0.76,
+      stockBoost: 18,
+    },
+  };
+  private readonly PROMOTER_PROFILES: Record<
+    'street_hype' | 'vip_whisper' | 'tourist_hunter',
+    { nl: string; en: string; durationHours: number; cost: number; crowdBoost: number; spendBoost: number }
+  > = {
+    street_hype: {
+      nl: 'Street Hype Team',
+      en: 'Street Hype Team',
+      durationHours: 24,
+      cost: 45000,
+      crowdBoost: 8,
+      spendBoost: 0.04,
+    },
+    vip_whisper: {
+      nl: 'VIP Whisper Circle',
+      en: 'VIP Whisper Circle',
+      durationHours: 24,
+      cost: 70000,
+      crowdBoost: 5,
+      spendBoost: 0.12,
+    },
+    tourist_hunter: {
+      nl: 'Tourist Hunter Crew',
+      en: 'Tourist Hunter Crew',
+      durationHours: 24,
+      cost: 52000,
+      crowdBoost: 6,
+      spendBoost: 0.06,
+    },
+  };
+  private readonly SMUGGLING_ROUTES: Record<
+    'harbor' | 'airstrip' | 'borderline',
+    {
+      nl: string;
+      en: string;
+      cost: number;
+      risk: number;
+      minGrams: number;
+      maxGrams: number;
+      quality: 'C' | 'B' | 'A';
+    }
+  > = {
+    harbor: {
+      nl: 'Harbor run',
+      en: 'Harbor run',
+      cost: 60000,
+      risk: 0.22,
+      minGrams: 45,
+      maxGrams: 110,
+      quality: 'C',
+    },
+    airstrip: {
+      nl: 'Airstrip drop',
+      en: 'Airstrip drop',
+      cost: 95000,
+      risk: 0.35,
+      minGrams: 70,
+      maxGrams: 160,
+      quality: 'B',
+    },
+    borderline: {
+      nl: 'Borderline convoy',
+      en: 'Borderline convoy',
+      cost: 130000,
+      risk: 0.44,
+      minGrams: 100,
+      maxGrams: 220,
+      quality: 'A',
+    },
   };
 
   private readonly EVENT_TEMPLATES: Record<
@@ -764,6 +867,203 @@ class NightclubService {
     }
 
     return alerts;
+  }
+
+  private pickSeverity(value: number, lowCutoff: number, highCutoff: number): 'low' | 'medium' | 'high' {
+    if (value >= highCutoff) return 'high';
+    if (value >= lowCutoff) return 'medium';
+    return 'low';
+  }
+
+  private buildDynamicCalendarSnapshot() {
+    const day = new Date().getUTCDay();
+    const themes = [
+      { key: 'street_takeover', nl: 'Street Friday', en: 'Street Friday', demandBoostPct: 8 },
+      { key: 'deep_house_night', nl: 'Deep Pulse', en: 'Deep Pulse', demandBoostPct: 6 },
+      { key: 'vip_gala', nl: 'High Society', en: 'High Society', demandBoostPct: 10 },
+      { key: 'deep_house_night', nl: 'Basement Echo', en: 'Basement Echo', demandBoostPct: 5 },
+      { key: 'street_takeover', nl: 'Neon Run', en: 'Neon Run', demandBoostPct: 7 },
+      { key: 'vip_gala', nl: 'Saturday Black', en: 'Saturday Black', demandBoostPct: 12 },
+      { key: 'deep_house_night', nl: 'Recovery Set', en: 'Recovery Set', demandBoostPct: 4 },
+    ];
+    const today = themes[day];
+    const tomorrow = themes[(day + 1) % themes.length];
+    return {
+      today,
+      tomorrow,
+      recommendedEventType: today.key,
+      demandBoostPct: today.demandBoostPct,
+    };
+  }
+
+  private buildStaffTraitsSnapshot(params: {
+    assignedStaff: number;
+    staffCap: number;
+    morale: number;
+    fatigue: number;
+    crowdSize: number;
+    recentTheftsCount: number;
+  }) {
+    const occupancy = params.staffCap > 0 ? params.assignedStaff / params.staffCap : 0;
+    const traits = [
+      {
+        key: 'discipline',
+        nl: occupancy > 0.85 ? 'Overwerkt team' : 'Gedisciplineerd team',
+        en: occupancy > 0.85 ? 'Overworked team' : 'Disciplined team',
+        effectNl: occupancy > 0.85 ? 'Meer fouten bij piekuren' : 'Snellere response op incidenten',
+        effectEn: occupancy > 0.85 ? 'More mistakes during peak hours' : 'Faster incident responses',
+      },
+      {
+        key: 'energy',
+        nl: params.fatigue > 1.1 || params.morale < 0.9 ? 'Vermoeid ritme' : 'Hoge energie',
+        en: params.fatigue > 1.1 || params.morale < 0.9 ? 'Fatigued rhythm' : 'High energy',
+        effectNl:
+          params.fatigue > 1.1 || params.morale < 0.9
+            ? 'Lagere servicekwaliteit'
+            : 'Betere crowd-retentie',
+        effectEn:
+          params.fatigue > 1.1 || params.morale < 0.9
+            ? 'Lower service quality'
+            : 'Improved crowd retention',
+      },
+      {
+        key: 'street_pressure',
+        nl: params.recentTheftsCount >= 2 ? 'Onder druk' : 'Stabiele vloer',
+        en: params.recentTheftsCount >= 2 ? 'Under pressure' : 'Stable floor',
+        effectNl: params.recentTheftsCount >= 2 ? 'Diefstalrisico stijgt' : 'Minder opportunistische thefts',
+        effectEn: params.recentTheftsCount >= 2 ? 'Theft risk increases' : 'Fewer opportunistic thefts',
+      },
+      {
+        key: 'crowd_handling',
+        nl: params.crowdSize >= 75 ? 'Piekmodus' : 'Rustige flow',
+        en: params.crowdSize >= 75 ? 'Peak mode' : 'Calm flow',
+        effectNl: params.crowdSize >= 75 ? 'Hogere omzet maar hogere stress' : 'Lagere omzet, stabiele uitvoering',
+        effectEn: params.crowdSize >= 75 ? 'Higher revenue but more stress' : 'Lower revenue, stable execution',
+      },
+    ];
+    return traits;
+  }
+
+  private async buildOperationsTimeline(venueId: number) {
+    const [sales, thefts, events, djShifts, securityShifts] = await Promise.all([
+      prisma.nightclubSale.findMany({
+        where: { venueId },
+        orderBy: { saleTime: 'desc' },
+        take: 6,
+        select: { saleTime: true, totalRevenue: true, drugType: true, quality: true, quantitySold: true },
+      }),
+      prisma.nightclubTheft.findMany({
+        where: { venueId },
+        orderBy: { occurredAt: 'desc' },
+        take: 4,
+        select: { occurredAt: true, valueLost: true, theftType: true, drugType: true },
+      }),
+      prisma.nightclubEvent.findMany({
+        where: { venueId },
+        orderBy: { startsAt: 'desc' },
+        take: 6,
+        select: { startsAt: true, eventName: true, eventType: true, investment: true, expectedVisitors: true },
+      }),
+      prisma.nightclubDJShift.findMany({
+        where: { venueId },
+        orderBy: { shiftStartAt: 'desc' },
+        take: 3,
+        include: { dj: { select: { djName: true } } },
+      }),
+      prisma.nightclubSecurityShift.findMany({
+        where: { venueId },
+        orderBy: { shiftStartAt: 'desc' },
+        take: 3,
+        include: { guard: { select: { guardName: true } } },
+      }),
+    ]);
+
+    const rows: Array<{
+      at: Date;
+      type: string;
+      severity: 'low' | 'medium' | 'high';
+      labelNl: string;
+      labelEn: string;
+      meta: Record<string, any>;
+    }> = [];
+
+    for (const sale of sales) {
+      rows.push({
+        at: sale.saleTime,
+        type: 'sale',
+        severity: this.pickSeverity(sale.totalRevenue, 600, 1800),
+        labelNl: `Sale ${sale.drugType} (${sale.quality})`,
+        labelEn: `Sale ${sale.drugType} (${sale.quality})`,
+        meta: {
+          revenue: sale.totalRevenue,
+          grams: sale.quantitySold,
+        },
+      });
+    }
+
+    for (const theft of thefts) {
+      rows.push({
+        at: theft.occurredAt,
+        type: 'theft',
+        severity: this.pickSeverity(theft.valueLost, 1200, 4000),
+        labelNl: `Incident: ${theft.theftType}`,
+        labelEn: `Incident: ${theft.theftType}`,
+        meta: {
+          valueLost: theft.valueLost,
+          drugType: theft.drugType,
+        },
+      });
+    }
+
+    for (const event of events) {
+      rows.push({
+        at: event.startsAt,
+        type: 'event',
+        severity: 'low',
+        labelNl: `Event: ${event.eventName}`,
+        labelEn: `Event: ${event.eventName}`,
+        meta: {
+          eventType: event.eventType,
+          investment: event.investment,
+          expectedVisitors: event.expectedVisitors,
+        },
+      });
+    }
+
+    for (const shift of djShifts) {
+      rows.push({
+        at: shift.shiftStartAt,
+        type: 'dj_shift',
+        severity: 'low',
+        labelNl: `DJ shift gestart: ${shift.dj?.djName ?? 'DJ'}`,
+        labelEn: `DJ shift started: ${shift.dj?.djName ?? 'DJ'}`,
+        meta: {
+          shiftEndAt: shift.shiftEndAt,
+        },
+      });
+    }
+
+    for (const shift of securityShifts) {
+      rows.push({
+        at: shift.shiftStartAt,
+        type: 'security_shift',
+        severity: 'low',
+        labelNl: `Security actief: ${shift.guard?.guardName ?? 'Guard'}`,
+        labelEn: `Security active: ${shift.guard?.guardName ?? 'Guard'}`,
+        meta: {
+          shiftEndAt: shift.shiftEndAt,
+          theftReduction: shift.theftReduction,
+        },
+      });
+    }
+
+    return rows
+      .sort((a, b) => b.at.getTime() - a.at.getTime())
+      .slice(0, 16)
+      .map((row) => ({
+        ...row,
+        at: row.at,
+      }));
   }
 
   private async getStaffingLimits(playerId: number): Promise<{
@@ -1518,6 +1818,378 @@ class NightclubService {
     };
   }
 
+  async activateSupplierContract(
+    playerId: number,
+    venueId: number,
+    contractType: 'street' | 'cartel' | 'clean'
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    const contract = this.SUPPLIER_CONTRACTS[contractType];
+    if (!contract) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onbekend supplier contract', 'Unknown supplier contract'),
+      };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    if (!player || player.money < contract.cost) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onvoldoende cash voor supplier contract', 'Not enough cash for supplier contract'),
+      };
+    }
+
+    const startsAt = new Date();
+    const endsAt = new Date(startsAt.getTime() + contract.durationHours * 60 * 60 * 1000);
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: contract.cost } },
+      }),
+      prisma.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.SUPPLIER_EVENT_PREFIX}${contractType}`,
+          eventName: this.localize(language, contract.nl, contract.en),
+          startsAt,
+          endsAt,
+          expectedVisitors: contract.stockBoost,
+          investment: contract.cost,
+          eventSuccess: true,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        `${contract.nl} geactiveerd (${contract.durationHours}u).`,
+        `${contract.en} activated (${contract.durationHours}h).`
+      ),
+    };
+  }
+
+  async hirePromoterProfile(
+    playerId: number,
+    venueId: number,
+    profileType: 'street_hype' | 'vip_whisper' | 'tourist_hunter'
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    const profile = this.PROMOTER_PROFILES[profileType];
+    if (!profile) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onbekend promoter profiel', 'Unknown promoter profile'),
+      };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    if (!player || player.money < profile.cost) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onvoldoende cash voor promoter', 'Not enough cash for promoter'),
+      };
+    }
+
+    const startsAt = new Date();
+    const endsAt = new Date(startsAt.getTime() + profile.durationHours * 60 * 60 * 1000);
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: profile.cost } },
+      }),
+      prisma.nightclubVenue.update({
+        where: { id: venueId },
+        data: {
+          crowdSize: { increment: profile.crowdBoost },
+        },
+      }),
+      prisma.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.PROMOTER_EVENT_PREFIX}${profileType}`,
+          eventName: this.localize(language, profile.nl, profile.en),
+          startsAt,
+          endsAt,
+          expectedVisitors: profile.crowdBoost,
+          investment: profile.cost,
+          eventSuccess: true,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        `${profile.nl} actief: crowd boost +${profile.crowdBoost}%.`,
+        `${profile.en} active: crowd boost +${profile.crowdBoost}%.`
+      ),
+    };
+  }
+
+  async runHeatCooldown(
+    playerId: number,
+    venueId: number
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    const activeCooldown = await prisma.nightclubEvent.findFirst({
+      where: {
+        venueId,
+        eventType: { startsWith: this.HEAT_EVENT_PREFIX },
+        endsAt: { gte: new Date() },
+      },
+    });
+    if (activeCooldown) {
+      return {
+        success: false,
+        message: this.localize(language, 'Heat-cooldown is al actief', 'Heat cooldown already active'),
+      };
+    }
+
+    const cost = 65000;
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    if (!player || player.money < cost) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onvoldoende cash voor heat cooldown', 'Not enough cash for heat cooldown'),
+      };
+    }
+
+    const startsAt = new Date();
+    const endsAt = new Date(startsAt.getTime() + 6 * 60 * 60 * 1000);
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: cost } },
+      }),
+      prisma.nightclubVenue.update({
+        where: { id: venueId },
+        data: {
+          crowdSize: { decrement: 5 },
+        },
+      }),
+      prisma.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.HEAT_EVENT_PREFIX}stealth_window`,
+          eventName: this.localize(language, 'Stealth Window', 'Stealth Window'),
+          startsAt,
+          endsAt,
+          expectedVisitors: 0,
+          investment: cost,
+          eventSuccess: true,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        'Heat-cooldown gestart: lager raid-risico voor 6 uur.',
+        'Heat cooldown started: lower raid risk for 6 hours.'
+      ),
+    };
+  }
+
+  async runSmugglingRoute(
+    playerId: number,
+    venueId: number,
+    routeType: 'harbor' | 'airstrip' | 'borderline'
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    const route = this.SMUGGLING_ROUTES[routeType];
+    if (!route) {
+      return {
+        success: false,
+        message: this.localize(language, 'Ongeldige route', 'Invalid route'),
+      };
+    }
+
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    if (!player || player.money < route.cost) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onvoldoende cash voor route', 'Not enough cash for route'),
+      };
+    }
+
+    const seized = Math.random() < route.risk;
+    const grams = seized
+      ? 0
+      : route.minGrams + Math.floor(Math.random() * (route.maxGrams - route.minGrams + 1));
+    const pool = ['cocaine', 'mdma', 'weed', 'meth', 'heroin'];
+    const drugType = pool[Math.floor(Math.random() * pool.length)];
+    const startsAt = new Date();
+    const endsAt = new Date(startsAt.getTime() + 2 * 60 * 60 * 1000);
+
+    await prisma.$transaction(async (tx) => {
+      await tx.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: route.cost } },
+      });
+
+      if (!seized && grams > 0) {
+        await tx.nightclubDrugInventory.upsert({
+          where: {
+            venueId_drugType_quality: {
+              venueId,
+              drugType,
+              quality: route.quality,
+            },
+          },
+          update: {
+            quantity: { increment: grams },
+          },
+          create: {
+            venueId,
+            drugType,
+            quality: route.quality,
+            quantity: grams,
+            basePrice: this.getDrugBasePrice(drugType),
+          },
+        });
+      }
+
+      await tx.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.SMUGGLING_EVENT_PREFIX}${routeType}`,
+          eventName: this.localize(language, route.nl, route.en),
+          startsAt,
+          endsAt,
+          expectedVisitors: grams,
+          investment: route.cost,
+          eventSuccess: !seized,
+          revenue: 0,
+        },
+      });
+    });
+
+    if (seized) {
+      return {
+        success: true,
+        message: this.localize(
+          language,
+          'Smuggling route onderschept. Lading kwijt, crew blijft onzichtbaar.',
+          'Smuggling route intercepted. Cargo lost, crew stays hidden.'
+        ),
+      };
+    }
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        `Smuggling route gelukt: +${grams}g ${drugType} (${route.quality}).`,
+        `Smuggling route succeeded: +${grams}g ${drugType} (${route.quality}).`
+      ),
+    };
+  }
+
+  async runCounterIntelSweep(
+    playerId: number,
+    venueId: number
+  ): Promise<{ success: boolean; message: string }> {
+    const language = await this.getPlayerLanguage(playerId);
+    const venue = await this.getOwnedVenueOrNull(playerId, venueId);
+    if (!venue) {
+      return {
+        success: false,
+        message: this.localize(language, 'Nachtclub niet gevonden', 'Nightclub not found'),
+      };
+    }
+
+    const cost = 50000;
+    const player = await prisma.player.findUnique({
+      where: { id: playerId },
+      select: { money: true },
+    });
+    if (!player || player.money < cost) {
+      return {
+        success: false,
+        message: this.localize(language, 'Onvoldoende cash voor counter-intel', 'Not enough cash for counter-intel'),
+      };
+    }
+
+    const startsAt = new Date();
+    const endsAt = new Date(startsAt.getTime() + 12 * 60 * 60 * 1000);
+    await prisma.$transaction([
+      prisma.player.update({
+        where: { id: playerId },
+        data: { money: { decrement: cost } },
+      }),
+      prisma.nightclubEvent.create({
+        data: {
+          venueId,
+          eventType: `${this.COUNTER_INTEL_EVENT_PREFIX}sweep`,
+          eventName: this.localize(language, 'Counter-Intel Sweep', 'Counter-Intel Sweep'),
+          startsAt,
+          endsAt,
+          expectedVisitors: 0,
+          investment: cost,
+          eventSuccess: true,
+        },
+      }),
+    ]);
+
+    return {
+      success: true,
+      message: this.localize(
+        language,
+        'Counter-intel sweep actief: rival sabotage wordt afgezwakt.',
+        'Counter-intel sweep active: rival sabotage impact is reduced.'
+      ),
+    };
+  }
+
   async applyUpgrade(
     playerId: number,
     venueId: number,
@@ -1874,7 +2546,7 @@ class NightclubService {
             startsAt: { lte: new Date() },
             endsAt: { gte: new Date() },
           },
-          take: 1,
+          take: 8,
         },
       },
     });
@@ -1891,10 +2563,23 @@ class NightclubService {
       vibe = this.improveVibe(vibe);
     }
 
-    // Event effect
+    // Event effects (base + profile-specific modifiers)
     if (venue.events.length > 0) {
       size = Math.min(100, size + 15);
       vibe = this.improveVibe(vibe);
+
+      for (const event of venue.events) {
+        const eventType = event.eventType ?? '';
+        if (eventType.startsWith(this.PROMOTER_EVENT_PREFIX)) {
+          size = Math.min(100, size + 4);
+        }
+        if (eventType.startsWith(this.SUPPLIER_EVENT_PREFIX)) {
+          size = Math.min(100, size + 2);
+        }
+        if (eventType.startsWith(this.HEAT_EVENT_PREFIX)) {
+          size = Math.max(8, size - 2);
+        }
+      }
     }
 
     // Upgrade effect: Sound rig improves crowd retention and vibe floor.
@@ -2120,6 +2805,24 @@ class NightclubService {
       const crowdState = await this.calculateCrowdState(venue.id);
       const securityShift = venue.securityShifts[0];
       const upgradeLevels = await this.getVenueUpgradeLevels(venue.id);
+      const [heatCooldownActive, counterIntelActive] = await Promise.all([
+        prisma.nightclubEvent.findFirst({
+          where: {
+            venueId: venue.id,
+            eventType: { startsWith: this.HEAT_EVENT_PREFIX },
+            endsAt: { gte: new Date() },
+          },
+          select: { id: true },
+        }),
+        prisma.nightclubEvent.findFirst({
+          where: {
+            venueId: venue.id,
+            eventType: { startsWith: this.COUNTER_INTEL_EVENT_PREFIX },
+            endsAt: { gte: new Date() },
+          },
+          select: { id: true },
+        }),
+      ]);
 
       // Base theft chance: 15% per minute in raging environment
       let theftChance = 0.15 * (crowdState.size / 100);
@@ -2130,6 +2833,12 @@ class NightclubService {
       }
       if (upgradeLevels.surveillance > 0) {
         theftChance *= 1 - upgradeLevels.surveillance * 0.08;
+      }
+      if (heatCooldownActive) {
+        theftChance *= 0.84;
+      }
+      if (counterIntelActive) {
+        theftChance *= 0.78;
       }
 
       if (Math.random() < theftChance && venue.inventory.length > 0) {
@@ -2412,6 +3121,138 @@ class NightclubService {
       staffAssigned,
       staffCap: staffingLimits.staffCap,
     });
+    const [
+      activeSupplierEvent,
+      activePromoterEvent,
+      activeHeatCooldownEvent,
+      activeCounterIntelEvent,
+      latestSmugglingEvent,
+      timeline,
+    ] = await Promise.all([
+      prisma.nightclubEvent.findFirst({
+        where: {
+          venueId,
+          eventType: { startsWith: this.SUPPLIER_EVENT_PREFIX },
+          endsAt: { gte: now },
+        },
+        orderBy: { startsAt: 'desc' },
+      }),
+      prisma.nightclubEvent.findFirst({
+        where: {
+          venueId,
+          eventType: { startsWith: this.PROMOTER_EVENT_PREFIX },
+          endsAt: { gte: now },
+        },
+        orderBy: { startsAt: 'desc' },
+      }),
+      prisma.nightclubEvent.findFirst({
+        where: {
+          venueId,
+          eventType: { startsWith: this.HEAT_EVENT_PREFIX },
+          endsAt: { gte: now },
+        },
+        orderBy: { startsAt: 'desc' },
+      }),
+      prisma.nightclubEvent.findFirst({
+        where: {
+          venueId,
+          eventType: { startsWith: this.COUNTER_INTEL_EVENT_PREFIX },
+          endsAt: { gte: now },
+        },
+        orderBy: { startsAt: 'desc' },
+      }),
+      prisma.nightclubEvent.findFirst({
+        where: {
+          venueId,
+          eventType: { startsWith: this.SMUGGLING_EVENT_PREFIX },
+        },
+        orderBy: { startsAt: 'desc' },
+      }),
+      this.buildOperationsTimeline(venueId),
+    ]);
+    const supplierKey =
+      activeSupplierEvent?.eventType?.replace(this.SUPPLIER_EVENT_PREFIX, '') ?? null;
+    const supplierMeta = supplierKey
+      ? this.SUPPLIER_CONTRACTS[supplierKey as 'street' | 'cartel' | 'clean'] ?? null
+      : null;
+    const promoterKey =
+      activePromoterEvent?.eventType?.replace(this.PROMOTER_EVENT_PREFIX, '') ?? null;
+    const promoterMeta = promoterKey
+      ? this.PROMOTER_PROFILES[
+          promoterKey as 'street_hype' | 'vip_whisper' | 'tourist_hunter'
+        ] ?? null
+      : null;
+    const smugglingKey =
+      latestSmugglingEvent?.eventType?.replace(this.SMUGGLING_EVENT_PREFIX, '') ?? null;
+    const smugglingMeta = smugglingKey
+      ? this.SMUGGLING_ROUTES[smugglingKey as 'harbor' | 'airstrip' | 'borderline'] ?? null
+      : null;
+    const recentThefts24h = venue.thefts.filter((t) => {
+      const at = t.occurredAt ? new Date(t.occurredAt).getTime() : 0;
+      return at >= Date.now() - 24 * 60 * 60 * 1000;
+    }).length;
+    const promoterSpendBoost = promoterMeta?.spendBoost ?? 0;
+    const vipClientShare = Math.max(
+      4,
+      Math.min(
+        48,
+        Math.round(
+          8 +
+            upgradeLevels.vip_lounge * 7 +
+            (promoterKey === 'vip_whisper' ? 10 : 0) +
+            (staffingLimits.isVipActive ? 6 : 0)
+        )
+      )
+    );
+    const baseHeat = Math.round(
+      crowdState.size * 0.22 +
+        Math.min(45, revenuesToday / 1400) +
+        recentThefts24h * 5 +
+        (activeDjShift ? 4 : 0)
+    );
+    const heatValue = Math.max(0, baseHeat - (activeHeatCooldownEvent ? 18 : 0));
+    const raidRiskPct = Math.max(
+      4,
+      Math.min(
+        85,
+        Math.round(
+          heatValue * 0.6 +
+            (100 - (securityReduction * 100)) * 0.18 -
+            upgradeLevels.surveillance * 7 -
+            (activeCounterIntelEvent ? 10 : 0)
+        )
+      )
+    );
+    const reputationScore = Math.max(
+      0,
+      Math.min(
+        1000,
+        Math.round(
+          300 +
+            Math.min(300, Number(venue.totalRevenueAllTime ?? 0) / 8000) +
+            crowdState.size * 2 -
+            recentThefts24h * 18 +
+            upgradeLevels.sound_rig * 24
+        )
+      )
+    );
+    const reputationTier =
+      reputationScore >= 820
+        ? 'legend'
+        : reputationScore >= 650
+          ? 'elite'
+          : reputationScore >= 480
+            ? 'rising'
+            : 'underground';
+    const calendar = this.buildDynamicCalendarSnapshot();
+    const staffTraits = this.buildStaffTraitsSnapshot({
+      assignedStaff: staffAssigned,
+      staffCap: staffingLimits.staffCap,
+      morale,
+      fatigue,
+      crowdSize: crowdState.size,
+      recentTheftsCount: recentThefts24h,
+    });
 
     return {
       id: venue.id,
@@ -2480,6 +3321,95 @@ class NightclubService {
         },
         upgrades: upgradeTree,
         alerts,
+        expansion: {
+          policeHeat: {
+            value: heatValue,
+            severity: this.pickSeverity(heatValue, 40, 70),
+            raidRiskPct,
+            cooldownActive: activeHeatCooldownEvent != null,
+            cooldownEndsAt: activeHeatCooldownEvent?.endsAt ?? null,
+            cooldownCost: 65000,
+          },
+          supplierContracts: {
+            activeKey: supplierKey,
+            activeNameNl: supplierMeta?.nl ?? null,
+            activeNameEn: supplierMeta?.en ?? null,
+            reliability: supplierMeta?.reliability ?? 0.5,
+            stockBoost: supplierMeta?.stockBoost ?? 0,
+            contractEndsAt: activeSupplierEvent?.endsAt ?? null,
+            options: Object.entries(this.SUPPLIER_CONTRACTS).map(([key, value]) => ({
+              key,
+              labelNl: value.nl,
+              labelEn: value.en,
+              durationHours: value.durationHours,
+              cost: value.cost,
+              reliability: value.reliability,
+              stockBoost: value.stockBoost,
+            })),
+          },
+          promoters: {
+            activeKey: promoterKey,
+            activeNameNl: promoterMeta?.nl ?? null,
+            activeNameEn: promoterMeta?.en ?? null,
+            crowdBoost: promoterMeta?.crowdBoost ?? 0,
+            spendBoost: promoterMeta?.spendBoost ?? 0,
+            profileEndsAt: activePromoterEvent?.endsAt ?? null,
+            options: Object.entries(this.PROMOTER_PROFILES).map(([key, value]) => ({
+              key,
+              labelNl: value.nl,
+              labelEn: value.en,
+              durationHours: value.durationHours,
+              cost: value.cost,
+              crowdBoost: value.crowdBoost,
+              spendBoost: value.spendBoost,
+            })),
+          },
+          dynamicCalendar: {
+            today: calendar.today,
+            tomorrow: calendar.tomorrow,
+            recommendedEventType: calendar.recommendedEventType,
+            demandBoostPct: calendar.demandBoostPct,
+          },
+          vipClientele: {
+            sharePct: vipClientShare,
+            spendMultiplier: Number((1 + upgradeLevels.vip_lounge * 0.06 + promoterSpendBoost).toFixed(2)),
+            requiresVipLoungeLevel: 2,
+            currentVipLoungeLevel: upgradeLevels.vip_lounge,
+          },
+          staffTraits,
+          smuggling: {
+            lastRouteKey: smugglingKey,
+            lastRouteNameNl: smugglingMeta?.nl ?? null,
+            lastRouteNameEn: smugglingMeta?.en ?? null,
+            lastRunAt: latestSmugglingEvent?.startsAt ?? null,
+            lastRunSuccess: latestSmugglingEvent?.eventSuccess ?? null,
+            options: Object.entries(this.SMUGGLING_ROUTES).map(([key, value]) => ({
+              key,
+              labelNl: value.nl,
+              labelEn: value.en,
+              cost: value.cost,
+              riskPct: Math.round(value.risk * 100),
+              minGrams: value.minGrams,
+              maxGrams: value.maxGrams,
+              quality: value.quality,
+            })),
+          },
+          reputationSeason: {
+            score: reputationScore,
+            tier: reputationTier,
+            seasonProgressPct: Math.max(
+              0,
+              Math.min(100, Math.round(((Number(venue.totalRevenueAllTime ?? 0) % 1000000) / 1000000) * 100))
+            ),
+          },
+          counterIntel: {
+            active: activeCounterIntelEvent != null,
+            endsAt: activeCounterIntelEvent?.endsAt ?? null,
+            mitigationPct: activeCounterIntelEvent ? 18 : 0,
+            actionCost: 50000,
+          },
+          timeline,
+        },
       },
       leaderboardPreview: countryLeaderboardPreview,
     };

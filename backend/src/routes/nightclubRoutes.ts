@@ -300,6 +300,113 @@ router.post('/:venueId/upgrades/marketing', authenticate, async (req: Request, r
 });
 
 /**
+ * POST /:venueId/ops/supplier-contract
+ * Body: { contractType: 'street'|'cartel'|'clean' }
+ */
+router.post('/:venueId/ops/supplier-contract', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { contractType } = req.body;
+    if (!contractType) {
+      return res.status(400).json({ success: false, message: 'Missing contractType' });
+    }
+    const result = await nightclubService.activateSupplierContract(
+      playerId,
+      venueId,
+      String(contractType) as 'street' | 'cartel' | 'clean'
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/ops/promoter
+ * Body: { profileType: 'street_hype'|'vip_whisper'|'tourist_hunter' }
+ */
+router.post('/:venueId/ops/promoter', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { profileType } = req.body;
+    if (!profileType) {
+      return res.status(400).json({ success: false, message: 'Missing profileType' });
+    }
+    const result = await nightclubService.hirePromoterProfile(
+      playerId,
+      venueId,
+      String(profileType) as 'street_hype' | 'vip_whisper' | 'tourist_hunter'
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/ops/heat-cooldown
+ */
+router.post('/:venueId/ops/heat-cooldown', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const result = await nightclubService.runHeatCooldown(playerId, venueId);
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/ops/smuggling-route
+ * Body: { routeType: 'harbor'|'airstrip'|'borderline' }
+ */
+router.post('/:venueId/ops/smuggling-route', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const { routeType } = req.body;
+    if (!routeType) {
+      return res.status(400).json({ success: false, message: 'Missing routeType' });
+    }
+    const result = await nightclubService.runSmugglingRoute(
+      playerId,
+      venueId,
+      String(routeType) as 'harbor' | 'airstrip' | 'borderline'
+    );
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
+ * POST /:venueId/ops/counter-intel
+ */
+router.post('/:venueId/ops/counter-intel', authenticate, async (req: Request, res: Response) => {
+  try {
+    const playerId = (req as AuthRequest).player?.id;
+    if (!playerId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const venueId = parseInt(req.params.venueId);
+    const result = await nightclubService.runCounterIntelSweep(playerId, venueId);
+    if (result.success) return res.json(result);
+    return res.status(400).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, message: (err as any).message });
+  }
+});
+
+/**
  * POST /:venueId/upgrades/apply
  * Body: { upgradeType: 'sound_rig'|'vip_lounge'|'surveillance' }
  */

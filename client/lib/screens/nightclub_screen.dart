@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,6 +54,9 @@ class _NightclubScreenState extends State<NightclubScreen>
   String _selectedEventType = 'deep_house_night';
   int _marketingAmount = 50000;
   String _selectedUpgradeType = 'sound_rig';
+  String _selectedSupplierContract = 'street';
+  String _selectedPromoterProfile = 'street_hype';
+  String _selectedSmugglingRoute = 'harbor';
   String? _selectedRivalName;
   List<dynamic> _rivalSearchResults = const [];
   late final TextEditingController _storeQuantityController;
@@ -955,6 +958,59 @@ class _NightclubScreenState extends State<NightclubScreen>
       _l('Rival action mislukt', 'Rival action failed'),
     );
     await _searchRivals();
+    await _load();
+  }
+
+  Future<void> _activateSupplierContract() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.activateSupplierContract(
+      venueId: _venueId!,
+      contractType: _selectedSupplierContract,
+    );
+    _showResultMessage(
+      result,
+      _l('Supplier contract mislukt', 'Supplier contract failed'),
+    );
+    await _load();
+  }
+
+  Future<void> _hirePromoterProfile() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.hirePromoter(
+      venueId: _venueId!,
+      profileType: _selectedPromoterProfile,
+    );
+    _showResultMessage(result, _l('Promoter mislukt', 'Promoter failed'));
+    await _load();
+  }
+
+  Future<void> _runHeatCooldownAction() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.runHeatCooldown(venueId: _venueId!);
+    _showResultMessage(
+      result,
+      _l('Heat cooldown mislukt', 'Heat cooldown failed'),
+    );
+    await _load();
+  }
+
+  Future<void> _runSmugglingRouteAction() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.runSmugglingRoute(
+      venueId: _venueId!,
+      routeType: _selectedSmugglingRoute,
+    );
+    _showResultMessage(result, _l('Smuggling mislukt', 'Smuggling failed'));
+    await _load();
+  }
+
+  Future<void> _runCounterIntelSweep() async {
+    if (_venueId == null) return;
+    final result = await _nightclubService.runCounterIntel(venueId: _venueId!);
+    _showResultMessage(
+      result,
+      _l('Counter-intel mislukt', 'Counter-intel failed'),
+    );
     await _load();
   }
 
@@ -2059,6 +2115,33 @@ class _NightclubScreenState extends State<NightclubScreen>
     final eventTemplates =
         (operations['eventTemplates'] as List<dynamic>?) ?? const [];
     final events = (operations['events'] as List<dynamic>?) ?? const [];
+    final expansion =
+        (operations['expansion'] as Map<String, dynamic>?) ?? const {};
+    final policeHeat =
+        (expansion['policeHeat'] as Map<String, dynamic>?) ?? const {};
+    final supplierContracts =
+        (expansion['supplierContracts'] as Map<String, dynamic>?) ?? const {};
+    final promoters =
+        (expansion['promoters'] as Map<String, dynamic>?) ?? const {};
+    final dynamicCalendar =
+        (expansion['dynamicCalendar'] as Map<String, dynamic>?) ?? const {};
+    final vipClientele =
+        (expansion['vipClientele'] as Map<String, dynamic>?) ?? const {};
+    final staffTraits = (expansion['staffTraits'] as List<dynamic>?) ?? const [];
+    final smuggling = (expansion['smuggling'] as Map<String, dynamic>?) ?? const {};
+    final reputation =
+        (expansion['reputationSeason'] as Map<String, dynamic>?) ?? const {};
+    final counterIntel =
+        (expansion['counterIntel'] as Map<String, dynamic>?) ?? const {};
+    final timeline = (expansion['timeline'] as List<dynamic>?) ?? const [];
+
+    String formatDate(dynamic value) {
+      final parsed = DateTime.tryParse((value ?? '').toString());
+      if (parsed == null) return '-';
+      final local = parsed.toLocal();
+      final mm = local.minute.toString().padLeft(2, '0');
+      return '${local.day}/${local.month} ${local.hour}:$mm';
+    }
 
     return _mafiaPanel(
       child: Padding(
@@ -2067,7 +2150,7 @@ class _NightclubScreenState extends State<NightclubScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _l('Operations Lab (7 upgrades)', 'Operations Lab (7 upgrades)'),
+              _l('Operations Lab (10 systemen)', 'Operations Lab (10 systems)'),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -2121,9 +2204,21 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('2) Live event kalender', '2) Live event calendar'),
+              _l('2) Dynamic event kalender', '2) Dynamic event calendar'),
               Icons.event,
             ),
+            if (dynamicCalendar.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: _kpiChip(
+                  _l('Aanbevolen vandaag', 'Recommended today'),
+                  Localizations.localeOf(context).languageCode == 'nl'
+                      ? ((dynamicCalendar['today'] as Map<String, dynamic>?)?['nl'] ?? '-')
+                            .toString()
+                      : ((dynamicCalendar['today'] as Map<String, dynamic>?)?['en'] ?? '-')
+                            .toString(),
+                ),
+              ),
             if (eventTemplates.isNotEmpty)
               DropdownButtonFormField<String>(
                 value: _selectedEventType,
@@ -2266,9 +2361,33 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('4) Incident gameplay', '4) Incident gameplay'),
+              _l('4) Police heat & incidents', '4) Police heat & incidents'),
               Icons.crisis_alert,
             ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _kpiChip(_l('Heat', 'Heat'), '${policeHeat['value'] ?? 0}'),
+                _kpiChip(
+                  _l('Raid risico', 'Raid risk'),
+                  '${policeHeat['raidRiskPct'] ?? 0}%',
+                ),
+                _kpiChip(
+                  _l('Cooldown', 'Cooldown'),
+                  policeHeat['cooldownActive'] == true
+                      ? _l('Actief', 'Active')
+                      : _l('Uit', 'Off'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: _runHeatCooldownAction,
+              icon: const Icon(Icons.shield_moon),
+              label: Text(_l('Start heat cooldown', 'Start heat cooldown')),
+            ),
+            const SizedBox(height: 8),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -2306,10 +2425,130 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l(
-                '6) Rival clubs (zoek op naam)',
-                '6) Rival clubs (search by name)',
+              _l('6) Supplier & promoter', '6) Supplier & promoter'),
+              Icons.local_shipping,
+            ),
+            DropdownButtonFormField<String>(
+              value: _selectedSupplierContract,
+              items: ((supplierContracts['options'] as List<dynamic>?) ?? const [])
+                  .map((raw) {
+                    final map = raw as Map<String, dynamic>;
+                    final key = (map['key'] ?? '').toString();
+                    final label = Localizations.localeOf(context).languageCode == 'nl'
+                        ? (map['labelNl'] ?? key).toString()
+                        : (map['labelEn'] ?? key).toString();
+                    return DropdownMenuItem(value: key, child: Text(label));
+                  })
+                  .toList(),
+              onChanged: (v) {
+                if (v == null) return;
+                setState(() => _selectedSupplierContract = v);
+              },
+              decoration: InputDecoration(
+                labelText: _l('Supplier contract', 'Supplier contract'),
               ),
+            ),
+            const SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: _activateSupplierContract,
+              icon: const Icon(Icons.playlist_add_check),
+              label: Text(_l('Activeer supplier', 'Activate supplier')),
+            ),
+            const SizedBox(height: 6),
+            DropdownButtonFormField<String>(
+              value: _selectedPromoterProfile,
+              items: ((promoters['options'] as List<dynamic>?) ?? const []).map((raw) {
+                final map = raw as Map<String, dynamic>;
+                final key = (map['key'] ?? '').toString();
+                final label = Localizations.localeOf(context).languageCode == 'nl'
+                    ? (map['labelNl'] ?? key).toString()
+                    : (map['labelEn'] ?? key).toString();
+                return DropdownMenuItem(value: key, child: Text(label));
+              }).toList(),
+              onChanged: (v) {
+                if (v == null) return;
+                setState(() => _selectedPromoterProfile = v);
+              },
+              decoration: InputDecoration(
+                labelText: _l('Promoter profiel', 'Promoter profile'),
+              ),
+            ),
+            const SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: _hirePromoterProfile,
+              icon: const Icon(Icons.record_voice_over),
+              label: Text(_l('Huur promoter', 'Hire promoter')),
+            ),
+            const SizedBox(height: 12),
+            _intelligenceSectionTitle(
+              _l('7) VIP clientele & staff traits', '7) VIP clientele & staff traits'),
+              Icons.workspace_premium,
+            ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _kpiChip(_l('VIP share', 'VIP share'), '${vipClientele['sharePct'] ?? 0}%'),
+                _kpiChip(
+                  _l('Spend x', 'Spend x'),
+                  '${vipClientele['spendMultiplier'] ?? 1}',
+                ),
+                _kpiChip(
+                  _l('Tier', 'Tier'),
+                  '${reputation['tier'] ?? '-'}',
+                ),
+              ],
+            ),
+            ...staffTraits.take(2).map((raw) {
+              final map = raw as Map<String, dynamic>;
+              final title = Localizations.localeOf(context).languageCode == 'nl'
+                  ? (map['nl'] ?? '-').toString()
+                  : (map['en'] ?? '-').toString();
+              final effect = Localizations.localeOf(context).languageCode == 'nl'
+                  ? (map['effectNl'] ?? '-').toString()
+                  : (map['effectEn'] ?? '-').toString();
+              return ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                title: Text(title),
+                subtitle: Text(effect),
+              );
+            }),
+            const SizedBox(height: 12),
+            _intelligenceSectionTitle(
+              _l('8) Smuggling routes', '8) Smuggling routes'),
+              Icons.route,
+            ),
+            DropdownButtonFormField<String>(
+              value: _selectedSmugglingRoute,
+              items: ((smuggling['options'] as List<dynamic>?) ?? const []).map((raw) {
+                final map = raw as Map<String, dynamic>;
+                final key = (map['key'] ?? '').toString();
+                final label = Localizations.localeOf(context).languageCode == 'nl'
+                    ? (map['labelNl'] ?? key).toString()
+                    : (map['labelEn'] ?? key).toString();
+                return DropdownMenuItem(value: key, child: Text(label));
+              }).toList(),
+              onChanged: (v) {
+                if (v == null) return;
+                setState(() => _selectedSmugglingRoute = v);
+              },
+              decoration: InputDecoration(labelText: _l('Route', 'Route')),
+            ),
+            const SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: _runSmugglingRouteAction,
+              icon: const Icon(Icons.local_shipping),
+              label: Text(_l('Start route', 'Start route')),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '${_l('Laatste route', 'Last route')}: ${smuggling['lastRouteKey'] ?? '-'}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 12),
+            _intelligenceSectionTitle(
+              _l('9) Rival clubs + counter-intel', '9) Rival clubs + counter-intel'),
               Icons.sports_mma,
             ),
             TextField(
@@ -2360,11 +2599,46 @@ class _NightclubScreenState extends State<NightclubScreen>
                       : () => _runRivalAction('promo_war'),
                   child: Text(_l('Promo war', 'Promo war')),
                 ),
+                OutlinedButton(
+                  onPressed: _runCounterIntelSweep,
+                  child: Text(_l('Counter-intel sweep', 'Counter-intel sweep')),
+                ),
               ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '${_l('Mitigatie', 'Mitigation')}: ${counterIntel['mitigationPct'] ?? 0}% | ${_l('Actief', 'Active')}: ${counterIntel['active'] == true ? _l('Ja', 'Yes') : _l('Nee', 'No')}',
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('7) Operations alerts', '7) Operations alerts'),
+              _l('10) Operations timeline', '10) Operations timeline'),
+              Icons.timeline,
+            ),
+            if (timeline.isEmpty)
+              Text(_l('Geen timeline events.', 'No timeline events.')),
+            ...timeline.take(6).map((raw) {
+              final map = raw as Map<String, dynamic>;
+              final severity = (map['severity'] ?? 'low').toString();
+              final color = severity == 'high'
+                  ? Colors.redAccent
+                  : (severity == 'medium'
+                        ? Colors.orangeAccent
+                        : Colors.lightGreenAccent);
+              final label = Localizations.localeOf(context).languageCode == 'nl'
+                  ? (map['labelNl'] ?? '-').toString()
+                  : (map['labelEn'] ?? '-').toString();
+              return ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(Icons.fiber_manual_record, color: color, size: 12),
+                title: Text(label),
+                subtitle: Text(formatDate(map['at'])),
+              );
+            }),
+            const SizedBox(height: 12),
+            _intelligenceSectionTitle(
+              _l('Operations alerts', 'Operations alerts'),
               Icons.notifications_active,
             ),
             if (alerts.isEmpty)
@@ -2770,3 +3044,4 @@ class _SparklinePainter extends CustomPainter {
     return false;
   }
 }
+

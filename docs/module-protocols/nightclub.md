@@ -35,6 +35,8 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Rival-targeting UX in nightclub must be name-first (search by player username), never forcing players to input or know numeric player IDs.
 - Ops/management additions (resident DJ, events, upgrades, incident response, rival actions, alerts) must expose clear per-action cost/impact in NL+EN before confirmation.
 - Upgrade tree entries in Ops Lab must be actionable (select + purchase), not read-only status chips; players need an explicit upgrade action path per upgrade type.
+- Expanded Ops Lab must support the 10-system management set (heat/raids, suppliers, promoters, dynamic events, VIP clientele, staff traits, smuggling routes, reputation, rival counter-intel, timeline) with readable mobile controls.
+- Smuggling, supplier and promoter actions must remain side-grade choices (risk/reliability/price trade-off), not flat guaranteed power spikes.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.
@@ -54,6 +56,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Verify mobile drug-storage selector keeps gram counts readable (no clipped labels) and quantity shortcuts respect available stock.
 - Verify expired DJ contracts clear automatically and a new DJ can be hired immediately after shift end.
 - Verify rival actions can be triggered by searching/selecting player name and never require playerId entry.
+- Verify Operations Timeline shows mixed event types (sales, thefts, staffing, events) with clear severity labels.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

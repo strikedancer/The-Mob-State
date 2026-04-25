@@ -464,3 +464,5 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 - Ops Lab bevat nu 7 live managementfeatures: resident DJ contracts, event planning, upgrade-investeringen, incident responses, morale/fatigue indicators, rival actions en operation alerts.
 - Upgrade tree is nu actiegedreven: spelers kiezen in Ops Lab expliciet een upgrade-type (Sound Rig/VIP Lounge/Surveillance) en kopen level-upgrades met directe cost-preview.
 - Rival acties zijn username-first: spelers zoeken rival clubs op naam en kiezen acties zonder playerId invoer.
+- Ops Lab is uitgebreid naar 10 systemen met extra lagen: police heat + raid risk, supplier contracts, promoter profiles, VIP clientele scoring, staff traits, smuggling routes, reputation season score, rival counter-intel sweep en een operationele timeline.
+- Nieuwe operations-acties lopen via backend endpoints en blijven side-grade balancing: hogere output kan tegelijk hogere kosten of interceptierisico geven.
