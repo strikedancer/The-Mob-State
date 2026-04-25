@@ -53,6 +53,7 @@
 ## Reizen
 
 - Bij een directe route (1 etappe) wordt de reis na de cooldown meteen als afgerond behandeld. De speler krijgt dan niet alsnog een extra stap met "Verder" of "Reis annuleren".
+- Vliegen gebruikt een cooldown van 60 minuten per etappe. Deze cooldown kan tijdens een actieve timer met credits direct worden gereset.
 
 ---
 

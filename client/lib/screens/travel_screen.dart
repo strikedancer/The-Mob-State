@@ -22,7 +22,7 @@ class TravelScreen extends StatefulWidget {
 }
 
 class _TravelScreenState extends State<TravelScreen> {
-  static const int _legCooldownMinutes = 30;
+  static const int _legCooldownMinutes = 60;
 
   final ApiClient _apiClient = ApiClient();
   final JailService _jailService = JailService();

@@ -25,6 +25,8 @@ Country movement, route costs, legs, confiscation risk and travel cooldowns.
 - Responsive usability without pushing critical actions off-screen.
 - Overweight and travel-blocking checks must use the real carried drug quantity in grams; do not reintroduce legacy `quantity * 100` conversions.
 - Directe routes (1 etappe) mogen nooit in een in-transit state blijven hangen; na cooldown moet de reis als afgerond gelden zonder extra "Verder"/"Annuleren" stap.
+- Travel cooldown-copy moet exact gelijk lopen met de backend cooldown (momenteel 60 minuten per vlieg-etappe) en mag niet hardcoded afwijken.
+- Travel cooldown moet ondersteund zijn door Premium/Credits `ACTION_COOLDOWN_RESET` met `actionType=travel`, inclusief correcte `canRedeemNow` status op actieve cooldown.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

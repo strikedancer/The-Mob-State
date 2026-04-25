@@ -184,6 +184,17 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     sortOrder: 52,
   },
   {
+    key: 'travel_cooldown_reset',
+    titleNl: 'Reis cooldown reset',
+    titleEn: 'Travel cooldown reset',
+    descriptionNl: 'Maak je volgende vlucht direct opnieuw beschikbaar.',
+    descriptionEn: 'Make your next flight immediately available again.',
+    creditCost: 14,
+    effectType: 'ACTION_COOLDOWN_RESET',
+    actionType: 'travel',
+    sortOrder: 53,
+  },
+  {
     key: 'vehicle_theft_cooldown_reset',
     titleNl: 'Auto theft cooldown reset',
     titleEn: 'Car theft cooldown reset',
@@ -192,7 +203,7 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     creditCost: 20,
     effectType: 'ACTION_COOLDOWN_RESET',
     actionType: 'vehicle_theft',
-    sortOrder: 53,
+    sortOrder: 54,
   },
   {
     key: 'motorcycle_theft_cooldown_reset',
@@ -203,7 +214,7 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     creditCost: 16,
     effectType: 'ACTION_COOLDOWN_RESET',
     actionType: 'motorcycle_theft',
-    sortOrder: 54,
+    sortOrder: 55,
   },
   {
     key: 'boat_theft_cooldown_reset',
@@ -214,7 +225,7 @@ const DEFAULT_CREDIT_ITEMS: CreditCatalogItem[] = [
     creditCost: 24,
     effectType: 'ACTION_COOLDOWN_RESET',
     actionType: 'boat_theft',
-    sortOrder: 55,
+    sortOrder: 56,
   },
   {
     key: 'crime_focus_boost_2h',
