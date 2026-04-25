@@ -466,4 +466,5 @@ MAX_MARGIN = 3.0                    // 300% maximum markup
 - Rival acties zijn username-first: spelers zoeken rival clubs op naam en kiezen acties zonder playerId invoer.
 - Ops Lab is uitgebreid naar 11 systemen met extra lagen: police heat + raid risk, supplier contracts, promoter profiles, VIP clientele scoring, staff traits, smuggling routes, bar & kitchen management, reputation season score, rival counter-intel sweep en een operationele timeline.
 - Nieuwe operations-acties lopen via backend endpoints en blijven side-grade balancing: hogere output kan tegelijk hogere kosten of interceptierisico geven.
+- Smuggling routes hebben een server-side cooldown om spam te blokkeren (Harbor 60 min, Airstrip 90 min, Borderline 120 min); cooldown-status wordt meegeleverd in de Ops payload.
 - Ops Lab heeft nu ook Bar & Kitchen management: spelers kopen drank/food packs, kiezen pricing mode (budget/balanced/premium) en sturen service-level vs crowd-retentie met bederfrisico.

@@ -37,6 +37,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Upgrade tree entries in Ops Lab must be actionable (select + purchase), not read-only status chips; players need an explicit upgrade action path per upgrade type.
 - Expanded Ops Lab must support the 11-system management set (heat/raids, suppliers, promoters, dynamic events, VIP clientele, staff traits, smuggling routes, bar/kitchen, reputation, rival counter-intel, timeline) with readable mobile controls.
 - Smuggling, supplier and promoter actions must remain side-grade choices (risk/reliability/price trade-off), not flat guaranteed power spikes.
+- Smuggling routes must enforce a visible backend cooldown window (no infinite repeat spam), with remaining lock time exposed in stats payload for UI feedback.
 - Bar & Kitchen management (drinks/food stock + menu pricing) must show stock state, spoilage risk and pricing impact in NL+EN before confirmation.
 
 ## i18n and Messaging

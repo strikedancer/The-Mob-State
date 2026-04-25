@@ -209,6 +209,7 @@ class NightclubService {
       minGrams: number;
       maxGrams: number;
       quality: 'C' | 'B' | 'A';
+      cooldownMinutes: number;
     }
   > = {
     harbor: {
@@ -219,6 +220,7 @@ class NightclubService {
       minGrams: 45,
       maxGrams: 110,
       quality: 'C',
+      cooldownMinutes: 60,
     },
     airstrip: {
       nl: 'Airstrip drop',
@@ -228,6 +230,7 @@ class NightclubService {
       minGrams: 70,
       maxGrams: 160,
       quality: 'B',
+      cooldownMinutes: 90,
     },
     borderline: {
       nl: 'Borderline convoy',
@@ -237,8 +240,27 @@ class NightclubService {
       minGrams: 100,
       maxGrams: 220,
       quality: 'A',
+      cooldownMinutes: 120,
     },
   };
+
+  private formatRemainingMinutesLabel(minutesRaw: number, language: 'nl' | 'en'): string {
+    const minutes = Math.max(0, Math.ceil(minutesRaw));
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+
+    if (hours <= 0) {
+      return language === 'nl' ? `${minutes} min` : `${minutes} min`;
+    }
+
+    if (remainingMinutes <= 0) {
+      return language === 'nl' ? `${hours} uur` : `${hours}h`;
+    }
+
+    return language === 'nl'
+      ? `${hours}u ${remainingMinutes}m`
+      : `${hours}h ${remainingMinutes}m`;
+  }
   private readonly HOSPITALITY_STOCK_PACKS: Record<
     'beer_crates' | 'premium_bottles' | 'street_food' | 'vip_catering',
     {
@@ -2128,6 +2150,34 @@ class NightclubService {
       };
     }
 
+    const now = new Date();
+    const activeSmugglingCooldown = await prisma.nightclubEvent.findFirst({
+      where: {
+        venueId,
+        eventType: { startsWith: this.SMUGGLING_EVENT_PREFIX },
+        endsAt: { gte: now },
+      },
+      orderBy: { endsAt: 'desc' },
+    });
+    if (activeSmugglingCooldown) {
+      const remainingMinutes = Math.max(
+        0,
+        Math.ceil((activeSmugglingCooldown.endsAt.getTime() - now.getTime()) / 60000)
+      );
+      const remainingLabel = this.formatRemainingMinutesLabel(
+        remainingMinutes,
+        language
+      );
+      return {
+        success: false,
+        message: this.localize(
+          language,
+          `Smuggling route cooldown actief. Beschikbaar over ${remainingLabel}.`,
+          `Smuggling route cooldown active. Available in ${remainingLabel}.`
+        ),
+      };
+    }
+
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       select: { money: true },
@@ -2146,7 +2196,7 @@ class NightclubService {
     const pool = ['cocaine', 'mdma', 'weed', 'meth', 'heroin'];
     const drugType = pool[Math.floor(Math.random() * pool.length)];
     const startsAt = new Date();
-    const endsAt = new Date(startsAt.getTime() + 2 * 60 * 60 * 1000);
+    const endsAt = new Date(startsAt.getTime() + route.cooldownMinutes * 60 * 1000);
 
     await prisma.$transaction(async (tx) => {
       await tx.player.update({
@@ -3405,6 +3455,7 @@ class NightclubService {
       activePromoterEvent,
       activeHeatCooldownEvent,
       activeCounterIntelEvent,
+      activeSmugglingCooldownEvent,
       latestSmugglingEvent,
       timeline,
       hospitality,
@@ -3445,6 +3496,14 @@ class NightclubService {
         where: {
           venueId,
           eventType: { startsWith: this.SMUGGLING_EVENT_PREFIX },
+          endsAt: { gte: now },
+        },
+        orderBy: { endsAt: 'desc' },
+      }),
+      prisma.nightclubEvent.findFirst({
+        where: {
+          venueId,
+          eventType: { startsWith: this.SMUGGLING_EVENT_PREFIX },
         },
         orderBy: { startsAt: 'desc' },
       }),
@@ -3468,6 +3527,14 @@ class NightclubService {
     const smugglingMeta = smugglingKey
       ? this.SMUGGLING_ROUTES[smugglingKey as 'harbor' | 'airstrip' | 'borderline'] ?? null
       : null;
+    const activeSmugglingKey =
+      activeSmugglingCooldownEvent?.eventType?.replace(this.SMUGGLING_EVENT_PREFIX, '') ?? null;
+    const smugglingCooldownRemainingMinutes = activeSmugglingCooldownEvent
+      ? Math.max(
+          0,
+          Math.ceil((activeSmugglingCooldownEvent.endsAt.getTime() - now.getTime()) / 60000)
+        )
+      : 0;
     const recentThefts24h = venue.thefts.filter((t) => {
       const at = t.occurredAt ? new Date(t.occurredAt).getTime() : 0;
       return at >= Date.now() - 24 * 60 * 60 * 1000;
@@ -3680,6 +3747,10 @@ class NightclubService {
             lastRouteNameEn: smugglingMeta?.en ?? null,
             lastRunAt: latestSmugglingEvent?.startsAt ?? null,
             lastRunSuccess: latestSmugglingEvent?.eventSuccess ?? null,
+            cooldownActive: activeSmugglingCooldownEvent != null,
+            cooldownEndsAt: activeSmugglingCooldownEvent?.endsAt ?? null,
+            cooldownRemainingMinutes: smugglingCooldownRemainingMinutes,
+            activeRouteKey: activeSmugglingKey,
             options: Object.entries(this.SMUGGLING_ROUTES).map(([key, value]) => ({
               key,
               labelNl: value.nl,
@@ -3689,6 +3760,7 @@ class NightclubService {
               minGrams: value.minGrams,
               maxGrams: value.maxGrams,
               quality: value.quality,
+              cooldownMinutes: value.cooldownMinutes,
             })),
           },
           reputationSeason: {

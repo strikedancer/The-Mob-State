@@ -92,6 +92,20 @@ class _NightclubScreenState extends State<NightclubScreen>
     return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
   }
 
+  String _formatRemainingMinutesLabel(int minutesRaw) {
+    final minutes = minutesRaw < 0 ? 0 : minutesRaw;
+    final hours = minutes ~/ 60;
+    final remainingMinutes = minutes % 60;
+
+    if (hours <= 0) {
+      return _l('$minutes min', '$minutes min');
+    }
+    if (remainingMinutes <= 0) {
+      return _l('$hours uur', '${hours}h');
+    }
+    return _l('${hours}u ${remainingMinutes}m', '${hours}h ${remainingMinutes}m');
+  }
+
   bool _isVipVariant(dynamic variantRaw) {
     final variant = (variantRaw as num?)?.toInt() ?? 0;
     return variant >= 6 && variant <= 10;
@@ -2157,6 +2171,9 @@ class _NightclubScreenState extends State<NightclubScreen>
         (expansion['vipClientele'] as Map<String, dynamic>?) ?? const {};
     final staffTraits = (expansion['staffTraits'] as List<dynamic>?) ?? const [];
     final smuggling = (expansion['smuggling'] as Map<String, dynamic>?) ?? const {};
+    final smugglingCooldownActive = smuggling['cooldownActive'] == true;
+    final smugglingCooldownRemainingMinutes =
+        (smuggling['cooldownRemainingMinutes'] as num?)?.toInt() ?? 0;
     final reputation =
         (expansion['reputationSeason'] as Map<String, dynamic>?) ?? const {};
     final counterIntel =
@@ -2549,6 +2566,13 @@ class _NightclubScreenState extends State<NightclubScreen>
               _l('8) Smuggling routes', '8) Smuggling routes'),
               Icons.route,
             ),
+            _kpiChip(
+              _l('Cooldown', 'Cooldown'),
+              smugglingCooldownActive
+                  ? _formatRemainingMinutesLabel(smugglingCooldownRemainingMinutes)
+                  : _l('Klaar', 'Ready'),
+            ),
+            const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedSmugglingRoute,
               items: ((smuggling['options'] as List<dynamic>?) ?? const []).map((raw) {
@@ -2567,7 +2591,7 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
-              onPressed: _runSmugglingRouteAction,
+              onPressed: smugglingCooldownActive ? null : _runSmugglingRouteAction,
               icon: const Icon(Icons.local_shipping),
               label: Text(_l('Start route', 'Start route')),
             ),
@@ -2576,6 +2600,14 @@ class _NightclubScreenState extends State<NightclubScreen>
               '${_l('Laatste route', 'Last route')}: ${smuggling['lastRouteKey'] ?? '-'}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
+            if (smugglingCooldownActive)
+              Text(
+                _l(
+                  'Route-lock actief tot ${formatDate(smuggling['cooldownEndsAt'])}',
+                  'Route lock active until ${formatDate(smuggling['cooldownEndsAt'])}',
+                ),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
               _l('9) Bar & Kitchen management', '9) Bar & Kitchen management'),
