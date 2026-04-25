@@ -10,6 +10,12 @@ Het nachtclub drugsverkoopsysteem is een diepgaande economische mechanica waar s
 - **Thefts/robberies** riskeren gebaseerd op veiligheid + druk
 - **Events organiseren** voor speciale occasions en boost
 
+### UI update (management command center)
+
+- Het onderste "Nachtclub Beheer" deel gebruikt nu een command center met 5 zones: Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab.
+- De beheerflow gebruikt 1 hoofdscroll in plaats van vaste tabpanel-hoogtes met nested inner-scroll.
+- Crew-beheer toont actieve shifts en historie onder elkaar voor betere leesbaarheid op mobiel, tablet en desktop.
+
 ---
 
 ## ARCHITECTURE

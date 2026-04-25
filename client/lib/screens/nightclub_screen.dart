@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,8 +22,13 @@ class NightclubScreen extends StatefulWidget {
   State<NightclubScreen> createState() => _NightclubScreenState();
 }
 
-class _NightclubScreenState extends State<NightclubScreen>
-    with TickerProviderStateMixin {
+class _NightclubScreenState extends State<NightclubScreen> {
+  static const String _managementSectionCrew = 'crew';
+  static const String _managementSectionDrugs = 'drugs';
+  static const String _managementSectionDj = 'dj';
+  static const String _managementSectionSecurity = 'security';
+  static const String _managementSectionOpsLab = 'ops';
+
   final NightclubService _nightclubService = NightclubService();
   final DrugService _drugService = DrugService();
   final ProstitutionService _achievementService = ProstitutionService();
@@ -60,10 +65,10 @@ class _NightclubScreenState extends State<NightclubScreen>
   String _selectedHospitalityPack = 'beer_crates';
   String _selectedHospitalityPricing = 'balanced';
   String? _selectedRivalName;
+  String _selectedManagementSection = _managementSectionCrew;
   List<dynamic> _rivalSearchResults = const [];
   late final TextEditingController _storeQuantityController;
   late final TextEditingController _rivalSearchController;
-  late final TabController _managementTabController;
 
   List<Map<String, dynamic>> _storeDrugOptions() {
     final byKey = <String, Map<String, dynamic>>{};
@@ -103,7 +108,10 @@ class _NightclubScreenState extends State<NightclubScreen>
     if (remainingMinutes <= 0) {
       return _l('$hours uur', '${hours}h');
     }
-    return _l('${hours}u ${remainingMinutes}m', '${hours}h ${remainingMinutes}m');
+    return _l(
+      '${hours}u ${remainingMinutes}m',
+      '${hours}h ${remainingMinutes}m',
+    );
   }
 
   bool _isVipVariant(dynamic variantRaw) {
@@ -333,15 +341,6 @@ class _NightclubScreenState extends State<NightclubScreen>
 
   double _contentPadding() => _isCompactLayout() ? 10 : 16;
 
-  double _tabIconSize() => _isCompactLayout() ? 16 : 20;
-
-  TextStyle _tabLabelStyle() {
-    return TextStyle(
-      fontSize: _isCompactLayout() ? 12 : 14,
-      fontWeight: FontWeight.w600,
-    );
-  }
-
   Map<String, dynamic>? _selectedStoreOption(
     List<Map<String, dynamic>> options,
   ) {
@@ -397,7 +396,6 @@ class _NightclubScreenState extends State<NightclubScreen>
     super.initState();
     _storeQuantityController = TextEditingController(text: '$_storeQuantity');
     _rivalSearchController = TextEditingController();
-    _managementTabController = TabController(length: 5, vsync: this);
     _load();
     _startPolling();
   }
@@ -407,7 +405,6 @@ class _NightclubScreenState extends State<NightclubScreen>
     _pollTimer?.cancel();
     _storeQuantityController.dispose();
     _rivalSearchController.dispose();
-    _managementTabController.dispose();
     super.dispose();
   }
 
@@ -1466,188 +1463,148 @@ class _NightclubScreenState extends State<NightclubScreen>
               label: Text(_t.nightclubAssignShift),
             ),
             const SizedBox(height: 12),
-            DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  TabBar(
-                    tabs: [
-                      Tab(text: _t.nightclubTabActive),
-                      Tab(text: _t.nightclubTabHistory),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 240,
-                    child: TabBarView(
-                      children: [
-                        assignedStaff.isEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Text(_t.nightclubNoCrewAssigned),
-                              )
-                            : GridView.builder(
-                                padding: const EdgeInsets.only(top: 8),
-                                itemCount: assignedStaff.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: _isCompactLayout()
-                                          ? 1
-                                          : 2,
-                                      mainAxisExtent: _isCompactLayout()
-                                          ? 118
-                                          : 124,
-                                      crossAxisSpacing: 8,
-                                      mainAxisSpacing: 8,
-                                    ),
-                                itemBuilder: (context, index) {
-                                  final map =
-                                      assignedStaff[index]
-                                          as Map<String, dynamic>;
-                                  final id = (map['id'] as num).toInt();
-                                  final vipLabel = _vipStatusLabel(
-                                    map['variant'],
-                                  );
+            _intelligenceSectionTitle(
+              _l('Actieve crew-shifts', 'Active crew shifts'),
+              Icons.groups_2,
+            ),
+            const SizedBox(height: 6),
+            if (assignedStaff.isEmpty)
+              Text(_t.nightclubNoCrewAssigned)
+            else
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final maxWidth = constraints.maxWidth;
+                  final columns = maxWidth >= 980
+                      ? 2
+                      : (maxWidth >= 520 ? 2 : 1);
+                  final extent = _isCompactLayout() ? 116.0 : 122.0;
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemCount: assignedStaff.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: columns,
+                      mainAxisExtent: extent,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemBuilder: (context, index) {
+                      final map = assignedStaff[index] as Map<String, dynamic>;
+                      final id = (map['id'] as num).toInt();
+                      final vipLabel = _vipStatusLabel(map['variant']);
 
-                                  return Card(
-                                    margin: EdgeInsets.zero,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Row(
-                                        children: [
-                                          _thumbFromImageRef(
-                                            fallbackAsset:
-                                                _prostitutePortraitAsset(
-                                                  map['variant'],
-                                                ),
-                                            fallbackIcon: Icons.person,
-                                            size: 44,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '${map['name']}',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  '$vipLabel • Lv ${map['level'] ?? 1}',
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: Theme.of(
-                                                    context,
-                                                  ).textTheme.bodySmall,
-                                                ),
-                                                const SizedBox(height: 6),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: OutlinedButton(
-                                                    onPressed: () =>
-                                                        _unassignProstitute(id),
-                                                    style: OutlinedButton.styleFrom(
-                                                      minimumSize: const Size(
-                                                        0,
-                                                        30,
-                                                      ),
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            horizontal: 10,
-                                                            vertical: 0,
-                                                          ),
-                                                      tapTargetSize:
-                                                          MaterialTapTargetSize
-                                                              .shrinkWrap,
-                                                    ),
-                                                    child: Text(
-                                                      _t.nightclubRemove,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                      return Card(
+                        margin: EdgeInsets.zero,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              _thumbFromImageRef(
+                                fallbackAsset: _prostitutePortraitAsset(
+                                  map['variant'],
+                                ),
+                                fallbackIcon: Icons.person,
+                                size: 44,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${map['name']}',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                  );
-                                },
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '$vipLabel • Lv ${map['level'] ?? 1}',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: OutlinedButton(
+                                        onPressed: () =>
+                                            _unassignProstitute(id),
+                                        style: OutlinedButton.styleFrom(
+                                          minimumSize: const Size(0, 30),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 10,
+                                            vertical: 0,
+                                          ),
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                        ),
+                                        child: Text(_t.nightclubRemove),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                        ListView(
-                          children: [
-                            if (history.isEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: Text(_t.nightclubNoStaffHistory),
-                              ),
-                            ...history.map((h) {
-                              final map = h as Map<String, dynamic>;
-                              final prostitute =
-                                  (map['prostitute']
-                                      as Map<String, dynamic>?) ??
-                                  const {};
-                              final assignedAt = DateTime.tryParse(
-                                map['assignedAt']?.toString() ?? '',
-                              );
-                              final releasedAt = DateTime.tryParse(
-                                map['releasedAt']?.toString() ?? '',
-                              );
-                              final active = map['isActive'] == true;
-                              final startText = assignedAt != null
-                                  ? '${assignedAt.day.toString().padLeft(2, '0')}-${assignedAt.month.toString().padLeft(2, '0')} ${assignedAt.hour.toString().padLeft(2, '0')}:${assignedAt.minute.toString().padLeft(2, '0')}'
-                                  : '-';
-                              final endText = releasedAt != null
-                                  ? '${releasedAt.day.toString().padLeft(2, '0')}-${releasedAt.month.toString().padLeft(2, '0')} ${releasedAt.hour.toString().padLeft(2, '0')}:${releasedAt.minute.toString().padLeft(2, '0')}'
-                                  : (active
-                                        ? _t.nightclubStatusActiveLower
-                                        : '-');
-                              final estimatedRevenue =
-                                  map['estimatedRevenue'] ?? 0;
-                              final estimatedSalesCount =
-                                  map['estimatedSalesCount'] ?? 0;
-                              final vipLabel = _vipStatusLabel(
-                                prostitute['variant'],
-                              );
-
-                              return ListTile(
-                                dense: true,
-                                contentPadding: EdgeInsets.zero,
-                                leading: _thumbFromImageRef(
-                                  fallbackAsset: _prostitutePortraitAsset(
-                                    prostitute['variant'],
-                                  ),
-                                  fallbackIcon: active
-                                      ? Icons.schedule
-                                      : Icons.history,
-                                  size: 30,
-                                ),
-                                title: Text(
-                                  '${prostitute['name'] ?? _l('Onbekend', 'Unknown')} • $vipLabel (Lv ${prostitute['level'] ?? 1})',
-                                ),
-                                subtitle: Text(
-                                  '${_t.nightclubFrom}: $startText  |  ${_t.nightclubTo}: $endText\n${_t.nightclubRevenueImpact}: €$estimatedRevenue (${_t.nightclubSalesCountLabel}: $estimatedSalesCount)',
-                                ),
-                              );
-                            }),
-                          ],
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
+                      );
+                    },
+                  );
+                },
               ),
+            const SizedBox(height: 12),
+            _intelligenceSectionTitle(
+              _l('Recente crew-historie', 'Recent crew history'),
+              Icons.history,
             ),
+            const SizedBox(height: 6),
+            if (history.isEmpty) Text(_t.nightclubNoStaffHistory),
+            ...history.take(8).map((h) {
+              final map = h as Map<String, dynamic>;
+              final prostitute =
+                  (map['prostitute'] as Map<String, dynamic>?) ?? const {};
+              final assignedAt = DateTime.tryParse(
+                map['assignedAt']?.toString() ?? '',
+              );
+              final releasedAt = DateTime.tryParse(
+                map['releasedAt']?.toString() ?? '',
+              );
+              final active = map['isActive'] == true;
+              final startText = assignedAt != null
+                  ? '${assignedAt.day.toString().padLeft(2, '0')}-${assignedAt.month.toString().padLeft(2, '0')} ${assignedAt.hour.toString().padLeft(2, '0')}:${assignedAt.minute.toString().padLeft(2, '0')}'
+                  : '-';
+              final endText = releasedAt != null
+                  ? '${releasedAt.day.toString().padLeft(2, '0')}-${releasedAt.month.toString().padLeft(2, '0')} ${releasedAt.hour.toString().padLeft(2, '0')}:${releasedAt.minute.toString().padLeft(2, '0')}'
+                  : (active ? _t.nightclubStatusActiveLower : '-');
+              final estimatedRevenue = map['estimatedRevenue'] ?? 0;
+              final estimatedSalesCount = map['estimatedSalesCount'] ?? 0;
+              final vipLabel = _vipStatusLabel(prostitute['variant']);
+
+              return ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.zero,
+                leading: _thumbFromImageRef(
+                  fallbackAsset: _prostitutePortraitAsset(
+                    prostitute['variant'],
+                  ),
+                  fallbackIcon: active ? Icons.schedule : Icons.history,
+                  size: 30,
+                ),
+                title: Text(
+                  '${prostitute['name'] ?? _l('Onbekend', 'Unknown')} • $vipLabel (Lv ${prostitute['level'] ?? 1})',
+                ),
+                subtitle: Text(
+                  '${_t.nightclubFrom}: $startText  |  ${_t.nightclubTo}: $endText\n${_t.nightclubRevenueImpact}: €$estimatedRevenue (${_t.nightclubSalesCountLabel}: $estimatedSalesCount)',
+                ),
+              );
+            }),
           ],
         ),
       ),
@@ -2169,8 +2126,10 @@ class _NightclubScreenState extends State<NightclubScreen>
         (expansion['dynamicCalendar'] as Map<String, dynamic>?) ?? const {};
     final vipClientele =
         (expansion['vipClientele'] as Map<String, dynamic>?) ?? const {};
-    final staffTraits = (expansion['staffTraits'] as List<dynamic>?) ?? const [];
-    final smuggling = (expansion['smuggling'] as Map<String, dynamic>?) ?? const {};
+    final staffTraits =
+        (expansion['staffTraits'] as List<dynamic>?) ?? const [];
+    final smuggling =
+        (expansion['smuggling'] as Map<String, dynamic>?) ?? const {};
     final smugglingCooldownActive = smuggling['cooldownActive'] == true;
     final smugglingCooldownRemainingMinutes =
         (smuggling['cooldownRemainingMinutes'] as num?)?.toInt() ?? 0;
@@ -2260,9 +2219,13 @@ class _NightclubScreenState extends State<NightclubScreen>
                 child: _kpiChip(
                   _l('Aanbevolen vandaag', 'Recommended today'),
                   Localizations.localeOf(context).languageCode == 'nl'
-                      ? ((dynamicCalendar['today'] as Map<String, dynamic>?)?['nl'] ?? '-')
+                      ? ((dynamicCalendar['today']
+                                    as Map<String, dynamic>?)?['nl'] ??
+                                '-')
                             .toString()
-                      : ((dynamicCalendar['today'] as Map<String, dynamic>?)?['en'] ?? '-')
+                      : ((dynamicCalendar['today']
+                                    as Map<String, dynamic>?)?['en'] ??
+                                '-')
                             .toString(),
                 ),
               ),
@@ -2477,16 +2440,18 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             DropdownButtonFormField<String>(
               value: _selectedSupplierContract,
-              items: ((supplierContracts['options'] as List<dynamic>?) ?? const [])
-                  .map((raw) {
-                    final map = raw as Map<String, dynamic>;
-                    final key = (map['key'] ?? '').toString();
-                    final label = Localizations.localeOf(context).languageCode == 'nl'
-                        ? (map['labelNl'] ?? key).toString()
-                        : (map['labelEn'] ?? key).toString();
-                    return DropdownMenuItem(value: key, child: Text(label));
-                  })
-                  .toList(),
+              items:
+                  ((supplierContracts['options'] as List<dynamic>?) ?? const [])
+                      .map((raw) {
+                        final map = raw as Map<String, dynamic>;
+                        final key = (map['key'] ?? '').toString();
+                        final label =
+                            Localizations.localeOf(context).languageCode == 'nl'
+                            ? (map['labelNl'] ?? key).toString()
+                            : (map['labelEn'] ?? key).toString();
+                        return DropdownMenuItem(value: key, child: Text(label));
+                      })
+                      .toList(),
               onChanged: (v) {
                 if (v == null) return;
                 setState(() => _selectedSupplierContract = v);
@@ -2504,14 +2469,17 @@ class _NightclubScreenState extends State<NightclubScreen>
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedPromoterProfile,
-              items: ((promoters['options'] as List<dynamic>?) ?? const []).map((raw) {
-                final map = raw as Map<String, dynamic>;
-                final key = (map['key'] ?? '').toString();
-                final label = Localizations.localeOf(context).languageCode == 'nl'
-                    ? (map['labelNl'] ?? key).toString()
-                    : (map['labelEn'] ?? key).toString();
-                return DropdownMenuItem(value: key, child: Text(label));
-              }).toList(),
+              items: ((promoters['options'] as List<dynamic>?) ?? const []).map(
+                (raw) {
+                  final map = raw as Map<String, dynamic>;
+                  final key = (map['key'] ?? '').toString();
+                  final label =
+                      Localizations.localeOf(context).languageCode == 'nl'
+                      ? (map['labelNl'] ?? key).toString()
+                      : (map['labelEn'] ?? key).toString();
+                  return DropdownMenuItem(value: key, child: Text(label));
+                },
+              ).toList(),
               onChanged: (v) {
                 if (v == null) return;
                 setState(() => _selectedPromoterProfile = v);
@@ -2528,22 +2496,25 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('7) VIP clientele & staff traits', '7) VIP clientele & staff traits'),
+              _l(
+                '7) VIP clientele & staff traits',
+                '7) VIP clientele & staff traits',
+              ),
               Icons.workspace_premium,
             ),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: [
-                _kpiChip(_l('VIP share', 'VIP share'), '${vipClientele['sharePct'] ?? 0}%'),
+                _kpiChip(
+                  _l('VIP share', 'VIP share'),
+                  '${vipClientele['sharePct'] ?? 0}%',
+                ),
                 _kpiChip(
                   _l('Spend x', 'Spend x'),
                   '${vipClientele['spendMultiplier'] ?? 1}',
                 ),
-                _kpiChip(
-                  _l('Tier', 'Tier'),
-                  '${reputation['tier'] ?? '-'}',
-                ),
+                _kpiChip(_l('Tier', 'Tier'), '${reputation['tier'] ?? '-'}'),
               ],
             ),
             ...staffTraits.take(2).map((raw) {
@@ -2551,7 +2522,8 @@ class _NightclubScreenState extends State<NightclubScreen>
               final title = Localizations.localeOf(context).languageCode == 'nl'
                   ? (map['nl'] ?? '-').toString()
                   : (map['en'] ?? '-').toString();
-              final effect = Localizations.localeOf(context).languageCode == 'nl'
+              final effect =
+                  Localizations.localeOf(context).languageCode == 'nl'
                   ? (map['effectNl'] ?? '-').toString()
                   : (map['effectEn'] ?? '-').toString();
               return ListTile(
@@ -2569,20 +2541,25 @@ class _NightclubScreenState extends State<NightclubScreen>
             _kpiChip(
               _l('Cooldown', 'Cooldown'),
               smugglingCooldownActive
-                  ? _formatRemainingMinutesLabel(smugglingCooldownRemainingMinutes)
+                  ? _formatRemainingMinutesLabel(
+                      smugglingCooldownRemainingMinutes,
+                    )
                   : _l('Klaar', 'Ready'),
             ),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedSmugglingRoute,
-              items: ((smuggling['options'] as List<dynamic>?) ?? const []).map((raw) {
-                final map = raw as Map<String, dynamic>;
-                final key = (map['key'] ?? '').toString();
-                final label = Localizations.localeOf(context).languageCode == 'nl'
-                    ? (map['labelNl'] ?? key).toString()
-                    : (map['labelEn'] ?? key).toString();
-                return DropdownMenuItem(value: key, child: Text(label));
-              }).toList(),
+              items: ((smuggling['options'] as List<dynamic>?) ?? const []).map(
+                (raw) {
+                  final map = raw as Map<String, dynamic>;
+                  final key = (map['key'] ?? '').toString();
+                  final label =
+                      Localizations.localeOf(context).languageCode == 'nl'
+                      ? (map['labelNl'] ?? key).toString()
+                      : (map['labelEn'] ?? key).toString();
+                  return DropdownMenuItem(value: key, child: Text(label));
+                },
+              ).toList(),
               onChanged: (v) {
                 if (v == null) return;
                 setState(() => _selectedSmugglingRoute = v);
@@ -2591,7 +2568,9 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 6),
             FilledButton.icon(
-              onPressed: smugglingCooldownActive ? null : _runSmugglingRouteAction,
+              onPressed: smugglingCooldownActive
+                  ? null
+                  : _runSmugglingRouteAction,
               icon: const Icon(Icons.local_shipping),
               label: Text(_l('Start route', 'Start route')),
             ),
@@ -2634,17 +2613,21 @@ class _NightclubScreenState extends State<NightclubScreen>
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedHospitalityPack,
-              items: ((hospitality['stockOptions'] as List<dynamic>?) ?? const []).map((raw) {
-                final map = raw as Map<String, dynamic>;
-                final key = (map['key'] ?? '').toString();
-                final label = Localizations.localeOf(context).languageCode == 'nl'
-                    ? (map['labelNl'] ?? key).toString()
-                    : (map['labelEn'] ?? key).toString();
-                return DropdownMenuItem(
-                  value: key,
-                  child: Text('$label • €${map['cost'] ?? 0}'),
-                );
-              }).toList(),
+              items:
+                  ((hospitality['stockOptions'] as List<dynamic>?) ?? const [])
+                      .map((raw) {
+                        final map = raw as Map<String, dynamic>;
+                        final key = (map['key'] ?? '').toString();
+                        final label =
+                            Localizations.localeOf(context).languageCode == 'nl'
+                            ? (map['labelNl'] ?? key).toString()
+                            : (map['labelEn'] ?? key).toString();
+                        return DropdownMenuItem(
+                          value: key,
+                          child: Text('$label • €${map['cost'] ?? 0}'),
+                        );
+                      })
+                      .toList(),
               onChanged: (v) {
                 if (v == null) return;
                 setState(() => _selectedHospitalityPack = v);
@@ -2662,14 +2645,19 @@ class _NightclubScreenState extends State<NightclubScreen>
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedHospitalityPricing,
-              items: ((hospitality['pricingOptions'] as List<dynamic>?) ?? const []).map((raw) {
-                final map = raw as Map<String, dynamic>;
-                final key = (map['key'] ?? '').toString();
-                final label = Localizations.localeOf(context).languageCode == 'nl'
-                    ? (map['labelNl'] ?? key).toString()
-                    : (map['labelEn'] ?? key).toString();
-                return DropdownMenuItem(value: key, child: Text(label));
-              }).toList(),
+              items:
+                  ((hospitality['pricingOptions'] as List<dynamic>?) ??
+                          const [])
+                      .map((raw) {
+                        final map = raw as Map<String, dynamic>;
+                        final key = (map['key'] ?? '').toString();
+                        final label =
+                            Localizations.localeOf(context).languageCode == 'nl'
+                            ? (map['labelNl'] ?? key).toString()
+                            : (map['labelEn'] ?? key).toString();
+                        return DropdownMenuItem(value: key, child: Text(label));
+                      })
+                      .toList(),
               onChanged: (v) {
                 if (v == null) return;
                 setState(() => _selectedHospitalityPricing = v);
@@ -2686,7 +2674,10 @@ class _NightclubScreenState extends State<NightclubScreen>
             ),
             const SizedBox(height: 12),
             _intelligenceSectionTitle(
-              _l('10) Rival clubs + counter-intel', '10) Rival clubs + counter-intel'),
+              _l(
+                '10) Rival clubs + counter-intel',
+                '10) Rival clubs + counter-intel',
+              ),
               Icons.sports_mma,
             ),
             TextField(
@@ -2769,7 +2760,11 @@ class _NightclubScreenState extends State<NightclubScreen>
               return ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.fiber_manual_record, color: color, size: 12),
+                leading: Icon(
+                  Icons.fiber_manual_record,
+                  color: color,
+                  size: 12,
+                ),
                 title: Text(label),
                 subtitle: Text(formatDate(map['at'])),
               );
@@ -2809,84 +2804,279 @@ class _NightclubScreenState extends State<NightclubScreen>
     );
   }
 
+  List<_ManagementSectionMeta> _managementSections() {
+    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
+    final operations =
+        (data['operations'] as Map<String, dynamic>?) ?? const {};
+    final expansion =
+        (operations['expansion'] as Map<String, dynamic>?) ?? const {};
+    final smuggling =
+        (expansion['smuggling'] as Map<String, dynamic>?) ?? const {};
+    final smugglingCooldown = smuggling['cooldownActive'] == true;
+    final smugglingMinutes =
+        (smuggling['cooldownRemainingMinutes'] as num?)?.toInt() ?? 0;
+    final opsAlerts = (operations['alerts'] as List<dynamic>?)?.length ?? 0;
+
+    return [
+      _ManagementSectionMeta(
+        key: _managementSectionCrew,
+        icon: Icons.groups_2_rounded,
+        title: _l('Crew & diensten', 'Crew & shifts'),
+        subtitle: _l(
+          'Bezetting, prestaties en shift-historie.',
+          'Staffing, performance and shift history.',
+        ),
+      ),
+      _ManagementSectionMeta(
+        key: _managementSectionDrugs,
+        icon: Icons.science_rounded,
+        title: _l('Drugsopslag', 'Drug storage'),
+        subtitle: _l(
+          'Voorraad in grammen beheren en verplaatsen.',
+          'Manage and transfer inventory in grams.',
+        ),
+      ),
+      _ManagementSectionMeta(
+        key: _managementSectionDj,
+        icon: Icons.queue_music_rounded,
+        title: _l('DJ Command', 'DJ command'),
+        subtitle: _l(
+          'Kies DJ, shiftduur en live crowd-boost.',
+          'Choose DJ, shift length and live crowd boost.',
+        ),
+      ),
+      _ManagementSectionMeta(
+        key: _managementSectionSecurity,
+        icon: Icons.shield_moon_rounded,
+        title: _l('Security Unit', 'Security unit'),
+        subtitle: _l(
+          'Diefstalreductie, kosten en actieve beveiliging.',
+          'Theft reduction, costs and active security.',
+        ),
+      ),
+      _ManagementSectionMeta(
+        key: _managementSectionOpsLab,
+        icon: Icons.precision_manufacturing_rounded,
+        title: _l('Ops Lab', 'Ops Lab'),
+        subtitle: _l(
+          opsAlerts > 0
+              ? 'Live alerts: $opsAlerts | Smuggling: ${smugglingCooldown ? _formatRemainingMinutesLabel(smugglingMinutes) : _l('klaar', 'ready')}'
+              : '11 systemen voor events, upgrades, routes en rivalen.',
+          opsAlerts > 0
+              ? 'Live alerts: $opsAlerts | Smuggling: ${smugglingCooldown ? _formatRemainingMinutesLabel(smugglingMinutes) : 'ready'}'
+              : '11 systems for events, upgrades, routes and rivals.',
+        ),
+      ),
+    ];
+  }
+
+  Widget _managementZoneCard({
+    required _ManagementSectionMeta section,
+    required bool selected,
+  }) {
+    final borderColor = selected
+        ? const Color(0xFFD4A24D)
+        : const Color(0x44D4A24D);
+    final bgGradient = selected
+        ? const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xCC3B2412), Color(0xAA2B180D), Color(0xCC150E0A)],
+          )
+        : const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0x77221311), Color(0x55201510), Color(0x7720120D)],
+          );
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: () => setState(() => _selectedManagementSection = section.key),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeOut,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          gradient: bgGradient,
+          border: Border.all(color: borderColor),
+          boxShadow: selected
+              ? const [
+                  BoxShadow(
+                    color: Color(0x55000000),
+                    blurRadius: 12,
+                    offset: Offset(0, 5),
+                  ),
+                ]
+              : const [],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: selected
+                    ? const Color(0x33FFE3A0)
+                    : const Color(0x22FFFFFF),
+              ),
+              child: Icon(
+                section.icon,
+                color: selected ? const Color(0xFFFFE3A0) : Colors.white70,
+                size: 19,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    section.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: selected ? const Color(0xFFFFE3A0) : Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    section.subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: selected ? Colors.white : Colors.white70,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _managementSectionBody(String key) {
+    switch (key) {
+      case _managementSectionCrew:
+        return _staffCard();
+      case _managementSectionDrugs:
+        return _storeCard();
+      case _managementSectionDj:
+        return _djCard();
+      case _managementSectionSecurity:
+        return _securityCard();
+      case _managementSectionOpsLab:
+        return _operationsCard();
+      default:
+        return _staffCard();
+    }
+  }
+
   Widget _managementTabs() {
-    final screenHeight = MediaQuery.of(context).size.height;
     final compact = _isCompactLayout();
-    final tabBodyHeight = (screenHeight * 0.62).clamp(420.0, 780.0);
+    final sections = _managementSections();
+    final selectedSection = sections.firstWhere(
+      (section) => section.key == _selectedManagementSection,
+      orElse: () => sections.first,
+    );
+    final data = (_stats?['data'] as Map<String, dynamic>?) ?? const {};
+    final prostitution =
+        (data['prostitution'] as Map<String, dynamic>?) ?? const {};
+    final assignedCount = (prostitution['assignedCount'] as num?)?.toInt() ?? 0;
+    final staffCap = (prostitution['staffCap'] as num?)?.toInt() ?? 0;
+    final storedTotalGrams = _nightclubStoredDrugs().fold<int>(
+      0,
+      (sum, row) => sum + ((row['quantity'] as num?)?.toInt() ?? 0),
+    );
+    final ops =
+        (data['operations'] as Map<String, dynamic>?) ??
+        const <String, dynamic>{};
+    final opsAlerts = (ops['alerts'] as List<dynamic>?)?.length ?? 0;
 
     return _mafiaPanel(
       child: Padding(
-        padding: EdgeInsets.all(compact ? 8 : 12),
+        padding: EdgeInsets.all(compact ? 10 : 14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               _l('Nachtclub Beheer', 'Nightclub Management'),
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+                color: Color(0xFFFFE3A0),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _l(
+                'Kies een managementzone en beheer alles zonder losse inner-scroll.',
+                'Choose a management zone and control everything without nested inner-scroll.',
+              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.white70),
             ),
             const SizedBox(height: 8),
-            TabBar(
-              controller: _managementTabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              labelStyle: _tabLabelStyle(),
-              labelColor: const Color(0xFFFFE3A0),
-              unselectedLabelColor: Colors.white70,
-              indicatorColor: const Color(0xFFD4A24D),
-              labelPadding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12),
-              tabs: [
-                Tab(
-                  text: _l('Hoeren', 'Crew'),
-                  icon: Icon(Icons.group, size: _tabIconSize()),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _kpiChip(_l('Crew', 'Crew'), '$assignedCount/$staffCap'),
+                _kpiChip(_l('Opslag', 'Storage'), '${storedTotalGrams}g'),
+                _kpiChip(
+                  _l('DJ shift', 'DJ shift'),
+                  _activeDjShift() == null
+                      ? _l('Geen', 'None')
+                      : _l('Actief', 'Active'),
                 ),
-                Tab(
-                  text: _l('Drugs', 'Drugs'),
-                  icon: Icon(Icons.science, size: _tabIconSize()),
+                _kpiChip(
+                  _l('Security', 'Security'),
+                  _activeSecurityShift() == null
+                      ? _l('Geen', 'None')
+                      : _l('Actief', 'Active'),
                 ),
-                Tab(
-                  text: _l('DJ', 'DJ'),
-                  icon: Icon(Icons.music_note, size: _tabIconSize()),
-                ),
-                Tab(
-                  text: _l('Beveiliging', 'Security'),
-                  icon: Icon(Icons.security, size: _tabIconSize()),
-                ),
-                Tab(
-                  text: _l('Ops Lab', 'Ops Lab'),
-                  icon: Icon(
-                    Icons.precision_manufacturing,
-                    size: _tabIconSize(),
-                  ),
-                ),
+                _kpiChip(_l('Ops alerts', 'Ops alerts'), '$opsAlerts'),
               ],
             ),
             const SizedBox(height: 10),
-            SizedBox(
-              height: tabBodyHeight,
-              child: TabBarView(
-                controller: _managementTabController,
-                children: [
-                  SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: _staffCard(),
-                  ),
-                  SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: _storeCard(),
-                  ),
-                  SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: _djCard(),
-                  ),
-                  SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: _securityCard(),
-                  ),
-                  SingleChildScrollView(
-                    padding: EdgeInsets.zero,
-                    child: _operationsCard(),
-                  ),
-                ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final maxWidth = constraints.maxWidth;
+                final columns = maxWidth >= 1200
+                    ? 3
+                    : (maxWidth >= 780 ? 2 : 1);
+                final totalSpacing = (columns - 1) * 10;
+                final cardWidth = (maxWidth - totalSpacing) / columns;
+
+                return Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: sections.map((section) {
+                    final isSelected = section.key == selectedSection.key;
+                    return SizedBox(
+                      width: columns == 1 ? maxWidth : cardWidth,
+                      child: _managementZoneCard(
+                        section: section,
+                        selected: isSelected,
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
+            ),
+            const SizedBox(height: 12),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 220),
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeInCubic,
+              child: KeyedSubtree(
+                key: ValueKey<String>(selectedSection.key),
+                child: _managementSectionBody(selectedSection.key),
               ),
             ),
           ],
@@ -3126,6 +3316,20 @@ class _NightclubScreenState extends State<NightclubScreen>
   }
 }
 
+class _ManagementSectionMeta {
+  final String key;
+  final IconData icon;
+  final String title;
+  final String subtitle;
+
+  const _ManagementSectionMeta({
+    required this.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
+}
+
 class _SparklinePainter extends CustomPainter {
   final List<int> points;
 
@@ -3182,4 +3386,3 @@ class _SparklinePainter extends CustomPainter {
     return false;
   }
 }
-

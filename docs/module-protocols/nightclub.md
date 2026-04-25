@@ -11,7 +11,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Keep Dutch and English copy in sync for any user-visible change.
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
-- For dense management screens, prefer tab-based information architecture over long stacked cards.
+- For dense management screens, prefer either tab-based information architecture or a single-section command center pattern; avoid long stacked cards and avoid nested inner-scroll regions.
 - Use image-backed selectors for staff, drugs, DJs and security where assets exist; always provide icon fallbacks if an image is missing.
 - Avoid fixed panel heights without breakpoints; use responsive/clamped heights so tabs remain usable on both mobile and desktop.
 
@@ -30,6 +30,7 @@ Venue management, staff, revenue, leaderboard and seasonal progression.
 - Resilient screen load: one slow/failing API call may not block the whole nightclub screen.
 - Live staffing selectors must never depend on manual seed steps alone; DJ/security availability data needs a production-safe bootstrap or fallback so empty staff tables do not leave selectors blank.
 - Drug storage controls must keep grams visible on mobile (selected item + available grams), so players can make quantity decisions without hidden or truncated unit info.
+- Nightclub management UI must keep one primary vertical page scroll on mobile; do not embed fixed-height subpanels with independent scrollbars.
 - DJ status must reflect real active shift state; expired contracts must be cleaned up server-side so hire actions are not blocked by stale `currentDJId`.
 - If Nightclub overview is rendered as a single intelligence panel (without tabs), all former Overview/Revenue/Risk essentials must remain present in that one panel with clear section headers and mobile-safe spacing.
 - Rival-targeting UX in nightclub must be name-first (search by player username), never forcing players to input or know numeric player IDs.

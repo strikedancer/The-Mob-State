@@ -712,7 +712,7 @@ const List<HelpTopic> helpTopics = [
     summaryEn:
         'Run a nightclub as part of your criminal empire. Manage staff, security and supply for passive and active income with a dedicated season leaderboard.',
     howNl: [
-      'De nachtclub heeft meerdere schermen: Hub (overzicht revenue en bezoekers), DJs (boek entertainers voor hogere bezoekerscores), Beveiliging (bewakers verlagen incidentrisico), Supply (alcohol en andere voorraden) en Season Summary.',
+      'Onderaan gebruik je nu een Nightclub Management Command Center met zones voor Crew, Drugsopslag, DJ Command, Security Unit en Ops Lab; alle zones draaien in één doorlopende paginaflow zonder extra inner-scroll.',
       'In het nightclub scherm staat nu één centrale Intelligence-sectie waarin overzicht, omzettrends en risicologs samen zichtbaar zijn zonder tab-switches.',
       'In Ops Lab gebruik je nu 11 systemen: resident DJ, dynamic event kalender, upgrade-tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drank/food) met pricing, rival sabotage + counter-intel en operations timeline.',
       'Smuggling routes hebben nu een cooldown per run (Harbor 60 min, Airstrip 90 min, Borderline 120 min) zodat je risico en timing moet plannen in plaats van oneindig spammen.',
@@ -728,7 +728,7 @@ const List<HelpTopic> helpTopics = [
       'Upgrades verbeteren capaciteit, supply-opslag en het maximale aantal DJs en bewakers dat je kunt inzetten.',
     ],
     howEn: [
-      'The nightclub has multiple screens: Hub (revenue and visitor overview), DJs (book entertainers for higher visitor scores), Security (guards lower incident risk), Supply (alcohol and other stock) and Season Summary.',
+      'At the bottom you now use a Nightclub Management Command Center with zones for Crew, Drug Storage, DJ Command, Security Unit and Ops Lab; all zones run in one continuous page flow without extra inner-scroll.',
       'The nightclub screen now includes one central Intelligence section combining overview, revenue trends and risk logs without tab switching.',
       'Ops Lab now includes 11 systems: resident DJ, dynamic event calendar, upgrade tree, police heat/incident response, supplier contracts, promoter profiles, VIP clientele + staff traits, smuggling routes, bar & kitchen management (drinks/food) with pricing, rival sabotage + counter-intel, and an operations timeline.',
       'Smuggling routes now have a run cooldown (Harbor 60 min, Airstrip 90 min, Borderline 120 min), forcing risk/timing planning instead of infinite spam.',
