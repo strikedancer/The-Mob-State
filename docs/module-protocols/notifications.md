@@ -42,6 +42,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Web-only notificaties gebruiken een data-only payload; native clients mogen het `notification` veld blijven gebruiken als dat nodig is.
 - Arrestatie-alerts voor vrienden of crewleden moeten via dezelfde fire-and-forget pipeline lopen, ontvangers dedupliceren als iemand zowel vriend als crewlid is, en mogen arrest-/jailflows nooit rollbacken.
 - Hitlist lifecycle-alerts (zoals "je staat op de moordlijst") moeten een dedicated pushtype/data payload gebruiken (`hitlist_placed`) en mogen niet alleen afhankelijk zijn van de algemene direct-message pushroute.
+- Arrestatie-alerts moeten authority-labels normaliseren per taal (`politie`/`police`, `grenspolitie`/`border police`, `FBI`) en typfouten in bronwaarden (zoals `pilice`) mogen nooit zichtbaar worden in player pushcopy.
 
 ## Frontend Guardrails
 - Settings moet een expliciete action bevatten die browser/iOS permission requests via user gesture kan starten.

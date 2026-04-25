@@ -77,6 +77,26 @@ export class NotificationService {
     return translationService.getPlayerLanguage(player ?? {});
   }
 
+  private normalizeArrestAuthorityLabel(authority: string, language: Language): string {
+    const raw = String(authority || '').trim();
+    if (!raw) {
+      return language === 'nl' ? 'politie' : 'police';
+    }
+
+    const normalized = raw.toLowerCase().replace(/[^a-z]/g, '');
+    if (normalized.includes('fbi')) {
+      return 'FBI';
+    }
+    if (normalized.includes('border') || normalized.includes('grens')) {
+      return language === 'nl' ? 'grenspolitie' : 'border police';
+    }
+    if (normalized.includes('police') || normalized.includes('pilice') || normalized.includes('politie')) {
+      return language === 'nl' ? 'politie' : 'police';
+    }
+
+    return language === 'nl' ? raw : raw.toLowerCase();
+  }
+
   public static getInstance(): NotificationService {
     if (!NotificationService.instance) {
       NotificationService.instance = new NotificationService();
@@ -405,16 +425,17 @@ export class NotificationService {
           const language = await this.resolveLanguageForPlayer(recipientId);
           const isCrewRelation = relation.isCrew;
           const crewName = crewMembership?.crew.name;
+          const authorityLabel = this.normalizeArrestAuthorityLabel(authority, language);
           const title = language === 'nl'
             ? (isCrewRelation ? 'Crewlid opgepakt' : 'Vriend opgepakt')
             : (isCrewRelation ? 'Crewmate Arrested' : 'Friend Arrested');
           const body = language === 'nl'
             ? isCrewRelation
-              ? `${player.username}${crewName ? ` van ${crewName}` : ''} is opgepakt door ${authority} en wacht op hulp in de gevangenis (${jailTimeMinutes} min).`
-              : `${player.username} is opgepakt door ${authority} en wacht op hulp in de gevangenis (${jailTimeMinutes} min).`
+              ? `${player.username}${crewName ? ` van ${crewName}` : ''} is opgepakt door de ${authorityLabel} en wacht op hulp in de gevangenis (${jailTimeMinutes} min).`
+              : `${player.username} is opgepakt door de ${authorityLabel} en wacht op hulp in de gevangenis (${jailTimeMinutes} min).`
             : isCrewRelation
-              ? `${player.username}${crewName ? ` from ${crewName}` : ''} was arrested by ${authority} and is waiting for help in prison (${jailTimeMinutes} min).`
-              : `${player.username} was arrested by ${authority} and is waiting for help in prison (${jailTimeMinutes} min).`;
+              ? `${player.username}${crewName ? ` from ${crewName}` : ''} was arrested by ${authorityLabel} and is waiting for help in prison (${jailTimeMinutes} min).`
+              : `${player.username} was arrested by ${authorityLabel} and is waiting for help in prison (${jailTimeMinutes} min).`;
 
           await this.sendToPlayer(recipientId, title, body, {
             type: 'ally_arrested',

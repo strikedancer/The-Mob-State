@@ -46,6 +46,7 @@
 ## Hitlist Notificaties
 
 - Wanneer iemand je op de moordlijst zet, hoort direct zowel een inbox-bericht als een pushmelding binnen te komen met bounty-bedrag en afzender.
+- Arrest-/hulpmeldingen voor vrienden en crew gebruiken consistente authority-labels per taal (NL: `politie`, EN: `police`, plus `FBI` waar relevant).
 
 ---
 
