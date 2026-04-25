@@ -37,6 +37,12 @@
 
 ---
 
+## School
+
+- Op mobiel worden School-tracks en unlock-kaarten in auto-hoogte weergegeven zodat volledige kaartinhoud altijd zichtbaar blijft (geen afgekapt onderste deel).
+
+---
+
 ## Basis Mechanics
 
 ### Speler Stats

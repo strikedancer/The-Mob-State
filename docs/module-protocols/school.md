@@ -23,6 +23,7 @@ Education tracks, certifications, gates, cooldowns and unlock dependencies.
 - Accurate state refresh after an action completes.
 - Consistent formatting for money, timers, percentages and labels.
 - Responsive usability without pushing critical actions off-screen.
+- On mobile, school cards must use content-driven height (auto-height); card content may never be clipped at the bottom by fixed grid aspect ratios.
 
 ## i18n and Messaging
 - Any new labels, warnings, helper text or dialogs must exist in both Dutch and English.

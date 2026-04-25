@@ -743,151 +743,143 @@ class _SchoolScreenState extends State<SchoolScreen> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              trackName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Tooltip(
+                            message: trackInfoText,
+                            preferBelow: false,
+                            child: const Icon(
+                              Icons.info_outline,
+                              size: 16,
+                              color: Color(0xFFFFC107),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      if (!trackUnlockedByRank)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            '${l10n.requiredRank}: $minPlayerRank',
+                            style: const TextStyle(
+                              color: Colors.orangeAccent,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(999),
+                        child: LinearProgressIndicator(
+                          minHeight: 8,
+                          value: progress,
+                          backgroundColor: Colors.blueGrey[800],
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            Color(0xFFFFC107),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.schoolXpLabel(currentXp),
+                        style: TextStyle(fontSize: 11, color: Colors.grey[300]),
+                      ),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        children: certifications
+                            .map((cert) {
+                              final certId = cert['id']?.toString() ?? '';
+                              final certName =
+                                  cert['name']?.toString() ?? certId;
+                              final requiredLevel =
+                                  (cert['requiredLevel'] as num?)?.toInt() ?? 0;
+                              final unlocked = _hasCertification(certId);
+
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 7,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: unlocked
+                                      ? Colors.green.withOpacity(0.18)
+                                      : Colors.blueGrey[900]?.withOpacity(0.55),
+                                  borderRadius: BorderRadius.circular(999),
+                                  border: Border.all(
+                                    color: unlocked
+                                        ? Colors.green.withOpacity(0.55)
+                                        : const Color(
+                                            0xFFFFC107,
+                                          ).withOpacity(0.45),
+                                  ),
+                                ),
+                                child: Text(
+                                  unlocked
+                                      ? '✓ $certName'
+                                      : l10n.schoolCertificationRequiredLevel(
+                                          certName,
+                                          requiredLevel,
+                                        ),
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    color: unlocked
+                                        ? Colors.greenAccent
+                                        : Colors.grey[300],
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              );
+                            })
+                            .toList(growable: false),
+                      ),
+                      if (isTraining || isOnCooldown) ...[
+                        const SizedBox(height: 8),
                         Row(
                           children: [
+                            Icon(
+                              isTraining ? Icons.hourglass_top : Icons.timer,
+                              size: 14,
+                              color: const Color(0xFFFFC107),
+                            ),
+                            const SizedBox(width: 6),
                             Expanded(
                               child: Text(
-                                trackName,
+                                isTraining
+                                    ? l10n.loading
+                                    : '${l10n.cooldown} ${_formatCooldownSeconds(remainingCooldownSeconds)}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                  color: Colors.white,
+                                  color: Color(0xFFFFC107),
                                 ),
-                              ),
-                            ),
-                            Tooltip(
-                              message: trackInfoText,
-                              preferBelow: false,
-                              child: const Icon(
-                                Icons.info_outline,
-                                size: 16,
-                                color: Color(0xFFFFC107),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
-                        if (!trackUnlockedByRank)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Text(
-                              '${l10n.requiredRank}: $minPlayerRank',
-                              style: const TextStyle(
-                                color: Colors.orangeAccent,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(999),
-                          child: LinearProgressIndicator(
-                            minHeight: 8,
-                            value: progress,
-                            backgroundColor: Colors.blueGrey[800],
-                            valueColor: const AlwaysStoppedAnimation<Color>(
-                              Color(0xFFFFC107),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          l10n.schoolXpLabel(currentXp),
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey[300],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 5,
-                          runSpacing: 5,
-                          children: certifications
-                              .map((cert) {
-                                final certId = cert['id']?.toString() ?? '';
-                                final certName =
-                                    cert['name']?.toString() ?? certId;
-                                final requiredLevel =
-                                    (cert['requiredLevel'] as num?)?.toInt() ??
-                                    0;
-                                final unlocked = _hasCertification(certId);
-
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 7,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: unlocked
-                                        ? Colors.green.withOpacity(0.18)
-                                        : Colors.blueGrey[900]?.withOpacity(
-                                            0.55,
-                                          ),
-                                    borderRadius: BorderRadius.circular(999),
-                                    border: Border.all(
-                                      color: unlocked
-                                          ? Colors.green.withOpacity(0.55)
-                                          : const Color(
-                                              0xFFFFC107,
-                                            ).withOpacity(0.45),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    unlocked
-                                        ? '✓ $certName'
-                                        : l10n.schoolCertificationRequiredLevel(
-                                            certName,
-                                            requiredLevel,
-                                          ),
-                                    style: TextStyle(
-                                      fontSize: 9,
-                                      color: unlocked
-                                          ? Colors.greenAccent
-                                          : Colors.grey[300],
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                );
-                              })
-                              .toList(growable: false),
-                        ),
-                        if (isTraining || isOnCooldown) ...[
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Icon(
-                                isTraining ? Icons.hourglass_top : Icons.timer,
-                                size: 14,
-                                color: const Color(0xFFFFC107),
-                              ),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  isTraining
-                                      ? l10n.loading
-                                      : '${l10n.cooldown} ${_formatCooldownSeconds(remainingCooldownSeconds)}',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xFFFFC107),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
                       ],
-                    ),
+                    ],
                   ),
                 ),
               ],
@@ -1016,96 +1008,88 @@ class _SchoolScreenState extends State<SchoolScreen> {
                   ],
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (trackId != null && requiredLevel != null)
-                        Text(
-                          l10n.schoolGateTrackLevelProgress(
-                            trackId.toUpperCase(),
-                            _trackLevel(trackId),
-                            requiredLevel,
-                          ),
-                          style: TextStyle(
-                            color: Colors.grey[300],
-                            fontSize: 12,
-                          ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (trackId != null && requiredLevel != null)
+                      Text(
+                        l10n.schoolGateTrackLevelProgress(
+                          trackId.toUpperCase(),
+                          _trackLevel(trackId),
+                          requiredLevel,
                         ),
-                      if (certs.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 6),
-                          child: Wrap(
-                            spacing: 6,
-                            runSpacing: 6,
-                            children: certs
-                                .map((certId) {
-                                  final hasCert = _hasCertification(certId);
-                                  final certName = _certDisplayName(
-                                    certId,
-                                    l10n,
-                                  );
-                                  return Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
+                        style: TextStyle(color: Colors.grey[300], fontSize: 12),
+                      ),
+                    if (certs.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: certs
+                              .map((certId) {
+                                final hasCert = _hasCertification(certId);
+                                final certName = _certDisplayName(certId, l10n);
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: hasCert
+                                        ? Colors.green.withOpacity(0.18)
+                                        : Colors.blueGrey[900]?.withOpacity(
+                                            0.6,
+                                          ),
+                                    borderRadius: BorderRadius.circular(999),
+                                    border: Border.all(
                                       color: hasCert
-                                          ? Colors.green.withOpacity(0.18)
-                                          : Colors.blueGrey[900]?.withOpacity(
-                                              0.6,
-                                            ),
-                                      borderRadius: BorderRadius.circular(999),
-                                      border: Border.all(
-                                        color: hasCert
-                                            ? Colors.green.withOpacity(0.55)
-                                            : const Color(
-                                                0xFFFFC107,
-                                              ).withOpacity(0.45),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      hasCert ? '✓ $certName' : certName,
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: hasCert
-                                            ? Colors.greenAccent
-                                            : Colors.grey[300],
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  );
-                                })
-                                .toList(growable: false),
-                          ),
-                        ),
-                      if (!unlocked && missingReasons.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: missingReasons
-                                .map(
-                                  (reason) => Padding(
-                                    padding: const EdgeInsets.only(bottom: 4),
-                                    child: Text(
-                                      '• $reason',
-                                      style: const TextStyle(
-                                        color: Colors.orangeAccent,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                          ? Colors.green.withOpacity(0.55)
+                                          : const Color(
+                                              0xFFFFC107,
+                                            ).withOpacity(0.45),
                                     ),
                                   ),
-                                )
-                                .toList(growable: false),
-                          ),
+                                  child: Text(
+                                    hasCert ? '✓ $certName' : certName,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: hasCert
+                                          ? Colors.greenAccent
+                                          : Colors.grey[300],
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                );
+                              })
+                              .toList(growable: false),
                         ),
-                    ],
-                  ),
+                      ),
+                    if (!unlocked && missingReasons.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: missingReasons
+                              .map(
+                                (reason) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 4),
+                                  child: Text(
+                                    '• $reason',
+                                    style: const TextStyle(
+                                      color: Colors.orangeAccent,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(growable: false),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -1155,6 +1139,9 @@ class _SchoolScreenState extends State<SchoolScreen> {
         ),
       );
     }
+
+    final viewportWidth = MediaQuery.of(context).size.width;
+    final isMobile = viewportWidth < 480;
 
     return Container(
       decoration: const BoxDecoration(
@@ -1256,46 +1243,62 @@ class _SchoolScreenState extends State<SchoolScreen> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: MediaQuery.of(context).size.width < 480
-                    ? 2
-                    : MediaQuery.of(context).size.width < 900
-                    ? 3
-                    : 5,
-                childAspectRatio: 0.78,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
+            if (isMobile)
+              Column(
+                children: _tracks
+                    .map(
+                      (track) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _buildTrackTile(track, playerRank),
+                      ),
+                    )
+                    .toList(growable: false),
+              )
+            else
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: viewportWidth < 900 ? 3 : 5,
+                  childAspectRatio: viewportWidth < 900 ? 0.72 : 0.78,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                itemCount: _tracks.length,
+                itemBuilder: (context, index) =>
+                    _buildTrackTile(_tracks[index], playerRank),
               ),
-              itemCount: _tracks.length,
-              itemBuilder: (context, index) =>
-                  _buildTrackTile(_tracks[index], playerRank),
-            ),
             const SizedBox(height: 12),
             Text(
               l10n.schoolUnlockableContentTitle,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: MediaQuery.of(context).size.width < 480
-                    ? 2
-                    : MediaQuery.of(context).size.width < 900
-                    ? 3
-                    : 5,
-                childAspectRatio: 0.82,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
+            if (isMobile)
+              Column(
+                children: _gates
+                    .map(
+                      (gate) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: _buildGateTile(gate, playerRank),
+                      ),
+                    )
+                    .toList(growable: false),
+              )
+            else
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: viewportWidth < 900 ? 3 : 5,
+                  childAspectRatio: viewportWidth < 900 ? 0.76 : 0.82,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                itemCount: _gates.length,
+                itemBuilder: (context, index) =>
+                    _buildGateTile(_gates[index], playerRank),
               ),
-              itemCount: _gates.length,
-              itemBuilder: (context, index) =>
-                  _buildGateTile(_gates[index], playerRank),
-            ),
           ],
         ),
       ),
