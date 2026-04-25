@@ -43,6 +43,12 @@
 
 ---
 
+## Hitlist Notificaties
+
+- Wanneer iemand je op de moordlijst zet, hoort direct zowel een inbox-bericht als een pushmelding binnen te komen met bounty-bedrag en afzender.
+
+---
+
 ## Basis Mechanics
 
 ### Speler Stats

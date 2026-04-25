@@ -12,6 +12,8 @@ import { weaponSelectionService } from './weaponSelectionService';
 import { directMessageService } from './directMessageService';
 import { getActiveEventBoostEffects } from './premiumCreditsService';
 import { isVipStatusActive } from './vipBenefitsService';
+import { NotificationService } from './notificationService';
+import { systemLogService } from './systemLogService';
 import fs from 'fs';
 import path from 'path';
 
@@ -502,6 +504,24 @@ function buildHitPlacedOnMeMessage(
     `Placed by: ${placedByUsername}`,
     'Tip: consider buying extra protection or placing a counter-bounty immediately.',
   ].join('\n');
+}
+
+function buildHitPlacedPushContent(
+  language: 'nl' | 'en',
+  placedByUsername: string,
+  bounty: number
+): { title: string; body: string } {
+  if (language === 'nl') {
+    return {
+      title: '🎯 Je staat op de moordlijst!',
+      body: `Bedrag: €${bounty.toLocaleString('nl-NL')} door ${placedByUsername}`,
+    };
+  }
+
+  return {
+    title: '🎯 You are on the hitlist!',
+    body: `Amount: €${bounty.toLocaleString('en-US')} by ${placedByUsername}`,
+  };
 }
 
 function buildKillerSuccessMessage(
@@ -1011,11 +1031,34 @@ export async function placeHit(
       buildHitPlacedOnMeMessage(language, player.username, bounty),
       {
         senderName: language === 'nl' ? 'Moordlijst Bureau' : 'Hitlist Bureau',
-        sendPush: true,
+        // Use dedicated hitlist push below for predictable delivery semantics.
+        sendPush: false,
       }
     );
+
+    const notificationService = NotificationService.getInstance();
+    const push = buildHitPlacedPushContent(language, player.username, bounty);
+    await notificationService.sendToPlayer(targetId, push.title, push.body, {
+      type: 'hitlist_placed',
+      hitId: String(hit.id),
+      bounty: String(bounty),
+      placedById: String(playerId),
+      placedByUsername: player.username,
+    });
   } catch (error) {
     console.error('[Hitlist] Failed to send hit placed notification:', error);
+    await systemLogService.logError(
+      'Hitlist.placeHit',
+      'Failed to send hit placed notification',
+      {
+        hitId: hit.id,
+        playerId,
+        targetId,
+        bounty,
+        placedByUsername: player.username,
+        error,
+      }
+    );
   }
 
   return hit as any;

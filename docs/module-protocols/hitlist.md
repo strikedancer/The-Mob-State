@@ -122,6 +122,7 @@ Hit placement, bounties, detective investigations, combat mechanics, counter-bou
 ### Hit Placed Notification Coverage
 - Zodra een speler op de hitlist wordt gezet, ontvangt het doelwit direct een inbox-bericht + push van `Moordlijst Bureau` / `Hitlist Bureau` met minimaal bounty-bedrag en waarschuwing.
 - Deze notificatie is onderdeel van de verplichte lifecycle-notificaties voor hitlist-events en mag niet stil wegvallen bij succesvolle hit-creatie.
+- Push voor `hit placed` moet via een dedicated notificatietype (`hitlist_placed`) lopen; gebruik niet uitsluitend de generieke direct-message pushroute voor deze kritieke lifecycle-melding.
 
 ### Notifications (Push + Inbox)
 

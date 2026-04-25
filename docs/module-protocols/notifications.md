@@ -41,6 +41,7 @@ Pushnotificaties, inbox-signalen, web/native FCM gedrag, permission entrypoints 
 - Bankoverschrijvingen sturen altijd een pushmelding naar de ontvanger via de bestaande notification pipeline en blijven fire-and-forget.
 - Web-only notificaties gebruiken een data-only payload; native clients mogen het `notification` veld blijven gebruiken als dat nodig is.
 - Arrestatie-alerts voor vrienden of crewleden moeten via dezelfde fire-and-forget pipeline lopen, ontvangers dedupliceren als iemand zowel vriend als crewlid is, en mogen arrest-/jailflows nooit rollbacken.
+- Hitlist lifecycle-alerts (zoals "je staat op de moordlijst") moeten een dedicated pushtype/data payload gebruiken (`hitlist_placed`) en mogen niet alleen afhankelijk zijn van de algemene direct-message pushroute.
 
 ## Frontend Guardrails
 - Settings moet een expliciete action bevatten die browser/iOS permission requests via user gesture kan starten.
