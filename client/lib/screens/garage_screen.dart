@@ -515,22 +515,40 @@ class _GarageScreenState extends State<GarageScreen> {
               else
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                  sliver: SliverGrid(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: constraints.maxWidth >= 1600
-                          ? 420
-                          : constraints.maxWidth >= 1200
-                          ? 460
-                          : 520,
-                      childAspectRatio: constraints.maxWidth < 720
-                          ? 0.76
-                          : 0.72,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
+                  sliver: SliverToBoxAdapter(
+                    child: Builder(
+                      builder: (context) {
+                        final columns = constraints.maxWidth >= 1680
+                            ? 4
+                            : constraints.maxWidth >= 1160
+                            ? 3
+                            : constraints.maxWidth >= 760
+                            ? 2
+                            : 1;
+                        const spacing = 16.0;
+                        final availableWidth = constraints.maxWidth - 32;
+                        final totalSpacing = (columns - 1) * spacing;
+                        final itemWidth = columns <= 1
+                            ? availableWidth
+                            : (availableWidth - totalSpacing) / columns;
+
+                        return Wrap(
+                          spacing: spacing,
+                          runSpacing: spacing,
+                          children: vehicles
+                              .map(
+                                (vehicle) => SizedBox(
+                                  width: itemWidth,
+                                  child: _buildVehicleCardItem(
+                                    provider,
+                                    vehicle,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        );
+                      },
                     ),
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      return _buildVehicleCardItem(provider, vehicles[index]);
-                    }, childCount: vehicles.length),
                   ),
                 ),
             ],

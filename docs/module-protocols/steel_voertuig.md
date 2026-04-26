@@ -35,6 +35,8 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Ops-actiekaarten moeten payout-context expliciet tonen (waarom cash toeneemt na klik), zodat reward-herkomst voor spelers traceerbaar is.
 - Toon per tab een catalogus met waarde, zeldzaamheid, landen en world-cap status.
 - In embedded garage/marina-weergave moet de gestolen-voertuigenlijst kaartgebaseerd en responsief blijven (mobiel 1 kolom, grotere schermen meerdere kolommen), zonder uitgerekte full-width rijen als default.
+- Embedded voertuigkaarten moeten natuurlijke (auto) hoogte gebruiken; forceer geen hoge vaste grid-cel die lege onderruimte in kaarten veroorzaakt.
+- Op grote schermen moet de embedded kaartlay-out kunnen opschalen tot 4 kolommen wanneer ruimte dit toelaat.
 - Gebruik timed repairs; geen instant click-pay-complete gedrag.
 - World-cap rotatie moet correct blijven: verkoop of sloop opent opnieuw beschikbaarheid voor die voertuigsoort.
 - Transport hoort niet meer in deze module; cross-country verplaatsing loopt via Smuggling Hub.

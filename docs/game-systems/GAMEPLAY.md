@@ -951,6 +951,8 @@ Bob: â‚¬300K counter-hit
 - De gecombineerde Vehicle Heist-pagina gebruikt één primaire categorie-selector (Auto/Motor/Boot lane cards) en toont geen tweede redundante tab-rij met dezelfde categorieën.
 - Per categoriekaart zijn quick actions voor stelen en opslag-upgrade direct beschikbaar.
 - Gestolen voertuigen in embedded Garage/Marina renderen responsief als card-grid (mobiel 1 kolom, tablet/desktop meerdere kolommen).
+- Embedded voertuigkaarten gebruiken natuurlijke hoogte (geen onnodige lege onderruimte door geforceerde hoge gridcellen).
+- Op brede schermen schaalt het embedded overzicht door naar maximaal 4 kaarten naast elkaar.
 - Crew-only ops-acties (Crew Op/Crew Match) blijven verborgen of gelockt voor spelers zonder crew, met expliciete unlock-hint.
 - Ops-beloningen worden bij succes direct als contant geld uitgekeerd; het actie-overzicht toont per knop de verwachte payout-context.
 
