@@ -22,11 +22,13 @@ class MarinaScreen extends StatefulWidget {
     this.embedded = false,
     this.titleOverride,
     this.hideEmbeddedHeaderActions = false,
+    this.hideEmbeddedCapacityHeader = false,
   });
 
   final bool embedded;
   final String? titleOverride;
   final bool hideEmbeddedHeaderActions;
+  final bool hideEmbeddedCapacityHeader;
 
   @override
   State<MarinaScreen> createState() => _MarinaScreenState();
@@ -471,7 +473,8 @@ class _MarinaScreenState extends State<MarinaScreen> {
           child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-              if (provider.marinaStatus != null)
+              if (provider.marinaStatus != null &&
+                  !widget.hideEmbeddedCapacityHeader)
                 SliverToBoxAdapter(
                   child: _buildCapacityIndicator(
                     provider,

@@ -23,12 +23,14 @@ class GarageScreen extends StatefulWidget {
     this.vehicleType = 'car',
     this.titleOverride,
     this.hideEmbeddedHeaderActions = false,
+    this.hideEmbeddedCapacityHeader = false,
   });
 
   final bool embedded;
   final String vehicleType;
   final String? titleOverride;
   final bool hideEmbeddedHeaderActions;
+  final bool hideEmbeddedCapacityHeader;
 
   @override
   State<GarageScreen> createState() => _GarageScreenState();
@@ -497,7 +499,8 @@ class _GarageScreenState extends State<GarageScreen> {
           child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-              if (provider.garageStatus != null)
+              if (provider.garageStatus != null &&
+                  !widget.hideEmbeddedCapacityHeader)
                 SliverToBoxAdapter(
                   child: _buildCapacityIndicator(
                     provider,

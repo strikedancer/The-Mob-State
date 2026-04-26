@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/vehicle.dart';
 import '../providers/auth_provider.dart';
 import '../providers/vehicle_provider.dart';
+import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../widgets/overlay_image.dart';
 import 'garage_screen.dart';
@@ -28,12 +30,14 @@ class VehicleHeistScreen extends StatefulWidget {
 
 class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     with SingleTickerProviderStateMixin {
+  final ApiClient _apiClient = ApiClient();
   late final TabController _tabController;
   int _activeTabIndex = 0;
   bool _opsActionInProgress = false;
   bool _laneActionInProgress = false;
   Timer? _opsTicker;
   DateTime? _opsLastRefreshAt;
+  final Map<String, Map<String, int>> _laneCapacities = {};
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
@@ -59,6 +63,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshOpsIntelligence();
+      _refreshLaneCapacities();
     });
     _opsTicker = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) return;
@@ -188,6 +193,53 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     });
   }
 
+  Future<void> _refreshLaneCapacities() async {
+    final authProvider = context.read<AuthProvider>();
+    final country = authProvider.currentPlayer?.currentCountry ?? 'netherlands';
+    final updated = <String, Map<String, int>>{};
+
+    Future<void> loadGarageType(String type) async {
+      final response = await _apiClient.get(
+        '/garage/status/$country?vehicleType=$type',
+      );
+      if (response.statusCode != 200) return;
+      final payload = jsonDecode(response.body) as Map<String, dynamic>;
+      final status = (payload['status'] as Map<String, dynamic>? ?? const {});
+      updated[type] = {
+        'stored': (status['capacity'] as num?)?.toInt() ?? 0,
+        'total': (status['totalCapacity'] as num?)?.toInt() ?? 0,
+        'level': (status['currentUpgradeLevel'] as num?)?.toInt() ?? 0,
+      };
+    }
+
+    Future<void> loadMarina() async {
+      final response = await _apiClient.get('/garage/marina/status/$country');
+      if (response.statusCode != 200) return;
+      final payload = jsonDecode(response.body) as Map<String, dynamic>;
+      final status = (payload['status'] as Map<String, dynamic>? ?? const {});
+      updated['boat'] = {
+        'stored': (status['capacity'] as num?)?.toInt() ?? 0,
+        'total': (status['totalCapacity'] as num?)?.toInt() ?? 0,
+        'level': (status['currentUpgradeLevel'] as num?)?.toInt() ?? 0,
+      };
+    }
+
+    try {
+      await loadGarageType('car');
+      await loadGarageType('motorcycle');
+      await loadMarina();
+    } catch (_) {
+      // Keep UI usable when one of the status calls fails temporarily.
+    }
+
+    if (!mounted || updated.isEmpty) return;
+    setState(() {
+      _laneCapacities
+        ..clear()
+        ..addAll(updated);
+    });
+  }
+
   int _liveCooldownSeconds(dynamic rawSeconds) {
     final base = (rawSeconds as num?)?.toInt() ?? 0;
     if (base <= 0) return 0;
@@ -259,9 +311,12 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
   int _upgradeCostForTab(int tabIndex, VehicleProvider provider) {
     final costs = [10000, 25000, 50000, 100000, 200000];
-    final currentLevel = tabIndex == 2
+    final type = _opsVehicleTypeForTab(tabIndex);
+    final cached = _laneCapacities[type];
+    final fallbackLevel = tabIndex == 2
         ? (provider.marinaStatus?.currentUpgradeLevel ?? 0)
         : (provider.garageStatus?.currentUpgradeLevel ?? 0);
+    final currentLevel = cached?['level'] ?? fallbackLevel;
     return currentLevel < costs.length ? costs[currentLevel] : 0;
   }
 
@@ -293,6 +348,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       if (_activeTabIndex == tabIndex) {
         await _refreshOpsIntelligence();
       }
+      await _refreshLaneCapacities();
 
       if (!mounted) return;
       if (success) {
@@ -361,6 +417,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       if (_activeTabIndex == tabIndex) {
         await _refreshOpsIntelligence();
       }
+      await _refreshLaneCapacities();
 
       if (!mounted) return;
       _showTopMessage(
@@ -624,6 +681,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           embedded: true,
           vehicleType: 'car',
           hideEmbeddedHeaderActions: true,
+          hideEmbeddedCapacityHeader: true,
         );
       case 1:
         return const GarageScreen(
@@ -631,6 +689,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           embedded: true,
           vehicleType: 'motorcycle',
           hideEmbeddedHeaderActions: true,
+          hideEmbeddedCapacityHeader: true,
         );
       case 2:
       default:
@@ -638,6 +697,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           key: ValueKey<String>('vehicle-tab-boat'),
           embedded: true,
           hideEmbeddedHeaderActions: true,
+          hideEmbeddedCapacityHeader: true,
         );
     }
   }
@@ -647,6 +707,11 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final isActive = _activeTabIndex == tabIndex;
     final count = _countForTab(provider, tabIndex);
     final requiredRank = _requiredRankForTab(tabIndex);
+    final laneType = _opsVehicleTypeForTab(tabIndex);
+    final cap = _laneCapacities[laneType];
+    final storedCap = cap?['stored'] ?? 0;
+    final totalCap = cap?['total'] ?? 0;
+    final laneLevel = cap?['level'] ?? 0;
 
     return Material(
       color: Colors.transparent,
@@ -773,6 +838,18 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   color: Colors.white60,
                   fontSize: 11.5,
                   fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                _tr(
+                  'Capaciteit: $storedCap/$totalCap | upgrade lvl $laneLevel',
+                  'Capacity: $storedCap/$totalCap | upgrade lvl $laneLevel',
+                ),
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 10),

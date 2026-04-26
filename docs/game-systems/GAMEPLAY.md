@@ -950,9 +950,11 @@ Bob: â‚¬300K counter-hit
 - Cooldowns worden in Vehicle Ops enkel in de actiekaarten als primaire bron getoond om dubbele info en visuele ruis te vermijden.
 - De gecombineerde Vehicle Heist-pagina gebruikt één primaire categorie-selector (Auto/Motor/Boot lane cards) en toont geen tweede redundante tab-rij met dezelfde categorieën.
 - Per categoriekaart zijn quick actions voor stelen en opslag-upgrade direct beschikbaar.
+- Per categoriekaart staat nu ook capaciteit per type (gebruikt/totaal + upgrade level) als primaire informatiebron.
 - Gestolen voertuigen in embedded Garage/Marina renderen responsief als card-grid (mobiel 1 kolom, tablet/desktop meerdere kolommen).
 - Embedded voertuigkaarten gebruiken natuurlijke hoogte (geen onnodige lege onderruimte door geforceerde hoge gridcellen).
 - Op brede schermen schaalt het embedded overzicht door naar maximaal 4 kaarten naast elkaar.
+- In deze Vehicle Heist-view is de aparte capaciteitsbalk boven de voertuigen verwijderd om dubbele informatie te voorkomen.
 - Crew-only ops-acties (Crew Op/Crew Match) blijven verborgen of gelockt voor spelers zonder crew, met expliciete unlock-hint.
 - Ops-beloningen worden bij succes direct als contant geld uitgekeerd; het actie-overzicht toont per knop de verwachte payout-context.
 
