@@ -31,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _pushCryptoOrder = true;
   bool _pushCryptoMission = true;
   bool _pushCryptoLeaderboard = true;
+  bool _pushGameEvents = true;
   bool _inAppCryptoTrade = true;
   bool _inAppCryptoPriceAlert = true;
   bool _inAppCryptoOrder = true;
@@ -126,6 +127,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               notificationPreferences['pushCryptoLeaderboard'],
               true,
             );
+        _pushGameEvents = _readPreferenceValue(
+          notificationPreferences['pushGameEvents'],
+          true,
+        );
         _inAppCryptoTrade = _readPreferenceValue(
           notificationPreferences['inAppCryptoTrade'],
           true,
@@ -478,6 +483,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 prefs['pushCryptoLeaderboard'],
                 _pushCryptoLeaderboard,
               );
+          _pushGameEvents = _readPreferenceValue(
+            prefs['pushGameEvents'],
+            _pushGameEvents,
+          );
           _inAppCryptoTrade = _readPreferenceValue(
             prefs['inAppCryptoTrade'],
             _inAppCryptoTrade,
@@ -1024,6 +1033,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                _isDutch ? 'Spelerevents' : 'Player events',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: SwitchListTile(
+                  secondary: const Icon(
+                    Icons.emoji_events_outlined,
+                    color: Colors.deepPurple,
+                  ),
+                  title: Text(
+                    _isDutch
+                        ? 'Push: live spelerevents'
+                        : 'Push: live player events',
+                  ),
+                  subtitle: Text(
+                    _isDutch
+                        ? 'Start en einde van wekelijkse/terugkerende competitie-events (bijv. top scores).'
+                        : 'Start and end of recurring competition events (e.g. top-score rounds).',
+                  ),
+                  value: _pushGameEvents,
+                  onChanged: (value) => _updateCryptoNotificationPreference(
+                    'pushGameEvents',
+                    value,
                   ),
                 ),
               ),

@@ -54,6 +54,7 @@ router.post('/notifications', authenticate, async (req: AuthRequest, res: Respon
       'pushCryptoOrder',
       'pushCryptoMission',
       'pushCryptoLeaderboard',
+      'pushGameEvents',
       'inAppCryptoTrade',
       'inAppCryptoPriceAlert',
       'inAppCryptoOrder',

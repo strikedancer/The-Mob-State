@@ -115,6 +115,37 @@ const DEFAULT_CREDIT_BUNDLE_OFFERS = [
   },
 ];
 
+async function ensureEventPassOffer(): Promise<void> {
+  await prisma.premiumOneTimeOffer.createMany({
+    data: [
+      {
+        key: 'event_pass_7d',
+        titleNl: 'Event Pass (7 dagen)',
+        titleEn: 'Event Pass (7 days)',
+        descriptionNl:
+          '+10% event-score op live events, plus 50 bonus credits. Zijwaarts voordeel: geen directe combat-boost.',
+        descriptionEn:
+          '+10% event score on live events, plus 50 bonus credits. Side-grade only: no direct combat boost.',
+        imageUrl: 'images/premium_tiles/credits_500.png',
+        priceEurCents: 599,
+        rewardType: 'event_boost',
+        moneyAmount: null,
+        ammoType: null,
+        ammoQuantity: null,
+        creditAmount: 50,
+        rewardKey: 'event_pass_7d',
+        durationHours: 168,
+        rewardValue: null,
+        metadataJson: JSON.stringify({ boosts: { eventContributionPct: 0.1 } }),
+        isActive: true,
+        showPopupOnOpen: false,
+        sortOrder: 190,
+      },
+    ],
+    skipDuplicates: true,
+  });
+}
+
 async function ensureDefaultCreditBundleOffers(): Promise<void> {
   await prisma.premiumOneTimeOffer.createMany({
     data: DEFAULT_CREDIT_BUNDLE_OFFERS.map((offer) => ({
@@ -233,9 +264,16 @@ function buildRewardSummary(offer: PremiumOfferRecord, locale: 'nl' | 'en') {
       : `+${offer.creditAmount ?? 0} credits`;
   }
 
-  const duration = offer.durationHours ? `${offer.durationHours}u` : null;
+  const duration = offer.durationHours ? `${offer.durationHours}h` : null;
   const rewardKey = offer.rewardKey || (locale === 'nl' ? 'Event boost' : 'Event boost');
-  return duration ? `${rewardKey} Â· ${duration}` : rewardKey;
+  const base = duration ? `${rewardKey} · ${duration}` : rewardKey;
+  const extra =
+    (offer.creditAmount ?? 0) > 0
+      ? locale === 'nl'
+        ? ` +${offer.creditAmount} bonus credits`
+        : ` +${offer.creditAmount} bonus credits`
+      : '';
+  return `${base}${extra}`;
 }
 
 function extractWebhookPaymentId(req: Request) {
@@ -327,6 +365,7 @@ function formatOfferForCatalog(offer: PremiumOfferRecord) {
 
 async function listActivePremiumOffers() {
   await ensureDefaultCreditBundleOffers();
+  await ensureEventPassOffer();
   const offers = await premiumOfferRepo.findMany({
     where: { isActive: true },
     orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
@@ -336,6 +375,7 @@ async function listActivePremiumOffers() {
 
 async function getActivePremiumOfferByKey(key: string) {
   await ensureDefaultCreditBundleOffers();
+  await ensureEventPassOffer();
   const offer = await premiumOfferRepo.findFirst({
     where: { key, isActive: true },
   });
@@ -664,18 +704,23 @@ async function fulfillOneTimePurchase(paymentId: string, metadata: PaymentMetada
     }
 
     const durationHours = product.durationHours ?? 24;
-    await createTimedCreditEntitlement(
-      tx,
-      playerId,
-      product.rewardKey || product.key,
-      'EVENT_BOOST',
-      durationHours,
-      {
-        source: 'premium_checkout',
-        rewardValue: product.rewardValue ?? 0,
-        metadataJson: product.metadataJson,
-      }
-    );
+    const parsedBoost =
+      product.metadataJson && String(product.metadataJson).trim()
+        ? (() => {
+            try {
+              return JSON.parse(String(product.metadataJson)) as Record<string, unknown>;
+            } catch {
+              return {};
+            }
+          })()
+        : {};
+    await createTimedCreditEntitlement(tx, playerId, product.rewardKey || product.key, 'EVENT_BOOST', durationHours, {
+      source: 'premium_checkout',
+      ...parsedBoost,
+    });
+    if (product.creditAmount && product.creditAmount > 0) {
+      await grantPurchasedCredits(tx, playerId, product.creditAmount, product.key);
+    }
   });
 }
 

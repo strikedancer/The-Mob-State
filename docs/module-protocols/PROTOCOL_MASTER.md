@@ -177,6 +177,7 @@ Doel:
 
 - Centrale index: `docs/module-protocols/README.md`
 - Moduleprotocollen: `docs/module-protocols/*.md`
+- **Live spelerevents (presets, deploy-checklist, dashboard, push):** `docs/module-protocols/events.md` — verplicht lezen bij taken die `gameEventService`, cron, Mollie Event Pass, dashboard-events of FCM-broadcasts raken.
 
 ## AI Keys & One-Shot Leonardo Workflow (Lokaal + VPS)
 

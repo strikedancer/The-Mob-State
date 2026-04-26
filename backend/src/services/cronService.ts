@@ -3,6 +3,7 @@ import cron from 'node-cron';
 import { processOpenOrdersInBackground } from './cryptoService';
 import drugService from './drugService';
 import { gameEventService } from './gameEventService';
+import { getDefaultRewardRulesForTemplateKey } from './gameEventPresets';
 import {
   processPendingInvestigations,
   processPendingMurderCaseInvestigations,
@@ -308,6 +309,7 @@ export async function runEventScheduler(): Promise<void> {
   const now = new Date();
   try {
     await gameEventService.resolveExpiredEvents();
+    await gameEventService.processPendingRewardDeliveries(80);
 
     const schedules = await prisma.gameEventSchedule.findMany({
       where: {
@@ -341,11 +343,13 @@ export async function runEventScheduler(): Promise<void> {
       if (existingActive) continue;
 
       const endsAt = new Date(now.getTime() + durationMs);
+      const rewardRules = getDefaultRewardRulesForTemplateKey(schedule.template.key);
       await gameEventService.createLiveEvent({
         templateId: schedule.templateId,
         status: 'active',
         startedAt: now,
         endsAt,
+        rewardRules,
       });
 
       await prisma.gameEventSchedule.update({

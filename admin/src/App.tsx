@@ -788,6 +788,14 @@ const defaultNewLiveEvent: CreateGameLiveEventPayload = {
   endsAt: null,
 };
 
+/** Zelfde keys als backend `gameEventPresets` — vaste terugkerende events. */
+const PRESET_EVENT_KEYS = new Set([
+  "weekly_vehicle_theft_hunt",
+  "smuggling_surge",
+  "lab_output_challenge",
+  "street_crime_spree",
+]);
+
 function App() {
   const initialRecentActionsPrefs = getStoredRecentActionsPrefs();
   const initialRecentActionsViews = getStoredRecentActionsViews();
@@ -1177,6 +1185,7 @@ function App() {
   const [savingLiveEventId, setSavingLiveEventId] = useState<number | null>(
     null,
   );
+  const [showAdvancedGameEvents, setShowAdvancedGameEvents] = useState(false);
 
   // Ticket system state
   const [tickets, setTickets] = useState<SupportTicketSummary[]>([]);
@@ -3157,6 +3166,32 @@ function App() {
       );
     } finally {
       setSavingLiveEventId(null);
+    }
+  };
+
+  const handleTogglePresetRow = async (
+    template: GameEventTemplate,
+    schedule: GameEventSchedule | undefined,
+  ) => {
+    if (!schedule) {
+      alert(
+        l(
+          "Geen schema voor dit template. Herstart de backend (seed) of voeg in Geavanceerd handmatig een schema toe.",
+          "No schedule for this template. Restart the backend (seed) or add a schedule under Advanced.",
+        ),
+      );
+      return;
+    }
+    const next = !(template.isActive && schedule.enabled);
+    try {
+      await adminService.updateEventTemplate(template.id, { isActive: next });
+      await adminService.updateEventSchedule(schedule.id, { enabled: next });
+      await loadEventAdminData();
+    } catch (err: any) {
+      if (handleUnauthorized(err)) return;
+      alert(
+        `${l("Aan/uit zetten mislukt", "Failed to toggle")}: ${err?.message || t.unknownError}`,
+      );
     }
   };
 
@@ -9810,11 +9845,124 @@ function App() {
                   <h1>{l("Events", "Events")}</h1>
                   <div className="config-warning">
                     {l(
-                      "Beheer hier event templates, schema's en live events.",
-                      "Manage event templates, schedules, and live events here.",
+                      "Vaste events worden bij serverstart geregistreerd. Gebruik de schakelaar om template + intervalschema tegelijk aan of uit te zetten.",
+                      "Preset events are registered on server start. Use the switch to enable or disable both the template and its interval schedule.",
                     )}
                   </div>
 
+                  <div
+                    className="table-container"
+                    style={{ marginBottom: "1rem" }}
+                  >
+                    <h3>
+                      {l("Vaste terugkerende events", "Preset recurring events")}
+                    </h3>
+                    <p style={{ marginBottom: "0.75rem" }}>
+                      {l(
+                        "Eén actief event per categorie (crime, drugs, smuggling, vehicles) voorkomt dubbele score-telling. Cron start automatisch live rondes.",
+                        "One active event per category (crime, drugs, smuggling, vehicles) avoids double score counting. The cron job starts live rounds automatically.",
+                      )}
+                    </p>
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>Key</th>
+                          <th>{l("Titel", "Title")}</th>
+                          <th>{l("Categorie", "Category")}</th>
+                          <th>{l("Interval (dagen)", "Interval (days)")}</th>
+                          <th>{l("Duur (u)", "Duration (h)")}</th>
+                          <th>{l("Actief", "On")}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {eventTemplates
+                          .filter((template) => PRESET_EVENT_KEYS.has(template.key))
+                          .map((template) => {
+                            const sched = eventSchedules.find(
+                              (s) => s.templateId === template.id,
+                            );
+                            const days = sched?.intervalMinutes
+                              ? (sched.intervalMinutes / (60 * 24)).toFixed(1)
+                              : "—";
+                            const hours = sched?.durationMinutes
+                              ? (sched.durationMinutes / 60).toFixed(1)
+                              : "—";
+                            const on = template.isActive && (sched?.enabled ?? false);
+                            return (
+                              <tr key={template.id}>
+                                <td>
+                                  <code>{template.key}</code>
+                                </td>
+                                <td>
+                                  {language === "nl"
+                                    ? template.titleNl
+                                    : template.titleEn}
+                                </td>
+                                <td>{template.category}</td>
+                                <td>{days}</td>
+                                <td>{hours}</td>
+                                <td>
+                                  <label
+                                    style={{
+                                      display: "inline-flex",
+                                      alignItems: "center",
+                                      gap: "0.35rem",
+                                    }}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={on}
+                                      disabled={eventsLoading}
+                                      onChange={() =>
+                                        handleTogglePresetRow(template, sched)
+                                      }
+                                    />
+                                    {on
+                                      ? l("aan", "on")
+                                      : l("uit", "off")}
+                                  </label>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                    <div className="config-actions" style={{ marginTop: "0.75rem" }}>
+                      <button
+                        className="btn-small"
+                        type="button"
+                        onClick={loadEventAdminData}
+                        disabled={eventsLoading}
+                      >
+                        {t.refresh}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: "0.75rem" }}>
+                    <label
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.4rem",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={showAdvancedGameEvents}
+                        onChange={() =>
+                          setShowAdvancedGameEvents(!showAdvancedGameEvents)
+                        }
+                      />
+                      {l(
+                        "Toon geavanceerde editor (handmatig template / schema / live test)",
+                        "Show advanced editor (manual template, schedule, live test)",
+                      )}
+                    </label>
+                  </div>
+
+                  {showAdvancedGameEvents && (
+                    <>
                   <div
                     className="table-container"
                     style={{ marginBottom: "1rem" }}
@@ -10452,6 +10600,8 @@ function App() {
                       </tbody>
                     </table>
                   </div>
+                    </>
+                  )}
                 </>
               )}
 

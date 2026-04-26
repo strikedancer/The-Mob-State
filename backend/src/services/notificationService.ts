@@ -1348,6 +1348,47 @@ export class NotificationService {
       }
     );
   }
+
+  /**
+   * Localized FCM for live game event start/end. Respects `push_game_events` in player settings
+   * (default on; no row = opted in). No-op if Firebase is not initialized.
+   */
+  public async broadcastLocalizedGameEventPushes(payload: {
+    titleNl: string;
+    titleEn: string;
+    bodyNl: string;
+    bodyEn: string;
+    data?: Record<string, string>;
+  }): Promise<void> {
+    if (!this.initialized) {
+      return;
+    }
+
+    const players = await prisma.player.findMany({
+      where: {
+        OR: [
+          { player_notification_preferences: { is: null } },
+          { player_notification_preferences: { push_game_events: true } },
+        ],
+      },
+      select: { id: true, preferredLanguage: true },
+    });
+
+    const batchSize = 50;
+    for (let i = 0; i < players.length; i += batchSize) {
+      const batch = players.slice(i, i + batchSize);
+      await Promise.all(
+        batch.map((p) => {
+          const isEn = String(p.preferredLanguage || 'nl')
+            .toLowerCase()
+            .startsWith('en');
+          const title = isEn ? payload.titleEn : payload.titleNl;
+          const body = isEn ? payload.bodyEn : payload.bodyNl;
+          return this.sendToPlayer(p.id, title, body, payload.data);
+        })
+      );
+    }
+  }
 }
 
 export const notificationService = NotificationService.getInstance();

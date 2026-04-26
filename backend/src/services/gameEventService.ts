@@ -1,7 +1,11 @@
 ﻿import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
 import { worldEventService } from './worldEventService';
-import { getActiveEventBoostEffects } from './premiumCreditsService';
+import { getActiveEventBoostEffects, grantPurchasedCredits } from './premiumCreditsService';
+import { gameEventNotificationService } from './gameEventNotificationService';
+import type { GameEventTemplate, GameLiveEvent } from '@prisma/client';
+
+type GameLiveEventWithTemplate = GameLiveEvent & { template: GameEventTemplate };
 
 type JsonRecord = Record<string, unknown>;
 
@@ -246,6 +250,14 @@ class GameEventService {
       templateId: liveEvent.templateId,
       status: liveEvent.status,
     });
+
+    if (liveEvent.status === 'active' && liveEvent.template) {
+      setImmediate(() => {
+        void gameEventNotificationService
+          .onLiveEventStarted(liveEvent as GameLiveEventWithTemplate)
+          .catch((e) => console.error('[GameEventNotification] start', e));
+      });
+    }
 
     return liveEvent;
   }
@@ -546,8 +558,89 @@ class GameEventService {
     });
 
     await worldEventService.createEvent('game_event.live.resolved', { liveEventId });
+
+    const forNotify = await prisma.gameLiveEvent.findUnique({
+      where: { id: liveEventId },
+      include: { template: true },
+    });
+    if (forNotify?.template) {
+      setImmediate(() => {
+        void gameEventNotificationService
+          .onLiveEventCompleted(forNotify as GameLiveEventWithTemplate)
+          .catch((e) => console.error('[GameEventNotification] complete', e));
+      });
+    }
+
     console.log(`[GameEventService] Resolved event ${liveEventId} with ${participants.length} participants`);
   }
+
+  /**
+   * Pays out pending event reward claims (cash, XP, optional premium credits) created at resolve time.
+   */
+  async processPendingRewardDeliveries(batchSize = 50): Promise<void> {
+    const pending = await prisma.gameEventRewardClaim.findMany({
+      where: { deliveryStatus: 'pending' },
+      take: batchSize,
+      orderBy: { id: 'asc' },
+    });
+
+    for (const claim of pending) {
+      try {
+        const granted = (claim.grantedRewardsJson
+          ? JSON.parse(claim.grantedRewardsJson)
+          : {}) as Record<string, unknown>;
+
+        const cash = toFiniteInt(granted.cash, 0);
+        const xp = toFiniteInt(granted.xp, 0);
+        const premiumCredits = toFiniteInt(granted.premiumCredits, 0);
+
+        if (cash <= 0 && xp <= 0 && premiumCredits <= 0) {
+          await prisma.gameEventRewardClaim.update({
+            where: { id: claim.id },
+            data: { deliveryStatus: 'completed', claimedAt: new Date() },
+          });
+          continue;
+        }
+
+        await prisma.$transaction(async (tx) => {
+          if (cash > 0) {
+            await tx.player.update({
+              where: { id: claim.playerId },
+              data: { money: { increment: cash } },
+            });
+          }
+          if (xp > 0) {
+            await tx.player.update({
+              where: { id: claim.playerId },
+              data: { xp: { increment: xp } },
+            });
+          }
+          if (premiumCredits > 0) {
+            await grantPurchasedCredits(
+              tx,
+              claim.playerId,
+              premiumCredits,
+              `event_reward_${claim.liveEventId}`
+            );
+          }
+          await tx.gameEventRewardClaim.update({
+            where: { id: claim.id },
+            data: { deliveryStatus: 'completed', claimedAt: new Date() },
+          });
+        });
+      } catch (e) {
+        console.error(
+          `[GameEventService] Failed to deliver claim ${claim.id} for player ${claim.playerId}:`,
+          e
+        );
+      }
+    }
+  }
+}
+
+function toFiniteInt(v: unknown, defaultValue: number): number {
+  const n = Number(v);
+  return Number.isFinite(n) ? Math.max(0, Math.floor(n)) : defaultValue;
 }
 
 export const gameEventService = new GameEventService();

@@ -45,6 +45,7 @@ De master protocol zorgt ervoor dat je:
 - [Casino](casino.md) - Gokken & winsten
 - [Black Market](black-market.md) - Illegals trading
 - [Payments & Premium](payments.md) - Mollie checkout, VIP, credits en premium catalogus
+- [Live game events (player)](events.md) - Preset terugkerende events, beloningen, Event Pass, admin toggles
 - [Balance & Economy](balance-economy.md) - Cross-loop balancing, runtime tuning en telemetry
 
 ### Activities & Crime

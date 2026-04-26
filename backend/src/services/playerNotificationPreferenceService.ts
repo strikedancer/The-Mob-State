@@ -6,6 +6,8 @@ export type PlayerNotificationPreferences = {
   pushCryptoOrder: boolean;
   pushCryptoMission: boolean;
   pushCryptoLeaderboard: boolean;
+  /** Live spelerevents (competitie) start/einde; standaard aan. */
+  pushGameEvents: boolean;
   inAppCryptoTrade: boolean;
   inAppCryptoPriceAlert: boolean;
   inAppCryptoOrder: boolean;
@@ -21,6 +23,7 @@ const DEFAULT_PREFERENCES: PlayerNotificationPreferences = {
   pushCryptoOrder: true,
   pushCryptoMission: true,
   pushCryptoLeaderboard: true,
+  pushGameEvents: true,
   inAppCryptoTrade: true,
   inAppCryptoPriceAlert: true,
   inAppCryptoOrder: true,
@@ -52,6 +55,7 @@ async function ensureTable(): Promise<void> {
       inapp_crypto_order BOOLEAN NOT NULL DEFAULT TRUE,
       inapp_crypto_mission BOOLEAN NOT NULL DEFAULT TRUE,
       inapp_crypto_leaderboard BOOLEAN NOT NULL DEFAULT TRUE,
+      push_game_events BOOLEAN NOT NULL DEFAULT TRUE,
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       CONSTRAINT fk_notification_preferences_player FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE
@@ -62,6 +66,7 @@ async function ensureTable(): Promise<void> {
       { name: 'inapp_crypto_mission', ddl: 'ALTER TABLE player_notification_preferences ADD COLUMN inapp_crypto_mission BOOLEAN NOT NULL DEFAULT TRUE' },
       { name: 'push_crypto_leaderboard', ddl: 'ALTER TABLE player_notification_preferences ADD COLUMN push_crypto_leaderboard BOOLEAN NOT NULL DEFAULT TRUE' },
       { name: 'inapp_crypto_leaderboard', ddl: 'ALTER TABLE player_notification_preferences ADD COLUMN inapp_crypto_leaderboard BOOLEAN NOT NULL DEFAULT TRUE' },
+      { name: 'push_game_events', ddl: 'ALTER TABLE player_notification_preferences ADD COLUMN push_game_events BOOLEAN NOT NULL DEFAULT TRUE' },
     ];
 
     for (const column of columns) {
@@ -147,6 +152,7 @@ export const playerNotificationPreferenceService = {
         push_crypto_order,
         push_crypto_mission,
         push_crypto_leaderboard,
+        push_game_events,
         inapp_crypto_trade,
         inapp_crypto_price_alert,
         inapp_crypto_order,
@@ -166,6 +172,7 @@ export const playerNotificationPreferenceService = {
       pushCryptoOrder: toBool(row.push_crypto_order, DEFAULT_PREFERENCES.pushCryptoOrder),
       pushCryptoMission: toBool(row.push_crypto_mission, DEFAULT_PREFERENCES.pushCryptoMission),
       pushCryptoLeaderboard: toBool(row.push_crypto_leaderboard, DEFAULT_PREFERENCES.pushCryptoLeaderboard),
+      pushGameEvents: toBool(row.push_game_events, DEFAULT_PREFERENCES.pushGameEvents),
       inAppCryptoTrade: toBool(row.inapp_crypto_trade, DEFAULT_PREFERENCES.inAppCryptoTrade),
       inAppCryptoPriceAlert: toBool(row.inapp_crypto_price_alert, DEFAULT_PREFERENCES.inAppCryptoPriceAlert),
       inAppCryptoOrder: toBool(row.inapp_crypto_order, DEFAULT_PREFERENCES.inAppCryptoOrder),
@@ -194,6 +201,7 @@ export const playerNotificationPreferenceService = {
         push_crypto_order = ?,
         push_crypto_mission = ?,
         push_crypto_leaderboard = ?,
+        push_game_events = ?,
         inapp_crypto_trade = ?,
         inapp_crypto_price_alert = ?,
         inapp_crypto_order = ?,
@@ -207,6 +215,7 @@ export const playerNotificationPreferenceService = {
       merged.pushCryptoOrder,
       merged.pushCryptoMission,
       merged.pushCryptoLeaderboard,
+      merged.pushGameEvents,
       merged.inAppCryptoTrade,
       merged.inAppCryptoPriceAlert,
       merged.inAppCryptoOrder,

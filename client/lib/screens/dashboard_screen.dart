@@ -2475,6 +2475,7 @@ class _WebDashboardHomeContent extends StatefulWidget {
 class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   DashboardStats? _stats;
   bool _loading = true;
+  List<Map<String, dynamic>> _gameEventsActive = const [];
   Timer? _cooldownTimer;
   Timer? _refreshTimer;
 
@@ -2485,6 +2486,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   void initState() {
     super.initState();
     _loadStats();
+    _loadGameEventsOverview();
 
     // Update cooldowns every second
     _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -2542,6 +2544,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     _refreshTimer = Timer.periodic(const Duration(seconds: 15), (_) {
       if (mounted) {
         _loadStats();
+        _loadGameEventsOverview();
       }
     });
 
@@ -2606,6 +2609,46 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         });
       }
     }
+  }
+
+  Future<void> _loadGameEventsOverview() async {
+    try {
+      final api = AuthService().apiClient;
+      final response = await api.get('/game-events/overview');
+      if (response.statusCode != 200) {
+        return;
+      }
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final active = ((data['active'] as List?) ?? const <dynamic>[])
+          .whereType<Map>()
+          .map((e) => Map<String, dynamic>.from(e))
+          .toList();
+      if (mounted) {
+        setState(() {
+          _gameEventsActive = active;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _gameEventsActive = const [];
+        });
+      }
+    }
+  }
+
+  String _gameEventTitleFromMap(Map<String, dynamic> event) {
+    final template = event['template'] as Map<String, dynamic>?;
+    if (template == null) {
+      return 'Event';
+    }
+    final title = _isNl ? template['titleNl'] : template['titleEn'];
+    if (title != null && title.toString().trim().isNotEmpty) {
+      return title.toString();
+    }
+    return template['titleEn']?.toString() ??
+        template['key']?.toString() ??
+        'Event';
   }
 
   String _formatCooldown(int seconds) {
@@ -3111,6 +3154,51 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       '${_stats?.operations?.activeVehicleCount ?? 0}/${_stats?.operations?.listedVehicleCount ?? 0}/${_stats?.operations?.inTransitVehicleCount ?? 0}',
                       Colors.white,
                     ),
+                    if (_gameEventsActive.isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      const Divider(color: Colors.grey),
+                      const SizedBox(height: 12),
+                      Text(
+                        _tr('Live spelerevents', 'Live player events'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ..._gameEventsActive.take(3).map(
+                        (e) => Padding(
+                          padding: const EdgeInsets.only(bottom: 6),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '• ${_gameEventTitleFromMap(e)}',
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 13,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const EventsScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          _tr('Open Events', 'Open Events'),
+                          style: const TextStyle(color: Colors.orangeAccent),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 12),
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 12),

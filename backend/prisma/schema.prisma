@@ -2215,6 +2215,7 @@ model player_notification_preferences {
   updated_at               DateTime @default(now()) @db.DateTime(0)
   push_crypto_leaderboard  Boolean  @default(true)
   inapp_crypto_leaderboard Boolean  @default(true)
+  push_game_events         Boolean  @default(true)
   players                  Player   @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_notification_preferences_player")
 }
 
