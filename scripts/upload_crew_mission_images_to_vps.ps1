@@ -44,8 +44,17 @@ param(
     [string] $RemoteBase = "/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images",
 
     [Parameter(Mandatory = $false)]
-    [string] $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+    [string] $ProjectRoot = ""
 )
+
+$scriptDir = if (-not [string]::IsNullOrWhiteSpace($PSScriptRoot)) {
+    $PSScriptRoot
+} else {
+    Split-Path -Parent $MyInvocation.MyCommand.Path
+}
+if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
+    $ProjectRoot = (Resolve-Path (Join-Path $scriptDir "..")).Path
+}
 
 function Get-PuTTYSessionHostName {
     param([string] $SessionName)
@@ -100,8 +109,8 @@ Write-Host "Uploading $($cardPng.Count) card(s) and $($scenePng.Count) scene(s).
 
 # Ensure target dirs exist (PROTOCOL_MASTER external image tree)
 $mkdirCmd = "mkdir -p $RemoteBase/crew_missions/cards $RemoteBase/crew_missions/scenes && chmod -R a+rX $RemoteBase/crew_missions"
-# No -batch: first-time proxy/host prompts need a real console; -l root matches your PuTTY usage
-& $plink -l $SshUser -load $PuttySession "$sshTarget" $mkdirCmd
+# plink: [user@]host must be one token; remote command last (do not pass -l with user@host)
+& $plink -load $PuttySession $sshTarget $mkdirCmd
 
 # PSCP: -load applies proxy, keys, port from saved session; -l root; destination is user@host:path
 & $pscp -l $SshUser -load $PuttySession (Join-Path $cards "*.png") $remoteCards

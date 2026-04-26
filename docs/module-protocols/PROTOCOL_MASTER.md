@@ -192,6 +192,8 @@ Ondersteunde env bronnen (in volgorde):
 4. `backend/.env`
 5. `.env.docker`
 
+Lokale Leonardo-key voor scripts (`generate_*leonardo*.py`): zet die in **`backend/.env.local`** (gitignored via `.env.*`). Nooit in getrackte Markdown, issues of chat plakken als je hem als productiesecret beschouwt; roteer na lekken.
+
 ### VPS Docker Compose standaard (aanbevolen)
 
 Voor productie/VPS runs hoort de key via compose naar de backend-container te gaan.
