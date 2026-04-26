@@ -2521,6 +2521,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   : 0,
             ),
             territoryLeaderStats: _stats!.territoryLeaderStats,
+            vehicleOps: _tickVehicleOps(_stats!.vehicleOps),
             cooldowns: Map.fromEntries(
               _stats!.cooldowns.entries.map(
                 (e) => MapEntry(e.key, e.value > 0 ? e.value - 1 : 0),
@@ -2605,6 +2606,30 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     return formatAdaptiveDurationFromSeconds(
       seconds,
       localeName: _isNl ? 'nl' : 'en',
+    );
+  }
+
+  VehicleOpsCategoryDashboardSummary? _tickVehicleOpsCategory(
+    VehicleOpsCategoryDashboardSummary? category,
+  ) {
+    if (category == null) return null;
+    return category.copyWith(
+      cooldowns: Map.fromEntries(
+        category.cooldowns.entries.map(
+          (entry) => MapEntry(entry.key, entry.value > 0 ? entry.value - 1 : 0),
+        ),
+      ),
+    );
+  }
+
+  VehicleOpsDashboardSummary? _tickVehicleOps(
+    VehicleOpsDashboardSummary? summary,
+  ) {
+    if (summary == null) return null;
+    return summary.copyWith(
+      car: _tickVehicleOpsCategory(summary.car),
+      motorcycle: _tickVehicleOpsCategory(summary.motorcycle),
+      boat: _tickVehicleOpsCategory(summary.boat),
     );
   }
 
@@ -2941,15 +2966,23 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     ),
                     _buildCooldownRow(l10n.dashboardTimeoutGym, 'gym'),
                     _buildCooldownRow(l10n.hospital, 'hospital'),
-                    _buildCooldownRow('Hoeren werven', 'prostitute_recruit'),
+                    _buildCooldownRow(
+                      _tr('Hoeren werven', 'Recruit prostitute'),
+                      'prostitute_recruit',
+                    ),
                     const SizedBox(height: 12),
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 12),
+                    _buildVehicleOpsDashboardSection(),
+                    const SizedBox(height: 12),
                     _buildInfoRow(
-                      'Gevangenis',
+                      _tr('Gevangenis', 'Jail'),
                       _stats != null && _stats!.jailed
-                          ? 'In cel (${_formatCooldown(_stats!.jailTimeRemaining)})'
-                          : 'Vrij',
+                          ? _tr(
+                              'In cel (${_formatCooldown(_stats!.jailTimeRemaining)})',
+                              'In jail (${_formatCooldown(_stats!.jailTimeRemaining)})',
+                            )
+                          : _tr('Vrij', 'Free'),
                       _stats != null && _stats!.jailed
                           ? Colors.red.shade300
                           : Colors.green.shade300,
@@ -3159,6 +3192,225 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildVehicleOpsDashboardSection() {
+    final vehicleOps = _stats?.vehicleOps;
+    final roleLabel = (vehicleOps?.crewRole ?? '').toLowerCase();
+    final crewRole = roleLabel.isEmpty
+        ? '-'
+        : _tr(
+            roleLabel == 'leader'
+                ? 'Leider'
+                : roleLabel == 'co_leader'
+                ? 'Co-leider'
+                : roleLabel == 'member'
+                ? 'Lid'
+                : roleLabel,
+            roleLabel == 'leader'
+                ? 'Leader'
+                : roleLabel == 'co_leader'
+                ? 'Co-leader'
+                : roleLabel == 'member'
+                ? 'Member'
+                : roleLabel,
+          );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          _tr('Voertuig Ops', 'Vehicle Ops'),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        _buildVehicleOpsCategoryCard(
+          title: _tr('Auto', 'Car'),
+          category: vehicleOps?.car,
+          accent: const Color(0xFF4FC3F7),
+        ),
+        const SizedBox(height: 8),
+        _buildVehicleOpsCategoryCard(
+          title: _tr('Motor', 'Motorcycle'),
+          category: vehicleOps?.motorcycle,
+          accent: const Color(0xFFFFB74D),
+        ),
+        const SizedBox(height: 8),
+        _buildVehicleOpsCategoryCard(
+          title: _tr('Boot', 'Boat'),
+          category: vehicleOps?.boat,
+          accent: const Color(0xFF4DD0A6),
+        ),
+        const SizedBox(height: 10),
+        _buildInfoRow(
+          _tr('Crew toegang', 'Crew access'),
+          vehicleOps?.hasCrew == true ? _tr('Ja', 'Yes') : _tr('Nee', 'No'),
+          vehicleOps?.hasCrew == true
+              ? Colors.green.shade300
+              : Colors.orange.shade300,
+        ),
+        _buildInfoRow(_tr('Crew rol', 'Crew role'), crewRole, Colors.white),
+      ],
+    );
+  }
+
+  Widget _buildVehicleOpsCategoryCard({
+    required String title,
+    required VehicleOpsCategoryDashboardSummary? category,
+    required Color accent,
+  }) {
+    if (category == null) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.22),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.white24),
+        ),
+        child: Text(
+          '$title: ${_tr('niet beschikbaar', 'unavailable')}',
+          style: const TextStyle(color: Colors.white70),
+        ),
+      );
+    }
+
+    final trendLabel = switch (category.partsTrend.toLowerCase()) {
+      'up' => _tr('onderdelenmarkt stijgt', 'parts market rising'),
+      'down' => _tr('onderdelenmarkt daalt', 'parts market falling'),
+      _ => _tr('onderdelenmarkt stabiel', 'parts market stable'),
+    };
+
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.22),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: accent.withOpacity(0.55)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: accent,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Wrap(
+            spacing: 10,
+            runSpacing: 6,
+            children: [
+              Text(
+                '${_tr('Heat', 'Heat')} ${category.heatCurrent} (${category.heatLevel})',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              Text(
+                'Rep L${category.reputationLevel} (${category.reputationValue})',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              Text(
+                trendLabel,
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              _buildVehicleOpsCooldownChip(
+                _tr('Hotspot', 'Hotspot'),
+                category.cooldowns['hotspot'] ?? 0,
+              ),
+              _buildVehicleOpsCooldownChip(
+                _tr('Crew', 'Crew'),
+                category.cooldowns['crew'] ?? 0,
+              ),
+              _buildVehicleOpsCooldownChip(
+                _tr('Crew-duel', 'Crew match'),
+                category.cooldowns['crewMatch'] ?? 0,
+              ),
+              _buildVehicleOpsCooldownChip(
+                _tr('Chop', 'Chop'),
+                category.cooldowns['chop'] ?? 0,
+              ),
+              _buildVehicleOpsCooldownChip(
+                _tr('Contract', 'Contract'),
+                category.cooldowns['contract'] ?? 0,
+              ),
+              _buildVehicleOpsCooldownChip(
+                _tr('Tegenactie', 'Counter'),
+                category.cooldowns['counter'] ?? 0,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 10,
+            runSpacing: 6,
+            children: [
+              Text(
+                '${_tr('Contracts', 'Contracts')}: ${category.contractsAvailable}',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              Text(
+                '${_tr('Claims', 'Claims')}: ${category.openInsuranceClaims}',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              Text(
+                '${_tr('Seizoen', 'Season')}: ${category.seasonPoints}p (${category.seasonWins}W/${category.seasonLosses}L)',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              Text(
+                category.blacklistActive
+                    ? _tr('Blacklist actief', 'Blacklist active')
+                    : _tr('Geen blacklist', 'No blacklist'),
+                style: TextStyle(
+                  color: category.blacklistActive
+                      ? Colors.red.shade300
+                      : Colors.green.shade300,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVehicleOpsCooldownChip(String label, int cooldownSeconds) {
+    final ready = cooldownSeconds <= 0;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: ready
+            ? Colors.green.withOpacity(0.14)
+            : Colors.orange.withOpacity(0.14),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: ready
+              ? Colors.green.withOpacity(0.65)
+              : Colors.orange.withOpacity(0.65),
+        ),
+      ),
+      child: Text(
+        '$label ${_formatCooldown(cooldownSeconds)}',
+        style: TextStyle(
+          color: ready ? Colors.green.shade200 : Colors.orange.shade200,
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

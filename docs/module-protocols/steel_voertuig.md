@@ -32,12 +32,14 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Vehicle Ops omvat nu ook Counter-Intercept missies, Crew Matchmaking met seizoensladder, country modifiers (inflatie/corruptie/havenstaking), contracts board met weekly legendary contracts en insurance dispute-resolutie.
 - Vehicle Ops moet live cooldowns per hoofdactie zichtbaar tonen met actieve countdown, niet alleen statische secondenwaarden na handmatige refresh.
 - Cooldowninformatie in Vehicle Ops hoort op 1 primaire plek te staan (actiekaarten); vermijd dubbele cooldownsamenvattingen in losse tekstregels.
+- Dashboard moet een compacte Vehicle Ops-samenvatting tonen (per auto/motor/boot) met live cooldowns, heat/reputatie en kernstatus van crew/contract/claims zonder dat 1 falende categorie de volledige dashboardweergave breekt.
 - Crew-only ops-acties (crew-run en crew-matchmaking) mogen alleen zichtbaar of bruikbaar zijn als de speler daadwerkelijk in een crew zit; zonder crew moet een duidelijke unlock-hint worden getoond.
 - Ops-actiekaarten moeten payout-context expliciet tonen (waarom cash toeneemt na klik), zodat reward-herkomst voor spelers traceerbaar is.
 - Toon per tab een catalogus met waarde, zeldzaamheid, landen en world-cap status.
 - In embedded garage/marina-weergave moet de gestolen-voertuigenlijst kaartgebaseerd en responsief blijven (mobiel 1 kolom, grotere schermen meerdere kolommen), zonder uitgerekte full-width rijen als default.
 - Embedded voertuigkaarten moeten natuurlijke (auto) hoogte gebruiken; forceer geen hoge vaste grid-cel die lege onderruimte in kaarten veroorzaakt.
 - Op grote schermen moet de embedded kaartlay-out kunnen opschalen tot 4 kolommen wanneer ruimte dit toelaat.
+- Gebruik een dynamische kolomberekening op basis van minimale kaartbreedte in plaats van alleen harde viewport-breakpoints, zodat 4 kolommen ook op veel laptop-layouts haalbaar zijn.
 - In Vehicle Heist embedded mode hoort de losse capaciteitsbalk boven de voertuigen verborgen te blijven; capaciteit wordt daar in de lane cards getoond.
 - Gebruik timed repairs; geen instant click-pay-complete gedrag.
 - World-cap rotatie moet correct blijven: verkoop of sloop opent opnieuw beschikbaarheid voor die voertuigsoort.

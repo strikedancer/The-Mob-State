@@ -94,6 +94,132 @@ class TerritoryLeaderDashboardSummary {
   }
 }
 
+class VehicleOpsCategoryDashboardSummary {
+  final int heatCurrent;
+  final String heatLevel;
+  final int reputationValue;
+  final int reputationLevel;
+  final String partsTrend;
+  final bool blacklistActive;
+  final bool crewAvailable;
+  final String? crewName;
+  final int contractsAvailable;
+  final int openInsuranceClaims;
+  final int seasonPoints;
+  final int seasonWins;
+  final int seasonLosses;
+  final Map<String, int> cooldowns;
+
+  VehicleOpsCategoryDashboardSummary({
+    required this.heatCurrent,
+    required this.heatLevel,
+    required this.reputationValue,
+    required this.reputationLevel,
+    required this.partsTrend,
+    required this.blacklistActive,
+    required this.crewAvailable,
+    this.crewName,
+    required this.contractsAvailable,
+    required this.openInsuranceClaims,
+    required this.seasonPoints,
+    required this.seasonWins,
+    required this.seasonLosses,
+    required this.cooldowns,
+  });
+
+  factory VehicleOpsCategoryDashboardSummary.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return VehicleOpsCategoryDashboardSummary(
+      heatCurrent: json['heatCurrent'] as int? ?? 0,
+      heatLevel: (json['heatLevel'] ?? 'LOW').toString(),
+      reputationValue: json['reputationValue'] as int? ?? 0,
+      reputationLevel: json['reputationLevel'] as int? ?? 0,
+      partsTrend: (json['partsTrend'] ?? 'flat').toString(),
+      blacklistActive: json['blacklistActive'] as bool? ?? false,
+      crewAvailable: json['crewAvailable'] as bool? ?? false,
+      crewName: json['crewName'] as String?,
+      contractsAvailable: json['contractsAvailable'] as int? ?? 0,
+      openInsuranceClaims: json['openInsuranceClaims'] as int? ?? 0,
+      seasonPoints: json['seasonPoints'] as int? ?? 0,
+      seasonWins: json['seasonWins'] as int? ?? 0,
+      seasonLosses: json['seasonLosses'] as int? ?? 0,
+      cooldowns: Map<String, int>.from(json['cooldowns'] as Map? ?? const {}),
+    );
+  }
+
+  VehicleOpsCategoryDashboardSummary copyWith({Map<String, int>? cooldowns}) {
+    return VehicleOpsCategoryDashboardSummary(
+      heatCurrent: heatCurrent,
+      heatLevel: heatLevel,
+      reputationValue: reputationValue,
+      reputationLevel: reputationLevel,
+      partsTrend: partsTrend,
+      blacklistActive: blacklistActive,
+      crewAvailable: crewAvailable,
+      crewName: crewName,
+      contractsAvailable: contractsAvailable,
+      openInsuranceClaims: openInsuranceClaims,
+      seasonPoints: seasonPoints,
+      seasonWins: seasonWins,
+      seasonLosses: seasonLosses,
+      cooldowns: cooldowns ?? this.cooldowns,
+    );
+  }
+}
+
+class VehicleOpsDashboardSummary {
+  final bool hasCrew;
+  final String? crewRole;
+  final VehicleOpsCategoryDashboardSummary? car;
+  final VehicleOpsCategoryDashboardSummary? motorcycle;
+  final VehicleOpsCategoryDashboardSummary? boat;
+
+  VehicleOpsDashboardSummary({
+    required this.hasCrew,
+    this.crewRole,
+    this.car,
+    this.motorcycle,
+    this.boat,
+  });
+
+  factory VehicleOpsDashboardSummary.fromJson(Map<String, dynamic> json) {
+    return VehicleOpsDashboardSummary(
+      hasCrew: json['hasCrew'] as bool? ?? false,
+      crewRole: json['crewRole'] as String?,
+      car: json['car'] is Map<String, dynamic>
+          ? VehicleOpsCategoryDashboardSummary.fromJson(
+              json['car'] as Map<String, dynamic>,
+            )
+          : null,
+      motorcycle: json['motorcycle'] is Map<String, dynamic>
+          ? VehicleOpsCategoryDashboardSummary.fromJson(
+              json['motorcycle'] as Map<String, dynamic>,
+            )
+          : null,
+      boat: json['boat'] is Map<String, dynamic>
+          ? VehicleOpsCategoryDashboardSummary.fromJson(
+              json['boat'] as Map<String, dynamic>,
+            )
+          : null,
+    );
+  }
+
+  VehicleOpsDashboardSummary copyWith({
+    VehicleOpsCategoryDashboardSummary? car,
+    VehicleOpsCategoryDashboardSummary? motorcycle,
+    VehicleOpsCategoryDashboardSummary? boat,
+  }) {
+    return VehicleOpsDashboardSummary(
+      hasCrew: hasCrew,
+      crewRole: crewRole,
+      car: car ?? this.car,
+      motorcycle: motorcycle ?? this.motorcycle,
+      boat: boat ?? this.boat,
+    );
+  }
+}
+
 class DashboardStats {
   final int crimeAttempts;
   final int breakoutCount;
@@ -118,6 +244,7 @@ class DashboardStats {
   final int bankBalance;
   final CrewWarDashboardSummary? crewWar;
   final TerritoryLeaderDashboardSummary? territoryLeaderStats;
+  final VehicleOpsDashboardSummary? vehicleOps;
   final Map<String, int> cooldowns;
 
   DashboardStats({
@@ -144,6 +271,7 @@ class DashboardStats {
     required this.bankBalance,
     this.crewWar,
     this.territoryLeaderStats,
+    this.vehicleOps,
     required this.cooldowns,
   });
 
@@ -182,6 +310,11 @@ class DashboardStats {
       territoryLeaderStats: json['territoryLeaderStats'] != null
           ? TerritoryLeaderDashboardSummary.fromJson(
               json['territoryLeaderStats'] as Map<String, dynamic>,
+            )
+          : null,
+      vehicleOps: json['vehicleOps'] != null
+          ? VehicleOpsDashboardSummary.fromJson(
+              json['vehicleOps'] as Map<String, dynamic>,
             )
           : null,
       cooldowns: Map<String, int>.from(json['cooldowns'] as Map),

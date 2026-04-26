@@ -954,9 +954,11 @@ Bob: â‚¬300K counter-hit
 - Gestolen voertuigen in embedded Garage/Marina renderen responsief als card-grid (mobiel 1 kolom, tablet/desktop meerdere kolommen).
 - Embedded voertuigkaarten gebruiken natuurlijke hoogte (geen onnodige lege onderruimte door geforceerde hoge gridcellen).
 - Op brede schermen schaalt het embedded overzicht door naar maximaal 4 kaarten naast elkaar.
+- Kolommen schalen dynamisch op kaartbreedte, zodat 4 kaarten ook op laptopweergaves met zijpanelen haalbaar blijven.
 - In deze Vehicle Heist-view is de aparte capaciteitsbalk boven de voertuigen verwijderd om dubbele informatie te voorkomen.
 - Crew-only ops-acties (Crew Op/Crew Match) blijven verborgen of gelockt voor spelers zonder crew, met expliciete unlock-hint.
 - Ops-beloningen worden bij succes direct als contant geld uitgekeerd; het actie-overzicht toont per knop de verwachte payout-context.
+- Dashboard bevat nu een Vehicle Ops-blok per auto/motor/boot met live cooldownchips (Hotspot/Crew/Crew-duel/Chop/Contract/Tegenactie), heat/reputatie en contract/claim/seizoenssamenvatting.
 
 ### Arrest Chances
 ```javascript

@@ -763,6 +763,19 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
 
     // Get cooldowns
     const cooldowns = await getPlayerCooldowns(playerId);
+    const parseNumber = (value: unknown): number => {
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        return Math.trunc(value);
+      }
+      if (typeof value === 'bigint') {
+        return Number(value);
+      }
+      if (typeof value === 'string') {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? Math.trunc(parsed) : 0;
+      }
+      return 0;
+    };
 
     const toRemainingSeconds = (nextAllowedAt: Date | null): number => {
       if (!nextAllowedAt) return 0;
@@ -851,6 +864,82 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
             return null;
           })
         : null;
+
+    const vehicleOpsEntries = await Promise.all(
+      (['car', 'motorcycle', 'boat'] as const).map(async (vehicleType) => {
+        try {
+          const intelligence = await vehicleService.getVehicleOpsIntelligence(playerId, vehicleType);
+          return [vehicleType, intelligence] as const;
+        } catch (error) {
+          console.error('[Dashboard] Vehicle Ops intelligence failed during dashboard stats load:', {
+            playerId,
+            vehicleType,
+            error,
+          });
+          return [vehicleType, null] as const;
+        }
+      })
+    );
+
+    const summarizeVehicleOps = (intelligence: Record<string, any> | null) => {
+      if (!intelligence) {
+        return null;
+      }
+
+      const hotspot = (Array.isArray(intelligence.hotspots)
+        ? intelligence.hotspots[0]
+        : null) as Record<string, any> | null;
+      const crewOp = (intelligence.crewOp ?? {}) as Record<string, any>;
+      const chopContract = (intelligence.chopContract ?? {}) as Record<string, any>;
+      const contractsBoard = (intelligence.contractsBoard ?? {}) as Record<string, any>;
+      const crewMatchmaking = (intelligence.crewMatchmaking ?? {}) as Record<string, any>;
+      const counterIntercept = (intelligence.counterIntercept ?? {}) as Record<string, any>;
+      const categoryHeat = (intelligence.categoryHeat ?? {}) as Record<string, any>;
+      const opsReputation = (intelligence.opsReputation ?? {}) as Record<string, any>;
+      const contrabandInsurance = (intelligence.contrabandInsurance ?? {}) as Record<string, any>;
+      const regionalBlacklist = (intelligence.regionalBlacklist ?? {}) as Record<string, any>;
+      const partsMarket = (intelligence.partsMarket ?? {}) as Record<string, any>;
+      const seasonCurrent = (crewMatchmaking.current ?? {}) as Record<string, any>;
+      const openClaims = Array.isArray(contrabandInsurance.openClaims)
+        ? contrabandInsurance.openClaims
+        : [];
+      const contracts = Array.isArray(contractsBoard.contracts) ? contractsBoard.contracts : [];
+
+      return {
+        heatCurrent: parseNumber(categoryHeat.current),
+        heatLevel: (categoryHeat.level ?? 'LOW').toString(),
+        reputationValue: parseNumber(opsReputation.value),
+        reputationLevel: parseNumber(opsReputation.level),
+        partsTrend: (partsMarket.trend ?? 'flat').toString(),
+        blacklistActive: regionalBlacklist.active === true,
+        crewAvailable: crewOp.available === true,
+        crewName: crewOp.crewName?.toString() ?? null,
+        contractsAvailable: contracts.length,
+        openInsuranceClaims: openClaims.length,
+        seasonPoints: parseNumber(seasonCurrent.points),
+        seasonWins: parseNumber(seasonCurrent.wins),
+        seasonLosses: parseNumber(seasonCurrent.losses),
+        cooldowns: {
+          hotspot: parseNumber(hotspot?.cooldownRemainingSeconds),
+          crew: parseNumber(crewOp.cooldownRemainingSeconds),
+          crewMatch: parseNumber(crewMatchmaking.cooldownRemainingSeconds),
+          chop: parseNumber(chopContract.cooldownRemainingSeconds),
+          contract: parseNumber(contractsBoard.cooldownRemainingSeconds),
+          counter: parseNumber(counterIntercept.cooldownRemainingSeconds),
+        },
+      };
+    };
+
+    const vehicleOpsByType = Object.fromEntries(
+      vehicleOpsEntries.map(([vehicleType, intelligence]) => [
+        vehicleType,
+        summarizeVehicleOps(intelligence as Record<string, any> | null),
+      ])
+    ) as {
+      car: ReturnType<typeof summarizeVehicleOps>;
+      motorcycle: ReturnType<typeof summarizeVehicleOps>;
+      boat: ReturnType<typeof summarizeVehicleOps>;
+    };
 
     const cooldownPlayer = await prisma.player.findUnique({
       where: { id: playerId },
@@ -1078,6 +1167,13 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           phaseEndsInSeconds: crewWarPhaseEndsInSeconds,
         },
         territoryLeaderStats,
+        vehicleOps: {
+          hasCrew: Boolean(crewMembership),
+          crewRole: crewMembership?.role ?? null,
+          car: vehicleOpsByType.car,
+          motorcycle: vehicleOpsByType.motorcycle,
+          boat: vehicleOpsByType.boat,
+        },
         cooldowns,
       },
     });

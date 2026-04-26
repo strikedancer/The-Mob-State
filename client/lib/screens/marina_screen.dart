@@ -495,15 +495,14 @@ class _MarinaScreenState extends State<MarinaScreen> {
                   sliver: SliverToBoxAdapter(
                     child: Builder(
                       builder: (context) {
-                        final columns = constraints.maxWidth >= 1680
-                            ? 4
-                            : constraints.maxWidth >= 1160
-                            ? 3
-                            : constraints.maxWidth >= 760
-                            ? 2
-                            : 1;
                         const spacing = 16.0;
                         final availableWidth = constraints.maxWidth - 32;
+                        const minCardWidth = 220.0;
+                        final computedColumns =
+                            ((availableWidth + spacing) /
+                                    (minCardWidth + spacing))
+                                .floor();
+                        final columns = computedColumns.clamp(1, 4);
                         final totalSpacing = (columns - 1) * spacing;
                         final itemWidth = columns <= 1
                             ? availableWidth
