@@ -28,6 +28,7 @@ Partial/fail/split/regels blijven gelijk aan [CREW_MISSIONS_PHASE1_2026-04-23.md
 - **Script:** `backend/scripts/generate_crew_missions_images_leonardo.py`
 - **Output (standaard):** `runtime/client-images/crew_missions/cards/<missionKey>.png` en `.../scenes/<missionKey>.png`
 - **Optioneel:** `--mirror-client-assets` kopieert naar `client/assets/images/crew_missions/{cards,scenes}/` (handig voor gebundelde builds).
+- **Upload script (Windows):** `scripts/upload_crew_mission_images_to_vps.ps1` (Pageant + `pscp`/`plink`, zie onder *Upload naar VPS*).
 
 ### Run (lokaal of op VPS waar `LEONARDO_API_KEY` staat)
 
@@ -37,6 +38,31 @@ python scripts/generate_crew_missions_images_leonardo.py --confirm-batch YES
 ```
 
 Optioneel: `--force` om bestaande PNG’s te overschrijven, `--mirror-client-assets` om client-assets te vullen.
+
+### Upload naar VPS (externe image map, PROTOCOL_MASTER)
+
+`docker-compose.plesk.yml` mount standaard:
+
+`CLIENT_EXTERNAL_IMAGES_PATH` → **`/var/www/vhosts/themobstate.com/apps/mafia_game/runtime/client-images`** → in de container **`/client/images`**.
+
+Crew mission PNG’s horen daar onder:
+
+- `.../runtime/client-images/crew_missions/cards/<missionKey>.png`
+- `.../runtime/client-images/crew_missions/scenes/<missionKey>.png`
+
+**Windows (Pageant + PuTTY):** na generatie lokaal, upload met:
+
+```powershell
+cd C:\xampp\htdocs\mafia_game
+.\scripts\upload_crew_mission_images_to_vps.ps1 -PuttySession "server vps"
+```
+
+- Gebruik **exact** de opgeslagen sessienaam uit PuTTY (in veel setups heet die **`server vps`**, niet per se `vps server`).
+- Pageant moet je private key geladen hebben; de sessie bevat proxy/poort/key zoals in PuTTY opgeslagen.
+- Als de registry geen host vindt voor je sessienaam: `-SshHost "jouw.ip.of.hostnaam"`.
+- Eerste connectie: host key accepteren kan nodig zijn (één keer interactief via PuTTY GUI met dezelfde sessie), daarna werkt `-batch` op `plink`/`pscp`.
+
+Als `CLIENT_EXTERNAL_IMAGES_PATH` op de server **afwijkt**, pas `-RemoteBase` aan op het pad dat compose echt mount.
 
 Zie ook: [CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md](CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md) (thema- en flavor-notities clearing house).
 
