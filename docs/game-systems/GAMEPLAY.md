@@ -42,6 +42,7 @@
 - Preset-terugkerende competitievensters (o.a. crime, drugs, smuggling, vehicles) worden door de server op een **interval** gepland; binnen het actieve venster telt je actie in die categorie mee voor de ranglijst; aan het eind volgen beloningen (o.a. cash, XP, kleine premium credits) volgens de regels in `docs/module-protocols/events.md`.
 - In **Instellingen** kun je onder **Spelerevents** pushmeldingen bij start/einde van een ronde **per speler** aan- of uitzetten (standaard aan). In **Premium** bestaat optioneel **Event Pass (7 dagen)** (echt geld) voor +event-score en bonus credits, zonder directe combat pay-to-win.
 - Volledig operator-/deploy-pad: `docs/module-protocols/PROTOCOL_MASTER.md` (verwijst naar `events.md`).
+- Technische afspraak server↔DB voor live events (JSON in tekstkolommen): `docs/module-protocols/events.md` (sectie *Backend (Prisma) invariant*).
 
 ---
 

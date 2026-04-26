@@ -27,3 +27,7 @@
 ## Admin
 
 - Preset list with single toggle: template + schedule; advanced CRUD under optional checkbox in `admin` `App.tsx`.
+
+## Backend (Prisma) invariant
+
+- `configJson` / `stateJson` / reward `triggerConfigJson` / `rewardsJson` en soortgelijke velden in het event-model zijn in het schema `String` (`@db.LongText`), geen native `Json` type. `gameEventService` moet dus objecten **serialiseren** (`JSON.stringify` / `toJsonString`) vóór `create` / `update`, en bij uitlezen waar nodig **parsen** — anders: `PrismaClientValidationError` (“Expected String or Null, provided Object”) bij o.a. `prisma.gameLiveEvent.create` met `rewardRules.create`.

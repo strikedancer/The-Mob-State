@@ -9,13 +9,34 @@ type GameLiveEventWithTemplate = GameLiveEvent & { template: GameEventTemplate }
 
 type JsonRecord = Record<string, unknown>;
 
-const toJson = (value: unknown): Prisma.InputJsonValue | undefined => {
+/** Persist JSON into Prisma `String` @db.LongText columns (not native Json type). */
+const toJsonString = (value: unknown): string | null | undefined => {
   if (value === undefined) {
     return undefined;
   }
-
-  return value as Prisma.InputJsonValue;
+  if (value === null) {
+    return null;
+  }
+  if (typeof value === 'string') {
+    return value;
+  }
+  return JSON.stringify(value);
 };
+
+function parseJsonRecord(raw: string | null | undefined): Record<string, unknown> {
+  if (raw == null || raw === '') {
+    return {};
+  }
+  if (typeof raw === 'string') {
+    try {
+      const v = JSON.parse(raw) as unknown;
+      return v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
+    } catch {
+      return {};
+    }
+  }
+  return {};
+}
 
 const liveEventInclude = {
   template: true,
@@ -68,8 +89,8 @@ class GameEventService {
         descriptionEn: input.descriptionEn,
         icon: input.icon,
         bannerImage: input.bannerImage,
-        configSchemaJson: toJson(input.configSchemaJson),
-        uiSchemaJson: toJson(input.uiSchemaJson),
+        configSchemaJson: toJsonString(input.configSchemaJson),
+        uiSchemaJson: toJsonString(input.uiSchemaJson),
         isActive: input.isActive ?? true,
       },
     });
@@ -98,9 +119,9 @@ class GameEventService {
       data: {
         ...input,
         configSchemaJson:
-          input.configSchemaJson === undefined ? undefined : toJson(input.configSchemaJson),
+          input.configSchemaJson === undefined ? undefined : toJsonString(input.configSchemaJson),
         uiSchemaJson:
-          input.uiSchemaJson === undefined ? undefined : toJson(input.uiSchemaJson),
+          input.uiSchemaJson === undefined ? undefined : toJsonString(input.uiSchemaJson),
       },
     });
   }
@@ -214,10 +235,10 @@ class GameEventService {
         status: input.status ?? 'draft',
         startedAt: input.startedAt,
         endsAt: input.endsAt,
-        configJson: toJson(input.configJson),
-        stateJson: toJson(input.stateJson),
-        announcementJson: toJson(input.announcementJson),
-        scopeJson: toJson(input.scopeJson),
+        configJson: toJsonString(input.configJson),
+        stateJson: toJsonString(input.stateJson),
+        announcementJson: toJsonString(input.announcementJson),
+        scopeJson: toJsonString(input.scopeJson),
         createdByAdminId: input.createdByAdminId,
         modifiers: input.modifiers?.length
           ? {
@@ -225,8 +246,8 @@ class GameEventService {
                 targetSystem: modifier.targetSystem,
                 modifierKey: modifier.modifierKey,
                 operation: modifier.operation,
-                valueJson: toJson(modifier.valueJson),
-                conditionsJson: toJson(modifier.conditionsJson),
+                valueJson: toJsonString(modifier.valueJson),
+                conditionsJson: toJsonString(modifier.conditionsJson),
               })),
             }
           : undefined,
@@ -234,8 +255,8 @@ class GameEventService {
           ? {
               create: input.rewardRules.map((rule, index) => ({
                 triggerType: rule.triggerType,
-                triggerConfigJson: toJson(rule.triggerConfigJson),
-                rewardsJson: rule.rewardsJson as Prisma.InputJsonValue,
+                triggerConfigJson: toJsonString(rule.triggerConfigJson),
+                rewardsJson: toJsonString(rule.rewardsJson) ?? '{}',
                 sortOrder: rule.sortOrder ?? index,
                 isActive: rule.isActive ?? true,
               })),
@@ -287,11 +308,11 @@ class GameEventService {
         startedAt: input.startedAt,
         endsAt: input.endsAt,
         resolvedAt: input.resolvedAt,
-        configJson: input.configJson === undefined ? undefined : toJson(input.configJson),
-        stateJson: input.stateJson === undefined ? undefined : toJson(input.stateJson),
+        configJson: input.configJson === undefined ? undefined : toJsonString(input.configJson),
+        stateJson: input.stateJson === undefined ? undefined : toJsonString(input.stateJson),
         announcementJson:
-          input.announcementJson === undefined ? undefined : toJson(input.announcementJson),
-        scopeJson: input.scopeJson === undefined ? undefined : toJson(input.scopeJson),
+          input.announcementJson === undefined ? undefined : toJsonString(input.announcementJson),
+        scopeJson: input.scopeJson === undefined ? undefined : toJsonString(input.scopeJson),
       },
       include: liveEventInclude,
     });
@@ -529,7 +550,7 @@ class GameEventService {
       });
 
       for (const rule of rewardRules) {
-        const triggerConfig = (rule.triggerConfigJson as Record<string, unknown>) ?? {};
+        const triggerConfig = parseJsonRecord(rule.triggerConfigJson);
         const minRank = typeof triggerConfig.minRank === 'number' ? triggerConfig.minRank : 1;
         const maxRank = typeof triggerConfig.maxRank === 'number' ? triggerConfig.maxRank : 3;
         const qualifiers = participants.filter((_, i) => i + 1 >= minRank && i + 1 <= maxRank);
@@ -543,7 +564,7 @@ class GameEventService {
                   liveEventId,
                   rewardRuleId: rule.id,
                   playerId: p.playerId!,
-                  grantedRewardsJson: rule.rewardsJson as Prisma.InputJsonValue,
+                  grantedRewardsJson: rule.rewardsJson,
                   deliveryStatus: 'pending',
                 },
               }),
