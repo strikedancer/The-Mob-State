@@ -331,3 +331,7 @@ Doorgevoerd:
 
 Opmerking:
 - De regressietest vereist een bereikbare MySQL/Prisma database.
+
+## Addendum 2026-04-26 (Expansion set)
+
+Zes extra crew missions (bank-lijn + clearing house), zonder tweede casino-missie naast Casino Ledger Raid. Zie [CREW_MISSIONS_EXPANSION_2026-04-26.md](CREW_MISSIONS_EXPANSION_2026-04-26.md) en `backend/scripts/generate_crew_missions_images_leonardo.py`.

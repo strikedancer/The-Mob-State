@@ -31,6 +31,9 @@ Voor **specifieke implementatie-details**, zie the bijbehorende [module-protocol
 - [CREW_MISSIONS_PHASE1_2026-04-23.md](CREW_MISSIONS_PHASE1_2026-04-23.md) - Crew Missions Phase 1 blueprint met 6 missies, balans, cooldown-skip prijzen en image prompts
   - Module-protocols: [crew-missions.md](../module-protocols/crew-missions.md), [crew.md](../module-protocols/crew.md), [balance-economy.md](../module-protocols/balance-economy.md)
 
+- [CREW_MISSIONS_EXPANSION_2026-04-26.md](CREW_MISSIONS_EXPANSION_2026-04-26.md) - Zes extra crew missions (bank-lijn + clearing house), Leonardo image script
+  - Zie ook: [CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md](CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md)
+
 - [TERRITORY_VISION.md](TERRITORY_VISION.md) - Doelontwerp voor de beste versie van Territory met Crew Wars- en Crew HQ-koppelingen
   - Module-protocols: [territory.md](../module-protocols/territory.md), [crew-wars.md](../module-protocols/crew-wars.md), [crew.md](../module-protocols/crew.md)
 

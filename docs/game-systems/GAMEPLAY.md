@@ -461,6 +461,11 @@ Voorbeelden:
 - Phase 1 bevat 6 missies met exacte timers, rewards, fail-risico en cooldown skip-pricing.
 - Volledige specificatie: [CREW_MISSIONS_PHASE1_2026-04-23.md](CREW_MISSIONS_PHASE1_2026-04-23.md).
 
+### Uitbreiding (bank-lijn + clearing house)
+- Zes extra crew missions (geen tweede casino-missie naast **Casino Ledger Raid**): night deposit, skim-netwerk, pantserroute, dochterbank-kluis, reservekluis en clearing house settlement-run.
+- Beloningen blijven uit de crew-mission economy (server); er wordt geen geld rechtstreeks uit andere spelers hun banksaldo gehaald.
+- Catalogus en getallen: [CREW_MISSIONS_EXPANSION_2026-04-26.md](CREW_MISSIONS_EXPANSION_2026-04-26.md). Afbeeldingen: `backend/scripts/generate_crew_missions_images_leonardo.py` (Leonardo API).
+
 ### Crew Mission XP & Level
 - Crew Missions geven naast persoonlijke XP ook **crew mission XP** aan de crew.
 - Deze XP bouwt een **crew mission level** op (zichtbaar in de Crew Missions-tab).

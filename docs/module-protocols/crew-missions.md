@@ -84,25 +84,31 @@ Ingebouwd voor Crew Missions:
 Gebruik minimaal 3 moeilijkheidslagen met oplopende coördinatie.
 
 ### Tier 1 - Quick Ops (5-12 min)
-- `Safehouse Supply Run`
-- `Street Intel Sweep`
-- `Courier Intercept`
+- `Safehouse Supply Run` (`safehouse_supply_run`)
+- `Street Intel Sweep` (`street_intel_sweep`)
+- `Night Deposit Grab` (`night_deposit_grab`)
+- `Skim Network Rollout` (`skim_network_rollout`)
+- (Visiedoc) `Courier Intercept` — kan als aparte template worden toegevoegd
 
 Doel:
 - Lage instap, korte loops, meerdere keren per sessie speelbaar.
 
 ### Tier 2 - Coordinated Ops (12-25 min)
-- `Armory Smuggle Chain`
-- `Port Hijack Window`
-- `City Vault Prep`
+- `Armory Smuggle Chain` (`armory_smuggle_chain`)
+- `Port Hijack Window` (`port_hijack_window`)
+- `Armored Pivot Route` (`armored_pivot_route`)
+- `Subsidiary Vault Window` (`subsidiary_vault_window`)
+- (Visiedoc) `City Vault Prep` — kan als aparte template worden toegevoegd
 
 Doel:
 - Team timing belangrijk, 2-4 actieve deelnemers aanbevolen.
 
 ### Tier 3 - High-Stakes Operations (25-45 min)
-- `Casino Ledger Raid`
-- `Territory Blackout Push`
-- `Federal Convoy Break`
+- `Casino Ledger Raid` (`casino_ledger_raid`) — enige crew-mission met primair casino-thema
+- `Federal Convoy Break` (`federal_convoy_break`)
+- `Reserve Vault Breach` (`reserve_vault_breach`)
+- `Clearing House Vault Run` (`clearing_house_vault_run`)
+- (Visiedoc) `Territory Blackout Push` — nog niet als crew-mission template geactiveerd
 
 Doel:
 - Hoge risk/reward, duidelijke fail states, sterk crewgevoel.
