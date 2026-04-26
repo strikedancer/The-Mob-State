@@ -66,6 +66,19 @@ Als `CLIENT_EXTERNAL_IMAGES_PATH` op de server **afwijkt**, pas `-RemoteBase` aa
 
 Zie ook: [CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md](CREW_MISSION_CLEARING_HOUSE_VAULT_2026-04-26.md) (thema- en flavor-notities clearing house).
 
+### VPS: `git pull` + Docker build (PROTOCOL_MASTER)
+
+Volledige flow (backup, pull, `docker compose config`, rebuild **backend** + **client**, logs) kun je lokaal draaien met Pageant + PuTTY **`plink`**:
+
+```powershell
+cd C:\xampp\htdocs\mafia_game
+.\scripts\vps_pull_and_build.ps1 -PuttySession "server vps"
+```
+
+Draai dit in een **normaal PowerShell-venster** (Pageant aan). Het script gebruikt **geen** `plink -batch`, zodat eventuele **proxy- of PuTTY-prompts** beantwoord kunnen worden; vanuit niet-interactieve omgegingen (zoals sommige IDE-terminals) kan `plink` daardoor vastlopen.
+
+Pas `-ProjectDir` aan als je clone op de VPS een ander pad heeft. Zie `docs/module-protocols/PROTOCOL_MASTER.md` (PuTTY / Plesk Update Runbook) voor de achterliggende eisen.
+
 ## QA (minimaal)
 
 - Start/resolve/claim per nieuwe `missionKey` (minstens één Tier 1 en één Tier 3).
