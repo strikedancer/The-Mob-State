@@ -237,6 +237,42 @@ Acceptatie-eis voor dit runbook:
 - Een PuTTY update-instructie is niet done zonder expliciete `--env-file .env.plesk` compose-commands.
 - Een productie-update is niet done zonder config-validatie en post-deploy logcheck.
 
+### VPS snelpad (Windows: Pageant + PuTTY plink) — aanbevolen
+
+Gebruik dit **volgende keer eerst**; het voert dezelfde stappen uit als het bash-blok hierboven (backup compose + `.env.plesk`, `git pull`, `docker compose … config`, rebuild **backend** + **client**, backend-logs), maar dan **vanaf je Windows-pc** via **PuTTY `plink`** met je opgeslagen sessie.
+
+**Voorwaarden**
+
+1. **Pageant** draait en je private key is geladen.
+2. PuTTY **Saved Session** exact zoals opgeslagen (vaak **`server vps`**; niet verwarren met een andere naam).
+3. SSH-login **`root`** (script zet **`-l root`**; sessie mag leeg Auto-login user hebben).
+4. Eerste keer of na hostkey-wissel: één keer **interactief** dezelfde sessie in PuTTY openen zodat host key / proxy akkoord staat; daarna werkt het ook vanuit **PowerShell** / agent.
+5. Voer deploy uit in een **normaal PowerShell-venster** (niet elke geïsoleerde terminal geeft prompts goed door).
+
+**Eén commando (lokaal, vanuit repo-root)**
+
+```powershell
+cd C:\xampp\htdocs\mafia_game
+.\scripts\vps_pull_and_build.ps1 -PuttySession "server vps"
+```
+
+- Standaard projectpad op de VPS: `/var/www/vhosts/themobstate.com/apps/mafia_game` (aanpasbaar met `-ProjectDir`).
+- Als `HostName` niet uit de PuTTY-registry te lezen is: `-SshHost "jouw.host.of.ip"`.
+- Script gebruikt **geen** `plink -batch`, zodat **HTTP-proxy- of andere PuTTY-prompts** beantwoord kunnen worden.
+
+**Crew-mission / externe images** naar dezelfde mount als compose (`CLIENT_EXTERNAL_IMAGES_PATH` → `runtime/client-images` op de server):
+
+```powershell
+.\scripts\upload_crew_mission_images_to_vps.ps1 -PuttySession "server vps"
+```
+
+Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitleg).
+
+**Agent / Cursor**
+
+- Zelfde PowerShell-aanroep kan vanuit de agent **als** Pageant op die machine draait en netwerk/proxy het toelaten.
+- **`docker compose … config`** schrijft resolved env naar stdout — **deel die log-output niet** (bevat secrets). Bij twijfel alleen `logs --tail` delen of lokaal bekijken.
+
 ### Live Online Test Workflow (Verplicht Bij VPS-Only QA)
 
 Als de actuele bron van waarheid online/VPS is en niet lokaal, dan hoort de agent na relevante codewijzigingen niet te stoppen bij alleen lokale edits of een commit.
@@ -282,6 +318,7 @@ Werk dit bestand bij als:
 - de algemene workflow verandert,
 - nieuwe verplichte checks gelden voor alle modules,
 - of een terugkerende productiebug extra guardrails nodig maakt.
+- de VPS/Plesk **pull + build**-snelweg wijzigt (scripts, PuTTY-sessienaam, of services).
 
 ## File Management & Repository Hygiene
 
