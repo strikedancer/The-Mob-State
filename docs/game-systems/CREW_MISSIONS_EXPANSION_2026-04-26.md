@@ -54,11 +54,13 @@ Crew mission PNG’s horen daar onder:
 
 ```powershell
 cd C:\xampp\htdocs\mafia_game
+# Pageant + PuTTY -load "server vps", SSH-gebruiker root (default)
 .\scripts\upload_crew_mission_images_to_vps.ps1 -PuttySession "server vps"
 ```
 
-- Gebruik **exact** de opgeslagen sessienaam uit PuTTY (in veel setups heet die **`server vps`**, niet per se `vps server`).
-- Pageant moet je private key geladen hebben; de sessie bevat proxy/poort/key zoals in PuTTY opgeslagen.
+- Gebruik **exact** de opgeslagen sessienaam uit PuTTY (standaard **`server vps`**).
+- **Pageant** met je key; scripts zetten **`-l root`** op `plink`/`pscp` naast **`root@host`** in het doelpad.
+- De sessie bevat verder proxy/poort/key zoals in PuTTY opgeslagen.
 - Als de registry geen host vindt voor je sessienaam: `-SshHost "jouw.ip.of.hostnaam"`.
 - Eerste connectie: host key accepteren kan nodig zijn (één keer interactief via PuTTY GUI met dezelfde sessie), daarna werkt `-batch` op `plink`/`pscp`.
 
@@ -72,6 +74,7 @@ Volledige flow (backup, pull, `docker compose config`, rebuild **backend** + **c
 
 ```powershell
 cd C:\xampp\htdocs\mafia_game
+# Pageant aan, key geladen. PuTTY-sessie: server vps, gebruiker: root (default in script)
 .\scripts\vps_pull_and_build.ps1 -PuttySession "server vps"
 ```
 

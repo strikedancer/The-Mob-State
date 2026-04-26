@@ -3,16 +3,18 @@
   On the VPS: git pull, docker compose config, rebuild backend + client (PROTOCOL_MASTER PuTTY/Plesk flow).
 
 .DESCRIPTION
-  Runs remote commands via PuTTY plink with your saved session (Pageant, proxy, keys from session).
+  Uses **Pageant** (SSH agent) + **PuTTY plink** with **-load "server vps"** and login **root** (`-l root`).
+  Connection details (proxy, port, private key file pointer) come from that saved session.
+
   Matches docs/module-protocols/PROTOCOL_MASTER.md: backup hint, pull, config validate, targeted rebuild, logs.
 
-  Run this in a normal PowerShell window on your PC (not necessarily from Cursor), with Pageant running.
+  Run this in a normal PowerShell window on your PC (not necessarily from Cursor), with **Pageant** running and your key loaded.
 
 .PARAMETER PuttySession
-  Saved PuTTY session name (exact). Default matches common registry name "server vps".
+  Saved PuTTY session name (exact). Default: **server vps**.
 
 .PARAMETER SshUser
-  Default root.
+  SSH login name. Default: **root** (explicit `-l` on plink).
 
 .PARAMETER SshHost
   If empty, HostName is read from the PuTTY session registry entry.
@@ -73,14 +75,15 @@ $tmp = [System.IO.Path]::GetTempFileName() + ".sh"
 try {
     $utf8NoBom = New-Object System.Text.UTF8Encoding $false
     [System.IO.File]::WriteAllText($tmp, $remoteScript, $utf8NoBom)
+    Write-Host "Auth: Pageant (agent). PuTTY: -load `"$PuttySession`" -l $SshUser"
     Write-Host "Remote: $sshTarget"
     Write-Host "Project: $ProjectDir"
-    Write-Host "Using PuTTY session: $PuttySession"
     Write-Host "(No -batch: proxy or PuTTY prompts can be answered in this window.)"
     Write-Host "---"
     # -m: local file whose lines are executed on the remote shell (bash)
     # -no-antispoof: skip post-auth banner prompt that breaks automation
-    & $plink -no-antispoof -t -load $PuttySession -m $tmp $sshTarget
+    # -l: login root (session may have empty Auto-login name)
+    & $plink -l $SshUser -no-antispoof -t -load $PuttySession -m $tmp $sshTarget
 } finally {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
 }

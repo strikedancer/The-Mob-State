@@ -3,14 +3,15 @@
   Upload crew mission card/scene PNGs to the VPS external image tree (Pageant + PuTTY PSCP).
 
 .DESCRIPTION
+  Uses **Pageant** + **pscp/plink** with **-load "server vps"** and login **root** (`-l root`).
+
   Aligns with docs/module-protocols/PROTOCOL_MASTER.md + docker-compose.plesk.yml:
   backend mounts CLIENT_EXTERNAL_IMAGES_PATH (default under the project) at /client/images.
   Crew mission files must live under: .../runtime/client-images/crew_missions/cards|scenes/
 
-  Requires: PuTTY PSCP, Pageant with loaded key, a saved PuTTY session that reaches the VPS.
+  Requires: PuTTY PSCP/plink, **Pageant** with key loaded, saved session **server vps** (override with -PuttySession).
 
-  Note: On this machine the saved session is often named "server vps" (not "vps server").
-  Override with -PuttySession.
+  Note: PuTTY saved session name is often **server vps** (not "vps server").
 
 .PARAMETER PuttySession
   Exact PuTTY saved session name (Connection > Data > Saved Sessions).
@@ -92,18 +93,19 @@ if ($cardPng.Count -eq 0 -or $scenePng.Count -eq 0) {
 $remoteCards = "${sshTarget}:$RemoteBase/crew_missions/cards/"
 $remoteScenes = "${sshTarget}:$RemoteBase/crew_missions/scenes/"
 
-Write-Host "Using PuTTY session: $PuttySession (proxy/key/Pageant from session)"
+Write-Host "Auth: Pageant. PuTTY: -load `"$PuttySession`" -l $SshUser"
 Write-Host "SSH target: $sshTarget"
 Write-Host "Remote base: $RemoteBase"
 Write-Host "Uploading $($cardPng.Count) card(s) and $($scenePng.Count) scene(s)..."
 
 # Ensure target dirs exist (PROTOCOL_MASTER external image tree)
 $mkdirCmd = "mkdir -p $RemoteBase/crew_missions/cards $RemoteBase/crew_missions/scenes && chmod -R a+rX $RemoteBase/crew_missions"
-& $plink -batch -load $PuttySession "$sshTarget" $mkdirCmd
+# No -batch: first-time proxy/host prompts need a real console; -l root matches your PuTTY usage
+& $plink -l $SshUser -load $PuttySession "$sshTarget" $mkdirCmd
 
-# PSCP: -load applies proxy, keys, port from saved session; destination is user@host:path
-& $pscp -batch -load $PuttySession (Join-Path $cards "*.png") $remoteCards
-& $pscp -batch -load $PuttySession (Join-Path $scenes "*.png") $remoteScenes
+# PSCP: -load applies proxy, keys, port from saved session; -l root; destination is user@host:path
+& $pscp -l $SshUser -load $PuttySession (Join-Path $cards "*.png") $remoteCards
+& $pscp -l $SshUser -load $PuttySession (Join-Path $scenes "*.png") $remoteScenes
 
 Write-Host "Done. Verify on the server:"
 Write-Host "  ls -la $RemoteBase/crew_missions/cards/"
