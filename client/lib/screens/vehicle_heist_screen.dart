@@ -1421,21 +1421,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    _tr(
-                      'Live cooldowns: Hotspot ${_formatCooldown(hotspotCooldown)} | Crew ${_formatCooldown(crewCooldown)} | Chop ${_formatCooldown(chopCooldown)}',
-                      'Live cooldowns: Hotspot ${_formatCooldown(hotspotCooldown)} | Crew ${_formatCooldown(crewCooldown)} | Chop ${_formatCooldown(chopCooldown)}',
-                    ),
-                    style: const TextStyle(color: Colors.lightBlueAccent),
-                  ),
-                  Text(
-                    _tr(
-                      'Contract ${_formatCooldown(contractCooldown)} | Crew-duel ${_formatCooldown(crewMatchCooldown)} | Tegenactie ${_formatCooldown(counterCooldown)}',
-                      'Contract ${_formatCooldown(contractCooldown)} | Crew match ${_formatCooldown(crewMatchCooldown)} | Counter ${_formatCooldown(counterCooldown)}',
-                    ),
-                    style: const TextStyle(color: Colors.lightBlueAccent),
-                  ),
                   const SizedBox(height: 8),
                   Text(
                     _tr(

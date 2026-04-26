@@ -947,6 +947,7 @@ Bob: â‚¬300K counter-hit
 - Ops-telemetry is uitgebreid met vehicle-type en region map-layers voor admin balancing.
 - Voertuigschermen respecteren actieve taalinstelling volledig: in NL-modus tonen opslabels en meldingen geen Engelse fallbackteksten.
 - Ops-paneel toont live cooldown countdowns per actie en ververst deze automatisch.
+- Cooldowns worden in Vehicle Ops enkel in de actiekaarten als primaire bron getoond om dubbele info en visuele ruis te vermijden.
 - Crew-only ops-acties (Crew Op/Crew Match) blijven verborgen of gelockt voor spelers zonder crew, met expliciete unlock-hint.
 - Ops-beloningen worden bij succes direct als contant geld uitgekeerd; het actie-overzicht toont per knop de verwachte payout-context.
 
