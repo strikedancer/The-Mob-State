@@ -28,6 +28,9 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Vehicle Ops uitbreidingen (hotspots, parts market, crew ops, category heat, chop contracts, dynamic police patterns) moeten per voertuigcategorie duidelijk zichtbaar en uitlegbaar blijven.
 - Advanced Vehicle Ops uitbreidingen (hotspot intercept windows, crew role-bonussen, ops-reputatie unlocks, regionale blacklist-events, contraband insurance, ops-telemetry) moeten coherent blijven met balance-economy guardrails.
 - Vehicle Ops omvat nu ook Counter-Intercept missies, Crew Matchmaking met seizoensladder, country modifiers (inflatie/corruptie/havenstaking), contracts board met weekly legendary contracts en insurance dispute-resolutie.
+- Vehicle Ops moet live cooldowns per hoofdactie zichtbaar tonen met actieve countdown, niet alleen statische secondenwaarden na handmatige refresh.
+- Crew-only ops-acties (crew-run en crew-matchmaking) mogen alleen zichtbaar of bruikbaar zijn als de speler daadwerkelijk in een crew zit; zonder crew moet een duidelijke unlock-hint worden getoond.
+- Ops-actiekaarten moeten payout-context expliciet tonen (waarom cash toeneemt na klik), zodat reward-herkomst voor spelers traceerbaar is.
 - Toon per tab een catalogus met waarde, zeldzaamheid, landen en world-cap status.
 - Gebruik timed repairs; geen instant click-pay-complete gedrag.
 - World-cap rotatie moet correct blijven: verkoop of sloop opent opnieuw beschikbaarheid voor die voertuigsoort.

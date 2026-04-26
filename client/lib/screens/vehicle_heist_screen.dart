@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +31,8 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   late final TabController _tabController;
   int _activeTabIndex = 0;
   bool _opsActionInProgress = false;
+  Timer? _opsTicker;
+  DateTime? _opsLastRefreshAt;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
@@ -54,10 +59,18 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshOpsIntelligence();
     });
+    _opsTicker = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) return;
+      if (timer.tick % 15 == 0 && !_opsActionInProgress) {
+        _refreshOpsIntelligence();
+      }
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
+    _opsTicker?.cancel();
     _tabController.dispose();
     super.dispose();
   }
@@ -167,6 +180,27 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final provider = context.read<VehicleProvider>();
     await provider.fetchVehicleOpsIntelligence(
       vehicleType: _opsVehicleTypeForTab(_activeTabIndex),
+    );
+    if (!mounted) return;
+    setState(() {
+      _opsLastRefreshAt = DateTime.now();
+    });
+  }
+
+  int _liveCooldownSeconds(dynamic rawSeconds) {
+    final base = (rawSeconds as num?)?.toInt() ?? 0;
+    if (base <= 0) return 0;
+    final refreshedAt = _opsLastRefreshAt;
+    if (refreshedAt == null) return base;
+    final elapsed = DateTime.now().difference(refreshedAt).inSeconds;
+    return math.max(0, base - elapsed);
+  }
+
+  String _formatCooldown(int seconds) {
+    if (seconds <= 0) return _tr('klaar', 'ready');
+    return formatAdaptiveDurationFromSeconds(
+      seconds,
+      localeName: Localizations.localeOf(context).languageCode,
     );
   }
 
@@ -677,6 +711,71 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     );
   }
 
+  Widget _buildOpsActionInfoCard({
+    required IconData icon,
+    required String title,
+    required String payout,
+    required int cooldownSeconds,
+    String? requirement,
+  }) {
+    final ready = cooldownSeconds <= 0;
+    return Container(
+      width: 210,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.28),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                size: 15,
+                color: ready ? Colors.lightGreen : Colors.white70,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12.5,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            payout,
+            style: const TextStyle(color: Colors.white70, fontSize: 12),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${_tr('Cooldown', 'Cooldown')}: ${_formatCooldown(cooldownSeconds)}',
+            style: TextStyle(
+              color: ready ? Colors.lightGreenAccent : Colors.orangeAccent,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          if (requirement != null && requirement.isNotEmpty) ...[
+            const SizedBox(height: 3),
+            Text(
+              requirement,
+              style: const TextStyle(color: Colors.white54, fontSize: 11),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   Future<void> _runHotspotOp(VehicleProvider provider) async {
     if (_opsActionInProgress) return;
     setState(() {
@@ -1079,6 +1178,30 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         ? hotspots.first as Map<String, dynamic>
         : const <String, dynamic>{};
     final isLoading = provider.vehicleOpsLoading;
+    final hasCrew = crewOp['available'] == true;
+    final contracts =
+        (contractsBoard['contracts'] as List<dynamic>? ?? const <dynamic>[]);
+    final firstContract =
+        contracts.isNotEmpty && contracts.first is Map<String, dynamic>
+        ? contracts.first as Map<String, dynamic>
+        : const <String, dynamic>{};
+    final hotspotCooldown = _liveCooldownSeconds(
+      hotspot['cooldownRemainingSeconds'],
+    );
+    final crewCooldown = _liveCooldownSeconds(
+      crewOp['cooldownRemainingSeconds'],
+    );
+    final chopCooldown = _liveCooldownSeconds(chop['cooldownRemainingSeconds']);
+    final contractCooldown = _liveCooldownSeconds(
+      contractsBoard['cooldownRemainingSeconds'],
+    );
+    final crewMatchCooldown = _liveCooldownSeconds(
+      crewMatchmaking['cooldownRemainingSeconds'],
+    );
+    final counterCooldown = _liveCooldownSeconds(
+      counterIntercept['cooldownRemainingSeconds'],
+    );
+    final partsRefresh = _liveCooldownSeconds(partsMarket['refreshInSeconds']);
 
     Color heatColor;
     final heatLevel = (heat['level'] ?? 'LOW').toString().toUpperCase();
@@ -1192,19 +1315,22 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 runSpacing: 8,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
+                    onPressed:
+                        isLoading || _opsActionInProgress || hotspotCooldown > 0
                         ? null
                         : () => _runHotspotOp(provider),
                     icon: const Icon(Icons.local_police, size: 16),
                     label: Text(_tr('Hotspot-run', 'Run Hotspot')),
                   ),
-                  OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
-                        ? null
-                        : () => _runCrewOp(provider),
-                    icon: const Icon(Icons.groups, size: 16),
-                    label: Text(_tr('Crew-actie', 'Crew Op')),
-                  ),
+                  if (hasCrew)
+                    OutlinedButton.icon(
+                      onPressed:
+                          isLoading || _opsActionInProgress || crewCooldown > 0
+                          ? null
+                          : () => _runCrewOp(provider),
+                      icon: const Icon(Icons.groups, size: 16),
+                      label: Text(_tr('Crew-actie', 'Crew Op')),
+                    ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
                         ? null
@@ -1213,7 +1339,8 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                     label: Text(_tr('Koop onderdelen', 'Buy Parts')),
                   ),
                   OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
+                    onPressed:
+                        isLoading || _opsActionInProgress || chopCooldown > 0
                         ? null
                         : () => _claimChopContract(provider),
                     icon: const Icon(Icons.build_circle, size: 16),
@@ -1226,22 +1353,38 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                     icon: const Icon(Icons.verified_user, size: 16),
                     label: Text(_tr('Verzekering', 'Insurance')),
                   ),
+                  if (hasCrew)
+                    OutlinedButton.icon(
+                      onPressed:
+                          isLoading ||
+                              _opsActionInProgress ||
+                              crewMatchCooldown > 0
+                          ? null
+                          : () => _runCrewMatch(provider),
+                      icon: const Icon(Icons.emoji_events, size: 16),
+                      label: Text(_tr('Crew-duel', 'Crew Match')),
+                    ),
+                  if (!hasCrew)
+                    _buildOpsPill(
+                      _tr(
+                        'Crew-acties ontgrendelen door een crew te joinen',
+                        'Join a crew to unlock crew actions',
+                      ),
+                      color: Colors.amberAccent,
+                    ),
                   OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
-                        ? null
-                        : () => _runCrewMatch(provider),
-                    icon: const Icon(Icons.emoji_events, size: 16),
-                    label: Text(_tr('Crew-duel', 'Crew Match')),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
+                    onPressed:
+                        isLoading || _opsActionInProgress || counterCooldown > 0
                         ? null
                         : () => _runCounterIntercept(provider),
                     icon: const Icon(Icons.swap_horiz, size: 16),
                     label: Text(_tr('Tegenactie', 'Counter')),
                   ),
                   OutlinedButton.icon(
-                    onPressed: isLoading || _opsActionInProgress
+                    onPressed:
+                        isLoading ||
+                            _opsActionInProgress ||
+                            contractCooldown > 0
                         ? null
                         : () => _runOpsContract(provider),
                     icon: const Icon(Icons.assignment_turned_in, size: 16),
@@ -1278,10 +1421,93 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
+                  const SizedBox(height: 6),
+                  Text(
+                    _tr(
+                      'Live cooldowns: Hotspot ${_formatCooldown(hotspotCooldown)} | Crew ${_formatCooldown(crewCooldown)} | Chop ${_formatCooldown(chopCooldown)}',
+                      'Live cooldowns: Hotspot ${_formatCooldown(hotspotCooldown)} | Crew ${_formatCooldown(crewCooldown)} | Chop ${_formatCooldown(chopCooldown)}',
+                    ),
+                    style: const TextStyle(color: Colors.lightBlueAccent),
+                  ),
+                  Text(
+                    _tr(
+                      'Contract ${_formatCooldown(contractCooldown)} | Crew-duel ${_formatCooldown(crewMatchCooldown)} | Tegenactie ${_formatCooldown(counterCooldown)}',
+                      'Contract ${_formatCooldown(contractCooldown)} | Crew match ${_formatCooldown(crewMatchCooldown)} | Counter ${_formatCooldown(counterCooldown)}',
+                    ),
+                    style: const TextStyle(color: Colors.lightBlueAccent),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _tr(
+                      'Waarom krijg je geld: succesvolle ops-acties betalen direct uit op zakgeld.',
+                      'Why you get cash: successful ops actions pay out directly to wallet cash.',
+                    ),
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                  const SizedBox(height: 8),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildOpsActionInfoCard(
+                          icon: Icons.local_police,
+                          title: _tr('Hotspot-run', 'Hotspot run'),
+                          payout: _tr(
+                            'Cash: ${formatCurrency((hotspot['rewardMin'] as num?)?.toInt() ?? 0)} - ${formatCurrency((hotspot['rewardMax'] as num?)?.toInt() ?? 0)}',
+                            'Cash: ${formatCurrency((hotspot['rewardMin'] as num?)?.toInt() ?? 0)} - ${formatCurrency((hotspot['rewardMax'] as num?)?.toInt() ?? 0)}',
+                          ),
+                          cooldownSeconds: hotspotCooldown,
+                        ),
+                        const SizedBox(width: 8),
+                        _buildOpsActionInfoCard(
+                          icon: Icons.groups,
+                          title: _tr('Crew-actie', 'Crew op'),
+                          payout: _tr(
+                            'Jij: ${formatCurrency((crewOp['rewardPersonalMin'] as num?)?.toInt() ?? 0)} - ${formatCurrency((crewOp['rewardPersonalMax'] as num?)?.toInt() ?? 0)}',
+                            'You: ${formatCurrency((crewOp['rewardPersonalMin'] as num?)?.toInt() ?? 0)} - ${formatCurrency((crewOp['rewardPersonalMax'] as num?)?.toInt() ?? 0)}',
+                          ),
+                          cooldownSeconds: crewCooldown,
+                          requirement: hasCrew
+                              ? _tr('Crew vereist: ja', 'Crew required: yes')
+                              : _tr(
+                                  'Crew vereist: nee (join eerst een crew)',
+                                  'Crew required: no (join a crew first)',
+                                ),
+                        ),
+                        const SizedBox(width: 8),
+                        _buildOpsActionInfoCard(
+                          icon: Icons.build_circle,
+                          title: _tr('Claim contract', 'Claim contract'),
+                          payout: _tr(
+                            'Cash: ${formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0)}',
+                            'Cash: ${formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0)}',
+                          ),
+                          cooldownSeconds: chopCooldown,
+                        ),
+                        const SizedBox(width: 8),
+                        _buildOpsActionInfoCard(
+                          icon: Icons.assignment_turned_in,
+                          title: _tr('Ops Contract', 'Ops Contract'),
+                          payout: _tr(
+                            'Contracten: ${contracts.length}${(firstContract['rewardMoney'] is num) ? ' | vanaf ${formatCurrency((firstContract['rewardMoney'] as num).toInt())}' : ''}',
+                            'Contracts: ${contracts.length}${(firstContract['rewardMoney'] is num) ? ' | from ${formatCurrency((firstContract['rewardMoney'] as num).toInt())}' : ''}',
+                          ),
+                          cooldownSeconds: contractCooldown,
+                        ),
+                      ],
+                    ),
+                  ),
                   Text(
                     _tr(
                       'Partsprijzen (auto/motor/boot): ${prices['car'] ?? '-'} / ${prices['motorcycle'] ?? '-'} / ${prices['boat'] ?? '-'}',
                       'Part prices (car/motorcycle/boat): ${prices['car'] ?? '-'} / ${prices['motorcycle'] ?? '-'} / ${prices['boat'] ?? '-'}',
+                    ),
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                  Text(
+                    _tr(
+                      'Onderdelenmarkt refresh: ${_formatCooldown(partsRefresh)}',
+                      'Parts market refresh: ${_formatCooldown(partsRefresh)}',
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
@@ -1348,15 +1574,15 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   ),
                   Text(
                     _tr(
-                      'Contracten: ${(contractsBoard['contracts'] as List<dynamic>? ?? const []).length} | cooldown ${contractsBoard['cooldownRemainingSeconds'] ?? 0}s',
-                      'Contracts: ${(contractsBoard['contracts'] as List<dynamic>? ?? const []).length} | cooldown ${contractsBoard['cooldownRemainingSeconds'] ?? 0}s',
+                      'Contracten: ${contracts.length} | cooldown ${_formatCooldown(contractCooldown)}',
+                      'Contracts: ${contracts.length} | cooldown ${_formatCooldown(contractCooldown)}',
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   Text(
                     _tr(
-                      'Tegenactie cooldown: ${counterIntercept['cooldownRemainingSeconds'] ?? 0}s | open claims: ${openClaims.length}',
-                      'Counter cooldown: ${counterIntercept['cooldownRemainingSeconds'] ?? 0}s | open claims: ${openClaims.length}',
+                      'Tegenactie cooldown: ${_formatCooldown(counterCooldown)} | open claims: ${openClaims.length}',
+                      'Counter cooldown: ${_formatCooldown(counterCooldown)} | open claims: ${openClaims.length}',
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
