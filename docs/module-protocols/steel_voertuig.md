@@ -25,6 +25,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Ops-panel labels, knoppen en statusregels moeten volledig gelokaliseerd zijn; NL-weergave mag geen Engelse fallbacklabels tonen.
 - Houd layout bruikbaar op mobiel, tablet en desktop.
 - Houd Auto, Motor en Boot als drie duidelijk gescheiden componenten in de UI, met eigen opslagcontext en duidelijke labels.
+- In de gecombineerde Vehicle Heist shell mag geen dubbele categorie-navigatie bestaan: gebruik één primaire categorie-selector (lane cards) en vermijd een tweede redundante tab-rij met dezelfde drie categorieën.
 - Vehicle Ops uitbreidingen (hotspots, parts market, crew ops, category heat, chop contracts, dynamic police patterns) moeten per voertuigcategorie duidelijk zichtbaar en uitlegbaar blijven.
 - Advanced Vehicle Ops uitbreidingen (hotspot intercept windows, crew role-bonussen, ops-reputatie unlocks, regionale blacklist-events, contraband insurance, ops-telemetry) moeten coherent blijven met balance-economy guardrails.
 - Vehicle Ops omvat nu ook Counter-Intercept missies, Crew Matchmaking met seizoensladder, country modifiers (inflatie/corruptie/havenstaking), contracts board met weekly legendary contracts en insurance dispute-resolutie.
@@ -33,6 +34,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Crew-only ops-acties (crew-run en crew-matchmaking) mogen alleen zichtbaar of bruikbaar zijn als de speler daadwerkelijk in een crew zit; zonder crew moet een duidelijke unlock-hint worden getoond.
 - Ops-actiekaarten moeten payout-context expliciet tonen (waarom cash toeneemt na klik), zodat reward-herkomst voor spelers traceerbaar is.
 - Toon per tab een catalogus met waarde, zeldzaamheid, landen en world-cap status.
+- In embedded garage/marina-weergave moet de gestolen-voertuigenlijst kaartgebaseerd en responsief blijven (mobiel 1 kolom, grotere schermen meerdere kolommen), zonder uitgerekte full-width rijen als default.
 - Gebruik timed repairs; geen instant click-pay-complete gedrag.
 - World-cap rotatie moet correct blijven: verkoop of sloop opent opnieuw beschikbaarheid voor die voertuigsoort.
 - Transport hoort niet meer in deze module; cross-country verplaatsing loopt via Smuggling Hub.

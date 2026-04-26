@@ -17,10 +17,16 @@ import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
 
 class MarinaScreen extends StatefulWidget {
-  const MarinaScreen({super.key, this.embedded = false, this.titleOverride});
+  const MarinaScreen({
+    super.key,
+    this.embedded = false,
+    this.titleOverride,
+    this.hideEmbeddedHeaderActions = false,
+  });
 
   final bool embedded;
   final String? titleOverride;
+  final bool hideEmbeddedHeaderActions;
 
   @override
   State<MarinaScreen> createState() => _MarinaScreenState();
@@ -458,31 +464,53 @@ class _MarinaScreenState extends State<MarinaScreen> {
     AuthProvider authProvider,
   ) {
     final boats = _getSortedVehicles(provider);
-    final children = <Widget>[
-      if (provider.marinaStatus != null)
-        _buildCapacityIndicator(provider, authProvider),
-      if (boats.isEmpty)
-        Padding(
-          padding: const EdgeInsets.all(24),
-          child: _buildEmptyBoatState(),
-        )
-      else
-        ...boats.map(
-          (boat) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _buildBoatCardItem(provider, boat),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return RefreshIndicator(
+          onRefresh: _loadData,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              if (provider.marinaStatus != null)
+                SliverToBoxAdapter(
+                  child: _buildCapacityIndicator(
+                    provider,
+                    authProvider,
+                    showActions: !widget.hideEmbeddedHeaderActions,
+                  ),
+                ),
+              if (boats.isEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: _buildEmptyBoatState(),
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: constraints.maxWidth >= 1600
+                          ? 420
+                          : constraints.maxWidth >= 1200
+                          ? 460
+                          : 520,
+                      childAspectRatio: constraints.maxWidth < 720
+                          ? 0.76
+                          : 0.72,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      return _buildBoatCardItem(provider, boats[index]);
+                    }, childCount: boats.length),
+                  ),
+                ),
+            ],
           ),
-        ),
-    ];
-
-    return RefreshIndicator(
-      onRefresh: _loadData,
-      child: ListView.separated(
-        padding: const EdgeInsets.only(top: 0, bottom: 16),
-        itemCount: children.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 16),
-        itemBuilder: (context, index) => children[index],
-      ),
+        );
+      },
     );
   }
 
@@ -625,8 +653,9 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
   Widget _buildCapacityIndicator(
     VehicleProvider vehicleProvider,
-    AuthProvider authProvider,
-  ) {
+    AuthProvider authProvider, {
+    bool showActions = true,
+  }) {
     final marinaStatus = vehicleProvider.marinaStatus!;
     const goldColor = Color(0xFFD4AF37);
 
@@ -696,109 +725,42 @@ class _MarinaScreenState extends State<MarinaScreen> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      if (isSmall) ...[
-                        Tooltip(
-                          message: AppLocalizations.of(context)!.stealBoat,
-                          child: InkWell(
-                            onTap: _isStealAttemptRunning
-                                ? null
-                                : () =>
-                                      _stealBoat(vehicleProvider, authProvider),
-                            borderRadius: BorderRadius.circular(6),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                  if (showActions)
+                    Row(
+                      children: [
+                        if (isSmall) ...[
+                          Tooltip(
+                            message: AppLocalizations.of(context)!.stealBoat,
+                            child: InkWell(
+                              onTap: _isStealAttemptRunning
+                                  ? null
+                                  : () => _stealBoat(
+                                      vehicleProvider,
+                                      authProvider,
+                                    ),
+                              borderRadius: BorderRadius.circular(6),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.lightBlue.shade300,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Icon(
+                                  Icons.sailing,
                                   color: Colors.lightBlue.shade300,
+                                  size: 18,
                                 ),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Icon(
-                                Icons.sailing,
-                                color: Colors.lightBlue.shade300,
-                                size: 18,
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Tooltip(
-                          message: marinaStatus.currentUpgradeLevel < 5
-                              ? AppLocalizations.of(
-                                  context,
-                                )!.marinaUpgradeWithCost(
-                                  _getUpgradeCost(
-                                    marinaStatus.currentUpgradeLevel,
-                                  ).toString(),
-                                )
-                              : AppLocalizations.of(context)!.marinaMaxLevel,
-                          child: InkWell(
-                            onTap: marinaStatus.currentUpgradeLevel < 5
-                                ? () => _upgradeMarina(
-                                    vehicleProvider,
-                                    authProvider,
-                                  )
-                                : null,
-                            borderRadius: BorderRadius.circular(6),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: marinaStatus.currentUpgradeLevel < 5
-                                      ? goldColor
-                                      : Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Icon(
-                                Icons.upgrade,
-                                color: marinaStatus.currentUpgradeLevel < 5
-                                    ? goldColor
-                                    : Colors.grey,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ] else ...[
-                        OutlinedButton.icon(
-                          onPressed: _isStealAttemptRunning
-                              ? null
-                              : () => _stealBoat(vehicleProvider, authProvider),
-                          icon: const Icon(Icons.sailing, size: 16),
-                          label: Text(
-                            _stealCooldownSeconds > 0
-                                ? '${AppLocalizations.of(context)!.stealBoat} (${_stealCooldownSeconds}s)'
-                                : AppLocalizations.of(context)!.stealBoat,
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.lightBlue.shade300,
-                            side: BorderSide(color: Colors.lightBlue.shade300),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        OutlinedButton.icon(
-                          onPressed: marinaStatus.currentUpgradeLevel < 5
-                              ? () => _upgradeMarina(
-                                  vehicleProvider,
-                                  authProvider,
-                                )
-                              : null,
-                          icon: const Icon(Icons.upgrade, size: 16),
-                          label: Text(
-                            marinaStatus.currentUpgradeLevel < 5
+                          const SizedBox(width: 8),
+                          Tooltip(
+                            message: marinaStatus.currentUpgradeLevel < 5
                                 ? AppLocalizations.of(
                                     context,
                                   )!.marinaUpgradeWithCost(
@@ -807,19 +769,94 @@ class _MarinaScreenState extends State<MarinaScreen> {
                                     ).toString(),
                                   )
                                 : AppLocalizations.of(context)!.marinaMaxLevel,
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: goldColor,
-                            side: const BorderSide(color: goldColor),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
+                            child: InkWell(
+                              onTap: marinaStatus.currentUpgradeLevel < 5
+                                  ? () => _upgradeMarina(
+                                      vehicleProvider,
+                                      authProvider,
+                                    )
+                                  : null,
+                              borderRadius: BorderRadius.circular(6),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: marinaStatus.currentUpgradeLevel < 5
+                                        ? goldColor
+                                        : Colors.grey,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Icon(
+                                  Icons.upgrade,
+                                  color: marinaStatus.currentUpgradeLevel < 5
+                                      ? goldColor
+                                      : Colors.grey,
+                                  size: 18,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ] else ...[
+                          OutlinedButton.icon(
+                            onPressed: _isStealAttemptRunning
+                                ? null
+                                : () =>
+                                      _stealBoat(vehicleProvider, authProvider),
+                            icon: const Icon(Icons.sailing, size: 16),
+                            label: Text(
+                              _stealCooldownSeconds > 0
+                                  ? '${AppLocalizations.of(context)!.stealBoat} (${_stealCooldownSeconds}s)'
+                                  : AppLocalizations.of(context)!.stealBoat,
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.lightBlue.shade300,
+                              side: BorderSide(
+                                color: Colors.lightBlue.shade300,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          OutlinedButton.icon(
+                            onPressed: marinaStatus.currentUpgradeLevel < 5
+                                ? () => _upgradeMarina(
+                                    vehicleProvider,
+                                    authProvider,
+                                  )
+                                : null,
+                            icon: const Icon(Icons.upgrade, size: 16),
+                            label: Text(
+                              marinaStatus.currentUpgradeLevel < 5
+                                  ? AppLocalizations.of(
+                                      context,
+                                    )!.marinaUpgradeWithCost(
+                                      _getUpgradeCost(
+                                        marinaStatus.currentUpgradeLevel,
+                                      ).toString(),
+                                    )
+                                  : AppLocalizations.of(
+                                      context,
+                                    )!.marinaMaxLevel,
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: goldColor,
+                              side: const BorderSide(color: goldColor),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
+                    ),
                 ],
               ),
               const SizedBox(height: 10),

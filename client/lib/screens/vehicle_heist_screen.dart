@@ -31,6 +31,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   late final TabController _tabController;
   int _activeTabIndex = 0;
   bool _opsActionInProgress = false;
+  bool _laneActionInProgress = false;
   Timer? _opsTicker;
   DateTime? _opsLastRefreshAt;
 
@@ -253,6 +254,127 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       case 2:
       default:
         return _tr('Eigen marina-capaciteit', 'Dedicated marina capacity');
+    }
+  }
+
+  int _upgradeCostForTab(int tabIndex, VehicleProvider provider) {
+    final costs = [10000, 25000, 50000, 100000, 200000];
+    final currentLevel = tabIndex == 2
+        ? (provider.marinaStatus?.currentUpgradeLevel ?? 0)
+        : (provider.garageStatus?.currentUpgradeLevel ?? 0);
+    return currentLevel < costs.length ? costs[currentLevel] : 0;
+  }
+
+  Future<void> _runTileSteal(VehicleProvider provider, int tabIndex) async {
+    if (_laneActionInProgress) return;
+    setState(() {
+      _laneActionInProgress = true;
+      if (_activeTabIndex != tabIndex) {
+        _activeTabIndex = tabIndex;
+        _tabController.animateTo(tabIndex);
+      }
+    });
+
+    try {
+      final authProvider = context.read<AuthProvider>();
+      final country =
+          authProvider.currentPlayer?.currentCountry ?? 'netherlands';
+      final vehicleType = _opsVehicleTypeForTab(tabIndex);
+      final success = await provider.stealVehicle(country, vehicleType);
+      await authProvider.refreshPlayer();
+      await provider.fetchInventory();
+
+      if (tabIndex == 2) {
+        await provider.fetchMarinaStatus(country);
+      } else {
+        await provider.fetchGarageStatus(country, vehicleType: vehicleType);
+      }
+
+      if (_activeTabIndex == tabIndex) {
+        await _refreshOpsIntelligence();
+      }
+
+      if (!mounted) return;
+      if (success) {
+        final gained =
+            provider.lastStolenVehicle?.definition?.name ??
+            _tr('voertuig', 'vehicle');
+        _showTopMessage(
+          _tr('Succes: $gained gestolen.', 'Success: $gained stolen.'),
+          success: true,
+        );
+      } else if (provider.lastStealCooldownRemainingSeconds > 0) {
+        _showTopMessage(
+          _tr(
+            'Cooldown actief: ${_formatCooldown(provider.lastStealCooldownRemainingSeconds)}',
+            'Cooldown active: ${_formatCooldown(provider.lastStealCooldownRemainingSeconds)}',
+          ),
+        );
+      } else if (provider.lastStealArrested) {
+        _showTopMessage(
+          _tr(
+            'Je bent opgepakt (${provider.lastStealJailMinutes} min cel).',
+            'You got arrested (${provider.lastStealJailMinutes} min jail).',
+          ),
+        );
+      } else {
+        _showTopMessage(
+          provider.error ?? _tr('Stelen mislukt.', 'Steal action failed.'),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _laneActionInProgress = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _runTileUpgrade(VehicleProvider provider, int tabIndex) async {
+    if (_laneActionInProgress) return;
+    setState(() {
+      _laneActionInProgress = true;
+      if (_activeTabIndex != tabIndex) {
+        _activeTabIndex = tabIndex;
+        _tabController.animateTo(tabIndex);
+      }
+    });
+    try {
+      final authProvider = context.read<AuthProvider>();
+      final country =
+          authProvider.currentPlayer?.currentCountry ?? 'netherlands';
+      final success = tabIndex == 2
+          ? await provider.upgradeMarina(country)
+          : await provider.upgradeGarage(country);
+      if (success) {
+        if (tabIndex == 2) {
+          await provider.fetchMarinaStatus(country);
+        } else {
+          await provider.fetchGarageStatus(
+            country,
+            vehicleType: _opsVehicleTypeForTab(tabIndex),
+          );
+        }
+      }
+
+      if (_activeTabIndex == tabIndex) {
+        await _refreshOpsIntelligence();
+      }
+
+      if (!mounted) return;
+      _showTopMessage(
+        success
+            ? _tr('Upgrade voltooid.', 'Upgrade completed.')
+            : (provider.error ?? _tr('Upgrade mislukt.', 'Upgrade failed.')),
+        success: success,
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _laneActionInProgress = false;
+        });
+      }
     }
   }
 
@@ -494,27 +616,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     );
   }
 
-  Widget _buildTabBadge(VehicleProvider provider, int tabIndex) {
-    final count = _countForTab(provider, tabIndex);
-    final accent = _tabAccentColor(tabIndex);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: accent.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: accent.withOpacity(0.45)),
-      ),
-      child: Text(
-        '$count',
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-          color: accent,
-        ),
-      ),
-    );
-  }
-
   Widget _buildTabContent() {
     switch (_activeTabIndex) {
       case 0:
@@ -522,33 +623,23 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           key: ValueKey<String>('vehicle-tab-car'),
           embedded: true,
           vehicleType: 'car',
+          hideEmbeddedHeaderActions: true,
         );
       case 1:
         return const GarageScreen(
           key: ValueKey<String>('vehicle-tab-motorcycle'),
           embedded: true,
           vehicleType: 'motorcycle',
+          hideEmbeddedHeaderActions: true,
         );
       case 2:
       default:
         return const MarinaScreen(
           key: ValueKey<String>('vehicle-tab-boat'),
           embedded: true,
+          hideEmbeddedHeaderActions: true,
         );
     }
-  }
-
-  Widget _buildTabLabel(VehicleProvider provider, int tabIndex) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(_tabIcon(tabIndex), size: 18),
-        const SizedBox(width: 6),
-        Text(_tabTitle(tabIndex)),
-        const SizedBox(width: 6),
-        _buildTabBadge(provider, tabIndex),
-      ],
-    );
   }
 
   Widget _buildOperationLaneCard(VehicleProvider provider, int tabIndex) {
@@ -683,6 +774,51 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   fontSize: 11.5,
                   fontWeight: FontWeight.w500,
                 ),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: _laneActionInProgress
+                        ? null
+                        : () => _runTileSteal(provider, tabIndex),
+                    icon: Icon(
+                      tabIndex == 2 ? Icons.sailing : Icons.local_police,
+                      size: 14,
+                    ),
+                    label: Text(
+                      tabIndex == 2
+                          ? _tr('Steel boot', 'Steal boat')
+                          : tabIndex == 1
+                          ? _tr('Steel motor', 'Steal bike')
+                          : _tr('Steel auto', 'Steal car'),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: accent,
+                      side: BorderSide(color: accent.withOpacity(0.8)),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ),
+                  OutlinedButton.icon(
+                    onPressed: _laneActionInProgress
+                        ? null
+                        : () => _runTileUpgrade(provider, tabIndex),
+                    icon: const Icon(Icons.upgrade, size: 14),
+                    label: Text(
+                      _tr(
+                        'Upgrade €${_upgradeCostForTab(tabIndex, provider)}',
+                        'Upgrade €${_upgradeCostForTab(tabIndex, provider)}',
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.amber.shade200,
+                      side: BorderSide(color: Colors.amber.shade400),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -1706,22 +1842,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           ),
         );
 
-        final tabs = Container(
-          color: Colors.black.withOpacity(0.25),
-          child: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            indicatorColor: const Color(0xFFD4AF37),
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white70,
-            tabs: [
-              Tab(child: _buildTabLabel(provider, 0)),
-              Tab(child: _buildTabLabel(provider, 1)),
-              Tab(child: _buildTabLabel(provider, 2)),
-            ],
-          ),
-        );
-
         final tabBody = AnimatedSwitcher(
           duration: const Duration(milliseconds: 260),
           switchInCurve: Curves.easeOutCubic,
@@ -1746,7 +1866,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           return NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverToBoxAdapter(child: header),
-              SliverToBoxAdapter(child: tabs),
               const SliverToBoxAdapter(child: Divider(height: 1)),
             ],
             body: tabBody,
@@ -1756,7 +1875,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         return Column(
           children: [
             header,
-            tabs,
             const Divider(height: 1),
             Expanded(child: tabBody),
           ],

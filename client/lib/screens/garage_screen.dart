@@ -22,11 +22,13 @@ class GarageScreen extends StatefulWidget {
     this.embedded = false,
     this.vehicleType = 'car',
     this.titleOverride,
+    this.hideEmbeddedHeaderActions = false,
   });
 
   final bool embedded;
   final String vehicleType;
   final String? titleOverride;
+  final bool hideEmbeddedHeaderActions;
 
   @override
   State<GarageScreen> createState() => _GarageScreenState();
@@ -488,31 +490,53 @@ class _GarageScreenState extends State<GarageScreen> {
     AuthProvider authProvider,
   ) {
     final vehicles = _getSortedVehicles(provider);
-    final children = <Widget>[
-      if (provider.garageStatus != null)
-        _buildCapacityIndicator(provider, authProvider),
-      if (vehicles.isEmpty)
-        Padding(
-          padding: const EdgeInsets.all(24),
-          child: _buildEmptyVehicleState(),
-        )
-      else
-        ...vehicles.map(
-          (vehicle) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _buildVehicleCardItem(provider, vehicle),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return RefreshIndicator(
+          onRefresh: _loadData,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              if (provider.garageStatus != null)
+                SliverToBoxAdapter(
+                  child: _buildCapacityIndicator(
+                    provider,
+                    authProvider,
+                    showActions: !widget.hideEmbeddedHeaderActions,
+                  ),
+                ),
+              if (vehicles.isEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: _buildEmptyVehicleState(),
+                  ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: constraints.maxWidth >= 1600
+                          ? 420
+                          : constraints.maxWidth >= 1200
+                          ? 460
+                          : 520,
+                      childAspectRatio: constraints.maxWidth < 720
+                          ? 0.76
+                          : 0.72,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                    ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      return _buildVehicleCardItem(provider, vehicles[index]);
+                    }, childCount: vehicles.length),
+                  ),
+                ),
+            ],
           ),
-        ),
-    ];
-
-    return RefreshIndicator(
-      onRefresh: _loadData,
-      child: ListView.separated(
-        padding: const EdgeInsets.only(top: 0, bottom: 16),
-        itemCount: children.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 16),
-        itemBuilder: (context, index) => children[index],
-      ),
+        );
+      },
     );
   }
 
@@ -665,8 +689,9 @@ class _GarageScreenState extends State<GarageScreen> {
 
   Widget _buildCapacityIndicator(
     VehicleProvider vehicleProvider,
-    AuthProvider authProvider,
-  ) {
+    AuthProvider authProvider, {
+    bool showActions = true,
+  }) {
     final garageStatus = vehicleProvider.garageStatus!;
     final capacityTitle = _isMotorTab
         ? _tr('Motorstalling Capaciteit', 'Motorcycle Storage Capacity')
@@ -744,117 +769,42 @@ class _GarageScreenState extends State<GarageScreen> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      if (isSmall) ...[
-                        Tooltip(
-                          message: _stealActionLabel,
-                          child: InkWell(
-                            onTap: _isStealAttemptRunning
-                                ? null
-                                : () => _stealVehicle(
-                                    vehicleProvider,
-                                    authProvider,
+                  if (showActions)
+                    Row(
+                      children: [
+                        if (isSmall) ...[
+                          Tooltip(
+                            message: _stealActionLabel,
+                            child: InkWell(
+                              onTap: _isStealAttemptRunning
+                                  ? null
+                                  : () => _stealVehicle(
+                                      vehicleProvider,
+                                      authProvider,
+                                    ),
+                              borderRadius: BorderRadius.circular(6),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.green.shade400,
                                   ),
-                            borderRadius: BorderRadius.circular(6),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Icon(
+                                  Icons.drive_eta,
                                   color: Colors.green.shade400,
+                                  size: 18,
                                 ),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Icon(
-                                Icons.drive_eta,
-                                color: Colors.green.shade400,
-                                size: 18,
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Tooltip(
-                          message: garageStatus.currentUpgradeLevel < 5
-                              ? AppLocalizations.of(
-                                  context,
-                                )!.garageUpgradeWithCost(
-                                  _getUpgradeCost(
-                                    garageStatus.currentUpgradeLevel,
-                                  ).toString(),
-                                )
-                              : AppLocalizations.of(context)!.garageMaxLevel,
-                          child: InkWell(
-                            onTap: garageStatus.currentUpgradeLevel < 5
-                                ? () => _upgradeGarage(
-                                    vehicleProvider,
-                                    authProvider,
-                                  )
-                                : null,
-                            borderRadius: BorderRadius.circular(6),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: garageStatus.currentUpgradeLevel < 5
-                                      ? goldColor
-                                      : Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Icon(
-                                Icons.upgrade,
-                                color: garageStatus.currentUpgradeLevel < 5
-                                    ? goldColor
-                                    : Colors.grey,
-                                size: 18,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ] else ...[
-                        OutlinedButton.icon(
-                          onPressed: _isStealAttemptRunning
-                              ? null
-                              : () => _stealVehicle(
-                                  vehicleProvider,
-                                  authProvider,
-                                ),
-                          icon: Icon(
-                            _isMotorTab ? Icons.two_wheeler : Icons.drive_eta,
-                            size: 16,
-                          ),
-                          label: Text(
-                            _stealCooldownSeconds > 0
-                                ? '$_stealActionLabel (${_stealCooldownSeconds}s)'
-                                : _stealActionLabel,
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.green.shade400,
-                            side: BorderSide(color: Colors.green.shade400),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        OutlinedButton.icon(
-                          onPressed: garageStatus.currentUpgradeLevel < 5
-                              ? () => _upgradeGarage(
-                                  vehicleProvider,
-                                  authProvider,
-                                )
-                              : null,
-                          icon: const Icon(Icons.upgrade, size: 16),
-                          label: Text(
-                            garageStatus.currentUpgradeLevel < 5
+                          const SizedBox(width: 8),
+                          Tooltip(
+                            message: garageStatus.currentUpgradeLevel < 5
                                 ? AppLocalizations.of(
                                     context,
                                   )!.garageUpgradeWithCost(
@@ -863,19 +813,97 @@ class _GarageScreenState extends State<GarageScreen> {
                                     ).toString(),
                                   )
                                 : AppLocalizations.of(context)!.garageMaxLevel,
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: goldColor,
-                            side: const BorderSide(color: goldColor),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
+                            child: InkWell(
+                              onTap: garageStatus.currentUpgradeLevel < 5
+                                  ? () => _upgradeGarage(
+                                      vehicleProvider,
+                                      authProvider,
+                                    )
+                                  : null,
+                              borderRadius: BorderRadius.circular(6),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: garageStatus.currentUpgradeLevel < 5
+                                        ? goldColor
+                                        : Colors.grey,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Icon(
+                                  Icons.upgrade,
+                                  color: garageStatus.currentUpgradeLevel < 5
+                                      ? goldColor
+                                      : Colors.grey,
+                                  size: 18,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ] else ...[
+                          OutlinedButton.icon(
+                            onPressed: _isStealAttemptRunning
+                                ? null
+                                : () => _stealVehicle(
+                                    vehicleProvider,
+                                    authProvider,
+                                  ),
+                            icon: Icon(
+                              _isMotorTab ? Icons.two_wheeler : Icons.drive_eta,
+                              size: 16,
+                            ),
+                            label: Text(
+                              _stealCooldownSeconds > 0
+                                  ? '$_stealActionLabel (${_stealCooldownSeconds}s)'
+                                  : _stealActionLabel,
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.green.shade400,
+                              side: BorderSide(color: Colors.green.shade400),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          OutlinedButton.icon(
+                            onPressed: garageStatus.currentUpgradeLevel < 5
+                                ? () => _upgradeGarage(
+                                    vehicleProvider,
+                                    authProvider,
+                                  )
+                                : null,
+                            icon: const Icon(Icons.upgrade, size: 16),
+                            label: Text(
+                              garageStatus.currentUpgradeLevel < 5
+                                  ? AppLocalizations.of(
+                                      context,
+                                    )!.garageUpgradeWithCost(
+                                      _getUpgradeCost(
+                                        garageStatus.currentUpgradeLevel,
+                                      ).toString(),
+                                    )
+                                  : AppLocalizations.of(
+                                      context,
+                                    )!.garageMaxLevel,
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: goldColor,
+                              side: const BorderSide(color: goldColor),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
+                    ),
                 ],
               ),
               const SizedBox(height: 10),
