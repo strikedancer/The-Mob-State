@@ -713,7 +713,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       } else {
         _showTopMessage(
           _tr(
-            'Hotspot run mislukt, heat is verhoogd.',
+            'Hotspot-run mislukt, hitte is verhoogd.',
             'Hotspot run failed, heat increased.',
           ),
         );
@@ -853,7 +853,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     if (reason == 'NO_ELIGIBLE_VEHICLE') {
       _showTopMessage(
         _tr(
-          'Geen geschikt voertuig in inventory voor dit contract.',
+          'Geen geschikt voertuig in je inventaris voor dit contract.',
           'No eligible vehicle in inventory for this contract.',
         ),
       );
@@ -874,7 +874,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final choice = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr('Contraband Insurance', 'Contraband Insurance')),
+        title: Text(_tr('Smokkelverzekering', 'Contraband Insurance')),
         content: Text(
           _tr(
             'Kies een dekking voor deze voertuigcategorie.',
@@ -888,7 +888,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           ),
           OutlinedButton(
             onPressed: () => Navigator.of(context).pop('basic'),
-            child: const Text('Basic'),
+            child: Text(_tr('Basis', 'Basic')),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop('pro'),
@@ -907,7 +907,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       final price = (params['price'] as num?)?.toInt() ?? 0;
       _showTopMessage(
         _tr(
-          'Insurance actief (${choice.toUpperCase()}) voor ${formatCurrency(price)}.',
+          'Verzekering actief (${choice.toUpperCase()}) voor ${formatCurrency(price)}.',
           'Insurance active (${choice.toUpperCase()}) for ${formatCurrency(price)}.',
         ),
         success: true,
@@ -915,7 +915,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       return;
     }
     _showTopMessage(
-      _tr('Insurance aankoop mislukt.', 'Insurance purchase failed.'),
+      _tr('Verzekering aankopen mislukt.', 'Insurance purchase failed.'),
     );
   }
 
@@ -961,7 +961,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     }
     _showTopMessage(
       _tr(
-        'Counter-intercept niet beschikbaar of mislukt.',
+        'Tegenintercept niet beschikbaar of mislukt.',
         'Counter-intercept unavailable or failed.',
       ),
     );
@@ -1008,7 +1008,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final claims = (insurance['openClaims'] as List<dynamic>? ?? const []);
     if (claims.isEmpty || claims.first is! Map<String, dynamic>) {
       _showTopMessage(
-        _tr('Geen open insurance claims.', 'No open insurance claims.'),
+        _tr('Geen open verzekeringsclaims.', 'No open insurance claims.'),
       );
       return;
     }
@@ -1122,7 +1122,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  _tr('Vehicle Ops Intelligence', 'Vehicle Ops Intelligence'),
+                  _tr('Voertuig Ops Inlichtingen', 'Vehicle Ops Intelligence'),
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 15,
@@ -1139,7 +1139,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 IconButton(
                   onPressed: _refreshOpsIntelligence,
                   icon: const Icon(Icons.refresh, size: 18),
-                  tooltip: _tr('Ververs intelligence', 'Refresh intelligence'),
+                  tooltip: _tr('Ververs inlichtingen', 'Refresh intelligence'),
                 ),
             ],
           ),
@@ -1150,7 +1150,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
             children: [
               _buildOpsPill(
                 _tr(
-                  'Heat ${heat['current'] ?? 0} ($heatLevel)',
+                  'Hitte ${heat['current'] ?? 0} ($heatLevel)',
                   'Heat ${heat['current'] ?? 0} ($heatLevel)',
                 ),
                 color: heatColor,
@@ -1164,7 +1164,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
               ),
               _buildOpsPill(
                 _tr(
-                  'Rep lvl ${rep['level'] ?? 0}',
+                  'Reputatie lvl ${rep['level'] ?? 0}',
                   'Rep lvl ${rep['level'] ?? 0}',
                 ),
                 color: Colors.purpleAccent,
@@ -1176,7 +1176,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 ),
               _buildOpsPill(
                 _tr(
-                  'Onderdelenmarkt ${partsMarket['trend'] ?? '-'}',
+                  'Onderdelenmarkt: ${partsMarket['trend'] ?? '-'}',
                   'Parts market ${partsMarket['trend'] ?? '-'}',
                 ),
                 color: Colors.cyanAccent,
@@ -1196,49 +1196,49 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                         ? null
                         : () => _runHotspotOp(provider),
                     icon: const Icon(Icons.local_police, size: 16),
-                    label: Text(_tr('Run Hotspot', 'Run Hotspot')),
+                    label: Text(_tr('Hotspot-run', 'Run Hotspot')),
                   ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
                         ? null
                         : () => _runCrewOp(provider),
                     icon: const Icon(Icons.groups, size: 16),
-                    label: Text(_tr('Crew Op', 'Crew Op')),
+                    label: Text(_tr('Crew-actie', 'Crew Op')),
                   ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
                         ? null
                         : () => _buyOpsParts(provider),
                     icon: const Icon(Icons.precision_manufacturing, size: 16),
-                    label: Text(_tr('Koop Parts', 'Buy Parts')),
+                    label: Text(_tr('Koop onderdelen', 'Buy Parts')),
                   ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
                         ? null
                         : () => _claimChopContract(provider),
                     icon: const Icon(Icons.build_circle, size: 16),
-                    label: Text(_tr('Claim Contract', 'Claim Contract')),
+                    label: Text(_tr('Claim contract', 'Claim Contract')),
                   ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
                         ? null
                         : () => _purchaseInsurance(provider),
                     icon: const Icon(Icons.verified_user, size: 16),
-                    label: Text(_tr('Insurance', 'Insurance')),
+                    label: Text(_tr('Verzekering', 'Insurance')),
                   ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
                         ? null
                         : () => _runCrewMatch(provider),
                     icon: const Icon(Icons.emoji_events, size: 16),
-                    label: Text(_tr('Crew Match', 'Crew Match')),
+                    label: Text(_tr('Crew-duel', 'Crew Match')),
                   ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
                         ? null
                         : () => _runCounterIntercept(provider),
                     icon: const Icon(Icons.swap_horiz, size: 16),
-                    label: Text(_tr('Counter', 'Counter')),
+                    label: Text(_tr('Tegenactie', 'Counter')),
                   ),
                   OutlinedButton.icon(
                     onPressed: isLoading || _opsActionInProgress
@@ -1252,7 +1252,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                         ? null
                         : () => _resolveInsuranceClaim(provider),
                     icon: const Icon(Icons.gavel, size: 16),
-                    label: Text(_tr('Claim dispute', 'Claim dispute')),
+                    label: Text(_tr('Claim betwisten', 'Claim dispute')),
                   ),
                 ],
               );
@@ -1273,7 +1273,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   const SizedBox(height: 4),
                   Text(
                     _tr(
-                      'Reward: ${formatCurrency((hotspot['rewardMin'] as num?)?.toInt() ?? 0)} - ${formatCurrency((hotspot['rewardMax'] as num?)?.toInt() ?? 0)}',
+                      'Beloning: ${formatCurrency((hotspot['rewardMin'] as num?)?.toInt() ?? 0)} - ${formatCurrency((hotspot['rewardMax'] as num?)?.toInt() ?? 0)}',
                       'Reward: ${formatCurrency((hotspot['rewardMin'] as num?)?.toInt() ?? 0)} - ${formatCurrency((hotspot['rewardMax'] as num?)?.toInt() ?? 0)}',
                     ),
                     style: const TextStyle(color: Colors.white70),
@@ -1294,14 +1294,14 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   ),
                   Text(
                     _tr(
-                      'Chop contract reward: ${formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0)}',
+                      'Chop-contract beloning: ${formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0)}',
                       'Chop contract reward: ${formatCurrency((chop['rewardMoney'] as num?)?.toInt() ?? 0)}',
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   Text(
                     _tr(
-                      'Intercept window: ${interception['activeWindow'] == true ? 'ACTIEF' : 'uit'}',
+                      'Intercept-venster: ${interception['activeWindow'] == true ? 'ACTIEF' : 'uit'}',
                       'Intercept window: ${interception['activeWindow'] == true ? 'ACTIVE' : 'off'}',
                     ),
                     style: const TextStyle(color: Colors.white70),
@@ -1324,8 +1324,8 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   Text(
                     _tr(
                       insurance['active'] == true
-                          ? 'Insurance: ${insurance['tier'] ?? '-'} actief'
-                          : 'Insurance: niet actief',
+                          ? 'Verzekering: ${insurance['tier'] ?? '-'} actief'
+                          : 'Verzekering: niet actief',
                       insurance['active'] == true
                           ? 'Insurance: ${insurance['tier'] ?? '-'} active'
                           : 'Insurance: inactive',
@@ -1334,28 +1334,28 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   ),
                   Text(
                     _tr(
-                      'Country modifier: ${countryModifier['nameNl'] ?? '-'} (${countryModifier['payoutMultiplier'] ?? 1}x)',
+                      'Landmodifier: ${countryModifier['nameNl'] ?? '-'} (${countryModifier['payoutMultiplier'] ?? 1}x)',
                       'Country modifier: ${countryModifier['nameEn'] ?? '-'} (${countryModifier['payoutMultiplier'] ?? 1}x)',
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   Text(
                     _tr(
-                      'Crew season: ${crewMatchmaking['seasonKey'] ?? '-'} | punten ${((crewMatchmaking['current'] as Map<String, dynamic>?)?['points'] ?? 0)}',
+                      'Crew-seizoen: ${crewMatchmaking['seasonKey'] ?? '-'} | punten ${((crewMatchmaking['current'] as Map<String, dynamic>?)?['points'] ?? 0)}',
                       'Crew season: ${crewMatchmaking['seasonKey'] ?? '-'} | points ${((crewMatchmaking['current'] as Map<String, dynamic>?)?['points'] ?? 0)}',
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   Text(
                     _tr(
-                      'Contracts: ${(contractsBoard['contracts'] as List<dynamic>? ?? const []).length} | cooldown ${contractsBoard['cooldownRemainingSeconds'] ?? 0}s',
+                      'Contracten: ${(contractsBoard['contracts'] as List<dynamic>? ?? const []).length} | cooldown ${contractsBoard['cooldownRemainingSeconds'] ?? 0}s',
                       'Contracts: ${(contractsBoard['contracts'] as List<dynamic>? ?? const []).length} | cooldown ${contractsBoard['cooldownRemainingSeconds'] ?? 0}s',
                     ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   Text(
                     _tr(
-                      'Counter cooldown: ${counterIntercept['cooldownRemainingSeconds'] ?? 0}s | open claims: ${openClaims.length}',
+                      'Tegenactie cooldown: ${counterIntercept['cooldownRemainingSeconds'] ?? 0}s | open claims: ${openClaims.length}',
                       'Counter cooldown: ${counterIntercept['cooldownRemainingSeconds'] ?? 0}s | open claims: ${openClaims.length}',
                     ),
                     style: const TextStyle(color: Colors.white70),

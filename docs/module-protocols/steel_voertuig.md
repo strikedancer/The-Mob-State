@@ -22,6 +22,7 @@ Onderdeel hiervan is TuneShop: onderdelen-economie via sloop en upgrades voor sp
 - Onderdelen zijn categorie-gepoold (auto/motor/boot): gesloopte onderdelen mogen op elk voertuig binnen dezelfde categorie worden besteed.
 - Tune-upgrades hebben een verplichte timer per voertuig om spam-upgrades te voorkomen.
 - Houd NL en EN tekst parity op alle zichtbare teksten.
+- Ops-panel labels, knoppen en statusregels moeten volledig gelokaliseerd zijn; NL-weergave mag geen Engelse fallbacklabels tonen.
 - Houd layout bruikbaar op mobiel, tablet en desktop.
 - Houd Auto, Motor en Boot als drie duidelijk gescheiden componenten in de UI, met eigen opslagcontext en duidelijke labels.
 - Vehicle Ops uitbreidingen (hotspots, parts market, crew ops, category heat, chop contracts, dynamic police patterns) moeten per voertuigcategorie duidelijk zichtbaar en uitlegbaar blijven.

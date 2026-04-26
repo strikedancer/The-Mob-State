@@ -1331,7 +1331,12 @@ class _GarageScreenState extends State<GarageScreen> {
 
     final wantedLevel = provider.lastStealWantedLevel;
     if (wantedLevel != null) {
-      details.add('Wanted: ${wantedLevel.toStringAsFixed(0)}');
+      details.add(
+        _tr(
+          'Gezocht: ${wantedLevel.toStringAsFixed(0)}',
+          'Wanted: ${wantedLevel.toStringAsFixed(0)}',
+        ),
+      );
     }
 
     if (provider.lastStealArrested && provider.lastStealJailMinutes > 0) {
@@ -1345,7 +1350,7 @@ class _GarageScreenState extends State<GarageScreen> {
 
     final bail = provider.lastStealBailAmount;
     if (bail != null && bail > 0) {
-      details.add(_tr('Borg: \$$bail', 'Bail: \$$bail'));
+      details.add(_tr('Borg: €$bail', 'Bail: €$bail'));
     }
 
     if (details.isEmpty) return baseMessage;

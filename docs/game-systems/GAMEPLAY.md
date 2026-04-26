@@ -945,6 +945,7 @@ Bob: â‚¬300K counter-hit
   - Insurance claim review + dispute flow (contest met bonus of afwijzingsrisico)
 - Alle flows blijven soft-capped via cooldown + risk loops (geen hard daily cap).
 - Ops-telemetry is uitgebreid met vehicle-type en region map-layers voor admin balancing.
+- Voertuigschermen respecteren actieve taalinstelling volledig: in NL-modus tonen opslabels en meldingen geen Engelse fallbackteksten.
 
 ### Arrest Chances
 ```javascript
