@@ -268,6 +268,8 @@ cd C:\xampp\htdocs\mafia_game
 
 Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitleg).
 
+**Crew mission kaarten (zelfde afbeelding bug):** ontbrekende `images/crew_missions/cards/<key>.png` op de externe mount laat de client op de **default** fallback in `_crewMissionFallbackImagePath` vallen — daardoor zagen meerdere nieuwe missies dezelfde plaat. Oplossing: (1) PNG’s genereren met `backend/scripts/generate_crew_missions_images_leonardo.py` (`LEONARDO_API_KEY`), (2) uploaden met `scripts/upload_crew_mission_images_to_vps.ps1`, (3) per nieuwe `missionKey` een eigen fallback in `crew_screen.dart` tot de assets live staan (zie `crew-missions.md` Image Pipeline).
+
 **Agent / Cursor**
 
 - Zelfde PowerShell-aanroep kan vanuit de agent **als** Pageant op die machine draait en netwerk/proxy het toelaten.

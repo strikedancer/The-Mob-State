@@ -201,6 +201,8 @@ Opslagregels:
   - `images/crew_missions/cards/<mission_key>.png`
   - `images/crew_missions/scenes/<mission_key>.png`
 
+**Client fallback (verplicht bij nieuwe `missionKey`):** zolang bovenstaande PNG’s ontbreken of 404’en, gebruikt de UI `WebAssetHelper` met `_crewMissionFallbackImagePath` in `client/lib/screens/crew_screen.dart`. Onbekende keys vielen historisch op **één** generieke fallback (zelfde plaat voor alle missies). Bij elke nieuwe mission key daarom **tijdelijk** een unieke fallback toevoegen **en** Leonardo-assets deployen naar de externe mount (zie `PROTOCOL_MASTER.md` VPS-snelpad + `backend/scripts/generate_crew_missions_images_leonardo.py`).
+
 Bestandsconventies:
 - `crew_mission_<mission_key>_card_v1.png`
 - `crew_mission_<mission_key>_scene_v1.png`

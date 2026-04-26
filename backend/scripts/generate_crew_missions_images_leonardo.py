@@ -367,6 +367,12 @@ def main() -> None:
     print(f"- success: {success}")
     print(f"- skipped: {skipped}")
     print(f"- failed: {failed}")
+    if failed > 0 and success == 0:
+        print(
+            "Hint: 401 Unauthorized usually means LEONARDO_API_KEY is missing, expired, or wrong for v2 API. "
+            "Set a valid key in process env or backend/.env.local, then re-run."
+        )
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

@@ -1071,6 +1071,18 @@ class _CrewScreenState extends State<CrewScreen>
         return 'images/crimes/casino_heist_crime.png';
       case 'federal_convoy_break':
         return 'images/crimes/bank_robbery_crime.png';
+      case 'night_deposit_grab':
+        return 'images/crimes/atm_theft_crime.png';
+      case 'skim_network_rollout':
+        return 'images/crimes/identity_theft_crime.png';
+      case 'armored_pivot_route':
+        return 'images/crimes/rob_armored_truck_crime.png';
+      case 'subsidiary_vault_window':
+        return 'images/crimes/burglary_crime.png';
+      case 'reserve_vault_breach':
+        return 'images/crimes/diamond_heist_crime.png';
+      case 'clearing_house_vault_run':
+        return 'images/crimes/counterfeit_money_crime.png';
       default:
         return 'images/casino/casino_background_landscape.png';
     }

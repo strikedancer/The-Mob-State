@@ -39,6 +39,8 @@ python scripts/generate_crew_missions_images_leonardo.py --confirm-batch YES
 
 Optioneel: `--force` om bestaande PNG’s te overschrijven, `--mirror-client-assets` om client-assets te vullen.
 
+Als alle generaties **401 Unauthorized** geven: zet een geldige `LEONARDO_API_KEY` in `backend/.env.local` (of export in de shell) en run opnieuw; het script stopt dan met exitcode `1` zodat je niet per ongeluk denkt dat er PNG’s zijn.
+
 ### Upload naar VPS (externe image map, PROTOCOL_MASTER)
 
 `docker-compose.plesk.yml` mount standaard:
