@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { drugFacilityService } from './drugFacilityService';
 import { isVipStatusActive } from './vipBenefitsService';
+import { checkAndUnlockAchievements } from './achievementService';
 
 interface DrugDefinition {
   id: string;
@@ -811,7 +812,11 @@ class DrugService {
   }
 
   // Collect finished production
-  async collectProduction(playerId: number, productionId: number): Promise<{ success: boolean; message: string }> {
+  async collectProduction(
+    playerId: number,
+    productionId: number,
+    options?: { skipAchievementCheck?: boolean }
+  ): Promise<{ success: boolean; message: string }> {
     const production = await prisma.drugProduction.findUnique({
       where: { id: productionId },
     });
@@ -902,6 +907,12 @@ class DrugService {
         await this.updateHeat(playerId, -15); // Raid reduces heat
         raidMessage = ` ⚠️ POLITIE-INVAL: ${confiscated}g geconfisqueerd! (heat: ${heatInfo.heat})`;
       }
+    }
+
+    if (!options?.skipAchievementCheck) {
+      void checkAndUnlockAchievements(playerId).catch((err) =>
+        console.error('[DrugService] Achievement check after collect failed:', err)
+      );
     }
 
     return {
@@ -1092,6 +1103,7 @@ class DrugService {
 
     console.log(`Processing ${finishedProductions.length} finished drug productions`);
 
+    const affectedPlayerIds = new Set<number>();
     for (const production of finishedProductions) {
       await prisma.drugProduction.update({
         where: { id: production.id },
@@ -1099,6 +1111,13 @@ class DrugService {
           completed: true,
         },
       });
+      affectedPlayerIds.add(production.playerId);
+    }
+
+    for (const pid of affectedPlayerIds) {
+      void checkAndUnlockAchievements(pid).catch((err) =>
+        console.error(`[DrugService] Achievement check after production complete (player ${pid}):`, err)
+      );
     }
   }
 
@@ -1517,8 +1536,13 @@ class DrugService {
     });
     let collected = 0;
     for (const prod of ready) {
-      const result = await this.collectProduction(playerId, prod.id);
+      const result = await this.collectProduction(playerId, prod.id, { skipAchievementCheck: true });
       if (result.success) collected++;
+    }
+    if (collected > 0) {
+      void checkAndUnlockAchievements(playerId).catch((err) =>
+        console.error('[DrugService] Achievement check after auto-collect failed:', err)
+      );
     }
     return collected;
   }

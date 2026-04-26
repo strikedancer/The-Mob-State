@@ -38,6 +38,7 @@ Drug empire hub with facilities, production, inventory, heat and progression.
 - After relation/query changes: regenerate Prisma client and verify `/drugs/productions`, `/drug-facilities`, and `/drugs/inventory` all return success.
 - Production list helpers must stay runtime-safe JavaScript/TypeScript; do not introduce Dart-style collection calls or other non-JS APIs in server-side mapping logic, because `/drugs/productions` is used during live play and admin error monitoring.
 - When `/drugs/productions` throws, preserve actionable `Error` details in backend system logs so Admin -> System Logs shows message and stack instead of empty `{}` payloads.
+- **Achievements (server):** `checkAndUnlockAchievements` must run when drug production data changes for progression (`completed` set by batch completion cron and on collect), not only from unrelated modules (e.g. nightclub responses). Otherwise players only see drug-related unlocks the next time a screen that happens to call the achievement check loads.
 
 ## Frontend Loading Guardrails (Drugs)
 - Drug dashboards often load multiple endpoints in parallel. One failure may hide all cards if not guarded.

@@ -88,6 +88,9 @@ Elke **5 minuten** gebeurt er automatisch:
 - **FBI Heat Decay**: -1 punt per tick (alleen als FBI Heat < 10)
 - **Bank Interest**: Rente wordt toegevoegd aan je bank account
 
+### Drugs & prestaties (server)
+- Prestaties die op drugproductie (o.a. aantal voltooide batches, hoeveelheid per type) zijn gebaseerd, worden door de server **verwerkt wanneer productie klaar is of wanneer je ophaalt** (incl. VIP auto-ophalen), zodat je ze niet pas krijgt door later een ander scherm (zoals nachtclub) te openen. Zie `docs/module-protocols/drugs.md`.
+
 ---
 
 ## Crime Systeem
