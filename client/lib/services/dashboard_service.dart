@@ -220,6 +220,171 @@ class VehicleOpsDashboardSummary {
   }
 }
 
+class DashboardEconomySummary {
+  final int cashBalance;
+  final int bankBalance;
+  final int cryptoPortfolioValue;
+  final int propertyPortfolioValue;
+  final int vehiclePortfolioValue;
+  final int netWorth;
+
+  DashboardEconomySummary({
+    required this.cashBalance,
+    required this.bankBalance,
+    required this.cryptoPortfolioValue,
+    required this.propertyPortfolioValue,
+    required this.vehiclePortfolioValue,
+    required this.netWorth,
+  });
+
+  factory DashboardEconomySummary.fromJson(Map<String, dynamic> json) {
+    return DashboardEconomySummary(
+      cashBalance: json['cashBalance'] as int? ?? 0,
+      bankBalance: json['bankBalance'] as int? ?? 0,
+      cryptoPortfolioValue: json['cryptoPortfolioValue'] as int? ?? 0,
+      propertyPortfolioValue: json['propertyPortfolioValue'] as int? ?? 0,
+      vehiclePortfolioValue: json['vehiclePortfolioValue'] as int? ?? 0,
+      netWorth: json['netWorth'] as int? ?? 0,
+    );
+  }
+}
+
+class DashboardEconomy24hSummary {
+  final int crimeIncome;
+  final int jobIncome;
+  final int nightclubIncome;
+  final int propertySpend;
+  final int grossIncome;
+  final int netCashflow;
+  final int trendVsPreviousPct;
+
+  DashboardEconomy24hSummary({
+    required this.crimeIncome,
+    required this.jobIncome,
+    required this.nightclubIncome,
+    required this.propertySpend,
+    required this.grossIncome,
+    required this.netCashflow,
+    required this.trendVsPreviousPct,
+  });
+
+  factory DashboardEconomy24hSummary.fromJson(Map<String, dynamic> json) {
+    return DashboardEconomy24hSummary(
+      crimeIncome: json['crimeIncome'] as int? ?? 0,
+      jobIncome: json['jobIncome'] as int? ?? 0,
+      nightclubIncome: json['nightclubIncome'] as int? ?? 0,
+      propertySpend: json['propertySpend'] as int? ?? 0,
+      grossIncome: json['grossIncome'] as int? ?? 0,
+      netCashflow: json['netCashflow'] as int? ?? 0,
+      trendVsPreviousPct: json['trendVsPreviousPct'] as int? ?? 0,
+    );
+  }
+}
+
+class DashboardActivity7dSummary {
+  final int crimeAttempts;
+  final int jobAttempts;
+  final int vehicleThefts;
+  final int travels;
+
+  DashboardActivity7dSummary({
+    required this.crimeAttempts,
+    required this.jobAttempts,
+    required this.vehicleThefts,
+    required this.travels,
+  });
+
+  factory DashboardActivity7dSummary.fromJson(Map<String, dynamic> json) {
+    return DashboardActivity7dSummary(
+      crimeAttempts: json['crimeAttempts'] as int? ?? 0,
+      jobAttempts: json['jobAttempts'] as int? ?? 0,
+      vehicleThefts: json['vehicleThefts'] as int? ?? 0,
+      travels: json['travels'] as int? ?? 0,
+    );
+  }
+}
+
+class DashboardOperationsSummary {
+  final int activeCooldownCount;
+  final int longestCooldownSeconds;
+  final int activeDrugProductionsCount;
+  final int nextDrugProductionEndsInSeconds;
+  final int activeNightclubEventsCount;
+  final int nextNightclubEventStartsInSeconds;
+  final int activeVehicleCount;
+  final int listedVehicleCount;
+  final int inTransitVehicleCount;
+
+  DashboardOperationsSummary({
+    required this.activeCooldownCount,
+    required this.longestCooldownSeconds,
+    required this.activeDrugProductionsCount,
+    required this.nextDrugProductionEndsInSeconds,
+    required this.activeNightclubEventsCount,
+    required this.nextNightclubEventStartsInSeconds,
+    required this.activeVehicleCount,
+    required this.listedVehicleCount,
+    required this.inTransitVehicleCount,
+  });
+
+  factory DashboardOperationsSummary.fromJson(Map<String, dynamic> json) {
+    return DashboardOperationsSummary(
+      activeCooldownCount: json['activeCooldownCount'] as int? ?? 0,
+      longestCooldownSeconds: json['longestCooldownSeconds'] as int? ?? 0,
+      activeDrugProductionsCount: json['activeDrugProductionsCount'] as int? ?? 0,
+      nextDrugProductionEndsInSeconds:
+          json['nextDrugProductionEndsInSeconds'] as int? ?? 0,
+      activeNightclubEventsCount:
+          json['activeNightclubEventsCount'] as int? ?? 0,
+      nextNightclubEventStartsInSeconds:
+          json['nextNightclubEventStartsInSeconds'] as int? ?? 0,
+      activeVehicleCount: json['activeVehicleCount'] as int? ?? 0,
+      listedVehicleCount: json['listedVehicleCount'] as int? ?? 0,
+      inTransitVehicleCount: json['inTransitVehicleCount'] as int? ?? 0,
+    );
+  }
+}
+
+class DashboardNotificationsSummary {
+  final int unreadDirectMessages;
+  final int supportNeedsReply;
+  final int eventsLast24h;
+
+  DashboardNotificationsSummary({
+    required this.unreadDirectMessages,
+    required this.supportNeedsReply,
+    required this.eventsLast24h,
+  });
+
+  factory DashboardNotificationsSummary.fromJson(Map<String, dynamic> json) {
+    return DashboardNotificationsSummary(
+      unreadDirectMessages: json['unreadDirectMessages'] as int? ?? 0,
+      supportNeedsReply: json['supportNeedsReply'] as int? ?? 0,
+      eventsLast24h: json['eventsLast24h'] as int? ?? 0,
+    );
+  }
+}
+
+class DashboardRiskSummary {
+  final int wantedLevel;
+  final int fbiHeat;
+  final int score;
+
+  DashboardRiskSummary({
+    required this.wantedLevel,
+    required this.fbiHeat,
+    required this.score,
+  });
+
+  factory DashboardRiskSummary.fromJson(Map<String, dynamic> json) {
+    return DashboardRiskSummary(
+      wantedLevel: json['wantedLevel'] as int? ?? 0,
+      fbiHeat: json['fbiHeat'] as int? ?? 0,
+      score: json['score'] as int? ?? 0,
+    );
+  }
+}
+
 class DashboardStats {
   final int crimeAttempts;
   final int breakoutCount;
@@ -242,6 +407,12 @@ class DashboardStats {
   final bool jailed;
   final int jailTimeRemaining;
   final int bankBalance;
+  final DashboardEconomySummary? economy;
+  final DashboardEconomy24hSummary? economy24h;
+  final DashboardActivity7dSummary? activity7d;
+  final DashboardOperationsSummary? operations;
+  final DashboardNotificationsSummary? notifications;
+  final DashboardRiskSummary? risk;
   final CrewWarDashboardSummary? crewWar;
   final TerritoryLeaderDashboardSummary? territoryLeaderStats;
   final VehicleOpsDashboardSummary? vehicleOps;
@@ -269,6 +440,12 @@ class DashboardStats {
     required this.jailed,
     required this.jailTimeRemaining,
     required this.bankBalance,
+    this.economy,
+    this.economy24h,
+    this.activity7d,
+    this.operations,
+    this.notifications,
+    this.risk,
     this.crewWar,
     this.territoryLeaderStats,
     this.vehicleOps,
@@ -302,6 +479,34 @@ class DashboardStats {
       jailed: json['jailed'] as bool,
       jailTimeRemaining: json['jailTimeRemaining'] as int,
       bankBalance: json['bankBalance'] as int,
+      economy: json['economy'] is Map<String, dynamic>
+          ? DashboardEconomySummary.fromJson(
+              json['economy'] as Map<String, dynamic>,
+            )
+          : null,
+      economy24h: json['economy24h'] is Map<String, dynamic>
+          ? DashboardEconomy24hSummary.fromJson(
+              json['economy24h'] as Map<String, dynamic>,
+            )
+          : null,
+      activity7d: json['activity7d'] is Map<String, dynamic>
+          ? DashboardActivity7dSummary.fromJson(
+              json['activity7d'] as Map<String, dynamic>,
+            )
+          : null,
+      operations: json['operations'] is Map<String, dynamic>
+          ? DashboardOperationsSummary.fromJson(
+              json['operations'] as Map<String, dynamic>,
+            )
+          : null,
+      notifications: json['notifications'] is Map<String, dynamic>
+          ? DashboardNotificationsSummary.fromJson(
+              json['notifications'] as Map<String, dynamic>,
+            )
+          : null,
+      risk: json['risk'] is Map<String, dynamic>
+          ? DashboardRiskSummary.fromJson(json['risk'] as Map<String, dynamic>)
+          : null,
       crewWar: json['crewWar'] != null
           ? CrewWarDashboardSummary.fromJson(
               json['crewWar'] as Map<String, dynamic>,

@@ -2515,6 +2515,12 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 ? _stats!.jailTimeRemaining - 1
                 : 0,
             bankBalance: _stats!.bankBalance,
+            economy: _stats!.economy,
+            economy24h: _stats!.economy24h,
+            activity7d: _stats!.activity7d,
+            operations: _tickOperations(_stats!.operations),
+            notifications: _stats!.notifications,
+            risk: _stats!.risk,
             crewWar: _stats!.crewWar?.copyWith(
               phaseEndsInSeconds: (_stats!.crewWar?.phaseEndsInSeconds ?? 0) > 0
                   ? (_stats!.crewWar?.phaseEndsInSeconds ?? 0) - 1
@@ -2630,6 +2636,31 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       car: _tickVehicleOpsCategory(summary.car),
       motorcycle: _tickVehicleOpsCategory(summary.motorcycle),
       boat: _tickVehicleOpsCategory(summary.boat),
+    );
+  }
+
+  DashboardOperationsSummary? _tickOperations(
+    DashboardOperationsSummary? operations,
+  ) {
+    if (operations == null) return null;
+    return DashboardOperationsSummary(
+      activeCooldownCount: operations.activeCooldownCount,
+      longestCooldownSeconds: operations.longestCooldownSeconds > 0
+          ? operations.longestCooldownSeconds - 1
+          : 0,
+      activeDrugProductionsCount: operations.activeDrugProductionsCount,
+      nextDrugProductionEndsInSeconds:
+          operations.nextDrugProductionEndsInSeconds > 0
+          ? operations.nextDrugProductionEndsInSeconds - 1
+          : 0,
+      activeNightclubEventsCount: operations.activeNightclubEventsCount,
+      nextNightclubEventStartsInSeconds:
+          operations.nextNightclubEventStartsInSeconds > 0
+          ? operations.nextNightclubEventStartsInSeconds - 1
+          : 0,
+      activeVehicleCount: operations.activeVehicleCount,
+      listedVehicleCount: operations.listedVehicleCount,
+      inTransitVehicleCount: operations.inTransitVehicleCount,
     );
   }
 
@@ -2754,13 +2785,33 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const SizedBox(height: 8),
                     _buildInfoRow(
                       'Contant',
-                      '\$${player.money}',
+                      formatCurrency(_stats?.economy?.cashBalance ?? player.money),
                       Colors.green.shade300,
                     ),
                     _buildInfoRow(
                       'Bank',
-                      '\$${_stats?.bankBalance ?? 0}',
+                      formatCurrency(_stats?.economy?.bankBalance ?? _stats?.bankBalance ?? 0),
                       Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Crypto', 'Crypto'),
+                      formatCurrency(_stats?.economy?.cryptoPortfolioValue ?? 0),
+                      Colors.cyan.shade300,
+                    ),
+                    _buildInfoRow(
+                      _tr('Eigendommen', 'Properties'),
+                      formatCurrency(_stats?.economy?.propertyPortfolioValue ?? 0),
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Voertuigen', 'Vehicles'),
+                      formatCurrency(_stats?.economy?.vehiclePortfolioValue ?? 0),
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Netto waarde', 'Net worth'),
+                      formatCurrency(_stats?.economy?.netWorth ?? 0),
+                      Colors.amber.shade300,
                     ),
                     const SizedBox(height: 12),
                     const Divider(color: Colors.grey),
@@ -2885,6 +2936,74 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                           '${_stats?.totalAmmo ?? 0}',
                           Colors.white,
                         ),
+                        const SizedBox(height: 10),
+                        const Divider(color: Colors.grey),
+                        const SizedBox(height: 10),
+                        Text(
+                          _tr('Economie 24u', 'Economy 24h'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        _buildInfoRow(
+                          _tr('Bruto inkomsten', 'Gross income'),
+                          formatCurrency(_stats?.economy24h?.grossIncome ?? 0),
+                          Colors.green.shade300,
+                        ),
+                        _buildInfoRow(
+                          _tr('Vastgoed uitgave', 'Property spend'),
+                          formatCurrency(_stats?.economy24h?.propertySpend ?? 0),
+                          Colors.orange.shade300,
+                        ),
+                        _buildInfoRow(
+                          _tr('Netto cashflow', 'Net cashflow'),
+                          formatCurrency(_stats?.economy24h?.netCashflow ?? 0),
+                          (_stats?.economy24h?.netCashflow ?? 0) >= 0
+                              ? Colors.green.shade300
+                              : Colors.red.shade300,
+                        ),
+                        _buildInfoRow(
+                          _tr('Trend t.o.v. gisteren', 'Trend vs previous'),
+                          '${_stats?.economy24h?.trendVsPreviousPct ?? 0}%',
+                          (_stats?.economy24h?.trendVsPreviousPct ?? 0) >= 0
+                              ? Colors.green.shade300
+                              : Colors.red.shade300,
+                        ),
+                        const SizedBox(height: 10),
+                        const Divider(color: Colors.grey),
+                        const SizedBox(height: 10),
+                        Text(
+                          _tr('Activiteit 7d', 'Activity 7d'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        _buildInfoRow(
+                          _tr('Misdaden', 'Crimes'),
+                          '${_stats?.activity7d?.crimeAttempts ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          _tr('Werk', 'Jobs'),
+                          '${_stats?.activity7d?.jobAttempts ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          _tr('Voertuigdiefstal', 'Vehicle thefts'),
+                          '${_stats?.activity7d?.vehicleThefts ?? 0}',
+                          Colors.white,
+                        ),
+                        _buildInfoRow(
+                          _tr('Reizen', 'Travels'),
+                          '${_stats?.activity7d?.travels ?? 0}',
+                          Colors.white,
+                        ),
                       ],
                     ),
                   ),
@@ -2944,6 +3063,92 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       ),
                     ),
                     const SizedBox(height: 12),
+                    Text(
+                      _tr('Ops Overzicht', 'Ops Overview'),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoRow(
+                      _tr('Actieve cooldowns', 'Active cooldowns'),
+                      '${_stats?.operations?.activeCooldownCount ?? 0}',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Langste timer', 'Longest timer'),
+                      _formatCooldown(_stats?.operations?.longestCooldownSeconds ?? 0),
+                      Colors.orange.shade300,
+                    ),
+                    _buildInfoRow(
+                      _tr('Actieve productie', 'Active production'),
+                      '${_stats?.operations?.activeDrugProductionsCount ?? 0}',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Productie klaar over', 'Production ready in'),
+                      _formatCooldown(
+                        _stats?.operations?.nextDrugProductionEndsInSeconds ?? 0,
+                      ),
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Nachtclub-events', 'Nightclub events'),
+                      '${_stats?.operations?.activeNightclubEventsCount ?? 0}',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Volgend event start in', 'Next event starts in'),
+                      _formatCooldown(
+                        _stats?.operations?.nextNightclubEventStartsInSeconds ?? 0,
+                      ),
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Voertuigen actief/listing/transit', 'Vehicles active/listed/transit'),
+                      '${_stats?.operations?.activeVehicleCount ?? 0}/${_stats?.operations?.listedVehicleCount ?? 0}/${_stats?.operations?.inTransitVehicleCount ?? 0}',
+                      Colors.white,
+                    ),
+                    const SizedBox(height: 12),
+                    const Divider(color: Colors.grey),
+                    const SizedBox(height: 12),
+                    Text(
+                      _tr('Meldingen & Risico', 'Notifications & Risk'),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildInfoRow(
+                      _tr('Ongelezen DM', 'Unread DM'),
+                      '${_stats?.notifications?.unreadDirectMessages ?? 0}',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Support wacht op jou', 'Support waiting on you'),
+                      '${_stats?.notifications?.supportNeedsReply ?? 0}',
+                      (_stats?.notifications?.supportNeedsReply ?? 0) > 0
+                          ? Colors.orange.shade300
+                          : Colors.green.shade300,
+                    ),
+                    _buildInfoRow(
+                      _tr('Events laatste 24u', 'Events last 24h'),
+                      '${_stats?.notifications?.eventsLast24h ?? 0}',
+                      Colors.white,
+                    ),
+                    _buildInfoRow(
+                      _tr('Risicoscore', 'Risk score'),
+                      '${_stats?.risk?.score ?? 0}/100',
+                      (_stats?.risk?.score ?? 0) >= 70
+                          ? Colors.red.shade300
+                          : (_stats?.risk?.score ?? 0) >= 40
+                                ? Colors.orange.shade300
+                                : Colors.green.shade300,
+                    ),
                     _buildCooldownRow(l10n.dashboardTimeoutCrime, 'crime'),
                     _buildCooldownRow(l10n.dashboardTimeoutJob, 'job'),
                     _buildCooldownRow(l10n.dashboardTimeoutTravel, 'travel'),
@@ -3152,16 +3357,22 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(color: Colors.white70, fontSize: 13),
+            ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              color: valueColor,
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: valueColor,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

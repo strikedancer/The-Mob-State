@@ -26,6 +26,7 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Consistent formatting for money, timers, percentages and labels.
 - Dashboard shell en hoofdpanelen moeten visueel aansluiten op de game-identiteit (noir/gold), met nadruk op leesbaar contrast, subtiele gradients en duidelijke scheiding tussen navigatie, content en quick actions in plaats van vlakke donkere blokken.
 - Dashboard statistiekblokken mogen geen hardcoded nul-placeholders tonen wanneer er al echte backendtellers of bestaande spelerstats beschikbaar zijn.
+- Dashboard moet een complete baseline blijven tonen voor: economy (cash/bank/portfolio/net worth), cooldown-operaties, risicosignalen, notificaties en 24u/7d trendstatistieken; nieuwe modules die deze domeinen raken moeten hierop inhaken.
 - Gekoppelde moduledata zoals Crew Wars mag dashboardstatistieken nooit als alles-of-niets dependency blokkeren; als een secundaire hub-call faalt moet het dashboard met veilige fallbackdata blijven renderen in plaats van 500 of nul-collaps van alle statistiekkaarten.
 - Vehicle Heist/Ops data (crew-acties, cooldowns, heat/reputatie, contracts/claims) moet als compacte dashboardsamenvatting zichtbaar blijven met live countdowns, inclusief veilige fallback per voertuigtype.
 - Responsive usability without pushing critical actions off-screen.
@@ -47,12 +48,17 @@ Global player overview, navigation shell, timers, live events and quick access.
 - Run through the main success path and at least one failure or locked-state path.
 - Verify the screen refreshes correctly after actions.
 - Verify cooldowns, counters, balances or progress bars remain accurate.
+- Verifieer dat economy/operations/risk/notification dashboardsecties gevuld blijven met echte backenddata en geen lege defaults bij normale accounts.
 - Verifieer dat een fout in een gekoppelde submodule zoals Crew Wars de dashboard-statistieken niet volledig leeg of op nul laat terugvallen.
 - Verifieer dat Vehicle Ops-data per voertuigtype (auto/motor/boot) op dashboard blijft renderen, ook als één type tijdelijk geen intelligence payload teruggeeft.
 - Verify no text overflows or clipped buttons appear.
 - Verify new dashboard navigation entries are visible and clickable in the web sidebar; treat tile-grid visibility as secondary fallback only.
 - Verifieer in admin image-management dat uploaden en vervangen werkt voor dezelfde storage-root die door runtime `/assets/images` wordt geserveerd.
 - Verifieer dat modulefilter + zoekresultaten overeenkomen met de daadwerkelijke serverbestanden per module.
+
+## Dashboard Completeness Gate
+- Elke modulewijziging die nieuwe cooldowns, payouts, risico-indicatoren, notificatie-events of operationele loops toevoegt/verandert, moet in dezelfde PR ook het dashboardcontract (`/player/dashboard-stats`), dashboardweergave en `Help & Uitleg` controleren en indien nodig bijwerken.
+- "Done" is pas geldig als de nieuwe module-impact zichtbaar of expliciet gemotiveerd afwezig is in dashboard-economy, dashboard-operaties en dashboard-notificaties.
 
 ## When To Update This File
 Update this protocol when the module gains a new subflow, new dependency, new notification path, major UX change or new QA risk.

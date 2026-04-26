@@ -24,6 +24,7 @@ Verplichte regel:
 - Bij elke taak moeten alle relevante module-protocollen gelezen worden, inclusief afhankelijkheden.
 - Bij nieuwe systemen of modules is het verplicht om actief alle bestaande protocollen te scannen op mogelijke koppelingen, afhankelijkheden, overlap en regressierisico's; een nieuw systeem is niet klaar zonder expliciete protocol-impactcheck.
 - Bij elke wijziging aan progression, economy, rewards, cooldowns, premium credits of monetization is `docs/module-protocols/balance-economy.md` verplicht en mag deze nooit worden overgeslagen.
+- Bij elke wijziging aan gameplay loops, cooldowns, economy, notifications, crew/ops-systemen of nieuwe module-acties is `docs/module-protocols/dashboard.md` verplicht en moet dashboard-impact expliciet worden gecontroleerd (API + UI + Help & Uitleg).
 
 Minimum output bij implementatie:
 - Noem welke protocollen zijn toegepast.
@@ -157,6 +158,7 @@ Implementatievoorkeur:
 9. Verifieer dat `Help & Uitleg` nog klopt voor de gewijzigde of nieuw toegevoegde module/flow.
 10. Bij nieuwe systemen of modules: bevestig dat alle relevante bestaande protocollen op koppelingen en regressierisico's zijn nagelopen.
 11. Bij economy/progression/monetization wijzigingen: bevestig expliciet dat `balance-economy.md` is toegepast en dat telemetry + runtime keys zijn meegecontroleerd.
+12. Bij module-uitbreidingen met nieuwe acties/timers/rewards: bevestig expliciet dat dashboarddekking is bijgewerkt of bewust niet van toepassing is (met reden), inclusief NL/EN helptekst.
 
 ## Flutter Analyze Hang Recovery (Windows)
 

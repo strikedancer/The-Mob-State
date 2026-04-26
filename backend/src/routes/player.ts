@@ -760,6 +760,10 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
   try {
     const playerId = req.player!.id;
     console.log('[Dashboard] Fetching stats for player:', playerId);
+    const now = new Date();
+    const last24hStart = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const prev24hStart = new Date(now.getTime() - 48 * 60 * 60 * 1000);
+    const last7dStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
     // Get cooldowns
     const cooldowns = await getPlayerCooldowns(playerId);
@@ -774,12 +778,33 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
         const parsed = Number(value);
         return Number.isFinite(parsed) ? Math.trunc(parsed) : 0;
       }
+      if (value && typeof value === 'object') {
+        const parsed = Number((value as { toString: () => string }).toString());
+        return Number.isFinite(parsed) ? Math.trunc(parsed) : 0;
+      }
       return 0;
     };
 
     const toRemainingSeconds = (nextAllowedAt: Date | null): number => {
       if (!nextAllowedAt) return 0;
       return Math.max(0, Math.ceil((nextAllowedAt.getTime() - Date.now()) / 1000));
+    };
+    const parseFloatNumber = (value: unknown): number => {
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        return value;
+      }
+      if (typeof value === 'bigint') {
+        return Number(value);
+      }
+      if (typeof value === 'string') {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+      if (value && typeof value === 'object') {
+        const parsed = Number((value as { toString: () => string }).toString());
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+      return 0;
     };
 
     const [
@@ -795,6 +820,28 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       hitsPlacedCount,
       travelCount,
       crewMembership,
+      unreadDirectMessagesCount,
+      supportTicketsNeedingReply,
+      worldEventsLast24hCount,
+      activeDrugProductionsCount,
+      nextDrugProduction,
+      activeNightclubEventsCount,
+      nextNightclubEvent,
+      crimeIncomeLast24hAgg,
+      crimeIncomePrev24hAgg,
+      jobIncomeLast24hAgg,
+      jobIncomePrev24hAgg,
+      nightclubIncomeLast24hAgg,
+      nightclubIncomePrev24hAgg,
+      propertiesPurchasedLast24hAgg,
+      propertiesPurchasedPrev24hAgg,
+      crimeAttemptsLast7d,
+      jobAttemptsLast7d,
+      vehicleTheftsLast7d,
+      travelCountLast7d,
+      propertiesOwnedAgg,
+      vehicleInventoryRows,
+      cryptoHoldingRows,
     ] = await Promise.all([
       prisma.shootingRangeStats.findUnique({
         where: { playerId },
@@ -828,7 +875,14 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       }),
       prisma.player.findUnique({
         where: { id: playerId },
-        select: { killCount: true },
+        select: {
+          killCount: true,
+          money: true,
+          rank: true,
+          xp: true,
+          wantedLevel: true,
+          fbiHeat: true,
+        },
       }),
       prisma.worldEvent.count({
         where: { playerId, eventKey: 'prison.escape_success' },
@@ -847,6 +901,170 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
       prisma.crewMember.findUnique({
         where: { playerId },
         select: { crewId: true, role: true },
+      }),
+      prisma.directMessage.count({
+        where: {
+          receiverId: playerId,
+          read: false,
+        },
+      }),
+      prisma.supportTicket.findMany({
+        where: {
+          playerId,
+          status: {
+            notIn: ['resolved', 'closed', 'archived'],
+          },
+          lastAdminMessageAt: {
+            not: null,
+          },
+        },
+        select: {
+          id: true,
+          lastAdminMessageAt: true,
+          lastPlayerMessageAt: true,
+        },
+      }),
+      prisma.worldEvent.count({
+        where: {
+          playerId,
+          createdAt: { gte: last24hStart },
+        },
+      }),
+      prisma.drugProduction.count({
+        where: {
+          playerId,
+          completed: false,
+          finishesAt: { gt: now },
+        },
+      }),
+      prisma.drugProduction.findFirst({
+        where: {
+          playerId,
+          completed: false,
+          finishesAt: { gt: now },
+        },
+        orderBy: { finishesAt: 'asc' },
+        select: { finishesAt: true },
+      }),
+      prisma.nightclubEvent.count({
+        where: {
+          venue: { playerId },
+          startsAt: { lte: now },
+          endsAt: { gt: now },
+        },
+      }),
+      prisma.nightclubEvent.findFirst({
+        where: {
+          venue: { playerId },
+          startsAt: { gt: now },
+        },
+        orderBy: { startsAt: 'asc' },
+        select: { startsAt: true },
+      }),
+      prisma.crimeAttempt.aggregate({
+        where: {
+          playerId,
+          createdAt: { gte: last24hStart },
+        },
+        _sum: { reward: true },
+      }),
+      prisma.crimeAttempt.aggregate({
+        where: {
+          playerId,
+          createdAt: { gte: prev24hStart, lt: last24hStart },
+        },
+        _sum: { reward: true },
+      }),
+      prisma.jobAttempt.aggregate({
+        where: {
+          playerId,
+          completedAt: { gte: last24hStart },
+        },
+        _sum: { earnings: true },
+      }),
+      prisma.jobAttempt.aggregate({
+        where: {
+          playerId,
+          completedAt: { gte: prev24hStart, lt: last24hStart },
+        },
+        _sum: { earnings: true },
+      }),
+      prisma.nightclubSale.aggregate({
+        where: {
+          venue: { playerId },
+          saleTime: { gte: last24hStart },
+        },
+        _sum: { totalRevenue: true },
+      }),
+      prisma.nightclubSale.aggregate({
+        where: {
+          venue: { playerId },
+          saleTime: { gte: prev24hStart, lt: last24hStart },
+        },
+        _sum: { totalRevenue: true },
+      }),
+      prisma.property.aggregate({
+        where: {
+          playerId,
+          purchasedAt: { gte: last24hStart },
+        },
+        _sum: { purchasePrice: true },
+      }),
+      prisma.property.aggregate({
+        where: {
+          playerId,
+          purchasedAt: { gte: prev24hStart, lt: last24hStart },
+        },
+        _sum: { purchasePrice: true },
+      }),
+      prisma.crimeAttempt.count({
+        where: {
+          playerId,
+          createdAt: { gte: last7dStart },
+        },
+      }),
+      prisma.jobAttempt.count({
+        where: {
+          playerId,
+          completedAt: { gte: last7dStart },
+        },
+      }),
+      prisma.vehicleInventory.count({
+        where: {
+          playerId,
+          stolenAt: { gte: last7dStart },
+        },
+      }),
+      prisma.worldEvent.count({
+        where: {
+          playerId,
+          eventKey: {
+            in: ['travel.arrived', 'travel.journey_complete'],
+          },
+          createdAt: { gte: last7dStart },
+        },
+      }),
+      prisma.property.aggregate({
+        where: { playerId },
+        _count: { id: true },
+        _sum: { purchasePrice: true },
+      }),
+      prisma.vehicleInventory.findMany({
+        where: { playerId },
+        select: {
+          vehicleId: true,
+          condition: true,
+          askingPrice: true,
+          marketListing: true,
+          transportStatus: true,
+        },
+      }),
+      prisma.crypto_holdings.findMany({
+        where: { player_id: playerId },
+        select: {
+          asset_symbol: true,
+          quantity: true,
+        },
       }),
     ]);
 
@@ -1050,6 +1268,83 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
     const drugsTotalQuantity = Number(drugInventoryAgg._sum.quantity ?? 0);
     const nightclubRevenueAllTime = Number(nightclubRevenueAgg._sum.totalRevenueAllTime ?? 0n);
     const killCount = Number(playerCore?.killCount ?? 0);
+    const cashBalance = Number(playerCore?.money ?? 0);
+    const wantedLevel = Number(playerCore?.wantedLevel ?? 0);
+    const fbiHeat = Number(playerCore?.fbiHeat ?? 0);
+
+    const supportNeedsReplyCount = supportTicketsNeedingReply.filter((ticket) => {
+      if (!ticket.lastAdminMessageAt) {
+        return false;
+      }
+      if (!ticket.lastPlayerMessageAt) {
+        return true;
+      }
+      return ticket.lastAdminMessageAt.getTime() > ticket.lastPlayerMessageAt.getTime();
+    }).length;
+
+    const crimeIncomeLast24h = Number(crimeIncomeLast24hAgg._sum.reward ?? 0);
+    const crimeIncomePrev24h = Number(crimeIncomePrev24hAgg._sum.reward ?? 0);
+    const jobIncomeLast24h = Number(jobIncomeLast24hAgg._sum.earnings ?? 0);
+    const jobIncomePrev24h = Number(jobIncomePrev24hAgg._sum.earnings ?? 0);
+    const nightclubIncomeLast24h = Number(nightclubIncomeLast24hAgg._sum.totalRevenue ?? 0);
+    const nightclubIncomePrev24h = Number(nightclubIncomePrev24hAgg._sum.totalRevenue ?? 0);
+    const propertySpendLast24h = Number(propertiesPurchasedLast24hAgg._sum.purchasePrice ?? 0);
+    const propertySpendPrev24h = Number(propertiesPurchasedPrev24hAgg._sum.purchasePrice ?? 0);
+    const grossIncomeLast24h = crimeIncomeLast24h + jobIncomeLast24h + nightclubIncomeLast24h;
+    const grossIncomePrev24h = crimeIncomePrev24h + jobIncomePrev24h + nightclubIncomePrev24h;
+    const netCashflowLast24h = grossIncomeLast24h - propertySpendLast24h;
+    const netCashflowPrev24h = grossIncomePrev24h - propertySpendPrev24h;
+    const cashflowTrendPercent =
+      netCashflowPrev24h === 0
+        ? netCashflowLast24h === 0
+          ? 0
+          : 100
+        : Math.round(((netCashflowLast24h - netCashflowPrev24h) / Math.abs(netCashflowPrev24h)) * 100);
+
+    const vehiclePortfolio = vehicleInventoryRows.reduce(
+      (acc, vehicle) => {
+        const def = vehicleService.getVehicleById(vehicle.vehicleId);
+        const baseValue = def?.baseValue ?? 0;
+        const estimatedValue = Math.round((baseValue * Math.max(0, vehicle.condition ?? 100)) / 100);
+        acc.estimatedValue += Math.max(estimatedValue, parseNumber(vehicle.askingPrice));
+        if (vehicle.marketListing) {
+          acc.listedCount += 1;
+        }
+        if (vehicle.transportStatus) {
+          acc.inTransitCount += 1;
+        }
+        return acc;
+      },
+      {
+        totalCount: vehicleInventoryRows.length,
+        listedCount: 0,
+        inTransitCount: 0,
+        estimatedValue: 0,
+      }
+    );
+
+    const cryptoSymbols = Array.from(new Set(cryptoHoldingRows.map((holding) => holding.asset_symbol)));
+    const cryptoAssets =
+      cryptoSymbols.length > 0
+        ? await prisma.crypto_assets.findMany({
+            where: {
+              symbol: { in: cryptoSymbols },
+            },
+            select: {
+              symbol: true,
+              current_price: true,
+            },
+          })
+        : [];
+    const cryptoPriceMap = new Map(
+      cryptoAssets.map((asset) => [asset.symbol, parseFloatNumber(asset.current_price)])
+    );
+    const cryptoPortfolioValue = cryptoHoldingRows.reduce((sum, holding) => {
+      const qty = parseFloatNumber(holding.quantity);
+      const price = cryptoPriceMap.get(holding.asset_symbol) ?? 0;
+      return sum + qty * price;
+    }, 0);
+    const propertyPortfolioValue = Number(propertiesOwnedAgg._sum.purchasePrice ?? 0);
 
     // Get player weapons
     const weapons = await prisma.weaponInventory.findMany({
@@ -1109,6 +1404,24 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
     const bankAccount = await prisma.bankAccount.findUnique({
       where: { playerId },
     });
+    const bankBalance = Number(bankAccount?.balance ?? 0);
+    const activeCooldownCount = Object.values(cooldowns).filter((value) => value > 0).length;
+    const longestCooldownSeconds = Object.values(cooldowns).reduce(
+      (max, value) => (value > max ? value : max),
+      0
+    );
+    const nextDrugProductionEndsInSeconds = nextDrugProduction?.finishesAt
+      ? toRemainingSeconds(nextDrugProduction.finishesAt)
+      : 0;
+    const nextNightclubEventStartsInSeconds = nextNightclubEvent?.startsAt
+      ? toRemainingSeconds(nextNightclubEvent.startsAt)
+      : 0;
+    const riskScore = Math.min(
+      100,
+      Math.max(0, Math.round(wantedLevel * 0.6 + fbiHeat * 0.4 + activeCooldownCount * 1.5))
+    );
+    const netWorth =
+      cashBalance + bankBalance + propertyPortfolioValue + vehiclePortfolio.estimatedValue + cryptoPortfolioValue;
 
     return res.status(200).json({
       event: 'dashboard.stats',
@@ -1151,7 +1464,51 @@ router.get('/dashboard-stats', authenticate, async (req: AuthRequest, res: Respo
           : null,
         jailed: jailStatus > 0,
         jailTimeRemaining: jailStatus,
-        bankBalance: bankAccount?.balance || 0,
+        bankBalance,
+        economy: {
+          cashBalance,
+          bankBalance,
+          cryptoPortfolioValue: Math.round(cryptoPortfolioValue),
+          propertyPortfolioValue,
+          vehiclePortfolioValue: vehiclePortfolio.estimatedValue,
+          netWorth: Math.round(netWorth),
+        },
+        economy24h: {
+          crimeIncome: crimeIncomeLast24h,
+          jobIncome: jobIncomeLast24h,
+          nightclubIncome: nightclubIncomeLast24h,
+          propertySpend: propertySpendLast24h,
+          grossIncome: grossIncomeLast24h,
+          netCashflow: netCashflowLast24h,
+          trendVsPreviousPct: cashflowTrendPercent,
+        },
+        activity7d: {
+          crimeAttempts: crimeAttemptsLast7d,
+          jobAttempts: jobAttemptsLast7d,
+          vehicleThefts: vehicleTheftsLast7d,
+          travels: travelCountLast7d,
+        },
+        operations: {
+          activeCooldownCount,
+          longestCooldownSeconds,
+          activeDrugProductionsCount,
+          nextDrugProductionEndsInSeconds,
+          activeNightclubEventsCount,
+          nextNightclubEventStartsInSeconds,
+          activeVehicleCount: vehiclePortfolio.totalCount,
+          listedVehicleCount: vehiclePortfolio.listedCount,
+          inTransitVehicleCount: vehiclePortfolio.inTransitCount,
+        },
+        notifications: {
+          unreadDirectMessages: unreadDirectMessagesCount,
+          supportNeedsReply: supportNeedsReplyCount,
+          eventsLast24h: worldEventsLast24hCount,
+        },
+        risk: {
+          wantedLevel,
+          fbiHeat,
+          score: riskScore,
+        },
         crewWar: {
           hasActiveWar: Boolean(currentCrewWar),
           canDeclare: crewWarHub.canDeclare === true,
