@@ -10,10 +10,12 @@ import '../providers/auth_provider.dart';
 import '../providers/vehicle_provider.dart';
 import '../services/api_client.dart';
 import '../services/jail_service.dart';
+import '../services/theft_cooldown_credit_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/theft_cooldown_credit_flow.dart';
+import '../widgets/theft_cooldown_steal_control.dart';
 import '../widgets/overlay_image.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
@@ -45,6 +47,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   final Map<String, Map<String, int>> _laneCapacities = {};
   int? _embeddedJailSeconds;
   int _jailContentEpoch = 0;
+  final Map<int, int> _stealCreditHintByTab = {};
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
@@ -205,6 +208,34 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       default:
         return 'vehicle_theft';
     }
+  }
+
+  void _prefetchStealCreditHint(int tabIndex) {
+    if (_stealCreditHintByTab.containsKey(tabIndex)) return;
+    Future<void> load() async {
+      final info = await TheftCooldownCreditService.load(
+        _cooldownActionTypeForTab(tabIndex),
+      );
+      if (!mounted || info == null || info.creditCost <= 0) return;
+      setState(() {
+        _stealCreditHintByTab[tabIndex] = info.creditCost;
+      });
+    }
+    load();
+  }
+
+  String _boltTooltipForLane(int tabIndex) {
+    final c = _stealCreditHintByTab[tabIndex];
+    if (c != null && c > 0) {
+      return _tr(
+        'Versnellen met credits ($c credits)',
+        'Speed up with credits ($c credits)',
+      );
+    }
+    return _tr(
+      'Versnellen met credits — kosten in het volgende scherm',
+      'Speed up with credits — cost shown on the next screen',
+    );
   }
 
   Future<void> _redeemStealCooldownWithCredits(
@@ -816,6 +847,20 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final totalCap = cap?['total'] ?? 0;
     final laneLevel = cap?['level'] ?? 0;
 
+    if (stealRemaining > 0) {
+      if (!_stealCreditHintByTab.containsKey(tabIndex)) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _prefetchStealCreditHint(tabIndex);
+        });
+      }
+    } else if (_stealCreditHintByTab.containsKey(tabIndex)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() => _stealCreditHintByTab.remove(tabIndex));
+        }
+      });
+    }
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -960,68 +1005,31 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      OutlinedButton.icon(
-                        onPressed: _laneActionInProgress
-                            ? null
-                            : stealRemaining > 0
-                                ? null
-                                : () => _runTileSteal(provider, tabIndex),
-                        icon: Icon(
-                          stealRemaining > 0
-                              ? Icons.timer
-                              : (tabIndex == 2
-                                  ? Icons.sailing
-                                  : Icons.local_police),
-                          size: 14,
-                        ),
-                        label: Text(
-                          stealRemaining > 0
-                              ? _formatCooldown(stealRemaining)
-                              : (tabIndex == 2
-                                  ? _tr('Steel boot', 'Steal boat')
-                                  : tabIndex == 1
-                                  ? _tr('Steel motor', 'Steal bike')
-                                  : _tr('Steel auto', 'Steal car')),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: accent,
-                          side: BorderSide(color: accent.withOpacity(0.8)),
-                          visualDensity: VisualDensity.compact,
-                        ),
-                      ),
-                      if (stealRemaining > 0) ...[
-                        const SizedBox(width: 2),
-                        Tooltip(
-                          message: _tr(
-                            'Versnellen met credits',
-                            'Speed up with credits',
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: _laneActionInProgress
-                                  ? null
-                                  : () => _redeemStealCooldownWithCredits(
-                                        provider,
-                                        tabIndex,
-                                      ),
-                              borderRadius: BorderRadius.circular(20),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: Icon(
-                                  Icons.bolt,
-                                  size: 22,
-                                  color: Colors.amber.shade400,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ],
+                  TheftCooldownStealControl(
+                    cooldownActive: stealRemaining > 0,
+                    actionInProgress: _laneActionInProgress,
+                    foregroundColor: accent,
+                    borderColor: accent,
+                    leadingIcon: stealRemaining > 0
+                        ? Icons.timer
+                        : (tabIndex == 2
+                            ? Icons.sailing
+                            : Icons.local_police),
+                    label: stealRemaining > 0
+                        ? _formatCooldown(stealRemaining)
+                        : (tabIndex == 2
+                            ? _tr('Steel boot', 'Steal boat')
+                            : tabIndex == 1
+                            ? _tr('Steel motor', 'Steal bike')
+                            : _tr('Steel auto', 'Steal car')),
+                    onSteal: () => _runTileSteal(provider, tabIndex),
+                    onCreditRedeem: () => _redeemStealCooldownWithCredits(
+                      provider,
+                      tabIndex,
+                    ),
+                    boltTooltip: _boltTooltipForLane(tabIndex),
+                    compact: true,
+                    iconSize: 14,
                   ),
                   OutlinedButton.icon(
                     onPressed: _laneActionInProgress

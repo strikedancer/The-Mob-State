@@ -36,27 +36,15 @@ Future<void> runTheftCooldownCreditRedeem(
     return;
   }
 
+  /// Still show the dialog with real costs unless the user disabled confirmations;
+  /// only block the confirm button when redemption cannot proceed.
+  String? redeemBlockReason;
   if (!info.canRedeemNow) {
-    final reason = info.unavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE'
+    redeemBlockReason = info.unavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE'
         ? l10n.theftCooldownRedeemNoActiveCooldown
         : l10n.theftCooldownRedeemNotAvailable;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(reason),
-        backgroundColor: Colors.orange.shade800,
-      ),
-    );
-    return;
-  }
-
-  if (info.creditBalance < info.creditCost) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.theftCooldownRedeemInsufficientCredits),
-        backgroundColor: Colors.red.shade800,
-      ),
-    );
-    return;
+  } else if (info.creditBalance < info.creditCost) {
+    redeemBlockReason = l10n.theftCooldownRedeemInsufficientCredits;
   }
 
   final skip = await TheftCooldownConfirmPrefs.skipConfirmDialog;
@@ -101,6 +89,15 @@ Future<void> runTheftCooldownCreditRedeem(
   }
 
   if (skip) {
+    if (redeemBlockReason != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(redeemBlockReason),
+          backgroundColor: Colors.orange.shade800,
+        ),
+      );
+      return;
+    }
     await doRedeem();
     return;
   }
@@ -111,6 +108,7 @@ Future<void> runTheftCooldownCreditRedeem(
     builder: (ctx) {
       return StatefulBuilder(
         builder: (context, setLocal) {
+          final canConfirm = redeemBlockReason == null;
           return AlertDialog(
             title: Text(l10n.theftCooldownRedeemTitle),
             content: Column(
@@ -123,6 +121,16 @@ Future<void> runTheftCooldownCreditRedeem(
                     info.creditBalance,
                   ),
                 ),
+                if (redeemBlockReason != null) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    redeemBlockReason,
+                    style: TextStyle(
+                      color: Colors.orange.shade800,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 12),
                 CheckboxListTile(
                   value: hideNextTime,
@@ -145,7 +153,9 @@ Future<void> runTheftCooldownCreditRedeem(
                 child: Text(l10n.cancel),
               ),
               FilledButton(
-                onPressed: () => Navigator.of(ctx).pop(true),
+                onPressed: canConfirm
+                    ? () => Navigator.of(ctx).pop(true)
+                    : null,
                 child: Text(
                   l10n.theftCooldownRedeemConfirmAction(info.creditCost),
                 ),
