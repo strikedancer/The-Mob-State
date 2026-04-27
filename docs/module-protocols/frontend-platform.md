@@ -20,7 +20,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Platform-specifieke cache-, service-worker- en asset-routes mogen bestaande deployments niet breken.
 
 ## Cross-Module Dependencies
-- Vehicle Heist / embedded Garage & Marina: theft-cooldown op stelen-CTA’s komt server-side mee via vehicle-ops intelligence (`laneTheftCooldowns`); UI toont dan een live aftellende duur op de knop en schakelt de knop uit (geen extra user-facing strings buiten bestaande formatters).
+- Vehicle Heist / embedded Garage & Marina: theft-cooldown op stelen-CTA’s komt server-side mee via vehicle-ops intelligence (`laneTheftCooldowns`); na een `steal` response moet `params.cooldownRemainingSeconds` worden meegenomen wanneer de server de theft-cooldown zet, zodat de UI de lane-knop onmiddellijk blokkert. Voertuig-Heist toasts voor deze flow gebruiken `showTopRightFromSnackBar` (niet de floating SnackBar onderaan).
 - Dashboard -> Frontend Platform (shell, remount, embedded content)
 - Help/Inventory/Storage -> Frontend Platform (scroll- en layoutgedrag)
 - Gameplay screens met dynamische afbeeldingen -> Frontend Platform (asset routing en fallbacks)

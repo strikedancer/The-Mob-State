@@ -3663,7 +3663,7 @@ export const vehicleService = {
       });
 
       // Set cooldown even on failed theft
-      await setCooldown(playerId, cooldownType);
+      const failTheftCooldown = await setCooldown(playerId, cooldownType);
 
       // Check if player gets arrested after failed steal
       const arrestResult = await checkArrest(playerId);
@@ -3694,6 +3694,7 @@ export const vehicleService = {
           bail: arrestResult.bail,
           wantedLevel: 0,
           reputation: newReputation,
+          cooldownRemainingSeconds: failTheftCooldown.remainingSeconds,
         };
       }
 
@@ -3733,6 +3734,7 @@ export const vehicleService = {
         arrested: false,
         wantedLevel: updatedPlayer.wantedLevel,
         reputation: newReputation,
+        cooldownRemainingSeconds: failTheftCooldown.remainingSeconds,
       };
     }
 
@@ -3761,7 +3763,7 @@ export const vehicleService = {
     });
 
     // Set cooldown after successful theft
-    await setCooldown(playerId, cooldownType);
+    const successTheftCooldown = await setCooldown(playerId, cooldownType);
 
     // Check if player gets arrested even after successful steal (lower chance)
     const arrestResult = await checkArrest(playerId);
@@ -3800,6 +3802,7 @@ export const vehicleService = {
         bail: arrestResult.bail,
         wantedLevel: 0,
         reputation: postArrestReputation,
+        cooldownRemainingSeconds: successTheftCooldown.remainingSeconds,
       };
     }
 
@@ -3875,6 +3878,7 @@ export const vehicleService = {
       sessionPayoutMultiplier,
       sessionAttemptsInWindow: diminishingContext.attemptsInWindow,
       sessionWindowMinutes: diminishingContext.sessionWindowMinutes,
+      cooldownRemainingSeconds: successTheftCooldown.remainingSeconds,
       vehicle: {
         ...stolenVehicle,
         definition: vehicleDef,

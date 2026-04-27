@@ -663,6 +663,7 @@ class VehicleProvider with ChangeNotifier {
 
       if (stealResponse.statusCode == 200 &&
           stealData['event'] == 'vehicles.stolen') {
+        _lastStealCooldownRemainingSeconds = _extractCooldownSeconds(stealData);
         final arrested = stealData['params']?['arrested'] == true;
         _lastStealArrested = arrested;
         _lastStealJailMinutes =

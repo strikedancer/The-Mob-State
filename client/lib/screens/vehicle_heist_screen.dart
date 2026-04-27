@@ -10,6 +10,7 @@ import '../providers/auth_provider.dart';
 import '../providers/vehicle_provider.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
+import '../utils/top_right_notification.dart';
 import '../widgets/overlay_image.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
@@ -267,10 +268,14 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
   void _showTopMessage(String message, {bool success = false}) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
+    showTopRightFromSnackBar(
+      context,
       SnackBar(
         content: Text(message),
         backgroundColor: success ? Colors.green : Colors.orange,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.zero,
+        duration: const Duration(seconds: 4),
       ),
     );
   }
@@ -344,6 +349,8 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           authProvider.currentPlayer?.currentCountry ?? 'netherlands';
       final vehicleType = _opsVehicleTypeForTab(tabIndex);
       final success = await provider.stealVehicle(country, vehicleType);
+      if (!mounted) return;
+      await _refreshOpsIntelligence();
       await authProvider.refreshPlayer();
       await provider.fetchInventory();
 
@@ -351,10 +358,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         await provider.fetchMarinaStatus(country);
       } else {
         await provider.fetchGarageStatus(country, vehicleType: vehicleType);
-      }
-
-      if (_activeTabIndex == tabIndex) {
-        await _refreshOpsIntelligence();
       }
       await _refreshLaneCapacities();
 

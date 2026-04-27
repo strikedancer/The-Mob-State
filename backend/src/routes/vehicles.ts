@@ -644,6 +644,7 @@ router.post('/steal/:vehicleId', authenticate, async (req: AuthRequest, res: Res
         sessionPayoutMultiplier: result.sessionPayoutMultiplier ?? 1,
         sessionAttemptsInWindow: result.sessionAttemptsInWindow ?? 0,
         sessionWindowMinutes: result.sessionWindowMinutes ?? 60,
+        cooldownRemainingSeconds: result.cooldownRemainingSeconds ?? 0,
       },
       player: {
         xp: result.newXp ?? null,
