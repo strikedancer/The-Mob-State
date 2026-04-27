@@ -1133,6 +1133,7 @@ const List<HelpTopic> helpTopics = [
     howNl: [
       'Elke maand start een nieuwe ronde op de 1e en eindigt op de laatste dag van de maand.',
       'Je kiest een inzet (bijv. 1/3/5 credits) en voert een 4-cijferige code in.',
+      'Je kunt de code ook invullen via het codepaneel (cijferknoppen) op het scherm.',
       'Elke poging kost credits. Raad je de code goed, dan win je een prijs.',
       'Bij hogere inzet zijn de prijzen hoger; soms kan er ook een VIP-prijs vallen.',
       'Als je al VIP bent, wordt een VIP-prijs omgezet naar credits.',
@@ -1141,6 +1142,7 @@ const List<HelpTopic> helpTopics = [
     howEn: [
       'Each month a new season starts on the 1st and ends on the last day of the month.',
       'Pick a stake (e.g. 1/3/5 credits) and enter a 4-digit code.',
+      'You can also enter the code using the on-screen keypad (digit buttons).',
       'Each attempt costs credits. If you guess correctly, you win a prize.',
       'Higher stakes mean bigger prizes; sometimes a VIP reward can drop.',
       'If you are already VIP, a VIP reward is converted into credits.',

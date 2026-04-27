@@ -990,6 +990,7 @@ Bob: â‚¬300K counter-hit
 ### Kraak de Kluis (maandronde)
 - Elke maand start een nieuwe ronde op de **1e** en eindigt op de **laatste dag** van de maand.
 - Je voert een **4-cijferige code** in en kiest een inzet (credits). **Elke poging kost credits**.
+- Je kunt de code ook invullen via het kluis **codepaneel** (cijferknoppen) op de pagina.
 - Raad je de code goed, dan win je een prijs (credits; bij hogere inzet kan ook een VIP-prijs vallen). Als je al VIP bent wordt een VIP-prijs omgezet naar credits.
 - Foute codes worden bijgehouden in een lijst en resetten automatisch bij een nieuwe maandronde.
 - Als de server zonder migratie deployt, bootstrapt de backend de benodigde vault-tabellen bij startup zodat het systeem direct werkt.

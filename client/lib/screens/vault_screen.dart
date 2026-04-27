@@ -183,8 +183,148 @@ class _VaultScreenState extends State<VaultScreen> {
 
   Widget _buildVaultHero(BuildContext context) {
     final isSmall = MediaQuery.of(context).size.width < 700;
-    final height = isSmall ? 150.0 : 190.0;
+    final height = isSmall ? 190.0 : 220.0;
     final seasonWindow = _seasonWindowLabel();
+
+    final banner = ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Image.asset(
+        'assets/images/vault/vault_banner.png',
+        width: double.infinity,
+        height: height,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          // Fallback: keep the existing gradient look if the asset isn't present yet.
+          return Container(
+            width: double.infinity,
+            height: height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFF0F0F12).withOpacity(0.94),
+                  const Color(0xFF1B1324).withOpacity(0.92),
+                  const Color(0xFF101820).withOpacity(0.9),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+
+    Widget keypadButton({
+      required String label,
+      required VoidCallback onPressed,
+      Color? accent,
+    }) {
+      final color = accent ?? const Color(0xFFD4AF37);
+      return OutlinedButton(
+        onPressed: _submitting ? null : onPressed,
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          side: BorderSide(color: color.withOpacity(0.55)),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black.withOpacity(0.22),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w900,
+            color: color,
+            letterSpacing: 0.4,
+          ),
+        ),
+      );
+    }
+
+    void pushDigit(String d) {
+      final raw = _codeController.text.replaceAll(RegExp(r'[^\d]'), '');
+      if (raw.length >= 4) return;
+      final next = (raw + d).substring(0, (raw.length + 1).clamp(0, 4));
+      _codeController.text = next;
+      _codeController.selection = TextSelection.collapsed(offset: next.length);
+      setState(() {});
+    }
+
+    void backspace() {
+      final raw = _codeController.text.replaceAll(RegExp(r'[^\d]'), '');
+      if (raw.isEmpty) return;
+      final next = raw.substring(0, raw.length - 1);
+      _codeController.text = next;
+      _codeController.selection = TextSelection.collapsed(offset: next.length);
+      setState(() {});
+    }
+
+    void clear() {
+      _codeController.clear();
+      setState(() {});
+    }
+
+    final keypad = Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.38),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.45)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.35),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            _tr('Codepaneel', 'Keypad'),
+            style: const TextStyle(fontWeight: FontWeight.w900),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.35),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white12),
+            ),
+            child: Text(
+              (_codeController.text.replaceAll(RegExp(r'[^\d]'), '').padRight(4, '•'))
+                  .split('')
+                  .take(4)
+                  .join('  '),
+              style: const TextStyle(
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2.2,
+                color: Color(0xFFD4AF37),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 10),
+          GridView.count(
+            crossAxisCount: 3,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            childAspectRatio: 1.45,
+            children: [
+              for (final n in ['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+                keypadButton(label: n, onPressed: () => pushDigit(n)),
+              keypadButton(label: 'C', onPressed: clear, accent: Colors.white70),
+              keypadButton(label: '0', onPressed: () => pushDigit('0')),
+              keypadButton(label: '⌫', onPressed: backspace, accent: Colors.redAccent),
+            ],
+          ),
+        ],
+      ),
+    );
 
     return Container(
       height: height,
@@ -205,15 +345,18 @@ class _VaultScreenState extends State<VaultScreen> {
       ),
       child: Stack(
         children: [
+          Positioned.fill(child: banner),
           Positioned.fill(
-            child: Opacity(
-              opacity: 0.18,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.lock,
-                  size: isSmall ? 120 : 150,
-                  color: const Color(0xFFD4AF37),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0.62),
+                    Colors.black.withOpacity(0.22),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                 ),
               ),
             ),
@@ -254,6 +397,29 @@ class _VaultScreenState extends State<VaultScreen> {
               ],
             ],
           ),
+          if (!isSmall)
+            Positioned(
+              right: 0,
+              top: 0,
+              bottom: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: SizedBox(width: 280, child: keypad),
+              ),
+            ),
+          if (isSmall)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: SizedBox(
+                  height: 220,
+                  child: keypad,
+                ),
+              ),
+            ),
         ],
       ),
     );
