@@ -1120,6 +1120,43 @@ const List<HelpTopic> helpTopics = [
     protocolPath: 'docs/module-protocols/prison.md',
   ),
   HelpTopic(
+    id: 'vault',
+    categoryNl: 'Events',
+    categoryEn: 'Events',
+    icon: Icons.lock,
+    titleNl: 'Kraak de Kluis',
+    titleEn: 'Crack the Vault',
+    summaryNl:
+        'Maandelijkse kluisronde: voer een 4-cijferige code in en zet credits in voor kans op grote prijzen.',
+    summaryEn:
+        'Monthly vault season: enter a 4-digit code and stake credits for a chance at big prizes.',
+    howNl: [
+      'Elke maand start een nieuwe ronde op de 1e en eindigt op de laatste dag van de maand.',
+      'Je kiest een inzet (bijv. 1/3/5 credits) en voert een 4-cijferige code in.',
+      'Elke poging kost credits. Raad je de code goed, dan win je een prijs.',
+      'Bij hogere inzet zijn de prijzen hoger; soms kan er ook een VIP-prijs vallen.',
+      'Als je al VIP bent, wordt een VIP-prijs omgezet naar credits.',
+      'Foute codes van deze maand kun je terugzien in je lijst. Die lijst reset automatisch bij de nieuwe maand.',
+    ],
+    howEn: [
+      'Each month a new season starts on the 1st and ends on the last day of the month.',
+      'Pick a stake (e.g. 1/3/5 credits) and enter a 4-digit code.',
+      'Each attempt costs credits. If you guess correctly, you win a prize.',
+      'Higher stakes mean bigger prizes; sometimes a VIP reward can drop.',
+      'If you are already VIP, a VIP reward is converted into credits.',
+      'You can view your wrong codes for this month. The list resets automatically with the new month.',
+    ],
+    tipsNl: [
+      'Kies een inzet die past bij je creditsaldo: je kunt onbeperkt proberen, maar elke poging kost credits.',
+      'Gebruik de foute-codes lijst om te voorkomen dat je dezelfde code opnieuw probeert.',
+    ],
+    tipsEn: [
+      'Pick a stake that matches your credit balance: you can try unlimited times, but each attempt costs credits.',
+      'Use the wrong-codes list to avoid retrying the same code.',
+    ],
+    protocolPath: 'docs/module-protocols/payments.md',
+  ),
+  HelpTopic(
     id: 'garage',
     categoryNl: 'Assets',
     categoryEn: 'Assets',

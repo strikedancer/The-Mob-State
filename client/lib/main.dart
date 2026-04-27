@@ -26,6 +26,7 @@ import 'screens/help_screen.dart';
 import 'screens/tune_shop_screen.dart';
 import 'screens/territory_screen.dart';
 import 'screens/premium_screen.dart';
+import 'screens/vault_screen.dart';
 import 'widgets/mobile_web_sticky_player_header.dart';
 import 'services/notification_service.dart';
 
@@ -124,6 +125,7 @@ class MafiaGameApp extends StatelessWidget {
             '/tune-shop': (context) => const TuneShopScreen(),
             '/territory': (context) => const TerritoryScreen(),
             '/premium': (context) => const PremiumScreen(),
+            '/vault': (context) => const VaultScreen(),
           },
         ),
       ),

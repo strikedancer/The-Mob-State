@@ -110,6 +110,7 @@ model Player {
   devices                         PlayerDevice[]
   player_notification_preferences player_notification_preferences?
   premiumPopupSeen                PlayerPremiumPopupSeen[]
+  vaultAttempts                   VaultAttempt[]
   security                        PlayerSecurity?
   selectedVehicle                 PlayerSelectedVehicle?
   playerTools                     PlayerTools[]
@@ -1135,6 +1136,38 @@ model PlayerCreditEntitlement {
   @@index([playerId, status, expiresAt])
   @@index([catalogItemId], map: "player_credit_entitlements_catalogItemId_fkey")
   @@map("player_credit_entitlements")
+}
+
+model VaultSeason {
+  id        Int      @id @default(autoincrement())
+  seasonKey String   @unique @db.VarChar(10) // YYYY-MM
+  startsAt  DateTime
+  endsAt    DateTime
+  codeHash  String   @db.VarChar(128)
+  createdAt DateTime @default(now())
+
+  attempts  VaultAttempt[]
+
+  @@index([startsAt])
+  @@index([endsAt])
+  @@map("vault_seasons")
+}
+
+model VaultAttempt {
+  id        Int      @id @default(autoincrement())
+  seasonId  Int
+  playerId  Int
+  stakeTier Int
+  guess     String?  @db.VarChar(8)
+  isCorrect Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  player    Player     @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  season    VaultSeason @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, seasonId, createdAt])
+  @@index([seasonId, isCorrect])
+  @@map("vault_attempts")
 }
 
 model WeaponInventory {

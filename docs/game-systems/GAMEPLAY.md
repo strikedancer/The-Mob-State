@@ -987,6 +987,12 @@ Bob: â‚¬300K counter-hit
 - Ops-beloningen worden bij succes direct als contant geld uitgekeerd; het actie-overzicht toont per knop de verwachte payout-context.
 - Dashboard bevat nu een Vehicle Ops-blok per auto/motor/boot met live cooldownchips (Hotspot/Crew/Crew-duel/Chop/Contract/Tegenactie), heat/reputatie en contract/claim/seizoenssamenvatting.
 
+### Kraak de Kluis (maandronde)
+- Elke maand start een nieuwe ronde op de **1e** en eindigt op de **laatste dag** van de maand.
+- Je voert een **4-cijferige code** in en kiest een inzet (credits). **Elke poging kost credits**.
+- Raad je de code goed, dan win je een prijs (credits; bij hogere inzet kan ook een VIP-prijs vallen). Als je al VIP bent wordt een VIP-prijs omgezet naar credits.
+- Foute codes worden bijgehouden in een lijst en resetten automatisch bij een nieuwe maandronde.
+
 ### Arrest Chances
 ```javascript
 // Police arrest

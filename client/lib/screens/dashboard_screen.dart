@@ -56,10 +56,12 @@ import 'territory_screen.dart';
 import 'player_profile_screen.dart';
 import 'premium_screen.dart';
 import 'support_tickets_screen.dart';
+import 'vault_screen.dart';
 
 enum _WebSection {
   support,
   dashboard,
+  vault,
   events,
   crimes,
   jobs,
@@ -105,6 +107,8 @@ _WebSection _webSectionFromQueryParam(String? value) {
   switch ((value ?? '').toLowerCase()) {
     case 'premium':
       return _WebSection.premium;
+    case 'vault':
+      return _WebSection.vault;
     default:
       return _WebSection.dashboard;
   }
@@ -833,6 +837,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: Icons.dashboard,
             label: l10n.dashboard,
             section: _WebSection.dashboard,
+            badge: 0,
+          ),
+          (
+            icon: Icons.lock,
+            label: _tr('Kraak de Kluis', 'Crack the Vault'),
+            section: _WebSection.vault,
             badge: 0,
           ),
           (
@@ -1673,6 +1683,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       case _WebSection.dashboard:
         return const _WebDashboardHomeContent();
+      case _WebSection.vault:
+        return const VaultScreen(embedded: true);
       case _WebSection.events:
         return const EventsScreen();
       case _WebSection.crimes:
