@@ -1876,6 +1876,11 @@ export const vehicleService = {
       opsContractActionTypeForVehicle(vehicleType)
     );
     const chopCooldown = await checkCooldown(playerId, chopActionTypeForVehicle(vehicleType));
+    const [stealCooldownCar, stealCooldownMotorcycle, stealCooldownBoat] = await Promise.all([
+      checkCooldown(playerId, 'vehicle_theft'),
+      checkCooldown(playerId, 'motorcycle_theft'),
+      checkCooldown(playerId, 'boat_theft'),
+    ]);
     const chopContract = getChopContractForVehicleType(vehicleType, now);
     const blacklist = getRegionalBlacklistEvent(vehicleType, player.currentCountry ?? '', now);
     const crewMember = await prisma.crewMember.findUnique({
@@ -2076,6 +2081,11 @@ export const vehicleService = {
         cooldownRemainingSeconds: counterInterceptCooldown,
         summaryNl: 'Counter-intercept laat je recent verlies deels terughalen bij rival ops.',
         summaryEn: 'Counter-intercept lets you recover part of recent losses from rival ops.',
+      },
+      laneTheftCooldowns: {
+        car: stealCooldownCar,
+        motorcycle: stealCooldownMotorcycle,
+        boat: stealCooldownBoat,
       },
     };
   },

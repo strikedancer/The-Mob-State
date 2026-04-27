@@ -70,6 +70,16 @@ class _MarinaScreenState extends State<MarinaScreen> {
     super.dispose();
   }
 
+  String _stealButtonDisplayLabel() {
+    if (_stealCooldownSeconds <= 0) {
+      return AppLocalizations.of(context)!.stealBoat;
+    }
+    return formatAdaptiveDurationFromSeconds(
+      _stealCooldownSeconds,
+      localeName: Localizations.localeOf(context).languageCode,
+    );
+  }
+
   void _startStealCooldown(int seconds) {
     _stealCooldownTimer?.cancel();
     if (seconds <= 0) {
@@ -747,9 +757,9 @@ class _MarinaScreenState extends State<MarinaScreen> {
                       children: [
                         if (isSmall) ...[
                           Tooltip(
-                            message: AppLocalizations.of(context)!.stealBoat,
+                            message: _stealButtonDisplayLabel(),
                             child: InkWell(
-                              onTap: _isStealAttemptRunning
+                              onTap: _isStealAttemptRunning || _stealCooldownSeconds > 0
                                   ? null
                                   : () => _stealBoat(
                                       vehicleProvider,
@@ -763,13 +773,19 @@ class _MarinaScreenState extends State<MarinaScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Colors.lightBlue.shade300,
+                                    color: _stealCooldownSeconds > 0
+                                        ? Colors.grey
+                                        : Colors.lightBlue.shade300,
                                   ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Icon(
-                                  Icons.sailing,
-                                  color: Colors.lightBlue.shade300,
+                                  _stealCooldownSeconds > 0
+                                      ? Icons.timer
+                                      : Icons.sailing,
+                                  color: _stealCooldownSeconds > 0
+                                      ? Colors.grey
+                                      : Colors.lightBlue.shade300,
                                   size: 18,
                                 ),
                               ),
@@ -819,15 +835,18 @@ class _MarinaScreenState extends State<MarinaScreen> {
                           ),
                         ] else ...[
                           OutlinedButton.icon(
-                            onPressed: _isStealAttemptRunning
+                            onPressed: _isStealAttemptRunning || _stealCooldownSeconds > 0
                                 ? null
                                 : () =>
                                       _stealBoat(vehicleProvider, authProvider),
-                            icon: const Icon(Icons.sailing, size: 16),
-                            label: Text(
+                            icon: Icon(
                               _stealCooldownSeconds > 0
-                                  ? '${AppLocalizations.of(context)!.stealBoat} (${_stealCooldownSeconds}s)'
-                                  : AppLocalizations.of(context)!.stealBoat,
+                                  ? Icons.timer
+                                  : Icons.sailing,
+                              size: 16,
+                            ),
+                            label: Text(
+                              _stealButtonDisplayLabel(),
                             ),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.lightBlue.shade300,

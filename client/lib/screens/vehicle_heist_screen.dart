@@ -249,6 +249,14 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     return math.max(0, base - elapsed);
   }
 
+  int _liveStealCooldownForOperationLane(VehicleProvider provider, int tabIndex) {
+    final intel = provider.vehicleOpsIntelligence;
+    final map = intel?['laneTheftCooldowns'] as Map<String, dynamic>?;
+    if (map == null) return 0;
+    final type = _opsVehicleTypeForTab(tabIndex);
+    return _liveCooldownSeconds(map[type]);
+  }
+
   String _formatCooldown(int seconds) {
     if (seconds <= 0) return _tr('klaar', 'ready');
     return formatAdaptiveDurationFromSeconds(
@@ -708,6 +716,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final count = _countForTab(provider, tabIndex);
     final requiredRank = _requiredRankForTab(tabIndex);
     final laneType = _opsVehicleTypeForTab(tabIndex);
+    final stealRemaining = _liveStealCooldownForOperationLane(provider, tabIndex);
     final cap = _laneCapacities[laneType];
     final storedCap = cap?['stored'] ?? 0;
     final totalCap = cap?['total'] ?? 0;
@@ -858,19 +867,25 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 runSpacing: 8,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: _laneActionInProgress
+                    onPressed: _laneActionInProgress || stealRemaining > 0
                         ? null
                         : () => _runTileSteal(provider, tabIndex),
                     icon: Icon(
-                      tabIndex == 2 ? Icons.sailing : Icons.local_police,
+                      stealRemaining > 0
+                          ? Icons.timer
+                          : (tabIndex == 2
+                              ? Icons.sailing
+                              : Icons.local_police),
                       size: 14,
                     ),
                     label: Text(
-                      tabIndex == 2
-                          ? _tr('Steel boot', 'Steal boat')
-                          : tabIndex == 1
-                          ? _tr('Steel motor', 'Steal bike')
-                          : _tr('Steel auto', 'Steal car'),
+                      stealRemaining > 0
+                          ? _formatCooldown(stealRemaining)
+                          : (tabIndex == 2
+                              ? _tr('Steel boot', 'Steal boat')
+                              : tabIndex == 1
+                              ? _tr('Steel motor', 'Steal bike')
+                              : _tr('Steel auto', 'Steal car')),
                     ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: accent,

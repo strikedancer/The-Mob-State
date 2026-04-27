@@ -89,6 +89,14 @@ class _GarageScreenState extends State<GarageScreen> {
     super.dispose();
   }
 
+  String _stealButtonDisplayLabel() {
+    if (_stealCooldownSeconds <= 0) return _stealActionLabel;
+    return formatAdaptiveDurationFromSeconds(
+      _stealCooldownSeconds,
+      localeName: Localizations.localeOf(context).languageCode,
+    );
+  }
+
   void _startStealCooldown(int seconds) {
     _stealCooldownTimer?.cancel();
     if (seconds <= 0) {
@@ -794,9 +802,9 @@ class _GarageScreenState extends State<GarageScreen> {
                       children: [
                         if (isSmall) ...[
                           Tooltip(
-                            message: _stealActionLabel,
+                            message: _stealButtonDisplayLabel(),
                             child: InkWell(
-                              onTap: _isStealAttemptRunning
+                              onTap: _isStealAttemptRunning || _stealCooldownSeconds > 0
                                   ? null
                                   : () => _stealVehicle(
                                       vehicleProvider,
@@ -810,13 +818,19 @@ class _GarageScreenState extends State<GarageScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Colors.green.shade400,
+                                    color: _stealCooldownSeconds > 0
+                                        ? Colors.grey
+                                        : Colors.green.shade400,
                                   ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Icon(
-                                  Icons.drive_eta,
-                                  color: Colors.green.shade400,
+                                  _stealCooldownSeconds > 0
+                                      ? Icons.timer
+                                      : Icons.drive_eta,
+                                  color: _stealCooldownSeconds > 0
+                                      ? Colors.grey
+                                      : Colors.green.shade400,
                                   size: 18,
                                 ),
                               ),
@@ -866,20 +880,20 @@ class _GarageScreenState extends State<GarageScreen> {
                           ),
                         ] else ...[
                           OutlinedButton.icon(
-                            onPressed: _isStealAttemptRunning
+                            onPressed: _isStealAttemptRunning || _stealCooldownSeconds > 0
                                 ? null
                                 : () => _stealVehicle(
                                     vehicleProvider,
                                     authProvider,
                                   ),
                             icon: Icon(
-                              _isMotorTab ? Icons.two_wheeler : Icons.drive_eta,
+                              _stealCooldownSeconds > 0
+                                  ? Icons.timer
+                                  : (_isMotorTab ? Icons.two_wheeler : Icons.drive_eta),
                               size: 16,
                             ),
                             label: Text(
-                              _stealCooldownSeconds > 0
-                                  ? '$_stealActionLabel (${_stealCooldownSeconds}s)'
-                                  : _stealActionLabel,
+                              _stealButtonDisplayLabel(),
                             ),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.green.shade400,
