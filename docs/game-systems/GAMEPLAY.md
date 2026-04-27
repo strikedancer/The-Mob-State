@@ -35,11 +35,10 @@
 - Het dashboard gebruikt een noir/gold game-stijl met duidelijke panelen voor navigatie, status en quick actions.
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
 - Dashboard-baseline bevat economy-overzicht (cash/bank/crypto/assets/net worth), 24u cashflowtrend, 7d activiteit, operations-timers en notificatie/risico-indicatoren.
-- Het dashboard kan een compacte **“Wat nu?”** sectie tonen met 3–5 aanbevolen acties (op basis van cooldowns/operaties) zodat spelers sneller de volgende stap vinden.
 - Het dashboard kan daarnaast **Dagdoelen** tonen (claimable beloning in cash + XP) om dagelijkse terugkeer te stimuleren.
 - Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie.
 - Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
-- Het dashboard kan een **Sessie recap** tonen met de laatste events van deze sessie (handig om beloningen en voortgang direct terug te zien).
+- Het dashboard heeft een **Sessie recap** (icoon rechtsboven) met de laatste events van deze sessie (handig om beloningen en voortgang direct terug te zien).
 - Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim.
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
 
