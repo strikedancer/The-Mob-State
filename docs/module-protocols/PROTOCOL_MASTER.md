@@ -15,6 +15,7 @@ Doel:
 4. Doe een cross-module impact scan en open ook alle afhankelijke protocollen.
 5. Voer QA uit op primaire en afhankelijke modules.
 6. Als gedrag voor spelers verandert: update help-content en release-notes.
+7. **Afronding (code + docs wijzigen):** commit, push en bij live/VPS de standaard deploy (zie *Commit/Push/Deploy Standaardflow* hieronder). De AI-agent wacht hier niet op een aparte opdracht tenzij jij expliciet lokaal-only vroeg; projectregel staat in `.cursor/rules/commit-push-deploy.mdc`.
 
 ## Verplichte Protocol-Resolutie
 
@@ -310,6 +311,8 @@ Voor deze codebase geldt als standaard uitvoerflow na een functionele wijziging:
 
 Verplichte uitzonderingsregel:
 - Alleen afwijken van deze flow als de gebruiker expliciet aangeeft dat iets lokaal-only, zonder commit, zonder push of zonder deploy moet blijven.
+
+**Cursor / AI-agent (autonome afronding):** wacht niet op een aparte “commit / push / deploy”-vraag. Zodra een wijziging klaar en getest is, voer je deze standaardflow zelfstandig uit, tenzij de gebruiker expliciet anders vroeg of er niets te committen is. Vaste projectregel: `.cursor/rules/commit-push-deploy.mdc`.
 
 Fallback bij API validation errors:
 - Gebruik de fallback payload variant uit `generate_school_narcotics_images_leonardo.py` (latest main).

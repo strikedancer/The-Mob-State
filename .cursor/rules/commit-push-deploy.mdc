@@ -1,0 +1,23 @@
+---
+description: Default completion — commit, push, VPS deploy (PROTOCOL_MASTER)
+alwaysApply: true
+---
+
+# Commit, push en deploy (standaard)
+
+Na **elke afgeronde taak** die **getrackte** bestanden wijzigt (code, client, backend, docs, scripts, `.cursor`-regels):
+
+1. **`git status`** — alleen bestanden committen die bij de taak horen (geen losse `runtime/`-generatie of secrets tenzij de taak dat expliciet vroeg).
+2. **Commit** met duidelijke message (Conventional Commits waar passend).
+3. **`git push origin <huidige-branch>`** (meestal `main`).
+4. **Productie/VPS** — als de wijziging live moet gelden: vanaf de **projectroot** in PowerShell (Pageant + PuTTY-sessie zoals in `docs/module-protocols/PROTOCOL_MASTER.md`):
+
+   `.\scripts\vps_pull_and_build.ps1`
+
+   Niet de volledige `docker compose config`-output plakken (kan secrets bevatten); tail-logs zijn ok.
+
+**Uitzonderingen (alleen als de gebruiker het expliciet zegt):** lokaal-only, geen commit, geen push, of geen deploy. **Technische blokkade** (geen `plink`, geen netwerk): kort melden wat lokaal wél gedaan is en welke commando’s de gebruiker zelf moet draaien.
+
+**Niet** standaard deployen: puur lokale experimenten, of als de gebruiker alleen een vraag stelde zonder codewijziging.
+
+Zie ook: `docs/module-protocols/PROTOCOL_MASTER.md` → *Commit/Push/Deploy Standaardflow*.
