@@ -991,6 +991,7 @@ Bob: â‚¬300K counter-hit
 - Elke maand start een nieuwe ronde op de **1e** en eindigt op de **laatste dag** van de maand.
 - Je voert een **4-cijferige code** in en kiest een inzet (credits). **Elke poging kost credits**.
 - Je kunt de code ook invullen via het kluis **codepaneel** (cijferknoppen) op de pagina.
+- De kluis-bannerafbeelding wordt op web bij voorkeur geladen vanaf de externe image library (`/client/images/vault/vault_banner.png`) en valt terug op de meegebundelde app-asset als de externe image (nog) niet beschikbaar is.
 - Raad je de code goed, dan win je een prijs (credits; bij hogere inzet kan ook een VIP-prijs vallen). Als je al VIP bent wordt een VIP-prijs omgezet naar credits.
 - Foute codes worden bijgehouden in een lijst en resetten automatisch bij een nieuwe maandronde.
 - Als de server zonder migratie deployt, bootstrapt de backend de benodigde vault-tabellen bij startup zodat het systeem direct werkt.

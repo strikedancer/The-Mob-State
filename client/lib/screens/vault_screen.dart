@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../services/api_client.dart';
+import '../utils/web_asset_helper.dart';
 import '../utils/top_right_notification.dart';
 
 class VaultScreen extends StatefulWidget {
@@ -186,33 +187,46 @@ class _VaultScreenState extends State<VaultScreen> {
     final height = isSmall ? 190.0 : 220.0;
     final seasonWindow = _seasonWindowLabel();
 
-    final banner = ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Image.asset(
-        'assets/images/vault/vault_banner.png',
-        width: double.infinity,
-        height: height,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          // Fallback: keep the existing gradient look if the asset isn't present yet.
-          return Container(
-            width: double.infinity,
-            height: height,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color(0xFF0F0F12).withOpacity(0.94),
-                  const Color(0xFF1B1324).withOpacity(0.92),
-                  const Color(0xFF101820).withOpacity(0.9),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-          );
-        },
-      ),
-    );
+    // Prefer external image library path on web/prod (served via nginx),
+    // fall back to bundled Flutter asset.
+    final externalBannerUrl = Uri.base.resolve('/client/images/vault/vault_banner.png').toString();
+
+    Widget banner() {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.network(
+          externalBannerUrl,
+          width: double.infinity,
+          height: height,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return WebAssetHelper.image(
+              'assets/images/vault/vault_banner.png',
+              width: double.infinity,
+              height: height,
+              fit: BoxFit.cover,
+              errorBuilder: (ctx, err, st) {
+                return Container(
+                  width: double.infinity,
+                  height: height,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF0F0F12).withOpacity(0.94),
+                        const Color(0xFF1B1324).withOpacity(0.92),
+                        const Color(0xFF101820).withOpacity(0.9),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      );
+    }
 
     Widget keypadButton({
       required String label,
@@ -326,6 +340,10 @@ class _VaultScreenState extends State<VaultScreen> {
       ),
     );
 
+    final keypadWidth = isSmall ? 210.0 : 280.0;
+    final keypadTopPadding = isSmall ? 10.0 : 14.0;
+    final keypadRightPadding = isSmall ? 10.0 : 14.0;
+
     return Container(
       height: height,
       width: double.infinity,
@@ -345,7 +363,7 @@ class _VaultScreenState extends State<VaultScreen> {
       ),
       child: Stack(
         children: [
-          Positioned.fill(child: banner),
+          Positioned.fill(child: banner()),
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
@@ -397,29 +415,18 @@ class _VaultScreenState extends State<VaultScreen> {
               ],
             ],
           ),
-          if (!isSmall)
-            Positioned(
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(6),
-                child: SizedBox(width: 280, child: keypad),
+          Positioned(
+            right: keypadRightPadding,
+            top: keypadTopPadding,
+            bottom: keypadTopPadding,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: SizedBox(
+                width: keypadWidth,
+                child: keypad,
               ),
             ),
-          if (isSmall)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(6),
-                child: SizedBox(
-                  height: 220,
-                  child: keypad,
-                ),
-              ),
-            ),
+          ),
         ],
       ),
     );

@@ -43,6 +43,8 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Productie-nginx moet compatibele alias-routes kunnen bieden voor legacy imagepaden en external image mounts.
 - Bij Docker builds waar `assets/images/` is uitgesloten, moeten gedeclareerde assetdirectories vooraf aangemaakt worden.
 - Images kunnen runtime extern gemount zijn; deploy-flow moet image sync (`rsync` of equivalent) borgen vóór rebuild.
+- Voor hero-banners die ook als externe runtime image bestaan: probeer eerst de externe URL (bijv. `/client/images/...`) en val dan pas terug op de gebundelde asset (`WebAssetHelper.image(...)`), zodat PWA/web caching en nginx image mounts geen lege hero veroorzaken.
+- Voor touch-first gameplay met een on-screen keypad: positioneer het codepaneel als overlay **binnen** de hero/banner (`Stack` + `Positioned`) met clamped afmetingen, zodat het consistent “in de image” voelt op desktop én mobiel.
 - Premium/Credits tegelafbeeldingen die regelmatig wijzigen moeten onder externe runtime-opslag blijven (`runtime/client-images/premium_tiles/`) en in de client via `images/premium_tiles/...` worden aangesproken.
 - Voor Premium/Credits tegelafbeeldingen op web: gebruik een network fallback-keten met root-candidates (`/images/...`, `/assets/assets/images/...`, `/assets/images/...`) en cache-bust query zodat oudere 404-responses sneller herstellen na image-sync.
 - Voor Premium/Credits tegelafbeeldingen op web: geef directe network-load (`Image.network`) de voorkeur boven `Image.asset` fallback om ruis door `assets/assets/...` 404's te voorkomen wanneer images bewust extern gehost worden.

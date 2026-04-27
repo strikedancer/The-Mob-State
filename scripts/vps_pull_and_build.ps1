@@ -65,6 +65,9 @@ cd REMOTE_PROJECT_DIR
 cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M) || true
 test -f .env.plesk && cp .env.plesk .env.plesk.bak-$(date +%F-%H%M) || true
 git pull origin main
+# Keep external image library in sync for vault banner (served via /client/images).
+mkdir -p runtime/client-images/vault || true
+cp -f client/assets/images/vault/vault_banner.png runtime/client-images/vault/vault_banner.png || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client
