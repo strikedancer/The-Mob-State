@@ -40,6 +40,7 @@
 - Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie.
 - Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
 - Het dashboard kan een **Sessie recap** tonen met de laatste events van deze sessie (handig om beloningen en voortgang direct terug te zien).
+- Als claimen ooit mislukt, is dat een fout (niet “pech”): claims horen snel te committen en eventuele activity/recap logging gebeurt best-effort ná de claim.
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
 
 ### Live spelerevents

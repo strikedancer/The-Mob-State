@@ -239,7 +239,7 @@ export const dailyGoalsService = {
       throw err;
     }
 
-    return await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx) => {
       const existing = await tx.playerDailyGoalClaim.findFirst({
         where: { playerId, dateKey: key, goalKey },
         select: { id: true },
@@ -279,23 +279,6 @@ export const dailyGoalsService = {
         select: { money: true, xp: true, rank: true },
       });
 
-      // Best-effort activity log (outside tx would be fine, but keep it simple)
-      await activityService.logActivity(
-        playerId,
-        isWeekly ? 'WEEKLY_GOAL_CLAIM' : 'DAILY_GOAL_CLAIM',
-        `Claimed ${isWeekly ? 'weekly' : 'daily'} goal ${goalKey}`,
-        {
-          dateKey: key,
-          goalKey,
-          rewardCash: def.rewardCash,
-          rewardXp: def.rewardXp,
-          newMoney: updated.money,
-          newXp: updated.xp,
-          newRank: updated.rank,
-        },
-        false
-      );
-
       return {
         dateKey: key,
         goalKey,
@@ -306,6 +289,33 @@ export const dailyGoalsService = {
         rank: updated.rank,
       };
     });
+
+    // Best-effort activity log OUTSIDE the transaction to avoid tx timeouts.
+    try {
+      await activityService.logActivity(
+        playerId,
+        isWeekly ? 'WEEKLY_GOAL_CLAIM' : 'DAILY_GOAL_CLAIM',
+        `Claimed ${isWeekly ? 'weekly' : 'daily'} goal ${goalKey}`,
+        {
+          dateKey: result.dateKey,
+          goalKey,
+          rewardCash: def.rewardCash,
+          rewardXp: def.rewardXp,
+          newMoney: result.money,
+          newXp: result.xp,
+          newRank: result.rank,
+        },
+        false
+      );
+    } catch (error) {
+      console.error('[dailyGoalsService] activity log failed', {
+        playerId,
+        goalKey,
+        error,
+      });
+    }
+
+    return result;
   },
 };
 
