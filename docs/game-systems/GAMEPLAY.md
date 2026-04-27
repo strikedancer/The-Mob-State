@@ -993,6 +993,7 @@ Bob: â‚¬300K counter-hit
 - Raad je de code goed, dan win je een prijs (credits; bij hogere inzet kan ook een VIP-prijs vallen). Als je al VIP bent wordt een VIP-prijs omgezet naar credits.
 - Foute codes worden bijgehouden in een lijst en resetten automatisch bij een nieuwe maandronde.
 - Als de server zonder migratie deployt, bootstrapt de backend de benodigde vault-tabellen bij startup zodat het systeem direct werkt.
+- Na elke poging krijg je direct een melding rechtsboven (goed/fout/te weinig credits).
 
 ### Arrest Chances
 ```javascript

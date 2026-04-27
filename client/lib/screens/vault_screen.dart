@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../services/api_client.dart';
+import '../utils/top_right_notification.dart';
 
 class VaultScreen extends StatefulWidget {
   final bool embedded;
@@ -28,6 +29,20 @@ class _VaultScreenState extends State<VaultScreen> {
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
+
+  void _showTopMessage(String message, {required bool success}) {
+    if (!mounted) return;
+    showTopRightFromSnackBar(
+      context,
+      SnackBar(
+        content: Text(message),
+        backgroundColor: success ? Colors.green : Colors.orange,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.zero,
+        duration: const Duration(seconds: 4),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -107,6 +122,10 @@ class _VaultScreenState extends State<VaultScreen> {
     if (_submitting) return;
     final code = _codeController.text.trim();
     if (!RegExp(r'^\d{4}$').hasMatch(code)) {
+      _showTopMessage(
+        _tr('Voer een 4-cijferige code in.', 'Enter a 4-digit code.'),
+        success: false,
+      );
       setState(() {
         _message = _tr('Voer een 4-cijferige code in.', 'Enter a 4-digit code.');
         _messageSuccess = false;
@@ -125,9 +144,13 @@ class _VaultScreenState extends State<VaultScreen> {
       if (decoded['success'] == true) {
         final data = decoded['data'] as Map<String, dynamic>;
         final msg = _isNl ? (data['messageNl'] ?? '') : (data['messageEn'] ?? '');
+        final text =
+            msg.toString().trim().isNotEmpty ? msg.toString() : _tr('Gelukt.', 'Success.');
+        final isSuccess = data['correct'] == true;
+        _showTopMessage(text, success: isSuccess);
         setState(() {
-          _message = msg.toString().trim().isNotEmpty ? msg.toString() : _tr('Gelukt.', 'Success.');
-          _messageSuccess = data['correct'] == true;
+          _message = text;
+          _messageSuccess = isSuccess;
         });
         // Refresh status for updated balance + wrong codes
         await _loadStatus();
@@ -135,12 +158,20 @@ class _VaultScreenState extends State<VaultScreen> {
         final params = (decoded['params'] as Map<String, dynamic>?) ?? const {};
         final msgNl = params['messageNl']?.toString();
         final msgEn = params['messageEn']?.toString();
+        final text = _isNl
+            ? (msgNl ?? _tr('Mislukt.', 'Failed.'))
+            : (msgEn ?? _tr('Mislukt.', 'Failed.'));
+        _showTopMessage(text, success: false);
         setState(() {
-          _message = _isNl ? (msgNl ?? _tr('Mislukt.', 'Failed.')) : (msgEn ?? _tr('Mislukt.', 'Failed.'));
+          _message = text;
           _messageSuccess = false;
         });
       }
     } catch (_) {
+      _showTopMessage(
+        _tr('Mislukt. Probeer opnieuw.', 'Failed. Please try again.'),
+        success: false,
+      );
       setState(() {
         _message = _tr('Mislukt. Probeer opnieuw.', 'Failed. Please try again.');
         _messageSuccess = false;
