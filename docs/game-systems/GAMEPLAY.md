@@ -38,6 +38,7 @@
 - Het dashboard kan een compacte **“Wat nu?”** sectie tonen met 3–5 aanbevolen acties (op basis van cooldowns/operaties) zodat spelers sneller de volgende stap vinden.
 - Het dashboard kan daarnaast **Dagdoelen** tonen (claimable beloning in cash + XP) om dagelijkse terugkeer te stimuleren.
 - Het dashboard kan ook een compacte **Weekdoelen** voortgang tonen als extra mid-term motivatie.
+- Weekdoelen kun je openen via de Weekdoelen-kaart; als een weekdoel “Klaar” is kun je de beloning claimen.
 - Het dashboard kan een **Sessie recap** tonen met de laatste events van deze sessie (handig om beloningen en voortgang direct terug te zien).
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
 

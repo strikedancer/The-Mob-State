@@ -3035,10 +3035,15 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       });
       final decoded = jsonDecode(response.body) as Map<String, dynamic>;
       if (decoded['success'] == true) {
+        final isWeekly = goalKey.startsWith('weekly_');
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_tr('Dagdoel geclaimd!', 'Daily goal claimed!')),
+            content: Text(
+              isWeekly
+                  ? _tr('Weekdoel geclaimd!', 'Weekly goal claimed!')
+                  : _tr('Dagdoel geclaimd!', 'Daily goal claimed!'),
+            ),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
             margin: EdgeInsets.zero,
@@ -3046,6 +3051,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         );
         await _loadStats();
         await _loadDailyGoals();
+        await _loadWeeklyGoals();
         return;
       }
       final params = (decoded['params'] as Map<String, dynamic>?) ?? const {};
@@ -3243,24 +3249,183 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ? _tr('$claimable klaar om te claimen', '$claimable ready to claim')
         : _tr('$completed/$total voltooid', '$completed/$total completed');
 
+    void openWeeklyGoalsSheet() {
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) {
+          return SafeArea(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: const Color(0xFF141012).withOpacity(0.98),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.cyanAccent.withOpacity(0.35)),
+              ),
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(ctx).size.height * 0.75,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.emoji_events, color: Colors.cyanAccent),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          _tr('Weekdoelen', 'Weekly goals'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => Navigator.pop(ctx),
+                        icon: const Icon(Icons.close, color: Colors.white70),
+                        tooltip: _tr('Sluiten', 'Close'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: ListView(
+                      children: goals.whereType<Map>().map((raw) {
+                        final g = Map<String, dynamic>.from(raw);
+                        final key = g['key']?.toString() ?? '';
+                        final title = _isNl ? (g['titleNl'] ?? '') : (g['titleEn'] ?? '');
+                        final progress = (g['progress'] as num?)?.toInt() ?? 0;
+                        final target = (g['target'] as num?)?.toInt() ?? 0;
+                        final claimableLocal = g['claimable'] == true;
+                        final claimedLocal = g['claimed'] == true;
+                        final rewardCash = (g['rewardCash'] as num?)?.toInt() ?? 0;
+                        final rewardXp = (g['rewardXp'] as num?)?.toInt() ?? 0;
+                        final ratioLocal = target <= 0 ? 0.0 : (progress / target).clamp(0.0, 1.0);
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.white10),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        title.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                    ),
+                                    if (claimedLocal)
+                                      Text(
+                                        _tr('Geclaimd', 'Claimed'),
+                                        style: TextStyle(
+                                          color: Colors.greenAccent.withOpacity(0.9),
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 12,
+                                        ),
+                                      )
+                                    else if (claimableLocal)
+                                      Text(
+                                        _tr('Klaar', 'Ready'),
+                                        style: TextStyle(
+                                          color: Colors.cyanAccent.withOpacity(0.9),
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 12,
+                                        ),
+                                      )
+                                    else
+                                      Text(
+                                        '$progress/$target',
+                                        style: TextStyle(
+                                          color: Colors.white.withOpacity(0.75),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(999),
+                                  child: LinearProgressIndicator(
+                                    value: ratioLocal,
+                                    minHeight: 8,
+                                    backgroundColor: Colors.white.withOpacity(0.12),
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      claimableLocal
+                                          ? Colors.cyanAccent.withOpacity(0.9)
+                                          : Colors.cyanAccent.withOpacity(0.55),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        _tr(
+                                          'Beloning: +${formatCurrency(rewardCash)} en +$rewardXp XP',
+                                          'Reward: +${formatCurrency(rewardCash)} and +$rewardXp XP',
+                                        ),
+                                        style: TextStyle(
+                                          color: Colors.white.withOpacity(0.7),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    if (!claimedLocal)
+                                      OutlinedButton(
+                                        onPressed: claimableLocal && key.isNotEmpty
+                                            ? () => _claimDailyGoal(key)
+                                            : null,
+                                        style: OutlinedButton.styleFrom(
+                                          foregroundColor: Colors.white,
+                                          side: BorderSide(
+                                            color: (claimableLocal
+                                                    ? Colors.cyanAccent
+                                                    : Colors.white24)
+                                                .withOpacity(0.8),
+                                          ),
+                                        ),
+                                        child: Text(_tr('Claim', 'Claim')),
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: _panelDecoration(accent: Colors.cyanAccent),
       child: InkWell(
-        onTap: () {
-          // For now, weekly goals live under the same endpoint; keep UX simple by opening dashboard goals section.
-          showTopRightFromSnackBar(
-            context,
-            SnackBar(
-              content: Text(_tr('Weekdoelen worden hier binnenkort uitgebreid.', 'Weekly goals will be expanded here soon.')),
-              backgroundColor: const Color(0xFF1E3A8A),
-              behavior: SnackBarBehavior.floating,
-              margin: EdgeInsets.zero,
-              duration: const Duration(seconds: 3),
-            ),
-          );
-        },
+        onTap: openWeeklyGoalsSheet,
         borderRadius: BorderRadius.circular(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

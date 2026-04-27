@@ -42,11 +42,12 @@ router.post('/daily/claim', authenticate, async (req: AuthRequest, res: Response
     }
 
     const result = await dailyGoalsService.claimDailyGoal(playerId, goalKey);
+    const isWeekly = goalKey.startsWith('weekly_');
     return res.status(200).json({
       success: true,
       data: result,
-      messageNl: 'Dagdoel geclaimd!',
-      messageEn: 'Daily goal claimed!',
+      messageNl: isWeekly ? 'Weekdoel geclaimd!' : 'Dagdoel geclaimd!',
+      messageEn: isWeekly ? 'Weekly goal claimed!' : 'Daily goal claimed!',
     });
   } catch (error: any) {
     const code = String(error?.code ?? error?.message ?? '');
@@ -55,8 +56,8 @@ router.post('/daily/claim', authenticate, async (req: AuthRequest, res: Response
         success: false,
         event: 'daily_goal.not_complete',
         params: {
-          messageNl: 'Dit dagdoel is nog niet voltooid.',
-          messageEn: 'This daily goal is not complete yet.',
+          messageNl: 'Dit doel is nog niet voltooid.',
+          messageEn: 'This goal is not complete yet.',
         },
       });
     }
@@ -65,8 +66,8 @@ router.post('/daily/claim', authenticate, async (req: AuthRequest, res: Response
         success: false,
         event: 'daily_goal.already_claimed',
         params: {
-          messageNl: 'Dit dagdoel is al geclaimd.',
-          messageEn: 'This daily goal was already claimed.',
+          messageNl: 'Dit doel is al geclaimd.',
+          messageEn: 'This goal was already claimed.',
         },
       });
     }

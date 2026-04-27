@@ -227,8 +227,9 @@ export const dailyGoalsService = {
     }
 
     const now = new Date();
-    const from = startOfUtcDay(now);
-    const key = dateKeyUtc(now);
+    const isWeekly = def.key.startsWith('weekly_');
+    const from = isWeekly ? startOfUtcWeek(now) : startOfUtcDay(now);
+    const key = isWeekly ? weekKeyUtc(now) : dateKeyUtc(now);
     const progress = await computeProgress(playerId, from);
     const current = progress[goalKey] ?? 0;
     if (current < def.target) {
@@ -281,8 +282,8 @@ export const dailyGoalsService = {
       // Best-effort activity log (outside tx would be fine, but keep it simple)
       await activityService.logActivity(
         playerId,
-        'DAILY_GOAL_CLAIM',
-        `Claimed daily goal ${goalKey}`,
+        isWeekly ? 'WEEKLY_GOAL_CLAIM' : 'DAILY_GOAL_CLAIM',
+        `Claimed ${isWeekly ? 'weekly' : 'daily'} goal ${goalKey}`,
         {
           dateKey: key,
           goalKey,
