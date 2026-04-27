@@ -576,16 +576,18 @@ class _GarageScreenState extends State<GarageScreen> {
     final content = Stack(
       children: [
         _jailTime != null && _jailTime! > 0
-            ? JailOverlay(
-                remainingSeconds: _jailTime!,
-                wantedLevel: authProvider.currentPlayer?.wantedLevel,
-                embedded: true,
-                onReleased: () {
-                  setState(() {
-                    _jailTime = null;
-                  });
-                  _checkJailStatusAndLoadData();
-                },
+            ? Positioned.fill(
+                child: JailOverlay(
+                  remainingSeconds: _jailTime!,
+                  wantedLevel: authProvider.currentPlayer?.wantedLevel,
+                  embedded: true,
+                  onReleased: () {
+                    setState(() {
+                      _jailTime = null;
+                    });
+                    _checkJailStatusAndLoadData();
+                  },
+                ),
               )
             : widget.embedded
             ? _buildEmbeddedVehicleContent(vehicleProvider, authProvider)

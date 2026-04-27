@@ -345,15 +345,31 @@ class _JailOverlayState extends State<JailOverlay> {
             ? 640.0
             : 560.0;
 
-    final card = Card(
-      margin: cardMargin,
-      elevation: 12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      clipBehavior: Clip.antiAlias,
+    return LayoutBuilder(
+      builder: (context, tabConstraints) {
+        final isEmbedded = widget.embedded;
+        final fullScreenDefaultMaxH =
+            screenSize.height - (compactWidth ? 24 : 96);
+        // Embedded (dashboard / Vehicle Heist tab): use real tab height so we do
+        // not center a near-fullscreen card; pin header+timer to the top of the
+        // visible content. Otherwise the bottom half of the card was all users saw.
+        final maxCardH = isEmbedded
+            ? (tabConstraints.hasBoundedHeight && tabConstraints.maxHeight.isFinite
+                ? (tabConstraints.maxHeight - 4).clamp(200.0, 880.0)
+                : (screenSize.height * 0.5).clamp(260.0, 560.0))
+            : fullScreenDefaultMaxH;
+
+        final card = Card(
+          margin: isEmbedded
+              ? const EdgeInsets.symmetric(horizontal: 2, vertical: 0)
+              : cardMargin,
+          elevation: 12,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          clipBehavior: Clip.antiAlias,
       child: Container(
         constraints: BoxConstraints(
           maxWidth: maxCardWidth,
-          maxHeight: screenSize.height - (compactWidth ? 24 : 96),
+          maxHeight: maxCardH,
         ),
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -611,13 +627,25 @@ class _JailOverlayState extends State<JailOverlay> {
       ),
     );
 
-    if (widget.embedded) {
-      return Center(child: card);
+    if (isEmbedded) {
+      return Material(
+        color: Colors.transparent,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 6),
+            primary: false,
+            child: card,
+          ),
+        ),
+      );
     }
 
     return Scaffold(
       backgroundColor: Colors.black87,
       body: SafeArea(child: Center(child: card)),
+    );
+      },
     );
   }
 }
