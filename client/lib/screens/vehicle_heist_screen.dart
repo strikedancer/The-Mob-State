@@ -434,14 +434,18 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   }
 
   int _upgradeCostForTab(int tabIndex, VehicleProvider provider) {
-    final costs = [10000, 25000, 50000, 100000, 200000];
+    final costsGarage = [50000, 100000, 200000, 400000, 800000];
+    final costsMarina = [75000, 150000, 300000, 600000, 1200000];
     final type = _opsVehicleTypeForTab(tabIndex);
     final cached = _laneCapacities[type];
     final fallbackLevel = tabIndex == 2
         ? (provider.marinaStatus?.currentUpgradeLevel ?? 0)
         : (provider.garageStatus?.currentUpgradeLevel ?? 0);
     final currentLevel = cached?['level'] ?? fallbackLevel;
-    return currentLevel < costs.length ? costs[currentLevel] : 0;
+    if (tabIndex == 2) {
+      return currentLevel < costsMarina.length ? costsMarina[currentLevel] : 0;
+    }
+    return currentLevel < costsGarage.length ? costsGarage[currentLevel] : 0;
   }
 
   Future<void> _runTileSteal(VehicleProvider provider, int tabIndex) async {
@@ -531,7 +535,10 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           authProvider.currentPlayer?.currentCountry ?? 'netherlands';
       final success = tabIndex == 2
           ? await provider.upgradeMarina(country)
-          : await provider.upgradeGarage(country);
+          : await provider.upgradeGarage(
+              country,
+              garageTrack: tabIndex == 1 ? 'motorcycle' : 'car',
+            );
       if (success) {
         if (tabIndex == 2) {
           await provider.fetchMarinaStatus(country);
@@ -1031,23 +1038,24 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                     compact: true,
                     iconSize: 14,
                   ),
-                  OutlinedButton.icon(
-                    onPressed: _laneActionInProgress
-                        ? null
-                        : () => _runTileUpgrade(provider, tabIndex),
-                    icon: const Icon(Icons.upgrade, size: 14),
-                    label: Text(
-                      _tr(
-                        'Upgrade €${_upgradeCostForTab(tabIndex, provider)}',
-                        'Upgrade €${_upgradeCostForTab(tabIndex, provider)}',
+                  if (laneLevel < 5)
+                    OutlinedButton.icon(
+                      onPressed: _laneActionInProgress
+                          ? null
+                          : () => _runTileUpgrade(provider, tabIndex),
+                      icon: const Icon(Icons.upgrade, size: 14),
+                      label: Text(
+                        _tr(
+                          'Upgrade €${_upgradeCostForTab(tabIndex, provider)}',
+                          'Upgrade €${_upgradeCostForTab(tabIndex, provider)}',
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.amber.shade200,
+                        side: BorderSide(color: Colors.amber.shade400),
+                        visualDensity: VisualDensity.compact,
                       ),
                     ),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.amber.shade200,
-                      side: BorderSide(color: Colors.amber.shade400),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                  ),
                 ],
               ),
             ],

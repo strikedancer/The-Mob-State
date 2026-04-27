@@ -25,6 +25,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - Keep layout usable on mobile, tablet and desktop if this module is reachable in the dashboard shell.
 - Do not silently remove existing rewards, cooldowns or risk gates without updating help and release notes.
 - Car and motorcycle storage caps are separate by design: car theft checks garage car capacity, motorcycle theft checks motorcycle storage capacity.
+- Garage **upgrade levels** are **independent per track** (`car` vs `motorcycle`) per player per country: `garage_upgrades.track` + parallel capacity math (auto: basis `garages.capacity` + car-track bonus; motor: basis 2 slots + motorcycle-track bonus, +3 per level). `POST /garage/upgrade` accepts `garageTrack`. At max level (5) per track the client hides the upgrade control.
 - Vehicle Ops mechanics (hotspot run, crew op, parts market, category heat, chop contract, police pattern) must stay balanced as side loops and remain visible with clear feedback in Garage/Vehicle Heist UI.
 - Advanced ops mechanics (hotspot PvP intercept windows, crew-role modifiers, per-type ops reputation unlocks, regional blacklist locks, contraband insurance) must never silently bypass risk loops or cooldown pacing.
 - Vehicle Ops uitbreiding bevat ook counter-intercept recovery runs, crew matchmaking ladders per season, country modifiers, contracts board inclusief weekly legendary contracts en insurance dispute flows; deze moeten zichtbaar blijven in Garage/Vehicle Heist UX.
@@ -37,7 +38,7 @@ Vehicle inventory, steal flow, sorting, condition, fuel, timed repairs, country 
 - When a timed repair completes, the owner must receive a repair-ready push notification.
 - Available car and motorcycle catalog entries must expose country availability, value, rarity and world-cap information.
 - World-cap rotation must remain correct: when a vehicle is sold or scrapped, one slot reopens for theft.
-- Scrap system: players can scrap owned vehicles to get salvage value (35% of base value, scaled by condition and garage upgrade level). Scrapping must not be instant; it must trigger immediately but show clear feedback. Scrap price must respect garage upgrade multipliers (up to 20% bonus at max level).
+- Scrap system: players can scrap owned vehicles to get salvage value (35% of base value, scaled by condition and **the garage upgrade level of the same track** as the vehicle type). Scrapping must not be instant; it must trigger immediately but show clear feedback. Scrap price must respect garage upgrade multipliers (up to 20% bonus at max level).
 - Scrapping in this flow also yields category parts for TuneShop upgrades (car/motorcycle parts).
 - Keep event-only police vehicles disabled outside explicit event windows.
 - Target catalog scale for this module: at least 200 cars and a broad motorcycle set, spread from common to ultra-rare tiers.

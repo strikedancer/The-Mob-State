@@ -7,6 +7,14 @@ import prisma from '../lib/prisma';
 
 type GarageVehicleType = 'car' | 'motorcycle' | 'road';
 
+export type GarageUpgradeRow = {
+  track: string;
+  upgradeLevel: number;
+  capacityBonus: number;
+};
+
+export const GARAGE_MOTORCYCLE_BASE_SLOTS = 2;
+
 const normalizeGarageVehicleType = (value?: string): GarageVehicleType => {
   const normalized = (value ?? '').toString().trim().toLowerCase();
   if (normalized === 'motorcycle' || normalized === 'motor' || normalized === 'bike') {
@@ -18,48 +26,68 @@ const normalizeGarageVehicleType = (value?: string): GarageVehicleType => {
   return 'car';
 };
 
-const calculateMotorcycleCapacity = (carTotalCapacity: number): number => {
-  // Keep motorcycle storage meaningfully separate without exploding total economy capacity.
-  return Math.max(2, Math.ceil(carTotalCapacity * 0.4));
+export const normalizeGarageUpgradeTrack = (track?: string | null): 'car' | 'motorcycle' => {
+  const t = (track ?? 'car').toString().trim().toLowerCase();
+  return t === 'motorcycle' ? 'motorcycle' : 'car';
 };
 
-export const getGarageCapacities = (carTotalCapacity: number) => {
-  const motorcycleTotalCapacity = calculateMotorcycleCapacity(carTotalCapacity);
+export function pickLatestUpgradeForTrack(
+  upgrades: GarageUpgradeRow[],
+  target: 'car' | 'motorcycle',
+): GarageUpgradeRow | undefined {
+  const filtered = upgrades.filter((u) => normalizeGarageUpgradeTrack(u.track) === target);
+  if (filtered.length === 0) return undefined;
+  return filtered.reduce((a, b) => (a.upgradeLevel >= b.upgradeLevel ? a : b));
+}
+
+export function computeGarageSlotTotals(garage: {
+  capacity: number;
+  upgrades: GarageUpgradeRow[];
+}): {
+  carTotalCapacity: number;
+  motorcycleTotalCapacity: number;
+  roadTotalCapacity: number;
+  carUpgradeLevel: number;
+  motorcycleUpgradeLevel: number;
+} {
+  const carUp = pickLatestUpgradeForTrack(garage.upgrades, 'car');
+  const motoUp = pickLatestUpgradeForTrack(garage.upgrades, 'motorcycle');
+  const carBonus = carUp?.capacityBonus ?? 0;
+  const motoBonus = motoUp?.capacityBonus ?? 0;
+  const carTotalCapacity = garage.capacity + carBonus;
+  const motorcycleTotalCapacity = GARAGE_MOTORCYCLE_BASE_SLOTS + motoBonus;
   return {
     carTotalCapacity,
     motorcycleTotalCapacity,
     roadTotalCapacity: carTotalCapacity + motorcycleTotalCapacity,
+    carUpgradeLevel: carUp?.upgradeLevel ?? 0,
+    motorcycleUpgradeLevel: motoUp?.upgradeLevel ?? 0,
   };
-};
+}
+
+const CAR_UPGRADE_COSTS = [0, 50000, 100000, 200000, 400000, 800000];
 
 export const garageService = {
   /**
    * Get or create garage for player in a location
    */
   async getGarageStatus(playerId: number, location: string, vehicleType?: string) {
-    // Try to find existing garage
     let garage = await prisma.garage.findFirst({
       where: {
         playerId,
         location,
       },
       include: {
-        upgrades: {
-          orderBy: {
-            upgradeLevel: 'desc',
-          },
-          take: 1,
-        },
+        upgrades: true,
       },
     });
 
-    // Create garage if it doesn't exist
     if (!garage) {
       garage = await prisma.garage.create({
         data: {
           playerId,
           location,
-          capacity: 5, // Default capacity
+          capacity: 5,
         },
         include: {
           upgrades: true,
@@ -67,14 +95,9 @@ export const garageService = {
       });
     }
 
-    // Calculate total capacity (base + upgrades)
-    const upgradeBonus =
-      garage.upgrades.length > 0 ? garage.upgrades[0].capacityBonus : 0;
-    const totalCapacity = garage.capacity + upgradeBonus;
-
+    const caps = computeGarageSlotTotals(garage);
     const selectedType = normalizeGarageVehicleType(vehicleType);
 
-    // Get vehicles stored in this garage
     const storedVehicles = await prisma.vehicleInventory.findMany({
       where: {
         playerId,
@@ -84,68 +107,82 @@ export const garageService = {
     });
 
     const carStoredCount = storedVehicles.filter((v) => v.vehicleType === 'car').length;
-    const motorcycleStoredCount = storedVehicles.filter((v) => v.vehicleType === 'motorcycle').length;
-    const capacities = getGarageCapacities(totalCapacity);
+    const motorcycleStoredCount = storedVehicles.filter((v) => v.vehicleType === 'motorcycle')
+      .length;
 
-    const selectedStoredCount = selectedType === 'motorcycle'
-      ? motorcycleStoredCount
-      : selectedType === 'road'
-        ? (carStoredCount + motorcycleStoredCount)
-        : carStoredCount;
-    const selectedTotalCapacity = selectedType === 'motorcycle'
-      ? capacities.motorcycleTotalCapacity
-      : selectedType === 'road'
-        ? capacities.roadTotalCapacity
-        : capacities.carTotalCapacity;
+    const selectedStoredCount =
+      selectedType === 'motorcycle'
+        ? motorcycleStoredCount
+        : selectedType === 'road'
+          ? carStoredCount + motorcycleStoredCount
+          : carStoredCount;
+    const selectedTotalCapacity =
+      selectedType === 'motorcycle'
+        ? caps.motorcycleTotalCapacity
+        : selectedType === 'road'
+          ? caps.roadTotalCapacity
+          : caps.carTotalCapacity;
+
+    const currentUpgradeLevelForSelection =
+      selectedType === 'motorcycle' ? caps.motorcycleUpgradeLevel : caps.carUpgradeLevel;
 
     return {
       garageId: garage.id,
       capacity: selectedStoredCount,
       totalCapacity: selectedTotalCapacity,
-      currentUpgradeLevel: garage.upgrades.length > 0 ? garage.upgrades[0].upgradeLevel : 0,
+      currentUpgradeLevel: currentUpgradeLevelForSelection,
+      currentCarUpgradeLevel: caps.carUpgradeLevel,
+      currentMotorcycleUpgradeLevel: caps.motorcycleUpgradeLevel,
       storedCount: selectedStoredCount,
       selectedVehicleType: selectedType,
       carStoredCount,
       motorcycleStoredCount,
-      carTotalCapacity: capacities.carTotalCapacity,
-      motorcycleTotalCapacity: capacities.motorcycleTotalCapacity,
+      carTotalCapacity: caps.carTotalCapacity,
+      motorcycleTotalCapacity: caps.motorcycleTotalCapacity,
       roadStoredCount: carStoredCount + motorcycleStoredCount,
-      roadTotalCapacity: capacities.roadTotalCapacity,
+      roadTotalCapacity: caps.roadTotalCapacity,
       storedVehicles,
     };
   },
 
   /**
-   * Upgrade garage capacity
+   * Upgrade garage capacity for one track: car or motorcycle (independent levels, max 5 each).
    */
   async upgradeGarage(
     playerId: number,
-    location: string
+    location: string,
+    garageTrack: 'car' | 'motorcycle' = 'car',
   ): Promise<{
     newLevel: number;
     capacityBonus: number;
     upgradeCost: number;
     newMoney: number;
+    garageTrack: 'car' | 'motorcycle';
   }> {
-    // Get garage status
-    const status = await this.getGarageStatus(playerId, location);
-    const currentLevel = status.currentUpgradeLevel;
+    let garage = await prisma.garage.findFirst({
+      where: { playerId, location },
+      include: { upgrades: true },
+    });
 
-    // Max level is 5
+    if (!garage) {
+      garage = await prisma.garage.create({
+        data: { playerId, location, capacity: 5 },
+        include: { upgrades: true },
+      });
+    }
+
+    const caps = computeGarageSlotTotals(garage);
+    const currentLevel =
+      garageTrack === 'motorcycle' ? caps.motorcycleUpgradeLevel : caps.carUpgradeLevel;
+
     if (currentLevel >= 5) {
       throw new Error('MAX_UPGRADE_LEVEL');
     }
 
     const newLevel = currentLevel + 1;
+    const capacityBonus = garageTrack === 'motorcycle' ? newLevel * 3 : newLevel * 5;
+    const upgradeCost = CAR_UPGRADE_COSTS[newLevel];
 
-    // Calculate upgrade cost (increases with level)
-    const upgradeCosts = [0, 50000, 100000, 200000, 400000, 800000]; // Levels 0-5
-    const upgradeCost = upgradeCosts[newLevel];
-
-    // Calculate capacity bonus (each level adds +5 capacity)
-    const capacityBonus = newLevel * 5;
-
-    // Check player money
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       select: { money: true },
@@ -159,9 +196,7 @@ export const garageService = {
       throw new Error('INSUFFICIENT_FUNDS');
     }
 
-    // Use transaction
     const result = await prisma.$transaction(async (tx) => {
-      // Deduct money
       const updatedPlayer = await tx.player.update({
         where: { id: playerId },
         data: {
@@ -169,13 +204,13 @@ export const garageService = {
         },
       });
 
-      // Create upgrade record
       await tx.garageUpgrade.create({
         data: {
-          garageId: status.garageId,
+          garageId: garage.id,
           upgradeLevel: newLevel,
           capacityBonus,
           upgradeCost,
+          track: garageTrack,
         },
       });
 
@@ -184,6 +219,7 @@ export const garageService = {
         capacityBonus,
         upgradeCost,
         newMoney: updatedPlayer.money,
+        garageTrack,
       };
     });
 
@@ -194,7 +230,6 @@ export const garageService = {
    * Get or create marina for player in a location
    */
   async getMarinaStatus(playerId: number, location: string) {
-    // Try to find existing marina
     let marina = await prisma.marina.findFirst({
       where: {
         playerId,
@@ -210,13 +245,12 @@ export const garageService = {
       },
     });
 
-    // Create marina if it doesn't exist
     if (!marina) {
       marina = await prisma.marina.create({
         data: {
           playerId,
           location,
-          capacity: 3, // Default capacity
+          capacity: 3,
         },
         include: {
           upgrades: true,
@@ -224,12 +258,10 @@ export const garageService = {
       });
     }
 
-    // Calculate total capacity (base + upgrades)
     const upgradeBonus =
       marina.upgrades.length > 0 ? marina.upgrades[0].capacityBonus : 0;
     const totalCapacity = marina.capacity + upgradeBonus;
 
-    // Get boats stored in this marina
     const storedBoats = await prisma.vehicleInventory.findMany({
       where: {
         playerId,
@@ -253,32 +285,27 @@ export const garageService = {
    */
   async upgradeMarina(
     playerId: number,
-    location: string
+    location: string,
   ): Promise<{
     newLevel: number;
     capacityBonus: number;
     upgradeCost: number;
     newMoney: number;
   }> {
-    // Get marina status
     const status = await this.getMarinaStatus(playerId, location);
     const currentLevel = status.currentUpgradeLevel;
 
-    // Max level is 5
     if (currentLevel >= 5) {
       throw new Error('MAX_UPGRADE_LEVEL');
     }
 
     const newLevel = currentLevel + 1;
 
-    // Calculate upgrade cost (increases with level)
-    const upgradeCosts = [0, 75000, 150000, 300000, 600000, 1200000]; // Levels 0-5 (more expensive than garage)
+    const upgradeCosts = [0, 75000, 150000, 300000, 600000, 1200000];
     const upgradeCost = upgradeCosts[newLevel];
 
-    // Calculate capacity bonus (each level adds +3 capacity)
     const capacityBonus = newLevel * 3;
 
-    // Check player money
     const player = await prisma.player.findUnique({
       where: { id: playerId },
       select: { money: true },
@@ -292,9 +319,7 @@ export const garageService = {
       throw new Error('INSUFFICIENT_FUNDS');
     }
 
-    // Use transaction
     const result = await prisma.$transaction(async (tx) => {
-      // Deduct money
       const updatedPlayer = await tx.player.update({
         where: { id: playerId },
         data: {
@@ -302,7 +327,6 @@ export const garageService = {
         },
       });
 
-      // Create upgrade record
       await tx.marinaUpgrade.create({
         data: {
           marinaId: status.marinaId,

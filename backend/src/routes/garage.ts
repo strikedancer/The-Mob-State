@@ -5,6 +5,7 @@
 
 import { Router, Response } from 'express';
 import { authenticate, AuthRequest } from '../middleware/authenticate';
+import prisma from '../lib/prisma';
 import { garageService } from '../services/garageService';
 import {
   clearPlayerCrimeVehicle,
@@ -50,7 +51,7 @@ router.get('/status/:location', authenticate, async (req: AuthRequest, res: Resp
  */
 router.post('/upgrade', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const { location } = req.body;
+    const { location, garageTrack: rawTrack } = req.body;
 
     if (!location) {
       return res.status(400).json({
@@ -59,12 +60,18 @@ router.post('/upgrade', authenticate, async (req: AuthRequest, res: Response) =>
       });
     }
 
-    const result = await garageService.upgradeGarage(req.player!.id, location);
+    const normalized =
+      typeof rawTrack === 'string' && rawTrack.toLowerCase() === 'motorcycle'
+        ? 'motorcycle'
+        : 'car';
+
+    const result = await garageService.upgradeGarage(req.player!.id, location, normalized);
 
     return res.status(200).json({
       event: 'garage.upgraded',
       params: {
         location,
+        garageTrack: result.garageTrack,
         newLevel: result.newLevel,
         capacityBonus: result.capacityBonus,
         upgradeCost: result.upgradeCost,

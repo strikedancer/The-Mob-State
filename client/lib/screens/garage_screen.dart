@@ -847,48 +847,40 @@ class _GarageScreenState extends State<GarageScreen> {
                               iconSize: 18,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Tooltip(
-                            message: garageStatus.currentUpgradeLevel < 5
-                                ? AppLocalizations.of(
-                                    context,
-                                  )!.garageUpgradeWithCost(
-                                    _getUpgradeCost(
-                                      garageStatus.currentUpgradeLevel,
-                                    ).toString(),
-                                  )
-                                : AppLocalizations.of(context)!.garageMaxLevel,
-                            child: InkWell(
-                              onTap: garageStatus.currentUpgradeLevel < 5
-                                  ? () => _upgradeGarage(
-                                      vehicleProvider,
-                                      authProvider,
-                                    )
-                                  : null,
-                              borderRadius: BorderRadius.circular(6),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 6,
+                          if (garageStatus.currentUpgradeLevel < 5) ...[
+                            const SizedBox(width: 8),
+                            Tooltip(
+                              message: AppLocalizations.of(
+                                context,
+                              )!.garageUpgradeWithCost(
+                                _getUpgradeCost(
+                                  garageStatus.currentUpgradeLevel,
+                                ).toString(),
+                              ),
+                              child: InkWell(
+                                onTap: () => _upgradeGarage(
+                                  vehicleProvider,
+                                  authProvider,
                                 ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: garageStatus.currentUpgradeLevel < 5
-                                        ? goldColor
-                                        : Colors.grey,
+                                borderRadius: BorderRadius.circular(6),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
                                   ),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Icon(
-                                  Icons.upgrade,
-                                  color: garageStatus.currentUpgradeLevel < 5
-                                      ? goldColor
-                                      : Colors.grey,
-                                  size: 18,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: goldColor),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Icon(
+                                    Icons.upgrade,
+                                    color: goldColor,
+                                    size: 18,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ] else ...[
                           TheftCooldownStealControl(
                             cooldownActive: _stealCooldownSeconds > 0,
@@ -916,37 +908,33 @@ class _GarageScreenState extends State<GarageScreen> {
                             boltTooltip: _garageBoltTooltip(),
                             iconSize: 16,
                           ),
-                          const SizedBox(width: 8),
-                          OutlinedButton.icon(
-                            onPressed: garageStatus.currentUpgradeLevel < 5
-                                ? () => _upgradeGarage(
-                                    vehicleProvider,
-                                    authProvider,
-                                  )
-                                : null,
-                            icon: const Icon(Icons.upgrade, size: 16),
-                            label: Text(
-                              garageStatus.currentUpgradeLevel < 5
-                                  ? AppLocalizations.of(
-                                      context,
-                                    )!.garageUpgradeWithCost(
-                                      _getUpgradeCost(
-                                        garageStatus.currentUpgradeLevel,
-                                      ).toString(),
-                                    )
-                                  : AppLocalizations.of(
-                                      context,
-                                    )!.garageMaxLevel,
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: goldColor,
-                              side: const BorderSide(color: goldColor),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
+                          if (garageStatus.currentUpgradeLevel < 5) ...[
+                            const SizedBox(width: 8),
+                            OutlinedButton.icon(
+                              onPressed: () => _upgradeGarage(
+                                vehicleProvider,
+                                authProvider,
+                              ),
+                              icon: const Icon(Icons.upgrade, size: 16),
+                              label: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.garageUpgradeWithCost(
+                                  _getUpgradeCost(
+                                    garageStatus.currentUpgradeLevel,
+                                  ).toString(),
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: goldColor,
+                                side: const BorderSide(color: goldColor),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ],
                       ],
                     ),
@@ -1072,7 +1060,7 @@ class _GarageScreenState extends State<GarageScreen> {
   }
 
   int _getUpgradeCost(int currentLevel) {
-    final costs = [10000, 25000, 50000, 100000, 200000];
+    final costs = [50000, 100000, 200000, 400000, 800000];
     return currentLevel < costs.length ? costs[currentLevel] : 0;
   }
 
@@ -1449,7 +1437,10 @@ class _GarageScreenState extends State<GarageScreen> {
   ) async {
     final currentCountry =
         authProvider.currentPlayer?.currentCountry ?? 'netherlands';
-    final success = await provider.upgradeGarage(currentCountry);
+    final success = await provider.upgradeGarage(
+      currentCountry,
+      garageTrack: _isMotorTab ? 'motorcycle' : 'car',
+    );
 
     if (!mounted) return;
 

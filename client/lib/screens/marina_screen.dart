@@ -802,48 +802,40 @@ class _MarinaScreenState extends State<MarinaScreen> {
                               iconSize: 18,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Tooltip(
-                            message: marinaStatus.currentUpgradeLevel < 5
-                                ? AppLocalizations.of(
-                                    context,
-                                  )!.marinaUpgradeWithCost(
-                                    _getUpgradeCost(
-                                      marinaStatus.currentUpgradeLevel,
-                                    ).toString(),
-                                  )
-                                : AppLocalizations.of(context)!.marinaMaxLevel,
-                            child: InkWell(
-                              onTap: marinaStatus.currentUpgradeLevel < 5
-                                  ? () => _upgradeMarina(
-                                      vehicleProvider,
-                                      authProvider,
-                                    )
-                                  : null,
-                              borderRadius: BorderRadius.circular(6),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 6,
+                          if (marinaStatus.currentUpgradeLevel < 5) ...[
+                            const SizedBox(width: 8),
+                            Tooltip(
+                              message: AppLocalizations.of(
+                                context,
+                              )!.marinaUpgradeWithCost(
+                                _getUpgradeCost(
+                                  marinaStatus.currentUpgradeLevel,
+                                ).toString(),
+                              ),
+                              child: InkWell(
+                                onTap: () => _upgradeMarina(
+                                  vehicleProvider,
+                                  authProvider,
                                 ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: marinaStatus.currentUpgradeLevel < 5
-                                        ? goldColor
-                                        : Colors.grey,
+                                borderRadius: BorderRadius.circular(6),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
                                   ),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Icon(
-                                  Icons.upgrade,
-                                  color: marinaStatus.currentUpgradeLevel < 5
-                                      ? goldColor
-                                      : Colors.grey,
-                                  size: 18,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: goldColor),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Icon(
+                                    Icons.upgrade,
+                                    color: goldColor,
+                                    size: 18,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ] else ...[
                           TheftCooldownStealControl(
                             cooldownActive: _stealCooldownSeconds > 0,
@@ -867,37 +859,33 @@ class _MarinaScreenState extends State<MarinaScreen> {
                             boltTooltip: _marinaBoltTooltip(),
                             iconSize: 16,
                           ),
-                          const SizedBox(width: 8),
-                          OutlinedButton.icon(
-                            onPressed: marinaStatus.currentUpgradeLevel < 5
-                                ? () => _upgradeMarina(
-                                    vehicleProvider,
-                                    authProvider,
-                                  )
-                                : null,
-                            icon: const Icon(Icons.upgrade, size: 16),
-                            label: Text(
-                              marinaStatus.currentUpgradeLevel < 5
-                                  ? AppLocalizations.of(
-                                      context,
-                                    )!.marinaUpgradeWithCost(
-                                      _getUpgradeCost(
-                                        marinaStatus.currentUpgradeLevel,
-                                      ).toString(),
-                                    )
-                                  : AppLocalizations.of(
-                                      context,
-                                    )!.marinaMaxLevel,
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: goldColor,
-                              side: const BorderSide(color: goldColor),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
+                          if (marinaStatus.currentUpgradeLevel < 5) ...[
+                            const SizedBox(width: 8),
+                            OutlinedButton.icon(
+                              onPressed: () => _upgradeMarina(
+                                vehicleProvider,
+                                authProvider,
+                              ),
+                              icon: const Icon(Icons.upgrade, size: 16),
+                              label: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.marinaUpgradeWithCost(
+                                  _getUpgradeCost(
+                                    marinaStatus.currentUpgradeLevel,
+                                  ).toString(),
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: goldColor,
+                                side: const BorderSide(color: goldColor),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ],
                       ],
                     ),
@@ -1026,7 +1014,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
   }
 
   int _getUpgradeCost(int currentLevel) {
-    final costs = [10000, 25000, 50000, 100000, 200000];
+    final costs = [75000, 150000, 300000, 600000, 1200000];
     return currentLevel < costs.length ? costs[currentLevel] : 0;
   }
 

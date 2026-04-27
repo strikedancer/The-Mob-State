@@ -141,6 +141,10 @@ GarageStatus _$GarageStatusFromJson(Map<String, dynamic> json) => GarageStatus(
   capacity: (json['capacity'] as num).toInt(),
   totalCapacity: (json['totalCapacity'] as num).toInt(),
   currentUpgradeLevel: (json['currentUpgradeLevel'] as num).toInt(),
+  currentCarUpgradeLevel:
+      (json['currentCarUpgradeLevel'] as num?)?.toInt() ?? 0,
+  currentMotorcycleUpgradeLevel:
+      (json['currentMotorcycleUpgradeLevel'] as num?)?.toInt() ?? 0,
   storedCount: (json['storedCount'] as num).toInt(),
   storedVehicles: (json['storedVehicles'] as List<dynamic>)
       .map((e) => VehicleInventoryItem.fromJson(e as Map<String, dynamic>))
@@ -153,6 +157,8 @@ Map<String, dynamic> _$GarageStatusToJson(GarageStatus instance) =>
       'capacity': instance.capacity,
       'totalCapacity': instance.totalCapacity,
       'currentUpgradeLevel': instance.currentUpgradeLevel,
+      'currentCarUpgradeLevel': instance.currentCarUpgradeLevel,
+      'currentMotorcycleUpgradeLevel': instance.currentMotorcycleUpgradeLevel,
       'storedCount': instance.storedCount,
       'storedVehicles': instance.storedVehicles,
     };

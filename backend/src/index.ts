@@ -15,6 +15,7 @@ import { ensureCrewWarSchema } from './startup/ensureCrewWarSchema';
 import { ensureTerritorySchema } from './startup/ensureTerritorySchema';
 import { ensureCooldownSchema } from './startup/ensureCooldownSchema';
 import { ensureCrewMissionSchema } from './startup/ensureCrewMissionSchema';
+import { ensureGarageMotorcycleTrackBackfill } from './startup/ensureGarageMotorcycleTrackBackfill';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
 import fs from 'fs';
@@ -53,6 +54,7 @@ async function startServer() {
   await ensureTerritorySchema();
   await ensureCooldownSchema();
   await ensureCrewMissionSchema();
+  await ensureGarageMotorcycleTrackBackfill();
   await ensureGameEventPresets();
 
   // Capture runtime errors into persistent system logs for admin monitoring

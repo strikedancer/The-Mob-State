@@ -1242,9 +1242,12 @@ model GarageUpgrade {
   capacityBonus Int      @default(5)
   upgradeCost   Int
   upgradedAt    DateTime @default(now())
+  /// car | motorcycle — losse upgrade-lijnen per voertuigtype
+  track         String   @default("car") @db.VarChar(20)
   garage        Garage   @relation(fields: [garageId], references: [id], onDelete: Cascade)
 
   @@index([garageId])
+  @@index([garageId, track])
   @@map("garage_upgrades")
 }
 

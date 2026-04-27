@@ -1133,6 +1133,7 @@ const List<HelpTopic> helpTopics = [
     howNl: [
       'Je garage toont auto\'s en motoren met conditie (0-100%), brandstof, marktwaarde, zeldzaamheid en world-cap status.',
       'Auto-opslag en motor-opslag zijn nu gescheiden: auto\'s gebruiken garagecapaciteit, motoren gebruiken motorstallingcapaciteit.',
+      'Opslag-upgrades voor auto en motor zijn onafhankelijk per land: een autoupgrade telt niet mee voor motorcapaciteit (en omgekeerd). Bij niveau 5 verdwijnt de upgrade-knop.',
       'Via de catalogus-knop zie je alle steelbare auto\'s en motoren, inclusief in welk land ze het meest voorkomen en in welke landen ze kunnen spawnen.',
       'Diefstal werkt per voertuig met rank-eisen en cooldown. Hoe duurder en zeldzamer, hoe lager de kans op succes.',
       'Als de world-cap van een model vol is, kun je dat model tijdelijk niet stelen. Bij verkoop of sloop van dat model komt er direct weer 1 slot vrij.',
@@ -1161,6 +1162,7 @@ const List<HelpTopic> helpTopics = [
     howEn: [
       'Your garage shows cars and motorcycles with condition (0-100%), fuel, market value, rarity and world-cap status.',
       'Car storage and motorcycle storage are now separated: cars use garage capacity, motorcycles use motorcycle storage capacity.',
+      'Car and motorcycle storage upgrades are independent per country: upgrading cars does not increase motorcycle capacity (and vice versa). At level 5 the upgrade button is hidden.',
       'Using the catalog button you can view all stealable cars and motorcycles, including their most common country and full spawn country list.',
       'Theft is per vehicle with rank requirements and cooldowns. The more expensive and rare, the lower your success chance.',
       'If a model world-cap is full, you cannot steal that model temporarily. When a copy is sold or scrapped, 1 slot reopens immediately.',

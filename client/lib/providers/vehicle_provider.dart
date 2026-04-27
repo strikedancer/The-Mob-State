@@ -958,14 +958,22 @@ class VehicleProvider with ChangeNotifier {
     }
   }
 
-  /// Upgrade garage
-  Future<bool> upgradeGarage(String location) async {
+  /// Upgrade garage ([garageTrack]: car | motorcycle — onafhankelijke upgrade-lijnen)
+  Future<bool> upgradeGarage(
+    String location, {
+    String garageTrack = 'car',
+  }) async {
     try {
+      final normalizedTrack =
+          garageTrack.toLowerCase() == 'motorcycle' ? 'motorcycle' : 'car';
       final headers = await _getHeaders();
       final response = await http.post(
         Uri.parse('$baseUrl/garage/upgrade'),
         headers: headers,
-        body: json.encode({'location': location}),
+        body: json.encode({
+          'location': location,
+          'garageTrack': normalizedTrack,
+        }),
       );
 
       final data = json.decode(response.body);

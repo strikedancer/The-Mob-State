@@ -14,7 +14,7 @@ import { notificationService } from './notificationService';
 import { applyReputationAction } from './reputationService';
 import { economyBalanceService } from './economyBalanceService';
 import { checkAndUnlockAchievements, serializeAchievementForClient } from './achievementService';
-import { getGarageCapacities } from './garageService';
+import { computeGarageSlotTotals, pickLatestUpgradeForTrack } from './garageService';
 
 const COUNTRY_ALIASES: Record<string, string> = {
   united_kingdom: 'uk',
@@ -3496,10 +3496,7 @@ export const vehicleService = {
           location: player.currentCountry!,
         },
         include: {
-          upgrades: {
-            orderBy: { upgradeLevel: 'desc' },
-            take: 1,
-          },
+          upgrades: true,
         },
       });
 
@@ -3510,9 +3507,7 @@ export const vehicleService = {
         };
       }
 
-      const capacityBonus = garage.upgrades[0]?.capacityBonus || 0;
-      const carTotalCapacity = garage.capacity + capacityBonus;
-      const { motorcycleTotalCapacity } = getGarageCapacities(carTotalCapacity);
+      const { carTotalCapacity, motorcycleTotalCapacity } = computeGarageSlotTotals(garage);
 
       const currentVehicleCountForType = await prisma.vehicleInventory.count({
         where: {
@@ -4150,13 +4145,14 @@ export const vehicleService = {
           location: inventoryItem.currentLocation ?? undefined,
         },
         include: {
-          upgrades: {
-            orderBy: { upgradeLevel: 'desc' },
-            take: 1,
-          },
+          upgrades: true,
         },
       });
-      facilityUpgradeLevel = garage?.upgrades[0]?.upgradeLevel ?? 0;
+      const gTrack = vehicleType === 'motorcycle' ? 'motorcycle' : 'car';
+      facilityUpgradeLevel =
+        garage && garage.upgrades.length > 0
+          ? pickLatestUpgradeForTrack(garage.upgrades, gTrack)?.upgradeLevel ?? 0
+          : 0;
     }
 
     const conditionMultiplier = Math.max(0.1, (inventoryItem.condition || 0) / 100);
@@ -4512,13 +4508,17 @@ export const vehicleService = {
           location: vehicle.currentLocation ?? player.currentCountry ?? undefined,
         },
         include: {
-          upgrades: {
-            orderBy: { upgradeLevel: 'desc' },
-            take: 1,
-          },
+          upgrades: true,
         },
       });
-      facilityUpgradeLevel = garage?.upgrades[0]?.upgradeLevel ?? 0;
+      const gTrack =
+        normalizeVehicleType(vehicle.vehicleType) === 'motorcycle'
+          ? 'motorcycle'
+          : 'car';
+      facilityUpgradeLevel =
+        garage && garage.upgrades.length > 0
+          ? pickLatestUpgradeForTrack(garage.upgrades, gTrack)?.upgradeLevel ?? 0
+          : 0;
     }
 
     const baseRepairSeconds = repairDurationSecondsForVehicle(vehicleDef, currentCondition);
