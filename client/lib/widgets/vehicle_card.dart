@@ -187,6 +187,33 @@ class VehicleCard extends StatelessWidget {
                               ),
                               child: _buildPlaceholder(),
                             ),
+                      Positioned(
+                        left: 8,
+                        top: 8,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isSmallScreen ? 7 : 8,
+                            vertical: isSmallScreen ? 3 : 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.52),
+                            borderRadius: BorderRadius.circular(999),
+                            border: Border.all(
+                              color: _rarityColor(rarity).withOpacity(0.95),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            _rarityLabel(context, rarity),
+                            style: TextStyle(
+                              color: _rarityColor(rarity),
+                              fontWeight: FontWeight.w800,
+                              fontSize: isSmallScreen ? 10 : 11,
+                              letterSpacing: 0.2,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -272,29 +299,6 @@ class VehicleCard extends StatelessWidget {
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 6),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _rarityColor(rarity).withOpacity(0.16),
-                      borderRadius: BorderRadius.circular(999),
-                      border: Border.all(color: _rarityColor(rarity)),
-                    ),
-                    child: Text(
-                      _rarityLabel(context, rarity),
-                      style: TextStyle(
-                        color: _rarityColor(rarity),
-                        fontWeight: FontWeight.w700,
-                        fontSize: isSmallScreen ? 11 : 12,
-                      ),
-                    ),
-                  ),
                 ),
                 SizedBox(height: isSmallScreen ? 6 : 10),
 
