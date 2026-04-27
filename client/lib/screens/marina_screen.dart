@@ -23,12 +23,14 @@ class MarinaScreen extends StatefulWidget {
     this.titleOverride,
     this.hideEmbeddedHeaderActions = false,
     this.hideEmbeddedCapacityHeader = false,
+    this.suppressJailOverlay = false,
   });
 
   final bool embedded;
   final String? titleOverride;
   final bool hideEmbeddedHeaderActions;
   final bool hideEmbeddedCapacityHeader;
+  final bool suppressJailOverlay;
 
   @override
   State<MarinaScreen> createState() => _MarinaScreenState();
@@ -548,7 +550,7 @@ class _MarinaScreenState extends State<MarinaScreen> {
 
     final content = Stack(
       children: [
-        _jailTime != null && _jailTime! > 0
+        _jailTime != null && _jailTime! > 0 && !widget.suppressJailOverlay
             ? Positioned.fill(
                 child: JailOverlay(
                   remainingSeconds: _jailTime!,

@@ -9,9 +9,11 @@ import '../models/vehicle.dart';
 import '../providers/auth_provider.dart';
 import '../providers/vehicle_provider.dart';
 import '../services/api_client.dart';
+import '../services/jail_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/cooldown_overlay.dart';
+import '../widgets/jail_screen.dart';
 import '../widgets/overlay_image.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
@@ -33,6 +35,7 @@ class VehicleHeistScreen extends StatefulWidget {
 class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     with SingleTickerProviderStateMixin {
   final ApiClient _apiClient = ApiClient();
+  final JailService _jailService = JailService();
   late final TabController _tabController;
   int _activeTabIndex = 0;
   bool _opsActionInProgress = false;
@@ -43,6 +46,8 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   bool _showStealCooldownOverlay = false;
   int _stealCooldownOverlaySeconds = 0;
   String _stealCooldownActionType = 'vehicle_theft';
+  int? _embeddedJailSeconds;
+  int _jailContentEpoch = 0;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
@@ -70,11 +75,17 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshOpsIntelligence();
       _refreshLaneCapacities();
+      if (widget.embedded) {
+        unawaited(_refreshEmbeddedJailStatus());
+      }
     });
     _opsTicker = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!mounted) return;
       if (timer.tick % 15 == 0 && !_opsActionInProgress) {
         _refreshOpsIntelligence();
+      }
+      if (widget.embedded && timer.tick % 30 == 0) {
+        unawaited(_refreshEmbeddedJailStatus());
       }
       setState(() {});
     });
@@ -286,6 +297,28 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         ..clear()
         ..addAll(updated);
     });
+  }
+
+  /// When embedded in the dashboard, [JailOverlay] must live here — not inside
+  /// the tab [NestedScrollView] body — or it appears below the ops header slivers.
+  Future<void> _refreshEmbeddedJailStatus() async {
+    if (!widget.embedded) return;
+    final jailTime = await _jailService.checkJailStatus();
+    if (!mounted) return;
+    if (jailTime > 0) {
+      final authProvider = context.read<AuthProvider>();
+      await authProvider.refreshPlayer();
+      if (!mounted) return;
+      setState(() {
+        _embeddedJailSeconds = jailTime;
+      });
+      return;
+    }
+    if (_embeddedJailSeconds != null) {
+      setState(() {
+        _embeddedJailSeconds = null;
+      });
+    }
   }
 
   int _liveCooldownSeconds(dynamic rawSeconds) {
@@ -746,30 +779,34 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   }
 
   Widget _buildTabContent() {
+    final epoch = _jailContentEpoch.toString();
     switch (_activeTabIndex) {
       case 0:
-        return const GarageScreen(
-          key: ValueKey<String>('vehicle-tab-car'),
+        return GarageScreen(
+          key: ValueKey<String>('vehicle-tab-car-$epoch'),
           embedded: true,
           vehicleType: 'car',
           hideEmbeddedHeaderActions: true,
           hideEmbeddedCapacityHeader: true,
+          suppressJailOverlay: widget.embedded,
         );
       case 1:
-        return const GarageScreen(
-          key: ValueKey<String>('vehicle-tab-motorcycle'),
+        return GarageScreen(
+          key: ValueKey<String>('vehicle-tab-motorcycle-$epoch'),
           embedded: true,
           vehicleType: 'motorcycle',
           hideEmbeddedHeaderActions: true,
           hideEmbeddedCapacityHeader: true,
+          suppressJailOverlay: widget.embedded,
         );
       case 2:
       default:
-        return const MarinaScreen(
-          key: ValueKey<String>('vehicle-tab-boat'),
+        return MarinaScreen(
+          key: ValueKey<String>('vehicle-tab-boat-$epoch'),
           embedded: true,
           hideEmbeddedHeaderActions: true,
           hideEmbeddedCapacityHeader: true,
+          suppressJailOverlay: widget.embedded,
         );
     }
   }
@@ -1893,6 +1930,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   Widget build(BuildContext context) {
     final content = Consumer<VehicleProvider>(
       builder: (context, provider, _) {
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
         final header = Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
@@ -2015,7 +2053,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
             );
           },
           child: KeyedSubtree(
-            key: ValueKey<int>(_activeTabIndex),
+            key: ValueKey<String>('heist-tab-$_activeTabIndex-$_jailContentEpoch'),
             child: _buildTabContent(),
           ),
         );
@@ -2079,6 +2117,23 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                       ),
                     ),
                   ),
+                ),
+              ),
+            if (widget.embedded &&
+                _embeddedJailSeconds != null &&
+                _embeddedJailSeconds! > 0)
+              Positioned.fill(
+                child: JailOverlay(
+                  remainingSeconds: _embeddedJailSeconds!,
+                  wantedLevel: authProvider.currentPlayer?.wantedLevel,
+                  embedded: true,
+                  onReleased: () {
+                    if (!mounted) return;
+                    setState(() {
+                      _embeddedJailSeconds = null;
+                      _jailContentEpoch++;
+                    });
+                  },
                 ),
               ),
           ],

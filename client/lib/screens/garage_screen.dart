@@ -24,6 +24,7 @@ class GarageScreen extends StatefulWidget {
     this.titleOverride,
     this.hideEmbeddedHeaderActions = false,
     this.hideEmbeddedCapacityHeader = false,
+    this.suppressJailOverlay = false,
   });
 
   final bool embedded;
@@ -31,6 +32,9 @@ class GarageScreen extends StatefulWidget {
   final String? titleOverride;
   final bool hideEmbeddedHeaderActions;
   final bool hideEmbeddedCapacityHeader;
+  /// When true, jail UI is shown by a parent (e.g. [VehicleHeistScreen]) so it
+  /// is not stuck below `NestedScrollView` headers.
+  final bool suppressJailOverlay;
 
   @override
   State<GarageScreen> createState() => _GarageScreenState();
@@ -575,7 +579,7 @@ class _GarageScreenState extends State<GarageScreen> {
 
     final content = Stack(
       children: [
-        _jailTime != null && _jailTime! > 0
+        _jailTime != null && _jailTime! > 0 && !widget.suppressJailOverlay
             ? Positioned.fill(
                 child: JailOverlay(
                   remainingSeconds: _jailTime!,
