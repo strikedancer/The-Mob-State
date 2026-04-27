@@ -32,6 +32,45 @@ class VehicleCard extends StatelessWidget {
     this.isSelectedForCrimes = false,
   });
 
+  String _tr(BuildContext context, String nl, String en) {
+    final lang = Localizations.localeOf(context).languageCode;
+    return lang == 'nl' ? nl : en;
+  }
+
+  Color _rarityColor(String rarity) {
+    switch (rarity) {
+      case 'common':
+        return Colors.grey.shade400;
+      case 'uncommon':
+        return Colors.green.shade400;
+      case 'rare':
+        return Colors.blue.shade300;
+      case 'epic':
+        return Colors.purple.shade300;
+      case 'legendary':
+        return Colors.amber.shade300;
+      default:
+        return Colors.white70;
+    }
+  }
+
+  String _rarityLabel(BuildContext context, String rarity) {
+    switch (rarity) {
+      case 'common':
+        return _tr(context, 'Gewoon', 'Common');
+      case 'uncommon':
+        return _tr(context, 'Ongewoon', 'Uncommon');
+      case 'rare':
+        return _tr(context, 'Zeldzaam', 'Rare');
+      case 'epic':
+        return _tr(context, 'Episch', 'Epic');
+      case 'legendary':
+        return _tr(context, 'Legendarisch', 'Legendary');
+      default:
+        return rarity;
+    }
+  }
+
   Color _getConditionColor() {
     final colorName = vehicle.getConditionColor();
     switch (colorName) {
@@ -99,6 +138,7 @@ class VehicleCard extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final selectedImage = vehicle.conditionImage;
+    final rarity = (vehicle.definition?.rarity ?? 'common').toLowerCase();
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -233,11 +273,34 @@ class VehicleCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: isSmallScreen ? 6 : 12),
+                const SizedBox(height: 6),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _rarityColor(rarity).withOpacity(0.16),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(color: _rarityColor(rarity)),
+                    ),
+                    child: Text(
+                      _rarityLabel(context, rarity),
+                      style: TextStyle(
+                        color: _rarityColor(rarity),
+                        fontWeight: FontWeight.w700,
+                        fontSize: isSmallScreen ? 11 : 12,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: isSmallScreen ? 6 : 10),
 
                 // Condition Bar
                 _buildStatusBar(
-                  label: 'Conditie',
+                  label: _tr(context, 'Conditie', 'Condition'),
                   value: vehicle.condition,
                   color: _getConditionColor(),
                 ),
@@ -245,7 +308,7 @@ class VehicleCard extends StatelessWidget {
 
                 // Fuel Bar
                 _buildStatusBar(
-                  label: 'Brandstof',
+                  label: _tr(context, 'Brandstof', 'Fuel'),
                   value: vehicle.fuelLevel,
                   color: _getFuelColor(),
                 ),
@@ -255,7 +318,10 @@ class VehicleCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Waarde:', style: theme.textTheme.bodySmall),
+                    Text(
+                      _tr(context, 'Waarde:', 'Value:'),
+                      style: theme.textTheme.bodySmall,
+                    ),
                     Text(
                       '€${vehicle.getMarketValue().toStringAsFixed(0)}',
                       style: theme.textTheme.bodyMedium?.copyWith(
@@ -271,10 +337,13 @@ class VehicleCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Locatie:', style: theme.textTheme.bodySmall),
+                    Text(
+                      _tr(context, 'Locatie:', 'Location:'),
+                      style: theme.textTheme.bodySmall,
+                    ),
                     Text(
                       _isInTransit()
-                          ? 'Onderweg → ${_formatLocation(vehicle.transportDestination ?? vehicle.currentLocation ?? 'Unknown')}'
+                          ? '${_tr(context, 'Onderweg', 'In transit')} → ${_formatLocation(vehicle.transportDestination ?? vehicle.currentLocation ?? 'Unknown')}'
                           : _formatLocation(
                               vehicle.currentLocation ?? 'Unknown',
                             ),
