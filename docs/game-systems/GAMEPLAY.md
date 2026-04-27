@@ -36,6 +36,7 @@
 - Visual polish mag nooit ten koste gaan van leesbaarheid: statistieken, timers en actieknoppen moeten op mobiel/tablet/desktop direct scanbaar blijven.
 - Dashboard-baseline bevat economy-overzicht (cash/bank/crypto/assets/net worth), 24u cashflowtrend, 7d activiteit, operations-timers en notificatie/risico-indicatoren.
 - Het dashboard kan een compacte **“Wat nu?”** sectie tonen met 3–5 aanbevolen acties (op basis van cooldowns/operaties) zodat spelers sneller de volgende stap vinden.
+- Het dashboard kan daarnaast **Dagdoelen** tonen (claimable beloning in cash + XP) om dagelijkse terugkeer te stimuleren.
 - Nieuwe gameplaymodules of uitbreidingen met timers/rewards/notificaties moeten dashboard-coverage en helptekst in dezelfde wijziging meenemen.
 
 ### Live spelerevents

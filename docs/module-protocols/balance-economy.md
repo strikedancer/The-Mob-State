@@ -99,6 +99,13 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
 5. Geen regressie op core gameplay loops (crime/job/vehicle/hitlist).
 6. `Help & Uitleg` en roadmap zijn bijgewerkt als gedrag wijzigt.
 
+## Dagdoelen (Retention, cash + XP)
+- Dagdoelen zijn toegestaan als retention-loop zolang:
+  - er **geen hard cap** op kernloops ontstaat (dagdoelen zijn bonus, geen blokkade)
+  - rewards klein blijven (cash + XP) en niet structureel premium credits injecteren
+  - claim idempotent is (1x per speler per dag per goal) en abuse-bestendig
+  - tuning later server-side kan (bijv. via runtime keys/admin), niet hardcoded in de client
+
 ## i18n / Help
 - Als player-perceptie verandert (tempo, reward-gevoel, premium-waarde), update `docs/game-systems/GAMEPLAY.md`.
 - Geen economyfeature is done zonder NL/EN consistente player copy waar van toepassing.

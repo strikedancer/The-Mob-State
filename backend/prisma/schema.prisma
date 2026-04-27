@@ -111,6 +111,7 @@ model Player {
   player_notification_preferences player_notification_preferences?
   premiumPopupSeen                PlayerPremiumPopupSeen[]
   vaultAttempts                   VaultAttempt[]
+  dailyGoalClaims                 PlayerDailyGoalClaim[]
   security                        PlayerSecurity?
   selectedVehicle                 PlayerSelectedVehicle?
   playerTools                     PlayerTools[]
@@ -136,6 +137,21 @@ model Player {
 
   @@index([username])
   @@map("players")
+}
+
+model PlayerDailyGoalClaim {
+  id        Int      @id @default(autoincrement())
+  playerId  Int
+  dateKey   String   @db.VarChar(10) // YYYY-MM-DD (UTC)
+  goalKey   String   @db.VarChar(40)
+  claimedAt DateTime @default(now())
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, dateKey, goalKey])
+  @@index([playerId, dateKey])
+  @@index([dateKey])
+  @@map("player_daily_goal_claims")
 }
 
 model PlayerBackpack {
