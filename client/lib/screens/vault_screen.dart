@@ -329,28 +329,31 @@ class _VaultScreenState extends State<VaultScreen> {
             ),
           ),
           SizedBox(height: isSmall ? 8 : 10),
-          GridView.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: isSmall ? 6 : 8,
-            crossAxisSpacing: isSmall ? 6 : 8,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            childAspectRatio: isSmall ? 1.6 : 1.45,
-            children: [
-              for (final n in ['1', '2', '3', '4', '5', '6', '7', '8', '9'])
-                keypadButton(label: n, onPressed: () => pushDigit(n)),
-              keypadButton(label: 'C', onPressed: clear, accent: Colors.white70),
-              keypadButton(label: '0', onPressed: () => pushDigit('0')),
-              keypadButton(label: '⌫', onPressed: backspace, accent: Colors.redAccent),
-            ],
+          // IMPORTANT: keep keypad buttons within the overlay bounds.
+          // If the grid overflows (e.g. shrinkWrap), parts can paint outside the hit-test area,
+          // making lower rows visible but not clickable.
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 3,
+              mainAxisSpacing: isSmall ? 6 : 8,
+              crossAxisSpacing: isSmall ? 6 : 8,
+              physics: const NeverScrollableScrollPhysics(),
+              childAspectRatio: isSmall ? 1.75 : 1.55,
+              children: [
+                for (final n in ['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+                  keypadButton(label: n, onPressed: () => pushDigit(n)),
+                keypadButton(label: 'C', onPressed: clear, accent: Colors.white70),
+                keypadButton(label: '0', onPressed: () => pushDigit('0')),
+                keypadButton(label: '⌫', onPressed: backspace, accent: Colors.redAccent),
+              ],
+            ),
           ),
         ],
       ),
     );
 
-    final keypadWidth = isSmall ? 210.0 : 280.0;
-    final keypadTopPadding = isSmall ? 10.0 : 14.0;
-    final keypadRightPadding = isSmall ? 10.0 : 14.0;
+    final keypadWidth = isSmall ? 240.0 : 300.0;
+    final keypadPad = isSmall ? 12.0 : 16.0;
 
     return Container(
       height: height,
@@ -424,15 +427,12 @@ class _VaultScreenState extends State<VaultScreen> {
             ],
           ),
           Positioned(
-            right: keypadRightPadding,
-            top: keypadTopPadding,
-            bottom: keypadTopPadding,
+            right: keypadPad,
+            top: keypadPad,
+            bottom: keypadPad,
             child: Align(
               alignment: Alignment.centerRight,
-              child: SizedBox(
-                width: keypadWidth,
-                child: keypad,
-              ),
+              child: SizedBox(width: keypadWidth, child: keypad),
             ),
           ),
         ],
