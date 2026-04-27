@@ -36,7 +36,8 @@ const EXTENDED_COUNTRIES = new Set([
 ]);
 
 const normalizeCountryId = (countryId: string): string => {
-  return COUNTRY_ALIASES[countryId] ?? countryId;
+  const raw = (countryId ?? '').toString().trim().toLowerCase();
+  return (COUNTRY_ALIASES[raw] ?? raw).toString().trim().toLowerCase();
 };
 
 // Debug: log vehicle data structure on import
@@ -1819,6 +1820,8 @@ export const vehicleService = {
         if (lock.active) return false;
         if (isExtendedCountry) return true;
         const availability = v.availableInCountries?.map(normalizeCountryId) ?? [];
+        // Backwards-compat: if boats have no explicit availability list, treat as globally available.
+        if (availability.length === 0) return true;
         return availability.includes(normalizedCountry);
       })
       .map((v) => withVehicleMeta(v, 'boat', worldCounts.get(v.id) ?? 0))
