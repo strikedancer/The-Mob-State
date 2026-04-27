@@ -251,11 +251,13 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   }
 
   int _liveStealCooldownForOperationLane(VehicleProvider provider, int tabIndex) {
+    final type = _opsVehicleTypeForTab(tabIndex);
     final intel = provider.vehicleOpsIntelligence;
     final map = intel?['laneTheftCooldowns'] as Map<String, dynamic>?;
-    if (map == null) return 0;
-    final type = _opsVehicleTypeForTab(tabIndex);
-    return _liveCooldownSeconds(map[type]);
+    final fromIntel =
+        map == null ? 0 : _liveCooldownSeconds(map[type]);
+    final fromLastAttempt = provider.liveTheftCooldownSecondsForType(type);
+    return math.max(fromIntel, fromLastAttempt);
   }
 
   String _formatCooldown(int seconds) {
@@ -349,6 +351,12 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           authProvider.currentPlayer?.currentCountry ?? 'netherlands';
       final vehicleType = _opsVehicleTypeForTab(tabIndex);
       final success = await provider.stealVehicle(country, vehicleType);
+      // Snapshot: fetch ops intel + fetchInventory clear provider.error before we can show it.
+      final stealError = provider.error;
+      final stealCooldown = provider.lastStealCooldownRemainingSeconds;
+      final stealArrested = provider.lastStealArrested;
+      final stealJail = provider.lastStealJailMinutes;
+
       if (!mounted) return;
       await _refreshOpsIntelligence();
       await authProvider.refreshPlayer();
@@ -370,23 +378,24 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _tr('Succes: $gained gestolen.', 'Success: $gained stolen.'),
           success: true,
         );
-      } else if (provider.lastStealCooldownRemainingSeconds > 0) {
+      } else if (stealCooldown > 0) {
         _showTopMessage(
-          _tr(
-            'Cooldown actief: ${_formatCooldown(provider.lastStealCooldownRemainingSeconds)}',
-            'Cooldown active: ${_formatCooldown(provider.lastStealCooldownRemainingSeconds)}',
-          ),
+          stealError ??
+              _tr(
+                'Cooldown actief: ${_formatCooldown(stealCooldown)}',
+                'Cooldown active: ${_formatCooldown(stealCooldown)}',
+              ),
         );
-      } else if (provider.lastStealArrested) {
+      } else if (stealArrested) {
         _showTopMessage(
           _tr(
-            'Je bent opgepakt (${provider.lastStealJailMinutes} min cel).',
-            'You got arrested (${provider.lastStealJailMinutes} min jail).',
+            'Je bent opgepakt ($stealJail min cel).',
+            'You got arrested ($stealJail min jail).',
           ),
         );
       } else {
         _showTopMessage(
-          provider.error ?? _tr('Stelen mislukt.', 'Steal action failed.'),
+          stealError ?? _tr('Stelen mislukt.', 'Steal action failed.'),
         );
       }
     } finally {

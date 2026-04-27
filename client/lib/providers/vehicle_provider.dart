@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
+import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 import '../models/vehicle.dart';
 import '../services/auth_service.dart';
@@ -16,6 +17,8 @@ class VehicleProvider with ChangeNotifier {
   List<MarketListing> _marketListings = [];
   VehicleInventoryItem? _lastStolenVehicle;
   int _lastStealCooldownRemainingSeconds = 0;
+  String? _lastStealAttemptVehicleType;
+  DateTime? _lastStealCooldownMeasuredAt;
   bool _lastStealArrested = false;
   int _lastStealJailMinutes = 0;
   double? _lastStealWantedLevel;
@@ -38,6 +41,17 @@ class VehicleProvider with ChangeNotifier {
   VehicleInventoryItem? get lastStolenVehicle => _lastStolenVehicle;
   int get lastStealCooldownRemainingSeconds =>
       _lastStealCooldownRemainingSeconds;
+
+  /// Live countdown for the last attempted theft category (for lane buttons if ops intel lags).
+  int liveTheftCooldownSecondsForType(String vehicleType) {
+    if (_lastStealAttemptVehicleType != vehicleType) return 0;
+    if (_lastStealCooldownRemainingSeconds <= 0) return 0;
+    final at = _lastStealCooldownMeasuredAt;
+    if (at == null) return _lastStealCooldownRemainingSeconds;
+    final elapsed = DateTime.now().difference(at).inSeconds;
+    return math.max(0, _lastStealCooldownRemainingSeconds - elapsed);
+  }
+
   bool get lastStealArrested => _lastStealArrested;
   int get lastStealJailMinutes => _lastStealJailMinutes;
   double? get lastStealWantedLevel => _lastStealWantedLevel;
@@ -94,6 +108,15 @@ class VehicleProvider with ChangeNotifier {
     }
 
     return 0;
+  }
+
+  void _applyTheftCooldownSnapshot(int seconds) {
+    _lastStealCooldownRemainingSeconds = seconds;
+    if (seconds > 0) {
+      _lastStealCooldownMeasuredAt = DateTime.now();
+    } else {
+      _lastStealCooldownMeasuredAt = null;
+    }
   }
 
   Future<Map<String, String>> _getHeaders() async {
@@ -284,7 +307,6 @@ class VehicleProvider with ChangeNotifier {
         _vehicleOpsIntelligence = data['intelligence'] is Map<String, dynamic>
             ? data['intelligence'] as Map<String, dynamic>
             : null;
-        _error = null;
       } else {
         _error = 'Kon voertuig intelligence niet laden';
       }
@@ -551,6 +573,8 @@ class VehicleProvider with ChangeNotifier {
     try {
       _lastStolenVehicle = null;
       _lastStealCooldownRemainingSeconds = 0;
+      _lastStealCooldownMeasuredAt = null;
+      _lastStealAttemptVehicleType = vehicleType;
       _lastStealArrested = false;
       _lastStealJailMinutes = 0;
       _lastStealWantedLevel = null;
@@ -663,7 +687,7 @@ class VehicleProvider with ChangeNotifier {
 
       if (stealResponse.statusCode == 200 &&
           stealData['event'] == 'vehicles.stolen') {
-        _lastStealCooldownRemainingSeconds = _extractCooldownSeconds(stealData);
+        _applyTheftCooldownSnapshot(_extractCooldownSeconds(stealData));
         final arrested = stealData['params']?['arrested'] == true;
         _lastStealArrested = arrested;
         _lastStealJailMinutes =
@@ -702,7 +726,7 @@ class VehicleProvider with ChangeNotifier {
       } else {
         // Get error message from response
         final reason = stealData['params']?['reason'];
-        _lastStealCooldownRemainingSeconds = _extractCooldownSeconds(stealData);
+        _applyTheftCooldownSnapshot(_extractCooldownSeconds(stealData));
         _lastStealArrested = stealData['params']?['arrested'] == true;
         _lastStealJailMinutes =
             (stealData['params']?['jailTime'] as num?)?.toInt() ?? 0;
