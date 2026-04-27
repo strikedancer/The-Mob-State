@@ -967,6 +967,7 @@ Bob: â‚¬300K counter-hit
 - Ops-telemetry is uitgebreid met vehicle-type en region map-layers voor admin balancing.
 - Voertuigschermen respecteren actieve taalinstelling volledig: in NL-modus tonen opslabels en meldingen geen Engelse fallbackteksten.
 - Ops-paneel toont live cooldown countdowns per actie en ververst deze automatisch.
+- Vehicle Ops (bij Voertuig Stelen) bestaat uit 6 extra opties: Hotspot run, Parts market, Crew op, Heat, Chop contract en Politiepatroon. Deze zijn bedoeld als side-loops naast stelen, met duidelijke feedback als iets niet kan (cooldown, crew vereist, regionale lock).
 - Cooldowns worden in Vehicle Ops enkel in de actiekaarten als primaire bron getoond om dubbele info en visuele ruis te vermijden.
 - De gecombineerde Vehicle Heist-pagina gebruikt één primaire categorie-selector (Auto/Motor/Boot lane cards) en toont geen tweede redundante tab-rij met dezelfde categorieën.
 - **Garage auto vs motor**: opslag-upgrades zijn **onafhankelijke lijnen** per land (`garageTrack`: auto of motor); een autoupgrade verhoogt niet langer de motorcapaciteit. Motor-startcapaciteit is een eigen basis (met eigen upgrade-teller); bestaande spelers krijgen bij deploy een **motor-track** die de oude afgeleide capaciteit minimaal behoudt. Upgrades zijn daarnaast **rank-gated**: als je rank te laag is zie je een lock/tooltip en kan de upgrade niet. Bij **upgrade niveau 5** verdwijnt de upgrade-knop (garage/marina en Vehicle Heist-lanes). Server-start voegt zo nodig de DB-kolom `track` toe en vult motor-tracks eenmalig bij (idempotent).
