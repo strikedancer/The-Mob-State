@@ -11,6 +11,7 @@ import '../providers/vehicle_provider.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
+import '../widgets/cooldown_overlay.dart';
 import '../widgets/overlay_image.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
@@ -39,6 +40,9 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   Timer? _opsTicker;
   DateTime? _opsLastRefreshAt;
   final Map<String, Map<String, int>> _laneCapacities = {};
+  bool _showStealCooldownOverlay = false;
+  int _stealCooldownOverlaySeconds = 0;
+  String _stealCooldownActionType = 'vehicle_theft';
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
@@ -58,6 +62,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _activeTabIndex != _tabController.index) {
         setState(() {
           _activeTabIndex = _tabController.index;
+          _showStealCooldownOverlay = false;
         });
         _refreshOpsIntelligence();
       }
@@ -180,6 +185,48 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       default:
         return 'car';
     }
+  }
+
+  /// API / subscription `cooldownActionType` for steal cooldown credit reset.
+  String _cooldownActionTypeForTab(int tabIndex) {
+    switch (tabIndex) {
+      case 1:
+        return 'motorcycle_theft';
+      case 2:
+        return 'boat_theft';
+      case 0:
+      default:
+        return 'vehicle_theft';
+    }
+  }
+
+  String _stealCooldownResultMessageForAction(String action) {
+    switch (action) {
+      case 'motorcycle_theft':
+        return _tr(
+          'Motor stelen staat op cooldown.',
+          'Motorcycle theft is on cooldown.',
+        );
+      case 'boat_theft':
+        return _tr('Boot stelen staat op cooldown.', 'Boat theft is on cooldown.');
+      case 'vehicle_theft':
+      default:
+        return _tr(
+          'Auto stelen staat op cooldown.',
+          'Car theft is on cooldown.',
+        );
+    }
+  }
+
+  void _openStealCooldownOverlay(VehicleProvider provider, int tabIndex) {
+    final live = _liveStealCooldownForOperationLane(provider, tabIndex);
+    if (live <= 0) return;
+    if (!mounted) return;
+    setState(() {
+      _showStealCooldownOverlay = true;
+      _stealCooldownOverlaySeconds = live;
+      _stealCooldownActionType = _cooldownActionTypeForTab(tabIndex);
+    });
   }
 
   Future<void> _refreshOpsIntelligence() async {
@@ -386,6 +433,11 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 'Cooldown active: ${_formatCooldown(stealCooldown)}',
               ),
         );
+        setState(() {
+          _showStealCooldownOverlay = true;
+          _stealCooldownOverlaySeconds = stealCooldown;
+          _stealCooldownActionType = _cooldownActionTypeForTab(tabIndex);
+        });
       } else if (stealArrested) {
         _showTopMessage(
           _tr(
@@ -879,9 +931,11 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 runSpacing: 8,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: _laneActionInProgress || stealRemaining > 0
+                    onPressed: _laneActionInProgress
                         ? null
-                        : () => _runTileSteal(provider, tabIndex),
+                        : stealRemaining > 0
+                            ? () => _openStealCooldownOverlay(provider, tabIndex)
+                            : () => _runTileSteal(provider, tabIndex),
                     icon: Icon(
                       stealRemaining > 0
                           ? Icons.timer
@@ -1966,21 +2020,67 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           ),
         );
 
-        if (widget.embedded) {
-          return NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverToBoxAdapter(child: header),
-              const SliverToBoxAdapter(child: Divider(height: 1)),
-            ],
-            body: tabBody,
-          );
-        }
+        final mainBody = widget.embedded
+            ? NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverToBoxAdapter(child: header),
+                  const SliverToBoxAdapter(child: Divider(height: 1)),
+                ],
+                body: tabBody,
+              )
+            : Column(
+                children: [
+                  header,
+                  const Divider(height: 1),
+                  Expanded(child: tabBody),
+                ],
+              );
 
-        return Column(
+        return Stack(
+          fit: StackFit.expand,
           children: [
-            header,
-            const Divider(height: 1),
-            Expanded(child: tabBody),
+            Positioned.fill(child: mainBody),
+            if (_showStealCooldownOverlay && _stealCooldownOverlaySeconds > 0)
+              Positioned.fill(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    setState(() {
+                      _showStealCooldownOverlay = false;
+                    });
+                  },
+                  child: Container(
+                    color: Colors.black45,
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: CooldownOverlay(
+                        key: ValueKey<String>(
+                          'heist_steal_${_stealCooldownActionType}_'
+                          '$_stealCooldownOverlaySeconds',
+                        ),
+                        actionType: 'crime',
+                        cooldownActionType: _stealCooldownActionType,
+                        remainingSeconds: _stealCooldownOverlaySeconds,
+                        embedded: true,
+                        resultMessage: _stealCooldownResultMessageForAction(
+                          _stealCooldownActionType,
+                        ),
+                        isSuccess: false,
+                        onExpired: () {
+                          if (!mounted) return;
+                          setState(() {
+                            _showStealCooldownOverlay = false;
+                            _stealCooldownOverlaySeconds = 0;
+                          });
+                          _refreshOpsIntelligence();
+                          _refreshLaneCapacities();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         );
       },
