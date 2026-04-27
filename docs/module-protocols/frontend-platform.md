@@ -33,6 +33,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Embedded screens blijven scrollbaar op touch en pointer devices.
 - Service worker en cache gedrag mogen releases niet verbergen.
 - Achtergrondafbeeldingen, card-afbeeldingen en dynamische images gebruiken consistente fallbackketens.
+- SEO/crawl basisbestanden (robots/sitemap) blijven direct bereikbaar (geen SPA fallback) en SEO landings blijven echte HTML.
 
 ## Platform Guardrails
 - Voor runtime `Image.asset(...)` in Flutter web gebruik standaard keys onder `assets/images/...`.
@@ -52,6 +53,8 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Voor Premium/Credits image-first tiles met weinig overlay-ruimte: toon alleen kernlabels/CTA op de tegel en verplaats uitgebreide uitleg naar een meertalige info-popup (`i`-icoon) met `SafeArea`, clamped afmetingen en scrollfallback.
 - Gebruik versie-bestandsnamen of expliciete cache-invalidering bij runtime image updates.
 - Voor iOS homescreen/PWA updates: serve `index.html`, `manifest.json`, `flutter_bootstrap.js`, `flutter_service_worker.js`, `firebase-messaging-sw.js` en `main.dart.js` met no-cache/must-revalidate gedrag.
+- SEO files (web-root): `robots.txt` + `sitemap.xml` moeten expliciete nginx routes hebben zodat ze niet door `try_files … /index.html` als Flutter shell terugvallen.
+- Voor competitieve zoektermen (bv. “mafia game”, “text based mafia game”) is een SPA-only app-shell vaak onvoldoende: gebruik 1–2 statische HTML landings (bijv. `/text-based-mafia-game`, `/mafia-game`) die **niet** naar Flutter shell terugvallen.
 - Post-deploy cache-eis: hard refresh en indien nodig service worker unregister bij visuele regressies.
 - Custom service workers vallen nooit onder generieke immutable JS caching; geef FCM/service-worker bestanden altijd een expliciete, strengere cache-policy dan normale bundles.
 - De web app-shell mag een nieuwe build actief detecteren via een stabiele build-fingerprint en daarna precies één gecontroleerde runtime reset doen: service workers unregisteren, `CacheStorage` legen en hard reloaden. Doe dit alleen bij echte buildwissels, nooit blind op elke load.

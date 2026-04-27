@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -18,7 +18,58 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Mafia Game - Build your criminal empire">
+  <meta name="description" content="The Mob State is een text-based mafia game (browser/PWA). Bouw je criminele imperium, doe misdaden, bouw je crew en strijd om macht.">
+
+  <!-- Canonical (production) -->
+  <link rel="canonical" href="https://themobstate.com/">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Mob State">
+  <meta property="og:title" content="The Mob State — Text-based Mafia Game (Browser/PWA)">
+  <meta property="og:description" content="Speel een text-based mafia game in je browser: bouw je imperium, doe misdaden, word de baas.">
+  <meta property="og:url" content="https://themobstate.com/">
+  <meta property="og:image" content="https://themobstate.com/logo.png">
+  <meta property="og:image:alt" content="The Mob State logo">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Mob State — Text-based Mafia Game (Browser/PWA)">
+  <meta name="twitter:description" content="Speel een text-based mafia game in je browser: bouw je imperium, doe misdaden, word de baas.">
+  <meta name="twitter:image" content="https://themobstate.com/logo.png">
+
+  <!-- Structured data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://themobstate.com/#org",
+          "name": "The Mob State",
+          "url": "https://themobstate.com/",
+          "logo": "https://themobstate.com/logo.png"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://themobstate.com/#website",
+          "url": "https://themobstate.com/",
+          "name": "The Mob State",
+          "publisher": { "@id": "https://themobstate.com/#org" },
+          "inLanguage": "nl"
+        },
+        {
+          "@type": "VideoGame",
+          "@id": "https://themobstate.com/#game",
+          "name": "The Mob State",
+          "url": "https://themobstate.com/",
+          "genre": ["Strategy", "RolePlayingGame"],
+          "description": "Text-based mafia game voor browser/PWA waarin je een crimineel imperium opbouwt.",
+          "publisher": { "@id": "https://themobstate.com/#org" }
+        }
+      ]
+    }
+  </script>
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -35,7 +86,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <title>The Mob State</title>
+  <title>The Mob State — Text-based Mafia Game (Browser/PWA)</title>
 </head>
 <body>
   <script>

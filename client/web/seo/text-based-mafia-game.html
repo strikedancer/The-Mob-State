@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Text-based Mafia Game (Browser) — The Mob State</title>
+    <meta
+      name="description"
+      content="The Mob State is een text-based mafia game in je browser (PWA). Bouw je criminele imperium, doe misdaden, word sterker, bouw je crew en strijd om dominantie."
+    />
+    <link rel="canonical" href="https://themobstate.com/text-based-mafia-game" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Mob State" />
+    <meta property="og:title" content="Text-based Mafia Game (Browser) — The Mob State" />
+    <meta
+      property="og:description"
+      content="Speel een text-based mafia game in je browser (PWA). Bouw je imperium, doe misdaden en word de baas."
+    />
+    <meta property="og:url" content="https://themobstate.com/text-based-mafia-game" />
+    <meta property="og:image" content="https://themobstate.com/logo.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Text-based Mafia Game (Browser) — The Mob State" />
+    <meta
+      name="twitter:description"
+      content="Speel een text-based mafia game in je browser (PWA). Bouw je imperium, doe misdaden en word de baas."
+    />
+    <meta name="twitter:image" content="https://themobstate.com/logo.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Wat is een text-based mafia game?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Een text-based mafia game is een browsergame waarin je keuzes maakt via tekst en menu’s. Je bouwt progressie op (geld, respect, crew) en speelt korte sessies door de dag."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Kan ik spelen op mobiel?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. The Mob State werkt in je mobiele browser en als PWA (installeren op homescreen), zodat je snel kunt spelen zonder app store."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is het gratis?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Je kunt gratis starten en spelen. Er zijn optionele premium features, maar de kern gameplay blijft speelbaar zonder betaling."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 600px at 20% -10%, rgba(212, 175, 55, 0.25), transparent),
+          radial-gradient(1200px 600px at 80% 0%, rgba(255, 255, 255, 0.06), transparent),
+          linear-gradient(135deg, #0b0a0b, #151012 55%, #080708);
+        color: #f2f2f2;
+      }
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 40px 18px 60px;
+      }
+      .badge {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(212, 175, 55, 0.45);
+        background: rgba(0, 0, 0, 0.25);
+        color: rgba(212, 175, 55, 0.95);
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        font-size: 12px;
+      }
+      h1 {
+        margin: 18px 0 8px;
+        font-size: clamp(28px, 3.8vw, 42px);
+        letter-spacing: -0.5px;
+      }
+      p {
+        margin: 12px 0;
+        line-height: 1.55;
+        color: rgba(242, 242, 242, 0.85);
+        font-size: 16px;
+      }
+      .ctaRow {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 900;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35);
+        color: #fff;
+      }
+      .btnPrimary {
+        border-color: rgba(212, 175, 55, 0.55);
+        background: linear-gradient(180deg, rgba(212, 175, 55, 0.28), rgba(212, 175, 55, 0.12));
+      }
+      .grid {
+        margin-top: 26px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .card {
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.28);
+      }
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 15px;
+        color: rgba(212, 175, 55, 0.95);
+      }
+      .card p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(242, 242, 242, 0.78);
+      }
+      .faq {
+        margin-top: 24px;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.28);
+      }
+      .faq h2 {
+        margin: 0 0 12px;
+        color: #fff;
+        font-size: 16px;
+      }
+      details {
+        padding: 10px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      details:first-of-type {
+        border-top: none;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 800;
+        color: rgba(242, 242, 242, 0.92);
+      }
+      .foot {
+        margin-top: 26px;
+        font-size: 12px;
+        color: rgba(242, 242, 242, 0.55);
+      }
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <div class="badge">Text-based • Mafia game • Browser/PWA</div>
+      <h1>Text-based Mafia Game in je browser</h1>
+      <p>
+        <strong>The Mob State</strong> is een text-based mafia game (browser/PWA). Je speelt in korte sessies:
+        misdaden plegen, groeien in rank, je crew opbouwen en strijden om macht.
+      </p>
+      <p>
+        Zoek je een <em>text based mafia game</em> die lekker speelt op mobiel én desktop? Dan zit je hier goed.
+      </p>
+
+      <div class="ctaRow">
+        <a class="btn btnPrimary" href="/" rel="nofollow">Speel nu</a>
+        <a class="btn" href="/mafia-game">Wat is The Mob State?</a>
+      </div>
+
+      <section class="grid" aria-label="Highlights">
+        <div class="card">
+          <h2>Browsergame (PWA)</h2>
+          <p>Speel direct, geen store nodig. Installeren op homescreen kan ook.</p>
+        </div>
+        <div class="card">
+          <h2>Progressie & doelen</h2>
+          <p>Verdien cash, XP en status. Dag- en weekdoelen geven extra motivatie.</p>
+        </div>
+        <div class="card">
+          <h2>Crew & competitie</h2>
+          <p>Bouw een crew, speel events en klim naar de top in seizoenen.</p>
+        </div>
+      </section>
+
+      <section class="faq">
+        <h2>Veelgestelde vragen</h2>
+
+        <details>
+          <summary>Wat is een text-based mafia game?</summary>
+          <p>
+            Een text-based mafia game is een spel waarin je keuzes maakt via tekst en menu’s. Je bouwt langzaam een
+            imperium op met korte acties die je door de dag heen doet.
+          </p>
+        </details>
+        <details>
+          <summary>Kan ik spelen op mobiel?</summary>
+          <p>Ja. The Mob State werkt in je mobiele browser en als PWA.</p>
+        </details>
+        <details>
+          <summary>Is het gratis?</summary>
+          <p>Je kunt gratis starten en spelen. Premium is optioneel.</p>
+        </details>
+      </section>
+
+      <div class="foot">© The Mob State — Text-based mafia game (browser/PWA)</div>
+    </main>
+  </body>
+</html>
