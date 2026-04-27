@@ -18,6 +18,7 @@ import '../utils/formatters.dart';
 import '../widgets/event_feed.dart';
 import '../widgets/icu_overlay.dart';
 import '../utils/top_right_notification.dart';
+import '../services/event_renderer.dart';
 import 'crime_screen.dart';
 import 'jobs_screen.dart';
 import 'travel_screen.dart';
@@ -2504,6 +2505,154 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     return _tr('Over ', 'In ') + _formatCooldown(seconds);
   }
 
+  String _timeAgoLabel(DateTime dt) {
+    final diff = DateTime.now().difference(dt);
+    if (diff.inSeconds < 20) return _tr('Zojuist', 'Just now');
+    if (diff.inMinutes < 1) return _tr('${diff.inSeconds}s geleden', '${diff.inSeconds}s ago');
+    if (diff.inHours < 1) return _tr('${diff.inMinutes}m geleden', '${diff.inMinutes}m ago');
+    return _tr('${diff.inHours}u geleden', '${diff.inHours}h ago');
+  }
+
+  void _openSessionRecap(AppLocalizations l10n) {
+    final eventProvider = Provider.of<EventProvider>(context, listen: false);
+    final renderer = EventRenderer(l10n);
+    final items = eventProvider.events.take(10).toList();
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return SafeArea(
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: const Color(0xFF141012).withOpacity(0.98),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: _dashboardGold.withOpacity(0.35)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.4),
+                  blurRadius: 16,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(ctx).size.height * 0.75,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.receipt_long, color: _dashboardGold),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        _tr('Sessie recap', 'Session recap'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(ctx),
+                      icon: const Icon(Icons.close, color: Colors.white70),
+                      tooltip: _tr('Sluiten', 'Close'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  _tr('Laatste 10 events (live).', 'Last 10 events (live).'),
+                  style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
+                ),
+                const SizedBox(height: 12),
+                Expanded(
+                  child: items.isEmpty
+                      ? Center(
+                          child: Text(
+                            _tr('Nog geen events in deze sessie.', 'No events yet in this session.'),
+                            style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                          ),
+                        )
+                      : ListView.separated(
+                          itemCount: items.length,
+                          separatorBuilder: (_, _) => Divider(color: Colors.white.withOpacity(0.08)),
+                          itemBuilder: (_, i) {
+                            final ev = items[i];
+                            final text = renderer.renderEvent(ev.eventKey, ev.params);
+                            final when = _timeAgoLabel(ev.timestamp);
+                            final isPositive = ev.eventKey.endsWith('.success') ||
+                                ev.eventKey == 'job.success' ||
+                                ev.eventKey == 'crime.success';
+                            final accent = isPositive ? Colors.greenAccent : Colors.white70;
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    margin: const EdgeInsets.only(top: 4),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: accent.withOpacity(0.85),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          text,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          when,
+                                          style: TextStyle(
+                                            color: Colors.white.withOpacity(0.55),
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 10),
+                OutlinedButton.icon(
+                  onPressed: () => eventProvider.clearEvents(),
+                  icon: const Icon(Icons.delete_outline),
+                  label: Text(_tr('Recap leegmaken', 'Clear recap')),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    side: BorderSide(color: Colors.white.withOpacity(0.18)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildNextBestActions(Player player, AppLocalizations l10n) {
     final stats = _stats;
 
@@ -2635,9 +2784,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   ),
                 ),
               ),
-              Text(
-                _tr('Tips', 'Tips'),
-                style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
+              IconButton(
+                onPressed: () => _openSessionRecap(l10n),
+                icon: const Icon(Icons.receipt_long, color: Colors.white70),
+                tooltip: _tr('Sessie recap', 'Session recap'),
               ),
             ],
           ),
