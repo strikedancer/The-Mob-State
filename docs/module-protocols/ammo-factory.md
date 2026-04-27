@@ -18,6 +18,10 @@ Factory ownership, production, market stock, upgrades and ammo economy balance.
 - Does this module send notifications, inbox messages, rewards or achievements?
 - Does this module depend on assets, videos, icons or generated media?
 
+## Balance / pacing
+- Production throughput is driven by `PRODUCTION_INTERVAL_MINUTES` and per-tick output multipliers in `backend/src/services/ammoFactoryService.ts`. Player-facing copy (NL/EN) must stay aligned with the server interval when it changes (Help & Uitleg, factory screen, ARB fallbacks).
+- Cross-cutting economy rules: `docs/module-protocols/balance-economy.md` (small steps, avoid multiple curve shifts at once).
+
 ## Must Preserve
 - Clear success and failure feedback for the player.
 - Accurate state refresh after an action completes.

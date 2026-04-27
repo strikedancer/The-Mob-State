@@ -4469,7 +4469,7 @@ abstract class AppLocalizations {
   /// No description provided for @factorySessionStarted.
   ///
   /// In en, this message translates to:
-  /// **'Production started: active for 8 hours, new ammo every 5 minutes'**
+  /// **'Production started: active for 8 hours, claim every 10 minutes'**
   String get factorySessionStarted;
 
   /// No description provided for @ammoFactoryTitle.
@@ -4481,7 +4481,7 @@ abstract class AppLocalizations {
   /// No description provided for @ammoFactoryIntro.
   ///
   /// In en, this message translates to:
-  /// **'Produces automatically every 5 minutes. You can claim up to 8 hours of backlog.'**
+  /// **'Produces in batches; you claim every 10 minutes (up to 8 hours of backlog per session).'**
   String get ammoFactoryIntro;
 
   /// No description provided for @ammoFactoryWhatYouCanDo.
@@ -4499,13 +4499,13 @@ abstract class AppLocalizations {
   /// No description provided for @ammoFactoryActionProduce.
   ///
   /// In en, this message translates to:
-  /// **'Claim production (interval: 5 minutes, max backlog: 8 hours)'**
+  /// **'Claim production (interval: 10 minutes, max backlog: 8 hours per session)'**
   String get ammoFactoryActionProduce;
 
   /// No description provided for @ammoFactoryActionOutput.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade output to level 5 (max ±3200 per 8h / ±400 per hour)'**
+  /// **'Upgrade output to level 5 for more rounds per claim'**
   String get ammoFactoryActionOutput;
 
   /// No description provided for @ammoFactoryActionQuality.
@@ -4583,7 +4583,7 @@ abstract class AppLocalizations {
   /// No description provided for @factorySessionActive.
   ///
   /// In en, this message translates to:
-  /// **'Production window: active (5 min interval)'**
+  /// **'Production window: active (10 min interval)'**
   String get factorySessionActive;
 
   /// No description provided for @factorySessionStopped.

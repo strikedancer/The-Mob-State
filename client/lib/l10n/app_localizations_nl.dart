@@ -2406,14 +2406,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Productie gestart: 8 uur actief, elke 5 minuten nieuwe munitie';
+      'Productie gestart: 8 uur actief, claim elke 10 minuten';
 
   @override
   String get ammoFactoryTitle => 'Munitiefabriek';
 
   @override
   String get ammoFactoryIntro =>
-      'Produceert automatisch elke 5 minuten. Je kunt tot 8 uur achterstallige productie innen.';
+      'Werkt in batches; je kunt elke 10 minuten productie innen (tot 8 uur backlog per sessie).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Wat je kunt doen:';
@@ -2423,11 +2423,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Incasseer productie (interval: 5 minuten, max backlog: 8 uur)';
+      'Incasseer productie (interval: 10 minuten, max backlog: 8 uur per sessie)';
 
   @override
   String get ammoFactoryActionOutput =>
-      'Upgrade output tot level 5 (max ±3200 per 8u / ±400 per uur)';
+      'Upgrade output tot level 5 voor meer patronen per claim';
 
   @override
   String get ammoFactoryActionQuality =>
@@ -2468,7 +2468,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Productie venster: actief (5 min interval)';
+      'Productie venster: actief (10 min interval)';
 
   @override
   String get factorySessionStopped =>

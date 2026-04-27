@@ -15,7 +15,8 @@ interface AmmoDef {
   pricePerRound: number;
 }
 
-const PRODUCTION_INTERVAL_MINUTES = 5;
+/** Wall-clock spacing between production ticks when claiming (balance: player feedback April 2026 — was 5). */
+const PRODUCTION_INTERVAL_MINUTES = 10;
 const PRODUCTION_BACKLOG_HOURS = 8;
 const INACTIVITY_HOURS = 48;
 const MAX_LEVEL = 5;
@@ -61,8 +62,8 @@ class AmmoFactoryService {
   }
 
   private outputMultiplier(level: number) {
-    // Scales from 1.0 (level 1) to ~10.84 (level 5)
-    // Target: 400 rounds/hour × 8 hours = 3200 per cycle at max level
+    // Scales from 1.0 (level 1) to ~10.84 (level 5); rounds per tick per ammo type.
+    // With 10-minute ticks, max-level throughput is ~half the old 5-minute pacing.
     return 1 + (level - 1) * 2.46;
   }
 

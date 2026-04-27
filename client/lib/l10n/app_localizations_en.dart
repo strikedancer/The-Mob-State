@@ -2399,14 +2399,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get factorySessionStarted =>
-      'Production started: active for 8 hours, new ammo every 5 minutes';
+      'Production started: active for 8 hours, claim every 10 minutes';
 
   @override
   String get ammoFactoryTitle => 'Ammo Factory';
 
   @override
   String get ammoFactoryIntro =>
-      'Produces automatically every 5 minutes. You can claim up to 8 hours of backlog.';
+      'Produces in batches; you claim every 10 minutes (up to 8 hours of backlog per session).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'What you can do:';
@@ -2416,11 +2416,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ammoFactoryActionProduce =>
-      'Claim production (interval: 5 minutes, max backlog: 8 hours)';
+      'Claim production (interval: 10 minutes, max backlog: 8 hours per session)';
 
   @override
   String get ammoFactoryActionOutput =>
-      'Upgrade output to level 5 (max ±3200 per 8h / ±400 per hour)';
+      'Upgrade output to level 5 for more rounds per claim';
 
   @override
   String get ammoFactoryActionQuality =>
@@ -2461,7 +2461,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get factorySessionActive =>
-      'Production window: active (5 min interval)';
+      'Production window: active (10 min interval)';
 
   @override
   String get factorySessionStopped =>

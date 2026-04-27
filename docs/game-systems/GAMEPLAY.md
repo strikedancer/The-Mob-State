@@ -563,6 +563,9 @@ Per dag (288 ticks): â‚¬10,000 â†’ â‚¬14,400 rente
 
 ## Trade Market
 
+### Munitiefabriek (ammo)
+- Productie wordt **server-side** getakt (claim-interval en output per tick); bij te hoge pacing kan dit worden verlaagd zonder client-wijziging. Zie `docs/module-protocols/ammo-factory.md` en `docs/module-protocols/balance-economy.md`.
+
 ### Tradable Goods
 Elk land heeft unieke goods:
 - **Diamonds** (Zuid-Afrika)
