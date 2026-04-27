@@ -10,7 +10,7 @@ import '../services/jail_service.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/overlay_image.dart';
 import '../widgets/vehicle_card.dart';
-import '../widgets/cooldown_overlay.dart';
+import '../widgets/theft_cooldown_credit_flow.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
@@ -44,7 +44,6 @@ class _MarinaScreenState extends State<MarinaScreen> {
   int? _jailTime;
   bool _isStealAttemptRunning = false;
   int _stealCooldownSeconds = 0;
-  bool _showStealCooldownOverlay = false;
   Timer? _stealCooldownTimer;
   final Set<int> _repairCreditRedeemInProgress = <int>{};
   int? _repairFinishCreditCost;
@@ -87,7 +86,6 @@ class _MarinaScreenState extends State<MarinaScreen> {
     if (seconds <= 0) {
       setState(() {
         _stealCooldownSeconds = 0;
-        _showStealCooldownOverlay = false;
       });
       return;
     }
@@ -106,7 +104,6 @@ class _MarinaScreenState extends State<MarinaScreen> {
         timer.cancel();
         setState(() {
           _stealCooldownSeconds = 0;
-          _showStealCooldownOverlay = false;
         });
         return;
       }
@@ -115,6 +112,25 @@ class _MarinaScreenState extends State<MarinaScreen> {
         _stealCooldownSeconds -= 1;
       });
     });
+  }
+
+  Future<void> _redeemMarinaStealCooldown(
+    VehicleProvider vehicleProvider,
+    AuthProvider authProvider,
+  ) async {
+    await runTheftCooldownCreditRedeem(
+      context,
+      cooldownActionType: 'boat_theft',
+      onAfterSuccess: () async {
+        _stealCooldownTimer?.cancel();
+        if (mounted) {
+          setState(() {
+            _stealCooldownSeconds = 0;
+          });
+        }
+        await _loadData();
+      },
+    );
   }
 
   Future<void> _checkJailStatusAndLoadData() async {
@@ -573,45 +589,6 @@ class _MarinaScreenState extends State<MarinaScreen> {
                   Expanded(child: _buildVehicleGrid(vehicleProvider)),
                 ],
               ),
-        if (_jailTime == null &&
-            _stealCooldownSeconds > 0 &&
-            _showStealCooldownOverlay)
-          Positioned.fill(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                setState(() {
-                  _showStealCooldownOverlay = false;
-                });
-              },
-              child: Container(
-                color: Colors.black45,
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: CooldownOverlay(
-                    actionType: 'crime',
-                    cooldownActionType: 'boat_theft',
-                    remainingSeconds: _stealCooldownSeconds,
-                    embedded: true,
-                    resultMessage: _tr(
-                      'Boot stelen staat op cooldown.',
-                      'Boat theft is on cooldown.',
-                    ),
-                    isSuccess: false,
-                    onExpired: () {
-                      if (!mounted) return;
-                      _stealCooldownTimer?.cancel();
-                      setState(() {
-                        _stealCooldownSeconds = 0;
-                        _showStealCooldownOverlay = false;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
       ],
     );
 
@@ -760,40 +737,77 @@ class _MarinaScreenState extends State<MarinaScreen> {
                     Row(
                       children: [
                         if (isSmall) ...[
-                          Tooltip(
-                            message: _stealButtonDisplayLabel(),
-                            child: InkWell(
-                              onTap: _isStealAttemptRunning || _stealCooldownSeconds > 0
-                                  ? null
-                                  : () => _stealBoat(
-                                      vehicleProvider,
-                                      authProvider,
-                                    ),
-                              borderRadius: BorderRadius.circular(6),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: _stealCooldownSeconds > 0
-                                        ? Colors.grey
-                                        : Colors.lightBlue.shade300,
-                                  ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Tooltip(
+                                message: _stealButtonDisplayLabel(),
+                                child: InkWell(
+                                  onTap: _isStealAttemptRunning || _stealCooldownSeconds > 0
+                                      ? null
+                                      : () => _stealBoat(
+                                            vehicleProvider,
+                                            authProvider,
+                                          ),
                                   borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Icon(
-                                  _stealCooldownSeconds > 0
-                                      ? Icons.timer
-                                      : Icons.sailing,
-                                  color: _stealCooldownSeconds > 0
-                                      ? Colors.grey
-                                      : Colors.lightBlue.shade300,
-                                  size: 18,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: _stealCooldownSeconds > 0
+                                            ? Colors.grey
+                                            : Colors.lightBlue.shade300,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Icon(
+                                      _stealCooldownSeconds > 0
+                                          ? Icons.timer
+                                          : Icons.sailing,
+                                      color: _stealCooldownSeconds > 0
+                                          ? Colors.grey
+                                          : Colors.lightBlue.shade300,
+                                      size: 18,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              if (_stealCooldownSeconds > 0) ...[
+                                const SizedBox(width: 4),
+                                Tooltip(
+                                  message: _tr(
+                                    'Versnellen met credits',
+                                    'Speed up with credits',
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: _isStealAttemptRunning
+                                          ? null
+                                          : () => _redeemMarinaStealCooldown(
+                                                vehicleProvider,
+                                                authProvider,
+                                              ),
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                          vertical: 2,
+                                        ),
+                                        child: Icon(
+                                          Icons.bolt,
+                                          color: Colors.amber.shade400,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                           const SizedBox(width: 8),
                           Tooltip(
@@ -838,30 +852,64 @@ class _MarinaScreenState extends State<MarinaScreen> {
                             ),
                           ),
                         ] else ...[
-                          OutlinedButton.icon(
-                            onPressed: _isStealAttemptRunning || _stealCooldownSeconds > 0
-                                ? null
-                                : () =>
-                                      _stealBoat(vehicleProvider, authProvider),
-                            icon: Icon(
-                              _stealCooldownSeconds > 0
-                                  ? Icons.timer
-                                  : Icons.sailing,
-                              size: 16,
-                            ),
-                            label: Text(
-                              _stealButtonDisplayLabel(),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.lightBlue.shade300,
-                              side: BorderSide(
-                                color: Colors.lightBlue.shade300,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              OutlinedButton.icon(
+                                onPressed: _isStealAttemptRunning || _stealCooldownSeconds > 0
+                                    ? null
+                                    : () =>
+                                        _stealBoat(vehicleProvider, authProvider),
+                                icon: Icon(
+                                  _stealCooldownSeconds > 0
+                                      ? Icons.timer
+                                      : Icons.sailing,
+                                  size: 16,
+                                ),
+                                label: Text(
+                                  _stealButtonDisplayLabel(),
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.lightBlue.shade300,
+                                  side: BorderSide(
+                                    color: Colors.lightBlue.shade300,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                ),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                            ),
+                              if (_stealCooldownSeconds > 0) ...[
+                                const SizedBox(width: 4),
+                                Tooltip(
+                                  message: _tr(
+                                    'Versnellen met credits',
+                                    'Speed up with credits',
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: _isStealAttemptRunning
+                                          ? null
+                                          : () => _redeemMarinaStealCooldown(
+                                                vehicleProvider,
+                                                authProvider,
+                                              ),
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4),
+                                        child: Icon(
+                                          Icons.bolt,
+                                          color: Colors.amber.shade400,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                           const SizedBox(width: 8),
                           OutlinedButton.icon(
@@ -1034,13 +1082,6 @@ class _MarinaScreenState extends State<MarinaScreen> {
       return;
     }
 
-    if (_stealCooldownSeconds > 0) {
-      setState(() {
-        _showStealCooldownOverlay = true;
-      });
-      return;
-    }
-
     setState(() {
       _isStealAttemptRunning = true;
     });
@@ -1080,14 +1121,6 @@ class _MarinaScreenState extends State<MarinaScreen> {
     final cooldownSeconds = provider.lastStealCooldownRemainingSeconds;
     if (cooldownSeconds > 0) {
       _startStealCooldown(cooldownSeconds);
-    }
-
-    if (!success && cooldownSeconds > 0) {
-      setState(() {
-        _isStealAttemptRunning = false;
-        _showStealCooldownOverlay = true;
-      });
-      return;
     }
 
     if (!success &&

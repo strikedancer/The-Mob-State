@@ -9,6 +9,7 @@ import '../providers/locale_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../services/notification_service.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/theft_cooldown_confirm_prefs.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool embedded;
@@ -42,6 +43,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   AuthorizationStatus? _pushAuthorizationStatus;
   bool _pushTokenRegistered = false;
   bool _isEnablingPush = false;
+  /// When true, show confirm dialog before spending credits on theft cooldown skip.
+  bool _askTheftCooldownCreditConfirm = true;
 
   bool get _isDutch => Localizations.localeOf(context).languageCode == 'nl';
 
@@ -171,6 +174,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {
         _isLoading = false;
       });
+
+      _askTheftCooldownCreditConfirm =
+          !(await TheftCooldownConfirmPrefs.skipConfirmDialog);
 
       await _loadPushPermissionStatus();
     } catch (e) {
@@ -927,6 +933,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ],
                       ),
                     );
+                  },
+                ),
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: SwitchListTile(
+                  secondary: const Icon(Icons.bolt, color: Colors.amber),
+                  title: Text(l10n.settingsTheftCooldownConfirmTitle),
+                  subtitle: Text(l10n.settingsTheftCooldownConfirmSubtitle),
+                  value: _askTheftCooldownCreditConfirm,
+                  onChanged: (value) async {
+                    await TheftCooldownConfirmPrefs.setSkipConfirmDialog(!value);
+                    if (mounted) {
+                      setState(() {
+                        _askTheftCooldownCreditConfirm = value;
+                      });
+                    }
                   },
                 ),
               ),

@@ -2369,5 +2369,33 @@
   "nightclubVibeRaging": "Raging",
   "nightclubTheftTypeCustomer": "Customer theft",
   "nightclubTheftTypeEmployee": "Employee heist",
-  "nightclubTheftTypeRival": "Rival sabotage"
+  "nightclubTheftTypeRival": "Rival sabotage",
+  "theftCooldownRedeemTitle": "Skip theft cooldown?",
+  "theftCooldownRedeemMessage": "Spend {cost} credits to clear the vehicle theft cooldown now? Your balance: {balance}.",
+  "@theftCooldownRedeemMessage": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      },
+      "balance": {
+        "type": "int"
+      }
+    }
+  },
+  "theftCooldownRedeemDontShowAgain": "Don't show this confirmation again",
+  "theftCooldownRedeemConfirmAction": "Use {credits} credits",
+  "@theftCooldownRedeemConfirmAction": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "theftCooldownRedeemNotAvailable": "Credit speed-up is not available for this cooldown right now.",
+  "theftCooldownRedeemNoActiveCooldown": "No active theft cooldown to reset.",
+  "theftCooldownRedeemInsufficientCredits": "Not enough credits.",
+  "theftCooldownRedeemFailed": "Could not apply credits to the cooldown.",
+  "theftCooldownRedeemSuccess": "Cooldown cleared.",
+  "settingsTheftCooldownConfirmTitle": "Theft cooldown (credits)",
+  "settingsTheftCooldownConfirmSubtitle": "Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer)."
 }

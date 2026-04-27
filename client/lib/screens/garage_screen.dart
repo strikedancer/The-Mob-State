@@ -9,8 +9,8 @@ import '../services/api_client.dart';
 import '../services/jail_service.dart';
 import '../widgets/jail_screen.dart';
 import '../widgets/vehicle_card.dart';
-import '../widgets/cooldown_overlay.dart';
 import '../widgets/overlay_image.dart';
+import '../widgets/theft_cooldown_credit_flow.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
@@ -48,7 +48,6 @@ class _GarageScreenState extends State<GarageScreen> {
   int? _jailTime;
   bool _isStealAttemptRunning = false;
   int _stealCooldownSeconds = 0;
-  bool _showStealCooldownOverlay = false;
   Timer? _stealCooldownTimer;
   final Set<int> _repairCreditRedeemInProgress = <int>{};
   int? _repairFinishCreditCost;
@@ -106,7 +105,6 @@ class _GarageScreenState extends State<GarageScreen> {
     if (seconds <= 0) {
       setState(() {
         _stealCooldownSeconds = 0;
-        _showStealCooldownOverlay = false;
       });
       return;
     }
@@ -125,7 +123,6 @@ class _GarageScreenState extends State<GarageScreen> {
         timer.cancel();
         setState(() {
           _stealCooldownSeconds = 0;
-          _showStealCooldownOverlay = false;
         });
         return;
       }
@@ -134,6 +131,26 @@ class _GarageScreenState extends State<GarageScreen> {
         _stealCooldownSeconds -= 1;
       });
     });
+  }
+
+  Future<void> _redeemGarageStealCooldown(
+    VehicleProvider vehicleProvider,
+    AuthProvider authProvider,
+  ) async {
+    final action = _isMotorTab ? 'motorcycle_theft' : 'vehicle_theft';
+    await runTheftCooldownCreditRedeem(
+      context,
+      cooldownActionType: action,
+      onAfterSuccess: () async {
+        _stealCooldownTimer?.cancel();
+        if (mounted) {
+          setState(() {
+            _stealCooldownSeconds = 0;
+          });
+        }
+        await _loadData();
+      },
+    );
   }
 
   Future<void> _checkJailStatusAndLoadData() async {
@@ -602,51 +619,6 @@ class _GarageScreenState extends State<GarageScreen> {
                   Expanded(child: _buildVehicleGrid(vehicleProvider)),
                 ],
               ),
-        if (_jailTime == null &&
-            _stealCooldownSeconds > 0 &&
-            _showStealCooldownOverlay)
-          Positioned.fill(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                setState(() {
-                  _showStealCooldownOverlay = false;
-                });
-              },
-              child: Container(
-                color: Colors.black45,
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: CooldownOverlay(
-                    actionType: 'crime',
-                    cooldownActionType: _isMotorTab
-                        ? 'motorcycle_theft'
-                        : 'vehicle_theft',
-                    remainingSeconds: _stealCooldownSeconds,
-                    embedded: true,
-                    resultMessage: _tr(
-                      _isMotorTab
-                          ? 'Motor stelen staat op cooldown.'
-                          : 'Auto stelen staat op cooldown.',
-                      _isMotorTab
-                          ? 'Motorcycle theft is on cooldown.'
-                          : 'Car theft is on cooldown.',
-                    ),
-                    isSuccess: false,
-                    onExpired: () {
-                      if (!mounted) return;
-                      _stealCooldownTimer?.cancel();
-                      setState(() {
-                        _stealCooldownSeconds = 0;
-                        _showStealCooldownOverlay = false;
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
       ],
     );
 
@@ -807,40 +779,77 @@ class _GarageScreenState extends State<GarageScreen> {
                     Row(
                       children: [
                         if (isSmall) ...[
-                          Tooltip(
-                            message: _stealButtonDisplayLabel(),
-                            child: InkWell(
-                              onTap: _isStealAttemptRunning || _stealCooldownSeconds > 0
-                                  ? null
-                                  : () => _stealVehicle(
-                                      vehicleProvider,
-                                      authProvider,
-                                    ),
-                              borderRadius: BorderRadius.circular(6),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: _stealCooldownSeconds > 0
-                                        ? Colors.grey
-                                        : Colors.green.shade400,
-                                  ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Tooltip(
+                                message: _stealButtonDisplayLabel(),
+                                child: InkWell(
+                                  onTap: _isStealAttemptRunning || _stealCooldownSeconds > 0
+                                      ? null
+                                      : () => _stealVehicle(
+                                            vehicleProvider,
+                                            authProvider,
+                                          ),
                                   borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Icon(
-                                  _stealCooldownSeconds > 0
-                                      ? Icons.timer
-                                      : Icons.drive_eta,
-                                  color: _stealCooldownSeconds > 0
-                                      ? Colors.grey
-                                      : Colors.green.shade400,
-                                  size: 18,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: _stealCooldownSeconds > 0
+                                            ? Colors.grey
+                                            : Colors.green.shade400,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Icon(
+                                      _stealCooldownSeconds > 0
+                                          ? Icons.timer
+                                          : Icons.drive_eta,
+                                      color: _stealCooldownSeconds > 0
+                                          ? Colors.grey
+                                          : Colors.green.shade400,
+                                      size: 18,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              if (_stealCooldownSeconds > 0) ...[
+                                const SizedBox(width: 4),
+                                Tooltip(
+                                  message: _tr(
+                                    'Versnellen met credits',
+                                    'Speed up with credits',
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: _isStealAttemptRunning
+                                          ? null
+                                          : () => _redeemGarageStealCooldown(
+                                                vehicleProvider,
+                                                authProvider,
+                                              ),
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4,
+                                          vertical: 2,
+                                        ),
+                                        child: Icon(
+                                          Icons.bolt,
+                                          color: Colors.amber.shade400,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                           const SizedBox(width: 8),
                           Tooltip(
@@ -885,30 +894,66 @@ class _GarageScreenState extends State<GarageScreen> {
                             ),
                           ),
                         ] else ...[
-                          OutlinedButton.icon(
-                            onPressed: _isStealAttemptRunning || _stealCooldownSeconds > 0
-                                ? null
-                                : () => _stealVehicle(
-                                    vehicleProvider,
-                                    authProvider,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              OutlinedButton.icon(
+                                onPressed: _isStealAttemptRunning || _stealCooldownSeconds > 0
+                                    ? null
+                                    : () => _stealVehicle(
+                                          vehicleProvider,
+                                          authProvider,
+                                        ),
+                                icon: Icon(
+                                  _stealCooldownSeconds > 0
+                                      ? Icons.timer
+                                      : (_isMotorTab
+                                          ? Icons.two_wheeler
+                                          : Icons.drive_eta),
+                                  size: 16,
+                                ),
+                                label: Text(
+                                  _stealButtonDisplayLabel(),
+                                ),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.green.shade400,
+                                  side: BorderSide(color: Colors.green.shade400),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
                                   ),
-                            icon: Icon(
-                              _stealCooldownSeconds > 0
-                                  ? Icons.timer
-                                  : (_isMotorTab ? Icons.two_wheeler : Icons.drive_eta),
-                              size: 16,
-                            ),
-                            label: Text(
-                              _stealButtonDisplayLabel(),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.green.shade400,
-                              side: BorderSide(color: Colors.green.shade400),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
+                                ),
                               ),
-                            ),
+                              if (_stealCooldownSeconds > 0) ...[
+                                const SizedBox(width: 4),
+                                Tooltip(
+                                  message: _tr(
+                                    'Versnellen met credits',
+                                    'Speed up with credits',
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: _isStealAttemptRunning
+                                          ? null
+                                          : () => _redeemGarageStealCooldown(
+                                                vehicleProvider,
+                                                authProvider,
+                                              ),
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4),
+                                        child: Icon(
+                                          Icons.bolt,
+                                          color: Colors.amber.shade400,
+                                          size: 22,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                           const SizedBox(width: 8),
                           OutlinedButton.icon(
@@ -1078,13 +1123,6 @@ class _GarageScreenState extends State<GarageScreen> {
       return;
     }
 
-    if (_stealCooldownSeconds > 0) {
-      setState(() {
-        _showStealCooldownOverlay = true;
-      });
-      return;
-    }
-
     setState(() {
       _isStealAttemptRunning = true;
     });
@@ -1135,14 +1173,6 @@ class _GarageScreenState extends State<GarageScreen> {
     final cooldownSeconds = provider.lastStealCooldownRemainingSeconds;
     if (cooldownSeconds > 0) {
       _startStealCooldown(cooldownSeconds);
-    }
-
-    if (!success && cooldownSeconds > 0) {
-      setState(() {
-        _isStealAttemptRunning = false;
-        _showStealCooldownOverlay = true;
-      });
-      return;
     }
 
     if (!success &&

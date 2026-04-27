@@ -12,8 +12,8 @@ import '../services/api_client.dart';
 import '../services/jail_service.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
-import '../widgets/cooldown_overlay.dart';
 import '../widgets/jail_screen.dart';
+import '../widgets/theft_cooldown_credit_flow.dart';
 import '../widgets/overlay_image.dart';
 import 'garage_screen.dart';
 import 'marina_screen.dart';
@@ -43,9 +43,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   Timer? _opsTicker;
   DateTime? _opsLastRefreshAt;
   final Map<String, Map<String, int>> _laneCapacities = {};
-  bool _showStealCooldownOverlay = false;
-  int _stealCooldownOverlaySeconds = 0;
-  String _stealCooldownActionType = 'vehicle_theft';
   int? _embeddedJailSeconds;
   int _jailContentEpoch = 0;
 
@@ -67,7 +64,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _activeTabIndex != _tabController.index) {
         setState(() {
           _activeTabIndex = _tabController.index;
-          _showStealCooldownOverlay = false;
         });
         _refreshOpsIntelligence();
       }
@@ -211,33 +207,35 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     }
   }
 
-  String _stealCooldownResultMessageForAction(String action) {
-    switch (action) {
-      case 'motorcycle_theft':
-        return _tr(
-          'Motor stelen staat op cooldown.',
-          'Motorcycle theft is on cooldown.',
-        );
-      case 'boat_theft':
-        return _tr('Boot stelen staat op cooldown.', 'Boat theft is on cooldown.');
-      case 'vehicle_theft':
-      default:
-        return _tr(
-          'Auto stelen staat op cooldown.',
-          'Car theft is on cooldown.',
-        );
-    }
-  }
-
-  void _openStealCooldownOverlay(VehicleProvider provider, int tabIndex) {
-    final live = _liveStealCooldownForOperationLane(provider, tabIndex);
-    if (live <= 0) return;
+  Future<void> _redeemStealCooldownWithCredits(
+    VehicleProvider provider,
+    int tabIndex,
+  ) async {
     if (!mounted) return;
-    setState(() {
-      _showStealCooldownOverlay = true;
-      _stealCooldownOverlaySeconds = live;
-      _stealCooldownActionType = _cooldownActionTypeForTab(tabIndex);
-    });
+    final action = _cooldownActionTypeForTab(tabIndex);
+    await runTheftCooldownCreditRedeem(
+      context,
+      cooldownActionType: action,
+      onAfterSuccess: () async {
+        if (!mounted) return;
+        await _refreshOpsIntelligence();
+        await _refreshLaneCapacities();
+        final auth = context.read<AuthProvider>();
+        await auth.refreshPlayer();
+        if (!mounted) return;
+        await provider.fetchInventory();
+        final country = auth.currentPlayer?.currentCountry ?? 'netherlands';
+        final vehicleType = _opsVehicleTypeForTab(tabIndex);
+        if (tabIndex == 2) {
+          await provider.fetchMarinaStatus(country);
+        } else {
+          await provider.fetchGarageStatus(
+            country,
+            vehicleType: vehicleType,
+          );
+        }
+      },
+    );
   }
 
   Future<void> _refreshOpsIntelligence() async {
@@ -466,11 +464,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 'Cooldown active: ${_formatCooldown(stealCooldown)}',
               ),
         );
-        setState(() {
-          _showStealCooldownOverlay = true;
-          _stealCooldownOverlaySeconds = stealCooldown;
-          _stealCooldownActionType = _cooldownActionTypeForTab(tabIndex);
-        });
       } else if (stealArrested) {
         _showTopMessage(
           _tr(
@@ -967,34 +960,68 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  OutlinedButton.icon(
-                    onPressed: _laneActionInProgress
-                        ? null
-                        : stealRemaining > 0
-                            ? () => _openStealCooldownOverlay(provider, tabIndex)
-                            : () => _runTileSteal(provider, tabIndex),
-                    icon: Icon(
-                      stealRemaining > 0
-                          ? Icons.timer
-                          : (tabIndex == 2
-                              ? Icons.sailing
-                              : Icons.local_police),
-                      size: 14,
-                    ),
-                    label: Text(
-                      stealRemaining > 0
-                          ? _formatCooldown(stealRemaining)
-                          : (tabIndex == 2
-                              ? _tr('Steel boot', 'Steal boat')
-                              : tabIndex == 1
-                              ? _tr('Steel motor', 'Steal bike')
-                              : _tr('Steel auto', 'Steal car')),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: accent,
-                      side: BorderSide(color: accent.withOpacity(0.8)),
-                      visualDensity: VisualDensity.compact,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      OutlinedButton.icon(
+                        onPressed: _laneActionInProgress
+                            ? null
+                            : stealRemaining > 0
+                                ? null
+                                : () => _runTileSteal(provider, tabIndex),
+                        icon: Icon(
+                          stealRemaining > 0
+                              ? Icons.timer
+                              : (tabIndex == 2
+                                  ? Icons.sailing
+                                  : Icons.local_police),
+                          size: 14,
+                        ),
+                        label: Text(
+                          stealRemaining > 0
+                              ? _formatCooldown(stealRemaining)
+                              : (tabIndex == 2
+                                  ? _tr('Steel boot', 'Steal boat')
+                                  : tabIndex == 1
+                                  ? _tr('Steel motor', 'Steal bike')
+                                  : _tr('Steel auto', 'Steal car')),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: accent,
+                          side: BorderSide(color: accent.withOpacity(0.8)),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                      ),
+                      if (stealRemaining > 0) ...[
+                        const SizedBox(width: 2),
+                        Tooltip(
+                          message: _tr(
+                            'Versnellen met credits',
+                            'Speed up with credits',
+                          ),
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: _laneActionInProgress
+                                  ? null
+                                  : () => _redeemStealCooldownWithCredits(
+                                        provider,
+                                        tabIndex,
+                                      ),
+                              borderRadius: BorderRadius.circular(20),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Icon(
+                                  Icons.bolt,
+                                  size: 22,
+                                  color: Colors.amber.shade400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                   OutlinedButton.icon(
                     onPressed: _laneActionInProgress
@@ -2078,47 +2105,6 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           fit: StackFit.expand,
           children: [
             Positioned.fill(child: mainBody),
-            if (_showStealCooldownOverlay && _stealCooldownOverlaySeconds > 0)
-              Positioned.fill(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    setState(() {
-                      _showStealCooldownOverlay = false;
-                    });
-                  },
-                  child: Container(
-                    color: Colors.black45,
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: CooldownOverlay(
-                        key: ValueKey<String>(
-                          'heist_steal_${_stealCooldownActionType}_'
-                          '$_stealCooldownOverlaySeconds',
-                        ),
-                        actionType: 'crime',
-                        cooldownActionType: _stealCooldownActionType,
-                        remainingSeconds: _stealCooldownOverlaySeconds,
-                        embedded: true,
-                        resultMessage: _stealCooldownResultMessageForAction(
-                          _stealCooldownActionType,
-                        ),
-                        isSuccess: false,
-                        onExpired: () {
-                          if (!mounted) return;
-                          setState(() {
-                            _showStealCooldownOverlay = false;
-                            _stealCooldownOverlaySeconds = 0;
-                          });
-                          _refreshOpsIntelligence();
-                          _refreshLaneCapacities();
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             if (widget.embedded &&
                 _embeddedJailSeconds != null &&
                 _embeddedJailSeconds! > 0)

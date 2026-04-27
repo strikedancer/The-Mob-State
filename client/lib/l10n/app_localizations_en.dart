@@ -4458,4 +4458,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nightclubTheftTypeRival => 'Rival sabotage';
+
+  @override
+  String get theftCooldownRedeemTitle => 'Skip theft cooldown?';
+
+  @override
+  String theftCooldownRedeemMessage(int cost, int balance) {
+    return 'Spend $cost credits to clear the vehicle theft cooldown now? Your balance: $balance.';
+  }
+
+  @override
+  String get theftCooldownRedeemDontShowAgain =>
+      'Don\'t show this confirmation again';
+
+  @override
+  String theftCooldownRedeemConfirmAction(int credits) {
+    return 'Use $credits credits';
+  }
+
+  @override
+  String get theftCooldownRedeemNotAvailable =>
+      'Credit speed-up is not available for this cooldown right now.';
+
+  @override
+  String get theftCooldownRedeemNoActiveCooldown =>
+      'No active theft cooldown to reset.';
+
+  @override
+  String get theftCooldownRedeemInsufficientCredits => 'Not enough credits.';
+
+  @override
+  String get theftCooldownRedeemFailed =>
+      'Could not apply credits to the cooldown.';
+
+  @override
+  String get theftCooldownRedeemSuccess => 'Cooldown cleared.';
+
+  @override
+  String get settingsTheftCooldownConfirmTitle => 'Theft cooldown (credits)';
+
+  @override
+  String get settingsTheftCooldownConfirmSubtitle =>
+      'Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer).';
 }

@@ -4457,4 +4457,45 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get nightclubTheftTypeRival => 'Rivaal-sabotage';
+
+  @override
+  String get theftCooldownRedeemTitle => 'Stelen-cooldown overslaan?';
+
+  @override
+  String theftCooldownRedeemMessage(int cost, int balance) {
+    return 'Weet je zeker dat je $cost credits wilt uitgeven om de voertuigdiefstal-cooldown nu te beëindigen? Je saldo: $balance.';
+  }
+
+  @override
+  String get theftCooldownRedeemDontShowAgain => 'Dit scherm niet meer tonen';
+
+  @override
+  String theftCooldownRedeemConfirmAction(int credits) {
+    return 'Gebruik $credits credits';
+  }
+
+  @override
+  String get theftCooldownRedeemNotAvailable =>
+      'Versnellen met credits is nu niet beschikbaar voor deze cooldown.';
+
+  @override
+  String get theftCooldownRedeemNoActiveCooldown =>
+      'Geen actieve stelen-cooldown om te resetten.';
+
+  @override
+  String get theftCooldownRedeemInsufficientCredits => 'Onvoldoende credits.';
+
+  @override
+  String get theftCooldownRedeemFailed =>
+      'Kon credits niet toepassen op de cooldown.';
+
+  @override
+  String get theftCooldownRedeemSuccess => 'Cooldown beëindigd.';
+
+  @override
+  String get settingsTheftCooldownConfirmTitle => 'Stelen-cooldown (credits)';
+
+  @override
+  String get settingsTheftCooldownConfirmSubtitle =>
+      'Vraag bevestiging voordat je credits uitgeeft om de voertuigdiefstal-cooldown over te slaan. Zet uit om in één tik te verzilveren (bliksem naast de timer).';
 }

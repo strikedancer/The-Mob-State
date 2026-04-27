@@ -1959,5 +1959,33 @@
   "nightclubVibeRaging": "Raging",
   "nightclubTheftTypeCustomer": "Klantdiefstal",
   "nightclubTheftTypeEmployee": "Medewerker-heist",
-  "nightclubTheftTypeRival": "Rivaal-sabotage"
+  "nightclubTheftTypeRival": "Rivaal-sabotage",
+  "theftCooldownRedeemTitle": "Stelen-cooldown overslaan?",
+  "theftCooldownRedeemMessage": "Weet je zeker dat je {cost} credits wilt uitgeven om de voertuigdiefstal-cooldown nu te beëindigen? Je saldo: {balance}.",
+  "@theftCooldownRedeemMessage": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      },
+      "balance": {
+        "type": "int"
+      }
+    }
+  },
+  "theftCooldownRedeemDontShowAgain": "Dit scherm niet meer tonen",
+  "theftCooldownRedeemConfirmAction": "Gebruik {credits} credits",
+  "@theftCooldownRedeemConfirmAction": {
+    "placeholders": {
+      "credits": {
+        "type": "int"
+      }
+    }
+  },
+  "theftCooldownRedeemNotAvailable": "Versnellen met credits is nu niet beschikbaar voor deze cooldown.",
+  "theftCooldownRedeemNoActiveCooldown": "Geen actieve stelen-cooldown om te resetten.",
+  "theftCooldownRedeemInsufficientCredits": "Onvoldoende credits.",
+  "theftCooldownRedeemFailed": "Kon credits niet toepassen op de cooldown.",
+  "theftCooldownRedeemSuccess": "Cooldown beëindigd.",
+  "settingsTheftCooldownConfirmTitle": "Stelen-cooldown (credits)",
+  "settingsTheftCooldownConfirmSubtitle": "Vraag bevestiging voordat je credits uitgeeft om de voertuigdiefstal-cooldown over te slaan. Zet uit om in één tik te verzilveren (bliksem naast de timer)."
 }

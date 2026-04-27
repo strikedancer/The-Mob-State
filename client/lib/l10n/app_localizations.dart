@@ -8155,6 +8155,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rival sabotage'**
   String get nightclubTheftTypeRival;
+
+  /// No description provided for @theftCooldownRedeemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip theft cooldown?'**
+  String get theftCooldownRedeemTitle;
+
+  /// No description provided for @theftCooldownRedeemMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Spend {cost} credits to clear the vehicle theft cooldown now? Your balance: {balance}.'**
+  String theftCooldownRedeemMessage(int cost, int balance);
+
+  /// No description provided for @theftCooldownRedeemDontShowAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t show this confirmation again'**
+  String get theftCooldownRedeemDontShowAgain;
+
+  /// No description provided for @theftCooldownRedeemConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {credits} credits'**
+  String theftCooldownRedeemConfirmAction(int credits);
+
+  /// No description provided for @theftCooldownRedeemNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit speed-up is not available for this cooldown right now.'**
+  String get theftCooldownRedeemNotAvailable;
+
+  /// No description provided for @theftCooldownRedeemNoActiveCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'No active theft cooldown to reset.'**
+  String get theftCooldownRedeemNoActiveCooldown;
+
+  /// No description provided for @theftCooldownRedeemInsufficientCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough credits.'**
+  String get theftCooldownRedeemInsufficientCredits;
+
+  /// No description provided for @theftCooldownRedeemFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not apply credits to the cooldown.'**
+  String get theftCooldownRedeemFailed;
+
+  /// No description provided for @theftCooldownRedeemSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown cleared.'**
+  String get theftCooldownRedeemSuccess;
+
+  /// No description provided for @settingsTheftCooldownConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theft cooldown (credits)'**
+  String get settingsTheftCooldownConfirmTitle;
+
+  /// No description provided for @settingsTheftCooldownConfirmSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer).'**
+  String get settingsTheftCooldownConfirmSubtitle;
 }
 
 class _AppLocalizationsDelegate
