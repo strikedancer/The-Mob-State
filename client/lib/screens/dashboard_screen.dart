@@ -2494,6 +2494,207 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
 
+  String _cooldownLabel(int seconds) {
+    if (seconds <= 0) return _tr('Nu', 'Now');
+    return _tr('Over ', 'In ') + _formatCooldown(seconds);
+  }
+
+  Widget _buildNextBestActions(Player player, AppLocalizations l10n) {
+    final stats = _stats;
+
+    void open(Widget screen) {
+      Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+    }
+
+    int cd(String key) => stats?.getCooldownSeconds(key) ?? 0;
+    bool ready(String key) => (stats?.getCooldownSeconds(key) ?? 0) == 0;
+
+    final operations = stats?.operations;
+
+    final actions = <Map<String, dynamic>>[];
+
+    if (stats != null && stats.jailed && stats.jailTimeRemaining > 0) {
+      actions.add({
+        'title': _tr('Je zit in de cel', 'You are in jail'),
+        'subtitle': _tr(
+          'Wacht nog ${_formatCooldown(stats.jailTimeRemaining)} of check opties.',
+          'Wait ${_formatCooldown(stats.jailTimeRemaining)} or check options.',
+        ),
+        'icon': Icons.lock,
+        'color': Colors.redAccent,
+        'onTap': () => open(const PrisonScreen()),
+      });
+    }
+
+    if (ready('crime')) {
+      actions.add({
+        'title': _tr('Doe een misdaad', 'Do a crime'),
+        'subtitle': _tr('Snel geld + XP.', 'Quick cash + XP.'),
+        'icon': Icons.flash_on,
+        'color': Colors.orangeAccent,
+        'onTap': () => open(const CrimeScreen()),
+      });
+    } else {
+      actions.add({
+        'title': _tr('Misdaad cooldown', 'Crime cooldown'),
+        'subtitle': _cooldownLabel(cd('crime')),
+        'icon': Icons.timer,
+        'color': Colors.orangeAccent,
+        'onTap': () => open(const CrimeScreen()),
+      });
+    }
+
+    if (ready('vehicle_theft') || ready('boat_theft')) {
+      actions.add({
+        'title': _tr('Voertuig stelen', 'Steal a vehicle'),
+        'subtitle': _tr('Probeer een auto/motor/boot.', 'Try car/motorcycle/boat.'),
+        'icon': Icons.directions_car,
+        'color': const Color(0xFF4FC3F7),
+        'onTap': () => open(const VehicleHeistScreen()),
+      });
+    } else {
+      final best = [cd('vehicle_theft'), cd('boat_theft')]
+          .where((s) => s > 0)
+          .fold<int>(0, (p, c) => p == 0 ? c : (c < p ? c : p));
+      actions.add({
+        'title': _tr('Voertuig stelen', 'Steal a vehicle'),
+        'subtitle': _cooldownLabel(best),
+        'icon': Icons.directions_car,
+        'color': const Color(0xFF4FC3F7),
+        'onTap': () => open(const VehicleHeistScreen()),
+      });
+    }
+
+    if (operations != null && operations.activeDrugProductionsCount > 0) {
+      final endsIn = operations.nextDrugProductionEndsInSeconds;
+      actions.add({
+        'title': _tr('Drugs productie loopt', 'Drug production running'),
+        'subtitle': endsIn > 0
+            ? _tr('Klaar over ${_formatCooldown(endsIn)}.', 'Done in ${_formatCooldown(endsIn)}.')
+            : _tr('Check of je kunt ophalen.', 'Check if you can collect.'),
+        'icon': Icons.science,
+        'color': Colors.greenAccent,
+        'onTap': () => open(const DrugEnvironmentScreen()),
+      });
+    }
+
+    if (ready('job')) {
+      actions.add({
+        'title': _tr('Werk (baan)', 'Work (job)'),
+        'subtitle': _tr('Stabiele cashflow.', 'Steady income.'),
+        'icon': Icons.work,
+        'color': Colors.lightGreenAccent,
+        'onTap': () => open(const JobsScreen()),
+      });
+    }
+
+    if (ready('travel')) {
+      actions.add({
+        'title': _tr('Reis naar een ander land', 'Travel to another country'),
+        'subtitle': _tr('Nieuwe targets & prijzen.', 'New targets & prices.'),
+        'icon': Icons.flight_takeoff,
+        'color': Colors.cyanAccent,
+        'onTap': () => open(const TravelScreen()),
+      });
+    }
+
+    // Vault is a strong retention loop; keep it as a fallback CTA.
+    actions.add({
+      'title': _tr('Kraak de Kluis', 'Crack the Vault'),
+      'subtitle': _tr('Maandronde: raad de code.', 'Monthly season: guess the code.'),
+      'icon': Icons.lock_open,
+      'color': const Color(0xFFD4AF37),
+      'onTap': () => open(const VaultScreen()),
+    });
+
+    final top = actions.take(5).toList();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: _panelDecoration(accent: const Color(0xFFD4AF37)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.auto_awesome, color: _dashboardGold, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  _tr('Wat nu?', 'What now?'),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                _tr('Tips', 'Tips'),
+                style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ...top.map((a) {
+            final color = a['color'] as Color;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: InkWell(
+                onTap: a['onTap'] as VoidCallback,
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.18),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: color.withOpacity(0.35)),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 34,
+                        height: 34,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: color.withOpacity(0.14),
+                          border: Border.all(color: color.withOpacity(0.35)),
+                        ),
+                        child: Icon(a['icon'] as IconData, color: color, size: 18),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              a['title'] as String,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              a['subtitle'] as String,
+                              style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.chevron_right, color: Colors.white54),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -2791,6 +2992,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             // Dashboard cards: stack vertically on tablet, 3-column layout on desktop
             final isCompact =
                 constraints.maxWidth < _DashboardScreenState._tabletBreakpoint;
+
+            final nextActions = _buildNextBestActions(player, l10n);
 
             Widget buildLeftCard() {
               return Container(
@@ -3426,6 +3629,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  nextActions,
+                  const SizedBox(height: 16),
                   buildLeftCard(),
                   const SizedBox(height: 16),
                   buildMiddleCard(),
@@ -3438,7 +3643,17 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(flex: 2, child: buildLeftCard()),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      nextActions,
+                      const SizedBox(height: 16),
+                      buildLeftCard(),
+                    ],
+                  ),
+                ),
                 const SizedBox(width: 16),
                 Expanded(flex: 2, child: buildMiddleCard()),
                 const SizedBox(width: 16),
