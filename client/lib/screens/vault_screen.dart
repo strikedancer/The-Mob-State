@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import '../services/api_client.dart';
@@ -255,8 +254,9 @@ class _VaultScreenState extends State<VaultScreen> {
     }
 
     Widget keypad() {
-      // Clickable button zones aligned to the SVG's grid area:
-      // viewBox 360x480, grid x=24..336, y=146..450 (3 cols, 4 rows)
+      // Clickable button zones aligned to a fixed virtual layout.
+      // We render the panel with Flutter widgets (not SVG) and overlay exact hit zones
+      // so the keypad remains stable/visible on Flutter web.
       const vbW = 360.0;
       const vbH = 480.0;
       const gridLeft = 24.0;
@@ -297,12 +297,74 @@ class _VaultScreenState extends State<VaultScreen> {
 
             return Stack(
               children: [
+                // Panel background
                 Positioned.fill(
-                  child: SvgPicture.asset(
-                    'assets/images/vault/vault_keypad.svg',
-                    fit: BoxFit.contain,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: Colors.black.withOpacity(0.38),
+                      border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.45)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.35),
+                          blurRadius: 18,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.all(isSmall ? 10 : 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (!isSmall) ...[
+                          Text(
+                            _tr('Codepaneel', 'Keypad'),
+                            style: const TextStyle(fontWeight: FontWeight.w900),
+                          ),
+                          const SizedBox(height: 6),
+                        ],
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isSmall ? 10 : 12,
+                            vertical: isSmall ? 8 : 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.35),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.white12),
+                          ),
+                          child: Text(
+                            (_codeController.text
+                                    .replaceAll(RegExp(r'[^\d]'), '')
+                                    .padRight(4, '•'))
+                                .split('')
+                                .take(4)
+                                .join('  '),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: isSmall ? 1.8 : 2.2,
+                              color: const Color(0xFFD4AF37),
+                              fontSize: isSmall ? 14 : 15,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(height: isSmall ? 8 : 10),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              color: Colors.black.withOpacity(0.10),
+                              border: Border.all(color: Colors.white10),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+
+                // Button visuals + click zones
                 for (var i = 0; i < buttons.length; i++)
                   Positioned(
                     left: sx(gridLeft + (i % cols) * cellW + insetX),
@@ -316,6 +378,26 @@ class _VaultScreenState extends State<VaultScreen> {
                         borderRadius: BorderRadius.circular(14),
                         splashColor: const Color(0xFFD4AF37).withOpacity(0.16),
                         highlightColor: Colors.white.withOpacity(0.05),
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Colors.black.withOpacity(0.18),
+                            border: Border.all(
+                              color: const Color(0xFFD4AF37).withOpacity(0.28),
+                            ),
+                          ),
+                          child: Text(
+                            buttons[i],
+                            style: TextStyle(
+                              color: (buttons[i] == '⌫')
+                                  ? Colors.redAccent
+                                  : const Color(0xFFD4AF37),
+                              fontWeight: FontWeight.w900,
+                              fontSize: isSmall ? 15 : 16,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
