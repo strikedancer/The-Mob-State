@@ -1842,6 +1842,16 @@ export const vehicleService = {
     return [...cars, ...motorcycles, ...boats];
   },
 
+  getRegionalBlacklistByType(countryId: string) {
+    const now = new Date();
+    const normalized = normalizeCountryId(countryId);
+    return {
+      car: getRegionalBlacklistEvent('car', normalized, now),
+      motorcycle: getRegionalBlacklistEvent('motorcycle', normalized, now),
+      boat: getRegionalBlacklistEvent('boat', normalized, now),
+    };
+  },
+
   getPoliceVehicleEventStatus(): PoliceVehicleEventStatus {
     return getPoliceVehicleEventStatusForTime(new Date());
   },

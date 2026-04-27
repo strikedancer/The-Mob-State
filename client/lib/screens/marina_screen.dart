@@ -1966,10 +1966,26 @@ class _MarinaScreenState extends State<MarinaScreen> {
               ),
               if (boats.isEmpty)
                 Text(
-                  _tr(
-                    'Er zijn nu geen boten beschikbaar in dit land.',
-                    'There are currently no boats available in this country.',
-                  ),
+                  () {
+                    final lock = provider.regionalBlacklistForType('boat');
+                    if (lock?['active'] == true) {
+                      final ends = DateTime.tryParse((lock?['endsAt'] ?? '').toString());
+                      final suffix = ends == null
+                          ? ''
+                          : ' (${_tr('tot', 'until')} ${formatAdaptiveDurationFromSeconds(
+                              ends.difference(DateTime.now().toUtc()).inSeconds.clamp(0, 999999),
+                              localeName: Localizations.localeOf(context).languageCode,
+                            )})';
+                      return _tr(
+                        (lock?['reasonNl']?.toString() ?? 'Regionale blokkade actief.') + suffix,
+                        (lock?['reasonEn']?.toString() ?? 'Regional lock active.') + suffix,
+                      );
+                    }
+                    return _tr(
+                      'Er zijn nu geen boten beschikbaar in dit land.',
+                      'There are currently no boats available in this country.',
+                    );
+                  }(),
                 )
               else
                 Flexible(

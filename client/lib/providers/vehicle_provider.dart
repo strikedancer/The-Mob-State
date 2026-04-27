@@ -25,6 +25,7 @@ class VehicleProvider with ChangeNotifier {
   int? _lastStealBailAmount;
   int _lastStealXpGained = 0;
   Map<String, dynamic>? _policeVehicleEvent;
+  Map<String, dynamic>? _regionalBlacklistByType;
   Map<String, dynamic>? _vehicleOpsIntelligence;
   bool _vehicleOpsLoading = false;
   Map<String, int> _tuningParts = {'car': 0, 'motorcycle': 0, 'boat': 0};
@@ -58,6 +59,15 @@ class VehicleProvider with ChangeNotifier {
   int? get lastStealBailAmount => _lastStealBailAmount;
   int get lastStealXpGained => _lastStealXpGained;
   Map<String, dynamic>? get policeVehicleEvent => _policeVehicleEvent;
+  Map<String, dynamic>? get regionalBlacklistByType => _regionalBlacklistByType;
+
+  Map<String, dynamic>? regionalBlacklistForType(String type) {
+    final node = _regionalBlacklistByType;
+    if (node == null) return null;
+    final key = type.toLowerCase();
+    final entry = node[key];
+    return entry is Map<String, dynamic> ? entry : null;
+  }
   Map<String, dynamic>? get vehicleOpsIntelligence => _vehicleOpsIntelligence;
   bool get vehicleOpsLoading => _vehicleOpsLoading;
   Map<String, int> get tuningParts => _tuningParts;
@@ -203,6 +213,10 @@ class VehicleProvider with ChangeNotifier {
         _policeVehicleEvent = data['policeVehicleEvent'] is Map<String, dynamic>
             ? data['policeVehicleEvent'] as Map<String, dynamic>
             : null;
+        _regionalBlacklistByType =
+            data['regionalBlacklistByType'] is Map<String, dynamic>
+                ? data['regionalBlacklistByType'] as Map<String, dynamic>
+                : null;
         notifyListeners();
       }
     } catch (e) {
@@ -598,6 +612,10 @@ class VehicleProvider with ChangeNotifier {
       _policeVehicleEvent = data['policeVehicleEvent'] is Map<String, dynamic>
           ? data['policeVehicleEvent'] as Map<String, dynamic>
           : _policeVehicleEvent;
+      _regionalBlacklistByType =
+          data['regionalBlacklistByType'] is Map<String, dynamic>
+              ? data['regionalBlacklistByType'] as Map<String, dynamic>
+              : _regionalBlacklistByType;
       final vehiclesData = data['vehicles'];
 
       if (vehiclesData == null) {
@@ -650,10 +668,19 @@ class VehicleProvider with ChangeNotifier {
       }).toList();
 
       if (availableVehicles.isEmpty) {
-        final typeLabel = vehicleType == 'car'
-            ? 'auto\'s'
-            : (vehicleType == 'boat' ? 'boten' : 'motoren');
-        _error = 'Geen $typeLabel beschikbaar in $country';
+        final lock = regionalBlacklistForType(vehicleType);
+        final isLocked = lock?['active'] == true;
+        if (isLocked) {
+          final reasonNl = lock?['reasonNl']?.toString();
+          _error = (reasonNl != null && reasonNl.trim().isNotEmpty)
+              ? reasonNl
+              : 'Regionale blokkade actief voor dit voertuigtype.';
+        } else {
+          final typeLabel = vehicleType == 'car'
+              ? 'auto\'s'
+              : (vehicleType == 'boat' ? 'boten' : 'motoren');
+          _error = 'Geen $typeLabel beschikbaar in $country';
+        }
         notifyListeners();
         return false;
       }

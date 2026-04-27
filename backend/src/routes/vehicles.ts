@@ -340,12 +340,14 @@ router.get('/available/:country', authenticate, async (req: AuthRequest, res: Re
     const { country } = req.params;
     const vehicles = await vehicleService.getVehiclesInCountry(country as string);
     const policeVehicleEvent = vehicleService.getPoliceVehicleEventStatus();
+    const regionalBlacklistByType = vehicleService.getRegionalBlacklistByType(country as string);
 
     return res.status(200).json({
       event: 'vehicles.available_in_country',
       params: { country },
       vehicles,
       policeVehicleEvent,
+      regionalBlacklistByType,
     });
   } catch {
     return res.status(500).json({

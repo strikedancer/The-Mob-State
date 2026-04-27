@@ -471,6 +471,11 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
       final stealCooldown = provider.lastStealCooldownRemainingSeconds;
       final stealArrested = provider.lastStealArrested;
       final stealJail = provider.lastStealJailMinutes;
+      final lock = provider.regionalBlacklistForType(vehicleType);
+      final lockActive = lock?['active'] == true;
+      final lockReasonNl = lock?['reasonNl']?.toString();
+      final lockReasonEn = lock?['reasonEn']?.toString();
+      final lockEndsAt = lock?['endsAt']?.toString();
 
       if (!mounted) return;
       await _refreshOpsIntelligence();
@@ -506,6 +511,20 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _tr(
             'Je bent opgepakt ($stealJail min cel).',
             'You got arrested ($stealJail min jail).',
+          ),
+        );
+      } else if (lockActive) {
+        final ends = DateTime.tryParse(lockEndsAt ?? '');
+        final endsSuffix = ends == null
+            ? ''
+            : ' (${_tr('tot', 'until')} ${formatAdaptiveDurationFromSeconds(
+                ends.difference(DateTime.now().toUtc()).inSeconds.clamp(0, 999999),
+                localeName: Localizations.localeOf(context).languageCode,
+              )})';
+        _showTopMessage(
+          _tr(
+            (lockReasonNl ?? 'Regionale blokkade actief.') + endsSuffix,
+            (lockReasonEn ?? 'Regional lock active.') + endsSuffix,
           ),
         );
       } else {
