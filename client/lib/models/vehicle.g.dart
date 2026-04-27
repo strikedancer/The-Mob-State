@@ -145,6 +145,7 @@ GarageStatus _$GarageStatusFromJson(Map<String, dynamic> json) => GarageStatus(
       (json['currentCarUpgradeLevel'] as num?)?.toInt() ?? 0,
   currentMotorcycleUpgradeLevel:
       (json['currentMotorcycleUpgradeLevel'] as num?)?.toInt() ?? 0,
+  nextUpgradeRequiredRank: (json['nextUpgradeRequiredRank'] as num?)?.toInt(),
   storedCount: (json['storedCount'] as num).toInt(),
   storedVehicles: (json['storedVehicles'] as List<dynamic>)
       .map((e) => VehicleInventoryItem.fromJson(e as Map<String, dynamic>))
@@ -159,6 +160,7 @@ Map<String, dynamic> _$GarageStatusToJson(GarageStatus instance) =>
       'currentUpgradeLevel': instance.currentUpgradeLevel,
       'currentCarUpgradeLevel': instance.currentCarUpgradeLevel,
       'currentMotorcycleUpgradeLevel': instance.currentMotorcycleUpgradeLevel,
+      'nextUpgradeRequiredRank': instance.nextUpgradeRequiredRank,
       'storedCount': instance.storedCount,
       'storedVehicles': instance.storedVehicles,
     };
@@ -168,6 +170,7 @@ MarinaStatus _$MarinaStatusFromJson(Map<String, dynamic> json) => MarinaStatus(
   capacity: (json['capacity'] as num).toInt(),
   totalCapacity: (json['totalCapacity'] as num).toInt(),
   currentUpgradeLevel: (json['currentUpgradeLevel'] as num).toInt(),
+  nextUpgradeRequiredRank: (json['nextUpgradeRequiredRank'] as num?)?.toInt(),
   storedCount: (json['storedCount'] as num).toInt(),
   storedBoats: (json['storedBoats'] as List<dynamic>)
       .map((e) => VehicleInventoryItem.fromJson(e as Map<String, dynamic>))
@@ -180,6 +183,7 @@ Map<String, dynamic> _$MarinaStatusToJson(MarinaStatus instance) =>
       'capacity': instance.capacity,
       'totalCapacity': instance.totalCapacity,
       'currentUpgradeLevel': instance.currentUpgradeLevel,
+      'nextUpgradeRequiredRank': instance.nextUpgradeRequiredRank,
       'storedCount': instance.storedCount,
       'storedBoats': instance.storedBoats,
     };

@@ -736,6 +736,9 @@ class _GarageScreenState extends State<GarageScreen> {
     bool showActions = true,
   }) {
     final garageStatus = vehicleProvider.garageStatus!;
+    final playerRank = authProvider.currentPlayer?.rank ?? 1;
+    final upgradeRequiredRank = garageStatus.nextUpgradeRequiredRank;
+    final upgradeLockedByRank = upgradeRequiredRank != null && playerRank < upgradeRequiredRank;
     final capacityTitle = _isMotorTab
         ? _tr('Motorstalling Capaciteit', 'Motorcycle Storage Capacity')
         : AppLocalizations.of(context)!.garageCapacity;
@@ -850,18 +853,24 @@ class _GarageScreenState extends State<GarageScreen> {
                           if (garageStatus.currentUpgradeLevel < 5) ...[
                             const SizedBox(width: 8),
                             Tooltip(
-                              message: AppLocalizations.of(
-                                context,
-                              )!.garageUpgradeWithCost(
-                                _getUpgradeCost(
-                                  garageStatus.currentUpgradeLevel,
-                                ).toString(),
-                              ),
+                              message: upgradeLockedByRank
+                                  ? AppLocalizations.of(context)!.rankRequired(
+                                      upgradeRequiredRank,
+                                    )
+                                  : AppLocalizations.of(
+                                      context,
+                                    )!.garageUpgradeWithCost(
+                                      _getUpgradeCost(
+                                        garageStatus.currentUpgradeLevel,
+                                      ).toString(),
+                                    ),
                               child: InkWell(
-                                onTap: () => _upgradeGarage(
-                                  vehicleProvider,
-                                  authProvider,
-                                ),
+                                onTap: upgradeLockedByRank
+                                    ? null
+                                    : () => _upgradeGarage(
+                                          vehicleProvider,
+                                          authProvider,
+                                        ),
                                 borderRadius: BorderRadius.circular(6),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -869,12 +878,14 @@ class _GarageScreenState extends State<GarageScreen> {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: goldColor),
+                                    border: Border.all(
+                                      color: upgradeLockedByRank ? Colors.grey : goldColor,
+                                    ),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Icon(
-                                    Icons.upgrade,
-                                    color: goldColor,
+                                    upgradeLockedByRank ? Icons.lock : Icons.upgrade,
+                                    color: upgradeLockedByRank ? Colors.grey : goldColor,
                                     size: 18,
                                   ),
                                 ),
@@ -910,11 +921,19 @@ class _GarageScreenState extends State<GarageScreen> {
                           ),
                           if (garageStatus.currentUpgradeLevel < 5) ...[
                             const SizedBox(width: 8),
-                            OutlinedButton.icon(
-                              onPressed: () => _upgradeGarage(
-                                vehicleProvider,
-                                authProvider,
-                              ),
+                            Tooltip(
+                              message: upgradeLockedByRank
+                                  ? AppLocalizations.of(context)!.rankRequired(
+                                      upgradeRequiredRank,
+                                    )
+                                  : '',
+                              child: OutlinedButton.icon(
+                                onPressed: upgradeLockedByRank
+                                    ? null
+                                    : () => _upgradeGarage(
+                                          vehicleProvider,
+                                          authProvider,
+                                        ),
                               icon: const Icon(Icons.upgrade, size: 16),
                               label: Text(
                                 AppLocalizations.of(
@@ -926,13 +945,17 @@ class _GarageScreenState extends State<GarageScreen> {
                                 ),
                               ),
                               style: OutlinedButton.styleFrom(
-                                foregroundColor: goldColor,
-                                side: const BorderSide(color: goldColor),
+                                foregroundColor:
+                                    upgradeLockedByRank ? Colors.grey : goldColor,
+                                side: BorderSide(
+                                  color: upgradeLockedByRank ? Colors.grey : goldColor,
+                                ),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 12,
                                   vertical: 8,
                                 ),
                               ),
+                            ),
                             ),
                           ],
                         ],

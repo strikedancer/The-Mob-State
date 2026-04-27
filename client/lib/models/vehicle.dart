@@ -179,6 +179,7 @@ class GarageStatus {
   final int currentCarUpgradeLevel;
   @JsonKey(defaultValue: 0)
   final int currentMotorcycleUpgradeLevel;
+  final int? nextUpgradeRequiredRank;
   final int storedCount;
   final List<VehicleInventoryItem> storedVehicles;
 
@@ -189,6 +190,7 @@ class GarageStatus {
     required this.currentUpgradeLevel,
     this.currentCarUpgradeLevel = 0,
     this.currentMotorcycleUpgradeLevel = 0,
+    this.nextUpgradeRequiredRank,
     required this.storedCount,
     required this.storedVehicles,
   });
@@ -209,6 +211,7 @@ class MarinaStatus {
   final int capacity;
   final int totalCapacity;
   final int currentUpgradeLevel;
+  final int? nextUpgradeRequiredRank;
   final int storedCount;
   final List<VehicleInventoryItem> storedBoats;
 
@@ -217,6 +220,7 @@ class MarinaStatus {
     required this.capacity,
     required this.totalCapacity,
     required this.currentUpgradeLevel,
+    this.nextUpgradeRequiredRank,
     required this.storedCount,
     required this.storedBoats,
   });

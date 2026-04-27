@@ -986,7 +986,13 @@ class VehicleProvider with ChangeNotifier {
         );
         return true;
       } else {
-        _error = _getErrorMessage(data['params']?['reason']?.toString());
+        final reason = data['params']?['reason']?.toString();
+        if (reason == 'RANK_REQUIRED') {
+          final requiredRank = (data['params']?['requiredRank'] as num?)?.toInt() ?? 0;
+          _error = 'Rank $requiredRank vereist';
+        } else {
+          _error = _getErrorMessage(reason);
+        }
         notifyListeners();
         return false;
       }
@@ -1034,7 +1040,13 @@ class VehicleProvider with ChangeNotifier {
         await fetchMarinaStatus(location);
         return true;
       } else {
-        _error = _getErrorMessage(data['params']?['reason']?.toString());
+        final reason = data['params']?['reason']?.toString();
+        if (reason == 'RANK_REQUIRED') {
+          final requiredRank = (data['params']?['requiredRank'] as num?)?.toInt() ?? 0;
+          _error = 'Rank $requiredRank vereist';
+        } else {
+          _error = _getErrorMessage(reason);
+        }
         notifyListeners();
         return false;
       }
@@ -1240,6 +1252,8 @@ class VehicleProvider with ChangeNotifier {
         return 'Gebruik de Smokkel Hub om voertuigen te verplaatsen';
       case 'INVALID_AMOUNT':
         return 'Ongeldig bedrag';
+      case 'RANK_REQUIRED':
+        return 'Rank te laag';
       default:
         return 'Er is een fout opgetreden';
     }

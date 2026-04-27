@@ -82,6 +82,13 @@ router.post('/upgrade', authenticate, async (req: AuthRequest, res: Response) =>
     });
   } catch (error) {
     if (error instanceof Error) {
+      if (error.message.startsWith('RANK_REQUIRED:')) {
+        const requiredRank = parseInt(error.message.split(':')[1] ?? '0', 10) || 0;
+        return res.status(400).json({
+          event: 'garage.error',
+          params: { reason: 'RANK_REQUIRED', requiredRank },
+        });
+      }
       if (error.message === 'MAX_UPGRADE_LEVEL') {
         return res.status(400).json({
           event: 'garage.error',
@@ -166,6 +173,13 @@ router.post('/marina/upgrade', authenticate, async (req: AuthRequest, res: Respo
     });
   } catch (error) {
     if (error instanceof Error) {
+      if (error.message.startsWith('RANK_REQUIRED:')) {
+        const requiredRank = parseInt(error.message.split(':')[1] ?? '0', 10) || 0;
+        return res.status(400).json({
+          event: 'marina.error',
+          params: { reason: 'RANK_REQUIRED', requiredRank },
+        });
+      }
       if (error.message === 'MAX_UPGRADE_LEVEL') {
         return res.status(400).json({
           event: 'marina.error',

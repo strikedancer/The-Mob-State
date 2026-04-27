@@ -67,6 +67,27 @@ export function computeGarageSlotTotals(garage: {
 
 const CAR_UPGRADE_COSTS = [0, 50000, 100000, 200000, 400000, 800000];
 
+const GARAGE_CAR_UPGRADE_REQUIRED_RANKS = [0, 5, 7, 10, 12, 15]; // target level -> rank
+const GARAGE_MOTORCYCLE_UPGRADE_REQUIRED_RANKS = [0, 7, 10, 12, 15, 18]; // target level -> rank
+const MARINA_UPGRADE_REQUIRED_RANKS = [0, 10, 12, 15, 18, 20]; // target level -> rank
+
+function requiredRankForGarageUpgrade(
+  track: 'car' | 'motorcycle',
+  targetLevel: number,
+): number {
+  const list =
+    track === 'motorcycle'
+      ? GARAGE_MOTORCYCLE_UPGRADE_REQUIRED_RANKS
+      : GARAGE_CAR_UPGRADE_REQUIRED_RANKS;
+  return list[targetLevel] ?? list[list.length - 1] ?? 0;
+}
+
+function requiredRankForMarinaUpgrade(targetLevel: number): number {
+  return MARINA_UPGRADE_REQUIRED_RANKS[targetLevel] ??
+    MARINA_UPGRADE_REQUIRED_RANKS[MARINA_UPGRADE_REQUIRED_RANKS.length - 1] ??
+    0;
+}
+
 export const garageService = {
   /**
    * Get or create garage for player in a location
@@ -126,6 +147,15 @@ export const garageService = {
     const currentUpgradeLevelForSelection =
       selectedType === 'motorcycle' ? caps.motorcycleUpgradeLevel : caps.carUpgradeLevel;
 
+    const nextLevelForSelection = Math.min(5, currentUpgradeLevelForSelection + 1);
+    const nextUpgradeRequiredRank =
+      currentUpgradeLevelForSelection >= 5
+        ? null
+        : requiredRankForGarageUpgrade(
+            selectedType === 'motorcycle' ? 'motorcycle' : 'car',
+            nextLevelForSelection,
+          );
+
     return {
       garageId: garage.id,
       capacity: selectedStoredCount,
@@ -133,6 +163,7 @@ export const garageService = {
       currentUpgradeLevel: currentUpgradeLevelForSelection,
       currentCarUpgradeLevel: caps.carUpgradeLevel,
       currentMotorcycleUpgradeLevel: caps.motorcycleUpgradeLevel,
+      nextUpgradeRequiredRank,
       storedCount: selectedStoredCount,
       selectedVehicleType: selectedType,
       carStoredCount,
@@ -185,11 +216,16 @@ export const garageService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true },
+      select: { money: true, rank: true },
     });
 
     if (!player) {
       throw new Error('PLAYER_NOT_FOUND');
+    }
+
+    const requiredRank = requiredRankForGarageUpgrade(garageTrack, newLevel);
+    if ((player.rank ?? 0) < requiredRank) {
+      throw new Error(`RANK_REQUIRED:${requiredRank}`);
     }
 
     if (player.money < upgradeCost) {
@@ -270,11 +306,17 @@ export const garageService = {
       },
     });
 
+    const currentUpgradeLevel = marina.upgrades.length > 0 ? marina.upgrades[0].upgradeLevel : 0;
+    const nextLevel = Math.min(5, currentUpgradeLevel + 1);
+    const nextUpgradeRequiredRank =
+      currentUpgradeLevel >= 5 ? null : requiredRankForMarinaUpgrade(nextLevel);
+
     return {
       marinaId: marina.id,
       capacity: storedBoats.length,
       totalCapacity,
-      currentUpgradeLevel: marina.upgrades.length > 0 ? marina.upgrades[0].upgradeLevel : 0,
+      currentUpgradeLevel,
+      nextUpgradeRequiredRank,
       storedCount: storedBoats.length,
       storedBoats,
     };
@@ -308,11 +350,16 @@ export const garageService = {
 
     const player = await prisma.player.findUnique({
       where: { id: playerId },
-      select: { money: true },
+      select: { money: true, rank: true },
     });
 
     if (!player) {
       throw new Error('PLAYER_NOT_FOUND');
+    }
+
+    const requiredRank = requiredRankForMarinaUpgrade(newLevel);
+    if ((player.rank ?? 0) < requiredRank) {
+      throw new Error(`RANK_REQUIRED:${requiredRank}`);
     }
 
     if (player.money < upgradeCost) {

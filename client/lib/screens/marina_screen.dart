@@ -701,6 +701,9 @@ class _MarinaScreenState extends State<MarinaScreen> {
     bool showActions = true,
   }) {
     final marinaStatus = vehicleProvider.marinaStatus!;
+    final playerRank = authProvider.currentPlayer?.rank ?? 1;
+    final upgradeRequiredRank = marinaStatus.nextUpgradeRequiredRank;
+    final upgradeLockedByRank = upgradeRequiredRank != null && playerRank < upgradeRequiredRank;
     const goldColor = Color(0xFFD4AF37);
 
     return LayoutBuilder(
@@ -805,18 +808,24 @@ class _MarinaScreenState extends State<MarinaScreen> {
                           if (marinaStatus.currentUpgradeLevel < 5) ...[
                             const SizedBox(width: 8),
                             Tooltip(
-                              message: AppLocalizations.of(
-                                context,
-                              )!.marinaUpgradeWithCost(
-                                _getUpgradeCost(
-                                  marinaStatus.currentUpgradeLevel,
-                                ).toString(),
-                              ),
+                              message: upgradeLockedByRank
+                                  ? AppLocalizations.of(context)!.rankRequired(
+                                      upgradeRequiredRank,
+                                    )
+                                  : AppLocalizations.of(
+                                      context,
+                                    )!.marinaUpgradeWithCost(
+                                      _getUpgradeCost(
+                                        marinaStatus.currentUpgradeLevel,
+                                      ).toString(),
+                                    ),
                               child: InkWell(
-                                onTap: () => _upgradeMarina(
-                                  vehicleProvider,
-                                  authProvider,
-                                ),
+                                onTap: upgradeLockedByRank
+                                    ? null
+                                    : () => _upgradeMarina(
+                                          vehicleProvider,
+                                          authProvider,
+                                        ),
                                 borderRadius: BorderRadius.circular(6),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -824,12 +833,14 @@ class _MarinaScreenState extends State<MarinaScreen> {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: goldColor),
+                                    border: Border.all(
+                                      color: upgradeLockedByRank ? Colors.grey : goldColor,
+                                    ),
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Icon(
-                                    Icons.upgrade,
-                                    color: goldColor,
+                                    upgradeLockedByRank ? Icons.lock : Icons.upgrade,
+                                    color: upgradeLockedByRank ? Colors.grey : goldColor,
                                     size: 18,
                                   ),
                                 ),
@@ -861,11 +872,19 @@ class _MarinaScreenState extends State<MarinaScreen> {
                           ),
                           if (marinaStatus.currentUpgradeLevel < 5) ...[
                             const SizedBox(width: 8),
-                            OutlinedButton.icon(
-                              onPressed: () => _upgradeMarina(
-                                vehicleProvider,
-                                authProvider,
-                              ),
+                            Tooltip(
+                              message: upgradeLockedByRank
+                                  ? AppLocalizations.of(context)!.rankRequired(
+                                      upgradeRequiredRank,
+                                    )
+                                  : '',
+                              child: OutlinedButton.icon(
+                                onPressed: upgradeLockedByRank
+                                    ? null
+                                    : () => _upgradeMarina(
+                                          vehicleProvider,
+                                          authProvider,
+                                        ),
                               icon: const Icon(Icons.upgrade, size: 16),
                               label: Text(
                                 AppLocalizations.of(
@@ -877,13 +896,17 @@ class _MarinaScreenState extends State<MarinaScreen> {
                                 ),
                               ),
                               style: OutlinedButton.styleFrom(
-                                foregroundColor: goldColor,
-                                side: const BorderSide(color: goldColor),
+                                foregroundColor:
+                                    upgradeLockedByRank ? Colors.grey : goldColor,
+                                side: BorderSide(
+                                  color: upgradeLockedByRank ? Colors.grey : goldColor,
+                                ),
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 12,
                                   vertical: 8,
                                 ),
                               ),
+                            ),
                             ),
                           ],
                         ],

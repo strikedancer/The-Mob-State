@@ -297,6 +297,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         'stored': (status['capacity'] as num?)?.toInt() ?? 0,
         'total': (status['totalCapacity'] as num?)?.toInt() ?? 0,
         'level': (status['currentUpgradeLevel'] as num?)?.toInt() ?? 0,
+        'nextRank': (status['nextUpgradeRequiredRank'] as num?)?.toInt() ?? 0,
       };
     }
 
@@ -309,6 +310,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
         'stored': (status['capacity'] as num?)?.toInt() ?? 0,
         'total': (status['totalCapacity'] as num?)?.toInt() ?? 0,
         'level': (status['currentUpgradeLevel'] as num?)?.toInt() ?? 0,
+        'nextRank': (status['nextUpgradeRequiredRank'] as num?)?.toInt() ?? 0,
       };
     }
 
@@ -853,6 +855,9 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
     final storedCap = cap?['stored'] ?? 0;
     final totalCap = cap?['total'] ?? 0;
     final laneLevel = cap?['level'] ?? 0;
+    final nextUpgradeRank = cap?['nextRank'] ?? 0;
+    final playerRank = context.read<AuthProvider>().currentPlayer?.rank ?? 1;
+    final upgradeLockedByRank = laneLevel < 5 && nextUpgradeRank > 0 && playerRank < nextUpgradeRank;
 
     if (stealRemaining > 0) {
       if (!_stealCreditHintByTab.containsKey(tabIndex)) {
@@ -1038,7 +1043,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                     compact: true,
                     iconSize: 14,
                   ),
-                  if (laneLevel < 5)
+                  if (laneLevel < 5 && !upgradeLockedByRank)
                     OutlinedButton.icon(
                       onPressed: _laneActionInProgress
                           ? null
@@ -1054,6 +1059,25 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                         foregroundColor: Colors.amber.shade200,
                         side: BorderSide(color: Colors.amber.shade400),
                         visualDensity: VisualDensity.compact,
+                      ),
+                    ),
+                  if (laneLevel < 5 && upgradeLockedByRank)
+                    Tooltip(
+                      message: _tr(
+                        'Rank $nextUpgradeRank vereist',
+                        'Rank $nextUpgradeRank required',
+                      ),
+                      child: OutlinedButton.icon(
+                        onPressed: null,
+                        icon: const Icon(Icons.lock, size: 14),
+                        label: Text(
+                          _tr('Upgrade gelockt', 'Upgrade locked'),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.grey,
+                          side: const BorderSide(color: Colors.grey),
+                          visualDensity: VisualDensity.compact,
+                        ),
                       ),
                     ),
                 ],
