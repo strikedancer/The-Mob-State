@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mafia Game (Text-based) — The Mob State</title>
+    <meta
+      name="description"
+      content="The Mob State is a mafia game in your browser: text-based progression, crimes, vehicle ops, goals, crew play, and seasonal competition—play on mobile or desktop (PWA)."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://themobstate.com/en/mafia-game" />
+    <link rel="alternate" hreflang="en" href="https://themobstate.com/en/mafia-game" />
+    <link rel="alternate" hreflang="nl" href="https://themobstate.com/mafia-game" />
+    <link rel="alternate" hreflang="x-default" href="https://themobstate.com/mafia-game" />
+
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="nl_NL" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Mob State" />
+    <meta property="og:title" content="Mafia Game (Text-based) — The Mob State" />
+    <meta
+      property="og:description"
+      content="A browser mafia game you can play as a PWA. Crimes, progression, vehicle ops, goals, crew, and more."
+    />
+    <meta property="og:url" content="https://themobstate.com/en/mafia-game" />
+    <meta property="og:image" content="https://themobstate.com/logo.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mafia Game (Text-based) — The Mob State" />
+    <meta name="twitter:description" content="Browser mafia game with long-term progression and short session gameplay." />
+    <meta name="twitter:image" content="https://themobstate.com/logo.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "inLanguage": "en",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is The Mob State?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The Mob State is a browser mafia game with text-based gameplay: you take actions through menus, earn money and XP, grow your account, work with a crew, and play events and seasons."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work on mobile?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Play in a mobile web browser, or install the PWA to your home screen for faster access—no app store required."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <style>
+      :root { color-scheme: dark; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 600px at 15% -10%, rgba(212, 175, 55, 0.22), transparent),
+          radial-gradient(1200px 600px at 85% 0%, rgba(255, 255, 255, 0.06), transparent),
+          linear-gradient(135deg, #0b0a0b, #151012 55%, #080708);
+        color: #f2f2f2;
+      }
+      .wrap { max-width: 980px; margin: 0 auto; padding: 40px 18px 60px; }
+      h1 { margin: 0 0 10px; font-size: clamp(30px, 4vw, 44px); letter-spacing: -0.5px; }
+      p { margin: 12px 0; line-height: 1.55; color: rgba(242, 242, 242, 0.85); font-size: 16px; }
+      .ctaRow { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; padding: 12px 14px; border-radius: 12px;
+        text-decoration: none; font-weight: 900; border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35); color: #fff;
+      }
+      .btnPrimary {
+        border-color: rgba(212, 175, 55, 0.55);
+        background: linear-gradient(180deg, rgba(212, 175, 55, 0.28), rgba(212, 175, 55, 0.12));
+      }
+      ul { margin: 14px 0 0; padding-left: 18px; color: rgba(242, 242, 242, 0.82); }
+      li { margin: 8px 0; line-height: 1.5; }
+      .faq { margin-top: 24px; padding: 14px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(0, 0, 0, 0.28); }
+      .faq h2 { margin: 0 0 12px; color: #fff; font-size: 16px; }
+      details { padding: 10px 0; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+      details:first-of-type { border-top: none; }
+      summary { cursor: pointer; font-weight: 800; color: rgba(242, 242, 242, 0.92); }
+      .lang { font-size: 14px; margin: 0 0 6px; }
+      .lang a { color: rgba(212, 175, 55, 0.95); font-weight: 700; }
+      .foot { margin-top: 26px; font-size: 12px; color: rgba(242, 242, 242, 0.55); }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <p class="lang">Also available: <a href="/mafia-game">Nederlandse versie</a></p>
+      <h1>Mafia game (text-based) in your browser</h1>
+      <p>
+        <strong>The Mob State</strong> is a <strong>mafia game</strong> you can play in the browser (PWA). The UI is
+        <em>text-based</em> (menus + timers) so it loads fast, plays well on mobile, and works great in short sessions.
+      </p>
+      <p>What you can do in-game (high level):</p>
+      <ul>
+        <li>Commit crimes, work jobs, and grow your account with XP and money.</li>
+        <li>Run vehicle operations and expand your vehicle portfolio over time.</li>
+        <li>Claim daily/weekly goals for small rewards and steady motivation.</li>
+        <li>Play seasons/events and climb leaderboards with your crew.</li>
+      </ul>
+
+      <div class="ctaRow">
+        <a class="btn btnPrimary" href="/">Play now</a>
+        <a class="btn" href="/en/text-based-mafia-game">Text-based mafia game (EN)</a>
+      </div>
+
+      <section class="faq">
+        <h2>Frequently asked questions</h2>
+        <details>
+          <summary>What is The Mob State?</summary>
+          <p>
+            A browser mafia game with long-term progression: you build power through money, items, and social systems like
+            crews, while the world runs on timers and competitive seasons.
+          </p>
+        </details>
+        <details>
+          <summary>Does it work on my phone?</summary>
+          <p>Yes. Use your mobile web browser, or install the PWA to your home screen for faster access.</p>
+        </details>
+      </section>
+
+      <div class="foot">© The Mob State — mafia game (text-based) (browser / PWA)</div>
+    </main>
+  </body>
+</html>

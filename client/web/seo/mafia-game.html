@@ -9,7 +9,12 @@
       content="The Mob State is een mafia game in je browser (text-based/PWA). Pleeg misdaden, bouw je crew, verzamel voertuigen en klim naar de top."
     />
     <link rel="canonical" href="https://themobstate.com/mafia-game" />
+    <link rel="alternate" hreflang="nl" href="https://themobstate.com/mafia-game" />
+    <link rel="alternate" hreflang="en" href="https://themobstate.com/en/mafia-game" />
+    <link rel="alternate" hreflang="x-default" href="https://themobstate.com/mafia-game" />
 
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="The Mob State" />
     <meta property="og:title" content="Mafia Game (Text-based) — The Mob State" />
@@ -27,6 +32,31 @@
       content="Een mafia game in je browser (PWA). Bouw je imperium, doe misdaden, word de baas."
     />
     <meta name="twitter:image" content="https://themobstate.com/logo.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Wat is The Mob State?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The Mob State is een browser mafia game met text-based gameplay: je stuurt acties in via menu’s, verdient geld en XP, bouwt je crew en speelt in events en seizoenen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Werkt The Mob State op mijn telefoon?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Speel in de browser of installeer de PWA op je homescreen voor snelle toegang."
+            }
+          }
+        ]
+      }
+    </script>
 
     <style>
       :root {
@@ -87,6 +117,30 @@
         margin: 8px 0;
         line-height: 1.5;
       }
+      .faq {
+        margin-top: 24px;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.28);
+      }
+      .faq h2 {
+        margin: 0 0 12px;
+        color: #fff;
+        font-size: 16px;
+      }
+      details {
+        padding: 10px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      details:first-of-type {
+        border-top: none;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 800;
+        color: rgba(242, 242, 242, 0.92);
+      }
       .foot {
         margin-top: 26px;
         font-size: 12px;
@@ -96,6 +150,11 @@
   </head>
   <body>
     <main class="wrap">
+      <p style="font-size: 14px; margin: 0 0 8px">
+        English: <a href="/en/mafia-game" style="color: rgba(212, 175, 55, 0.95); font-weight: 800"
+          >mafia game (EN)</a
+        >
+      </p>
       <h1>Mafia game (text-based) in je browser</h1>
       <p>
         <strong>The Mob State</strong> is een mafia game in je browser (PWA) met een text-based stijl. Je speelt korte
@@ -110,9 +169,24 @@
       </ul>
 
       <div class="ctaRow">
-        <a class="btn btnPrimary" href="/" rel="nofollow">Speel nu</a>
+        <a class="btn btnPrimary" href="/">Speel nu</a>
         <a class="btn" href="/text-based-mafia-game">Text-based uitleg</a>
       </div>
+
+      <section class="faq">
+        <h2>Veelgestelde vragen</h2>
+        <details>
+          <summary>Wat is The Mob State?</summary>
+          <p>
+            The Mob State is een browser mafia game met text-based gameplay: je stuurt acties in via menu’s, verdient
+            geld en XP, bouwt je crew en speelt in events en seizoenen.
+          </p>
+        </details>
+        <details>
+          <summary>Werkt The Mob State op mijn telefoon?</summary>
+          <p>Ja. Speel in de browser of installeer de PWA op je homescreen voor snelle toegang.</p>
+        </details>
+      </section>
 
       <div class="foot">© The Mob State — Mafia game (text-based) (browser/PWA)</div>
     </main>

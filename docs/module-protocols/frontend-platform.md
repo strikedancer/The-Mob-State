@@ -34,6 +34,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Service worker en cache gedrag mogen releases niet verbergen.
 - Achtergrondafbeeldingen, card-afbeeldingen en dynamische images gebruiken consistente fallbackketens.
 - SEO/crawl basisbestanden (robots/sitemap) blijven direct bereikbaar (geen SPA fallback) en SEO landings blijven echte HTML.
+- Meertalige SEO: NL/EN landings staan op vaste paden (`/text-based-mafia-game` vs `/en/text-based-mafia-game`, idem `mafia-game`, plus `/en/`) en hebben expliciete nginx routes + hreflang; wijzig dit alleen bewust en update `sitemap.xml` mee.
 
 ## Platform Guardrails
 - Voor runtime `Image.asset(...)` in Flutter web gebruik standaard keys onder `assets/images/...`.

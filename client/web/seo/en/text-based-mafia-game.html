@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Text-based Mafia Game (Browser) — The Mob State</title>
+    <meta
+      name="description"
+      content="The Mob State is a text-based mafia game in your browser (PWA). Build your criminal empire, commit crimes, grow your crew, and compete in seasons—on mobile or desktop."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://themobstate.com/en/text-based-mafia-game" />
+    <link rel="alternate" hreflang="en" href="https://themobstate.com/en/text-based-mafia-game" />
+    <link rel="alternate" hreflang="nl" href="https://themobstate.com/text-based-mafia-game" />
+    <link rel="alternate" hreflang="x-default" href="https://themobstate.com/text-based-mafia-game" />
+
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="nl_NL" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Mob State" />
+    <meta property="og:title" content="Text-based Mafia Game (Browser) — The Mob State" />
+    <meta
+      property="og:description"
+      content="Play a text based mafia game in your browser (PWA). Short sessions, deep progression, crew play, and seasonal competition."
+    />
+    <meta property="og:url" content="https://themobstate.com/en/text-based-mafia-game" />
+    <meta property="og:image" content="https://themobstate.com/logo.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Text-based Mafia Game (Browser) — The Mob State" />
+    <meta
+      name="twitter:description"
+      content="Browser/PWA mafia game with text-based UI and long-term progression."
+    />
+    <meta name="twitter:image" content="https://themobstate.com/logo.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "inLanguage": "en",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a text based mafia game?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A text-based mafia game is a browser game where you take actions through menus and text UI. You build long-term progress (money, respect, vehicles, crew) in short play sessions through the day."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I play on my phone?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The Mob State works in a mobile web browser and can be installed as a PWA to your home screen for quick access—no app store required."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it free to start?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can start and play the core experience without paying. Optional premium features can exist, but the core loop remains playable for free."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <style>
+      :root { color-scheme: dark; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 600px at 20% -10%, rgba(212, 175, 55, 0.25), transparent),
+          radial-gradient(1200px 600px at 80% 0%, rgba(255, 255, 255, 0.06), transparent),
+          linear-gradient(135deg, #0b0a0b, #151012 55%, #080708);
+        color: #f2f2f2;
+      }
+      .wrap { max-width: 980px; margin: 0 auto; padding: 40px 18px 60px; }
+      .badge {
+        display: inline-flex; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 999px;
+        border: 1px solid rgba(212, 175, 55, 0.45); background: rgba(0, 0, 0, 0.25);
+        color: rgba(212, 175, 55, 0.95); font-weight: 800; font-size: 12px;
+      }
+      h1 { margin: 18px 0 8px; font-size: clamp(28px, 3.8vw, 42px); letter-spacing: -0.5px; }
+      p { margin: 12px 0; line-height: 1.55; color: rgba(242, 242, 242, 0.85); font-size: 16px; }
+      .ctaRow { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 14px;
+        border-radius: 12px; text-decoration: none; font-weight: 900; border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.35); color: #fff;
+      }
+      .btnPrimary {
+        border-color: rgba(212, 175, 55, 0.55);
+        background: linear-gradient(180deg, rgba(212, 175, 55, 0.28), rgba(212, 175, 55, 0.12));
+      }
+      .grid { margin-top: 26px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+      .card { padding: 14px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(0, 0, 0, 0.28); }
+      .card h2 { margin: 0 0 8px; font-size: 15px; color: rgba(212, 175, 55, 0.95); }
+      .card p { margin: 0; font-size: 13px; color: rgba(242, 242, 242, 0.78); }
+      .faq { margin-top: 24px; padding: 14px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(0, 0, 0, 0.28); }
+      .faq h2 { margin: 0 0 12px; color: #fff; font-size: 16px; }
+      details { padding: 10px 0; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+      details:first-of-type { border-top: none; }
+      summary { cursor: pointer; font-weight: 800; color: rgba(242, 242, 242, 0.92); }
+      .foot { margin-top: 26px; font-size: 12px; color: rgba(242, 242, 242, 0.55); }
+      .lang { font-size: 14px; margin: 6px 0 0; }
+      .lang a { color: rgba(212, 175, 55, 0.95); font-weight: 700; }
+      @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <div class="badge">Text-based • Mafia game • Browser / PWA</div>
+      <p class="lang">Also available: <a href="/text-based-mafia-game">Nederlandse versie</a></p>
+      <h1>Text-based mafia game in your browser</h1>
+      <p>
+        <strong>The Mob State</strong> is a <em>text based mafia game</em> (browser / PWA). You play in short sessions:
+        crimes and jobs, rank progression, vehicle operations, and crew play—designed to fit around your day.
+      </p>
+      <p>
+        Searching for a <strong>mafia game</strong> you can play on <strong>mobile and desktop</strong> without a store
+        install? This is a strong match: installable PWA, fast return sessions, and long-term competition.
+      </p>
+
+      <div class="ctaRow">
+        <a class="btn btnPrimary" href="/">Play now</a>
+        <a class="btn" href="/en/mafia-game">Mafia game overview (EN)</a>
+      </div>
+
+      <section class="grid" aria-label="Highlights">
+        <div class="card">
+          <h2>Browser game (PWA)</h2>
+          <p>Start instantly. Optionally install to your home screen for a more app-like experience—still no app store.</p>
+        </div>
+        <div class="card">
+          <h2>Progression & goals</h2>
+          <p>Earn cash, XP, and status. Daily and weekly goals can help you stay in the loop with small rewards.</p>
+        </div>
+        <div class="card">
+          <h2>Crew & seasons</h2>
+          <p>Build a crew, participate in live events, and push for top ranks in seasonal play.</p>
+        </div>
+      </section>
+
+      <section class="faq">
+        <h2>Frequently asked questions</h2>
+        <details>
+          <summary>What is a text based mafia game?</summary>
+          <p>
+            It is a mafia / crime strategy game that uses a text-based UI: menus, timers, and narrative-style feedback
+            rather than 3D action. Progression is the core loop: money, XP, vehicles, crew, and long-term goals.
+          </p>
+        </details>
+        <details>
+          <summary>Can I play on my phone?</summary>
+          <p>Yes. Use your mobile browser or install the PWA. The same account works across devices (via your session/login).</p>
+        </details>
+        <details>
+          <summary>Is it free to start?</summary>
+          <p>Yes—core play is free to start. Optional premium can exist, but the core experience remains playable without paying.</p>
+        </details>
+      </section>
+
+      <div class="foot">© The Mob State — text-based mafia game (browser / PWA)</div>
+    </main>
+  </body>
+</html>
