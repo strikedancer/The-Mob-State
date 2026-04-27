@@ -184,7 +184,9 @@ class _VaultScreenState extends State<VaultScreen> {
 
   Widget _buildVaultHero(BuildContext context) {
     final isSmall = MediaQuery.of(context).size.width < 700;
-    final height = isSmall ? 190.0 : 220.0;
+    // The hero also contains an on-screen keypad overlay; keep enough height so
+    // the full keypad is clickable (otherwise only top rows receive taps).
+    final height = isSmall ? 320.0 : 340.0;
     final seasonWindow = _seasonWindowLabel();
 
     // Prefer external image library path on web/prod (served via nginx),
@@ -237,7 +239,7 @@ class _VaultScreenState extends State<VaultScreen> {
       return OutlinedButton(
         onPressed: _submitting ? null : onPressed,
         style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 14),
+          padding: EdgeInsets.symmetric(vertical: isSmall ? 10 : 12),
           side: BorderSide(color: color.withOpacity(0.55)),
           foregroundColor: Colors.white,
           backgroundColor: Colors.black.withOpacity(0.22),
@@ -246,7 +248,7 @@ class _VaultScreenState extends State<VaultScreen> {
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: isSmall ? 14 : 15,
             fontWeight: FontWeight.w900,
             color: color,
             letterSpacing: 0.4,
@@ -279,7 +281,7 @@ class _VaultScreenState extends State<VaultScreen> {
     }
 
     final keypad = Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(isSmall ? 10 : 12),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.38),
         borderRadius: BorderRadius.circular(16),
@@ -295,13 +297,18 @@ class _VaultScreenState extends State<VaultScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            _tr('Codepaneel', 'Keypad'),
-            style: const TextStyle(fontWeight: FontWeight.w900),
-          ),
-          const SizedBox(height: 6),
+          if (!isSmall) ...[
+            Text(
+              _tr('Codepaneel', 'Keypad'),
+              style: const TextStyle(fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 6),
+          ],
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: EdgeInsets.symmetric(
+              horizontal: isSmall ? 10 : 12,
+              vertical: isSmall ? 8 : 10,
+            ),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.35),
               borderRadius: BorderRadius.circular(12),
@@ -312,22 +319,23 @@ class _VaultScreenState extends State<VaultScreen> {
                   .split('')
                   .take(4)
                   .join('  '),
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w900,
-                letterSpacing: 2.2,
-                color: Color(0xFFD4AF37),
+                letterSpacing: isSmall ? 1.8 : 2.2,
+                color: const Color(0xFFD4AF37),
+                fontSize: isSmall ? 14 : 15,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: isSmall ? 8 : 10),
           GridView.count(
             crossAxisCount: 3,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
+            mainAxisSpacing: isSmall ? 6 : 8,
+            crossAxisSpacing: isSmall ? 6 : 8,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            childAspectRatio: 1.45,
+            childAspectRatio: isSmall ? 1.6 : 1.45,
             children: [
               for (final n in ['1', '2', '3', '4', '5', '6', '7', '8', '9'])
                 keypadButton(label: n, onPressed: () => pushDigit(n)),
