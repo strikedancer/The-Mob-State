@@ -60,6 +60,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Op mobiel/web-smal mag een sticky player-header bovenaan blijven staan, maar de rest van de pagina moet in één primaire scrollcontainer renderen; embed geen volledige schermen in kleine innerlijke viewport-vensters met aparte scrollbars.
 - In `Expanded` contexten heeft `ListView` de voorkeur boven `SingleChildScrollView`.
 - Bij `TabBar + TabBarView` schermen: laat elke tabcontent zelf scrollen en voorkom nested scroll conflicts.
+- Mobile scroll ergonomie: lange “info panels” (zoals Vehicle Ops Intelligence) mogen op smalle schermen standaard ingeklapt zijn (dropdown) zodat primaire acties en content sneller in beeld komen; behoud wel een compacte samenvatting in de header.
 - Voeg geen extra `ScrollConfiguration` toe aan child-content als parent embedded gedrag al afhandelt.
 - Nieuwe en aangepaste overlays/dialogs/modals moeten `SafeArea`, clamped breedte/hoogte en een scrollfallback voor kleine viewports hebben; kritieke CTA's mogen op mobiel of embedded layouts niet buiten beeld vallen.
 - Geef gedeelde overlay- en dialogcomponenten de voorkeur boven scherm-specifieke fixed-width `AlertDialog` implementaties wanneer hetzelfde patroon op meerdere screens terugkomt.

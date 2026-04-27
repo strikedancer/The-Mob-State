@@ -967,6 +967,7 @@ Bob: â‚¬300K counter-hit
 - Ops-telemetry is uitgebreid met vehicle-type en region map-layers voor admin balancing.
 - Voertuigschermen respecteren actieve taalinstelling volledig: in NL-modus tonen opslabels en meldingen geen Engelse fallbackteksten.
 - Ops-paneel toont live cooldown countdowns per actie en ververst deze automatisch.
+- Op mobiel staat het Ops-paneel standaard ingeklapt zodat je sneller bij je voertuigen komt; je kunt het openklappen via de pijl rechtsboven in het blok.
 - Vehicle Ops (bij Voertuig Stelen) bestaat uit 6 extra opties: Hotspot run, Parts market, Crew op, Heat, Chop contract en Politiepatroon. Deze zijn bedoeld als side-loops naast stelen, met duidelijke feedback als iets niet kan (cooldown, crew vereist, regionale lock).
 - Cooldowns worden in Vehicle Ops enkel in de actiekaarten als primaire bron getoond om dubbele info en visuele ruis te vermijden.
 - De gecombineerde Vehicle Heist-pagina gebruikt één primaire categorie-selector (Auto/Motor/Boot lane cards) en toont geen tweede redundante tab-rij met dezelfde categorieën.

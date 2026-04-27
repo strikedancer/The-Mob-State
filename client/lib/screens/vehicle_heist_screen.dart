@@ -48,6 +48,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
   int? _embeddedJailSeconds;
   int _jailContentEpoch = 0;
   final Map<int, int> _stealCreditHintByTab = {};
+  bool _opsIntelExpandedMobile = false;
 
   bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   String _tr(String nl, String en) => _isNl ? nl : en;
@@ -69,6 +70,10 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
           _activeTabIndex = _tabController.index;
         });
         _refreshOpsIntelligence();
+        // Mobile: keep ops intel collapsed by default when switching types.
+        if (_opsIntelExpandedMobile) {
+          setState(() => _opsIntelExpandedMobile = false);
+        }
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -1564,6 +1569,7 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
 
   Widget _buildOpsIntelligencePanel(VehicleProvider provider) {
     final intel = provider.vehicleOpsIntelligence;
+    final isMobile = MediaQuery.of(context).size.width < 600;
     final heat = (intel?['categoryHeat'] as Map<String, dynamic>?) ?? const {};
     final pattern =
         (intel?['policePattern'] as Map<String, dynamic>?) ?? const {};
@@ -1681,6 +1687,23 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
                   icon: const Icon(Icons.refresh, size: 18),
                   tooltip: _tr('Ververs inlichtingen', 'Refresh intelligence'),
                 ),
+              if (isMobile)
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _opsIntelExpandedMobile = !_opsIntelExpandedMobile;
+                    });
+                  },
+                  icon: Icon(
+                    _opsIntelExpandedMobile
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    size: 20,
+                  ),
+                  tooltip: _opsIntelExpandedMobile
+                      ? _tr('Sluiten', 'Collapse')
+                      : _tr('Openen', 'Expand'),
+                ),
             ],
           ),
           const SizedBox(height: 8),
@@ -1723,7 +1746,17 @@ class _VehicleHeistScreenState extends State<VehicleHeistScreen>
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          if (!isMobile || _opsIntelExpandedMobile) const SizedBox(height: 10),
+          if (isMobile && !_opsIntelExpandedMobile)
+            Text(
+              _tr(
+                'Tik om te openen en alle acties te zien.',
+                'Tap to expand and view all actions.',
+              ),
+              style: const TextStyle(color: Colors.white60, fontSize: 12),
+            ),
+          if (isMobile && !_opsIntelExpandedMobile) const SizedBox(height: 2),
+          if (!isMobile || _opsIntelExpandedMobile)
           LayoutBuilder(
             builder: (context, constraints) {
               final stacked = constraints.maxWidth < 820;
