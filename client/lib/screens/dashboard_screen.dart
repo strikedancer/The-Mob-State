@@ -4083,10 +4083,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       buildLeftCard(),
-                      const SizedBox(height: 16),
-                      buildMiddleCard(),
-                      const SizedBox(height: 16),
-                      buildRightCard(),
                       if (dailyGoalsCard is! SizedBox) ...[
                         const SizedBox(height: 16),
                         dailyGoalsCard,
@@ -4095,6 +4091,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         const SizedBox(height: 16),
                         weeklyGoalsCard,
                       ],
+                      const SizedBox(height: 16),
+                      buildMiddleCard(),
+                      const SizedBox(height: 16),
+                      buildRightCard(),
                     ],
                   );
                 }
@@ -4105,21 +4105,29 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(flex: 2, child: buildLeftCard()),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              buildLeftCard(),
+                              if (dailyGoalsCard is! SizedBox) ...[
+                                const SizedBox(height: 16),
+                                dailyGoalsCard,
+                              ],
+                              if (weeklyGoalsCard is! SizedBox) ...[
+                                const SizedBox(height: 16),
+                                weeklyGoalsCard,
+                              ],
+                            ],
+                          ),
+                        ),
                         const SizedBox(width: 16),
                         Expanded(flex: 2, child: buildMiddleCard()),
                         const SizedBox(width: 16),
                         Expanded(flex: 2, child: buildRightCard()),
                       ],
                     ),
-                    if (dailyGoalsCard is! SizedBox) ...[
-                      const SizedBox(height: 16),
-                      dailyGoalsCard,
-                    ],
-                    if (weeklyGoalsCard is! SizedBox) ...[
-                      const SizedBox(height: 16),
-                      weeklyGoalsCard,
-                    ],
                   ],
                 );
               },
