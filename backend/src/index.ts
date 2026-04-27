@@ -17,6 +17,7 @@ import { ensureCooldownSchema } from './startup/ensureCooldownSchema';
 import { ensureCrewMissionSchema } from './startup/ensureCrewMissionSchema';
 import { ensureGarageUpgradeTrackSchema } from './startup/ensureGarageUpgradeTrackSchema';
 import { ensureGarageMotorcycleTrackBackfill } from './startup/ensureGarageMotorcycleTrackBackfill';
+import { ensureVaultSchema } from './startup/ensureVaultSchema';
 import { ensureGameEventPresets } from './services/gameEventPresets';
 import path from 'path';
 import fs from 'fs';
@@ -55,6 +56,7 @@ async function startServer() {
   await ensureTerritorySchema();
   await ensureCooldownSchema();
   await ensureCrewMissionSchema();
+  await ensureVaultSchema();
   await ensureGarageUpgradeTrackSchema();
   await ensureGarageMotorcycleTrackBackfill();
   await ensureGameEventPresets();

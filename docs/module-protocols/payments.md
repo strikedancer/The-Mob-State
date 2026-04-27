@@ -54,6 +54,7 @@ Deze module dekt externe betalingen, VIP-abonnementen, premium catalogus, premiu
 
 ## Backend Contract Guardrails
 - Nieuwe provider-velden en transaction-modellen moeten ook in Prisma bestaan vóór gebruik.
+- Productie-deploys mogen niet stil afhankelijk zijn van handmatig gedraaide DB-migraties: voor kritieke premium/gameplay tabellen mag een startup `ensure*Schema` bootstrap bestaan die ontbrekende tabellen/kolommen veilig aanmaakt (idempotent), zodat endpoints niet 500'en na deploy.
 - Webhook-code moet status server-side ophalen bij Mollie; vertrouw nooit alleen request-body.
 - Gebruik unieke provider payment-id opslag voor idempotente fulfillment.
 - Redemptions die gameplay-data aanpassen moeten ownership en actieve state valideren.
