@@ -2,7 +2,15 @@ import prisma from '../lib/prisma';
 import { getRankFromXP } from '../config';
 import { activityService } from './activityService';
 
-export type DailyGoalKey = 'crime_3' | 'job_2' | 'vehicle_theft_1' | 'travel_1';
+export type DailyGoalKey =
+  | 'crime_3'
+  | 'job_2'
+  | 'vehicle_theft_1'
+  | 'travel_1'
+  | 'weekly_crime_20'
+  | 'weekly_job_10'
+  | 'weekly_vehicle_theft_5'
+  | 'weekly_travel_3';
 
 type DailyGoalDef = {
   key: DailyGoalKey;
@@ -46,6 +54,38 @@ const GOALS: DailyGoalDef[] = [
     rewardCash: 500,
     rewardXp: 15,
   },
+  {
+    key: 'weekly_crime_20',
+    titleNl: 'Weekdoel: 20 misdaden',
+    titleEn: 'Weekly: 20 crimes',
+    target: 20,
+    rewardCash: 5000,
+    rewardXp: 120,
+  },
+  {
+    key: 'weekly_job_10',
+    titleNl: 'Weekdoel: 10x werken',
+    titleEn: 'Weekly: work 10 times',
+    target: 10,
+    rewardCash: 3500,
+    rewardXp: 90,
+  },
+  {
+    key: 'weekly_vehicle_theft_5',
+    titleNl: 'Weekdoel: 5 voertuigen stelen',
+    titleEn: 'Weekly: steal 5 vehicles',
+    target: 5,
+    rewardCash: 6000,
+    rewardXp: 150,
+  },
+  {
+    key: 'weekly_travel_3',
+    titleNl: 'Weekdoel: 3 reizen',
+    titleEn: 'Weekly: 3 travels',
+    target: 3,
+    rewardCash: 2500,
+    rewardXp: 60,
+  },
 ];
 
 function startOfUtcDay(date: Date): Date {
@@ -84,7 +124,25 @@ async function computeProgress(playerId: number, from: Date): Promise<Record<Dai
     job_2: jobCount,
     vehicle_theft_1: vehicleTheftCount,
     travel_1: travelCount,
+    weekly_crime_20: crimeCount,
+    weekly_job_10: jobCount,
+    weekly_vehicle_theft_5: vehicleTheftCount,
+    weekly_travel_3: travelCount,
   };
+}
+
+function startOfUtcWeek(date: Date): Date {
+  // ISO-like: week starts on Monday (1). JS getUTCDay: Sunday=0.
+  const day = date.getUTCDay();
+  const mondayBased = day === 0 ? 7 : day;
+  const start = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0));
+  start.setUTCDate(start.getUTCDate() - (mondayBased - 1));
+  return start;
+}
+
+function weekKeyUtc(date: Date): string {
+  const start = startOfUtcWeek(date);
+  return dateKeyUtc(start);
 }
 
 export const dailyGoalsService = {
@@ -105,7 +163,7 @@ export const dailyGoalsService = {
 
     const claimed = new Set(claims.map((c) => c.goalKey));
 
-    const goals = GOALS.map((g) => {
+    const goals = GOALS.filter((g) => !g.key.startsWith('weekly_')).map((g) => {
       const current = progress[g.key] ?? 0;
       const claimable = current >= g.target && !claimed.has(g.key);
       return {
@@ -122,6 +180,40 @@ export const dailyGoalsService = {
     });
 
     return { dateKey: key, goals };
+  },
+
+  async getWeeklyGoals(playerId: number) {
+    const now = new Date();
+    const from = startOfUtcWeek(now);
+    const key = weekKeyUtc(now);
+
+    const [progress, claims] = await Promise.all([
+      computeProgress(playerId, from),
+      prisma.playerDailyGoalClaim.findMany({
+        where: { playerId, dateKey: key },
+        select: { goalKey: true },
+      }),
+    ]);
+
+    const claimed = new Set(claims.map((c) => c.goalKey));
+
+    const goals = GOALS.filter((g) => g.key.startsWith('weekly_')).map((g) => {
+      const current = progress[g.key] ?? 0;
+      const claimable = current >= g.target && !claimed.has(g.key);
+      return {
+        key: g.key,
+        titleNl: g.titleNl,
+        titleEn: g.titleEn,
+        progress: current,
+        target: g.target,
+        claimed: claimed.has(g.key),
+        claimable,
+        rewardCash: g.rewardCash,
+        rewardXp: g.rewardXp,
+      };
+    });
+
+    return { weekKey: key, startsAt: from.toISOString(), goals };
   },
 
   async claimDailyGoal(playerId: number, goalKeyRaw: string) {

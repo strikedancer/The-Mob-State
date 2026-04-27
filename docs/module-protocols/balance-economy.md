@@ -106,6 +106,12 @@ Dit protocol is verplicht voor alle wijzigingen die invloed hebben op:
   - claim idempotent is (1x per speler per dag per goal) en abuse-bestendig
   - tuning later server-side kan (bijv. via runtime keys/admin), niet hardcoded in de client
 
+## Weekdoelen (Mid-term motivatie)
+- Weekdoelen zijn toegestaan als mid-term retention-loop zolang:
+  - rewards beperkt blijven (cash + XP) en niet pay-to-win aanvoelen
+  - week-window duidelijk en consistent is (start maandag UTC in deze implementatie)
+  - claim idempotent is (1x per speler per week per goal) en abuse-bestendig
+
 ## i18n / Help
 - Als player-perceptie verandert (tempo, reward-gevoel, premium-waarde), update `docs/game-systems/GAMEPLAY.md`.
 - Geen economyfeature is done zonder NL/EN consistente player copy waar van toepassing.

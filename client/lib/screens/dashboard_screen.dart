@@ -2491,6 +2491,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   List<Map<String, dynamic>> _gameEventsActive = const [];
   Map<String, dynamic>? _dailyGoals;
   bool _dailyGoalsLoading = false;
+  Map<String, dynamic>? _weeklyGoals;
+  bool _weeklyGoalsLoading = false;
   Timer? _cooldownTimer;
   Timer? _refreshTimer;
 
@@ -2704,6 +2706,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     _loadStats();
     _loadGameEventsOverview();
     _loadDailyGoals();
+    _loadWeeklyGoals();
 
     // Update cooldowns every second
     _cooldownTimer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -2763,6 +2766,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         _loadStats();
         _loadGameEventsOverview();
         _loadDailyGoals();
+        _loadWeeklyGoals();
       }
     });
 
@@ -2848,6 +2852,28 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       // keep last known state
     } finally {
       if (mounted) setState(() => _dailyGoalsLoading = false);
+    }
+  }
+
+  Future<void> _loadWeeklyGoals() async {
+    if (_weeklyGoalsLoading) return;
+    setState(() => _weeklyGoalsLoading = true);
+    try {
+      final api = AuthService().apiClient;
+      final response = await api.get('/daily-goals/weekly');
+      if (response.statusCode != 200) {
+        return;
+      }
+      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      if (decoded['success'] == true && decoded['data'] is Map) {
+        if (mounted) {
+          setState(() => _weeklyGoals = Map<String, dynamic>.from(decoded['data'] as Map));
+        }
+      }
+    } catch (_) {
+      // keep last known state
+    } finally {
+      if (mounted) setState(() => _weeklyGoalsLoading = false);
     }
   }
 
@@ -3045,6 +3071,86 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     );
   }
 
+  Widget _buildWeeklyGoalsMiniCard() {
+    final data = _weeklyGoals;
+    final goals = (data?['goals'] as List?) ?? const [];
+    if (goals.isEmpty && !_weeklyGoalsLoading) {
+      return const SizedBox.shrink();
+    }
+
+    int completed = 0;
+    int total = 0;
+    int claimable = 0;
+    for (final raw in goals.whereType<Map>()) {
+      final g = Map<String, dynamic>.from(raw);
+      total += 1;
+      if (g['claimed'] == true) completed += 1;
+      if (g['claimable'] == true) claimable += 1;
+    }
+
+    final ratio = total == 0 ? 0.0 : (completed / total).clamp(0.0, 1.0);
+    final subtitle = claimable > 0
+        ? _tr('$claimable klaar om te claimen', '$claimable ready to claim')
+        : _tr('$completed/$total voltooid', '$completed/$total completed');
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: _panelDecoration(accent: Colors.cyanAccent),
+      child: InkWell(
+        onTap: () {
+          // For now, weekly goals live under the same endpoint; keep UX simple by opening dashboard goals section.
+          showTopRightFromSnackBar(
+            context,
+            SnackBar(
+              content: Text(_tr('Weekdoelen worden hier binnenkort uitgebreid.', 'Weekly goals will be expanded here soon.')),
+              backgroundColor: const Color(0xFF1E3A8A),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.zero,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.emoji_events, color: Colors.cyanAccent, size: 18),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    _tr('Weekdoelen', 'Weekly goals'),
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                if (_weeklyGoalsLoading)
+                  const SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(subtitle, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12)),
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: LinearProgressIndicator(
+                value: ratio,
+                minHeight: 8,
+                backgroundColor: Colors.white.withOpacity(0.12),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.cyanAccent.withOpacity(0.9)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> _loadGameEventsOverview() async {
     try {
       final api = AuthService().apiClient;
@@ -3216,6 +3322,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
 
             final nextActions = _buildNextBestActions(player, l10n);
             final dailyGoalsCard = _buildDailyGoalsCard();
+            final weeklyGoalsCard = _buildWeeklyGoalsMiniCard();
 
             Widget buildLeftCard() {
               return Container(
@@ -3856,6 +3963,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const SizedBox(height: 16),
                     dailyGoalsCard,
                   ],
+                  if (weeklyGoalsCard is! SizedBox) ...[
+                    const SizedBox(height: 16),
+                    weeklyGoalsCard,
+                  ],
                   const SizedBox(height: 16),
                   buildLeftCard(),
                   const SizedBox(height: 16),
@@ -3878,6 +3989,10 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       if (dailyGoalsCard is! SizedBox) ...[
                         const SizedBox(height: 16),
                         dailyGoalsCard,
+                      ],
+                      if (weeklyGoalsCard is! SizedBox) ...[
+                        const SizedBox(height: 16),
+                        weeklyGoalsCard,
                       ],
                       const SizedBox(height: 16),
                       buildLeftCard(),

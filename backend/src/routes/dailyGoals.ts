@@ -15,6 +15,17 @@ router.get('/daily', authenticate, async (req: AuthRequest, res: Response) => {
   }
 });
 
+router.get('/weekly', authenticate, async (req: AuthRequest, res: Response) => {
+  try {
+    const playerId = req.player!.id;
+    const data = await dailyGoalsService.getWeeklyGoals(playerId);
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error('[GET /daily-goals/weekly] error', error);
+    return res.status(500).json({ success: false, event: 'error.internal', params: {} });
+  }
+});
+
 router.post('/daily/claim', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = req.player!.id;
