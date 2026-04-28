@@ -663,6 +663,96 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout => 'Logout';
 
   @override
+  String get logOut => 'Log out';
+
+  @override
+  String get menu => 'Menu';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get messages => 'Messages';
+
+  @override
+  String get helpAndGuide => 'Help & Guide';
+
+  @override
+  String get quickActions => 'Quick Actions';
+
+  @override
+  String get liveEvents => 'Live Events';
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get events => 'Events';
+
+  @override
+  String get aviation => 'Aviation';
+
+  @override
+  String get premiumAndCredits => 'Premium & Credits';
+
+  @override
+  String get bank => 'Bank';
+
+  @override
+  String get tradeGoods => 'Trade goods';
+
+  @override
+  String get drugs => 'Drugs';
+
+  @override
+  String get nightclub => 'Nightclub';
+
+  @override
+  String get crypto => 'Crypto';
+
+  @override
+  String get smuggling => 'Smuggling';
+
+  @override
+  String get tools => 'tools';
+
+  @override
+  String get vehicleHeist => 'Vehicle Heist';
+
+  @override
+  String get tuneShop => 'Tune Shop';
+
+  @override
+  String get territory => 'Territory';
+
+  @override
+  String get achievements => 'Achievements';
+
+  @override
+  String get menuCrackVault => 'Crack the Vault';
+
+  @override
+  String get quickActionsCrimesSubtitle => 'Commit criminal acts';
+
+  @override
+  String get quickActionsVehicleHeistSubtitle => 'Car, motorcycle and boat';
+
+  @override
+  String get quickActionsTuneShopSubtitle => 'Parts and upgrades';
+
+  @override
+  String get quickActionsEventsSubtitle => 'Active and upcoming events';
+
+  @override
+  String get quickActionsJobsSubtitle => 'Earn legal money';
+
+  @override
+  String get quickActionsCasinoSubtitle => 'Gamble your money';
+
+  @override
+  String get quickActionsBankSubtitle => 'Manage your global balance';
+
+  @override
   String money(String amount) {
     return '€$amount';
   }
@@ -1812,9 +1902,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get slotsRemaining => 'slots remaining';
-
-  @override
-  String get tools => 'tools';
 
   @override
   String get noLoadouts => 'No loadouts';

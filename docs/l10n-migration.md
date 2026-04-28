@@ -19,6 +19,7 @@ Er zijn nog veel plekken in de client die **twee takken** gebruiken (Nederlands 
 
 - Nieuwe of gewijzigde UI: voorkeur voor **AppLocalizations**-keys in de ARB’s, geen handmatige tweetalige strings.
 - Bestaande schermen: gefaseerd refactoren waar `_isNl` puur voor een tweede string zorgt.
+- Concreet: dashboard navigatie + quick-actions labels zijn een hotspot; als die hardcoded blijven, zien spelers met `es/de/fr/...` veel Engels.
 
 ### Inventaris (indicatief)
 

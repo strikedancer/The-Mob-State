@@ -181,9 +181,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   _WebSection _selectedWebSection = _WebSection.dashboard;
   int _webSectionRefreshSeed = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
   int _vehicleHeistTabIndex = 0;
 
   void _openVehicleHeist([int initialTabIndex = 0]) {
@@ -528,7 +525,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   IconButton(
                     icon: const Icon(Icons.menu),
                     onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-                    tooltip: 'Menu',
+                    tooltip: l10n.menu,
                   ),
                 if (!showLeftSidebar) const SizedBox(width: 8),
                 Expanded(
@@ -543,7 +540,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       fit: BoxFit.contain,
                       alignment: Alignment.center,
                       errorBuilder: (context, error, stackTrace) => Text(
-                        'The Mob State',
+                        l10n.appTitle,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -556,10 +553,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   IconButton(
                     icon: const Icon(Icons.flash_on),
                     onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
-                    tooltip: 'Quick Actions',
+                    tooltip: l10n.quickActions,
                   ),
                 PopupMenuButton<String>(
-                  tooltip: 'Account',
+                  tooltip: l10n.account,
                   onSelected: (value) async {
                     switch (value) {
                       case 'messages':
@@ -610,7 +607,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           const Icon(Icons.mail, size: 20),
                           const SizedBox(width: 12),
-                          Text(_tr('Berichten', 'Messages')),
+                          Text(l10n.messages),
                           if (_unreadCount > 0)
                             Padding(
                               padding: const EdgeInsets.only(left: 8),
@@ -635,7 +632,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           const Icon(Icons.menu_book, size: 20),
                           const SizedBox(width: 12),
-                          Text(_tr('Help & Uitleg', 'Help & Guide')),
+                          Text(l10n.helpAndGuide),
                         ],
                       ),
                     ),
@@ -645,7 +642,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           const Icon(Icons.settings, size: 20),
                           const SizedBox(width: 12),
-                          Text(_tr('Instellingen', 'Settings')),
+                          Text(l10n.settings),
                         ],
                       ),
                     ),
@@ -657,7 +654,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           const Icon(Icons.logout, size: 20, color: Colors.red),
                           const SizedBox(width: 12),
                           Text(
-                            _tr('Uitloggen', 'Log out'),
+                            l10n.logOut,
                             style: const TextStyle(color: Colors.red),
                           ),
                         ],
@@ -843,25 +840,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.lock,
-            label: _tr('Kraak de Kluis', 'Crack the Vault'),
+            label: l10n.menuCrackVault,
             section: _WebSection.vault,
             badge: 0,
           ),
           (
             icon: Icons.menu_book,
-            label: _tr('Help & Uitleg', 'Help & Guide'),
+            label: l10n.helpAndGuide,
             section: _WebSection.help,
             badge: 0,
           ),
           (
             icon: FontAwesomeIcons.commentsSolid,
-            label: _tr('Support', 'Support'),
+            label: l10n.support,
             section: _WebSection.support,
             badge: _supportBadgeCount,
           ),
           (
             icon: Icons.event,
-            label: _tr('Events', 'Events'),
+            label: l10n.events,
             section: _WebSection.events,
             badge: 0,
           ),
@@ -885,7 +882,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: FontAwesomeIcons.planeSolid,
-            label: _tr('Luchtvaart', 'Aviation'),
+            label: l10n.aviation,
             section: _WebSection.aviation,
             badge: 0,
           ),
@@ -897,7 +894,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.workspace_premium,
-            label: _tr('Premium & Credits', 'Premium & Credits'),
+            label: l10n.premiumAndCredits,
             section: _WebSection.premium,
             badge: 0,
           ),
@@ -921,7 +918,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.account_balance,
-            label: 'Bank',
+            label: l10n.bank,
             section: _WebSection.bank,
             badge: 0,
           ),
@@ -933,7 +930,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.work,
-            label: 'Handelswaar',
+            label: l10n.tradeGoods,
             section: _WebSection.trade,
             badge: 0,
           ),
@@ -945,31 +942,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.local_pharmacy,
-            label: 'Drugs',
+            label: l10n.drugs,
             section: _WebSection.drugs,
             badge: 0,
           ),
           (
             icon: Icons.nightlife,
-            label: _tr('Nachtclub', 'Nightclub'),
+            label: l10n.nightclub,
             section: _WebSection.nightclub,
             badge: 0,
           ),
           (
             icon: Icons.currency_bitcoin,
-            label: _tr('Crypto', 'Crypto'),
+            label: l10n.crypto,
             section: _WebSection.crypto,
             badge: 0,
           ),
           (
             icon: Icons.local_shipping,
-            label: _tr('Smokkelen', 'Smuggling'),
+            label: l10n.smuggling,
             section: _WebSection.smuggling,
             badge: 0,
           ),
           (
             icon: Icons.build,
-            label: 'Gereedschap',
+            label: l10n.tools,
             section: _WebSection.tools,
             badge: 0,
           ),
@@ -1005,13 +1002,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.directions_car_filled,
-            label: _tr('Voertuig Stelen', 'Vehicle Heist'),
+            label: l10n.vehicleHeist,
             section: _WebSection.vehicleHeist,
             badge: 0,
           ),
           (
             icon: Icons.tune,
-            label: _tr('TuneShop', 'Tune Shop'),
+            label: l10n.tuneShop,
             section: _WebSection.tuneShop,
             badge: 0,
           ),
@@ -1041,7 +1038,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.language,
-            label: _tr('Territorium', 'Territory'),
+            label: l10n.territory,
             section: _WebSection.territory,
             badge: 0,
           ),
@@ -1059,7 +1056,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           (
             icon: Icons.emoji_events,
-            label: 'Prestaties',
+            label: l10n.achievements,
             section: _WebSection.achievements,
             badge: 0,
           ),
@@ -1141,7 +1138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Quick Actions',
+          l10n.quickActions,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
             color: _dashboardGold,
@@ -1155,8 +1152,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _buildActionCard(
                 context,
                 icon: Icons.warning,
-                title: 'Misdaden',
-                subtitle: 'Pleeg criminele acties',
+                title: l10n.crimes,
+                subtitle: l10n.quickActionsCrimesSubtitle,
                 color: Colors.red.shade700,
                 onTap: () =>
                     setState(() => _selectedWebSection = _WebSection.crimes),
@@ -1165,11 +1162,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _buildActionCard(
                 context,
                 icon: Icons.directions_car_filled,
-                title: _tr('Voertuig Stelen', 'Vehicle Heist'),
-                subtitle: _tr(
-                  'Auto, motor en boot',
-                  'Car, motorcycle and boat',
-                ),
+                title: l10n.vehicleHeist,
+                subtitle: l10n.quickActionsVehicleHeistSubtitle,
                 color: Colors.orange.shade700,
                 onTap: () => _openVehicleHeist(0),
               ),
@@ -1177,8 +1171,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _buildActionCard(
                 context,
                 icon: Icons.tune,
-                title: _tr('TuneShop', 'Tune Shop'),
-                subtitle: _tr('Onderdelen en upgrades', 'Parts and upgrades'),
+                title: l10n.tuneShop,
+                subtitle: l10n.quickActionsTuneShopSubtitle,
                 color: Colors.purple.shade700,
                 onTap: () =>
                     setState(() => _selectedWebSection = _WebSection.tuneShop),
@@ -1187,11 +1181,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _buildActionCard(
                 context,
                 icon: Icons.event,
-                title: _tr('Events', 'Events'),
-                subtitle: _tr(
-                  'Actieve en aankomende events',
-                  'Active and upcoming events',
-                ),
+                title: l10n.events,
+                subtitle: l10n.quickActionsEventsSubtitle,
                 color: Colors.teal.shade700,
                 onTap: () =>
                     setState(() => _selectedWebSection = _WebSection.events),
@@ -1200,8 +1191,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _buildActionCard(
                 context,
                 icon: Icons.work,
-                title: 'Werk',
-                subtitle: 'Verdien legaal geld',
+                title: l10n.jobs,
+                subtitle: l10n.quickActionsJobsSubtitle,
                 color: Colors.green.shade700,
                 onTap: () =>
                     setState(() => _selectedWebSection = _WebSection.jobs),
@@ -1210,8 +1201,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _buildActionCard(
                 context,
                 icon: Icons.casino,
-                title: 'Casino',
-                subtitle: 'Gok je geld',
+                title: l10n.casino,
+                subtitle: l10n.quickActionsCasinoSubtitle,
                 color: Colors.purple.shade700,
                 onTap: () =>
                     setState(() => _selectedWebSection = _WebSection.casino),
@@ -1220,8 +1211,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               _buildActionCard(
                 context,
                 icon: Icons.account_balance,
-                title: 'Bank',
-                subtitle: 'Beheer je globale saldo',
+                title: l10n.bank,
+                subtitle: l10n.quickActionsBankSubtitle,
                 color: Colors.indigo.shade700,
                 onTap: () =>
                     setState(() => _selectedWebSection = _WebSection.bank),
@@ -1338,9 +1329,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     'title_mobstate.png',
                     height: 60,
                     fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => const Text(
-                      'The Mob State',
-                      style: TextStyle(
+                    errorBuilder: (context, error, stackTrace) => Text(
+                      l10n.appTitle,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -1365,13 +1356,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Icons.warning,
                             color: Colors.red.shade700,
                           ),
-                          title: Text(_tr('Misdaden', 'Crimes')),
-                          subtitle: Text(
-                            _tr(
-                              'Pleeg criminele acties',
-                              'Commit criminal actions',
-                            ),
-                          ),
+                          title: Text(l10n.crimes),
+                          subtitle: Text(l10n.quickActionsCrimesSubtitle),
                           onTap: () {
                             Navigator.of(context).pop();
                             setState(
@@ -1384,13 +1370,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Icons.directions_car_filled,
                             color: Colors.orange.shade700,
                           ),
-                          title: Text(_tr('Voertuig Stelen', 'Vehicle Heist')),
-                          subtitle: Text(
-                            _tr(
-                              'Auto, motor en boot',
-                              'Car, motorcycle and boat',
-                            ),
-                          ),
+                          title: Text(l10n.vehicleHeist),
+                          subtitle: Text(l10n.quickActionsVehicleHeistSubtitle),
                           onTap: () {
                             Navigator.of(context).pop();
                             _openVehicleHeist(0);
@@ -1401,13 +1382,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Icons.event,
                             color: Colors.teal.shade700,
                           ),
-                          title: Text(_tr('Events', 'Events')),
-                          subtitle: Text(
-                            _tr(
-                              'Actieve en aankomende events',
-                              'Active and upcoming events',
-                            ),
-                          ),
+                          title: Text(l10n.events),
+                          subtitle: Text(l10n.quickActionsEventsSubtitle),
                           onTap: () {
                             Navigator.of(context).pop();
                             setState(
@@ -1420,10 +1396,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Icons.work,
                             color: Colors.green.shade700,
                           ),
-                          title: Text(_tr('Werk', 'Work')),
-                          subtitle: Text(
-                            _tr('Verdien legaal geld', 'Earn legal money'),
-                          ),
+                          title: Text(l10n.jobs),
+                          subtitle: Text(l10n.quickActionsJobsSubtitle),
                           onTap: () {
                             Navigator.of(context).pop();
                             setState(
@@ -1436,10 +1410,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Icons.casino,
                             color: Colors.purple.shade700,
                           ),
-                          title: const Text('Casino'),
-                          subtitle: Text(
-                            _tr('Gok je geld', 'Gamble your money'),
-                          ),
+                          title: Text(l10n.casino),
+                          subtitle: Text(l10n.quickActionsCasinoSubtitle),
                           onTap: () {
                             Navigator.of(context).pop();
                             setState(
@@ -1452,13 +1424,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             Icons.account_balance,
                             color: Colors.indigo.shade700,
                           ),
-                          title: const Text('Bank'),
-                          subtitle: Text(
-                            _tr(
-                              'Beheer je globale saldo',
-                              'Manage your global balance',
-                            ),
-                          ),
+                          title: Text(l10n.bank),
+                          subtitle: Text(l10n.quickActionsBankSubtitle),
                           onTap: () {
                             Navigator.of(context).pop();
                             setState(
@@ -1793,7 +1760,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ).then((_) => _loadUnreadCount());
                   },
-                  tooltip: _tr('Berichten', 'Messages'),
+                  tooltip: l10n.messages,
                 ),
                 IconButton(
                   icon: const Icon(Icons.backpack),
@@ -1803,7 +1770,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 IconButton(
                   icon: const Icon(Icons.menu_book),
                   onPressed: () => Navigator.of(context).pushNamed('/help'),
-                  tooltip: _tr('Help & Uitleg', 'Help & Guide'),
+                  tooltip: l10n.helpAndGuide,
                 ),
                 IconButton(
                   icon: const Icon(Icons.settings),
@@ -2015,7 +1982,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.chat,
-                                  label: 'Berichten',
+                                  label: l10n.messages,
                                   badge: _unreadCount,
                                   onTap: () => Navigator.push(
                                     context,
@@ -2028,14 +1995,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.menu_book,
-                                  label: _tr('Help & Uitleg', 'Help & Guide'),
+                                  label: l10n.helpAndGuide,
                                   onTap: () =>
                                       Navigator.pushNamed(context, '/help'),
                                 ),
                                 _buildMenuTile(
                                   context,
                                   icon: FontAwesomeIcons.commentsSolid,
-                                  label: _tr('Support', 'Support'),
+                                  label: l10n.support,
                                   badge: _supportBadgeCount,
                                   onTap: () => Navigator.push(
                                     context,
@@ -2061,7 +2028,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: FontAwesomeIcons.planeSolid,
-                                  label: _tr('Luchtvaart', 'Aviation'),
+                                  label: l10n.aviation,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2117,7 +2084,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.account_balance,
-                                  label: 'Bank',
+                                  label: l10n.bank,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2128,7 +2095,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.shopping_bag,
-                                  label: 'Handelswaar',
+                                  label: l10n.tradeGoods,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2150,7 +2117,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.local_pharmacy,
-                                  label: 'Drugs',
+                                  label: l10n.drugs,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2162,7 +2129,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.nightlife,
-                                  label: _tr('Nachtclub', 'Nightclub'),
+                                  label: l10n.nightclub,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2173,7 +2140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.build,
-                                  label: 'Gereedschap',
+                                  label: l10n.tools,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2357,7 +2324,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             const Icon(Icons.feed, size: 20),
                             const SizedBox(width: 8),
                             Text(
-                              'Live Events',
+                              l10n.liveEvents,
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const Spacer(),

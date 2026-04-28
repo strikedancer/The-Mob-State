@@ -675,6 +675,96 @@ class AppLocalizationsEs extends AppLocalizations {
   String get logout => 'Cerrar sesión';
 
   @override
+  String get logOut => 'Finalizar la sesión';
+
+  @override
+  String get menu => 'Menú';
+
+  @override
+  String get account => 'Cuenta';
+
+  @override
+  String get messages => 'Mensajes';
+
+  @override
+  String get helpAndGuide => 'Ayuda y guía';
+
+  @override
+  String get quickActions => 'Acciones Rápidas';
+
+  @override
+  String get liveEvents => 'Eventos en vivo';
+
+  @override
+  String get support => 'Apoyo';
+
+  @override
+  String get events => 'Eventos';
+
+  @override
+  String get aviation => 'Aviación';
+
+  @override
+  String get premiumAndCredits => 'Primas y créditos';
+
+  @override
+  String get bank => 'Banco';
+
+  @override
+  String get tradeGoods => 'bienes comerciales';
+
+  @override
+  String get drugs => 'Drogas';
+
+  @override
+  String get nightclub => 'Club nocturno';
+
+  @override
+  String get crypto => 'Cripto';
+
+  @override
+  String get smuggling => 'Contrabando';
+
+  @override
+  String get tools => 'herramientas';
+
+  @override
+  String get vehicleHeist => 'Atraco de vehículos';
+
+  @override
+  String get tuneShop => 'Tienda de melodías';
+
+  @override
+  String get territory => 'Territorio';
+
+  @override
+  String get achievements => 'Logros';
+
+  @override
+  String get menuCrackVault => 'Romper la bóveda';
+
+  @override
+  String get quickActionsCrimesSubtitle => 'Cometer actos criminales';
+
+  @override
+  String get quickActionsVehicleHeistSubtitle => 'Coche, moto y barco.';
+
+  @override
+  String get quickActionsTuneShopSubtitle => 'Piezas y actualizaciones';
+
+  @override
+  String get quickActionsEventsSubtitle => 'Eventos activos y próximos';
+
+  @override
+  String get quickActionsJobsSubtitle => 'Gana dinero legal';
+
+  @override
+  String get quickActionsCasinoSubtitle => 'Apuesta tu dinero';
+
+  @override
+  String get quickActionsBankSubtitle => 'Gestiona tu saldo global';
+
+  @override
   String money(String amount) {
     return '€$amount';
   }
@@ -1837,9 +1927,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get slotsRemaining => 'espacios restantes';
-
-  @override
-  String get tools => 'herramientas';
 
   @override
   String get noLoadouts => 'Sin equipamientos';

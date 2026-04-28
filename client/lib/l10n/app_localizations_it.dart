@@ -668,6 +668,96 @@ class AppLocalizationsIt extends AppLocalizations {
   String get logout => 'Esci';
 
   @override
+  String get logOut => 'Esci';
+
+  @override
+  String get menu => 'Menu';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get messages => 'Messaggi';
+
+  @override
+  String get helpAndGuide => 'Aiuto e guida';
+
+  @override
+  String get quickActions => 'Azioni rapide';
+
+  @override
+  String get liveEvents => 'Eventi dal vivo';
+
+  @override
+  String get support => 'Supporto';
+
+  @override
+  String get events => 'Eventi';
+
+  @override
+  String get aviation => 'Aviazione';
+
+  @override
+  String get premiumAndCredits => 'Premi e crediti';
+
+  @override
+  String get bank => 'Banca';
+
+  @override
+  String get tradeGoods => 'Beni commerciali';
+
+  @override
+  String get drugs => 'Droghe';
+
+  @override
+  String get nightclub => 'Discoteca';
+
+  @override
+  String get crypto => 'Criptovaluta';
+
+  @override
+  String get smuggling => 'Contrabbando';
+
+  @override
+  String get tools => 'utensili';
+
+  @override
+  String get vehicleHeist => 'Furto di veicoli';
+
+  @override
+  String get tuneShop => 'Negozio di sintonizzazione';
+
+  @override
+  String get territory => 'Territorio';
+
+  @override
+  String get achievements => 'Risultati';
+
+  @override
+  String get menuCrackVault => 'Scassina il caveau';
+
+  @override
+  String get quickActionsCrimesSubtitle => 'Commettere atti criminali';
+
+  @override
+  String get quickActionsVehicleHeistSubtitle => 'Auto, moto e barca';
+
+  @override
+  String get quickActionsTuneShopSubtitle => 'Parti e aggiornamenti';
+
+  @override
+  String get quickActionsEventsSubtitle => 'Eventi attivi e futuri';
+
+  @override
+  String get quickActionsJobsSubtitle => 'Guadagna denaro legale';
+
+  @override
+  String get quickActionsCasinoSubtitle => 'Scommetti i tuoi soldi';
+
+  @override
+  String get quickActionsBankSubtitle => 'Gestisci il tuo saldo globale';
+
+  @override
   String money(String amount) {
     return '€$amount';
   }
@@ -1833,9 +1923,6 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get slotsRemaining => 'slot rimanenti';
-
-  @override
-  String get tools => 'utensili';
 
   @override
   String get noLoadouts => 'Nessun caricamento';

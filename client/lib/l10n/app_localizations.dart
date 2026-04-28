@@ -1334,6 +1334,186 @@ abstract class AppLocalizations {
   /// **'Logout'**
   String get logout;
 
+  /// No description provided for @logOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logOut;
+
+  /// No description provided for @menu.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get menu;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get messages;
+
+  /// No description provided for @helpAndGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Guide'**
+  String get helpAndGuide;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get quickActions;
+
+  /// No description provided for @liveEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Events'**
+  String get liveEvents;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// No description provided for @events.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get events;
+
+  /// No description provided for @aviation.
+  ///
+  /// In en, this message translates to:
+  /// **'Aviation'**
+  String get aviation;
+
+  /// No description provided for @premiumAndCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium & Credits'**
+  String get premiumAndCredits;
+
+  /// No description provided for @bank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get bank;
+
+  /// No description provided for @tradeGoods.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade goods'**
+  String get tradeGoods;
+
+  /// No description provided for @drugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get drugs;
+
+  /// No description provided for @nightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub'**
+  String get nightclub;
+
+  /// No description provided for @crypto.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto'**
+  String get crypto;
+
+  /// No description provided for @smuggling.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling'**
+  String get smuggling;
+
+  /// No description provided for @tools.
+  ///
+  /// In en, this message translates to:
+  /// **'tools'**
+  String get tools;
+
+  /// No description provided for @vehicleHeist.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Heist'**
+  String get vehicleHeist;
+
+  /// No description provided for @tuneShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Tune Shop'**
+  String get tuneShop;
+
+  /// No description provided for @territory.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory'**
+  String get territory;
+
+  /// No description provided for @achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievements;
+
+  /// No description provided for @menuCrackVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Crack the Vault'**
+  String get menuCrackVault;
+
+  /// No description provided for @quickActionsCrimesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Commit criminal acts'**
+  String get quickActionsCrimesSubtitle;
+
+  /// No description provided for @quickActionsVehicleHeistSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Car, motorcycle and boat'**
+  String get quickActionsVehicleHeistSubtitle;
+
+  /// No description provided for @quickActionsTuneShopSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Parts and upgrades'**
+  String get quickActionsTuneShopSubtitle;
+
+  /// No description provided for @quickActionsEventsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active and upcoming events'**
+  String get quickActionsEventsSubtitle;
+
+  /// No description provided for @quickActionsJobsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn legal money'**
+  String get quickActionsJobsSubtitle;
+
+  /// No description provided for @quickActionsCasinoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gamble your money'**
+  String get quickActionsCasinoSubtitle;
+
+  /// No description provided for @quickActionsBankSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your global balance'**
+  String get quickActionsBankSubtitle;
+
   /// No description provided for @money.
   ///
   /// In en, this message translates to:
@@ -3415,12 +3595,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'slots remaining'**
   String get slotsRemaining;
-
-  /// No description provided for @tools.
-  ///
-  /// In en, this message translates to:
-  /// **'tools'**
-  String get tools;
 
   /// No description provided for @noLoadouts.
   ///
