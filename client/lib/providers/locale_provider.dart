@@ -3,12 +3,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../config/app_config.dart';
+import '../config/supported_languages.dart';
 
 class LocaleProvider with ChangeNotifier {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   Locale _locale = const Locale('nl'); // Default to Dutch
 
   Locale get locale => _locale;
+
+  String _primary(String? code) =>
+      (code ?? '').toLowerCase().trim().split(RegExp(r'[-_]')).first;
 
   /// Load the user's preferred language from the server
   Future<void> loadLocale() async {
@@ -27,24 +31,25 @@ class LocaleProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final lang = data['preferredLanguage'] as String?;
-        
-        if (lang != null && (lang == 'en' || lang == 'nl')) {
-          _locale = Locale(lang);
+
+        if (lang != null && SupportedLanguages.isSupportedCode(lang)) {
+          _locale = Locale(_primary(lang));
           notifyListeners();
-          print('[LocaleProvider] Loaded locale: $lang');
         }
       }
     } catch (e) {
+      // ignore: avoid_print
       print('[LocaleProvider] Error loading locale: $e');
     }
   }
 
   /// Update the locale (when user changes language in settings)
   void setLocale(String languageCode) {
-    if (languageCode == 'en' || languageCode == 'nl') {
-      _locale = Locale(languageCode);
+    if (SupportedLanguages.isSupportedCode(languageCode)) {
+      _locale = Locale(_primary(languageCode));
       notifyListeners();
-      print('[LocaleProvider] Set locale to: $languageCode');
+      // ignore: avoid_print
+      print('[LocaleProvider] Set locale to: $_locale');
     }
   }
 

@@ -9,6 +9,7 @@ import 'forgot_password_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../services/notification_service.dart';
+import '../config/supported_languages.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -524,15 +525,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   vertical: 14,
                                 ),
                               ),
-                              items: const [
-                                DropdownMenuItem(
-                                  value: 'nl',
-                                  child: Text('🇳🇱 Nederlands'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'en',
-                                  child: Text('🇬🇧 English'),
-                                ),
+                              items: [
+                                for (final code in SupportedLanguages.codes)
+                                  DropdownMenuItem(
+                                    value: code,
+                                    child: Text(SupportedLanguages.menuSubtitle(code)),
+                                  ),
                               ],
                               onChanged: (value) {
                                 if (value != null) {

@@ -703,7 +703,8 @@ export const translationService = {
   },
 
   /**
-   * Get player's preferred language
+   * Get player's preferred language for **NL/EN email templates** only.
+   * UI may use more locales; anything other than `nl` maps to `en` here until templates exist for more languages.
    */
   getPlayerLanguage(player: { preferredLanguage?: string }): Language {
     const lang = player.preferredLanguage?.toLowerCase();

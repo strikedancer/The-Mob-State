@@ -1379,11 +1379,11 @@ export class NotificationService {
       const batch = players.slice(i, i + batchSize);
       await Promise.all(
         batch.map((p) => {
-          const isEn = String(p.preferredLanguage || 'nl')
+          const isNl = String(p.preferredLanguage || 'nl')
             .toLowerCase()
-            .startsWith('en');
-          const title = isEn ? payload.titleEn : payload.titleNl;
-          const body = isEn ? payload.bodyEn : payload.bodyNl;
+            .startsWith('nl');
+          const title = isNl ? payload.titleNl : payload.titleEn;
+          const body = isNl ? payload.bodyNl : payload.bodyEn;
           return this.sendToPlayer(p.id, title, body, payload.data);
         })
       );

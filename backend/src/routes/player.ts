@@ -22,6 +22,10 @@ import {
   applyVipTimeoutReductionSeconds,
   isVipStatusActive,
 } from '../services/vipBenefitsService';
+import {
+  isSupportedPlayerLanguage,
+  normalizePlayerLanguage,
+} from '../config/supportedLanguages';
 
 function emptyCrewWarHub() {
   return {
@@ -717,8 +721,7 @@ router.put('/language', authenticate, async (req: AuthRequest, res: Response) =>
   try {
     const { language } = req.body;
 
-    // Validate language
-    if (!language || !['en', 'nl'].includes(language)) {
+    if (!language || typeof language !== 'string' || !isSupportedPlayerLanguage(language)) {
       console.log('[PUT /player/language] Invalid language:', language);
       return res.status(400).json({
         event: 'error.invalid_language',
@@ -726,10 +729,12 @@ router.put('/language', authenticate, async (req: AuthRequest, res: Response) =>
       });
     }
 
+    const normalized = normalizePlayerLanguage(language);
+
     // Update player language
     const updatedPlayer = await prisma.player.update({
       where: { id: req.player!.id },
-      data: { preferredLanguage: language },
+      data: { preferredLanguage: normalized },
       select: {
         id: true,
         username: true,

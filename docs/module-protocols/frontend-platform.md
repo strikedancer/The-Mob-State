@@ -4,6 +4,7 @@
 Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedrag, image loading, cache/service worker gedrag en platformgevoelige UI-patronen.
 
 ## Primary Frontend Entry
+- client/lib/config/supported_languages.dart (centrale player-UI-taalcodes; synchroon met `backend/src/config/supportedLanguages.ts` en `client/lib/l10n/app_*.arb`)
 - client/lib/screens/dashboard_screen.dart
 - client/lib/utils/web_asset_helper.dart
 - client/lib/widgets/overlay_image.dart

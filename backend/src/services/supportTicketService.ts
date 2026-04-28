@@ -139,7 +139,8 @@ async function getPlayerLanguage(playerId: number): Promise<'nl' | 'en'> {
     where: { id: playerId },
     select: { preferredLanguage: true },
   });
-  return row?.preferredLanguage === 'en' ? 'en' : 'nl';
+  const lang = row?.preferredLanguage?.toLowerCase() ?? '';
+  return lang.startsWith('nl') ? 'nl' : 'en';
 }
 
 function normalizeTicketStatus(status: string): TicketStatus {

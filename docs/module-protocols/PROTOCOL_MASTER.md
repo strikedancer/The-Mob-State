@@ -126,10 +126,12 @@ Implementatievoorkeur:
 ## i18n en UX Basisregels
 
 - Multilanguage is een harde eis voor alles wat nieuw wordt gemaakt of aangepast en tekst of UX-signalen bevat (minimaal NL + EN).
-- Geen enkele wijziging is "done" als nieuwe of gewijzigde labels, knoppen, foutmeldingen, succesmeldingen, dialogs, help-content, notificaties of admin/player UI-tekst maar in 1 taal aanwezig zijn.
+- Daarnaast ondersteunt de **player client** een uitbreidbare set **Europese UI-talen** (codes en allowlist staan centraal in `client/lib/config/supported_languages.dart` + `backend/src/config/supportedLanguages.ts`). Nieuwe talen: ARB-key-pariteit met `app_en.arb`, `flutter gen-l10n`, allowlist uitbreiden, en (totdat er echte vertaling is) mogen stringwaarden tijdelijk gelijk zijn aan EN.
+- E-mail- en sommige server-side templates kunnen nog beperkt zijn tot **NL + EN**; andere voorkeurstalen vallen terug op **EN** totdat `translationService` wordt uitgebreid (zie `docs/l10n-migration.md`).
+- Geen enkele wijziging is "done" als nieuwe of gewijzigde labels, knoppen, foutmeldingen, succesmeldingen, dialogs, help-content, notificaties of admin/player UI-tekst maar in 1 taal aanwezig zijn (minimaal NL + EN; voor elke **officieel geactiveerde** extra UI-taal geldt dezelfde volledigheid voor nieuwe/gewijzigde keys in de ARB’s).
 - Nieuwe features en refactors mogen geen bestaande NL/EN pariteit breken; werk ontbrekende vertalingen direct mee bij in dezelfde wijziging.
 - Bij aanpassingen of nieuwe modules is het verplicht om te controleren of `Help & Uitleg` nog klopt; als player-gedrag, flows, uitleg of terminologie verandert, moet de help-content in dezelfde wijziging worden bijgewerkt.
-- NL en EN tekst altijd synchroon houden.
+- NL en EN tekst altijd synchroon houden (en elke andere **actieve** ARB-locale synchroon qua keys met `app_en.arb`).
 - Geen regressies op mobiel, tablet, desktop.
 - Alle nieuwe en aangepaste overlays, dialogs, modals en full-screen lock states moeten expliciet responsive zijn voor mobiel, tablet en desktop; vaste breedtes/hoogtes zonder clamp, scrollfallback of safe-area-afhandeling gelden niet als done.
 - Gebruik voor gedeelde overlays/dialogs een centraal responsive patroon of helper in plaats van losse one-off layoutlogica per scherm.
@@ -155,7 +157,7 @@ Implementatievoorkeur:
 5. Backend logs checken op runtime errors tijdens die flow.
 6. Verifieer cross-module gedrag (minimaal 1 gekoppelde module testen).
 7. Verifieer dat Admin/logging de wijziging correct weergeeft als die module-impact heeft.
-8. Verifieer dat alle nieuwe/gewijzigde player-facing teksten in NL en EN aanwezig zijn.
+8. Verifieer dat alle nieuwe/gewijzigde player-facing teksten in NL en EN aanwezig zijn, en voor elke andere **actieve** ARB-locale dat dezelfde keys aanwezig zijn (pariteit met `app_en.arb`; `node scripts/verify_arb_parity.mjs`).
 9. Verifieer dat `Help & Uitleg` nog klopt voor de gewijzigde of nieuw toegevoegde module/flow.
 10. Bij nieuwe systemen of modules: bevestig dat alle relevante bestaande protocollen op koppelingen en regressierisico's zijn nagelopen.
 11. Bij economy/progression/monetization wijzigingen: bevestig expliciet dat `balance-economy.md` is toegepast en dat telemetry + runtime keys zijn meegecontroleerd.

@@ -2248,6 +2248,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get hit => 'MOORD';
 
   @override
+  String get counterBidLabel => 'TEGEN-BOD';
+
+  @override
   String daysAgo(String count, String plural) {
     return '$count dag$plural geleden';
   }

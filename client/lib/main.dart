@@ -81,8 +81,16 @@ class MafiaGameApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [Locale('en'), Locale('nl')],
+          supportedLocales: AppLocalizations.supportedLocales,
           locale: localeProvider.locale,
+          localeResolutionCallback: (locale, supported) {
+            if (locale == null) return const Locale('nl');
+            final primary = locale.languageCode.toLowerCase();
+            for (final l in supported) {
+              if (l.languageCode == primary) return l;
+            }
+            return const Locale('nl');
+          },
 
           // Theme
           theme: ThemeData(

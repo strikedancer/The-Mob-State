@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'api_client.dart';
+import '../config/supported_languages.dart';
 import '../models/player.dart';
 import 'notification_service.dart';
 
@@ -39,12 +40,13 @@ class AuthService {
     await _apiClient.clearToken();
   }
 
-  /// Get device language code (en or nl)
+  /// Map device locale to a supported player language code.
   String _getDeviceLanguage() {
     final locale = ui.PlatformDispatcher.instance.locale;
-    final languageCode = locale.languageCode.toLowerCase();
-    // Only support 'nl' and 'en', default to 'en'
-    return (languageCode == 'nl') ? 'nl' : 'en';
+    return SupportedLanguages.resolveFromDeviceLanguage(
+      locale.languageCode,
+      fallbackCode: 'en',
+    );
   }
 
   Future<AuthResult> login(String username, String password) async {

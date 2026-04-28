@@ -5,6 +5,7 @@ import config from '../config';
 import { getRankFromXP } from '../config';
 import { emailService } from './emailService';
 import countries from '../../content/countries.json';
+import { normalizePlayerLanguage } from '../config/supportedLanguages';
 
 const SALT_ROUNDS = 10;
 
@@ -53,9 +54,10 @@ export const authService = {
       throw new Error('EMAIL_INVALID');
     }
 
-    // Validate and normalize language (only 'en' or 'nl' allowed)
-    const normalizedLanguage = preferredLanguage === 'nl' ? 'nl' : 'en';
-    console.log(`[AuthService] Registration - received language: ${preferredLanguage}, normalized: ${normalizedLanguage}`);
+    const normalizedLanguage = normalizePlayerLanguage(preferredLanguage);
+    console.log(
+      `[AuthService] Registration - received language: ${preferredLanguage}, normalized: ${normalizedLanguage}`,
+    );
 
     // Check if username already exists
     const existingPlayer = await prisma.player.findUnique({

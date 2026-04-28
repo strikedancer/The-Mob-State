@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import '../config/app_config.dart';
+import '../config/supported_languages.dart';
 import '../providers/locale_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../services/notification_service.dart';
@@ -882,9 +883,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(Icons.language, color: Colors.amber),
                   title: Text(l10n.changeLanguage),
                   subtitle: Text(
-                    _selectedLanguage == 'nl'
-                        ? '🇳🇱 ${l10n.dutch}'
-                        : '🇬🇧 ${l10n.english}',
+                    SupportedLanguages.menuSubtitle(_selectedLanguage),
                   ),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
@@ -892,38 +891,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       context: context,
                       builder: (context) => AlertDialog(
                         title: Text(l10n.chooseLanguage),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ListTile(
-                              leading: const Text(
-                                '🇳🇱',
-                                style: TextStyle(fontSize: 24),
-                              ),
-                              title: Text(l10n.dutch),
-                              trailing: _selectedLanguage == 'nl'
-                                  ? const Icon(Icons.check, color: Colors.green)
-                                  : null,
-                              onTap: () {
-                                _changeLanguage('nl');
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            ListTile(
-                              leading: const Text(
-                                '🇬🇧',
-                                style: TextStyle(fontSize: 24),
-                              ),
-                              title: Text(l10n.english),
-                              trailing: _selectedLanguage == 'en'
-                                  ? const Icon(Icons.check, color: Colors.green)
-                                  : null,
-                              onTap: () {
-                                _changeLanguage('en');
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              for (final code in SupportedLanguages.codes)
+                                ListTile(
+                                  leading: Text(
+                                    SupportedLanguages.flagFor(code) ?? '🌐',
+                                    style: const TextStyle(fontSize: 24),
+                                  ),
+                                  title: Text(SupportedLanguages.labelFor(code)),
+                                  trailing: _selectedLanguage == code
+                                      ? const Icon(Icons.check, color: Colors.green)
+                                      : null,
+                                  onTap: () {
+                                    _changeLanguage(code);
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                            ],
+                          ),
                         ),
                         actions: [
                           TextButton(
