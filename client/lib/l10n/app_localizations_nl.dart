@@ -1317,6 +1317,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get close => 'Sluiten';
 
   @override
+  String get viewOffer => 'View offer';
+
+  @override
   String get unexpectedResponse => 'Onverwachte API response';
 
   @override

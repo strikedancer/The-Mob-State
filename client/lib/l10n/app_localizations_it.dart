@@ -1327,6 +1327,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get close => 'Vicina';
 
   @override
+  String get viewOffer => 'Visualizza l\'offerta';
+
+  @override
   String get unexpectedResponse => 'Risposta API imprevista';
 
   @override

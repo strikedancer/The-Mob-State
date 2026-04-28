@@ -1333,6 +1333,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get close => 'Schließen';
 
   @override
+  String get viewOffer => 'Angebot ansehen';
+
+  @override
   String get unexpectedResponse => 'Unerwartete API-Antwort';
 
   @override

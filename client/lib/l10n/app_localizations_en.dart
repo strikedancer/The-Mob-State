@@ -1316,6 +1316,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get close => 'Close';
 
   @override
+  String get viewOffer => 'View offer';
+
+  @override
   String get unexpectedResponse => 'Unexpected API response';
 
   @override

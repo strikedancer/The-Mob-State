@@ -1325,6 +1325,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get close => 'Fechar';
 
   @override
+  String get viewOffer => 'Ver oferta';
+
+  @override
   String get unexpectedResponse => 'Resposta inesperada da API';
 
   @override

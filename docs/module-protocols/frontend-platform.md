@@ -17,6 +17,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Admin dashboard UI-vertalingen worden gegenereerd naar `admin/src/i18n/` via `scripts/build_admin_i18n.mjs`.
 - Voor consistente terminologie (bijv. `Crew`, `Nightclub`, `VIP`): pas de conservatieve regels in `scripts/terminology.mjs` toe (wordt door beide scripts gebruikt).
 - Dashboard navigatie/quick-actions labels moeten via **AppLocalizations** lopen (dus ARB keys), niet via hardcoded NL/EN strings of `_isNl`/`_tr`-helpers; anders vallen extra talen terug op Engels.
+- Voor kleine dialog-buttons/CTA’s in dashboard (bv. `Close`, `View offer`): voeg ook ARB keys toe i.p.v. inline tekst.
 
 ## Primary Platform/Infra Entry
 - client/docker/nginx.conf

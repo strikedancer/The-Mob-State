@@ -450,7 +450,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(_tr('Sluiten', 'Close')),
+              child: Text(l10n.close),
             ),
             ElevatedButton(
               onPressed: () {
@@ -463,7 +463,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ).push(MaterialPageRoute(builder: (_) => const CrewScreen()));
                 }
               },
-              child: Text(_tr('Bekijk aanbieding', 'View offer')),
+              child: Text(l10n.viewOffer),
             ),
           ],
         ),
@@ -1949,7 +1949,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.event,
-                                  label: _tr('Events', 'Events'),
+                                  label: l10n.events,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2225,10 +2225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.directions_car_filled,
-                                  label: _tr(
-                                    'Voertuig Stelen',
-                                    'Vehicle Heist',
-                                  ),
+                                  label: l10n.vehicleHeist,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2241,7 +2238,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.tune,
-                                  label: _tr('TuneShop', 'Tune Shop'),
+                                  label: l10n.tuneShop,
                                   onTap: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -2296,7 +2293,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 _buildMenuTile(
                                   context,
                                   icon: Icons.language,
-                                  label: _tr('Territorium', 'Territory'),
+                                  label: l10n.territory,
                                   onTap: () => Navigator.pushNamed(
                                     context,
                                     '/territory',

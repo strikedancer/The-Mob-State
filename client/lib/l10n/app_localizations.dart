@@ -2546,6 +2546,12 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get close;
 
+  /// No description provided for @viewOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'View offer'**
+  String get viewOffer;
+
   /// No description provided for @unexpectedResponse.
   ///
   /// In en, this message translates to:

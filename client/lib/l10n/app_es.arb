@@ -702,6 +702,7 @@
   "notEnoughMoney": "¡No tienes suficiente dinero!",
   "confirm": "Confirmar",
   "close": "Cerca",
+  "viewOffer": "Ver oferta",
   "unexpectedResponse": "Respuesta API inesperada",
   "errorLoadingMenu": "Error al cargar el menú",
   "unknownError": "Error desconocido",

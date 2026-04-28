@@ -1322,6 +1322,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get close => 'Zamknąć';
 
   @override
+  String get viewOffer => 'Zobacz ofertę';
+
+  @override
   String get unexpectedResponse => 'Nieoczekiwana odpowiedź interfejsu API';
 
   @override

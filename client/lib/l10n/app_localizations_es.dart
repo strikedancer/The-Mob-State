@@ -1332,6 +1332,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get close => 'Cerca';
 
   @override
+  String get viewOffer => 'Ver oferta';
+
+  @override
   String get unexpectedResponse => 'Respuesta API inesperada';
 
   @override
