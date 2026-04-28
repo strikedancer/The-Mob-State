@@ -378,6 +378,189 @@
   "territory": "Gebiet",
   "achievements": "Erfolge",
   "menuCrackVault": "Knacke den Tresor",
+  "rankProgress": "Rangfortschritt",
+  "cash": "Kasse",
+  "sessionRecap": "Zusammenfassung der Sitzung",
+  "nameLabel": "Name",
+  "countryLabel": "Land",
+  "wantedLevel": "Gesuchtes Level",
+  "fbiHeat": "FBI-Hitze",
+  "properties": "Eigenschaften",
+  "vehicles": "Fahrzeuge",
+  "netWorth": "Nettovermögen",
+  "securityLabel": "Sicherheit",
+  "noSecurity": "Keine Sicherheit",
+  "weaponLabel": "Waffe",
+  "vehicleLabel": "Fahrzeug",
+  "none": "Keiner",
+  "statistics": "Statistiken",
+  "breakouts": "Ausbrüche",
+  "murders": "Morde",
+  "hitlistContracts": "Hitlist-Verträge",
+  "carsStolen": "Autos gestohlen",
+  "boatsStolen": "Boote gestohlen",
+  "crimeAttempts": "Kriminalversuche",
+  "successful": "Erfolgreich",
+  "jobAttempts": "Arbeitsversuche",
+  "streetProstitutes": "Straßenprostituierte",
+  "rldProstitutes": "RLD-Prostituierte",
+  "travels": "Reisen",
+  "bullets": "Kugeln",
+  "justNow": "Soeben",
+  "secondsAgo": "Vor {seconds}s",
+  "@secondsAgo": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesAgo": "Vor {count} Minuten",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hoursAgo": "Vor {count} Stunden",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "last10EventsLive": "Die letzten 10 Ereignisse (live).",
+  "noEventsYetSession": "In dieser Sitzung gibt es noch keine Ereignisse.",
+  "clearRecap": "Klare Zusammenfassung",
+  "weeklyGoalClaimed": "Wochenziel erreicht!",
+  "dailyGoalClaimed": "Tagesziel erreicht!",
+  "failed": "Fehlgeschlagen.",
+  "failedPleaseTryAgain": "Fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  "dailyGoals": "Tägliche Ziele",
+  "weeklyGoals": "Wöchentliche Ziele",
+  "claimed": "Behauptet",
+  "ready": "Bereit",
+  "claim": "Beanspruchen",
+  "readyToClaim": "{count} bereit zur Inanspruchnahme",
+  "@readyToClaim": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "completedOutOfTotal": "{completed}/{total} abgeschlossen",
+  "@completedOutOfTotal": {
+    "placeholders": {
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "noPlayerData": "Keine Spielerdaten",
+  "economy24h": "Wirtschaft 24h",
+  "grossIncome": "Bruttoeinkommen",
+  "propertySpend": "Immobilienausgaben",
+  "netCashflow": "Netto-Cashflow",
+  "trendVsPrevious": "Trend vs. Vorheriger",
+  "activity7d": "Aktivität 7d",
+  "vehicleThefts": "Fahrzeugdiebstähle",
+  "opsOverview": "Ops-Übersicht",
+  "activeCooldowns": "Aktive Abklingzeiten",
+  "longestTimer": "Längster Timer",
+  "activeProduction": "Aktive Produktion",
+  "productionReadyIn": "Die Produktion ist fertig",
+  "nightclubEvents": "Nightclub-Events",
+  "nextEventStartsIn": "Die nächste Veranstaltung beginnt in",
+  "vehiclesActiveListedTransit": "Fahrzeuge aktiv/gelistet/im Transit",
+  "livePlayerEvents": "Live-Spielerevents",
+  "openEvents": "Offene Veranstaltungen",
+  "notificationsAndRisk": "Benachrichtigungen und Risiko",
+  "unreadDm": "Ungelesene DM",
+  "supportWaitingOnYou": "Der Support wartet auf Sie",
+  "eventsLast24h": "Die Veranstaltungen dauern 24 Stunden",
+  "riskScore": "Risikobewertung",
+  "recruitProstitute": "Prostituierte rekrutieren",
+  "free": "FREI",
+  "crewWars": "Besatzungskriege",
+  "status": "Status",
+  "canDeclare": "Kann erklären",
+  "yes": "Ja",
+  "no": "NEIN",
+  "type": "Typ",
+  "opponent": "Gegnerin",
+  "crewPoints": "Besatzungspunkte",
+  "warRank": "Kriegsrang",
+  "seasonRank": "Saisonrang",
+  "openTargets": "Offene Ziele",
+  "phaseEndsIn": "Phase endet in",
+  "crewTerritory": "Besatzungsgebiet",
+  "regions": "Regionen",
+  "countriesCaptured": "Länder erobert",
+  "payout": "Auszahlung",
+  "earningPerHour": "Jetzt pro Stunde verdienen",
+  "earningPerDay": "Jetzt pro Tag verdienen",
+  "totalEarned": "Insgesamt verdient",
+  "crewBank": "Mannschaftsbank",
+  "dashboardEconomy24h": "Wirtschaft 24h",
+  "dashboardGrossIncome": "Bruttoeinkommen",
+  "dashboardPropertySpend": "Immobilienausgaben",
+  "dashboardNetCashflow": "Netto-Cashflow",
+  "dashboardTrendVsPrevious": "Trend vs. Vorheriger",
+  "dashboardActivity7d": "Aktivität 7d",
+  "dashboardVehicleThefts": "Fahrzeugdiebstähle",
+  "dashboardOpsOverview": "Ops-Übersicht",
+  "dashboardActiveCooldowns": "Aktive Abklingzeiten",
+  "dashboardLongestTimer": "Längster Timer",
+  "dashboardActiveProduction": "Aktive Produktion",
+  "dashboardProductionReadyIn": "Die Produktion ist fertig",
+  "dashboardNightclubEvents": "Nightclub-Events",
+  "dashboardNextEventStartsIn": "Die nächste Veranstaltung beginnt in",
+  "dashboardVehiclesActiveListedTransit": "Fahrzeuge aktiv/gelistet/im Transit",
+  "dashboardLivePlayerEvents": "Live-Spielerevents",
+  "dashboardOpenEvents": "Offene Veranstaltungen",
+  "dashboardNotificationsAndRisk": "Benachrichtigungen und Risiko",
+  "dashboardUnreadDm": "Ungelesene DM",
+  "dashboardSupportWaitingOnYou": "Der Support wartet auf Sie",
+  "dashboardEventsLast24h": "Die Veranstaltungen dauern 24 Stunden",
+  "dashboardRiskScore": "Risikobewertung",
+  "dashboardRecruitProstitute": "Prostituierte rekrutieren",
+  "dashboardCrewWars": "Besatzungskriege",
+  "dashboardStatusLabel": "Status",
+  "dashboardCanDeclare": "Kann erklären",
+  "dashboardTypeLabel": "Typ",
+  "dashboardOpponent": "Gegnerin",
+  "dashboardCrewPoints": "Besatzungspunkte",
+  "dashboardWarRank": "Kriegsrang",
+  "dashboardSeasonRank": "Saisonrang",
+  "dashboardOpenTargets": "Offene Ziele",
+  "dashboardPhaseEndsIn": "Phase endet in",
+  "dashboardCrewTerritory": "Besatzungsgebiet",
+  "dashboardRegions": "Regionen",
+  "dashboardCountriesCaptured": "Länder erobert",
+  "dashboardPayout": "Auszahlung",
+  "dashboardEarningPerHour": "Jetzt pro Stunde verdienen",
+  "dashboardEarningPerDay": "Jetzt pro Tag verdienen",
+  "dashboardTotalEarned": "Insgesamt verdient",
+  "dashboardVehicleOps": "Fahrzeugbetrieb",
+  "dashboardCar": "Auto",
+  "dashboardMotorcycle": "Motorrad",
+  "dashboardBoat": "Boot",
+  "dashboardCrewAccess": "Zugang für die Crew",
+  "dashboardCrewRole": "Crew-Rolle",
+  "dashboardUnavailable": "nicht verfügbar",
+  "vehicleOps": "Fahrzeugbetrieb",
+  "car": "Auto",
+  "motorcycle": "Motorrad",
+  "boat": "Boot",
+  "crewAccess": "Zugang für die Crew",
+  "crewRole": "Crew-Rolle",
+  "unavailable": "nicht verfügbar",
   "quickActionsCrimesSubtitle": "Straftaten begehen",
   "quickActionsVehicleHeistSubtitle": "Auto, Motorrad und Boot",
   "quickActionsTuneShopSubtitle": "Teile und Upgrades",
@@ -461,7 +644,6 @@
   "foodInfo3": "• Kaufen Sie Essen und Trinken, um Ihre Werte aufrechtzuerhalten",
   "friends": "Freundinnen",
   "friendActivity": "Freundesaktivität",
-  "properties": "Eigenschaften",
   "propertiesAvailable": "Verfügbar",
   "myProperties": "Meine Eigenschaften",
   "errorLoadingMyProperties": "Fehler beim Laden meiner Eigenschaften",
@@ -688,7 +870,6 @@
   "pay": "Zahlen",
   "success": "Erfolg",
   "jail": "Gefängnis",
-  "wantedLevel": "Gesuchtes Level",
   "cooldown": "Abklingzeit",
   "requiredRank": "Erforderlicher Spielerrang",
   "playerRankLabel": "Spielerrang",
@@ -734,7 +915,6 @@
   "marketplace": "Marktplatz",
   "myListings": "Meine Einträge",
   "inventory": "Inventar",
-  "vehicles": "Fahrzeuge",
   "backpacks": "Rucksäcke",
   "materials": "Materialien",
   "production": "Produktion",
@@ -746,7 +926,6 @@
   "yourHealth": "Ihre Gesundheit",
   "criticalHealthWarning": "⚠️ KRITISCH! Sie müssen sofort ins Krankenhaus gehen!",
   "lowHealthWarning": "⚠️ Geringe Gesundheit! Seien Sie vorsichtig.",
-  "free": "FREI",
   "information": "Information",
   "contrabandFlowersName": "Blumen",
   "contrabandFlowersDesc": "Niederländische Tulpen und andere Blumen für den internationalen Handel",
@@ -1155,8 +1334,6 @@
   "arrested": "Verhaftet!",
   "jailMessage": "Sie wurden während Ihrer Reise verhaftet und alle Waren wurden beschlagnahmt!",
   "confirmAction": "Bist du sicher?",
-  "yes": "Ja",
-  "no": "NEIN",
   "ok": "OK",
   "travelContinueConfirmTitle": "Mit der nächsten Etappe fortfahren?",
   "travelContinueConfirmBody": "Grenzkontrollen sind aktiv. Ihre Reise fortsetzen?",
@@ -1264,22 +1441,6 @@
         "type": "String"
       },
       "plural": {
-        "type": "String"
-      }
-    }
-  },
-  "hoursAgo": "Vor {count} Stunden",
-  "@hoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "minutesAgo": "Vor {count} Minuten",
-  "@minutesAgo": {
-    "placeholders": {
-      "count": {
         "type": "String"
       }
     }

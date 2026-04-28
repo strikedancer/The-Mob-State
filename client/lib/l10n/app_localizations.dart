@@ -1472,6 +1472,876 @@ abstract class AppLocalizations {
   /// **'Crack the Vault'**
   String get menuCrackVault;
 
+  /// No description provided for @rankProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank Progress'**
+  String get rankProgress;
+
+  /// No description provided for @cash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get cash;
+
+  /// No description provided for @sessionRecap.
+  ///
+  /// In en, this message translates to:
+  /// **'Session recap'**
+  String get sessionRecap;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get nameLabel;
+
+  /// No description provided for @countryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get countryLabel;
+
+  /// No description provided for @wantedLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Wanted Level'**
+  String get wantedLevel;
+
+  /// No description provided for @fbiHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'FBI Heat'**
+  String get fbiHeat;
+
+  /// No description provided for @properties.
+  ///
+  /// In en, this message translates to:
+  /// **'Properties'**
+  String get properties;
+
+  /// No description provided for @vehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles'**
+  String get vehicles;
+
+  /// No description provided for @netWorth.
+  ///
+  /// In en, this message translates to:
+  /// **'Net worth'**
+  String get netWorth;
+
+  /// No description provided for @securityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get securityLabel;
+
+  /// No description provided for @noSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'No security'**
+  String get noSecurity;
+
+  /// No description provided for @weaponLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon'**
+  String get weaponLabel;
+
+  /// No description provided for @vehicleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle'**
+  String get vehicleLabel;
+
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// No description provided for @breakouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakouts'**
+  String get breakouts;
+
+  /// No description provided for @murders.
+  ///
+  /// In en, this message translates to:
+  /// **'Murders'**
+  String get murders;
+
+  /// No description provided for @hitlistContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Hitlist contracts'**
+  String get hitlistContracts;
+
+  /// No description provided for @carsStolen.
+  ///
+  /// In en, this message translates to:
+  /// **'Cars stolen'**
+  String get carsStolen;
+
+  /// No description provided for @boatsStolen.
+  ///
+  /// In en, this message translates to:
+  /// **'Boats stolen'**
+  String get boatsStolen;
+
+  /// No description provided for @crimeAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime attempts'**
+  String get crimeAttempts;
+
+  /// No description provided for @successful.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful'**
+  String get successful;
+
+  /// No description provided for @jobAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Job attempts'**
+  String get jobAttempts;
+
+  /// No description provided for @streetProstitutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Street prostitutes'**
+  String get streetProstitutes;
+
+  /// No description provided for @rldProstitutes.
+  ///
+  /// In en, this message translates to:
+  /// **'RLD prostitutes'**
+  String get rldProstitutes;
+
+  /// No description provided for @travels.
+  ///
+  /// In en, this message translates to:
+  /// **'Travels'**
+  String get travels;
+
+  /// No description provided for @bullets.
+  ///
+  /// In en, this message translates to:
+  /// **'Bullets'**
+  String get bullets;
+
+  /// No description provided for @justNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get justNow;
+
+  /// No description provided for @secondsAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds}s ago'**
+  String secondsAgo(String seconds);
+
+  /// No description provided for @minutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} minutes ago'**
+  String minutesAgo(String count);
+
+  /// No description provided for @hoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hours ago'**
+  String hoursAgo(String count);
+
+  /// No description provided for @last10EventsLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 10 events (live).'**
+  String get last10EventsLive;
+
+  /// No description provided for @noEventsYetSession.
+  ///
+  /// In en, this message translates to:
+  /// **'No events yet in this session.'**
+  String get noEventsYetSession;
+
+  /// No description provided for @clearRecap.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear recap'**
+  String get clearRecap;
+
+  /// No description provided for @weeklyGoalClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly goal claimed!'**
+  String get weeklyGoalClaimed;
+
+  /// No description provided for @dailyGoalClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal claimed!'**
+  String get dailyGoalClaimed;
+
+  /// No description provided for @failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed.'**
+  String get failed;
+
+  /// No description provided for @failedPleaseTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed. Please try again.'**
+  String get failedPleaseTryAgain;
+
+  /// No description provided for @dailyGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goals'**
+  String get dailyGoals;
+
+  /// No description provided for @weeklyGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly goals'**
+  String get weeklyGoals;
+
+  /// No description provided for @claimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed'**
+  String get claimed;
+
+  /// No description provided for @ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get ready;
+
+  /// No description provided for @claim.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim'**
+  String get claim;
+
+  /// No description provided for @readyToClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} ready to claim'**
+  String readyToClaim(String count);
+
+  /// No description provided for @completedOutOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed}/{total} completed'**
+  String completedOutOfTotal(String completed, String total);
+
+  /// No description provided for @noPlayerData.
+  ///
+  /// In en, this message translates to:
+  /// **'No player data'**
+  String get noPlayerData;
+
+  /// No description provided for @economy24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Economy 24h'**
+  String get economy24h;
+
+  /// No description provided for @grossIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Gross income'**
+  String get grossIncome;
+
+  /// No description provided for @propertySpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Property spend'**
+  String get propertySpend;
+
+  /// No description provided for @netCashflow.
+  ///
+  /// In en, this message translates to:
+  /// **'Net cashflow'**
+  String get netCashflow;
+
+  /// No description provided for @trendVsPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Trend vs previous'**
+  String get trendVsPrevious;
+
+  /// No description provided for @activity7d.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity 7d'**
+  String get activity7d;
+
+  /// No description provided for @vehicleThefts.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle thefts'**
+  String get vehicleThefts;
+
+  /// No description provided for @opsOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops Overview'**
+  String get opsOverview;
+
+  /// No description provided for @activeCooldowns.
+  ///
+  /// In en, this message translates to:
+  /// **'Active cooldowns'**
+  String get activeCooldowns;
+
+  /// No description provided for @longestTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest timer'**
+  String get longestTimer;
+
+  /// No description provided for @activeProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Active production'**
+  String get activeProduction;
+
+  /// No description provided for @productionReadyIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Production ready in'**
+  String get productionReadyIn;
+
+  /// No description provided for @nightclubEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub events'**
+  String get nightclubEvents;
+
+  /// No description provided for @nextEventStartsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next event starts in'**
+  String get nextEventStartsIn;
+
+  /// No description provided for @vehiclesActiveListedTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles active/listed/transit'**
+  String get vehiclesActiveListedTransit;
+
+  /// No description provided for @livePlayerEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Live player events'**
+  String get livePlayerEvents;
+
+  /// No description provided for @openEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Events'**
+  String get openEvents;
+
+  /// No description provided for @notificationsAndRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications & Risk'**
+  String get notificationsAndRisk;
+
+  /// No description provided for @unreadDm.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread DM'**
+  String get unreadDm;
+
+  /// No description provided for @supportWaitingOnYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Support waiting on you'**
+  String get supportWaitingOnYou;
+
+  /// No description provided for @eventsLast24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Events last 24h'**
+  String get eventsLast24h;
+
+  /// No description provided for @riskScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk score'**
+  String get riskScore;
+
+  /// No description provided for @recruitProstitute.
+  ///
+  /// In en, this message translates to:
+  /// **'Recruit prostitute'**
+  String get recruitProstitute;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'FREE'**
+  String get free;
+
+  /// No description provided for @crewWars.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Wars'**
+  String get crewWars;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @canDeclare.
+  ///
+  /// In en, this message translates to:
+  /// **'Can declare'**
+  String get canDeclare;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// No description provided for @opponent.
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent'**
+  String get opponent;
+
+  /// No description provided for @crewPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew points'**
+  String get crewPoints;
+
+  /// No description provided for @warRank.
+  ///
+  /// In en, this message translates to:
+  /// **'War rank'**
+  String get warRank;
+
+  /// No description provided for @seasonRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Season rank'**
+  String get seasonRank;
+
+  /// No description provided for @openTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'Open targets'**
+  String get openTargets;
+
+  /// No description provided for @phaseEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase ends in'**
+  String get phaseEndsIn;
+
+  /// No description provided for @crewTerritory.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Territory'**
+  String get crewTerritory;
+
+  /// No description provided for @regions.
+  ///
+  /// In en, this message translates to:
+  /// **'Regions'**
+  String get regions;
+
+  /// No description provided for @countriesCaptured.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries captured'**
+  String get countriesCaptured;
+
+  /// No description provided for @payout.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout'**
+  String get payout;
+
+  /// No description provided for @earningPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Earning now per hour'**
+  String get earningPerHour;
+
+  /// No description provided for @earningPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Earning now per day'**
+  String get earningPerDay;
+
+  /// No description provided for @totalEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Total earned'**
+  String get totalEarned;
+
+  /// No description provided for @crewBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew bank'**
+  String get crewBank;
+
+  /// No description provided for @dashboardEconomy24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Economy 24h'**
+  String get dashboardEconomy24h;
+
+  /// No description provided for @dashboardGrossIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Gross income'**
+  String get dashboardGrossIncome;
+
+  /// No description provided for @dashboardPropertySpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Property spend'**
+  String get dashboardPropertySpend;
+
+  /// No description provided for @dashboardNetCashflow.
+  ///
+  /// In en, this message translates to:
+  /// **'Net cashflow'**
+  String get dashboardNetCashflow;
+
+  /// No description provided for @dashboardTrendVsPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Trend vs previous'**
+  String get dashboardTrendVsPrevious;
+
+  /// No description provided for @dashboardActivity7d.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity 7d'**
+  String get dashboardActivity7d;
+
+  /// No description provided for @dashboardVehicleThefts.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle thefts'**
+  String get dashboardVehicleThefts;
+
+  /// No description provided for @dashboardOpsOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops Overview'**
+  String get dashboardOpsOverview;
+
+  /// No description provided for @dashboardActiveCooldowns.
+  ///
+  /// In en, this message translates to:
+  /// **'Active cooldowns'**
+  String get dashboardActiveCooldowns;
+
+  /// No description provided for @dashboardLongestTimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest timer'**
+  String get dashboardLongestTimer;
+
+  /// No description provided for @dashboardActiveProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Active production'**
+  String get dashboardActiveProduction;
+
+  /// No description provided for @dashboardProductionReadyIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Production ready in'**
+  String get dashboardProductionReadyIn;
+
+  /// No description provided for @dashboardNightclubEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub events'**
+  String get dashboardNightclubEvents;
+
+  /// No description provided for @dashboardNextEventStartsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next event starts in'**
+  String get dashboardNextEventStartsIn;
+
+  /// No description provided for @dashboardVehiclesActiveListedTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles active/listed/transit'**
+  String get dashboardVehiclesActiveListedTransit;
+
+  /// No description provided for @dashboardLivePlayerEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Live player events'**
+  String get dashboardLivePlayerEvents;
+
+  /// No description provided for @dashboardOpenEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Events'**
+  String get dashboardOpenEvents;
+
+  /// No description provided for @dashboardNotificationsAndRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications & Risk'**
+  String get dashboardNotificationsAndRisk;
+
+  /// No description provided for @dashboardUnreadDm.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread DM'**
+  String get dashboardUnreadDm;
+
+  /// No description provided for @dashboardSupportWaitingOnYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Support waiting on you'**
+  String get dashboardSupportWaitingOnYou;
+
+  /// No description provided for @dashboardEventsLast24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Events last 24h'**
+  String get dashboardEventsLast24h;
+
+  /// No description provided for @dashboardRiskScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk score'**
+  String get dashboardRiskScore;
+
+  /// No description provided for @dashboardRecruitProstitute.
+  ///
+  /// In en, this message translates to:
+  /// **'Recruit prostitute'**
+  String get dashboardRecruitProstitute;
+
+  /// No description provided for @dashboardCrewWars.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Wars'**
+  String get dashboardCrewWars;
+
+  /// No description provided for @dashboardStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get dashboardStatusLabel;
+
+  /// No description provided for @dashboardCanDeclare.
+  ///
+  /// In en, this message translates to:
+  /// **'Can declare'**
+  String get dashboardCanDeclare;
+
+  /// No description provided for @dashboardTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get dashboardTypeLabel;
+
+  /// No description provided for @dashboardOpponent.
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent'**
+  String get dashboardOpponent;
+
+  /// No description provided for @dashboardCrewPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew points'**
+  String get dashboardCrewPoints;
+
+  /// No description provided for @dashboardWarRank.
+  ///
+  /// In en, this message translates to:
+  /// **'War rank'**
+  String get dashboardWarRank;
+
+  /// No description provided for @dashboardSeasonRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Season rank'**
+  String get dashboardSeasonRank;
+
+  /// No description provided for @dashboardOpenTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'Open targets'**
+  String get dashboardOpenTargets;
+
+  /// No description provided for @dashboardPhaseEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase ends in'**
+  String get dashboardPhaseEndsIn;
+
+  /// No description provided for @dashboardCrewTerritory.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Territory'**
+  String get dashboardCrewTerritory;
+
+  /// No description provided for @dashboardRegions.
+  ///
+  /// In en, this message translates to:
+  /// **'Regions'**
+  String get dashboardRegions;
+
+  /// No description provided for @dashboardCountriesCaptured.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries captured'**
+  String get dashboardCountriesCaptured;
+
+  /// No description provided for @dashboardPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout'**
+  String get dashboardPayout;
+
+  /// No description provided for @dashboardEarningPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Earning now per hour'**
+  String get dashboardEarningPerHour;
+
+  /// No description provided for @dashboardEarningPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Earning now per day'**
+  String get dashboardEarningPerDay;
+
+  /// No description provided for @dashboardTotalEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Total earned'**
+  String get dashboardTotalEarned;
+
+  /// No description provided for @dashboardVehicleOps.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Ops'**
+  String get dashboardVehicleOps;
+
+  /// No description provided for @dashboardCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get dashboardCar;
+
+  /// No description provided for @dashboardMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle'**
+  String get dashboardMotorcycle;
+
+  /// No description provided for @dashboardBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat'**
+  String get dashboardBoat;
+
+  /// No description provided for @dashboardCrewAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew access'**
+  String get dashboardCrewAccess;
+
+  /// No description provided for @dashboardCrewRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew role'**
+  String get dashboardCrewRole;
+
+  /// No description provided for @dashboardUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'unavailable'**
+  String get dashboardUnavailable;
+
+  /// No description provided for @vehicleOps.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Ops'**
+  String get vehicleOps;
+
+  /// No description provided for @car.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get car;
+
+  /// No description provided for @motorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle'**
+  String get motorcycle;
+
+  /// No description provided for @boat.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat'**
+  String get boat;
+
+  /// No description provided for @crewAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew access'**
+  String get crewAccess;
+
+  /// No description provided for @crewRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew role'**
+  String get crewRole;
+
+  /// No description provided for @unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'unavailable'**
+  String get unavailable;
+
   /// No description provided for @quickActionsCrimesSubtitle.
   ///
   /// In en, this message translates to:
@@ -1801,12 +2671,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Friend Activity'**
   String get friendActivity;
-
-  /// No description provided for @properties.
-  ///
-  /// In en, this message translates to:
-  /// **'Properties'**
-  String get properties;
 
   /// No description provided for @propertiesAvailable.
   ///
@@ -2462,12 +3326,6 @@ abstract class AppLocalizations {
   /// **'Jail'**
   String get jail;
 
-  /// No description provided for @wantedLevel.
-  ///
-  /// In en, this message translates to:
-  /// **'Wanted Level'**
-  String get wantedLevel;
-
   /// No description provided for @cooldown.
   ///
   /// In en, this message translates to:
@@ -2654,12 +3512,6 @@ abstract class AppLocalizations {
   /// **'Inventory'**
   String get inventory;
 
-  /// No description provided for @vehicles.
-  ///
-  /// In en, this message translates to:
-  /// **'Vehicles'**
-  String get vehicles;
-
   /// No description provided for @backpacks.
   ///
   /// In en, this message translates to:
@@ -2725,12 +3577,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'⚠️ Low health! Be careful.'**
   String get lowHealthWarning;
-
-  /// No description provided for @free.
-  ///
-  /// In en, this message translates to:
-  /// **'FREE'**
-  String get free;
 
   /// No description provided for @information.
   ///
@@ -4040,18 +4886,6 @@ abstract class AppLocalizations {
   /// **'Are you sure?'**
   String get confirmAction;
 
-  /// No description provided for @yes.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get yes;
-
-  /// No description provided for @no.
-  ///
-  /// In en, this message translates to:
-  /// **'No'**
-  String get no;
-
   /// No description provided for @ok.
   ///
   /// In en, this message translates to:
@@ -4387,18 +5221,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} day{plural} ago'**
   String daysAgo(String count, String plural);
-
-  /// No description provided for @hoursAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} hours ago'**
-  String hoursAgo(String count);
-
-  /// No description provided for @minutesAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} minutes ago'**
-  String minutesAgo(String count);
 
   /// No description provided for @justPlaced.
   ///

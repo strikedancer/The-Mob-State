@@ -378,6 +378,189 @@
   "territory": "Terytorium",
   "achievements": "Osiągnięcia",
   "menuCrackVault": "Złam skarbiec",
+  "rankProgress": "Postęp w rankingu",
+  "cash": "Gotówka",
+  "sessionRecap": "Podsumowanie sesji",
+  "nameLabel": "Nazwa",
+  "countryLabel": "Kraj",
+  "wantedLevel": "Poszukiwany poziom",
+  "fbiHeat": "Temperatura FBI",
+  "properties": "Właściwości",
+  "vehicles": "Pojazdy",
+  "netWorth": "Wartość netto",
+  "securityLabel": "Bezpieczeństwo",
+  "noSecurity": "Brak zabezpieczeń",
+  "weaponLabel": "Broń",
+  "vehicleLabel": "Pojazd",
+  "none": "Nic",
+  "statistics": "Statystyka",
+  "breakouts": "Wypryski",
+  "murders": "Morderstwa",
+  "hitlistContracts": "Umowy z listą przebojów",
+  "carsStolen": "Kradzież samochodów",
+  "boatsStolen": "Skradziono łodzie",
+  "crimeAttempts": "Próby przestępcze",
+  "successful": "Udany",
+  "jobAttempts": "Próby pracy",
+  "streetProstitutes": "Prostytutki uliczne",
+  "rldProstitutes": "prostytutki RLD",
+  "travels": "Podróże",
+  "bullets": "Kule",
+  "justNow": "Właśnie",
+  "secondsAgo": "{seconds} temu",
+  "@secondsAgo": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesAgo": "{count} minut temu",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hoursAgo": "{count} godzin temu",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "last10EventsLive": "Ostatnie 10 wydarzeń (na żywo).",
+  "noEventsYetSession": "Brak wydarzeń w tej sesji.",
+  "clearRecap": "Wyczyść podsumowanie",
+  "weeklyGoalClaimed": "Tygodniowy cel osiągnięty!",
+  "dailyGoalClaimed": "Dzienny cel osiągnięty!",
+  "failed": "Przegrany.",
+  "failedPleaseTryAgain": "Przegrany. Spróbuj ponownie.",
+  "dailyGoals": "Codzienne cele",
+  "weeklyGoals": "Tygodniowe cele",
+  "claimed": "Zgłoszono",
+  "ready": "Gotowy",
+  "claim": "Prawo",
+  "readyToClaim": "{count} gotowy do odbioru",
+  "@readyToClaim": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "completedOutOfTotal": "{completed}/{total} zakończone",
+  "@completedOutOfTotal": {
+    "placeholders": {
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "noPlayerData": "Brak danych gracza",
+  "economy24h": "Ekonomiczna 24h",
+  "grossIncome": "Dochód brutto",
+  "propertySpend": "Wydatki na nieruchomość",
+  "netCashflow": "Przepływy pieniężne netto",
+  "trendVsPrevious": "Trend vs poprzedni",
+  "activity7d": "Ćwiczenie 7d",
+  "vehicleThefts": "Kradzieże pojazdów",
+  "opsOverview": "Przegląd operacji",
+  "activeCooldowns": "Aktywne czasy odnowienia",
+  "longestTimer": "Najdłuższy timer",
+  "activeProduction": "Aktywna produkcja",
+  "productionReadyIn": "Produkcja gotowa w",
+  "nightclubEvents": "Imprezy w klubach nocnych",
+  "nextEventStartsIn": "Następne wydarzenie rozpoczyna się za",
+  "vehiclesActiveListedTransit": "Pojazdy aktywne/wystawione/przejeżdżające",
+  "livePlayerEvents": "Wydarzenia dla graczy na żywo",
+  "openEvents": "Otwarte wydarzenia",
+  "notificationsAndRisk": "Powiadomienia i ryzyko",
+  "unreadDm": "Nieprzeczytany DM",
+  "supportWaitingOnYou": "Wsparcie czeka na Ciebie",
+  "eventsLast24h": "Wydarzenia trwają 24h",
+  "riskScore": "Ocena ryzyka",
+  "recruitProstitute": "Rekrutuj prostytutkę",
+  "free": "BEZPŁATNY",
+  "crewWars": "Wojny załóg",
+  "status": "Status",
+  "canDeclare": "Można zadeklarować",
+  "yes": "Tak",
+  "no": "NIE",
+  "type": "Typ",
+  "opponent": "Przeciwnik",
+  "crewPoints": "Punkty załogi",
+  "warRank": "Stopień wojenny",
+  "seasonRank": "Ranking sezonu",
+  "openTargets": "Otwarte cele",
+  "phaseEndsIn": "Faza kończy się w",
+  "crewTerritory": "Terytorium załogi",
+  "regions": "Regiony",
+  "countriesCaptured": "Kraje zdobyte",
+  "payout": "Wypłata",
+  "earningPerHour": "Zarabianie teraz na godzinę",
+  "earningPerDay": "Zarabianie teraz dziennie",
+  "totalEarned": "Łącznie zarobione",
+  "crewBank": "Bank załogi",
+  "dashboardEconomy24h": "Ekonomiczna 24h",
+  "dashboardGrossIncome": "Dochód brutto",
+  "dashboardPropertySpend": "Wydatki na nieruchomość",
+  "dashboardNetCashflow": "Przepływy pieniężne netto",
+  "dashboardTrendVsPrevious": "Trend vs poprzedni",
+  "dashboardActivity7d": "Ćwiczenie 7d",
+  "dashboardVehicleThefts": "Kradzieże pojazdów",
+  "dashboardOpsOverview": "Przegląd operacji",
+  "dashboardActiveCooldowns": "Aktywne czasy odnowienia",
+  "dashboardLongestTimer": "Najdłuższy timer",
+  "dashboardActiveProduction": "Aktywna produkcja",
+  "dashboardProductionReadyIn": "Produkcja gotowa w",
+  "dashboardNightclubEvents": "Imprezy w klubach nocnych",
+  "dashboardNextEventStartsIn": "Następne wydarzenie rozpoczyna się za",
+  "dashboardVehiclesActiveListedTransit": "Pojazdy aktywne/wystawione/przejeżdżające",
+  "dashboardLivePlayerEvents": "Wydarzenia dla graczy na żywo",
+  "dashboardOpenEvents": "Otwarte wydarzenia",
+  "dashboardNotificationsAndRisk": "Powiadomienia i ryzyko",
+  "dashboardUnreadDm": "Nieprzeczytany DM",
+  "dashboardSupportWaitingOnYou": "Wsparcie czeka na Ciebie",
+  "dashboardEventsLast24h": "Wydarzenia trwają 24h",
+  "dashboardRiskScore": "Ocena ryzyka",
+  "dashboardRecruitProstitute": "Rekrutuj prostytutkę",
+  "dashboardCrewWars": "Wojny załóg",
+  "dashboardStatusLabel": "Status",
+  "dashboardCanDeclare": "Można zadeklarować",
+  "dashboardTypeLabel": "Typ",
+  "dashboardOpponent": "Przeciwnik",
+  "dashboardCrewPoints": "Punkty załogi",
+  "dashboardWarRank": "Stopień wojenny",
+  "dashboardSeasonRank": "Ranking sezonu",
+  "dashboardOpenTargets": "Otwarte cele",
+  "dashboardPhaseEndsIn": "Faza kończy się w",
+  "dashboardCrewTerritory": "Terytorium załogi",
+  "dashboardRegions": "Regiony",
+  "dashboardCountriesCaptured": "Kraje zdobyte",
+  "dashboardPayout": "Wypłata",
+  "dashboardEarningPerHour": "Zarabianie teraz na godzinę",
+  "dashboardEarningPerDay": "Zarabianie teraz dziennie",
+  "dashboardTotalEarned": "Łącznie zarobione",
+  "dashboardVehicleOps": "Operacje pojazdów",
+  "dashboardCar": "Samochód",
+  "dashboardMotorcycle": "Motocykl",
+  "dashboardBoat": "Łódź",
+  "dashboardCrewAccess": "Dostęp załogi",
+  "dashboardCrewRole": "Rola załogi",
+  "dashboardUnavailable": "nie płynny",
+  "vehicleOps": "Operacje pojazdów",
+  "car": "Samochód",
+  "motorcycle": "Motocykl",
+  "boat": "Łódź",
+  "crewAccess": "Dostęp załogi",
+  "crewRole": "Rola załogi",
+  "unavailable": "nie płynny",
   "quickActionsCrimesSubtitle": "Dokonuj czynów przestępczych",
   "quickActionsVehicleHeistSubtitle": "Samochód, motocykl i łódź",
   "quickActionsTuneShopSubtitle": "Części i ulepszenia",
@@ -461,7 +644,6 @@
   "foodInfo3": "• Kupuj jedzenie i napoje, aby utrzymać swoje statystyki",
   "friends": "Przyjaciele",
   "friendActivity": "Aktywność przyjaciela",
-  "properties": "Właściwości",
   "propertiesAvailable": "Dostępny",
   "myProperties": "Moje właściwości",
   "errorLoadingMyProperties": "Błąd podczas ładowania moich właściwości",
@@ -688,7 +870,6 @@
   "pay": "Płacić",
   "success": "Sukces",
   "jail": "Więzienie",
-  "wantedLevel": "Poszukiwany poziom",
   "cooldown": "Czas odnowienia",
   "requiredRank": "Wymagana ranga gracza",
   "playerRankLabel": "Ranga gracza",
@@ -734,7 +915,6 @@
   "marketplace": "Rynek",
   "myListings": "Moje zestawienia",
   "inventory": "Spis",
-  "vehicles": "Pojazdy",
   "backpacks": "Plecaki",
   "materials": "Przybory",
   "production": "Produkcja",
@@ -746,7 +926,6 @@
   "yourHealth": "Twoje zdrowie",
   "criticalHealthWarning": "⚠️KRYTYCZNE! Musisz natychmiast jechać do szpitala!",
   "lowHealthWarning": "⚠️ Niskie zdrowie! Bądź ostrożny.",
-  "free": "BEZPŁATNY",
   "information": "Informacja",
   "contrabandFlowersName": "Kwiaty",
   "contrabandFlowersDesc": "Holenderskie tulipany i inne kwiaty przeznaczone do handlu międzynarodowego",
@@ -1155,8 +1334,6 @@
   "arrested": "Aresztowany!",
   "jailMessage": "Zostałeś aresztowany podczas podróży i skonfiskowano cały towar!",
   "confirmAction": "Czy jesteś pewien?",
-  "yes": "Tak",
-  "no": "NIE",
   "ok": "OK",
   "travelContinueConfirmTitle": "Przejść do następnego etapu?",
   "travelContinueConfirmBody": "Kontrole graniczne są aktywne. Kontynuować podróż?",
@@ -1264,22 +1441,6 @@
         "type": "String"
       },
       "plural": {
-        "type": "String"
-      }
-    }
-  },
-  "hoursAgo": "{count} godzin temu",
-  "@hoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "minutesAgo": "{count} minut temu",
-  "@minutesAgo": {
-    "placeholders": {
-      "count": {
         "type": "String"
       }
     }

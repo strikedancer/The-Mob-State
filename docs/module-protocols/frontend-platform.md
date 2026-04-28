@@ -19,6 +19,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Dashboard navigatie/quick-actions labels moeten via **AppLocalizations** lopen (dus ARB keys), niet via hardcoded NL/EN strings of `_isNl`/`_tr`-helpers; anders vallen extra talen terug op Engels.
 - Voor kleine dialog-buttons/CTA’s in dashboard (bv. `Close`, `View offer`): voeg ook ARB keys toe i.p.v. inline tekst.
 - Bij `showDialog(builder: (ctx) => ...)` hoort l10n uit `ctx` te komen (dus `AppLocalizations.of(ctx)`), anders kan de build breken.
+- Ook de **dashboard center cards** (stats/economy/ops/notifications panels) moeten volledig via ARB keys; vermijd NL/EN literals zoals “Statistieken”, “Ops Overview”, “Gross income”, enz.
 
 ## Primary Platform/Infra Entry
 - client/docker/nginx.conf

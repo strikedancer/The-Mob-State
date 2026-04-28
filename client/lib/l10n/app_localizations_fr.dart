@@ -745,6 +745,455 @@ class AppLocalizationsFr extends AppLocalizations {
   String get menuCrackVault => 'Cassez le coffre-fort';
 
   @override
+  String get rankProgress => 'Progression du classement';
+
+  @override
+  String get cash => 'Espèces';
+
+  @override
+  String get sessionRecap => 'Récapitulatif de la séance';
+
+  @override
+  String get nameLabel => 'Nom';
+
+  @override
+  String get countryLabel => 'Pays';
+
+  @override
+  String get wantedLevel => 'Niveau recherché';
+
+  @override
+  String get fbiHeat => 'Chaleur du FBI';
+
+  @override
+  String get properties => 'Propriétés';
+
+  @override
+  String get vehicles => 'Véhicules';
+
+  @override
+  String get netWorth => 'Valeur nette';
+
+  @override
+  String get securityLabel => 'Sécurité';
+
+  @override
+  String get noSecurity => 'Aucune sécurité';
+
+  @override
+  String get weaponLabel => 'Arme';
+
+  @override
+  String get vehicleLabel => 'Véhicule';
+
+  @override
+  String get none => 'Aucune';
+
+  @override
+  String get statistics => 'Statistiques';
+
+  @override
+  String get breakouts => 'Éruptions cutanées';
+
+  @override
+  String get murders => 'Meurtres';
+
+  @override
+  String get hitlistContracts => 'Contrats de liste de résultats';
+
+  @override
+  String get carsStolen => 'Voitures volées';
+
+  @override
+  String get boatsStolen => 'Bateaux volés';
+
+  @override
+  String get crimeAttempts => 'Tentatives de crime';
+
+  @override
+  String get successful => 'Réussie';
+
+  @override
+  String get jobAttempts => 'Tentatives de travail';
+
+  @override
+  String get streetProstitutes => 'Prostituées de rue';
+
+  @override
+  String get rldProstitutes => 'Prostituées RLD';
+
+  @override
+  String get travels => 'Voyages';
+
+  @override
+  String get bullets => 'Balles';
+
+  @override
+  String get justNow => 'Tout à l\' heure';
+
+  @override
+  String secondsAgo(String seconds) {
+    return 'Il y a $seconds';
+  }
+
+  @override
+  String minutesAgo(String count) {
+    return 'il y a $count minutes';
+  }
+
+  @override
+  String hoursAgo(String count) {
+    return 'Il y a $count heures';
+  }
+
+  @override
+  String get last10EventsLive => '10 derniers événements (en direct).';
+
+  @override
+  String get noEventsYetSession =>
+      'Aucun événement pour l\'instant dans cette session.';
+
+  @override
+  String get clearRecap => 'Récapitulatif clair';
+
+  @override
+  String get weeklyGoalClaimed => 'Objectif hebdomadaire revendiqué !';
+
+  @override
+  String get dailyGoalClaimed => 'Objectif quotidien revendiqué !';
+
+  @override
+  String get failed => 'Échoué.';
+
+  @override
+  String get failedPleaseTryAgain => 'Échoué. Veuillez réessayer.';
+
+  @override
+  String get dailyGoals => 'Objectifs quotidiens';
+
+  @override
+  String get weeklyGoals => 'Objectifs hebdomadaires';
+
+  @override
+  String get claimed => 'Réclamé';
+
+  @override
+  String get ready => 'Prêt';
+
+  @override
+  String get claim => 'Réclamer';
+
+  @override
+  String readyToClaim(String count) {
+    return '$count prêt à réclamer';
+  }
+
+  @override
+  String completedOutOfTotal(String completed, String total) {
+    return '$completed/$total terminé';
+  }
+
+  @override
+  String get noPlayerData => 'Aucune donnée du joueur';
+
+  @override
+  String get economy24h => 'Économie 24h';
+
+  @override
+  String get grossIncome => 'Revenu brut';
+
+  @override
+  String get propertySpend => 'Dépenses immobilières';
+
+  @override
+  String get netCashflow => 'Flux de trésorerie net';
+
+  @override
+  String get trendVsPrevious => 'Tendance par rapport au précédent';
+
+  @override
+  String get activity7d => 'Activité 7j';
+
+  @override
+  String get vehicleThefts => 'Vols de véhicules';
+
+  @override
+  String get opsOverview => 'Présentation des opérations';
+
+  @override
+  String get activeCooldowns => 'Temps de recharge actifs';
+
+  @override
+  String get longestTimer => 'Minuterie la plus longue';
+
+  @override
+  String get activeProduction => 'Production active';
+
+  @override
+  String get productionReadyIn => 'Production prête à';
+
+  @override
+  String get nightclubEvents => 'Événements en Nightclub';
+
+  @override
+  String get nextEventStartsIn => 'Le prochain événement commence dans';
+
+  @override
+  String get vehiclesActiveListedTransit =>
+      'Véhicules actifs/répertoriés/en transit';
+
+  @override
+  String get livePlayerEvents => 'Événements de joueurs en direct';
+
+  @override
+  String get openEvents => 'Événements ouverts';
+
+  @override
+  String get notificationsAndRisk => 'Notifications et risques';
+
+  @override
+  String get unreadDm => 'DM non lu';
+
+  @override
+  String get supportWaitingOnYou => 'Un soutien qui vous attend';
+
+  @override
+  String get eventsLast24h => 'Événements dernières 24h';
+
+  @override
+  String get riskScore => 'Score de risque';
+
+  @override
+  String get recruitProstitute => 'Recruter une prostituée';
+
+  @override
+  String get free => 'GRATUITE';
+
+  @override
+  String get crewWars => 'Guerres d\'équipage';
+
+  @override
+  String get status => 'Statut';
+
+  @override
+  String get canDeclare => 'Peut déclarer';
+
+  @override
+  String get yes => 'Oui';
+
+  @override
+  String get no => 'Non';
+
+  @override
+  String get type => 'Taper';
+
+  @override
+  String get opponent => 'Adversaire';
+
+  @override
+  String get crewPoints => 'Points d\'équipage';
+
+  @override
+  String get warRank => 'Rang de guerre';
+
+  @override
+  String get seasonRank => 'Classement de la saison';
+
+  @override
+  String get openTargets => 'Cibles ouvertes';
+
+  @override
+  String get phaseEndsIn => 'La phase se termine dans';
+
+  @override
+  String get crewTerritory => 'Territoire de l\'équipage';
+
+  @override
+  String get regions => 'Régions';
+
+  @override
+  String get countriesCaptured => 'Pays capturés';
+
+  @override
+  String get payout => 'Paiement';
+
+  @override
+  String get earningPerHour => 'Gagner maintenant par heure';
+
+  @override
+  String get earningPerDay => 'Gagner maintenant par jour';
+
+  @override
+  String get totalEarned => 'Total gagné';
+
+  @override
+  String get crewBank => 'Banque d\'équipage';
+
+  @override
+  String get dashboardEconomy24h => 'Économie 24h';
+
+  @override
+  String get dashboardGrossIncome => 'Revenu brut';
+
+  @override
+  String get dashboardPropertySpend => 'Dépenses immobilières';
+
+  @override
+  String get dashboardNetCashflow => 'Flux de trésorerie net';
+
+  @override
+  String get dashboardTrendVsPrevious => 'Tendance par rapport au précédent';
+
+  @override
+  String get dashboardActivity7d => 'Activité 7j';
+
+  @override
+  String get dashboardVehicleThefts => 'Vols de véhicules';
+
+  @override
+  String get dashboardOpsOverview => 'Présentation des opérations';
+
+  @override
+  String get dashboardActiveCooldowns => 'Temps de recharge actifs';
+
+  @override
+  String get dashboardLongestTimer => 'Minuterie la plus longue';
+
+  @override
+  String get dashboardActiveProduction => 'Production active';
+
+  @override
+  String get dashboardProductionReadyIn => 'Production prête à';
+
+  @override
+  String get dashboardNightclubEvents => 'Événements en Nightclub';
+
+  @override
+  String get dashboardNextEventStartsIn =>
+      'Le prochain événement commence dans';
+
+  @override
+  String get dashboardVehiclesActiveListedTransit =>
+      'Véhicules actifs/répertoriés/en transit';
+
+  @override
+  String get dashboardLivePlayerEvents => 'Événements de joueurs en direct';
+
+  @override
+  String get dashboardOpenEvents => 'Événements ouverts';
+
+  @override
+  String get dashboardNotificationsAndRisk => 'Notifications et risques';
+
+  @override
+  String get dashboardUnreadDm => 'DM non lu';
+
+  @override
+  String get dashboardSupportWaitingOnYou => 'Un soutien qui vous attend';
+
+  @override
+  String get dashboardEventsLast24h => 'Événements dernières 24h';
+
+  @override
+  String get dashboardRiskScore => 'Score de risque';
+
+  @override
+  String get dashboardRecruitProstitute => 'Recruter une prostituée';
+
+  @override
+  String get dashboardCrewWars => 'Guerres d\'équipage';
+
+  @override
+  String get dashboardStatusLabel => 'Statut';
+
+  @override
+  String get dashboardCanDeclare => 'Peut déclarer';
+
+  @override
+  String get dashboardTypeLabel => 'Taper';
+
+  @override
+  String get dashboardOpponent => 'Adversaire';
+
+  @override
+  String get dashboardCrewPoints => 'Points d\'équipage';
+
+  @override
+  String get dashboardWarRank => 'Rang de guerre';
+
+  @override
+  String get dashboardSeasonRank => 'Classement de la saison';
+
+  @override
+  String get dashboardOpenTargets => 'Cibles ouvertes';
+
+  @override
+  String get dashboardPhaseEndsIn => 'La phase se termine dans';
+
+  @override
+  String get dashboardCrewTerritory => 'Territoire de l\'équipage';
+
+  @override
+  String get dashboardRegions => 'Régions';
+
+  @override
+  String get dashboardCountriesCaptured => 'Pays capturés';
+
+  @override
+  String get dashboardPayout => 'Paiement';
+
+  @override
+  String get dashboardEarningPerHour => 'Gagner maintenant par heure';
+
+  @override
+  String get dashboardEarningPerDay => 'Gagner maintenant par jour';
+
+  @override
+  String get dashboardTotalEarned => 'Total gagné';
+
+  @override
+  String get dashboardVehicleOps => 'Opérations de véhicules';
+
+  @override
+  String get dashboardCar => 'Voiture';
+
+  @override
+  String get dashboardMotorcycle => 'Moto';
+
+  @override
+  String get dashboardBoat => 'Bateau';
+
+  @override
+  String get dashboardCrewAccess => 'Accès de l\'équipage';
+
+  @override
+  String get dashboardCrewRole => 'Rôle de l\'équipage';
+
+  @override
+  String get dashboardUnavailable => 'indisponible';
+
+  @override
+  String get vehicleOps => 'Opérations de véhicules';
+
+  @override
+  String get car => 'Voiture';
+
+  @override
+  String get motorcycle => 'Moto';
+
+  @override
+  String get boat => 'Bateau';
+
+  @override
+  String get crewAccess => 'Accès de l\'équipage';
+
+  @override
+  String get crewRole => 'Rôle de l\'équipage';
+
+  @override
+  String get unavailable => 'indisponible';
+
+  @override
   String get quickActionsCrimesSubtitle => 'Commettre des actes criminels';
 
   @override
@@ -918,9 +1367,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get friendActivity => 'Activité d\'un ami';
-
-  @override
-  String get properties => 'Propriétés';
 
   @override
   String get propertiesAvailable => 'Disponible';
@@ -1294,9 +1740,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get jail => 'Prison';
 
   @override
-  String get wantedLevel => 'Niveau recherché';
-
-  @override
   String get cooldown => 'Refroidir';
 
   @override
@@ -1396,9 +1839,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get inventory => 'Inventaire';
 
   @override
-  String get vehicles => 'Véhicules';
-
-  @override
   String get backpacks => 'Sacs à dos';
 
   @override
@@ -1431,9 +1871,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get lowHealthWarning => '⚠️ Faible santé ! Sois prudent.';
-
-  @override
-  String get free => 'GRATUITE';
 
   @override
   String get information => 'Information';
@@ -2182,12 +2619,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get confirmAction => 'Es-tu sûr?';
 
   @override
-  String get yes => 'Oui';
-
-  @override
-  String get no => 'Non';
-
-  @override
   String get ok => 'D\'ACCORD';
 
   @override
@@ -2371,16 +2802,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String daysAgo(String count, String plural) {
     return 'Il y a $count jour$plural';
-  }
-
-  @override
-  String hoursAgo(String count) {
-    return 'Il y a $count heures';
-  }
-
-  @override
-  String minutesAgo(String count) {
-    return 'il y a $count minutes';
   }
 
   @override

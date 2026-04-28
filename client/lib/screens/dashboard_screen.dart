@@ -118,13 +118,13 @@ _WebSection _webSectionFromQueryParam(String? value) {
 
 String _rankProgressLabel(BuildContext context, int rank) {
   final l10n = AppLocalizations.of(context)!;
-  final baseLabel = l10n.localeName == 'nl' ? 'Rankvordering' : 'Rank Progress';
+  final baseLabel = l10n.rankProgress;
   return '$baseLabel (${l10n.rank} $rank)';
 }
 
 String _cashLabel(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
-  return l10n.localeName == 'nl' ? 'Contant' : 'Cash';
+  return l10n.cash;
 }
 
 String _newMessagesLabel(BuildContext context, int count) {
@@ -2464,15 +2464,21 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   Timer? _cooldownTimer;
   Timer? _refreshTimer;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
+  bool get _isNl =>
+      (AppLocalizations.of(context)?.localeName ?? 'en').toLowerCase().startsWith('nl');
   String _tr(String nl, String en) => _isNl ? nl : en;
 
   String _timeAgoLabel(DateTime dt) {
     final diff = DateTime.now().difference(dt);
-    if (diff.inSeconds < 20) return _tr('Zojuist', 'Just now');
-    if (diff.inMinutes < 1) return _tr('${diff.inSeconds}s geleden', '${diff.inSeconds}s ago');
-    if (diff.inHours < 1) return _tr('${diff.inMinutes}m geleden', '${diff.inMinutes}m ago');
-    return _tr('${diff.inHours}u geleden', '${diff.inHours}h ago');
+    final l10n = AppLocalizations.of(context)!;
+    if (diff.inSeconds < 20) return l10n.justNow;
+    if (diff.inMinutes < 1) {
+      return l10n.secondsAgo(diff.inSeconds.toString());
+    }
+    if (diff.inHours < 1) {
+      return l10n.minutesAgo(diff.inMinutes.toString());
+    }
+    return l10n.hoursAgo(diff.inHours.toString());
   }
 
   void _openSessionRecap(AppLocalizations l10n) {
@@ -2513,7 +2519,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        _tr('Sessie recap', 'Session recap'),
+                        l10n.sessionRecap,
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w900,
@@ -2524,13 +2530,13 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     IconButton(
                       onPressed: () => Navigator.pop(ctx),
                       icon: const Icon(Icons.close, color: Colors.white70),
-                      tooltip: _tr('Sluiten', 'Close'),
+                      tooltip: l10n.close,
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  _tr('Laatste 10 events (live).', 'Last 10 events (live).'),
+                  l10n.last10EventsLive,
                   style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
                 ),
                 const SizedBox(height: 12),
@@ -2538,7 +2544,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   child: items.isEmpty
                       ? Center(
                           child: Text(
-                            _tr('Nog geen events in deze sessie.', 'No events yet in this session.'),
+                            l10n.noEventsYetSession,
                             style: TextStyle(color: Colors.white.withOpacity(0.7)),
                           ),
                         )
@@ -2601,7 +2607,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 OutlinedButton.icon(
                   onPressed: () => eventProvider.clearEvents(),
                   icon: const Icon(Icons.delete_outline),
-                  label: Text(_tr('Recap leegmaken', 'Clear recap')),
+                  label: Text(l10n.clearRecap),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
                     side: BorderSide(color: Colors.white.withOpacity(0.18)),
@@ -2801,13 +2807,14 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       final decoded = jsonDecode(response.body) as Map<String, dynamic>;
       if (decoded['success'] == true) {
         final isWeekly = goalKey.startsWith('weekly_');
+        final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
             content: Text(
               isWeekly
-                  ? _tr('Weekdoel geclaimd!', 'Weekly goal claimed!')
-                  : _tr('Dagdoel geclaimd!', 'Daily goal claimed!'),
+                  ? l10n.weeklyGoalClaimed
+                  : l10n.dailyGoalClaimed,
             ),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
@@ -2820,10 +2827,13 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         return;
       }
       final params = (decoded['params'] as Map<String, dynamic>?) ?? const {};
-      final msg = _isNl ? (params['messageNl'] ?? '') : (params['messageEn'] ?? '');
+      final lang = (AppLocalizations.of(context)?.localeName ?? 'en').toLowerCase();
+      final isNl = lang.startsWith('nl');
+      final msg = isNl ? (params['messageNl'] ?? '') : (params['messageEn'] ?? '');
+      final l10n = AppLocalizations.of(context)!;
       final text = msg.toString().trim().isNotEmpty
           ? msg.toString()
-          : _tr('Mislukt.', 'Failed.');
+          : l10n.failed;
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -2834,10 +2844,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ),
       );
     } catch (_) {
+      final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Mislukt. Probeer opnieuw.', 'Failed. Please try again.')),
+          content: Text(l10n.failedPleaseTryAgain),
           backgroundColor: Colors.orange,
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.zero,
@@ -2866,7 +2877,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  _tr('Dagdoelen', 'Daily goals'),
+                  AppLocalizations.of(context)!.dailyGoals,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -2921,7 +2932,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         ),
                         if (claimed)
                           Text(
-                            _tr('Geclaimd', 'Claimed'),
+                            AppLocalizations.of(context)!.claimed,
                             style: TextStyle(
                               color: Colors.greenAccent.withOpacity(0.9),
                               fontWeight: FontWeight.w800,
@@ -2930,7 +2941,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                           )
                         else if (claimable)
                           Text(
-                            _tr('Klaar', 'Ready'),
+                            AppLocalizations.of(context)!.ready,
                             style: TextStyle(
                               color: Colors.lightGreenAccent.withOpacity(0.9),
                               fontWeight: FontWeight.w800,
@@ -2978,7 +2989,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                                 color: (claimable ? Colors.lightGreenAccent : Colors.white24).withOpacity(0.8),
                               ),
                             ),
-                            child: Text(_tr('Claim', 'Claim')),
+                            child: Text(AppLocalizations.of(context)!.claim),
                           ),
                       ],
                     ),
@@ -3011,8 +3022,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
 
     final ratio = total == 0 ? 0.0 : (completed / total).clamp(0.0, 1.0);
     final subtitle = claimable > 0
-        ? _tr('$claimable klaar om te claimen', '$claimable ready to claim')
-        : _tr('$completed/$total voltooid', '$completed/$total completed');
+        ? AppLocalizations.of(context)!.readyToClaim(claimable.toString())
+        : AppLocalizations.of(context)!.completedOutOfTotal(
+            completed.toString(),
+            total.toString(),
+          );
 
     void openWeeklyGoalsSheet() {
       showModalBottomSheet<void>(
@@ -3041,7 +3055,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          _tr('Weekdoelen', 'Weekly goals'),
+                          AppLocalizations.of(context)!.weeklyGoals,
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
@@ -3052,7 +3066,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       IconButton(
                         onPressed: () => Navigator.pop(ctx),
                         icon: const Icon(Icons.close, color: Colors.white70),
-                        tooltip: _tr('Sluiten', 'Close'),
+                        tooltip: AppLocalizations.of(context)!.close,
                       ),
                     ],
                   ),
@@ -3096,7 +3110,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                                     ),
                                     if (claimedLocal)
                                       Text(
-                                        _tr('Geclaimd', 'Claimed'),
+                                        AppLocalizations.of(context)!.claimed,
                                         style: TextStyle(
                                           color: Colors.greenAccent.withOpacity(0.9),
                                           fontWeight: FontWeight.w800,
@@ -3105,7 +3119,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                                       )
                                     else if (claimableLocal)
                                       Text(
-                                        _tr('Klaar', 'Ready'),
+                                        AppLocalizations.of(context)!.ready,
                                         style: TextStyle(
                                           color: Colors.cyanAccent.withOpacity(0.9),
                                           fontWeight: FontWeight.w800,
@@ -3166,7 +3180,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                                                 .withOpacity(0.8),
                                           ),
                                         ),
-                                        child: Text(_tr('Claim', 'Claim')),
+                                        child: Text(AppLocalizations.of(context)!.claim),
                                       ),
                                   ],
                                 ),
@@ -3201,7 +3215,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    _tr('Weekdoelen', 'Weekly goals'),
+                    AppLocalizations.of(context)!.weeklyGoals,
                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -3353,7 +3367,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     final l10n = AppLocalizations.of(context)!;
 
     if (player == null) {
-      return Center(child: Text(_tr('Geen speler data', 'No player data')));
+      return Center(child: Text(AppLocalizations.of(context)!.noPlayerData));
     }
 
     // Calculate rank progress
@@ -3402,7 +3416,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
               child: IconButton(
                 onPressed: () => _openSessionRecap(l10n),
                 icon: const Icon(Icons.receipt_long, color: Colors.white70),
-                tooltip: _tr('Sessie recap', 'Session recap'),
+                tooltip: l10n.sessionRecap,
               ),
             ),
             const SizedBox(height: 8),
@@ -3423,7 +3437,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildInfoRow('Naam', player.username, Colors.white),
+                    _buildInfoRow(l10n.nameLabel, player.username, Colors.white),
                     _buildInfoRow(
                       'Rank (${player.rank})',
                       _getRankTitle(player.rank),
@@ -3442,19 +3456,19 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     _buildInfoRow('XP', '${player.xp}', Colors.white),
                     _buildInfoRow('Clicks', '-', Colors.white),
                     _buildInfoRow(
-                      'Land',
+                      l10n.countryLabel,
                       '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
                       Colors.white,
                     ),
                     if (player.wantedLevel != null && player.wantedLevel! > 0)
                       _buildInfoRow(
-                        'Wanted Level',
+                        l10n.wantedLevel,
                         '${player.wantedLevel}',
                         Colors.red.shade300,
                       ),
                     if (player.fbiHeat != null && player.fbiHeat! > 0)
                       _buildInfoRow(
-                        'FBI Heat',
+                        l10n.fbiHeat,
                         '${player.fbiHeat}',
                         Colors.orange.shade300,
                       ),
@@ -3462,32 +3476,32 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 8),
                     _buildInfoRow(
-                      'Contant',
+                      l10n.cash,
                       formatCurrency(_stats?.economy?.cashBalance ?? player.money),
                       Colors.green.shade300,
                     ),
                     _buildInfoRow(
-                      'Bank',
+                      l10n.bank,
                       formatCurrency(_stats?.economy?.bankBalance ?? _stats?.bankBalance ?? 0),
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Crypto', 'Crypto'),
+                      l10n.crypto,
                       formatCurrency(_stats?.economy?.cryptoPortfolioValue ?? 0),
                       Colors.cyan.shade300,
                     ),
                     _buildInfoRow(
-                      _tr('Eigendommen', 'Properties'),
+                      l10n.properties,
                       formatCurrency(_stats?.economy?.propertyPortfolioValue ?? 0),
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Voertuigen', 'Vehicles'),
+                      l10n.vehicles,
                       formatCurrency(_stats?.economy?.vehiclePortfolioValue ?? 0),
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Netto waarde', 'Net worth'),
+                      l10n.netWorth,
                       formatCurrency(_stats?.economy?.netWorth ?? 0),
                       Colors.amber.shade300,
                     ),
@@ -3495,22 +3509,22 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 8),
                     _buildInfoRow(
-                      'Beveiliging',
-                      'Geen beveiliging',
+                      l10n.securityLabel,
+                      l10n.noSecurity,
                       Colors.grey.shade400,
                     ),
                     _buildInfoRow(
-                      'Wapen',
+                      l10n.weaponLabel,
                       _stats?.selectedWeaponName != null
                           ? _stats!.selectedWeaponName!
-                          : 'Geen',
+                          : l10n.none,
                       _stats?.selectedWeaponName != null
                           ? Colors.green.shade300
                           : Colors.grey.shade400,
                     ),
                     _buildInfoRow(
-                      'Voertuig',
-                      _stats?.activeVehicle?.name ?? 'Geen',
+                      l10n.vehicleLabel,
+                      _stats?.activeVehicle?.name ?? l10n.none,
                       _stats?.activeVehicle != null
                           ? Colors.green.shade300
                           : Colors.grey.shade400,
@@ -3530,8 +3544,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Text(
-                          'Statistieken',
+                        Text(
+                          l10n.statistics,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -3540,52 +3554,52 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         ),
                         const SizedBox(height: 12),
                         _buildInfoRow(
-                          _tr('Uitbraken', 'Breakouts'),
+                          l10n.breakouts,
                           '${_stats?.breakoutCount ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          _tr('Moorden', 'Murders'),
+                          l10n.murders,
                           '${_stats?.killCount ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          _tr('Hitlist opdrachten', 'Hitlist contracts'),
+                          l10n.hitlistContracts,
                           '${_stats?.hitsPlacedCount ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          'Auto gestolen',
+                          l10n.carsStolen,
                           '${_stats?.vehicleThieves ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          'Boten gestolen',
+                          l10n.boatsStolen,
                           '${_stats?.boatThieves ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          'Misdaadpogingen',
+                          l10n.crimeAttempts,
                           '${_stats?.crimeAttempts ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          'Succesvol',
+                          l10n.successful,
                           '${_stats?.successfulCrimes ?? 0}',
                           Colors.green.shade300,
                         ),
                         _buildInfoRow(
-                          'Werk pogingen',
+                          l10n.jobAttempts,
                           '${_stats?.jobAttempts ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          'Hoeren op straat',
+                          l10n.streetProstitutes,
                           '${_stats?.streetProstitutes ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          'Hoeren in RLD',
+                          l10n.rldProstitutes,
                           '${_stats?.redLightProstitutes ?? 0}',
                           Colors.white,
                         ),
@@ -3605,12 +3619,12 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          _tr('Reizen', 'Travels'),
+                          l10n.travels,
                           '${_stats?.travelCount ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          _tr('Kogels', 'Bullets'),
+                          l10n.bullets,
                           '${_stats?.totalAmmo ?? 0}',
                           Colors.white,
                         ),
@@ -3618,7 +3632,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         const Divider(color: Colors.grey),
                         const SizedBox(height: 10),
                         Text(
-                          _tr('Economie 24u', 'Economy 24h'),
+                          l10n.dashboardEconomy24h,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -3627,24 +3641,24 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         ),
                         const SizedBox(height: 8),
                         _buildInfoRow(
-                          _tr('Bruto inkomsten', 'Gross income'),
+                          l10n.dashboardGrossIncome,
                           formatCurrency(_stats?.economy24h?.grossIncome ?? 0),
                           Colors.green.shade300,
                         ),
                         _buildInfoRow(
-                          _tr('Vastgoed uitgave', 'Property spend'),
+                          l10n.dashboardPropertySpend,
                           formatCurrency(_stats?.economy24h?.propertySpend ?? 0),
                           Colors.orange.shade300,
                         ),
                         _buildInfoRow(
-                          _tr('Netto cashflow', 'Net cashflow'),
+                          l10n.dashboardNetCashflow,
                           formatCurrency(_stats?.economy24h?.netCashflow ?? 0),
                           (_stats?.economy24h?.netCashflow ?? 0) >= 0
                               ? Colors.green.shade300
                               : Colors.red.shade300,
                         ),
                         _buildInfoRow(
-                          _tr('Trend t.o.v. gisteren', 'Trend vs previous'),
+                          l10n.dashboardTrendVsPrevious,
                           '${_stats?.economy24h?.trendVsPreviousPct ?? 0}%',
                           (_stats?.economy24h?.trendVsPreviousPct ?? 0) >= 0
                               ? Colors.green.shade300
@@ -3654,7 +3668,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         const Divider(color: Colors.grey),
                         const SizedBox(height: 10),
                         Text(
-                          _tr('Activiteit 7d', 'Activity 7d'),
+                          l10n.dashboardActivity7d,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -3663,22 +3677,22 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         ),
                         const SizedBox(height: 8),
                         _buildInfoRow(
-                          _tr('Misdaden', 'Crimes'),
+                          l10n.crimes,
                           '${_stats?.activity7d?.crimeAttempts ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          _tr('Werk', 'Jobs'),
+                          l10n.jobs,
                           '${_stats?.activity7d?.jobAttempts ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          _tr('Voertuigdiefstal', 'Vehicle thefts'),
+                          l10n.dashboardVehicleThefts,
                           '${_stats?.activity7d?.vehicleThefts ?? 0}',
                           Colors.white,
                         ),
                         _buildInfoRow(
-                          _tr('Reizen', 'Travels'),
+                          l10n.travels,
                           '${_stats?.activity7d?.travels ?? 0}',
                           Colors.white,
                         ),
@@ -3742,7 +3756,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      _tr('Ops Overzicht', 'Ops Overview'),
+                      l10n.dashboardOpsOverview,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -3751,41 +3765,41 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     ),
                     const SizedBox(height: 8),
                     _buildInfoRow(
-                      _tr('Actieve cooldowns', 'Active cooldowns'),
+                      l10n.dashboardActiveCooldowns,
                       '${_stats?.operations?.activeCooldownCount ?? 0}',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Langste timer', 'Longest timer'),
+                      l10n.dashboardLongestTimer,
                       _formatCooldown(_stats?.operations?.longestCooldownSeconds ?? 0),
                       Colors.orange.shade300,
                     ),
                     _buildInfoRow(
-                      _tr('Actieve productie', 'Active production'),
+                      l10n.dashboardActiveProduction,
                       '${_stats?.operations?.activeDrugProductionsCount ?? 0}',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Productie klaar over', 'Production ready in'),
+                      l10n.dashboardProductionReadyIn,
                       _formatCooldown(
                         _stats?.operations?.nextDrugProductionEndsInSeconds ?? 0,
                       ),
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Nachtclub-events', 'Nightclub events'),
+                      l10n.dashboardNightclubEvents,
                       '${_stats?.operations?.activeNightclubEventsCount ?? 0}',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Volgend event start in', 'Next event starts in'),
+                      l10n.dashboardNextEventStartsIn,
                       _formatCooldown(
                         _stats?.operations?.nextNightclubEventStartsInSeconds ?? 0,
                       ),
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Voertuigen actief/listing/transit', 'Vehicles active/listed/transit'),
+                      l10n.dashboardVehiclesActiveListedTransit,
                       '${_stats?.operations?.activeVehicleCount ?? 0}/${_stats?.operations?.listedVehicleCount ?? 0}/${_stats?.operations?.inTransitVehicleCount ?? 0}',
                       Colors.white,
                     ),
@@ -3794,7 +3808,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       const Divider(color: Colors.grey),
                       const SizedBox(height: 12),
                       Text(
-                        _tr('Live spelerevents', 'Live player events'),
+                        l10n.dashboardLivePlayerEvents,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -3829,7 +3843,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                           );
                         },
                         child: Text(
-                          _tr('Open Events', 'Open Events'),
+                          l10n.dashboardOpenEvents,
                           style: const TextStyle(color: Colors.orangeAccent),
                         ),
                       ),
@@ -3838,7 +3852,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 12),
                     Text(
-                      _tr('Meldingen & Risico', 'Notifications & Risk'),
+                      l10n.dashboardNotificationsAndRisk,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -3847,24 +3861,24 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     ),
                     const SizedBox(height: 8),
                     _buildInfoRow(
-                      _tr('Ongelezen DM', 'Unread DM'),
+                      l10n.dashboardUnreadDm,
                       '${_stats?.notifications?.unreadDirectMessages ?? 0}',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Support wacht op jou', 'Support waiting on you'),
+                      l10n.dashboardSupportWaitingOnYou,
                       '${_stats?.notifications?.supportNeedsReply ?? 0}',
                       (_stats?.notifications?.supportNeedsReply ?? 0) > 0
                           ? Colors.orange.shade300
                           : Colors.green.shade300,
                     ),
                     _buildInfoRow(
-                      _tr('Events laatste 24u', 'Events last 24h'),
+                      l10n.dashboardEventsLast24h,
                       '${_stats?.notifications?.eventsLast24h ?? 0}',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Risicoscore', 'Risk score'),
+                      l10n.dashboardRiskScore,
                       '${_stats?.risk?.score ?? 0}/100',
                       (_stats?.risk?.score ?? 0) >= 70
                           ? Colors.red.shade300
@@ -3895,7 +3909,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     _buildCooldownRow(l10n.dashboardTimeoutGym, 'gym'),
                     _buildCooldownRow(l10n.hospital, 'hospital'),
                     _buildCooldownRow(
-                      _tr('Hoeren werven', 'Recruit prostitute'),
+                      l10n.dashboardRecruitProstitute,
                       'prostitute_recruit',
                     ),
                     const SizedBox(height: 12),
@@ -3904,13 +3918,13 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     _buildVehicleOpsDashboardSection(),
                     const SizedBox(height: 12),
                     _buildInfoRow(
-                      _tr('Gevangenis', 'Jail'),
+                      l10n.jail,
                       _stats != null && _stats!.jailed
                           ? _tr(
                               'In cel (${_formatCooldown(_stats!.jailTimeRemaining)})',
                               'In jail (${_formatCooldown(_stats!.jailTimeRemaining)})',
                             )
-                          : _tr('Vrij', 'Free'),
+                          : l10n.free,
                       _stats != null && _stats!.jailed
                           ? Colors.red.shade300
                           : Colors.green.shade300,
@@ -3919,7 +3933,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const Divider(color: Colors.grey),
                     const SizedBox(height: 12),
                     Text(
-                      _tr('Crew Wars', 'Crew Wars'),
+                      l10n.dashboardCrewWars,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -3928,56 +3942,56 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     ),
                     const SizedBox(height: 12),
                     _buildInfoRow(
-                      _tr('Status', 'Status'),
+                      l10n.dashboardStatusLabel,
                       _formatCrewWarDashboardStatus(_stats?.crewWar?.status),
                       _stats?.crewWar?.hasActiveWar == true
                           ? Colors.orange.shade300
                           : Colors.grey.shade400,
                     ),
                     _buildInfoRow(
-                      _tr('Kan declareren', 'Can declare'),
+                      l10n.dashboardCanDeclare,
                       _stats?.crewWar?.canDeclare == true
-                          ? _tr('Ja', 'Yes')
-                          : _tr('Nee', 'No'),
+                          ? l10n.yes
+                          : l10n.no,
                       _stats?.crewWar?.canDeclare == true
                           ? Colors.green.shade300
                           : Colors.grey.shade400,
                     ),
                     if ((_stats?.crewWar?.warType ?? '').isNotEmpty)
                       _buildInfoRow(
-                        _tr('Type', 'Type'),
+                        l10n.dashboardTypeLabel,
                         _formatCrewWarDashboardType(_stats?.crewWar?.warType),
                         Colors.white,
                       ),
                     if ((_stats?.crewWar?.opponentCrewName ?? '').isNotEmpty)
                       _buildInfoRow(
-                        _tr('Tegenstander', 'Opponent'),
+                        l10n.dashboardOpponent,
                         _stats!.crewWar!.opponentCrewName!,
                         Colors.white,
                       ),
                     _buildInfoRow(
-                      _tr('Crewpunten', 'Crew points'),
+                      l10n.dashboardCrewPoints,
                       '${_stats?.crewWar?.myCrewPoints ?? 0}',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('War-rang', 'War rank'),
+                      l10n.dashboardWarRank,
                       _stats?.crewWar?.myCrewRank?.toString() ?? '-',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Seizoensrang', 'Season rank'),
+                      l10n.dashboardSeasonRank,
                       _stats?.crewWar?.seasonRank?.toString() ?? '-',
                       Colors.white,
                     ),
                     _buildInfoRow(
-                      _tr('Open targets', 'Open targets'),
+                      l10n.dashboardOpenTargets,
                       '${_stats?.crewWar?.availableTargetsCount ?? 0}',
                       Colors.white,
                     ),
                     if ((_stats?.crewWar?.phaseEndsInSeconds ?? 0) > 0)
                       _buildInfoRow(
-                        _tr('Fase eindigt over', 'Phase ends in'),
+                        l10n.dashboardPhaseEndsIn,
                         _formatCooldown(_stats!.crewWar!.phaseEndsInSeconds),
                         Colors.orange.shade300,
                       ),
@@ -3986,7 +4000,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       const Divider(color: Colors.grey),
                       const SizedBox(height: 12),
                       Text(
-                        _tr('Crew Territory', 'Crew Territory'),
+                        l10n.dashboardCrewTerritory,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -3995,36 +4009,36 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
-                        _tr('Gebieden', 'Regions'),
+                        l10n.dashboardRegions,
                         '${_stats!.territoryLeaderStats!.regionsOwned}',
                         Colors.white,
                       ),
                       _buildInfoRow(
-                        _tr('Landen veroverd', 'Countries captured'),
+                        l10n.dashboardCountriesCaptured,
                         '${_stats!.territoryLeaderStats!.countriesOwned}',
                         Colors.white,
                       ),
                       _buildInfoRow(
-                        _tr('Uitbetaling', 'Payout'),
+                        l10n.dashboardPayout,
                         '${formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerInterval)} · ${_territoryIncomeIntervalLabel(_stats!.territoryLeaderStats!.incomeIntervalMinutes)}',
                         Colors.green.shade300,
                       ),
                       _buildInfoRow(
-                        _tr('Verdient nu per uur', 'Earning now per hour'),
+                        l10n.dashboardEarningPerHour,
                         formatCurrency(
                           _stats!.territoryLeaderStats!.passiveIncomePerHour,
                         ),
                         Colors.green.shade300,
                       ),
                       _buildInfoRow(
-                        _tr('Verdient nu per dag', 'Earning now per day'),
+                        l10n.dashboardEarningPerDay,
                         formatCurrency(
                           _stats!.territoryLeaderStats!.passiveIncomePerDay,
                         ),
                         Colors.green.shade300,
                       ),
                       _buildInfoRow(
-                        _tr('Totaal verdiend', 'Total earned'),
+                        l10n.dashboardTotalEarned,
                         formatCurrency(
                           _stats!
                               .territoryLeaderStats!
@@ -4033,7 +4047,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                         Colors.amber.shade300,
                       ),
                       _buildInfoRow(
-                        _tr('Crew bank', 'Crew bank'),
+                        l10n.crewBank,
                         formatCurrency(
                           _stats!.territoryLeaderStats!.crewBankBalance,
                         ),
