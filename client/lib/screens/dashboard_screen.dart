@@ -426,47 +426,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       await showDialog<void>(
         context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text(title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (imageUrl.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Image.network(
-                    imageUrl,
-                    height: 120,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const SizedBox.shrink(),
+        builder: (ctx) {
+          final l10n = AppLocalizations.of(ctx)!;
+          return AlertDialog(
+            title: Text(title),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (imageUrl.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Image.network(
+                      imageUrl,
+                      height: 120,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
+                    ),
                   ),
-                ),
-              Text('€$price'),
-              if (reward.isNotEmpty) Text(reward),
+                Text('€$price'),
+                if (reward.isNotEmpty) Text(reward),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: Text(l10n.close),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  if (kIsWeb) {
+                    setState(() => _selectedWebSection = _WebSection.crew);
+                  } else {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const CrewScreen()),
+                    );
+                  }
+                },
+                child: Text(l10n.viewOffer),
+              ),
             ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(l10n.close),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-                if (kIsWeb) {
-                  setState(() => _selectedWebSection = _WebSection.crew);
-                } else {
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute(builder: (_) => const CrewScreen()));
-                }
-              },
-              child: Text(l10n.viewOffer),
-            ),
-          ],
-        ),
+          );
+        },
       );
 
       if (productKey.isNotEmpty) {
