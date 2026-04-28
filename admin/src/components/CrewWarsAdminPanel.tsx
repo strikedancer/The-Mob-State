@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { adminService, type AdminCrewWarOverview } from '../services/adminService'
+import type { AdminLanguage } from '../i18n/translations'
+import { getAdminTr } from '../i18n/inlineMessages'
 
 type Props = {
-  locale: 'nl' | 'en'
+  locale: AdminLanguage
 }
 
-const tr = (locale: 'nl' | 'en', nl: string, en: string) => (locale === 'nl' ? nl : en)
+const tr = (locale: AdminLanguage, nl: string, en: string) =>
+  getAdminTr(locale, nl, en)
 
 export function CrewWarsAdminPanel({ locale }: Props) {
   const [overview, setOverview] = useState<AdminCrewWarOverview | null>(null)

@@ -9,592 +9,605 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Mafia Game';
+  String get appTitle => 'Jeu mafieux';
 
   @override
-  String get login => 'Login';
+  String get login => 'Se connecter';
 
   @override
-  String get register => 'Register';
+  String get register => 'Registre';
 
   @override
-  String get username => 'Username';
+  String get username => 'Nom d\'utilisateur';
 
   @override
-  String get password => 'Password';
+  String get password => 'Mot de passe';
 
   @override
-  String get usernameLabel => 'USERNAME';
+  String get usernameLabel => 'NOM D\'UTILISATEUR';
 
   @override
-  String get passwordLabel => 'PASSWORD';
+  String get passwordLabel => 'MOT DE PASSE';
 
   @override
-  String get usernamePlaceholder => 'Username';
+  String get usernamePlaceholder => 'Nom d\'utilisateur';
 
   @override
-  String get passwordPlaceholder => 'Password';
+  String get passwordPlaceholder => 'Mot de passe';
 
   @override
-  String get loginButton => 'LOGIN';
+  String get loginButton => 'SE CONNECTER';
 
   @override
-  String get registerButton => 'REGISTER';
+  String get registerButton => 'REGISTRE';
 
   @override
-  String get forgotPassword => 'Forgot Password?';
+  String get forgotPassword => 'Mot de passe oublié ?';
 
   @override
-  String get usernameRequired => 'Please enter a username';
+  String get usernameRequired => 'Veuillez entrer un nom d\'utilisateur';
 
   @override
-  String get passwordRequired => 'Please enter a password';
+  String get passwordRequired => 'Veuillez entrer un mot de passe';
 
   @override
-  String get passwordTooShort => 'Password must be at least 6 characters';
+  String get passwordTooShort =>
+      'Le mot de passe doit contenir au moins 6 caractères';
 
   @override
-  String get invalidCredentials => 'Incorrect username or password';
+  String get invalidCredentials =>
+      'Nom d\'utilisateur ou mot de passe incorrect';
 
   @override
-  String get loginSuccessful => 'Login successful!';
+  String get loginSuccessful => 'Connexion réussie !';
 
   @override
-  String get registrationSuccessful => 'Registration successful!';
+  String get registrationSuccessful => 'Inscription réussie !';
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'La connexion a échoué';
 
   @override
-  String get emailLabel => 'EMAIL';
+  String get emailLabel => 'E-MAIL';
 
   @override
-  String get emailPlaceholder => 'Email';
+  String get emailPlaceholder => 'E-mail';
 
   @override
-  String get emailRequired => 'Please enter an email address';
+  String get emailRequired => 'Veuillez entrer une adresse e-mail';
 
   @override
-  String get emailInvalid => 'Please enter a valid email address';
+  String get emailInvalid =>
+      'S\'il vous plaît, mettez une adresse email valide';
 
   @override
-  String get forgotPasswordTitle => 'Reset Password';
+  String get forgotPasswordTitle => 'Réinitialiser le mot de passe';
 
   @override
   String get forgotPasswordDescription =>
-      'Enter your email address and we\'ll send you a link to reset your password.';
+      'Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.';
 
   @override
-  String get resetPasswordButton => 'SEND RESET LINK';
+  String get resetPasswordButton => 'ENVOYER LE LIEN DE RÉINITIALISATION';
 
   @override
-  String get emailSent => 'Reset link sent! Check your email.';
+  String get emailSent =>
+      'Lien de réinitialisation envoyé ! Vérifiez votre courrier électronique.';
 
   @override
-  String get backToLogin => 'Back to Login';
+  String get backToLogin => 'Retour à la connexion';
 
   @override
   String welcome(String username) {
-    return 'Welcome, $username!';
+    return 'Bienvenue, $username !';
   }
 
   @override
-  String get dashboardTimeouts => 'Timeouts';
+  String get dashboardTimeouts => 'Délais d\'attente';
 
   @override
   String get dashboardTimeoutCrime => 'Crime';
 
   @override
-  String get dashboardTimeoutJob => 'Work';
+  String get dashboardTimeoutJob => 'Travail';
 
   @override
-  String get dashboardTimeoutTravel => 'Travel';
+  String get dashboardTimeoutTravel => 'Voyage';
 
   @override
-  String get dashboardTimeoutVehicleTheft => 'Steal car';
+  String get dashboardTimeoutVehicleTheft => 'Voler une voiture';
 
   @override
-  String get dashboardTimeoutBoatTheft => 'Steal boat';
+  String get dashboardTimeoutBoatTheft => 'Voler un bateau';
 
   @override
-  String get dashboardTimeoutNightclubSeason => 'Nightclub season';
+  String get dashboardTimeoutNightclubSeason => 'Saison des discothèques';
 
   @override
-  String get dashboardTimeoutAmmo => 'Buy bullets';
+  String get dashboardTimeoutAmmo => 'Acheter des balles';
 
   @override
-  String get dashboardTimeoutShootingRange => 'Shooting range';
+  String get dashboardTimeoutShootingRange => 'Champ de tir';
 
   @override
-  String get dashboardTimeoutGym => 'Gym';
+  String get dashboardTimeoutGym => 'Salle de sport';
 
   @override
-  String get dashboardInfoDrugsGrams => 'Drugs (grams)';
+  String get dashboardInfoDrugsGrams => 'Médicaments (grammes)';
 
   @override
-  String get dashboardInfoNightclubs => 'Nightclubs';
+  String get dashboardInfoNightclubs => 'Boîtes de nuit';
 
   @override
-  String get dashboardInfoNightclubRevenue => 'Nightclub revenue';
+  String get dashboardInfoNightclubRevenue => 'Revenus des discothèques';
 
   @override
-  String get dashboard => 'Dashboard';
+  String get dashboard => 'Tableau de bord';
 
   @override
   String get crimes => 'Crimes';
 
   @override
-  String get errorLoadingCrimes => 'Failed to load crimes';
+  String get errorLoadingCrimes => 'Échec du chargement des crimes';
 
   @override
   String connectionError(String error) {
-    return 'Connection error: $error';
+    return 'Erreur de connexion : $error';
   }
 
   @override
   String payRange(String min, String max) {
-    return 'Pay: €$min - €$max';
+    return 'Salaire : $min€ - 1$max€';
   }
 
   @override
   String requiresRank(String rank) {
-    return 'Requires Rank $rank';
+    return 'Nécessite le rang $rank';
   }
 
   @override
-  String get requiresVehicle => 'Requires Vehicle';
+  String get requiresVehicle => 'Nécessite un véhicule';
 
   @override
-  String get federalCrimeWarning => '⚠️ Federal Crime - FBI Heat';
+  String get federalCrimeWarning => '⚠️ Crime fédéral - FBI Heat';
 
   @override
-  String get crimePickpocketName => 'Pickpocketing';
+  String get crimePickpocketName => 'Vol à la tire';
 
   @override
-  String get crimePickpocketDesc => 'Steal wallets from passersby';
+  String get crimePickpocketDesc => 'Voler les portefeuilles des passants';
 
   @override
-  String get crimeShopliftName => 'Shoplifting';
+  String get crimeShopliftName => 'Vol à l\'étalage';
 
   @override
-  String get crimeShopliftDesc => 'Steal goods from a store';
+  String get crimeShopliftDesc => 'Voler des marchandises dans un magasin';
 
   @override
-  String get crimeStealBikeName => 'Steal Bike';
+  String get crimeStealBikeName => 'Voler un vélo';
 
   @override
-  String get crimeStealBikeDesc => 'Steal a bike from a rack';
+  String get crimeStealBikeDesc => 'Voler un vélo sur un support';
 
   @override
-  String get crimeCarTheftName => 'Car Theft';
+  String get crimeCarTheftName => 'Vol de voiture';
 
   @override
-  String get crimeCarTheftDesc => 'Steal a parked car';
+  String get crimeCarTheftDesc => 'Voler une voiture garée';
 
   @override
-  String get crimeBurglaryName => 'Burglary';
+  String get crimeBurglaryName => 'Cambriolage';
 
   @override
-  String get crimeBurglaryDesc => 'Break into a house';
+  String get crimeBurglaryDesc => 'Pénétrer dans une maison';
 
   @override
-  String get crimeRobStoreName => 'Store Robbery';
+  String get crimeRobStoreName => 'Vol de magasin';
 
   @override
-  String get crimeRobStoreDesc => 'Rob a small store';
+  String get crimeRobStoreDesc => 'Voler un petit magasin';
 
   @override
-  String get crimeMugPersonName => 'Mugging';
+  String get crimeMugPersonName => 'Agression';
 
   @override
-  String get crimeMugPersonDesc => 'Mug someone on the street';
+  String get crimeMugPersonDesc => 'Agresser quelqu\'un dans la rue';
 
   @override
-  String get crimeStealCarPartsName => 'Steal Car Parts';
+  String get crimeStealCarPartsName => 'Voler des pièces de voiture';
 
   @override
-  String get crimeStealCarPartsDesc => 'Steal parts from parked cars';
+  String get crimeStealCarPartsDesc =>
+      'Voler des pièces dans des voitures garées';
 
   @override
-  String get crimeHijackTruckName => 'Hijack Truck';
+  String get crimeHijackTruckName => 'Détourner un camion';
 
   @override
-  String get crimeHijackTruckDesc => 'Hijack a truck carrying goods';
+  String get crimeHijackTruckDesc =>
+      'Détourner un camion transportant des marchandises';
 
   @override
-  String get crimeAtmTheftName => 'ATM Theft';
+  String get crimeAtmTheftName => 'Vol de guichet automatique';
 
   @override
-  String get crimeAtmTheftDesc => 'Break into an ATM';
+  String get crimeAtmTheftDesc => 'Intrusion dans un guichet automatique';
 
   @override
-  String get crimeJewelryHeistName => 'Jewelry Heist';
+  String get crimeJewelryHeistName => 'Vol de bijoux';
 
   @override
-  String get crimeJewelryHeistDesc => 'Rob a jeweler';
+  String get crimeJewelryHeistDesc => 'Voler un bijoutier';
 
   @override
-  String get crimeVandalismName => 'Vandalism';
+  String get crimeVandalismName => 'Vandalisme';
 
   @override
-  String get crimeVandalismDesc => 'Damage property for money';
+  String get crimeVandalismDesc => 'Dommages à la propriété pour de l\'argent';
 
   @override
   String get crimeGraffitiName => 'Graffiti';
 
   @override
-  String get crimeGraffitiDesc => 'Spray graffiti for local gangs';
+  String get crimeGraffitiDesc =>
+      'Pulvérisez des graffitis pour les gangs locaux';
 
   @override
-  String get crimeDrugDealSmallName => 'Small Drug Deal';
+  String get crimeDrugDealSmallName => 'Petite affaire de drogue';
 
   @override
-  String get crimeDrugDealSmallDesc => 'Sell a small amount of drugs';
+  String get crimeDrugDealSmallDesc => 'Vendre une petite quantité de drogue';
 
   @override
-  String get crimeDrugDealLargeName => 'Large Drug Deal';
+  String get crimeDrugDealLargeName => 'Gros trafic de drogue';
 
   @override
-  String get crimeDrugDealLargeDesc => 'Sell a large amount of drugs';
+  String get crimeDrugDealLargeDesc => 'Vendre une grande quantité de drogue';
 
   @override
-  String get crimeExtortionName => 'Extortion';
+  String get crimeExtortionName => 'Extorsion';
 
   @override
-  String get crimeExtortionDesc => 'Extort money from local businesses';
+  String get crimeExtortionDesc =>
+      'Extorquer de l’argent aux entreprises locales';
 
   @override
-  String get crimeKidnappingName => 'Kidnapping';
+  String get crimeKidnappingName => 'Enlèvement';
 
   @override
-  String get crimeKidnappingDesc => 'Kidnap someone for ransom';
+  String get crimeKidnappingDesc => 'Enlever quelqu\'un contre rançon';
 
   @override
-  String get crimeArsonName => 'Arson';
+  String get crimeArsonName => 'Incendie criminel';
 
   @override
-  String get crimeArsonDesc => 'Set a building on fire';
+  String get crimeArsonDesc => 'Mettre le feu à un immeuble';
 
   @override
-  String get crimeSmugglingName => 'Smuggling';
+  String get crimeSmugglingName => 'Contrebande';
 
   @override
-  String get crimeSmugglingDesc => 'Smuggle goods across the border';
+  String get crimeSmugglingDesc =>
+      'Faire passer clandestinement des marchandises à la frontière';
 
   @override
-  String get crimeAssassinationName => 'Assassination';
+  String get crimeAssassinationName => 'Assassinat';
 
   @override
-  String get crimeAssassinationDesc => 'Carry out a contract killing';
+  String get crimeAssassinationDesc => 'Effectuer un meurtre à forfait';
 
   @override
-  String get crimeHackAccountName => 'Hack Account';
+  String get crimeHackAccountName => 'Pirater un compte';
 
   @override
-  String get crimeHackAccountDesc => 'Hack a bank account';
+  String get crimeHackAccountDesc => 'Pirater un compte bancaire';
 
   @override
-  String get crimeCounterfeitMoneyName => 'Counterfeit Money';
+  String get crimeCounterfeitMoneyName => 'Argent contrefait';
 
   @override
-  String get crimeCounterfeitMoneyDesc => 'Make fake money';
+  String get crimeCounterfeitMoneyDesc => 'Gagner de la fausse monnaie';
 
   @override
-  String get crimeIdentityTheftName => 'Identity Theft';
+  String get crimeIdentityTheftName => 'Vol d\'identité';
 
   @override
-  String get crimeIdentityTheftDesc => 'Steal someone\'s identity for fraud';
+  String get crimeIdentityTheftDesc =>
+      'Voler l\'identité de quelqu\'un pour fraude';
 
   @override
-  String get crimeRobArmoredTruckName => 'Armored Truck Heist';
+  String get crimeRobArmoredTruckName => 'Vol de camion blindé';
 
   @override
-  String get crimeRobArmoredTruckDesc => 'Rob an armored truck';
+  String get crimeRobArmoredTruckDesc => 'Voler un camion blindé';
 
   @override
-  String get crimeArtTheftName => 'Art Theft';
+  String get crimeArtTheftName => 'Vol d\'œuvres d\'art';
 
   @override
-  String get crimeArtTheftDesc => 'Steal valuable artwork';
+  String get crimeArtTheftDesc => 'Voler des œuvres d\'art de valeur';
 
   @override
-  String get crimeProtectionRacketName => 'Protection Racket';
+  String get crimeProtectionRacketName => 'Raquette de protection';
 
   @override
   String get crimeProtectionRacketDesc =>
-      'Make businesses pay protection money';
+      'Faire payer aux entreprises de l’argent pour la protection';
 
   @override
-  String get crimeCasinoHeistName => 'Casino Heist';
+  String get crimeCasinoHeistName => 'Vol de casino';
 
   @override
-  String get crimeCasinoHeistDesc => 'Rob a casino';
+  String get crimeCasinoHeistDesc => 'Voler un casino';
 
   @override
-  String get crimeBankRobberyName => 'Bank Robbery';
+  String get crimeBankRobberyName => 'Vol de banque';
 
   @override
-  String get crimeBankRobberyDesc => 'Rob a bank';
+  String get crimeBankRobberyDesc => 'Voler une banque';
 
   @override
-  String get crimeStealYachtName => 'Steal Yacht';
+  String get crimeStealYachtName => 'Voler un yacht';
 
   @override
-  String get crimeStealYachtDesc => 'Steal a luxury yacht';
+  String get crimeStealYachtDesc => 'Voler un yacht de luxe';
 
   @override
-  String get crimeCorruptOfficialName => 'Bribe Official';
+  String get crimeCorruptOfficialName => 'Pot-de-vin officiel';
 
   @override
-  String get crimeCorruptOfficialDesc => 'Bribe an official for favors';
+  String get crimeCorruptOfficialDesc =>
+      'Soudoyer un fonctionnaire pour obtenir des faveurs';
 
   @override
-  String get tooltipCrimeRequiresTools => 'Tools Required';
+  String get tooltipCrimeRequiresTools => 'Outils requis';
 
   @override
-  String get tooltipCrimeRequiresVehicle => 'Vehicle Required';
+  String get tooltipCrimeRequiresVehicle => 'Véhicule requis';
 
   @override
-  String get tooltipCrimeRequiresDrugs => 'Drugs required';
+  String get tooltipCrimeRequiresDrugs => 'Médicaments requis';
 
   @override
-  String get tooltipCrimeHighValue => 'High Value Operation';
+  String get tooltipCrimeHighValue => 'Opération à haute valeur ajoutée';
 
   @override
-  String get tooltipCrimeRequiresViolence => 'Violence Required';
+  String get tooltipCrimeRequiresViolence => 'Violence requise';
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
-    return 'You need at least ${quantity}g of: $drugs';
+    return 'Il vous faut au moins ${quantity}g de : $drugs';
   }
 
   @override
-  String get jobs => 'Jobs';
+  String get jobs => 'Emplois';
 
   @override
-  String get errorLoadingJobs => 'Failed to load jobs';
+  String get errorLoadingJobs => 'Échec du chargement des tâches';
 
   @override
-  String get jobNewspaperDeliveryName => 'Newspaper Delivery';
+  String get jobNewspaperDeliveryName => 'Livraison de journaux';
 
   @override
-  String get jobNewspaperDeliveryDesc =>
-      'Deliver newspapers early in the morning';
+  String get jobNewspaperDeliveryDesc => 'Livrer les journaux tôt le matin';
 
   @override
-  String get jobCarWashName => 'Car Wash';
+  String get jobCarWashName => 'Lavage de voiture';
 
   @override
-  String get jobCarWashDesc => 'Wash cars at the car wash';
+  String get jobCarWashDesc => 'Laver les voitures au lave-auto';
 
   @override
-  String get jobGroceryBaggerName => 'Grocery Bagger';
+  String get jobGroceryBaggerName => 'Ensacheuse d\'épicerie';
 
   @override
-  String get jobGroceryBaggerDesc => 'Stock shelves at the supermarket';
+  String get jobGroceryBaggerDesc => 'Stocker les étagères au supermarché';
 
   @override
-  String get jobDishwasherName => 'Dishwasher';
+  String get jobDishwasherName => 'Lave-vaisselle';
 
   @override
-  String get jobDishwasherDesc => 'Wash dishes in a restaurant';
+  String get jobDishwasherDesc => 'Faire la vaisselle dans un restaurant';
 
   @override
-  String get jobStreetSweeperName => 'Street Sweeper';
+  String get jobStreetSweeperName => 'Balayeuse de rue';
 
   @override
-  String get jobStreetSweeperDesc => 'Sweep streets clean';
+  String get jobStreetSweeperDesc => 'Nettoyer les rues';
 
   @override
-  String get jobPizzaDeliveryName => 'Pizza Delivery';
+  String get jobPizzaDeliveryName => 'Livraison de pizzas';
 
   @override
-  String get jobPizzaDeliveryDesc => 'Deliver pizzas in the city';
+  String get jobPizzaDeliveryDesc => 'Livrer des pizzas en ville';
 
   @override
-  String get jobTaxiDriverName => 'Taxi Driver';
+  String get jobTaxiDriverName => 'Chauffeur de taxi';
 
   @override
-  String get jobTaxiDriverDesc => 'Drive a taxi around the city';
+  String get jobTaxiDriverDesc => 'Conduire un taxi dans la ville';
 
   @override
-  String get jobWarehouseWorkerName => 'Warehouse Worker';
+  String get jobWarehouseWorkerName => 'Ouvrier d\'entrepôt';
 
   @override
-  String get jobWarehouseWorkerDesc => 'Work in a warehouse';
+  String get jobWarehouseWorkerDesc => 'Travailler dans un entrepôt';
 
   @override
-  String get jobConstructionWorkerName => 'Construction Worker';
+  String get jobConstructionWorkerName => 'Ouvrier du bâtiment';
 
   @override
-  String get jobConstructionWorkerDesc => 'Work on a construction site';
+  String get jobConstructionWorkerDesc =>
+      'Travailler sur un chantier de construction';
 
   @override
-  String get jobBartenderName => 'Bartender';
+  String get jobBartenderName => 'Barman';
 
   @override
-  String get jobBartenderDesc => 'Pour beer and mix cocktails';
+  String get jobBartenderDesc => 'Verser la bière et mélanger les cocktails';
 
   @override
-  String get jobSecurityGuardName => 'Security Guard';
+  String get jobSecurityGuardName => 'Agent de sécurité';
 
   @override
-  String get jobSecurityGuardDesc => 'Guard a building';
+  String get jobSecurityGuardDesc => 'Garder un bâtiment';
 
   @override
-  String get jobTruckDriverName => 'Truck Driver';
+  String get jobTruckDriverName => 'Chauffeur de camion';
 
   @override
-  String get jobTruckDriverDesc => 'Drive a truck over long distances';
+  String get jobTruckDriverDesc =>
+      'Conduire un camion sur de longues distances';
 
   @override
-  String get jobMechanicName => 'Mechanic';
+  String get jobMechanicName => 'Mécanicienne';
 
   @override
-  String get jobMechanicDesc => 'Repair cars in a garage';
+  String get jobMechanicDesc => 'Réparer des voitures dans un garage';
 
   @override
-  String get jobElectricianName => 'Electrician';
+  String get jobElectricianName => 'Électricienne';
 
   @override
-  String get jobElectricianDesc => 'Install and repair electrical systems';
+  String get jobElectricianDesc =>
+      'Installer et réparer des systèmes électriques';
 
   @override
-  String get jobPlumberName => 'Plumber';
+  String get jobPlumberName => 'Plombière';
 
   @override
-  String get jobPlumberDesc => 'Repair pipes and plumbing';
+  String get jobPlumberDesc => 'Réparer les canalisations et la plomberie';
 
   @override
-  String get jobChefName => 'Chef';
+  String get jobChefName => 'Cuisinière';
 
   @override
-  String get jobChefDesc => 'Cook in a restaurant';
+  String get jobChefDesc => 'Cuisiner dans un restaurant';
 
   @override
-  String get jobParamedicName => 'Paramedic';
+  String get jobParamedicName => 'Paramédicale';
 
   @override
-  String get jobParamedicDesc => 'Help people in need';
+  String get jobParamedicDesc => 'Aider les personnes dans le besoin';
 
   @override
-  String get jobProgrammerName => 'Programmer';
+  String get jobProgrammerName => 'Programmeuse';
 
   @override
-  String get jobProgrammerDesc => 'Write software for companies';
+  String get jobProgrammerDesc => 'Écrire des logiciels pour les entreprises';
 
   @override
-  String get jobAccountantName => 'Accountant';
+  String get jobAccountantName => 'Comptable';
 
   @override
-  String get jobAccountantDesc => 'Manage finances for businesses';
+  String get jobAccountantDesc => 'Gérer les finances des entreprises';
 
   @override
-  String get jobLawyerName => 'Lawyer';
+  String get jobLawyerName => 'Avocate';
 
   @override
-  String get jobLawyerDesc => 'Defend clients in court';
+  String get jobLawyerDesc => 'Défendre ses clients devant les tribunaux';
 
   @override
-  String get jobRealEstateAgentName => 'Real Estate Agent';
+  String get jobRealEstateAgentName => 'Agent immobilier';
 
   @override
-  String get jobRealEstateAgentDesc => 'Sell houses and buildings';
+  String get jobRealEstateAgentDesc => 'Vendre des maisons et des immeubles';
 
   @override
-  String get jobStockbrokerName => 'Stockbroker';
+  String get jobStockbrokerName => 'Agent de change';
 
   @override
-  String get jobStockbrokerDesc => 'Trade stocks';
+  String get jobStockbrokerDesc => 'Négocier des actions';
 
   @override
-  String get jobDoctorName => 'Doctor';
+  String get jobDoctorName => 'Médecin';
 
   @override
-  String get jobDoctorDesc => 'Treat patients at the hospital';
+  String get jobDoctorDesc => 'Traiter les patients à l\'hôpital';
 
   @override
-  String get jobAirlinePilotName => 'Pilot';
+  String get jobAirlinePilotName => 'Pilote';
 
   @override
-  String get jobAirlinePilotDesc => 'Fly passenger airplanes';
+  String get jobAirlinePilotDesc => 'Piloter des avions de passagers';
 
   @override
-  String get travel => 'Travel';
+  String get travel => 'Voyage';
 
   @override
-  String get errorLoadingCountries => 'Failed to load countries';
+  String get errorLoadingCountries => 'Échec du chargement des pays';
 
   @override
-  String get currentLocation => 'Current Location';
+  String get currentLocation => 'Emplacement actuel';
 
   @override
-  String get current => 'Current';
+  String get current => 'Actuelle';
 
   @override
-  String get travelTo => 'Travel';
+  String get travelTo => 'Voyage';
 
   @override
   String travelCost(String amount) {
-    return 'Cost: €$amount';
+    return 'Coût : $amount€';
   }
 
   @override
-  String get travelJourneyTitle => 'Start journey?';
+  String get travelJourneyTitle => 'Commencer le voyage ?';
 
   @override
-  String get travelRouteLabel => 'Route:';
+  String get travelRouteLabel => 'Itinéraire:';
 
   @override
   String travelLegsLabel(String count) {
-    return 'Legs: $count';
+    return 'Jambes : $count';
   }
 
   @override
   String travelCostPerLeg(String amount) {
-    return 'Cost per leg: €$amount';
+    return 'Coût par étape : $amount€';
   }
 
   @override
   String travelTotalCost(String amount) {
-    return 'Total cost: €$amount';
+    return 'Coût total : $amount€';
   }
 
   @override
   String travelCooldownPerLeg(String minutes) {
-    return 'Cooldown: $minutes min per leg';
+    return 'Temps de recharge : $minutes min par jambe';
   }
 
   @override
   String get travelRiskPerLeg =>
-      'Risk: per leg (can be jailed and lose all goods)';
+      'Risque : par jambe (peut être emprisonné et perdre toutes les marchandises)';
 
   @override
-  String get travelStart => 'Start';
+  String get travelStart => 'Commencer';
 
   @override
   String travelInTransitTo(String country) {
-    return 'In transit to $country';
+    return 'En transit vers $country';
   }
 
   @override
   String travelLegProgress(String current, String total) {
-    return 'Leg $current/$total';
+    return 'Jambe $current/$total';
   }
 
   @override
   String travelNextStop(String country) {
-    return 'Next stop: $country';
+    return 'Prochain arrêt : $country';
   }
 
   @override
-  String get travelContinue => 'Continue';
+  String get travelContinue => 'Continuer';
 
   @override
-  String get travelCancelJourney => 'Cancel journey';
+  String get travelCancelJourney => 'Annuler le voyage';
 
   @override
-  String get travelJourneyCanceled => 'Journey canceled';
+  String get travelJourneyCanceled => 'Voyage annulé';
 
   @override
   String get travelDirect => 'Direct';
@@ -606,61 +619,61 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String travelLegsCount(String count) {
-    return '$count legs';
+    return '$count jambes';
   }
 
   @override
   String jailRemainingMinutes(String minutes) {
-    return 'You are in jail for $minutes more minutes';
+    return 'Vous êtes en prison pendant $minutes minutes supplémentaires';
   }
 
   @override
   String travelSuccessTo(String country) {
-    return 'Traveled to $country!';
+    return 'J\'ai voyagé à $country !';
   }
 
   @override
   String travelConfiscated(String quantity, String item) {
-    return '🚨 $quantity items $item confiscated!';
+    return '🚨 $quantity articles $item confisqués !';
   }
 
   @override
   String travelDamaged(String item, String percent) {
-    return '⚠️ $item damaged ($percent% value loss)!';
+    return '⚠️ $item endommagé ($percent% de perte de valeur) !';
   }
 
   @override
-  String get countryNetherlands => 'Netherlands';
+  String get countryNetherlands => 'Pays-Bas';
 
   @override
-  String get countryBelgium => 'Belgium';
+  String get countryBelgium => 'Belgique';
 
   @override
-  String get countryGermany => 'Germany';
+  String get countryGermany => 'Allemagne';
 
   @override
   String get countryFrance => 'France';
 
   @override
-  String get countrySpain => 'Spain';
+  String get countrySpain => 'Espagne';
 
   @override
-  String get countryItaly => 'Italy';
+  String get countryItaly => 'Italie';
 
   @override
-  String get countryUk => 'United Kingdom';
+  String get countryUk => 'Royaume-Uni';
 
   @override
-  String get countrySwitzerland => 'Switzerland';
+  String get countrySwitzerland => 'Suisse';
 
   @override
-  String get crew => 'Crew';
+  String get crew => 'Équipage';
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'Profil';
 
   @override
-  String get logout => 'Logout';
+  String get logout => 'Déconnexion';
 
   @override
   String money(String amount) {
@@ -668,118 +681,119 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get health => 'Health';
+  String get health => 'Santé';
 
   @override
-  String get rank => 'Rank';
+  String get rank => 'Rang';
 
   @override
   String get xp => 'XP';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'Paramètres';
 
   @override
   String get avatar => 'Avatar';
 
   @override
-  String get avatarUpdated => 'Avatar updated!';
+  String get avatarUpdated => 'Avatar mis à jour !';
 
   @override
   String error(String error) {
-    return 'Error: $error';
+    return 'Erreur : $error';
   }
 
   @override
-  String get changeLanguage => 'Language / Taal';
+  String get changeLanguage => 'Langue / Taal';
 
   @override
-  String get languageChanged => 'Language changed to English';
+  String get languageChanged => 'Langue changée en anglais';
 
   @override
   String languageChangeFailed(String code) {
-    return 'Language change failed ($code)';
+    return 'Échec du changement de langue ($code)';
   }
 
   @override
-  String get chooseLanguage => 'Choose Language / Taal Kiezen';
+  String get chooseLanguage => 'Choisir la langue / Taal Kiezen';
 
   @override
-  String get dutch => 'Nederlands';
+  String get dutch => 'Pays-Bas';
 
   @override
-  String get english => 'English';
+  String get english => 'Anglaise';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Annuler';
 
   @override
-  String get changeUsername => 'Change Username';
+  String get changeUsername => 'Changer le nom d\'utilisateur';
 
   @override
-  String get usernameHint => '3-20 characters';
+  String get usernameHint => '3-20 caractères';
 
   @override
-  String get change => 'Change';
+  String get change => 'Changement';
 
   @override
-  String get minChars => 'Minimum 3 characters';
+  String get minChars => 'Minimum 3 caractères';
 
   @override
-  String get usernameUpdated => 'Username updated!';
+  String get usernameUpdated => 'Nom d\'utilisateur mis à jour !';
 
   @override
-  String get usernameTaken => 'Username already taken';
+  String get usernameTaken => 'Nom d\'utilisateur déjà pris';
 
   @override
-  String get oncePerMonth => 'Change once per month';
+  String get oncePerMonth => 'Changer une fois par mois';
 
   @override
-  String get privacy => 'Privacy';
+  String get privacy => 'Confidentialité';
 
   @override
-  String get allowMessages => 'Allow Messages';
+  String get allowMessages => 'Autoriser les messages';
 
   @override
-  String get allowMessagesDesc => 'Other players can send you messages';
+  String get allowMessagesDesc =>
+      'Les autres joueurs peuvent vous envoyer des messages';
 
   @override
-  String get settingsSaved => 'Settings saved';
+  String get settingsSaved => 'Paramètres enregistrés';
 
   @override
-  String get vipStatus => 'VIP Status';
+  String get vipStatus => 'Statut VIP';
 
   @override
   String activeUntil(String date) {
-    return 'Active until $date';
+    return 'Actif jusqu\'à $date';
   }
 
   @override
-  String get unknown => 'Unknown';
+  String get unknown => 'Inconnue';
 
   @override
-  String get chooseAvatar => 'Choose an Avatar';
+  String get chooseAvatar => 'Choisissez un avatar';
 
   @override
-  String get freeAvatars => 'Free Avatars';
+  String get freeAvatars => 'Avatars gratuits';
 
   @override
-  String get vipAvatars => 'VIP Avatars';
+  String get vipAvatars => 'Avatars VIP';
 
   @override
   String get vip => 'VIP';
 
   @override
-  String get notLoggedIn => 'Not logged in';
+  String get notLoggedIn => 'Non connecté';
 
   @override
-  String get refresh => 'Refresh';
+  String get refresh => 'Rafraîchir';
 
   @override
-  String get foodAndDrink => 'Food & Drink';
+  String get foodAndDrink => 'Nourriture et boissons';
 
   @override
-  String get invalidItem => 'This item does not exist';
+  String get invalidItem => 'Cet article n\'existe pas';
 
   @override
   String get foodBroodje => 'Sandwich';
@@ -788,103 +802,106 @@ class AppLocalizationsFr extends AppLocalizations {
   String get foodPizza => 'Pizza';
 
   @override
-  String get foodBurger => 'Burger';
+  String get foodBurger => 'Hamburger';
 
   @override
   String get foodSteak => 'Steak';
 
   @override
-  String get drinkWater => 'Water';
+  String get drinkWater => 'Eau';
 
   @override
-  String get drinkSoda => 'Soda';
+  String get drinkSoda => 'Soude';
 
   @override
-  String get drinkCoffee => 'Coffee';
+  String get drinkCoffee => 'Café';
 
   @override
-  String get drinkBeer => 'Beer';
+  String get drinkBeer => 'Bière';
 
   @override
-  String get foodInfo3 => '• Buy food and drink to keep your stats up';
+  String get foodInfo3 =>
+      '• Achetez de la nourriture et des boissons pour maintenir vos statistiques à jour';
 
   @override
-  String get friends => 'Friends';
+  String get friends => 'Amies';
 
   @override
-  String get friendActivity => 'Friend Activity';
+  String get friendActivity => 'Activité d\'un ami';
 
   @override
-  String get properties => 'Properties';
+  String get properties => 'Propriétés';
 
   @override
-  String get propertiesAvailable => 'Available';
+  String get propertiesAvailable => 'Disponible';
 
   @override
-  String get myProperties => 'My Properties';
+  String get myProperties => 'Mes propriétés';
 
   @override
-  String get errorLoadingMyProperties => 'Error loading my properties';
+  String get errorLoadingMyProperties =>
+      'Erreur lors du chargement de mes propriétés';
 
   @override
-  String get errorBuyingProperty => 'Error buying property';
+  String get errorBuyingProperty => 'Erreur lors de l\'achat d\'une propriété';
 
   @override
-  String get errorCollectingIncome => 'Error collecting income';
+  String get errorCollectingIncome => 'Erreur de collecte des revenus';
 
   @override
-  String get noAvailableProperties => 'No available properties';
+  String get noAvailableProperties => 'Aucune propriété disponible';
 
   @override
-  String get noOwnedProperties => 'You don\'t own any properties yet';
+  String get noOwnedProperties =>
+      'Vous n\'êtes pas encore propriétaire de propriétés';
 
   @override
   String get buyFirstPropertyHint =>
-      'Buy your first property in the \"Available\" tab';
+      'Achetez votre première propriété dans l\'onglet \"Disponible\"';
 
   @override
   String buyPropertyConfirm(String name, String price) {
-    return 'Do you want to buy $name for €$price?';
+    return 'Voulez-vous acheter 0$name pour 1⟧€ ?';
   }
 
   @override
-  String get propertyPrice => 'Price';
+  String get propertyPrice => 'Prix';
 
   @override
-  String get propertyMinLevel => 'Required level';
+  String get propertyMinLevel => 'Niveau requis';
 
   @override
-  String get propertyIncomePerHour => 'Income/hour';
+  String get propertyIncomePerHour => 'Revenu/heure';
 
   @override
-  String get propertyMaxLevel => 'Max Level';
+  String get propertyMaxLevel => 'Niveau maximum';
 
   @override
-  String get propertyUniquePerCountry => '⚠️ Unique - 1 per country';
+  String get propertyUniquePerCountry => '⚠️ Unique - 1 par pays';
 
   @override
-  String get propertyIncomeReady => '✅ Income ready to collect!';
+  String get propertyIncomeReady => '✅Revenus prêts à encaisser !';
 
   @override
   String propertyNextIncome(String duration) {
-    return '⏱️ Next income in $duration';
+    return '⏱️ Prochain revenu en $duration';
   }
 
   @override
-  String get propertyBuyAction => 'Buy Property';
+  String get propertyBuyAction => 'Acheter une propriété';
 
   @override
-  String get propertyCollectAction => 'Collect';
+  String get propertyCollectAction => 'Collecter';
 
   @override
-  String get propertyUpgradeAction => 'Upgrade';
+  String get propertyUpgradeAction => 'Mise à niveau';
 
   @override
-  String get propertyMax => 'MAX';
+  String get propertyMax => 'MAXIMUM';
 
   @override
   String propertyLevel(String level) {
-    return 'Level $level';
+    return 'Niveau $level';
   }
 
   @override
@@ -894,2125 +911,2146 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String durationMinutes(String minutes) {
-    return '${minutes}m';
+    return '${minutes}min';
   }
 
   @override
-  String get propertyTypeHouse => 'House';
+  String get propertyTypeHouse => 'Maison';
 
   @override
-  String get propertyTypeWarehouse => 'Warehouse';
+  String get propertyTypeWarehouse => 'Entrepôt';
 
   @override
   String get propertyTypeCasino => 'Casino';
 
   @override
-  String get propertyTypeHotel => 'Hotel';
+  String get propertyTypeHotel => 'Hôtel';
 
   @override
-  String get propertyTypeFactory => 'Factory';
+  String get propertyTypeFactory => 'Usine';
 
   @override
-  String get propertyTypeBusiness => 'Business';
+  String get propertyTypeBusiness => 'Entreprise';
 
   @override
   String get propertyCasinoName => 'Casino';
 
   @override
-  String get propertyWarehouseName => 'Warehouse';
+  String get propertyWarehouseName => 'Entrepôt';
 
   @override
-  String get propertyNightclubName => 'Nightclub';
+  String get propertyNightclubName => 'Discothèque';
 
   @override
-  String get propertyHouseName => 'House';
+  String get propertyHouseName => 'Maison';
 
   @override
-  String get propertyApartmentName => 'Apartment';
+  String get propertyApartmentName => 'Appartement';
 
   @override
-  String get propertyShopName => 'Shop';
+  String get propertyShopName => 'Boutique';
 
   @override
-  String get blackMarket => 'Black Market';
+  String get blackMarket => 'Marché noir';
 
   @override
   String get garage => 'Garage';
 
   @override
-  String get garageCapacity => 'Garage Capacity';
+  String get garageCapacity => 'Capacité du garage';
 
   @override
   String garageVehiclesCount(String current, String total) {
-    return '$current / $total vehicles';
+    return '$current / $total véhicules';
   }
 
   @override
   String garageUpgradeWithCost(String cost) {
-    return 'Upgrade (€$cost)';
+    return 'Surclassement ($cost€)';
   }
 
   @override
-  String get garageMaxLevel => 'Max Level';
+  String get garageMaxLevel => 'Niveau maximum';
 
   @override
   String garageLevelRemaining(String level, String spots) {
-    return 'Level $level | $spots spots left';
+    return 'Niveau $level | $spots places restantes';
   }
 
   @override
-  String get noCarsInGarage => 'No cars in your garage';
+  String get noCarsInGarage => 'Aucune voiture dans votre garage';
 
   @override
-  String get stealCarsToStart => 'Steal some cars to get started!';
+  String get stealCarsToStart => 'Volez des voitures pour commencer !';
 
   @override
-  String get stealFailed => 'Steal failed';
+  String get stealFailed => 'Le vol a échoué';
 
   @override
-  String get garageUpgradeFailed => 'Failed to upgrade garage';
+  String get garageUpgradeFailed => 'Échec de la mise à niveau du garage';
 
   @override
-  String get saleFailed => 'Sale failed';
+  String get saleFailed => 'La vente a échoué';
 
   @override
-  String get vehicleTransported => 'Vehicle transported successfully!';
+  String get vehicleTransported => 'Véhicule transporté avec succès !';
 
   @override
-  String get vehicleTransportFailed => 'Failed to transport vehicle';
+  String get vehicleTransportFailed => 'Échec du transport du véhicule';
 
   @override
-  String get listOnMarket => 'List on Market';
+  String get listOnMarket => 'Liste sur le marché';
 
   @override
   String marketValue(String amount) {
-    return 'Market Value: €$amount';
+    return 'Valeur marchande : $amount€';
   }
 
   @override
-  String get askingPrice => 'Asking Price (€)';
+  String get askingPrice => 'Prix ​​demandé (€)';
 
   @override
-  String get enterPrice => 'Enter price';
+  String get enterPrice => 'Entrez le prix';
 
   @override
-  String get list => 'List';
+  String get list => 'Liste';
 
   @override
-  String get invalidPrice => 'Invalid price';
+  String get invalidPrice => 'Prix ​​invalide';
 
   @override
-  String get vehicleListed => 'Vehicle listed on market!';
+  String get vehicleListed => 'Véhicule répertorié sur le marché !';
 
   @override
-  String get listVehicleFailed => 'Failed to list vehicle';
+  String get listVehicleFailed => 'Échec de la liste du véhicule';
 
   @override
   String get marina => 'Marina';
 
   @override
-  String get hospital => 'Hospital';
+  String get hospital => 'Hôpital';
 
   @override
-  String get court => 'Court';
+  String get court => 'Tribunal';
 
   @override
   String get casino => 'Casino';
 
   @override
-  String get errorLoadingCasinoStatus => 'Could not check casino status';
+  String get errorLoadingCasinoStatus =>
+      'Impossible de vérifier le statut du casino';
 
   @override
-  String get errorLoadingCasinoGames => 'Could not load casino games';
+  String get errorLoadingCasinoGames =>
+      'Impossible de charger les jeux de casino';
 
   @override
   String casinoPrice(String amount) {
-    return 'Price: €$amount';
+    return 'Prix ​​: $amount€';
   }
 
   @override
-  String get startingCapital => 'Starting capital';
+  String get startingCapital => 'Capital de départ';
 
   @override
-  String get bankrollHelper => 'This will be the casino bankroll';
+  String get bankrollHelper => 'Ce sera la bankroll du casino';
 
   @override
-  String get casinoOwnershipInfoTitle => 'About casino ownership:';
+  String get casinoOwnershipInfoTitle =>
+      'À propos de la propriété d\'un casino :';
 
   @override
-  String get casinoClosedTitle => 'CASINO CLOSED';
+  String get casinoClosedTitle => 'CASINO FERMÉ';
 
   @override
-  String get casinoOwnedByLabel => 'This casino is owned by:';
+  String get casinoOwnedByLabel => 'Ce casino appartient à :';
 
   @override
-  String get casinoNoOwner => 'This casino has no owner yet';
+  String get casinoNoOwner => 'Ce casino n\'a pas encore de propriétaire';
 
   @override
-  String get casinoPurchasePriceLabel => 'Purchase price:';
+  String get casinoPurchasePriceLabel => 'Prix ​​d\'achat :';
 
   @override
   String get casinoOwnerInfo =>
-      'As owner you manage the casino bankroll and earn money when players lose!';
+      'En tant que propriétaire, vous gérez les fonds du casino et gagnez de l\'argent lorsque les joueurs perdent !';
 
   @override
-  String get casinoGameSlotsName => 'Slot Machine';
+  String get casinoGameSlotsName => 'Machine à sous';
 
   @override
   String get casinoGameSlotsDesc =>
-      'Spin the reels and win up to 100x your bet!';
+      'Faites tourner les rouleaux et gagnez jusqu\'à 100x votre mise !';
 
   @override
   String get casinoGameBlackjackName => 'Blackjack';
 
   @override
   String get casinoGameBlackjackDesc =>
-      'Beat the dealer and win up to 2x your bet!';
+      'Battez le croupier et gagnez jusqu\'à 2x votre mise !';
 
   @override
   String get casinoGameRouletteName => 'Roulette';
 
   @override
   String get casinoGameRouletteDesc =>
-      'Pick your number and win up to 35x your bet!';
+      'Choisissez votre numéro et gagnez jusqu\'à 35x votre mise !';
 
   @override
-  String get casinoGameDiceName => 'Dice';
+  String get casinoGameDiceName => 'Dés';
 
   @override
-  String get casinoGameDiceDesc => 'Roll the dice and win up to 6x your bet!';
+  String get casinoGameDiceDesc =>
+      'Lancez les dés et gagnez jusqu\'à 6x votre mise !';
 
   @override
-  String get difficultyEasy => 'EASY';
+  String get difficultyEasy => 'FACILE';
 
   @override
-  String get difficultyMedium => 'MEDIUM';
+  String get difficultyMedium => 'MOYENNE';
 
   @override
-  String get difficultyHard => 'HARD';
+  String get difficultyHard => 'DURE';
 
   @override
-  String get casinoDepositTitle => 'Deposit Money';
+  String get casinoDepositTitle => 'Déposer de l\'argent';
 
   @override
-  String get casinoWithdrawTitle => 'Withdraw Money';
+  String get casinoWithdrawTitle => 'Retirer de l\'argent';
 
   @override
-  String get amount => 'Amount';
+  String get amount => 'Montante';
 
   @override
-  String get deposit => 'Deposit';
+  String get deposit => 'Dépôt';
 
   @override
-  String get withdraw => 'Withdraw';
+  String get withdraw => 'Retirer';
 
   @override
   String casinoDepositSuccess(String amount) {
-    return '€$amount deposited into casino bankroll';
+    return '€$amount déposé sur la bankroll du casino';
   }
 
   @override
   String casinoWithdrawSuccess(String amount) {
-    return '€$amount withdrawn from casino bankroll';
+    return '$amount € retiré de la bankroll du casino';
   }
 
   @override
-  String get casinoDepositError => 'Error depositing';
+  String get casinoDepositError => 'Erreur de dépôt';
 
   @override
-  String get casinoWithdrawError => 'Error withdrawing';
+  String get casinoWithdrawError => 'Erreur lors du retrait';
 
   @override
   String get casinoMinBankroll =>
-      'At least €10,000 must remain in the bankroll';
+      'Au moins 10 000 € doivent rester dans la bankroll';
 
   @override
   String casinoMaxWithdraw(String amount) {
-    return 'Maximum: €$amount';
+    return 'Maximum : $amount€';
   }
 
   @override
-  String get casinoManagementTitle => 'Casino Management';
+  String get casinoManagementTitle => 'Gestion des casinos';
 
   @override
   String casinoBankruptWarning(String amount) {
-    return 'WARNING: Casino bankroll too low!\nDeposit at least €$amount to avoid bankruptcy.';
+    return 'AVERTISSEMENT : la bankroll du casino est trop faible ! \nDéposez au moins $amount € pour éviter la faillite.';
   }
 
   @override
-  String get casinoBankroll => 'Casino Bankroll';
+  String get casinoBankroll => 'Fonds de casino';
 
   @override
-  String get casinoStatsTitle => 'Statistics';
+  String get casinoStatsTitle => 'Statistiques';
 
   @override
-  String get casinoTotalReceived => 'Total Received:';
+  String get casinoTotalReceived => 'Total reçu :';
 
   @override
-  String get casinoTotalPaidOut => 'Total Paid Out:';
+  String get casinoTotalPaidOut => 'Total payé :';
 
   @override
-  String get casinoNetProfit => 'Net Profit:';
+  String get casinoNetProfit => 'Bénéfice net:';
 
   @override
   String casinoProfitMargin(String percent) {
-    return 'Profit margin: $percent%';
+    return 'Marge bénéficiaire : $percent%';
   }
 
   @override
-  String get casinoManagementInfoTitle => 'Casino Management Info';
+  String get casinoManagementInfoTitle =>
+      'Informations sur la gestion du casino';
 
   @override
   String get casinoManagementInfo5 =>
-      '• You can deposit or withdraw money at any time';
+      '• Vous pouvez déposer ou retirer de l\'argent à tout moment';
 
   @override
-  String get retry => 'Retry';
+  String get retry => 'Réessayer';
 
   @override
-  String get doAction => 'Do';
+  String get doAction => 'Faire';
 
   @override
-  String get pay => 'Pay';
+  String get pay => 'Payer';
 
   @override
-  String get success => 'Success';
+  String get success => 'Succès';
 
   @override
-  String get jail => 'Jail';
+  String get jail => 'Prison';
 
   @override
-  String get wantedLevel => 'Wanted Level';
+  String get wantedLevel => 'Niveau recherché';
 
   @override
-  String get cooldown => 'Cooldown';
+  String get cooldown => 'Refroidir';
 
   @override
-  String get requiredRank => 'Required Player Rank';
+  String get requiredRank => 'Rang de joueur requis';
 
   @override
-  String get playerRankLabel => 'Player rank';
+  String get playerRankLabel => 'Classement du joueur';
 
   @override
-  String get loading => 'Loading...';
+  String get loading => 'Chargement...';
 
   @override
-  String get trade => 'Trade';
+  String get trade => 'Commerce';
 
   @override
-  String get buy => 'Buy';
+  String get buy => 'Acheter';
 
   @override
-  String get sell => 'Sell';
+  String get sell => 'Vendre';
 
   @override
-  String get price => 'Price';
+  String get price => 'Prix';
 
   @override
-  String get total => 'Total';
+  String get total => 'Totale';
 
   @override
   String available(String count) {
-    return 'Available: $count';
+    return 'Disponible : $count';
   }
 
   @override
-  String get notEnoughMoney => 'You don\'t have enough money!';
+  String get notEnoughMoney => 'Vous n\'avez pas assez d\'argent !';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'Confirmer';
 
   @override
-  String get close => 'Close';
+  String get close => 'Fermer';
 
   @override
-  String get unexpectedResponse => 'Unexpected API response';
+  String get unexpectedResponse => 'Réponse inattendue de l\'API';
 
   @override
-  String get errorLoadingMenu => 'Error loading menu';
+  String get errorLoadingMenu => 'Erreur de chargement du menu';
 
   @override
-  String get unknownError => 'Unknown error';
+  String get unknownError => 'Erreur inconnue';
 
   @override
-  String get food => 'Food';
+  String get food => 'Nourriture';
 
   @override
-  String get drink => 'Drink';
+  String get drink => 'Boire';
 
   @override
-  String get work => 'Work';
+  String get work => 'Travail';
 
   @override
   String cooldownMinutes(String minutes) {
-    return 'Cooldown: $minutes min';
+    return 'Temps de recharge : $minutes min';
   }
 
   @override
   String xpReward(String amount) {
-    return 'XP: +$amount';
+    return 'XP : +$amount';
   }
 
   @override
-  String get fly => 'Fly';
+  String get fly => 'Voler';
 
   @override
-  String get purchased => 'Purchased!';
+  String get purchased => 'Achetée!';
 
   @override
-  String get sold => 'Sold!';
+  String get sold => 'Vendue!';
 
   @override
-  String get errorBuying => 'Error buying';
+  String get errorBuying => 'Erreur d\'achat';
 
   @override
-  String get errorSelling => 'Error selling';
+  String get errorSelling => 'Erreur de vente';
 
   @override
-  String get goods => 'Goods';
+  String get goods => 'Marchandises';
 
   @override
-  String get marketplace => 'Marketplace';
+  String get marketplace => 'Marché';
 
   @override
-  String get myListings => 'My Listings';
+  String get myListings => 'Mes annonces';
 
   @override
-  String get inventory => 'Inventory';
+  String get inventory => 'Inventaire';
 
   @override
-  String get vehicles => 'Vehicles';
+  String get vehicles => 'Véhicules';
 
   @override
-  String get backpacks => 'Backpacks';
+  String get backpacks => 'Sacs à dos';
 
   @override
-  String get materials => 'Materials';
+  String get materials => 'Matériels';
 
   @override
   String get production => 'Production';
 
   @override
-  String get stock => 'Stock';
+  String get stock => 'Action';
 
   @override
-  String get retryAgain => 'Retry';
+  String get retryAgain => 'Réessayer';
 
   @override
-  String get noVehiclesAvailable => 'No vehicles available';
+  String get noVehiclesAvailable => 'Aucun véhicule disponible';
 
   @override
-  String get noListings => 'No listings';
+  String get noListings => 'Aucune annonce';
 
   @override
   String get condition => 'Condition';
 
   @override
-  String get yourHealth => 'Your Health';
+  String get yourHealth => 'Votre santé';
 
   @override
   String get criticalHealthWarning =>
-      '⚠️ CRITICAL! You must go to the hospital immediately!';
+      '⚠️ CRITIQUE ! Vous devez vous rendre à l\'hôpital immédiatement !';
 
   @override
-  String get lowHealthWarning => '⚠️ Low health! Be careful.';
+  String get lowHealthWarning => '⚠️ Faible santé ! Sois prudent.';
 
   @override
-  String get free => 'FREE';
+  String get free => 'GRATUITE';
 
   @override
   String get information => 'Information';
 
   @override
-  String get contrabandFlowersName => 'Flowers';
+  String get contrabandFlowersName => 'Fleurs';
 
   @override
   String get contrabandFlowersDesc =>
-      'Dutch tulips and other flowers for international trade';
+      'Tulipes hollandaises et autres fleurs pour le commerce international';
 
   @override
-  String get contrabandElectronicsName => 'Electronics';
+  String get contrabandElectronicsName => 'Électronique';
 
   @override
   String get contrabandElectronicsDesc =>
-      'Advanced electronics and computer components';
+      'Composants électroniques et informatiques avancés';
 
   @override
-  String get contrabandDiamondsName => 'Diamonds';
+  String get contrabandDiamondsName => 'Diamants';
 
   @override
-  String get contrabandDiamondsDesc => 'Rough and cut diamonds';
+  String get contrabandDiamondsDesc => 'Diamants bruts et taillés';
 
   @override
-  String get contrabandWeaponsName => 'Weapons';
+  String get contrabandWeaponsName => 'Armes';
 
   @override
-  String get contrabandWeaponsDesc => 'Illegal weapons and ammunition';
+  String get contrabandWeaponsDesc => 'Armes et munitions illégales';
 
   @override
-  String get contrabandPharmaceuticalsName => 'Pharmaceuticals';
+  String get contrabandPharmaceuticalsName => 'Médicaments';
 
   @override
-  String get contrabandPharmaceuticalsDesc => 'Rare pharmaceutical products';
+  String get contrabandPharmaceuticalsDesc => 'Produits pharmaceutiques rares';
 
   @override
-  String get multiplier => 'Multiplier';
+  String get multiplier => 'Multiplicateur';
 
   @override
-  String get sellPrice => 'Sell price';
+  String get sellPrice => 'Prix ​​de vente';
 
   @override
-  String get boughtFor => 'Bought for';
+  String get boughtFor => 'Acheté pour';
 
   @override
   String get profit => 'Profit';
 
   @override
-  String get loss => 'Loss';
+  String get loss => 'Perte';
 
   @override
   String ownedQuantity(String quantity) {
-    return 'Owned: $quantity';
+    return 'Possédé : $quantity';
   }
 
   @override
   String spoilsInHours(String hours) {
-    return '⚠️ Spoils in ${hours}h';
+    return '⚠️ Spoilers dans ${hours}h';
   }
 
   @override
-  String get spoiledWorthless => '💀 SPOILED - Worthless';
+  String get spoiledWorthless => '💀 GÂTÉ - Sans valeur';
 
   @override
-  String get vehicleBought => 'Vehicle successfully bought!';
+  String get vehicleBought => 'Véhicule acheté avec succès !';
 
   @override
-  String get purchaseFailed => 'Purchase failed';
+  String get purchaseFailed => 'L\'achat a échoué';
 
   @override
-  String get listingRemoved => 'Listing removed';
+  String get listingRemoved => 'Annonce supprimée';
 
   @override
-  String get noItemsInInventory => 'No items in inventory';
+  String get noItemsInInventory => 'Aucun article en inventaire';
 
   @override
-  String get buyItemsInBuyTab => 'Buy items in the Buy tab';
+  String get buyItemsInBuyTab => 'Acheter des articles dans l\'onglet Acheter';
 
   @override
   String errorLoadingMarketData(String error) {
-    return 'Error loading market data: $error';
+    return 'Erreur lors du chargement des données de marché : $error';
   }
 
   @override
-  String get appeal => 'Appeal';
+  String get appeal => 'Appel';
 
   @override
-  String get submitAppeal => 'Submit Appeal';
+  String get submitAppeal => 'Soumettre un appel';
 
   @override
-  String get bribeJudge => 'Bribe Judge';
+  String get bribeJudge => 'Juge de pots-de-vin';
 
   @override
-  String get bribe => 'Bribe';
+  String get bribe => 'Pot-de-vin';
 
   @override
-  String get treated => 'Treated!';
+  String get treated => 'Traité !';
 
   @override
   String healthRestored(String hp, String cost) {
-    return '+$hp HP for €$cost';
+    return '+$hp HP pour $cost€';
   }
 
   @override
-  String get treatmentOptions => 'Treatment Options';
+  String get treatmentOptions => 'Options de traitement';
 
   @override
-  String get youAreDead => 'You are dead! Game over.';
+  String get youAreDead => 'Tu es mort ! Jeu terminé.';
 
   @override
-  String get emergencyOnly => 'Emergency treatment only available below 10 HP';
+  String get emergencyOnly =>
+      'Traitement d\'urgence uniquement disponible en dessous de 10 HP';
 
   @override
   String emergencyTreatment(String hp) {
-    return 'Emergency treatment! Free +$hp HP';
+    return 'Traitement d\'urgence ! Gratuit +$hp HP';
   }
 
   @override
-  String get byValue => 'By Value';
+  String get byValue => 'Par valeur';
 
   @override
-  String get byCondition => 'By Condition';
+  String get byCondition => 'Par état';
 
   @override
-  String get byFuel => 'By Fuel';
+  String get byFuel => 'Par carburant';
 
   @override
-  String get byName => 'By Name';
+  String get byName => 'Par nom';
 
   @override
-  String get stealCar => 'Steal Car';
+  String get stealCar => 'Voler une voiture';
 
   @override
-  String get stealBoat => 'Steal Boat';
+  String get stealBoat => 'Voler un bateau';
 
   @override
-  String get sellVehicle => 'Sell Vehicle';
+  String get sellVehicle => 'Vendre un véhicule';
 
   @override
-  String get sellBoat => 'Sell Boat';
+  String get sellBoat => 'Vendre un bateau';
 
   @override
   String get confirmSellVehicle =>
-      'Are you sure you want to sell this vehicle?';
+      'Êtes-vous sûr de vouloir vendre ce véhicule ?';
 
   @override
-  String get confirmSellBoat => 'Are you sure you want to sell this boat?';
+  String get confirmSellBoat => 'Etes-vous sûr de vouloir vendre ce bateau ?';
 
   @override
-  String get carStolen => 'Car successfully stolen!';
+  String get carStolen => 'Voiture volée avec succès !';
 
   @override
-  String get boatStolen => 'Boat successfully stolen!';
+  String get boatStolen => 'Bateau volé avec succès !';
 
   @override
-  String get vehicleTypeCar => 'Car';
+  String get vehicleTypeCar => 'Voiture';
 
   @override
-  String get vehicleTypeBoat => 'Boat';
+  String get vehicleTypeBoat => 'Bateau';
 
   @override
   String stolenVehicleTitle(String vehicleType) {
-    return '$vehicleType stolen!';
+    return '$vehicleType volé !';
   }
 
   @override
   String unknownVehicleType(String vehicleType) {
-    return 'Unknown $vehicleType';
+    return 'Inconnu $vehicleType';
   }
 
   @override
-  String get vehicleStatSpeed => 'Speed';
+  String get vehicleStatSpeed => 'Vitesse';
 
   @override
-  String get vehicleStatFuel => 'Fuel';
+  String get vehicleStatFuel => 'Carburant';
 
   @override
-  String get vehicleStatCargo => 'Cargo';
+  String get vehicleStatCargo => 'Cargaison';
 
   @override
-  String get vehicleStatStealth => 'Stealth';
+  String get vehicleStatStealth => 'Furtivité';
 
   @override
-  String get continueAction => 'Continue';
+  String get continueAction => 'Continuer';
 
   @override
-  String get vehicleSold => 'Vehicle successfully sold!';
+  String get vehicleSold => 'Véhicule vendu avec succès !';
 
   @override
-  String get boatSold => 'Boat successfully sold!';
+  String get boatSold => 'Bateau vendu avec succès !';
 
   @override
-  String get garageUpgraded => 'Garage upgraded!';
+  String get garageUpgraded => 'Garage amélioré !';
 
   @override
-  String get marinaUpgraded => 'Marina successfully upgraded!';
+  String get marinaUpgraded => 'Marina a été mise à niveau avec succès !';
 
   @override
-  String get marinaCapacity => 'Marina Capacity';
+  String get marinaCapacity => 'Capacité de la marina';
 
   @override
   String marinaBoatsCount(String current, String total) {
-    return '$current / $total boats';
+    return '$current / $total bateaux';
   }
 
   @override
   String marinaUpgradeWithCost(String cost) {
-    return 'Upgrade (€$cost)';
+    return 'Surclassement ($cost€)';
   }
 
   @override
-  String get marinaMaxLevel => 'Max Level';
+  String get marinaMaxLevel => 'Niveau maximum';
 
   @override
   String marinaLevelRemaining(String level, String remaining) {
-    return 'Level $level | $remaining spots left';
+    return 'Niveau $level | $remaining places restantes';
   }
 
   @override
-  String get noBoatsInMarina => 'No boats in your marina';
+  String get noBoatsInMarina => 'Aucun bateau dans votre marina';
 
   @override
-  String get stealBoatsToStart => 'Steal some boats to get started!';
+  String get stealBoatsToStart => 'Volez des bateaux pour commencer !';
 
   @override
-  String get marinaUpgradeFailed => 'Marina upgrade failed';
+  String get marinaUpgradeFailed => 'La mise à niveau de la marina a échoué';
 
   @override
-  String get boatShipped => 'Boat successfully shipped!';
+  String get boatShipped => 'Bateau expédié avec succès !';
 
   @override
-  String get boatShipFailed => 'Boat shipping failed';
+  String get boatShipFailed => 'L\'expédition par bateau a échoué';
 
   @override
-  String get buyProperty => 'Buy Property';
+  String get buyProperty => 'Acheter une propriété';
 
   @override
   String propertyBought(String name) {
-    return '$name purchased!';
+    return '$name acheté !';
   }
 
   @override
   String propertyUpgraded(String level) {
-    return 'Property upgraded to level $level!';
+    return 'Propriété surclassée au niveau $level !';
   }
 
   @override
-  String get errorLoadingProperties => 'Error loading properties';
+  String get errorLoadingProperties => 'Erreur de chargement des propriétés';
 
   @override
-  String get errorUpgrading => 'Error upgrading';
+  String get errorUpgrading => 'Erreur de mise à niveau';
 
   @override
   String networkError(String error) {
-    return 'Network error: $error';
+    return 'Erreur réseau : $error';
   }
 
   @override
-  String get unknownResponse => 'Unknown response';
+  String get unknownResponse => 'Réponse inconnue';
 
   @override
   String incomeCollected(String amount) {
-    return '€$amount collected!';
+    return '$amount€ collectés !';
   }
 
   @override
-  String get buyCasino => 'Buy Casino';
+  String get buyCasino => 'Acheter un casino';
 
   @override
-  String get manageCasino => 'Manage Casino';
+  String get manageCasino => 'Gérer le casino';
 
   @override
-  String get casinoBought => 'Casino successfully bought! 🎰';
+  String get casinoBought => 'Casino acheté avec succès ! 🎰';
 
   @override
-  String get errorBuyCasino => 'An error occurred while buying the casino';
+  String get errorBuyCasino =>
+      'Une erreur s\'est produite lors de l\'achat du casino';
 
   @override
   String minimumDeposit(String amount) {
-    return 'Minimum deposit is €$amount';
+    return 'Le dépôt minimum est de $amount€';
   }
 
   @override
-  String get casinoInfo1 => 'Players bet against the casino bankroll';
+  String get casinoInfo1 => 'Les joueurs parient contre la bankroll du casino';
 
   @override
-  String get casinoInfo2 => 'Winnings are paid from the bankroll';
+  String get casinoInfo2 => 'Les gains sont payés à partir de la bankroll';
 
   @override
-  String get casinoInfo3 => 'You can deposit and withdraw money';
+  String get casinoInfo3 => 'Vous pouvez déposer et retirer de l\'argent';
 
   @override
-  String get casinoInfo4 => 'Minimum €10,000 in bankroll required';
+  String get casinoInfo4 => 'Minimum 10 000 € de bankroll requis';
 
   @override
-  String get casinoInfo5 => 'Below that: bankruptcy';
+  String get casinoInfo5 => 'En dessous : faillite';
 
   @override
-  String get members => 'Members';
+  String get members => 'Membres';
 
   @override
-  String get location => 'Location';
+  String get location => 'Emplacement';
 
   @override
-  String get level => 'Level';
+  String get level => 'Niveau';
 
   @override
-  String get alreadyFullHealth => 'You are already at full health!';
+  String get alreadyFullHealth => 'Vous êtes déjà en pleine santé !';
 
   @override
-  String get errorTreatment => 'Error during treatment';
+  String get errorTreatment => 'Erreur pendant le traitement';
 
   @override
   String waitMinutes(String minutes) {
-    return 'You must wait $minutes more minutes for the next treatment!';
+    return 'Vous devez attendre $minutes minutes supplémentaires pour le prochain traitement !';
   }
 
   @override
-  String get emergencyHelp => 'Emergency Help';
+  String get emergencyHelp => 'Aide d\'urgence';
 
   @override
   String onlyNeedHp(String hp) {
-    return '(You only need $hp HP)';
+    return '(Vous n\'avez besoin que de $hp HP)';
   }
 
   @override
   String get emergencyInfo =>
-      '• 🊘 Emergency Help is FREE below 10 HP (+20 HP)';
+      '• 🊘 L\'aide d\'urgence est GRATUITE en dessous de 10 HP (+20 HP)';
 
   @override
-  String get hospitalInfo1 => '• Health decreases when committing crimes';
+  String get hospitalInfo1 =>
+      '• La santé diminue lors de la commission de crimes';
 
   @override
-  String get hospitalInfo2 => '• At 0 HP you cannot commit crimes';
+  String get hospitalInfo2 =>
+      '• À 0 HP, vous ne pouvez pas commettre de crimes';
 
   @override
   String hospitalInfo3(String cost) {
-    return '• Treatment costs €$cost per time';
+    return '• Le traitement coûte $cost € par fois.';
   }
 
   @override
   String hospitalInfo4(String amount) {
-    return '• You can restore max $amount HP per treatment';
+    return '• Vous pouvez restaurer un maximum de $amount HP par traitement';
   }
 
   @override
-  String get hospitalInfo5 => '• ⏱️ 1 hour cooldown between treatments';
+  String get hospitalInfo5 =>
+      '• ⏱️ 1 heure de récupération entre les traitements';
 
   @override
   String get hospitalInfo6 =>
-      '• 💚 Passive healing: +5 HP per 5 minutes (if HP > 0)';
+      '• 💚 Guérison passive : +5 HP toutes les 5 minutes (si HP > 0)';
 
   @override
-  String get medicalTreatment => 'Medical Treatment';
+  String get medicalTreatment => 'Traitement médical';
 
   @override
-  String get restoreCritical => 'Restore +20 HP (critical condition)';
+  String get restoreCritical => 'Restaure +20 HP (condition critique)';
 
   @override
   String restoreUp(String amount) {
-    return 'Restore up to $amount HP';
+    return 'Restaurer jusqu\'à $amount HP';
   }
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Coût';
 
   @override
   String crimeErrorToolRequired(String tools) {
-    return '⚒️ You need $tools for this crime';
+    return '⚒️ Il vous faut $tools pour ce crime';
   }
 
   @override
   String crimeErrorToolInStorage(String tools) {
-    return '⚒️ You have $tools, but it\'s at home! Go to Inventory → Transfer';
+    return '⚒️ Vous avez $tools, mais c\'est chez vous ! Allez dans Inventaire → Transfert';
   }
 
   @override
-  String get crimeErrorVehicleRequired => '🚗 This crime requires a vehicle';
+  String get crimeErrorVehicleRequired => '🚗 Ce crime nécessite un véhicule';
 
   @override
-  String get crimeErrorVehicleNotFound => '🚗 Vehicle not found';
+  String get crimeErrorVehicleNotFound => '🚗 Véhicule introuvable';
 
   @override
-  String get crimeErrorNotVehicleOwner => '🚗 You don\'t own this vehicle';
+  String get crimeErrorNotVehicleOwner =>
+      '🚗 Vous n\'êtes pas propriétaire de ce véhicule';
 
   @override
   String get crimeErrorVehicleBroken =>
-      '🚗 Your vehicle is broken and needs repair';
+      '🚗 Votre véhicule est en panne et a besoin d\'être réparé';
 
   @override
-  String get crimeErrorNoFuel => '⛽ Your vehicle has no fuel';
+  String get crimeErrorNoFuel => '⛽ Votre véhicule n\'a plus de carburant';
 
   @override
-  String get crimeErrorLevelTooLow => '⭐ Your level is too low for this crime';
+  String get crimeErrorLevelTooLow =>
+      '⭐ Votre niveau est trop bas pour ce crime';
 
   @override
-  String get crimeErrorInvalidCrimeId => '❌ Invalid crime';
+  String get crimeErrorInvalidCrimeId => '❌ Crime invalide';
 
   @override
-  String get crimeErrorWeaponRequired => '🔫 You need a weapon for this crime';
+  String get crimeErrorWeaponRequired =>
+      '🔫 Vous avez besoin d\'une arme pour ce crime';
 
   @override
   String get crimeErrorWeaponBroken =>
-      '🔫 Your weapon is broken and needs repair';
+      '🔫 Votre arme est cassée et doit être réparée';
 
   @override
-  String get crimeErrorNoAmmo => '🔫 You have no ammo';
+  String get crimeErrorNoAmmo => '🔫 Vous n\'avez pas de munitions';
 
   @override
-  String get crimeErrorGeneric => '❌ Something went wrong with this crime';
+  String get crimeErrorGeneric =>
+      '❌ Quelque chose n\'a pas fonctionné avec ce crime';
 
   @override
   String get inventoryFull =>
-      '🎒 Your inventory is full! Store tools in a property';
+      '🎒 Votre inventaire est plein ! Ranger les outils dans une propriété';
 
   @override
-  String get storageFull => '📦 Property storage is full';
+  String get storageFull => '📦 Le stockage de la propriété est plein';
 
   @override
   String transferSuccess(String tool, String location) {
-    return '✅ $tool moved to $location';
+    return '✅ $tool déplacé vers $location';
   }
 
   @override
-  String get carried => 'Carried';
+  String get carried => 'Adoptée';
 
   @override
-  String get storage => 'Storage';
+  String get storage => 'Stockage';
 
   @override
-  String get property => 'Property';
+  String get property => 'Propriété';
 
   @override
   String inventorySlots(int used, int max) {
-    return '$used / $max slots';
+    return '$used / $max emplacements';
   }
 
   @override
-  String get loadouts => 'Loadouts';
+  String get loadouts => 'Chargements';
 
   @override
-  String get createLoadout => 'Create Loadout';
+  String get createLoadout => 'Créer un chargement';
 
   @override
-  String get equipLoadout => 'Equip';
+  String get equipLoadout => 'Équiper';
 
   @override
-  String get loadoutEquipped => '✅ Loadout equipped';
+  String get loadoutEquipped => '✅ Équipement équipé';
 
   @override
-  String get loadoutMaxReached => '❌ Maximum loadouts reached (5)';
+  String get loadoutMaxReached => '❌ Chargements maximum atteints (5)';
 
   @override
   String loadoutMissingTools(String tools) {
-    return '❌ Missing tools: $tools';
+    return '❌ Outils manquants : $tools';
   }
 
   @override
-  String get backpackUpgrade => 'Backpack Upgrade';
+  String get backpackUpgrade => 'Mise à niveau du sac à dos';
 
   @override
-  String get backpackBasic => 'Basic Backpack (+5 slots)';
+  String get backpackBasic => 'Sac à dos de base (+5 emplacements)';
 
   @override
-  String get backpackTactical => 'Tactical Vest (+10 slots)';
+  String get backpackTactical => 'Gilet tactique (+10 emplacements)';
 
   @override
-  String get backpackCargo => 'Cargo Pants (+3 slots)';
+  String get backpackCargo => 'Pantalon cargo (+3 emplacements)';
 
   @override
-  String get upgradeInventory => 'Upgrade Inventory';
+  String get upgradeInventory => 'Inventaire de mise à niveau';
 
   @override
-  String get noToolsCarried => 'No tools carried';
+  String get noToolsCarried => 'Aucun outil transporté';
 
   @override
-  String get visitShopToBuyTools => 'Visit the shop to buy tools';
+  String get visitShopToBuyTools =>
+      'Visitez la boutique pour acheter des outils';
 
   @override
-  String get noProperties => 'No properties';
+  String get noProperties => 'Aucune propriété';
 
   @override
-  String get buyPropertyForStorage => 'Buy a property to store tools';
+  String get buyPropertyForStorage =>
+      'Acheter une propriété pour stocker des outils';
 
   @override
-  String get noToolsInStorage => 'No tools in storage';
+  String get noToolsInStorage => 'Aucun outil en stock';
 
   @override
-  String get selectProperty => 'Select property';
+  String get selectProperty => 'Sélectionnez une propriété';
 
   @override
-  String get slotsRemaining => 'slots remaining';
+  String get slotsRemaining => 'créneaux restants';
 
   @override
-  String get tools => 'tools';
+  String get tools => 'outils';
 
   @override
-  String get noLoadouts => 'No loadouts';
+  String get noLoadouts => 'Aucun chargement';
 
   @override
-  String get createLoadoutToStart => 'Create a loadout to get started';
+  String get createLoadoutToStart => 'Créez un chargement pour commencer';
 
   @override
-  String get deleteLoadout => 'Delete Loadout';
+  String get deleteLoadout => 'Supprimer le chargement';
 
   @override
   String get confirmDeleteLoadout =>
-      'Are you sure you want to delete this loadout?';
+      'Êtes-vous sûr de vouloir supprimer ce chargement ?';
 
   @override
-  String get loadoutDeleted => 'Loadout deleted';
+  String get loadoutDeleted => 'Chargement supprimé';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Modifier';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Supprimer';
 
   @override
   String get active => 'Active';
 
   @override
-  String get durability => 'Durability';
+  String get durability => 'Durabilité';
 
   @override
-  String get quantity => 'Quantity';
+  String get quantity => 'Quantité';
 
   @override
-  String get slotSize => 'Slot size';
+  String get slotSize => 'Taille de l\'emplacement';
 
   @override
-  String get repairCost => 'Repair cost';
+  String get repairCost => 'Coût de réparation';
 
   @override
-  String get wearPerUse => 'Wear per use';
+  String get wearPerUse => 'Usure par utilisation';
 
   @override
-  String get loseChance => 'Chance to lose';
+  String get loseChance => 'Chance de perdre';
 
   @override
-  String get requiredFor => 'Required for';
+  String get requiredFor => 'Requis pour';
 
   @override
-  String get lowDurability => 'Low durability';
+  String get lowDurability => 'Faible durabilité';
 
   @override
-  String get transfer => 'Transfer';
+  String get transfer => 'Transfert';
 
   @override
-  String get toolDetails => 'Tool Details';
+  String get toolDetails => 'Détails de l\'outil';
 
   @override
-  String get transferTool => 'Transfer Tool';
+  String get transferTool => 'Outil de transfert';
 
   @override
-  String get selectQuantity => 'Select quantity';
+  String get selectQuantity => 'Sélectionnez la quantité';
 
   @override
   String get destination => 'Destination';
 
   @override
-  String get from => 'From';
+  String get from => 'Depuis';
 
   @override
-  String get to => 'To';
+  String get to => 'À';
 
   @override
-  String get editLoadout => 'Edit Loadout';
+  String get editLoadout => 'Modifier l\'équipement';
 
   @override
-  String get loadoutName => 'Loadout Name';
+  String get loadoutName => 'Nom du chargement';
 
   @override
   String get description => 'Description';
 
   @override
-  String get optional => 'optional';
+  String get optional => 'facultative';
 
   @override
-  String get selectedTools => 'Selected tools';
+  String get selectedTools => 'Outils sélectionnés';
 
   @override
-  String get noToolsAvailable => 'No tools available';
+  String get noToolsAvailable => 'Aucun outil disponible';
 
   @override
-  String get create => 'Create';
+  String get create => 'Créer';
 
   @override
-  String get save => 'Save';
+  String get save => 'Sauvegarder';
 
   @override
-  String get pleaseEnterName => 'Please enter a name';
+  String get pleaseEnterName => 'Veuillez entrer un nom';
 
   @override
-  String get pleaseSelectTools => 'Please select at least 1 tool';
+  String get pleaseSelectTools => 'Veuillez sélectionner au moins 1 outil';
 
   @override
-  String get loadoutCreated => 'Loadout created';
+  String get loadoutCreated => 'Chargement créé';
 
   @override
-  String get loadoutUpdated => 'Loadout updated';
+  String get loadoutUpdated => 'Équipement mis à jour';
 
   @override
-  String get goToInventory => 'Go to Inventory';
+  String get goToInventory => 'Aller à l\'inventaire';
 
   @override
-  String get slots => 'slots';
+  String get slots => 'machines à sous';
 
   @override
-  String get backpackShop => 'Backpack Shop';
+  String get backpackShop => 'Boutique de sacs à dos';
 
   @override
-  String get yourBackpack => 'Your backpack';
+  String get yourBackpack => 'Votre sac à dos';
 
   @override
-  String get availableUpgrades => 'Available upgrades';
+  String get availableUpgrades => 'Mises à niveau disponibles';
 
   @override
-  String get otherBackpacks => 'Other backpacks';
+  String get otherBackpacks => 'Autres sacs à dos';
 
   @override
-  String get youHaveBestBackpack => 'You have the best backpack!';
+  String get youHaveBestBackpack => 'Vous avez le meilleur sac à dos !';
 
   @override
-  String get backpackPurchased => 'Backpack purchased!';
+  String get backpackPurchased => 'Sac à dos acheté !';
 
   @override
-  String get backpackUpgraded => 'Backpack upgraded!';
+  String get backpackUpgraded => 'Sac à dos amélioré !';
 
   @override
-  String get buyBackpack => 'Buy';
+  String get buyBackpack => 'Acheter';
 
   @override
-  String get upgradeBackpack => 'Upgrade';
+  String get upgradeBackpack => 'Mise à niveau';
 
   @override
-  String get backpackPrice => 'Price';
+  String get backpackPrice => 'Prix';
 
   @override
-  String get extraSlots => 'Extra slots';
+  String get extraSlots => 'Emplacements supplémentaires';
 
   @override
-  String get totalSlots => 'Total slots';
+  String get totalSlots => 'Emplacements totaux';
 
   @override
-  String get vipOnly => 'VIP only';
+  String get vipOnly => 'VIP uniquement';
 
   @override
-  String get tradeInValue => 'Trade-in value';
+  String get tradeInValue => 'Valeur de reprise';
 
   @override
-  String get upgradeCost => 'Upgrade cost';
+  String get upgradeCost => 'Coût de mise à niveau';
 
   @override
   String rankRequired(Object rank) {
-    return 'Rank $rank required';
+    return 'Rang $rank requis';
   }
 
   @override
   String insufficientFunds(String needed, String have) {
-    return 'You need €$needed. You have €$have';
+    return 'Il vous faut$needed€. Vous avez $have€';
   }
 
   @override
-  String get alreadyHasBackpack => 'You already have a backpack';
+  String get alreadyHasBackpack => 'Vous avez déjà un sac à dos';
 
   @override
-  String get backpackNotFound => 'Backpack not found';
+  String get backpackNotFound => 'Sac à dos introuvable';
 
   @override
-  String get playerNotFound => 'Player not found';
+  String get playerNotFound => 'Joueur introuvable';
 
   @override
-  String get notAnUpgrade => 'This is not an upgrade';
+  String get notAnUpgrade => 'Ce n\'est pas une mise à niveau';
 
   @override
   String backpackPurchasedEvent(Object name, Object slots) {
-    return 'You purchased $name! +$slots slots.';
+    return 'Vous avez acheté $name ! +$slots emplacements.';
   }
 
   @override
   String backpackUpgradedEvent(Object newName, Object upgradeSlots) {
-    return 'Upgraded to $newName! +$upgradeSlots extra slots.';
+    return 'Mis à niveau vers $newName ! +$upgradeSlots emplacements supplémentaires.';
   }
 
   @override
-  String get backpackPurchaseFailedNotFound => 'Backpack not found';
+  String get backpackPurchaseFailedNotFound => 'Sac à dos introuvable';
 
   @override
   String get backpackPurchaseFailedAlready =>
-      'You already have a backpack. You can only use one at a time.';
+      'Vous avez déjà un sac à dos. Vous ne pouvez en utiliser qu’un à la fois.';
 
   @override
   String backpackPurchaseFailedRank(Object current, Object required) {
-    return 'You need rank $required (you are rank $current)';
+    return 'Vous avez besoin du rang $required (vous êtes le rang $current)';
   }
 
   @override
   String backpackPurchaseFailedFunds(Object have, Object needed) {
-    return 'You need €$needed. You have €$have';
+    return 'Il vous faut$needed€. Vous avez $have€';
   }
 
   @override
   String get backpackPurchaseFailedVip =>
-      'This backpack is for VIP members only';
+      'Ce sac à dos est réservé aux membres VIP';
 
   @override
-  String get backpackUpgradeFailedNo => 'You have no backpack to upgrade';
+  String get backpackUpgradeFailedNo =>
+      'Vous n\'avez pas de sac à dos à mettre à niveau';
 
   @override
   String get backpackUpgradeFailedNotUpgrade =>
-      'This is not an upgrade. Choose a larger backpack.';
+      'Il ne s\'agit pas d\'une mise à niveau. Choisissez un sac à dos plus grand.';
 
   @override
   String backpackUpgradeFailedRank(Object current, Object required) {
-    return 'You need rank $required (you are rank $current)';
+    return 'Vous avez besoin du rang $required (vous êtes le rang $current)';
   }
 
   @override
   String backpackUpgradeFailedFunds(Object have, Object needed) {
-    return 'You need €$needed. You have €$have';
+    return 'Il vous faut$needed€. Vous avez $have€';
   }
 
   @override
   String get backpackUpgradeFailedVip =>
-      'This backpack is for VIP members only';
+      'Ce sac à dos est réservé aux membres VIP';
 
   @override
-  String get arrested => 'Arrested!';
+  String get arrested => 'Arrêté!';
 
   @override
   String get jailMessage =>
-      'You were arrested during your journey and all goods were confiscated!';
+      'Vous avez été arrêté pendant votre voyage et toutes les marchandises ont été confisquées !';
 
   @override
-  String get confirmAction => 'Are you sure?';
+  String get confirmAction => 'Es-tu sûr?';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'Oui';
 
   @override
-  String get no => 'No';
+  String get no => 'Non';
 
   @override
-  String get ok => 'OK';
+  String get ok => 'D\'ACCORD';
 
   @override
-  String get travelContinueConfirmTitle => 'Proceed to next leg?';
+  String get travelContinueConfirmTitle => 'Passer à l\'étape suivante ?';
 
   @override
   String get travelContinueConfirmBody =>
-      'Border checks are active. Continue your journey?';
+      'Les contrôles aux frontières sont actifs. Continuer votre voyage ?';
 
   @override
-  String get travelJourneyCompleteTitle => 'Journey complete';
+  String get travelJourneyCompleteTitle => 'Voyage terminé';
 
   @override
   String get travelJourneyCompleteBody =>
-      'You made it safely to your destination.';
+      'Vous êtes arrivé à destination en toute sécurité.';
 
   @override
-  String get hitlist => 'Hit List';
+  String get hitlist => 'Liste des résultats';
 
   @override
   String hitlistLoadError(String error) {
-    return 'Error loading hit list: $error';
+    return 'Erreur lors du chargement de la liste des résultats : $error';
   }
 
   @override
-  String get noActiveHits => 'No active hits placed';
+  String get noActiveHits => 'Aucun coup actif placé';
 
   @override
-  String get selectTarget => 'Select Target';
+  String get selectTarget => 'Sélectionnez la cible';
 
   @override
-  String get searchPlayer => 'Search player...';
+  String get searchPlayer => 'Rechercher un joueur...';
 
   @override
-  String get placeHitTitle => 'Place Hit';
+  String get placeHitTitle => 'Placer le coup';
 
   @override
-  String get minimumBounty => 'Minimum bounty: €50,000';
+  String get minimumBounty => 'Prime minimale : 50 000 €';
 
   @override
-  String get bountyAmount => 'Bounty amount';
+  String get bountyAmount => 'Montant de la prime';
 
   @override
-  String get place => 'Place';
+  String get place => 'Lieu';
 
   @override
   String hitPlaced(String amount) {
-    return 'Hit placed for €$amount';
+    return 'Hit placé pour ⟦0€⟧';
   }
 
   @override
   String hitError(String error) {
-    return 'Error: $error';
+    return 'Erreur : $error';
   }
 
   @override
   String get hitDifferentCountry =>
-      'You must be in the same country as the target';
+      'Vous devez être dans le même pays que la cible';
 
   @override
-  String get counterBountyTitle => 'Place Counter-Bounty';
+  String get counterBountyTitle => 'Placer une contre-bounty';
 
   @override
   String minimumAmount(String amount) {
-    return 'Minimum amount: €$amount';
+    return 'Montant minimum : $amount€';
   }
 
   @override
-  String get counterBountyAmount => 'Counter-bounty amount';
+  String get counterBountyAmount => 'Montant de la contre-prime';
 
   @override
   String counterBountyPlaced(String amount) {
-    return 'Counter-bounty of €$amount placed';
+    return 'Contre-bounty de $amount€ placé';
   }
 
   @override
-  String get cancelHitConfirmTitle => 'Cancel hit?';
+  String get cancelHitConfirmTitle => 'Annuler l\'appel ?';
 
   @override
-  String get cancelHitConfirmBody => 'Your bounty will be refunded.';
+  String get cancelHitConfirmBody => 'Votre prime sera remboursée.';
 
   @override
-  String get hitCancelled => 'Hit cancelled';
+  String get hitCancelled => 'Appel annulé';
 
   @override
-  String get target => 'Target';
+  String get target => 'Cible';
 
   @override
-  String get placer => 'Placer';
+  String get placer => 'Placeuse';
 
   @override
-  String get bounty => 'Bounty';
+  String get bounty => 'Prime';
 
   @override
-  String get counterBid => 'COUNTER-BID';
+  String get counterBid => 'CONTRE-OFFRE';
 
   @override
   String get counterBidPlaced =>
-      'Counter-bid placed! The contract has been reversed.';
+      'Contre-enchère placée ! Le contrat a été annulé.';
 
   @override
-  String get attemptHit => 'Attempt Hit';
+  String get attemptHit => 'Tentative de frappe';
 
   @override
-  String get selectWeapon => 'Select Weapon and Ammo';
+  String get selectWeapon => 'Sélectionnez l\'arme et les munitions';
 
   @override
-  String get youAreTargeted => 'You are on the hit list';
+  String get youAreTargeted => 'Vous êtes sur la liste noire';
 
   @override
-  String get security => 'Security';
+  String get security => 'Sécurité';
 
   @override
-  String get currentDefense => 'Current Defense';
+  String get currentDefense => 'Défense actuelle';
 
   @override
-  String get totalDefense => 'Total Defense';
+  String get totalDefense => 'Défense totale';
 
   @override
-  String get currentArmor => 'Current Armor';
+  String get currentArmor => 'Armure actuelle';
 
   @override
-  String get bodyguards => 'Bodyguards';
+  String get bodyguards => 'Gardes du corps';
 
   @override
-  String get buyBodyguards => 'Buy Bodyguards';
+  String get buyBodyguards => 'Acheter des gardes du corps';
 
   @override
-  String get bodyguardPrice => 'Price per Bodyguard';
+  String get bodyguardPrice => 'Prix ​​par garde du corps';
 
   @override
-  String get armor => 'Armor';
+  String get armor => 'Armure';
 
   @override
-  String get protectorsFollow => 'Protectors that follow you';
+  String get protectorsFollow => 'Des protecteurs qui vous suivent';
 
   @override
-  String get eachGivesDefense => 'Each gives +10 defense';
+  String get eachGivesDefense => 'Chacun donne +10 en défense';
 
   @override
-  String get lightArmor => 'Light Armor';
+  String get lightArmor => 'Armure légère';
 
   @override
-  String get basicProtection => 'Basic protection';
+  String get basicProtection => 'Protection de base';
 
   @override
-  String get heavyArmor => 'Heavy Armor';
+  String get heavyArmor => 'Armure lourde';
 
   @override
-  String get strongProtection => 'Strong protection';
+  String get strongProtection => 'Forte protection';
 
   @override
-  String get bulletproofVest => 'Bulletproof Vest';
+  String get bulletproofVest => 'Gilet pare-balles';
 
   @override
-  String get veryStrongProtection => 'Very strong protection';
+  String get veryStrongProtection => 'Protection très forte';
 
   @override
-  String get tacticalSuit => 'Tactical Outfit';
+  String get tacticalSuit => 'Tenue tactique';
 
   @override
-  String get premiumProtection => 'Premium protection';
+  String get premiumProtection => 'Protection haut de gamme';
 
   @override
-  String get defense => 'Defense';
+  String get defense => 'Défense';
 
   @override
   String defenseIncrease(String armor, String defense) {
-    return 'You purchased $armor! +$defense defense';
+    return 'Vous avez acheté $armor ! +$defense défense';
   }
 
   @override
-  String get worn => 'Worn';
+  String get worn => 'Porté';
 
   @override
-  String get hit => 'HIT';
+  String get hit => 'FRAPPER';
 
   @override
-  String get counterBidLabel => 'COUNTER-BID';
+  String get counterBidLabel => 'CONTRE-OFFRE';
 
   @override
   String daysAgo(String count, String plural) {
-    return '$count day$plural ago';
+    return 'Il y a $count jour$plural';
   }
 
   @override
   String hoursAgo(String count) {
-    return '$count hours ago';
+    return 'Il y a $count heures';
   }
 
   @override
   String minutesAgo(String count) {
-    return '$count minutes ago';
+    return 'il y a $count minutes';
   }
 
   @override
-  String get justPlaced => 'Just placed';
+  String get justPlaced => 'Je viens de placer';
 
   @override
-  String get youAreTheTarget => 'You are the target';
+  String get youAreTheTarget => 'Vous êtes la cible';
 
   @override
-  String get youAreThePlacer => 'You are the placer';
+  String get youAreThePlacer => 'Tu es le placeur';
 
   @override
   String get onlyTargetCanCounterBid =>
-      'Only the target can place a counter-bid';
+      'Seule la cible peut faire une contre-offre';
 
   @override
-  String get executeHit => 'Execute Hit';
+  String get executeHit => 'Exécuter le coup';
 
   @override
-  String get moneyNotEnough => 'You don\'t have enough money';
+  String get moneyNotEnough => 'Tu n\'as pas assez d\'argent';
 
   @override
-  String get securityScreen => 'Security';
+  String get securityScreen => 'Sécurité';
 
   @override
-  String get currentDefenseStatus => 'Current Defense Status';
+  String get currentDefenseStatus => 'État de défense actuel';
 
   @override
-  String get noWeapons => 'You have no weapons in your inventory';
+  String get noWeapons => 'Vous n\'avez aucune arme dans votre inventaire';
 
   @override
-  String get ammoQuantity => 'Ammo Quantity';
+  String get ammoQuantity => 'Quantité de munitions';
 
   @override
-  String get noAmmoRequired => 'No ammunition required for this weapon';
+  String get noAmmoRequired => 'Aucune munition requise pour cette arme';
 
   @override
-  String get weaponStats => 'Weapon Stats';
+  String get weaponStats => 'Statistiques des armes';
 
   @override
-  String get damage => 'Damage';
+  String get damage => 'Dommage';
 
   @override
   String get intimidation => 'Intimidation';
 
   @override
-  String get execute => 'Execute';
+  String get execute => 'Exécuter';
 
   @override
-  String get hitExecuted => 'Hit executed successfully!';
+  String get hitExecuted => 'Frappe exécutée avec succès !';
 
   @override
-  String get invalidAmmo => 'Please enter valid ammo quantity';
+  String get invalidAmmo => 'Veuillez entrer une quantité de munitions valide';
 
   @override
-  String get weaponsMarket => 'Weapons Market';
+  String get weaponsMarket => 'Marché des armes';
 
   @override
-  String get ammoMarket => 'Ammo Market';
+  String get ammoMarket => 'Marché des munitions';
 
   @override
-  String get shootingRange => 'Shooting Range';
+  String get shootingRange => 'Champ de tir';
 
   @override
-  String get ammoFactory => 'Ammo Factory';
+  String get ammoFactory => 'Usine de munitions';
 
   @override
-  String get weaponShop => 'Weapon Shop';
+  String get weaponShop => 'Magasin d\'armes';
 
   @override
-  String get myWeapons => 'My Weapons';
+  String get myWeapons => 'Mes armes';
 
   @override
-  String get weaponPurchased => 'Weapon purchased';
+  String get weaponPurchased => 'Arme achetée';
 
   @override
   String weaponRankRequired(String rank) {
-    return 'Rank required: $rank';
+    return 'Rang requis : $rank';
   }
 
   @override
-  String get buyWeapon => 'Buy';
+  String get buyWeapon => 'Acheter';
 
   @override
-  String get ammoShop => 'Ammo Market';
+  String get ammoShop => 'Marché des munitions';
 
   @override
-  String get myAmmo => 'My Ammo';
+  String get myAmmo => 'Mes munitions';
 
   @override
-  String get ammoPurchased => 'Ammo purchased';
+  String get ammoPurchased => 'Munitions achetées';
 
   @override
-  String get purchaseCooldown => 'You must wait before the next purchase';
+  String get purchaseCooldown => 'Vous devez attendre avant le prochain achat';
 
   @override
-  String get insufficientStock => 'Not enough stock available';
+  String get insufficientStock => 'Pas assez de stock disponible';
 
   @override
-  String get maxInventoryReached => 'Maximum inventory capacity reached';
+  String get maxInventoryReached => 'Capacité maximale d\'inventaire atteinte';
 
   @override
-  String get invalidQuantity => 'Invalid quantity';
+  String get invalidQuantity => 'Quantité invalide';
 
   @override
-  String get nextAmmoPurchase => 'Next purchase available in';
+  String get nextAmmoPurchase => 'Prochain achat disponible dans';
 
   @override
-  String get ammoBoxes => 'Boxes';
+  String get ammoBoxes => 'Boîtes';
 
   @override
   String ammoRoundsPerBox(String rounds) {
-    return '$rounds rounds per box';
+    return '$rounds tours par boîte';
   }
 
   @override
   String ammoYouWillReceive(String rounds) {
-    return 'You will receive: $rounds rounds';
+    return 'Vous recevrez : $rounds tours';
   }
 
   @override
   String ammoTotalCost(String cost) {
-    return 'Total cost: €$cost';
+    return 'Coût total : $cost€';
   }
 
   @override
-  String get ammoRounds => 'rounds';
+  String get ammoRounds => 'tours';
 
   @override
-  String get ammoBoxesUnit => 'boxes';
+  String get ammoBoxesUnit => 'boîtes';
 
   @override
-  String get ammoStock => 'Stock';
+  String get ammoStock => 'Action';
 
   @override
-  String get ammoQuality => 'Quality';
+  String get ammoQuality => 'Qualité';
 
   @override
-  String get factoryBought => 'Factory purchased';
+  String get factoryBought => 'Acheté en usine';
 
   @override
-  String get factoryProduced => 'Production updated';
+  String get factoryProduced => 'Production mise à jour';
 
   @override
   String get factorySessionStarted =>
-      'Production started: active for 8 hours, claim every 10 minutes';
+      'Production démarrée : actif pendant 8 heures, réclamation toutes les 10 minutes';
 
   @override
-  String get ammoFactoryTitle => 'Ammo Factory';
+  String get ammoFactoryTitle => 'Usine de munitions';
 
   @override
   String get ammoFactoryIntro =>
-      'Produces in batches; you claim every 10 minutes (up to 8 hours of backlog per session).';
+      'Produit par lots ; vous réclamez toutes les 10 minutes (jusqu\'à 8 heures de retard par session).';
 
   @override
-  String get ammoFactoryWhatYouCanDo => 'What you can do:';
+  String get ammoFactoryWhatYouCanDo => 'Ce que vous pouvez faire :';
 
   @override
-  String get ammoFactoryActionBuy => 'Buy a factory in your current country';
+  String get ammoFactoryActionBuy => 'Achetez une usine dans votre pays actuel';
 
   @override
   String get ammoFactoryActionProduce =>
-      'Claim production (interval: 10 minutes, max backlog: 8 hours per session)';
+      'Production des réclamations (intervalle : 10 minutes, backlog max : 8 heures par session)';
 
   @override
   String get ammoFactoryActionOutput =>
-      'Upgrade output to level 5 for more rounds per claim';
+      'Améliorez la sortie au niveau 5 pour plus de tours par réclamation';
 
   @override
   String get ammoFactoryActionQuality =>
-      'Upgrade quality for stronger market prices';
+      'Améliorez la qualité pour des prix de marché plus élevés';
 
   @override
-  String get factoryUpgradeOutputSuccess => 'Output upgraded';
+  String get factoryUpgradeOutputSuccess => 'Sortie améliorée';
 
   @override
-  String get factoryUpgradeQualitySuccess => 'Quality upgraded';
+  String get factoryUpgradeQualitySuccess => 'Qualité améliorée';
 
   @override
-  String get myFactory => 'My Factory';
+  String get myFactory => 'Mon usine';
 
   @override
-  String get noFactoryOwned => 'You do not own a factory';
+  String get noFactoryOwned => 'Vous ne possédez pas d\'usine';
 
   @override
-  String get factoryCountry => 'Country';
+  String get factoryCountry => 'Pays';
 
   @override
-  String get factoryOutputLevel => 'Output level';
+  String get factoryOutputLevel => 'Niveau de sortie';
 
   @override
-  String get factoryQualityLevel => 'Quality level';
+  String get factoryQualityLevel => 'Niveau de qualité';
 
   @override
-  String get factoryLastProduced => 'Last produced';
+  String get factoryLastProduced => 'Dernière production';
 
   @override
-  String get factoryProduceStatusLabel => 'Produce status';
+  String get factoryProduceStatusLabel => 'Statut du produit';
 
   @override
-  String get factoryProduceStatusReady => 'Ready';
+  String get factoryProduceStatusReady => 'Prêt';
 
   @override
-  String get factoryProduceStatusCooldown => 'Cooldown';
+  String get factoryProduceStatusCooldown => 'Refroidir';
 
   @override
   String get factorySessionActive =>
-      'Production window: active (10 min interval)';
+      'Fenêtre de production : active (intervalle de 10 min)';
 
   @override
   String get factorySessionStopped =>
-      'Production window: stopped (click Produce to start a new 8-hour window)';
+      'Fenêtre de production : arrêtée (cliquez sur Produire pour démarrer une nouvelle fenêtre de 8 heures)';
 
   @override
   String factorySessionEndsIn(String duration) {
-    return 'Window ends in: $duration';
+    return 'La fenêtre se termine par : $duration';
   }
 
   @override
   String get factoryNextProductionReady =>
-      'Next production: available now (press Produce to claim)';
+      'Prochaine production : disponible maintenant (appuyez sur Produire pour réclamer)';
 
   @override
   String factoryNextProductionIn(String duration) {
-    return 'Next production in: $duration';
+    return 'Prochaine production en : $duration';
   }
 
   @override
-  String get factoryProduce => 'Produce';
+  String get factoryProduce => 'Produire';
 
   @override
-  String get factoryUpgradeOutput => 'Upgrade Output';
+  String get factoryUpgradeOutput => 'Sortie de mise à niveau';
 
   @override
-  String get factoryUpgradeQuality => 'Upgrade Quality';
+  String get factoryUpgradeQuality => 'Améliorer la qualité';
 
   @override
-  String get factoryList => 'Factories by Country';
+  String get factoryList => 'Usines par pays';
 
   @override
-  String get factoryUnowned => 'Available';
+  String get factoryUnowned => 'Disponible';
 
   @override
   String factoryOwnedBy(String owner) {
-    return 'Owner: $owner';
+    return 'Propriétaire : $owner';
   }
 
   @override
-  String get factoryBuy => 'Buy';
+  String get factoryBuy => 'Acheter';
 
   @override
-  String get shootingTrainSuccess => 'Training complete';
+  String get shootingTrainSuccess => 'Formation terminée';
 
   @override
   String shootingSessions(String count) {
-    return 'Sessions: $count/100';
+    return 'Séances : $count/100';
   }
 
   @override
   String shootingAccuracyBonus(String bonus) {
-    return 'Accuracy bonus: $bonus%';
+    return 'Bonus de précision : $bonus%';
   }
 
   @override
   String shootingCooldown(String time) {
-    return 'Next session at $time';
+    return 'Prochaine séance à $time';
   }
 
   @override
-  String get shootingTrain => 'Train';
+  String get shootingTrain => 'Former';
 
   @override
-  String get gym => 'Gym';
+  String get gym => 'Salle de sport';
 
   @override
-  String get gymTrainSuccess => 'Training complete';
+  String get gymTrainSuccess => 'Formation terminée';
 
   @override
   String gymSessions(String count) {
-    return 'Sessions: $count/100';
+    return 'Séances : $count/100';
   }
 
   @override
   String gymStrengthBonus(String bonus) {
-    return 'Strength bonus: $bonus%';
+    return 'Bonus de force : $bonus%';
   }
 
   @override
   String gymCooldown(String time) {
-    return 'Next session at $time';
+    return 'Prochaine séance à $time';
   }
 
   @override
-  String get gymTrain => 'Train';
+  String get gymTrain => 'Former';
 
   @override
-  String get buyAmmo => 'Buy Ammo';
+  String get buyAmmo => 'Acheter des munitions';
 
   @override
   String factoryPurchaseCost(String cost) {
-    return 'Purchase Cost: €$cost';
+    return 'Coût d\'achat : $cost€';
   }
 
   @override
   String factoryProductionOutput(String amount) {
-    return 'Output per cycle: $amount units';
+    return 'Sortie par cycle : $amount unités';
   }
 
   @override
   String factoryQualityMultiplier(String multiplier) {
-    return 'Quality Multiplier: ${multiplier}x';
+    return 'Multiplicateur de qualité : ${multiplier}x';
   }
 
   @override
   String upgradeOutputCost(String cost, String nextAmount) {
-    return 'Upgrade Output - Cost: €$cost, Next Output: $nextAmount';
+    return 'Sortie de mise à niveau - Coût : $cost €, Sortie suivante : $nextAmount';
   }
 
   @override
   String upgradeQualityCost(String cost, String nextQuality) {
-    return 'Upgrade Quality - Cost: €$cost, Next Quality: ${nextQuality}x';
+    return 'Qualité de mise à niveau - Coût : $cost €, Qualité suivante : ${nextQuality}x';
   }
 
   @override
-  String get factoryCostLabel => 'Cost';
+  String get factoryCostLabel => 'Coût';
 
   @override
-  String get factoryCurrentOutput => 'Current Output';
+  String get factoryCurrentOutput => 'Sortie actuelle';
 
   @override
-  String get factoryNextOutput => 'Next Output';
+  String get factoryNextOutput => 'Sortie suivante';
 
   @override
-  String get factoryCurrentQuality => 'Current Quality';
+  String get factoryCurrentQuality => 'Qualité actuelle';
 
   @override
-  String get factoryNextQuality => 'Next Quality';
+  String get factoryNextQuality => 'Qualité suivante';
 
   @override
-  String get factoryUnitsPerCycle => 'units/8h max';
+  String get factoryUnitsPerCycle => 'unités/8h maximum';
 
   @override
-  String get factoryUnitsPerHour => 'units/hour';
+  String get factoryUnitsPerHour => 'unités/heure';
 
   @override
-  String get factoryUpgradeMaxLevel => 'Factory is at max level';
+  String get factoryUpgradeMaxLevel => 'L\'usine est au niveau maximum';
 
   @override
   String get countryUsa => 'USA';
 
   @override
-  String get countryMexico => 'Mexico';
+  String get countryMexico => 'Mexique';
 
   @override
-  String get countryColombia => 'Colombia';
+  String get countryColombia => 'Colombie';
 
   @override
-  String get countryBrazil => 'Brazil';
+  String get countryBrazil => 'Brésil';
 
   @override
-  String get countryArgentina => 'Argentina';
+  String get countryArgentina => 'Argentine';
 
   @override
-  String get countryJapan => 'Japan';
+  String get countryJapan => 'Japon';
 
   @override
-  String get countryChina => 'China';
+  String get countryChina => 'Chine';
 
   @override
-  String get countryRussia => 'Russia';
+  String get countryRussia => 'Russie';
 
   @override
-  String get countryIndia => 'India';
+  String get countryIndia => 'Inde';
 
   @override
-  String get countryAustralia => 'Australia';
+  String get countryAustralia => 'Australie';
 
   @override
-  String get countrySouthAfrica => 'South Africa';
+  String get countrySouthAfrica => 'Afrique du Sud';
 
   @override
   String get countryCanada => 'Canada';
 
   @override
-  String get toolBoltCutter => 'Bolt Cutter';
+  String get toolBoltCutter => 'Coupe-boulon';
 
   @override
-  String get toolCarTheftTools => 'Car Theft Tools';
+  String get toolCarTheftTools => 'Outils de vol de voiture';
 
   @override
-  String get toolBurglaryKit => 'Burglary Kit';
+  String get toolBurglaryKit => 'Kit anti-effraction';
 
   @override
-  String get toolToolbox => 'Toolbox';
+  String get toolToolbox => 'Boîte à outils';
 
   @override
-  String get toolCrowbar => 'Crowbar';
+  String get toolCrowbar => 'Pied de biche';
 
   @override
-  String get toolGlassCutter => 'Glass Cutter';
+  String get toolGlassCutter => 'Coupe-verre';
 
   @override
-  String get toolSprayPaint => 'Spray Paint';
+  String get toolSprayPaint => 'Peinture en aérosol';
 
   @override
-  String get toolJerryCan => 'Jerry Can';
+  String get toolJerryCan => 'Jerry peut';
 
   @override
-  String get toolFakeDocuments => 'Fake Documents';
+  String get toolFakeDocuments => 'Faux documents';
 
   @override
-  String get toolHackingLaptop => 'Hacking Laptop';
+  String get toolHackingLaptop => 'Piratage d\'un ordinateur portable';
 
   @override
-  String get toolCounterfeitingKit => 'Counterfeiting Kit';
+  String get toolCounterfeitingKit => 'Kit de contrefaçon';
 
   @override
-  String get toolRope => 'Rope';
+  String get toolRope => 'Corde';
 
   @override
-  String get toolSilencer => 'Silencer';
+  String get toolSilencer => 'Silencieux';
 
   @override
-  String get toolNightVision => 'Night Vision';
+  String get toolNightVision => 'Vision nocturne';
 
   @override
-  String get toolGpsJammer => 'GPS Jammer';
+  String get toolGpsJammer => 'Brouilleur GPS';
 
   @override
-  String get toolBurnerPhone => 'Burner Phone';
+  String get toolBurnerPhone => 'Téléphone graveur';
 
   @override
-  String get crimeOutcomeSuccess => 'Crime successful!';
+  String get crimeOutcomeSuccess => 'Crime réussi !';
 
   @override
-  String get crimeOutcomeCaught => 'Caught by police';
+  String get crimeOutcomeCaught => 'Arrêté par la police';
 
   @override
   String get crimeOutcomeVehicleBreakdownBefore =>
-      'Your vehicle broke down before reaching the crime scene';
+      'Votre véhicule est en panne avant d\'arriver sur les lieux du crime';
 
   @override
   String get crimeOutcomeVehicleBreakdownDuring =>
-      'Vehicle broke down during escape - abandoned most loot';
+      'Le véhicule est tombé en panne lors d\'une évasion - la plupart du butin a été abandonné';
 
   @override
   String get crimeOutcomeOutOfFuel =>
-      'Ran out of fuel during escape - fled on foot, lost loot and vehicle';
+      'Manque de carburant lors de l\'évasion - fuite à pied, perte du butin et du véhicule';
 
   @override
   String get crimeOutcomeToolBroke =>
-      'Your tool broke during the crime, leaving evidence';
+      'Votre outil s\'est cassé pendant le crime, laissant des preuves';
 
   @override
-  String get crimeOutcomeFledNoLoot => 'Fled the scene without loot';
+  String get crimeOutcomeFledNoLoot => 'J\'ai fui les lieux sans butin';
 
   @override
   String get vehicleCondition => 'Condition';
 
   @override
-  String get vehicleFuel => 'Fuel';
+  String get vehicleFuel => 'Carburant';
 
   @override
-  String get vehicleSpeed => 'Speed';
+  String get vehicleSpeed => 'Vitesse';
 
   @override
-  String get vehicleArmor => 'Armor';
+  String get vehicleArmor => 'Armure';
 
   @override
-  String get vehicleStealth => 'Stealth';
+  String get vehicleStealth => 'Furtivité';
 
   @override
-  String get vehicleCargo => 'Cargo';
+  String get vehicleCargo => 'Cargaison';
 
   @override
-  String get vehicleRepair => 'Repair';
+  String get vehicleRepair => 'Réparation';
 
   @override
-  String get vehicleRefuel => 'Refuel';
+  String get vehicleRefuel => 'Ravitailler';
 
   @override
-  String get selectCrimeVehicle => 'Select Vehicle for Crimes';
+  String get selectCrimeVehicle => 'Sélectionnez le véhicule pour les crimes';
 
   @override
-  String get noVehicleSelected => 'No vehicle selected';
+  String get noVehicleSelected => 'Aucun véhicule sélectionné';
 
   @override
-  String get selectedVehicle => 'Crime Vehicle';
+  String get selectedVehicle => 'Véhicule criminel';
 
   @override
-  String get changeVehicle => 'Change Vehicle';
+  String get changeVehicle => 'Changer de véhicule';
 
   @override
-  String get selectVehicle => 'Select Vehicle';
+  String get selectVehicle => 'Sélectionnez un véhicule';
 
   @override
-  String get vehicleConditionLow => 'Vehicle Condition Low';
+  String get vehicleConditionLow => 'État du véhicule faible';
 
   @override
-  String get vehicleFuelLow => 'Vehicle Fuel Low';
+  String get vehicleFuelLow => 'Carburant du véhicule faible';
 
   @override
-  String get vehicleSelectedForCrimes => 'Vehicle selected for crimes!';
+  String get vehicleSelectedForCrimes =>
+      'Véhicule sélectionné pour des crimes !';
 
   @override
-  String get vehicleDeselectedForCrimes => 'Vehicle deselected for crimes!';
+  String get vehicleDeselectedForCrimes =>
+      'Véhicule désélectionné pour crimes !';
 
   @override
   String get vehicleWrongCountry =>
-      'Vehicle must be in the same country as you';
+      'Le véhicule doit être dans le même pays que vous';
 
   @override
-  String get failedSelectVehicle => 'Failed to select vehicle';
+  String get failedSelectVehicle => 'Échec de la sélection du véhicule';
 
   @override
-  String get failedDeselectVehicle => 'Failed to deselect vehicle';
+  String get failedDeselectVehicle => 'Échec de la désélection du véhicule';
 
   @override
-  String get selectedForCrimesBadge => 'Selected for crimes';
+  String get selectedForCrimesBadge => 'Sélectionné pour des crimes';
 
   @override
-  String get selectedButton => 'Selected';
+  String get selectedButton => 'Choisie';
 
   @override
-  String get selectButton => 'Select';
+  String get selectButton => 'Sélectionner';
 
   @override
-  String get deselectButton => 'Deselect';
+  String get deselectButton => 'Désélectionner';
 
   @override
   String get prostitutionTitle => 'Prostitution';
 
   @override
-  String get prostitutionTotal => 'Total';
+  String get prostitutionTotal => 'Totale';
 
   @override
-  String get prostitutionStreet => 'On Street';
+  String get prostitutionStreet => 'Dans la rue';
 
   @override
-  String get prostitutionRedLight => 'Red Light';
+  String get prostitutionRedLight => 'Lumière rouge';
 
   @override
-  String get prostitutionPotentialEarnings => 'Earnings';
+  String get prostitutionPotentialEarnings => 'Gains';
 
   @override
-  String get prostitutionCollect => 'Collect';
+  String get prostitutionCollect => 'Collecter';
 
   @override
-  String get prostitutionRecruit => 'Recruit';
+  String get prostitutionRecruit => 'Recruter';
 
   @override
-  String get prostitutionMyProstitutes => 'My Prostitutes';
+  String get prostitutionMyProstitutes => 'Mes prostituées';
 
   @override
-  String get prostitutionRedLightDistricts => 'Red Light Districts';
+  String get prostitutionRedLightDistricts => 'Quartiers rouges';
 
   @override
-  String get prostitutionNoProstitutes => 'No prostitutes recruited yet';
+  String get prostitutionNoProstitutes =>
+      'Aucune prostituée recrutée pour l\'instant';
 
   @override
-  String get prostitutionLocation => 'Location';
+  String get prostitutionLocation => 'Emplacement';
 
   @override
-  String get prostitutionMoveToRedLight => 'Move to Red Light';
+  String get prostitutionMoveToRedLight => 'Passer au feu rouge';
 
   @override
-  String get prostitutionMoveToRldShort => 'To RLD';
+  String get prostitutionMoveToRldShort => 'Vers RLD';
 
   @override
-  String get prostitutionMoveToStreet => 'Move to Street';
+  String get prostitutionMoveToStreet => 'Déplacer vers la rue';
 
   @override
-  String get prostitutionViewDistricts => 'View Districts';
+  String get prostitutionViewDistricts => 'Voir les quartiers';
 
   @override
-  String get prostitutionAvailable => 'Available';
+  String get prostitutionAvailable => 'Disponible';
 
   @override
-  String get prostitutionMyDistricts => 'My Districts';
+  String get prostitutionMyDistricts => 'Mes quartiers';
 
   @override
-  String get prostitutionCurrentRLD => 'Current RLD';
+  String get prostitutionCurrentRLD => 'RLD actuel';
 
   @override
-  String get prostitutionMyRLDs => 'My RLDs';
+  String get prostitutionMyRLDs => 'Mes RLD';
 
   @override
-  String get prostitutionNoAvailableDistricts => 'No districts available';
+  String get prostitutionNoAvailableDistricts => 'Aucun quartier disponible';
 
   @override
-  String get prostitutionNoOwnedDistricts => 'You don\'t own any districts yet';
+  String get prostitutionNoOwnedDistricts =>
+      'Vous ne possédez pas encore de quartiers';
 
   @override
-  String get prostitutionRooms => 'rooms';
+  String get prostitutionRooms => 'chambres';
 
   @override
-  String get prostitutionOccupancy => 'Occupancy';
+  String get prostitutionOccupancy => 'Occupation';
 
   @override
-  String get prostitutionIncome => 'Income';
+  String get prostitutionIncome => 'Revenu';
 
   @override
-  String get prostitutionTenants => 'Tenants';
+  String get prostitutionTenants => 'Locataires';
 
   @override
-  String get prostitutionBuy => 'Buy';
+  String get prostitutionBuy => 'Acheter';
 
   @override
-  String get prostitutionManage => 'Manage';
+  String get prostitutionManage => 'Gérer';
 
   @override
-  String get prostitutionPurchaseConfirmTitle => 'Buy District';
+  String get prostitutionPurchaseConfirmTitle => 'Acheter Quartier';
 
   @override
   String prostitutionPurchaseConfirmMessage(String country, int price) {
-    return 'Are you sure you want to buy the Red Light District in $country for €$price?';
+    return 'Etes-vous sûr de vouloir acheter le Quartier Rouge à $country pour $price€ ?';
   }
 
   @override
-  String get prostitutionPurchase => 'Buy';
+  String get prostitutionPurchase => 'Acheter';
 
   @override
-  String get prostitutionPurchaseSuccess => 'District purchased successfully!';
+  String get prostitutionPurchaseSuccess => 'Quartier acheté avec succès !';
 
   @override
-  String get prostitutionPurchaseFailed => 'Purchase failed';
+  String get prostitutionPurchaseFailed => 'L\'achat a échoué';
 
   @override
-  String get prostitutionDistrictManagement => 'District Management';
+  String get prostitutionDistrictManagement => 'Gestion de district';
 
   @override
-  String get prostitutionDistrictNotFound => 'District not found';
+  String get prostitutionDistrictNotFound => 'Quartier introuvable';
 
   @override
-  String get back => 'Back';
+  String get back => 'Dos';
 
   @override
   String prostitutionMoveToStreetConfirm(String name) {
-    return 'Are you sure you want to move $name from the Red Light District to the street?';
+    return 'Êtes-vous sûr de vouloir déplacer le $name du quartier rouge vers la rue ?';
   }
 
   @override
-  String get prostitutionMoveSuccess => 'Successfully moved';
+  String get prostitutionMoveSuccess => 'Déplacement réussi';
 
   @override
-  String get prostitutionMoveFailed => 'Move failed';
+  String get prostitutionMoveFailed => 'Le déplacement a échoué';
 
   @override
   String get prostitutionNoStreetProstitutes =>
-      'No prostitutes available on the street';
+      'Aucune prostituée disponible dans la rue';
 
   @override
-  String get prostitutionSelectProstitute => 'Select Prostitute';
+  String get prostitutionSelectProstitute => 'Sélectionnez une prostituée';
 
   @override
-  String get prostitutionOnStreet => 'On street';
+  String get prostitutionOnStreet => 'Dans la rue';
 
   @override
-  String get prostitutionRoom => 'Room';
+  String get prostitutionRoom => 'Chambre';
 
   @override
-  String get prostitutionInRedLight => 'In Red Light District';
+  String get prostitutionInRedLight => 'Dans le quartier rouge';
 
   @override
-  String get prostitutionEarnings => 'Earnings';
+  String get prostitutionEarnings => 'Gains';
 
   @override
-  String get prostitutionRent => 'Rent';
+  String get prostitutionRent => 'Louer';
 
   @override
-  String get prostitutionNetIncome => 'Net Income';
+  String get prostitutionNetIncome => 'Revenu net';
 
   @override
-  String get prostitutionLevel => 'Level';
+  String get prostitutionLevel => 'Niveau';
 
   @override
-  String get prostitutionXpToNext => 'XP to next level';
+  String get prostitutionXpToNext => 'XP au niveau suivant';
 
   @override
-  String get prostitutionBusted => 'BUSTED';
+  String get prostitutionBusted => 'CASSÉE';
 
   @override
-  String get prostitutionBustedCount => 'Times busted';
+  String get prostitutionBustedCount => 'Des temps brisés';
 
   @override
-  String get prostitutionLevelBonus => 'Level bonus';
+  String get prostitutionLevelBonus => 'Bonus de niveau';
 
   @override
-  String get prostitutionVipBonus => 'VIP bonus: +50% earnings';
+  String get prostitutionVipBonus => 'Bonus VIP : +50% de gains';
 
   @override
-  String get prostitutionUpgradeTier => 'Upgrade Tier';
+  String get prostitutionUpgradeTier => 'Niveau de mise à niveau';
 
   @override
-  String get prostitutionUpgradeSecurity => 'Upgrade Security';
+  String get prostitutionUpgradeSecurity => 'Mettre à niveau la sécurité';
 
   @override
-  String get prostitutionTier => 'Tier';
+  String get prostitutionTier => 'Étage';
 
   @override
-  String get prostitutionSecurity => 'Security';
+  String get prostitutionSecurity => 'Sécurité';
 
   @override
-  String get prostitutionTierBasic => 'Basic';
+  String get prostitutionTierBasic => 'Basique';
 
   @override
-  String get prostitutionTierLuxury => 'Luxury';
+  String get prostitutionTierLuxury => 'Luxe';
 
   @override
   String get prostitutionTierVip => 'VIP';
 
   @override
-  String get prostitutionSecurityLevel => 'Security Level';
+  String get prostitutionSecurityLevel => 'Niveau de sécurité';
 
   @override
-  String get prostitutionRaidChance => 'Raid Chance';
+  String get prostitutionRaidChance => 'Chances de raid';
 
   @override
-  String get prostitutionMaxTier => 'Max tier reached';
+  String get prostitutionMaxTier => 'Niveau maximum atteint';
 
   @override
-  String get prostitutionMaxSecurity => 'Max security reached';
+  String get prostitutionMaxSecurity => 'Sécurité maximale atteinte';
 
   @override
-  String get prostitutionUpgradeSuccess => 'Upgrade successful!';
+  String get prostitutionUpgradeSuccess => 'Mise à niveau réussie !';
 
   @override
-  String get prostitutionUpgradeFailed => 'Upgrade failed';
+  String get prostitutionUpgradeFailed => 'La mise à niveau a échoué';
 
   @override
-  String get vipEventsTitle => 'VIP Events';
+  String get vipEventsTitle => 'Événements VIP';
 
   @override
-  String get vipEventsTabTitle => 'VIP Events';
+  String get vipEventsTabTitle => 'Événements VIP';
 
   @override
   String get vipEventsDescription =>
-      'Assign prostitutes to VIP events for bonus earnings!';
+      'Assignez des prostituées à des événements VIP pour gagner des bonus !';
 
   @override
-  String get vipEventsActive => 'Active Events';
+  String get vipEventsActive => 'Événements actifs';
 
   @override
-  String get vipEventsUpcoming => 'Upcoming Events';
+  String get vipEventsUpcoming => 'Événements à venir';
 
   @override
-  String get vipEventsMyParticipations => 'My Active Participations';
+  String get vipEventsMyParticipations => 'Mes participations actives';
 
   @override
-  String get vipEventTypeTitle => 'VIP Event';
+  String get vipEventTypeTitle => 'Événement VIP';
 
   @override
-  String get vipEventCelebrity => 'Celebrity Visit';
+  String get vipEventCelebrity => 'Visite de célébrité';
 
   @override
-  String get vipEventBachelor => 'Bachelor Party';
+  String get vipEventBachelor => 'Enterrement de vie de garçon';
 
   @override
   String get vipEventConvention => 'Convention';
@@ -3021,146 +3059,148 @@ class AppLocalizationsFr extends AppLocalizations {
   String get vipEventFestival => 'Festival';
 
   @override
-  String get vipEventBonus => 'BONUS';
+  String get vipEventBonus => 'PRIME';
 
   @override
-  String get vipEventSpots => 'spots';
+  String get vipEventSpots => 'taches';
 
   @override
-  String get vipEventParticipants => 'Participants';
+  String get vipEventParticipants => 'Participantes';
 
   @override
-  String get vipEventFull => 'EVENT FULL';
+  String get vipEventFull => 'ÉVÉNEMENT COMPLET';
 
   @override
-  String get vipEventRequires => 'Requires';
+  String get vipEventRequires => 'Nécessite';
 
   @override
-  String get vipEventLevel => 'Level';
+  String get vipEventLevel => 'Niveau';
 
   @override
-  String get vipEventLocation => 'Location';
+  String get vipEventLocation => 'Emplacement';
 
   @override
-  String get vipEventEndsIn => 'Ends in';
+  String get vipEventEndsIn => 'Se termine dans';
 
   @override
-  String get vipEventStartsIn => 'Starts in';
+  String get vipEventStartsIn => 'Commence dans';
 
   @override
-  String get vipEventNoActive => 'No active events at the moment';
+  String get vipEventNoActive => 'Aucun événement actif pour le moment';
 
   @override
-  String get vipEventNoUpcoming => 'No upcoming events';
+  String get vipEventNoUpcoming => 'Aucun événement à venir';
 
   @override
-  String get vipEventAssignProstitute => 'Assign Prostitute';
+  String get vipEventAssignProstitute => 'Attribuer une prostituée';
 
   @override
-  String get vipEventAssignDialogTitle => 'Assign to';
+  String get vipEventAssignDialogTitle => 'Attribuer à';
 
   @override
   String vipEventNoEligible(int level, String country) {
-    return 'No eligible prostitutes. Need level $level+ in $country';
+    return 'Aucune prostituée éligible. Besoin du niveau $level+ en $country';
   }
 
   @override
-  String get vipEventJoinSuccess => 'Joined event!';
+  String get vipEventJoinSuccess => 'Événement rejoint !';
 
   @override
-  String get vipEventJoinFailed => 'Failed to join event';
+  String get vipEventJoinFailed => 'Impossible de rejoindre l\'événement';
 
   @override
-  String get vipEventLeave => 'Leave Event';
+  String get vipEventLeave => 'Quitter l\'événement';
 
   @override
-  String get vipEventLeaveSuccess => 'Left event';
+  String get vipEventLeaveSuccess => 'Événement gauche';
 
   @override
-  String get vipEventLeaveFailed => 'Could not leave event';
+  String get vipEventLeaveFailed => 'Impossible de quitter l\'événement';
 
   @override
-  String get vipEventAssigned => 'Assigned';
+  String get vipEventAssigned => 'Attribué';
 
   @override
-  String get vipEventPerHour => '/hour';
+  String get vipEventPerHour => '/heure';
 
   @override
-  String get vipEventEarnings => 'Earnings';
+  String get vipEventEarnings => 'Gains';
 
   @override
-  String get prostitutionLeaderboardTitle => 'Prostitution Leaderboard';
+  String get prostitutionLeaderboardTitle => 'Classement de la prostitution';
 
   @override
-  String get prostitutionLeaderboardWeekly => 'Weekly';
+  String get prostitutionLeaderboardWeekly => 'Hebdomadaire';
 
   @override
-  String get prostitutionLeaderboardMonthly => 'Monthly';
+  String get prostitutionLeaderboardMonthly => 'Mensuelle';
 
   @override
-  String get prostitutionLeaderboardAllTime => 'All-Time';
+  String get prostitutionLeaderboardAllTime => 'De tous les temps';
 
   @override
-  String get prostitutionLeaderboardYourRank => 'Your Weekly Rank';
+  String get prostitutionLeaderboardYourRank => 'Votre classement hebdomadaire';
 
   @override
-  String get prostitutionLeaderboardUnranked => 'Unranked';
+  String get prostitutionLeaderboardUnranked => 'Non classé';
 
   @override
-  String get prostitutionLeaderboardNoData => 'No leaderboard data yet';
+  String get prostitutionLeaderboardNoData =>
+      'Aucune donnée de classement pour l\'instant';
 
   @override
-  String get prostitutionLeaderboardButton => 'Leaderboard';
+  String get prostitutionLeaderboardButton => 'Classement';
 
   @override
-  String get prostitutionRivalryButton => 'Rivalry';
+  String get prostitutionRivalryButton => 'Rivalité';
 
   @override
-  String get prostitutionLeaderboardAchievements => 'Achievements';
+  String get prostitutionLeaderboardAchievements => 'Réalisations';
 
   @override
-  String get prostitutionLeaderboardLoadFailed => 'Could not load leaderboard';
+  String get prostitutionLeaderboardLoadFailed =>
+      'Impossible de charger le classement';
 
   @override
-  String get achievementsTitle => 'Achievements';
+  String get achievementsTitle => 'Réalisations';
 
   @override
   String achievementsProgress(int unlocked, int total) {
-    return '$unlocked of $total unlocked';
+    return '$unlocked sur $total débloqué';
   }
 
   @override
-  String get achievementsCategoryAll => 'All';
+  String get achievementsCategoryAll => 'Toute';
 
   @override
   String get achievementsCategoryProgression => 'Progression';
 
   @override
-  String get achievementsCategoryWealth => 'Wealth';
+  String get achievementsCategoryWealth => 'Richesse';
 
   @override
-  String get achievementsCategoryPower => 'Power';
+  String get achievementsCategoryPower => 'Pouvoir';
 
   @override
-  String get achievementsCategorySocial => 'Social';
+  String get achievementsCategorySocial => 'Sociale';
 
   @override
-  String get achievementsCategoryMastery => 'Mastery';
+  String get achievementsCategoryMastery => 'Maîtrise';
 
   @override
-  String get achievementLocked => 'Locked';
+  String get achievementLocked => 'Fermée';
 
   @override
-  String get achievementReward => 'Reward';
+  String get achievementReward => 'Récompense';
 
   @override
-  String get achievementUnlocked => 'Unlocked';
+  String get achievementUnlocked => 'Débloqué';
 
   @override
-  String get achievementNoData => 'No achievements found';
+  String get achievementNoData => 'Aucune réalisation trouvée';
 
   @override
-  String get achievementLoadFailed => 'Could not load achievements';
+  String get achievementLoadFailed => 'Impossible de charger les réalisations';
 
   @override
   String achievementsMoney(String amount) {
@@ -3174,201 +3214,205 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String achievementsUnlockedDate(String date) {
-    return 'Unlocked on $date';
+    return 'Débloqué le $date';
   }
 
   @override
   String achievementsDetailProgress(int current, int required) {
-    return 'Progress: $current/$required';
+    return 'Progression : $current/$required';
   }
 
   @override
-  String get achievementsNoRewardConfigured => 'No reward configured yet';
+  String get achievementsNoRewardConfigured =>
+      'Aucune récompense configurée pour le moment';
 
   @override
   String get achievementsRewardOnUnlock =>
-      'You receive this reward once the achievement is unlocked.';
+      'Vous recevez cette récompense une fois le succès débloqué.';
 
   @override
-  String get achievementsDateToday => 'Today';
+  String get achievementsDateToday => 'Aujourd\'hui';
 
   @override
-  String get achievementsDateYesterday => 'Yesterday';
+  String get achievementsDateYesterday => 'Hier';
 
   @override
   String achievementsDateDaysAgo(int days) {
-    return '$days days ago';
+    return 'il y a $days jours';
   }
 
   @override
-  String get achievementsDetails => 'Details';
+  String get achievementsDetails => 'Détails';
 
   @override
-  String get achievementsCategory => 'Category';
+  String get achievementsCategory => 'Catégorie';
 
   @override
-  String get achievementJobItSpecialistTitle => 'IT Specialist';
+  String get achievementJobItSpecialistTitle => 'Spécialiste informatique';
 
   @override
   String get achievementJobItSpecialistDescription =>
-      'Complete your first shift as a Programmer';
+      'Terminez votre premier quart de travail en tant que programmeur';
 
   @override
-  String get achievementJobLawyerTitle => 'Street Lawyer';
+  String get achievementJobLawyerTitle => 'Avocat de rue';
 
   @override
   String get achievementJobLawyerDescription =>
-      'Complete your first shift as a Lawyer';
+      'Complétez votre premier quart de travail en tant qu\'avocat';
 
   @override
-  String get achievementJobDoctorTitle => 'Underground Doctor';
+  String get achievementJobDoctorTitle => 'Docteur souterrain';
 
   @override
   String get achievementJobDoctorDescription =>
-      'Complete your first shift as a Doctor';
+      'Terminez votre premier quart de travail en tant que médecin';
 
   @override
-  String get achievementSchoolCertifiedTitle => 'Certified Student';
+  String get achievementSchoolCertifiedTitle => 'Étudiant certifié';
 
   @override
   String get achievementSchoolCertifiedDescription =>
-      'Earn 3 school certifications';
+      'Gagnez 3 certifications scolaires';
 
   @override
-  String get achievementSchoolMultiCertifiedTitle => 'Multi-Certified';
+  String get achievementSchoolMultiCertifiedTitle => 'Multi-certifié';
 
   @override
   String get achievementSchoolMultiCertifiedDescription =>
-      'Earn 6 school certifications';
+      'Gagnez 6 certifications scolaires';
 
   @override
-  String get achievementSchoolTrackSpecialistTitle => 'Track Specialist';
+  String get achievementSchoolTrackSpecialistTitle => 'Spécialiste de la piste';
 
   @override
   String get achievementSchoolTrackSpecialistDescription =>
-      'Max out 3 school tracks';
+      'Maximisez 3 pistes scolaires';
 
   @override
-  String get schoolMenuLabel => 'School';
+  String get schoolMenuLabel => 'École';
 
   @override
-  String get schoolMenuSubtitle => 'Level your education and certifications';
+  String get schoolMenuSubtitle =>
+      'Améliorez votre formation et vos certifications';
 
   @override
-  String get schoolTitle => 'School & Education';
+  String get schoolTitle => 'École et éducation';
 
   @override
   String get schoolIntro =>
-      'Unlock jobs and assets through levels and certifications.';
+      'Débloquez des emplois et des atouts grâce à des niveaux et des certifications.';
 
   @override
-  String get schoolTracksTitle => 'Available educations';
+  String get schoolTracksTitle => 'Formations disponibles';
 
   @override
-  String get schoolUnlockableContentTitle => 'Locked educations';
+  String get schoolUnlockableContentTitle => 'Des formations verrouillées';
 
   @override
   String schoolOverallLevelLabel(int level) {
-    return 'School level: $level';
+    return 'Niveau scolaire : $level';
   }
 
   @override
   String schoolLoadError(String error) {
-    return 'Could not load school data: $error';
+    return 'Impossible de charger les données de l\'école : $error';
   }
 
   @override
   String schoolTrackLevelLabel(int current, int max) {
-    return 'Lv $current/$max';
+    return 'Niv $current/$max';
   }
 
   @override
   String schoolXpLabel(int xp) {
-    return 'XP: $xp';
+    return 'XP : $xp';
   }
 
   @override
   String schoolCertificationRequiredLevel(String name, int level) {
-    return '$name (Lv $level)';
+    return '$name (Niv $level)';
   }
 
   @override
-  String get schoolGateStatusOpen => 'OPEN';
+  String get schoolGateStatusOpen => 'OUVRIR';
 
   @override
-  String get schoolGateStatusLocked => 'LOCKED';
+  String get schoolGateStatusLocked => 'FERMÉE';
 
   @override
   String schoolGateRankProgress(int current, int required) {
-    return 'Player rank: $current/$required';
+    return 'Rang du joueur : $current/$required';
   }
 
   @override
   String schoolGateTrackLevelProgress(String track, int current, int required) {
-    return '$track level: $current/$required';
+    return 'Niveau $track : $current/$required';
   }
 
   @override
   String schoolGateJobTarget(String target) {
-    return 'Job: $target';
+    return 'Emploi : $target';
   }
 
   @override
-  String get schoolGateAssetCasinoPurchase => 'Asset: Casino purchase';
+  String get schoolGateAssetCasinoPurchase => 'Atout : Achat de casino';
 
   @override
   String get schoolGateAssetAmmoFactoryPurchase =>
-      'Asset: Ammo factory purchase';
+      'Atout : achat d\'usine de munitions';
 
   @override
-  String get schoolGateAssetAmmoOutputUpgrade => 'Asset: Ammo output upgrade';
+  String get schoolGateAssetAmmoOutputUpgrade =>
+      'Atout : mise à niveau de la sortie de munitions';
 
   @override
-  String get schoolGateAssetAmmoQualityUpgrade => 'Asset: Ammo quality upgrade';
+  String get schoolGateAssetAmmoQualityUpgrade =>
+      'Atout : amélioration de la qualité des munitions';
 
   @override
   String schoolGateAssetGeneric(String target) {
-    return 'Asset: $target';
+    return 'Actif : $target';
   }
 
   @override
   String schoolGateSystemGeneric(String type, String target) {
-    return '$type: $target';
+    return '$type : $target';
   }
 
   @override
-  String get educationDialogDefaultTitle => '🔒 Education required';
+  String get educationDialogDefaultTitle => '🔒 Éducation requise';
 
   @override
   String get educationDialogFallbackMessage =>
-      'Requirements not met. Complete education requirements to continue.';
+      'Exigences non remplies. Remplissez les exigences de formation pour continuer.';
 
   @override
-  String get educationDialogClose => 'Close';
+  String get educationDialogClose => 'Fermer';
 
   @override
   String get educationLockedJobsSectionTitle =>
-      '🔒 Locked jobs (education required)';
+      '🔒 Emplois verrouillés (formation requise)';
 
   @override
   String get educationAmmoOutputUpgradeLockedTitle =>
-      '🔒 Output upgrade locked';
+      '🔒 Mise à niveau de sortie verrouillée';
 
   @override
   String get educationAmmoQualityUpgradeLockedTitle =>
-      '🔒 Quality upgrade locked';
+      '🔒 Amélioration de la qualité verrouillée';
 
   @override
   String get educationAmmoFactoryPurchaseLockedTitle =>
-      '🔒 Factory purchase locked';
+      '🔒 Achat d\'usine verrouillé';
 
   @override
   String educationRequirementRankProgress(int requiredRank, int currentRank) {
-    return 'Need player rank $requiredRank · Current player rank $currentRank';
+    return 'Besoin du rang du joueur $requiredRank · Classement actuel du joueur $currentRank';
   }
 
   @override
-  String get educationRequirementTrackLevelTitle => 'Education level';
+  String get educationRequirementTrackLevelTitle => 'Niveau d\'éducation';
 
   @override
   String educationRequirementTrackLevelProgress(
@@ -3376,945 +3420,950 @@ class AppLocalizationsFr extends AppLocalizations {
     int requiredLevel,
     int currentLevel,
   ) {
-    return '$trackName level $requiredLevel required · Current $currentLevel';
+    return '$trackName niveau $requiredLevel requis · Actuel $currentLevel';
   }
 
   @override
-  String get educationRequirementCertificationTitle => 'Certification required';
+  String get educationRequirementCertificationTitle => 'Certification requise';
 
   @override
-  String get educationRequirementGenericTitle => 'Requirement';
+  String get educationRequirementGenericTitle => 'Exigence';
 
   @override
-  String get educationRequirementUnknown => 'Unknown requirement';
+  String get educationRequirementUnknown => 'Exigence inconnue';
 
   @override
   String get educationTrackNameAviation => 'Aviation';
 
   @override
-  String get educationTrackNameLaw => 'Law';
+  String get educationTrackNameLaw => 'Loi';
 
   @override
-  String get educationTrackNameMedicine => 'Medicine';
+  String get educationTrackNameMedicine => 'Médecine';
 
   @override
   String get educationTrackNameFinance => 'Finance';
 
   @override
-  String get educationTrackNameEngineering => 'Engineering';
+  String get educationTrackNameEngineering => 'Ingénierie';
 
   @override
-  String get educationTrackNameIt => 'IT';
+  String get educationTrackNameIt => 'IL';
 
   @override
   String get schoolTrackDescriptionAviation =>
-      'Flight theory, navigation, and aircraft operation.';
+      'Théorie du vol, navigation et exploitation des aéronefs.';
 
   @override
   String get schoolTrackDescriptionLaw =>
-      'Criminal law, procedure, and courtroom practice.';
+      'Droit pénal, procédure et pratique judiciaire.';
 
   @override
   String get schoolTrackDescriptionMedicine =>
-      'Emergency response, diagnostics, and medical practice.';
+      'Intervention d\'urgence, diagnostic et pratique médicale.';
 
   @override
   String get schoolTrackDescriptionFinance =>
-      'Accounting, investment, and business operations.';
+      'Comptabilité, investissement et opérations commerciales.';
 
   @override
   String get schoolTrackDescriptionEngineering =>
-      'Mechanical systems, industrial safety, and manufacturing.';
+      'Systèmes mécaniques, sécurité industrielle et fabrication.';
 
   @override
   String get schoolTrackDescriptionIt =>
-      'Software development, systems, and network operations.';
+      'Développement de logiciels, systèmes et opérations réseau.';
 
   @override
   String schoolTrackCooldownActive(int seconds) {
-    return 'Cooldown active: ${seconds}s remaining';
+    return 'Temps de recharge actif : ${seconds}s restants';
   }
 
   @override
-  String get schoolTrackMaxLevelReached => 'Track is already at max level';
+  String get schoolTrackMaxLevelReached =>
+      'La piste est déjà au niveau maximum';
 
   @override
-  String get schoolTrackStartFailed => 'Failed to start training';
+  String get schoolTrackStartFailed => 'Échec du démarrage de la formation';
 
   @override
-  String get educationCertSoftwareEngineer => 'Software Engineer Certification';
+  String get educationCertSoftwareEngineer =>
+      'Certification d\'ingénieur logiciel';
 
   @override
-  String get educationCertBarExam => 'Bar Exam';
+  String get educationCertBarExam => 'Examen du Barreau';
 
   @override
-  String get educationCertMedicalLicense => 'Medical License';
+  String get educationCertMedicalLicense => 'Licence médicale';
 
   @override
-  String get educationCertFlightCommercial => 'Commercial Flight License';
+  String get educationCertFlightCommercial => 'Licence de vol commercial';
 
   @override
-  String get educationCertFlightBasic => 'Basic Flight License';
+  String get educationCertFlightBasic => 'Licence de vol de base';
 
   @override
-  String get educationCertIndustrialSafety => 'Industrial Safety Certification';
+  String get educationCertIndustrialSafety =>
+      'Certification de sécurité industrielle';
 
   @override
-  String get educationCertFinancialAnalyst => 'Financial Analyst Certification';
+  String get educationCertFinancialAnalyst =>
+      'Certification d\'analyste financier';
 
   @override
-  String get educationCertCasinoManagement => 'Casino Management Certification';
+  String get educationCertCasinoManagement =>
+      'Certification en gestion de casino';
 
   @override
-  String get educationCertParamedic => 'Paramedic Certification';
+  String get educationCertParamedic => 'Certification paramédicale';
 
   @override
-  String get prostitutionLeaderboardProstitutesUnit => 'prostitutes';
+  String get prostitutionLeaderboardProstitutesUnit => 'prostituées';
 
   @override
-  String get prostitutionLeaderboardDistrictsUnit => 'districts';
+  String get prostitutionLeaderboardDistrictsUnit => 'quartiers';
 
   @override
-  String get rivalryTitle => 'Rivalry';
+  String get rivalryTitle => 'Rivalité';
 
   @override
-  String get rivalryChallengeTitle => 'Challenge Player';
+  String get rivalryChallengeTitle => 'Joueur de défi';
 
   @override
-  String get rivalryChallengeHint => 'Enter a player ID to start a rivalry.';
+  String get rivalryChallengeHint =>
+      'Entrez un identifiant de joueur pour démarrer une rivalité.';
 
   @override
-  String get rivalryPlayerIdHint => 'Player ID';
+  String get rivalryPlayerIdHint => 'Identifiant du joueur';
 
   @override
-  String get rivalryStartButton => 'Start';
+  String get rivalryStartButton => 'Commencer';
 
   @override
-  String get rivalryNoActive => 'No active rivalries yet.';
+  String get rivalryNoActive => 'Aucune rivalité active pour l’instant.';
 
   @override
-  String get rivalryActiveTitle => 'Active Rivals';
+  String get rivalryActiveTitle => 'Rivaux actifs';
 
   @override
-  String get rivalryScoreLabel => 'Rivalry score';
+  String get rivalryScoreLabel => 'Score de rivalité';
 
   @override
-  String get rivalryRecentActivity => 'Recent Activity';
+  String get rivalryRecentActivity => 'Activité récente';
 
   @override
-  String get rivalryNoActivity => 'No sabotage activity yet';
+  String get rivalryNoActivity => 'Aucune activité de sabotage pour l\'instant';
 
   @override
-  String get rivalryCooldownReady => 'Sabotage ready';
+  String get rivalryCooldownReady => 'Prêt pour le sabotage';
 
   @override
   String rivalryCooldownIn(String duration) {
-    return 'Cooldown: $duration';
+    return 'Temps de recharge : $duration';
   }
 
   @override
-  String get rivalryActionTipPolice => 'Tip Police (€5k)';
+  String get rivalryActionTipPolice => 'Pourboire à la police (5 000 €)';
 
   @override
-  String get rivalryActionStealCustomer => 'Steal Customer (€3k)';
+  String get rivalryActionStealCustomer => 'Voler un client (3 000 €)';
 
   @override
-  String get rivalryActionDamageReputation => 'Damage Reputation (€10k)';
+  String get rivalryActionDamageReputation =>
+      'Dommages à la réputation (10 000 €)';
 
   @override
-  String get rivalryActionBribeEmployee => 'Bribe Employee (€8k)';
+  String get rivalryActionBribeEmployee => 'Pot-de-vin à un employé (8 000 €)';
 
   @override
-  String get rivalryUpdateMessage => 'Rivalry updated';
+  String get rivalryUpdateMessage => 'Rivalité mise à jour';
 
   @override
-  String get rivalrySabotageExecuted => 'Sabotage executed';
+  String get rivalrySabotageExecuted => 'Sabotage exécuté';
 
   @override
-  String get rivalryConfirmTitle => 'Confirm sabotage';
+  String get rivalryConfirmTitle => 'Confirmer le sabotage';
 
   @override
   String rivalryConfirmTarget(String username) {
-    return 'Target: $username';
+    return 'Cible : $username';
   }
 
   @override
   String rivalryConfirmAction(String action) {
-    return 'Action: $action';
+    return 'Action : $action';
   }
 
   @override
   String rivalryConfirmCost(int amount) {
-    return 'Cost: €$amount';
+    return 'Coût : $amount€';
   }
 
   @override
   String rivalryConfirmEffect(String effect) {
-    return 'Effect: $effect';
+    return 'Effet : $effect';
   }
 
   @override
   String get rivalryConfirmWarning =>
-      'Success is not guaranteed and you can lose money.';
+      'Le succès n’est pas garanti et vous pouvez perdre de l’argent.';
 
   @override
-  String get rivalryExecuteButton => 'Execute';
+  String get rivalryExecuteButton => 'Exécuter';
 
   @override
-  String get rivalryEffectTipPolice => 'Increase rival police pressure';
+  String get rivalryEffectTipPolice => 'Augmenter la pression policière rivale';
 
   @override
-  String get rivalryEffectStealCustomer => 'Steal part of rival cashflow';
+  String get rivalryEffectStealCustomer =>
+      'Voler une partie des liquidités du rival';
 
   @override
-  String get rivalryEffectDamageReputation => 'Lower rival prostitute progress';
+  String get rivalryEffectDamageReputation =>
+      'Diminution des progrès des prostituées rivales';
 
   @override
   String get rivalryEffectBribeEmployee =>
-      'Force one rival prostitute into busted state';
+      'Forcer une prostituée rivale à se retrouver en faillite';
 
   @override
-  String get prostitutionUnderAttackTitle => 'Your empire is under attack';
+  String get prostitutionUnderAttackTitle => 'Votre empire est attaqué';
 
   @override
   String prostitutionUnderAttackBody(String attacker, String action) {
-    return '$attacker used $action against you in the last 24h.';
+    return '$attacker a utilisé $action contre vous au cours des dernières 24h.';
   }
 
   @override
-  String get prostitutionUnderAttackAction => 'Open rivalry';
+  String get prostitutionUnderAttackAction => 'Rivalité ouverte';
 
   @override
-  String get rivalryProtectionTitle => 'Protection Insurance';
+  String get rivalryProtectionTitle => 'Assurance protection';
 
   @override
   String get rivalryProtectionDescription =>
-      'Reduces incoming sabotage impact by 30% for 7 days.';
+      'Réduit l\'impact des sabotages entrants de 30 % pendant 7 jours.';
 
   @override
-  String get rivalryProtectionInactive => 'No active protection';
+  String get rivalryProtectionInactive => 'Aucune protection active';
 
   @override
   String rivalryProtectionActive(String date) {
-    return 'Active until: $date';
+    return 'Actif jusqu\'à : $date';
   }
 
   @override
-  String get rivalryProtectionBuy => 'Buy protection (€25k/week)';
+  String get rivalryProtectionBuy => 'Acheter une protection (25k€/semaine)';
 
   @override
-  String get rivalryProtectionActivated => 'Protection insurance activated';
+  String get rivalryProtectionActivated => 'Assurance protection activée';
 
   @override
-  String get achievementTitle_first_steps => 'First Steps';
+  String get achievementTitle_first_steps => 'Premiers pas';
 
   @override
   String get achievementDescription_first_steps =>
-      'Recruit your first prostitute';
+      'Recrutez votre première prostituée';
 
   @override
-  String get achievementTitle_growing_empire => 'Growing Empire';
+  String get achievementTitle_growing_empire => 'Empire grandissant';
 
   @override
-  String get achievementDescription_growing_empire => 'Recruit 5 prostitutes';
+  String get achievementDescription_growing_empire => 'Recruter 5 prostituées';
 
   @override
-  String get achievementTitle_first_district => 'First District';
+  String get achievementTitle_first_district => 'Premier District';
 
   @override
   String get achievementDescription_first_district =>
-      'Purchase your first red light district';
+      'Achetez votre premier quartier rouge';
 
   @override
-  String get achievementTitle_empire_builder => 'Empire Builder';
+  String get achievementTitle_empire_builder => 'Bâtisseur d\'Empire';
 
   @override
   String get achievementDescription_empire_builder =>
-      'Own 5 red light districts';
+      'Posséder 5 quartiers rouges';
 
   @override
-  String get achievementTitle_district_master => 'District Master';
+  String get achievementTitle_district_master => 'Maître de District';
 
   @override
   String get achievementDescription_district_master =>
-      'Own 10 red light districts';
+      'Posséder 10 quartiers rouges';
 
   @override
-  String get achievementTitle_leveling_master => 'Leveling Master';
+  String get achievementTitle_leveling_master => 'Maître de mise à niveau';
 
   @override
   String get achievementDescription_leveling_master =>
-      'Max out a prostitute to level 10';
+      'Maximisez une prostituée au niveau 10';
 
   @override
-  String get achievementTitle_untouchable => 'Untouchable';
+  String get achievementTitle_untouchable => 'Intouchable';
 
   @override
   String get achievementDescription_untouchable =>
-      'Never get busted for 7 consecutive days';
+      'Ne vous laissez jamais arrêter pendant 7 jours consécutifs';
 
   @override
-  String get achievementTitle_millionaire => 'Millionaire';
+  String get achievementTitle_millionaire => 'Millionnaire';
 
   @override
   String get achievementDescription_millionaire =>
-      'Accumulate €1,000,000 total earnings';
+      'Accumulez 1 000 000 € de gains totaux';
 
   @override
-  String get achievementTitle_high_roller => 'High Roller';
+  String get achievementTitle_high_roller => 'Gros rouleau';
 
   @override
   String get achievementDescription_high_roller =>
-      'Accumulate €5,000,000 total earnings';
+      'Accumulez 5 000 000 € de gains totaux';
 
   @override
-  String get achievementTitle_vip_service => 'VIP Service';
+  String get achievementTitle_vip_service => 'Service VIP';
 
   @override
-  String get achievementDescription_vip_service => 'Complete 10 VIP events';
+  String get achievementDescription_vip_service => 'Terminez 10 événements VIP';
 
   @override
-  String get achievementTitle_event_enthusiast => 'Event Enthusiast';
+  String get achievementTitle_event_enthusiast => 'Passionné d\'événements';
 
   @override
   String get achievementDescription_event_enthusiast =>
-      'Complete 25 VIP events';
+      'Terminez 25 événements VIP';
 
   @override
-  String get achievementTitle_security_expert => 'Security Expert';
+  String get achievementTitle_security_expert => 'Expert en sécurité';
 
   @override
   String get achievementDescription_security_expert =>
-      'Maximize security level on all owned districts';
+      'Maximiser le niveau de sécurité sur tous les districts possédés';
 
   @override
-  String get achievementTitle_luxury_provider => 'Luxury Provider';
+  String get achievementTitle_luxury_provider => 'Fournisseur de luxe';
 
   @override
   String get achievementDescription_luxury_provider =>
-      'Upgrade 3 districts to VIP tier';
+      'Améliorez 3 districts au niveau VIP';
 
   @override
-  String get achievementTitle_rivalry_victor => 'Rivalry Victor';
+  String get achievementTitle_rivalry_victor => 'Rivalité Victor';
 
   @override
   String get achievementDescription_rivalry_victor =>
-      'Successfully sabotage rivals 10 times';
+      'Saboter vos rivaux avec succès 10 fois';
 
   @override
-  String get achievementTitle_untouchable_rival => 'Untouchable Rival';
+  String get achievementTitle_untouchable_rival => 'Rival intouchable';
 
   @override
   String get achievementDescription_untouchable_rival =>
-      'Defend against 20 sabotage attempts';
+      'Se défendre contre 20 tentatives de sabotage';
 
   @override
-  String get achievementTitle_crime_first_blood => 'Crime First Blood';
+  String get achievementTitle_crime_first_blood => 'Crime Premier Sang';
 
   @override
   String get achievementDescription_crime_first_blood =>
-      'Successfully complete your first crime';
+      'Réussissez votre premier crime';
 
   @override
-  String get achievementTitle_crime_hustler => 'Crime Hustler';
+  String get achievementTitle_crime_hustler => 'arnaqueur de crime';
 
   @override
-  String get achievementDescription_crime_hustler =>
-      'Successfully complete 5 crimes';
+  String get achievementDescription_crime_hustler => 'Réussissez 5 crimes';
 
   @override
-  String get achievementTitle_crime_novice => 'Crime Novice';
+  String get achievementTitle_crime_novice =>
+      'Débutant en matière de criminalité';
 
   @override
-  String get achievementDescription_crime_novice =>
-      'Successfully complete 10 crimes';
+  String get achievementDescription_crime_novice => 'Réussissez 10 crimes';
 
   @override
-  String get achievementTitle_crime_operator => 'Crime Operator';
+  String get achievementTitle_crime_operator => 'Opérateur du crime';
 
   @override
-  String get achievementDescription_crime_operator =>
-      'Successfully complete 25 crimes';
+  String get achievementDescription_crime_operator => 'Réussissez 25 crimes';
 
   @override
-  String get achievementTitle_crime_wave => 'Crime Wave';
+  String get achievementTitle_crime_wave => 'Vague de criminalité';
 
   @override
-  String get achievementDescription_crime_wave =>
-      'Successfully complete 50 crimes';
+  String get achievementDescription_crime_wave => 'Réussissez 50 crimes';
 
   @override
-  String get achievementTitle_crime_mastermind => 'Crime Mastermind';
+  String get achievementTitle_crime_mastermind => 'Cerveau du crime';
 
   @override
-  String get achievementDescription_crime_mastermind =>
-      'Successfully complete 100 crimes';
+  String get achievementDescription_crime_mastermind => 'Réussissez 100 crimes';
 
   @override
-  String get achievementTitle_the_godfather => 'The Godfather';
+  String get achievementTitle_the_godfather => 'Le parrain';
 
   @override
-  String get achievementDescription_the_godfather =>
-      'Successfully complete 250 crimes';
+  String get achievementDescription_the_godfather => 'Réussissez 250 crimes';
 
   @override
-  String get achievementTitle_crime_emperor => 'Crime Emperor';
+  String get achievementTitle_crime_emperor => 'Empereur du crime';
 
   @override
-  String get achievementDescription_crime_emperor =>
-      'Successfully complete 500 crimes';
+  String get achievementDescription_crime_emperor => 'Réussissez 500 crimes';
 
   @override
-  String get achievementTitle_crime_legend => 'Crime Legend';
+  String get achievementTitle_crime_legend => 'Légende du crime';
 
   @override
-  String get achievementDescription_crime_legend =>
-      'Successfully complete 1000 crimes';
+  String get achievementDescription_crime_legend => 'Réussissez 1 000 crimes';
 
   @override
-  String get achievementTitle_crime_getaway_driver => 'Getaway Driver';
+  String get achievementTitle_crime_getaway_driver => 'Chauffeur d\'escapade';
 
   @override
   String get achievementDescription_crime_getaway_driver =>
-      'Successfully complete your first crime with a vehicle';
+      'Réussissez votre premier crime avec un véhicule';
 
   @override
-  String get achievementTitle_crime_armed_and_ready => 'Armed & Ready';
+  String get achievementTitle_crime_armed_and_ready => 'Armé et prêt';
 
   @override
   String get achievementDescription_crime_armed_and_ready =>
-      'Successfully complete your first crime that requires a weapon';
+      'Réussissez votre premier crime nécessitant une arme';
 
   @override
-  String get achievementTitle_crime_full_loadout => 'Full Loadout';
+  String get achievementTitle_crime_full_loadout => 'Chargement complet';
 
   @override
   String get achievementDescription_crime_full_loadout =>
-      'Successfully complete a crime requiring vehicle, weapon, and tools';
+      'Réussissez un crime nécessitant un véhicule, une arme et des outils';
 
   @override
-  String get achievementTitle_crime_completionist => 'Crime Completionist';
+  String get achievementTitle_crime_completionist => 'Crime Completionniste';
 
   @override
   String get achievementDescription_crime_completionist =>
-      'Successfully complete every crime type at least once';
+      'Réussir chaque type de crime au moins une fois';
 
   @override
-  String get achievementTitle_job_first_shift => 'First Shift';
+  String get achievementTitle_job_first_shift => 'Premier quart de travail';
 
   @override
   String get achievementDescription_job_first_shift =>
-      'Successfully complete your first job';
+      'Réussissez votre premier emploi';
 
   @override
-  String get achievementTitle_job_hustler => 'Job Hustler';
+  String get achievementTitle_job_hustler => 'arnaqueur d\'emploi';
 
   @override
-  String get achievementDescription_job_hustler =>
-      'Successfully complete 5 jobs';
+  String get achievementDescription_job_hustler => 'Réussir 5 tâches';
 
   @override
-  String get achievementTitle_job_starter => 'Job Starter';
+  String get achievementTitle_job_starter => 'Démarreur d\'emploi';
 
   @override
-  String get achievementDescription_job_starter =>
-      'Successfully complete 10 jobs';
+  String get achievementDescription_job_starter => 'Réussir 10 tâches';
 
   @override
-  String get achievementTitle_job_operator => 'Job Operator';
+  String get achievementTitle_job_operator => 'Opérateur d\'emploi';
 
   @override
-  String get achievementDescription_job_operator =>
-      'Successfully complete 25 jobs';
+  String get achievementDescription_job_operator => 'Réussir 25 tâches';
 
   @override
-  String get achievementTitle_job_grinder => 'Job Grinder';
+  String get achievementTitle_job_grinder => 'Broyeur d\'emplois';
 
   @override
-  String get achievementDescription_job_grinder =>
-      'Successfully complete 50 jobs';
+  String get achievementDescription_job_grinder => 'Réussissez 50 tâches';
 
   @override
-  String get achievementTitle_job_master => 'Job Master';
+  String get achievementTitle_job_master => 'Maître des tâches';
 
   @override
-  String get achievementDescription_job_master =>
-      'Successfully complete 100 jobs';
+  String get achievementDescription_job_master => 'Réussir 100 tâches';
 
   @override
-  String get achievementTitle_job_expert => 'Job Expert';
+  String get achievementTitle_job_expert => 'Expert en emploi';
 
   @override
-  String get achievementDescription_job_expert =>
-      'Successfully complete 250 jobs';
+  String get achievementDescription_job_expert => 'Réussissez 250 tâches';
 
   @override
-  String get achievementTitle_job_elite => 'Job Elite';
+  String get achievementTitle_job_elite => 'Emploi Élite';
 
   @override
-  String get achievementDescription_job_elite =>
-      'Successfully complete 500 jobs';
+  String get achievementDescription_job_elite => 'Réussir 500 tâches';
 
   @override
-  String get achievementTitle_job_legend => 'Job Legend';
+  String get achievementTitle_job_legend => 'Légende du travail';
 
   @override
-  String get achievementDescription_job_legend =>
-      'Successfully complete 1000 jobs';
+  String get achievementDescription_job_legend => 'Réussir 1 000 tâches';
 
   @override
-  String get achievementTitle_job_completionist => 'Job Completionist';
+  String get achievementTitle_job_completionist => 'Achèvement du travail';
 
   @override
   String get achievementDescription_job_completionist =>
-      'Successfully complete every job type at least once';
+      'Réussir chaque type de travail au moins une fois';
 
   @override
-  String get achievementTitle_job_educated_worker => 'Educated Worker';
+  String get achievementTitle_job_educated_worker => 'Travailleur instruit';
 
   @override
   String get achievementDescription_job_educated_worker =>
-      'Complete 1 job that has education requirements';
+      'Terminez 1 emploi qui comporte des exigences en matière de formation';
 
   @override
-  String get achievementTitle_job_certified_hustler => 'Certified Hustler';
+  String get achievementTitle_job_certified_hustler => 'arnaqueur certifié';
 
   @override
   String get achievementDescription_job_certified_hustler =>
-      'Complete 25 jobs with education requirements';
+      'Terminez 25 emplois avec des exigences de formation';
 
   @override
   String get achievementTitle_job_education_completionist =>
-      'Education Job Completionist';
+      'Finisseur d’emplois en éducation';
 
   @override
   String get achievementDescription_job_education_completionist =>
-      'Complete every education-gated job type at least once';
+      'Terminez chaque type d’emploi lié à l’éducation au moins une fois';
 
   @override
-  String get achievementTitle_job_it_specialist => 'IT Specialist';
+  String get achievementTitle_job_it_specialist => 'Spécialiste informatique';
 
   @override
   String get achievementDescription_job_it_specialist =>
-      'Complete your first shift as a Programmer';
+      'Terminez votre premier quart de travail en tant que programmeur';
 
   @override
-  String get achievementTitle_job_lawyer => 'Street Lawyer';
+  String get achievementTitle_job_lawyer => 'Avocat de rue';
 
   @override
   String get achievementDescription_job_lawyer =>
-      'Complete your first shift as a Lawyer';
+      'Complétez votre premier quart de travail en tant qu\'avocat';
 
   @override
-  String get achievementTitle_job_doctor => 'Underground Doctor';
+  String get achievementTitle_job_doctor => 'Docteur souterrain';
 
   @override
   String get achievementDescription_job_doctor =>
-      'Complete your first shift as a Doctor';
+      'Terminez votre premier quart de travail en tant que médecin';
 
   @override
-  String get achievementTitle_school_certified => 'Certified Student';
+  String get achievementTitle_school_certified => 'Étudiant certifié';
 
   @override
   String get achievementDescription_school_certified =>
-      'Earn 3 school certifications';
+      'Gagnez 3 certifications scolaires';
 
   @override
-  String get achievementTitle_school_multi_certified => 'Multi-Certified';
+  String get achievementTitle_school_multi_certified => 'Multi-certifié';
 
   @override
   String get achievementDescription_school_multi_certified =>
-      'Earn 6 school certifications';
+      'Gagnez 6 certifications scolaires';
 
   @override
-  String get achievementTitle_school_track_specialist => 'Track Specialist';
+  String get achievementTitle_school_track_specialist =>
+      'Spécialiste de la piste';
 
   @override
   String get achievementDescription_school_track_specialist =>
-      'Max out 3 school tracks';
+      'Maximisez 3 pistes scolaires';
 
   @override
-  String get achievementTitle_school_freshman => 'School Freshman';
+  String get achievementTitle_school_freshman => 'Étudiant de première année';
 
   @override
   String get achievementDescription_school_freshman =>
-      'Reach education level 1';
+      'Atteindre le niveau d\'éducation 1';
 
   @override
-  String get achievementTitle_school_scholar => 'School Scholar';
+  String get achievementTitle_school_scholar => 'Érudit scolaire';
 
   @override
-  String get achievementDescription_school_scholar => 'Reach education level 3';
+  String get achievementDescription_school_scholar =>
+      'Atteindre le niveau d\'éducation 3';
 
   @override
-  String get achievementTitle_school_graduate => 'School Graduate';
+  String get achievementTitle_school_graduate => 'Diplômé de l\'école';
 
   @override
   String get achievementDescription_school_graduate =>
-      'Reach education level 5';
+      'Atteindre le niveau d\'éducation 5';
 
   @override
-  String get achievementTitle_school_mastermind => 'Academic Mastermind';
+  String get achievementTitle_school_mastermind => 'Cerveau académique';
 
   @override
   String get achievementDescription_school_mastermind =>
-      'Reach education level 10';
+      'Atteindre le niveau d\'éducation 10';
 
   @override
-  String get achievementTitle_school_doctorate => 'Street Doctorate';
+  String get achievementTitle_school_doctorate => 'Doctorat de rue';
 
   @override
   String get achievementDescription_school_doctorate =>
-      'Reach education level 20';
+      'Atteindre le niveau d\'éducation 20';
 
   @override
-  String get achievementTitle_road_bandit => 'Road Bandit';
+  String get achievementTitle_road_bandit => 'Bandit de la route';
 
   @override
-  String get achievementDescription_road_bandit => 'Steal 5 cars';
+  String get achievementDescription_road_bandit => 'Voler 5 voitures';
 
   @override
-  String get achievementTitle_grand_theft_fleet => 'Grand Theft Fleet';
+  String get achievementTitle_grand_theft_fleet => 'Flotte Grand Theft';
 
   @override
-  String get achievementDescription_grand_theft_fleet => 'Steal 25 cars';
+  String get achievementDescription_grand_theft_fleet => 'Voler 25 voitures';
 
   @override
-  String get achievementTitle_sea_raider => 'Sea Raider';
+  String get achievementTitle_sea_raider => 'Pilleur de mer';
 
   @override
-  String get achievementDescription_sea_raider => 'Steal 3 boats';
+  String get achievementDescription_sea_raider => 'Voler 3 bateaux';
 
   @override
-  String get achievementTitle_captain_of_smugglers => 'Captain of Smugglers';
+  String get achievementTitle_captain_of_smugglers =>
+      'Capitaine des contrebandiers';
 
   @override
-  String get achievementDescription_captain_of_smugglers => 'Steal 12 boats';
+  String get achievementDescription_captain_of_smugglers => 'Voler 12 bateaux';
 
   @override
-  String get achievementTitle_globe_trotter => 'Globe Trotter';
+  String get achievementTitle_globe_trotter => 'Globe-trotter';
 
   @override
-  String get achievementDescription_globe_trotter => 'Complete 5 journeys';
+  String get achievementDescription_globe_trotter => 'Terminez 5 voyages';
 
   @override
-  String get achievementTitle_jet_setter => 'Jet Setter';
+  String get achievementTitle_jet_setter => 'Jet-setteur';
 
   @override
-  String get achievementDescription_jet_setter => 'Complete 25 journeys';
+  String get achievementDescription_jet_setter => 'Terminez 25 voyages';
 
   @override
-  String get achievementTitle_chemist_apprentice => 'Chemist Apprentice';
+  String get achievementTitle_chemist_apprentice => 'Apprenti chimiste';
 
   @override
   String get achievementDescription_chemist_apprentice =>
-      'Complete 10 drug productions';
+      'Terminez 10 productions de médicaments';
 
   @override
-  String get achievementTitle_narco_chemist => 'Narco Chemist';
+  String get achievementTitle_narco_chemist => 'Chimiste Narco';
 
   @override
   String get achievementDescription_narco_chemist =>
-      'Complete 100 drug productions';
+      'Terminez 100 productions de médicaments';
 
   @override
-  String get achievementTitle_street_merchant => 'Street Merchant';
+  String get achievementTitle_street_merchant => 'Marchand de rue';
 
   @override
-  String get achievementDescription_street_merchant => 'Complete 25 trades';
+  String get achievementDescription_street_merchant =>
+      'Terminez 25 transactions';
 
   @override
-  String get achievementTitle_trade_tycoon => 'Trade Tycoon';
+  String get achievementTitle_trade_tycoon => 'Magnat du commerce';
 
   @override
-  String get achievementDescription_trade_tycoon => 'Complete 150 trades';
+  String get achievementDescription_trade_tycoon => 'Terminez 150 transactions';
 
   @override
-  String get achievementTitle_prostitute_lineup => 'Lineup Built';
+  String get achievementTitle_prostitute_lineup => 'Programmation construite';
 
   @override
   String get achievementDescription_prostitute_lineup =>
-      'Recruit 10 prostitutes';
+      'Recruter 10 prostituées';
 
   @override
-  String get achievementTitle_prostitute_network => 'Street Network';
+  String get achievementTitle_prostitute_network => 'Réseau routier';
 
   @override
   String get achievementDescription_prostitute_network =>
-      'Recruit 25 prostitutes';
+      'Recruter 25 prostituées';
 
   @override
-  String get achievementTitle_prostitute_syndicate => 'Syndicate';
+  String get achievementTitle_prostitute_syndicate => 'Syndicat';
 
   @override
   String get achievementDescription_prostitute_syndicate =>
-      'Recruit 50 prostitutes';
+      'Recruter 50 prostituées';
 
   @override
-  String get achievementTitle_prostitute_dynasty => 'Dynasty';
+  String get achievementTitle_prostitute_dynasty => 'Dynastie';
 
   @override
   String get achievementDescription_prostitute_dynasty =>
-      'Recruit 100 prostitutes';
+      'Recruter 100 prostituées';
 
   @override
   String get achievementTitle_prostitute_empire_250 => 'Empire 250';
 
   @override
   String get achievementDescription_prostitute_empire_250 =>
-      'Recruit 250 prostitutes';
+      'Recruter 250 prostituées';
 
   @override
   String get achievementTitle_prostitute_cartel_500 => 'Cartel 500';
 
   @override
   String get achievementDescription_prostitute_cartel_500 =>
-      'Recruit 500 prostitutes';
+      'Recruter 500 prostituées';
 
   @override
-  String get achievementTitle_prostitute_legend_1000 => 'Legend 1000';
+  String get achievementTitle_prostitute_legend_1000 => 'Légende 1000';
 
   @override
   String get achievementDescription_prostitute_legend_1000 =>
-      'Recruit 1000 prostitutes';
+      'Recruter 1000 prostituées';
 
   @override
-  String get achievementTitle_vip_prostitute_level_10 => 'VIP Beginner';
+  String get achievementTitle_vip_prostitute_level_10 => 'VIP Débutant';
 
   @override
   String get achievementDescription_vip_prostitute_level_10 =>
-      'Reach level 3 with a VIP prostitute';
+      'Atteignez le niveau 3 avec une prostituée VIP';
 
   @override
-  String get achievementTitle_vip_prostitute_level_25 => 'VIP Headliner';
+  String get achievementTitle_vip_prostitute_level_25 => 'Tête d\'affiche VIP';
 
   @override
   String get achievementDescription_vip_prostitute_level_25 =>
-      'Reach level 5 with a VIP prostitute';
+      'Atteignez le niveau 5 avec une prostituée VIP';
 
   @override
-  String get achievementTitle_vip_prostitute_level_50 => 'VIP Icon';
+  String get achievementTitle_vip_prostitute_level_50 => 'Icône VIP';
 
   @override
   String get achievementDescription_vip_prostitute_level_50 =>
-      'Reach level 7 with a VIP prostitute';
+      'Atteignez le niveau 7 avec une prostituée VIP';
 
   @override
-  String get achievementTitle_vip_prostitute_level_100 => 'VIP Legend';
+  String get achievementTitle_vip_prostitute_level_100 => 'Légende VIP';
 
   @override
   String get achievementDescription_vip_prostitute_level_100 =>
-      'Reach level 10 with a VIP prostitute';
+      'Atteignez le niveau 10 avec une prostituée VIP';
 
   @override
-  String get achievementTitle_nightclub_opening_night => 'Opening Night';
+  String get achievementTitle_nightclub_opening_night => 'Soirée d\'ouverture';
 
   @override
   String get achievementDescription_nightclub_opening_night =>
-      'Open your first nightclub venue';
+      'Ouvrez votre première discothèque';
 
   @override
-  String get achievementTitle_nightclub_headliner => 'Headliner Booker';
+  String get achievementTitle_nightclub_headliner =>
+      'Réservateur en tête d\'affiche';
 
   @override
   String get achievementDescription_nightclub_headliner =>
-      'Book 10 DJ shifts for your nightclub empire';
+      'Réservez 10 équipes de DJ pour votre empire de discothèques';
 
   @override
-  String get achievementTitle_nightclub_full_house => 'Full House';
+  String get achievementTitle_nightclub_full_house => 'Full house';
 
   @override
   String get achievementDescription_nightclub_full_house =>
-      'Push a nightclub crowd to 90% capacity';
+      'Pousser la fréquentation d\'une discothèque à 90 % de sa capacité';
 
   @override
-  String get achievementTitle_nightclub_cash_machine => 'Cash Machine';
+  String get achievementTitle_nightclub_cash_machine =>
+      'Distributeur automatique de billets';
 
   @override
   String get achievementDescription_nightclub_cash_machine =>
-      'Earn €250,000 total nightclub revenue';
+      'Gagnez 250 000 € de revenus totaux en discothèque';
 
   @override
-  String get achievementTitle_nightclub_empire => 'Nightlife Empire';
+  String get achievementTitle_nightclub_empire => 'Empire de la vie nocturne';
 
   @override
   String get achievementDescription_nightclub_empire =>
-      'Earn €1,000,000 total nightclub revenue';
+      'Gagnez 1 000 000 € de revenus totaux en discothèque';
 
   @override
-  String get achievementTitle_nightclub_staffing_boss => 'Staffing Boss';
+  String get achievementTitle_nightclub_staffing_boss => 'Chef du personnel';
 
   @override
   String get achievementDescription_nightclub_staffing_boss =>
-      'Run 3 active nightclub crew members at the same time';
+      'Dirigez 3 membres actifs de l\'équipe de discothèque en même temps';
 
   @override
-  String get achievementTitle_nightclub_vip_room => 'VIP Room';
+  String get achievementTitle_nightclub_vip_room => 'Salle VIP';
 
   @override
   String get achievementDescription_nightclub_vip_room =>
-      'Assign 2 VIP crew members to your nightclub';
+      'Assignez 2 membres d\'équipage VIP à votre discothèque';
 
   @override
-  String get achievementTitle_nightclub_head_of_security => 'Head of Security';
+  String get achievementTitle_nightclub_head_of_security =>
+      'Chef de la sécurité';
 
   @override
   String get achievementDescription_nightclub_head_of_security =>
-      'Hire nightclub security for 10 shifts';
+      'Embaucher la sécurité d\'une discothèque pour 10 équipes';
 
   @override
-  String get achievementTitle_nightclub_podium_finish => 'Podium Finish';
+  String get achievementTitle_nightclub_podium_finish =>
+      'Arrivée sur le podium';
 
   @override
   String get achievementDescription_nightclub_podium_finish =>
-      'Finish in the top 3 of a weekly nightclub season';
+      'Terminez dans le top 3 d\'une saison hebdomadaire en boîte de nuit';
 
   @override
-  String get achievementTitle_nightclub_season_champion => 'Season Champion';
+  String get achievementTitle_nightclub_season_champion =>
+      'Champion de la saison';
 
   @override
   String get achievementDescription_nightclub_season_champion =>
-      'Win a weekly nightclub season';
+      'Gagnez une saison hebdomadaire en discothèque';
 
   @override
-  String get nightclubManagementTitle => 'Nightclub Management';
+  String get nightclubManagementTitle => 'Gestion de discothèque';
 
   @override
-  String get nightclubRealtimeStatus => 'Realtime status active';
+  String get nightclubRealtimeStatus => 'Statut en temps réel actif';
 
   @override
-  String get nightclubRefresh => 'Refresh';
+  String get nightclubRefresh => 'Rafraîchir';
 
   @override
-  String get nightclubEmptyTitle => 'No nightclub found yet';
+  String get nightclubEmptyTitle =>
+      'Aucune discothèque trouvée pour l\'instant';
 
   @override
   String get nightclubEmptyBody =>
-      'Buy a nightclub in Properties first to activate this system.';
+      'Achetez d\'abord une discothèque dans Propriétés pour activer ce système.';
 
   @override
-  String get nightclubLocationTitle => 'Nightclub Location';
+  String get nightclubLocationTitle => 'Emplacement de la discothèque';
 
   @override
-  String get nightclubSelectVenue => 'Select venue';
+  String get nightclubSelectVenue => 'Sélectionnez le lieu';
 
   @override
-  String get nightclubLiveStatistics => 'Live Statistics';
+  String get nightclubLiveStatistics => 'Statistiques en direct';
 
   @override
-  String get nightclubKpiCrowd => 'Crowd';
+  String get nightclubKpiCrowd => 'Foule';
 
   @override
-  String get nightclubKpiVibe => 'Vibe';
+  String get nightclubKpiVibe => 'Ambiance';
 
   @override
-  String get nightclubKpiToday => 'Today';
+  String get nightclubKpiToday => 'Aujourd\'hui';
 
   @override
-  String get nightclubKpiAllTime => 'All-time';
+  String get nightclubKpiAllTime => 'De tous les temps';
 
   @override
-  String get nightclubKpiStock => 'Stock';
+  String get nightclubKpiStock => 'Action';
 
   @override
   String get nightclubKpiDj => 'DJ';
 
   @override
-  String get nightclubKpiThefts => 'Thefts';
+  String get nightclubKpiThefts => 'Vols';
 
   @override
-  String get nightclubKpiStaff => 'Staff';
+  String get nightclubKpiStaff => 'Personnelle';
 
   @override
-  String get nightclubKpiSalesBoost => 'Sales boost';
+  String get nightclubKpiSalesBoost => 'Augmentation des ventes';
 
   @override
-  String get nightclubKpiPriceBoost => 'Price boost';
+  String get nightclubKpiPriceBoost => 'Augmentation des prix';
 
   @override
-  String get nightclubKpiVipBonus => 'VIP bonus';
+  String get nightclubKpiVipBonus => 'Bonus VIP';
 
   @override
   String get nightclubStatusActive => 'Active';
 
   @override
-  String get nightclubStatusOff => 'Off';
+  String get nightclubStatusOff => 'Désactivé';
 
   @override
   String get nightclubStatusActiveLower => 'active';
 
   @override
-  String get nightclubRevenueTrend => 'Revenue Trend (live)';
+  String get nightclubRevenueTrend => 'Tendance des revenus (en direct)';
 
   @override
-  String get nightclubLeaderboardTitle => 'Top Nightclubs';
+  String get nightclubLeaderboardTitle => 'Meilleures boîtes de nuit';
 
   @override
-  String get nightclubLeaderboardCountry => 'Country';
+  String get nightclubLeaderboardCountry => 'Pays';
 
   @override
-  String get nightclubLeaderboardGlobal => 'Global';
+  String get nightclubLeaderboardGlobal => 'Mondiale';
 
   @override
-  String get nightclubLeaderboardEmpty => 'No leaderboard data yet';
+  String get nightclubLeaderboardEmpty =>
+      'Aucune donnée de classement pour l\'instant';
 
   @override
-  String get nightclubLeaderboardRevenue24h => '24h revenue';
+  String get nightclubLeaderboardRevenue24h => 'Revenus 24h';
 
   @override
-  String get nightclubSeasonProcessing => 'processing...';
+  String get nightclubSeasonProcessing => 'traitement...';
 
   @override
-  String get nightclubSeasonTitle => 'Weekly Season Ranking';
+  String get nightclubSeasonTitle => 'Classement hebdomadaire de la saison';
 
   @override
-  String get nightclubSeasonResetIn => 'Reset in';
+  String get nightclubSeasonResetIn => 'Réinitialiser dans';
 
   @override
-  String get nightclubSeasonYourRewards => 'Your season rewards';
+  String get nightclubSeasonYourRewards => 'Vos récompenses de saison';
 
   @override
-  String get nightclubSeasonCurrentTop5 => 'Current week top 5';
+  String get nightclubSeasonCurrentTop5 => 'Top 5 de la semaine en cours';
 
   @override
-  String get nightclubSeasonEmpty => 'No season data yet';
+  String get nightclubSeasonEmpty => 'Aucune donnée de saison pour l\'instant';
 
   @override
-  String get nightclubSeasonWeekRevenue => 'Week revenue';
+  String get nightclubSeasonWeekRevenue => 'Revenu hebdomadaire';
 
   @override
   String get nightclubSeasonScore => 'Score';
 
   @override
-  String get nightclubSeasonRecentPayouts => 'Recent payouts';
+  String get nightclubSeasonRecentPayouts => 'Paiements récents';
 
   @override
-  String get nightclubSeasonNoPayouts => 'No payouts yet';
+  String get nightclubSeasonNoPayouts => 'Aucun paiement pour l\'instant';
 
   @override
-  String get nightclubSalesTitle => 'Recent Sales';
+  String get nightclubSalesTitle => 'Ventes récentes';
 
   @override
-  String get nightclubSalesEmpty => 'No sales data yet';
+  String get nightclubSalesEmpty => 'Aucune donnée de vente pour l\'instant';
 
   @override
-  String get nightclubTheftTitle => 'Theft Log';
+  String get nightclubTheftTitle => 'Journal de vol';
 
   @override
-  String get nightclubTheftEmpty => 'No thefts recorded';
+  String get nightclubTheftEmpty => 'Aucun vol enregistré';
 
   @override
-  String get nightclubTheftLoss => 'Loss';
+  String get nightclubTheftLoss => 'Perte';
 
   @override
-  String get nightclubStaffTitle => 'Pimp Crew in Club';
+  String get nightclubStaffTitle => 'L\'équipe de proxénètes dans le club';
 
   @override
-  String get nightclubStaffVipExtraActive => ' (VIP +2 active)';
+  String get nightclubStaffVipExtraActive => '(VIP +2 actif)';
 
   @override
   String nightclubStaffCapacity(String assigned, String cap, String vipSuffix) {
-    return 'Capacity: $assigned/$cap$vipSuffix';
+    return 'Capacité : $assigned/$cap$vipSuffix';
   }
 
   @override
@@ -4327,180 +4376,184 @@ class AppLocalizationsFr extends AppLocalizations {
     String vipStaff,
     String vipAssigned,
   ) {
-    return 'Boost mix: sales x$sales | price x$price | vibe x$vibe | security x$security | vip player x$vipPlayer | vip staff x$vipStaff ($vipAssigned)';
+    return 'Boost mix : ventes x$sales | prix x$price | ambiance x$vibe | sécurité x$security | joueur vip x$vipPlayer | personnel vip x$vipStaff ($vipAssigned)';
   }
 
   @override
-  String get nightclubSelectCrewMember => 'Select crew member';
+  String get nightclubSelectCrewMember => 'Sélectionner un membre d\'équipage';
 
   @override
-  String get nightclubAssignShift => 'Assign to nightclub shift';
+  String get nightclubAssignShift => 'Affecter à l\'équipe de discothèque';
 
   @override
   String get nightclubTabActive => 'Active';
 
   @override
-  String get nightclubTabHistory => 'History';
+  String get nightclubTabHistory => 'Histoire';
 
   @override
-  String get nightclubNoCrewAssigned => 'No crew assigned yet';
+  String get nightclubNoCrewAssigned =>
+      'Aucun équipage affecté pour l\'instant';
 
   @override
   String get nightclubCrewBoostDescription =>
-      'Boosts demand and margin in your club';
+      'Augmente la demande et la marge dans votre club';
 
   @override
-  String get nightclubRemove => 'Remove';
+  String get nightclubRemove => 'Retirer';
 
   @override
-  String get nightclubNoStaffHistory => 'No staffing history yet';
+  String get nightclubNoStaffHistory =>
+      'Aucun historique de dotation pour l\'instant';
 
   @override
-  String get nightclubFrom => 'From';
+  String get nightclubFrom => 'Depuis';
 
   @override
-  String get nightclubTo => 'To';
+  String get nightclubTo => 'À';
 
   @override
-  String get nightclubRevenueImpact => 'Revenue impact';
+  String get nightclubRevenueImpact => 'Impact sur les revenus';
 
   @override
-  String get nightclubSalesCountLabel => 'sales';
+  String get nightclubSalesCountLabel => 'ventes';
 
   @override
-  String get nightclubDjTitle => 'Hire DJ';
+  String get nightclubDjTitle => 'Embaucher un DJ';
 
   @override
-  String get nightclubChooseDj => 'Choose DJ';
+  String get nightclubChooseDj => 'Choisissez DJ';
 
   @override
-  String get nightclubShiftLength => 'Shift length';
+  String get nightclubShiftLength => 'Durée du quart de travail';
 
   @override
-  String get nightclubHireDj => 'Hire DJ';
+  String get nightclubHireDj => 'Embaucher un DJ';
 
   @override
-  String get nightclubSecurityTitle => 'Security';
+  String get nightclubSecurityTitle => 'Sécurité';
 
   @override
-  String get nightclubChooseSecurity => 'Choose security';
+  String get nightclubChooseSecurity => 'Choisissez la sécurité';
 
   @override
-  String get nightclubHireSecurity => 'Hire security';
+  String get nightclubHireSecurity => 'Embaucher la sécurité';
 
   @override
-  String get nightclubStoreTitle => 'Store Drugs';
+  String get nightclubStoreTitle => 'Conserver les médicaments';
 
   @override
-  String get nightclubChooseStock => 'Choose stock';
+  String get nightclubChooseStock => 'Choisissez des actions';
 
   @override
-  String get nightclubAmountGrams => 'Amount in grams';
+  String get nightclubAmountGrams => 'Quantité en grammes';
 
   @override
-  String get nightclubStoreButton => 'Store in nightclub';
+  String get nightclubStoreButton => 'Magasin dans une discothèque';
 
   @override
-  String get nightclubHireDjSuccess => 'DJ hired';
+  String get nightclubHireDjSuccess => 'DJ embauché';
 
   @override
-  String get nightclubHireSecuritySuccess => 'Security hired';
+  String get nightclubHireSecuritySuccess => 'Sécurité embauchée';
 
   @override
-  String get nightclubAssignCrewSuccess => 'Crew member assigned';
+  String get nightclubAssignCrewSuccess => 'Membre d\'équipage affecté';
 
   @override
-  String get nightclubRemoveCrewSuccess => 'Crew member removed';
+  String get nightclubRemoveCrewSuccess => 'Membre d\'équipage supprimé';
 
   @override
-  String get nightclubStoreDrugsSuccess => 'Drugs stored';
+  String get nightclubStoreDrugsSuccess => 'Médicaments stockés';
 
   @override
-  String get nightclubSeasonPayoutDialogTitle => 'Season payout received';
+  String get nightclubSeasonPayoutDialogTitle => 'Paiement de saison reçu';
 
   @override
   String nightclubSeasonPayoutDialogBody(String rank) {
-    return 'Your nightclub finished at rank #$rank this week.';
+    return 'Votre discothèque a terminé au rang #$rank cette semaine.';
   }
 
   @override
   String nightclubSeasonPayoutDialogReward(String amount) {
-    return 'Reward: $amount';
+    return 'Récompense : $amount';
   }
 
   @override
   String nightclubSeasonPayoutDialogRevenue(String amount) {
-    return 'Weekly revenue: $amount';
+    return 'Revenu hebdomadaire : $amount';
   }
 
   @override
   String nightclubSeasonPayoutDialogLoss(String amount) {
-    return 'Theft loss: $amount';
+    return 'Perte de vol : $amount';
   }
 
   @override
-  String get nightclubSeasonPayoutDialogAction => 'Close';
+  String get nightclubSeasonPayoutDialogAction => 'Fermer';
 
   @override
-  String get nightclubVibeChill => 'Chill';
+  String get nightclubVibeChill => 'Froideur';
 
   @override
-  String get nightclubVibeNormal => 'Normal';
+  String get nightclubVibeNormal => 'Normale';
 
   @override
-  String get nightclubVibeWild => 'Wild';
+  String get nightclubVibeWild => 'Sauvage';
 
   @override
-  String get nightclubVibeRaging => 'Raging';
+  String get nightclubVibeRaging => 'Rage';
 
   @override
-  String get nightclubTheftTypeCustomer => 'Customer theft';
+  String get nightclubTheftTypeCustomer => 'Vol de client';
 
   @override
-  String get nightclubTheftTypeEmployee => 'Employee heist';
+  String get nightclubTheftTypeEmployee => 'Vol d\'un employé';
 
   @override
-  String get nightclubTheftTypeRival => 'Rival sabotage';
+  String get nightclubTheftTypeRival => 'Sabotage rival';
 
   @override
-  String get theftCooldownRedeemTitle => 'Skip theft cooldown?';
+  String get theftCooldownRedeemTitle =>
+      'Ignorer le temps de recharge du vol ?';
 
   @override
   String theftCooldownRedeemMessage(int cost, int balance) {
-    return 'Spend $cost credits to clear the vehicle theft cooldown now? Your balance: $balance.';
+    return 'Dépenser $cost crédits pour effacer le temps de recharge du vol de véhicule maintenant ? Votre solde : $balance.';
   }
 
   @override
   String get theftCooldownRedeemDontShowAgain =>
-      'Don\'t show this confirmation again';
+      'Ne plus afficher cette confirmation';
 
   @override
   String theftCooldownRedeemConfirmAction(int credits) {
-    return 'Use $credits credits';
+    return 'Utilisez $credits crédits';
   }
 
   @override
   String get theftCooldownRedeemNotAvailable =>
-      'Credit speed-up is not available for this cooldown right now.';
+      'L’accélération du crédit n’est pas disponible pour ce temps de recharge pour le moment.';
 
   @override
   String get theftCooldownRedeemNoActiveCooldown =>
-      'No active theft cooldown to reset.';
+      'Aucun temps de recharge de vol actif à réinitialiser.';
 
   @override
-  String get theftCooldownRedeemInsufficientCredits => 'Not enough credits.';
+  String get theftCooldownRedeemInsufficientCredits => 'Pas assez de crédits.';
 
   @override
   String get theftCooldownRedeemFailed =>
-      'Could not apply credits to the cooldown.';
+      'Impossible d\'appliquer des crédits au temps de recharge.';
 
   @override
-  String get theftCooldownRedeemSuccess => 'Cooldown cleared.';
+  String get theftCooldownRedeemSuccess => 'Le temps de recharge est terminé.';
 
   @override
-  String get settingsTheftCooldownConfirmTitle => 'Theft cooldown (credits)';
+  String get settingsTheftCooldownConfirmTitle =>
+      'Temps de recharge pour vol (crédits)';
 
   @override
   String get settingsTheftCooldownConfirmSubtitle =>
-      'Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer).';
+      'Demandez une confirmation avant de dépenser des crédits pour éviter le temps de recharge du vol de véhicule. Désactivez-le pour l\'échanger en un seul clic (icône en forme d\'éclair à côté de la minuterie).';
 }

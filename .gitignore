@@ -58,6 +58,9 @@ firebase-service-account.json
 *-firebase-adminsdk-*.json
 firebase-adminsdk-*.json
 
+# Local MT cache (scripts; do not commit)
+scripts/.translate_cache.json
+
 # Runtime files
 *.pid
 *.seed

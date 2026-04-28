@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { adminService, type AdminTerritoryOverview } from '../services/adminService'
+import type { AdminLanguage } from '../i18n/translations'
+import { getAdminTr } from '../i18n/inlineMessages'
 
 type Props = {
-  locale: 'nl' | 'en'
+  locale: AdminLanguage
 }
 
 type TerritoryProgressionTuningForm = {
@@ -28,13 +30,25 @@ type TerritoryProgressionTuningForm = {
   actionUnlockHqLevelDefense: string
 }
 
-const tr = (locale: 'nl' | 'en', nl: string, en: string) => (locale === 'nl' ? nl : en)
+const tr = (locale: AdminLanguage, nl: string, en: string) =>
+  getAdminTr(locale, nl, en)
 
-const formatDate = (value: string | null, locale: 'nl' | 'en') => {
+const TERRITORY_DATE_LOCALE: Record<AdminLanguage, string> = {
+  nl: 'nl-NL',
+  en: 'en-GB',
+  de: 'de-DE',
+  fr: 'fr-FR',
+  es: 'es-ES',
+  it: 'it-IT',
+  pl: 'pl-PL',
+  pt: 'pt-PT',
+}
+
+const formatDate = (value: string | null, loc: AdminLanguage) => {
   if (!value) return '-'
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) return value
-  return parsed.toLocaleString(locale === 'nl' ? 'nl-NL' : 'en-GB')
+  return parsed.toLocaleString(TERRITORY_DATE_LOCALE[loc])
 }
 
 export function TerritoryAdminPanel({ locale }: Props) {

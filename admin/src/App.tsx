@@ -35,6 +35,38 @@ import {
 } from "./services/adminService";
 import { CrewWarsAdminPanel } from "./components/CrewWarsAdminPanel";
 import { TerritoryAdminPanel } from "./components/TerritoryAdminPanel";
+import {
+  translations,
+  type AdminLanguage,
+} from "./i18n/translations";
+import { getAdminTr } from "./i18n/inlineMessages";
+
+const ADMIN_UI_LANGUAGE_KEY = "admin_ui_language";
+
+function readStoredAdminLanguage(): AdminLanguage {
+  if (typeof window === "undefined") return "nl";
+  try {
+    const raw = localStorage.getItem(ADMIN_UI_LANGUAGE_KEY);
+    if (raw && Object.prototype.hasOwnProperty.call(translations, raw)) {
+      return raw as AdminLanguage;
+    }
+  } catch {
+    /* ignore */
+  }
+  return "nl";
+}
+
+/** Same order/codes as player client `SupportedLanguages.codes`. */
+const ADMIN_LANGUAGE_OPTIONS: { code: AdminLanguage; label: string }[] = [
+  { code: "nl", label: "🇳🇱 Nederlands" },
+  { code: "en", label: "🇬🇧 English" },
+  { code: "de", label: "🇩🇪 Deutsch" },
+  { code: "fr", label: "🇫🇷 Français" },
+  { code: "es", label: "🇪🇸 Español" },
+  { code: "it", label: "🇮🇹 Italiano" },
+  { code: "pl", label: "🇵🇱 Polski" },
+  { code: "pt", label: "🇵🇹 Português" },
+];
 
 type TabType =
   | "dashboard"
@@ -55,7 +87,6 @@ type TabType =
   | "todos"
   | "crew-wars"
   | "territory";
-type Language = "nl" | "en";
 type PlayerDetailTab = "overview" | "manage" | "financial";
 type DateRangeFilter = "24h" | "7d" | "30d" | "all";
 type SystemLogDateRange = "1h" | "24h" | "7d" | "30d" | "all";
@@ -172,346 +203,6 @@ const getStoredRecentActionsViews = (): SavedRecentActionsView[] => {
     return [];
   }
 };
-
-const translations = {
-  nl: {
-    loginTitle: "Mafia Admin Dashboard",
-    loginSubtitle: "Log in om het platform te beheren",
-    username: "Gebruikersnaam",
-    password: "Wachtwoord",
-    login: "Inloggen",
-    loggingIn: "Inloggen...",
-    loginFailed: "Inloggen mislukt. Controleer je gegevens.",
-    logout: "Uitloggen",
-    language: "Taal",
-    navDashboard: "Dashboard",
-    navPlayers: "Spelers",
-    navVehicles: "Voertuigen",
-    navTools: "Gereedschappen",
-    navCrimes: "Misdaden",
-    navNpcs: "NPCs",
-    navAudit: "Audit Logs",
-    navPremium: "Premium Offers",
-    navConfig: "Config",
-    navImages: "Afbeeldingen",
-    totalPlayers: "Totaal spelers",
-    activePlayers: "Actieve spelers",
-    bannedPlayers: "Gebande spelers",
-    apiWarningTitle: "Data laden mislukt",
-    dashboardTitle: "Dashboard",
-    playersTitle: "Spelers",
-    vehiclesTitle: "Voertuigen",
-    toolsTitle: "Gereedschappen",
-    crimesTitle: "Misdaden",
-    auditLogsTitle: "Audit Logs",
-    configEditorTitle: "Config Editor",
-    imagesTitle: "Afbeeldingenbeheer",
-    prostitutionBalanceTitle: "Prostitutie balansprofiel",
-    prostitutionBalanceDescription:
-      "Kies een preset voor risico en straf bij verraad: casual, normal of hardcore.",
-    prostitutionBalanceApply: "Pas profiel toe",
-    vipHousingBonusTitle: "VIP woningbonus",
-    vipHousingBonusDescription:
-      "Extra hoerplekken per residentieel eigendom (huis/appartement) voor VIP-spelers, bovenop de normale capaciteit.",
-    vipHousingBonusSave: "Opslaan",
-    vipHousingBonusLabel: "Extra plekken per eigendom",
-    vipHousingBonusHint: "(standaard: 5)",
-    vipHousingBonusSaved: "VIP Woningbonus opgeslagen",
-    vipHousingBonusError: "Voer een geldig getal in (0 of hoger)",
-    vipHousingBonusCurrentValue: "Huidige waarde",
-    prostitutionHousingRentTitle: "Prostitutie huur (dagtarief)",
-    prostitutionHousingRentDescription:
-      "Stel de daghuur in voor normale en VIP hoeren. Weekhuur = dagtarief x 7.",
-    prostitutionHousingRentSave: "Opslaan",
-    prostitutionHousingRentStandardLabel: "Normaal per dag",
-    prostitutionHousingRentVipLabel: "VIP per dag",
-    prostitutionHousingRentSaved: "Prostitutie huur opgeslagen",
-    prostitutionHousingRentError: "Voer geldige bedragen in (0 of hoger)",
-
-    premiumOffersTitle: "Premium One-time Offers",
-    npcManagementTitle: "NPC Beheer",
-    searchByUsernameOrId: "Zoek op gebruikersnaam of ID...",
-    searchConfigKeys: "Zoek config keys...",
-    save: "Opslaan",
-    delete: "Verwijderen",
-    edit: "Bewerken",
-    ban: "Ban",
-    cancel: "Annuleren",
-    refresh: "Verversen",
-    loading: "Laden...",
-    creating: "Aanmaken...",
-    previous: "Vorige",
-    next: "Volgende",
-    pageOf: "Pagina {page} van {total}",
-    actions: "Acties",
-    warning: "Waarschuwing",
-    noChangesToSave: "Geen wijzigingen om op te slaan",
-    failedUpdateConfig: "Config bijwerken mislukt",
-    unknownError: "Onbekende fout",
-    yes: "Ja",
-    no: "Nee",
-    close: "Sluiten",
-    statsLoadError:
-      "Statistieken konden niet geladen worden. Controleer backend/API verbinding.",
-    playersLoadError:
-      "Spelers konden niet geladen worden. Controleer backend/API verbinding.",
-    auditLoadError:
-      "Audit logs konden niet geladen worden. Controleer backend/API verbinding.",
-    configLoadError:
-      "Config kon niet geladen worden. Controleer backend/API verbinding.",
-    premiumLoadError:
-      "Premium offers konden niet geladen worden. Controleer backend/API verbinding.",
-    npcsLoadError:
-      "NPCs konden niet geladen worden. Controleer backend/API verbinding.",
-    vehiclesLoadError:
-      "Voertuigen konden niet geladen worden. Controleer backend/API verbinding.",
-    aircraftLoadError:
-      "Aircraft konden niet geladen worden. Controleer backend/API verbinding.",
-    toolsLoadError:
-      "Gereedschappen konden niet geladen worden. Controleer backend/API verbinding.",
-    crimesLoadError:
-      "Misdaden konden niet geladen worden. Controleer backend/API verbinding.",
-    failedLoadPremium: "Laden van premium offers mislukt",
-    failedLoadNpcs: "Laden van NPCs mislukt",
-    failedLoadVehicles: "Laden van voertuigen mislukt",
-    failedLoadTools: "Laden van gereedschappen mislukt",
-    failedLoadCrimes: "Laden van misdaden mislukt",
-    addVehicleSuccess: "Voertuig toegevoegd",
-    addAircraftSuccess: "Vliegtuig toegevoegd",
-    addToolSuccess: "Gereedschap toegevoegd",
-    addCrimeSuccess: "Misdaad toegevoegd",
-    saved: "Opgeslagen",
-    failedAddVehicle: "Voertuig toevoegen mislukt",
-    failedDeleteVehicle: "Voertuig verwijderen mislukt",
-    errorPrefix: "Fout",
-    npcUsernameRequired: "NPC gebruikersnaam is verplicht",
-    failedCreateNpc: "NPC aanmaken mislukt",
-    invalidSimHours: "Voer een geldig aantal uren in tussen 0 en 24",
-    simulationComplete: "Simulatie voltooid!",
-    failedSimNpc: "NPC simulatie mislukt",
-    keyRequired: "Key is verplicht",
-    moneyAmountRequired: "Money amount moet groter zijn dan 0 voor type money",
-    ammoRequired: "Ammo type en quantity zijn verplicht voor type ammo",
-    savedOffer: "Offer opgeslagen",
-    createdOffer: "Offer aangemaakt",
-    failedSaveOffer: "Opslaan van offer mislukt",
-    failedDeleteOffer: "Verwijderen van offer mislukt",
-    failedCreateOffer: "Aanmaken van offer mislukt",
-    confirmDeleteOffer:
-      'Weet je zeker dat je aanbieding "{key}" wilt verwijderen?',
-    enterBanReason: "Vul een banreden in",
-    playerBanned: "Speler succesvol geband",
-    failedBanPlayer: "Speler bannen mislukt",
-    playerUpdated: "Speler succesvol bijgewerkt",
-    failedUpdatePlayer: "Speler bijwerken mislukt",
-    confirmDeleteVehicle:
-      'Weet je zeker dat je voertuig "{id}" wilt verwijderen?',
-    confirmDeleteAircraft:
-      'Weet je zeker dat je vliegtuig "{id}" wilt verwijderen?',
-    confirmDeleteTool:
-      'Weet je zeker dat je gereedschap "{id}" wilt verwijderen?',
-    confirmDeleteCrime: 'Weet je zeker dat je misdaad "{id}" wilt verwijderen?',
-    enterCountryCode: "Voer minimaal één landcode in",
-    editPlayerTitle: "Speler bewerken",
-    banPlayerTitle: "Speler bannen",
-    banReason: "Ban reden",
-    banType: "Ban type",
-    temporaryBan: "Tijdelijke ban",
-    permanentBan: "Permanente ban",
-    durationHours: "Duur (uren)",
-    permanentBanAction: "Speler permanent bannen",
-    banForHours: "Ban voor {hours} uur",
-    configRestartWarning:
-      "Wijzigingen in configuratie vereisen een server-restart om actief te worden.",
-    saveChanges: "Wijzigingen opslaan",
-    reset: "Reset",
-    noNpcsFound: "Geen NPCs gevonden. Maak je eerste NPC aan om te starten.",
-    createNpc: "NPC aanmaken",
-    createNpcTitle: "Nieuwe NPC aanmaken",
-    addVehicle: "Voertuig toevoegen",
-    addAircraft: "Vliegtuig toevoegen",
-    addTool: "Gereedschap toevoegen",
-    addCrime: "Misdaad toevoegen",
-    activityLevel: "Activiteitsniveau",
-    simulate: "Simuleren",
-    details: "Details",
-    simulateNpcTitle: "NPC activiteit simuleren",
-    startSimulation: "Start simulatie",
-    hoursToSimulate: "Uren om te simuleren",
-    npcDetails: "NPC details",
-    playerInfo: "Speler info",
-    crimeStats: "Misdaad statistieken",
-    jobStats: "Job statistieken",
-    earningsPerformance: "Verdiensten & prestaties",
-    otherStats: "Overige statistieken",
-  },
-  en: {
-    loginTitle: "Mafia Admin Dashboard",
-    loginSubtitle: "Sign in to manage the game platform",
-    username: "Username",
-    password: "Password",
-    login: "Login",
-    loggingIn: "Logging in...",
-    loginFailed: "Login failed. Check your credentials.",
-    logout: "Logout",
-    language: "Language",
-    navDashboard: "Dashboard",
-    navPlayers: "Players",
-    navVehicles: "Vehicles",
-    navTools: "Tools",
-    navCrimes: "Crimes",
-    navNpcs: "NPCs",
-    navAudit: "Audit Logs",
-    navPremium: "Premium Offers",
-    navConfig: "Config",
-    navImages: "Images",
-    totalPlayers: "Total players",
-    activePlayers: "Active players",
-    bannedPlayers: "Banned players",
-    apiWarningTitle: "Failed to load data",
-    dashboardTitle: "Dashboard",
-    playersTitle: "Players",
-    vehiclesTitle: "Vehicles",
-    toolsTitle: "Tools",
-    crimesTitle: "Crimes",
-    auditLogsTitle: "Audit Logs",
-    configEditorTitle: "Config Editor",
-    imagesTitle: "Image management",
-    prostitutionBalanceTitle: "Prostitution balance profile",
-    prostitutionBalanceDescription:
-      "Choose a preset for betrayal risk and punishment: casual, normal or hardcore.",
-    prostitutionBalanceApply: "Apply profile",
-    vipHousingBonusTitle: "VIP housing bonus",
-    vipHousingBonusDescription:
-      "Extra prostitute slots per residential property (house/apartment) for VIP players, on top of normal capacity.",
-    vipHousingBonusSave: "Save",
-    vipHousingBonusLabel: "Extra slots per property",
-    vipHousingBonusHint: "(default: 5)",
-    vipHousingBonusSaved: "VIP housing bonus saved",
-    vipHousingBonusError: "Enter a valid number (0 or higher)",
-    vipHousingBonusCurrentValue: "Current value",
-    prostitutionHousingRentTitle: "Prostitution housing rent (daily)",
-    prostitutionHousingRentDescription:
-      "Set daily rent for regular and VIP prostitutes. Weekly rent = daily x 7.",
-    prostitutionHousingRentSave: "Save",
-    prostitutionHousingRentStandardLabel: "Regular per day",
-    prostitutionHousingRentVipLabel: "VIP per day",
-    prostitutionHousingRentSaved: "Prostitution rent saved",
-    prostitutionHousingRentError: "Enter valid amounts (0 or higher)",
-
-    premiumOffersTitle: "Premium One-time Offers",
-    npcManagementTitle: "NPC Management",
-    searchByUsernameOrId: "Search by username or ID...",
-    searchConfigKeys: "Search config keys...",
-    save: "Save",
-    delete: "Delete",
-    edit: "Edit",
-    ban: "Ban",
-    cancel: "Cancel",
-    refresh: "Refresh",
-    loading: "Loading...",
-    creating: "Creating...",
-    previous: "Previous",
-    next: "Next",
-    pageOf: "Page {page} of {total}",
-    actions: "Actions",
-    warning: "Warning",
-    noChangesToSave: "No changes to save",
-    failedUpdateConfig: "Failed to update config",
-    unknownError: "Unknown error",
-    yes: "Yes",
-    no: "No",
-    close: "Close",
-    statsLoadError:
-      "Stats could not be loaded. Check backend/API connectivity.",
-    playersLoadError:
-      "Players could not be loaded. Check backend/API connectivity.",
-    auditLoadError:
-      "Audit logs could not be loaded. Check backend/API connectivity.",
-    configLoadError:
-      "Config could not be loaded. Check backend/API connectivity.",
-    premiumLoadError:
-      "Premium offers could not be loaded. Check backend/API connectivity.",
-    npcsLoadError: "NPCs could not be loaded. Check backend/API connectivity.",
-    vehiclesLoadError:
-      "Vehicles could not be loaded. Check backend/API connectivity.",
-    aircraftLoadError:
-      "Aircraft could not be loaded. Check backend/API connectivity.",
-    toolsLoadError:
-      "Tools could not be loaded. Check backend/API connectivity.",
-    crimesLoadError:
-      "Crimes could not be loaded. Check backend/API connectivity.",
-    failedLoadPremium: "Failed to load premium offers",
-    failedLoadNpcs: "Failed to load NPCs",
-    failedLoadVehicles: "Failed to load vehicles",
-    failedLoadTools: "Failed to load tools",
-    failedLoadCrimes: "Failed to load crimes",
-    addVehicleSuccess: "Vehicle added",
-    addAircraftSuccess: "Aircraft added",
-    addToolSuccess: "Tool added",
-    addCrimeSuccess: "Crime added",
-    saved: "Saved",
-    failedAddVehicle: "Failed to add vehicle",
-    failedDeleteVehicle: "Failed to delete vehicle",
-    errorPrefix: "Error",
-    npcUsernameRequired: "NPC username is required",
-    failedCreateNpc: "Failed to create NPC",
-    invalidSimHours: "Please enter a valid number of hours between 0 and 24",
-    simulationComplete: "Simulation complete!",
-    failedSimNpc: "Failed to simulate NPC",
-    keyRequired: "Key is required",
-    moneyAmountRequired: "Money amount must be greater than 0 for money reward",
-    ammoRequired: "Ammo type and quantity are required for ammo reward",
-    savedOffer: "Saved offer",
-    createdOffer: "Created offer",
-    failedSaveOffer: "Failed to save premium offer",
-    failedDeleteOffer: "Failed to delete premium offer",
-    failedCreateOffer: "Failed to create premium offer",
-    confirmDeleteOffer: 'Are you sure you want to delete offer "{key}"?',
-    enterBanReason: "Please enter a ban reason",
-    playerBanned: "Player banned successfully",
-    failedBanPlayer: "Failed to ban player",
-    playerUpdated: "Player updated successfully",
-    failedUpdatePlayer: "Failed to update player",
-    confirmDeleteVehicle: 'Are you sure you want to delete vehicle "{id}"?',
-    confirmDeleteAircraft: 'Are you sure you want to delete aircraft "{id}"?',
-    confirmDeleteTool: 'Are you sure you want to delete tool "{id}"?',
-    confirmDeleteCrime: 'Are you sure you want to delete crime "{id}"?',
-    enterCountryCode: "Enter at least one country code",
-    editPlayerTitle: "Edit player",
-    banPlayerTitle: "Ban player",
-    banReason: "Ban reason",
-    banType: "Ban type",
-    temporaryBan: "Temporary ban",
-    permanentBan: "Permanent ban",
-    durationHours: "Duration (hours)",
-    permanentBanAction: "Permanently ban player",
-    banForHours: "Ban for {hours} hours",
-    configRestartWarning:
-      "Changes to configuration require a server restart to take effect.",
-    saveChanges: "Save changes",
-    reset: "Reset",
-    noNpcsFound: "No NPCs found. Create your first NPC to get started.",
-    createNpc: "Create NPC",
-    createNpcTitle: "Create new NPC",
-    addVehicle: "Add vehicle",
-    addAircraft: "Add aircraft",
-    addTool: "Add tool",
-    addCrime: "Add crime",
-    activityLevel: "Activity level",
-    simulate: "Simulate",
-    details: "Details",
-    simulateNpcTitle: "Simulate NPC activity",
-    startSimulation: "Start simulation",
-    hoursToSimulate: "Hours to simulate",
-    npcDetails: "NPC details",
-    playerInfo: "Player info",
-    crimeStats: "Crime statistics",
-    jobStats: "Job statistics",
-    earningsPerformance: "Earnings & performance",
-    otherStats: "Other stats",
-  },
-} as const;
 
 interface AdminAircraft {
   id: string;
@@ -799,12 +490,21 @@ const PRESET_EVENT_KEYS = new Set([
 function App() {
   const initialRecentActionsPrefs = getStoredRecentActionsPrefs();
   const initialRecentActionsViews = getStoredRecentActionsViews();
-  const [language, setLanguage] = useState<Language>("nl");
+  const [language, setLanguage] = useState<AdminLanguage>(() =>
+    readStoredAdminLanguage(),
+  );
   const [theme, setTheme] = useState<"light" | "dark">(() =>
     localStorage.getItem("theme") === "dark" ? "dark" : "light",
   );
+  useEffect(() => {
+    try {
+      localStorage.setItem(ADMIN_UI_LANGUAGE_KEY, language);
+    } catch {
+      /* ignore */
+    }
+  }, [language]);
   const t = translations[language];
-  const l = (nl: string, en: string) => (language === "nl" ? nl : en);
+  const l = (nl: string, en: string) => getAdminTr(language, nl, en);
   const tr = (template: string, vars: Record<string, string | number>) =>
     Object.entries(vars).reduce(
       (acc, [key, value]) => acc.replace(`{${key}}`, String(value)),
@@ -4633,10 +4333,15 @@ function App() {
                 <select
                   className="form-select"
                   value={language}
-                  onChange={(e) => setLanguage(e.target.value as Language)}
+                  onChange={(e) =>
+                    setLanguage(e.target.value as AdminLanguage)
+                  }
                 >
-                  <option value="nl">Nederlands</option>
-                  <option value="en">English</option>
+                  {ADMIN_LANGUAGE_OPTIONS.map((o) => (
+                    <option key={o.code} value={o.code}>
+                      {o.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="mb-3">
@@ -4726,10 +4431,16 @@ function App() {
               <select
                 className="form-select form-select-sm"
                 value={language}
-                onChange={(e) => setLanguage(e.target.value as Language)}
+                onChange={(e) =>
+                  setLanguage(e.target.value as AdminLanguage)
+                }
+                title={t.language}
               >
-                <option value="nl">NL</option>
-                <option value="en">EN</option>
+                {ADMIN_LANGUAGE_OPTIONS.map((o) => (
+                  <option key={o.code} value={o.code}>
+                    {o.code.toUpperCase()}
+                  </option>
+                ))}
               </select>
             </li>
             <li className="nav-item ms-2">

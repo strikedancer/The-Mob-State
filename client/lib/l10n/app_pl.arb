@@ -1,50 +1,50 @@
 {
   "@@locale": "pl",
-  "appTitle": "Mafia Game",
+  "appTitle": "Gra mafijna",
   "@appTitle": {
     "description": "The title of the application"
   },
   "login": "Login",
-  "register": "Register",
-  "username": "Username",
-  "password": "Password",
-  "usernameLabel": "USERNAME",
-  "passwordLabel": "PASSWORD",
-  "usernamePlaceholder": "Username",
-  "passwordPlaceholder": "Password",
+  "register": "Rejestr",
+  "username": "Nazwa użytkownika",
+  "password": "Hasło",
+  "usernameLabel": "NAZWA UŻYTKOWNIKA",
+  "passwordLabel": "HASŁO",
+  "usernamePlaceholder": "Nazwa użytkownika",
+  "passwordPlaceholder": "Hasło",
   "loginButton": "LOGIN",
-  "registerButton": "REGISTER",
-  "forgotPassword": "Forgot Password?",
-  "usernameRequired": "Please enter a username",
-  "passwordRequired": "Please enter a password",
-  "passwordTooShort": "Password must be at least 6 characters",
-  "invalidCredentials": "Incorrect username or password",
-  "loginSuccessful": "Login successful!",
-  "registrationSuccessful": "Registration successful!",
-  "loginFailed": "Login failed",
-  "emailLabel": "EMAIL",
-  "emailPlaceholder": "Email",
-  "emailRequired": "Please enter an email address",
-  "emailInvalid": "Please enter a valid email address",
-  "forgotPasswordTitle": "Reset Password",
-  "forgotPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
-  "resetPasswordButton": "SEND RESET LINK",
-  "emailSent": "Reset link sent! Check your email.",
-  "backToLogin": "Back to Login",
-  "welcome": "Welcome, {username}!",
-  "dashboardTimeouts": "Timeouts",
-  "dashboardTimeoutCrime": "Crime",
-  "dashboardTimeoutJob": "Work",
-  "dashboardTimeoutTravel": "Travel",
-  "dashboardTimeoutVehicleTheft": "Steal car",
-  "dashboardTimeoutBoatTheft": "Steal boat",
-  "dashboardTimeoutNightclubSeason": "Nightclub season",
-  "dashboardTimeoutAmmo": "Buy bullets",
-  "dashboardTimeoutShootingRange": "Shooting range",
-  "dashboardTimeoutGym": "Gym",
-  "dashboardInfoDrugsGrams": "Drugs (grams)",
-  "dashboardInfoNightclubs": "Nightclubs",
-  "dashboardInfoNightclubRevenue": "Nightclub revenue",
+  "registerButton": "REJESTR",
+  "forgotPassword": "Zapomniałeś hasła?",
+  "usernameRequired": "Proszę wprowadzić nazwę użytkownika",
+  "passwordRequired": "Proszę wprowadzić hasło",
+  "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
+  "invalidCredentials": "Nieprawidłowa nazwa użytkownika lub hasło",
+  "loginSuccessful": "Zaloguj się pomyślnie!",
+  "registrationSuccessful": "Rejestracja pomyślna!",
+  "loginFailed": "Logowanie nie powiodło się",
+  "emailLabel": "E-MAIL",
+  "emailPlaceholder": "E-mail",
+  "emailRequired": "Proszę podać adres e-mail",
+  "emailInvalid": "Proszę podać prawidłowy adres e-mail",
+  "forgotPasswordTitle": "Zresetuj hasło",
+  "forgotPasswordDescription": "Wpisz swój adres e-mail, a my wyślemy Ci link umożliwiający zresetowanie hasła.",
+  "resetPasswordButton": "WYŚLIJ LINK RESETUJĄCY",
+  "emailSent": "Zresetuj link wysłany! Sprawdź swój e-mail.",
+  "backToLogin": "Powrót do logowania",
+  "welcome": "Witamy, {username}!",
+  "dashboardTimeouts": "Limity czasu",
+  "dashboardTimeoutCrime": "Przestępczość",
+  "dashboardTimeoutJob": "Praca",
+  "dashboardTimeoutTravel": "Podróż",
+  "dashboardTimeoutVehicleTheft": "Ukraść samochód",
+  "dashboardTimeoutBoatTheft": "Ukraść łódź",
+  "dashboardTimeoutNightclubSeason": "Sezon klubów nocnych",
+  "dashboardTimeoutAmmo": "Kup naboje",
+  "dashboardTimeoutShootingRange": "Strzelnica",
+  "dashboardTimeoutGym": "Sala gimnastyczna",
+  "dashboardInfoDrugsGrams": "Leki (gramy)",
+  "dashboardInfoNightclubs": "Kluby nocne",
+  "dashboardInfoNightclubRevenue": "Przychody klubu nocnego",
   "@welcome": {
     "placeholders": {
       "username": {
@@ -52,10 +52,10 @@
       }
     }
   },
-  "dashboard": "Dashboard",
-  "crimes": "Crimes",
-  "errorLoadingCrimes": "Failed to load crimes",
-  "connectionError": "Connection error: {error}",
+  "dashboard": "Panel",
+  "crimes": "Zbrodnie",
+  "errorLoadingCrimes": "Nie udało się wczytać przestępstw",
+  "connectionError": "Błąd połączenia: {error}",
   "@connectionError": {
     "placeholders": {
       "error": {
@@ -63,7 +63,7 @@
       }
     }
   },
-  "payRange": "Pay: €{min} - €{max}",
+  "payRange": "Zapłata: {min} € - {max}",
   "@payRange": {
     "placeholders": {
       "min": {
@@ -74,7 +74,7 @@
       }
     }
   },
-  "requiresRank": "Requires Rank {rank}",
+  "requiresRank": "Wymaga rangi {rank}",
   "@requiresRank": {
     "placeholders": {
       "rank": {
@@ -82,74 +82,74 @@
       }
     }
   },
-  "requiresVehicle": "Requires Vehicle",
-  "federalCrimeWarning": "⚠️ Federal Crime - FBI Heat",
-  "crimePickpocketName": "Pickpocketing",
-  "crimePickpocketDesc": "Steal wallets from passersby",
-  "crimeShopliftName": "Shoplifting",
-  "crimeShopliftDesc": "Steal goods from a store",
-  "crimeStealBikeName": "Steal Bike",
-  "crimeStealBikeDesc": "Steal a bike from a rack",
-  "crimeCarTheftName": "Car Theft",
-  "crimeCarTheftDesc": "Steal a parked car",
-  "crimeBurglaryName": "Burglary",
-  "crimeBurglaryDesc": "Break into a house",
-  "crimeRobStoreName": "Store Robbery",
-  "crimeRobStoreDesc": "Rob a small store",
-  "crimeMugPersonName": "Mugging",
-  "crimeMugPersonDesc": "Mug someone on the street",
-  "crimeStealCarPartsName": "Steal Car Parts",
-  "crimeStealCarPartsDesc": "Steal parts from parked cars",
-  "crimeHijackTruckName": "Hijack Truck",
-  "crimeHijackTruckDesc": "Hijack a truck carrying goods",
-  "crimeAtmTheftName": "ATM Theft",
-  "crimeAtmTheftDesc": "Break into an ATM",
-  "crimeJewelryHeistName": "Jewelry Heist",
-  "crimeJewelryHeistDesc": "Rob a jeweler",
-  "crimeVandalismName": "Vandalism",
-  "crimeVandalismDesc": "Damage property for money",
+  "requiresVehicle": "Wymaga pojazdu",
+  "federalCrimeWarning": "⚠️ Przestępczość Federalna – FBI Heat",
+  "crimePickpocketName": "Kradzież kieszonkowa",
+  "crimePickpocketDesc": "Kradnij portfele przechodniom",
+  "crimeShopliftName": "Kradzieże w sklepach",
+  "crimeShopliftDesc": "Ukraść towar ze sklepu",
+  "crimeStealBikeName": "Ukraść rower",
+  "crimeStealBikeDesc": "Ukraść rower ze stojaka",
+  "crimeCarTheftName": "Kradzież samochodu",
+  "crimeCarTheftDesc": "Ukraść zaparkowany samochód",
+  "crimeBurglaryName": "Włamanie",
+  "crimeBurglaryDesc": "Włamać się do domu",
+  "crimeRobStoreName": "Napad na sklep",
+  "crimeRobStoreDesc": "Okraść mały sklep",
+  "crimeMugPersonName": "Rabunek",
+  "crimeMugPersonDesc": "Obrabuj kogoś na ulicy",
+  "crimeStealCarPartsName": "Kradnij części samochodowe",
+  "crimeStealCarPartsDesc": "Kradnij części z zaparkowanych samochodów",
+  "crimeHijackTruckName": "Porwanie ciężarówki",
+  "crimeHijackTruckDesc": "Porwij ciężarówkę przewożącą towary",
+  "crimeAtmTheftName": "Kradzież bankomatu",
+  "crimeAtmTheftDesc": "Włamać się do bankomatu",
+  "crimeJewelryHeistName": "Napad na biżuterię",
+  "crimeJewelryHeistDesc": "Okraść jubilera",
+  "crimeVandalismName": "Wandalizm",
+  "crimeVandalismDesc": "Zniszczyć majątek za pieniądze",
   "crimeGraffitiName": "Graffiti",
-  "crimeGraffitiDesc": "Spray graffiti for local gangs",
-  "crimeDrugDealSmallName": "Small Drug Deal",
-  "crimeDrugDealSmallDesc": "Sell a small amount of drugs",
-  "crimeDrugDealLargeName": "Large Drug Deal",
-  "crimeDrugDealLargeDesc": "Sell a large amount of drugs",
-  "crimeExtortionName": "Extortion",
-  "crimeExtortionDesc": "Extort money from local businesses",
-  "crimeKidnappingName": "Kidnapping",
-  "crimeKidnappingDesc": "Kidnap someone for ransom",
-  "crimeArsonName": "Arson",
-  "crimeArsonDesc": "Set a building on fire",
-  "crimeSmugglingName": "Smuggling",
-  "crimeSmugglingDesc": "Smuggle goods across the border",
-  "crimeAssassinationName": "Assassination",
-  "crimeAssassinationDesc": "Carry out a contract killing",
-  "crimeHackAccountName": "Hack Account",
-  "crimeHackAccountDesc": "Hack a bank account",
-  "crimeCounterfeitMoneyName": "Counterfeit Money",
-  "crimeCounterfeitMoneyDesc": "Make fake money",
-  "crimeIdentityTheftName": "Identity Theft",
-  "crimeIdentityTheftDesc": "Steal someone's identity for fraud",
-  "crimeRobArmoredTruckName": "Armored Truck Heist",
-  "crimeRobArmoredTruckDesc": "Rob an armored truck",
-  "crimeArtTheftName": "Art Theft",
-  "crimeArtTheftDesc": "Steal valuable artwork",
-  "crimeProtectionRacketName": "Protection Racket",
-  "crimeProtectionRacketDesc": "Make businesses pay protection money",
-  "crimeCasinoHeistName": "Casino Heist",
-  "crimeCasinoHeistDesc": "Rob a casino",
-  "crimeBankRobberyName": "Bank Robbery",
-  "crimeBankRobberyDesc": "Rob a bank",
-  "crimeStealYachtName": "Steal Yacht",
-  "crimeStealYachtDesc": "Steal a luxury yacht",
-  "crimeCorruptOfficialName": "Bribe Official",
-  "crimeCorruptOfficialDesc": "Bribe an official for favors",
-  "tooltipCrimeRequiresTools": "Tools Required",
-  "tooltipCrimeRequiresVehicle": "Vehicle Required",
-  "tooltipCrimeRequiresDrugs": "Drugs required",
-  "tooltipCrimeHighValue": "High Value Operation",
-  "tooltipCrimeRequiresViolence": "Violence Required",
-  "crimeErrorDrugsRequired": "You need at least {quantity}g of: {drugs}",
+  "crimeGraffitiDesc": "Rozpylaj graffiti dla lokalnych gangów",
+  "crimeDrugDealSmallName": "Mały handel narkotykami",
+  "crimeDrugDealSmallDesc": "Sprzedaj niewielką ilość narkotyków",
+  "crimeDrugDealLargeName": "Duży handel narkotykami",
+  "crimeDrugDealLargeDesc": "Sprzedaj dużą ilość narkotyków",
+  "crimeExtortionName": "Wymuszenie",
+  "crimeExtortionDesc": "Wyłudzaj pieniądze od lokalnych firm",
+  "crimeKidnappingName": "Porwanie",
+  "crimeKidnappingDesc": "Porwać kogoś dla okupu",
+  "crimeArsonName": "Podpalenie",
+  "crimeArsonDesc": "Podpalić budynek",
+  "crimeSmugglingName": "Przemyt",
+  "crimeSmugglingDesc": "Przemycaj towary przez granicę",
+  "crimeAssassinationName": "Zamach",
+  "crimeAssassinationDesc": "Dokonaj zabójstwa na zlecenie",
+  "crimeHackAccountName": "Włamać się na konto",
+  "crimeHackAccountDesc": "Włamać się na konto bankowe",
+  "crimeCounterfeitMoneyName": "Fałszywe pieniądze",
+  "crimeCounterfeitMoneyDesc": "Zarabiaj fałszywe pieniądze",
+  "crimeIdentityTheftName": "Kradzież tożsamości",
+  "crimeIdentityTheftDesc": "Ukraść czyjąś tożsamość w celu oszustwa",
+  "crimeRobArmoredTruckName": "Napad na ciężarówkę opancerzoną",
+  "crimeRobArmoredTruckDesc": "Obrabuj opancerzoną ciężarówkę",
+  "crimeArtTheftName": "Kradzież dzieł sztuki",
+  "crimeArtTheftDesc": "Kradnij cenne dzieła sztuki",
+  "crimeProtectionRacketName": "Rakieta ochronna",
+  "crimeProtectionRacketDesc": "Spraw, aby firmy płaciły pieniądze za ochronę",
+  "crimeCasinoHeistName": "Napad na kasyno",
+  "crimeCasinoHeistDesc": "Obrabować kasyno",
+  "crimeBankRobberyName": "Napad na bank",
+  "crimeBankRobberyDesc": "Obrabować bank",
+  "crimeStealYachtName": "Ukraść jacht",
+  "crimeStealYachtDesc": "Ukraść luksusowy jacht",
+  "crimeCorruptOfficialName": "Urzędnik łapówek",
+  "crimeCorruptOfficialDesc": "Przekupić urzędnika za przysługi",
+  "tooltipCrimeRequiresTools": "Wymagane narzędzia",
+  "tooltipCrimeRequiresVehicle": "Wymagany pojazd",
+  "tooltipCrimeRequiresDrugs": "Wymagane leki",
+  "tooltipCrimeHighValue": "Operacja o wysokiej wartości",
+  "tooltipCrimeRequiresViolence": "Wymagana przemoc",
+  "crimeErrorDrugsRequired": "Potrzebujesz co najmniej {quantity}g: {drugs}",
   "@crimeErrorDrugsRequired": {
     "placeholders": {
       "quantity": {
@@ -160,62 +160,62 @@
       }
     }
   },
-  "jobs": "Jobs",
-  "errorLoadingJobs": "Failed to load jobs",
-  "jobNewspaperDeliveryName": "Newspaper Delivery",
-  "jobNewspaperDeliveryDesc": "Deliver newspapers early in the morning",
-  "jobCarWashName": "Car Wash",
-  "jobCarWashDesc": "Wash cars at the car wash",
-  "jobGroceryBaggerName": "Grocery Bagger",
-  "jobGroceryBaggerDesc": "Stock shelves at the supermarket",
-  "jobDishwasherName": "Dishwasher",
-  "jobDishwasherDesc": "Wash dishes in a restaurant",
-  "jobStreetSweeperName": "Street Sweeper",
-  "jobStreetSweeperDesc": "Sweep streets clean",
-  "jobPizzaDeliveryName": "Pizza Delivery",
-  "jobPizzaDeliveryDesc": "Deliver pizzas in the city",
-  "jobTaxiDriverName": "Taxi Driver",
-  "jobTaxiDriverDesc": "Drive a taxi around the city",
-  "jobWarehouseWorkerName": "Warehouse Worker",
-  "jobWarehouseWorkerDesc": "Work in a warehouse",
-  "jobConstructionWorkerName": "Construction Worker",
-  "jobConstructionWorkerDesc": "Work on a construction site",
-  "jobBartenderName": "Bartender",
-  "jobBartenderDesc": "Pour beer and mix cocktails",
-  "jobSecurityGuardName": "Security Guard",
-  "jobSecurityGuardDesc": "Guard a building",
-  "jobTruckDriverName": "Truck Driver",
-  "jobTruckDriverDesc": "Drive a truck over long distances",
-  "jobMechanicName": "Mechanic",
-  "jobMechanicDesc": "Repair cars in a garage",
-  "jobElectricianName": "Electrician",
-  "jobElectricianDesc": "Install and repair electrical systems",
-  "jobPlumberName": "Plumber",
-  "jobPlumberDesc": "Repair pipes and plumbing",
-  "jobChefName": "Chef",
-  "jobChefDesc": "Cook in a restaurant",
-  "jobParamedicName": "Paramedic",
-  "jobParamedicDesc": "Help people in need",
-  "jobProgrammerName": "Programmer",
-  "jobProgrammerDesc": "Write software for companies",
-  "jobAccountantName": "Accountant",
-  "jobAccountantDesc": "Manage finances for businesses",
-  "jobLawyerName": "Lawyer",
-  "jobLawyerDesc": "Defend clients in court",
-  "jobRealEstateAgentName": "Real Estate Agent",
-  "jobRealEstateAgentDesc": "Sell houses and buildings",
-  "jobStockbrokerName": "Stockbroker",
-  "jobStockbrokerDesc": "Trade stocks",
-  "jobDoctorName": "Doctor",
-  "jobDoctorDesc": "Treat patients at the hospital",
+  "jobs": "Praca",
+  "errorLoadingJobs": "Nie udało się załadować zadań",
+  "jobNewspaperDeliveryName": "Dostawa gazet",
+  "jobNewspaperDeliveryDesc": "Dostarczaj gazety wcześnie rano",
+  "jobCarWashName": "Myjnia samochodowa",
+  "jobCarWashDesc": "Myj samochody na myjni samochodowej",
+  "jobGroceryBaggerName": "Bagażnik artykułów spożywczych",
+  "jobGroceryBaggerDesc": "Półki magazynowe w supermarkecie",
+  "jobDishwasherName": "Pomywaczka",
+  "jobDishwasherDesc": "Zmywanie naczyń w restauracji",
+  "jobStreetSweeperName": "Zamiatacz ulic",
+  "jobStreetSweeperDesc": "Zamiataj ulice w czystości",
+  "jobPizzaDeliveryName": "Dostawa pizzy",
+  "jobPizzaDeliveryDesc": "Dostarczaj pizzę w mieście",
+  "jobTaxiDriverName": "Taksówkarz",
+  "jobTaxiDriverDesc": "Jedź taksówką po mieście",
+  "jobWarehouseWorkerName": "Pracownik magazynu",
+  "jobWarehouseWorkerDesc": "Praca w magazynie",
+  "jobConstructionWorkerName": "Pracownik budowlany",
+  "jobConstructionWorkerDesc": "Praca na budowie",
+  "jobBartenderName": "Barman",
+  "jobBartenderDesc": "Wlać piwo i wymieszać koktajle",
+  "jobSecurityGuardName": "Strażnik",
+  "jobSecurityGuardDesc": "Strzeż budynku",
+  "jobTruckDriverName": "Kierowca ciężarówki",
+  "jobTruckDriverDesc": "Prowadź ciężarówkę na długich dystansach",
+  "jobMechanicName": "Mechanik",
+  "jobMechanicDesc": "Naprawiaj samochody w garażu",
+  "jobElectricianName": "Elektryk",
+  "jobElectricianDesc": "Montujemy i naprawiamy instalacje elektryczne",
+  "jobPlumberName": "Hydraulik",
+  "jobPlumberDesc": "Napraw rury i hydraulikę",
+  "jobChefName": "Szef kuchni",
+  "jobChefDesc": "Gotuj w restauracji",
+  "jobParamedicName": "Sanitariusz",
+  "jobParamedicDesc": "Pomóż potrzebującym",
+  "jobProgrammerName": "Programista",
+  "jobProgrammerDesc": "Pisanie oprogramowania dla firm",
+  "jobAccountantName": "Księgowy",
+  "jobAccountantDesc": "Zarządzaj finansami firm",
+  "jobLawyerName": "Prawnik",
+  "jobLawyerDesc": "Broń klientów w sądzie",
+  "jobRealEstateAgentName": "Agent nieruchomości",
+  "jobRealEstateAgentDesc": "Sprzedam domy i budynki",
+  "jobStockbrokerName": "Makler giełdowy",
+  "jobStockbrokerDesc": "Handluj akcjami",
+  "jobDoctorName": "Lekarz",
+  "jobDoctorDesc": "Leczyć pacjentów w szpitalu",
   "jobAirlinePilotName": "Pilot",
-  "jobAirlinePilotDesc": "Fly passenger airplanes",
-  "travel": "Travel",
-  "errorLoadingCountries": "Failed to load countries",
-  "currentLocation": "Current Location",
-  "current": "Current",
-  "travelTo": "Travel",
-  "travelCost": "Cost: €{amount}",
+  "jobAirlinePilotDesc": "Latać samolotami pasażerskimi",
+  "travel": "Podróż",
+  "errorLoadingCountries": "Nie udało się wczytać krajów",
+  "currentLocation": "Aktualna lokalizacja",
+  "current": "Aktualny",
+  "travelTo": "Podróż",
+  "travelCost": "Koszt: {amount} €",
   "@travelCost": {
     "placeholders": {
       "amount": {
@@ -223,9 +223,9 @@
       }
     }
   },
-  "travelJourneyTitle": "Start journey?",
-  "travelRouteLabel": "Route:",
-  "travelLegsLabel": "Legs: {count}",
+  "travelJourneyTitle": "Rozpocząć podróż?",
+  "travelRouteLabel": "Trasa:",
+  "travelLegsLabel": "Nogi: {count}",
   "@travelLegsLabel": {
     "placeholders": {
       "count": {
@@ -233,7 +233,7 @@
       }
     }
   },
-  "travelCostPerLeg": "Cost per leg: €{amount}",
+  "travelCostPerLeg": "Koszt za nogę: {amount} €",
   "@travelCostPerLeg": {
     "placeholders": {
       "amount": {
@@ -241,7 +241,7 @@
       }
     }
   },
-  "travelTotalCost": "Total cost: €{amount}",
+  "travelTotalCost": "Całkowity koszt: {amount} €",
   "@travelTotalCost": {
     "placeholders": {
       "amount": {
@@ -249,7 +249,7 @@
       }
     }
   },
-  "travelCooldownPerLeg": "Cooldown: {minutes} min per leg",
+  "travelCooldownPerLeg": "Czas odnowienia: {minutes} min na nogę",
   "@travelCooldownPerLeg": {
     "placeholders": {
       "minutes": {
@@ -257,9 +257,9 @@
       }
     }
   },
-  "travelRiskPerLeg": "Risk: per leg (can be jailed and lose all goods)",
+  "travelRiskPerLeg": "Ryzyko: na nogę (może zostać uwięziony i utracić wszystkie dobra)",
   "travelStart": "Start",
-  "travelInTransitTo": "In transit to {country}",
+  "travelInTransitTo": "W drodze do {country}",
   "@travelInTransitTo": {
     "placeholders": {
       "country": {
@@ -267,7 +267,7 @@
       }
     }
   },
-  "travelLegProgress": "Leg {current}/{total}",
+  "travelLegProgress": "Noga {current}/{total}",
   "@travelLegProgress": {
     "placeholders": {
       "current": {
@@ -278,7 +278,7 @@
       }
     }
   },
-  "travelNextStop": "Next stop: {country}",
+  "travelNextStop": "Następny przystanek: {country}",
   "@travelNextStop": {
     "placeholders": {
       "country": {
@@ -286,11 +286,11 @@
       }
     }
   },
-  "travelContinue": "Continue",
-  "travelCancelJourney": "Cancel journey",
-  "travelJourneyCanceled": "Journey canceled",
-  "travelDirect": "Direct",
-  "travelVia": "via {countries}",
+  "travelContinue": "Kontynuować",
+  "travelCancelJourney": "Anuluj podróż",
+  "travelJourneyCanceled": "Podróż odwołana",
+  "travelDirect": "Bezpośredni",
+  "travelVia": "przez {countries}",
   "@travelVia": {
     "placeholders": {
       "countries": {
@@ -298,7 +298,7 @@
       }
     }
   },
-  "travelLegsCount": "{count} legs",
+  "travelLegsCount": "{count} nóg",
   "@travelLegsCount": {
     "placeholders": {
       "count": {
@@ -306,7 +306,7 @@
       }
     }
   },
-  "jailRemainingMinutes": "You are in jail for {minutes} more minutes",
+  "jailRemainingMinutes": "Jesteś w więzieniu jeszcze przez {minutes} minut",
   "@jailRemainingMinutes": {
     "placeholders": {
       "minutes": {
@@ -314,7 +314,7 @@
       }
     }
   },
-  "travelSuccessTo": "Traveled to {country}!",
+  "travelSuccessTo": "Podróż do {country}!",
   "@travelSuccessTo": {
     "placeholders": {
       "country": {
@@ -322,7 +322,7 @@
       }
     }
   },
-  "travelConfiscated": "🚨 {quantity} items {item} confiscated!",
+  "travelConfiscated": "🚨 {quantity} przedmiotów {item} skonfiskowane!",
   "@travelConfiscated": {
     "placeholders": {
       "quantity": {
@@ -333,7 +333,7 @@
       }
     }
   },
-  "travelDamaged": "⚠️ {item} damaged ({percent}% value loss)!",
+  "travelDamaged": "⚠️ {item} uszkodzone ({percent}% utraty wartości)!",
   "@travelDamaged": {
     "placeholders": {
       "item": {
@@ -344,17 +344,17 @@
       }
     }
   },
-  "countryNetherlands": "Netherlands",
-  "countryBelgium": "Belgium",
-  "countryGermany": "Germany",
-  "countryFrance": "France",
-  "countrySpain": "Spain",
-  "countryItaly": "Italy",
-  "countryUk": "United Kingdom",
-  "countrySwitzerland": "Switzerland",
-  "crew": "Crew",
-  "profile": "Profile",
-  "logout": "Logout",
+  "countryNetherlands": "Niderlandy",
+  "countryBelgium": "Belgia",
+  "countryGermany": "Niemcy",
+  "countryFrance": "Francja",
+  "countrySpain": "Hiszpania",
+  "countryItaly": "Włochy",
+  "countryUk": "Zjednoczone Królestwo",
+  "countrySwitzerland": "Szwajcaria",
+  "crew": "Załoga",
+  "profile": "Profil",
+  "logout": "Wyloguj się",
   "money": "€{amount}",
   "@money": {
     "placeholders": {
@@ -363,13 +363,13 @@
       }
     }
   },
-  "health": "Health",
-  "rank": "Rank",
+  "health": "Zdrowie",
+  "rank": "Stopień",
   "xp": "XP",
-  "settings": "Settings",
-  "avatar": "Avatar",
-  "avatarUpdated": "Avatar updated!",
-  "error": "Error: {error}",
+  "settings": "Ustawienia",
+  "avatar": "Awatara",
+  "avatarUpdated": "Awatar zaktualizowany!",
+  "error": "Błąd: {error}",
   "@error": {
     "placeholders": {
       "error": {
@@ -377,9 +377,9 @@
       }
     }
   },
-  "changeLanguage": "Language / Taal",
-  "languageChanged": "Language changed to English",
-  "languageChangeFailed": "Language change failed ({code})",
+  "changeLanguage": "Język / Taal",
+  "languageChanged": "Język zmieniony na angielski",
+  "languageChangeFailed": "Zmiana języka nie powiodła się ({code})",
   "@languageChangeFailed": {
     "placeholders": {
       "code": {
@@ -387,23 +387,23 @@
       }
     }
   },
-  "chooseLanguage": "Choose Language / Taal Kiezen",
-  "dutch": "Nederlands",
-  "english": "English",
-  "cancel": "Cancel",
-  "changeUsername": "Change Username",
-  "usernameHint": "3-20 characters",
-  "change": "Change",
-  "minChars": "Minimum 3 characters",
-  "usernameUpdated": "Username updated!",
-  "usernameTaken": "Username already taken",
-  "oncePerMonth": "Change once per month",
-  "privacy": "Privacy",
-  "allowMessages": "Allow Messages",
-  "allowMessagesDesc": "Other players can send you messages",
-  "settingsSaved": "Settings saved",
-  "vipStatus": "VIP Status",
-  "activeUntil": "Active until {date}",
+  "chooseLanguage": "Wybierz język / Taal Kiezen",
+  "dutch": "Holandia",
+  "english": "angielski",
+  "cancel": "Anulować",
+  "changeUsername": "Zmień nazwę użytkownika",
+  "usernameHint": "3-20 znaków",
+  "change": "Zmiana",
+  "minChars": "Minimum 3 znaki",
+  "usernameUpdated": "Nazwa użytkownika zaktualizowana!",
+  "usernameTaken": "Nazwa użytkownika jest już zajęta",
+  "oncePerMonth": "Zmieniaj raz na miesiąc",
+  "privacy": "Prywatność",
+  "allowMessages": "Zezwalaj na wiadomości",
+  "allowMessagesDesc": "Inni gracze mogą wysyłać Ci wiadomości",
+  "settingsSaved": "Ustawienia zostały zapisane",
+  "vipStatus": "Status VIP-a",
+  "activeUntil": "Aktywny do {date}",
   "@activeUntil": {
     "placeholders": {
       "date": {
@@ -411,36 +411,36 @@
       }
     }
   },
-  "unknown": "Unknown",
-  "chooseAvatar": "Choose an Avatar",
-  "freeAvatars": "Free Avatars",
-  "vipAvatars": "VIP Avatars",
-  "vip": "VIP",
-  "notLoggedIn": "Not logged in",
-  "refresh": "Refresh",
-  "foodAndDrink": "Food & Drink",
-  "invalidItem": "This item does not exist",
-  "foodBroodje": "Sandwich",
+  "unknown": "Nieznany",
+  "chooseAvatar": "Wybierz awatara",
+  "freeAvatars": "Darmowe awatary",
+  "vipAvatars": "Avatary VIP",
+  "vip": "VIP-a",
+  "notLoggedIn": "Nie zalogowany",
+  "refresh": "Odświeżać",
+  "foodAndDrink": "Jedzenie i napoje",
+  "invalidItem": "Ten element nie istnieje",
+  "foodBroodje": "Kanapka",
   "foodPizza": "Pizza",
   "foodBurger": "Burger",
-  "foodSteak": "Steak",
-  "drinkWater": "Water",
+  "foodSteak": "Stek",
+  "drinkWater": "Woda",
   "drinkSoda": "Soda",
-  "drinkCoffee": "Coffee",
-  "drinkBeer": "Beer",
-  "foodInfo3": "• Buy food and drink to keep your stats up",
-  "friends": "Friends",
-  "friendActivity": "Friend Activity",
-  "properties": "Properties",
-  "propertiesAvailable": "Available",
-  "myProperties": "My Properties",
-  "errorLoadingMyProperties": "Error loading my properties",
-  "errorBuyingProperty": "Error buying property",
-  "errorCollectingIncome": "Error collecting income",
-  "noAvailableProperties": "No available properties",
-  "noOwnedProperties": "You don't own any properties yet",
-  "buyFirstPropertyHint": "Buy your first property in the \"Available\" tab",
-  "buyPropertyConfirm": "Do you want to buy {name} for €{price}?",
+  "drinkCoffee": "Kawa",
+  "drinkBeer": "Piwo",
+  "foodInfo3": "• Kupuj jedzenie i napoje, aby utrzymać swoje statystyki",
+  "friends": "Przyjaciele",
+  "friendActivity": "Aktywność przyjaciela",
+  "properties": "Właściwości",
+  "propertiesAvailable": "Dostępny",
+  "myProperties": "Moje właściwości",
+  "errorLoadingMyProperties": "Błąd podczas ładowania moich właściwości",
+  "errorBuyingProperty": "Błąd podczas zakupu nieruchomości",
+  "errorCollectingIncome": "Błąd podczas zbierania dochodu",
+  "noAvailableProperties": "Brak dostępnych obiektów",
+  "noOwnedProperties": "Nie posiadasz jeszcze żadnych nieruchomości",
+  "buyFirstPropertyHint": "Kup swoją pierwszą nieruchomość w zakładce „Dostępne”.",
+  "buyPropertyConfirm": "Chcesz kupić {name} za {price}?",
   "@buyPropertyConfirm": {
     "placeholders": {
       "name": {
@@ -451,13 +451,13 @@
       }
     }
   },
-  "propertyPrice": "Price",
-  "propertyMinLevel": "Required level",
-  "propertyIncomePerHour": "Income/hour",
-  "propertyMaxLevel": "Max Level",
-  "propertyUniquePerCountry": "⚠️ Unique - 1 per country",
-  "propertyIncomeReady": "✅ Income ready to collect!",
-  "propertyNextIncome": "⏱️ Next income in {duration}",
+  "propertyPrice": "Cena",
+  "propertyMinLevel": "Wymagany poziom",
+  "propertyIncomePerHour": "Dochód/godz",
+  "propertyMaxLevel": "Maksymalny poziom",
+  "propertyUniquePerCountry": "⚠️ Unikalne - 1 na kraj",
+  "propertyIncomeReady": "✅Dochód gotowy do odbioru!",
+  "propertyNextIncome": "⏱️ Następny dochód za {duration}",
   "@propertyNextIncome": {
     "placeholders": {
       "duration": {
@@ -465,11 +465,11 @@
       }
     }
   },
-  "propertyBuyAction": "Buy Property",
-  "propertyCollectAction": "Collect",
-  "propertyUpgradeAction": "Upgrade",
-  "propertyMax": "MAX",
-  "propertyLevel": "Level {level}",
+  "propertyBuyAction": "Kup nieruchomość",
+  "propertyCollectAction": "Zbierać",
+  "propertyUpgradeAction": "Aktualizacja",
+  "propertyMax": "MAKS",
+  "propertyLevel": "Poziom {level}",
   "@propertyLevel": {
     "placeholders": {
       "level": {
@@ -496,22 +496,22 @@
       }
     }
   },
-  "propertyTypeHouse": "House",
-  "propertyTypeWarehouse": "Warehouse",
-  "propertyTypeCasino": "Casino",
+  "propertyTypeHouse": "Dom",
+  "propertyTypeWarehouse": "Magazyn",
+  "propertyTypeCasino": "Kasyno",
   "propertyTypeHotel": "Hotel",
-  "propertyTypeFactory": "Factory",
-  "propertyTypeBusiness": "Business",
-  "propertyCasinoName": "Casino",
-  "propertyWarehouseName": "Warehouse",
-  "propertyNightclubName": "Nightclub",
-  "propertyHouseName": "House",
-  "propertyApartmentName": "Apartment",
-  "propertyShopName": "Shop",
-  "blackMarket": "Black Market",
-  "garage": "Garage",
-  "garageCapacity": "Garage Capacity",
-  "garageVehiclesCount": "{current} / {total} vehicles",
+  "propertyTypeFactory": "Fabryka",
+  "propertyTypeBusiness": "Biznes",
+  "propertyCasinoName": "Kasyno",
+  "propertyWarehouseName": "Magazyn",
+  "propertyNightclubName": "Klub nocny",
+  "propertyHouseName": "Dom",
+  "propertyApartmentName": "Apartament",
+  "propertyShopName": "Sklep",
+  "blackMarket": "Czarny rynek",
+  "garage": "Garaż",
+  "garageCapacity": "Pojemność garażu",
+  "garageVehiclesCount": "{current} / {total} pojazdów",
   "@garageVehiclesCount": {
     "placeholders": {
       "current": {
@@ -522,7 +522,7 @@
       }
     }
   },
-  "garageUpgradeWithCost": "Upgrade (€{cost})",
+  "garageUpgradeWithCost": "Uaktualnij ({cost} €)",
   "@garageUpgradeWithCost": {
     "placeholders": {
       "cost": {
@@ -530,8 +530,8 @@
       }
     }
   },
-  "garageMaxLevel": "Max Level",
-  "garageLevelRemaining": "Level {level} | {spots} spots left",
+  "garageMaxLevel": "Maksymalny poziom",
+  "garageLevelRemaining": "Poziom {level} | Pozostało {spots} miejsc",
   "@garageLevelRemaining": {
     "placeholders": {
       "level": {
@@ -542,15 +542,15 @@
       }
     }
   },
-  "noCarsInGarage": "No cars in your garage",
-  "stealCarsToStart": "Steal some cars to get started!",
-  "stealFailed": "Steal failed",
-  "garageUpgradeFailed": "Failed to upgrade garage",
-  "saleFailed": "Sale failed",
-  "vehicleTransported": "Vehicle transported successfully!",
-  "vehicleTransportFailed": "Failed to transport vehicle",
-  "listOnMarket": "List on Market",
-  "marketValue": "Market Value: €{amount}",
+  "noCarsInGarage": "Żadnych samochodów w twoim garażu",
+  "stealCarsToStart": "Na początek ukradnij kilka samochodów!",
+  "stealFailed": "Kradzież nie powiodła się",
+  "garageUpgradeFailed": "Nie udało się ulepszyć garażu",
+  "saleFailed": "Sprzedaż nie powiodła się",
+  "vehicleTransported": "Pojazd przetransportowany pomyślnie!",
+  "vehicleTransportFailed": "Nie udało się przetransportować pojazdu",
+  "listOnMarket": "Lista na rynku",
+  "marketValue": "Wartość rynkowa: €{amount}",
   "@marketValue": {
     "placeholders": {
       "amount": {
@@ -558,19 +558,19 @@
       }
     }
   },
-  "askingPrice": "Asking Price (€)",
-  "enterPrice": "Enter price",
-  "list": "List",
-  "invalidPrice": "Invalid price",
-  "vehicleListed": "Vehicle listed on market!",
-  "listVehicleFailed": "Failed to list vehicle",
+  "askingPrice": "Cena wywoławcza (€)",
+  "enterPrice": "Wprowadź cenę",
+  "list": "Lista",
+  "invalidPrice": "Nieprawidłowa cena",
+  "vehicleListed": "Pojazd wystawiony na rynku!",
+  "listVehicleFailed": "Nie udało się wyświetlić listy pojazdów",
   "marina": "Marina",
-  "hospital": "Hospital",
-  "court": "Court",
-  "casino": "Casino",
-  "errorLoadingCasinoStatus": "Could not check casino status",
-  "errorLoadingCasinoGames": "Could not load casino games",
-  "casinoPrice": "Price: €{amount}",
+  "hospital": "Szpital",
+  "court": "Sąd",
+  "casino": "Kasyno",
+  "errorLoadingCasinoStatus": "Nie można sprawdzić statusu kasyna",
+  "errorLoadingCasinoGames": "Nie można załadować gier kasynowych",
+  "casinoPrice": "Cena: {amount} €",
   "@casinoPrice": {
     "placeholders": {
       "amount": {
@@ -578,31 +578,31 @@
       }
     }
   },
-  "startingCapital": "Starting capital",
-  "bankrollHelper": "This will be the casino bankroll",
-  "casinoOwnershipInfoTitle": "About casino ownership:",
-  "casinoClosedTitle": "CASINO CLOSED",
-  "casinoOwnedByLabel": "This casino is owned by:",
-  "casinoNoOwner": "This casino has no owner yet",
-  "casinoPurchasePriceLabel": "Purchase price:",
-  "casinoOwnerInfo": "As owner you manage the casino bankroll and earn money when players lose!",
-  "casinoGameSlotsName": "Slot Machine",
-  "casinoGameSlotsDesc": "Spin the reels and win up to 100x your bet!",
-  "casinoGameBlackjackName": "Blackjack",
-  "casinoGameBlackjackDesc": "Beat the dealer and win up to 2x your bet!",
-  "casinoGameRouletteName": "Roulette",
-  "casinoGameRouletteDesc": "Pick your number and win up to 35x your bet!",
-  "casinoGameDiceName": "Dice",
-  "casinoGameDiceDesc": "Roll the dice and win up to 6x your bet!",
-  "difficultyEasy": "EASY",
-  "difficultyMedium": "MEDIUM",
-  "difficultyHard": "HARD",
-  "casinoDepositTitle": "Deposit Money",
-  "casinoWithdrawTitle": "Withdraw Money",
-  "amount": "Amount",
-  "deposit": "Deposit",
-  "withdraw": "Withdraw",
-  "casinoDepositSuccess": "€{amount} deposited into casino bankroll",
+  "startingCapital": "Kapitał początkowy",
+  "bankrollHelper": "To będzie budżet kasyna",
+  "casinoOwnershipInfoTitle": "O własności kasyna:",
+  "casinoClosedTitle": "KASYNO ZAMKNIĘTE",
+  "casinoOwnedByLabel": "Właścicielem tego kasyna jest:",
+  "casinoNoOwner": "To kasyno nie ma jeszcze właściciela",
+  "casinoPurchasePriceLabel": "Cena zakupu:",
+  "casinoOwnerInfo": "Jako właściciel zarządzasz bankrollem kasyna i zarabiasz pieniądze, gdy gracze przegrywają!",
+  "casinoGameSlotsName": "Automat",
+  "casinoGameSlotsDesc": "Zakręć bębnami i wygraj nawet 100-krotność swojego zakładu!",
+  "casinoGameBlackjackName": "Maczuga",
+  "casinoGameBlackjackDesc": "Pokonaj krupiera i wygraj nawet dwukrotnie większą kwotę zakładu!",
+  "casinoGameRouletteName": "Ruletka",
+  "casinoGameRouletteDesc": "Wybierz swój numer i wygraj aż do 35-krotności swojego zakładu!",
+  "casinoGameDiceName": "Kostka do gry",
+  "casinoGameDiceDesc": "Rzuć kostką i wygraj aż do 6-krotności swojego zakładu!",
+  "difficultyEasy": "ŁATWY",
+  "difficultyMedium": "ŚREDNI",
+  "difficultyHard": "TWARDY",
+  "casinoDepositTitle": "Wpłać pieniądze",
+  "casinoWithdrawTitle": "Wypłacić pieniądze",
+  "amount": "Kwota",
+  "deposit": "Depozyt",
+  "withdraw": "Wycofać",
+  "casinoDepositSuccess": "{amount} € zdeponowane w bankrollu kasyna",
   "@casinoDepositSuccess": {
     "placeholders": {
       "amount": {
@@ -610,7 +610,7 @@
       }
     }
   },
-  "casinoWithdrawSuccess": "€{amount} withdrawn from casino bankroll",
+  "casinoWithdrawSuccess": "€{amount} wycofane z bankrolla kasyna",
   "@casinoWithdrawSuccess": {
     "placeholders": {
       "amount": {
@@ -618,10 +618,10 @@
       }
     }
   },
-  "casinoDepositError": "Error depositing",
-  "casinoWithdrawError": "Error withdrawing",
-  "casinoMinBankroll": "At least €10,000 must remain in the bankroll",
-  "casinoMaxWithdraw": "Maximum: €{amount}",
+  "casinoDepositError": "Błąd podczas składania depozytu",
+  "casinoWithdrawError": "Błąd podczas wycofywania",
+  "casinoMinBankroll": "W bankrollu musi pozostać co najmniej 10 000 euro",
+  "casinoMaxWithdraw": "Maksymalnie: {amount} €",
   "@casinoMaxWithdraw": {
     "placeholders": {
       "amount": {
@@ -629,8 +629,8 @@
       }
     }
   },
-  "casinoManagementTitle": "Casino Management",
-  "casinoBankruptWarning": "WARNING: Casino bankroll too low!\nDeposit at least €{amount} to avoid bankruptcy.",
+  "casinoManagementTitle": "Zarządzanie kasynem",
+  "casinoBankruptWarning": "OSTRZEŻENIE: Bankroll kasyna jest zbyt niski! \nWpłać co najmniej {amount} €, aby uniknąć bankructwa.",
   "@casinoBankruptWarning": {
     "placeholders": {
       "amount": {
@@ -638,12 +638,12 @@
       }
     }
   },
-  "casinoBankroll": "Casino Bankroll",
-  "casinoStatsTitle": "Statistics",
-  "casinoTotalReceived": "Total Received:",
-  "casinoTotalPaidOut": "Total Paid Out:",
-  "casinoNetProfit": "Net Profit:",
-  "casinoProfitMargin": "Profit margin: {percent}%",
+  "casinoBankroll": "Bankroll kasyna",
+  "casinoStatsTitle": "Statystyka",
+  "casinoTotalReceived": "Łącznie otrzymane:",
+  "casinoTotalPaidOut": "Całkowita wypłacona kwota:",
+  "casinoNetProfit": "Zysk netto:",
+  "casinoProfitMargin": "Marża zysku: {percent}%",
   "@casinoProfitMargin": {
     "placeholders": {
       "percent": {
@@ -651,34 +651,34 @@
       }
     }
   },
-  "casinoManagementInfoTitle": "Casino Management Info",
-  "casinoManagementInfo5": "• You can deposit or withdraw money at any time",
-  "retry": "Retry",
+  "casinoManagementInfoTitle": "Informacje o zarządzaniu kasynem",
+  "casinoManagementInfo5": "• Możesz wpłacić lub wypłacić pieniądze w dowolnym momencie",
+  "retry": "Spróbować ponownie",
   "doAction": "Do",
-  "pay": "Pay",
-  "success": "Success",
-  "jail": "Jail",
-  "wantedLevel": "Wanted Level",
-  "cooldown": "Cooldown",
-  "requiredRank": "Required Player Rank",
-  "playerRankLabel": "Player rank",
-  "loading": "Loading...",
-  "trade": "Trade",
-  "buy": "Buy",
-  "sell": "Sell",
-  "price": "Price",
-  "total": "Total",
-  "available": "Available: {count}",
-  "notEnoughMoney": "You don't have enough money!",
-  "confirm": "Confirm",
-  "close": "Close",
-  "unexpectedResponse": "Unexpected API response",
-  "errorLoadingMenu": "Error loading menu",
-  "unknownError": "Unknown error",
-  "food": "Food",
+  "pay": "Płacić",
+  "success": "Sukces",
+  "jail": "Więzienie",
+  "wantedLevel": "Poszukiwany poziom",
+  "cooldown": "Czas odnowienia",
+  "requiredRank": "Wymagana ranga gracza",
+  "playerRankLabel": "Ranga gracza",
+  "loading": "Załadunek...",
+  "trade": "Handel",
+  "buy": "Kupić",
+  "sell": "Sprzedać",
+  "price": "Cena",
+  "total": "Całkowity",
+  "available": "Dostępne: {count}",
+  "notEnoughMoney": "Nie masz dość pieniędzy!",
+  "confirm": "Potwierdzać",
+  "close": "Zamknąć",
+  "unexpectedResponse": "Nieoczekiwana odpowiedź interfejsu API",
+  "errorLoadingMenu": "Błąd ładowania menu",
+  "unknownError": "Nieznany błąd",
+  "food": "Żywność",
   "drink": "Drink",
-  "work": "Work",
-  "cooldownMinutes": "Cooldown: {minutes} min",
+  "work": "Praca",
+  "cooldownMinutes": "Czas odnowienia: {minutes} min",
   "@cooldownMinutes": {
     "placeholders": {
       "minutes": {
@@ -694,45 +694,45 @@
       }
     }
   },
-  "fly": "Fly",
-  "purchased": "Purchased!",
-  "sold": "Sold!",
-  "errorBuying": "Error buying",
-  "errorSelling": "Error selling",
-  "goods": "Goods",
-  "marketplace": "Marketplace",
-  "myListings": "My Listings",
-  "inventory": "Inventory",
-  "vehicles": "Vehicles",
-  "backpacks": "Backpacks",
-  "materials": "Materials",
-  "production": "Production",
-  "stock": "Stock",
-  "retryAgain": "Retry",
-  "noVehiclesAvailable": "No vehicles available",
-  "noListings": "No listings",
-  "condition": "Condition",
-  "yourHealth": "Your Health",
-  "criticalHealthWarning": "⚠️ CRITICAL! You must go to the hospital immediately!",
-  "lowHealthWarning": "⚠️ Low health! Be careful.",
-  "free": "FREE",
-  "information": "Information",
-  "contrabandFlowersName": "Flowers",
-  "contrabandFlowersDesc": "Dutch tulips and other flowers for international trade",
-  "contrabandElectronicsName": "Electronics",
-  "contrabandElectronicsDesc": "Advanced electronics and computer components",
-  "contrabandDiamondsName": "Diamonds",
-  "contrabandDiamondsDesc": "Rough and cut diamonds",
-  "contrabandWeaponsName": "Weapons",
-  "contrabandWeaponsDesc": "Illegal weapons and ammunition",
-  "contrabandPharmaceuticalsName": "Pharmaceuticals",
-  "contrabandPharmaceuticalsDesc": "Rare pharmaceutical products",
-  "multiplier": "Multiplier",
-  "sellPrice": "Sell price",
-  "boughtFor": "Bought for",
-  "profit": "Profit",
-  "loss": "Loss",
-  "ownedQuantity": "Owned: {quantity}",
+  "fly": "Latać",
+  "purchased": "Kupiony!",
+  "sold": "Sprzedany!",
+  "errorBuying": "Błąd podczas zakupu",
+  "errorSelling": "Błąd podczas sprzedaży",
+  "goods": "Towary",
+  "marketplace": "Rynek",
+  "myListings": "Moje zestawienia",
+  "inventory": "Spis",
+  "vehicles": "Pojazdy",
+  "backpacks": "Plecaki",
+  "materials": "Przybory",
+  "production": "Produkcja",
+  "stock": "Magazyn",
+  "retryAgain": "Spróbować ponownie",
+  "noVehiclesAvailable": "Brak dostępnych pojazdów",
+  "noListings": "Brak ofert",
+  "condition": "Stan",
+  "yourHealth": "Twoje zdrowie",
+  "criticalHealthWarning": "⚠️KRYTYCZNE! Musisz natychmiast jechać do szpitala!",
+  "lowHealthWarning": "⚠️ Niskie zdrowie! Bądź ostrożny.",
+  "free": "BEZPŁATNY",
+  "information": "Informacja",
+  "contrabandFlowersName": "Kwiaty",
+  "contrabandFlowersDesc": "Holenderskie tulipany i inne kwiaty przeznaczone do handlu międzynarodowego",
+  "contrabandElectronicsName": "Elektronika",
+  "contrabandElectronicsDesc": "Zaawansowana elektronika i podzespoły komputerowe",
+  "contrabandDiamondsName": "Diamenty",
+  "contrabandDiamondsDesc": "Szorstkie i oszlifowane diamenty",
+  "contrabandWeaponsName": "Broń",
+  "contrabandWeaponsDesc": "Nielegalna broń i amunicja",
+  "contrabandPharmaceuticalsName": "Farmaceutyki",
+  "contrabandPharmaceuticalsDesc": "Rzadkie produkty farmaceutyczne",
+  "multiplier": "Mnożnik",
+  "sellPrice": "Cena sprzedaży",
+  "boughtFor": "Kupiony dla",
+  "profit": "Zysk",
+  "loss": "Strata",
+  "ownedQuantity": "Posiadane: {quantity}",
   "@ownedQuantity": {
     "placeholders": {
       "quantity": {
@@ -740,7 +740,7 @@
       }
     }
   },
-  "spoilsInHours": "⚠️ Spoils in {hours}h",
+  "spoilsInHours": "⚠️ Łupy za {hours}h",
   "@spoilsInHours": {
     "placeholders": {
       "hours": {
@@ -748,13 +748,13 @@
       }
     }
   },
-  "spoiledWorthless": "💀 SPOILED - Worthless",
-  "vehicleBought": "Vehicle successfully bought!",
-  "purchaseFailed": "Purchase failed",
-  "listingRemoved": "Listing removed",
-  "noItemsInInventory": "No items in inventory",
-  "buyItemsInBuyTab": "Buy items in the Buy tab",
-  "errorLoadingMarketData": "Error loading market data: {error}",
+  "spoiledWorthless": "💀 Zepsute - Bezwartościowe",
+  "vehicleBought": "Pojazd pomyślnie kupiony!",
+  "purchaseFailed": "Zakup nie powiódł się",
+  "listingRemoved": "Lista została usunięta",
+  "noItemsInInventory": "Brak pozycji w ekwipunku",
+  "buyItemsInBuyTab": "Kupuj przedmioty w zakładce Kup",
+  "errorLoadingMarketData": "Błąd podczas ładowania danych rynkowych: {error}",
   "@errorLoadingMarketData": {
     "placeholders": {
       "error": {
@@ -762,12 +762,12 @@
       }
     }
   },
-  "appeal": "Appeal",
-  "submitAppeal": "Submit Appeal",
-  "bribeJudge": "Bribe Judge",
-  "bribe": "Bribe",
-  "treated": "Treated!",
-  "healthRestored": "+{hp} HP for €{cost}",
+  "appeal": "Odwołanie",
+  "submitAppeal": "Prześlij odwołanie",
+  "bribeJudge": "Sędzia łapówkowy",
+  "bribe": "Przekupić",
+  "treated": "Leczony!",
+  "healthRestored": "+{hp} HP za {cost} €",
   "@healthRestored": {
     "placeholders": {
       "hp": {
@@ -778,10 +778,10 @@
       }
     }
   },
-  "treatmentOptions": "Treatment Options",
-  "youAreDead": "You are dead! Game over.",
-  "emergencyOnly": "Emergency treatment only available below 10 HP",
-  "emergencyTreatment": "Emergency treatment! Free +{hp} HP",
+  "treatmentOptions": "Opcje leczenia",
+  "youAreDead": "Nie żyjesz! Koniec gry.",
+  "emergencyOnly": "Leczenie awaryjne dostępne tylko poniżej 10 HP",
+  "emergencyTreatment": "Leczenie doraźne! Darmowe +{hp} HP",
   "@emergencyTreatment": {
     "placeholders": {
       "hp": {
@@ -789,21 +789,21 @@
       }
     }
   },
-  "byValue": "By Value",
-  "byCondition": "By Condition",
-  "byFuel": "By Fuel",
-  "byName": "By Name",
-  "stealCar": "Steal Car",
-  "stealBoat": "Steal Boat",
-  "sellVehicle": "Sell Vehicle",
-  "sellBoat": "Sell Boat",
-  "confirmSellVehicle": "Are you sure you want to sell this vehicle?",
-  "confirmSellBoat": "Are you sure you want to sell this boat?",
-  "carStolen": "Car successfully stolen!",
-  "boatStolen": "Boat successfully stolen!",
-  "vehicleTypeCar": "Car",
-  "vehicleTypeBoat": "Boat",
-  "stolenVehicleTitle": "{vehicleType} stolen!",
+  "byValue": "Według wartości",
+  "byCondition": "Według warunku",
+  "byFuel": "Paliwem",
+  "byName": "Według nazwy",
+  "stealCar": "Ukraść samochód",
+  "stealBoat": "Ukraść łódź",
+  "sellVehicle": "Sprzedaj pojazd",
+  "sellBoat": "Sprzedaj łódź",
+  "confirmSellVehicle": "Czy na pewno chcesz sprzedać ten pojazd?",
+  "confirmSellBoat": "Czy na pewno chcesz sprzedać tę łódź?",
+  "carStolen": "Skutecznie skradziono samochód!",
+  "boatStolen": "Skradziono łódź!",
+  "vehicleTypeCar": "Samochód",
+  "vehicleTypeBoat": "Łódź",
+  "stolenVehicleTitle": "{vehicleType} skradzione!",
   "@stolenVehicleTitle": {
     "placeholders": {
       "vehicleType": {
@@ -811,7 +811,7 @@
       }
     }
   },
-  "unknownVehicleType": "Unknown {vehicleType}",
+  "unknownVehicleType": "Nieznany {vehicleType}",
   "@unknownVehicleType": {
     "placeholders": {
       "vehicleType": {
@@ -819,17 +819,17 @@
       }
     }
   },
-  "vehicleStatSpeed": "Speed",
-  "vehicleStatFuel": "Fuel",
-  "vehicleStatCargo": "Cargo",
-  "vehicleStatStealth": "Stealth",
-  "continueAction": "Continue",
-  "vehicleSold": "Vehicle successfully sold!",
-  "boatSold": "Boat successfully sold!",
-  "garageUpgraded": "Garage upgraded!",
-  "marinaUpgraded": "Marina successfully upgraded!",
-  "marinaCapacity": "Marina Capacity",
-  "marinaBoatsCount": "{current} / {total} boats",
+  "vehicleStatSpeed": "Prędkość",
+  "vehicleStatFuel": "Paliwo",
+  "vehicleStatCargo": "Ładunek",
+  "vehicleStatStealth": "Podstęp",
+  "continueAction": "Kontynuować",
+  "vehicleSold": "Pojazd sprzedany pomyślnie!",
+  "boatSold": "Łódź pomyślnie sprzedana!",
+  "garageUpgraded": "Garaż zmodernizowany!",
+  "marinaUpgraded": "Marina została pomyślnie zmodernizowana!",
+  "marinaCapacity": "Pojemność Mariny",
+  "marinaBoatsCount": "{current} / {total} łodzie",
   "@marinaBoatsCount": {
     "placeholders": {
       "current": {
@@ -840,7 +840,7 @@
       }
     }
   },
-  "marinaUpgradeWithCost": "Upgrade (€{cost})",
+  "marinaUpgradeWithCost": "Uaktualnij ({cost} €)",
   "@marinaUpgradeWithCost": {
     "placeholders": {
       "cost": {
@@ -848,8 +848,8 @@
       }
     }
   },
-  "marinaMaxLevel": "Max Level",
-  "marinaLevelRemaining": "Level {level} | {remaining} spots left",
+  "marinaMaxLevel": "Maksymalny poziom",
+  "marinaLevelRemaining": "Poziom {level} | Pozostało {remaining} miejsc",
   "@marinaLevelRemaining": {
     "placeholders": {
       "level": {
@@ -860,13 +860,13 @@
       }
     }
   },
-  "noBoatsInMarina": "No boats in your marina",
-  "stealBoatsToStart": "Steal some boats to get started!",
-  "marinaUpgradeFailed": "Marina upgrade failed",
-  "boatShipped": "Boat successfully shipped!",
-  "boatShipFailed": "Boat shipping failed",
-  "buyProperty": "Buy Property",
-  "propertyBought": "{name} purchased!",
+  "noBoatsInMarina": "Brak łodzi w Twojej marinie",
+  "stealBoatsToStart": "Na początek ukradnij kilka łodzi!",
+  "marinaUpgradeFailed": "Modernizacja mariny nie powiodła się",
+  "boatShipped": "Łódź została wysłana pomyślnie!",
+  "boatShipFailed": "Wysyłka łodzią nie powiodła się",
+  "buyProperty": "Kup nieruchomość",
+  "propertyBought": "{name} zakupione!",
   "@propertyBought": {
     "placeholders": {
       "name": {
@@ -874,7 +874,7 @@
       }
     }
   },
-  "propertyUpgraded": "Property upgraded to level {level}!",
+  "propertyUpgraded": "Nieruchomość podniesiona do poziomu {level}!",
   "@propertyUpgraded": {
     "placeholders": {
       "level": {
@@ -882,9 +882,9 @@
       }
     }
   },
-  "errorLoadingProperties": "Error loading properties",
-  "errorUpgrading": "Error upgrading",
-  "networkError": "Network error: {error}",
+  "errorLoadingProperties": "Błąd ładowania właściwości",
+  "errorUpgrading": "Błąd aktualizacji",
+  "networkError": "Błąd sieci: {error}",
   "@networkError": {
     "placeholders": {
       "error": {
@@ -892,8 +892,8 @@
       }
     }
   },
-  "unknownResponse": "Unknown response",
-  "incomeCollected": "€{amount} collected!",
+  "unknownResponse": "Nieznana odpowiedź",
+  "incomeCollected": "Zebrano {amount} €!",
   "@incomeCollected": {
     "placeholders": {
       "amount": {
@@ -901,11 +901,11 @@
       }
     }
   },
-  "buyCasino": "Buy Casino",
-  "manageCasino": "Manage Casino",
-  "casinoBought": "Casino successfully bought! 🎰",
-  "errorBuyCasino": "An error occurred while buying the casino",
-  "minimumDeposit": "Minimum deposit is €{amount}",
+  "buyCasino": "Kup kasyno",
+  "manageCasino": "Zarządzaj kasynem",
+  "casinoBought": "Kasyno pomyślnie kupione! 🎰",
+  "errorBuyCasino": "Wystąpił błąd podczas zakupu kasyna",
+  "minimumDeposit": "Minimalny depozyt wynosi €{amount}",
   "@minimumDeposit": {
     "placeholders": {
       "amount": {
@@ -913,17 +913,17 @@
       }
     }
   },
-  "casinoInfo1": "Players bet against the casino bankroll",
-  "casinoInfo2": "Winnings are paid from the bankroll",
-  "casinoInfo3": "You can deposit and withdraw money",
-  "casinoInfo4": "Minimum €10,000 in bankroll required",
-  "casinoInfo5": "Below that: bankruptcy",
-  "members": "Members",
-  "location": "Location",
-  "level": "Level",
-  "alreadyFullHealth": "You are already at full health!",
-  "errorTreatment": "Error during treatment",
-  "waitMinutes": "You must wait {minutes} more minutes for the next treatment!",
+  "casinoInfo1": "Gracze stawiają zakłady przeciwko bankrollowi kasyna",
+  "casinoInfo2": "Wygrane są wypłacane z bankrolla",
+  "casinoInfo3": "Możesz wpłacać i wypłacać pieniądze",
+  "casinoInfo4": "Wymagany minimalny kapitał w wysokości 10 000 EUR",
+  "casinoInfo5": "Poniżej: upadłość",
+  "members": "Członkowie",
+  "location": "Lokalizacja",
+  "level": "Poziom",
+  "alreadyFullHealth": "Jesteś już w pełni zdrowia!",
+  "errorTreatment": "Błąd podczas leczenia",
+  "waitMinutes": "Na kolejny zabieg musisz poczekać {minutes} minut więcej!",
   "@waitMinutes": {
     "placeholders": {
       "minutes": {
@@ -931,8 +931,8 @@
       }
     }
   },
-  "emergencyHelp": "Emergency Help",
-  "onlyNeedHp": "(You only need {hp} HP)",
+  "emergencyHelp": "Pomoc w nagłych wypadkach",
+  "onlyNeedHp": "(Potrzebujesz tylko {hp} HP)",
   "@onlyNeedHp": {
     "placeholders": {
       "hp": {
@@ -940,10 +940,10 @@
       }
     }
   },
-  "emergencyInfo": "• 🊘 Emergency Help is FREE below 10 HP (+20 HP)",
-  "hospitalInfo1": "• Health decreases when committing crimes",
-  "hospitalInfo2": "• At 0 HP you cannot commit crimes",
-  "hospitalInfo3": "• Treatment costs €{cost} per time",
+  "emergencyInfo": "• 🊘 Pomoc w nagłych wypadkach jest BEZPŁATNA poniżej 10 KM (+20 KM)",
+  "hospitalInfo1": "• Zdrowie spada w przypadku popełniania przestępstw",
+  "hospitalInfo2": "• Przy 0 HP nie możesz popełniać przestępstw",
+  "hospitalInfo3": "• Koszt leczenia wynosi {cost} € za czas",
   "@hospitalInfo3": {
     "placeholders": {
       "cost": {
@@ -951,7 +951,7 @@
       }
     }
   },
-  "hospitalInfo4": "• You can restore max {amount} HP per treatment",
+  "hospitalInfo4": "• Możesz przywrócić maksymalnie {amount} HP na zabieg",
   "@hospitalInfo4": {
     "placeholders": {
       "amount": {
@@ -959,11 +959,11 @@
       }
     }
   },
-  "hospitalInfo5": "• ⏱️ 1 hour cooldown between treatments",
-  "hospitalInfo6": "• 💚 Passive healing: +5 HP per 5 minutes (if HP > 0)",
-  "medicalTreatment": "Medical Treatment",
-  "restoreCritical": "Restore +20 HP (critical condition)",
-  "restoreUp": "Restore up to {amount} HP",
+  "hospitalInfo5": "• ⏱️ 1 godzina przerwy pomiędzy zabiegami",
+  "hospitalInfo6": "• 💚 Leczenie pasywne: +5 HP na 5 minut (jeśli HP > 0)",
+  "medicalTreatment": "Leczenie medyczne",
+  "restoreCritical": "Przywróć +20 HP (stan krytyczny)",
+  "restoreUp": "Przywróć do {amount} HP",
   "@restoreUp": {
     "placeholders": {
       "amount": {
@@ -971,8 +971,8 @@
       }
     }
   },
-  "cost": "Cost",
-  "crimeErrorToolRequired": "⚒️ You need {tools} for this crime",
+  "cost": "Koszt",
+  "crimeErrorToolRequired": "⚒️ Do tego przestępstwa potrzebujesz {tools}",
   "@crimeErrorToolRequired": {
     "placeholders": {
       "tools": {
@@ -980,7 +980,7 @@
       }
     }
   },
-  "crimeErrorToolInStorage": "⚒️ You have {tools}, but it's at home! Go to Inventory → Transfer",
+  "crimeErrorToolInStorage": "⚒️ Masz {tools}, ale w domu! Przejdź do Zapasy → Transfer",
   "@crimeErrorToolInStorage": {
     "placeholders": {
       "tools": {
@@ -988,20 +988,20 @@
       }
     }
   },
-  "crimeErrorVehicleRequired": "🚗 This crime requires a vehicle",
-  "crimeErrorVehicleNotFound": "🚗 Vehicle not found",
-  "crimeErrorNotVehicleOwner": "🚗 You don't own this vehicle",
-  "crimeErrorVehicleBroken": "🚗 Your vehicle is broken and needs repair",
-  "crimeErrorNoFuel": "⛽ Your vehicle has no fuel",
-  "crimeErrorLevelTooLow": "⭐ Your level is too low for this crime",
-  "crimeErrorInvalidCrimeId": "❌ Invalid crime",
-  "crimeErrorWeaponRequired": "🔫 You need a weapon for this crime",
-  "crimeErrorWeaponBroken": "🔫 Your weapon is broken and needs repair",
-  "crimeErrorNoAmmo": "🔫 You have no ammo",
-  "crimeErrorGeneric": "❌ Something went wrong with this crime",
-  "inventoryFull": "🎒 Your inventory is full! Store tools in a property",
-  "storageFull": "📦 Property storage is full",
-  "transferSuccess": "✅ {tool} moved to {location}",
+  "crimeErrorVehicleRequired": "🚗 Do tego przestępstwa potrzebny jest pojazd",
+  "crimeErrorVehicleNotFound": "🚗 Nie znaleziono pojazdu",
+  "crimeErrorNotVehicleOwner": "🚗 Nie jesteś właścicielem tego pojazdu",
+  "crimeErrorVehicleBroken": "🚗 Twój pojazd jest zepsuty i wymaga naprawy",
+  "crimeErrorNoFuel": "⛽ W Twoim pojeździe nie ma paliwa",
+  "crimeErrorLevelTooLow": "⭐ Twój poziom jest zbyt niski dla tego przestępstwa",
+  "crimeErrorInvalidCrimeId": "❌ Nieprawidłowe przestępstwo",
+  "crimeErrorWeaponRequired": "🔫 Do tego przestępstwa potrzebujesz broni",
+  "crimeErrorWeaponBroken": "🔫 Twoja broń jest zepsuta i wymaga naprawy",
+  "crimeErrorNoAmmo": "🔫 Nie masz amunicji",
+  "crimeErrorGeneric": "❌ Coś poszło nie tak z tą zbrodnią",
+  "inventoryFull": "🎒 Twój ekwipunek jest pełny! Przechowuj narzędzia w obiekcie",
+  "storageFull": "📦 Magazyn nieruchomości jest pełny",
+  "transferSuccess": "✅ {tool} przeniesiono do {location}",
   "@transferSuccess": {
     "placeholders": {
       "tool": {
@@ -1012,10 +1012,10 @@
       }
     }
   },
-  "carried": "Carried",
-  "storage": "Storage",
-  "property": "Property",
-  "inventorySlots": "{used} / {max} slots",
+  "carried": "Przewieziony",
+  "storage": "Składowanie",
+  "property": "Nieruchomość",
+  "inventorySlots": "{used} / {max} slotów",
   "@inventorySlots": {
     "placeholders": {
       "used": {
@@ -1026,12 +1026,12 @@
       }
     }
   },
-  "loadouts": "Loadouts",
-  "createLoadout": "Create Loadout",
-  "equipLoadout": "Equip",
-  "loadoutEquipped": "✅ Loadout equipped",
-  "loadoutMaxReached": "❌ Maximum loadouts reached (5)",
-  "loadoutMissingTools": "❌ Missing tools: {tools}",
+  "loadouts": "Ładunki",
+  "createLoadout": "Utwórz zestaw",
+  "equipLoadout": "Wyposażyć",
+  "loadoutEquipped": "✅ Wyposażenie wyposażone",
+  "loadoutMaxReached": "❌ Osiągnięto maksymalne obciążenie (5)",
+  "loadoutMissingTools": "❌ Brakujące narzędzia: {tools}",
   "@loadoutMissingTools": {
     "placeholders": {
       "tools": {
@@ -1039,101 +1039,101 @@
       }
     }
   },
-  "backpackUpgrade": "Backpack Upgrade",
-  "backpackBasic": "Basic Backpack (+5 slots)",
-  "backpackTactical": "Tactical Vest (+10 slots)",
-  "backpackCargo": "Cargo Pants (+3 slots)",
-  "upgradeInventory": "Upgrade Inventory",
-  "noToolsCarried": "No tools carried",
-  "visitShopToBuyTools": "Visit the shop to buy tools",
-  "noProperties": "No properties",
-  "buyPropertyForStorage": "Buy a property to store tools",
-  "noToolsInStorage": "No tools in storage",
-  "selectProperty": "Select property",
-  "slotsRemaining": "slots remaining",
-  "tools": "tools",
-  "noLoadouts": "No loadouts",
-  "createLoadoutToStart": "Create a loadout to get started",
-  "deleteLoadout": "Delete Loadout",
-  "confirmDeleteLoadout": "Are you sure you want to delete this loadout?",
-  "loadoutDeleted": "Loadout deleted",
-  "edit": "Edit",
-  "delete": "Delete",
-  "active": "Active",
-  "durability": "Durability",
-  "quantity": "Quantity",
-  "slotSize": "Slot size",
-  "repairCost": "Repair cost",
-  "wearPerUse": "Wear per use",
-  "loseChance": "Chance to lose",
-  "requiredFor": "Required for",
-  "lowDurability": "Low durability",
-  "transfer": "Transfer",
-  "toolDetails": "Tool Details",
-  "transferTool": "Transfer Tool",
-  "selectQuantity": "Select quantity",
-  "destination": "Destination",
-  "from": "From",
-  "to": "To",
-  "editLoadout": "Edit Loadout",
-  "loadoutName": "Loadout Name",
-  "description": "Description",
-  "optional": "optional",
-  "selectedTools": "Selected tools",
-  "noToolsAvailable": "No tools available",
-  "create": "Create",
-  "save": "Save",
-  "pleaseEnterName": "Please enter a name",
-  "pleaseSelectTools": "Please select at least 1 tool",
-  "loadoutCreated": "Loadout created",
-  "loadoutUpdated": "Loadout updated",
-  "goToInventory": "Go to Inventory",
-  "slots": "slots",
-  "backpackShop": "Backpack Shop",
-  "yourBackpack": "Your backpack",
-  "availableUpgrades": "Available upgrades",
-  "otherBackpacks": "Other backpacks",
-  "youHaveBestBackpack": "You have the best backpack!",
-  "backpackPurchased": "Backpack purchased!",
-  "backpackUpgraded": "Backpack upgraded!",
-  "buyBackpack": "Buy",
-  "upgradeBackpack": "Upgrade",
-  "backpackPrice": "Price",
-  "extraSlots": "Extra slots",
-  "totalSlots": "Total slots",
-  "vipOnly": "VIP only",
-  "tradeInValue": "Trade-in value",
-  "upgradeCost": "Upgrade cost",
-  "rankRequired": "Rank {rank} required",
-  "insufficientFunds": "You need €{needed}. You have €{have}",
-  "alreadyHasBackpack": "You already have a backpack",
-  "backpackNotFound": "Backpack not found",
-  "playerNotFound": "Player not found",
-  "notAnUpgrade": "This is not an upgrade",
-  "backpackPurchasedEvent": "You purchased {name}! +{slots} slots.",
-  "backpackUpgradedEvent": "Upgraded to {newName}! +{upgradeSlots} extra slots.",
-  "backpackPurchaseFailedNotFound": "Backpack not found",
-  "backpackPurchaseFailedAlready": "You already have a backpack. You can only use one at a time.",
-  "backpackPurchaseFailedRank": "You need rank {required} (you are rank {current})",
-  "backpackPurchaseFailedFunds": "You need €{needed}. You have €{have}",
-  "backpackPurchaseFailedVip": "This backpack is for VIP members only",
-  "backpackUpgradeFailedNo": "You have no backpack to upgrade",
-  "backpackUpgradeFailedNotUpgrade": "This is not an upgrade. Choose a larger backpack.",
-  "backpackUpgradeFailedRank": "You need rank {required} (you are rank {current})",
-  "backpackUpgradeFailedFunds": "You need €{needed}. You have €{have}",
-  "backpackUpgradeFailedVip": "This backpack is for VIP members only",
-  "arrested": "Arrested!",
-  "jailMessage": "You were arrested during your journey and all goods were confiscated!",
-  "confirmAction": "Are you sure?",
-  "yes": "Yes",
-  "no": "No",
+  "backpackUpgrade": "Ulepszenie plecaka",
+  "backpackBasic": "Podstawowy plecak (+5 miejsc)",
+  "backpackTactical": "Kamizelka taktyczna (+10 miejsc)",
+  "backpackCargo": "Spodnie cargo (+3 miejsca)",
+  "upgradeInventory": "Uaktualnij ekwipunek",
+  "noToolsCarried": "Żadnych narzędzi",
+  "visitShopToBuyTools": "Odwiedź sklep, aby kupić narzędzia",
+  "noProperties": "Brak właściwości",
+  "buyPropertyForStorage": "Kup nieruchomość do przechowywania narzędzi",
+  "noToolsInStorage": "Brak narzędzi w magazynie",
+  "selectProperty": "Wybierz nieruchomość",
+  "slotsRemaining": "pozostałe sloty",
+  "tools": "narzędzia",
+  "noLoadouts": "Żadnych załadunków",
+  "createLoadoutToStart": "Aby rozpocząć, utwórz zestaw wyposażenia",
+  "deleteLoadout": "Usuń wyposażenie",
+  "confirmDeleteLoadout": "Czy na pewno chcesz usunąć to wyposażenie?",
+  "loadoutDeleted": "Ładunek usunięty",
+  "edit": "Redagować",
+  "delete": "Usuwać",
+  "active": "Aktywny",
+  "durability": "Trwałość",
+  "quantity": "Ilość",
+  "slotSize": "Rozmiar gniazda",
+  "repairCost": "Koszt naprawy",
+  "wearPerUse": "Nosić według użycia",
+  "loseChance": "Szansa na stratę",
+  "requiredFor": "Wymagane dla",
+  "lowDurability": "Niska trwałość",
+  "transfer": "Przenosić",
+  "toolDetails": "Szczegóły narzędzia",
+  "transferTool": "Narzędzie do przenoszenia",
+  "selectQuantity": "Wybierz ilość",
+  "destination": "Miejsce docelowe",
+  "from": "Z",
+  "to": "Do",
+  "editLoadout": "Edytuj wyposażenie",
+  "loadoutName": "Nazwa ładunku",
+  "description": "Opis",
+  "optional": "fakultatywny",
+  "selectedTools": "Wybrane narzędzia",
+  "noToolsAvailable": "Brak dostępnych narzędzi",
+  "create": "Tworzyć",
+  "save": "Ratować",
+  "pleaseEnterName": "Proszę wpisać nazwę",
+  "pleaseSelectTools": "Proszę wybrać co najmniej 1 narzędzie",
+  "loadoutCreated": "Utworzono obciążenie",
+  "loadoutUpdated": "Ładunek zaktualizowany",
+  "goToInventory": "Przejdź do Zapasów",
+  "slots": "szczeliny",
+  "backpackShop": "Sklep z plecakami",
+  "yourBackpack": "Twój plecak",
+  "availableUpgrades": "Dostępne aktualizacje",
+  "otherBackpacks": "Inne plecaki",
+  "youHaveBestBackpack": "Masz najlepszy plecak!",
+  "backpackPurchased": "Plecak zakupiony!",
+  "backpackUpgraded": "Ulepszony plecak!",
+  "buyBackpack": "Kupić",
+  "upgradeBackpack": "Aktualizacja",
+  "backpackPrice": "Cena",
+  "extraSlots": "Dodatkowe sloty",
+  "totalSlots": "Łączna liczba slotów",
+  "vipOnly": "Tylko dla VIP-ów",
+  "tradeInValue": "Wartość handlowa",
+  "upgradeCost": "Koszt aktualizacji",
+  "rankRequired": "Wymagana ranga {rank}",
+  "insufficientFunds": "Potrzebujesz €{needed}. Masz {have} €",
+  "alreadyHasBackpack": "Masz już plecak",
+  "backpackNotFound": "Nie znaleziono plecaka",
+  "playerNotFound": "Nie znaleziono gracza",
+  "notAnUpgrade": "To nie jest aktualizacja",
+  "backpackPurchasedEvent": "Kupiłeś {name}! +{slots} slotów.",
+  "backpackUpgradedEvent": "Uaktualniono do {newName}! +{upgradeSlots} dodatkowe miejsca.",
+  "backpackPurchaseFailedNotFound": "Nie znaleziono plecaka",
+  "backpackPurchaseFailedAlready": "Masz już plecak. Można używać tylko jednego na raz.",
+  "backpackPurchaseFailedRank": "Potrzebujesz rangi {required} (masz rangę {current})",
+  "backpackPurchaseFailedFunds": "Potrzebujesz €{needed}. Masz {have} €",
+  "backpackPurchaseFailedVip": "Ten plecak jest przeznaczony wyłącznie dla członków VIP",
+  "backpackUpgradeFailedNo": "Nie masz plecaka do ulepszenia",
+  "backpackUpgradeFailedNotUpgrade": "To nie jest aktualizacja. Wybierz większy plecak.",
+  "backpackUpgradeFailedRank": "Potrzebujesz rangi {required} (masz rangę {current})",
+  "backpackUpgradeFailedFunds": "Potrzebujesz €{needed}. Masz {have} €",
+  "backpackUpgradeFailedVip": "Ten plecak jest przeznaczony wyłącznie dla członków VIP",
+  "arrested": "Aresztowany!",
+  "jailMessage": "Zostałeś aresztowany podczas podróży i skonfiskowano cały towar!",
+  "confirmAction": "Czy jesteś pewien?",
+  "yes": "Tak",
+  "no": "NIE",
   "ok": "OK",
-  "travelContinueConfirmTitle": "Proceed to next leg?",
-  "travelContinueConfirmBody": "Border checks are active. Continue your journey?",
-  "travelJourneyCompleteTitle": "Journey complete",
-  "travelJourneyCompleteBody": "You made it safely to your destination.",
-  "hitlist": "Hit List",
-  "hitlistLoadError": "Error loading hit list: {error}",
+  "travelContinueConfirmTitle": "Przejść do następnego etapu?",
+  "travelContinueConfirmBody": "Kontrole graniczne są aktywne. Kontynuować podróż?",
+  "travelJourneyCompleteTitle": "Podróż zakończona",
+  "travelJourneyCompleteBody": "Dotarłeś bezpiecznie do celu.",
+  "hitlist": "Lista hitów",
+  "hitlistLoadError": "Błąd podczas ładowania listy trafień: {error}",
   "@hitlistLoadError": {
     "placeholders": {
       "error": {
@@ -1141,14 +1141,14 @@
       }
     }
   },
-  "noActiveHits": "No active hits placed",
-  "selectTarget": "Select Target",
-  "searchPlayer": "Search player...",
-  "placeHitTitle": "Place Hit",
-  "minimumBounty": "Minimum bounty: €50,000",
-  "bountyAmount": "Bounty amount",
-  "place": "Place",
-  "hitPlaced": "Hit placed for €{amount}",
+  "noActiveHits": "Brak aktywnych trafień",
+  "selectTarget": "Wybierz Cel",
+  "searchPlayer": "Wyszukaj gracza...",
+  "placeHitTitle": "Umieść trafienie",
+  "minimumBounty": "Minimalna nagroda: 50 000 euro",
+  "bountyAmount": "Wysokość nagrody",
+  "place": "Miejsce",
+  "hitPlaced": "Trafienie za {amount} €",
   "@hitPlaced": {
     "placeholders": {
       "amount": {
@@ -1156,7 +1156,7 @@
       }
     }
   },
-  "hitError": "Error: {error}",
+  "hitError": "Błąd: {error}",
   "@hitError": {
     "placeholders": {
       "error": {
@@ -1164,9 +1164,9 @@
       }
     }
   },
-  "hitDifferentCountry": "You must be in the same country as the target",
-  "counterBountyTitle": "Place Counter-Bounty",
-  "minimumAmount": "Minimum amount: €{amount}",
+  "hitDifferentCountry": "Musisz znajdować się w tym samym kraju co cel",
+  "counterBountyTitle": "Umieść kontr-nagrodę",
+  "minimumAmount": "Minimalna kwota: €{amount}",
   "@minimumAmount": {
     "placeholders": {
       "amount": {
@@ -1174,8 +1174,8 @@
       }
     }
   },
-  "counterBountyAmount": "Counter-bounty amount",
-  "counterBountyPlaced": "Counter-bounty of €{amount} placed",
+  "counterBountyAmount": "Kwota kontr-nagrody",
+  "counterBountyPlaced": "Umieszczona przeciwnagroda w wysokości {amount} €",
   "@counterBountyPlaced": {
     "placeholders": {
       "amount": {
@@ -1183,37 +1183,37 @@
       }
     }
   },
-  "cancelHitConfirmTitle": "Cancel hit?",
-  "cancelHitConfirmBody": "Your bounty will be refunded.",
-  "hitCancelled": "Hit cancelled",
-  "target": "Target",
-  "placer": "Placer",
-  "bounty": "Bounty",
-  "counterBid": "COUNTER-BID",
-  "counterBidPlaced": "Counter-bid placed! The contract has been reversed.",
-  "attemptHit": "Attempt Hit",
-  "selectWeapon": "Select Weapon and Ammo",
-  "youAreTargeted": "You are on the hit list",
-  "security": "Security",
-  "currentDefense": "Current Defense",
-  "totalDefense": "Total Defense",
-  "currentArmor": "Current Armor",
-  "bodyguards": "Bodyguards",
-  "buyBodyguards": "Buy Bodyguards",
-  "bodyguardPrice": "Price per Bodyguard",
-  "armor": "Armor",
-  "protectorsFollow": "Protectors that follow you",
-  "eachGivesDefense": "Each gives +10 defense",
-  "lightArmor": "Light Armor",
-  "basicProtection": "Basic protection",
-  "heavyArmor": "Heavy Armor",
-  "strongProtection": "Strong protection",
-  "bulletproofVest": "Bulletproof Vest",
-  "veryStrongProtection": "Very strong protection",
-  "tacticalSuit": "Tactical Outfit",
-  "premiumProtection": "Premium protection",
-  "defense": "Defense",
-  "defenseIncrease": "You purchased {armor}! +{defense} defense",
+  "cancelHitConfirmTitle": "Anulować trafienie?",
+  "cancelHitConfirmBody": "Twoja nagroda zostanie zwrócona.",
+  "hitCancelled": "Hit anulowany",
+  "target": "Cel",
+  "placer": "Pakowacz",
+  "bounty": "Hojność",
+  "counterBid": "KONTR-LICYTACJA",
+  "counterBidPlaced": "Kontroferta złożona! Umowa została odwrócona.",
+  "attemptHit": "Próba trafienia",
+  "selectWeapon": "Wybierz Broń i amunicja",
+  "youAreTargeted": "Jesteś na liście przebojów",
+  "security": "Bezpieczeństwo",
+  "currentDefense": "Aktualna obrona",
+  "totalDefense": "Całkowita obrona",
+  "currentArmor": "Obecna zbroja",
+  "bodyguards": "Ochroniarze",
+  "buyBodyguards": "Kup Ochroniarze",
+  "bodyguardPrice": "Cena za ochroniarza",
+  "armor": "Zbroja",
+  "protectorsFollow": "Obrońcy, którzy podążają za tobą",
+  "eachGivesDefense": "Każdy daje +10 obrony",
+  "lightArmor": "Lekka zbroja",
+  "basicProtection": "Podstawowa ochrona",
+  "heavyArmor": "Ciężka zbroja",
+  "strongProtection": "Silna ochrona",
+  "bulletproofVest": "Kamizelka kuloodporna",
+  "veryStrongProtection": "Bardzo silna ochrona",
+  "tacticalSuit": "Strój taktyczny",
+  "premiumProtection": "Ochrona premium",
+  "defense": "Obrona",
+  "defenseIncrease": "Kupiłeś {armor}! +{defense} obrona",
   "@defenseIncrease": {
     "placeholders": {
       "armor": {
@@ -1224,10 +1224,10 @@
       }
     }
   },
-  "worn": "Worn",
-  "hit": "HIT",
-  "counterBidLabel": "COUNTER-BID",
-  "daysAgo": "{count} day{plural} ago",
+  "worn": "Noszony",
+  "hit": "UDERZYĆ",
+  "counterBidLabel": "KONTR-LICYTACJA",
+  "daysAgo": "{count} dzień{plural} temu",
   "@daysAgo": {
     "placeholders": {
       "count": {
@@ -1238,7 +1238,7 @@
       }
     }
   },
-  "hoursAgo": "{count} hours ago",
+  "hoursAgo": "{count} godzin temu",
   "@hoursAgo": {
     "placeholders": {
       "count": {
@@ -1246,7 +1246,7 @@
       }
     }
   },
-  "minutesAgo": "{count} minutes ago",
+  "minutesAgo": "{count} minut temu",
   "@minutesAgo": {
     "placeholders": {
       "count": {
@@ -1254,14 +1254,14 @@
       }
     }
   },
-  "justPlaced": "Just placed",
-  "youAreTheTarget": "You are the target",
-  "youAreThePlacer": "You are the placer",
-  "onlyTargetCanCounterBid": "Only the target can place a counter-bid",
-  "executeHit": "Execute Hit",
-  "moneyNotEnough": "You don't have enough money",
-  "securityScreen": "Security",
-  "currentDefenseStatus": "Current Defense Status",
+  "justPlaced": "Właśnie umieszczone",
+  "youAreTheTarget": "Jesteś celem",
+  "youAreThePlacer": "Jesteś umieszczaczem",
+  "onlyTargetCanCounterBid": "Tylko cel może złożyć kontrofertę",
+  "executeHit": "Wykonaj uderzenie",
+  "moneyNotEnough": "Nie masz dość pieniędzy",
+  "securityScreen": "Bezpieczeństwo",
+  "currentDefenseStatus": "Obecny stan obrony",
   "@insufficientFunds": {
     "placeholders": {
       "needed": {
@@ -1272,8 +1272,8 @@
       }
     }
   },
-  "noWeapons": "You have no weapons in your inventory",
-  "ammoQuantity": "Ammo Quantity",
+  "noWeapons": "Nie masz broni w swoim ekwipunku",
+  "ammoQuantity": "Ilość amunicji",
   "@available": {
     "placeholders": {
       "count": {
@@ -1281,21 +1281,21 @@
       }
     }
   },
-  "noAmmoRequired": "No ammunition required for this weapon",
-  "weaponStats": "Weapon Stats",
-  "damage": "Damage",
-  "intimidation": "Intimidation",
-  "execute": "Execute",
-  "hitExecuted": "Hit executed successfully!",
-  "invalidAmmo": "Please enter valid ammo quantity",
-  "weaponsMarket": "Weapons Market",
-  "ammoMarket": "Ammo Market",
-  "shootingRange": "Shooting Range",
-  "ammoFactory": "Ammo Factory",
-  "weaponShop": "Weapon Shop",
-  "myWeapons": "My Weapons",
-  "weaponPurchased": "Weapon purchased",
-  "weaponRankRequired": "Rank required: {rank}",
+  "noAmmoRequired": "Do tej broni nie jest wymagana amunicja",
+  "weaponStats": "Statystyki broni",
+  "damage": "Szkoda",
+  "intimidation": "Zastraszenie",
+  "execute": "Wykonać",
+  "hitExecuted": "Trafienie wykonane pomyślnie!",
+  "invalidAmmo": "Proszę podać prawidłową ilość amunicji",
+  "weaponsMarket": "Rynek broni",
+  "ammoMarket": "Rynek amunicji",
+  "shootingRange": "Strzelnica",
+  "ammoFactory": "Fabryka Amunicji",
+  "weaponShop": "Sklep z bronią",
+  "myWeapons": "Moja broń",
+  "weaponPurchased": "Broń zakupiona",
+  "weaponRankRequired": "Wymagana ranga: {rank}",
   "@weaponRankRequired": {
     "placeholders": {
       "rank": {
@@ -1303,17 +1303,17 @@
       }
     }
   },
-  "buyWeapon": "Buy",
-  "ammoShop": "Ammo Market",
-  "myAmmo": "My Ammo",
-  "ammoPurchased": "Ammo purchased",
-  "purchaseCooldown": "You must wait before the next purchase",
-  "insufficientStock": "Not enough stock available",
-  "maxInventoryReached": "Maximum inventory capacity reached",
-  "invalidQuantity": "Invalid quantity",
-  "nextAmmoPurchase": "Next purchase available in",
-  "ammoBoxes": "Boxes",
-  "ammoRoundsPerBox": "{rounds} rounds per box",
+  "buyWeapon": "Kupić",
+  "ammoShop": "Rynek amunicji",
+  "myAmmo": "Moja amunicja",
+  "ammoPurchased": "Amunicja zakupiona",
+  "purchaseCooldown": "Trzeba poczekać do następnego zakupu",
+  "insufficientStock": "Za mało dostępnych zapasów",
+  "maxInventoryReached": "Osiągnięto maksymalną pojemność magazynu",
+  "invalidQuantity": "Nieprawidłowa ilość",
+  "nextAmmoPurchase": "Następny zakup dostępny w",
+  "ammoBoxes": "Pudełka",
+  "ammoRoundsPerBox": "{rounds} nabojów w pudełku",
   "@ammoRoundsPerBox": {
     "placeholders": {
       "rounds": {
@@ -1321,7 +1321,7 @@
       }
     }
   },
-  "ammoYouWillReceive": "You will receive: {rounds} rounds",
+  "ammoYouWillReceive": "Otrzymasz: {rounds} rund",
   "@ammoYouWillReceive": {
     "placeholders": {
       "rounds": {
@@ -1329,7 +1329,7 @@
       }
     }
   },
-  "ammoTotalCost": "Total cost: €{cost}",
+  "ammoTotalCost": "Całkowity koszt: {cost} €",
   "@ammoTotalCost": {
     "placeholders": {
       "cost": {
@@ -1337,36 +1337,36 @@
       }
     }
   },
-  "ammoRounds": "rounds",
-  "ammoBoxesUnit": "boxes",
-  "ammoStock": "Stock",
-  "ammoQuality": "Quality",
-  "factoryBought": "Factory purchased",
-  "factoryProduced": "Production updated",
-  "factorySessionStarted": "Production started: active for 8 hours, claim every 10 minutes",
-  "ammoFactoryTitle": "Ammo Factory",
-  "ammoFactoryIntro": "Produces in batches; you claim every 10 minutes (up to 8 hours of backlog per session).",
-  "ammoFactoryWhatYouCanDo": "What you can do:",
-  "ammoFactoryActionBuy": "Buy a factory in your current country",
-  "ammoFactoryActionProduce": "Claim production (interval: 10 minutes, max backlog: 8 hours per session)",
-  "ammoFactoryActionOutput": "Upgrade output to level 5 for more rounds per claim",
-  "ammoFactoryActionQuality": "Upgrade quality for stronger market prices",
-  "factoryUpgradeOutputSuccess": "Output upgraded",
-  "factoryUpgradeQualitySuccess": "Quality upgraded",
-  "myFactory": "My Factory",
-  "noFactoryOwned": "You do not own a factory",
-  "factoryCountry": "Country",
-  "factoryOutputLevel": "Output level",
-  "factoryQualityLevel": "Quality level",
-  "factoryLastProduced": "Last produced",
-  "factoryProduceStatusLabel": "Produce status",
-  "factoryProduceStatusReady": "Ready",
-  "factoryProduceStatusCooldown": "Cooldown",
-  "factorySessionActive": "Production window: active (10 min interval)",
-  "factorySessionStopped": "Production window: stopped (click Produce to start a new 8-hour window)",
-  "factorySessionEndsIn": "Window ends in: {duration}",
-  "factoryNextProductionReady": "Next production: available now (press Produce to claim)",
-  "factoryNextProductionIn": "Next production in: {duration}",
+  "ammoRounds": "rundy",
+  "ammoBoxesUnit": "pudełka",
+  "ammoStock": "Magazyn",
+  "ammoQuality": "Jakość",
+  "factoryBought": "Kupiony fabrycznie",
+  "factoryProduced": "Produkcja zaktualizowana",
+  "factorySessionStarted": "Rozpoczęto produkcję: aktywna przez 8 godzin, odbiór co 10 minut",
+  "ammoFactoryTitle": "Fabryka Amunicji",
+  "ammoFactoryIntro": "Produkuje partiami; odbierasz co 10 minut (do 8 godzin zaległości na sesję).",
+  "ammoFactoryWhatYouCanDo": "Co możesz zrobić:",
+  "ammoFactoryActionBuy": "Kup fabrykę w swoim obecnym kraju",
+  "ammoFactoryActionProduce": "Produkcja roszczeń (interwał: 10 minut, maksymalne zaległości: 8 godzin na sesję)",
+  "ammoFactoryActionOutput": "Ulepsz wyjście do poziomu 5, aby uzyskać więcej rund na roszczenie",
+  "ammoFactoryActionQuality": "Ulepsz jakość, aby uzyskać wyższe ceny rynkowe",
+  "factoryUpgradeOutputSuccess": "Wyjście ulepszone",
+  "factoryUpgradeQualitySuccess": "Jakość poprawiona",
+  "myFactory": "Moja fabryka",
+  "noFactoryOwned": "Nie jesteś właścicielem fabryki",
+  "factoryCountry": "Kraj",
+  "factoryOutputLevel": "Poziom wyjściowy",
+  "factoryQualityLevel": "Poziom jakości",
+  "factoryLastProduced": "Ostatnio wyprodukowany",
+  "factoryProduceStatusLabel": "Stan produkcji",
+  "factoryProduceStatusReady": "Gotowy",
+  "factoryProduceStatusCooldown": "Czas odnowienia",
+  "factorySessionActive": "Okno produkcyjne: aktywne (przerwa 10 min)",
+  "factorySessionStopped": "Okno produkcyjne: zatrzymane (kliknij przycisk Produkuj, aby rozpocząć nowe 8-godzinne okno)",
+  "factorySessionEndsIn": "Okno kończy się za: {duration}",
+  "factoryNextProductionReady": "Następna produkcja: dostępna już teraz (naciśnij przycisk Produkuj, aby odebrać)",
+  "factoryNextProductionIn": "Następna produkcja za: {duration}",
   "@factorySessionEndsIn": {
     "placeholders": {
       "duration": {
@@ -1381,12 +1381,12 @@
       }
     }
   },
-  "factoryProduce": "Produce",
-  "factoryUpgradeOutput": "Upgrade Output",
-  "factoryUpgradeQuality": "Upgrade Quality",
-  "factoryList": "Factories by Country",
-  "factoryUnowned": "Available",
-  "factoryOwnedBy": "Owner: {owner}",
+  "factoryProduce": "Wytwarzać",
+  "factoryUpgradeOutput": "Uaktualnij wyjście",
+  "factoryUpgradeQuality": "Ulepsz jakość",
+  "factoryList": "Fabryki według kraju",
+  "factoryUnowned": "Dostępny",
+  "factoryOwnedBy": "Właściciel: {owner}",
   "@factoryOwnedBy": {
     "placeholders": {
       "owner": {
@@ -1394,9 +1394,9 @@
       }
     }
   },
-  "factoryBuy": "Buy",
-  "shootingTrainSuccess": "Training complete",
-  "shootingSessions": "Sessions: {count}/100",
+  "factoryBuy": "Kupić",
+  "shootingTrainSuccess": "Szkolenie zakończone",
+  "shootingSessions": "Sesje: {count}/100",
   "@shootingSessions": {
     "placeholders": {
       "count": {
@@ -1404,7 +1404,7 @@
       }
     }
   },
-  "shootingAccuracyBonus": "Accuracy bonus: {bonus}%",
+  "shootingAccuracyBonus": "Premia do celności: {bonus}%",
   "@shootingAccuracyBonus": {
     "placeholders": {
       "bonus": {
@@ -1412,7 +1412,7 @@
       }
     }
   },
-  "shootingCooldown": "Next session at {time}",
+  "shootingCooldown": "Następna sesja o {time}",
   "@shootingCooldown": {
     "placeholders": {
       "time": {
@@ -1420,10 +1420,10 @@
       }
     }
   },
-  "shootingTrain": "Train",
-  "gym": "Gym",
-  "gymTrainSuccess": "Training complete",
-  "gymSessions": "Sessions: {count}/100",
+  "shootingTrain": "Pociąg",
+  "gym": "Sala gimnastyczna",
+  "gymTrainSuccess": "Szkolenie zakończone",
+  "gymSessions": "Sesje: {count}/100",
   "@gymSessions": {
     "placeholders": {
       "count": {
@@ -1431,7 +1431,7 @@
       }
     }
   },
-  "gymStrengthBonus": "Strength bonus: {bonus}%",
+  "gymStrengthBonus": "Bonus do siły: {bonus}%",
   "@gymStrengthBonus": {
     "placeholders": {
       "bonus": {
@@ -1439,7 +1439,7 @@
       }
     }
   },
-  "gymCooldown": "Next session at {time}",
+  "gymCooldown": "Następna sesja o {time}",
   "@gymCooldown": {
     "placeholders": {
       "time": {
@@ -1447,9 +1447,9 @@
       }
     }
   },
-  "gymTrain": "Train",
-  "buyAmmo": "Buy Ammo",
-  "factoryPurchaseCost": "Purchase Cost: €{cost}",
+  "gymTrain": "Pociąg",
+  "buyAmmo": "Kup amunicję",
+  "factoryPurchaseCost": "Koszt zakupu: €{cost}",
   "@factoryPurchaseCost": {
     "placeholders": {
       "cost": {
@@ -1457,7 +1457,7 @@
       }
     }
   },
-  "factoryProductionOutput": "Output per cycle: {amount} units",
+  "factoryProductionOutput": "Wydajność na cykl: {amount} jednostek",
   "@factoryProductionOutput": {
     "placeholders": {
       "amount": {
@@ -1465,7 +1465,7 @@
       }
     }
   },
-  "factoryQualityMultiplier": "Quality Multiplier: {multiplier}x",
+  "factoryQualityMultiplier": "Mnożnik jakości: {multiplier}x",
   "@factoryQualityMultiplier": {
     "placeholders": {
       "multiplier": {
@@ -1473,7 +1473,7 @@
       }
     }
   },
-  "upgradeOutputCost": "Upgrade Output - Cost: €{cost}, Next Output: {nextAmount}",
+  "upgradeOutputCost": "Ulepsz wyjście - koszt: {cost} €, następny wynik: {nextAmount}",
   "@upgradeOutputCost": {
     "placeholders": {
       "cost": {
@@ -1484,7 +1484,7 @@
       }
     }
   },
-  "upgradeQualityCost": "Upgrade Quality - Cost: €{cost}, Next Quality: {nextQuality}x",
+  "upgradeQualityCost": "Ulepsz jakość - koszt: {cost} €, następna jakość: {nextQuality}x",
   "@upgradeQualityCost": {
     "placeholders": {
       "cost": {
@@ -1495,102 +1495,102 @@
       }
     }
   },
-  "factoryCostLabel": "Cost",
-  "factoryCurrentOutput": "Current Output",
-  "factoryNextOutput": "Next Output",
-  "factoryCurrentQuality": "Current Quality",
-  "factoryNextQuality": "Next Quality",
-  "factoryUnitsPerCycle": "units/8h max",
-  "factoryUnitsPerHour": "units/hour",
-  "factoryUpgradeMaxLevel": "Factory is at max level",
+  "factoryCostLabel": "Koszt",
+  "factoryCurrentOutput": "Prąd wyjściowy",
+  "factoryNextOutput": "Następne wyjście",
+  "factoryCurrentQuality": "Aktualna jakość",
+  "factoryNextQuality": "Następna jakość",
+  "factoryUnitsPerCycle": "jednostek/8h maks",
+  "factoryUnitsPerHour": "jednostki/godzinę",
+  "factoryUpgradeMaxLevel": "Fabryka jest na maksymalnym poziomie",
   "countryUsa": "USA",
-  "countryMexico": "Mexico",
-  "countryColombia": "Colombia",
-  "countryBrazil": "Brazil",
-  "countryArgentina": "Argentina",
-  "countryJapan": "Japan",
-  "countryChina": "China",
-  "countryRussia": "Russia",
-  "countryIndia": "India",
+  "countryMexico": "Meksyk",
+  "countryColombia": "Kolumbia",
+  "countryBrazil": "Brazylia",
+  "countryArgentina": "Argentyna",
+  "countryJapan": "Japonia",
+  "countryChina": "Chiny",
+  "countryRussia": "Rosja",
+  "countryIndia": "Indie",
   "countryAustralia": "Australia",
-  "countrySouthAfrica": "South Africa",
-  "countryCanada": "Canada",
-  "toolBoltCutter": "Bolt Cutter",
-  "toolCarTheftTools": "Car Theft Tools",
-  "toolBurglaryKit": "Burglary Kit",
-  "toolToolbox": "Toolbox",
-  "toolCrowbar": "Crowbar",
-  "toolGlassCutter": "Glass Cutter",
-  "toolSprayPaint": "Spray Paint",
+  "countrySouthAfrica": "Republika Południowej Afryki",
+  "countryCanada": "Kanada",
+  "toolBoltCutter": "Obcinak do śrub",
+  "toolCarTheftTools": "Narzędzia do kradzieży samochodów",
+  "toolBurglaryKit": "Zestaw antywłamaniowy",
+  "toolToolbox": "Skrzynka narzędziowa",
+  "toolCrowbar": "Łom",
+  "toolGlassCutter": "Przecinarka do szkła",
+  "toolSprayPaint": "Farba w sprayu",
   "toolJerryCan": "Jerry Can",
-  "toolFakeDocuments": "Fake Documents",
-  "toolHackingLaptop": "Hacking Laptop",
-  "toolCounterfeitingKit": "Counterfeiting Kit",
-  "toolRope": "Rope",
-  "toolSilencer": "Silencer",
-  "toolNightVision": "Night Vision",
-  "toolGpsJammer": "GPS Jammer",
-  "toolBurnerPhone": "Burner Phone",
-  "crimeOutcomeSuccess": "Crime successful!",
-  "crimeOutcomeCaught": "Caught by police",
-  "crimeOutcomeVehicleBreakdownBefore": "Your vehicle broke down before reaching the crime scene",
-  "crimeOutcomeVehicleBreakdownDuring": "Vehicle broke down during escape - abandoned most loot",
-  "crimeOutcomeOutOfFuel": "Ran out of fuel during escape - fled on foot, lost loot and vehicle",
-  "crimeOutcomeToolBroke": "Your tool broke during the crime, leaving evidence",
-  "crimeOutcomeFledNoLoot": "Fled the scene without loot",
-  "vehicleCondition": "Condition",
-  "vehicleFuel": "Fuel",
-  "vehicleSpeed": "Speed",
-  "vehicleArmor": "Armor",
-  "vehicleStealth": "Stealth",
-  "vehicleCargo": "Cargo",
-  "vehicleRepair": "Repair",
-  "vehicleRefuel": "Refuel",
-  "selectCrimeVehicle": "Select Vehicle for Crimes",
-  "noVehicleSelected": "No vehicle selected",
-  "selectedVehicle": "Crime Vehicle",
-  "changeVehicle": "Change Vehicle",
-  "selectVehicle": "Select Vehicle",
-  "vehicleConditionLow": "Vehicle Condition Low",
-  "vehicleFuelLow": "Vehicle Fuel Low",
-  "vehicleSelectedForCrimes": "Vehicle selected for crimes!",
-  "vehicleDeselectedForCrimes": "Vehicle deselected for crimes!",
-  "vehicleWrongCountry": "Vehicle must be in the same country as you",
-  "failedSelectVehicle": "Failed to select vehicle",
-  "failedDeselectVehicle": "Failed to deselect vehicle",
-  "selectedForCrimesBadge": "Selected for crimes",
-  "selectedButton": "Selected",
-  "selectButton": "Select",
-  "deselectButton": "Deselect",
-  "prostitutionTitle": "Prostitution",
-  "prostitutionTotal": "Total",
-  "prostitutionStreet": "On Street",
-  "prostitutionRedLight": "Red Light",
-  "prostitutionPotentialEarnings": "Earnings",
-  "prostitutionCollect": "Collect",
-  "prostitutionRecruit": "Recruit",
-  "prostitutionMyProstitutes": "My Prostitutes",
-  "prostitutionRedLightDistricts": "Red Light Districts",
-  "prostitutionNoProstitutes": "No prostitutes recruited yet",
-  "prostitutionLocation": "Location",
-  "prostitutionMoveToRedLight": "Move to Red Light",
-  "prostitutionMoveToRldShort": "To RLD",
-  "prostitutionMoveToStreet": "Move to Street",
-  "prostitutionViewDistricts": "View Districts",
-  "prostitutionAvailable": "Available",
-  "prostitutionMyDistricts": "My Districts",
-  "prostitutionCurrentRLD": "Current RLD",
-  "prostitutionMyRLDs": "My RLDs",
-  "prostitutionNoAvailableDistricts": "No districts available",
-  "prostitutionNoOwnedDistricts": "You don't own any districts yet",
-  "prostitutionRooms": "rooms",
-  "prostitutionOccupancy": "Occupancy",
-  "prostitutionIncome": "Income",
-  "prostitutionTenants": "Tenants",
-  "prostitutionBuy": "Buy",
-  "prostitutionManage": "Manage",
-  "prostitutionPurchaseConfirmTitle": "Buy District",
-  "prostitutionPurchaseConfirmMessage": "Are you sure you want to buy the Red Light District in {country} for €{price}?",
+  "toolFakeDocuments": "Fałszywe dokumenty",
+  "toolHackingLaptop": "Włamanie do laptopa",
+  "toolCounterfeitingKit": "Zestaw do podrabiania",
+  "toolRope": "Lina",
+  "toolSilencer": "Tłumik",
+  "toolNightVision": "Nocna wizja",
+  "toolGpsJammer": "Zagłuszacz GPS",
+  "toolBurnerPhone": "Telefon Palnika",
+  "crimeOutcomeSuccess": "Kryminał udany!",
+  "crimeOutcomeCaught": "Złapany przez policję",
+  "crimeOutcomeVehicleBreakdownBefore": "Twój pojazd zepsuł się przed dotarciem na miejsce zbrodni",
+  "crimeOutcomeVehicleBreakdownDuring": "Pojazd zepsuł się podczas ucieczki – porzucił większość łupów",
+  "crimeOutcomeOutOfFuel": "Podczas ucieczki skończyło się paliwo – uciekł pieszo, zgubił łup i pojazd",
+  "crimeOutcomeToolBroke": "Twoje narzędzie zepsuło się podczas przestępstwa, pozostawiając dowód",
+  "crimeOutcomeFledNoLoot": "Uciekł z miejsca zdarzenia bez łupów",
+  "vehicleCondition": "Stan",
+  "vehicleFuel": "Paliwo",
+  "vehicleSpeed": "Prędkość",
+  "vehicleArmor": "Zbroja",
+  "vehicleStealth": "Podstęp",
+  "vehicleCargo": "Ładunek",
+  "vehicleRepair": "Naprawa",
+  "vehicleRefuel": "Zatankować",
+  "selectCrimeVehicle": "Wybierz pojazd do przestępstw",
+  "noVehicleSelected": "Nie wybrano pojazdu",
+  "selectedVehicle": "Pojazd kryminalny",
+  "changeVehicle": "Zmień pojazd",
+  "selectVehicle": "Wybierz Pojazd",
+  "vehicleConditionLow": "Stan pojazdu niski",
+  "vehicleFuelLow": "Niski poziom paliwa w pojeździe",
+  "vehicleSelectedForCrimes": "Pojazd wybrany do przestępstw!",
+  "vehicleDeselectedForCrimes": "Pojazd odznaczono pod kątem przestępstw!",
+  "vehicleWrongCountry": "Pojazd musi znajdować się w tym samym kraju co Ty",
+  "failedSelectVehicle": "Nie udało się wybrać pojazdu",
+  "failedDeselectVehicle": "Nie udało się odznaczyć pojazdu",
+  "selectedForCrimesBadge": "Wybrany za przestępstwa",
+  "selectedButton": "Wybrany",
+  "selectButton": "Wybierać",
+  "deselectButton": "Odznacz",
+  "prostitutionTitle": "Prostytucja",
+  "prostitutionTotal": "Całkowity",
+  "prostitutionStreet": "Na ulicy",
+  "prostitutionRedLight": "Czerwone światło",
+  "prostitutionPotentialEarnings": "Zyski",
+  "prostitutionCollect": "Zbierać",
+  "prostitutionRecruit": "Rekrut",
+  "prostitutionMyProstitutes": "Moje prostytutki",
+  "prostitutionRedLightDistricts": "Dzielnice czerwonych latarni",
+  "prostitutionNoProstitutes": "Nie zatrudniono jeszcze żadnych prostytutek",
+  "prostitutionLocation": "Lokalizacja",
+  "prostitutionMoveToRedLight": "Przejdź do czerwonego światła",
+  "prostitutionMoveToRldShort": "Do RLD",
+  "prostitutionMoveToStreet": "Przenieś się na ul",
+  "prostitutionViewDistricts": "Zobacz dzielnice",
+  "prostitutionAvailable": "Dostępny",
+  "prostitutionMyDistricts": "Moje dzielnice",
+  "prostitutionCurrentRLD": "Obecny RLD",
+  "prostitutionMyRLDs": "Moje RLD",
+  "prostitutionNoAvailableDistricts": "Brak dostępnych dzielnic",
+  "prostitutionNoOwnedDistricts": "Nie posiadasz jeszcze żadnych dzielnic",
+  "prostitutionRooms": "pokoje",
+  "prostitutionOccupancy": "Okupacja",
+  "prostitutionIncome": "Dochód",
+  "prostitutionTenants": "Najemcy",
+  "prostitutionBuy": "Kupić",
+  "prostitutionManage": "Zarządzać",
+  "prostitutionPurchaseConfirmTitle": "Kup Dystrykt",
+  "prostitutionPurchaseConfirmMessage": "Czy na pewno chcesz kupić Dzielnicę Czerwonych Latarni w {country} za {price}?",
   "@prostitutionPurchaseConfirmMessage": {
     "placeholders": {
       "country": {
@@ -1601,13 +1601,13 @@
       }
     }
   },
-  "prostitutionPurchase": "Buy",
-  "prostitutionPurchaseSuccess": "District purchased successfully!",
-  "prostitutionPurchaseFailed": "Purchase failed",
-  "prostitutionDistrictManagement": "District Management",
-  "prostitutionDistrictNotFound": "District not found",
-  "back": "Back",
-  "prostitutionMoveToStreetConfirm": "Are you sure you want to move {name} from the Red Light District to the street?",
+  "prostitutionPurchase": "Kupić",
+  "prostitutionPurchaseSuccess": "Dzielnica zakupiona pomyślnie!",
+  "prostitutionPurchaseFailed": "Zakup nie powiódł się",
+  "prostitutionDistrictManagement": "Zarząd Okręgowy",
+  "prostitutionDistrictNotFound": "Nie znaleziono dzielnicy",
+  "back": "Z powrotem",
+  "prostitutionMoveToStreetConfirm": "Czy na pewno chcesz przenieść {name} z Dzielnicy Czerwonych Latarni na ulicę?",
   "@prostitutionMoveToStreetConfirm": {
     "placeholders": {
       "name": {
@@ -1615,60 +1615,60 @@
       }
     }
   },
-  "prostitutionMoveSuccess": "Successfully moved",
-  "prostitutionMoveFailed": "Move failed",
-  "prostitutionNoStreetProstitutes": "No prostitutes available on the street",
-  "prostitutionSelectProstitute": "Select Prostitute",
-  "prostitutionOnStreet": "On street",
-  "prostitutionRoom": "Room",
-  "prostitutionInRedLight": "In Red Light District",
-  "prostitutionEarnings": "Earnings",
-  "prostitutionRent": "Rent",
-  "prostitutionNetIncome": "Net Income",
-  "prostitutionLevel": "Level",
-  "prostitutionXpToNext": "XP to next level",
-  "prostitutionBusted": "BUSTED",
-  "prostitutionBustedCount": "Times busted",
-  "prostitutionLevelBonus": "Level bonus",
-  "prostitutionVipBonus": "VIP bonus: +50% earnings",
-  "prostitutionUpgradeTier": "Upgrade Tier",
-  "prostitutionUpgradeSecurity": "Upgrade Security",
-  "prostitutionTier": "Tier",
-  "prostitutionSecurity": "Security",
-  "prostitutionTierBasic": "Basic",
-  "prostitutionTierLuxury": "Luxury",
-  "prostitutionTierVip": "VIP",
-  "prostitutionSecurityLevel": "Security Level",
-  "prostitutionRaidChance": "Raid Chance",
-  "prostitutionMaxTier": "Max tier reached",
-  "prostitutionMaxSecurity": "Max security reached",
-  "prostitutionUpgradeSuccess": "Upgrade successful!",
-  "prostitutionUpgradeFailed": "Upgrade failed",
-  "vipEventsTitle": "VIP Events",
-  "vipEventsTabTitle": "VIP Events",
-  "vipEventsDescription": "Assign prostitutes to VIP events for bonus earnings!",
-  "vipEventsActive": "Active Events",
-  "vipEventsUpcoming": "Upcoming Events",
-  "vipEventsMyParticipations": "My Active Participations",
-  "vipEventTypeTitle": "VIP Event",
-  "vipEventCelebrity": "Celebrity Visit",
-  "vipEventBachelor": "Bachelor Party",
-  "vipEventConvention": "Convention",
-  "vipEventFestival": "Festival",
-  "vipEventBonus": "BONUS",
-  "vipEventSpots": "spots",
-  "vipEventParticipants": "Participants",
-  "vipEventFull": "EVENT FULL",
-  "vipEventRequires": "Requires",
-  "vipEventLevel": "Level",
-  "vipEventLocation": "Location",
-  "vipEventEndsIn": "Ends in",
-  "vipEventStartsIn": "Starts in",
-  "vipEventNoActive": "No active events at the moment",
-  "vipEventNoUpcoming": "No upcoming events",
-  "vipEventAssignProstitute": "Assign Prostitute",
-  "vipEventAssignDialogTitle": "Assign to",
-  "vipEventNoEligible": "No eligible prostitutes. Need level {level}+ in {country}",
+  "prostitutionMoveSuccess": "Pomyślnie przeniesiono",
+  "prostitutionMoveFailed": "Przeniesienie nie powiodło się",
+  "prostitutionNoStreetProstitutes": "Na ulicy nie ma prostytutek",
+  "prostitutionSelectProstitute": "Wybierz Prostytutka",
+  "prostitutionOnStreet": "Na ulicy",
+  "prostitutionRoom": "Pokój",
+  "prostitutionInRedLight": "W dzielnicy czerwonych latarni",
+  "prostitutionEarnings": "Zyski",
+  "prostitutionRent": "Wynajem",
+  "prostitutionNetIncome": "Dochód netto",
+  "prostitutionLevel": "Poziom",
+  "prostitutionXpToNext": "XP do następnego poziomu",
+  "prostitutionBusted": "PRZYPADKOWANY",
+  "prostitutionBustedCount": "Czasy się popsuły",
+  "prostitutionLevelBonus": "Bonus za poziom",
+  "prostitutionVipBonus": "Bonus VIP: +50% zarobków",
+  "prostitutionUpgradeTier": "Uaktualnij poziom",
+  "prostitutionUpgradeSecurity": "Uaktualnij zabezpieczenia",
+  "prostitutionTier": "Szczebel",
+  "prostitutionSecurity": "Bezpieczeństwo",
+  "prostitutionTierBasic": "Podstawowy",
+  "prostitutionTierLuxury": "Luksus",
+  "prostitutionTierVip": "VIP-a",
+  "prostitutionSecurityLevel": "Poziom bezpieczeństwa",
+  "prostitutionRaidChance": "Szansa na napad",
+  "prostitutionMaxTier": "Osiągnięto maksymalny poziom",
+  "prostitutionMaxSecurity": "Osiągnięto maksymalne bezpieczeństwo",
+  "prostitutionUpgradeSuccess": "Aktualizacja powiodła się!",
+  "prostitutionUpgradeFailed": "Aktualizacja nie powiodła się",
+  "vipEventsTitle": "Wydarzenia VIP",
+  "vipEventsTabTitle": "Wydarzenia VIP",
+  "vipEventsDescription": "Przydzielaj prostytutki do wydarzeń VIP, aby uzyskać dodatkowe zarobki!",
+  "vipEventsActive": "Aktywne wydarzenia",
+  "vipEventsUpcoming": "Nadchodzące wydarzenia",
+  "vipEventsMyParticipations": "Moje aktywne uczestnictwo",
+  "vipEventTypeTitle": "Wydarzenie VIP",
+  "vipEventCelebrity": "Wizyta gwiazd",
+  "vipEventBachelor": "Wieczór kawalerski",
+  "vipEventConvention": "Konwencja",
+  "vipEventFestival": "Festiwal",
+  "vipEventBonus": "PREMIA",
+  "vipEventSpots": "grochy",
+  "vipEventParticipants": "Uczestnicy",
+  "vipEventFull": "WYDARZENIE PEŁNE",
+  "vipEventRequires": "Wymaga",
+  "vipEventLevel": "Poziom",
+  "vipEventLocation": "Lokalizacja",
+  "vipEventEndsIn": "Kończy się w",
+  "vipEventStartsIn": "Zaczyna się w",
+  "vipEventNoActive": "Brak aktywnych wydarzeń w tej chwili",
+  "vipEventNoUpcoming": "Brak nadchodzących wydarzeń",
+  "vipEventAssignProstitute": "Przypisz prostytutkę",
+  "vipEventAssignDialogTitle": "Przypisz do",
+  "vipEventNoEligible": "Brak odpowiednich prostytutek. Potrzebujesz poziomu {level}+ w {country}",
   "@vipEventNoEligible": {
     "placeholders": {
       "level": {
@@ -1679,27 +1679,27 @@
       }
     }
   },
-  "vipEventJoinSuccess": "Joined event!",
-  "vipEventJoinFailed": "Failed to join event",
-  "vipEventLeave": "Leave Event",
-  "vipEventLeaveSuccess": "Left event",
-  "vipEventLeaveFailed": "Could not leave event",
-  "vipEventAssigned": "Assigned",
-  "vipEventPerHour": "/hour",
-  "vipEventEarnings": "Earnings",
-  "prostitutionLeaderboardTitle": "Prostitution Leaderboard",
-  "prostitutionLeaderboardWeekly": "Weekly",
-  "prostitutionLeaderboardMonthly": "Monthly",
-  "prostitutionLeaderboardAllTime": "All-Time",
-  "prostitutionLeaderboardYourRank": "Your Weekly Rank",
-  "prostitutionLeaderboardUnranked": "Unranked",
-  "prostitutionLeaderboardNoData": "No leaderboard data yet",
-  "prostitutionLeaderboardButton": "Leaderboard",
-  "prostitutionRivalryButton": "Rivalry",
-  "prostitutionLeaderboardAchievements": "Achievements",
-  "prostitutionLeaderboardLoadFailed": "Could not load leaderboard",
-  "achievementsTitle": "Achievements",
-  "achievementsProgress": "{unlocked} of {total} unlocked",
+  "vipEventJoinSuccess": "Dołączono do wydarzenia!",
+  "vipEventJoinFailed": "Nie udało się dołączyć do wydarzenia",
+  "vipEventLeave": "Opuść wydarzenie",
+  "vipEventLeaveSuccess": "Opuścił wydarzenie",
+  "vipEventLeaveFailed": "Nie można opuścić wydarzenia",
+  "vipEventAssigned": "Przydzielony",
+  "vipEventPerHour": "/godzina",
+  "vipEventEarnings": "Zyski",
+  "prostitutionLeaderboardTitle": "Tablica liderów prostytucji",
+  "prostitutionLeaderboardWeekly": "Tygodnik",
+  "prostitutionLeaderboardMonthly": "Miesięczny",
+  "prostitutionLeaderboardAllTime": "Wszechczasów",
+  "prostitutionLeaderboardYourRank": "Twój ranking tygodniowy",
+  "prostitutionLeaderboardUnranked": "Nierankingowe",
+  "prostitutionLeaderboardNoData": "Brak jeszcze danych o tabeli liderów",
+  "prostitutionLeaderboardButton": "Tabela liderów",
+  "prostitutionRivalryButton": "Rywalizacja",
+  "prostitutionLeaderboardAchievements": "Osiągnięcia",
+  "prostitutionLeaderboardLoadFailed": "Nie udało się załadować tabeli liderów",
+  "achievementsTitle": "Osiągnięcia",
+  "achievementsProgress": "{unlocked} z {total} odblokowane",
   "@achievementsProgress": {
     "placeholders": {
       "unlocked": {
@@ -1710,17 +1710,17 @@
       }
     }
   },
-  "achievementsCategoryAll": "All",
-  "achievementsCategoryProgression": "Progression",
-  "achievementsCategoryWealth": "Wealth",
-  "achievementsCategoryPower": "Power",
-  "achievementsCategorySocial": "Social",
-  "achievementsCategoryMastery": "Mastery",
-  "achievementLocked": "Locked",
-  "achievementReward": "Reward",
-  "achievementUnlocked": "Unlocked",
-  "achievementNoData": "No achievements found",
-  "achievementLoadFailed": "Could not load achievements",
+  "achievementsCategoryAll": "Wszystko",
+  "achievementsCategoryProgression": "Postęp",
+  "achievementsCategoryWealth": "Bogactwo",
+  "achievementsCategoryPower": "Moc",
+  "achievementsCategorySocial": "Społeczny",
+  "achievementsCategoryMastery": "Mistrzostwo",
+  "achievementLocked": "Zamknięty",
+  "achievementReward": "Nagroda",
+  "achievementUnlocked": "Odblokowany",
+  "achievementNoData": "Nie znaleziono żadnych osiągnięć",
+  "achievementLoadFailed": "Nie udało się wczytać osiągnięć",
   "achievementsMoney": "€{amount}",
   "@achievementsMoney": {
     "placeholders": {
@@ -1729,7 +1729,7 @@
       }
     }
   },
-  "achievementsXp": "{xp} XP",
+  "achievementsXp": "{xp} PD",
   "@achievementsXp": {
     "placeholders": {
       "xp": {
@@ -1737,7 +1737,7 @@
       }
     }
   },
-  "achievementsUnlockedDate": "Unlocked on {date}",
+  "achievementsUnlockedDate": "Odblokowano {date}",
   "@achievementsUnlockedDate": {
     "placeholders": {
       "date": {
@@ -1745,7 +1745,7 @@
       }
     }
   },
-  "achievementsDetailProgress": "Progress: {current}/{required}",
+  "achievementsDetailProgress": "Postęp: {current}/{required}",
   "@achievementsDetailProgress": {
     "placeholders": {
       "current": {
@@ -1756,11 +1756,11 @@
       }
     }
   },
-  "achievementsNoRewardConfigured": "No reward configured yet",
-  "achievementsRewardOnUnlock": "You receive this reward once the achievement is unlocked.",
-  "achievementsDateToday": "Today",
-  "achievementsDateYesterday": "Yesterday",
-  "achievementsDateDaysAgo": "{days} days ago",
+  "achievementsNoRewardConfigured": "Nie skonfigurowano jeszcze żadnej nagrody",
+  "achievementsRewardOnUnlock": "Otrzymasz tę nagrodę po odblokowaniu osiągnięcia.",
+  "achievementsDateToday": "Dzisiaj",
+  "achievementsDateYesterday": "Wczoraj",
+  "achievementsDateDaysAgo": "{days} dni temu",
   "@achievementsDateDaysAgo": {
     "placeholders": {
       "days": {
@@ -1768,27 +1768,27 @@
       }
     }
   },
-  "achievementsDetails": "Details",
-  "achievementsCategory": "Category",
-  "achievementJobItSpecialistTitle": "IT Specialist",
-  "achievementJobItSpecialistDescription": "Complete your first shift as a Programmer",
-  "achievementJobLawyerTitle": "Street Lawyer",
-  "achievementJobLawyerDescription": "Complete your first shift as a Lawyer",
-  "achievementJobDoctorTitle": "Underground Doctor",
-  "achievementJobDoctorDescription": "Complete your first shift as a Doctor",
-  "achievementSchoolCertifiedTitle": "Certified Student",
-  "achievementSchoolCertifiedDescription": "Earn 3 school certifications",
-  "achievementSchoolMultiCertifiedTitle": "Multi-Certified",
-  "achievementSchoolMultiCertifiedDescription": "Earn 6 school certifications",
-  "achievementSchoolTrackSpecialistTitle": "Track Specialist",
-  "achievementSchoolTrackSpecialistDescription": "Max out 3 school tracks",
-  "schoolMenuLabel": "School",
-  "schoolMenuSubtitle": "Level your education and certifications",
-  "schoolTitle": "School & Education",
-  "schoolIntro": "Unlock jobs and assets through levels and certifications.",
-  "schoolTracksTitle": "Available educations",
-  "schoolUnlockableContentTitle": "Locked educations",
-  "schoolOverallLevelLabel": "School level: {level}",
+  "achievementsDetails": "Bliższe dane",
+  "achievementsCategory": "Kategoria",
+  "achievementJobItSpecialistTitle": "Specjalista IT",
+  "achievementJobItSpecialistDescription": "Ukończ swoją pierwszą zmianę jako Programista",
+  "achievementJobLawyerTitle": "Uliczny prawnik",
+  "achievementJobLawyerDescription": "Ukończ swoją pierwszą zmianę jako prawnik",
+  "achievementJobDoctorTitle": "Podziemny lekarz",
+  "achievementJobDoctorDescription": "Ukończ swoją pierwszą zmianę jako lekarz",
+  "achievementSchoolCertifiedTitle": "Certyfikowany student",
+  "achievementSchoolCertifiedDescription": "Zdobądź 3 certyfikaty szkolne",
+  "achievementSchoolMultiCertifiedTitle": "Wielocertyfikowany",
+  "achievementSchoolMultiCertifiedDescription": "Zdobądź 6 certyfikatów szkolnych",
+  "achievementSchoolTrackSpecialistTitle": "Specjalista od torów",
+  "achievementSchoolTrackSpecialistDescription": "Maksymalnie 3 tory szkolne",
+  "schoolMenuLabel": "Szkoła",
+  "schoolMenuSubtitle": "Wyrównaj swoje wykształcenie i certyfikaty",
+  "schoolTitle": "Szkoła i edukacja",
+  "schoolIntro": "Odblokuj zadania i zasoby poprzez poziomy i certyfikaty.",
+  "schoolTracksTitle": "Dostępne wykształcenie",
+  "schoolUnlockableContentTitle": "Zablokowana edukacja",
+  "schoolOverallLevelLabel": "Poziom szkoły: {level}",
   "@schoolOverallLevelLabel": {
     "placeholders": {
       "level": {
@@ -1796,7 +1796,7 @@
       }
     }
   },
-  "schoolLoadError": "Could not load school data: {error}",
+  "schoolLoadError": "Nie można załadować danych szkoły: {error}",
   "@schoolLoadError": {
     "placeholders": {
       "error": {
@@ -1804,7 +1804,7 @@
       }
     }
   },
-  "schoolTrackLevelLabel": "Lv {current}/{max}",
+  "schoolTrackLevelLabel": "Poziom {current}/{max}",
   "@schoolTrackLevelLabel": {
     "placeholders": {
       "current": {
@@ -1823,7 +1823,7 @@
       }
     }
   },
-  "schoolCertificationRequiredLevel": "{name} (Lv {level})",
+  "schoolCertificationRequiredLevel": "{name} (Poz. {level})",
   "@schoolCertificationRequiredLevel": {
     "placeholders": {
       "name": {
@@ -1834,9 +1834,9 @@
       }
     }
   },
-  "schoolGateStatusOpen": "OPEN",
-  "schoolGateStatusLocked": "LOCKED",
-  "schoolGateRankProgress": "Player rank: {current}/{required}",
+  "schoolGateStatusOpen": "OTWARTE",
+  "schoolGateStatusLocked": "ZAMKNIĘTY",
+  "schoolGateRankProgress": "Ranga gracza: {current}/{required}",
   "@schoolGateRankProgress": {
     "placeholders": {
       "current": {
@@ -1847,7 +1847,7 @@
       }
     }
   },
-  "schoolGateTrackLevelProgress": "{track} level: {current}/{required}",
+  "schoolGateTrackLevelProgress": "{track} poziom: {current}/{required}",
   "@schoolGateTrackLevelProgress": {
     "placeholders": {
       "track": {
@@ -1861,7 +1861,7 @@
       }
     }
   },
-  "schoolGateJobTarget": "Job: {target}",
+  "schoolGateJobTarget": "Praca: {target}",
   "@schoolGateJobTarget": {
     "placeholders": {
       "target": {
@@ -1869,11 +1869,11 @@
       }
     }
   },
-  "schoolGateAssetCasinoPurchase": "Asset: Casino purchase",
-  "schoolGateAssetAmmoFactoryPurchase": "Asset: Ammo factory purchase",
-  "schoolGateAssetAmmoOutputUpgrade": "Asset: Ammo output upgrade",
-  "schoolGateAssetAmmoQualityUpgrade": "Asset: Ammo quality upgrade",
-  "schoolGateAssetGeneric": "Asset: {target}",
+  "schoolGateAssetCasinoPurchase": "Zasób: zakup kasyna",
+  "schoolGateAssetAmmoFactoryPurchase": "Zasób: Zakup fabryki amunicji",
+  "schoolGateAssetAmmoOutputUpgrade": "Zasób: ulepszenie produkcji amunicji",
+  "schoolGateAssetAmmoQualityUpgrade": "Zasób: Ulepszenie jakości amunicji",
+  "schoolGateAssetGeneric": "Zasób: {target}",
   "@schoolGateAssetGeneric": {
     "placeholders": {
       "target": {
@@ -1892,14 +1892,14 @@
       }
     }
   },
-  "educationDialogDefaultTitle": "🔒 Education required",
-  "educationDialogFallbackMessage": "Requirements not met. Complete education requirements to continue.",
-  "educationDialogClose": "Close",
-  "educationLockedJobsSectionTitle": "🔒 Locked jobs (education required)",
-  "educationAmmoOutputUpgradeLockedTitle": "🔒 Output upgrade locked",
-  "educationAmmoQualityUpgradeLockedTitle": "🔒 Quality upgrade locked",
-  "educationAmmoFactoryPurchaseLockedTitle": "🔒 Factory purchase locked",
-  "educationRequirementRankProgress": "Need player rank {requiredRank} · Current player rank {currentRank}",
+  "educationDialogDefaultTitle": "🔒 Wymagane wykształcenie",
+  "educationDialogFallbackMessage": "Wymagania nie zostały spełnione. Aby kontynuować, spełnij wymagania edukacyjne.",
+  "educationDialogClose": "Zamknąć",
+  "educationLockedJobsSectionTitle": "🔒 Zablokowane prace (wymagane wykształcenie)",
+  "educationAmmoOutputUpgradeLockedTitle": "🔒 Aktualizacja wyjścia zablokowana",
+  "educationAmmoQualityUpgradeLockedTitle": "🔒 Aktualizacja jakości zablokowana",
+  "educationAmmoFactoryPurchaseLockedTitle": "🔒 Zakup fabryczny zablokowany",
+  "educationRequirementRankProgress": "Potrzebujesz rangi gracza {requiredRank} · Aktualna ranga gracza {currentRank}",
   "@educationRequirementRankProgress": {
     "placeholders": {
       "requiredRank": {
@@ -1910,8 +1910,8 @@
       }
     }
   },
-  "educationRequirementTrackLevelTitle": "Education level",
-  "educationRequirementTrackLevelProgress": "{trackName} level {requiredLevel} required · Current {currentLevel}",
+  "educationRequirementTrackLevelTitle": "Poziom edukacji",
+  "educationRequirementTrackLevelProgress": "wymagany {trackName} poziom {requiredLevel} · Obecny {currentLevel}",
   "@educationRequirementTrackLevelProgress": {
     "placeholders": {
       "trackName": {
@@ -1925,22 +1925,22 @@
       }
     }
   },
-  "educationRequirementCertificationTitle": "Certification required",
-  "educationRequirementGenericTitle": "Requirement",
-  "educationRequirementUnknown": "Unknown requirement",
-  "educationTrackNameAviation": "Aviation",
-  "educationTrackNameLaw": "Law",
-  "educationTrackNameMedicine": "Medicine",
-  "educationTrackNameFinance": "Finance",
-  "educationTrackNameEngineering": "Engineering",
-  "educationTrackNameIt": "IT",
-  "schoolTrackDescriptionAviation": "Flight theory, navigation, and aircraft operation.",
-  "schoolTrackDescriptionLaw": "Criminal law, procedure, and courtroom practice.",
-  "schoolTrackDescriptionMedicine": "Emergency response, diagnostics, and medical practice.",
-  "schoolTrackDescriptionFinance": "Accounting, investment, and business operations.",
-  "schoolTrackDescriptionEngineering": "Mechanical systems, industrial safety, and manufacturing.",
-  "schoolTrackDescriptionIt": "Software development, systems, and network operations.",
-  "schoolTrackCooldownActive": "Cooldown active: {seconds}s remaining",
+  "educationRequirementCertificationTitle": "Wymagana certyfikacja",
+  "educationRequirementGenericTitle": "Wymóg",
+  "educationRequirementUnknown": "Nieznane wymaganie",
+  "educationTrackNameAviation": "Lotnictwo",
+  "educationTrackNameLaw": "Prawo",
+  "educationTrackNameMedicine": "Medycyna",
+  "educationTrackNameFinance": "Finanse",
+  "educationTrackNameEngineering": "Inżynieria",
+  "educationTrackNameIt": "TO",
+  "schoolTrackDescriptionAviation": "Teoria lotu, nawigacja i obsługa samolotów.",
+  "schoolTrackDescriptionLaw": "Prawo karne, procedura i praktyka na sali sądowej.",
+  "schoolTrackDescriptionMedicine": "Reagowanie w sytuacjach kryzysowych, diagnostyka i praktyka lekarska.",
+  "schoolTrackDescriptionFinance": "Księgowość, inwestycje i operacje biznesowe.",
+  "schoolTrackDescriptionEngineering": "Systemy mechaniczne, bezpieczeństwo przemysłowe i produkcja.",
+  "schoolTrackDescriptionIt": "Tworzenie oprogramowania, systemów i operacji sieciowych.",
+  "schoolTrackCooldownActive": "Aktywny czas odnowienia: pozostało {seconds} s",
   "@schoolTrackCooldownActive": {
     "placeholders": {
       "seconds": {
@@ -1948,31 +1948,31 @@
       }
     }
   },
-  "schoolTrackMaxLevelReached": "Track is already at max level",
-  "schoolTrackStartFailed": "Failed to start training",
-  "educationCertSoftwareEngineer": "Software Engineer Certification",
-  "educationCertBarExam": "Bar Exam",
-  "educationCertMedicalLicense": "Medical License",
-  "educationCertFlightCommercial": "Commercial Flight License",
-  "educationCertFlightBasic": "Basic Flight License",
-  "educationCertIndustrialSafety": "Industrial Safety Certification",
-  "educationCertFinancialAnalyst": "Financial Analyst Certification",
-  "educationCertCasinoManagement": "Casino Management Certification",
-  "educationCertParamedic": "Paramedic Certification",
-  "prostitutionLeaderboardProstitutesUnit": "prostitutes",
-  "prostitutionLeaderboardDistrictsUnit": "districts",
-  "rivalryTitle": "Rivalry",
-  "rivalryChallengeTitle": "Challenge Player",
-  "rivalryChallengeHint": "Enter a player ID to start a rivalry.",
-  "rivalryPlayerIdHint": "Player ID",
+  "schoolTrackMaxLevelReached": "Tor jest już na maksymalnym poziomie",
+  "schoolTrackStartFailed": "Nie udało się rozpocząć treningu",
+  "educationCertSoftwareEngineer": "Certyfikat Inżyniera Oprogramowania",
+  "educationCertBarExam": "Egzamin adwokacki",
+  "educationCertMedicalLicense": "Licencja lekarska",
+  "educationCertFlightCommercial": "Licencja na lot komercyjny",
+  "educationCertFlightBasic": "Podstawowa licencja lotnicza",
+  "educationCertIndustrialSafety": "Certyfikat Bezpieczeństwa Przemysłowego",
+  "educationCertFinancialAnalyst": "Certyfikat analityka finansowego",
+  "educationCertCasinoManagement": "Certyfikat zarządzania kasynem",
+  "educationCertParamedic": "Certyfikat ratownika medycznego",
+  "prostitutionLeaderboardProstitutesUnit": "prostytutki",
+  "prostitutionLeaderboardDistrictsUnit": "dzielnice",
+  "rivalryTitle": "Rywalizacja",
+  "rivalryChallengeTitle": "Rzuć wyzwanie graczowi",
+  "rivalryChallengeHint": "Wprowadź identyfikator gracza, aby rozpocząć rywalizację.",
+  "rivalryPlayerIdHint": "Identyfikator gracza",
   "rivalryStartButton": "Start",
-  "rivalryNoActive": "No active rivalries yet.",
-  "rivalryActiveTitle": "Active Rivals",
-  "rivalryScoreLabel": "Rivalry score",
-  "rivalryRecentActivity": "Recent Activity",
-  "rivalryNoActivity": "No sabotage activity yet",
-  "rivalryCooldownReady": "Sabotage ready",
-  "rivalryCooldownIn": "Cooldown: {duration}",
+  "rivalryNoActive": "Nie ma jeszcze aktywnych rywalizacji.",
+  "rivalryActiveTitle": "Aktywni rywale",
+  "rivalryScoreLabel": "Wynik rywalizacji",
+  "rivalryRecentActivity": "Ostatnia aktywność",
+  "rivalryNoActivity": "Nie ma jeszcze żadnych działań sabotażowych",
+  "rivalryCooldownReady": "Sabotaż gotowy",
+  "rivalryCooldownIn": "Czas odnowienia: {duration}",
   "@rivalryCooldownIn": {
     "placeholders": {
       "duration": {
@@ -1980,14 +1980,14 @@
       }
     }
   },
-  "rivalryActionTipPolice": "Tip Police (€5k)",
-  "rivalryActionStealCustomer": "Steal Customer (€3k)",
-  "rivalryActionDamageReputation": "Damage Reputation (€10k)",
-  "rivalryActionBribeEmployee": "Bribe Employee (€8k)",
-  "rivalryUpdateMessage": "Rivalry updated",
-  "rivalrySabotageExecuted": "Sabotage executed",
-  "rivalryConfirmTitle": "Confirm sabotage",
-  "rivalryConfirmTarget": "Target: {username}",
+  "rivalryActionTipPolice": "Napiwek Policja (5 tys. euro)",
+  "rivalryActionStealCustomer": "Ukradnij klienta (3 tys. €)",
+  "rivalryActionDamageReputation": "Uszkodzona reputacja (10 tys. euro)",
+  "rivalryActionBribeEmployee": "Łapówka pracownika (8 tys. euro)",
+  "rivalryUpdateMessage": "Rywalizacja zaktualizowana",
+  "rivalrySabotageExecuted": "Dokonano sabotażu",
+  "rivalryConfirmTitle": "Potwierdź sabotaż",
+  "rivalryConfirmTarget": "Cel: {username}",
   "@rivalryConfirmTarget": {
     "placeholders": {
       "username": {
@@ -1995,7 +1995,7 @@
       }
     }
   },
-  "rivalryConfirmAction": "Action: {action}",
+  "rivalryConfirmAction": "Akcja: {action}",
   "@rivalryConfirmAction": {
     "placeholders": {
       "action": {
@@ -2003,7 +2003,7 @@
       }
     }
   },
-  "rivalryConfirmCost": "Cost: €{amount}",
+  "rivalryConfirmCost": "Koszt: {amount} €",
   "@rivalryConfirmCost": {
     "placeholders": {
       "amount": {
@@ -2011,7 +2011,7 @@
       }
     }
   },
-  "rivalryConfirmEffect": "Effect: {effect}",
+  "rivalryConfirmEffect": "Efekt: {effect}",
   "@rivalryConfirmEffect": {
     "placeholders": {
       "effect": {
@@ -2019,14 +2019,14 @@
       }
     }
   },
-  "rivalryConfirmWarning": "Success is not guaranteed and you can lose money.",
-  "rivalryExecuteButton": "Execute",
-  "rivalryEffectTipPolice": "Increase rival police pressure",
-  "rivalryEffectStealCustomer": "Steal part of rival cashflow",
-  "rivalryEffectDamageReputation": "Lower rival prostitute progress",
-  "rivalryEffectBribeEmployee": "Force one rival prostitute into busted state",
-  "prostitutionUnderAttackTitle": "Your empire is under attack",
-  "prostitutionUnderAttackBody": "{attacker} used {action} against you in the last 24h.",
+  "rivalryConfirmWarning": "Sukces nie jest gwarantowany i możesz stracić pieniądze.",
+  "rivalryExecuteButton": "Wykonać",
+  "rivalryEffectTipPolice": "Zwiększ presję policji na rywala",
+  "rivalryEffectStealCustomer": "Ukradnij część przepływów pieniężnych konkurencji",
+  "rivalryEffectDamageReputation": "Niższy postęp konkurencyjnej prostytutki",
+  "rivalryEffectBribeEmployee": "Zmuś jedną z konkurencyjnych prostytutek do stanu rozkładu",
+  "prostitutionUnderAttackTitle": "Twoje imperium jest atakowane",
+  "prostitutionUnderAttackBody": "{attacker} użył {action} przeciwko tobie w ciągu ostatnich 24 godzin.",
   "@prostitutionUnderAttackBody": {
     "placeholders": {
       "attacker": {
@@ -2037,11 +2037,11 @@
       }
     }
   },
-  "prostitutionUnderAttackAction": "Open rivalry",
-  "rivalryProtectionTitle": "Protection Insurance",
-  "rivalryProtectionDescription": "Reduces incoming sabotage impact by 30% for 7 days.",
-  "rivalryProtectionInactive": "No active protection",
-  "rivalryProtectionActive": "Active until: {date}",
+  "prostitutionUnderAttackAction": "Otwarta rywalizacja",
+  "rivalryProtectionTitle": "Ubezpieczenie ochronne",
+  "rivalryProtectionDescription": "Zmniejsza wpływ nadchodzącego sabotażu o 30% na 7 dni.",
+  "rivalryProtectionInactive": "Brak aktywnej ochrony",
+  "rivalryProtectionActive": "Aktywny do: {date}",
   "@rivalryProtectionActive": {
     "placeholders": {
       "date": {
@@ -2049,220 +2049,220 @@
       }
     }
   },
-  "rivalryProtectionBuy": "Buy protection (€25k/week)",
-  "rivalryProtectionActivated": "Protection insurance activated",
-  "achievementTitle_first_steps": "First Steps",
-  "achievementDescription_first_steps": "Recruit your first prostitute",
-  "achievementTitle_growing_empire": "Growing Empire",
-  "achievementDescription_growing_empire": "Recruit 5 prostitutes",
-  "achievementTitle_first_district": "First District",
-  "achievementDescription_first_district": "Purchase your first red light district",
-  "achievementTitle_empire_builder": "Empire Builder",
-  "achievementDescription_empire_builder": "Own 5 red light districts",
-  "achievementTitle_district_master": "District Master",
-  "achievementDescription_district_master": "Own 10 red light districts",
-  "achievementTitle_leveling_master": "Leveling Master",
-  "achievementDescription_leveling_master": "Max out a prostitute to level 10",
-  "achievementTitle_untouchable": "Untouchable",
-  "achievementDescription_untouchable": "Never get busted for 7 consecutive days",
-  "achievementTitle_millionaire": "Millionaire",
-  "achievementDescription_millionaire": "Accumulate €1,000,000 total earnings",
-  "achievementTitle_high_roller": "High Roller",
-  "achievementDescription_high_roller": "Accumulate €5,000,000 total earnings",
-  "achievementTitle_vip_service": "VIP Service",
-  "achievementDescription_vip_service": "Complete 10 VIP events",
-  "achievementTitle_event_enthusiast": "Event Enthusiast",
-  "achievementDescription_event_enthusiast": "Complete 25 VIP events",
-  "achievementTitle_security_expert": "Security Expert",
-  "achievementDescription_security_expert": "Maximize security level on all owned districts",
-  "achievementTitle_luxury_provider": "Luxury Provider",
-  "achievementDescription_luxury_provider": "Upgrade 3 districts to VIP tier",
-  "achievementTitle_rivalry_victor": "Rivalry Victor",
-  "achievementDescription_rivalry_victor": "Successfully sabotage rivals 10 times",
-  "achievementTitle_untouchable_rival": "Untouchable Rival",
-  "achievementDescription_untouchable_rival": "Defend against 20 sabotage attempts",
-  "achievementTitle_crime_first_blood": "Crime First Blood",
-  "achievementDescription_crime_first_blood": "Successfully complete your first crime",
-  "achievementTitle_crime_hustler": "Crime Hustler",
-  "achievementDescription_crime_hustler": "Successfully complete 5 crimes",
-  "achievementTitle_crime_novice": "Crime Novice",
-  "achievementDescription_crime_novice": "Successfully complete 10 crimes",
-  "achievementTitle_crime_operator": "Crime Operator",
-  "achievementDescription_crime_operator": "Successfully complete 25 crimes",
-  "achievementTitle_crime_wave": "Crime Wave",
-  "achievementDescription_crime_wave": "Successfully complete 50 crimes",
-  "achievementTitle_crime_mastermind": "Crime Mastermind",
-  "achievementDescription_crime_mastermind": "Successfully complete 100 crimes",
-  "achievementTitle_the_godfather": "The Godfather",
-  "achievementDescription_the_godfather": "Successfully complete 250 crimes",
-  "achievementTitle_crime_emperor": "Crime Emperor",
-  "achievementDescription_crime_emperor": "Successfully complete 500 crimes",
-  "achievementTitle_crime_legend": "Crime Legend",
-  "achievementDescription_crime_legend": "Successfully complete 1000 crimes",
-  "achievementTitle_crime_getaway_driver": "Getaway Driver",
-  "achievementDescription_crime_getaway_driver": "Successfully complete your first crime with a vehicle",
-  "achievementTitle_crime_armed_and_ready": "Armed & Ready",
-  "achievementDescription_crime_armed_and_ready": "Successfully complete your first crime that requires a weapon",
-  "achievementTitle_crime_full_loadout": "Full Loadout",
-  "achievementDescription_crime_full_loadout": "Successfully complete a crime requiring vehicle, weapon, and tools",
-  "achievementTitle_crime_completionist": "Crime Completionist",
-  "achievementDescription_crime_completionist": "Successfully complete every crime type at least once",
-  "achievementTitle_job_first_shift": "First Shift",
-  "achievementDescription_job_first_shift": "Successfully complete your first job",
-  "achievementTitle_job_hustler": "Job Hustler",
-  "achievementDescription_job_hustler": "Successfully complete 5 jobs",
-  "achievementTitle_job_starter": "Job Starter",
-  "achievementDescription_job_starter": "Successfully complete 10 jobs",
-  "achievementTitle_job_operator": "Job Operator",
-  "achievementDescription_job_operator": "Successfully complete 25 jobs",
-  "achievementTitle_job_grinder": "Job Grinder",
-  "achievementDescription_job_grinder": "Successfully complete 50 jobs",
-  "achievementTitle_job_master": "Job Master",
-  "achievementDescription_job_master": "Successfully complete 100 jobs",
-  "achievementTitle_job_expert": "Job Expert",
-  "achievementDescription_job_expert": "Successfully complete 250 jobs",
-  "achievementTitle_job_elite": "Job Elite",
-  "achievementDescription_job_elite": "Successfully complete 500 jobs",
-  "achievementTitle_job_legend": "Job Legend",
-  "achievementDescription_job_legend": "Successfully complete 1000 jobs",
-  "achievementTitle_job_completionist": "Job Completionist",
-  "achievementDescription_job_completionist": "Successfully complete every job type at least once",
-  "achievementTitle_job_educated_worker": "Educated Worker",
-  "achievementDescription_job_educated_worker": "Complete 1 job that has education requirements",
-  "achievementTitle_job_certified_hustler": "Certified Hustler",
-  "achievementDescription_job_certified_hustler": "Complete 25 jobs with education requirements",
-  "achievementTitle_job_education_completionist": "Education Job Completionist",
-  "achievementDescription_job_education_completionist": "Complete every education-gated job type at least once",
-  "achievementTitle_job_it_specialist": "IT Specialist",
-  "achievementDescription_job_it_specialist": "Complete your first shift as a Programmer",
-  "achievementTitle_job_lawyer": "Street Lawyer",
-  "achievementDescription_job_lawyer": "Complete your first shift as a Lawyer",
-  "achievementTitle_job_doctor": "Underground Doctor",
-  "achievementDescription_job_doctor": "Complete your first shift as a Doctor",
-  "achievementTitle_school_certified": "Certified Student",
-  "achievementDescription_school_certified": "Earn 3 school certifications",
-  "achievementTitle_school_multi_certified": "Multi-Certified",
-  "achievementDescription_school_multi_certified": "Earn 6 school certifications",
-  "achievementTitle_school_track_specialist": "Track Specialist",
-  "achievementDescription_school_track_specialist": "Max out 3 school tracks",
-  "achievementTitle_school_freshman": "School Freshman",
-  "achievementDescription_school_freshman": "Reach education level 1",
-  "achievementTitle_school_scholar": "School Scholar",
-  "achievementDescription_school_scholar": "Reach education level 3",
-  "achievementTitle_school_graduate": "School Graduate",
-  "achievementDescription_school_graduate": "Reach education level 5",
-  "achievementTitle_school_mastermind": "Academic Mastermind",
-  "achievementDescription_school_mastermind": "Reach education level 10",
-  "achievementTitle_school_doctorate": "Street Doctorate",
-  "achievementDescription_school_doctorate": "Reach education level 20",
-  "achievementTitle_road_bandit": "Road Bandit",
-  "achievementDescription_road_bandit": "Steal 5 cars",
-  "achievementTitle_grand_theft_fleet": "Grand Theft Fleet",
-  "achievementDescription_grand_theft_fleet": "Steal 25 cars",
-  "achievementTitle_sea_raider": "Sea Raider",
-  "achievementDescription_sea_raider": "Steal 3 boats",
-  "achievementTitle_captain_of_smugglers": "Captain of Smugglers",
-  "achievementDescription_captain_of_smugglers": "Steal 12 boats",
-  "achievementTitle_globe_trotter": "Globe Trotter",
-  "achievementDescription_globe_trotter": "Complete 5 journeys",
-  "achievementTitle_jet_setter": "Jet Setter",
-  "achievementDescription_jet_setter": "Complete 25 journeys",
-  "achievementTitle_chemist_apprentice": "Chemist Apprentice",
-  "achievementDescription_chemist_apprentice": "Complete 10 drug productions",
-  "achievementTitle_narco_chemist": "Narco Chemist",
-  "achievementDescription_narco_chemist": "Complete 100 drug productions",
-  "achievementTitle_street_merchant": "Street Merchant",
-  "achievementDescription_street_merchant": "Complete 25 trades",
-  "achievementTitle_trade_tycoon": "Trade Tycoon",
-  "achievementDescription_trade_tycoon": "Complete 150 trades",
-  "achievementTitle_prostitute_lineup": "Lineup Built",
-  "achievementDescription_prostitute_lineup": "Recruit 10 prostitutes",
-  "achievementTitle_prostitute_network": "Street Network",
-  "achievementDescription_prostitute_network": "Recruit 25 prostitutes",
-  "achievementTitle_prostitute_syndicate": "Syndicate",
-  "achievementDescription_prostitute_syndicate": "Recruit 50 prostitutes",
-  "achievementTitle_prostitute_dynasty": "Dynasty",
-  "achievementDescription_prostitute_dynasty": "Recruit 100 prostitutes",
-  "achievementTitle_prostitute_empire_250": "Empire 250",
-  "achievementDescription_prostitute_empire_250": "Recruit 250 prostitutes",
-  "achievementTitle_prostitute_cartel_500": "Cartel 500",
-  "achievementDescription_prostitute_cartel_500": "Recruit 500 prostitutes",
-  "achievementTitle_prostitute_legend_1000": "Legend 1000",
-  "achievementDescription_prostitute_legend_1000": "Recruit 1000 prostitutes",
-  "achievementTitle_vip_prostitute_level_10": "VIP Beginner",
-  "achievementDescription_vip_prostitute_level_10": "Reach level 3 with a VIP prostitute",
-  "achievementTitle_vip_prostitute_level_25": "VIP Headliner",
-  "achievementDescription_vip_prostitute_level_25": "Reach level 5 with a VIP prostitute",
-  "achievementTitle_vip_prostitute_level_50": "VIP Icon",
-  "achievementDescription_vip_prostitute_level_50": "Reach level 7 with a VIP prostitute",
-  "achievementTitle_vip_prostitute_level_100": "VIP Legend",
-  "achievementDescription_vip_prostitute_level_100": "Reach level 10 with a VIP prostitute",
-  "achievementTitle_nightclub_opening_night": "Opening Night",
-  "achievementDescription_nightclub_opening_night": "Open your first nightclub venue",
+  "rivalryProtectionBuy": "Kup ochronę (25 tys. €/tydzień)",
+  "rivalryProtectionActivated": "Aktywowano ubezpieczenie ochronne",
+  "achievementTitle_first_steps": "Pierwsze kroki",
+  "achievementDescription_first_steps": "Zrekrutuj swoją pierwszą prostytutkę",
+  "achievementTitle_growing_empire": "Rosnące Imperium",
+  "achievementDescription_growing_empire": "Zrekrutuj 5 prostytutek",
+  "achievementTitle_first_district": "Pierwsza dzielnica",
+  "achievementDescription_first_district": "Kup swoją pierwszą dzielnicę czerwonych latarni",
+  "achievementTitle_empire_builder": "Budowniczy Imperium",
+  "achievementDescription_empire_builder": "Posiadaj 5 dzielnic czerwonych latarni",
+  "achievementTitle_district_master": "Mistrz Okręgowy",
+  "achievementDescription_district_master": "Posiadaj 10 dzielnic czerwonych latarni",
+  "achievementTitle_leveling_master": "Mistrz poziomowania",
+  "achievementDescription_leveling_master": "Wymaksuj prostytutkę do poziomu 10",
+  "achievementTitle_untouchable": "Niedotykalny",
+  "achievementDescription_untouchable": "Nigdy nie daj się złapać przez 7 kolejnych dni",
+  "achievementTitle_millionaire": "Milioner",
+  "achievementDescription_millionaire": "Zgromadź łączne zarobki w wysokości 1 000 000 EUR",
+  "achievementTitle_high_roller": "Wysoki Roller",
+  "achievementDescription_high_roller": "Zgromadź łączne zarobki w wysokości 5 000 000 EUR",
+  "achievementTitle_vip_service": "Obsługa VIP-ów",
+  "achievementDescription_vip_service": "Ukończ 10 wydarzeń VIP",
+  "achievementTitle_event_enthusiast": "Entuzjasta wydarzeń",
+  "achievementDescription_event_enthusiast": "Ukończ 25 wydarzeń VIP",
+  "achievementTitle_security_expert": "Ekspert ds. bezpieczeństwa",
+  "achievementDescription_security_expert": "Maksymalizuj poziom bezpieczeństwa we wszystkich posiadanych dzielnicach",
+  "achievementTitle_luxury_provider": "Dostawca luksusu",
+  "achievementDescription_luxury_provider": "Ulepsz 3 dzielnice do poziomu VIP",
+  "achievementTitle_rivalry_victor": "Wiktor Rywalizacja",
+  "achievementDescription_rivalry_victor": "Pomyślnie sabotuj rywali 10 razy",
+  "achievementTitle_untouchable_rival": "Nietykalny rywal",
+  "achievementDescription_untouchable_rival": "Obroń się przed 20 próbami sabotażu",
+  "achievementTitle_crime_first_blood": "Zbrodnia Pierwsza Krew",
+  "achievementDescription_crime_first_blood": "Pomyślnie ukończ swoje pierwsze przestępstwo",
+  "achievementTitle_crime_hustler": "Miłośnik kryminałów",
+  "achievementDescription_crime_hustler": "Pomyślnie wykonaj 5 przestępstw",
+  "achievementTitle_crime_novice": "Nowicjusz kryminalny",
+  "achievementDescription_crime_novice": "Pomyślnie wykonaj 10 przestępstw",
+  "achievementTitle_crime_operator": "Operator kryminalny",
+  "achievementDescription_crime_operator": "Pomyślnie wykonaj 25 przestępstw",
+  "achievementTitle_crime_wave": "Fala zbrodni",
+  "achievementDescription_crime_wave": "Pomyślnie wykonaj 50 przestępstw",
+  "achievementTitle_crime_mastermind": "Mistrz zbrodni",
+  "achievementDescription_crime_mastermind": "Pomyślnie wykonaj 100 przestępstw",
+  "achievementTitle_the_godfather": "Ojciec chrzestny",
+  "achievementDescription_the_godfather": "Wykonaj pomyślnie 250 przestępstw",
+  "achievementTitle_crime_emperor": "Cesarz zbrodni",
+  "achievementDescription_crime_emperor": "Pomyślnie wykonaj 500 przestępstw",
+  "achievementTitle_crime_legend": "Legenda kryminału",
+  "achievementDescription_crime_legend": "Pomyślnie wykonaj 1000 przestępstw",
+  "achievementTitle_crime_getaway_driver": "Kierowca ucieczki",
+  "achievementDescription_crime_getaway_driver": "Pomyślnie wykonaj swoje pierwsze przestępstwo z użyciem pojazdu",
+  "achievementTitle_crime_armed_and_ready": "Uzbrojony i gotowy",
+  "achievementDescription_crime_armed_and_ready": "Pomyślnie ukończ swoje pierwsze przestępstwo wymagające użycia broni",
+  "achievementTitle_crime_full_loadout": "Pełne wyposażenie",
+  "achievementDescription_crime_full_loadout": "Pomyślnie ukończ przestępstwo wymagające pojazdu, broni i narzędzi",
+  "achievementTitle_crime_completionist": "Kompletator kryminałów",
+  "achievementDescription_crime_completionist": "Pomyślnie ukończ każdy rodzaj przestępstwa przynajmniej raz",
+  "achievementTitle_job_first_shift": "Pierwsza zmiana",
+  "achievementDescription_job_first_shift": "Pomyślnie ukończ swoją pierwszą pracę",
+  "achievementTitle_job_hustler": "Joba Hustlera",
+  "achievementDescription_job_hustler": "Pomyślnie ukończ 5 zadań",
+  "achievementTitle_job_starter": "Rozrusznik pracy",
+  "achievementDescription_job_starter": "Pomyślnie ukończ 10 zadań",
+  "achievementTitle_job_operator": "Operator pracy",
+  "achievementDescription_job_operator": "Pomyślnie ukończ 25 zadań",
+  "achievementTitle_job_grinder": "Szlifierka pracy",
+  "achievementDescription_job_grinder": "Pomyślnie ukończ 50 zadań",
+  "achievementTitle_job_master": "Mistrz pracy",
+  "achievementDescription_job_master": "Pomyślnie ukończ 100 zadań",
+  "achievementTitle_job_expert": "Ekspert pracy",
+  "achievementDescription_job_expert": "Pomyślnie ukończ 250 zadań",
+  "achievementTitle_job_elite": "Elita pracy",
+  "achievementDescription_job_elite": "Pomyślnie ukończ 500 zadań",
+  "achievementTitle_job_legend": "Legenda pracy",
+  "achievementDescription_job_legend": "Pomyślnie ukończ 1000 zadań",
+  "achievementTitle_job_completionist": "Kompletator pracy",
+  "achievementDescription_job_completionist": "Pomyślnie ukończ każdy rodzaj zadania przynajmniej raz",
+  "achievementTitle_job_educated_worker": "Wykształcony pracownik",
+  "achievementDescription_job_educated_worker": "Wykonaj 1 pracę, która ma wymagania dotyczące wykształcenia",
+  "achievementTitle_job_certified_hustler": "Certyfikowany Hustler",
+  "achievementDescription_job_certified_hustler": "Ukończ 25 zawodów z wymaganiami edukacyjnymi",
+  "achievementTitle_job_education_completionist": "Osoba kończąca pracę w edukacji",
+  "achievementDescription_job_education_completionist": "Ukończ każdy rodzaj pracy związany z edukacją co najmniej raz",
+  "achievementTitle_job_it_specialist": "Specjalista IT",
+  "achievementDescription_job_it_specialist": "Ukończ swoją pierwszą zmianę jako Programista",
+  "achievementTitle_job_lawyer": "Uliczny prawnik",
+  "achievementDescription_job_lawyer": "Ukończ swoją pierwszą zmianę jako prawnik",
+  "achievementTitle_job_doctor": "Podziemny lekarz",
+  "achievementDescription_job_doctor": "Ukończ swoją pierwszą zmianę jako lekarz",
+  "achievementTitle_school_certified": "Certyfikowany student",
+  "achievementDescription_school_certified": "Zdobądź 3 certyfikaty szkolne",
+  "achievementTitle_school_multi_certified": "Wielocertyfikowany",
+  "achievementDescription_school_multi_certified": "Zdobądź 6 certyfikatów szkolnych",
+  "achievementTitle_school_track_specialist": "Specjalista od torów",
+  "achievementDescription_school_track_specialist": "Maksymalnie 3 tory szkolne",
+  "achievementTitle_school_freshman": "Pierwszoklasista szkoły",
+  "achievementDescription_school_freshman": "Osiągnij poziom wykształcenia 1",
+  "achievementTitle_school_scholar": "Uczony szkolny",
+  "achievementDescription_school_scholar": "Osiągnij poziom wykształcenia 3",
+  "achievementTitle_school_graduate": "Absolwent szkoły",
+  "achievementDescription_school_graduate": "Osiągnij poziom wykształcenia 5",
+  "achievementTitle_school_mastermind": "Akademicki geniusz",
+  "achievementDescription_school_mastermind": "Osiągnij poziom wykształcenia 10",
+  "achievementTitle_school_doctorate": "Doktorat uliczny",
+  "achievementDescription_school_doctorate": "Osiągnij poziom wykształcenia 20",
+  "achievementTitle_road_bandit": "Drogowy bandyta",
+  "achievementDescription_road_bandit": "Ukradnij 5 samochodów",
+  "achievementTitle_grand_theft_fleet": "Flota Wielkiej Kradzieży",
+  "achievementDescription_grand_theft_fleet": "Ukradnij 25 samochodów",
+  "achievementTitle_sea_raider": "Morski Najeźdźca",
+  "achievementDescription_sea_raider": "Ukradnij 3 łodzie",
+  "achievementTitle_captain_of_smugglers": "Kapitan przemytników",
+  "achievementDescription_captain_of_smugglers": "Ukradnij 12 łodzi",
+  "achievementTitle_globe_trotter": "Globowy Kłusak",
+  "achievementDescription_globe_trotter": "Ukończ 5 podróży",
+  "achievementTitle_jet_setter": "Seter odrzutowy",
+  "achievementDescription_jet_setter": "Ukończ 25 podróży",
+  "achievementTitle_chemist_apprentice": "Uczeń chemika",
+  "achievementDescription_chemist_apprentice": "Ukończ 10 produkcji narkotyków",
+  "achievementTitle_narco_chemist": "Narcochemik",
+  "achievementDescription_narco_chemist": "Ukończ 100 produkcji leków",
+  "achievementTitle_street_merchant": "Sprzedawca uliczny",
+  "achievementDescription_street_merchant": "Wykonaj 25 transakcji",
+  "achievementTitle_trade_tycoon": "Potentat handlowy",
+  "achievementDescription_trade_tycoon": "Wykonaj 150 transakcji",
+  "achievementTitle_prostitute_lineup": "Skład zbudowany",
+  "achievementDescription_prostitute_lineup": "Zrekrutuj 10 prostytutek",
+  "achievementTitle_prostitute_network": "Sieć Uliczna",
+  "achievementDescription_prostitute_network": "Zrekrutuj 25 prostytutek",
+  "achievementTitle_prostitute_syndicate": "Konsorcjum",
+  "achievementDescription_prostitute_syndicate": "Zrekrutuj 50 prostytutek",
+  "achievementTitle_prostitute_dynasty": "Dynastia",
+  "achievementDescription_prostitute_dynasty": "Zrekrutuj 100 prostytutek",
+  "achievementTitle_prostitute_empire_250": "Imperium 250",
+  "achievementDescription_prostitute_empire_250": "Zrekrutuj 250 prostytutek",
+  "achievementTitle_prostitute_cartel_500": "Kartel 500",
+  "achievementDescription_prostitute_cartel_500": "Zrekrutuj 500 prostytutek",
+  "achievementTitle_prostitute_legend_1000": "Legenda 1000",
+  "achievementDescription_prostitute_legend_1000": "Zrekrutuj 1000 prostytutek",
+  "achievementTitle_vip_prostitute_level_10": "Początkujący VIP-a",
+  "achievementDescription_vip_prostitute_level_10": "Osiągnij poziom 3 z prostytutką VIP",
+  "achievementTitle_vip_prostitute_level_25": "Głowa VIP-a",
+  "achievementDescription_vip_prostitute_level_25": "Osiągnij poziom 5 z prostytutką VIP",
+  "achievementTitle_vip_prostitute_level_50": "Ikona VIP-a",
+  "achievementDescription_vip_prostitute_level_50": "Osiągnij poziom 7 z prostytutką VIP",
+  "achievementTitle_vip_prostitute_level_100": "Legenda VIP-a",
+  "achievementDescription_vip_prostitute_level_100": "Osiągnij poziom 10 z prostytutką VIP",
+  "achievementTitle_nightclub_opening_night": "Wieczór otwarcia",
+  "achievementDescription_nightclub_opening_night": "Otwórz swój pierwszy klub nocny",
   "achievementTitle_nightclub_headliner": "Headliner Booker",
-  "achievementDescription_nightclub_headliner": "Book 10 DJ shifts for your nightclub empire",
-  "achievementTitle_nightclub_full_house": "Full House",
-  "achievementDescription_nightclub_full_house": "Push a nightclub crowd to 90% capacity",
-  "achievementTitle_nightclub_cash_machine": "Cash Machine",
-  "achievementDescription_nightclub_cash_machine": "Earn €250,000 total nightclub revenue",
-  "achievementTitle_nightclub_empire": "Nightlife Empire",
-  "achievementDescription_nightclub_empire": "Earn €1,000,000 total nightclub revenue",
-  "achievementTitle_nightclub_staffing_boss": "Staffing Boss",
-  "achievementDescription_nightclub_staffing_boss": "Run 3 active nightclub crew members at the same time",
-  "achievementTitle_nightclub_vip_room": "VIP Room",
-  "achievementDescription_nightclub_vip_room": "Assign 2 VIP crew members to your nightclub",
-  "achievementTitle_nightclub_head_of_security": "Head of Security",
-  "achievementDescription_nightclub_head_of_security": "Hire nightclub security for 10 shifts",
-  "achievementTitle_nightclub_podium_finish": "Podium Finish",
-  "achievementDescription_nightclub_podium_finish": "Finish in the top 3 of a weekly nightclub season",
-  "achievementTitle_nightclub_season_champion": "Season Champion",
-  "achievementDescription_nightclub_season_champion": "Win a weekly nightclub season",
-  "nightclubManagementTitle": "Nightclub Management",
-  "nightclubRealtimeStatus": "Realtime status active",
-  "nightclubRefresh": "Refresh",
-  "nightclubEmptyTitle": "No nightclub found yet",
-  "nightclubEmptyBody": "Buy a nightclub in Properties first to activate this system.",
-  "nightclubLocationTitle": "Nightclub Location",
-  "nightclubSelectVenue": "Select venue",
-  "nightclubLiveStatistics": "Live Statistics",
-  "nightclubKpiCrowd": "Crowd",
-  "nightclubKpiVibe": "Vibe",
-  "nightclubKpiToday": "Today",
-  "nightclubKpiAllTime": "All-time",
-  "nightclubKpiStock": "Stock",
+  "achievementDescription_nightclub_headliner": "Zarezerwuj 10 zmian DJ-skich dla swojego imperium klubu nocnego",
+  "achievementTitle_nightclub_full_house": "Pełna sala",
+  "achievementDescription_nightclub_full_house": "Zwiększ pojemność klubu nocnego do 90%.",
+  "achievementTitle_nightclub_cash_machine": "Bankomat",
+  "achievementDescription_nightclub_cash_machine": "Zarób 250 000 euro całkowitego dochodu z klubu nocnego",
+  "achievementTitle_nightclub_empire": "Imperium życia nocnego",
+  "achievementDescription_nightclub_empire": "Zarób 1 000 000 euro całkowitego dochodu z klubu nocnego",
+  "achievementTitle_nightclub_staffing_boss": "Szef kadr",
+  "achievementDescription_nightclub_staffing_boss": "Prowadź jednocześnie 3 aktywnych członków załogi klubu nocnego",
+  "achievementTitle_nightclub_vip_room": "Pokój VIP",
+  "achievementDescription_nightclub_vip_room": "Przypisz 2 członków załogi VIP do swojego klubu nocnego",
+  "achievementTitle_nightclub_head_of_security": "Szef Bezpieczeństwa",
+  "achievementDescription_nightclub_head_of_security": "Zatrudnię ochronę klubu nocnego na 10 zmian",
+  "achievementTitle_nightclub_podium_finish": "Finisz na podium",
+  "achievementDescription_nightclub_podium_finish": "Zajmij miejsce w pierwszej trójce cotygodniowego sezonu klubów nocnych",
+  "achievementTitle_nightclub_season_champion": "Mistrz sezonu",
+  "achievementDescription_nightclub_season_champion": "Wygraj cotygodniowy sezon klubu nocnego",
+  "nightclubManagementTitle": "Zarządzanie klubem nocnym",
+  "nightclubRealtimeStatus": "Stan w czasie rzeczywistym aktywny",
+  "nightclubRefresh": "Odświeżać",
+  "nightclubEmptyTitle": "Nie znaleziono jeszcze żadnego klubu nocnego",
+  "nightclubEmptyBody": "Najpierw kup klub nocny w Właściwości, aby aktywować ten system.",
+  "nightclubLocationTitle": "Lokalizacja klubu nocnego",
+  "nightclubSelectVenue": "Wybierz miejsce",
+  "nightclubLiveStatistics": "Statystyki na żywo",
+  "nightclubKpiCrowd": "Tłum",
+  "nightclubKpiVibe": "Wibracja",
+  "nightclubKpiToday": "Dzisiaj",
+  "nightclubKpiAllTime": "Wszechczasów",
+  "nightclubKpiStock": "Magazyn",
   "nightclubKpiDj": "DJ",
-  "nightclubKpiThefts": "Thefts",
-  "nightclubKpiStaff": "Staff",
-  "nightclubKpiSalesBoost": "Sales boost",
-  "nightclubKpiPriceBoost": "Price boost",
-  "nightclubKpiVipBonus": "VIP bonus",
-  "nightclubStatusActive": "Active",
-  "nightclubStatusOff": "Off",
-  "nightclubStatusActiveLower": "active",
-  "nightclubRevenueTrend": "Revenue Trend (live)",
-  "nightclubLeaderboardTitle": "Top Nightclubs",
-  "nightclubLeaderboardCountry": "Country",
-  "nightclubLeaderboardGlobal": "Global",
-  "nightclubLeaderboardEmpty": "No leaderboard data yet",
-  "nightclubLeaderboardRevenue24h": "24h revenue",
-  "nightclubSeasonProcessing": "processing...",
-  "nightclubSeasonTitle": "Weekly Season Ranking",
-  "nightclubSeasonResetIn": "Reset in",
-  "nightclubSeasonYourRewards": "Your season rewards",
-  "nightclubSeasonCurrentTop5": "Current week top 5",
-  "nightclubSeasonEmpty": "No season data yet",
-  "nightclubSeasonWeekRevenue": "Week revenue",
-  "nightclubSeasonScore": "Score",
-  "nightclubSeasonRecentPayouts": "Recent payouts",
-  "nightclubSeasonNoPayouts": "No payouts yet",
-  "nightclubSalesTitle": "Recent Sales",
-  "nightclubSalesEmpty": "No sales data yet",
-  "nightclubTheftTitle": "Theft Log",
-  "nightclubTheftEmpty": "No thefts recorded",
-  "nightclubTheftLoss": "Loss",
-  "nightclubStaffTitle": "Pimp Crew in Club",
-  "nightclubStaffVipExtraActive": " (VIP +2 active)",
-  "nightclubStaffCapacity": "Capacity: {assigned}/{cap}{vipSuffix}",
+  "nightclubKpiThefts": "Kradzieże",
+  "nightclubKpiStaff": "Personel",
+  "nightclubKpiSalesBoost": "Zwiększenie sprzedaży",
+  "nightclubKpiPriceBoost": "Podwyżka cen",
+  "nightclubKpiVipBonus": "Bonus VIP-owski",
+  "nightclubStatusActive": "Aktywny",
+  "nightclubStatusOff": "Wyłączony",
+  "nightclubStatusActiveLower": "aktywny",
+  "nightclubRevenueTrend": "Trend przychodów (na żywo)",
+  "nightclubLeaderboardTitle": "Najlepsze kluby nocne",
+  "nightclubLeaderboardCountry": "Kraj",
+  "nightclubLeaderboardGlobal": "Światowy",
+  "nightclubLeaderboardEmpty": "Brak jeszcze danych o tabeli liderów",
+  "nightclubLeaderboardRevenue24h": "Przychód 24h",
+  "nightclubSeasonProcessing": "przetwarzanie...",
+  "nightclubSeasonTitle": "Cotygodniowy ranking sezonu",
+  "nightclubSeasonResetIn": "Zresetuj w",
+  "nightclubSeasonYourRewards": "Twoje nagrody sezonowe",
+  "nightclubSeasonCurrentTop5": "Top 5 bieżącego tygodnia",
+  "nightclubSeasonEmpty": "Nie ma jeszcze danych o sezonie",
+  "nightclubSeasonWeekRevenue": "Tygodniowe przychody",
+  "nightclubSeasonScore": "Wynik",
+  "nightclubSeasonRecentPayouts": "Ostatnie wypłaty",
+  "nightclubSeasonNoPayouts": "Nie ma jeszcze wypłat",
+  "nightclubSalesTitle": "Ostatnie wyprzedaże",
+  "nightclubSalesEmpty": "Nie ma jeszcze danych o sprzedaży",
+  "nightclubTheftTitle": "Dziennik kradzieży",
+  "nightclubTheftEmpty": "Nie odnotowano żadnych kradzieży",
+  "nightclubTheftLoss": "Strata",
+  "nightclubStaffTitle": "Załoga Pimp w klubie",
+  "nightclubStaffVipExtraActive": "(VIP +2 aktywny)",
+  "nightclubStaffCapacity": "Pojemność: {assigned}/{cap}{vipSuffix}",
   "@nightclubStaffCapacity": {
     "placeholders": {
       "assigned": {
@@ -2276,7 +2276,7 @@
       }
     }
   },
-  "nightclubStaffBoostMix": "Boost mix: sales x{sales} | price x{price} | vibe x{vibe} | security x{security} | vip player x{vipPlayer} | vip staff x{vipStaff} ({vipAssigned})",
+  "nightclubStaffBoostMix": "Boost mix: sprzedaż x{sales} | cena x{price} | klimat x{vibe} | bezpieczeństwo x{security} | gracz VIP x{vipPlayer} | personel VIP x{vipStaff} ({vipAssigned})",
   "@nightclubStaffBoostMix": {
     "placeholders": {
       "sales": {
@@ -2302,36 +2302,36 @@
       }
     }
   },
-  "nightclubSelectCrewMember": "Select crew member",
-  "nightclubAssignShift": "Assign to nightclub shift",
-  "nightclubTabActive": "Active",
-  "nightclubTabHistory": "History",
-  "nightclubNoCrewAssigned": "No crew assigned yet",
-  "nightclubCrewBoostDescription": "Boosts demand and margin in your club",
-  "nightclubRemove": "Remove",
-  "nightclubNoStaffHistory": "No staffing history yet",
-  "nightclubFrom": "From",
-  "nightclubTo": "To",
-  "nightclubRevenueImpact": "Revenue impact",
-  "nightclubSalesCountLabel": "sales",
-  "nightclubDjTitle": "Hire DJ",
-  "nightclubChooseDj": "Choose DJ",
-  "nightclubShiftLength": "Shift length",
-  "nightclubHireDj": "Hire DJ",
-  "nightclubSecurityTitle": "Security",
-  "nightclubChooseSecurity": "Choose security",
-  "nightclubHireSecurity": "Hire security",
-  "nightclubStoreTitle": "Store Drugs",
-  "nightclubChooseStock": "Choose stock",
-  "nightclubAmountGrams": "Amount in grams",
-  "nightclubStoreButton": "Store in nightclub",
-  "nightclubHireDjSuccess": "DJ hired",
-  "nightclubHireSecuritySuccess": "Security hired",
-  "nightclubAssignCrewSuccess": "Crew member assigned",
-  "nightclubRemoveCrewSuccess": "Crew member removed",
-  "nightclubStoreDrugsSuccess": "Drugs stored",
-  "nightclubSeasonPayoutDialogTitle": "Season payout received",
-  "nightclubSeasonPayoutDialogBody": "Your nightclub finished at rank #{rank} this week.",
+  "nightclubSelectCrewMember": "Wybierz członka załogi",
+  "nightclubAssignShift": "Przydziel do zmiany w nocnym klubie",
+  "nightclubTabActive": "Aktywny",
+  "nightclubTabHistory": "Historia",
+  "nightclubNoCrewAssigned": "Nie przydzielono jeszcze żadnej załogi",
+  "nightclubCrewBoostDescription": "Zwiększa popyt i marżę w Twoim klubie",
+  "nightclubRemove": "Usunąć",
+  "nightclubNoStaffHistory": "Nie ma jeszcze historii zatrudnienia",
+  "nightclubFrom": "Z",
+  "nightclubTo": "Do",
+  "nightclubRevenueImpact": "Wpływ na przychody",
+  "nightclubSalesCountLabel": "obroty",
+  "nightclubDjTitle": "Zatrudnij DJ-a",
+  "nightclubChooseDj": "Wybierz DJ-a",
+  "nightclubShiftLength": "Długość zmiany",
+  "nightclubHireDj": "Zatrudnij DJ-a",
+  "nightclubSecurityTitle": "Bezpieczeństwo",
+  "nightclubChooseSecurity": "Wybierz bezpieczeństwo",
+  "nightclubHireSecurity": "Zatrudnij ochronę",
+  "nightclubStoreTitle": "Przechowuj leki",
+  "nightclubChooseStock": "Wybierz zapasy",
+  "nightclubAmountGrams": "Ilość w gramach",
+  "nightclubStoreButton": "Przechowywać w nocnym klubie",
+  "nightclubHireDjSuccess": "Zatrudniony DJ",
+  "nightclubHireSecuritySuccess": "Zatrudniono ochronę",
+  "nightclubAssignCrewSuccess": "Przydzielony członek załogi",
+  "nightclubRemoveCrewSuccess": "Członek załogi usunięty",
+  "nightclubStoreDrugsSuccess": "Leki przechowywane",
+  "nightclubSeasonPayoutDialogTitle": "Otrzymano wypłatę za sezon",
+  "nightclubSeasonPayoutDialogBody": "Twój klub nocny zajął w tym tygodniu pozycję #{rank}.",
   "@nightclubSeasonPayoutDialogBody": {
     "placeholders": {
       "rank": {
@@ -2339,7 +2339,7 @@
       }
     }
   },
-  "nightclubSeasonPayoutDialogReward": "Reward: {amount}",
+  "nightclubSeasonPayoutDialogReward": "Nagroda: {amount}",
   "@nightclubSeasonPayoutDialogReward": {
     "placeholders": {
       "amount": {
@@ -2347,7 +2347,7 @@
       }
     }
   },
-  "nightclubSeasonPayoutDialogRevenue": "Weekly revenue: {amount}",
+  "nightclubSeasonPayoutDialogRevenue": "Tygodniowe przychody: {amount}",
   "@nightclubSeasonPayoutDialogRevenue": {
     "placeholders": {
       "amount": {
@@ -2355,7 +2355,7 @@
       }
     }
   },
-  "nightclubSeasonPayoutDialogLoss": "Theft loss: {amount}",
+  "nightclubSeasonPayoutDialogLoss": "Strata w wyniku kradzieży: {amount}",
   "@nightclubSeasonPayoutDialogLoss": {
     "placeholders": {
       "amount": {
@@ -2363,16 +2363,16 @@
       }
     }
   },
-  "nightclubSeasonPayoutDialogAction": "Close",
-  "nightclubVibeChill": "Chill",
-  "nightclubVibeNormal": "Normal",
-  "nightclubVibeWild": "Wild",
-  "nightclubVibeRaging": "Raging",
-  "nightclubTheftTypeCustomer": "Customer theft",
-  "nightclubTheftTypeEmployee": "Employee heist",
-  "nightclubTheftTypeRival": "Rival sabotage",
-  "theftCooldownRedeemTitle": "Skip theft cooldown?",
-  "theftCooldownRedeemMessage": "Spend {cost} credits to clear the vehicle theft cooldown now? Your balance: {balance}.",
+  "nightclubSeasonPayoutDialogAction": "Zamknąć",
+  "nightclubVibeChill": "Chłod",
+  "nightclubVibeNormal": "Normalna",
+  "nightclubVibeWild": "Dziki",
+  "nightclubVibeRaging": "Wściekły",
+  "nightclubTheftTypeCustomer": "Kradzież klienta",
+  "nightclubTheftTypeEmployee": "Napad na pracownika",
+  "nightclubTheftTypeRival": "Sabotaż rywala",
+  "theftCooldownRedeemTitle": "Pominąć czas odnowienia kradzieży?",
+  "theftCooldownRedeemMessage": "Wydać teraz {cost} kredytów, aby wyczyścić czas odnowienia kradzieży pojazdu? Twoje saldo: {balance}.",
   "@theftCooldownRedeemMessage": {
     "placeholders": {
       "cost": {
@@ -2383,8 +2383,8 @@
       }
     }
   },
-  "theftCooldownRedeemDontShowAgain": "Don't show this confirmation again",
-  "theftCooldownRedeemConfirmAction": "Use {credits} credits",
+  "theftCooldownRedeemDontShowAgain": "Nie pokazuj więcej tego potwierdzenia",
+  "theftCooldownRedeemConfirmAction": "Użyj {credits} kredytów",
   "@theftCooldownRedeemConfirmAction": {
     "placeholders": {
       "credits": {
@@ -2392,11 +2392,11 @@
       }
     }
   },
-  "theftCooldownRedeemNotAvailable": "Credit speed-up is not available for this cooldown right now.",
-  "theftCooldownRedeemNoActiveCooldown": "No active theft cooldown to reset.",
-  "theftCooldownRedeemInsufficientCredits": "Not enough credits.",
-  "theftCooldownRedeemFailed": "Could not apply credits to the cooldown.",
-  "theftCooldownRedeemSuccess": "Cooldown cleared.",
-  "settingsTheftCooldownConfirmTitle": "Theft cooldown (credits)",
-  "settingsTheftCooldownConfirmSubtitle": "Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer)."
+  "theftCooldownRedeemNotAvailable": "Przyspieszenie kredytu nie jest obecnie dostępne dla tego czasu odnowienia.",
+  "theftCooldownRedeemNoActiveCooldown": "Brak aktywnego czasu odnowienia kradzieży do zresetowania.",
+  "theftCooldownRedeemInsufficientCredits": "Za mało kredytów.",
+  "theftCooldownRedeemFailed": "Nie można zastosować kredytów do czasu odnowienia.",
+  "theftCooldownRedeemSuccess": "Czas odnowienia został usunięty.",
+  "settingsTheftCooldownConfirmTitle": "Czas odnowienia kradzieży (kredyty)",
+  "settingsTheftCooldownConfirmSubtitle": "Poproś o potwierdzenie przed wydaniem kredytów, aby pominąć czas odnowienia kradzieży pojazdu. Wyłącz, aby zrealizować jednym dotknięciem (ikona błyskawicy obok minutnika)."
 }

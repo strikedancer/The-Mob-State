@@ -11,6 +11,11 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - client/lib/screens/help_screen.dart
 - client/lib/screens/storage_tab.dart
 
+## i18n / meertaligheid (praktisch)
+- Player UI gebruikt `client/lib/l10n/app_*.arb` (key-pariteit afdwingen via `node scripts/verify_arb_parity.mjs`).
+- Voor initiële, niet-handmatige vertalingen van `app_de/fr/es/it/pl/pt.arb`: gebruik `scripts/translate_app_arb_from_en.mjs` (placeholder-safe).
+- Admin dashboard UI-vertalingen worden gegenereerd naar `admin/src/i18n/` via `scripts/build_admin_i18n.mjs`.
+
 ## Primary Platform/Infra Entry
 - client/docker/nginx.conf
 - client/web/firebase-messaging-sw.js
