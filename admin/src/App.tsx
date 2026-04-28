@@ -4321,7 +4321,7 @@ function App() {
                 className="admin-game-logo mb-3"
               />
               <span className="admin-kicker d-inline-block mb-2">
-                Control Center
+                {l("Controlecentrum", "Control Center")}
               </span>
               <h1 className="h3 mb-1">{t.loginTitle}</h1>
               <p className="text-muted mb-0">{t.loginSubtitle}</p>
@@ -4471,7 +4471,7 @@ function App() {
             <div className="sidebar-section">
               <div className="sidebar-section-body d-flex justify-content-center">
                 <h5 className="sidebar-resize-hide flex-grow-1 my-auto">
-                  Navigation
+                  {l("Navigatie", "Navigation")}
                 </h5>
                 <div>
                   <button
@@ -4496,7 +4496,7 @@ function App() {
               <ul className="nav nav-sidebar" data-nav-type="accordion">
                 <li className="nav-item-header pt-0">
                   <div className="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">
-                    Main
+                    {l("Hoofdmenu", "Main")}
                   </div>
                   <i className="ph-dots-three sidebar-resize-show" />
                 </li>

@@ -6,6 +6,7 @@
   - [client/lib/config/supported_languages.dart](../client/lib/config/supported_languages.dart)
   - [backend/src/config/supportedLanguages.ts](../backend/src/config/supportedLanguages.ts)
 - ARB’s voor `de`, `fr`, `es`, `it`, `pl`, `pt` worden gevuld vanuit `app_en.arb` met het script `scripts/translate_app_arb_from_en.mjs` (Google Translate via `google-translate-api-x`, gedeeld cache-bestand `scripts/.translate_cache.json`, niet gecommit). Review game-terminologie desgewenst handmatig.
+- Terminologie wordt na vertaling conservatief bijgestuurd via `scripts/terminology.mjs` (bijv. `Crew`, `Nightclub`, `VIP`).
 - **Admin**-UI-teksten: `npm run build-admin-i18n` in `scripts/` schrijft `admin/src/i18n/translations.ts` en `inlineMessages.ts` (zelfde MT-stack).
 - ARB-pariteit controleren: `node scripts/verify_arb_parity.mjs` (vanaf repo root).
 - Nieuwe locale toevoegen: `node scripts/sync_arb_from_en.mjs <code>`, daarna `flutter gen-l10n` in `client/`, en de allowlists in client + backend (plus `ADMIN_LANGUAGE_OPTIONS` in `admin/src/App.tsx`) uitbreiden.

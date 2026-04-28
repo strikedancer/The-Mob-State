@@ -15,6 +15,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Player UI gebruikt `client/lib/l10n/app_*.arb` (key-pariteit afdwingen via `node scripts/verify_arb_parity.mjs`).
 - Voor initiële, niet-handmatige vertalingen van `app_de/fr/es/it/pl/pt.arb`: gebruik `scripts/translate_app_arb_from_en.mjs` (placeholder-safe).
 - Admin dashboard UI-vertalingen worden gegenereerd naar `admin/src/i18n/` via `scripts/build_admin_i18n.mjs`.
+- Voor consistente terminologie (bijv. `Crew`, `Nightclub`, `VIP`): pas de conservatieve regels in `scripts/terminology.mjs` toe (wordt door beide scripts gebruikt).
 
 ## Primary Platform/Infra Entry
 - client/docker/nginx.conf

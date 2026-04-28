@@ -7,10 +7,12 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { translate } from 'google-translate-api-x';
+import { applyTerminology } from './terminology.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const appTsx = path.join(root, 'admin/src/App.tsx');
+const adminTranslationsTs = path.join(root, 'admin/src/i18n/translations.ts');
 const cachePath = path.join(__dirname, '.translate_cache.json');
 const OUT_DIR = path.join(root, 'admin/src/i18n');
 
@@ -50,7 +52,7 @@ async function trText(text, to) {
         forceBatch: false,
         rejectOnPartialFail: false,
       });
-      const out = r.text ?? text;
+      const out = applyTerminology(to, r.text ?? text);
       cache[k] = out;
       return out;
     } catch (e) {
@@ -61,12 +63,14 @@ async function trText(text, to) {
   throw lastErr;
 }
 
-function extractTranslationsObject() {
-  const txt = fs.readFileSync(appTsx, 'utf8');
-  const m = txt.match(/const translations = (\{[\s\S]*\n\}) as const/);
-  if (!m) throw new Error('Could not parse translations from App.tsx');
+function extractBaseTranslations() {
+  const txt = fs.readFileSync(adminTranslationsTs, 'utf8');
+  const m = txt.match(/export const translations = (\{[\s\S]*?\n\}) as const;/);
+  if (!m) throw new Error('Could not parse admin/src/i18n/translations.ts');
   // eslint-disable-next-line no-eval
-  return (0, eval)('(' + m[1] + ')');
+  const obj = (0, eval)('(' + m[1] + ')');
+  if (!obj?.en || !obj?.nl) throw new Error('translations.ts missing en/nl');
+  return { en: obj.en, nl: obj.nl };
 }
 
 function extractInlinePairs() {
@@ -96,7 +100,7 @@ function extractInlinePairs() {
 }
 
 async function main() {
-  const base = extractTranslationsObject();
+  const base = extractBaseTranslations();
   const en = base.en;
   const nl = base.nl;
 

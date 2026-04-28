@@ -10,6 +10,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { translate } from 'google-translate-api-x';
+import { applyTerminology } from './terminology.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
@@ -69,7 +70,7 @@ async function trText(text, to) {
         rejectOnPartialFail: false,
       });
       const raw = r.text ?? masked;
-      const out = unmask(raw, ph);
+      const out = applyTerminology(to, unmask(raw, ph));
       cache[k] = out;
       if (Object.keys(cache).length % 50 === 0) saveCache();
       return out;

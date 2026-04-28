@@ -885,6 +885,36 @@ export const ADMIN_INLINE_ROWS: Record<string, { nl: string; en: string; de: str
     "pl": "Administratorzy",
     "pt": "Administradores"
   },
+  "Controlecentrum\u0000Control Center": {
+    "nl": "Controlecentrum",
+    "en": "Control Center",
+    "de": "Kontrollzentrum",
+    "fr": "Centre de contrôle",
+    "es": "Centro de control",
+    "it": "Centro di controllo",
+    "pl": "Centrum sterowania",
+    "pt": "Centro de Controle"
+  },
+  "Navigatie\u0000Navigation": {
+    "nl": "Navigatie",
+    "en": "Navigation",
+    "de": "Navigation",
+    "fr": "Navigation",
+    "es": "Navegación",
+    "it": "Navigazione",
+    "pl": "Nawigacja",
+    "pt": "Navegação"
+  },
+  "Hoofdmenu\u0000Main": {
+    "nl": "Hoofdmenu",
+    "en": "Main",
+    "de": "Hauptsächlich",
+    "fr": "Principale",
+    "es": "Principal",
+    "it": "Principale",
+    "pl": "Główny",
+    "pt": "Principal"
+  },
   "Spelerdetails\u0000Player details": {
     "nl": "Spelerdetails",
     "en": "Player details",
