@@ -1348,6 +1348,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get avatarUpdated => 'Avatar aggiornato!';
 
   @override
+  String get avatarChangeFailed => 'Impossibile cambiare avatar';
+
+  @override
   String error(String error) {
     return 'Errore: $error';
   }
@@ -1394,6 +1397,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get usernameTaken => 'Nome utente già preso';
 
   @override
+  String get usernameChangeFailed => 'Impossibile modificare il nome utente';
+
+  @override
   String get oncePerMonth => 'Cambiare una volta al mese';
 
   @override
@@ -1404,6 +1410,159 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get allowMessagesDesc => 'Altri giocatori possono inviarti messaggi';
+
+  @override
+  String get settingsSystemNotificationsTitle =>
+      'Notifiche di sistema per l\'app';
+
+  @override
+  String get settingsPushPermissionAllowedLinked =>
+      'Autorizzazione: consentita, dispositivo collegato';
+
+  @override
+  String get settingsPushPermissionAllowedRelinking =>
+      'Autorizzazione: consentita, il dispositivo si sta ricollegando';
+
+  @override
+  String get settingsPushPermissionProvisionalLinked =>
+      'Autorizzazione: provvisoria, collegata al dispositivo';
+
+  @override
+  String get settingsPushPermissionProvisionalRelinking =>
+      'Autorizzazione: provvisoria, il dispositivo si sta ricollegando';
+
+  @override
+  String get settingsPushPermissionDenied => 'Autorizzazione: negata';
+
+  @override
+  String get settingsPushPermissionNotRequested =>
+      'Autorizzazione: non ancora richiesta';
+
+  @override
+  String get settingsPushPermissionUnknown => 'Autorizzazione: sconosciuta';
+
+  @override
+  String get settingsDeviceTokenRegistered =>
+      'Token del dispositivo registrato sul server';
+
+  @override
+  String get settingsDeviceTokenNotRegistered =>
+      'Nessun token dispositivo ancora registrato';
+
+  @override
+  String get settingsPushHelpText =>
+      'Utilizza questo pulsante per richiedere nuovamente l\'autorizzazione del browser/iPhone e registrare il tuo token push.';
+
+  @override
+  String get working => 'Lavorando...';
+
+  @override
+  String get settingsEnablePush => 'Abilita spinta';
+
+  @override
+  String get settingsPushEnabledToast =>
+      'Notifiche push abilitate. Ora verranno ricevute nuove notifiche.';
+
+  @override
+  String get settingsPushDisabledInSystem =>
+      'Push è disabilitato nelle impostazioni del tuo browser/iPhone. Abilita le notifiche per questa app.';
+
+  @override
+  String settingsEnablePushFailed(String error) {
+    return 'Impossibile abilitare le notifiche push: $error';
+  }
+
+  @override
+  String get settingsPlayerEventsTitle => 'Eventi dei giocatori';
+
+  @override
+  String get settingsPushLivePlayerEventsTitle =>
+      'Push: eventi dei giocatori dal vivo';
+
+  @override
+  String get settingsPushLivePlayerEventsSubtitle =>
+      'Inizio e fine degli eventi ricorrenti della competizione (ad esempio i round con il punteggio più alto).';
+
+  @override
+  String get settingsCryptoNotificationsTitle => 'Notifiche crittografiche';
+
+  @override
+  String get settingsCryptoPushTradesTitle => 'Push: scambi';
+
+  @override
+  String get settingsCryptoPushTradesSubtitle =>
+      'Notifica push per operazioni di acquisto/vendita';
+
+  @override
+  String get settingsCryptoPushPriceAlertsTitle => 'Push: avvisi sui prezzi';
+
+  @override
+  String get settingsCryptoPushPriceAlertsSubtitle =>
+      'Notifica push per movimenti di prezzo rilevanti';
+
+  @override
+  String get settingsCryptoPushOrdersTitle => 'Push: ordini';
+
+  @override
+  String get settingsCryptoPushOrdersSubtitle =>
+      'Notifica push quando l\'ordine viene attivato o eseguito';
+
+  @override
+  String get settingsCryptoPushMissionsTitle => 'Spingi: Missioni';
+
+  @override
+  String get settingsCryptoPushMissionsSubtitle =>
+      'Notifica push quando una missione crittografica viene completata';
+
+  @override
+  String get settingsCryptoPushLeaderboardTitle => 'Spinta: classifica';
+
+  @override
+  String get settingsCryptoPushLeaderboardSubtitle =>
+      'Notifica push per i premi della classifica crittografica';
+
+  @override
+  String get settingsCryptoInAppTradesTitle => 'In-app: scambi';
+
+  @override
+  String get settingsCryptoInAppTradesSubtitle =>
+      'Mostra gli eventi commerciali nel feed degli eventi';
+
+  @override
+  String get settingsCryptoInAppPriceAlertsTitle => 'In-app: avvisi sui prezzi';
+
+  @override
+  String get settingsCryptoInAppPriceAlertsSubtitle =>
+      'Mostra gli eventi di avviso di prezzo nel tuo feed eventi';
+
+  @override
+  String get settingsCryptoInAppOrdersTitle => 'In-app: Ordini';
+
+  @override
+  String get settingsCryptoInAppOrdersSubtitle =>
+      'Mostra gli eventi dell\'ordine nel tuo feed eventi';
+
+  @override
+  String get settingsCryptoInAppMissionsTitle => 'Nell\'app: missioni';
+
+  @override
+  String get settingsCryptoInAppMissionsSubtitle =>
+      'Mostra i completamenti delle missioni nel feed degli eventi';
+
+  @override
+  String get settingsCryptoInAppLeaderboardTitle => 'In-app: classifica';
+
+  @override
+  String get settingsCryptoInAppLeaderboardSubtitle =>
+      'Mostra i premi della classifica nel feed dell\'evento';
+
+  @override
+  String get settingsAvatarChangeWeeklyLimit =>
+      'Puoi cambiare il tuo avatar solo una volta alla settimana';
+
+  @override
+  String get settingsUsernameChangeMonthlyLimit =>
+      'Puoi modificare il tuo nome utente solo una volta al mese';
 
   @override
   String get settingsSaved => 'Impostazioni salvate';

@@ -2660,6 +2660,12 @@ abstract class AppLocalizations {
   /// **'Avatar updated!'**
   String get avatarUpdated;
 
+  /// No description provided for @avatarChangeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to change avatar'**
+  String get avatarChangeFailed;
+
   /// No description provided for @error.
   ///
   /// In en, this message translates to:
@@ -2744,6 +2750,12 @@ abstract class AppLocalizations {
   /// **'Username already taken'**
   String get usernameTaken;
 
+  /// No description provided for @usernameChangeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to change username'**
+  String get usernameChangeFailed;
+
   /// No description provided for @oncePerMonth.
   ///
   /// In en, this message translates to:
@@ -2767,6 +2779,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other players can send you messages'**
   String get allowMessagesDesc;
+
+  /// No description provided for @settingsSystemNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'System notifications for app'**
+  String get settingsSystemNotificationsTitle;
+
+  /// No description provided for @settingsPushPermissionAllowedLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission: allowed, device linked'**
+  String get settingsPushPermissionAllowedLinked;
+
+  /// No description provided for @settingsPushPermissionAllowedRelinking.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission: allowed, device is re-linking'**
+  String get settingsPushPermissionAllowedRelinking;
+
+  /// No description provided for @settingsPushPermissionProvisionalLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission: provisional, device linked'**
+  String get settingsPushPermissionProvisionalLinked;
+
+  /// No description provided for @settingsPushPermissionProvisionalRelinking.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission: provisional, device is re-linking'**
+  String get settingsPushPermissionProvisionalRelinking;
+
+  /// No description provided for @settingsPushPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission: denied'**
+  String get settingsPushPermissionDenied;
+
+  /// No description provided for @settingsPushPermissionNotRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission: not requested yet'**
+  String get settingsPushPermissionNotRequested;
+
+  /// No description provided for @settingsPushPermissionUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission: unknown'**
+  String get settingsPushPermissionUnknown;
+
+  /// No description provided for @settingsDeviceTokenRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Device token registered on server'**
+  String get settingsDeviceTokenRegistered;
+
+  /// No description provided for @settingsDeviceTokenNotRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'No device token registered yet'**
+  String get settingsDeviceTokenNotRegistered;
+
+  /// No description provided for @settingsPushHelpText.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this button to request browser/iPhone permission again and register your push token.'**
+  String get settingsPushHelpText;
+
+  /// No description provided for @working.
+  ///
+  /// In en, this message translates to:
+  /// **'Working...'**
+  String get working;
+
+  /// No description provided for @settingsEnablePush.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable push'**
+  String get settingsEnablePush;
+
+  /// No description provided for @settingsPushEnabledToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications enabled. New notifications will now be received.'**
+  String get settingsPushEnabledToast;
+
+  /// No description provided for @settingsPushDisabledInSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Push is disabled in your browser/iPhone settings. Enable notifications for this app.'**
+  String get settingsPushDisabledInSystem;
+
+  /// No description provided for @settingsEnablePushFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to enable push notifications: {error}'**
+  String settingsEnablePushFailed(String error);
+
+  /// No description provided for @settingsPlayerEventsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Player events'**
+  String get settingsPlayerEventsTitle;
+
+  /// No description provided for @settingsPushLivePlayerEventsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push: live player events'**
+  String get settingsPushLivePlayerEventsTitle;
+
+  /// No description provided for @settingsPushLivePlayerEventsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start and end of recurring competition events (e.g. top-score rounds).'**
+  String get settingsPushLivePlayerEventsSubtitle;
+
+  /// No description provided for @settingsCryptoNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto Notifications'**
+  String get settingsCryptoNotificationsTitle;
+
+  /// No description provided for @settingsCryptoPushTradesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push: Trades'**
+  String get settingsCryptoPushTradesTitle;
+
+  /// No description provided for @settingsCryptoPushTradesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notification for buy/sell trades'**
+  String get settingsCryptoPushTradesSubtitle;
+
+  /// No description provided for @settingsCryptoPushPriceAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push: Price alerts'**
+  String get settingsCryptoPushPriceAlertsTitle;
+
+  /// No description provided for @settingsCryptoPushPriceAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notification for relevant price moves'**
+  String get settingsCryptoPushPriceAlertsSubtitle;
+
+  /// No description provided for @settingsCryptoPushOrdersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push: Orders'**
+  String get settingsCryptoPushOrdersTitle;
+
+  /// No description provided for @settingsCryptoPushOrdersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notification when order is triggered or filled'**
+  String get settingsCryptoPushOrdersSubtitle;
+
+  /// No description provided for @settingsCryptoPushMissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push: Missions'**
+  String get settingsCryptoPushMissionsTitle;
+
+  /// No description provided for @settingsCryptoPushMissionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notification when a crypto mission is completed'**
+  String get settingsCryptoPushMissionsSubtitle;
+
+  /// No description provided for @settingsCryptoPushLeaderboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push: Leaderboard'**
+  String get settingsCryptoPushLeaderboardTitle;
+
+  /// No description provided for @settingsCryptoPushLeaderboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notification for crypto leaderboard rewards'**
+  String get settingsCryptoPushLeaderboardSubtitle;
+
+  /// No description provided for @settingsCryptoInAppTradesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app: Trades'**
+  String get settingsCryptoInAppTradesTitle;
+
+  /// No description provided for @settingsCryptoInAppTradesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show trade events in your event feed'**
+  String get settingsCryptoInAppTradesSubtitle;
+
+  /// No description provided for @settingsCryptoInAppPriceAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app: Price alerts'**
+  String get settingsCryptoInAppPriceAlertsTitle;
+
+  /// No description provided for @settingsCryptoInAppPriceAlertsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show price alert events in your event feed'**
+  String get settingsCryptoInAppPriceAlertsSubtitle;
+
+  /// No description provided for @settingsCryptoInAppOrdersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app: Orders'**
+  String get settingsCryptoInAppOrdersTitle;
+
+  /// No description provided for @settingsCryptoInAppOrdersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show order events in your event feed'**
+  String get settingsCryptoInAppOrdersSubtitle;
+
+  /// No description provided for @settingsCryptoInAppMissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app: Missions'**
+  String get settingsCryptoInAppMissionsTitle;
+
+  /// No description provided for @settingsCryptoInAppMissionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show mission completions in your event feed'**
+  String get settingsCryptoInAppMissionsSubtitle;
+
+  /// No description provided for @settingsCryptoInAppLeaderboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app: Leaderboard'**
+  String get settingsCryptoInAppLeaderboardTitle;
+
+  /// No description provided for @settingsCryptoInAppLeaderboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show leaderboard rewards in your event feed'**
+  String get settingsCryptoInAppLeaderboardSubtitle;
+
+  /// No description provided for @settingsAvatarChangeWeeklyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only change your avatar once per week'**
+  String get settingsAvatarChangeWeeklyLimit;
+
+  /// No description provided for @settingsUsernameChangeMonthlyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only change your username once per month'**
+  String get settingsUsernameChangeMonthlyLimit;
 
   /// No description provided for @settingsSaved.
   ///

@@ -216,13 +216,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Navigator.of(context).pop();
         _loadSettings();
       } else if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
             content: Text(
               data['event'] == 'error.avatar_cooldown'
-                  ? 'Je kunt maar 1x per week je avatar wijzigen'
-                  : 'Avatar wijzigen mislukt',
+                  ? l10n.settingsAvatarChangeWeeklyLimit
+                  : l10n.avatarChangeFailed,
             ),
             backgroundColor: Colors.red,
           ),
@@ -232,7 +233,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.error(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -283,7 +287,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('Language change failed (${response.statusCode})'),
+            content: Text(
+              AppLocalizations.of(context)!.languageChangeFailed(
+                response.statusCode.toString(),
+              ),
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -293,7 +301,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.error(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -322,7 +333,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  'Je kunt maar 1x per maand je naam wijzigen',
+                  l10n.settingsUsernameChangeMonthlyLimit,
                   style: TextStyle(color: Colors.orange[300], fontSize: 12),
                 ),
               ),
@@ -379,8 +390,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         data['event'] == 'error.username_taken'
                             ? l10n.usernameTaken
                             : data['event'] == 'error.username_cooldown'
-                            ? 'Je kunt maar 1x per maand je naam wijzigen'
-                            : 'Naam wijzigen mislukt',
+                            ? l10n.settingsUsernameChangeMonthlyLimit
+                            : l10n.usernameChangeFailed,
                       ),
                       backgroundColor: Colors.red,
                     ),
@@ -391,7 +402,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   showTopRightFromSnackBar(
                     context,
                     SnackBar(
-                      content: Text('Error: $e'),
+                      content: Text(
+                        AppLocalizations.of(context)!.error(e.toString()),
+                      ),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -438,7 +451,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.error(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -550,7 +566,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.error(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -585,6 +604,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await _loadPushPermissionStatus();
 
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
 
       final status = _pushAuthorizationStatus;
       final authorized =
@@ -596,9 +616,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           context,
           SnackBar(
             content: Text(
-              _isDutch
-                  ? 'Pushmeldingen geactiveerd. Nieuwe meldingen worden nu ontvangen.'
-                  : 'Push notifications enabled. New notifications will now be received.',
+              l10n.settingsPushEnabledToast,
             ),
             backgroundColor: Colors.green,
           ),
@@ -608,9 +626,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           context,
           SnackBar(
             content: Text(
-              _isDutch
-                  ? 'Push staat uit in je browser/iPhone instellingen. Zet meldingen aan voor deze app.'
-                  : 'Push is disabled in your browser/iPhone settings. Enable notifications for this app.',
+              l10n.settingsPushDisabledInSystem,
             ),
             backgroundColor: Colors.orange,
           ),
@@ -618,13 +634,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
             content: Text(
-              _isDutch
-                  ? 'Push activeren mislukt: $e'
-                  : 'Failed to enable push notifications: $e',
+              l10n.settingsEnablePushFailed(e.toString()),
             ),
             backgroundColor: Colors.red,
           ),
@@ -641,31 +656,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   String _pushStatusText() {
     final hasToken = _pushTokenRegistered;
+    final l10n = AppLocalizations.of(context)!;
     switch (_pushAuthorizationStatus) {
       case AuthorizationStatus.authorized:
         return hasToken
-            ? (_isDutch
-                  ? 'Toestemming: toegestaan, apparaat gekoppeld'
-                  : 'Permission: allowed, device linked')
-            : (_isDutch
-                  ? 'Toestemming: toegestaan, apparaat wordt opnieuw gekoppeld'
-                  : 'Permission: allowed, device is re-linking');
+            ? l10n.settingsPushPermissionAllowedLinked
+            : l10n.settingsPushPermissionAllowedRelinking;
       case AuthorizationStatus.provisional:
         return hasToken
-            ? (_isDutch
-                  ? 'Toestemming: voorlopig, apparaat gekoppeld'
-                  : 'Permission: provisional, device linked')
-            : (_isDutch
-                  ? 'Toestemming: voorlopig, apparaat wordt opnieuw gekoppeld'
-                  : 'Permission: provisional, device is re-linking');
+            ? l10n.settingsPushPermissionProvisionalLinked
+            : l10n.settingsPushPermissionProvisionalRelinking;
       case AuthorizationStatus.denied:
-        return _isDutch ? 'Toestemming: geweigerd' : 'Permission: denied';
+        return l10n.settingsPushPermissionDenied;
       case AuthorizationStatus.notDetermined:
-        return _isDutch
-            ? 'Toestemming: nog niet gevraagd'
-            : 'Permission: not requested yet';
+        return l10n.settingsPushPermissionNotRequested;
       default:
-        return _isDutch ? 'Toestemming: onbekend' : 'Permission: unknown';
+        return l10n.settingsPushPermissionUnknown;
     }
   }
 
@@ -992,9 +998,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              _isDutch
-                                  ? 'Systeemmeldingen voor app'
-                                  : 'System notifications for app',
+                              l10n.settingsSystemNotificationsTitle,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -1006,13 +1010,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Text(_pushStatusText()),
                       const SizedBox(height: 4),
                       Text(
-                        _isDutch
-                            ? (_pushTokenRegistered
-                                  ? 'Device-token geregistreerd op server'
-                                  : 'Nog geen device-token geregistreerd')
-                            : (_pushTokenRegistered
-                                  ? 'Device token registered on server'
-                                  : 'No device token registered yet'),
+                        _pushTokenRegistered
+                            ? l10n.settingsDeviceTokenRegistered
+                            : l10n.settingsDeviceTokenNotRegistered,
                         style: TextStyle(
                           color: _pushTokenRegistered
                               ? Colors.green
@@ -1021,9 +1021,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        _isDutch
-                            ? 'Gebruik deze knop om browser/iPhone permissie opnieuw te vragen en je push-token te registreren.'
-                            : 'Use this button to request browser/iPhone permission again and register your push token.',
+                        l10n.settingsPushHelpText,
                         style: TextStyle(color: Colors.grey[400], fontSize: 12),
                       ),
                       const SizedBox(height: 12),
@@ -1036,10 +1034,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           icon: const Icon(Icons.notifications),
                           label: Text(
                             _isEnablingPush
-                                ? (_isDutch ? 'Bezig...' : 'Working...')
-                                : (_isDutch
-                                      ? 'Push inschakelen'
-                                      : 'Enable push'),
+                                ? l10n.working
+                                : l10n.settingsEnablePush,
                           ),
                         ),
                       ),
@@ -1049,7 +1045,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                _isDutch ? 'Spelerevents' : 'Player events',
+                l10n.settingsPlayerEventsTitle,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -1063,14 +1059,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Colors.deepPurple,
                   ),
                   title: Text(
-                    _isDutch
-                        ? 'Push: live spelerevents'
-                        : 'Push: live player events',
+                    l10n.settingsPushLivePlayerEventsTitle,
                   ),
                   subtitle: Text(
-                    _isDutch
-                        ? 'Start en einde van wekelijkse/terugkerende competitie-events (bijv. top scores).'
-                        : 'Start and end of recurring competition events (e.g. top-score rounds).',
+                    l10n.settingsPushLivePlayerEventsSubtitle,
                   ),
                   value: _pushGameEvents,
                   onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1081,7 +1073,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                _isDutch ? 'Crypto Notificaties' : 'Crypto Notifications',
+                l10n.settingsCryptoNotificationsTitle,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -1096,11 +1088,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Icons.campaign,
                         color: Colors.amber,
                       ),
-                      title: Text(_isDutch ? 'Push: Trades' : 'Push: Trades'),
+                      title: Text(l10n.settingsCryptoPushTradesTitle),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Pushmelding bij koop/verkoop'
-                            : 'Push notification for buy/sell trades',
+                        l10n.settingsCryptoPushTradesSubtitle,
                       ),
                       value: _pushCryptoTrade,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1114,12 +1104,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: Colors.orange,
                       ),
                       title: Text(
-                        _isDutch ? 'Push: Prijsalerts' : 'Push: Price alerts',
+                        l10n.settingsCryptoPushPriceAlertsTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Pushmelding bij belangrijke prijsbewegingen'
-                            : 'Push notification for relevant price moves',
+                        l10n.settingsCryptoPushPriceAlertsSubtitle,
                       ),
                       value: _pushCryptoPriceAlert,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1132,11 +1120,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Icons.fact_check,
                         color: Colors.deepOrange,
                       ),
-                      title: Text(_isDutch ? 'Push: Orders' : 'Push: Orders'),
+                      title: Text(l10n.settingsCryptoPushOrdersTitle),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Pushmelding wanneer order triggert of gevuld is'
-                            : 'Push notification when order is triggered or filled',
+                        l10n.settingsCryptoPushOrdersSubtitle,
                       ),
                       value: _pushCryptoOrder,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1150,12 +1136,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: Colors.green,
                       ),
                       title: Text(
-                        _isDutch ? 'Push: Missies' : 'Push: Missions',
+                        l10n.settingsCryptoPushMissionsTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Pushmelding wanneer een crypto missie voltooid is'
-                            : 'Push notification when a crypto mission is completed',
+                        l10n.settingsCryptoPushMissionsSubtitle,
                       ),
                       value: _pushCryptoMission,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1169,12 +1153,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: Colors.cyan,
                       ),
                       title: Text(
-                        _isDutch ? 'Push: Leaderboard' : 'Push: Leaderboard',
+                        l10n.settingsCryptoPushLeaderboardTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Pushmelding bij crypto leaderboard beloningen'
-                            : 'Push notification for crypto leaderboard rewards',
+                        l10n.settingsCryptoPushLeaderboardSubtitle,
                       ),
                       value: _pushCryptoLeaderboard,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1189,12 +1171,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: Colors.lightBlue,
                       ),
                       title: Text(
-                        _isDutch ? 'In-app: Trades' : 'In-app: Trades',
+                        l10n.settingsCryptoInAppTradesTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Toon trade-events in je event feed'
-                            : 'Show trade events in your event feed',
+                        l10n.settingsCryptoInAppTradesSubtitle,
                       ),
                       value: _inAppCryptoTrade,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1208,14 +1188,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: Colors.blueAccent,
                       ),
                       title: Text(
-                        _isDutch
-                            ? 'In-app: Prijsalerts'
-                            : 'In-app: Price alerts',
+                        l10n.settingsCryptoInAppPriceAlertsTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Toon prijsalert-events in je event feed'
-                            : 'Show price alert events in your event feed',
+                        l10n.settingsCryptoInAppPriceAlertsSubtitle,
                       ),
                       value: _inAppCryptoPriceAlert,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1229,12 +1205,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: Colors.indigo,
                       ),
                       title: Text(
-                        _isDutch ? 'In-app: Orders' : 'In-app: Orders',
+                        l10n.settingsCryptoInAppOrdersTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Toon order-events in je event feed'
-                            : 'Show order events in your event feed',
+                        l10n.settingsCryptoInAppOrdersSubtitle,
                       ),
                       value: _inAppCryptoOrder,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1245,12 +1219,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     SwitchListTile(
                       secondary: const Icon(Icons.flag, color: Colors.teal),
                       title: Text(
-                        _isDutch ? 'In-app: Missies' : 'In-app: Missions',
+                        l10n.settingsCryptoInAppMissionsTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Toon missie-voltooiingen in je event feed'
-                            : 'Show mission completions in your event feed',
+                        l10n.settingsCryptoInAppMissionsSubtitle,
                       ),
                       value: _inAppCryptoMission,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1264,14 +1236,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: Colors.cyanAccent,
                       ),
                       title: Text(
-                        _isDutch
-                            ? 'In-app: Leaderboard'
-                            : 'In-app: Leaderboard',
+                        l10n.settingsCryptoInAppLeaderboardTitle,
                       ),
                       subtitle: Text(
-                        _isDutch
-                            ? 'Toon leaderboard beloningen in je event feed'
-                            : 'Show leaderboard rewards in your event feed',
+                        l10n.settingsCryptoInAppLeaderboardSubtitle,
                       ),
                       value: _inAppCryptoLeaderboard,
                       onChanged: (value) => _updateCryptoNotificationPreference(
@@ -1291,7 +1259,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     title: Text(l10n.vipStatus),
                     subtitle: Text(
                       _settings?['vipExpiresAt'] != null
-                          ? 'Active until ${DateTime.parse(_settings!['vipExpiresAt']).toLocal().toString().split(' ')[0]}'
+                          ? l10n.activeUntil(
+                              DateTime.parse(_settings!['vipExpiresAt'])
+                                  .toLocal()
+                                  .toString()
+                                  .split(' ')[0],
+                            )
                           : l10n.unknown,
                     ),
                   ),
