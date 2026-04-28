@@ -1203,6 +1203,66 @@ class AppLocalizationsPl extends AppLocalizations {
   String get dashboardVehicleOps => 'Operacje pojazdów';
 
   @override
+  String get dashboardKillProgress => 'Zabij Postęp';
+
+  @override
+  String get vehicleOpsHeat => 'Ciepło';
+
+  @override
+  String get vehicleOpsReputation => 'Rozpustnik';
+
+  @override
+  String get vehicleOpsPartsTrendUp => 'rośnie rynek części';
+
+  @override
+  String get vehicleOpsPartsTrendDown => 'spadek rynku części';
+
+  @override
+  String get vehicleOpsPartsTrendStable => 'Rynek części stabilny';
+
+  @override
+  String get vehicleOpsBlacklistActive => 'Czarna lista aktywna';
+
+  @override
+  String get vehicleOpsNoBlacklist => 'Brak czarnej listy';
+
+  @override
+  String get crewRoleLeader => 'Lider';
+
+  @override
+  String get crewRoleCoLeader => 'Współlider';
+
+  @override
+  String get crewRoleMember => 'Członek';
+
+  @override
+  String get vehicleOpsHotspot => 'Hotspot';
+
+  @override
+  String get vehicleOpsCrew => 'Załoga';
+
+  @override
+  String get vehicleOpsCrewMatch => 'Mecz załogi';
+
+  @override
+  String get vehicleOpsChop => 'Siekać';
+
+  @override
+  String get vehicleOpsContract => 'Umowa';
+
+  @override
+  String get vehicleOpsCounter => 'Lada';
+
+  @override
+  String get vehicleOpsContracts => 'Umowy';
+
+  @override
+  String get vehicleOpsClaims => 'Roszczenia';
+
+  @override
+  String get vehicleOpsSeason => 'Sezon';
+
+  @override
   String get dashboardCar => 'Samochód';
 
   @override

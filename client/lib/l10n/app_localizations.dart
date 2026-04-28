@@ -2378,6 +2378,126 @@ abstract class AppLocalizations {
   /// **'Vehicle Ops'**
   String get dashboardVehicleOps;
 
+  /// No description provided for @dashboardKillProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Kill Progress'**
+  String get dashboardKillProgress;
+
+  /// No description provided for @vehicleOpsHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat'**
+  String get vehicleOpsHeat;
+
+  /// No description provided for @vehicleOpsReputation.
+  ///
+  /// In en, this message translates to:
+  /// **'Rep'**
+  String get vehicleOpsReputation;
+
+  /// No description provided for @vehicleOpsPartsTrendUp.
+  ///
+  /// In en, this message translates to:
+  /// **'parts market rising'**
+  String get vehicleOpsPartsTrendUp;
+
+  /// No description provided for @vehicleOpsPartsTrendDown.
+  ///
+  /// In en, this message translates to:
+  /// **'parts market falling'**
+  String get vehicleOpsPartsTrendDown;
+
+  /// No description provided for @vehicleOpsPartsTrendStable.
+  ///
+  /// In en, this message translates to:
+  /// **'parts market stable'**
+  String get vehicleOpsPartsTrendStable;
+
+  /// No description provided for @vehicleOpsBlacklistActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Blacklist active'**
+  String get vehicleOpsBlacklistActive;
+
+  /// No description provided for @vehicleOpsNoBlacklist.
+  ///
+  /// In en, this message translates to:
+  /// **'No blacklist'**
+  String get vehicleOpsNoBlacklist;
+
+  /// No description provided for @crewRoleLeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Leader'**
+  String get crewRoleLeader;
+
+  /// No description provided for @crewRoleCoLeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Co-leader'**
+  String get crewRoleCoLeader;
+
+  /// No description provided for @crewRoleMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get crewRoleMember;
+
+  /// No description provided for @vehicleOpsHotspot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot'**
+  String get vehicleOpsHotspot;
+
+  /// No description provided for @vehicleOpsCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get vehicleOpsCrew;
+
+  /// No description provided for @vehicleOpsCrewMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew match'**
+  String get vehicleOpsCrewMatch;
+
+  /// No description provided for @vehicleOpsChop.
+  ///
+  /// In en, this message translates to:
+  /// **'Chop'**
+  String get vehicleOpsChop;
+
+  /// No description provided for @vehicleOpsContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract'**
+  String get vehicleOpsContract;
+
+  /// No description provided for @vehicleOpsCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter'**
+  String get vehicleOpsCounter;
+
+  /// No description provided for @vehicleOpsContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts'**
+  String get vehicleOpsContracts;
+
+  /// No description provided for @vehicleOpsClaims.
+  ///
+  /// In en, this message translates to:
+  /// **'Claims'**
+  String get vehicleOpsClaims;
+
+  /// No description provided for @vehicleOpsSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Season'**
+  String get vehicleOpsSeason;
+
   /// No description provided for @dashboardCar.
   ///
   /// In en, this message translates to:

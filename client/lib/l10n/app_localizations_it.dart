@@ -1205,6 +1205,66 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dashboardVehicleOps => 'Operazioni sui veicoli';
 
   @override
+  String get dashboardKillProgress => 'Uccidi il progresso';
+
+  @override
+  String get vehicleOpsHeat => 'Calore';
+
+  @override
+  String get vehicleOpsReputation => 'Rappresentante';
+
+  @override
+  String get vehicleOpsPartsTrendUp => 'mercato dei ricambi in crescita';
+
+  @override
+  String get vehicleOpsPartsTrendDown => 'mercato dei ricambi in calo';
+
+  @override
+  String get vehicleOpsPartsTrendStable => 'mercato dei ricambi stabile';
+
+  @override
+  String get vehicleOpsBlacklistActive => 'Lista nera attiva';
+
+  @override
+  String get vehicleOpsNoBlacklist => 'Nessuna lista nera';
+
+  @override
+  String get crewRoleLeader => 'Leader';
+
+  @override
+  String get crewRoleCoLeader => 'Co-leader';
+
+  @override
+  String get crewRoleMember => 'Membro';
+
+  @override
+  String get vehicleOpsHotspot => 'Punto caldo';
+
+  @override
+  String get vehicleOpsCrew => 'Equipaggio';
+
+  @override
+  String get vehicleOpsCrewMatch => 'Partita dell\'Crew';
+
+  @override
+  String get vehicleOpsChop => 'Taglio';
+
+  @override
+  String get vehicleOpsContract => 'Contrarre';
+
+  @override
+  String get vehicleOpsCounter => 'Contatrice';
+
+  @override
+  String get vehicleOpsContracts => 'Contratti';
+
+  @override
+  String get vehicleOpsClaims => 'Affermazioni';
+
+  @override
+  String get vehicleOpsSeason => 'Stagione';
+
+  @override
   String get dashboardCar => 'Auto';
 
   @override

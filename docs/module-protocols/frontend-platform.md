@@ -21,6 +21,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Bij `showDialog(builder: (ctx) => ...)` hoort l10n uit `ctx` te komen (dus `AppLocalizations.of(ctx)`), anders kan de build breken.
 - Ook de **dashboard center cards** (stats/economy/ops/notifications panels) moeten volledig via ARB keys; vermijd NL/EN literals zoals “Statistieken”, “Ops Overview”, “Gross income”, enz.
 - Voor dynamische templates (zoals `daily-goals` uit backend): geef voorkeur aan **client-side mapping op goal keys** (`crime_3`, `weekly_job_10`, …) naar ARB-strings, zodat alle EU-locales consistente vertalingen krijgen zonder server-side `titleNl/titleEn` leakage.
+- Vehicle Ops labels/chips (Heat/Rep/Hotspot/Crew/Blacklist etc.) horen ook via ARB keys zodat dashboard geen Engels lekt in EU-locales.
 
 ## Primary Platform/Infra Entry
 - client/docker/nginx.conf

@@ -136,7 +136,7 @@ String _newMessagesLabel(BuildContext context, int count) {
 
 String _killProgressLabel(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
-  return l10n.localeName == 'nl' ? 'Moordvordering' : 'Kill Progress';
+  return l10n.dashboardKillProgress;
 }
 
 const Color _dashboardGold = Color(0xFFFFB347);
@@ -4202,32 +4202,23 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   }
 
   Widget _buildVehicleOpsDashboardSection() {
+    final l10n = AppLocalizations.of(context)!;
     final vehicleOps = _stats?.vehicleOps;
     final roleLabel = (vehicleOps?.crewRole ?? '').toLowerCase();
     final crewRole = roleLabel.isEmpty
         ? '-'
-        : _tr(
-            roleLabel == 'leader'
-                ? 'Leider'
-                : roleLabel == 'co_leader'
-                ? 'Co-leider'
-                : roleLabel == 'member'
-                ? 'Lid'
-                : roleLabel,
-            roleLabel == 'leader'
-                ? 'Leader'
-                : roleLabel == 'co_leader'
-                ? 'Co-leader'
-                : roleLabel == 'member'
-                ? 'Member'
-                : roleLabel,
-          );
+        : switch (roleLabel) {
+            'leader' => l10n.crewRoleLeader,
+            'co_leader' => l10n.crewRoleCoLeader,
+            'member' => l10n.crewRoleMember,
+            _ => roleLabel,
+          };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          _tr('Voertuig Ops', 'Vehicle Ops'),
+          l10n.dashboardVehicleOps,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -4236,31 +4227,31 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         ),
         const SizedBox(height: 10),
         _buildVehicleOpsCategoryCard(
-          title: _tr('Auto', 'Car'),
+          title: l10n.dashboardCar,
           category: vehicleOps?.car,
           accent: const Color(0xFF4FC3F7),
         ),
         const SizedBox(height: 8),
         _buildVehicleOpsCategoryCard(
-          title: _tr('Motor', 'Motorcycle'),
+          title: l10n.dashboardMotorcycle,
           category: vehicleOps?.motorcycle,
           accent: const Color(0xFFFFB74D),
         ),
         const SizedBox(height: 8),
         _buildVehicleOpsCategoryCard(
-          title: _tr('Boot', 'Boat'),
+          title: l10n.dashboardBoat,
           category: vehicleOps?.boat,
           accent: const Color(0xFF4DD0A6),
         ),
         const SizedBox(height: 10),
         _buildInfoRow(
-          _tr('Crew toegang', 'Crew access'),
-          vehicleOps?.hasCrew == true ? _tr('Ja', 'Yes') : _tr('Nee', 'No'),
+          l10n.dashboardCrewAccess,
+          vehicleOps?.hasCrew == true ? l10n.yes : l10n.no,
           vehicleOps?.hasCrew == true
               ? Colors.green.shade300
               : Colors.orange.shade300,
         ),
-        _buildInfoRow(_tr('Crew rol', 'Crew role'), crewRole, Colors.white),
+        _buildInfoRow(l10n.dashboardCrewRole, crewRole, Colors.white),
       ],
     );
   }
@@ -4270,6 +4261,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     required VehicleOpsCategoryDashboardSummary? category,
     required Color accent,
   }) {
+    final l10n = AppLocalizations.of(context)!;
     if (category == null) {
       return Container(
         padding: const EdgeInsets.all(10),
@@ -4279,16 +4271,16 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
           border: Border.all(color: Colors.white24),
         ),
         child: Text(
-          '$title: ${_tr('niet beschikbaar', 'unavailable')}',
+          '$title: ${l10n.dashboardUnavailable}',
           style: const TextStyle(color: Colors.white70),
         ),
       );
     }
 
     final trendLabel = switch (category.partsTrend.toLowerCase()) {
-      'up' => _tr('onderdelenmarkt stijgt', 'parts market rising'),
-      'down' => _tr('onderdelenmarkt daalt', 'parts market falling'),
-      _ => _tr('onderdelenmarkt stabiel', 'parts market stable'),
+      'up' => l10n.vehicleOpsPartsTrendUp,
+      'down' => l10n.vehicleOpsPartsTrendDown,
+      _ => l10n.vehicleOpsPartsTrendStable,
     };
 
     return Container(
@@ -4315,11 +4307,11 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             runSpacing: 6,
             children: [
               Text(
-                '${_tr('Heat', 'Heat')} ${category.heatCurrent} (${category.heatLevel})',
+                '${l10n.vehicleOpsHeat} ${category.heatCurrent} (${category.heatLevel})',
                 style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
               Text(
-                'Rep L${category.reputationLevel} (${category.reputationValue})',
+                '${l10n.vehicleOpsReputation} L${category.reputationLevel} (${category.reputationValue})',
                 style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
               Text(
@@ -4334,27 +4326,27 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             runSpacing: 6,
             children: [
               _buildVehicleOpsCooldownChip(
-                _tr('Hotspot', 'Hotspot'),
+                l10n.vehicleOpsHotspot,
                 category.cooldowns['hotspot'] ?? 0,
               ),
               _buildVehicleOpsCooldownChip(
-                _tr('Crew', 'Crew'),
+                l10n.vehicleOpsCrew,
                 category.cooldowns['crew'] ?? 0,
               ),
               _buildVehicleOpsCooldownChip(
-                _tr('Crew-duel', 'Crew match'),
+                l10n.vehicleOpsCrewMatch,
                 category.cooldowns['crewMatch'] ?? 0,
               ),
               _buildVehicleOpsCooldownChip(
-                _tr('Chop', 'Chop'),
+                l10n.vehicleOpsChop,
                 category.cooldowns['chop'] ?? 0,
               ),
               _buildVehicleOpsCooldownChip(
-                _tr('Contract', 'Contract'),
+                l10n.vehicleOpsContract,
                 category.cooldowns['contract'] ?? 0,
               ),
               _buildVehicleOpsCooldownChip(
-                _tr('Tegenactie', 'Counter'),
+                l10n.vehicleOpsCounter,
                 category.cooldowns['counter'] ?? 0,
               ),
             ],
@@ -4365,21 +4357,21 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             runSpacing: 6,
             children: [
               Text(
-                '${_tr('Contracts', 'Contracts')}: ${category.contractsAvailable}',
+                '${l10n.vehicleOpsContracts}: ${category.contractsAvailable}',
                 style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
               Text(
-                '${_tr('Claims', 'Claims')}: ${category.openInsuranceClaims}',
+                '${l10n.vehicleOpsClaims}: ${category.openInsuranceClaims}',
                 style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
               Text(
-                '${_tr('Seizoen', 'Season')}: ${category.seasonPoints}p (${category.seasonWins}W/${category.seasonLosses}L)',
+                '${l10n.vehicleOpsSeason}: ${category.seasonPoints}p (${category.seasonWins}W/${category.seasonLosses}L)',
                 style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
               Text(
                 category.blacklistActive
-                    ? _tr('Blacklist actief', 'Blacklist active')
-                    : _tr('Geen blacklist', 'No blacklist'),
+                    ? l10n.vehicleOpsBlacklistActive
+                    : l10n.vehicleOpsNoBlacklist,
                 style: TextStyle(
                   color: category.blacklistActive
                       ? Colors.red.shade300
