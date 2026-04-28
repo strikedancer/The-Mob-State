@@ -819,6 +819,66 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bullets => 'Marcadores';
 
   @override
+  String get moneyStatusLabel => 'Status do dinheiro';
+
+  @override
+  String get moneyStatusPoor => 'Pobre';
+
+  @override
+  String get moneyStatusRising => 'Ascendente';
+
+  @override
+  String get moneyStatusRich => 'Rica';
+
+  @override
+  String get moneyStatusMultimillionaire => 'Multimilionária';
+
+  @override
+  String get rankBeginner => 'Novata';
+
+  @override
+  String get rankCriminal => 'Criminosa';
+
+  @override
+  String get rankGangster => 'Gângster';
+
+  @override
+  String get rankMafioso => 'Mafioso';
+
+  @override
+  String get rankGodfather => 'Padrinho';
+
+  @override
+  String get dailyGoalTitle_crime_3 => 'Faça 3 crimes';
+
+  @override
+  String get dailyGoalTitle_job_2 => 'Trabalhe 2 vezes';
+
+  @override
+  String get dailyGoalTitle_vehicle_theft_1 => 'Roube 1 veículo';
+
+  @override
+  String get dailyGoalTitle_travel_1 => 'Conclua 1 viagem';
+
+  @override
+  String get dailyGoalTitle_weekly_crime_20 => 'Semanal: 20 crimes';
+
+  @override
+  String get dailyGoalTitle_weekly_job_10 => 'Semanalmente: trabalhe 10 vezes';
+
+  @override
+  String get dailyGoalTitle_weekly_vehicle_theft_5 =>
+      'Semanalmente: roube 5 veículos';
+
+  @override
+  String get dailyGoalTitle_weekly_travel_3 => 'Semanalmente: 3 viagens';
+
+  @override
+  String dailyGoalReward(String cash, String xp) {
+    return 'Recompensa: +$cash e +$xp XP';
+  }
+
+  @override
   String get justNow => 'Agora mesmo';
 
   @override

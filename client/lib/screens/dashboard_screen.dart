@@ -1554,7 +1554,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Colors.green.shade300,
                     ),
                     _buildTopInfoItem(
-                      _getRankTitle(player.rank),
+                      _getRankTitle(AppLocalizations.of(context)!, player.rank),
                       Colors.amber.shade300,
                     ),
                     _buildTopInfoItem(
@@ -1572,7 +1572,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Expanded(
                 child: _buildLargeProgressBar(
                   context,
-                  'Wanted',
+                  AppLocalizations.of(context)!.wantedLevel,
                   wantedProgress,
                   '${wantedLevel.toInt()}/5',
                   wantedLevel > 0 ? Colors.orange : Colors.blueGrey,
@@ -1639,12 +1639,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  String _getRankTitle(int rank) {
-    if (rank <= 5) return 'Beginner';
-    if (rank <= 10) return 'Crimineel';
-    if (rank <= 15) return 'Gangster';
-    if (rank <= 20) return 'Mafioso';
-    return 'Godfather';
+  String _getRankTitle(AppLocalizations l10n, int rank) {
+    if (rank <= 5) return l10n.rankBeginner;
+    if (rank <= 10) return l10n.rankCriminal;
+    if (rank <= 15) return l10n.rankGangster;
+    if (rank <= 20) return l10n.rankMafioso;
+    return l10n.rankGodfather;
   }
 
   Widget _buildWebContent(BuildContext context) {
@@ -2468,6 +2468,30 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       (AppLocalizations.of(context)?.localeName ?? 'en').toLowerCase().startsWith('nl');
   String _tr(String nl, String en) => _isNl ? nl : en;
 
+  String _dailyGoalTitle(AppLocalizations l10n, String key) {
+    switch (key) {
+      case 'crime_3':
+        return l10n.dailyGoalTitle_crime_3;
+      case 'job_2':
+        return l10n.dailyGoalTitle_job_2;
+      case 'vehicle_theft_1':
+        return l10n.dailyGoalTitle_vehicle_theft_1;
+      case 'travel_1':
+        return l10n.dailyGoalTitle_travel_1;
+      case 'weekly_crime_20':
+        return l10n.dailyGoalTitle_weekly_crime_20;
+      case 'weekly_job_10':
+        return l10n.dailyGoalTitle_weekly_job_10;
+      case 'weekly_vehicle_theft_5':
+        return l10n.dailyGoalTitle_weekly_vehicle_theft_5;
+      case 'weekly_travel_3':
+        return l10n.dailyGoalTitle_weekly_travel_3;
+      default:
+        // Fallback to server-provided NL/EN until templates are expanded.
+        return _isNl ? key : key;
+    }
+  }
+
   String _timeAgoLabel(DateTime dt) {
     final diff = DateTime.now().difference(dt);
     final l10n = AppLocalizations.of(context)!;
@@ -2897,7 +2921,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
           ...goals.whereType<Map>().map((raw) {
             final g = Map<String, dynamic>.from(raw);
             final key = g['key']?.toString() ?? '';
-            final title = _isNl ? (g['titleNl'] ?? '') : (g['titleEn'] ?? '');
+            final l10n = AppLocalizations.of(context)!;
+            final title = _dailyGoalTitle(l10n, key);
             final progress = (g['progress'] as num?)?.toInt() ?? 0;
             final target = (g['target'] as num?)?.toInt() ?? 0;
             final claimable = g['claimable'] == true;
@@ -2972,9 +2997,9 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       children: [
                         Expanded(
                           child: Text(
-                            _tr(
-                              'Beloning: +${formatCurrency(rewardCash)} en +$rewardXp XP',
-                              'Reward: +${formatCurrency(rewardCash)} and +$rewardXp XP',
+                            l10n.dailyGoalReward(
+                              formatCurrency(rewardCash),
+                              rewardXp.toString(),
                             ),
                             style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12),
                           ),
@@ -3076,7 +3101,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       children: goals.whereType<Map>().map((raw) {
                         final g = Map<String, dynamic>.from(raw);
                         final key = g['key']?.toString() ?? '';
-                        final title = _isNl ? (g['titleNl'] ?? '') : (g['titleEn'] ?? '');
+                        final l10n = AppLocalizations.of(context)!;
+                        final title = _dailyGoalTitle(l10n, key);
                         final progress = (g['progress'] as num?)?.toInt() ?? 0;
                         final target = (g['target'] as num?)?.toInt() ?? 0;
                         final claimableLocal = g['claimable'] == true;
@@ -3155,9 +3181,9 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        _tr(
-                                          'Beloning: +${formatCurrency(rewardCash)} en +$rewardXp XP',
-                                          'Reward: +${formatCurrency(rewardCash)} and +$rewardXp XP',
+                                        l10n.dailyGoalReward(
+                                          formatCurrency(rewardCash),
+                                          rewardXp.toString(),
                                         ),
                                         style: TextStyle(
                                           color: Colors.white.withOpacity(0.7),
@@ -3439,17 +3465,17 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                   children: [
                     _buildInfoRow(l10n.nameLabel, player.username, Colors.white),
                     _buildInfoRow(
-                      'Rank (${player.rank})',
-                      _getRankTitle(player.rank),
+                      '${l10n.rank} (${player.rank})',
+                      _getRankTitle(l10n, player.rank),
                       Colors.amber.shade300,
                     ),
                     _buildInfoRow(
-                      'Geldstatus',
-                      _getMoneyStatus(player.money),
+                      l10n.moneyStatusLabel,
+                      _getMoneyStatus(l10n, player.money),
                       Colors.green.shade300,
                     ),
                     _buildInfoRow(
-                      'Kogels',
+                      l10n.bullets,
                       '${_stats?.totalAmmo ?? 0}',
                       Colors.white,
                     ),
@@ -4489,19 +4515,19 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     );
   }
 
-  String _getRankTitle(int rank) {
-    if (rank <= 5) return 'Beginner';
-    if (rank <= 10) return 'Crimineel';
-    if (rank <= 15) return 'Gangster';
-    if (rank <= 20) return 'Mafioso';
-    return 'Godfather';
+  String _getRankTitle(AppLocalizations l10n, int rank) {
+    if (rank <= 5) return l10n.rankBeginner;
+    if (rank <= 10) return l10n.rankCriminal;
+    if (rank <= 15) return l10n.rankGangster;
+    if (rank <= 20) return l10n.rankMafioso;
+    return l10n.rankGodfather;
   }
 
-  String _getMoneyStatus(int money) {
-    if (money < 10000) return 'Arm';
-    if (money < 100000) return 'Opkomend';
-    if (money < 1000000) return 'Rijk';
-    return 'Multimiljonair';
+  String _getMoneyStatus(AppLocalizations l10n, int money) {
+    if (money < 10000) return l10n.moneyStatusPoor;
+    if (money < 100000) return l10n.moneyStatusRising;
+    if (money < 1000000) return l10n.moneyStatusRich;
+    return l10n.moneyStatusMultimillionaire;
   }
 }
 

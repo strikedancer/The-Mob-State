@@ -406,6 +406,35 @@
   "rldProstitutes": "RLD-Prostituierte",
   "travels": "Reisen",
   "bullets": "Kugeln",
+  "moneyStatusLabel": "Geldstatus",
+  "moneyStatusPoor": "Arm",
+  "moneyStatusRising": "Aufstand",
+  "moneyStatusRich": "Reich",
+  "moneyStatusMultimillionaire": "Multimillionär",
+  "rankBeginner": "Anfängerin",
+  "rankCriminal": "Kriminell",
+  "rankGangster": "Gangster",
+  "rankMafioso": "Mafioso",
+  "rankGodfather": "Pate",
+  "dailyGoalTitle_crime_3": "Begehen Sie 3 Verbrechen",
+  "dailyGoalTitle_job_2": "2 Mal arbeiten",
+  "dailyGoalTitle_vehicle_theft_1": "Stehlen Sie 1 Fahrzeug",
+  "dailyGoalTitle_travel_1": "Schließe 1 Reise ab",
+  "dailyGoalTitle_weekly_crime_20": "Wöchentlich: 20 Verbrechen",
+  "dailyGoalTitle_weekly_job_10": "Wöchentlich: 10 Mal arbeiten",
+  "dailyGoalTitle_weekly_vehicle_theft_5": "Wöchentlich: 5 Fahrzeuge stehlen",
+  "dailyGoalTitle_weekly_travel_3": "Wöchentlich: 3 Reisen",
+  "dailyGoalReward": "Belohnung: +{cash} und +{xp} XP",
+  "@dailyGoalReward": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "xp": {
+        "type": "String"
+      }
+    }
+  },
   "justNow": "Soeben",
   "secondsAgo": "Vor {seconds}s",
   "@secondsAgo": {

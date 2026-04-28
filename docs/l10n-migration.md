@@ -23,6 +23,7 @@ Er zijn nog veel plekken in de client die **twee takken** gebruiken (Nederlands 
 - Voeg bij dashboard-topbar/menus alleen nieuwe teksten toe via ARB keys (bijv. knoppen als “View offer”), zodat EU-locales niet terugvallen op EN.
 - Let op scope: gebruik `AppLocalizations.of(ctx)` binnen `showDialog`/`builder` i.p.v. een outer `l10n` die daar niet zichtbaar is.
 - De dashboard center cards (stats/economy/ops) bevatten veel labels en zijn een tweede hotspot voor “NL/EN leakage”; vertaal die via ARB keys i.p.v. `_tr(...)`.
+- Daily/weekly goals komen uit de backend met `titleNl/titleEn`. Voor EU-locales is dat te beperkt: map `goal.key` (bv. `crime_3`, `weekly_vehicle_theft_5`) naar ARB-keys in de client en formatteer de reward-string (`Reward: +{cash} …`) ook via ARB.
 
 ### Inventaris (indicatief)
 

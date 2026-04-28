@@ -1640,6 +1640,120 @@ abstract class AppLocalizations {
   /// **'Bullets'**
   String get bullets;
 
+  /// No description provided for @moneyStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Money status'**
+  String get moneyStatusLabel;
+
+  /// No description provided for @moneyStatusPoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get moneyStatusPoor;
+
+  /// No description provided for @moneyStatusRising.
+  ///
+  /// In en, this message translates to:
+  /// **'Rising'**
+  String get moneyStatusRising;
+
+  /// No description provided for @moneyStatusRich.
+  ///
+  /// In en, this message translates to:
+  /// **'Rich'**
+  String get moneyStatusRich;
+
+  /// No description provided for @moneyStatusMultimillionaire.
+  ///
+  /// In en, this message translates to:
+  /// **'Multimillionaire'**
+  String get moneyStatusMultimillionaire;
+
+  /// No description provided for @rankBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get rankBeginner;
+
+  /// No description provided for @rankCriminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Criminal'**
+  String get rankCriminal;
+
+  /// No description provided for @rankGangster.
+  ///
+  /// In en, this message translates to:
+  /// **'Gangster'**
+  String get rankGangster;
+
+  /// No description provided for @rankMafioso.
+  ///
+  /// In en, this message translates to:
+  /// **'Mafioso'**
+  String get rankMafioso;
+
+  /// No description provided for @rankGodfather.
+  ///
+  /// In en, this message translates to:
+  /// **'Godfather'**
+  String get rankGodfather;
+
+  /// No description provided for @dailyGoalTitle_crime_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Do 3 crimes'**
+  String get dailyGoalTitle_crime_3;
+
+  /// No description provided for @dailyGoalTitle_job_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Work 2 times'**
+  String get dailyGoalTitle_job_2;
+
+  /// No description provided for @dailyGoalTitle_vehicle_theft_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal 1 vehicle'**
+  String get dailyGoalTitle_vehicle_theft_1;
+
+  /// No description provided for @dailyGoalTitle_travel_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 1 travel'**
+  String get dailyGoalTitle_travel_1;
+
+  /// No description provided for @dailyGoalTitle_weekly_crime_20.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly: 20 crimes'**
+  String get dailyGoalTitle_weekly_crime_20;
+
+  /// No description provided for @dailyGoalTitle_weekly_job_10.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly: work 10 times'**
+  String get dailyGoalTitle_weekly_job_10;
+
+  /// No description provided for @dailyGoalTitle_weekly_vehicle_theft_5.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly: steal 5 vehicles'**
+  String get dailyGoalTitle_weekly_vehicle_theft_5;
+
+  /// No description provided for @dailyGoalTitle_weekly_travel_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly: 3 travels'**
+  String get dailyGoalTitle_weekly_travel_3;
+
+  /// No description provided for @dailyGoalReward.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward: +{cash} and +{xp} XP'**
+  String dailyGoalReward(String cash, String xp);
+
   /// No description provided for @justNow.
   ///
   /// In en, this message translates to:
