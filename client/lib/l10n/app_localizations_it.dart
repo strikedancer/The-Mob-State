@@ -4885,25 +4885,25 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get prostitutionBetrayalDefaultMessage =>
-      'Betrayal! Your nightclub was hit by an intel leak.';
+      'Tradimento! Il tuo nightclub è stato colpito da una fuga di informazioni.';
 
   @override
-  String get prostitutionLoadError => 'Error loading data';
+  String get prostitutionLoadError => 'Errore nel caricamento dei dati';
 
   @override
   String get prostitutionNoDistrictInCountry =>
-      'No Red Light District found in this country';
+      'Nessun quartiere a luci rosse in questo paese';
 
   @override
-  String get prostitutionMovedToStreet => 'Moved to street';
+  String get prostitutionMovedToStreet => 'Spostata in strada';
 
   @override
   String get prostitutionArrestedCannotAssign =>
-      'This prostitute is arrested and cannot be assigned.';
+      'Questa prostituta è arrestata e non può essere assegnata.';
 
   @override
   String get prostitutionNoNightclubVenue =>
-      'You do not have a nightclub venue yet to assign staff.';
+      'Non hai ancora una sede nightclub per assegnare il personale.';
 
   @override
   String get prostitutionNightclubVenueName => 'Nightclub';
@@ -4914,191 +4914,192 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get prostitutionAssignedNightclub => 'Assigned to nightclub';
+  String get prostitutionAssignedNightclub => 'Assegnata al nightclub';
 
   @override
   String get prostitutionArrestedCannotWork =>
-      'This prostitute is arrested and cannot work.';
+      'Questa prostituta è arrestata e non può lavorare.';
 
   @override
   String prostitutionShiftRestNeeded(String duration) {
-    return 'Needs $duration rest before the next shift.';
+    return 'Ancora $duration di riposo prima del prossimo turno.';
   }
 
   @override
-  String get prostitutionWorkShiftCompleted => 'Work shift completed';
+  String get prostitutionWorkShiftCompleted => 'Turno completato';
 
   @override
   String get prostitutionNoWorkersToAssign =>
-      'No available prostitutes to send to work.';
+      'Nessuna prostituta disponibile da mandare a lavorare.';
 
   @override
   String prostitutionWorkAllSentCount(int count) {
-    return '$count prostitutes sent to work.';
+    return '$count prostitute mandate a lavorare.';
   }
 
   @override
   String prostitutionWorkAllPartial(int success, int failed) {
-    return '$success prostitutes sent to work, $failed failed.';
+    return '$success mandate a lavorare, $failed fallite.';
   }
 
   @override
-  String get prostitutionRecruitedDefault => 'Recruited!';
+  String get prostitutionRecruitedDefault => 'Reclutata!';
 
   @override
-  String get prostitutionRecruitFailed => 'Recruitment failed';
+  String get prostitutionRecruitFailed => 'Reclutamento fallito';
 
   @override
   String get prostitutionRecruitConnectionError =>
-      'Recruitment failed due to a connection error';
+      'Reclutamento fallito per errore di connessione';
 
   @override
-  String get prostitutionEventUpdate => 'Event updated';
+  String get prostitutionEventUpdate => 'Evento aggiornato';
 
   @override
-  String get prostitutionBuyPropertyFirst => 'Buy a house or apartment first';
+  String get prostitutionBuyPropertyFirst =>
+      'Compra prima una casa o un appartamento';
 
   @override
   String prostitutionWorkAll(int count) {
-    return 'Work all ($count)';
+    return 'Manda tutte a lavorare ($count)';
   }
 
   @override
   String get prostitutionNoHousingForRecruit =>
-      'No free housing slot. Buy or upgrade a house or apartment before recruiting more prostitutes.';
+      'Nessun posto in alloggio libero. Compra o migliora una casa o un appartamento prima di reclutare altre prostitute.';
 
   @override
-  String get prostitutionHousingTitle => 'Housing';
+  String get prostitutionHousingTitle => 'Alloggio';
 
   @override
   String prostitutionHousingRentRule(int days) {
-    return 'Each prostitute must work at least one shift every $days days to cover rent.';
+    return 'Ogni prostituta deve fare almeno un turno ogni $days giorni per pagare l\'affitto.';
   }
 
   @override
-  String get prostitutionHousingSlots => 'Slots';
+  String get prostitutionHousingSlots => 'Posti';
 
   @override
-  String get prostitutionHousingFree => 'Free';
+  String get prostitutionHousingFree => 'Libero';
 
   @override
-  String get prostitutionHousingHomes => 'Homes';
+  String get prostitutionHousingHomes => 'Case';
 
   @override
-  String get prostitutionHousingAvgUpgrade => 'Avg upgrade';
+  String get prostitutionHousingAvgUpgrade => 'Miglior. media';
 
   @override
-  String get prostitutionHousingHappinessBonus => 'Happiness bonus';
+  String get prostitutionHousingHappinessBonus => 'Bonus felicità';
 
   @override
-  String get prostitutionHousingWeeklyRent => 'Weekly rent';
+  String get prostitutionHousingWeeklyRent => 'Affitto settimanale';
 
   @override
-  String get prostitutionHousingAtRisk => 'At risk';
+  String get prostitutionHousingAtRisk => 'A rischio';
 
   @override
-  String get prostitutionHousingSafe => 'Safe';
+  String get prostitutionHousingSafe => 'Al sicuro';
 
   @override
   String prostitutionBetrayalActiveDetail(int grams, int licenses) {
-    return 'Betrayal triggered: ${grams}g drugs seized, $licenses nightclub license(s) revoked.';
+    return 'Tradimento attivato: $grams g di droga sequestrata/e, $licenses licenza/e nightclub revocata/e.';
   }
 
   @override
   String get prostitutionEarningsInsightTitle =>
-      'Earnings insight (active prostitutes)';
+      'Panoramica guadagni (prostitute attive)';
 
   @override
   String prostitutionEarningsStreetDetail(int count, int euros) {
-    return 'Street: $count • €$euros/hour';
+    return 'Strada: $count • €$euros/h';
   }
 
   @override
   String prostitutionEarningsRldDetail(int count, int euros) {
-    return 'RLD: $count • €$euros/hour';
+    return 'Luci rosse: $count • €$euros/h';
   }
 
   @override
   String prostitutionEarningsNightclubDetail(int count, int euros) {
-    return 'Nightclub: $count • €$euros/hour';
+    return 'Nightclub: $count • €$euros/h';
   }
 
   @override
   String prostitutionEarningsTotalDetail(int euros) {
-    return 'Total: €$euros/hour';
+    return 'Totale: €$euros/h';
   }
 
   @override
-  String get prostitutionHappinessEcstatic => 'Ecstatic';
+  String get prostitutionHappinessEcstatic => 'In estasi';
 
   @override
-  String get prostitutionHappinessHappy => 'Happy';
+  String get prostitutionHappinessHappy => 'Felice';
 
   @override
-  String get prostitutionHappinessStable => 'Stable';
+  String get prostitutionHappinessStable => 'Stabile';
 
   @override
-  String get prostitutionHappinessStressed => 'Stressed';
+  String get prostitutionHappinessStressed => 'Stressata';
 
   @override
-  String get prostitutionHappinessMiserable => 'Miserable';
+  String get prostitutionHappinessMiserable => 'Miserabile';
 
   @override
-  String get prostitutionHousingExpired => 'Expired';
+  String get prostitutionHousingExpired => 'Scaduto';
 
   @override
   String prostitutionHousingDaysLeft(int days) {
-    return '${days}d left';
+    return 'ancora $days g.';
   }
 
   @override
-  String get prostitutionHousingLessThanOneDay => 'Less than 1 day';
+  String get prostitutionHousingLessThanOneDay => 'Meno di 1 giorno';
 
   @override
-  String get prostitutionNightclubShort => 'Nightclub';
+  String get prostitutionNightclubShort => 'Club';
 
   @override
-  String get prostitutionMoveToStreetButton => 'To street';
+  String get prostitutionMoveToStreetButton => 'In strada';
 
   @override
-  String get prostitutionMoveToNightclubButton => 'To nightclub';
+  String get prostitutionMoveToNightclubButton => 'Al nightclub';
 
   @override
   String prostitutionEuroPerHour(String amount) {
-    return '€$amount/hour';
+    return '€$amount/h';
   }
 
   @override
   String prostitutionHappinessDetail(String label, int score, String bonus) {
-    return 'Happiness $label ($score%) • Yield $bonus';
+    return 'Felicità $label ($score%) • Rendimento $bonus';
   }
 
   @override
   String prostitutionHousingStatus(String status) {
-    return 'Housing: $status';
+    return 'Alloggio: $status';
   }
 
   @override
   String prostitutionWeeklyRentEuro(int amount) {
-    return 'Weekly rent €$amount';
+    return 'Affitto settimanale €$amount';
   }
 
   @override
-  String get prostitutionWork8h => 'Work 8h';
+  String get prostitutionWork8h => 'Lavora 8 h';
 
   @override
   String prostitutionRestFor(String duration) {
-    return 'Rest $duration';
+    return 'Riposa $duration';
   }
 
   @override
   String prostitutionNextShiftIn(String duration) {
-    return 'Next shift in $duration';
+    return 'Prossimo turno tra $duration';
   }
 
   @override
   String prostitutionTimeHoursMinutes(int hours, int minutes) {
-    return '${hours}h ${minutes}m';
+    return '$hours h $minutes min';
   }
 
   @override

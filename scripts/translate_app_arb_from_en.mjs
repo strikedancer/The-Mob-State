@@ -3,9 +3,10 @@
  * Fills app_<lang>.arb from app_en.arb using google-translate-api-x (same cache as build_admin_i18n).
  * Preserves {placeholders} in strings. Keeps @metadata blocks identical to English.
  *
- * Usage: node scripts/translate_app_arb_from_en.mjs
- *        node scripts/translate_app_arb_from_en.mjs --langs=de,fr,it,pl,pt
+ * Usage: cd scripts && node translate_app_arb_from_en.mjs
+ *        cd scripts && node translate_app_arb_from_en.mjs --langs=de,fr,it,pl,pt
  * (Omit `es` and `nl` if those ARBs are hand-curated; this overwrites the whole target file.)
+ * For only filling keys that still copy English: translate_arb_english_fallback.mjs
  *
  * Env: optional — uses scripts/.translate_cache.json
  */

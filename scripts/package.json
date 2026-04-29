@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-admin-i18n": "node build_admin_i18n.mjs",
-    "translate-arb": "node translate_app_arb_from_en.mjs"
+    "translate-arb": "node translate_app_arb_from_en.mjs",
+    "translate-arb-fallback": "node translate_arb_english_fallback.mjs",
+    "report-arb-fallback": "node translate_arb_english_fallback.mjs --report"
   },
   "keywords": [],
   "author": "",

@@ -3777,14 +3777,14 @@
   },
   "prostitutionOccupiedShort": "Occupied",
   "prostitutionNotApplicable": "N/A",
-  "prostitutionBetrayalDefaultMessage": "Betrayal! Your nightclub was hit by an intel leak.",
-  "prostitutionLoadError": "Error loading data",
-  "prostitutionNoDistrictInCountry": "No Red Light District found in this country",
-  "prostitutionMovedToStreet": "Moved to street",
-  "prostitutionArrestedCannotAssign": "This prostitute is arrested and cannot be assigned.",
-  "prostitutionNoNightclubVenue": "You do not have a nightclub venue yet to assign staff.",
-  "prostitutionNightclubVenueName": "Nightclub",
-  "prostitutionNightclubVenueNumbered": "Nightclub #{id}",
+  "prostitutionBetrayalDefaultMessage": "¡Traición! Tu club nocturno sufrió una filtración de información.",
+  "prostitutionLoadError": "Error al cargar los datos",
+  "prostitutionNoDistrictInCountry": "No hay distrito rojo en este país",
+  "prostitutionMovedToStreet": "Trasladada a la calle",
+  "prostitutionArrestedCannotAssign": "Esta prostituta está arrestada y no puede asignarse.",
+  "prostitutionNoNightclubVenue": "Aún no tienes un local de club nocturno para asignar personal.",
+  "prostitutionNightclubVenueName": "Club nocturno",
+  "prostitutionNightclubVenueNumbered": "Club nocturno #{id}",
   "@prostitutionNightclubVenueNumbered": {
     "placeholders": {
       "id": {
@@ -3792,9 +3792,9 @@
       }
     }
   },
-  "prostitutionAssignedNightclub": "Assigned to nightclub",
-  "prostitutionArrestedCannotWork": "This prostitute is arrested and cannot work.",
-  "prostitutionShiftRestNeeded": "Needs {duration} rest before the next shift.",
+  "prostitutionAssignedNightclub": "Asignada al club nocturno",
+  "prostitutionArrestedCannotWork": "Esta prostituta está arrestada y no puede trabajar.",
+  "prostitutionShiftRestNeeded": "Aún {duration} de descanso antes del siguiente turno.",
   "@prostitutionShiftRestNeeded": {
     "placeholders": {
       "duration": {
@@ -3802,9 +3802,9 @@
       }
     }
   },
-  "prostitutionWorkShiftCompleted": "Work shift completed",
-  "prostitutionNoWorkersToAssign": "No available prostitutes to send to work.",
-  "prostitutionWorkAllSentCount": "{count} prostitutes sent to work.",
+  "prostitutionWorkShiftCompleted": "Turno completado",
+  "prostitutionNoWorkersToAssign": "No hay prostitutas disponibles para mandar a trabajar.",
+  "prostitutionWorkAllSentCount": "{count} prostitutas enviadas a trabajar.",
   "@prostitutionWorkAllSentCount": {
     "placeholders": {
       "count": {
@@ -3812,7 +3812,7 @@
       }
     }
   },
-  "prostitutionWorkAllPartial": "{success} prostitutes sent to work, {failed} failed.",
+  "prostitutionWorkAllPartial": "{success} enviadas a trabajar, {failed} fallaron.",
   "@prostitutionWorkAllPartial": {
     "placeholders": {
       "success": {
@@ -3823,12 +3823,12 @@
       }
     }
   },
-  "prostitutionRecruitedDefault": "Recruited!",
-  "prostitutionRecruitFailed": "Recruitment failed",
-  "prostitutionRecruitConnectionError": "Recruitment failed due to a connection error",
-  "prostitutionEventUpdate": "Event updated",
-  "prostitutionBuyPropertyFirst": "Buy a house or apartment first",
-  "prostitutionWorkAll": "Work all ({count})",
+  "prostitutionRecruitedDefault": "¡Reclutada!",
+  "prostitutionRecruitFailed": "Reclutamiento fallido",
+  "prostitutionRecruitConnectionError": "Reclutamiento fallido por error de conexión",
+  "prostitutionEventUpdate": "Evento actualizado",
+  "prostitutionBuyPropertyFirst": "Compra primero una casa o piso",
+  "prostitutionWorkAll": "Mandar a todas a trabajar ({count})",
   "@prostitutionWorkAll": {
     "placeholders": {
       "count": {
@@ -3836,9 +3836,9 @@
       }
     }
   },
-  "prostitutionNoHousingForRecruit": "No free housing slot. Buy or upgrade a house or apartment before recruiting more prostitutes.",
-  "prostitutionHousingTitle": "Housing",
-  "prostitutionHousingRentRule": "Each prostitute must work at least one shift every {days} days to cover rent.",
+  "prostitutionNoHousingForRecruit": "No hay plaza de alojamiento libre. Compra o mejora una casa o piso antes de reclutar más prostitutas.",
+  "prostitutionHousingTitle": "Alojamiento",
+  "prostitutionHousingRentRule": "Cada prostituta debe trabajar al menos un turno cada {days} días para pagar el alquiler.",
   "@prostitutionHousingRentRule": {
     "placeholders": {
       "days": {
@@ -3846,15 +3846,15 @@
       }
     }
   },
-  "prostitutionHousingSlots": "Slots",
-  "prostitutionHousingFree": "Free",
-  "prostitutionHousingHomes": "Homes",
-  "prostitutionHousingAvgUpgrade": "Avg upgrade",
-  "prostitutionHousingHappinessBonus": "Happiness bonus",
-  "prostitutionHousingWeeklyRent": "Weekly rent",
-  "prostitutionHousingAtRisk": "At risk",
-  "prostitutionHousingSafe": "Safe",
-  "prostitutionBetrayalActiveDetail": "Betrayal triggered: {grams}g drugs seized, {licenses} nightclub license(s) revoked.",
+  "prostitutionHousingSlots": "Plazas",
+  "prostitutionHousingFree": "Libre",
+  "prostitutionHousingHomes": "Viviendas",
+  "prostitutionHousingAvgUpgrade": "Mejora media",
+  "prostitutionHousingHappinessBonus": "Bonificación de felicidad",
+  "prostitutionHousingWeeklyRent": "Alquiler semanal",
+  "prostitutionHousingAtRisk": "En riesgo",
+  "prostitutionHousingSafe": "A salvo",
+  "prostitutionBetrayalActiveDetail": "Traición activada: {grams} g de droga incautada(s), {licenses} licencia(s) de club nocturno revocada(s).",
   "@prostitutionBetrayalActiveDetail": {
     "placeholders": {
       "grams": {
@@ -3865,8 +3865,8 @@
       }
     }
   },
-  "prostitutionEarningsInsightTitle": "Earnings insight (active prostitutes)",
-  "prostitutionEarningsStreetDetail": "Street: {count} • €{euros}/hour",
+  "prostitutionEarningsInsightTitle": "Resumen de ingresos (prostitutas activas)",
+  "prostitutionEarningsStreetDetail": "Calle: {count} • €{euros}/h",
   "@prostitutionEarningsStreetDetail": {
     "placeholders": {
       "count": {
@@ -3877,7 +3877,7 @@
       }
     }
   },
-  "prostitutionEarningsRldDetail": "RLD: {count} • €{euros}/hour",
+  "prostitutionEarningsRldDetail": "Barrio rojo: {count} • €{euros}/h",
   "@prostitutionEarningsRldDetail": {
     "placeholders": {
       "count": {
@@ -3888,7 +3888,7 @@
       }
     }
   },
-  "prostitutionEarningsNightclubDetail": "Nightclub: {count} • €{euros}/hour",
+  "prostitutionEarningsNightclubDetail": "Club nocturno: {count} • €{euros}/h",
   "@prostitutionEarningsNightclubDetail": {
     "placeholders": {
       "count": {
@@ -3899,7 +3899,7 @@
       }
     }
   },
-  "prostitutionEarningsTotalDetail": "Total: €{euros}/hour",
+  "prostitutionEarningsTotalDetail": "Total: €{euros}/h",
   "@prostitutionEarningsTotalDetail": {
     "placeholders": {
       "euros": {
@@ -3907,13 +3907,13 @@
       }
     }
   },
-  "prostitutionHappinessEcstatic": "Ecstatic",
-  "prostitutionHappinessHappy": "Happy",
-  "prostitutionHappinessStable": "Stable",
-  "prostitutionHappinessStressed": "Stressed",
+  "prostitutionHappinessEcstatic": "Extático",
+  "prostitutionHappinessHappy": "Feliz",
+  "prostitutionHappinessStable": "Estable",
+  "prostitutionHappinessStressed": "Estresado",
   "prostitutionHappinessMiserable": "Miserable",
-  "prostitutionHousingExpired": "Expired",
-  "prostitutionHousingDaysLeft": "{days}d left",
+  "prostitutionHousingExpired": "Caducado",
+  "prostitutionHousingDaysLeft": "quedan {days} d.",
   "@prostitutionHousingDaysLeft": {
     "placeholders": {
       "days": {
@@ -3921,11 +3921,11 @@
       }
     }
   },
-  "prostitutionHousingLessThanOneDay": "Less than 1 day",
-  "prostitutionNightclubShort": "Nightclub",
-  "prostitutionMoveToStreetButton": "To street",
-  "prostitutionMoveToNightclubButton": "To nightclub",
-  "prostitutionEuroPerHour": "€{amount}/hour",
+  "prostitutionHousingLessThanOneDay": "Menos de 1 día",
+  "prostitutionNightclubShort": "Club",
+  "prostitutionMoveToStreetButton": "A la calle",
+  "prostitutionMoveToNightclubButton": "Al club",
+  "prostitutionEuroPerHour": "€{amount}/h",
   "@prostitutionEuroPerHour": {
     "placeholders": {
       "amount": {
@@ -3933,7 +3933,7 @@
       }
     }
   },
-  "prostitutionHappinessDetail": "Happiness {label} ({score}%) • Yield {bonus}",
+  "prostitutionHappinessDetail": "Felicidad {label} ({score}%) • Rendimiento {bonus}",
   "@prostitutionHappinessDetail": {
     "placeholders": {
       "label": {
@@ -3947,7 +3947,7 @@
       }
     }
   },
-  "prostitutionHousingStatus": "Housing: {status}",
+  "prostitutionHousingStatus": "Alojamiento: {status}",
   "@prostitutionHousingStatus": {
     "placeholders": {
       "status": {
@@ -3955,7 +3955,7 @@
       }
     }
   },
-  "prostitutionWeeklyRentEuro": "Weekly rent €{amount}",
+  "prostitutionWeeklyRentEuro": "Alquiler semanal €{amount}",
   "@prostitutionWeeklyRentEuro": {
     "placeholders": {
       "amount": {
@@ -3963,8 +3963,8 @@
       }
     }
   },
-  "prostitutionWork8h": "Work 8h",
-  "prostitutionRestFor": "Rest {duration}",
+  "prostitutionWork8h": "Trabajar 8 h",
+  "prostitutionRestFor": "Descansar {duration}",
   "@prostitutionRestFor": {
     "placeholders": {
       "duration": {
@@ -3972,7 +3972,7 @@
       }
     }
   },
-  "prostitutionNextShiftIn": "Next shift in {duration}",
+  "prostitutionNextShiftIn": "Próximo turno en {duration}",
   "@prostitutionNextShiftIn": {
     "placeholders": {
       "duration": {
@@ -3980,7 +3980,7 @@
       }
     }
   },
-  "prostitutionTimeHoursMinutes": "{hours}h {minutes}m",
+  "prostitutionTimeHoursMinutes": "{hours} h {minutes} min",
   "@prostitutionTimeHoursMinutes": {
     "placeholders": {
       "hours": {
