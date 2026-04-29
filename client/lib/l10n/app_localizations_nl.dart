@@ -935,7 +935,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get rankProgress => 'Rank Progress';
+  String get rankProgress => 'Rangvoortgang';
 
   @override
   String get cash => 'Cash';
@@ -1255,7 +1255,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get phaseEndsIn => 'Fase eindigt over';
 
   @override
-  String get crewTerritory => 'Crew Territory';
+  String get crewTerritory => 'Crewterritorium';
 
   @override
   String get regions => 'Regio\'s';
@@ -1379,7 +1379,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardPhaseEndsIn => 'Fase eindigt over';
 
   @override
-  String get dashboardCrewTerritory => 'Crew Territory';
+  String get dashboardCrewTerritory => 'Crewterritorium';
 
   @override
   String get dashboardRegions => 'Regio\'s';
@@ -1403,7 +1403,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardVehicleOps => 'Voertuig ops';
 
   @override
-  String get dashboardKillProgress => 'Kill progress';
+  String get dashboardKillProgress => 'Moordvoortgang';
 
   @override
   String get vehicleOpsHeat => 'Heat';
