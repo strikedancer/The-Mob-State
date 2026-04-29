@@ -38,7 +38,11 @@ router.post('/attempt', authenticate, vaultRateLimiter, async (req: AuthRequest,
       return res.status(400).json({
         success: false,
         event: 'vault.invalid_request',
-        params: { messageNl: result.messageNl, messageEn: result.messageEn },
+        params: {
+          messageNl: result.messageNl,
+          messageEn: result.messageEn,
+          messageEs: result.messageEs,
+        },
       });
     }
     return res.json({ success: true, data: result });

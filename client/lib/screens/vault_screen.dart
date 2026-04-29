@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/web_asset_helper.dart';
 import '../utils/top_right_notification.dart';
@@ -28,9 +29,6 @@ class _VaultScreenState extends State<VaultScreen> {
   String? _message;
   bool _messageSuccess = false;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   void _showTopMessage(String message, {required bool success}) {
     if (!mounted) return;
     showTopRightFromSnackBar(
@@ -43,6 +41,21 @@ class _VaultScreenState extends State<VaultScreen> {
         duration: const Duration(seconds: 4),
       ),
     );
+  }
+
+  /// Picks server-provided copy for the active UI language (nl / es / en + fallbacks).
+  String? _vaultMessageFromData(Map<String, dynamic> data) {
+    final code = Localizations.localeOf(context).languageCode;
+    String? raw;
+    if (code == 'nl') {
+      raw = data['messageNl']?.toString();
+    } else if (code == 'es') {
+      raw = data['messageEs']?.toString() ?? data['messageEn']?.toString();
+    } else {
+      raw = data['messageEn']?.toString() ?? data['messageNl']?.toString();
+    }
+    final t = raw?.trim();
+    return (t == null || t.isEmpty) ? null : t;
   }
 
   @override
@@ -58,6 +71,8 @@ class _VaultScreenState extends State<VaultScreen> {
   }
 
   Future<void> _loadStatus() async {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
     if (_loading) return;
     setState(() {
       _loading = true;
@@ -69,10 +84,10 @@ class _VaultScreenState extends State<VaultScreen> {
       if (decoded['success'] == true) {
         setState(() => _status = decoded['data'] as Map<String, dynamic>);
       } else {
-        setState(() => _message = _tr('Kon status niet laden.', 'Could not load status.'));
+        setState(() => _message = l10n.couldNotLoadVaultStatus);
       }
     } catch (_) {
-      setState(() => _message = _tr('Kon status niet laden.', 'Could not load status.'));
+      setState(() => _message = l10n.couldNotLoadVaultStatus);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -93,7 +108,7 @@ class _VaultScreenState extends State<VaultScreen> {
     return raw.map((e) => e.toString()).where((e) => e.trim().isNotEmpty).toList();
   }
 
-  String _seasonWindowLabel() {
+  String _seasonWindowLabel(BuildContext context) {
     final startsAtRaw = _status?['startsAt'];
     final endsAtRaw = _status?['endsAt'];
     if (startsAtRaw == null || endsAtRaw == null) return '';
@@ -102,8 +117,11 @@ class _VaultScreenState extends State<VaultScreen> {
     final endsAt = DateTime.tryParse(endsAtRaw.toString());
     if (startsAt == null || endsAt == null) return '';
 
-    final locale = _isNl ? 'nl_NL' : 'en_US';
-    final fmt = DateFormat('d MMM', locale);
+    final loc = Localizations.localeOf(context);
+    final locStr = loc.countryCode != null && loc.countryCode!.isNotEmpty
+        ? '${loc.languageCode}_${loc.countryCode}'
+        : loc.languageCode;
+    final fmt = DateFormat('d MMM', locStr);
     return '${fmt.format(startsAt)} – ${fmt.format(endsAt)}';
   }
 
@@ -120,15 +138,18 @@ class _VaultScreenState extends State<VaultScreen> {
   }
 
   Future<void> _submit() async {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
     if (_submitting) return;
     final code = _codeController.text.trim();
     if (!RegExp(r'^\d{4}$').hasMatch(code)) {
+      final msg = l10n.vaultEnterFourDigitCode;
       _showTopMessage(
-        _tr('Voer een 4-cijferige code in.', 'Enter a 4-digit code.'),
+        msg,
         success: false,
       );
       setState(() {
-        _message = _tr('Voer een 4-cijferige code in.', 'Enter a 4-digit code.');
+        _message = msg;
         _messageSuccess = false;
       });
       return;
@@ -144,24 +165,20 @@ class _VaultScreenState extends State<VaultScreen> {
       final decoded = jsonDecode(res.body) as Map<String, dynamic>;
       if (decoded['success'] == true) {
         final data = decoded['data'] as Map<String, dynamic>;
-        final msg = _isNl ? (data['messageNl'] ?? '') : (data['messageEn'] ?? '');
-        final text =
-            msg.toString().trim().isNotEmpty ? msg.toString() : _tr('Gelukt.', 'Success.');
         final isSuccess = data['correct'] == true;
+        final fromApi = _vaultMessageFromData(data);
+        final text = fromApi ??
+            (isSuccess ? l10n.vaultAttemptSuccessGeneric : l10n.vaultAttemptFailedGeneric);
         _showTopMessage(text, success: isSuccess);
         setState(() {
           _message = text;
           _messageSuccess = isSuccess;
         });
-        // Refresh status for updated balance + wrong codes
         await _loadStatus();
       } else {
         final params = (decoded['params'] as Map<String, dynamic>?) ?? const {};
-        final msgNl = params['messageNl']?.toString();
-        final msgEn = params['messageEn']?.toString();
-        final text = _isNl
-            ? (msgNl ?? _tr('Mislukt.', 'Failed.'))
-            : (msgEn ?? _tr('Mislukt.', 'Failed.'));
+        final fromApi = _vaultMessageFromData(params);
+        final text = fromApi ?? l10n.vaultAttemptFailedGeneric;
         _showTopMessage(text, success: false);
         setState(() {
           _message = text;
@@ -170,11 +187,11 @@ class _VaultScreenState extends State<VaultScreen> {
       }
     } catch (_) {
       _showTopMessage(
-        _tr('Mislukt. Probeer opnieuw.', 'Failed. Please try again.'),
+        l10n.vaultAttemptFailedRetry,
         success: false,
       );
       setState(() {
-        _message = _tr('Mislukt. Probeer opnieuw.', 'Failed. Please try again.');
+        _message = l10n.vaultAttemptFailedRetry;
         _messageSuccess = false;
       });
     } finally {
@@ -183,9 +200,10 @@ class _VaultScreenState extends State<VaultScreen> {
   }
 
   Widget _buildVaultHero(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isSmall = MediaQuery.of(context).size.width < 700;
     final height = isSmall ? 190.0 : 220.0;
-    final seasonWindow = _seasonWindowLabel();
+    final seasonWindow = _seasonWindowLabel(context);
 
     // Prefer external image library path on web/prod (served via nginx),
     // fall back to bundled Flutter asset.
@@ -268,7 +286,7 @@ class _VaultScreenState extends State<VaultScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _tr('Kraak de Kluis', 'Crack the Vault'),
+                l10n.menuCrackVault,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w900,
                       letterSpacing: 0.2,
@@ -276,10 +294,7 @@ class _VaultScreenState extends State<VaultScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                _tr(
-                  'Raad de code en win flinke prijzen.',
-                  'Guess the code and win big prizes.',
-                ),
+                l10n.vaultHeroTagline,
                 style: const TextStyle(color: Colors.white70),
               ),
               if (seasonWindow.isNotEmpty) ...[
@@ -292,7 +307,7 @@ class _VaultScreenState extends State<VaultScreen> {
                     border: Border.all(color: const Color(0xFFD4AF37).withOpacity(0.55)),
                   ),
                   child: Text(
-                    _tr('Ronde: ', 'Season: ') + seasonWindow,
+                    l10n.vaultSeasonLabel(seasonWindow),
                     style: const TextStyle(fontWeight: FontWeight.w700, color: Color(0xFFD4AF37)),
                   ),
                 ),
@@ -306,6 +321,7 @@ class _VaultScreenState extends State<VaultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isSmall = MediaQuery.of(context).size.width < 700;
     final tiers = _tiers();
     final wrongCodes = _wrongCodes();
@@ -333,7 +349,7 @@ class _VaultScreenState extends State<VaultScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      _tr('Jouw credits', 'Your credits'),
+                      l10n.vaultYourCredits,
                       style: const TextStyle(fontWeight: FontWeight.w800),
                     ),
                   ),
@@ -350,7 +366,7 @@ class _VaultScreenState extends State<VaultScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                _tr('Kies je inzet', 'Choose your stake'),
+                l10n.vaultChooseStake,
                 style: const TextStyle(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 10),
@@ -368,7 +384,7 @@ class _VaultScreenState extends State<VaultScreen> {
                   final selected = _stakeTier == stake;
                   return ChoiceChip(
                     selected: selected,
-                    label: Text(_tr('$stake credit', '$stake credit')),
+                    label: Text(l10n.vaultStakeCredits(stake)),
                     onSelected: _submitting
                         ? null
                         : (_) => setState(() => _stakeTier = stake),
@@ -377,12 +393,12 @@ class _VaultScreenState extends State<VaultScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                _tr('Verwachte prijs: +$reward credits', 'Expected prize: +$reward credits'),
+                l10n.vaultExpectedPrize(reward),
                 style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 14),
               Text(
-                _tr('Code', 'Code'),
+                l10n.vaultCodeLabel,
                 style: const TextStyle(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 8),
@@ -393,7 +409,7 @@ class _VaultScreenState extends State<VaultScreen> {
                 maxLength: 4,
                 decoration: InputDecoration(
                   counterText: '',
-                  hintText: _tr('0000', '0000'),
+                  hintText: '0000',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   prefixIcon: const Icon(Icons.key),
                 ),
@@ -410,7 +426,7 @@ class _VaultScreenState extends State<VaultScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.send),
-                  label: Text(_tr('Inzet', 'Submit stake')),
+                  label: Text(l10n.vaultSubmitStake),
                 ),
               ),
               if (_message != null && _message!.trim().isNotEmpty) ...[
@@ -453,7 +469,7 @@ class _VaultScreenState extends State<VaultScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      _tr('Foute codes (deze maand)', 'Wrong codes (this month)'),
+                      l10n.vaultWrongCodesTitle,
                       style: const TextStyle(fontWeight: FontWeight.w800),
                     ),
                   ),
@@ -461,13 +477,13 @@ class _VaultScreenState extends State<VaultScreen> {
                     onPressed: wrongCodes.isEmpty
                         ? null
                         : () => setState(() => _showWrongCodes = !_showWrongCodes),
-                    child: Text(_showWrongCodes ? _tr('Verberg', 'Hide') : _tr('Toon', 'Show')),
+                    child: Text(_showWrongCodes ? l10n.vaultHideWrongCodes : l10n.vaultShowWrongCodes),
                   ),
                 ],
               ),
               if (wrongCodes.isEmpty)
                 Text(
-                  _tr('Nog geen foute codes opgeslagen.', 'No wrong codes saved yet.'),
+                  l10n.vaultNoWrongCodesYet,
                   style: const TextStyle(color: Colors.white70),
                 )
               else if (_showWrongCodes) ...[
@@ -505,7 +521,7 @@ class _VaultScreenState extends State<VaultScreen> {
             child: TextButton.icon(
               onPressed: _loadStatus,
               icon: const Icon(Icons.refresh),
-              label: Text(_tr('Ververs', 'Refresh')),
+              label: Text(l10n.refresh),
             ),
           ),
         if (isSmall && widget.embedded) const SizedBox(height: 20),
@@ -518,12 +534,12 @@ class _VaultScreenState extends State<VaultScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_tr('Kraak de Kluis', 'Crack the Vault')),
+        title: Text(l10n.menuCrackVault),
         actions: [
           IconButton(
             onPressed: _loadStatus,
             icon: const Icon(Icons.refresh),
-            tooltip: _tr('Ververs', 'Refresh'),
+            tooltip: l10n.refresh,
           ),
         ],
       ),
@@ -531,4 +547,3 @@ class _VaultScreenState extends State<VaultScreen> {
     );
   }
 }
-

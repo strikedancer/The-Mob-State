@@ -1616,6 +1616,114 @@ abstract class AppLocalizations {
   /// **'Crack the Vault'**
   String get menuCrackVault;
 
+  /// No description provided for @vaultHeroTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Guess the code and win big prizes.'**
+  String get vaultHeroTagline;
+
+  /// No description provided for @vaultSeasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Season: {range}'**
+  String vaultSeasonLabel(String range);
+
+  /// No description provided for @vaultYourCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Your credits'**
+  String get vaultYourCredits;
+
+  /// No description provided for @vaultChooseStake.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your stake'**
+  String get vaultChooseStake;
+
+  /// No description provided for @vaultStakeCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'{stake, plural, one{{stake} credit} other{{stake} credits}}'**
+  String vaultStakeCredits(int stake);
+
+  /// No description provided for @vaultExpectedPrize.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected prize: +{reward} credits'**
+  String vaultExpectedPrize(int reward);
+
+  /// No description provided for @vaultCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get vaultCodeLabel;
+
+  /// No description provided for @vaultSubmitStake.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit stake'**
+  String get vaultSubmitStake;
+
+  /// No description provided for @vaultWrongCodesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong codes (this month)'**
+  String get vaultWrongCodesTitle;
+
+  /// No description provided for @vaultShowWrongCodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get vaultShowWrongCodes;
+
+  /// No description provided for @vaultHideWrongCodes.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get vaultHideWrongCodes;
+
+  /// No description provided for @vaultNoWrongCodesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No wrong codes saved yet.'**
+  String get vaultNoWrongCodesYet;
+
+  /// No description provided for @couldNotLoadVaultStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load status.'**
+  String get couldNotLoadVaultStatus;
+
+  /// No description provided for @vaultEnterFourDigitCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a 4-digit code.'**
+  String get vaultEnterFourDigitCode;
+
+  /// No description provided for @vaultAttemptSuccessGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Success.'**
+  String get vaultAttemptSuccessGeneric;
+
+  /// No description provided for @vaultAttemptFailedGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed.'**
+  String get vaultAttemptFailedGeneric;
+
+  /// No description provided for @vaultAttemptFailedRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed. Please try again.'**
+  String get vaultAttemptFailedRetry;
+
+  /// No description provided for @dashboardNewMessagesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} new messages'**
+  String dashboardNewMessagesCount(int count);
+
   /// No description provided for @rankProgress.
   ///
   /// In en, this message translates to:

@@ -430,6 +430,52 @@
   "territory": "Territory",
   "achievements": "Achievements",
   "menuCrackVault": "Crack the Vault",
+  "vaultHeroTagline": "Guess the code and win big prizes.",
+  "vaultSeasonLabel": "Season: {range}",
+  "@vaultSeasonLabel": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      }
+    }
+  },
+  "vaultYourCredits": "Your credits",
+  "vaultChooseStake": "Choose your stake",
+  "vaultStakeCredits": "{stake, plural, one{{stake} credit} other{{stake} credits}}",
+  "@vaultStakeCredits": {
+    "placeholders": {
+      "stake": {
+        "type": "int"
+      }
+    }
+  },
+  "vaultExpectedPrize": "Expected prize: +{reward} credits",
+  "@vaultExpectedPrize": {
+    "placeholders": {
+      "reward": {
+        "type": "int"
+      }
+    }
+  },
+  "vaultCodeLabel": "Code",
+  "vaultSubmitStake": "Submit stake",
+  "vaultWrongCodesTitle": "Wrong codes (this month)",
+  "vaultShowWrongCodes": "Show",
+  "vaultHideWrongCodes": "Hide",
+  "vaultNoWrongCodesYet": "No wrong codes saved yet.",
+  "couldNotLoadVaultStatus": "Could not load status.",
+  "vaultEnterFourDigitCode": "Enter a 4-digit code.",
+  "vaultAttemptSuccessGeneric": "Success.",
+  "vaultAttemptFailedGeneric": "Failed.",
+  "vaultAttemptFailedRetry": "Failed. Please try again.",
+  "dashboardNewMessagesCount": "{count} new messages",
+  "@dashboardNewMessagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "rankProgress": "Rank Progress",
   "cash": "Cash",
   "sessionRecap": "Session recap",

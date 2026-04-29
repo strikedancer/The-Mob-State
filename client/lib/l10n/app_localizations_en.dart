@@ -817,6 +817,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuCrackVault => 'Crack the Vault';
 
   @override
+  String get vaultHeroTagline => 'Guess the code and win big prizes.';
+
+  @override
+  String vaultSeasonLabel(String range) {
+    return 'Season: $range';
+  }
+
+  @override
+  String get vaultYourCredits => 'Your credits';
+
+  @override
+  String get vaultChooseStake => 'Choose your stake';
+
+  @override
+  String vaultStakeCredits(int stake) {
+    String _temp0 = intl.Intl.pluralLogic(
+      stake,
+      locale: localeName,
+      other: '$stake credits',
+      one: '$stake credit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String vaultExpectedPrize(int reward) {
+    return 'Expected prize: +$reward credits';
+  }
+
+  @override
+  String get vaultCodeLabel => 'Code';
+
+  @override
+  String get vaultSubmitStake => 'Submit stake';
+
+  @override
+  String get vaultWrongCodesTitle => 'Wrong codes (this month)';
+
+  @override
+  String get vaultShowWrongCodes => 'Show';
+
+  @override
+  String get vaultHideWrongCodes => 'Hide';
+
+  @override
+  String get vaultNoWrongCodesYet => 'No wrong codes saved yet.';
+
+  @override
+  String get couldNotLoadVaultStatus => 'Could not load status.';
+
+  @override
+  String get vaultEnterFourDigitCode => 'Enter a 4-digit code.';
+
+  @override
+  String get vaultAttemptSuccessGeneric => 'Success.';
+
+  @override
+  String get vaultAttemptFailedGeneric => 'Failed.';
+
+  @override
+  String get vaultAttemptFailedRetry => 'Failed. Please try again.';
+
+  @override
+  String dashboardNewMessagesCount(int count) {
+    return '$count new messages';
+  }
+
+  @override
   String get rankProgress => 'Rank Progress';
 
   @override

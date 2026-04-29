@@ -129,9 +129,7 @@ String _cashLabel(BuildContext context) {
 
 String _newMessagesLabel(BuildContext context, int count) {
   final l10n = AppLocalizations.of(context)!;
-  return l10n.localeName == 'nl'
-      ? '$count nieuwe berichten'
-      : '$count new messages';
+  return l10n.dashboardNewMessagesCount(count);
 }
 
 String _killProgressLabel(BuildContext context) {

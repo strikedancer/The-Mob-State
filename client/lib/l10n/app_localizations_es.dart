@@ -831,6 +831,74 @@ class AppLocalizationsEs extends AppLocalizations {
   String get menuCrackVault => 'Romper la bóveda';
 
   @override
+  String get vaultHeroTagline => 'Adivina el código y gana grandes premios.';
+
+  @override
+  String vaultSeasonLabel(String range) {
+    return 'Temporada: $range';
+  }
+
+  @override
+  String get vaultYourCredits => 'Tus créditos';
+
+  @override
+  String get vaultChooseStake => 'Elige tu apuesta';
+
+  @override
+  String vaultStakeCredits(int stake) {
+    String _temp0 = intl.Intl.pluralLogic(
+      stake,
+      locale: localeName,
+      other: '$stake créditos',
+      one: '$stake crédito',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String vaultExpectedPrize(int reward) {
+    return 'Premio esperado: +$reward créditos';
+  }
+
+  @override
+  String get vaultCodeLabel => 'Código';
+
+  @override
+  String get vaultSubmitStake => 'Enviar apuesta';
+
+  @override
+  String get vaultWrongCodesTitle => 'Códigos erróneos (este mes)';
+
+  @override
+  String get vaultShowWrongCodes => 'Mostrar';
+
+  @override
+  String get vaultHideWrongCodes => 'Ocultar';
+
+  @override
+  String get vaultNoWrongCodesYet => 'Aún no hay códigos erróneos guardados.';
+
+  @override
+  String get couldNotLoadVaultStatus => 'No se pudo cargar el estado.';
+
+  @override
+  String get vaultEnterFourDigitCode => 'Introduce un código de 4 dígitos.';
+
+  @override
+  String get vaultAttemptSuccessGeneric => 'Hecho.';
+
+  @override
+  String get vaultAttemptFailedGeneric => 'Error.';
+
+  @override
+  String get vaultAttemptFailedRetry => 'Error. Inténtalo de nuevo.';
+
+  @override
+  String dashboardNewMessagesCount(int count) {
+    return '$count mensajes nuevos';
+  }
+
+  @override
   String get rankProgress => 'Progreso de rango';
 
   @override

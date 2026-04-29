@@ -816,7 +816,75 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievements => 'Achievements';
 
   @override
-  String get menuCrackVault => 'Crack the Vault';
+  String get menuCrackVault => 'Kraak de Kluis';
+
+  @override
+  String get vaultHeroTagline => 'Raad de code en win flinke prijzen.';
+
+  @override
+  String vaultSeasonLabel(String range) {
+    return 'Ronde: $range';
+  }
+
+  @override
+  String get vaultYourCredits => 'Jouw credits';
+
+  @override
+  String get vaultChooseStake => 'Kies je inzet';
+
+  @override
+  String vaultStakeCredits(int stake) {
+    String _temp0 = intl.Intl.pluralLogic(
+      stake,
+      locale: localeName,
+      other: '$stake credits',
+      one: '$stake credit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String vaultExpectedPrize(int reward) {
+    return 'Verwachte prijs: +$reward credits';
+  }
+
+  @override
+  String get vaultCodeLabel => 'Code';
+
+  @override
+  String get vaultSubmitStake => 'Inzet';
+
+  @override
+  String get vaultWrongCodesTitle => 'Foute codes (deze maand)';
+
+  @override
+  String get vaultShowWrongCodes => 'Toon';
+
+  @override
+  String get vaultHideWrongCodes => 'Verberg';
+
+  @override
+  String get vaultNoWrongCodesYet => 'Nog geen foute codes opgeslagen.';
+
+  @override
+  String get couldNotLoadVaultStatus => 'Kon status niet laden.';
+
+  @override
+  String get vaultEnterFourDigitCode => 'Voer een 4-cijferige code in.';
+
+  @override
+  String get vaultAttemptSuccessGeneric => 'Gelukt.';
+
+  @override
+  String get vaultAttemptFailedGeneric => 'Mislukt.';
+
+  @override
+  String get vaultAttemptFailedRetry => 'Mislukt. Probeer opnieuw.';
+
+  @override
+  String dashboardNewMessagesCount(int count) {
+    return '$count nieuwe berichten';
+  }
 
   @override
   String get rankProgress => 'Rank Progress';

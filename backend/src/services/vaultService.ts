@@ -27,6 +27,7 @@ type AttemptResult = {
   balance: number;
   messageNl: string;
   messageEn: string;
+  messageEs: string;
   prize?: {
     type: 'CREDITS' | 'VIP_30D';
     credits?: number;
@@ -229,6 +230,7 @@ export const vaultService = {
         balance: 0,
         messageNl: 'Voer een 4-cijferige code in.',
         messageEn: 'Enter a 4-digit code.',
+        messageEs: 'Introduce un código de 4 dígitos.',
         wrongGuesses: [],
       };
     }
@@ -242,6 +244,7 @@ export const vaultService = {
         balance: 0,
         messageNl: 'Ongeldige inzet.',
         messageEn: 'Invalid stake.',
+        messageEs: 'Apuesta no válida.',
         wrongGuesses: [],
       };
     }
@@ -257,6 +260,7 @@ export const vaultService = {
         balance: status.player.premiumCredits,
         messageNl: 'Kraak de Kluis is nu niet actief.',
         messageEn: 'Crack the Vault is not active right now.',
+        messageEs: 'Romper la caja fuerte no está activo ahora.',
         wrongGuesses: status.player.wrongGuesses,
       };
     }
@@ -338,6 +342,7 @@ export const vaultService = {
           balance: result.balance,
           messageNl: 'Code gekraakt! Je hebt 1 maand VIP gewonnen.',
           messageEn: 'Vault cracked! You won 1 month of VIP.',
+          messageEs: '¡Código forzado! Has ganado 1 mes de VIP.',
           prize,
           wrongGuesses,
         };
@@ -349,6 +354,7 @@ export const vaultService = {
         balance: result.balance,
         messageNl: `Code gekraakt! +${tier.rewardCredits} credits.`,
         messageEn: `Vault cracked! +${tier.rewardCredits} credits.`,
+        messageEs: `¡Código forzado! +${tier.rewardCredits} créditos.`,
         prize: result.prize,
         wrongGuesses,
       };
@@ -361,6 +367,7 @@ export const vaultService = {
       balance: result.balance,
       messageNl: 'Fout! Deze code staat nu in je lijst.',
       messageEn: 'Wrong! This code has been added to your list.',
+      messageEs: '¡Incorrecto! Este código se ha añadido a tu lista.',
       wrongGuesses,
     };
   },
