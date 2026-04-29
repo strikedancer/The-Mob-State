@@ -3699,34 +3699,34 @@
   "vehicleOpsHeatLevelLow": "Niedrig",
   "vehicleOpsHeatLevelMedium": "Mittel",
   "vehicleOpsHeatLevelHigh": "Hoch",
-  "toolCategoryBoltCutter": "Bolt cutters",
-  "toolCategoryBurglaryKit": "Burglary kit",
-  "toolCategoryCarTools": "Car theft tools",
-  "toolCategoryJerryCan": "Jerry can",
-  "toolCategorySprayPaint": "Spray paint",
-  "toolCategoryCrowbar": "Crowbar",
-  "toolCategoryGlassCutter": "Glass cutter",
+  "toolCategoryBoltCutter": "Bolzenschneider",
+  "toolCategoryBurglaryKit": "Einbruchset",
+  "toolCategoryCarTools": "Werkzeuge für Autodiebstahl",
+  "toolCategoryJerryCan": "Jerry kann",
+  "toolCategorySprayPaint": "Sprühfarbe",
+  "toolCategoryCrowbar": "Brecheisen",
+  "toolCategoryGlassCutter": "Glasschneider",
   "toolCategoryLaptop": "Laptop",
-  "toolCategoryCounterfeiting": "Counterfeiting",
-  "toolCategoryToolbox": "Toolbox",
-  "toolCategoryRope": "Rope",
-  "toolCategorySilencer": "Silencer",
-  "toolCategoryFakeDocs": "Fake documents",
-  "toolCategoryNightVision": "Night vision",
-  "toolCategoryBurnerPhone": "Burner phone",
-  "toolCategoryGpsJammer": "GPS jammer",
-  "toolCategoryThermalDrill": "Thermal drill",
-  "toolsScreenTitle": "Black Market – Tools",
-  "toolsTabBuy": "Buy",
-  "toolsTabMyTools": "My tools",
-  "toolsNoToolsAvailable": "No tools available",
-  "toolsEmptyInventoryTitle": "You do not have any tools yet",
-  "toolsEmptyInventoryHint": "Buy tools in the shop",
-  "toolsNotEnoughMoney": "You do not have enough money!",
-  "toolsNotEnoughMoneyRepair": "You do not have enough money for repair!",
-  "toolsBuyError": "Error while buying",
-  "toolsRepairError": "Error while repairing",
-  "toolsPurchased": "{toolName} purchased!",
+  "toolCategoryCounterfeiting": "Fälschung",
+  "toolCategoryToolbox": "Werkzeugkasten",
+  "toolCategoryRope": "Seil",
+  "toolCategorySilencer": "Schalldämpfer",
+  "toolCategoryFakeDocs": "Gefälschte Dokumente",
+  "toolCategoryNightVision": "Nachtsicht",
+  "toolCategoryBurnerPhone": "Brennertelefon",
+  "toolCategoryGpsJammer": "GPS-Störsender",
+  "toolCategoryThermalDrill": "Thermobohrer",
+  "toolsScreenTitle": "Schwarzmarkt – Werkzeuge",
+  "toolsTabBuy": "Kaufen",
+  "toolsTabMyTools": "Meine Werkzeuge",
+  "toolsNoToolsAvailable": "Keine Werkzeuge vorhanden",
+  "toolsEmptyInventoryTitle": "Sie haben noch kein Werkzeug",
+  "toolsEmptyInventoryHint": "Kaufen Sie Werkzeuge im Shop",
+  "toolsNotEnoughMoney": "Du hast nicht genug Geld!",
+  "toolsNotEnoughMoneyRepair": "Sie haben nicht genug Geld für die Reparatur!",
+  "toolsBuyError": "Fehler beim Kauf",
+  "toolsRepairError": "Fehler beim Reparieren",
+  "toolsPurchased": "{toolName} gekauft!",
   "@toolsPurchased": {
     "placeholders": {
       "toolName": {
@@ -3734,7 +3734,7 @@
       }
     }
   },
-  "toolsRepaired": "{toolName} repaired for €{cost}",
+  "toolsRepaired": "{toolName} repariert für 1 €⟧",
   "@toolsRepaired": {
     "placeholders": {
       "toolName": {
@@ -3745,9 +3745,9 @@
       }
     }
   },
-  "toolsBadgeInventoryFull": "FULL",
-  "toolsBadgeBroken": "BROKEN",
-  "toolsBadgeRepair": "REPAIR",
+  "toolsBadgeInventoryFull": "VOLL",
+  "toolsBadgeBroken": "GEBROCHEN",
+  "toolsBadgeRepair": "REPARIEREN",
   "countryPortugal": "Portugal",
   "countryIreland": "Irland",
   "countryLuxembourg": "Luxemburg",
@@ -3986,6 +3986,42 @@
       "hours": {
         "type": "int"
       },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardJailStatusIn": "Im Gefängnis ({duration})",
+  "@dashboardJailStatusIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCrewWarStatusPreparing": "Vorbereiten",
+  "dashboardCrewWarStatusActive": "Aktiv",
+  "dashboardCrewWarStatusLockdown": "Sperrung",
+  "dashboardCrewWarStatusResolved": "Gelöst",
+  "dashboardCrewWarStatusArchived": "Archiviert",
+  "dashboardCrewWarStatusCancelled": "Abgesagt",
+  "dashboardCrewWarStatusNone": "Kein aktiver Krieg",
+  "dashboardCrewWarTypeKill": "Krieg töten",
+  "dashboardCrewWarTypeEconomy": "Wirtschaftskrieg",
+  "dashboardCrewWarTypeTerritory": "Territorialkrieg",
+  "dashboardCrewWarTypeTotal": "Totaler Krieg",
+  "dashboardTerritoryIncomeNotConfigured": "nicht konfiguriert",
+  "dashboardTerritoryIncomeEveryHours": "{hours, plural, one{every hour} other{every {hours} hours}}",
+  "@dashboardTerritoryIncomeEveryHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardTerritoryIncomeEveryMinutes": "alle {minutes} Min",
+  "@dashboardTerritoryIncomeEveryMinutes": {
+    "placeholders": {
       "minutes": {
         "type": "int"
       }

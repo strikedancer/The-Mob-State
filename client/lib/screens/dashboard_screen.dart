@@ -2477,10 +2477,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   Timer? _cooldownTimer;
   Timer? _refreshTimer;
 
-  bool get _isNl =>
-      (AppLocalizations.of(context)?.localeName ?? 'en').toLowerCase().startsWith('nl');
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   String _dailyGoalTitle(AppLocalizations l10n, String key) {
     switch (key) {
       case 'crime_3':
@@ -2500,8 +2496,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       case 'weekly_travel_3':
         return l10n.dailyGoalTitle_weekly_travel_3;
       default:
-        // Fallback to server-provided NL/EN until templates are expanded.
-        return _isNl ? key : key;
+        return key;
     }
   }
 
@@ -3313,7 +3308,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
   String _formatCooldown(int seconds) {
     return formatAdaptiveDurationFromSeconds(
       seconds,
-      localeName: _isNl ? 'nl' : 'en',
+      localeName: Localizations.localeOf(context).languageCode,
     );
   }
 
@@ -3952,9 +3947,8 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     _buildInfoRow(
                       l10n.jail,
                       _stats != null && _stats!.jailed
-                          ? _tr(
-                              'In cel (${_formatCooldown(_stats!.jailTimeRemaining)})',
-                              'In jail (${_formatCooldown(_stats!.jailTimeRemaining)})',
+                          ? l10n.dashboardJailStatusIn(
+                              _formatCooldown(_stats!.jailTimeRemaining),
                             )
                           : l10n.free,
                       _stats != null && _stats!.jailed
@@ -3975,7 +3969,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     const SizedBox(height: 12),
                     _buildInfoRow(
                       l10n.dashboardStatusLabel,
-                      _formatCrewWarDashboardStatus(_stats?.crewWar?.status),
+                      _formatCrewWarDashboardStatus(l10n, _stats?.crewWar?.status),
                       _stats?.crewWar?.hasActiveWar == true
                           ? Colors.orange.shade300
                           : Colors.grey.shade400,
@@ -3992,7 +3986,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                     if ((_stats?.crewWar?.warType ?? '').isNotEmpty)
                       _buildInfoRow(
                         l10n.dashboardTypeLabel,
-                        _formatCrewWarDashboardType(_stats?.crewWar?.warType),
+                        _formatCrewWarDashboardType(l10n, _stats?.crewWar?.warType),
                         Colors.white,
                       ),
                     if ((_stats?.crewWar?.opponentCrewName ?? '').isNotEmpty)
@@ -4052,7 +4046,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       ),
                       _buildInfoRow(
                         l10n.dashboardPayout,
-                        '${formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerInterval)} · ${_territoryIncomeIntervalLabel(_stats!.territoryLeaderStats!.incomeIntervalMinutes)}',
+                        '${formatCurrency(_stats!.territoryLeaderStats!.passiveIncomePerInterval)} · ${_territoryIncomeIntervalLabel(l10n, _stats!.territoryLeaderStats!.incomeIntervalMinutes)}',
                         Colors.green.shade300,
                       ),
                       _buildInfoRow(
@@ -4418,55 +4412,49 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     );
   }
 
-  String _formatCrewWarDashboardStatus(String? status) {
+  String _formatCrewWarDashboardStatus(AppLocalizations l10n, String? status) {
     switch (status) {
       case 'preparing':
-        return _tr('Voorbereiding', 'Preparing');
+        return l10n.dashboardCrewWarStatusPreparing;
       case 'active':
-        return _tr('Actief', 'Active');
+        return l10n.dashboardCrewWarStatusActive;
       case 'lockdown':
-        return _tr('Lockdown', 'Lockdown');
+        return l10n.dashboardCrewWarStatusLockdown;
       case 'resolved':
-        return _tr('Afgerond', 'Resolved');
+        return l10n.dashboardCrewWarStatusResolved;
       case 'archived':
-        return _tr('Gearchiveerd', 'Archived');
+        return l10n.dashboardCrewWarStatusArchived;
       case 'cancelled':
-        return _tr('Geannuleerd', 'Cancelled');
+        return l10n.dashboardCrewWarStatusCancelled;
       default:
-        return _tr('Geen actieve oorlog', 'No active war');
+        return l10n.dashboardCrewWarStatusNone;
     }
   }
 
-  String _formatCrewWarDashboardType(String? warType) {
+  String _formatCrewWarDashboardType(AppLocalizations l10n, String? warType) {
     switch (warType) {
       case 'kill_war':
-        return 'Kill War';
+        return l10n.dashboardCrewWarTypeKill;
       case 'economy_war':
-        return 'Economy War';
+        return l10n.dashboardCrewWarTypeEconomy;
       case 'territory_war':
-        return 'Territory War';
+        return l10n.dashboardCrewWarTypeTerritory;
       case 'total_war':
-        return 'Total War';
+        return l10n.dashboardCrewWarTypeTotal;
       default:
         return '-';
     }
   }
 
-  String _territoryIncomeIntervalLabel(int minutes) {
+  String _territoryIncomeIntervalLabel(AppLocalizations l10n, int minutes) {
     if (minutes <= 0) {
-      return _tr('niet ingesteld', 'not configured');
+      return l10n.dashboardTerritoryIncomeNotConfigured;
     }
-    if (minutes == 60) {
-      return _tr('ieder uur', 'every hour');
+    if (minutes % 60 != 0) {
+      return l10n.dashboardTerritoryIncomeEveryMinutes(minutes);
     }
-    if (minutes % 60 == 0) {
-      final hours = minutes ~/ 60;
-      return _tr(
-        'iedere $hours uur',
-        'every $hours hour${hours == 1 ? '' : 's'}',
-      );
-    }
-    return _tr('elke $minutes min', 'every $minutes min');
+    final hours = minutes ~/ 60;
+    return l10n.dashboardTerritoryIncomeEveryHours(hours);
   }
 
   Widget _buildDetailedProgressBar(

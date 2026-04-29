@@ -1373,6 +1373,63 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardPhaseEndsIn => 'Phase ends in';
 
   @override
+  String dashboardJailStatusIn(String duration) {
+    return 'In jail ($duration)';
+  }
+
+  @override
+  String get dashboardCrewWarStatusPreparing => 'Preparing';
+
+  @override
+  String get dashboardCrewWarStatusActive => 'Active';
+
+  @override
+  String get dashboardCrewWarStatusLockdown => 'Lockdown';
+
+  @override
+  String get dashboardCrewWarStatusResolved => 'Resolved';
+
+  @override
+  String get dashboardCrewWarStatusArchived => 'Archived';
+
+  @override
+  String get dashboardCrewWarStatusCancelled => 'Cancelled';
+
+  @override
+  String get dashboardCrewWarStatusNone => 'No active war';
+
+  @override
+  String get dashboardCrewWarTypeKill => 'Kill War';
+
+  @override
+  String get dashboardCrewWarTypeEconomy => 'Economy War';
+
+  @override
+  String get dashboardCrewWarTypeTerritory => 'Territory War';
+
+  @override
+  String get dashboardCrewWarTypeTotal => 'Total War';
+
+  @override
+  String get dashboardTerritoryIncomeNotConfigured => 'not configured';
+
+  @override
+  String dashboardTerritoryIncomeEveryHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: 'every $hours hours',
+      one: 'every hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dashboardTerritoryIncomeEveryMinutes(int minutes) {
+    return 'every $minutes min';
+  }
+
+  @override
   String get dashboardCrewTerritory => 'Crew Territory';
 
   @override

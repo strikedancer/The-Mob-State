@@ -2894,13 +2894,13 @@
   "supportMod_jobs": "Trabajo / empleos",
   "supportMod_vehicles": "Robo de coche / moto / barco",
   "supportMod_garage": "Garaje",
-  "supportMod_marina": "Marina",
+  "supportMod_marina": "Puerto pequeño",
   "supportMod_aviation": "Aviación",
   "supportMod_smuggling": "Contrabando",
   "supportMod_drugs": "Drogas",
   "supportMod_nightclub": "Club nocturno",
   "supportMod_prostitution": "Prostitución",
-  "supportMod_crew": "Crew",
+  "supportMod_crew": "Multitud",
   "supportMod_friends": "Amigos / jugadores",
   "supportMod_hitlist": "Lista negra",
   "supportMod_security": "Seguridad / FBI",
@@ -3624,7 +3624,7 @@
   "crimeCriminalRecordWipeTooltip": "Borra por completo tus antecedentes penales si ten éxito. Solo tiene sentido si ya tienes condenas.",
   "toolThermalDrill": "Taladro térmico",
   "crimeResultMoneyLabel": "Dinero",
-  "crimeResultXpLabel": "XP",
+  "crimeResultXpLabel": "experiencia",
   "crimeOutcomeRowReward": "Recompensa:",
   "crimeOutcomeRowXp": "XP:",
   "crimeOutcomeRowTools": "Herramientas:",
@@ -3699,34 +3699,34 @@
   "vehicleOpsHeatLevelLow": "Bajo",
   "vehicleOpsHeatLevelMedium": "Medio",
   "vehicleOpsHeatLevelHigh": "Alto",
-  "toolCategoryBoltCutter": "Bolt cutters",
-  "toolCategoryBurglaryKit": "Burglary kit",
-  "toolCategoryCarTools": "Car theft tools",
-  "toolCategoryJerryCan": "Jerry can",
-  "toolCategorySprayPaint": "Spray paint",
-  "toolCategoryCrowbar": "Crowbar",
-  "toolCategoryGlassCutter": "Glass cutter",
-  "toolCategoryLaptop": "Laptop",
-  "toolCategoryCounterfeiting": "Counterfeiting",
-  "toolCategoryToolbox": "Toolbox",
-  "toolCategoryRope": "Rope",
-  "toolCategorySilencer": "Silencer",
-  "toolCategoryFakeDocs": "Fake documents",
-  "toolCategoryNightVision": "Night vision",
-  "toolCategoryBurnerPhone": "Burner phone",
-  "toolCategoryGpsJammer": "GPS jammer",
-  "toolCategoryThermalDrill": "Thermal drill",
-  "toolsScreenTitle": "Black Market – Tools",
-  "toolsTabBuy": "Buy",
-  "toolsTabMyTools": "My tools",
-  "toolsNoToolsAvailable": "No tools available",
-  "toolsEmptyInventoryTitle": "You do not have any tools yet",
-  "toolsEmptyInventoryHint": "Buy tools in the shop",
-  "toolsNotEnoughMoney": "You do not have enough money!",
-  "toolsNotEnoughMoneyRepair": "You do not have enough money for repair!",
-  "toolsBuyError": "Error while buying",
-  "toolsRepairError": "Error while repairing",
-  "toolsPurchased": "{toolName} purchased!",
+  "toolCategoryBoltCutter": "Cortadoras de pernos",
+  "toolCategoryBurglaryKit": "kit de robo",
+  "toolCategoryCarTools": "Herramientas para robo de autos",
+  "toolCategoryJerryCan": "bidón",
+  "toolCategorySprayPaint": "pintura en aerosol",
+  "toolCategoryCrowbar": "Palanca",
+  "toolCategoryGlassCutter": "cortador de vidrio",
+  "toolCategoryLaptop": "Computadora portátil",
+  "toolCategoryCounterfeiting": "falsificación",
+  "toolCategoryToolbox": "Caja de instrumento",
+  "toolCategoryRope": "Soga",
+  "toolCategorySilencer": "Silenciador",
+  "toolCategoryFakeDocs": "Documentos falsos",
+  "toolCategoryNightVision": "Visión nocturna",
+  "toolCategoryBurnerPhone": "teléfono quemador",
+  "toolCategoryGpsJammer": "bloqueador de GPS",
+  "toolCategoryThermalDrill": "taladro termico",
+  "toolsScreenTitle": "Mercado negro – Herramientas",
+  "toolsTabBuy": "Comprar",
+  "toolsTabMyTools": "mis herramientas",
+  "toolsNoToolsAvailable": "No hay herramientas disponibles",
+  "toolsEmptyInventoryTitle": "Aún no tienes herramientas",
+  "toolsEmptyInventoryHint": "Comprar herramientas en la tienda.",
+  "toolsNotEnoughMoney": "¡No tienes suficiente dinero!",
+  "toolsNotEnoughMoneyRepair": "¡No tienes suficiente dinero para la reparación!",
+  "toolsBuyError": "Error al comprar",
+  "toolsRepairError": "Error al reparar",
+  "toolsPurchased": "{toolName} comprado!",
   "@toolsPurchased": {
     "placeholders": {
       "toolName": {
@@ -3734,7 +3734,7 @@
       }
     }
   },
-  "toolsRepaired": "{toolName} repaired for €{cost}",
+  "toolsRepaired": "{toolName} reparado por ⟦1€⟧",
   "@toolsRepaired": {
     "placeholders": {
       "toolName": {
@@ -3745,29 +3745,29 @@
       }
     }
   },
-  "toolsBadgeInventoryFull": "FULL",
-  "toolsBadgeBroken": "BROKEN",
-  "toolsBadgeRepair": "REPAIR",
+  "toolsBadgeInventoryFull": "LLENA",
+  "toolsBadgeBroken": "ROTA",
+  "toolsBadgeRepair": "REPARAR",
   "countryPortugal": "Portugal",
-  "countryIreland": "Ireland",
-  "countryLuxembourg": "Luxembourg",
+  "countryIreland": "Irlanda",
+  "countryLuxembourg": "Luxemburgo",
   "countryAustria": "Austria",
-  "countryDenmark": "Denmark",
-  "countrySweden": "Sweden",
-  "countryNorway": "Norway",
-  "countryFinland": "Finland",
-  "countryPoland": "Poland",
-  "countryCzechia": "Czechia",
-  "countryGreece": "Greece",
-  "countryTurkey": "Turkey",
-  "countryUae": "United Arab Emirates",
-  "countryDubai": "Dubai",
-  "prostitutionDistrictOwnedBadge": "Owned",
-  "prostitutionOwnerLabel": "Owner:",
-  "prostitutionForSale": "For sale",
-  "prostitutionRoomsLabel": "Rooms:",
-  "prostitutionRoomsRented": "rented",
-  "prostitutionRldAppBarTitle": "Red Light District ({country})",
+  "countryDenmark": "Dinamarca",
+  "countrySweden": "Suecia",
+  "countryNorway": "Noruega",
+  "countryFinland": "Finlandia",
+  "countryPoland": "Polonia",
+  "countryCzechia": "Chequia",
+  "countryGreece": "Grecia",
+  "countryTurkey": "Pava",
+  "countryUae": "Emiratos Árabes Unidos",
+  "countryDubai": "Dubái",
+  "prostitutionDistrictOwnedBadge": "Propiedad",
+  "prostitutionOwnerLabel": "Dueña:",
+  "prostitutionForSale": "En venta",
+  "prostitutionRoomsLabel": "Alojamiento:",
+  "prostitutionRoomsRented": "alquilada",
+  "prostitutionRldAppBarTitle": "Barrio Rojo ({country})",
   "@prostitutionRldAppBarTitle": {
     "placeholders": {
       "country": {
@@ -3775,8 +3775,8 @@
       }
     }
   },
-  "prostitutionOccupiedShort": "Occupied",
-  "prostitutionNotApplicable": "N/A",
+  "prostitutionOccupiedShort": "Ocupada",
+  "prostitutionNotApplicable": "N / A",
   "prostitutionBetrayalDefaultMessage": "¡Traición! Tu club nocturno sufrió una filtración de información.",
   "prostitutionLoadError": "Error al cargar los datos",
   "prostitutionNoDistrictInCountry": "No hay distrito rojo en este país",
@@ -3986,6 +3986,42 @@
       "hours": {
         "type": "int"
       },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardJailStatusIn": "En la cárcel ({duration})",
+  "@dashboardJailStatusIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCrewWarStatusPreparing": "Preparante",
+  "dashboardCrewWarStatusActive": "Activa",
+  "dashboardCrewWarStatusLockdown": "Aislamiento",
+  "dashboardCrewWarStatusResolved": "Resuelta",
+  "dashboardCrewWarStatusArchived": "Archivada",
+  "dashboardCrewWarStatusCancelled": "Cancelada",
+  "dashboardCrewWarStatusNone": "Sin guerra activa",
+  "dashboardCrewWarTypeKill": "matar guerra",
+  "dashboardCrewWarTypeEconomy": "Guerra económica",
+  "dashboardCrewWarTypeTerritory": "Guerra territorial",
+  "dashboardCrewWarTypeTotal": "Guerra total",
+  "dashboardTerritoryIncomeNotConfigured": "No configurada",
+  "dashboardTerritoryIncomeEveryHours": "{hours, plural, one{every hour} other{every {hours} hours}}",
+  "@dashboardTerritoryIncomeEveryHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardTerritoryIncomeEveryMinutes": "cada {minutes} min",
+  "@dashboardTerritoryIncomeEveryMinutes": {
+    "placeholders": {
       "minutes": {
         "type": "int"
       }

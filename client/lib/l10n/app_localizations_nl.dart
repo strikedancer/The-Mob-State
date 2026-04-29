@@ -619,7 +619,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Risico: per etappe (je kunt gepakt worden en alles kwijt raken)';
 
   @override
-  String get travelStart => 'Start';
+  String get travelStart => 'Begin';
 
   @override
   String travelInTransitTo(String country) {
@@ -703,7 +703,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get countrySwitzerland => 'Zwitserland';
 
   @override
-  String get crew => 'Crew';
+  String get crew => 'Bemanning';
 
   @override
   String get profile => 'Profiel';
@@ -712,16 +712,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get logout => 'Uitloggen';
 
   @override
-  String get logOut => 'Log out';
+  String get logOut => 'Uitloggen';
 
   @override
   String get menu => 'Menu';
 
   @override
-  String get account => 'Account';
+  String get account => 'Rekening';
 
   @override
-  String get messages => 'Messages';
+  String get messages => 'Berichten';
 
   @override
   String get noDirectMessagesYet => 'Nog geen berichten';
@@ -752,7 +752,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String chatFriendRankLine(int rank) {
-    return '★ Rank $rank';
+    return '★ Rang $rank';
   }
 
   @override
@@ -819,10 +819,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get liveEvents => 'Live events';
 
   @override
-  String get support => 'Support';
+  String get support => 'Steun';
 
   @override
-  String get events => 'Events';
+  String get events => 'Evenementen';
 
   @override
   String get aviation => 'Luchtvaart';
@@ -837,10 +837,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tradeGoods => 'Zwarte markt';
 
   @override
-  String get drugs => 'Drugs';
+  String get drugs => 'Geneesmiddelen';
 
   @override
-  String get nightclub => 'Nightclub';
+  String get nightclub => 'Nachtclub';
 
   @override
   String get crypto => 'Crypto';
@@ -1043,10 +1043,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rankGangster => 'Gangster';
 
   @override
-  String get rankMafioso => 'Mafioso';
+  String get rankMafioso => 'Maffioso';
 
   @override
-  String get rankGodfather => 'Godfather';
+  String get rankGodfather => 'Peetvader';
 
   @override
   String get dailyGoalTitle_crime_3 => 'Pleeg 3 misdaden';
@@ -1182,7 +1182,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get productionReadyIn => 'Productie klaar over';
 
   @override
-  String get nightclubEvents => 'Nightclub events';
+  String get nightclubEvents => 'Nachtclubevenementen';
 
   @override
   String get nextEventStartsIn => 'Volgende event start over';
@@ -1315,7 +1315,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardProductionReadyIn => 'Productie klaar over';
 
   @override
-  String get dashboardNightclubEvents => 'Nightclub events';
+  String get dashboardNightclubEvents => 'Nachtclubevenementen';
 
   @override
   String get dashboardNextEventStartsIn => 'Volgende event start over';
@@ -1377,6 +1377,63 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get dashboardPhaseEndsIn => 'Fase eindigt over';
+
+  @override
+  String dashboardJailStatusIn(String duration) {
+    return 'In de gevangenis ($duration)';
+  }
+
+  @override
+  String get dashboardCrewWarStatusPreparing => 'Voorbereiden';
+
+  @override
+  String get dashboardCrewWarStatusActive => 'Actief';
+
+  @override
+  String get dashboardCrewWarStatusLockdown => 'Lockdown';
+
+  @override
+  String get dashboardCrewWarStatusResolved => 'Opgelost';
+
+  @override
+  String get dashboardCrewWarStatusArchived => 'Gearchiveerd';
+
+  @override
+  String get dashboardCrewWarStatusCancelled => 'Geannuleerd';
+
+  @override
+  String get dashboardCrewWarStatusNone => 'Geen actieve oorlog';
+
+  @override
+  String get dashboardCrewWarTypeKill => 'Dood de oorlog';
+
+  @override
+  String get dashboardCrewWarTypeEconomy => 'Economie Oorlog';
+
+  @override
+  String get dashboardCrewWarTypeTerritory => 'Territoriumoorlog';
+
+  @override
+  String get dashboardCrewWarTypeTotal => 'Totale oorlog';
+
+  @override
+  String get dashboardTerritoryIncomeNotConfigured => 'niet geconfigureerd';
+
+  @override
+  String dashboardTerritoryIncomeEveryHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: 'every $hours hours',
+      one: 'every hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dashboardTerritoryIncomeEveryMinutes(int minutes) {
+    return 'elke $minutes min';
+  }
 
   @override
   String get dashboardCrewTerritory => 'Crewterritorium';
@@ -1448,7 +1505,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleOpsHotspot => 'Hotspot';
 
   @override
-  String get vehicleOpsCrew => 'Crew';
+  String get vehicleOpsCrew => 'Bemanning';
 
   @override
   String get vehicleOpsCrewMatch => 'Crew-match';
@@ -1555,7 +1612,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get avatarUpdated => 'Avatar bijgewerkt!';
 
   @override
-  String get avatarChangeFailed => 'Failed to change avatar';
+  String get avatarChangeFailed => 'Kan de avatar niet wijzigen';
 
   @override
   String error(String error) {
@@ -1580,7 +1637,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dutch => 'Nederlands';
 
   @override
-  String get english => 'English';
+  String get english => 'Engels';
 
   @override
   String get cancel => 'Annuleren';
@@ -1604,7 +1661,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get usernameTaken => 'Gebruikersnaam al in gebruik';
 
   @override
-  String get usernameChangeFailed => 'Failed to change username';
+  String get usernameChangeFailed => 'Kan gebruikersnaam niet wijzigen';
 
   @override
   String get oncePerMonth => '1x per maand wijzigen';
@@ -1619,161 +1676,163 @@ class AppLocalizationsNl extends AppLocalizations {
   String get allowMessagesDesc => 'Andere spelers kunnen je berichten sturen';
 
   @override
-  String get settingsSystemNotificationsTitle => 'System notifications for app';
+  String get settingsSystemNotificationsTitle => 'Systeemmeldingen voor app';
 
   @override
   String get settingsPushPermissionAllowedLinked =>
-      'Permission: allowed, device linked';
+      'Toestemming: toegestaan, apparaat gekoppeld';
 
   @override
   String get settingsPushPermissionAllowedRelinking =>
-      'Permission: allowed, device is re-linking';
+      'Toestemming: toegestaan, apparaat wordt opnieuw gekoppeld';
 
   @override
   String get settingsPushPermissionProvisionalLinked =>
-      'Permission: provisional, device linked';
+      'Toestemming: voorlopig, apparaat gekoppeld';
 
   @override
   String get settingsPushPermissionProvisionalRelinking =>
-      'Permission: provisional, device is re-linking';
+      'Toestemming: voorlopig, apparaat wordt opnieuw gekoppeld';
 
   @override
-  String get settingsPushPermissionDenied => 'Permission: denied';
+  String get settingsPushPermissionDenied => 'Toestemming: geweigerd';
 
   @override
   String get settingsPushPermissionNotRequested =>
-      'Permission: not requested yet';
+      'Toestemming: nog niet aangevraagd';
 
   @override
-  String get settingsPushPermissionUnknown => 'Permission: unknown';
+  String get settingsPushPermissionUnknown => 'Toestemming: onbekend';
 
   @override
   String get settingsDeviceTokenRegistered =>
-      'Device token registered on server';
+      'Apparaattoken geregistreerd op de server';
 
   @override
   String get settingsDeviceTokenNotRegistered =>
-      'No device token registered yet';
+      'Er is nog geen apparaattoken geregistreerd';
 
   @override
   String get settingsPushHelpText =>
-      'Use this button to request browser/iPhone permission again and register your push token.';
+      'Met deze knop kunt u opnieuw browser/iPhone-toestemming aanvragen en uw pushtoken registreren.';
 
   @override
-  String get working => 'Working...';
+  String get working => 'Werken...';
 
   @override
-  String get settingsEnablePush => 'Enable push';
+  String get settingsEnablePush => 'Schakel push in';
 
   @override
   String get settingsPushEnabledToast =>
-      'Push notifications enabled. New notifications will now be received.';
+      'Pushmeldingen ingeschakeld. Er worden nu nieuwe meldingen ontvangen.';
 
   @override
   String get settingsPushDisabledInSystem =>
-      'Push is disabled in your browser/iPhone settings. Enable notifications for this app.';
+      'Push is uitgeschakeld in uw browser-/iPhone-instellingen. Schakel meldingen in voor deze app.';
 
   @override
   String settingsEnablePushFailed(String error) {
-    return 'Failed to enable push notifications: $error';
+    return 'Kan pushmeldingen niet inschakelen: $error';
   }
 
   @override
-  String get settingsPlayerEventsTitle => 'Player events';
+  String get settingsPlayerEventsTitle => 'Speler evenementen';
 
   @override
-  String get settingsPushLivePlayerEventsTitle => 'Push: live player events';
+  String get settingsPushLivePlayerEventsTitle =>
+      'Push: live spelersevenementen';
 
   @override
   String get settingsPushLivePlayerEventsSubtitle =>
-      'Start and end of recurring competition events (e.g. top-score rounds).';
+      'Begin en einde van terugkerende competitie-evenementen (bijvoorbeeld topscorerondes).';
 
   @override
-  String get settingsCryptoNotificationsTitle => 'Crypto Notifications';
+  String get settingsCryptoNotificationsTitle => 'Crypto-meldingen';
 
   @override
-  String get settingsCryptoPushTradesTitle => 'Push: Trades';
+  String get settingsCryptoPushTradesTitle => 'Push: transacties';
 
   @override
   String get settingsCryptoPushTradesSubtitle =>
-      'Push notification for buy/sell trades';
+      'Pushmelding voor koop-/verkooptransacties';
 
   @override
-  String get settingsCryptoPushPriceAlertsTitle => 'Push: Price alerts';
+  String get settingsCryptoPushPriceAlertsTitle => 'Push: prijswaarschuwingen';
 
   @override
   String get settingsCryptoPushPriceAlertsSubtitle =>
-      'Push notification for relevant price moves';
+      'Pushmelding voor relevante prijsbewegingen';
 
   @override
-  String get settingsCryptoPushOrdersTitle => 'Push: Orders';
+  String get settingsCryptoPushOrdersTitle => 'Push: bestellingen';
 
   @override
   String get settingsCryptoPushOrdersSubtitle =>
-      'Push notification when order is triggered or filled';
+      'Pushmelding wanneer de bestelling wordt geactiveerd of gevuld';
 
   @override
-  String get settingsCryptoPushMissionsTitle => 'Push: Missions';
+  String get settingsCryptoPushMissionsTitle => 'Push: missies';
 
   @override
   String get settingsCryptoPushMissionsSubtitle =>
-      'Push notification when a crypto mission is completed';
+      'Pushmelding wanneer een cryptomissie is voltooid';
 
   @override
-  String get settingsCryptoPushLeaderboardTitle => 'Push: Leaderboard';
+  String get settingsCryptoPushLeaderboardTitle => 'Push: klassement';
 
   @override
   String get settingsCryptoPushLeaderboardSubtitle =>
-      'Push notification for crypto leaderboard rewards';
+      'Pushmelding voor crypto-leaderboard-beloningen';
 
   @override
-  String get settingsCryptoInAppTradesTitle => 'In-app: Trades';
+  String get settingsCryptoInAppTradesTitle => 'In-app: transacties';
 
   @override
   String get settingsCryptoInAppTradesSubtitle =>
-      'Show trade events in your event feed';
+      'Toon handelsevenementen in uw evenementenfeed';
 
   @override
-  String get settingsCryptoInAppPriceAlertsTitle => 'In-app: Price alerts';
+  String get settingsCryptoInAppPriceAlertsTitle =>
+      'In-app: prijswaarschuwingen';
 
   @override
   String get settingsCryptoInAppPriceAlertsSubtitle =>
-      'Show price alert events in your event feed';
+      'Toon prijswaarschuwingsgebeurtenissen in uw evenementenfeed';
 
   @override
-  String get settingsCryptoInAppOrdersTitle => 'In-app: Orders';
+  String get settingsCryptoInAppOrdersTitle => 'In-app: bestellingen';
 
   @override
   String get settingsCryptoInAppOrdersSubtitle =>
-      'Show order events in your event feed';
+      'Toon bestelgebeurtenissen in uw evenementenfeed';
 
   @override
-  String get settingsCryptoInAppMissionsTitle => 'In-app: Missions';
+  String get settingsCryptoInAppMissionsTitle => 'In-app: missies';
 
   @override
   String get settingsCryptoInAppMissionsSubtitle =>
-      'Show mission completions in your event feed';
+      'Toon voltooide missies in je evenementenfeed';
 
   @override
-  String get settingsCryptoInAppLeaderboardTitle => 'In-app: Leaderboard';
+  String get settingsCryptoInAppLeaderboardTitle => 'In-app: klassement';
 
   @override
   String get settingsCryptoInAppLeaderboardSubtitle =>
-      'Show leaderboard rewards in your event feed';
+      'Toon klassementbeloningen in uw evenementenfeed';
 
   @override
   String get settingsAvatarChangeWeeklyLimit =>
-      'You can only change your avatar once per week';
+      'Je kunt je avatar slechts één keer per week wijzigen';
 
   @override
   String get settingsUsernameChangeMonthlyLimit =>
-      'You can only change your username once per month';
+      'U kunt uw gebruikersnaam slechts één keer per maand wijzigen';
 
   @override
   String get settingsSaved => 'Instellingen opgeslagen';
 
   @override
-  String get vipStatus => 'VIP Status';
+  String get vipStatus => 'VIP-status';
 
   @override
   String activeUntil(String date) {
@@ -1790,7 +1849,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get freeAvatars => 'Gratis Avatars';
 
   @override
-  String get vipAvatars => 'VIP Avatars';
+  String get vipAvatars => 'VIP-avatars';
 
   @override
   String get vip => 'VIP';
@@ -1814,7 +1873,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get foodPizza => 'Pizza';
 
   @override
-  String get foodBurger => 'Burger';
+  String get foodBurger => 'Hamburger';
 
   @override
   String get foodSteak => 'Steak';
@@ -1881,7 +1940,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get propertyIncomePerHour => 'Inkomen/uur';
 
   @override
-  String get propertyMaxLevel => 'Max Level';
+  String get propertyMaxLevel => 'Maximaal niveau';
 
   @override
   String get propertyUniquePerCountry => '⚠️ Uniek - 1 per land';
@@ -1901,14 +1960,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get propertyCollectAction => 'Verzamel';
 
   @override
-  String get propertyUpgradeAction => 'Upgrade';
+  String get propertyUpgradeAction => 'Upgraden';
 
   @override
   String get propertyMax => 'MAX';
 
   @override
   String propertyLevel(String level) {
-    return 'Level $level';
+    return 'Niveau $level';
   }
 
   @override
@@ -1973,11 +2032,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String garageUpgradeWithCost(String cost) {
-    return 'Upgrade (€$cost)';
+    return 'Upgraden (€$cost)';
   }
 
   @override
-  String get garageMaxLevel => 'Max Level';
+  String get garageMaxLevel => 'Maximaal niveau';
 
   @override
   String garageLevelRemaining(String level, String spots) {
@@ -2205,7 +2264,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get jail => 'Gevangenis';
 
   @override
-  String get cooldown => 'Cooldown';
+  String get cooldown => 'Afkoelen';
 
   @override
   String get requiredRank => 'Vereiste speler rank';
@@ -2246,7 +2305,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get close => 'Sluiten';
 
   @override
-  String get viewOffer => 'View offer';
+  String get viewOffer => 'Bekijk aanbieding';
 
   @override
   String get unexpectedResponse => 'Onverwachte API response';
@@ -2268,7 +2327,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String cooldownMinutes(String minutes) {
-    return 'Cooldown: $minutes min';
+    return 'Afkoelperiode: $minutes min';
   }
 
   @override
@@ -2374,7 +2433,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Zeldzame farmaceutische producten';
 
   @override
-  String get multiplier => 'Multiplier';
+  String get multiplier => 'Vermenigvuldiger';
 
   @override
   String get sellPrice => 'Verkoopprijs';
@@ -2546,11 +2605,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String marinaUpgradeWithCost(String cost) {
-    return 'Upgrade (€$cost)';
+    return 'Upgraden (€$cost)';
   }
 
   @override
-  String get marinaMaxLevel => 'Max Level';
+  String get marinaMaxLevel => 'Maximaal niveau';
 
   @override
   String marinaLevelRemaining(String level, String remaining) {
@@ -2644,7 +2703,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get location => 'Locatie';
 
   @override
-  String get level => 'Level';
+  String get level => 'Niveau';
 
   @override
   String get alreadyFullHealth => 'Je bent al op volle gezondheid!';
@@ -2772,7 +2831,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get storage => 'Opslag';
 
   @override
-  String get property => 'Property';
+  String get property => 'Eigendom';
 
   @override
   String inventorySlots(int used, int max) {
@@ -2780,7 +2839,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get loadouts => 'Loadouts';
+  String get loadouts => 'Uitrustingen';
 
   @override
   String get createLoadout => 'Maak Loadout';
@@ -2979,7 +3038,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get backpackPrice => 'Prijs';
 
   @override
-  String get extraSlots => 'Extra slots';
+  String get extraSlots => 'Extra sleuven';
 
   @override
   String get totalSlots => 'Totaal slots';
@@ -3208,7 +3267,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bodyguardPrice => 'Prijs per Lijfwacht';
 
   @override
-  String get armor => 'Armor';
+  String get armor => 'Pantser';
 
   @override
   String get protectorsFollow => 'Beschermers die je volgen';
@@ -3458,13 +3517,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryLastProduced => 'Laatst geproduceerd';
 
   @override
-  String get factoryProduceStatusLabel => 'Produce status';
+  String get factoryProduceStatusLabel => 'Produceerstatus';
 
   @override
   String get factoryProduceStatusReady => 'Klaar';
 
   @override
-  String get factoryProduceStatusCooldown => 'Cooldown';
+  String get factoryProduceStatusCooldown => 'Afkoelen';
 
   @override
   String get factorySessionActive =>
@@ -3492,7 +3551,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryProduce => 'Produceren';
 
   @override
-  String get factoryUpgradeOutput => 'Upgrade Output';
+  String get factoryUpgradeOutput => 'Upgrade-uitvoer';
 
   @override
   String get factoryUpgradeQuality => 'Upgrade Kwaliteit';
@@ -3521,7 +3580,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String shootingAccuracyBonus(String bonus) {
-    return 'Accuracy bonus: $bonus%';
+    return 'Nauwkeurigheidsbonus: $bonus%';
   }
 
   @override
@@ -3609,7 +3668,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryUpgradeMaxLevel => 'Fabriek bereikt maximale niveau';
 
   @override
-  String get countryUsa => 'USA';
+  String get countryUsa => 'VS';
 
   @override
   String get countryMexico => 'Mexico';
@@ -3633,7 +3692,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get countryRussia => 'Rusland';
 
   @override
-  String get countryIndia => 'India';
+  String get countryIndia => 'Indië';
 
   @override
   String get countryAustralia => 'Australië';
@@ -3714,7 +3773,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get toolFakeDocuments => 'Vervalste Documenten';
 
   @override
-  String get toolHackingLaptop => 'Hacking Laptop';
+  String get toolHackingLaptop => 'Laptop hacken';
 
   @override
   String get toolCounterfeitingKit => 'Vervalsings Kit';
@@ -3729,7 +3788,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get toolNightVision => 'Nachtbril';
 
   @override
-  String get toolGpsJammer => 'GPS Jammer';
+  String get toolGpsJammer => 'GPS-stoorzender';
 
   @override
   String get toolBurnerPhone => 'Wegwerp Telefoon';
@@ -3884,7 +3943,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get icuIntensiveCareTitle => 'Intensive care';
+  String get icuIntensiveCareTitle => 'Intensieve zorg';
 
   @override
   String get icuInjuredLine =>
@@ -4037,7 +4096,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionStreet => 'Op Straat';
 
   @override
-  String get prostitutionRedLight => 'Red Light';
+  String get prostitutionRedLight => 'Rood licht';
 
   @override
   String get prostitutionPotentialEarnings => 'Inkomsten';
@@ -4052,7 +4111,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionMyProstitutes => 'Mijn Prostituees';
 
   @override
-  String get prostitutionRedLightDistricts => 'Red Light Districts';
+  String get prostitutionRedLightDistricts => 'Rosse buurten';
 
   @override
   String get prostitutionNoProstitutes => 'Nog geen prostituees geworven';
@@ -4148,7 +4207,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String prostitutionRldAppBarTitle(String country) {
-    return 'Red Light District ($country)';
+    return 'Rosse buurt ($country)';
   }
 
   @override
@@ -4185,7 +4244,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionRoom => 'Kamer';
 
   @override
-  String get prostitutionInRedLight => 'In Red Light District';
+  String get prostitutionInRedLight => 'In de Wallen';
 
   @override
   String get prostitutionEarnings => 'Inkomsten';
@@ -4197,7 +4256,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionNetIncome => 'Netto Inkomsten';
 
   @override
-  String get prostitutionLevel => 'Level';
+  String get prostitutionLevel => 'Niveau';
 
   @override
   String get prostitutionXpToNext => 'XP tot volgend level';
@@ -4209,7 +4268,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionBustedCount => 'Aantal keer gepakt';
 
   @override
-  String get prostitutionLevelBonus => 'Level bonus';
+  String get prostitutionLevelBonus => 'Niveaubonus';
 
   @override
   String get prostitutionVipBonus => 'VIP bonus: +50% inkomsten';
@@ -4221,22 +4280,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionUpgradeSecurity => 'Beveiliging Upgraden';
 
   @override
-  String get prostitutionTier => 'Tier';
+  String get prostitutionTier => 'Laag';
 
   @override
   String get prostitutionSecurity => 'Beveiliging';
 
   @override
-  String get prostitutionTierBasic => 'Basic';
+  String get prostitutionTierBasic => 'Basis';
 
   @override
-  String get prostitutionTierLuxury => 'Luxury';
+  String get prostitutionTierLuxury => 'Luxe';
 
   @override
   String get prostitutionTierVip => 'VIP';
 
   @override
-  String get prostitutionSecurityLevel => 'Security Level';
+  String get prostitutionSecurityLevel => 'Beveiligingsniveau';
 
   @override
   String get prostitutionRaidChance => 'Raid Kans';
@@ -4254,10 +4313,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionUpgradeFailed => 'Upgrade mislukt';
 
   @override
-  String get vipEventsTitle => 'VIP Events';
+  String get vipEventsTitle => 'VIP-evenementen';
 
   @override
-  String get vipEventsTabTitle => 'VIP Events';
+  String get vipEventsTabTitle => 'VIP-evenementen';
 
   @override
   String get vipEventsDescription =>
@@ -4273,7 +4332,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vipEventsMyParticipations => 'Mijn Actieve Deelnames';
 
   @override
-  String get vipEventTypeTitle => 'VIP Event';
+  String get vipEventTypeTitle => 'VIP-evenement';
 
   @override
   String get vipEventCelebrity => 'Celebrity Bezoek';
@@ -4303,7 +4362,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vipEventRequires => 'Vereist';
 
   @override
-  String get vipEventLevel => 'Level';
+  String get vipEventLevel => 'Niveau';
 
   @override
   String get vipEventLocation => 'Locatie';
@@ -4365,7 +4424,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionLeaderboardMonthly => 'Maandelijks';
 
   @override
-  String get prostitutionLeaderboardAllTime => 'All-Time';
+  String get prostitutionLeaderboardAllTime => 'Altijd';
 
   @override
   String get prostitutionLeaderboardYourRank => 'Jouw Wekelijkse Rang';
@@ -4377,7 +4436,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionLeaderboardNoData => 'Nog geen leaderboard data';
 
   @override
-  String get prostitutionLeaderboardButton => 'Leaderboard';
+  String get prostitutionLeaderboardButton => 'Leiderbord';
 
   @override
   String get prostitutionRivalryButton => 'Rivaliteit';
@@ -4474,7 +4533,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementsCategory => 'Categorie';
 
   @override
-  String get achievementJobItSpecialistTitle => 'IT Specialist';
+  String get achievementJobItSpecialistTitle => 'IT-specialist';
 
   @override
   String get achievementJobItSpecialistDescription =>
@@ -4509,7 +4568,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Behaal 6 schoolcertificaten';
 
   @override
-  String get achievementSchoolTrackSpecialistTitle => 'Track Specialist';
+  String get achievementSchoolTrackSpecialistTitle => 'Spoorspecialist';
 
   @override
   String get achievementSchoolTrackSpecialistDescription =>
@@ -4546,7 +4605,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String schoolTrackLevelLabel(int current, int max) {
-    return 'Lv $current/$max';
+    return 'Niveau $current/$max';
   }
 
   @override
@@ -4563,7 +4622,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get schoolGateStatusOpen => 'OPEN';
 
   @override
-  String get schoolGateStatusLocked => 'LOCKED';
+  String get schoolGateStatusLocked => 'GESLOTEN';
 
   @override
   String schoolGateRankProgress(int current, int required) {
@@ -4572,12 +4631,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String schoolGateTrackLevelProgress(String track, int current, int required) {
-    return '$track level: $current/$required';
+    return '$track niveau: $current/$required';
   }
 
   @override
   String schoolGateJobTarget(String target) {
-    return 'Job: $target';
+    return 'Taak: $target';
   }
 
   @override
@@ -4597,7 +4656,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String schoolGateAssetGeneric(String target) {
-    return 'Asset: $target';
+    return 'Activa: $target';
   }
 
   @override
@@ -4667,13 +4726,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get educationTrackNameMedicine => 'Geneeskunde';
 
   @override
-  String get educationTrackNameFinance => 'Finance';
+  String get educationTrackNameFinance => 'Financiën';
 
   @override
   String get educationTrackNameEngineering => 'Techniek';
 
   @override
-  String get educationTrackNameIt => 'IT';
+  String get educationTrackNameIt => 'HET';
 
   @override
   String get schoolTrackDescriptionAviation =>
@@ -4757,7 +4816,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rivalryPlayerIdHint => 'Speler-ID';
 
   @override
-  String get rivalryStartButton => 'Start';
+  String get rivalryStartButton => 'Begin';
 
   @override
   String get rivalryNoActive => 'Nog geen actieve rivaliteiten.';
@@ -4779,7 +4838,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String rivalryCooldownIn(String duration) {
-    return 'Cooldown: $duration';
+    return 'Afkoelperiode: $duration';
   }
 
   @override
@@ -4879,11 +4938,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je hebt nog geen nightclub-locatie om personeel toe te wijzen.';
 
   @override
-  String get prostitutionNightclubVenueName => 'Nightclub';
+  String get prostitutionNightclubVenueName => 'Nachtclub';
 
   @override
   String prostitutionNightclubVenueNumbered(int id) {
-    return 'Nightclub #$id';
+    return 'Nachtclub #$id';
   }
 
   @override
@@ -5029,7 +5088,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionHousingLessThanOneDay => 'Minder dan 1 dag';
 
   @override
-  String get prostitutionNightclubShort => 'Nightclub';
+  String get prostitutionNightclubShort => 'Nachtclub';
 
   @override
   String get prostitutionMoveToStreetButton => 'Naar straat';
@@ -5152,14 +5211,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Verdien in totaal €1.000.000';
 
   @override
-  String get achievementTitle_high_roller => 'High Roller';
+  String get achievementTitle_high_roller => 'Hoge rol';
 
   @override
   String get achievementDescription_high_roller =>
       'Verdien in totaal €5.000.000';
 
   @override
-  String get achievementTitle_vip_service => 'VIP Service';
+  String get achievementTitle_vip_service => 'VIP-service';
 
   @override
   String get achievementDescription_vip_service => 'Voltooi 10 VIP-events';
@@ -5241,7 +5300,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Voltooi 100 misdaden succesvol';
 
   @override
-  String get achievementTitle_the_godfather => 'The Godfather';
+  String get achievementTitle_the_godfather => 'De peetvader';
 
   @override
   String get achievementDescription_the_godfather =>
@@ -5375,7 +5434,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Voltooi elk education-gated jobtype minstens één keer';
 
   @override
-  String get achievementTitle_job_it_specialist => 'IT Specialist';
+  String get achievementTitle_job_it_specialist => 'IT-specialist';
 
   @override
   String get achievementDescription_job_it_specialist =>
@@ -5410,26 +5469,26 @@ class AppLocalizationsNl extends AppLocalizations {
       'Behaal 6 schoolcertificaten';
 
   @override
-  String get achievementTitle_school_track_specialist => 'Track Specialist';
+  String get achievementTitle_school_track_specialist => 'Spoorspecialist';
 
   @override
   String get achievementDescription_school_track_specialist =>
       'Max 3 school-tracks';
 
   @override
-  String get achievementTitle_school_freshman => 'School Freshman';
+  String get achievementTitle_school_freshman => 'Schooleerstejaars';
 
   @override
   String get achievementDescription_school_freshman => 'Bereik schoollevel 1';
 
   @override
-  String get achievementTitle_school_scholar => 'School Scholar';
+  String get achievementTitle_school_scholar => 'Schoolgeleerde';
 
   @override
   String get achievementDescription_school_scholar => 'Bereik schoollevel 3';
 
   @override
-  String get achievementTitle_school_graduate => 'School Graduate';
+  String get achievementTitle_school_graduate => 'Schoolafgestudeerd';
 
   @override
   String get achievementDescription_school_graduate => 'Bereik schoollevel 5';
@@ -5454,7 +5513,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementDescription_road_bandit => 'Steel 5 auto\'s';
 
   @override
-  String get achievementTitle_grand_theft_fleet => 'Grand Theft Fleet';
+  String get achievementTitle_grand_theft_fleet => 'Grote Diefstalvloot';
 
   @override
   String get achievementDescription_grand_theft_fleet => 'Steel 25 auto\'s';
@@ -5479,7 +5538,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementDescription_globe_trotter => 'Voltooi 5 reizen';
 
   @override
-  String get achievementTitle_jet_setter => 'Jet Setter';
+  String get achievementTitle_jet_setter => 'Jetsetter';
 
   @override
   String get achievementDescription_jet_setter => 'Voltooi 25 reizen';
@@ -5542,7 +5601,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Recruit 250 hoeren';
 
   @override
-  String get achievementTitle_prostitute_cartel_500 => 'Cartel 500';
+  String get achievementTitle_prostitute_cartel_500 => 'Kartel 500';
 
   @override
   String get achievementDescription_prostitute_cartel_500 =>
@@ -5556,14 +5615,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Recruit 1000 hoeren';
 
   @override
-  String get achievementTitle_vip_prostitute_level_10 => 'VIP Beginner';
+  String get achievementTitle_vip_prostitute_level_10 => 'VIP-beginner';
 
   @override
   String get achievementDescription_vip_prostitute_level_10 =>
       'Bereik level 3 met een VIP-hoer';
 
   @override
-  String get achievementTitle_vip_prostitute_level_25 => 'VIP Headliner';
+  String get achievementTitle_vip_prostitute_level_25 => 'VIP-headliner';
 
   @override
   String get achievementDescription_vip_prostitute_level_25 =>
@@ -5591,7 +5650,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Open je eerste nightclub venue';
 
   @override
-  String get achievementTitle_nightclub_headliner => 'Headliner Booker';
+  String get achievementTitle_nightclub_headliner => 'Headliner Boeker';
 
   @override
   String get achievementDescription_nightclub_headliner =>
@@ -5605,7 +5664,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Breng een nightclub crowd naar 90% capaciteit';
 
   @override
-  String get achievementTitle_nightclub_cash_machine => 'Cash Machine';
+  String get achievementTitle_nightclub_cash_machine => 'Geldautomaat';
 
   @override
   String get achievementDescription_nightclub_cash_machine =>
@@ -5619,14 +5678,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Verdien in totaal €1.000.000 nightclub-omzet';
 
   @override
-  String get achievementTitle_nightclub_staffing_boss => 'Staffing Boss';
+  String get achievementTitle_nightclub_staffing_boss => 'Personeelsbaas';
 
   @override
   String get achievementDescription_nightclub_staffing_boss =>
       'Laat 3 actieve nightclub-crewmembers tegelijk draaien';
 
   @override
-  String get achievementTitle_nightclub_vip_room => 'VIP Room';
+  String get achievementTitle_nightclub_vip_room => 'VIP-kamer';
 
   @override
   String get achievementDescription_nightclub_vip_room =>
@@ -5679,16 +5738,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubLiveStatistics => 'Live Statistieken';
 
   @override
-  String get nightclubKpiCrowd => 'Crowd';
+  String get nightclubKpiCrowd => 'Menigte';
 
   @override
-  String get nightclubKpiVibe => 'Vibe';
+  String get nightclubKpiVibe => 'Stemming';
 
   @override
   String get nightclubKpiToday => 'Vandaag';
 
   @override
-  String get nightclubKpiAllTime => 'All-time';
+  String get nightclubKpiAllTime => 'Altijd';
 
   @override
   String get nightclubKpiStock => 'Voorraad';
@@ -5700,16 +5759,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubKpiThefts => 'Diefstallen';
 
   @override
-  String get nightclubKpiStaff => 'Staff';
+  String get nightclubKpiStaff => 'Personeel';
 
   @override
-  String get nightclubKpiSalesBoost => 'Sales boost';
+  String get nightclubKpiSalesBoost => 'Verkoopboost';
 
   @override
-  String get nightclubKpiPriceBoost => 'Price boost';
+  String get nightclubKpiPriceBoost => 'Prijsverhoging';
 
   @override
-  String get nightclubKpiVipBonus => 'VIP bonus';
+  String get nightclubKpiVipBonus => 'VIP-bonus';
 
   @override
   String get nightclubStatusActive => 'Actief';
@@ -5724,7 +5783,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubRevenueTrend => 'Omzet Trend (live)';
 
   @override
-  String get nightclubLeaderboardTitle => 'Top Nightclubs';
+  String get nightclubLeaderboardTitle => 'Topnachtclubs';
 
   @override
   String get nightclubLeaderboardCountry => 'Land';
@@ -5742,7 +5801,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubSeasonProcessing => 'wordt verwerkt...';
 
   @override
-  String get nightclubSeasonTitle => 'Weekly Season Ranking';
+  String get nightclubSeasonTitle => 'Wekelijkse seizoensranglijst';
 
   @override
   String get nightclubSeasonResetIn => 'Reset over';
@@ -5760,7 +5819,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubSeasonWeekRevenue => 'Week omzet';
 
   @override
-  String get nightclubSeasonScore => 'Score';
+  String get nightclubSeasonScore => 'Scoren';
 
   @override
   String get nightclubSeasonRecentPayouts => 'Recente payouts';
@@ -5784,7 +5843,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubTheftLoss => 'Verlies';
 
   @override
-  String get nightclubStaffTitle => 'Pimp Crew in Club';
+  String get nightclubStaffTitle => 'Pooierploeg in Club';
 
   @override
   String get nightclubStaffVipExtraActive => ' (VIP +2 actief)';
@@ -5928,7 +5987,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubVibeWild => 'Wild';
 
   @override
-  String get nightclubVibeRaging => 'Raging';
+  String get nightclubVibeRaging => 'Woedend';
 
   @override
   String get nightclubTheftTypeCustomer => 'Klantdiefstal';
@@ -6049,7 +6108,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportStatusArchived => 'Gearchiveerd';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Beestje';
 
   @override
   String get supportCategoryQuestion => 'Vraag';
@@ -6067,7 +6126,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportPriorityHigh => 'Hoog';
 
   @override
-  String get supportPriorityUrgent => 'Urgent';
+  String get supportPriorityUrgent => 'Dringend';
 
   @override
   String get supportPriorityNormal => 'Normaal';
@@ -6091,7 +6150,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportTimeJustNow => 'zojuist';
 
   @override
-  String get supportSenderSupport => 'Support';
+  String get supportSenderSupport => 'Steun';
 
   @override
   String get supportSenderYou => 'Jij';
@@ -6232,7 +6291,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportMod_garage => 'Garage';
 
   @override
-  String get supportMod_marina => 'Marina';
+  String get supportMod_marina => 'Jachthaven';
 
   @override
   String get supportMod_aviation => 'Luchtvaart';
@@ -6241,7 +6300,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportMod_smuggling => 'Smokkelen';
 
   @override
-  String get supportMod_drugs => 'Drugs';
+  String get supportMod_drugs => 'Geneesmiddelen';
 
   @override
   String get supportMod_nightclub => 'Nachtclub';
@@ -6250,13 +6309,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportMod_prostitution => 'Prostitutie';
 
   @override
-  String get supportMod_crew => 'Crew';
+  String get supportMod_crew => 'Bemanning';
 
   @override
   String get supportMod_friends => 'Vrienden / spelers';
 
   @override
-  String get supportMod_hitlist => 'Hitlist';
+  String get supportMod_hitlist => 'Hitlijst';
 
   @override
   String get supportMod_security => 'Beveiliging / FBI';
@@ -6268,10 +6327,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportMod_casino => 'Casino';
 
   @override
-  String get supportMod_school => 'School / training';
+  String get supportMod_school => 'School/opleiding';
 
   @override
-  String get supportMod_achievements => 'Achievements';
+  String get supportMod_achievements => 'Prestaties';
 
   @override
   String get supportMod_profile => 'Profiel';
@@ -6280,13 +6339,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportMod_settings => 'Instellingen';
 
   @override
-  String get supportMod_events => 'Events / leaderboard';
+  String get supportMod_events => 'Evenementen / klassement';
 
   @override
   String get supportMod_other => 'Overig';
 
   @override
-  String get gameEventDefaultTitle => 'Event';
+  String get gameEventDefaultTitle => 'Evenement';
 
   @override
   String get gameEventStatusActive => 'Actief';
@@ -6355,7 +6414,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String gameScreenStartLine(String date) {
-    return 'Start: $date';
+    return 'Begin: $date';
   }
 
   @override
@@ -6373,11 +6432,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String gameScreenRank(String value) {
-    return 'Rank: $value';
+    return 'Rang: $value';
   }
 
   @override
-  String get gameScreenLeaderboard => 'Leaderboard (top 10)';
+  String get gameScreenLeaderboard => 'Leiderbord (top 10)';
 
   @override
   String get gameScreenNoLeaderboard => 'Nog geen leaderboard data.';
@@ -6976,7 +7035,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get cooldownTitleSchool => 'Opleiding cooldown';
 
   @override
-  String get cooldownTitleGeneric => 'Cooldown';
+  String get cooldownTitleGeneric => 'Afkoelen';
 
   @override
   String get crimeOutcomeDefaultTitle => 'Crime-resultaat';

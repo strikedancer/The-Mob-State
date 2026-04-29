@@ -1380,6 +1380,63 @@ class AppLocalizationsPl extends AppLocalizations {
   String get dashboardPhaseEndsIn => 'Faza kończy się w';
 
   @override
+  String dashboardJailStatusIn(String duration) {
+    return 'W więzieniu ($duration)';
+  }
+
+  @override
+  String get dashboardCrewWarStatusPreparing => 'Przygotowanie';
+
+  @override
+  String get dashboardCrewWarStatusActive => 'Aktywny';
+
+  @override
+  String get dashboardCrewWarStatusLockdown => 'Izolacja';
+
+  @override
+  String get dashboardCrewWarStatusResolved => 'Rozwiązany';
+
+  @override
+  String get dashboardCrewWarStatusArchived => 'Zarchiwizowane';
+
+  @override
+  String get dashboardCrewWarStatusCancelled => 'Odwołany';
+
+  @override
+  String get dashboardCrewWarStatusNone => 'Brak aktywnej wojny';
+
+  @override
+  String get dashboardCrewWarTypeKill => 'Zabij wojnę';
+
+  @override
+  String get dashboardCrewWarTypeEconomy => 'Wojna gospodarcza';
+
+  @override
+  String get dashboardCrewWarTypeTerritory => 'Wojna terytorialna';
+
+  @override
+  String get dashboardCrewWarTypeTotal => 'Totalna wojna';
+
+  @override
+  String get dashboardTerritoryIncomeNotConfigured => 'nie skonfigurowany';
+
+  @override
+  String dashboardTerritoryIncomeEveryHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: 'every $hours hours',
+      one: 'every hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dashboardTerritoryIncomeEveryMinutes(int minutes) {
+    return 'co $minutes min';
+  }
+
+  @override
   String get dashboardCrewTerritory => 'Terytorium załogi';
 
   @override
@@ -3653,43 +3710,43 @@ class AppLocalizationsPl extends AppLocalizations {
   String get countryCanada => 'Kanada';
 
   @override
-  String get countryPortugal => 'Portugal';
+  String get countryPortugal => 'Portugalia';
 
   @override
-  String get countryIreland => 'Ireland';
+  String get countryIreland => 'Irlandia';
 
   @override
-  String get countryLuxembourg => 'Luxembourg';
+  String get countryLuxembourg => 'Luksemburg';
 
   @override
   String get countryAustria => 'Austria';
 
   @override
-  String get countryDenmark => 'Denmark';
+  String get countryDenmark => 'Dania';
 
   @override
-  String get countrySweden => 'Sweden';
+  String get countrySweden => 'Szwecja';
 
   @override
-  String get countryNorway => 'Norway';
+  String get countryNorway => 'Norwegia';
 
   @override
-  String get countryFinland => 'Finland';
+  String get countryFinland => 'Finlandia';
 
   @override
-  String get countryPoland => 'Poland';
+  String get countryPoland => 'Polska';
 
   @override
-  String get countryCzechia => 'Czechia';
+  String get countryCzechia => 'Czechy';
 
   @override
-  String get countryGreece => 'Greece';
+  String get countryGreece => 'Grecja';
 
   @override
-  String get countryTurkey => 'Turkey';
+  String get countryTurkey => 'Indyk';
 
   @override
-  String get countryUae => 'United Arab Emirates';
+  String get countryUae => 'Emiraty Arabskie';
 
   @override
   String get countryDubai => 'Dubai';
@@ -3746,105 +3803,104 @@ class AppLocalizationsPl extends AppLocalizations {
   String get toolThermalDrill => 'Wiertarka termiczna';
 
   @override
-  String get toolCategoryBoltCutter => 'Bolt cutters';
+  String get toolCategoryBoltCutter => 'Przecinarki do śrub';
 
   @override
-  String get toolCategoryBurglaryKit => 'Burglary kit';
+  String get toolCategoryBurglaryKit => 'Zestaw antywłamaniowy';
 
   @override
-  String get toolCategoryCarTools => 'Car theft tools';
+  String get toolCategoryCarTools => 'Narzędzia do kradzieży samochodu';
 
   @override
-  String get toolCategoryJerryCan => 'Jerry can';
+  String get toolCategoryJerryCan => 'Jerry może';
 
   @override
-  String get toolCategorySprayPaint => 'Spray paint';
+  String get toolCategorySprayPaint => 'Farba w sprayu';
 
   @override
-  String get toolCategoryCrowbar => 'Crowbar';
+  String get toolCategoryCrowbar => 'Łom';
 
   @override
-  String get toolCategoryGlassCutter => 'Glass cutter';
+  String get toolCategoryGlassCutter => 'Przecinarka do szkła';
 
   @override
-  String get toolCategoryLaptop => 'Laptop';
+  String get toolCategoryLaptop => 'Laptopa';
 
   @override
-  String get toolCategoryCounterfeiting => 'Counterfeiting';
+  String get toolCategoryCounterfeiting => 'Podrabianie';
 
   @override
-  String get toolCategoryToolbox => 'Toolbox';
+  String get toolCategoryToolbox => 'Skrzynka narzędziowa';
 
   @override
-  String get toolCategoryRope => 'Rope';
+  String get toolCategoryRope => 'Lina';
 
   @override
-  String get toolCategorySilencer => 'Silencer';
+  String get toolCategorySilencer => 'Tłumik';
 
   @override
-  String get toolCategoryFakeDocs => 'Fake documents';
+  String get toolCategoryFakeDocs => 'Fałszywe dokumenty';
 
   @override
-  String get toolCategoryNightVision => 'Night vision';
+  String get toolCategoryNightVision => 'Widzenie w nocy';
 
   @override
-  String get toolCategoryBurnerPhone => 'Burner phone';
+  String get toolCategoryBurnerPhone => 'Telefon do palnika';
 
   @override
-  String get toolCategoryGpsJammer => 'GPS jammer';
+  String get toolCategoryGpsJammer => 'Zagłuszacz GPS';
 
   @override
-  String get toolCategoryThermalDrill => 'Thermal drill';
+  String get toolCategoryThermalDrill => 'Wiertarka termiczna';
 
   @override
-  String get toolsScreenTitle => 'Black Market – Tools';
+  String get toolsScreenTitle => 'Czarny rynek – narzędzia';
 
   @override
-  String get toolsTabBuy => 'Buy';
+  String get toolsTabBuy => 'Kupić';
 
   @override
-  String get toolsTabMyTools => 'My tools';
+  String get toolsTabMyTools => 'Moje narzędzia';
 
   @override
-  String get toolsNoToolsAvailable => 'No tools available';
+  String get toolsNoToolsAvailable => 'Brak dostępnych narzędzi';
 
   @override
-  String get toolsEmptyInventoryTitle => 'You do not have any tools yet';
+  String get toolsEmptyInventoryTitle => 'Nie masz jeszcze żadnych narzędzi';
 
   @override
-  String get toolsEmptyInventoryHint => 'Buy tools in the shop';
+  String get toolsEmptyInventoryHint => 'Kup narzędzia w sklepie';
 
   @override
-  String get toolsNotEnoughMoney => 'You do not have enough money!';
+  String get toolsNotEnoughMoney => 'Nie masz dość pieniędzy!';
 
   @override
-  String get toolsNotEnoughMoneyRepair =>
-      'You do not have enough money for repair!';
+  String get toolsNotEnoughMoneyRepair => 'Nie masz dość pieniędzy na naprawę!';
 
   @override
-  String get toolsBuyError => 'Error while buying';
+  String get toolsBuyError => 'Błąd podczas zakupu';
 
   @override
-  String get toolsRepairError => 'Error while repairing';
+  String get toolsRepairError => 'Błąd podczas naprawy';
 
   @override
   String toolsPurchased(String toolName) {
-    return '$toolName purchased!';
+    return '$toolName zakupione!';
   }
 
   @override
   String toolsRepaired(String toolName, String cost) {
-    return '$toolName repaired for €$cost';
+    return '$toolName naprawiony za $cost €';
   }
 
   @override
-  String get toolsBadgeInventoryFull => 'FULL';
+  String get toolsBadgeInventoryFull => 'PEŁNY';
 
   @override
-  String get toolsBadgeBroken => 'BROKEN';
+  String get toolsBadgeBroken => 'ZŁAMANY';
 
   @override
-  String get toolsBadgeRepair => 'REPAIR';
+  String get toolsBadgeRepair => 'NAPRAWA';
 
   @override
   String get crimeOutcomeSuccess => 'Kryminał udany!';
@@ -4142,30 +4198,30 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prostitutionDistrictNotFound => 'Nie znaleziono dzielnicy';
 
   @override
-  String get prostitutionDistrictOwnedBadge => 'Owned';
+  String get prostitutionDistrictOwnedBadge => 'Posiadany';
 
   @override
-  String get prostitutionOwnerLabel => 'Owner:';
+  String get prostitutionOwnerLabel => 'Właściciel:';
 
   @override
-  String get prostitutionForSale => 'For sale';
+  String get prostitutionForSale => 'Na sprzedaż';
 
   @override
-  String get prostitutionRoomsLabel => 'Rooms:';
+  String get prostitutionRoomsLabel => 'Pokoje:';
 
   @override
-  String get prostitutionRoomsRented => 'rented';
+  String get prostitutionRoomsRented => 'wynajęty';
 
   @override
   String prostitutionRldAppBarTitle(String country) {
-    return 'Red Light District ($country)';
+    return 'Dzielnica czerwonych latarni ($country)';
   }
 
   @override
-  String get prostitutionOccupiedShort => 'Occupied';
+  String get prostitutionOccupiedShort => 'Zajęty';
 
   @override
-  String get prostitutionNotApplicable => 'N/A';
+  String get prostitutionNotApplicable => 'Nie dotyczy';
 
   @override
   String get back => 'Z powrotem';
@@ -4896,7 +4952,7 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nie masz jeszcze lokalu Nightclub, aby przydzielić personel.';
 
   @override
-  String get prostitutionNightclubVenueName => 'Nightclub';
+  String get prostitutionNightclubVenueName => 'Klub nocny';
 
   @override
   String prostitutionNightclubVenueNumbered(int id) {
@@ -5045,7 +5101,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get prostitutionHousingLessThanOneDay => 'Mniej niż 1 dzień';
 
   @override
-  String get prostitutionNightclubShort => 'Nightclub';
+  String get prostitutionNightclubShort => 'Klub nocny';
 
   @override
   String get prostitutionMoveToStreetButton => 'Na ulicę';

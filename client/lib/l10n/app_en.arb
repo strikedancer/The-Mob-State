@@ -681,6 +681,42 @@
   "dashboardSeasonRank": "Season rank",
   "dashboardOpenTargets": "Open targets",
   "dashboardPhaseEndsIn": "Phase ends in",
+  "dashboardJailStatusIn": "In jail ({duration})",
+  "@dashboardJailStatusIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCrewWarStatusPreparing": "Preparing",
+  "dashboardCrewWarStatusActive": "Active",
+  "dashboardCrewWarStatusLockdown": "Lockdown",
+  "dashboardCrewWarStatusResolved": "Resolved",
+  "dashboardCrewWarStatusArchived": "Archived",
+  "dashboardCrewWarStatusCancelled": "Cancelled",
+  "dashboardCrewWarStatusNone": "No active war",
+  "dashboardCrewWarTypeKill": "Kill War",
+  "dashboardCrewWarTypeEconomy": "Economy War",
+  "dashboardCrewWarTypeTerritory": "Territory War",
+  "dashboardCrewWarTypeTotal": "Total War",
+  "dashboardTerritoryIncomeNotConfigured": "not configured",
+  "dashboardTerritoryIncomeEveryHours": "{hours, plural, one{every hour} other{every {hours} hours}}",
+  "@dashboardTerritoryIncomeEveryHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardTerritoryIncomeEveryMinutes": "every {minutes} min",
+  "@dashboardTerritoryIncomeEveryMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
   "dashboardCrewTerritory": "Crew Territory",
   "dashboardRegions": "Regions",
   "dashboardCountriesCaptured": "Countries captured",

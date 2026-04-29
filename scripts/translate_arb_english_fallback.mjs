@@ -111,11 +111,18 @@ function stringKeys(en) {
   );
 }
 
+/** Do not machine-translate ICU plural/select strings (MT corrupts syntax). */
+function isIcuSelectOrPlural(s) {
+  return /,\s*plural\s*,/.test(s) || /,\s*select\s*,/.test(s);
+}
+
 function fallbackKeys(en, target) {
   const keys = [];
   for (const k of stringKeys(en)) {
     if (target[k] === undefined) continue;
-    if (target[k] === en[k]) keys.push(k);
+    if (target[k] !== en[k]) continue;
+    if (isIcuSelectOrPlural(en[k])) continue;
+    keys.push(k);
   }
   return keys;
 }

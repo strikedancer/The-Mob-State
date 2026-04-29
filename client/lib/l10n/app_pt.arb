@@ -3699,34 +3699,34 @@
   "vehicleOpsHeatLevelLow": "Baixo",
   "vehicleOpsHeatLevelMedium": "Médio",
   "vehicleOpsHeatLevelHigh": "Alto",
-  "toolCategoryBoltCutter": "Bolt cutters",
-  "toolCategoryBurglaryKit": "Burglary kit",
-  "toolCategoryCarTools": "Car theft tools",
-  "toolCategoryJerryCan": "Jerry can",
-  "toolCategorySprayPaint": "Spray paint",
-  "toolCategoryCrowbar": "Crowbar",
-  "toolCategoryGlassCutter": "Glass cutter",
-  "toolCategoryLaptop": "Laptop",
-  "toolCategoryCounterfeiting": "Counterfeiting",
-  "toolCategoryToolbox": "Toolbox",
-  "toolCategoryRope": "Rope",
-  "toolCategorySilencer": "Silencer",
-  "toolCategoryFakeDocs": "Fake documents",
-  "toolCategoryNightVision": "Night vision",
-  "toolCategoryBurnerPhone": "Burner phone",
-  "toolCategoryGpsJammer": "GPS jammer",
-  "toolCategoryThermalDrill": "Thermal drill",
-  "toolsScreenTitle": "Black Market – Tools",
-  "toolsTabBuy": "Buy",
-  "toolsTabMyTools": "My tools",
-  "toolsNoToolsAvailable": "No tools available",
-  "toolsEmptyInventoryTitle": "You do not have any tools yet",
-  "toolsEmptyInventoryHint": "Buy tools in the shop",
-  "toolsNotEnoughMoney": "You do not have enough money!",
-  "toolsNotEnoughMoneyRepair": "You do not have enough money for repair!",
-  "toolsBuyError": "Error while buying",
-  "toolsRepairError": "Error while repairing",
-  "toolsPurchased": "{toolName} purchased!",
+  "toolCategoryBoltCutter": "Cortadores de parafuso",
+  "toolCategoryBurglaryKit": "Kit de roubo",
+  "toolCategoryCarTools": "Ferramentas para roubo de carro",
+  "toolCategoryJerryCan": "Jerry pode",
+  "toolCategorySprayPaint": "Tinta spray",
+  "toolCategoryCrowbar": "Pé de cabra",
+  "toolCategoryGlassCutter": "Cortador de vidro",
+  "toolCategoryLaptop": "Portátil",
+  "toolCategoryCounterfeiting": "Falsificação",
+  "toolCategoryToolbox": "Caixa de ferramentas",
+  "toolCategoryRope": "Corda",
+  "toolCategorySilencer": "Silenciadora",
+  "toolCategoryFakeDocs": "Documentos falsos",
+  "toolCategoryNightVision": "Visão noturna",
+  "toolCategoryBurnerPhone": "Telefone queimador",
+  "toolCategoryGpsJammer": "Bloqueador de GPS",
+  "toolCategoryThermalDrill": "Broca térmica",
+  "toolsScreenTitle": "Mercado Negro – Ferramentas",
+  "toolsTabBuy": "Comprar",
+  "toolsTabMyTools": "Minhas ferramentas",
+  "toolsNoToolsAvailable": "Nenhuma ferramenta disponível",
+  "toolsEmptyInventoryTitle": "Você ainda não tem nenhuma ferramenta",
+  "toolsEmptyInventoryHint": "Compre ferramentas na loja",
+  "toolsNotEnoughMoney": "Você não tem dinheiro suficiente!",
+  "toolsNotEnoughMoneyRepair": "Você não tem dinheiro suficiente para consertar!",
+  "toolsBuyError": "Erro ao comprar",
+  "toolsRepairError": "Erro ao reparar",
+  "toolsPurchased": "{toolName} comprado!",
   "@toolsPurchased": {
     "placeholders": {
       "toolName": {
@@ -3734,7 +3734,7 @@
       }
     }
   },
-  "toolsRepaired": "{toolName} repaired for €{cost}",
+  "toolsRepaired": "{toolName} reparado por €{cost}",
   "@toolsRepaired": {
     "placeholders": {
       "toolName": {
@@ -3745,29 +3745,29 @@
       }
     }
   },
-  "toolsBadgeInventoryFull": "FULL",
-  "toolsBadgeBroken": "BROKEN",
-  "toolsBadgeRepair": "REPAIR",
+  "toolsBadgeInventoryFull": "COMPLETA",
+  "toolsBadgeBroken": "QUEBRADA",
+  "toolsBadgeRepair": "REPARAR",
   "countryPortugal": "Portugal",
-  "countryIreland": "Ireland",
-  "countryLuxembourg": "Luxembourg",
-  "countryAustria": "Austria",
-  "countryDenmark": "Denmark",
-  "countrySweden": "Sweden",
-  "countryNorway": "Norway",
-  "countryFinland": "Finland",
-  "countryPoland": "Poland",
-  "countryCzechia": "Czechia",
-  "countryGreece": "Greece",
-  "countryTurkey": "Turkey",
-  "countryUae": "United Arab Emirates",
+  "countryIreland": "Irlanda",
+  "countryLuxembourg": "Luxemburgo",
+  "countryAustria": "Áustria",
+  "countryDenmark": "Dinamarca",
+  "countrySweden": "Suécia",
+  "countryNorway": "Noruega",
+  "countryFinland": "Finlândia",
+  "countryPoland": "Polônia",
+  "countryCzechia": "Tcheca",
+  "countryGreece": "Grécia",
+  "countryTurkey": "Peru",
+  "countryUae": "Emirados Árabes Unidos",
   "countryDubai": "Dubai",
-  "prostitutionDistrictOwnedBadge": "Owned",
-  "prostitutionOwnerLabel": "Owner:",
-  "prostitutionForSale": "For sale",
-  "prostitutionRoomsLabel": "Rooms:",
-  "prostitutionRoomsRented": "rented",
-  "prostitutionRldAppBarTitle": "Red Light District ({country})",
+  "prostitutionDistrictOwnedBadge": "Controlada",
+  "prostitutionOwnerLabel": "Proprietária:",
+  "prostitutionForSale": "À venda",
+  "prostitutionRoomsLabel": "Quartas:",
+  "prostitutionRoomsRented": "alugada",
+  "prostitutionRldAppBarTitle": "Distrito da Luz Vermelha ({country})",
   "@prostitutionRldAppBarTitle": {
     "placeholders": {
       "country": {
@@ -3775,16 +3775,16 @@
       }
     }
   },
-  "prostitutionOccupiedShort": "Occupied",
-  "prostitutionNotApplicable": "N/A",
+  "prostitutionOccupiedShort": "Ocupada",
+  "prostitutionNotApplicable": "N / D",
   "prostitutionBetrayalDefaultMessage": "Traição! Seu Nightclub foi atingido por um vazamento de informações.",
   "prostitutionLoadError": "Erro ao carregar os dados",
   "prostitutionNoDistrictInCountry": "Não há distrito da luz vermelha neste país",
   "prostitutionMovedToStreet": "Movida para a rua",
   "prostitutionArrestedCannotAssign": "Esta prostituta está presa e não pode ser designada.",
   "prostitutionNoNightclubVenue": "Você ainda não tem um local de Nightclub para designar equipe.",
-  "prostitutionNightclubVenueName": "Nightclub",
-  "prostitutionNightclubVenueNumbered": "Nightclub #{id}",
+  "prostitutionNightclubVenueName": "Boate",
+  "prostitutionNightclubVenueNumbered": "Boate #{id}",
   "@prostitutionNightclubVenueNumbered": {
     "placeholders": {
       "id": {
@@ -3922,7 +3922,7 @@
     }
   },
   "prostitutionHousingLessThanOneDay": "Menos de 1 dia",
-  "prostitutionNightclubShort": "Nightclub",
+  "prostitutionNightclubShort": "Boate",
   "prostitutionMoveToStreetButton": "Para a rua",
   "prostitutionMoveToNightclubButton": "Para o Nightclub",
   "prostitutionEuroPerHour": "€{amount}/h",
@@ -3986,6 +3986,42 @@
       "hours": {
         "type": "int"
       },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardJailStatusIn": "Na prisão ({duration})",
+  "@dashboardJailStatusIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardCrewWarStatusPreparing": "Preparando",
+  "dashboardCrewWarStatusActive": "Ativa",
+  "dashboardCrewWarStatusLockdown": "Confinamento",
+  "dashboardCrewWarStatusResolved": "Resolvida",
+  "dashboardCrewWarStatusArchived": "Arquivada",
+  "dashboardCrewWarStatusCancelled": "Cancelada",
+  "dashboardCrewWarStatusNone": "Nenhuma guerra ativa",
+  "dashboardCrewWarTypeKill": "Matar a guerra",
+  "dashboardCrewWarTypeEconomy": "Guerra Econômica",
+  "dashboardCrewWarTypeTerritory": "Guerra Territorial",
+  "dashboardCrewWarTypeTotal": "Guerra total",
+  "dashboardTerritoryIncomeNotConfigured": "não configurado",
+  "dashboardTerritoryIncomeEveryHours": "{hours, plural, one{every hour} other{every {hours} hours}}",
+  "@dashboardTerritoryIncomeEveryHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "dashboardTerritoryIncomeEveryMinutes": "a cada {minutes} min",
+  "@dashboardTerritoryIncomeEveryMinutes": {
+    "placeholders": {
       "minutes": {
         "type": "int"
       }

@@ -1395,6 +1395,63 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardPhaseEndsIn => 'Phase endet in';
 
   @override
+  String dashboardJailStatusIn(String duration) {
+    return 'Im Gefängnis ($duration)';
+  }
+
+  @override
+  String get dashboardCrewWarStatusPreparing => 'Vorbereiten';
+
+  @override
+  String get dashboardCrewWarStatusActive => 'Aktiv';
+
+  @override
+  String get dashboardCrewWarStatusLockdown => 'Sperrung';
+
+  @override
+  String get dashboardCrewWarStatusResolved => 'Gelöst';
+
+  @override
+  String get dashboardCrewWarStatusArchived => 'Archiviert';
+
+  @override
+  String get dashboardCrewWarStatusCancelled => 'Abgesagt';
+
+  @override
+  String get dashboardCrewWarStatusNone => 'Kein aktiver Krieg';
+
+  @override
+  String get dashboardCrewWarTypeKill => 'Krieg töten';
+
+  @override
+  String get dashboardCrewWarTypeEconomy => 'Wirtschaftskrieg';
+
+  @override
+  String get dashboardCrewWarTypeTerritory => 'Territorialkrieg';
+
+  @override
+  String get dashboardCrewWarTypeTotal => 'Totaler Krieg';
+
+  @override
+  String get dashboardTerritoryIncomeNotConfigured => 'nicht konfiguriert';
+
+  @override
+  String dashboardTerritoryIncomeEveryHours(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: 'every $hours hours',
+      one: 'every hour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String dashboardTerritoryIncomeEveryMinutes(int minutes) {
+    return 'alle $minutes Min';
+  }
+
+  @override
   String get dashboardCrewTerritory => 'Besatzungsgebiet';
 
   @override
@@ -3775,105 +3832,105 @@ class AppLocalizationsDe extends AppLocalizations {
   String get toolThermalDrill => 'Thermobohrer';
 
   @override
-  String get toolCategoryBoltCutter => 'Bolt cutters';
+  String get toolCategoryBoltCutter => 'Bolzenschneider';
 
   @override
-  String get toolCategoryBurglaryKit => 'Burglary kit';
+  String get toolCategoryBurglaryKit => 'Einbruchset';
 
   @override
-  String get toolCategoryCarTools => 'Car theft tools';
+  String get toolCategoryCarTools => 'Werkzeuge für Autodiebstahl';
 
   @override
-  String get toolCategoryJerryCan => 'Jerry can';
+  String get toolCategoryJerryCan => 'Jerry kann';
 
   @override
-  String get toolCategorySprayPaint => 'Spray paint';
+  String get toolCategorySprayPaint => 'Sprühfarbe';
 
   @override
-  String get toolCategoryCrowbar => 'Crowbar';
+  String get toolCategoryCrowbar => 'Brecheisen';
 
   @override
-  String get toolCategoryGlassCutter => 'Glass cutter';
+  String get toolCategoryGlassCutter => 'Glasschneider';
 
   @override
   String get toolCategoryLaptop => 'Laptop';
 
   @override
-  String get toolCategoryCounterfeiting => 'Counterfeiting';
+  String get toolCategoryCounterfeiting => 'Fälschung';
 
   @override
-  String get toolCategoryToolbox => 'Toolbox';
+  String get toolCategoryToolbox => 'Werkzeugkasten';
 
   @override
-  String get toolCategoryRope => 'Rope';
+  String get toolCategoryRope => 'Seil';
 
   @override
-  String get toolCategorySilencer => 'Silencer';
+  String get toolCategorySilencer => 'Schalldämpfer';
 
   @override
-  String get toolCategoryFakeDocs => 'Fake documents';
+  String get toolCategoryFakeDocs => 'Gefälschte Dokumente';
 
   @override
-  String get toolCategoryNightVision => 'Night vision';
+  String get toolCategoryNightVision => 'Nachtsicht';
 
   @override
-  String get toolCategoryBurnerPhone => 'Burner phone';
+  String get toolCategoryBurnerPhone => 'Brennertelefon';
 
   @override
-  String get toolCategoryGpsJammer => 'GPS jammer';
+  String get toolCategoryGpsJammer => 'GPS-Störsender';
 
   @override
-  String get toolCategoryThermalDrill => 'Thermal drill';
+  String get toolCategoryThermalDrill => 'Thermobohrer';
 
   @override
-  String get toolsScreenTitle => 'Black Market – Tools';
+  String get toolsScreenTitle => 'Schwarzmarkt – Werkzeuge';
 
   @override
-  String get toolsTabBuy => 'Buy';
+  String get toolsTabBuy => 'Kaufen';
 
   @override
-  String get toolsTabMyTools => 'My tools';
+  String get toolsTabMyTools => 'Meine Werkzeuge';
 
   @override
-  String get toolsNoToolsAvailable => 'No tools available';
+  String get toolsNoToolsAvailable => 'Keine Werkzeuge vorhanden';
 
   @override
-  String get toolsEmptyInventoryTitle => 'You do not have any tools yet';
+  String get toolsEmptyInventoryTitle => 'Sie haben noch kein Werkzeug';
 
   @override
-  String get toolsEmptyInventoryHint => 'Buy tools in the shop';
+  String get toolsEmptyInventoryHint => 'Kaufen Sie Werkzeuge im Shop';
 
   @override
-  String get toolsNotEnoughMoney => 'You do not have enough money!';
+  String get toolsNotEnoughMoney => 'Du hast nicht genug Geld!';
 
   @override
   String get toolsNotEnoughMoneyRepair =>
-      'You do not have enough money for repair!';
+      'Sie haben nicht genug Geld für die Reparatur!';
 
   @override
-  String get toolsBuyError => 'Error while buying';
+  String get toolsBuyError => 'Fehler beim Kauf';
 
   @override
-  String get toolsRepairError => 'Error while repairing';
+  String get toolsRepairError => 'Fehler beim Reparieren';
 
   @override
   String toolsPurchased(String toolName) {
-    return '$toolName purchased!';
+    return '$toolName gekauft!';
   }
 
   @override
   String toolsRepaired(String toolName, String cost) {
-    return '$toolName repaired for €$cost';
+    return '$toolName repariert für 1 €⟧';
   }
 
   @override
-  String get toolsBadgeInventoryFull => 'FULL';
+  String get toolsBadgeInventoryFull => 'VOLL';
 
   @override
-  String get toolsBadgeBroken => 'BROKEN';
+  String get toolsBadgeBroken => 'GEBROCHEN';
 
   @override
-  String get toolsBadgeRepair => 'REPAIR';
+  String get toolsBadgeRepair => 'REPARIEREN';
 
   @override
   String get crimeOutcomeSuccess => 'Krimi erfolgreich!';

@@ -2666,6 +2666,96 @@ abstract class AppLocalizations {
   /// **'Phase ends in'**
   String get dashboardPhaseEndsIn;
 
+  /// No description provided for @dashboardJailStatusIn.
+  ///
+  /// In en, this message translates to:
+  /// **'In jail ({duration})'**
+  String dashboardJailStatusIn(String duration);
+
+  /// No description provided for @dashboardCrewWarStatusPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing'**
+  String get dashboardCrewWarStatusPreparing;
+
+  /// No description provided for @dashboardCrewWarStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get dashboardCrewWarStatusActive;
+
+  /// No description provided for @dashboardCrewWarStatusLockdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Lockdown'**
+  String get dashboardCrewWarStatusLockdown;
+
+  /// No description provided for @dashboardCrewWarStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get dashboardCrewWarStatusResolved;
+
+  /// No description provided for @dashboardCrewWarStatusArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get dashboardCrewWarStatusArchived;
+
+  /// No description provided for @dashboardCrewWarStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get dashboardCrewWarStatusCancelled;
+
+  /// No description provided for @dashboardCrewWarStatusNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No active war'**
+  String get dashboardCrewWarStatusNone;
+
+  /// No description provided for @dashboardCrewWarTypeKill.
+  ///
+  /// In en, this message translates to:
+  /// **'Kill War'**
+  String get dashboardCrewWarTypeKill;
+
+  /// No description provided for @dashboardCrewWarTypeEconomy.
+  ///
+  /// In en, this message translates to:
+  /// **'Economy War'**
+  String get dashboardCrewWarTypeEconomy;
+
+  /// No description provided for @dashboardCrewWarTypeTerritory.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory War'**
+  String get dashboardCrewWarTypeTerritory;
+
+  /// No description provided for @dashboardCrewWarTypeTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total War'**
+  String get dashboardCrewWarTypeTotal;
+
+  /// No description provided for @dashboardTerritoryIncomeNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'not configured'**
+  String get dashboardTerritoryIncomeNotConfigured;
+
+  /// No description provided for @dashboardTerritoryIncomeEveryHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours, plural, one{every hour} other{every {hours} hours}}'**
+  String dashboardTerritoryIncomeEveryHours(int hours);
+
+  /// No description provided for @dashboardTerritoryIncomeEveryMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'every {minutes} min'**
+  String dashboardTerritoryIncomeEveryMinutes(int minutes);
+
   /// No description provided for @dashboardCrewTerritory.
   ///
   /// In en, this message translates to:
