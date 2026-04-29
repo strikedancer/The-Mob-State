@@ -2441,5 +2441,475 @@
   "vaultAttemptSuccessGeneric": "Gelukt.",
   "vaultAttemptFailedGeneric": "Mislukt.",
   "vaultAttemptFailedRetry": "Mislukt. Probeer opnieuw.",
-  "dashboardNewMessagesCount": "{count} nieuwe berichten"
+  "dashboardNewMessagesCount": "{count} nieuwe berichten",
+  "supportTicketsScreenTitle": "Supporttickets",
+  "supportLoadTicketsFailed": "Tickets laden mislukt",
+  "supportLoadTicketFailed": "Ticket laden mislukt",
+  "supportPickImageFailed": "Afbeelding kiezen mislukt",
+  "supportSubjectMessageMinLength": "Vul onderwerp en bericht in (min. 3 tekens).",
+  "supportTicketCreated": "Ticket aangemaakt.",
+  "supportCreateTicketFailed": "Ticket aanmaken mislukt",
+  "supportReplySent": "Reactie verstuurd.",
+  "supportReplySendFailed": "Reactie versturen mislukt",
+  "supportDeleteTicketTitle": "Ticket verwijderen",
+  "supportDeleteTicketBody": "Weet je zeker dat je dit ticket wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+  "supportTicketDeleted": "Ticket verwijderd.",
+  "supportDeleteTicketFailed": "Ticket verwijderen mislukt",
+  "supportUnknownError": "Onbekende fout",
+  "supportStatusNew": "Nieuw",
+  "supportStatusTriage": "Triage",
+  "supportStatusInProgress": "In behandeling",
+  "supportStatusWaitingPlayer": "Wacht op speler",
+  "supportStatusBlocked": "Geblokkeerd",
+  "supportStatusResolved": "Opgelost",
+  "supportStatusClosed": "Gesloten",
+  "supportStatusArchived": "Gearchiveerd",
+  "supportCategoryBug": "Bug",
+  "supportCategoryQuestion": "Vraag",
+  "supportCategoryFeedback": "Feedback",
+  "supportCategoryOther": "Overig",
+  "supportPriorityLow": "Laag",
+  "supportPriorityHigh": "Hoog",
+  "supportPriorityUrgent": "Urgent",
+  "supportPriorityNormal": "Normaal",
+  "supportTimeDaysAgo": "{count}d geleden",
+  "supportTimeHoursAgo": "{count}u geleden",
+  "supportTimeMinutesAgo": "{count}m geleden",
+  "supportTimeJustNow": "zojuist",
+  "supportSenderSupport": "Support",
+  "supportSenderYou": "Jij",
+  "supportImageLoadFailed": "Afbeelding laden mislukt.",
+  "supportMyTickets": "Mijn tickets",
+  "supportMyTicketsIntro": "Support reageert voortaan rechtstreeks in dit scherm. Je kunt optioneel nog wel een pushmelding krijgen als er een update op je ticket is.",
+  "supportNoTicketsYet": "Je hebt nog geen tickets. Maak hieronder een nieuwe melding aan.",
+  "supportSelectTicketPrompt": "Selecteer een ticket om het gesprek te openen.",
+  "supportConversation": "Gesprek",
+  "supportNoMessagesYet": "Nog geen berichten.",
+  "supportAttachments": "Bijlagen",
+  "supportReplyToTicket": "Reageer op dit ticket",
+  "supportReplyFieldHint": "Gebruik dit veld als support meer informatie vraagt of als je een update wilt doorgeven. Inbox en push blijven alleen meldingen van nieuwe supportreacties.",
+  "supportYourReply": "Jouw reactie",
+  "supportSendReply": "Reactie versturen",
+  "supportNewTicket": "Nieuw ticket",
+  "supportNewTicketIntro": "Maak hier een nieuwe melding aan. Support kan daarna antwoorden via inbox/push en in dit scherm, zodat je het gesprek op 1 plek kunt voortzetten.",
+  "supportTicketReceivedBanner": "Ticket ontvangen",
+  "supportTicketNumberLine": "Ticketnummer: #{id}",
+  "supportTicketReceivedDetail": "Het ticket staat nu direct bovenin je lijst. Nieuwe supportreacties komen ook als inboxbericht en pushmelding binnen.",
+  "supportFieldCategory": "Categorie",
+  "supportFieldModule": "Onderdeel",
+  "supportFieldSubject": "Onderwerp",
+  "supportFieldMessage": "Bericht",
+  "supportReferenceOptional": "Referentie (optioneel)",
+  "supportReferenceHint": "Bijv. order-id, schermnaam, land of korte context",
+  "supportAddScreenshot": "Screenshot toevoegen",
+  "supportSubmit": "Versturen",
+  "supportLastMessagePrefix": "Laatste: ",
+  "supportReferenceLabel": "Referentie",
+  "supportMod_support": "Algemeen support",
+  "supportMod_dashboard": "Dashboard",
+  "supportMod_messages": "Berichten / inbox",
+  "supportMod_notifications": "Meldingen / push",
+  "supportMod_payments": "Betalingen / premium",
+  "supportMod_bank": "Bank",
+  "supportMod_crypto": "Crypto",
+  "supportMod_travel": "Reizen",
+  "supportMod_properties": "Eigendommen",
+  "supportMod_inventory": "Inventory / opslag",
+  "supportMod_loadouts": "Loadouts / uitrusting",
+  "supportMod_crimes": "Misdaden",
+  "supportMod_jobs": "Werk / banen",
+  "supportMod_vehicles": "Auto / motor / boot diefstal",
+  "supportMod_garage": "Garage",
+  "supportMod_marina": "Marina",
+  "supportMod_aviation": "Luchtvaart",
+  "supportMod_smuggling": "Smokkelen",
+  "supportMod_drugs": "Drugs",
+  "supportMod_nightclub": "Nachtclub",
+  "supportMod_prostitution": "Prostitutie",
+  "supportMod_crew": "Crew",
+  "supportMod_friends": "Vrienden / spelers",
+  "supportMod_hitlist": "Hitlist",
+  "supportMod_security": "Beveiliging / FBI",
+  "supportMod_prison": "Gevangenis / rechtbank",
+  "supportMod_casino": "Casino",
+  "supportMod_school": "School / training",
+  "supportMod_achievements": "Achievements",
+  "supportMod_profile": "Profiel",
+  "supportMod_settings": "Instellingen",
+  "supportMod_events": "Events / leaderboard",
+  "supportMod_other": "Overig",
+  "logOut": "Log out",
+  "menu": "Menu",
+  "account": "Account",
+  "messages": "Messages",
+  "@errorLoadingConversations": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@chatFriendRankLine": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "@errorLoadingMessages": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@investigationStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "helpAndGuide": "Help & Guide",
+  "quickActions": "Quick Actions",
+  "liveEvents": "Live Events",
+  "support": "Support",
+  "events": "Events",
+  "aviation": "Aviation",
+  "premiumAndCredits": "Premium & Credits",
+  "bank": "Bank",
+  "tradeGoods": "Trade goods",
+  "drugs": "Drugs",
+  "nightclub": "Nightclub",
+  "crypto": "Crypto",
+  "smuggling": "Smuggling",
+  "vehicleHeist": "Vehicle Heist",
+  "tuneShop": "Tune Shop",
+  "territory": "Territory",
+  "achievements": "Achievements",
+  "@vaultSeasonLabel": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      }
+    }
+  },
+  "@vaultStakeCredits": {
+    "placeholders": {
+      "stake": {
+        "type": "int"
+      }
+    }
+  },
+  "@vaultExpectedPrize": {
+    "placeholders": {
+      "reward": {
+        "type": "int"
+      }
+    }
+  },
+  "@dashboardNewMessagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rankProgress": "Rank Progress",
+  "cash": "Cash",
+  "sessionRecap": "Session recap",
+  "nameLabel": "Name",
+  "countryLabel": "Country",
+  "fbiHeat": "FBI Heat",
+  "netWorth": "Net worth",
+  "securityLabel": "Security",
+  "noSecurity": "No security",
+  "weaponLabel": "Weapon",
+  "vehicleLabel": "Vehicle",
+  "none": "None",
+  "statistics": "Statistics",
+  "breakouts": "Breakouts",
+  "murders": "Murders",
+  "hitlistContracts": "Hitlist contracts",
+  "carsStolen": "Cars stolen",
+  "boatsStolen": "Boats stolen",
+  "crimeAttempts": "Crime attempts",
+  "successful": "Successful",
+  "jobAttempts": "Job attempts",
+  "streetProstitutes": "Street prostitutes",
+  "rldProstitutes": "RLD prostitutes",
+  "travels": "Travels",
+  "bullets": "Bullets",
+  "moneyStatusLabel": "Money status",
+  "moneyStatusPoor": "Poor",
+  "moneyStatusRising": "Rising",
+  "moneyStatusRich": "Rich",
+  "moneyStatusMultimillionaire": "Multimillionaire",
+  "rankBeginner": "Beginner",
+  "rankCriminal": "Criminal",
+  "rankGangster": "Gangster",
+  "rankMafioso": "Mafioso",
+  "rankGodfather": "Godfather",
+  "dailyGoalTitle_crime_3": "Do 3 crimes",
+  "dailyGoalTitle_job_2": "Work 2 times",
+  "dailyGoalTitle_vehicle_theft_1": "Steal 1 vehicle",
+  "dailyGoalTitle_travel_1": "Complete 1 travel",
+  "dailyGoalTitle_weekly_crime_20": "Weekly: 20 crimes",
+  "dailyGoalTitle_weekly_job_10": "Weekly: work 10 times",
+  "dailyGoalTitle_weekly_vehicle_theft_5": "Weekly: steal 5 vehicles",
+  "dailyGoalTitle_weekly_travel_3": "Weekly: 3 travels",
+  "dailyGoalReward": "Reward: +{cash} and +{xp} XP",
+  "@dailyGoalReward": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "xp": {
+        "type": "String"
+      }
+    }
+  },
+  "justNow": "Just now",
+  "secondsAgo": "{seconds}s ago",
+  "@secondsAgo": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "last10EventsLive": "Last 10 events (live).",
+  "noEventsYetSession": "No events yet in this session.",
+  "clearRecap": "Clear recap",
+  "weeklyGoalClaimed": "Weekly goal claimed!",
+  "dailyGoalClaimed": "Daily goal claimed!",
+  "failed": "Failed.",
+  "failedPleaseTryAgain": "Failed. Please try again.",
+  "dailyGoals": "Daily goals",
+  "weeklyGoals": "Weekly goals",
+  "claimed": "Claimed",
+  "ready": "Ready",
+  "claim": "Claim",
+  "readyToClaim": "{count} ready to claim",
+  "@readyToClaim": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "completedOutOfTotal": "{completed}/{total} completed",
+  "@completedOutOfTotal": {
+    "placeholders": {
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "noPlayerData": "No player data",
+  "economy24h": "Economy 24h",
+  "grossIncome": "Gross income",
+  "propertySpend": "Property spend",
+  "netCashflow": "Net cashflow",
+  "trendVsPrevious": "Trend vs previous",
+  "activity7d": "Activity 7d",
+  "vehicleThefts": "Vehicle thefts",
+  "opsOverview": "Ops Overview",
+  "activeCooldowns": "Active cooldowns",
+  "longestTimer": "Longest timer",
+  "activeProduction": "Active production",
+  "productionReadyIn": "Production ready in",
+  "nightclubEvents": "Nightclub events",
+  "nextEventStartsIn": "Next event starts in",
+  "vehiclesActiveListedTransit": "Vehicles active/listed/transit",
+  "livePlayerEvents": "Live player events",
+  "openEvents": "Open Events",
+  "notificationsAndRisk": "Notifications & Risk",
+  "unreadDm": "Unread DM",
+  "supportWaitingOnYou": "Support waiting on you",
+  "eventsLast24h": "Events last 24h",
+  "riskScore": "Risk score",
+  "recruitProstitute": "Recruit prostitute",
+  "crewWars": "Crew Wars",
+  "status": "Status",
+  "canDeclare": "Can declare",
+  "type": "Type",
+  "opponent": "Opponent",
+  "crewPoints": "Crew points",
+  "warRank": "War rank",
+  "seasonRank": "Season rank",
+  "openTargets": "Open targets",
+  "phaseEndsIn": "Phase ends in",
+  "crewTerritory": "Crew Territory",
+  "regions": "Regions",
+  "countriesCaptured": "Countries captured",
+  "payout": "Payout",
+  "earningPerHour": "Earning now per hour",
+  "earningPerDay": "Earning now per day",
+  "totalEarned": "Total earned",
+  "crewBank": "Crew bank",
+  "dashboardEconomy24h": "Economy 24h",
+  "dashboardGrossIncome": "Gross income",
+  "dashboardPropertySpend": "Property spend",
+  "dashboardNetCashflow": "Net cashflow",
+  "dashboardTrendVsPrevious": "Trend vs previous",
+  "dashboardActivity7d": "Activity 7d",
+  "dashboardVehicleThefts": "Vehicle thefts",
+  "dashboardOpsOverview": "Ops Overview",
+  "dashboardActiveCooldowns": "Active cooldowns",
+  "dashboardLongestTimer": "Longest timer",
+  "dashboardActiveProduction": "Active production",
+  "dashboardProductionReadyIn": "Production ready in",
+  "dashboardNightclubEvents": "Nightclub events",
+  "dashboardNextEventStartsIn": "Next event starts in",
+  "dashboardVehiclesActiveListedTransit": "Vehicles active/listed/transit",
+  "dashboardLivePlayerEvents": "Live player events",
+  "dashboardOpenEvents": "Open Events",
+  "dashboardNotificationsAndRisk": "Notifications & Risk",
+  "dashboardUnreadDm": "Unread DM",
+  "dashboardSupportWaitingOnYou": "Support waiting on you",
+  "dashboardEventsLast24h": "Events last 24h",
+  "dashboardRiskScore": "Risk score",
+  "dashboardRecruitProstitute": "Recruit prostitute",
+  "dashboardCrewWars": "Crew Wars",
+  "dashboardStatusLabel": "Status",
+  "dashboardCanDeclare": "Can declare",
+  "dashboardTypeLabel": "Type",
+  "dashboardOpponent": "Opponent",
+  "dashboardCrewPoints": "Crew points",
+  "dashboardWarRank": "War rank",
+  "dashboardSeasonRank": "Season rank",
+  "dashboardOpenTargets": "Open targets",
+  "dashboardPhaseEndsIn": "Phase ends in",
+  "dashboardCrewTerritory": "Crew Territory",
+  "dashboardRegions": "Regions",
+  "dashboardCountriesCaptured": "Countries captured",
+  "dashboardPayout": "Payout",
+  "dashboardEarningPerHour": "Earning now per hour",
+  "dashboardEarningPerDay": "Earning now per day",
+  "dashboardTotalEarned": "Total earned",
+  "dashboardVehicleOps": "Vehicle Ops",
+  "dashboardKillProgress": "Kill Progress",
+  "vehicleOpsHeat": "Heat",
+  "vehicleOpsReputation": "Rep",
+  "vehicleOpsPartsTrendUp": "parts market rising",
+  "vehicleOpsPartsTrendDown": "parts market falling",
+  "vehicleOpsPartsTrendStable": "parts market stable",
+  "vehicleOpsBlacklistActive": "Blacklist active",
+  "vehicleOpsNoBlacklist": "No blacklist",
+  "crewRoleLeader": "Leader",
+  "crewRoleCoLeader": "Co-leader",
+  "crewRoleMember": "Member",
+  "vehicleOpsHotspot": "Hotspot",
+  "vehicleOpsCrew": "Crew",
+  "vehicleOpsCrewMatch": "Crew match",
+  "vehicleOpsChop": "Chop",
+  "vehicleOpsContract": "Contract",
+  "vehicleOpsCounter": "Counter",
+  "vehicleOpsContracts": "Contracts",
+  "vehicleOpsClaims": "Claims",
+  "vehicleOpsSeason": "Season",
+  "dashboardCar": "Car",
+  "dashboardMotorcycle": "Motorcycle",
+  "dashboardBoat": "Boat",
+  "dashboardCrewAccess": "Crew access",
+  "dashboardCrewRole": "Crew role",
+  "dashboardUnavailable": "unavailable",
+  "vehicleOps": "Vehicle Ops",
+  "car": "Car",
+  "motorcycle": "Motorcycle",
+  "boat": "Boat",
+  "crewAccess": "Crew access",
+  "crewRole": "Crew role",
+  "unavailable": "unavailable",
+  "quickActionsCrimesSubtitle": "Commit criminal acts",
+  "quickActionsVehicleHeistSubtitle": "Car, motorcycle and boat",
+  "quickActionsTuneShopSubtitle": "Parts and upgrades",
+  "quickActionsEventsSubtitle": "Active and upcoming events",
+  "quickActionsJobsSubtitle": "Earn legal money",
+  "quickActionsCasinoSubtitle": "Gamble your money",
+  "quickActionsBankSubtitle": "Manage your global balance",
+  "avatarChangeFailed": "Failed to change avatar",
+  "usernameChangeFailed": "Failed to change username",
+  "settingsSystemNotificationsTitle": "System notifications for app",
+  "settingsPushPermissionAllowedLinked": "Permission: allowed, device linked",
+  "settingsPushPermissionAllowedRelinking": "Permission: allowed, device is re-linking",
+  "settingsPushPermissionProvisionalLinked": "Permission: provisional, device linked",
+  "settingsPushPermissionProvisionalRelinking": "Permission: provisional, device is re-linking",
+  "settingsPushPermissionDenied": "Permission: denied",
+  "settingsPushPermissionNotRequested": "Permission: not requested yet",
+  "settingsPushPermissionUnknown": "Permission: unknown",
+  "settingsDeviceTokenRegistered": "Device token registered on server",
+  "settingsDeviceTokenNotRegistered": "No device token registered yet",
+  "settingsPushHelpText": "Use this button to request browser/iPhone permission again and register your push token.",
+  "working": "Working...",
+  "settingsEnablePush": "Enable push",
+  "settingsPushEnabledToast": "Push notifications enabled. New notifications will now be received.",
+  "settingsPushDisabledInSystem": "Push is disabled in your browser/iPhone settings. Enable notifications for this app.",
+  "settingsEnablePushFailed": "Failed to enable push notifications: {error}",
+  "@settingsEnablePushFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsPlayerEventsTitle": "Player events",
+  "settingsPushLivePlayerEventsTitle": "Push: live player events",
+  "settingsPushLivePlayerEventsSubtitle": "Start and end of recurring competition events (e.g. top-score rounds).",
+  "settingsCryptoNotificationsTitle": "Crypto Notifications",
+  "settingsCryptoPushTradesTitle": "Push: Trades",
+  "settingsCryptoPushTradesSubtitle": "Push notification for buy/sell trades",
+  "settingsCryptoPushPriceAlertsTitle": "Push: Price alerts",
+  "settingsCryptoPushPriceAlertsSubtitle": "Push notification for relevant price moves",
+  "settingsCryptoPushOrdersTitle": "Push: Orders",
+  "settingsCryptoPushOrdersSubtitle": "Push notification when order is triggered or filled",
+  "settingsCryptoPushMissionsTitle": "Push: Missions",
+  "settingsCryptoPushMissionsSubtitle": "Push notification when a crypto mission is completed",
+  "settingsCryptoPushLeaderboardTitle": "Push: Leaderboard",
+  "settingsCryptoPushLeaderboardSubtitle": "Push notification for crypto leaderboard rewards",
+  "settingsCryptoInAppTradesTitle": "In-app: Trades",
+  "settingsCryptoInAppTradesSubtitle": "Show trade events in your event feed",
+  "settingsCryptoInAppPriceAlertsTitle": "In-app: Price alerts",
+  "settingsCryptoInAppPriceAlertsSubtitle": "Show price alert events in your event feed",
+  "settingsCryptoInAppOrdersTitle": "In-app: Orders",
+  "settingsCryptoInAppOrdersSubtitle": "Show order events in your event feed",
+  "settingsCryptoInAppMissionsTitle": "In-app: Missions",
+  "settingsCryptoInAppMissionsSubtitle": "Show mission completions in your event feed",
+  "settingsCryptoInAppLeaderboardTitle": "In-app: Leaderboard",
+  "settingsCryptoInAppLeaderboardSubtitle": "Show leaderboard rewards in your event feed",
+  "settingsAvatarChangeWeeklyLimit": "You can only change your avatar once per week",
+  "settingsUsernameChangeMonthlyLimit": "You can only change your username once per month",
+  "viewOffer": "View offer",
+  "@supportTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@supportTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@supportTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@supportTicketNumberLine": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -8,17 +8,10 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../config/app_config.dart';
+import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 import '../utils/support_badge_state.dart';
 import '../utils/top_right_notification.dart';
-
-class _SupportModuleOption {
-  const _SupportModuleOption(this.value, this.labelNl, this.labelEn);
-
-  final String value;
-  final String labelNl;
-  final String labelEn;
-}
 
 class _SupportTicketSummary {
   const _SupportTicketSummary({
@@ -156,6 +149,116 @@ DateTime _asDateTime(dynamic value) {
   return (parsed ?? DateTime.now()).toLocal();
 }
 
+/// Source module values sent to the API (order matches former dropdown).
+const List<String> _kSupportModuleValues = [
+  'support',
+  'dashboard',
+  'messages',
+  'notifications',
+  'payments',
+  'bank',
+  'crypto',
+  'travel',
+  'properties',
+  'inventory',
+  'loadouts',
+  'crimes',
+  'jobs',
+  'vehicles',
+  'garage',
+  'marina',
+  'aviation',
+  'smuggling',
+  'drugs',
+  'nightclub',
+  'prostitution',
+  'crew',
+  'friends',
+  'hitlist',
+  'security',
+  'prison',
+  'casino',
+  'school',
+  'achievements',
+  'profile',
+  'settings',
+  'events',
+  'other',
+];
+
+String _supportModuleLabel(AppLocalizations l10n, String value) {
+  switch (value) {
+    case 'support':
+      return l10n.supportMod_support;
+    case 'dashboard':
+      return l10n.supportMod_dashboard;
+    case 'messages':
+      return l10n.supportMod_messages;
+    case 'notifications':
+      return l10n.supportMod_notifications;
+    case 'payments':
+      return l10n.supportMod_payments;
+    case 'bank':
+      return l10n.supportMod_bank;
+    case 'crypto':
+      return l10n.supportMod_crypto;
+    case 'travel':
+      return l10n.supportMod_travel;
+    case 'properties':
+      return l10n.supportMod_properties;
+    case 'inventory':
+      return l10n.supportMod_inventory;
+    case 'loadouts':
+      return l10n.supportMod_loadouts;
+    case 'crimes':
+      return l10n.supportMod_crimes;
+    case 'jobs':
+      return l10n.supportMod_jobs;
+    case 'vehicles':
+      return l10n.supportMod_vehicles;
+    case 'garage':
+      return l10n.supportMod_garage;
+    case 'marina':
+      return l10n.supportMod_marina;
+    case 'aviation':
+      return l10n.supportMod_aviation;
+    case 'smuggling':
+      return l10n.supportMod_smuggling;
+    case 'drugs':
+      return l10n.supportMod_drugs;
+    case 'nightclub':
+      return l10n.supportMod_nightclub;
+    case 'prostitution':
+      return l10n.supportMod_prostitution;
+    case 'crew':
+      return l10n.supportMod_crew;
+    case 'friends':
+      return l10n.supportMod_friends;
+    case 'hitlist':
+      return l10n.supportMod_hitlist;
+    case 'security':
+      return l10n.supportMod_security;
+    case 'prison':
+      return l10n.supportMod_prison;
+    case 'casino':
+      return l10n.supportMod_casino;
+    case 'school':
+      return l10n.supportMod_school;
+    case 'achievements':
+      return l10n.supportMod_achievements;
+    case 'profile':
+      return l10n.supportMod_profile;
+    case 'settings':
+      return l10n.supportMod_settings;
+    case 'events':
+      return l10n.supportMod_events;
+    case 'other':
+      return l10n.supportMod_other;
+    default:
+      return value;
+  }
+}
+
 class SupportTicketsScreen extends StatefulWidget {
   const SupportTicketsScreen({super.key, this.onSeenSnapshotChanged});
 
@@ -166,66 +269,6 @@ class SupportTicketsScreen extends StatefulWidget {
 }
 
 class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
-  static const List<_SupportModuleOption> _moduleOptions = [
-    _SupportModuleOption('support', 'Algemeen support', 'General support'),
-    _SupportModuleOption('dashboard', 'Dashboard', 'Dashboard'),
-    _SupportModuleOption('messages', 'Berichten / inbox', 'Messages / inbox'),
-    _SupportModuleOption(
-      'notifications',
-      'Meldingen / push',
-      'Notifications / push',
-    ),
-    _SupportModuleOption(
-      'payments',
-      'Betalingen / premium',
-      'Payments / premium',
-    ),
-    _SupportModuleOption('bank', 'Bank', 'Bank'),
-    _SupportModuleOption('crypto', 'Crypto', 'Crypto'),
-    _SupportModuleOption('travel', 'Reizen', 'Travel'),
-    _SupportModuleOption('properties', 'Eigendommen', 'Properties'),
-    _SupportModuleOption(
-      'inventory',
-      'Inventory / opslag',
-      'Inventory / storage',
-    ),
-    _SupportModuleOption(
-      'loadouts',
-      'Loadouts / uitrusting',
-      'Loadouts / equipment',
-    ),
-    _SupportModuleOption('crimes', 'Misdaden', 'Crimes'),
-    _SupportModuleOption('jobs', 'Werk / banen', 'Work / jobs'),
-    _SupportModuleOption(
-      'vehicles',
-      'Auto / motor / boot diefstal',
-      'Car / bike / boat theft',
-    ),
-    _SupportModuleOption('garage', 'Garage', 'Garage'),
-    _SupportModuleOption('marina', 'Marina', 'Marina'),
-    _SupportModuleOption('aviation', 'Luchtvaart', 'Aviation'),
-    _SupportModuleOption('smuggling', 'Smokkelen', 'Smuggling'),
-    _SupportModuleOption('drugs', 'Drugs', 'Drugs'),
-    _SupportModuleOption('nightclub', 'Nachtclub', 'Nightclub'),
-    _SupportModuleOption('prostitution', 'Prostitutie', 'Prostitution'),
-    _SupportModuleOption('crew', 'Crew', 'Crew'),
-    _SupportModuleOption('friends', 'Vrienden / spelers', 'Friends / players'),
-    _SupportModuleOption('hitlist', 'Hitlist', 'Hitlist'),
-    _SupportModuleOption('security', 'Beveiliging / FBI', 'Security / FBI'),
-    _SupportModuleOption('prison', 'Gevangenis / rechtbank', 'Prison / court'),
-    _SupportModuleOption('casino', 'Casino', 'Casino'),
-    _SupportModuleOption('school', 'School / training', 'School / training'),
-    _SupportModuleOption('achievements', 'Achievements', 'Achievements'),
-    _SupportModuleOption('profile', 'Profiel', 'Profile'),
-    _SupportModuleOption('settings', 'Instellingen', 'Settings'),
-    _SupportModuleOption(
-      'events',
-      'Events / leaderboard',
-      'Events / leaderboard',
-    ),
-    _SupportModuleOption('other', 'Overig', 'Other'),
-  ];
-
   final _apiClient = AuthService().apiClient;
   final _imagePicker = ImagePicker();
 
@@ -255,9 +298,6 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     _loadTickets();
   }
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   @override
   void dispose() {
     _subjectController.dispose();
@@ -275,7 +315,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     try {
       final response = await _apiClient.get('/tickets/my');
       if (response.statusCode != 200) {
-        throw Exception(_extractErrorMessage(response.body));
+        throw Exception(
+          _extractErrorMessage(response.body, AppLocalizations.of(context)!),
+        );
       }
 
       final decoded = jsonDecode(response.body) as Map<String, dynamic>;
@@ -314,11 +356,12 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       }
     } catch (e) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
           content: Text(
-            '${_tr('Tickets laden mislukt', 'Failed to load tickets')}: $e',
+            '${l10n.supportLoadTicketsFailed}: $e',
           ),
           backgroundColor: Colors.red,
         ),
@@ -352,7 +395,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     try {
       final response = await _apiClient.get('/tickets/$ticketId');
       if (response.statusCode != 200) {
-        throw Exception(_extractErrorMessage(response.body));
+        throw Exception(
+          _extractErrorMessage(response.body, AppLocalizations.of(context)!),
+        );
       }
 
       final decoded = jsonDecode(response.body) as Map<String, dynamic>;
@@ -366,11 +411,12 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       });
     } catch (e) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
           content: Text(
-            '${_tr('Ticket laden mislukt', 'Failed to load ticket')}: $e',
+            '${l10n.supportLoadTicketFailed}: $e',
           ),
           backgroundColor: Colors.red,
         ),
@@ -401,11 +447,12 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       });
     } catch (e) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
           content: Text(
-            '${_tr('Afbeelding kiezen mislukt', 'Failed to select image')}: $e',
+            '${l10n.supportPickImageFailed}: $e',
           ),
           backgroundColor: Colors.red,
         ),
@@ -414,6 +461,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   }
 
   Future<void> _createTicket() async {
+    final l10n = AppLocalizations.of(context)!;
     final subject = _subjectController.text.trim();
     final message = _messageController.text.trim();
     if (subject.length < 3 || message.length < 3) {
@@ -421,10 +469,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         context,
         SnackBar(
           content: Text(
-            _tr(
-              'Vul onderwerp en bericht in (min. 3 tekens).',
-              'Fill in subject and message (min. 3 chars).',
-            ),
+            l10n.supportSubjectMessageMinLength,
           ),
           backgroundColor: Colors.orange,
         ),
@@ -497,7 +542,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_tr('Ticket aangemaakt.', 'Ticket created.')),
+            content: Text(l10n.supportTicketCreated),
             backgroundColor: Colors.green,
           ),
         );
@@ -508,7 +553,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
           context,
           SnackBar(
             content: Text(
-              '${_tr('Ticket aanmaken mislukt', 'Failed to create ticket')}: $e',
+              '${l10n.supportCreateTicketFailed}: $e',
             ),
             backgroundColor: Colors.red,
           ),
@@ -520,6 +565,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   }
 
   Future<void> _sendReply() async {
+    final l10n = AppLocalizations.of(context)!;
     final ticketId = _selectedTicketId;
     final message = _replyController.text.trim();
     if (ticketId == null || message.length < 1) return;
@@ -530,7 +576,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         'message': message,
       });
       if (response.statusCode != 200) {
-        throw Exception(_extractErrorMessage(response.body));
+        throw Exception(
+          _extractErrorMessage(response.body, AppLocalizations.of(context)!),
+        );
       }
 
       _replyController.clear();
@@ -540,7 +588,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Reactie verstuurd.', 'Reply sent.')),
+          content: Text(l10n.supportReplySent),
           backgroundColor: Colors.green,
         ),
       );
@@ -550,7 +598,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         context,
         SnackBar(
           content: Text(
-            '${_tr('Reactie versturen mislukt', 'Failed to send reply')}: $e',
+            '${l10n.supportReplySendFailed}: $e',
           ),
           backgroundColor: Colors.red,
         ),
@@ -563,29 +611,30 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   Future<void> _deleteSelectedTicket() async {
     final ticketId = _selectedTicketId;
     if (ticketId == null || _isDeletingTicket) return;
+    final l10n = AppLocalizations.of(context)!;
 
     final confirmed =
         await showDialog<bool>(
           context: context,
-          builder: (dialogContext) => AlertDialog(
-            title: Text(_tr('Ticket verwijderen', 'Delete ticket')),
+          builder: (dialogContext) {
+            final dl10n = AppLocalizations.of(dialogContext)!;
+            return AlertDialog(
+            title: Text(dl10n.supportDeleteTicketTitle),
             content: Text(
-              _tr(
-                'Weet je zeker dat je dit ticket wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.',
-                'Are you sure you want to delete this ticket? This action cannot be undone.',
-              ),
+              dl10n.supportDeleteTicketBody,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: Text(_tr('Annuleren', 'Cancel')),
+                child: Text(dl10n.cancel),
               ),
               FilledButton(
                 onPressed: () => Navigator.of(dialogContext).pop(true),
-                child: Text(_tr('Verwijderen', 'Delete')),
+                child: Text(dl10n.delete),
               ),
             ],
-          ),
+          );
+          },
         ) ??
         false;
 
@@ -595,7 +644,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     try {
       final response = await _apiClient.delete('/tickets/$ticketId');
       if (response.statusCode != 200) {
-        throw Exception(_extractErrorMessage(response.body));
+        throw Exception(
+          _extractErrorMessage(response.body, AppLocalizations.of(context)!),
+        );
       }
 
       _replyController.clear();
@@ -605,7 +656,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Ticket verwijderd.', 'Ticket deleted.')),
+          content: Text(l10n.supportTicketDeleted),
           backgroundColor: Colors.green,
         ),
       );
@@ -615,7 +666,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         context,
         SnackBar(
           content: Text(
-            '${_tr('Ticket verwijderen mislukt', 'Failed to delete ticket')}: $e',
+            '${l10n.supportDeleteTicketFailed}: $e',
           ),
           backgroundColor: Colors.red,
         ),
@@ -631,7 +682,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     );
   }
 
-  String _extractErrorMessage(String body) {
+  String _extractErrorMessage(String body, AppLocalizations l10n) {
     try {
       final decoded = jsonDecode(body) as Map<String, dynamic>;
       final params = decoded['params'];
@@ -645,64 +696,55 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     }
 
     final trimmed = body.trim();
-    return trimmed.isEmpty ? _tr('Onbekende fout', 'Unknown error') : trimmed;
+    return trimmed.isEmpty ? l10n.supportUnknownError : trimmed;
   }
 
-  String _moduleLabel(String value) {
-    for (final option in _moduleOptions) {
-      if (option.value == value) {
-        return _tr(option.labelNl, option.labelEn);
-      }
-    }
-    return value;
-  }
-
-  String _statusLabel(String status) {
+  String _statusLabel(AppLocalizations l10n, String status) {
     switch (status) {
       case 'new':
-        return _tr('Nieuw', 'New');
+        return l10n.supportStatusNew;
       case 'triage':
-        return _tr('Triage', 'Triage');
+        return l10n.supportStatusTriage;
       case 'in_progress':
-        return _tr('In behandeling', 'In progress');
+        return l10n.supportStatusInProgress;
       case 'waiting_player':
-        return _tr('Wacht op speler', 'Waiting for player');
+        return l10n.supportStatusWaitingPlayer;
       case 'blocked':
-        return _tr('Geblokkeerd', 'Blocked');
+        return l10n.supportStatusBlocked;
       case 'resolved':
-        return _tr('Opgelost', 'Resolved');
+        return l10n.supportStatusResolved;
       case 'closed':
-        return _tr('Gesloten', 'Closed');
+        return l10n.supportStatusClosed;
       case 'archived':
-        return _tr('Gearchiveerd', 'Archived');
+        return l10n.supportStatusArchived;
       default:
         return status;
     }
   }
 
-  String _categoryLabel(String category) {
+  String _categoryLabel(AppLocalizations l10n, String category) {
     switch (category) {
       case 'bug':
-        return _tr('Bug', 'Bug');
+        return l10n.supportCategoryBug;
       case 'question':
-        return _tr('Vraag', 'Question');
+        return l10n.supportCategoryQuestion;
       case 'feedback':
-        return _tr('Feedback', 'Feedback');
+        return l10n.supportCategoryFeedback;
       default:
-        return _tr('Overig', 'Other');
+        return l10n.supportCategoryOther;
     }
   }
 
-  String _priorityLabel(String priority) {
+  String _priorityLabel(AppLocalizations l10n, String priority) {
     switch (priority) {
       case 'low':
-        return _tr('Laag', 'Low');
+        return l10n.supportPriorityLow;
       case 'high':
-        return _tr('Hoog', 'High');
+        return l10n.supportPriorityHigh;
       case 'urgent':
-        return _tr('Urgent', 'Urgent');
+        return l10n.supportPriorityUrgent;
       default:
-        return _tr('Normaal', 'Normal');
+        return l10n.supportPriorityNormal;
     }
   }
 
@@ -722,30 +764,24 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
     }
   }
 
-  String _formatRelative(DateTime value) {
+  String _formatRelative(AppLocalizations l10n, DateTime value) {
     final difference = DateTime.now().difference(value);
     if (difference.inDays >= 1) {
-      return _tr('${difference.inDays}d geleden', '${difference.inDays}d ago');
+      return l10n.supportTimeDaysAgo(difference.inDays);
     }
     if (difference.inHours >= 1) {
-      return _tr(
-        '${difference.inHours}u geleden',
-        '${difference.inHours}h ago',
-      );
+      return l10n.supportTimeHoursAgo(difference.inHours);
     }
     if (difference.inMinutes >= 1) {
-      return _tr(
-        '${difference.inMinutes}m geleden',
-        '${difference.inMinutes}m ago',
-      );
+      return l10n.supportTimeMinutesAgo(difference.inMinutes);
     }
-    return _tr('zojuist', 'just now');
+    return l10n.supportTimeJustNow;
   }
 
-  String _senderLabel(String senderType) {
+  String _senderLabel(AppLocalizations l10n, String senderType) {
     return senderType == 'admin'
-        ? _tr('Support', 'Support')
-        : _tr('Jij', 'You');
+        ? l10n.supportSenderSupport
+        : l10n.supportSenderYou;
   }
 
   String _attachmentUrl(_SupportTicketAttachment attachment) {
@@ -760,7 +796,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   void _openAttachmentPreview(_SupportTicketAttachment attachment) {
     showDialog<void>(
       context: context,
-      builder: (dialogContext) => Dialog(
+      builder: (dialogContext) {
+        final dl10n = AppLocalizations.of(dialogContext)!;
+        return Dialog(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -790,7 +828,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   errorBuilder: (_, __, ___) => Padding(
                     padding: const EdgeInsets.all(24),
                     child: Text(
-                      _tr('Afbeelding laden mislukt.', 'Failed to load image.'),
+                      dl10n.supportImageLoadFailed,
                     ),
                   ),
                 ),
@@ -798,11 +836,13 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
             ),
           ],
         ),
-      ),
+      );
+      },
     );
   }
 
   Widget _buildTicketListCard() {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -813,7 +853,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    _tr('Mijn tickets', 'My tickets'),
+                    l10n.supportMyTickets,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
@@ -822,10 +862,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Support reageert voortaan rechtstreeks in dit scherm. Je kunt optioneel nog wel een pushmelding krijgen als er een update op je ticket is.',
-                'Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.',
-              ),
+              l10n.supportMyTicketsIntro,
             ),
             const SizedBox(height: 12),
             if (_isLoadingTickets && _tickets.isEmpty)
@@ -847,10 +884,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  _tr(
-                    'Je hebt nog geen tickets. Maak hieronder een nieuwe melding aan.',
-                    'You do not have any tickets yet. Create a new report below.',
-                  ),
+                  l10n.supportNoTicketsYet,
                   style: const TextStyle(color: Color(0xFFF2E6DF)),
                 ),
               )
@@ -873,7 +907,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                     onTap: () => _loadTicketDetail(ticket.id),
                     title: Text('#${ticket.id} ${ticket.subject}'),
                     subtitle: Text(
-                      '${_categoryLabel(ticket.category)} • ${_statusLabel(ticket.status)} • ${_formatRelative(ticket.updatedAt)}',
+                      '${_categoryLabel(l10n, ticket.category)} • ${_statusLabel(l10n, ticket.status)} • ${_formatRelative(l10n, ticket.updatedAt)}',
                     ),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -889,7 +923,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                             borderRadius: BorderRadius.circular(999),
                           ),
                           child: Text(
-                            _statusLabel(ticket.status),
+                            _statusLabel(l10n, ticket.status),
                             style: TextStyle(
                               color: color,
                               fontSize: 12,
@@ -901,8 +935,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
-                              _tr('Laatste: ', 'Last: ') +
-                                  _senderLabel(ticket.lastMessageBy!),
+                              l10n.supportLastMessagePrefix +
+                                  _senderLabel(l10n, ticket.lastMessageBy!),
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
@@ -918,6 +952,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   }
 
   Widget _buildSelectedTicketCard() {
+    final l10n = AppLocalizations.of(context)!;
     if (_selectedTicketId == null && _tickets.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -932,10 +967,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
               )
             : _selectedTicketDetail == null
             ? Text(
-                _tr(
-                  'Selecteer een ticket om het gesprek te openen.',
-                  'Select a ticket to open the conversation.',
-                ),
+                l10n.supportSelectTicketPrompt,
               )
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -959,6 +991,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                 Chip(
                                   label: Text(
                                     _statusLabel(
+                                      l10n,
                                       _selectedTicketDetail!.ticket.status,
                                     ),
                                   ),
@@ -966,6 +999,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                 Chip(
                                   label: Text(
                                     _categoryLabel(
+                                      l10n,
                                       _selectedTicketDetail!.ticket.category,
                                     ),
                                   ),
@@ -973,6 +1007,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                 Chip(
                                   label: Text(
                                     _priorityLabel(
+                                      l10n,
                                       _selectedTicketDetail!.ticket.priority,
                                     ),
                                   ),
@@ -984,7 +1019,8 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                     .isNotEmpty)
                                   Chip(
                                     label: Text(
-                                      _moduleLabel(
+                                      _supportModuleLabel(
+                                        l10n,
                                         _selectedTicketDetail!
                                             .ticket
                                             .sourceModule!,
@@ -998,7 +1034,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                 .isNotEmpty) ...[
                               const SizedBox(height: 6),
                               Text(
-                                _tr('Referentie', 'Reference') +
+                                l10n.supportReferenceLabel +
                                     ': ${_selectedTicketDetail!.ticket.referenceCode}',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
@@ -1019,18 +1055,18 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                 ),
                               )
                             : const Icon(Icons.delete_outline),
-                        tooltip: _tr('Ticket verwijderen', 'Delete ticket'),
+                        tooltip: l10n.supportDeleteTicketTitle,
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    _tr('Gesprek', 'Conversation'),
+                    l10n.supportConversation,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const SizedBox(height: 8),
                   if (_selectedTicketDetail!.messages.isEmpty)
-                    Text(_tr('Nog geen berichten.', 'No messages yet.'))
+                    Text(l10n.supportNoMessagesYet)
                   else
                     ListView.separated(
                       shrinkWrap: true,
@@ -1072,7 +1108,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                   Row(
                                     children: [
                                       Text(
-                                        _senderLabel(message.senderType),
+                                        _senderLabel(l10n, message.senderType),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w700,
                                           color: primaryTextColor,
@@ -1080,7 +1116,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                                       ),
                                       const Spacer(),
                                       Text(
-                                        _formatRelative(message.createdAt),
+                                        _formatRelative(l10n, message.createdAt),
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall
@@ -1111,7 +1147,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   if (_selectedTicketDetail!.attachments.isNotEmpty) ...[
                     const SizedBox(height: 16),
                     Text(
-                      _tr('Bijlagen', 'Attachments'),
+                      l10n.supportAttachments,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 8),
@@ -1164,15 +1200,12 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   ],
                   const SizedBox(height: 16),
                   Text(
-                    _tr('Reageer op dit ticket', 'Reply to this ticket'),
+                    l10n.supportReplyToTicket,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _tr(
-                      'Gebruik dit veld als support meer informatie vraagt of als je een update wilt doorgeven. Inbox en push blijven alleen meldingen van nieuwe supportreacties.',
-                      'Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.',
-                    ),
+                    l10n.supportReplyFieldHint,
                   ),
                   const SizedBox(height: 8),
                   TextField(
@@ -1180,7 +1213,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                     minLines: 3,
                     maxLines: 6,
                     decoration: InputDecoration(
-                      labelText: _tr('Jouw reactie', 'Your reply'),
+                      labelText: l10n.supportYourReply,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -1195,7 +1228,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Icon(Icons.reply_outlined),
-                      label: Text(_tr('Reactie versturen', 'Send reply')),
+                      label: Text(l10n.supportSendReply),
                     ),
                   ),
                 ],
@@ -1206,8 +1239,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(_tr('Support Tickets', 'Support Tickets'))),
+      appBar: AppBar(title: Text(l10n.supportTicketsScreenTitle)),
       body: RefreshIndicator(
         onRefresh: _refreshScreen,
         child: ListView(
@@ -1225,15 +1259,12 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr('Nieuw ticket', 'New ticket'),
+                      l10n.supportNewTicket,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _tr(
-                        'Maak hier een nieuwe melding aan. Support kan daarna antwoorden via inbox/push en in dit scherm, zodat je het gesprek op 1 plek kunt voortzetten.',
-                        'Create a new report here. Support can then reply through inbox/push and in this screen, so you can continue the conversation in one place.',
-                      ),
+                      l10n.supportNewTicketIntro,
                     ),
                     if (_lastCreatedTicketId != null) ...[
                       const SizedBox(height: 10),
@@ -1251,19 +1282,15 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _tr('Ticket ontvangen', 'Ticket received'),
+                              l10n.supportTicketReceivedBanner,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _tr('Ticketnummer', 'Ticket number') +
-                                  ': #$_lastCreatedTicketId',
+                              l10n.supportTicketNumberLine(_lastCreatedTicketId!),
                             ),
                             Text(
-                              _tr(
-                                'Het ticket staat nu direct bovenin je lijst. Nieuwe supportreacties komen ook als inboxbericht en pushmelding binnen.',
-                                'The ticket now appears directly in your list above. New support replies also arrive as inbox messages and push notifications.',
-                              ),
+                              l10n.supportTicketReceivedDetail,
                             ),
                           ],
                         ),
@@ -1275,19 +1302,19 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                       items: [
                         DropdownMenuItem(
                           value: 'bug',
-                          child: Text(_tr('Bug', 'Bug')),
+                          child: Text(l10n.supportCategoryBug),
                         ),
                         DropdownMenuItem(
                           value: 'question',
-                          child: Text(_tr('Vraag', 'Question')),
+                          child: Text(l10n.supportCategoryQuestion),
                         ),
                         DropdownMenuItem(
                           value: 'feedback',
-                          child: Text(_tr('Feedback', 'Feedback')),
+                          child: Text(l10n.supportCategoryFeedback),
                         ),
                         DropdownMenuItem(
                           value: 'other',
-                          child: Text(_tr('Overig', 'Other')),
+                          child: Text(l10n.supportCategoryOther),
                         ),
                       ],
                       onChanged: (value) {
@@ -1295,17 +1322,17 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                         setState(() => _category = value);
                       },
                       decoration: InputDecoration(
-                        labelText: _tr('Categorie', 'Category'),
+                        labelText: l10n.supportFieldCategory,
                       ),
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
                       value: _sourceModule,
-                      items: _moduleOptions
+                      items: _kSupportModuleValues
                           .map(
-                            (option) => DropdownMenuItem(
-                              value: option.value,
-                              child: Text(_tr(option.labelNl, option.labelEn)),
+                            (value) => DropdownMenuItem(
+                              value: value,
+                              child: Text(_supportModuleLabel(l10n, value)),
                             ),
                           )
                           .toList(),
@@ -1314,14 +1341,14 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                         setState(() => _sourceModule = value);
                       },
                       decoration: InputDecoration(
-                        labelText: _tr('Onderdeel', 'Module'),
+                        labelText: l10n.supportFieldModule,
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _subjectController,
                       decoration: InputDecoration(
-                        labelText: _tr('Onderwerp', 'Subject'),
+                        labelText: l10n.supportFieldSubject,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -1330,21 +1357,15 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                       minLines: 3,
                       maxLines: 6,
                       decoration: InputDecoration(
-                        labelText: _tr('Bericht', 'Message'),
+                        labelText: l10n.supportFieldMessage,
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _referenceController,
                       decoration: InputDecoration(
-                        labelText: _tr(
-                          'Referentie (optioneel)',
-                          'Reference (optional)',
-                        ),
-                        hintText: _tr(
-                          'Bijv. order-id, schermnaam, land of korte context',
-                          'For example order id, screen name, country or short context',
-                        ),
+                        labelText: l10n.supportReferenceOptional,
+                        hintText: l10n.supportReferenceHint,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -1354,7 +1375,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                           onPressed: _isSubmitting ? null : _pickAttachment,
                           icon: const Icon(Icons.image_outlined),
                           label: Text(
-                            _tr('Screenshot toevoegen', 'Add screenshot'),
+                            l10n.supportAddScreenshot,
                           ),
                         ),
                         if (_attachmentName != null) ...[
@@ -1398,7 +1419,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                       child: ElevatedButton.icon(
                         onPressed: _isSubmitting ? null : _createTicket,
                         icon: const Icon(Icons.send),
-                        label: Text(_tr('Versturen', 'Submit')),
+                        label: Text(l10n.supportSubmit),
                       ),
                     ),
                   ],

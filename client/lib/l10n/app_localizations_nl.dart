@@ -5440,4 +5440,309 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get settingsTheftCooldownConfirmSubtitle =>
       'Vraag bevestiging voordat je credits uitgeeft om de voertuigdiefstal-cooldown over te slaan. Zet uit om in één tik te verzilveren (bliksem naast de timer).';
+
+  @override
+  String get supportTicketsScreenTitle => 'Supporttickets';
+
+  @override
+  String get supportLoadTicketsFailed => 'Tickets laden mislukt';
+
+  @override
+  String get supportLoadTicketFailed => 'Ticket laden mislukt';
+
+  @override
+  String get supportPickImageFailed => 'Afbeelding kiezen mislukt';
+
+  @override
+  String get supportSubjectMessageMinLength =>
+      'Vul onderwerp en bericht in (min. 3 tekens).';
+
+  @override
+  String get supportTicketCreated => 'Ticket aangemaakt.';
+
+  @override
+  String get supportCreateTicketFailed => 'Ticket aanmaken mislukt';
+
+  @override
+  String get supportReplySent => 'Reactie verstuurd.';
+
+  @override
+  String get supportReplySendFailed => 'Reactie versturen mislukt';
+
+  @override
+  String get supportDeleteTicketTitle => 'Ticket verwijderen';
+
+  @override
+  String get supportDeleteTicketBody =>
+      'Weet je zeker dat je dit ticket wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.';
+
+  @override
+  String get supportTicketDeleted => 'Ticket verwijderd.';
+
+  @override
+  String get supportDeleteTicketFailed => 'Ticket verwijderen mislukt';
+
+  @override
+  String get supportUnknownError => 'Onbekende fout';
+
+  @override
+  String get supportStatusNew => 'Nieuw';
+
+  @override
+  String get supportStatusTriage => 'Triage';
+
+  @override
+  String get supportStatusInProgress => 'In behandeling';
+
+  @override
+  String get supportStatusWaitingPlayer => 'Wacht op speler';
+
+  @override
+  String get supportStatusBlocked => 'Geblokkeerd';
+
+  @override
+  String get supportStatusResolved => 'Opgelost';
+
+  @override
+  String get supportStatusClosed => 'Gesloten';
+
+  @override
+  String get supportStatusArchived => 'Gearchiveerd';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryQuestion => 'Vraag';
+
+  @override
+  String get supportCategoryFeedback => 'Feedback';
+
+  @override
+  String get supportCategoryOther => 'Overig';
+
+  @override
+  String get supportPriorityLow => 'Laag';
+
+  @override
+  String get supportPriorityHigh => 'Hoog';
+
+  @override
+  String get supportPriorityUrgent => 'Urgent';
+
+  @override
+  String get supportPriorityNormal => 'Normaal';
+
+  @override
+  String supportTimeDaysAgo(int count) {
+    return '${count}d geleden';
+  }
+
+  @override
+  String supportTimeHoursAgo(int count) {
+    return '${count}u geleden';
+  }
+
+  @override
+  String supportTimeMinutesAgo(int count) {
+    return '${count}m geleden';
+  }
+
+  @override
+  String get supportTimeJustNow => 'zojuist';
+
+  @override
+  String get supportSenderSupport => 'Support';
+
+  @override
+  String get supportSenderYou => 'Jij';
+
+  @override
+  String get supportImageLoadFailed => 'Afbeelding laden mislukt.';
+
+  @override
+  String get supportMyTickets => 'Mijn tickets';
+
+  @override
+  String get supportMyTicketsIntro =>
+      'Support reageert voortaan rechtstreeks in dit scherm. Je kunt optioneel nog wel een pushmelding krijgen als er een update op je ticket is.';
+
+  @override
+  String get supportNoTicketsYet =>
+      'Je hebt nog geen tickets. Maak hieronder een nieuwe melding aan.';
+
+  @override
+  String get supportSelectTicketPrompt =>
+      'Selecteer een ticket om het gesprek te openen.';
+
+  @override
+  String get supportConversation => 'Gesprek';
+
+  @override
+  String get supportNoMessagesYet => 'Nog geen berichten.';
+
+  @override
+  String get supportAttachments => 'Bijlagen';
+
+  @override
+  String get supportReplyToTicket => 'Reageer op dit ticket';
+
+  @override
+  String get supportReplyFieldHint =>
+      'Gebruik dit veld als support meer informatie vraagt of als je een update wilt doorgeven. Inbox en push blijven alleen meldingen van nieuwe supportreacties.';
+
+  @override
+  String get supportYourReply => 'Jouw reactie';
+
+  @override
+  String get supportSendReply => 'Reactie versturen';
+
+  @override
+  String get supportNewTicket => 'Nieuw ticket';
+
+  @override
+  String get supportNewTicketIntro =>
+      'Maak hier een nieuwe melding aan. Support kan daarna antwoorden via inbox/push en in dit scherm, zodat je het gesprek op 1 plek kunt voortzetten.';
+
+  @override
+  String get supportTicketReceivedBanner => 'Ticket ontvangen';
+
+  @override
+  String supportTicketNumberLine(int id) {
+    return 'Ticketnummer: #$id';
+  }
+
+  @override
+  String get supportTicketReceivedDetail =>
+      'Het ticket staat nu direct bovenin je lijst. Nieuwe supportreacties komen ook als inboxbericht en pushmelding binnen.';
+
+  @override
+  String get supportFieldCategory => 'Categorie';
+
+  @override
+  String get supportFieldModule => 'Onderdeel';
+
+  @override
+  String get supportFieldSubject => 'Onderwerp';
+
+  @override
+  String get supportFieldMessage => 'Bericht';
+
+  @override
+  String get supportReferenceOptional => 'Referentie (optioneel)';
+
+  @override
+  String get supportReferenceHint =>
+      'Bijv. order-id, schermnaam, land of korte context';
+
+  @override
+  String get supportAddScreenshot => 'Screenshot toevoegen';
+
+  @override
+  String get supportSubmit => 'Versturen';
+
+  @override
+  String get supportLastMessagePrefix => 'Laatste: ';
+
+  @override
+  String get supportReferenceLabel => 'Referentie';
+
+  @override
+  String get supportMod_support => 'Algemeen support';
+
+  @override
+  String get supportMod_dashboard => 'Dashboard';
+
+  @override
+  String get supportMod_messages => 'Berichten / inbox';
+
+  @override
+  String get supportMod_notifications => 'Meldingen / push';
+
+  @override
+  String get supportMod_payments => 'Betalingen / premium';
+
+  @override
+  String get supportMod_bank => 'Bank';
+
+  @override
+  String get supportMod_crypto => 'Crypto';
+
+  @override
+  String get supportMod_travel => 'Reizen';
+
+  @override
+  String get supportMod_properties => 'Eigendommen';
+
+  @override
+  String get supportMod_inventory => 'Inventory / opslag';
+
+  @override
+  String get supportMod_loadouts => 'Loadouts / uitrusting';
+
+  @override
+  String get supportMod_crimes => 'Misdaden';
+
+  @override
+  String get supportMod_jobs => 'Werk / banen';
+
+  @override
+  String get supportMod_vehicles => 'Auto / motor / boot diefstal';
+
+  @override
+  String get supportMod_garage => 'Garage';
+
+  @override
+  String get supportMod_marina => 'Marina';
+
+  @override
+  String get supportMod_aviation => 'Luchtvaart';
+
+  @override
+  String get supportMod_smuggling => 'Smokkelen';
+
+  @override
+  String get supportMod_drugs => 'Drugs';
+
+  @override
+  String get supportMod_nightclub => 'Nachtclub';
+
+  @override
+  String get supportMod_prostitution => 'Prostitutie';
+
+  @override
+  String get supportMod_crew => 'Crew';
+
+  @override
+  String get supportMod_friends => 'Vrienden / spelers';
+
+  @override
+  String get supportMod_hitlist => 'Hitlist';
+
+  @override
+  String get supportMod_security => 'Beveiliging / FBI';
+
+  @override
+  String get supportMod_prison => 'Gevangenis / rechtbank';
+
+  @override
+  String get supportMod_casino => 'Casino';
+
+  @override
+  String get supportMod_school => 'School / training';
+
+  @override
+  String get supportMod_achievements => 'Achievements';
+
+  @override
+  String get supportMod_profile => 'Profiel';
+
+  @override
+  String get supportMod_settings => 'Instellingen';
+
+  @override
+  String get supportMod_events => 'Events / leaderboard';
+
+  @override
+  String get supportMod_other => 'Overig';
 }

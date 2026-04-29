@@ -1,9 +1,11 @@
 /**
  * Translation Service
- * Handles email and notification translations for NL and EN
+ * Handles email and notification translations (full NL/EN catalogs; other UI languages fall back to EN with targeted patches).
  */
 
-export type Language = 'en' | 'nl';
+import { normalizePlayerLanguage, type SupportedPlayerLanguage } from '../config/supportedLanguages';
+
+export type Language = SupportedPlayerLanguage;
 
 interface Translations {
   email: {
@@ -205,7 +207,7 @@ interface Translations {
   };
 }
 
-const translations: Record<Language, Translations> = {
+const translations: Record<'en' | 'nl', Translations> = {
   en: {
     email: {
       verification: {
@@ -694,20 +696,78 @@ function impactLabelNl(impact: 'BULLISH' | 'BEARISH' | 'NEUTRAL'): string {
   return 'Neutraal';
 }
 
+const supportTicketPushByLocale: Partial<
+  Record<
+    SupportedPlayerLanguage,
+    { title: string; body: (ticketId: string, subject: string) => string }
+  >
+> = {
+  es: {
+    title: 'Actualización de soporte',
+    body: (ticketId, subject) =>
+      `El ticket #${ticketId} tiene una nueva respuesta: ${subject}`,
+  },
+  de: {
+    title: 'Support-Ticket aktualisiert',
+    body: (ticketId, subject) =>
+      `Ticket #${ticketId}: neue Support-Antwort — ${subject}`,
+  },
+  fr: {
+    title: 'Mise à jour du ticket support',
+    body: (ticketId, subject) =>
+      `Le ticket #${ticketId} a une nouvelle réponse : ${subject}`,
+  },
+  it: {
+    title: 'Aggiornamento ticket di supporto',
+    body: (ticketId, subject) =>
+      `Il ticket #${ticketId} ha una nuova risposta: ${subject}`,
+  },
+  pl: {
+    title: 'Aktualizacja zgłoszenia',
+    body: (ticketId, subject) =>
+      `Zgłoszenie #${ticketId} — nowa odpowiedź pomocy: ${subject}`,
+  },
+  pt: {
+    title: 'Atualização do ticket de suporte',
+    body: (ticketId, subject) =>
+      `O ticket #${ticketId} tem uma nova resposta: ${subject}`,
+  },
+};
+
+function withSupportTicketPushLocale(base: Translations, lang: SupportedPlayerLanguage): Translations {
+  const patch = supportTicketPushByLocale[lang];
+  if (!patch) {
+    return base;
+  }
+  return {
+    ...base,
+    notification: {
+      ...base.notification,
+      supportTicketUpdate: patch,
+    },
+  };
+}
+
 export const translationService = {
   /**
    * Get translations for a specific language
    */
   getTranslations(language: Language = 'en'): Translations {
-    return translations[language] || translations.en;
+    const lang = normalizePlayerLanguage(language ?? 'en');
+    if (lang === 'nl') {
+      return translations.nl;
+    }
+    if (lang === 'en') {
+      return translations.en;
+    }
+    return withSupportTicketPushLocale(translations.en, lang);
   },
 
   /**
-   * Get player's preferred language for **NL/EN email templates** only.
-   * UI may use more locales; anything other than `nl` maps to `en` here until templates exist for more languages.
+   * Player UI language (BCP-47 base codes supported by the game client).
+   * Email HTML templates exist for `nl` and `en` only; other codes still receive correct **push** copy where patched (e.g. support ticket updates).
    */
   getPlayerLanguage(player: { preferredLanguage?: string }): Language {
-    const lang = player.preferredLanguage?.toLowerCase();
-    return (lang === 'nl' || lang === 'en') ? lang : 'en';
+    return normalizePlayerLanguage(player.preferredLanguage);
   },
 };

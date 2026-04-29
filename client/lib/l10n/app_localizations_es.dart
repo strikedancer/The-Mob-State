@@ -5501,4 +5501,309 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get settingsTheftCooldownConfirmSubtitle =>
       'Solicite confirmación antes de gastar créditos para omitir el tiempo de reutilización por robo de vehículos. Desactívalo para canjearlo con un solo toque (icono de un rayo al lado del temporizador).';
+
+  @override
+  String get supportTicketsScreenTitle => 'Tickets de soporte';
+
+  @override
+  String get supportLoadTicketsFailed => 'No se pudieron cargar los tickets';
+
+  @override
+  String get supportLoadTicketFailed => 'No se pudo cargar el ticket';
+
+  @override
+  String get supportPickImageFailed => 'No se pudo seleccionar la imagen';
+
+  @override
+  String get supportSubjectMessageMinLength =>
+      'Rellena el asunto y el mensaje (mín. 3 caracteres).';
+
+  @override
+  String get supportTicketCreated => 'Ticket creado.';
+
+  @override
+  String get supportCreateTicketFailed => 'No se pudo crear el ticket';
+
+  @override
+  String get supportReplySent => 'Respuesta enviada.';
+
+  @override
+  String get supportReplySendFailed => 'No se pudo enviar la respuesta';
+
+  @override
+  String get supportDeleteTicketTitle => 'Eliminar ticket';
+
+  @override
+  String get supportDeleteTicketBody =>
+      '¿Seguro que quieres eliminar este ticket? Esta acción no se puede deshacer.';
+
+  @override
+  String get supportTicketDeleted => 'Ticket eliminado.';
+
+  @override
+  String get supportDeleteTicketFailed => 'No se pudo eliminar el ticket';
+
+  @override
+  String get supportUnknownError => 'Error desconocido';
+
+  @override
+  String get supportStatusNew => 'Nuevo';
+
+  @override
+  String get supportStatusTriage => 'Triaje';
+
+  @override
+  String get supportStatusInProgress => 'En curso';
+
+  @override
+  String get supportStatusWaitingPlayer => 'Esperando al jugador';
+
+  @override
+  String get supportStatusBlocked => 'Bloqueado';
+
+  @override
+  String get supportStatusResolved => 'Resuelto';
+
+  @override
+  String get supportStatusClosed => 'Cerrado';
+
+  @override
+  String get supportStatusArchived => 'Archivado';
+
+  @override
+  String get supportCategoryBug => 'Error';
+
+  @override
+  String get supportCategoryQuestion => 'Pregunta';
+
+  @override
+  String get supportCategoryFeedback => 'Comentarios';
+
+  @override
+  String get supportCategoryOther => 'Otro';
+
+  @override
+  String get supportPriorityLow => 'Baja';
+
+  @override
+  String get supportPriorityHigh => 'Alta';
+
+  @override
+  String get supportPriorityUrgent => 'Urgente';
+
+  @override
+  String get supportPriorityNormal => 'Normal';
+
+  @override
+  String supportTimeDaysAgo(int count) {
+    return 'hace $count d';
+  }
+
+  @override
+  String supportTimeHoursAgo(int count) {
+    return 'hace $count h';
+  }
+
+  @override
+  String supportTimeMinutesAgo(int count) {
+    return 'hace $count min';
+  }
+
+  @override
+  String get supportTimeJustNow => 'ahora mismo';
+
+  @override
+  String get supportSenderSupport => 'Soporte';
+
+  @override
+  String get supportSenderYou => 'Tú';
+
+  @override
+  String get supportImageLoadFailed => 'No se pudo cargar la imagen.';
+
+  @override
+  String get supportMyTickets => 'Mis tickets';
+
+  @override
+  String get supportMyTicketsIntro =>
+      'El soporte responde ahora directamente en esta pantalla. Opcionalmente puedes seguir recibiendo una notificación push cuando tu ticket se actualice.';
+
+  @override
+  String get supportNoTicketsYet =>
+      'Aún no tienes tickets. Crea un nuevo informe abajo.';
+
+  @override
+  String get supportSelectTicketPrompt =>
+      'Selecciona un ticket para abrir la conversación.';
+
+  @override
+  String get supportConversation => 'Conversación';
+
+  @override
+  String get supportNoMessagesYet => 'Aún no hay mensajes.';
+
+  @override
+  String get supportAttachments => 'Adjuntos';
+
+  @override
+  String get supportReplyToTicket => 'Responder a este ticket';
+
+  @override
+  String get supportReplyFieldHint =>
+      'Usa este campo cuando el soporte pida más información o quieras enviar una actualización. La bandeja de entrada y las push siguen avisando de nuevas respuestas del soporte.';
+
+  @override
+  String get supportYourReply => 'Tu respuesta';
+
+  @override
+  String get supportSendReply => 'Enviar respuesta';
+
+  @override
+  String get supportNewTicket => 'Nuevo ticket';
+
+  @override
+  String get supportNewTicketIntro =>
+      'Crea un nuevo informe aquí. El soporte puede responder por bandeja/push y en esta pantalla, para seguir la conversación en un solo lugar.';
+
+  @override
+  String get supportTicketReceivedBanner => 'Ticket recibido';
+
+  @override
+  String supportTicketNumberLine(int id) {
+    return 'Número de ticket: #$id';
+  }
+
+  @override
+  String get supportTicketReceivedDetail =>
+      'El ticket aparece ahora arriba en tu lista. Las nuevas respuestas del soporte también llegan como mensaje en la bandeja y como notificación push.';
+
+  @override
+  String get supportFieldCategory => 'Categoría';
+
+  @override
+  String get supportFieldModule => 'Módulo';
+
+  @override
+  String get supportFieldSubject => 'Asunto';
+
+  @override
+  String get supportFieldMessage => 'Mensaje';
+
+  @override
+  String get supportReferenceOptional => 'Referencia (opcional)';
+
+  @override
+  String get supportReferenceHint =>
+      'Por ejemplo id de pedido, nombre de pantalla, país o contexto breve';
+
+  @override
+  String get supportAddScreenshot => 'Añadir captura';
+
+  @override
+  String get supportSubmit => 'Enviar';
+
+  @override
+  String get supportLastMessagePrefix => 'Último: ';
+
+  @override
+  String get supportReferenceLabel => 'Referencia';
+
+  @override
+  String get supportMod_support => 'Soporte general';
+
+  @override
+  String get supportMod_dashboard => 'Panel';
+
+  @override
+  String get supportMod_messages => 'Mensajes / bandeja';
+
+  @override
+  String get supportMod_notifications => 'Notificaciones / push';
+
+  @override
+  String get supportMod_payments => 'Pagos / premium';
+
+  @override
+  String get supportMod_bank => 'Banco';
+
+  @override
+  String get supportMod_crypto => 'Cripto';
+
+  @override
+  String get supportMod_travel => 'Viajes';
+
+  @override
+  String get supportMod_properties => 'Propiedades';
+
+  @override
+  String get supportMod_inventory => 'Inventario / almacén';
+
+  @override
+  String get supportMod_loadouts => 'Equipamientos / equipo';
+
+  @override
+  String get supportMod_crimes => 'Crimen';
+
+  @override
+  String get supportMod_jobs => 'Trabajo / empleos';
+
+  @override
+  String get supportMod_vehicles => 'Robo de coche / moto / barco';
+
+  @override
+  String get supportMod_garage => 'Garaje';
+
+  @override
+  String get supportMod_marina => 'Marina';
+
+  @override
+  String get supportMod_aviation => 'Aviación';
+
+  @override
+  String get supportMod_smuggling => 'Contrabando';
+
+  @override
+  String get supportMod_drugs => 'Drogas';
+
+  @override
+  String get supportMod_nightclub => 'Club nocturno';
+
+  @override
+  String get supportMod_prostitution => 'Prostitución';
+
+  @override
+  String get supportMod_crew => 'Crew';
+
+  @override
+  String get supportMod_friends => 'Amigos / jugadores';
+
+  @override
+  String get supportMod_hitlist => 'Lista negra';
+
+  @override
+  String get supportMod_security => 'Seguridad / FBI';
+
+  @override
+  String get supportMod_prison => 'Prisión / juzgado';
+
+  @override
+  String get supportMod_casino => 'Casino';
+
+  @override
+  String get supportMod_school => 'Escuela / formación';
+
+  @override
+  String get supportMod_achievements => 'Logros';
+
+  @override
+  String get supportMod_profile => 'Perfil';
+
+  @override
+  String get supportMod_settings => 'Ajustes';
+
+  @override
+  String get supportMod_events => 'Eventos / clasificación';
+
+  @override
+  String get supportMod_other => 'Otro';
 }

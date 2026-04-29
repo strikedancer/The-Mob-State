@@ -5475,4 +5475,309 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get settingsTheftCooldownConfirmSubtitle =>
       'Poproś o potwierdzenie przed wydaniem kredytów, aby pominąć czas odnowienia kradzieży pojazdu. Wyłącz, aby zrealizować jednym dotknięciem (ikona błyskawicy obok minutnika).';
+
+  @override
+  String get supportTicketsScreenTitle => 'Support tickets';
+
+  @override
+  String get supportLoadTicketsFailed => 'Failed to load tickets';
+
+  @override
+  String get supportLoadTicketFailed => 'Failed to load ticket';
+
+  @override
+  String get supportPickImageFailed => 'Failed to select image';
+
+  @override
+  String get supportSubjectMessageMinLength =>
+      'Fill in subject and message (min. 3 chars).';
+
+  @override
+  String get supportTicketCreated => 'Ticket created.';
+
+  @override
+  String get supportCreateTicketFailed => 'Failed to create ticket';
+
+  @override
+  String get supportReplySent => 'Reply sent.';
+
+  @override
+  String get supportReplySendFailed => 'Failed to send reply';
+
+  @override
+  String get supportDeleteTicketTitle => 'Delete ticket';
+
+  @override
+  String get supportDeleteTicketBody =>
+      'Are you sure you want to delete this ticket? This action cannot be undone.';
+
+  @override
+  String get supportTicketDeleted => 'Ticket deleted.';
+
+  @override
+  String get supportDeleteTicketFailed => 'Failed to delete ticket';
+
+  @override
+  String get supportUnknownError => 'Unknown error';
+
+  @override
+  String get supportStatusNew => 'New';
+
+  @override
+  String get supportStatusTriage => 'Triage';
+
+  @override
+  String get supportStatusInProgress => 'In progress';
+
+  @override
+  String get supportStatusWaitingPlayer => 'Waiting for player';
+
+  @override
+  String get supportStatusBlocked => 'Blocked';
+
+  @override
+  String get supportStatusResolved => 'Resolved';
+
+  @override
+  String get supportStatusClosed => 'Closed';
+
+  @override
+  String get supportStatusArchived => 'Archived';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeedback => 'Feedback';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportPriorityLow => 'Low';
+
+  @override
+  String get supportPriorityHigh => 'High';
+
+  @override
+  String get supportPriorityUrgent => 'Urgent';
+
+  @override
+  String get supportPriorityNormal => 'Normal';
+
+  @override
+  String supportTimeDaysAgo(int count) {
+    return '${count}d ago';
+  }
+
+  @override
+  String supportTimeHoursAgo(int count) {
+    return '${count}h ago';
+  }
+
+  @override
+  String supportTimeMinutesAgo(int count) {
+    return '${count}m ago';
+  }
+
+  @override
+  String get supportTimeJustNow => 'just now';
+
+  @override
+  String get supportSenderSupport => 'Support';
+
+  @override
+  String get supportSenderYou => 'You';
+
+  @override
+  String get supportImageLoadFailed => 'Failed to load image.';
+
+  @override
+  String get supportMyTickets => 'My tickets';
+
+  @override
+  String get supportMyTicketsIntro =>
+      'Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.';
+
+  @override
+  String get supportNoTicketsYet =>
+      'You do not have any tickets yet. Create a new report below.';
+
+  @override
+  String get supportSelectTicketPrompt =>
+      'Select a ticket to open the conversation.';
+
+  @override
+  String get supportConversation => 'Conversation';
+
+  @override
+  String get supportNoMessagesYet => 'No messages yet.';
+
+  @override
+  String get supportAttachments => 'Attachments';
+
+  @override
+  String get supportReplyToTicket => 'Reply to this ticket';
+
+  @override
+  String get supportReplyFieldHint =>
+      'Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.';
+
+  @override
+  String get supportYourReply => 'Your reply';
+
+  @override
+  String get supportSendReply => 'Send reply';
+
+  @override
+  String get supportNewTicket => 'New ticket';
+
+  @override
+  String get supportNewTicketIntro =>
+      'Create a new report here. Support can then reply through inbox/push and in this screen, so you can continue the conversation in one place.';
+
+  @override
+  String get supportTicketReceivedBanner => 'Ticket received';
+
+  @override
+  String supportTicketNumberLine(int id) {
+    return 'Ticket number: #$id';
+  }
+
+  @override
+  String get supportTicketReceivedDetail =>
+      'The ticket now appears directly in your list above. New support replies also arrive as inbox messages and push notifications.';
+
+  @override
+  String get supportFieldCategory => 'Category';
+
+  @override
+  String get supportFieldModule => 'Module';
+
+  @override
+  String get supportFieldSubject => 'Subject';
+
+  @override
+  String get supportFieldMessage => 'Message';
+
+  @override
+  String get supportReferenceOptional => 'Reference (optional)';
+
+  @override
+  String get supportReferenceHint =>
+      'For example order id, screen name, country or short context';
+
+  @override
+  String get supportAddScreenshot => 'Add screenshot';
+
+  @override
+  String get supportSubmit => 'Submit';
+
+  @override
+  String get supportLastMessagePrefix => 'Last: ';
+
+  @override
+  String get supportReferenceLabel => 'Reference';
+
+  @override
+  String get supportMod_support => 'General support';
+
+  @override
+  String get supportMod_dashboard => 'Dashboard';
+
+  @override
+  String get supportMod_messages => 'Messages / inbox';
+
+  @override
+  String get supportMod_notifications => 'Notifications / push';
+
+  @override
+  String get supportMod_payments => 'Payments / premium';
+
+  @override
+  String get supportMod_bank => 'Bank';
+
+  @override
+  String get supportMod_crypto => 'Crypto';
+
+  @override
+  String get supportMod_travel => 'Travel';
+
+  @override
+  String get supportMod_properties => 'Properties';
+
+  @override
+  String get supportMod_inventory => 'Inventory / storage';
+
+  @override
+  String get supportMod_loadouts => 'Loadouts / equipment';
+
+  @override
+  String get supportMod_crimes => 'Crimes';
+
+  @override
+  String get supportMod_jobs => 'Work / jobs';
+
+  @override
+  String get supportMod_vehicles => 'Car / bike / boat theft';
+
+  @override
+  String get supportMod_garage => 'Garage';
+
+  @override
+  String get supportMod_marina => 'Marina';
+
+  @override
+  String get supportMod_aviation => 'Aviation';
+
+  @override
+  String get supportMod_smuggling => 'Smuggling';
+
+  @override
+  String get supportMod_drugs => 'Drugs';
+
+  @override
+  String get supportMod_nightclub => 'Nightclub';
+
+  @override
+  String get supportMod_prostitution => 'Prostitution';
+
+  @override
+  String get supportMod_crew => 'Crew';
+
+  @override
+  String get supportMod_friends => 'Friends / players';
+
+  @override
+  String get supportMod_hitlist => 'Hitlist';
+
+  @override
+  String get supportMod_security => 'Security / FBI';
+
+  @override
+  String get supportMod_prison => 'Prison / court';
+
+  @override
+  String get supportMod_casino => 'Casino';
+
+  @override
+  String get supportMod_school => 'School / training';
+
+  @override
+  String get supportMod_achievements => 'Achievements';
+
+  @override
+  String get supportMod_profile => 'Profile';
+
+  @override
+  String get supportMod_settings => 'Settings';
+
+  @override
+  String get supportMod_events => 'Events / leaderboard';
+
+  @override
+  String get supportMod_other => 'Other';
 }

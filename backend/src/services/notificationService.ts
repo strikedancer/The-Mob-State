@@ -1,6 +1,7 @@
 import admin from 'firebase-admin';
 import fs from 'fs';
 import prisma from '../lib/prisma';
+import { normalizePlayerLanguage } from '../config/supportedLanguages';
 import { translationService, type Language } from './translationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
 import { systemLogService } from './systemLogService';
@@ -1356,8 +1357,10 @@ export class NotificationService {
   public async broadcastLocalizedGameEventPushes(payload: {
     titleNl: string;
     titleEn: string;
+    titleEs?: string;
     bodyNl: string;
     bodyEn: string;
+    bodyEs?: string;
     data?: Record<string, string>;
   }): Promise<void> {
     if (!this.initialized) {
@@ -1379,11 +1382,16 @@ export class NotificationService {
       const batch = players.slice(i, i + batchSize);
       await Promise.all(
         batch.map((p) => {
-          const isNl = String(p.preferredLanguage || 'nl')
-            .toLowerCase()
-            .startsWith('nl');
-          const title = isNl ? payload.titleNl : payload.titleEn;
-          const body = isNl ? payload.bodyNl : payload.bodyEn;
+          const lang = normalizePlayerLanguage(p.preferredLanguage);
+          let title = payload.titleEn;
+          let body = payload.bodyEn;
+          if (lang === 'nl') {
+            title = payload.titleNl;
+            body = payload.bodyNl;
+          } else if (lang === 'es' && payload.titleEs && payload.bodyEs) {
+            title = payload.titleEs;
+            body = payload.bodyEs;
+          }
           return this.sendToPlayer(p.id, title, body, payload.data);
         })
       );

@@ -424,7 +424,7 @@
   "nightclub": "Nightclub",
   "crypto": "Crypto",
   "smuggling": "Smuggling",
-  "tools": "Tools",
+  "tools": "tools",
   "vehicleHeist": "Vehicle Heist",
   "tuneShop": "Tune Shop",
   "territory": "Territory",
@@ -483,7 +483,6 @@
   "countryLabel": "Country",
   "wantedLevel": "Wanted Level",
   "fbiHeat": "FBI Heat",
-  "bank": "Bank",
   "properties": "Properties",
   "vehicles": "Vehicles",
   "netWorth": "Net worth",
@@ -526,17 +525,39 @@
   "dailyGoalReward": "Reward: +{cash} and +{xp} XP",
   "@dailyGoalReward": {
     "placeholders": {
-      "cash": { "type": "String" },
-      "xp": { "type": "String" }
+      "cash": {
+        "type": "String"
+      },
+      "xp": {
+        "type": "String"
+      }
     }
   },
   "justNow": "Just now",
   "secondsAgo": "{seconds}s ago",
-  "@secondsAgo": { "placeholders": { "seconds": { "type": "String" } } },
-  "minutesAgo": "{minutes}m ago",
-  "@minutesAgo": { "placeholders": { "minutes": { "type": "String" } } },
-  "hoursAgo": "{hours}h ago",
-  "@hoursAgo": { "placeholders": { "hours": { "type": "String" } } },
+  "@secondsAgo": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "minutesAgo": "{count} minutes ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "hoursAgo": "{count} hours ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "last10EventsLive": "Last 10 events (live).",
   "noEventsYetSession": "No events yet in this session.",
   "clearRecap": "Clear recap",
@@ -550,9 +571,24 @@
   "ready": "Ready",
   "claim": "Claim",
   "readyToClaim": "{count} ready to claim",
-  "@readyToClaim": { "placeholders": { "count": { "type": "String" } } },
+  "@readyToClaim": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "completedOutOfTotal": "{completed}/{total} completed",
-  "@completedOutOfTotal": { "placeholders": { "completed": { "type": "String" }, "total": { "type": "String" } } },
+  "@completedOutOfTotal": {
+    "placeholders": {
+      "completed": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
   "noPlayerData": "No player data",
   "economy24h": "Economy 24h",
   "grossIncome": "Gross income",
@@ -577,7 +613,7 @@
   "eventsLast24h": "Events last 24h",
   "riskScore": "Risk score",
   "recruitProstitute": "Recruit prostitute",
-  "free": "Free",
+  "free": "FREE",
   "crewWars": "Crew Wars",
   "status": "Status",
   "canDeclare": "Can declare",
@@ -743,7 +779,13 @@
   "settingsPushEnabledToast": "Push notifications enabled. New notifications will now be received.",
   "settingsPushDisabledInSystem": "Push is disabled in your browser/iPhone settings. Enable notifications for this app.",
   "settingsEnablePushFailed": "Failed to enable push notifications: {error}",
-  "@settingsEnablePushFailed": { "placeholders": { "error": { "type": "String" } } },
+  "@settingsEnablePushFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "settingsPlayerEventsTitle": "Player events",
   "settingsPushLivePlayerEventsTitle": "Push: live player events",
   "settingsPushLivePlayerEventsSubtitle": "Start and end of recurring competition events (e.g. top-score rounds).",
@@ -800,7 +842,6 @@
   "foodInfo3": "• Buy food and drink to keep your stats up",
   "friends": "Friends",
   "friendActivity": "Friend Activity",
-  "properties": "Properties",
   "propertiesAvailable": "Available",
   "myProperties": "My Properties",
   "errorLoadingMyProperties": "Error loading my properties",
@@ -1027,7 +1068,6 @@
   "pay": "Pay",
   "success": "Success",
   "jail": "Jail",
-  "wantedLevel": "Wanted Level",
   "cooldown": "Cooldown",
   "requiredRank": "Required Player Rank",
   "playerRankLabel": "Player rank",
@@ -1073,7 +1113,6 @@
   "marketplace": "Marketplace",
   "myListings": "My Listings",
   "inventory": "Inventory",
-  "vehicles": "Vehicles",
   "backpacks": "Backpacks",
   "materials": "Materials",
   "production": "Production",
@@ -1085,7 +1124,6 @@
   "yourHealth": "Your Health",
   "criticalHealthWarning": "⚠️ CRITICAL! You must go to the hospital immediately!",
   "lowHealthWarning": "⚠️ Low health! Be careful.",
-  "free": "FREE",
   "information": "Information",
   "contrabandFlowersName": "Flowers",
   "contrabandFlowersDesc": "Dutch tulips and other flowers for international trade",
@@ -1421,7 +1459,6 @@
   "noToolsInStorage": "No tools in storage",
   "selectProperty": "Select property",
   "slotsRemaining": "slots remaining",
-  "tools": "tools",
   "noLoadouts": "No loadouts",
   "createLoadoutToStart": "Create a loadout to get started",
   "deleteLoadout": "Delete Loadout",
@@ -1495,8 +1532,6 @@
   "arrested": "Arrested!",
   "jailMessage": "You were arrested during your journey and all goods were confiscated!",
   "confirmAction": "Are you sure?",
-  "yes": "Yes",
-  "no": "No",
   "ok": "OK",
   "travelContinueConfirmTitle": "Proceed to next leg?",
   "travelContinueConfirmBody": "Border checks are active. Continue your journey?",
@@ -1604,22 +1639,6 @@
         "type": "String"
       },
       "plural": {
-        "type": "String"
-      }
-    }
-  },
-  "hoursAgo": "{count} hours ago",
-  "@hoursAgo": {
-    "placeholders": {
-      "count": {
-        "type": "String"
-      }
-    }
-  },
-  "minutesAgo": "{count} minutes ago",
-  "@minutesAgo": {
-    "placeholders": {
-      "count": {
         "type": "String"
       }
     }
@@ -2768,5 +2787,129 @@
   "theftCooldownRedeemFailed": "Could not apply credits to the cooldown.",
   "theftCooldownRedeemSuccess": "Cooldown cleared.",
   "settingsTheftCooldownConfirmTitle": "Theft cooldown (credits)",
-  "settingsTheftCooldownConfirmSubtitle": "Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer)."
+  "settingsTheftCooldownConfirmSubtitle": "Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer).",
+  "supportTicketsScreenTitle": "Support tickets",
+  "supportLoadTicketsFailed": "Failed to load tickets",
+  "supportLoadTicketFailed": "Failed to load ticket",
+  "supportPickImageFailed": "Failed to select image",
+  "supportSubjectMessageMinLength": "Fill in subject and message (min. 3 chars).",
+  "supportTicketCreated": "Ticket created.",
+  "supportCreateTicketFailed": "Failed to create ticket",
+  "supportReplySent": "Reply sent.",
+  "supportReplySendFailed": "Failed to send reply",
+  "supportDeleteTicketTitle": "Delete ticket",
+  "supportDeleteTicketBody": "Are you sure you want to delete this ticket? This action cannot be undone.",
+  "supportTicketDeleted": "Ticket deleted.",
+  "supportDeleteTicketFailed": "Failed to delete ticket",
+  "supportUnknownError": "Unknown error",
+  "supportStatusNew": "New",
+  "supportStatusTriage": "Triage",
+  "supportStatusInProgress": "In progress",
+  "supportStatusWaitingPlayer": "Waiting for player",
+  "supportStatusBlocked": "Blocked",
+  "supportStatusResolved": "Resolved",
+  "supportStatusClosed": "Closed",
+  "supportStatusArchived": "Archived",
+  "supportCategoryBug": "Bug",
+  "supportCategoryQuestion": "Question",
+  "supportCategoryFeedback": "Feedback",
+  "supportCategoryOther": "Other",
+  "supportPriorityLow": "Low",
+  "supportPriorityHigh": "High",
+  "supportPriorityUrgent": "Urgent",
+  "supportPriorityNormal": "Normal",
+  "supportTimeDaysAgo": "{count}d ago",
+  "@supportTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTimeHoursAgo": "{count}h ago",
+  "@supportTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTimeMinutesAgo": "{count}m ago",
+  "@supportTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTimeJustNow": "just now",
+  "supportSenderSupport": "Support",
+  "supportSenderYou": "You",
+  "supportImageLoadFailed": "Failed to load image.",
+  "supportMyTickets": "My tickets",
+  "supportMyTicketsIntro": "Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.",
+  "supportNoTicketsYet": "You do not have any tickets yet. Create a new report below.",
+  "supportSelectTicketPrompt": "Select a ticket to open the conversation.",
+  "supportConversation": "Conversation",
+  "supportNoMessagesYet": "No messages yet.",
+  "supportAttachments": "Attachments",
+  "supportReplyToTicket": "Reply to this ticket",
+  "supportReplyFieldHint": "Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.",
+  "supportYourReply": "Your reply",
+  "supportSendReply": "Send reply",
+  "supportNewTicket": "New ticket",
+  "supportNewTicketIntro": "Create a new report here. Support can then reply through inbox/push and in this screen, so you can continue the conversation in one place.",
+  "supportTicketReceivedBanner": "Ticket received",
+  "supportTicketNumberLine": "Ticket number: #{id}",
+  "@supportTicketNumberLine": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTicketReceivedDetail": "The ticket now appears directly in your list above. New support replies also arrive as inbox messages and push notifications.",
+  "supportFieldCategory": "Category",
+  "supportFieldModule": "Module",
+  "supportFieldSubject": "Subject",
+  "supportFieldMessage": "Message",
+  "supportReferenceOptional": "Reference (optional)",
+  "supportReferenceHint": "For example order id, screen name, country or short context",
+  "supportAddScreenshot": "Add screenshot",
+  "supportSubmit": "Submit",
+  "supportLastMessagePrefix": "Last: ",
+  "supportReferenceLabel": "Reference",
+  "supportMod_support": "General support",
+  "supportMod_dashboard": "Dashboard",
+  "supportMod_messages": "Messages / inbox",
+  "supportMod_notifications": "Notifications / push",
+  "supportMod_payments": "Payments / premium",
+  "supportMod_bank": "Bank",
+  "supportMod_crypto": "Crypto",
+  "supportMod_travel": "Travel",
+  "supportMod_properties": "Properties",
+  "supportMod_inventory": "Inventory / storage",
+  "supportMod_loadouts": "Loadouts / equipment",
+  "supportMod_crimes": "Crimes",
+  "supportMod_jobs": "Work / jobs",
+  "supportMod_vehicles": "Car / bike / boat theft",
+  "supportMod_garage": "Garage",
+  "supportMod_marina": "Marina",
+  "supportMod_aviation": "Aviation",
+  "supportMod_smuggling": "Smuggling",
+  "supportMod_drugs": "Drugs",
+  "supportMod_nightclub": "Nightclub",
+  "supportMod_prostitution": "Prostitution",
+  "supportMod_crew": "Crew",
+  "supportMod_friends": "Friends / players",
+  "supportMod_hitlist": "Hitlist",
+  "supportMod_security": "Security / FBI",
+  "supportMod_prison": "Prison / court",
+  "supportMod_casino": "Casino",
+  "supportMod_school": "School / training",
+  "supportMod_achievements": "Achievements",
+  "supportMod_profile": "Profile",
+  "supportMod_settings": "Settings",
+  "supportMod_events": "Events / leaderboard",
+  "supportMod_other": "Other"
 }

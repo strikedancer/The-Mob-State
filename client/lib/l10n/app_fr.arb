@@ -2731,5 +2731,185 @@
   "theftCooldownRedeemFailed": "Impossible d'appliquer des crédits au temps de recharge.",
   "theftCooldownRedeemSuccess": "Le temps de recharge est terminé.",
   "settingsTheftCooldownConfirmTitle": "Temps de recharge pour vol (crédits)",
-  "settingsTheftCooldownConfirmSubtitle": "Demandez une confirmation avant de dépenser des crédits pour éviter le temps de recharge du vol de véhicule. Désactivez-le pour l'échanger en un seul clic (icône en forme d'éclair à côté de la minuterie)."
+  "settingsTheftCooldownConfirmSubtitle": "Demandez une confirmation avant de dépenser des crédits pour éviter le temps de recharge du vol de véhicule. Désactivez-le pour l'échanger en un seul clic (icône en forme d'éclair à côté de la minuterie).",
+  "@errorLoadingConversations": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@chatFriendRankLine": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "@errorLoadingMessages": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@investigationStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@vaultSeasonLabel": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      }
+    }
+  },
+  "@vaultStakeCredits": {
+    "placeholders": {
+      "stake": {
+        "type": "int"
+      }
+    }
+  },
+  "@vaultExpectedPrize": {
+    "placeholders": {
+      "reward": {
+        "type": "int"
+      }
+    }
+  },
+  "@dashboardNewMessagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTicketsScreenTitle": "Support tickets",
+  "supportLoadTicketsFailed": "Failed to load tickets",
+  "supportLoadTicketFailed": "Failed to load ticket",
+  "supportPickImageFailed": "Failed to select image",
+  "supportSubjectMessageMinLength": "Fill in subject and message (min. 3 chars).",
+  "supportTicketCreated": "Ticket created.",
+  "supportCreateTicketFailed": "Failed to create ticket",
+  "supportReplySent": "Reply sent.",
+  "supportReplySendFailed": "Failed to send reply",
+  "supportDeleteTicketTitle": "Delete ticket",
+  "supportDeleteTicketBody": "Are you sure you want to delete this ticket? This action cannot be undone.",
+  "supportTicketDeleted": "Ticket deleted.",
+  "supportDeleteTicketFailed": "Failed to delete ticket",
+  "supportUnknownError": "Unknown error",
+  "supportStatusNew": "New",
+  "supportStatusTriage": "Triage",
+  "supportStatusInProgress": "In progress",
+  "supportStatusWaitingPlayer": "Waiting for player",
+  "supportStatusBlocked": "Blocked",
+  "supportStatusResolved": "Resolved",
+  "supportStatusClosed": "Closed",
+  "supportStatusArchived": "Archived",
+  "supportCategoryBug": "Bug",
+  "supportCategoryQuestion": "Question",
+  "supportCategoryFeedback": "Feedback",
+  "supportCategoryOther": "Other",
+  "supportPriorityLow": "Low",
+  "supportPriorityHigh": "High",
+  "supportPriorityUrgent": "Urgent",
+  "supportPriorityNormal": "Normal",
+  "supportTimeDaysAgo": "{count}d ago",
+  "@supportTimeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTimeHoursAgo": "{count}h ago",
+  "@supportTimeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTimeMinutesAgo": "{count}m ago",
+  "@supportTimeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTimeJustNow": "just now",
+  "supportSenderSupport": "Support",
+  "supportSenderYou": "You",
+  "supportImageLoadFailed": "Failed to load image.",
+  "supportMyTickets": "My tickets",
+  "supportMyTicketsIntro": "Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.",
+  "supportNoTicketsYet": "You do not have any tickets yet. Create a new report below.",
+  "supportSelectTicketPrompt": "Select a ticket to open the conversation.",
+  "supportConversation": "Conversation",
+  "supportNoMessagesYet": "No messages yet.",
+  "supportAttachments": "Attachments",
+  "supportReplyToTicket": "Reply to this ticket",
+  "supportReplyFieldHint": "Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.",
+  "supportYourReply": "Your reply",
+  "supportSendReply": "Send reply",
+  "supportNewTicket": "New ticket",
+  "supportNewTicketIntro": "Create a new report here. Support can then reply through inbox/push and in this screen, so you can continue the conversation in one place.",
+  "supportTicketReceivedBanner": "Ticket received",
+  "supportTicketNumberLine": "Ticket number: #{id}",
+  "@supportTicketNumberLine": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "supportTicketReceivedDetail": "The ticket now appears directly in your list above. New support replies also arrive as inbox messages and push notifications.",
+  "supportFieldCategory": "Category",
+  "supportFieldModule": "Module",
+  "supportFieldSubject": "Subject",
+  "supportFieldMessage": "Message",
+  "supportReferenceOptional": "Reference (optional)",
+  "supportReferenceHint": "For example order id, screen name, country or short context",
+  "supportAddScreenshot": "Add screenshot",
+  "supportSubmit": "Submit",
+  "supportLastMessagePrefix": "Last: ",
+  "supportReferenceLabel": "Reference",
+  "supportMod_support": "General support",
+  "supportMod_dashboard": "Dashboard",
+  "supportMod_messages": "Messages / inbox",
+  "supportMod_notifications": "Notifications / push",
+  "supportMod_payments": "Payments / premium",
+  "supportMod_bank": "Bank",
+  "supportMod_crypto": "Crypto",
+  "supportMod_travel": "Travel",
+  "supportMod_properties": "Properties",
+  "supportMod_inventory": "Inventory / storage",
+  "supportMod_loadouts": "Loadouts / equipment",
+  "supportMod_crimes": "Crimes",
+  "supportMod_jobs": "Work / jobs",
+  "supportMod_vehicles": "Car / bike / boat theft",
+  "supportMod_garage": "Garage",
+  "supportMod_marina": "Marina",
+  "supportMod_aviation": "Aviation",
+  "supportMod_smuggling": "Smuggling",
+  "supportMod_drugs": "Drugs",
+  "supportMod_nightclub": "Nightclub",
+  "supportMod_prostitution": "Prostitution",
+  "supportMod_crew": "Crew",
+  "supportMod_friends": "Friends / players",
+  "supportMod_hitlist": "Hitlist",
+  "supportMod_security": "Security / FBI",
+  "supportMod_prison": "Prison / court",
+  "supportMod_casino": "Casino",
+  "supportMod_school": "School / training",
+  "supportMod_achievements": "Achievements",
+  "supportMod_profile": "Profile",
+  "supportMod_settings": "Settings",
+  "supportMod_events": "Events / leaderboard",
+  "supportMod_other": "Other"
 }

@@ -16,8 +16,10 @@ export const gameEventNotificationService = {
     await notificationService.broadcastLocalizedGameEventPushes({
       titleNl: 'Live event gestart',
       titleEn: 'Live event started',
+      titleEs: 'Evento en vivo iniciado',
       bodyNl: `${t.titleNl} — doe mee via Events.`,
       bodyEn: `${t.titleEn} — join via Events.`,
+      bodyEs: `${t.titleEn} — únete en Eventos.`,
       data: {
         type: 'game_event_started',
         liveEventId: String(live.id),
@@ -34,8 +36,10 @@ export const gameEventNotificationService = {
     await notificationService.broadcastLocalizedGameEventPushes({
       titleNl: 'Live event afgerond',
       titleEn: 'Live event completed',
+      titleEs: 'Evento en vivo finalizado',
       bodyNl: `${t.titleNl} is beëindigd. Controleer je beloningen in Events.`,
       bodyEn: `${t.titleEn} has ended. Check your rewards in Events.`,
+      bodyEs: `${t.titleEn} ha terminado. Revisa tus recompensas en Eventos.`,
       data: {
         type: 'game_event_completed',
         liveEventId: String(live.id),

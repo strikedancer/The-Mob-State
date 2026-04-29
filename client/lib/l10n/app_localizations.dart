@@ -9991,6 +9991,582 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask for confirmation before spending credits to skip the vehicle theft cooldown. Turn off to redeem in one tap (lightning icon next to the timer).'**
   String get settingsTheftCooldownConfirmSubtitle;
+
+  /// No description provided for @supportTicketsScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support tickets'**
+  String get supportTicketsScreenTitle;
+
+  /// No description provided for @supportLoadTicketsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load tickets'**
+  String get supportLoadTicketsFailed;
+
+  /// No description provided for @supportLoadTicketFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load ticket'**
+  String get supportLoadTicketFailed;
+
+  /// No description provided for @supportPickImageFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to select image'**
+  String get supportPickImageFailed;
+
+  /// No description provided for @supportSubjectMessageMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in subject and message (min. 3 chars).'**
+  String get supportSubjectMessageMinLength;
+
+  /// No description provided for @supportTicketCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket created.'**
+  String get supportTicketCreated;
+
+  /// No description provided for @supportCreateTicketFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create ticket'**
+  String get supportCreateTicketFailed;
+
+  /// No description provided for @supportReplySent.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply sent.'**
+  String get supportReplySent;
+
+  /// No description provided for @supportReplySendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send reply'**
+  String get supportReplySendFailed;
+
+  /// No description provided for @supportDeleteTicketTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete ticket'**
+  String get supportDeleteTicketTitle;
+
+  /// No description provided for @supportDeleteTicketBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this ticket? This action cannot be undone.'**
+  String get supportDeleteTicketBody;
+
+  /// No description provided for @supportTicketDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket deleted.'**
+  String get supportTicketDeleted;
+
+  /// No description provided for @supportDeleteTicketFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete ticket'**
+  String get supportDeleteTicketFailed;
+
+  /// No description provided for @supportUnknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get supportUnknownError;
+
+  /// No description provided for @supportStatusNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get supportStatusNew;
+
+  /// No description provided for @supportStatusTriage.
+  ///
+  /// In en, this message translates to:
+  /// **'Triage'**
+  String get supportStatusTriage;
+
+  /// No description provided for @supportStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get supportStatusInProgress;
+
+  /// No description provided for @supportStatusWaitingPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for player'**
+  String get supportStatusWaitingPlayer;
+
+  /// No description provided for @supportStatusBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get supportStatusBlocked;
+
+  /// No description provided for @supportStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get supportStatusResolved;
+
+  /// No description provided for @supportStatusClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get supportStatusClosed;
+
+  /// No description provided for @supportStatusArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get supportStatusArchived;
+
+  /// No description provided for @supportCategoryBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug'**
+  String get supportCategoryBug;
+
+  /// No description provided for @supportCategoryQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get supportCategoryQuestion;
+
+  /// No description provided for @supportCategoryFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get supportCategoryFeedback;
+
+  /// No description provided for @supportCategoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get supportCategoryOther;
+
+  /// No description provided for @supportPriorityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get supportPriorityLow;
+
+  /// No description provided for @supportPriorityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get supportPriorityHigh;
+
+  /// No description provided for @supportPriorityUrgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get supportPriorityUrgent;
+
+  /// No description provided for @supportPriorityNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get supportPriorityNormal;
+
+  /// No description provided for @supportTimeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d ago'**
+  String supportTimeDaysAgo(int count);
+
+  /// No description provided for @supportTimeHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h ago'**
+  String supportTimeHoursAgo(int count);
+
+  /// No description provided for @supportTimeMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m ago'**
+  String supportTimeMinutesAgo(int count);
+
+  /// No description provided for @supportTimeJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get supportTimeJustNow;
+
+  /// No description provided for @supportSenderSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get supportSenderSupport;
+
+  /// No description provided for @supportSenderYou.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get supportSenderYou;
+
+  /// No description provided for @supportImageLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load image.'**
+  String get supportImageLoadFailed;
+
+  /// No description provided for @supportMyTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'My tickets'**
+  String get supportMyTickets;
+
+  /// No description provided for @supportMyTicketsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.'**
+  String get supportMyTicketsIntro;
+
+  /// No description provided for @supportNoTicketsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have any tickets yet. Create a new report below.'**
+  String get supportNoTicketsYet;
+
+  /// No description provided for @supportSelectTicketPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a ticket to open the conversation.'**
+  String get supportSelectTicketPrompt;
+
+  /// No description provided for @supportConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversation'**
+  String get supportConversation;
+
+  /// No description provided for @supportNoMessagesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet.'**
+  String get supportNoMessagesYet;
+
+  /// No description provided for @supportAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get supportAttachments;
+
+  /// No description provided for @supportReplyToTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply to this ticket'**
+  String get supportReplyToTicket;
+
+  /// No description provided for @supportReplyFieldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.'**
+  String get supportReplyFieldHint;
+
+  /// No description provided for @supportYourReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reply'**
+  String get supportYourReply;
+
+  /// No description provided for @supportSendReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Send reply'**
+  String get supportSendReply;
+
+  /// No description provided for @supportNewTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'New ticket'**
+  String get supportNewTicket;
+
+  /// No description provided for @supportNewTicketIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new report here. Support can then reply through inbox/push and in this screen, so you can continue the conversation in one place.'**
+  String get supportNewTicketIntro;
+
+  /// No description provided for @supportTicketReceivedBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket received'**
+  String get supportTicketReceivedBanner;
+
+  /// No description provided for @supportTicketNumberLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket number: #{id}'**
+  String supportTicketNumberLine(int id);
+
+  /// No description provided for @supportTicketReceivedDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'The ticket now appears directly in your list above. New support replies also arrive as inbox messages and push notifications.'**
+  String get supportTicketReceivedDetail;
+
+  /// No description provided for @supportFieldCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get supportFieldCategory;
+
+  /// No description provided for @supportFieldModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Module'**
+  String get supportFieldModule;
+
+  /// No description provided for @supportFieldSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get supportFieldSubject;
+
+  /// No description provided for @supportFieldMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get supportFieldMessage;
+
+  /// No description provided for @supportReferenceOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference (optional)'**
+  String get supportReferenceOptional;
+
+  /// No description provided for @supportReferenceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For example order id, screen name, country or short context'**
+  String get supportReferenceHint;
+
+  /// No description provided for @supportAddScreenshot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add screenshot'**
+  String get supportAddScreenshot;
+
+  /// No description provided for @supportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get supportSubmit;
+
+  /// No description provided for @supportLastMessagePrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Last: '**
+  String get supportLastMessagePrefix;
+
+  /// No description provided for @supportReferenceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get supportReferenceLabel;
+
+  /// No description provided for @supportMod_support.
+  ///
+  /// In en, this message translates to:
+  /// **'General support'**
+  String get supportMod_support;
+
+  /// No description provided for @supportMod_dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get supportMod_dashboard;
+
+  /// No description provided for @supportMod_messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages / inbox'**
+  String get supportMod_messages;
+
+  /// No description provided for @supportMod_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications / push'**
+  String get supportMod_notifications;
+
+  /// No description provided for @supportMod_payments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments / premium'**
+  String get supportMod_payments;
+
+  /// No description provided for @supportMod_bank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get supportMod_bank;
+
+  /// No description provided for @supportMod_crypto.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto'**
+  String get supportMod_crypto;
+
+  /// No description provided for @supportMod_travel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get supportMod_travel;
+
+  /// No description provided for @supportMod_properties.
+  ///
+  /// In en, this message translates to:
+  /// **'Properties'**
+  String get supportMod_properties;
+
+  /// No description provided for @supportMod_inventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory / storage'**
+  String get supportMod_inventory;
+
+  /// No description provided for @supportMod_loadouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Loadouts / equipment'**
+  String get supportMod_loadouts;
+
+  /// No description provided for @supportMod_crimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Crimes'**
+  String get supportMod_crimes;
+
+  /// No description provided for @supportMod_jobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Work / jobs'**
+  String get supportMod_jobs;
+
+  /// No description provided for @supportMod_vehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Car / bike / boat theft'**
+  String get supportMod_vehicles;
+
+  /// No description provided for @supportMod_garage.
+  ///
+  /// In en, this message translates to:
+  /// **'Garage'**
+  String get supportMod_garage;
+
+  /// No description provided for @supportMod_marina.
+  ///
+  /// In en, this message translates to:
+  /// **'Marina'**
+  String get supportMod_marina;
+
+  /// No description provided for @supportMod_aviation.
+  ///
+  /// In en, this message translates to:
+  /// **'Aviation'**
+  String get supportMod_aviation;
+
+  /// No description provided for @supportMod_smuggling.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling'**
+  String get supportMod_smuggling;
+
+  /// No description provided for @supportMod_drugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get supportMod_drugs;
+
+  /// No description provided for @supportMod_nightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub'**
+  String get supportMod_nightclub;
+
+  /// No description provided for @supportMod_prostitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Prostitution'**
+  String get supportMod_prostitution;
+
+  /// No description provided for @supportMod_crew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get supportMod_crew;
+
+  /// No description provided for @supportMod_friends.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends / players'**
+  String get supportMod_friends;
+
+  /// No description provided for @supportMod_hitlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Hitlist'**
+  String get supportMod_hitlist;
+
+  /// No description provided for @supportMod_security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security / FBI'**
+  String get supportMod_security;
+
+  /// No description provided for @supportMod_prison.
+  ///
+  /// In en, this message translates to:
+  /// **'Prison / court'**
+  String get supportMod_prison;
+
+  /// No description provided for @supportMod_casino.
+  ///
+  /// In en, this message translates to:
+  /// **'Casino'**
+  String get supportMod_casino;
+
+  /// No description provided for @supportMod_school.
+  ///
+  /// In en, this message translates to:
+  /// **'School / training'**
+  String get supportMod_school;
+
+  /// No description provided for @supportMod_achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get supportMod_achievements;
+
+  /// No description provided for @supportMod_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get supportMod_profile;
+
+  /// No description provided for @supportMod_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get supportMod_settings;
+
+  /// No description provided for @supportMod_events.
+  ///
+  /// In en, this message translates to:
+  /// **'Events / leaderboard'**
+  String get supportMod_events;
+
+  /// No description provided for @supportMod_other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get supportMod_other;
 }
 
 class _AppLocalizationsDelegate
