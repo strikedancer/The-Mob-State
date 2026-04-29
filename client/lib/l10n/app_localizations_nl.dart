@@ -846,7 +846,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crypto => 'Crypto';
 
   @override
-  String get smuggling => 'Smuggling';
+  String get smuggling => 'Smokkelen';
 
   @override
   String get tools => 'gereedschap';
