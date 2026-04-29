@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/crime_tool.dart';
+import '../l10n/app_localizations.dart';
+import '../utils/tool_display_name.dart';
 
 class ShopToolCard extends StatefulWidget {
   final CrimeTool tool;
@@ -24,7 +26,9 @@ class _ShopToolCardState extends State<ShopToolCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final l10n = AppLocalizations.of(context)!;  // Unused
+    final l10n = AppLocalizations.of(context)!;
+    final toolName = localizedToolName(l10n, widget.tool.id, widget.tool.name);
+    final toolCategory = localizedToolCategory(l10n, widget.tool.type);
     final imageAsset = 'assets/images/tools/${widget.tool.id}_tool.png';
     final canBuy = widget.canAfford && !widget.inventoryFull;
 
@@ -139,18 +143,18 @@ class _ShopToolCardState extends State<ShopToolCard> {
                               color: Colors.orange.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.inventory,
                                   size: 14,
                                   color: Colors.white,
                                 ),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 Text(
-                                  'VOL',
-                                  style: TextStyle(
+                                  l10n.toolsBadgeInventoryFull,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
@@ -192,7 +196,7 @@ class _ShopToolCardState extends State<ShopToolCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.tool.name,
+                              toolName,
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -211,7 +215,7 @@ class _ShopToolCardState extends State<ShopToolCard> {
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
-                                    widget.tool.type,
+                                    toolCategory,
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Colors.grey[400],

@@ -1938,6 +1938,55 @@
   "toolGpsJammer": "GPS Jammer",
   "toolBurnerPhone": "Burner Phone",
   "toolThermalDrill": "Thermal Drill",
+  "toolCategoryBoltCutter": "Bolt cutters",
+  "toolCategoryBurglaryKit": "Burglary kit",
+  "toolCategoryCarTools": "Car theft tools",
+  "toolCategoryJerryCan": "Jerry can",
+  "toolCategorySprayPaint": "Spray paint",
+  "toolCategoryCrowbar": "Crowbar",
+  "toolCategoryGlassCutter": "Glass cutter",
+  "toolCategoryLaptop": "Laptop",
+  "toolCategoryCounterfeiting": "Counterfeiting",
+  "toolCategoryToolbox": "Toolbox",
+  "toolCategoryRope": "Rope",
+  "toolCategorySilencer": "Silencer",
+  "toolCategoryFakeDocs": "Fake documents",
+  "toolCategoryNightVision": "Night vision",
+  "toolCategoryBurnerPhone": "Burner phone",
+  "toolCategoryGpsJammer": "GPS jammer",
+  "toolCategoryThermalDrill": "Thermal drill",
+  "toolsScreenTitle": "Black Market – Tools",
+  "toolsTabBuy": "Buy",
+  "toolsTabMyTools": "My tools",
+  "toolsNoToolsAvailable": "No tools available",
+  "toolsEmptyInventoryTitle": "You do not have any tools yet",
+  "toolsEmptyInventoryHint": "Buy tools in the shop",
+  "toolsNotEnoughMoney": "You do not have enough money!",
+  "toolsNotEnoughMoneyRepair": "You do not have enough money for repair!",
+  "toolsBuyError": "Error while buying",
+  "toolsRepairError": "Error while repairing",
+  "toolsPurchased": "{toolName} purchased!",
+  "@toolsPurchased": {
+    "placeholders": {
+      "toolName": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsRepaired": "{toolName} repaired for €{cost}",
+  "@toolsRepaired": {
+    "placeholders": {
+      "toolName": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsBadgeInventoryFull": "FULL",
+  "toolsBadgeBroken": "BROKEN",
+  "toolsBadgeRepair": "REPAIR",
   "crimeOutcomeSuccess": "Crime successful!",
   "crimeOutcomeCaught": "Caught by police",
   "crimeOutcomeVehicleBreakdownBefore": "Your vehicle broke down before reaching the crime scene",

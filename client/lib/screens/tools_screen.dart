@@ -10,6 +10,7 @@ import '../l10n/app_localizations.dart';
 import '../widgets/shop_tool_card.dart';
 import '../widgets/inventory_tool_card.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/tool_display_name.dart';
 
 class ToolsScreen extends StatefulWidget {
   const ToolsScreen({super.key});
@@ -31,9 +32,6 @@ class _ToolsScreenState extends State<ToolsScreen>
   int _inventoryUsed = 0;
   int _inventoryMax = 0;
   bool _inventoryFull = false;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -83,6 +81,7 @@ class _ToolsScreenState extends State<ToolsScreen>
   Future<void> _buyTool(CrimeTool tool) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final l10n = AppLocalizations.of(context)!;
+    final toolLabel = localizedToolName(l10n, tool.id, tool.name);
 
     // Check if inventory is full
     if (_inventoryFull) {
@@ -110,7 +109,7 @@ class _ToolsScreenState extends State<ToolsScreen>
     if (playerMoney < tool.basePrice) {
       if (mounted) {
         showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(_tr('Je hebt niet genoeg geld!', 'You do not have enough money!'))),
+          SnackBar(content: Text(l10n.toolsNotEnoughMoney)),
         );
       }
       return;
@@ -131,7 +130,7 @@ class _ToolsScreenState extends State<ToolsScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_tr('${tool.name} gekocht!', '${tool.name} purchased!')),
+            content: Text(l10n.toolsPurchased(toolLabel)),
             backgroundColor: Colors.green,
           ),
         );
@@ -140,7 +139,7 @@ class _ToolsScreenState extends State<ToolsScreen>
       setState(() => _isLoading = false);
       if (mounted) {
         showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(result.error ?? _tr('Fout bij kopen', 'Error while buying'))),
+          SnackBar(content: Text(result.error ?? l10n.toolsBuyError)),
         );
       }
     }
@@ -148,6 +147,8 @@ class _ToolsScreenState extends State<ToolsScreen>
 
   Future<void> _repairTool(PlayerTool tool) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final l10n = AppLocalizations.of(context)!;
+    final toolLabel = localizedToolName(l10n, tool.toolId, tool.name);
 
     // Repair cost is 50% of base price
     final repairCost = ((tool.basePrice ?? 0) * 0.5).floor();
@@ -157,7 +158,7 @@ class _ToolsScreenState extends State<ToolsScreen>
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text(_tr('Je hebt niet genoeg geld voor reparatie!', 'You do not have enough money for repair!')),
+            content: Text(l10n.toolsNotEnoughMoneyRepair),
           ),
         );
       }
@@ -178,7 +179,7 @@ class _ToolsScreenState extends State<ToolsScreen>
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text(_tr('${tool.name} gerepareerd voor €${result.cost}', '${tool.name} repaired for €${result.cost}')),
+            content: Text(l10n.toolsRepaired(toolLabel, result.cost.toString())),
           ),
         );
       }
@@ -186,7 +187,7 @@ class _ToolsScreenState extends State<ToolsScreen>
       setState(() => _isLoading = false);
       if (mounted) {
         showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(result.error ?? _tr('Fout bij reparatie', 'Error while repairing'))),
+          SnackBar(content: Text(result.error ?? l10n.toolsRepairError)),
         );
       }
     }
@@ -202,7 +203,7 @@ class _ToolsScreenState extends State<ToolsScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(_tr('Zwarte Markt - Gereedschap', 'Black Market - Tools')),
+            Text(l10n.toolsScreenTitle),
             if (_inventoryUsed > 0)
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -228,8 +229,8 @@ class _ToolsScreenState extends State<ToolsScreen>
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(icon: const Icon(Icons.shopping_cart), text: _tr('Kopen', 'Buy')),
-            Tab(icon: const Icon(Icons.inventory), text: _tr('Mijn Gereedschap', 'My Tools')),
+            Tab(icon: const Icon(Icons.shopping_cart), text: l10n.toolsTabBuy),
+            Tab(icon: const Icon(Icons.inventory), text: l10n.toolsTabMyTools),
           ],
         ),
         actions: [
@@ -245,6 +246,8 @@ class _ToolsScreenState extends State<ToolsScreen>
   }
 
   Widget _buildShopTab() {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -254,11 +257,11 @@ class _ToolsScreenState extends State<ToolsScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('${_tr('Fout', 'Error')}: $_error'),
+            Text(l10n.error(_error!)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadData,
-              child: Text(_tr('Opnieuw proberen', 'Retry')),
+              child: Text(l10n.retry),
             ),
           ],
         ),
@@ -266,7 +269,7 @@ class _ToolsScreenState extends State<ToolsScreen>
     }
 
     if (_availableTools.isEmpty) {
-      return Center(child: Text(_tr('Geen gereedschap beschikbaar', 'No tools available')));
+      return Center(child: Text(l10n.toolsNoToolsAvailable));
     }
 
     final authProvider = Provider.of<AuthProvider>(context);
@@ -300,6 +303,8 @@ class _ToolsScreenState extends State<ToolsScreen>
   }
 
   Widget _buildInventoryTab() {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -311,10 +316,10 @@ class _ToolsScreenState extends State<ToolsScreen>
           children: [
             const Icon(Icons.build, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
-            Text(_tr('Je hebt nog geen gereedschap', 'You do not have any tools yet')),
+            Text(l10n.toolsEmptyInventoryTitle),
             const SizedBox(height: 8),
             Text(
-              _tr('Koop gereedschap in de winkel', 'Buy tools in the shop'),
+              l10n.toolsEmptyInventoryHint,
               style: const TextStyle(color: Colors.grey),
             ),
           ],

@@ -3696,6 +3696,107 @@ class AppLocalizationsNl extends AppLocalizations {
   String get toolThermalDrill => 'Thermische boor';
 
   @override
+  String get toolCategoryBoltCutter => 'Betonschaar';
+
+  @override
+  String get toolCategoryBurglaryKit => 'Inbrekersset';
+
+  @override
+  String get toolCategoryCarTools => 'Autodiefstalgereedschap';
+
+  @override
+  String get toolCategoryJerryCan => 'Jerrycan';
+
+  @override
+  String get toolCategorySprayPaint => 'Spuitbusverf';
+
+  @override
+  String get toolCategoryCrowbar => 'Koevoet';
+
+  @override
+  String get toolCategoryGlassCutter => 'Glassnijder';
+
+  @override
+  String get toolCategoryLaptop => 'Laptop';
+
+  @override
+  String get toolCategoryCounterfeiting => 'Vervalsing';
+
+  @override
+  String get toolCategoryToolbox => 'Gereedschapskist';
+
+  @override
+  String get toolCategoryRope => 'Touw';
+
+  @override
+  String get toolCategorySilencer => 'Geluiddemper';
+
+  @override
+  String get toolCategoryFakeDocs => 'Valse documenten';
+
+  @override
+  String get toolCategoryNightVision => 'Nachtkijker';
+
+  @override
+  String get toolCategoryBurnerPhone => 'Wegwerptelefoon';
+
+  @override
+  String get toolCategoryGpsJammer => 'GPS-stoorzender';
+
+  @override
+  String get toolCategoryThermalDrill => 'Thermische boor';
+
+  @override
+  String get toolsScreenTitle => 'Zwarte markt – Gereedschap';
+
+  @override
+  String get toolsTabBuy => 'Kopen';
+
+  @override
+  String get toolsTabMyTools => 'Mijn gereedschap';
+
+  @override
+  String get toolsNoToolsAvailable => 'Geen gereedschap beschikbaar';
+
+  @override
+  String get toolsEmptyInventoryTitle => 'Je hebt nog geen gereedschap';
+
+  @override
+  String get toolsEmptyInventoryHint => 'Koop gereedschap in de winkel';
+
+  @override
+  String get toolsNotEnoughMoney => 'Je hebt niet genoeg geld!';
+
+  @override
+  String get toolsNotEnoughMoneyRepair =>
+      'Je hebt niet genoeg geld voor reparatie!';
+
+  @override
+  String get toolsBuyError => 'Fout bij kopen';
+
+  @override
+  String get toolsRepairError => 'Fout bij reparatie';
+
+  @override
+  String toolsPurchased(String toolName) {
+    return '$toolName gekocht!';
+  }
+
+  @override
+  String toolsRepaired(String toolName, String cost) {
+    return '$toolName gerepareerd voor €$cost';
+  }
+
+  @override
+  String get toolsBadgeInventoryFull => 'VOL';
+
+  @override
+  String get toolsBadgeBroken => 'KAPOT';
+
+  @override
+  String get toolsBadgeRepair => 'REPAREER';
+
+  @override
   String get crimeOutcomeSuccess => 'Misdaad geslaagd!';
 
   @override

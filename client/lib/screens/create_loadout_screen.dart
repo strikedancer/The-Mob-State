@@ -5,6 +5,7 @@ import '../services/loadout_service.dart';
 import '../services/inventory_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/tool_display_name.dart';
 
 class CreateLoadoutScreen extends StatefulWidget {
   final int playerId;
@@ -340,7 +341,11 @@ class _CreateLoadoutScreenState extends State<CreateLoadoutScreen> {
                                         const SizedBox(width: 12),
                                         Expanded(
                                           child: Text(
-                                            tool.name,
+                                            localizedToolName(
+                                              l10n,
+                                              tool.toolId,
+                                              tool.name,
+                                            ),
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,

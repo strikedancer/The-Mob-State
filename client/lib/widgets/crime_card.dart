@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/crime.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/web_asset_helper.dart';
+import '../utils/tool_display_name.dart';
 
 class CrimeCard extends StatefulWidget {
   final Crime crime;
@@ -103,46 +104,9 @@ class _CrimeCardState extends State<CrimeCard> {
     // Add tool requirements
     if (widget.crime.requiredTools != null &&
         widget.crime.requiredTools!.isNotEmpty) {
-      final toolNames = widget.crime.requiredTools!.map((toolId) {
-        switch (toolId) {
-          case 'bolt_cutter':
-            return l10n.toolBoltCutter;
-          case 'car_theft_tools':
-            return l10n.toolCarTheftTools;
-          case 'burglary_kit':
-            return l10n.toolBurglaryKit;
-          case 'toolbox':
-            return l10n.toolToolbox;
-          case 'crowbar':
-            return l10n.toolCrowbar;
-          case 'glass_cutter':
-            return l10n.toolGlassCutter;
-          case 'spray_paint':
-            return l10n.toolSprayPaint;
-          case 'jerry_can':
-            return l10n.toolJerryCan;
-          case 'fake_documents':
-            return l10n.toolFakeDocuments;
-          case 'hacking_laptop':
-            return l10n.toolHackingLaptop;
-          case 'counterfeiting_kit':
-            return l10n.toolCounterfeitingKit;
-          case 'rope':
-            return l10n.toolRope;
-          case 'silencer':
-            return l10n.toolSilencer;
-          case 'night_vision':
-            return l10n.toolNightVision;
-          case 'gps_jammer':
-            return l10n.toolGpsJammer;
-          case 'burner_phone':
-            return l10n.toolBurnerPhone;
-          case 'thermal_drill':
-            return l10n.toolThermalDrill;
-          default:
-            return toolId;
-        }
-      }).toList();
+      final toolNames = widget.crime.requiredTools!
+          .map((toolId) => localizedToolName(l10n, toolId, null))
+          .toList();
       requirements.add('🔧 ${toolNames.join(", ")}');
     }
 

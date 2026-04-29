@@ -3717,6 +3717,107 @@ class AppLocalizationsEs extends AppLocalizations {
   String get toolThermalDrill => 'Taladro térmico';
 
   @override
+  String get toolCategoryBoltCutter => 'Bolt cutters';
+
+  @override
+  String get toolCategoryBurglaryKit => 'Burglary kit';
+
+  @override
+  String get toolCategoryCarTools => 'Car theft tools';
+
+  @override
+  String get toolCategoryJerryCan => 'Jerry can';
+
+  @override
+  String get toolCategorySprayPaint => 'Spray paint';
+
+  @override
+  String get toolCategoryCrowbar => 'Crowbar';
+
+  @override
+  String get toolCategoryGlassCutter => 'Glass cutter';
+
+  @override
+  String get toolCategoryLaptop => 'Laptop';
+
+  @override
+  String get toolCategoryCounterfeiting => 'Counterfeiting';
+
+  @override
+  String get toolCategoryToolbox => 'Toolbox';
+
+  @override
+  String get toolCategoryRope => 'Rope';
+
+  @override
+  String get toolCategorySilencer => 'Silencer';
+
+  @override
+  String get toolCategoryFakeDocs => 'Fake documents';
+
+  @override
+  String get toolCategoryNightVision => 'Night vision';
+
+  @override
+  String get toolCategoryBurnerPhone => 'Burner phone';
+
+  @override
+  String get toolCategoryGpsJammer => 'GPS jammer';
+
+  @override
+  String get toolCategoryThermalDrill => 'Thermal drill';
+
+  @override
+  String get toolsScreenTitle => 'Black Market – Tools';
+
+  @override
+  String get toolsTabBuy => 'Buy';
+
+  @override
+  String get toolsTabMyTools => 'My tools';
+
+  @override
+  String get toolsNoToolsAvailable => 'No tools available';
+
+  @override
+  String get toolsEmptyInventoryTitle => 'You do not have any tools yet';
+
+  @override
+  String get toolsEmptyInventoryHint => 'Buy tools in the shop';
+
+  @override
+  String get toolsNotEnoughMoney => 'You do not have enough money!';
+
+  @override
+  String get toolsNotEnoughMoneyRepair =>
+      'You do not have enough money for repair!';
+
+  @override
+  String get toolsBuyError => 'Error while buying';
+
+  @override
+  String get toolsRepairError => 'Error while repairing';
+
+  @override
+  String toolsPurchased(String toolName) {
+    return '$toolName purchased!';
+  }
+
+  @override
+  String toolsRepaired(String toolName, String cost) {
+    return '$toolName repaired for €$cost';
+  }
+
+  @override
+  String get toolsBadgeInventoryFull => 'FULL';
+
+  @override
+  String get toolsBadgeBroken => 'BROKEN';
+
+  @override
+  String get toolsBadgeRepair => 'REPAIR';
+
+  @override
   String get crimeOutcomeSuccess => '¡Crimen exitoso!';
 
   @override

@@ -4,6 +4,7 @@ import '../models/storage_info.dart';
 import '../services/inventory_service.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/tool_display_name.dart';
 import 'responsive_modal.dart';
 
 class TransferDialog extends StatefulWidget {
@@ -72,6 +73,13 @@ class _TransferDialogState extends State<TransferDialog> {
   Future<void> _transfer() async {
     if (_selectedDestination == null) return;
 
+    final l10nTransfer = AppLocalizations.of(context)!;
+    final transferredLabel = localizedToolName(
+      l10nTransfer,
+      widget.tool.toolId,
+      widget.tool.name,
+    );
+
     setState(() {
       _isTransferring = true;
       _error = null;
@@ -93,7 +101,7 @@ class _TransferDialogState extends State<TransferDialog> {
         showTopRightFromSnackBar(context, 
           SnackBar(
             content: Text(AppLocalizations.of(context)!.transferSuccess(
-              widget.tool.name,
+              transferredLabel,
               _selectedDestination == 'carried' 
                   ? AppLocalizations.of(context)!.carried 
                   : AppLocalizations.of(context)!.storage,
@@ -200,7 +208,11 @@ class _TransferDialogState extends State<TransferDialog> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.tool.name,
+                                    localizedToolName(
+                                      l10n,
+                                      widget.tool.toolId,
+                                      widget.tool.name,
+                                    ),
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,

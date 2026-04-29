@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/player_tool.dart';
+import '../l10n/app_localizations.dart';
+import '../utils/tool_display_name.dart';
 
 class InventoryToolCard extends StatefulWidget {
   final PlayerTool tool;
@@ -28,7 +30,13 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final l10n = AppLocalizations.of(context)!;  // Unused
+    final l10n = AppLocalizations.of(context)!;
+    final toolName = localizedToolName(
+      l10n,
+      widget.tool.toolId,
+      widget.tool.name,
+    );
+    final toolCategory = localizedToolCategory(l10n, widget.tool.type);
     final imageAsset = 'assets/images/tools/${widget.tool.toolId}_tool.png';
     final durabilityPercent = widget.tool.durabilityPercent;
     final durabilityColor = _getDurabilityColor(durabilityPercent);
@@ -159,18 +167,18 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
                               color: Colors.red.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.broken_image,
                                   size: 14,
                                   color: Colors.white,
                                 ),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 Text(
-                                  'KAPOT',
-                                  style: TextStyle(
+                                  l10n.toolsBadgeBroken,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
@@ -195,18 +203,18 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
                               color: Colors.orange.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.warning,
                                   size: 14,
                                   color: Colors.white,
                                 ),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 Text(
-                                  'REPAREER',
-                                  style: TextStyle(
+                                  l10n.toolsBadgeRepair,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 9,
                                     fontWeight: FontWeight.bold,
@@ -231,7 +239,7 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.tool.name ?? widget.tool.toolId,
+                              toolName,
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -250,7 +258,7 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
-                                    widget.tool.type ?? '',
+                                    toolCategory,
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Colors.grey[400],

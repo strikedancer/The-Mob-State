@@ -3698,5 +3698,54 @@
   },
   "jailCannotActWhileIn": "Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.",
   "jailAttemptEscape": "Probeer uitbraak",
-  "jailYouAreInJail": "Je zit in de cel"
+  "jailYouAreInJail": "Je zit in de cel",
+  "toolCategoryBoltCutter": "Betonschaar",
+  "toolCategoryBurglaryKit": "Inbrekersset",
+  "toolCategoryCarTools": "Autodiefstalgereedschap",
+  "toolCategoryJerryCan": "Jerrycan",
+  "toolCategorySprayPaint": "Spuitbusverf",
+  "toolCategoryCrowbar": "Koevoet",
+  "toolCategoryGlassCutter": "Glassnijder",
+  "toolCategoryLaptop": "Laptop",
+  "toolCategoryCounterfeiting": "Vervalsing",
+  "toolCategoryToolbox": "Gereedschapskist",
+  "toolCategoryRope": "Touw",
+  "toolCategorySilencer": "Geluiddemper",
+  "toolCategoryFakeDocs": "Valse documenten",
+  "toolCategoryNightVision": "Nachtkijker",
+  "toolCategoryBurnerPhone": "Wegwerptelefoon",
+  "toolCategoryGpsJammer": "GPS-stoorzender",
+  "toolCategoryThermalDrill": "Thermische boor",
+  "toolsScreenTitle": "Zwarte markt – Gereedschap",
+  "toolsTabBuy": "Kopen",
+  "toolsTabMyTools": "Mijn gereedschap",
+  "toolsNoToolsAvailable": "Geen gereedschap beschikbaar",
+  "toolsEmptyInventoryTitle": "Je hebt nog geen gereedschap",
+  "toolsEmptyInventoryHint": "Koop gereedschap in de winkel",
+  "toolsNotEnoughMoney": "Je hebt niet genoeg geld!",
+  "toolsNotEnoughMoneyRepair": "Je hebt niet genoeg geld voor reparatie!",
+  "toolsBuyError": "Fout bij kopen",
+  "toolsRepairError": "Fout bij reparatie",
+  "toolsPurchased": "{toolName} gekocht!",
+  "@toolsPurchased": {
+    "placeholders": {
+      "toolName": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsRepaired": "{toolName} gerepareerd voor €{cost}",
+  "@toolsRepaired": {
+    "placeholders": {
+      "toolName": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsBadgeInventoryFull": "VOL",
+  "toolsBadgeBroken": "KAPOT",
+  "toolsBadgeRepair": "REPAREER"
 }

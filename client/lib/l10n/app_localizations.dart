@@ -6848,6 +6848,198 @@ abstract class AppLocalizations {
   /// **'Thermal Drill'**
   String get toolThermalDrill;
 
+  /// No description provided for @toolCategoryBoltCutter.
+  ///
+  /// In en, this message translates to:
+  /// **'Bolt cutters'**
+  String get toolCategoryBoltCutter;
+
+  /// No description provided for @toolCategoryBurglaryKit.
+  ///
+  /// In en, this message translates to:
+  /// **'Burglary kit'**
+  String get toolCategoryBurglaryKit;
+
+  /// No description provided for @toolCategoryCarTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Car theft tools'**
+  String get toolCategoryCarTools;
+
+  /// No description provided for @toolCategoryJerryCan.
+  ///
+  /// In en, this message translates to:
+  /// **'Jerry can'**
+  String get toolCategoryJerryCan;
+
+  /// No description provided for @toolCategorySprayPaint.
+  ///
+  /// In en, this message translates to:
+  /// **'Spray paint'**
+  String get toolCategorySprayPaint;
+
+  /// No description provided for @toolCategoryCrowbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Crowbar'**
+  String get toolCategoryCrowbar;
+
+  /// No description provided for @toolCategoryGlassCutter.
+  ///
+  /// In en, this message translates to:
+  /// **'Glass cutter'**
+  String get toolCategoryGlassCutter;
+
+  /// No description provided for @toolCategoryLaptop.
+  ///
+  /// In en, this message translates to:
+  /// **'Laptop'**
+  String get toolCategoryLaptop;
+
+  /// No description provided for @toolCategoryCounterfeiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Counterfeiting'**
+  String get toolCategoryCounterfeiting;
+
+  /// No description provided for @toolCategoryToolbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Toolbox'**
+  String get toolCategoryToolbox;
+
+  /// No description provided for @toolCategoryRope.
+  ///
+  /// In en, this message translates to:
+  /// **'Rope'**
+  String get toolCategoryRope;
+
+  /// No description provided for @toolCategorySilencer.
+  ///
+  /// In en, this message translates to:
+  /// **'Silencer'**
+  String get toolCategorySilencer;
+
+  /// No description provided for @toolCategoryFakeDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Fake documents'**
+  String get toolCategoryFakeDocs;
+
+  /// No description provided for @toolCategoryNightVision.
+  ///
+  /// In en, this message translates to:
+  /// **'Night vision'**
+  String get toolCategoryNightVision;
+
+  /// No description provided for @toolCategoryBurnerPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Burner phone'**
+  String get toolCategoryBurnerPhone;
+
+  /// No description provided for @toolCategoryGpsJammer.
+  ///
+  /// In en, this message translates to:
+  /// **'GPS jammer'**
+  String get toolCategoryGpsJammer;
+
+  /// No description provided for @toolCategoryThermalDrill.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal drill'**
+  String get toolCategoryThermalDrill;
+
+  /// No description provided for @toolsScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Black Market – Tools'**
+  String get toolsScreenTitle;
+
+  /// No description provided for @toolsTabBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get toolsTabBuy;
+
+  /// No description provided for @toolsTabMyTools.
+  ///
+  /// In en, this message translates to:
+  /// **'My tools'**
+  String get toolsTabMyTools;
+
+  /// No description provided for @toolsNoToolsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tools available'**
+  String get toolsNoToolsAvailable;
+
+  /// No description provided for @toolsEmptyInventoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have any tools yet'**
+  String get toolsEmptyInventoryTitle;
+
+  /// No description provided for @toolsEmptyInventoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy tools in the shop'**
+  String get toolsEmptyInventoryHint;
+
+  /// No description provided for @toolsNotEnoughMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have enough money!'**
+  String get toolsNotEnoughMoney;
+
+  /// No description provided for @toolsNotEnoughMoneyRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have enough money for repair!'**
+  String get toolsNotEnoughMoneyRepair;
+
+  /// No description provided for @toolsBuyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while buying'**
+  String get toolsBuyError;
+
+  /// No description provided for @toolsRepairError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while repairing'**
+  String get toolsRepairError;
+
+  /// No description provided for @toolsPurchased.
+  ///
+  /// In en, this message translates to:
+  /// **'{toolName} purchased!'**
+  String toolsPurchased(String toolName);
+
+  /// No description provided for @toolsRepaired.
+  ///
+  /// In en, this message translates to:
+  /// **'{toolName} repaired for €{cost}'**
+  String toolsRepaired(String toolName, String cost);
+
+  /// No description provided for @toolsBadgeInventoryFull.
+  ///
+  /// In en, this message translates to:
+  /// **'FULL'**
+  String get toolsBadgeInventoryFull;
+
+  /// No description provided for @toolsBadgeBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'BROKEN'**
+  String get toolsBadgeBroken;
+
+  /// No description provided for @toolsBadgeRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'REPAIR'**
+  String get toolsBadgeRepair;
+
   /// No description provided for @crimeOutcomeSuccess.
   ///
   /// In en, this message translates to:
