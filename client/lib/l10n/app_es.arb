@@ -2912,26 +2912,26 @@
   "supportMod_settings": "Ajustes",
   "supportMod_events": "Eventos / clasificación",
   "supportMod_other": "Otro",
-  "gameEventDefaultTitle": "Event",
-  "gameEventStatusActive": "Active",
-  "gameEventStatusScheduled": "Scheduled",
-  "gameEventStatusCompleted": "Completed",
-  "gameEventStatusDraft": "Draft",
-  "gameEventTmplWeeklyVehicleTheftHuntTitle": "Weekly Theft Hunt",
-  "gameEventTmplWeeklyVehicleTheftHuntDesc": "Steal as many vehicles as you can during the event window.",
-  "gameEventTmplSmugglingSurgeTitle": "Smuggling Surge",
-  "gameEventTmplSmugglingSurgeDesc": "Move the most smuggled contraband this round.",
-  "gameEventTmplLabOutputChallengeTitle": "Lab Output Challenge",
-  "gameEventTmplLabOutputChallengeDesc": "Produce the most output while the event is live.",
-  "gameEventTmplStreetCrimeSpreeTitle": "Street Crime Spree",
-  "gameEventTmplStreetCrimeSpreeDesc": "Complete as many crimes as possible in the live window.",
-  "gameScreenLoadError": "Could not load events.",
-  "gameScreenDetailsLoadError": "Could not load event details.",
-  "gameScreenSectionLive": "Live Events",
-  "gameScreenNoActive": "There are no active events right now.",
-  "gameScreenSectionUpcoming": "Upcoming Events",
-  "gameScreenNoUpcoming": "There are no scheduled events.",
-  "gameScreenStatusPrefix": "Status: {value}",
+  "gameEventDefaultTitle": "Evento",
+  "gameEventStatusActive": "Activo",
+  "gameEventStatusScheduled": "Programado",
+  "gameEventStatusCompleted": "Finalizado",
+  "gameEventStatusDraft": "Borrador",
+  "gameEventTmplWeeklyVehicleTheftHuntTitle": "Caza de robos semanal",
+  "gameEventTmplWeeklyVehicleTheftHuntDesc": "Roba tantos vehículos como puedas durante la ventana del evento.",
+  "gameEventTmplSmugglingSurgeTitle": "Oleada de contrabando",
+  "gameEventTmplSmugglingSurgeDesc": "Mueve el mayor volumen de contrabando en esta ronda.",
+  "gameEventTmplLabOutputChallengeTitle": "Desafío de producción del laboratorio",
+  "gameEventTmplLabOutputChallengeDesc": "Produce la mayor cantidad mientras el evento esté activo.",
+  "gameEventTmplStreetCrimeSpreeTitle": "Racha de crímenes callejeros",
+  "gameEventTmplStreetCrimeSpreeDesc": "Completa tantos crímenes como puedas mientras el evento esté en curso.",
+  "gameScreenLoadError": "No se pudieron cargar los eventos.",
+  "gameScreenDetailsLoadError": "No se pudieron cargar los detalles del evento.",
+  "gameScreenSectionLive": "Eventos en vivo",
+  "gameScreenNoActive": "No hay eventos activos ahora.",
+  "gameScreenSectionUpcoming": "Próximos eventos",
+  "gameScreenNoUpcoming": "No hay eventos programados.",
+  "gameScreenStatusPrefix": "Estado: {value}",
   "@gameScreenStatusPrefix": {
     "placeholders": {
       "value": {
@@ -2939,7 +2939,7 @@
       }
     }
   },
-  "gameScreenStartLine": "Start: {date}",
+  "gameScreenStartLine": "Inicio: {date}",
   "@gameScreenStartLine": {
     "placeholders": {
       "date": {
@@ -2947,7 +2947,7 @@
       }
     }
   },
-  "gameScreenEndLine": "End: {date}",
+  "gameScreenEndLine": "Fin: {date}",
   "@gameScreenEndLine": {
     "placeholders": {
       "date": {
@@ -2955,8 +2955,8 @@
       }
     }
   },
-  "gameScreenYourProgress": "Your progress",
-  "gameScreenScore": "Score: {value}",
+  "gameScreenYourProgress": "Tu progreso",
+  "gameScreenScore": "Puntuación: {value}",
   "@gameScreenScore": {
     "placeholders": {
       "value": {
@@ -2964,7 +2964,7 @@
       }
     }
   },
-  "gameScreenRank": "Rank: {value}",
+  "gameScreenRank": "Posición: {value}",
   "@gameScreenRank": {
     "placeholders": {
       "value": {
@@ -2972,12 +2972,12 @@
       }
     }
   },
-  "gameScreenLeaderboard": "Leaderboard (top 10)",
-  "gameScreenNoLeaderboard": "No leaderboard data yet.",
-  "gameScreenUnknownPlayer": "Unknown",
-  "gameCardActive": "Active",
-  "gameCardScheduled": "Planned",
-  "gameCardYourScore": "Your score: {value}",
+  "gameScreenLeaderboard": "Clasificación (top 10)",
+  "gameScreenNoLeaderboard": "Aún no hay datos de clasificación.",
+  "gameScreenUnknownPlayer": "Desconocido",
+  "gameCardActive": "Activo",
+  "gameCardScheduled": "Programado",
+  "gameCardYourScore": "Tu puntuación: {value}",
   "@gameCardYourScore": {
     "placeholders": {
       "value": {
@@ -2985,7 +2985,7 @@
       }
     }
   },
-  "gameCardYourRank": "Your rank: {value}",
+  "gameCardYourRank": "Tu posición: {value}",
   "@gameCardYourRank": {
     "placeholders": {
       "value": {
@@ -2993,15 +2993,15 @@
       }
     }
   },
-  "gameCardTapDetails": "Tap for details and leaderboard",
-  "eventFeedDisconnected": "Disconnected from the event stream",
-  "eventFeedReconnecting": "Reconnecting...",
-  "eventFeedConnectedWaiting": "Connected — waiting for events…",
-  "eventFeedConnecting": "Connecting to the event stream…",
-  "evStreamConnectionEstablished": "Connected to the event stream",
-  "evStreamAuthRegistered": "Account created successfully.",
-  "evStreamAuthLogin": "Welcome back.",
-  "evStreamCrimeSuccess": "Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP",
+  "gameCardTapDetails": "Toca para ver detalles y la clasificación",
+  "eventFeedDisconnected": "Sin conexión al flujo de eventos",
+  "eventFeedReconnecting": "Reconectando…",
+  "eventFeedConnectedWaiting": "Conectado: esperando eventos…",
+  "eventFeedConnecting": "Conectando al flujo de eventos…",
+  "evStreamConnectionEstablished": "Conectado al flujo de eventos",
+  "evStreamAuthRegistered": "Cuenta creada correctamente.",
+  "evStreamAuthLogin": "Bienvenido de nuevo.",
+  "evStreamCrimeSuccess": "¡Completaste con éxito {crimeName}! +EUR {reward}, +{xpGained} XP",
   "@evStreamCrimeSuccess": {
     "placeholders": {
       "crimeName": {
@@ -3015,7 +3015,7 @@
       }
     }
   },
-  "evStreamCrimeSuccessJailed": "Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP — but caught! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "evStreamCrimeSuccessJailed": "¡Completaste con éxito {crimeName}! +EUR {reward}, +{xpGained} XP — ¡pero te pillaron! Encarcelado durante {minutes, plural, one{1 minuto} other{{minutes} minutos}}.",
   "@evStreamCrimeSuccessJailed": {
     "placeholders": {
       "crimeName": {
@@ -3032,9 +3032,9 @@
       }
     }
   },
-  "evStreamCrimeSeizedVehicle": " Your vehicle was seized by the police.",
-  "evStreamCrimeSeizedWeapon": " Your weapon was confiscated by the police.",
-  "evStreamCrimeSuccessCleared": "Successfully completed {crimeName}! Criminal record cleared: {count, plural, one{1 conviction} other{{count} convictions}} removed. +{xpGained} XP",
+  "evStreamCrimeSeizedVehicle": " La policía incautó tu vehículo.",
+  "evStreamCrimeSeizedWeapon": " La policía confiscó tu arma.",
+  "evStreamCrimeSuccessCleared": "¡Completaste con éxito {crimeName}! Antecedentes borrados: {count, plural, one{1 condena} other{{count} condenas}}. +{xpGained} XP",
   "@evStreamCrimeSuccessCleared": {
     "placeholders": {
       "crimeName": {
@@ -3048,7 +3048,7 @@
       }
     }
   },
-  "evStreamCrimeFailedArrested": "Arrested by {authority} during a {crimeName} attempt.",
+  "evStreamCrimeFailedArrested": "¡Detenido por {authority} durante un intento de {crimeName}!",
   "@evStreamCrimeFailedArrested": {
     "placeholders": {
       "authority": {
@@ -3059,7 +3059,7 @@
       }
     }
   },
-  "evStreamCrimeFailedJailed": "Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "evStreamCrimeFailedJailed": "¡Te pillaron en {crimeName}! Encarcelado durante {minutes, plural, one{1 minuto} other{{minutes} minutos}}.",
   "@evStreamCrimeFailedJailed": {
     "placeholders": {
       "crimeName": {
@@ -3070,7 +3070,7 @@
       }
     }
   },
-  "evStreamCrimeFailedBase": "Failed to complete {crimeName}",
+  "evStreamCrimeFailedBase": "No se pudo completar {crimeName}",
   "@evStreamCrimeFailedBase": {
     "placeholders": {
       "crimeName": {
@@ -3078,7 +3078,7 @@
       }
     }
   },
-  "evStreamChaseDamage": " Your vehicle took {pct}% damage during the chase.",
+  "evStreamChaseDamage": " Tu vehículo sufrió un {pct}% de daño en la persecución.",
   "@evStreamChaseDamage": {
     "placeholders": {
       "pct": {
@@ -3086,7 +3086,7 @@
       }
     }
   },
-  "evStreamCrimeJailed": "Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "evStreamCrimeJailed": "¡Te pillaron en {crimeName}! Encarcelado durante {minutes, plural, one{1 minuto} other{{minutes} minutos}}.",
   "@evStreamCrimeJailed": {
     "placeholders": {
       "crimeName": {
@@ -3097,7 +3097,7 @@
       }
     }
   },
-  "evStreamJobSuccess": "Completed work as {jobName}! +€{earnings}, +{xpGained} XP",
+  "evStreamJobSuccess": "¡Trabajo como {jobName} completado! +€{earnings}, +{xpGained} XP",
   "@evStreamJobSuccess": {
     "placeholders": {
       "jobName": {
@@ -3111,7 +3111,7 @@
       }
     }
   },
-  "evStreamJobSuccessEdu": " (Education bonus +{pct}%)",
+  "evStreamJobSuccessEdu": " (Bonificación de formación +{pct}%)",
   "@evStreamJobSuccessEdu": {
     "placeholders": {
       "pct": {
@@ -3119,7 +3119,7 @@
       }
     }
   },
-  "evStreamJobFailedXp": "Failed to complete job as {jobName}. −{xpLost} XP",
+  "evStreamJobFailedXp": "No completaste el trabajo como {jobName}. −{xpLost} XP",
   "@evStreamJobFailedXp": {
     "placeholders": {
       "jobName": {
@@ -3130,7 +3130,7 @@
       }
     }
   },
-  "evStreamJobFailed": "Failed to complete job as {jobName}",
+  "evStreamJobFailed": "No completaste el trabajo como {jobName}",
   "@evStreamJobFailed": {
     "placeholders": {
       "jobName": {
@@ -3138,9 +3138,9 @@
       }
     }
   },
-  "evStreamJobErrorInvalid": "Invalid job",
-  "evStreamJobErrorLevel": "Your rank is too low for this job",
-  "evStreamJobErrorCooldown": "This job is on cooldown. Wait {minutes, plural, one{1 more minute} other{{minutes} more minutes}}",
+  "evStreamJobErrorInvalid": "Trabajo no válido",
+  "evStreamJobErrorLevel": "Tu rango es demasiado bajo para este trabajo",
+  "evStreamJobErrorCooldown": "Este trabajo tiene tiempo de espera. Espera {minutes, plural, one{1 minuto más} other{{minutes} minutos más}}",
   "@evStreamJobErrorCooldown": {
     "placeholders": {
       "minutes": {
@@ -3148,7 +3148,7 @@
       }
     }
   },
-  "evStreamJobErrorGeneric": "Job error: {reason}",
+  "evStreamJobErrorGeneric": "Error de trabajo: {reason}",
   "@evStreamJobErrorGeneric": {
     "placeholders": {
       "reason": {
@@ -3156,7 +3156,7 @@
       }
     }
   },
-  "evStreamTravelDeparted": "Flying to {dest}… −€{cost}",
+  "evStreamTravelDeparted": "Volando a {dest}… −€{cost}",
   "@evStreamTravelDeparted": {
     "placeholders": {
       "dest": {
@@ -3167,7 +3167,7 @@
       }
     }
   },
-  "evStreamTravelArrived": "Arrived in {country}.",
+  "evStreamTravelArrived": "¡Llegaste a {country}!",
   "@evStreamTravelArrived": {
     "placeholders": {
       "country": {
@@ -3175,8 +3175,8 @@
       }
     }
   },
-  "evStreamBankDeposit": "Deposited €{amount} to the bank",
-  "evStreamBankWithdraw": "Withdrew €{amount} from the bank",
+  "evStreamBankDeposit": "Ingresaste €{amount} en el banco",
+  "evStreamBankWithdraw": "Retiraste €{amount} del banco",
   "@evStreamBankDeposit": {
     "placeholders": {
       "amount": {
@@ -3191,7 +3191,7 @@
       }
     }
   },
-  "evStreamCryptoBuy": "Bought {quantity} {symbol} for €{total}",
+  "evStreamCryptoBuy": "Compraste {quantity} {symbol} por €{total}",
   "@evStreamCryptoBuy": {
     "placeholders": {
       "quantity": {
@@ -3205,7 +3205,7 @@
       }
     }
   },
-  "evStreamCryptoSell": "Sold {quantity} {symbol} for €{total} (P&L €{pnl})",
+  "evStreamCryptoSell": "Vendiste {quantity} {symbol} por €{total} (PyG €{pnl})",
   "@evStreamCryptoSell": {
     "placeholders": {
       "quantity": {
@@ -3222,7 +3222,7 @@
       }
     }
   },
-  "evStreamCryptoAlert": "{symbol} alert: €{price} ({chg}% 24h)",
+  "evStreamCryptoAlert": "Alerta {symbol}: €{price} ({chg}% 24h)",
   "@evStreamCryptoAlert": {
     "placeholders": {
       "symbol": {
@@ -3236,7 +3236,7 @@
       }
     }
   },
-  "evStreamCryptoOrderFilled": "{order} {side} filled: {quantity} {symbol} at €{price}",
+  "evStreamCryptoOrderFilled": "{order} {side} ejecutada: {quantity} {symbol} a €{price}",
   "@evStreamCryptoOrderFilled": {
     "placeholders": {
       "order": {
@@ -3256,7 +3256,7 @@
       }
     }
   },
-  "evStreamCryptoOrderTriggered": "{trig} triggered for {symbol} at €{price}",
+  "evStreamCryptoOrderTriggered": "{trig} activada para {symbol} a €{price}",
   "@evStreamCryptoOrderTriggered": {
     "placeholders": {
       "trig": {
@@ -3270,7 +3270,7 @@
       }
     }
   },
-  "evStreamCryptoRegime": "Market regime changed to {regime} ({move}% 24h)",
+  "evStreamCryptoRegime": "Régimen de mercado: {regime} ({move}% 24h)",
   "@evStreamCryptoRegime": {
     "placeholders": {
       "regime": {
@@ -3281,7 +3281,7 @@
       }
     }
   },
-  "evStreamCryptoNews": "{sentiment} news: {headline}",
+  "evStreamCryptoNews": "Noticias {sentiment}: {headline}",
   "@evStreamCryptoNews": {
     "placeholders": {
       "sentiment": {
@@ -3292,8 +3292,8 @@
       }
     }
   },
-  "evStreamCryptoMissionDaily": "Daily mission complete: {title} (+EUR {reward})",
-  "evStreamCryptoMissionWeekly": "Weekly mission complete: {title} (+EUR {reward})",
+  "evStreamCryptoMissionDaily": "Misión diaria completada: {title} (+EUR {reward})",
+  "evStreamCryptoMissionWeekly": "Misión semanal completada: {title} (+EUR {reward})",
   "@evStreamCryptoMissionDaily": {
     "placeholders": {
       "title": {
@@ -3314,7 +3314,7 @@
       }
     }
   },
-  "evStreamCryptoLeaderboard": "Crypto leaderboard reward: #{rank} (+EUR {reward})",
+  "evStreamCryptoLeaderboard": "Recompensa del ranking crypto: n.º {rank} (+EUR {reward})",
   "@evStreamCryptoLeaderboard": {
     "placeholders": {
       "rank": {
@@ -3325,13 +3325,13 @@
       }
     }
   },
-  "evStreamRegimeBull": "bullish",
-  "evStreamRegimeBear": "bearish",
-  "evStreamRegimeSideways": "sideways",
-  "evStreamImpactBull": "Bullish",
-  "evStreamImpactBear": "Bearish",
+  "evStreamRegimeBull": "alcista",
+  "evStreamRegimeBear": "bajista",
+  "evStreamRegimeSideways": "lateral",
+  "evStreamImpactBull": "Alcista",
+  "evStreamImpactBear": "Bajista",
   "evStreamImpactNeutral": "Neutral",
-  "evStreamPropertyBought": "Purchased {name} for €{cost}",
+  "evStreamPropertyBought": "Compraste {name} por €{cost}",
   "@evStreamPropertyBought": {
     "placeholders": {
       "name": {
@@ -3342,8 +3342,8 @@
       }
     }
   },
-  "evStreamCrewCreated": "Created crew: {name}",
-  "evStreamCrewJoined": "Joined crew: {name}",
+  "evStreamCrewCreated": "Banda creada: {name}",
+  "evStreamCrewJoined": "Te uniste a la banda: {name}",
   "@evStreamCrewCreated": {
     "placeholders": {
       "name": {
@@ -3358,8 +3358,8 @@
       }
     }
   },
-  "evStreamCrewWarDeclared": "Crew war declared: #{a} vs #{b} ({type})",
-  "evStreamCrewWarStarted": "Crew war started: #{a} vs #{b}",
+  "evStreamCrewWarDeclared": "Guerra de bandas declarada: #{a} vs #{b} ({type})",
+  "evStreamCrewWarStarted": "Guerra de bandas iniciada: #{a} vs #{b}",
   "@evStreamCrewWarDeclared": {
     "placeholders": {
       "a": {
@@ -3383,9 +3383,9 @@
       }
     }
   },
-  "evStreamCrewLockdown": "Crew war #{id} is in lockdown",
-  "evStreamCrewResolved": "Crew war #{id} resolved. Winner: crew #{winner}",
-  "evStreamCrewAction": "Crew war action: {action} (+{points} pt)",
+  "evStreamCrewLockdown": "La guerra de bandas #{id} está en confinamiento",
+  "evStreamCrewResolved": "Guerra de bandas #{id} resuelta. Ganador: banda #{winner}",
+  "evStreamCrewAction": "Acción de guerra: {action} (+{points} pt)",
   "@evStreamCrewLockdown": {
     "placeholders": {
       "id": {
@@ -3413,8 +3413,8 @@
       }
     }
   },
-  "evStreamHeistOk": "Heist “{name}” successful! +€{money}",
-  "evStreamHeistFail": "Heist “{name}” failed.",
+  "evStreamHeistOk": "Atraco “{name}” conseguido. +€{money}",
+  "evStreamHeistFail": "Atraco “{name}” fallido.",
   "@evStreamHeistOk": {
     "placeholders": {
       "name": {
@@ -3432,7 +3432,7 @@
       }
     }
   },
-  "evStreamHospital": "Treated in hospital! +{hp} health, −€{cost}",
+  "evStreamHospital": "¡Curado en el hospital! +{hp} de salud, −€{cost}",
   "@evStreamHospital": {
     "placeholders": {
       "hp": {
@@ -3443,9 +3443,9 @@
       }
     }
   },
-  "evStreamPoliceArrested": "Arrested! Jailed for {mins} minutes",
-  "evStreamPoliceEscaped": "You escaped the police.",
-  "evStreamFbiRaid": "FBI raid! You lost property and money.",
+  "evStreamPoliceArrested": "¡Detenido! {mins} minutos de cárcel",
+  "evStreamPoliceEscaped": "Escapaste de la policía.",
+  "evStreamFbiRaid": "¡Redada del FBI! Perdiste propiedades y dinero.",
   "@evStreamPoliceArrested": {
     "placeholders": {
       "mins": {
@@ -3453,21 +3453,21 @@
       }
     }
   },
-  "evStreamErrInsufficientFunds": "Not enough money",
-  "evStreamErrInsufficientHealth": "Not enough health for this action",
-  "evStreamErrInsufficientRank": "Requires rank {rank}",
-  "evStreamErrJailed": "You are in jail for {minutes, plural, one{1 more minute} other{{minutes} more minutes}}",
-  "evStreamErrNoHealthDefault": "You need to rest and recover your health",
-  "evStreamErrCooldown": "Wait {seconds, plural, one{1 second} other{{seconds} seconds}} before trying again",
-  "evStreamErrRescuerJailed": "You cannot help others while you are in jail",
-  "evStreamErrTargetNotJailed": "That player is not in jail",
-  "evStreamErrCannotRescueSelf": "You cannot free yourself",
-  "evStreamJailbreakOk": "Jailbreak successful! The player is free.",
-  "evStreamJailbreakFail": "Jailbreak failed! The player is still in jail.",
-  "evStreamJailbreakCaught": "Jailbreak failed! You were caught and jailed for {mins} minutes.",
-  "evStreamBailPaid": "Bail paid: €{amount}. You are free.",
-  "evStreamErrInternal": "Something went wrong. Please try again.",
-  "evStreamTest": "Test: {msg}",
+  "evStreamErrInsufficientFunds": "Dinero insuficiente",
+  "evStreamErrInsufficientHealth": "Salud insuficiente para esta acción",
+  "evStreamErrInsufficientRank": "Requiere rango {rank}",
+  "evStreamErrJailed": "Sigues en la cárcel {minutes, plural, one{1 minuto más} other{{minutes} minutos más}}",
+  "evStreamErrNoHealthDefault": "Descansa y recupera salud",
+  "evStreamErrCooldown": "Espera {seconds, plural, one{1 segundo} other{{seconds} segundos}} antes de volver a intentarlo",
+  "evStreamErrRescuerJailed": "No puedes rescatar a otros mientras estás en la cárcel",
+  "evStreamErrTargetNotJailed": "Ese jugador no está en la cárcel",
+  "evStreamErrCannotRescueSelf": "No puedes rescatarte a ti mismo",
+  "evStreamJailbreakOk": "¡Fuga conseguida! El jugador está libre.",
+  "evStreamJailbreakFail": "¡Fuga fallida! El jugador sigue en la cárcel.",
+  "evStreamJailbreakCaught": "¡Fuga fallida! Te pillaron: {mins} minutos de cárcel.",
+  "evStreamBailPaid": "Fianza pagada: €{amount}. ¡Estás libre!",
+  "evStreamErrInternal": "Algo salió mal. Inténtalo de nuevo.",
+  "evStreamTest": "Prueba: {msg}",
   "@evStreamErrJailed": {
     "placeholders": {
       "minutes": {
@@ -3510,9 +3510,9 @@
       }
     }
   },
-  "evStreamNoCriminalRecord": "You have no criminal record to clear",
-  "evStreamWeaponSelectRequired": "Select a crime weapon before committing this crime",
-  "evStreamWeaponNotSuitable": "You need a suitable weapon: {types}",
+  "evStreamNoCriminalRecord": "No tienes antecedentes que borrar",
+  "evStreamWeaponSelectRequired": "Selecciona un arma para el crimen antes de cometerlo",
+  "evStreamWeaponNotSuitable": "Necesitas un arma adecuada: {types}",
   "@evStreamWeaponNotSuitable": {
     "placeholders": {
       "types": {
@@ -3520,7 +3520,7 @@
       }
     }
   },
-  "evStreamJobFallbackName": "job",
+  "evStreamJobFallbackName": "trabajo",
   "evStreamUnknownKey": "{key}",
   "@evStreamUnknownKey": {
     "placeholders": {

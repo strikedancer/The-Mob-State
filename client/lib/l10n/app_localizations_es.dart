@@ -5808,142 +5808,146 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportMod_other => 'Otro';
 
   @override
-  String get gameEventDefaultTitle => 'Event';
+  String get gameEventDefaultTitle => 'Evento';
 
   @override
-  String get gameEventStatusActive => 'Active';
+  String get gameEventStatusActive => 'Activo';
 
   @override
-  String get gameEventStatusScheduled => 'Scheduled';
+  String get gameEventStatusScheduled => 'Programado';
 
   @override
-  String get gameEventStatusCompleted => 'Completed';
+  String get gameEventStatusCompleted => 'Finalizado';
 
   @override
-  String get gameEventStatusDraft => 'Draft';
+  String get gameEventStatusDraft => 'Borrador';
 
   @override
-  String get gameEventTmplWeeklyVehicleTheftHuntTitle => 'Weekly Theft Hunt';
+  String get gameEventTmplWeeklyVehicleTheftHuntTitle =>
+      'Caza de robos semanal';
 
   @override
   String get gameEventTmplWeeklyVehicleTheftHuntDesc =>
-      'Steal as many vehicles as you can during the event window.';
+      'Roba tantos vehículos como puedas durante la ventana del evento.';
 
   @override
-  String get gameEventTmplSmugglingSurgeTitle => 'Smuggling Surge';
+  String get gameEventTmplSmugglingSurgeTitle => 'Oleada de contrabando';
 
   @override
   String get gameEventTmplSmugglingSurgeDesc =>
-      'Move the most smuggled contraband this round.';
+      'Mueve el mayor volumen de contrabando en esta ronda.';
 
   @override
-  String get gameEventTmplLabOutputChallengeTitle => 'Lab Output Challenge';
+  String get gameEventTmplLabOutputChallengeTitle =>
+      'Desafío de producción del laboratorio';
 
   @override
   String get gameEventTmplLabOutputChallengeDesc =>
-      'Produce the most output while the event is live.';
+      'Produce la mayor cantidad mientras el evento esté activo.';
 
   @override
-  String get gameEventTmplStreetCrimeSpreeTitle => 'Street Crime Spree';
+  String get gameEventTmplStreetCrimeSpreeTitle =>
+      'Racha de crímenes callejeros';
 
   @override
   String get gameEventTmplStreetCrimeSpreeDesc =>
-      'Complete as many crimes as possible in the live window.';
+      'Completa tantos crímenes como puedas mientras el evento esté en curso.';
 
   @override
-  String get gameScreenLoadError => 'Could not load events.';
+  String get gameScreenLoadError => 'No se pudieron cargar los eventos.';
 
   @override
-  String get gameScreenDetailsLoadError => 'Could not load event details.';
+  String get gameScreenDetailsLoadError =>
+      'No se pudieron cargar los detalles del evento.';
 
   @override
-  String get gameScreenSectionLive => 'Live Events';
+  String get gameScreenSectionLive => 'Eventos en vivo';
 
   @override
-  String get gameScreenNoActive => 'There are no active events right now.';
+  String get gameScreenNoActive => 'No hay eventos activos ahora.';
 
   @override
-  String get gameScreenSectionUpcoming => 'Upcoming Events';
+  String get gameScreenSectionUpcoming => 'Próximos eventos';
 
   @override
-  String get gameScreenNoUpcoming => 'There are no scheduled events.';
+  String get gameScreenNoUpcoming => 'No hay eventos programados.';
 
   @override
   String gameScreenStatusPrefix(String value) {
-    return 'Status: $value';
+    return 'Estado: $value';
   }
 
   @override
   String gameScreenStartLine(String date) {
-    return 'Start: $date';
+    return 'Inicio: $date';
   }
 
   @override
   String gameScreenEndLine(String date) {
-    return 'End: $date';
+    return 'Fin: $date';
   }
 
   @override
-  String get gameScreenYourProgress => 'Your progress';
+  String get gameScreenYourProgress => 'Tu progreso';
 
   @override
   String gameScreenScore(String value) {
-    return 'Score: $value';
+    return 'Puntuación: $value';
   }
 
   @override
   String gameScreenRank(String value) {
-    return 'Rank: $value';
+    return 'Posición: $value';
   }
 
   @override
-  String get gameScreenLeaderboard => 'Leaderboard (top 10)';
+  String get gameScreenLeaderboard => 'Clasificación (top 10)';
 
   @override
-  String get gameScreenNoLeaderboard => 'No leaderboard data yet.';
+  String get gameScreenNoLeaderboard => 'Aún no hay datos de clasificación.';
 
   @override
-  String get gameScreenUnknownPlayer => 'Unknown';
+  String get gameScreenUnknownPlayer => 'Desconocido';
 
   @override
-  String get gameCardActive => 'Active';
+  String get gameCardActive => 'Activo';
 
   @override
-  String get gameCardScheduled => 'Planned';
+  String get gameCardScheduled => 'Programado';
 
   @override
   String gameCardYourScore(String value) {
-    return 'Your score: $value';
+    return 'Tu puntuación: $value';
   }
 
   @override
   String gameCardYourRank(String value) {
-    return 'Your rank: $value';
+    return 'Tu posición: $value';
   }
 
   @override
-  String get gameCardTapDetails => 'Tap for details and leaderboard';
+  String get gameCardTapDetails => 'Toca para ver detalles y la clasificación';
 
   @override
-  String get eventFeedDisconnected => 'Disconnected from the event stream';
+  String get eventFeedDisconnected => 'Sin conexión al flujo de eventos';
 
   @override
-  String get eventFeedReconnecting => 'Reconnecting...';
+  String get eventFeedReconnecting => 'Reconectando…';
 
   @override
-  String get eventFeedConnectedWaiting => 'Connected — waiting for events…';
+  String get eventFeedConnectedWaiting => 'Conectado: esperando eventos…';
 
   @override
-  String get eventFeedConnecting => 'Connecting to the event stream…';
+  String get eventFeedConnecting => 'Conectando al flujo de eventos…';
 
   @override
-  String get evStreamConnectionEstablished => 'Connected to the event stream';
+  String get evStreamConnectionEstablished => 'Conectado al flujo de eventos';
 
   @override
-  String get evStreamAuthRegistered => 'Account created successfully.';
+  String get evStreamAuthRegistered => 'Cuenta creada correctamente.';
 
   @override
-  String get evStreamAuthLogin => 'Welcome back.';
+  String get evStreamAuthLogin => 'Bienvenido de nuevo.';
 
   @override
   String evStreamCrimeSuccess(
@@ -5951,7 +5955,7 @@ class AppLocalizationsEs extends AppLocalizations {
     String reward,
     String xpGained,
   ) {
-    return 'Successfully completed $crimeName! +EUR $reward, +$xpGained XP';
+    return '¡Completaste con éxito $crimeName! +EUR $reward, +$xpGained XP';
   }
 
   @override
@@ -5964,19 +5968,17 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: '1 minute',
+      other: '$minutes minutos',
+      one: '1 minuto',
     );
-    return 'Successfully completed $crimeName! +EUR $reward, +$xpGained XP — but caught! Jailed for $_temp0.';
+    return '¡Completaste con éxito $crimeName! +EUR $reward, +$xpGained XP — ¡pero te pillaron! Encarcelado durante $_temp0.';
   }
 
   @override
-  String get evStreamCrimeSeizedVehicle =>
-      ' Your vehicle was seized by the police.';
+  String get evStreamCrimeSeizedVehicle => ' La policía incautó tu vehículo.';
 
   @override
-  String get evStreamCrimeSeizedWeapon =>
-      ' Your weapon was confiscated by the police.';
+  String get evStreamCrimeSeizedWeapon => ' La policía confiscó tu arma.';
 
   @override
   String evStreamCrimeSuccessCleared(
@@ -5987,15 +5989,15 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count convictions',
-      one: '1 conviction',
+      other: '$count condenas',
+      one: '1 condena',
     );
-    return 'Successfully completed $crimeName! Criminal record cleared: $_temp0 removed. +$xpGained XP';
+    return '¡Completaste con éxito $crimeName! Antecedentes borrados: $_temp0. +$xpGained XP';
   }
 
   @override
   String evStreamCrimeFailedArrested(String authority, String crimeName) {
-    return 'Arrested by $authority during a $crimeName attempt.';
+    return '¡Detenido por $authority durante un intento de $crimeName!';
   }
 
   @override
@@ -6003,20 +6005,20 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: '1 minute',
+      other: '$minutes minutos',
+      one: '1 minuto',
     );
-    return 'Caught during $crimeName! Jailed for $_temp0.';
+    return '¡Te pillaron en $crimeName! Encarcelado durante $_temp0.';
   }
 
   @override
   String evStreamCrimeFailedBase(String crimeName) {
-    return 'Failed to complete $crimeName';
+    return 'No se pudo completar $crimeName';
   }
 
   @override
   String evStreamChaseDamage(String pct) {
-    return ' Your vehicle took $pct% damage during the chase.';
+    return ' Tu vehículo sufrió un $pct% de daño en la persecución.';
   }
 
   @override
@@ -6024,77 +6026,78 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: '1 minute',
+      other: '$minutes minutos',
+      one: '1 minuto',
     );
-    return 'Caught during $crimeName! Jailed for $_temp0.';
+    return '¡Te pillaron en $crimeName! Encarcelado durante $_temp0.';
   }
 
   @override
   String evStreamJobSuccess(String jobName, String earnings, String xpGained) {
-    return 'Completed work as $jobName! +€$earnings, +$xpGained XP';
+    return '¡Trabajo como $jobName completado! +€$earnings, +$xpGained XP';
   }
 
   @override
   String evStreamJobSuccessEdu(String pct) {
-    return ' (Education bonus +$pct%)';
+    return ' (Bonificación de formación +$pct%)';
   }
 
   @override
   String evStreamJobFailedXp(String jobName, String xpLost) {
-    return 'Failed to complete job as $jobName. −$xpLost XP';
+    return 'No completaste el trabajo como $jobName. −$xpLost XP';
   }
 
   @override
   String evStreamJobFailed(String jobName) {
-    return 'Failed to complete job as $jobName';
+    return 'No completaste el trabajo como $jobName';
   }
 
   @override
-  String get evStreamJobErrorInvalid => 'Invalid job';
+  String get evStreamJobErrorInvalid => 'Trabajo no válido';
 
   @override
-  String get evStreamJobErrorLevel => 'Your rank is too low for this job';
+  String get evStreamJobErrorLevel =>
+      'Tu rango es demasiado bajo para este trabajo';
 
   @override
   String evStreamJobErrorCooldown(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes more minutes',
-      one: '1 more minute',
+      other: '$minutes minutos más',
+      one: '1 minuto más',
     );
-    return 'This job is on cooldown. Wait $_temp0';
+    return 'Este trabajo tiene tiempo de espera. Espera $_temp0';
   }
 
   @override
   String evStreamJobErrorGeneric(String reason) {
-    return 'Job error: $reason';
+    return 'Error de trabajo: $reason';
   }
 
   @override
   String evStreamTravelDeparted(String dest, String cost) {
-    return 'Flying to $dest… −€$cost';
+    return 'Volando a $dest… −€$cost';
   }
 
   @override
   String evStreamTravelArrived(String country) {
-    return 'Arrived in $country.';
+    return '¡Llegaste a $country!';
   }
 
   @override
   String evStreamBankDeposit(String amount) {
-    return 'Deposited €$amount to the bank';
+    return 'Ingresaste €$amount en el banco';
   }
 
   @override
   String evStreamBankWithdraw(String amount) {
-    return 'Withdrew €$amount from the bank';
+    return 'Retiraste €$amount del banco';
   }
 
   @override
   String evStreamCryptoBuy(String quantity, String symbol, String total) {
-    return 'Bought $quantity $symbol for €$total';
+    return 'Compraste $quantity $symbol por €$total';
   }
 
   @override
@@ -6104,12 +6107,12 @@ class AppLocalizationsEs extends AppLocalizations {
     String total,
     String pnl,
   ) {
-    return 'Sold $quantity $symbol for €$total (P&L €$pnl)';
+    return 'Vendiste $quantity $symbol por €$total (PyG €$pnl)';
   }
 
   @override
   String evStreamCryptoAlert(String symbol, String price, String chg) {
-    return '$symbol alert: €$price ($chg% 24h)';
+    return 'Alerta $symbol: €$price ($chg% 24h)';
   }
 
   @override
@@ -6120,7 +6123,7 @@ class AppLocalizationsEs extends AppLocalizations {
     String symbol,
     String price,
   ) {
-    return '$order $side filled: $quantity $symbol at €$price';
+    return '$order $side ejecutada: $quantity $symbol a €$price';
   }
 
   @override
@@ -6129,128 +6132,129 @@ class AppLocalizationsEs extends AppLocalizations {
     String symbol,
     String price,
   ) {
-    return '$trig triggered for $symbol at €$price';
+    return '$trig activada para $symbol a €$price';
   }
 
   @override
   String evStreamCryptoRegime(String regime, String move) {
-    return 'Market regime changed to $regime ($move% 24h)';
+    return 'Régimen de mercado: $regime ($move% 24h)';
   }
 
   @override
   String evStreamCryptoNews(String sentiment, String headline) {
-    return '$sentiment news: $headline';
+    return 'Noticias $sentiment: $headline';
   }
 
   @override
   String evStreamCryptoMissionDaily(String title, String reward) {
-    return 'Daily mission complete: $title (+EUR $reward)';
+    return 'Misión diaria completada: $title (+EUR $reward)';
   }
 
   @override
   String evStreamCryptoMissionWeekly(String title, String reward) {
-    return 'Weekly mission complete: $title (+EUR $reward)';
+    return 'Misión semanal completada: $title (+EUR $reward)';
   }
 
   @override
   String evStreamCryptoLeaderboard(String rank, String reward) {
-    return 'Crypto leaderboard reward: #$rank (+EUR $reward)';
+    return 'Recompensa del ranking crypto: n.º $rank (+EUR $reward)';
   }
 
   @override
-  String get evStreamRegimeBull => 'bullish';
+  String get evStreamRegimeBull => 'alcista';
 
   @override
-  String get evStreamRegimeBear => 'bearish';
+  String get evStreamRegimeBear => 'bajista';
 
   @override
-  String get evStreamRegimeSideways => 'sideways';
+  String get evStreamRegimeSideways => 'lateral';
 
   @override
-  String get evStreamImpactBull => 'Bullish';
+  String get evStreamImpactBull => 'Alcista';
 
   @override
-  String get evStreamImpactBear => 'Bearish';
+  String get evStreamImpactBear => 'Bajista';
 
   @override
   String get evStreamImpactNeutral => 'Neutral';
 
   @override
   String evStreamPropertyBought(String name, String cost) {
-    return 'Purchased $name for €$cost';
+    return 'Compraste $name por €$cost';
   }
 
   @override
   String evStreamCrewCreated(String name) {
-    return 'Created crew: $name';
+    return 'Banda creada: $name';
   }
 
   @override
   String evStreamCrewJoined(String name) {
-    return 'Joined crew: $name';
+    return 'Te uniste a la banda: $name';
   }
 
   @override
   String evStreamCrewWarDeclared(String a, String b, String type) {
-    return 'Crew war declared: #$a vs #$b ($type)';
+    return 'Guerra de bandas declarada: #$a vs #$b ($type)';
   }
 
   @override
   String evStreamCrewWarStarted(String a, String b) {
-    return 'Crew war started: #$a vs #$b';
+    return 'Guerra de bandas iniciada: #$a vs #$b';
   }
 
   @override
   String evStreamCrewLockdown(String id) {
-    return 'Crew war #$id is in lockdown';
+    return 'La guerra de bandas #$id está en confinamiento';
   }
 
   @override
   String evStreamCrewResolved(String id, String winner) {
-    return 'Crew war #$id resolved. Winner: crew #$winner';
+    return 'Guerra de bandas #$id resuelta. Ganador: banda #$winner';
   }
 
   @override
   String evStreamCrewAction(String action, String points) {
-    return 'Crew war action: $action (+$points pt)';
+    return 'Acción de guerra: $action (+$points pt)';
   }
 
   @override
   String evStreamHeistOk(String name, String money) {
-    return 'Heist “$name” successful! +€$money';
+    return 'Atraco “$name” conseguido. +€$money';
   }
 
   @override
   String evStreamHeistFail(String name) {
-    return 'Heist “$name” failed.';
+    return 'Atraco “$name” fallido.';
   }
 
   @override
   String evStreamHospital(String hp, String cost) {
-    return 'Treated in hospital! +$hp health, −€$cost';
+    return '¡Curado en el hospital! +$hp de salud, −€$cost';
   }
 
   @override
   String evStreamPoliceArrested(String mins) {
-    return 'Arrested! Jailed for $mins minutes';
+    return '¡Detenido! $mins minutos de cárcel';
   }
 
   @override
-  String get evStreamPoliceEscaped => 'You escaped the police.';
+  String get evStreamPoliceEscaped => 'Escapaste de la policía.';
 
   @override
-  String get evStreamFbiRaid => 'FBI raid! You lost property and money.';
+  String get evStreamFbiRaid =>
+      '¡Redada del FBI! Perdiste propiedades y dinero.';
 
   @override
-  String get evStreamErrInsufficientFunds => 'Not enough money';
+  String get evStreamErrInsufficientFunds => 'Dinero insuficiente';
 
   @override
   String get evStreamErrInsufficientHealth =>
-      'Not enough health for this action';
+      'Salud insuficiente para esta acción';
 
   @override
   String evStreamErrInsufficientRank(String rank) {
-    return 'Requires rank $rank';
+    return 'Requiere rango $rank';
   }
 
   @override
@@ -6258,76 +6262,75 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes more minutes',
-      one: '1 more minute',
+      other: '$minutes minutos más',
+      one: '1 minuto más',
     );
-    return 'You are in jail for $_temp0';
+    return 'Sigues en la cárcel $_temp0';
   }
 
   @override
-  String get evStreamErrNoHealthDefault =>
-      'You need to rest and recover your health';
+  String get evStreamErrNoHealthDefault => 'Descansa y recupera salud';
 
   @override
   String evStreamErrCooldown(int seconds) {
     String _temp0 = intl.Intl.pluralLogic(
       seconds,
       locale: localeName,
-      other: '$seconds seconds',
-      one: '1 second',
+      other: '$seconds segundos',
+      one: '1 segundo',
     );
-    return 'Wait $_temp0 before trying again';
+    return 'Espera $_temp0 antes de volver a intentarlo';
   }
 
   @override
   String get evStreamErrRescuerJailed =>
-      'You cannot help others while you are in jail';
+      'No puedes rescatar a otros mientras estás en la cárcel';
 
   @override
-  String get evStreamErrTargetNotJailed => 'That player is not in jail';
+  String get evStreamErrTargetNotJailed => 'Ese jugador no está en la cárcel';
 
   @override
-  String get evStreamErrCannotRescueSelf => 'You cannot free yourself';
+  String get evStreamErrCannotRescueSelf => 'No puedes rescatarte a ti mismo';
 
   @override
-  String get evStreamJailbreakOk => 'Jailbreak successful! The player is free.';
+  String get evStreamJailbreakOk => '¡Fuga conseguida! El jugador está libre.';
 
   @override
   String get evStreamJailbreakFail =>
-      'Jailbreak failed! The player is still in jail.';
+      '¡Fuga fallida! El jugador sigue en la cárcel.';
 
   @override
   String evStreamJailbreakCaught(String mins) {
-    return 'Jailbreak failed! You were caught and jailed for $mins minutes.';
+    return '¡Fuga fallida! Te pillaron: $mins minutos de cárcel.';
   }
 
   @override
   String evStreamBailPaid(String amount) {
-    return 'Bail paid: €$amount. You are free.';
+    return 'Fianza pagada: €$amount. ¡Estás libre!';
   }
 
   @override
-  String get evStreamErrInternal => 'Something went wrong. Please try again.';
+  String get evStreamErrInternal => 'Algo salió mal. Inténtalo de nuevo.';
 
   @override
   String evStreamTest(String msg) {
-    return 'Test: $msg';
+    return 'Prueba: $msg';
   }
 
   @override
-  String get evStreamNoCriminalRecord => 'You have no criminal record to clear';
+  String get evStreamNoCriminalRecord => 'No tienes antecedentes que borrar';
 
   @override
   String get evStreamWeaponSelectRequired =>
-      'Select a crime weapon before committing this crime';
+      'Selecciona un arma para el crimen antes de cometerlo';
 
   @override
   String evStreamWeaponNotSuitable(String types) {
-    return 'You need a suitable weapon: $types';
+    return 'Necesitas un arma adecuada: $types';
   }
 
   @override
-  String get evStreamJobFallbackName => 'job';
+  String get evStreamJobFallbackName => 'trabajo';
 
   @override
   String evStreamUnknownKey(String key) {
