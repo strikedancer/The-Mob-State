@@ -834,7 +834,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bank => 'Bank';
 
   @override
-  String get tradeGoods => 'Trade goods';
+  String get tradeGoods => 'Zwarte markt';
 
   @override
   String get drugs => 'Drugs';
@@ -852,13 +852,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tools => 'gereedschap';
 
   @override
-  String get vehicleHeist => 'Vehicle Heist';
+  String get vehicleHeist => 'Voertuig stelen';
 
   @override
   String get tuneShop => 'Tune Shop';
 
   @override
-  String get territory => 'Territory';
+  String get territory => 'Territorium';
 
   @override
   String get achievements => 'Achievements';
@@ -1504,7 +1504,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get quickActionsCrimesSubtitle => 'Commit criminal acts';
 
   @override
-  String get quickActionsVehicleHeistSubtitle => 'Car, motorcycle and boat';
+  String get quickActionsVehicleHeistSubtitle => 'Auto, motor en boot';
 
   @override
   String get quickActionsTuneShopSubtitle => 'Parts and upgrades';
