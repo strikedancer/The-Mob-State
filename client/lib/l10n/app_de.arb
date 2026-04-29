@@ -3776,5 +3776,219 @@
     }
   },
   "prostitutionOccupiedShort": "Belegt",
-  "prostitutionNotApplicable": "k. A."
+  "prostitutionNotApplicable": "k. A.",
+  "prostitutionBetrayalDefaultMessage": "Verrat! Dein Nachtclub wurde durch ein Informationsleck getroffen.",
+  "prostitutionLoadError": "Fehler beim Laden der Daten",
+  "prostitutionNoDistrictInCountry": "In diesem Land gibt es kein Rotlichtviertel",
+  "prostitutionMovedToStreet": "Auf die Straße verlegt",
+  "prostitutionArrestedCannotAssign": "Diese Prostituierte ist verhaftet und kann nicht zugewiesen werden.",
+  "prostitutionNoNightclubVenue": "Du hast noch keinen Nachtclub-Standort, um Personal zuzuweisen.",
+  "prostitutionNightclubVenueName": "Nachtclub",
+  "prostitutionNightclubVenueNumbered": "Nachtclub #{id}",
+  "@prostitutionNightclubVenueNumbered": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionAssignedNightclub": "Nachtclub zugewiesen",
+  "prostitutionArrestedCannotWork": "Diese Prostituierte ist verhaftet und kann nicht arbeiten.",
+  "prostitutionShiftRestNeeded": "Noch {duration} Pause bis zur nächsten Schicht.",
+  "@prostitutionShiftRestNeeded": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionWorkShiftCompleted": "Schicht beendet",
+  "prostitutionNoWorkersToAssign": "Keine verfügbaren Prostituierten zum Arbeiten schicken.",
+  "prostitutionWorkAllSentCount": "{count} Prostituierte zur Arbeit geschickt.",
+  "@prostitutionWorkAllSentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionWorkAllPartial": "{success} zur Arbeit geschickt, {failed} fehlgeschlagen.",
+  "@prostitutionWorkAllPartial": {
+    "placeholders": {
+      "success": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionRecruitedDefault": "Angeworben!",
+  "prostitutionRecruitFailed": "Anwerbung fehlgeschlagen",
+  "prostitutionRecruitConnectionError": "Anwerbung fehlgeschlagen wegen eines Verbindungsfehlers",
+  "prostitutionEventUpdate": "Event aktualisiert",
+  "prostitutionBuyPropertyFirst": "Kaufe zuerst ein Haus oder eine Wohnung",
+  "prostitutionWorkAll": "Alle arbeiten lassen ({count})",
+  "@prostitutionWorkAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionNoHousingForRecruit": "Kein freier Wohnplatz. Kaufe oder upgrade ein Haus oder eine Wohnung, bevor du weitere Prostituierte anwirbst.",
+  "prostitutionHousingTitle": "Unterkunft",
+  "prostitutionHousingRentRule": "Jede Prostituierte muss mindestens eine Schicht alle {days} Tage arbeiten, um die Miete zu zahlen.",
+  "@prostitutionHousingRentRule": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionHousingSlots": "Plätze",
+  "prostitutionHousingFree": "Frei",
+  "prostitutionHousingHomes": "Häuser",
+  "prostitutionHousingAvgUpgrade": "Ø-Upgrade",
+  "prostitutionHousingHappinessBonus": "Glücks-Bonus",
+  "prostitutionHousingWeeklyRent": "Wochenmiete",
+  "prostitutionHousingAtRisk": "Gefährdet",
+  "prostitutionHousingSafe": "Sicher",
+  "prostitutionBetrayalActiveDetail": "Verrat ausgelöst: {grams}g Drogen beschlagnahmt, {licenses} Nachtclub-Lizenz(en) entzogen.",
+  "@prostitutionBetrayalActiveDetail": {
+    "placeholders": {
+      "grams": {
+        "type": "int"
+      },
+      "licenses": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsInsightTitle": "Einnahmen-Überblick (aktive Prostituierte)",
+  "prostitutionEarningsStreetDetail": "Straße: {count} • €{euros}/Std.",
+  "@prostitutionEarningsStreetDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsRldDetail": "RLV: {count} • €{euros}/Std.",
+  "@prostitutionEarningsRldDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsNightclubDetail": "Nachtclub: {count} • €{euros}/Std.",
+  "@prostitutionEarningsNightclubDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsTotalDetail": "Gesamt: €{euros}/Std.",
+  "@prostitutionEarningsTotalDetail": {
+    "placeholders": {
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionHappinessEcstatic": "Ekstatisch",
+  "prostitutionHappinessHappy": "Glücklich",
+  "prostitutionHappinessStable": "Stabil",
+  "prostitutionHappinessStressed": "Gestresst",
+  "prostitutionHappinessMiserable": "Elend",
+  "prostitutionHousingExpired": "Abgelaufen",
+  "prostitutionHousingDaysLeft": "noch {days} T.",
+  "@prostitutionHousingDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionHousingLessThanOneDay": "Weniger als 1 Tag",
+  "prostitutionNightclubShort": "Nachtclub",
+  "prostitutionMoveToStreetButton": "Zur Straße",
+  "prostitutionMoveToNightclubButton": "Zum Nachtclub",
+  "prostitutionEuroPerHour": "€{amount}/Std.",
+  "@prostitutionEuroPerHour": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionHappinessDetail": "Glück {label} ({score}%) • Ertrag {bonus}",
+  "@prostitutionHappinessDetail": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "score": {
+        "type": "int"
+      },
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionHousingStatus": "Unterkunft: {status}",
+  "@prostitutionHousingStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionWeeklyRentEuro": "Wochenmiete €{amount}",
+  "@prostitutionWeeklyRentEuro": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionWork8h": "8 Std. arbeiten",
+  "prostitutionRestFor": "Pause {duration}",
+  "@prostitutionRestFor": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionNextShiftIn": "Nächste Schicht in {duration}",
+  "@prostitutionNextShiftIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionTimeHoursMinutes": "{hours} Std. {minutes} Min.",
+  "@prostitutionTimeHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }

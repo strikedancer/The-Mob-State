@@ -11,6 +11,7 @@ import '../widgets/jail_screen.dart';
 import 'prostitution_leaderboard_screen.dart';
 import 'prostitution_rivalry_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/country_helper.dart';
 
 class ProstitutionScreen extends StatefulWidget {
   final int initialTabIndex;
@@ -43,8 +44,6 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Timer? _cooldownTimer;
   late TabController _tabController;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
   int get _availableWorkCount => _prostitutes.where(_canStartWorkShift).length;
 
   bool _isNightclubProstitute(Prostitute prostitute) =>
@@ -68,14 +67,31 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     return 'street';
   }
 
-  String _formatDurationHoursMinutes(Duration duration) {
+  String _formatDurationHoursMinutes(
+    AppLocalizations l10n,
+    Duration duration,
+  ) {
     final totalMinutes = duration.inMinutes;
     final hours = totalMinutes ~/ 60;
     final minutes = totalMinutes % 60;
-    if (_isNl) {
-      return '${hours}u ${minutes}m';
+    return l10n.prostitutionTimeHoursMinutes(hours, minutes);
+  }
+
+  String _happinessLabelForCode(AppLocalizations l10n, String? code) {
+    switch (code) {
+      case 'ecstatic':
+        return l10n.prostitutionHappinessEcstatic;
+      case 'happy':
+        return l10n.prostitutionHappinessHappy;
+      case 'stable':
+        return l10n.prostitutionHappinessStable;
+      case 'stressed':
+        return l10n.prostitutionHappinessStressed;
+      case 'miserable':
+        return l10n.prostitutionHappinessMiserable;
+      default:
+        return code ?? '-';
     }
-    return '${hours}h ${minutes}m';
   }
 
   @override
@@ -120,22 +136,23 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       _housingSummary = result['housingSummary'] as ProstituteHousingSummary?;
 
       if (mounted && _housingSummary?.betrayalTriggered == true) {
+        final l10n = AppLocalizations.of(context)!;
         final msg =
             _housingSummary?.betrayalMessage ??
-            _tr(
-              'Verraad! Je nightclub is geraakt door een leak.',
-              'Betrayal! Your nightclub was hit by an intel leak.',
-            );
+            l10n.prostitutionBetrayalDefaultMessage;
         showTopRightFromSnackBar(
           context,
           SnackBar(content: Text(msg), backgroundColor: Colors.red),
         );
       }
     } else if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(result['message']?.toString() ?? 'Fout bij laden'),
+          content: Text(
+            result['message']?.toString() ?? l10n.prostitutionLoadError,
+          ),
         ),
       );
     }
@@ -215,12 +232,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Geen Red Light District gevonden in dit land',
-              'No Red Light District found in this country',
-            ),
-          ),
+          content: Text(l10n.prostitutionNoDistrictInCountry),
           backgroundColor: Colors.orange,
         ),
       );
@@ -250,6 +262,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   }
 
   Future<void> _moveProstituteToStreet(Prostitute prostitute) async {
+    final l10n = AppLocalizations.of(context)!;
     final result = await _service.moveToStreet(prostitute.id);
 
     if (!mounted) return;
@@ -258,8 +271,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       context,
       SnackBar(
         content: Text(
-          result['message']?.toString() ??
-              _tr('Verplaatst naar straat', 'Moved to street'),
+          result['message']?.toString() ?? l10n.prostitutionMovedToStreet,
         ),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
@@ -271,17 +283,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   }
 
   Future<void> _assignProstituteToNightclub(Prostitute prostitute) async {
+    final l10n = AppLocalizations.of(context)!;
     if (prostitute.isCurrentlyBusted) {
       if (!mounted) return;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Deze hoer is gearresteerd en kan niet geplaatst worden.',
-              'This prostitute is arrested and cannot be assigned.',
-            ),
-          ),
+          content: Text(l10n.prostitutionArrestedCannotAssign),
           backgroundColor: Colors.red,
         ),
       );
@@ -295,12 +303,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Je hebt nog geen nightclub in beheer om personeel te plaatsen.',
-              'You do not have a nightclub venue yet to assign staff.',
-            ),
-          ),
+          content: Text(l10n.prostitutionNoNightclubVenue),
           backgroundColor: Colors.orange,
         ),
       );
@@ -314,6 +317,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       venueId = await showModalBottomSheet<int>(
         context: context,
         builder: (ctx) {
+          final sheetL10n = AppLocalizations.of(ctx)!;
           return SafeArea(
             child: ListView.builder(
               shrinkWrap: true,
@@ -322,11 +326,15 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 final venue = venues[index];
                 final id = (venue['id'] as num?)?.toInt();
                 final venueLabel = id == null
-                    ? _tr('Nightclub', 'Nightclub')
-                    : _tr('Nightclub #$id', 'Nightclub #$id');
-                final country =
-                    venue['country']?.toString() ??
-                    _tr('Onbekend land', 'Unknown country');
+                    ? sheetL10n.prostitutionNightclubVenueName
+                    : sheetL10n.prostitutionNightclubVenueNumbered(id);
+                final rawCountry = venue['country']?.toString();
+                final country = rawCountry == null || rawCountry.isEmpty
+                    ? sheetL10n.unknown
+                    : CountryHelper.getLocalizedCountryName(
+                        CountryHelper.normalizeCountryId(rawCountry),
+                        sheetL10n,
+                      );
                 return ListTile(
                   enabled: id != null,
                   title: Text(venueLabel),
@@ -353,8 +361,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       context,
       SnackBar(
         content: Text(
-          result['message']?.toString() ??
-              _tr('Geplaatst in nightclub', 'Assigned to nightclub'),
+          result['message']?.toString() ?? l10n.prostitutionAssignedNightclub,
         ),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
@@ -368,21 +375,18 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   Future<void> _executeWorkShift(Prostitute prostitute) async {
     if (prostitute.isCurrentlyBusted) {
       if (!mounted) return;
+      final l10nBusted = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Deze hoer is gearresteerd en kan niet werken',
-              'This prostitute is arrested and cannot work',
-            ),
-          ),
+          content: Text(l10nBusted.prostitutionArrestedCannotWork),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
+    final l10n = AppLocalizations.of(context)!;
     final shiftRemaining = _getWorkShiftRemaining(prostitute);
     if (shiftRemaining != null) {
       if (!mounted) return;
@@ -390,9 +394,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         context,
         SnackBar(
           content: Text(
-            _tr(
-              'Nog ${_formatDurationHoursMinutes(shiftRemaining)} rust nodig voor volgende shift.',
-              'Needs ${_formatDurationHoursMinutes(shiftRemaining)} rest before next shift.',
+            l10n.prostitutionShiftRestNeeded(
+              _formatDurationHoursMinutes(l10n, shiftRemaining),
             ),
           ),
           backgroundColor: Colors.orange,
@@ -410,8 +413,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
       context,
       SnackBar(
         content: Text(
-          result['message']?.toString() ??
-              _tr('Work shift voltooid', 'Work shift completed'),
+          result['message']?.toString() ?? l10n.prostitutionWorkShiftCompleted,
         ),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
@@ -426,18 +428,14 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     if (_isWorkingAll) return;
 
     final available = _prostitutes.where(_canStartWorkShift).toList();
+    final l10nEmpty = AppLocalizations.of(context)!;
 
     if (available.isEmpty) {
       if (!mounted) return;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Geen beschikbare hoeren om aan het werk te zetten.',
-              'No available prostitutes to put to work.',
-            ),
-          ),
+          content: Text(l10nEmpty.prostitutionNoWorkersToAssign),
           backgroundColor: Colors.orange,
         ),
       );
@@ -468,19 +466,14 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
     setState(() => _isWorkingAll = false);
 
+    final l10nBatch = AppLocalizations.of(context)!;
     showTopRightFromSnackBar(
       context,
       SnackBar(
         content: Text(
           failedCount == 0
-              ? _tr(
-                  '$successCount hoeren aan het werk gezet.',
-                  '$successCount prostitutes sent to work.',
-                )
-              : _tr(
-                  '$successCount hoeren aan het werk gezet, $failedCount mislukt.',
-                  '$successCount prostitutes sent to work, $failedCount failed.',
-                ),
+              ? l10nBatch.prostitutionWorkAllSentCount(successCount)
+              : l10nBatch.prostitutionWorkAllPartial(successCount, failedCount),
         ),
         backgroundColor: successCount > 0 ? Colors.green : Colors.red,
       ),
@@ -549,7 +542,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
         if (!mounted) return;
 
-        final recruitMessage = result['message']?.toString() ?? 'Geworven!';
+        final l10nRecruit = AppLocalizations.of(context)!;
+        final recruitMessage =
+            result['message']?.toString() ?? l10nRecruit.prostitutionRecruitedDefault;
 
         if (!mounted) return;
 
@@ -563,25 +558,24 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
           _startCooldownTimer();
         }
 
+        final l10nFail = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(result['message']?.toString() ?? 'Werving mislukt'),
+            content: Text(
+              result['message']?.toString() ?? l10nFail.prostitutionRecruitFailed,
+            ),
             backgroundColor: Colors.red,
           ),
         );
       }
     } catch (_) {
       if (!mounted) return;
+      final l10nCatch = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Werving mislukt door een verbindingsfout',
-              'Recruitment failed due to a connection error',
-            ),
-          ),
+          content: Text(l10nCatch.prostitutionRecruitConnectionError),
           backgroundColor: Colors.red,
         ),
       );
@@ -624,10 +618,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
     if (!mounted) return;
 
+    final l10nLeave = AppLocalizations.of(context)!;
     showTopRightFromSnackBar(
       context,
       SnackBar(
-        content: Text(result['message']?.toString() ?? 'Event update'),
+        content: Text(
+          result['message']?.toString() ?? l10nLeave.prostitutionEventUpdate,
+        ),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
     );
@@ -642,10 +639,13 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
     if (!mounted) return;
 
+    final l10nPart = AppLocalizations.of(context)!;
     showTopRightFromSnackBar(
       context,
       SnackBar(
-        content: Text(result['message']?.toString() ?? 'Event update'),
+        content: Text(
+          result['message']?.toString() ?? l10nPart.prostitutionEventUpdate,
+        ),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
     );
@@ -763,10 +763,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             label: Text(
                               _housingSummary != null &&
                                       _housingSummary!.freeSlots <= 0
-                                  ? _tr(
-                                      'Koop eerst huis/appartement',
-                                      'Buy a house/apartment first',
-                                    )
+                                  ? l10n.prostitutionBuyPropertyFirst
                                   : _jailSeconds != null && _jailSeconds! > 0
                                   ? '${l10n.jail} (${_formatCooldown(_jailSeconds!)})'
                                   : _cooldownSeconds != null &&
@@ -792,10 +789,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                                   )
                                 : const Icon(Icons.groups_2),
                             label: Text(
-                              _tr(
-                                'Werk alle ($_availableWorkCount)',
-                                'Work all ($_availableWorkCount)',
-                              ),
+                              l10n.prostitutionWorkAll(_availableWorkCount),
                             ),
                           ),
                         ),
@@ -808,10 +802,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                       child: Text(
-                        _tr(
-                          'Geen vrije woonplek. Koop of upgrade een huis/appartement voordat je nieuwe hoeren kunt pimpen.',
-                          'No free housing slot. Buy or upgrade a house/apartment before recruiting more prostitutes.',
-                        ),
+                        l10n.prostitutionNoHousingForRecruit,
                         style: TextStyle(
                           color: Colors.orange.shade300,
                           fontSize: 12,
@@ -919,6 +910,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
 
   Widget _buildHousingSummaryBox() {
     if (_housingSummary == null) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -932,15 +924,12 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr('Huisvesting', 'Housing'),
+            l10n.prostitutionHousingTitle,
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
           ),
           const SizedBox(height: 6),
           Text(
-            _tr(
-              'Elke hoer moet minstens 1 shift per ${_housingSummary!.graceDays} dagen werken om de huur te betalen.',
-              'Each prostitute must work at least 1 shift every ${_housingSummary!.graceDays} days to cover rent.',
-            ),
+            l10n.prostitutionHousingRentRule(_housingSummary!.graceDays),
           ),
           const SizedBox(height: 8),
           Wrap(
@@ -948,35 +937,35 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
             runSpacing: 8,
             children: [
               _buildHousingChip(
-                _tr('Plekken', 'Slots'),
+                l10n.prostitutionHousingSlots,
                 '${_housingSummary!.occupiedSlots}/${_housingSummary!.totalCapacity}',
               ),
               _buildHousingChip(
-                _tr('Vrij', 'Free'),
+                l10n.prostitutionHousingFree,
                 '${_housingSummary!.freeSlots}',
               ),
               _buildHousingChip(
-                _tr('Woningen', 'Homes'),
+                l10n.prostitutionHousingHomes,
                 '${_housingSummary!.residentialProperties}',
               ),
               _buildHousingChip(
-                _tr('Upgrade gem.', 'Avg upgrade'),
+                l10n.prostitutionHousingAvgUpgrade,
                 _housingSummary!.averageResidentialUpgrade.toStringAsFixed(1),
               ),
               _buildHousingChip(
-                _tr('Geluk bonus', 'Happiness bonus'),
+                l10n.prostitutionHousingHappinessBonus,
                 '+${_housingSummary!.housingHappinessBonusPercent}%',
               ),
               _buildHousingChip(
-                _tr('Weekhuur', 'Weekly rent'),
+                l10n.prostitutionHousingWeeklyRent,
                 '€${_housingSummary!.totalWeeklyRent}',
               ),
               _buildHousingChip(
-                _tr('Risico', 'At risk'),
+                l10n.prostitutionHousingAtRisk,
                 '${_housingSummary!.atRiskCount}',
               ),
               _buildHousingChip(
-                _tr('Veilig', 'Safe'),
+                l10n.prostitutionHousingSafe,
                 '${_housingSummary!.safeCount}',
               ),
             ],
@@ -994,9 +983,9 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                 border: Border.all(color: Colors.redAccent),
               ),
               child: Text(
-                _tr(
-                  'Verraad actief: ${_housingSummary!.seizedDrugsGrams}g drugs in beslag genomen, ${_housingSummary!.nightclubLicensesRevoked} nightclub vergunning(en) kwijt.',
-                  'Betrayal triggered: ${_housingSummary!.seizedDrugsGrams}g drugs seized, ${_housingSummary!.nightclubLicensesRevoked} nightclub license(s) revoked.',
+                l10n.prostitutionBetrayalActiveDetail(
+                  _housingSummary!.seizedDrugsGrams,
+                  _housingSummary!.nightclubLicensesRevoked,
                 ),
                 style: const TextStyle(
                   fontSize: 12,
@@ -1023,6 +1012,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
   }
 
   Widget _buildEarningsInsightBox() {
+    final l10n = AppLocalizations.of(context)!;
     int streetCount = 0;
     int redLightCount = 0;
     int nightclubCount = 0;
@@ -1059,40 +1049,34 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr(
-              'Opbrengst inzicht (actieve hoeren)',
-              'Earnings insight (active prostitutes)',
-            ),
+            l10n.prostitutionEarningsInsightTitle,
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
           ),
           const SizedBox(height: 6),
           Text(
-            _tr(
-              'Straat: $streetCount • €${streetEarnings.toStringAsFixed(0)}/uur',
-              'Street: $streetCount • €${streetEarnings.toStringAsFixed(0)}/hour',
+            l10n.prostitutionEarningsStreetDetail(
+              streetCount,
+              streetEarnings.round(),
             ),
             style: const TextStyle(fontSize: 12),
           ),
           Text(
-            _tr(
-              'RLD: $redLightCount • €${redLightEarnings.toStringAsFixed(0)}/uur',
-              'RLD: $redLightCount • €${redLightEarnings.toStringAsFixed(0)}/hour',
+            l10n.prostitutionEarningsRldDetail(
+              redLightCount,
+              redLightEarnings.round(),
             ),
             style: const TextStyle(fontSize: 12),
           ),
           Text(
-            _tr(
-              'Nachtclub: $nightclubCount • €${nightclubEarnings.toStringAsFixed(0)}/uur',
-              'Nightclub: $nightclubCount • €${nightclubEarnings.toStringAsFixed(0)}/hour',
+            l10n.prostitutionEarningsNightclubDetail(
+              nightclubCount,
+              nightclubEarnings.round(),
             ),
             style: const TextStyle(fontSize: 12),
           ),
           const SizedBox(height: 4),
           Text(
-            _tr(
-              'Totaal: €${totalEarnings.toStringAsFixed(0)}/uur',
-              'Total: €${totalEarnings.toStringAsFixed(0)}/hour',
-            ),
+            l10n.prostitutionEarningsTotalDetail(totalEarnings.round()),
             style: const TextStyle(
               fontWeight: FontWeight.w700,
               color: Colors.lightGreenAccent,
@@ -1130,29 +1114,18 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
     final isVip = prostitute.isVipProstitute;
     final String portraitPath = _getPortraitPath(prostitute.variant);
     final currentLevelXp = prostitute.experience % 100;
-    final happinessLabel = _tr(
-      prostitute.happinessLabel == 'ecstatic'
-          ? 'Extatisch'
-          : prostitute.happinessLabel == 'happy'
-          ? 'Blij'
-          : prostitute.happinessLabel == 'stable'
-          ? 'Stabiel'
-          : prostitute.happinessLabel == 'stressed'
-          ? 'Gestrest'
-          : 'Miserabel',
+    final happinessLabel = _happinessLabelForCode(
+      l10n,
       prostitute.happinessLabel,
     );
     final housingRemaining = prostitute.housingTimeRemaining;
     final housingLabel = prostitute.isHousingExpired
-        ? _tr('Verlopen', 'Expired')
+        ? l10n.prostitutionHousingExpired
         : housingRemaining == null
         ? '-'
         : housingRemaining.inDays >= 1
-        ? _tr(
-            '${housingRemaining.inDays}d over',
-            '${housingRemaining.inDays}d left',
-          )
-        : _tr('minder dan 1 dag', 'less than 1 day');
+        ? l10n.prostitutionHousingDaysLeft(housingRemaining.inDays)
+        : l10n.prostitutionHousingLessThanOneDay;
 
     // Calculate hourly earnings
     final base = prostitute.isInRedLight
@@ -1296,7 +1269,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                           Expanded(
                             child: Text(
                               _isNightclubProstitute(prostitute)
-                                  ? _tr('Nachtclub', 'Nightclub')
+                                  ? l10n.prostitutionNightclubShort
                                   : prostitute.isInRedLight
                                   ? l10n.prostitutionRedLight
                                   : l10n.prostitutionStreet,
@@ -1365,7 +1338,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                                 visualDensity: VisualDensity.compact,
                               ),
                               child: Text(
-                                _tr('Naar straat', 'To street'),
+                                l10n.prostitutionMoveToStreetButton,
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
@@ -1386,7 +1359,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                                 visualDensity: VisualDensity.compact,
                               ),
                               child: Text(
-                                _tr('Naar nightclub', 'To nightclub'),
+                                l10n.prostitutionMoveToNightclubButton,
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
@@ -1397,7 +1370,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '€${(hourlyEarnings * prostitute.happinessEarningsMultiplier).toStringAsFixed(0)}/uur',
+                        l10n.prostitutionEuroPerHour(
+                          (hourlyEarnings * prostitute.happinessEarningsMultiplier)
+                              .toStringAsFixed(0),
+                        ),
                         style: const TextStyle(
                           color: Colors.green,
                           fontSize: 12,
@@ -1406,9 +1382,10 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        _tr(
-                          'Geluk $happinessLabel (${prostitute.happinessScore}%) • Opbrengst ${prostitute.happinessEarningsBonusPercent >= 0 ? '+' : ''}${prostitute.happinessEarningsBonusPercent}%',
-                          'Happiness $happinessLabel (${prostitute.happinessScore}%) • Yield ${prostitute.happinessEarningsBonusPercent >= 0 ? '+' : ''}${prostitute.happinessEarningsBonusPercent}%',
+                        l10n.prostitutionHappinessDetail(
+                          happinessLabel,
+                          prostitute.happinessScore,
+                          '${prostitute.happinessEarningsBonusPercent >= 0 ? '+' : ''}${prostitute.happinessEarningsBonusPercent}%',
                         ),
                         style: TextStyle(
                           fontSize: 10,
@@ -1440,10 +1417,7 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _tr(
-                                'Huisvesting: $housingLabel',
-                                'Housing: $housingLabel',
-                              ),
+                              l10n.prostitutionHousingStatus(housingLabel),
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,
@@ -1451,9 +1425,8 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              _tr(
-                                'Weekhuur €${prostitute.weeklyHousingCost}',
-                                'Weekly rent €${prostitute.weeklyHousingCost}',
+                              l10n.prostitutionWeeklyRentEuro(
+                                prostitute.weeklyHousingCost,
                               ),
                               style: const TextStyle(
                                 fontSize: 10,
@@ -1474,10 +1447,12 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                             icon: const Icon(Icons.work, size: 14),
                             label: Text(
                               shiftRemaining == null
-                                  ? _tr('Werk 8 uur', 'Work 8h')
-                                  : _tr(
-                                      'Rust ${_formatDurationHoursMinutes(shiftRemaining)}',
-                                      'Rest ${_formatDurationHoursMinutes(shiftRemaining)}',
+                                  ? l10n.prostitutionWork8h
+                                  : l10n.prostitutionRestFor(
+                                      _formatDurationHoursMinutes(
+                                        l10n,
+                                        shiftRemaining,
+                                      ),
                                     ),
                               style: const TextStyle(
                                 fontSize: 11,
@@ -1497,9 +1472,11 @@ class _ProstitutionScreenState extends State<ProstitutionScreen>
                           Padding(
                             padding: const EdgeInsets.only(top: 2),
                             child: Text(
-                              _tr(
-                                'Volgende shift over ${_formatDurationHoursMinutes(shiftRemaining)}',
-                                'Next shift in ${_formatDurationHoursMinutes(shiftRemaining)}',
+                              l10n.prostitutionNextShiftIn(
+                                _formatDurationHoursMinutes(
+                                  l10n,
+                                  shiftRemaining,
+                                ),
                               ),
                               style: const TextStyle(
                                 fontSize: 9,

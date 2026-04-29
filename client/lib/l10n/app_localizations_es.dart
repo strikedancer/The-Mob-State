@@ -51,7 +51,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get passwordRequired => 'Por favor ingrese una contraseña';
 
   @override
-  String get passwordTooShort => 'La contraseña debe tener al menos 6 caracteres.';
+  String get passwordTooShort =>
+      'La contraseña debe tener al menos 6 caracteres.';
 
   @override
   String get invalidCredentials => 'Nombre de usuario o contraseña incorrectos';
@@ -72,22 +73,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emailPlaceholder => 'Correo electrónico';
 
   @override
-  String get emailRequired => 'Por favor ingrese una dirección de correo electrónico';
+  String get emailRequired =>
+      'Por favor ingrese una dirección de correo electrónico';
 
   @override
-  String get emailInvalid => 'Por favor, introduce una dirección de correo electrónico válida';
+  String get emailInvalid =>
+      'Por favor, introduce una dirección de correo electrónico válida';
 
   @override
   String get forgotPasswordTitle => 'Restablecer contraseña';
 
   @override
-  String get forgotPasswordDescription => 'Ingrese su dirección de correo electrónico y le enviaremos un enlace para restablecer su contraseña.';
+  String get forgotPasswordDescription =>
+      'Ingrese su dirección de correo electrónico y le enviaremos un enlace para restablecer su contraseña.';
 
   @override
   String get resetPasswordButton => 'ENVIAR ENLACE DE RESET';
 
   @override
-  String get emailSent => 'Restablecer enlace enviado! Revisa tu correo electrónico.';
+  String get emailSent =>
+      'Restablecer enlace enviado! Revisa tu correo electrónico.';
 
   @override
   String get backToLogin => 'Volver a iniciar sesión';
@@ -218,7 +223,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeHijackTruckName => 'Camión secuestrador';
 
   @override
-  String get crimeHijackTruckDesc => 'Secuestra un camión que transporta mercancías';
+  String get crimeHijackTruckDesc =>
+      'Secuestra un camión que transporta mercancías';
 
   @override
   String get crimeAtmTheftName => 'Robo de cajero automático';
@@ -248,7 +254,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeDrugDealSmallName => 'Pequeño negocio de drogas';
 
   @override
-  String get crimeDrugDealSmallDesc => 'Vender una pequeña cantidad de medicamentos.';
+  String get crimeDrugDealSmallDesc =>
+      'Vender una pequeña cantidad de medicamentos.';
 
   @override
   String get crimeDrugDealLargeName => 'Gran negocio de drogas';
@@ -278,13 +285,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeSmugglingName => 'Contrabando';
 
   @override
-  String get crimeSmugglingDesc => 'Contrabandear mercancías a través de la frontera';
+  String get crimeSmugglingDesc =>
+      'Contrabandear mercancías a través de la frontera';
 
   @override
   String get crimeAssassinationName => 'Asesinato';
 
   @override
-  String get crimeAssassinationDesc => 'Llevar a cabo un asesinato por contrato';
+  String get crimeAssassinationDesc =>
+      'Llevar a cabo un asesinato por contrato';
 
   @override
   String get crimeHackAccountName => 'Hackear cuenta';
@@ -302,7 +311,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeIdentityTheftName => 'Robo de identidad';
 
   @override
-  String get crimeIdentityTheftDesc => 'Robar la identidad de alguien por fraude';
+  String get crimeIdentityTheftDesc =>
+      'Robar la identidad de alguien por fraude';
 
   @override
   String get crimeRobArmoredTruckName => 'Atraco a un camión blindado';
@@ -320,7 +330,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeProtectionRacketName => 'Raqueta de protección';
 
   @override
-  String get crimeProtectionRacketDesc => 'Hacer que las empresas paguen dinero por protección';
+  String get crimeProtectionRacketDesc =>
+      'Hacer que las empresas paguen dinero por protección';
 
   @override
   String get crimeCasinoHeistName => 'Atraco al casino';
@@ -344,19 +355,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeCorruptOfficialName => 'Oficial de soborno';
 
   @override
-  String get crimeCorruptOfficialDesc => 'Sobornar a una funcionaria para favores';
+  String get crimeCorruptOfficialDesc =>
+      'Sobornar a una funcionaria para favores';
 
   @override
   String get crimeEliminateWitnessName => 'Eliminar testigo';
 
   @override
-  String get crimeEliminateWitnessDesc => 'Elimina a un testigo antes del juicio';
+  String get crimeEliminateWitnessDesc =>
+      'Elimina a un testigo antes del juicio';
 
   @override
   String get crimeDiamondHeistName => 'Atraco al transporte de diamantes';
 
   @override
-  String get crimeDiamondHeistDesc => 'Intercepta un transporte de diamantes en bruto';
+  String get crimeDiamondHeistDesc =>
+      'Intercepta un transporte de diamantes en bruto';
 
   @override
   String get crimeEvidenceRoomHeistName => 'Asalto a la sala de pruebas';
@@ -374,7 +388,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeBossAssassinationName => 'Asesinato del jefe rival';
 
   @override
-  String get crimeBossAssassinationDesc => 'Elimina al líder de una organización criminal rival';
+  String get crimeBossAssassinationDesc =>
+      'Elimina al líder de una organización criminal rival';
 
   @override
   String get crimeCriminalRecordWipeName => 'Borrar antecedentes penales';
@@ -401,7 +416,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tooltipCrimeRequirementsHeading => 'Requisitos:';
 
   @override
-  String get crimeCriminalRecordWipeTooltip => 'Borra por completo tus antecedentes penales si ten éxito. Solo tiene sentido si ya tienes condenas.';
+  String get crimeCriminalRecordWipeTooltip =>
+      'Borra por completo tus antecedentes penales si ten éxito. Solo tiene sentido si ya tienes condenas.';
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
@@ -418,7 +434,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get jobNewspaperDeliveryName => 'Entrega de periódicos';
 
   @override
-  String get jobNewspaperDeliveryDesc => 'Entregar periódicos temprano en la mañana.';
+  String get jobNewspaperDeliveryDesc =>
+      'Entregar periódicos temprano en la mañana.';
 
   @override
   String get jobCarWashName => 'Lavado de autos';
@@ -430,7 +447,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get jobGroceryBaggerName => 'Ensacadora de comestibles';
 
   @override
-  String get jobGroceryBaggerDesc => 'Estantes de existencias en el supermercado.';
+  String get jobGroceryBaggerDesc =>
+      'Estantes de existencias en el supermercado.';
 
   @override
   String get jobDishwasherName => 'Lavavajillas';
@@ -466,7 +484,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get jobConstructionWorkerName => 'Trabajadora de la construcción';
 
   @override
-  String get jobConstructionWorkerDesc => 'Trabajar en un sitio de construcción';
+  String get jobConstructionWorkerDesc =>
+      'Trabajar en un sitio de construcción';
 
   @override
   String get jobBartenderName => 'Barman';
@@ -605,7 +624,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get travelRiskPerLeg => 'Riesgo: por tramo (puede ser encarcelado y perder todos los bienes)';
+  String get travelRiskPerLeg =>
+      'Riesgo: por tramo (puede ser encarcelado y perder todos los bienes)';
 
   @override
   String get travelStart => 'Comenzar';
@@ -733,7 +753,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get messageSystemThreadSubtitle => 'Logros y mensajes del sistema';
 
   @override
-  String get messageSystemThreadEmptyDetail => 'Los logros y los mensajes del sistema aparecen aquí automáticamente.';
+  String get messageSystemThreadEmptyDetail =>
+      'Los logros y los mensajes del sistema aparecen aquí automáticamente.';
 
   @override
   String get messageSendFirst => '¡Envía el primer mensaje!';
@@ -749,13 +770,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get messageDeleteOwnOnly => 'Solo puedes eliminar tus propios mensajes';
+  String get messageDeleteOwnOnly =>
+      'Solo puedes eliminar tus propios mensajes';
 
   @override
   String get messageDeleteTitle => 'Eliminar mensaje';
 
   @override
-  String get messageDeleteBody => 'Este mensaje se eliminará de forma permanente.';
+  String get messageDeleteBody =>
+      'Este mensaje se eliminará de forma permanente.';
 
   @override
   String get messageSendFailed => 'Error al enviar el mensaje';
@@ -764,13 +787,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get messageDeleteFailed => 'No se pudo eliminar el mensaje';
 
   @override
-  String get investigationWindowExpired => 'Ventana de investigación expirada (24 horas).';
+  String get investigationWindowExpired =>
+      'Ventana de investigación expirada (24 horas).';
 
   @override
-  String get investigationStartedInboxHint => 'Investigación iniciada. Revisa tu bandeja de entrada para el informe del detective.';
+  String get investigationStartedInboxHint =>
+      'Investigación iniciada. Revisa tu bandeja de entrada para el informe del detective.';
 
   @override
-  String get investigationAlreadyInProgress => 'Esta investigación ya está en curso o completada.';
+  String get investigationAlreadyInProgress =>
+      'Esta investigación ya está en curso o completada.';
 
   @override
   String investigationStartFailed(String error) {
@@ -790,7 +816,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get startMurderInvestigation => 'Iniciar investigación de asesinato';
 
   @override
-  String get systemMessagesReadOnlyHint => 'No se pueden responder los mensajes del sistema';
+  String get systemMessagesReadOnlyHint =>
+      'No se pueden responder los mensajes del sistema';
 
   @override
   String get helpAndGuide => 'Ayuda y guía';
@@ -1050,7 +1077,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dailyGoalTitle_weekly_job_10 => 'Semanal: trabajar 10 veces';
 
   @override
-  String get dailyGoalTitle_weekly_vehicle_theft_5 => 'Semanal: roba 5 vehículos';
+  String get dailyGoalTitle_weekly_vehicle_theft_5 =>
+      'Semanal: roba 5 vehículos';
 
   @override
   String get dailyGoalTitle_weekly_travel_3 => 'Semanal: 3 viajes';
@@ -1170,7 +1198,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nextEventStartsIn => 'El próximo evento comienza en';
 
   @override
-  String get vehiclesActiveListedTransit => 'Vehículos activos/listados/tránsito';
+  String get vehiclesActiveListedTransit =>
+      'Vehículos activos/listados/tránsito';
 
   @override
   String get livePlayerEvents => 'Eventos de jugadores en vivo';
@@ -1302,7 +1331,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dashboardNextEventStartsIn => 'El próximo evento comienza en';
 
   @override
-  String get dashboardVehiclesActiveListedTransit => 'Vehículos activos/listados/tránsito';
+  String get dashboardVehiclesActiveListedTransit =>
+      'Vehículos activos/listados/tránsito';
 
   @override
   String get dashboardLivePlayerEvents => 'Eventos de jugadores en vivo';
@@ -1599,19 +1629,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get allowMessagesDesc => 'Otras jugadoras pueden enviarte mensajes.';
 
   @override
-  String get settingsSystemNotificationsTitle => 'Notificaciones del sistema para la aplicación.';
+  String get settingsSystemNotificationsTitle =>
+      'Notificaciones del sistema para la aplicación.';
 
   @override
-  String get settingsPushPermissionAllowedLinked => 'Permiso: permitido, dispositivo vinculado';
+  String get settingsPushPermissionAllowedLinked =>
+      'Permiso: permitido, dispositivo vinculado';
 
   @override
-  String get settingsPushPermissionAllowedRelinking => 'Permiso: permitido, el dispositivo se está volviendo a vincular';
+  String get settingsPushPermissionAllowedRelinking =>
+      'Permiso: permitido, el dispositivo se está volviendo a vincular';
 
   @override
-  String get settingsPushPermissionProvisionalLinked => 'Permiso: provisional, dispositivo vinculado';
+  String get settingsPushPermissionProvisionalLinked =>
+      'Permiso: provisional, dispositivo vinculado';
 
   @override
-  String get settingsPushPermissionProvisionalRelinking => 'Permiso: provisional, el dispositivo se está volviendo a vincular';
+  String get settingsPushPermissionProvisionalRelinking =>
+      'Permiso: provisional, el dispositivo se está volviendo a vincular';
 
   @override
   String get settingsPushPermissionDenied => 'Permiso: denegado';
@@ -1623,13 +1658,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsPushPermissionUnknown => 'Permiso: desconocida';
 
   @override
-  String get settingsDeviceTokenRegistered => 'Token de dispositivo registrado en el servidor';
+  String get settingsDeviceTokenRegistered =>
+      'Token de dispositivo registrado en el servidor';
 
   @override
-  String get settingsDeviceTokenNotRegistered => 'Aún no se ha registrado ningún token de dispositivo';
+  String get settingsDeviceTokenNotRegistered =>
+      'Aún no se ha registrado ningún token de dispositivo';
 
   @override
-  String get settingsPushHelpText => 'Utilice este botón para solicitar permiso del navegador/iPhone nuevamente y registrar su token de inserción.';
+  String get settingsPushHelpText =>
+      'Utilice este botón para solicitar permiso del navegador/iPhone nuevamente y registrar su token de inserción.';
 
   @override
   String get working => 'Laboral...';
@@ -1638,10 +1676,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsEnablePush => 'Habilitar empuje';
 
   @override
-  String get settingsPushEnabledToast => 'Notificaciones push habilitadas. Ahora se recibirán nuevas notificaciones.';
+  String get settingsPushEnabledToast =>
+      'Notificaciones push habilitadas. Ahora se recibirán nuevas notificaciones.';
 
   @override
-  String get settingsPushDisabledInSystem => 'Push está deshabilitado en la configuración de su navegador/iPhone. Habilite las notificaciones para esta aplicación.';
+  String get settingsPushDisabledInSystem =>
+      'Push está deshabilitado en la configuración de su navegador/iPhone. Habilite las notificaciones para esta aplicación.';
 
   @override
   String settingsEnablePushFailed(String error) {
@@ -1652,79 +1692,97 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsPlayerEventsTitle => 'Eventos de jugadores';
 
   @override
-  String get settingsPushLivePlayerEventsTitle => 'Push: eventos de jugadores en vivo';
+  String get settingsPushLivePlayerEventsTitle =>
+      'Push: eventos de jugadores en vivo';
 
   @override
-  String get settingsPushLivePlayerEventsSubtitle => 'Inicio y fin de eventos de competencia recurrentes (por ejemplo, rondas de máxima puntuación).';
+  String get settingsPushLivePlayerEventsSubtitle =>
+      'Inicio y fin de eventos de competencia recurrentes (por ejemplo, rondas de máxima puntuación).';
 
   @override
-  String get settingsCryptoNotificationsTitle => 'Notificaciones criptográficas';
+  String get settingsCryptoNotificationsTitle =>
+      'Notificaciones criptográficas';
 
   @override
   String get settingsCryptoPushTradesTitle => 'Empujar: Comercios';
 
   @override
-  String get settingsCryptoPushTradesSubtitle => 'Notificación push para operaciones de compra/venta';
+  String get settingsCryptoPushTradesSubtitle =>
+      'Notificación push para operaciones de compra/venta';
 
   @override
   String get settingsCryptoPushPriceAlertsTitle => 'Push: Alertas de precios';
 
   @override
-  String get settingsCryptoPushPriceAlertsSubtitle => 'Notificación push para movimientos de precios relevantes';
+  String get settingsCryptoPushPriceAlertsSubtitle =>
+      'Notificación push para movimientos de precios relevantes';
 
   @override
   String get settingsCryptoPushOrdersTitle => 'Empujar: Órdenes';
 
   @override
-  String get settingsCryptoPushOrdersSubtitle => 'Notificación automática cuando se activa o completa el pedido';
+  String get settingsCryptoPushOrdersSubtitle =>
+      'Notificación automática cuando se activa o completa el pedido';
 
   @override
   String get settingsCryptoPushMissionsTitle => 'Empujar: Misiones';
 
   @override
-  String get settingsCryptoPushMissionsSubtitle => 'Notificación automática cuando se completa una misión criptográfica';
+  String get settingsCryptoPushMissionsSubtitle =>
+      'Notificación automática cuando se completa una misión criptográfica';
 
   @override
-  String get settingsCryptoPushLeaderboardTitle => 'Empujar: Tabla de clasificación';
+  String get settingsCryptoPushLeaderboardTitle =>
+      'Empujar: Tabla de clasificación';
 
   @override
-  String get settingsCryptoPushLeaderboardSubtitle => 'Notificación push para recompensas de la tabla de clasificación criptográfica';
+  String get settingsCryptoPushLeaderboardSubtitle =>
+      'Notificación push para recompensas de la tabla de clasificación criptográfica';
 
   @override
   String get settingsCryptoInAppTradesTitle => 'En la aplicación: Operaciones';
 
   @override
-  String get settingsCryptoInAppTradesSubtitle => 'Muestra eventos comerciales en tu feed de eventos';
+  String get settingsCryptoInAppTradesSubtitle =>
+      'Muestra eventos comerciales en tu feed de eventos';
 
   @override
-  String get settingsCryptoInAppPriceAlertsTitle => 'En la aplicación: alertas de precios';
+  String get settingsCryptoInAppPriceAlertsTitle =>
+      'En la aplicación: alertas de precios';
 
   @override
-  String get settingsCryptoInAppPriceAlertsSubtitle => 'Muestra eventos de alerta de precios en tu feed de eventos';
+  String get settingsCryptoInAppPriceAlertsSubtitle =>
+      'Muestra eventos de alerta de precios en tu feed de eventos';
 
   @override
   String get settingsCryptoInAppOrdersTitle => 'En la aplicación: pedidos';
 
   @override
-  String get settingsCryptoInAppOrdersSubtitle => 'Mostrar eventos de pedido en su feed de eventos';
+  String get settingsCryptoInAppOrdersSubtitle =>
+      'Mostrar eventos de pedido en su feed de eventos';
 
   @override
   String get settingsCryptoInAppMissionsTitle => 'En la aplicación: Misiones';
 
   @override
-  String get settingsCryptoInAppMissionsSubtitle => 'Muestra las misiones completadas en el feed de tu evento';
+  String get settingsCryptoInAppMissionsSubtitle =>
+      'Muestra las misiones completadas en el feed de tu evento';
 
   @override
-  String get settingsCryptoInAppLeaderboardTitle => 'En la aplicación: tabla de clasificación';
+  String get settingsCryptoInAppLeaderboardTitle =>
+      'En la aplicación: tabla de clasificación';
 
   @override
-  String get settingsCryptoInAppLeaderboardSubtitle => 'Muestra las recompensas de la tabla de clasificación en el feed de tu evento';
+  String get settingsCryptoInAppLeaderboardSubtitle =>
+      'Muestra las recompensas de la tabla de clasificación en el feed de tu evento';
 
   @override
-  String get settingsAvatarChangeWeeklyLimit => 'Sólo puedes cambiar tu avatar una vez por semana.';
+  String get settingsAvatarChangeWeeklyLimit =>
+      'Sólo puedes cambiar tu avatar una vez por semana.';
 
   @override
-  String get settingsUsernameChangeMonthlyLimit => 'Sólo puedes cambiar tu nombre de usuario una vez al mes.';
+  String get settingsUsernameChangeMonthlyLimit =>
+      'Sólo puedes cambiar tu nombre de usuario una vez al mes.';
 
   @override
   String get settingsSaved => 'Configuración guardada';
@@ -1789,7 +1847,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get drinkBeer => 'Cerveza';
 
   @override
-  String get foodInfo3 => '• Compra comida y bebida para mantener altas tus estadísticas';
+  String get foodInfo3 =>
+      '• Compra comida y bebida para mantener altas tus estadísticas';
 
   @override
   String get friends => 'Amigas';
@@ -1819,7 +1878,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noOwnedProperties => 'Aún no posees ninguna propiedad';
 
   @override
-  String get buyFirstPropertyHint => 'Compra tu primera propiedad en la pestaña \"Disponible\"';
+  String get buyFirstPropertyHint =>
+      'Compra tu primera propiedad en la pestaña \"Disponible\"';
 
   @override
   String buyPropertyConfirm(String name, String price) {
@@ -1999,10 +2059,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get casino => 'Casino';
 
   @override
-  String get errorLoadingCasinoStatus => 'No se pudo verificar el estado del casino';
+  String get errorLoadingCasinoStatus =>
+      'No se pudo verificar el estado del casino';
 
   @override
-  String get errorLoadingCasinoGames => 'No se pudieron cargar juegos de casino';
+  String get errorLoadingCasinoGames =>
+      'No se pudieron cargar juegos de casino';
 
   @override
   String casinoPrice(String amount) {
@@ -2031,31 +2093,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String get casinoPurchasePriceLabel => 'Precio de compra:';
 
   @override
-  String get casinoOwnerInfo => '¡Como propietario, administras los fondos del casino y ganas dinero cuando los jugadores pierden!';
+  String get casinoOwnerInfo =>
+      '¡Como propietario, administras los fondos del casino y ganas dinero cuando los jugadores pierden!';
 
   @override
   String get casinoGameSlotsName => 'Tragaperras';
 
   @override
-  String get casinoGameSlotsDesc => '¡Gira los carretes y gana hasta 100 veces tu apuesta!';
+  String get casinoGameSlotsDesc =>
+      '¡Gira los carretes y gana hasta 100 veces tu apuesta!';
 
   @override
   String get casinoGameBlackjackName => 'Veintiuna';
 
   @override
-  String get casinoGameBlackjackDesc => '¡Vence al crupier y gana hasta el doble de tu apuesta!';
+  String get casinoGameBlackjackDesc =>
+      '¡Vence al crupier y gana hasta el doble de tu apuesta!';
 
   @override
   String get casinoGameRouletteName => 'Ruleta';
 
   @override
-  String get casinoGameRouletteDesc => '¡Elija su número y gane hasta 35 veces su apuesta!';
+  String get casinoGameRouletteDesc =>
+      '¡Elija su número y gane hasta 35 veces su apuesta!';
 
   @override
   String get casinoGameDiceName => 'Dados';
 
   @override
-  String get casinoGameDiceDesc => '¡Tira los dados y gana hasta 6 veces tu apuesta!';
+  String get casinoGameDiceDesc =>
+      '¡Tira los dados y gana hasta 6 veces tu apuesta!';
 
   @override
   String get difficultyEasy => 'FÁCIL';
@@ -2098,7 +2165,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get casinoWithdrawError => 'Error al retirar';
 
   @override
-  String get casinoMinBankroll => 'Deben quedar al menos 10.000 € en el bankroll';
+  String get casinoMinBankroll =>
+      'Deben quedar al menos 10.000 € en el bankroll';
 
   @override
   String casinoMaxWithdraw(String amount) {
@@ -2137,7 +2205,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get casinoManagementInfoTitle => 'Información de gestión del casino';
 
   @override
-  String get casinoManagementInfo5 => '• Puedes depositar o retirar dinero en cualquier momento';
+  String get casinoManagementInfo5 =>
+      '• Puedes depositar o retirar dinero en cualquier momento';
 
   @override
   String get retry => 'Rever';
@@ -2281,7 +2350,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get yourHealth => 'Tu salud';
 
   @override
-  String get criticalHealthWarning => '⚠️¡CRÍTICO! ¡Debes ir al hospital inmediatamente!';
+  String get criticalHealthWarning =>
+      '⚠️¡CRÍTICO! ¡Debes ir al hospital inmediatamente!';
 
   @override
   String get lowHealthWarning => '⚠️¡Baja salud! Ten cuidado.';
@@ -2293,13 +2363,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get contrabandFlowersName => 'flores';
 
   @override
-  String get contrabandFlowersDesc => 'Tulipanes holandeses y otras flores para el comercio internacional';
+  String get contrabandFlowersDesc =>
+      'Tulipanes holandeses y otras flores para el comercio internacional';
 
   @override
   String get contrabandElectronicsName => 'Electrónica';
 
   @override
-  String get contrabandElectronicsDesc => 'Electrónica avanzada y componentes informáticos.';
+  String get contrabandElectronicsDesc =>
+      'Electrónica avanzada y componentes informáticos.';
 
   @override
   String get contrabandDiamondsName => 'diamantes';
@@ -2394,7 +2466,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get youAreDead => '¡Estás muerto! Juego terminado.';
 
   @override
-  String get emergencyOnly => 'El tratamiento de emergencia solo está disponible por debajo de 10 HP';
+  String get emergencyOnly =>
+      'El tratamiento de emergencia solo está disponible por debajo de 10 HP';
 
   @override
   String emergencyTreatment(String hp) {
@@ -2426,10 +2499,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sellBoat => 'Vender Barco';
 
   @override
-  String get confirmSellVehicle => '¿Estás segura de que quieres vender este vehículo?';
+  String get confirmSellVehicle =>
+      '¿Estás segura de que quieres vender este vehículo?';
 
   @override
-  String get confirmSellBoat => '¿Estás segura de que quieres vender este barco?';
+  String get confirmSellBoat =>
+      '¿Estás segura de que quieres vender este barco?';
 
   @override
   String get carStolen => '¡Coche robado con éxito!';
@@ -2508,7 +2583,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get stealBoatsToStart => '¡Roba algunos barcos para empezar!';
 
   @override
-  String get marinaUpgradeFailed => 'La actualización del puerto deportivo falló';
+  String get marinaUpgradeFailed =>
+      'La actualización del puerto deportivo falló';
 
   @override
   String get boatShipped => '¡Barco enviado con éxito!';
@@ -2566,7 +2642,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get casinoInfo1 => 'Las jugadoras apuestan contra el bankroll del casino.';
+  String get casinoInfo1 =>
+      'Las jugadoras apuestan contra el bankroll del casino.';
 
   @override
   String get casinoInfo2 => 'Las ganancias se pagan con cargo a los fondos.';
@@ -2609,7 +2686,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get emergencyInfo => '• 🊘 La ayuda de emergencia es GRATUITA por debajo de 10 HP (+20 HP)';
+  String get emergencyInfo =>
+      '• 🊘 La ayuda de emergencia es GRATUITA por debajo de 10 HP (+20 HP)';
 
   @override
   String get hospitalInfo1 => '• La salud disminuye al cometer delitos';
@@ -2631,7 +2709,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get hospitalInfo5 => '• ⏱️ 1 hora de recuperación entre tratamientos';
 
   @override
-  String get hospitalInfo6 => '• 💚 Curación pasiva: +5 HP cada 5 minutos (si HP > 0)';
+  String get hospitalInfo6 =>
+      '• 💚 Curación pasiva: +5 HP cada 5 minutos (si HP > 0)';
 
   @override
   String get medicalTreatment => 'Tratamiento médico';
@@ -2664,25 +2743,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeErrorVehicleNotFound => '🚗 Vehículo no encontrado';
 
   @override
-  String get crimeErrorNotVehicleOwner => '🚗 No eres propietario de este vehículo';
+  String get crimeErrorNotVehicleOwner =>
+      '🚗 No eres propietario de este vehículo';
 
   @override
-  String get crimeErrorVehicleBroken => '🚗 Su vehículo está averiado y necesita reparación';
+  String get crimeErrorVehicleBroken =>
+      '🚗 Su vehículo está averiado y necesita reparación';
 
   @override
   String get crimeErrorNoFuel => '⛽ Tu vehículo no tiene combustible';
 
   @override
-  String get crimeErrorLevelTooLow => '⭐ Tu nivel es demasiado bajo para este crimen';
+  String get crimeErrorLevelTooLow =>
+      '⭐ Tu nivel es demasiado bajo para este crimen';
 
   @override
   String get crimeErrorInvalidCrimeId => '❌ Delito inválido';
 
   @override
-  String get crimeErrorWeaponRequired => '🔫 Necesitas un arma para este crimen';
+  String get crimeErrorWeaponRequired =>
+      '🔫 Necesitas un arma para este crimen';
 
   @override
-  String get crimeErrorWeaponBroken => '🔫 Tu arma está rota y necesita reparación';
+  String get crimeErrorWeaponBroken =>
+      '🔫 Tu arma está rota y necesita reparación';
 
   @override
   String get crimeErrorNoAmmo => '🔫 No tienes munición';
@@ -2691,7 +2775,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeErrorGeneric => '❌ Algo salió mal con este crimen';
 
   @override
-  String get inventoryFull => '🎒 ¡Tu inventario está lleno! Almacenar herramientas en una propiedad.';
+  String get inventoryFull =>
+      '🎒 ¡Tu inventario está lleno! Almacenar herramientas en una propiedad.';
 
   @override
   String get storageFull => '📦 El almacenamiento de propiedades está lleno';
@@ -2754,13 +2839,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noToolsCarried => 'No se llevan herramientas';
 
   @override
-  String get visitShopToBuyTools => 'Visita la tienda para comprar herramientas.';
+  String get visitShopToBuyTools =>
+      'Visita la tienda para comprar herramientas.';
 
   @override
   String get noProperties => 'Sin propiedades';
 
   @override
-  String get buyPropertyForStorage => 'Comprar una propiedad para guardar herramientas.';
+  String get buyPropertyForStorage =>
+      'Comprar una propiedad para guardar herramientas.';
 
   @override
   String get noToolsInStorage => 'No hay herramientas almacenadas';
@@ -2781,7 +2868,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deleteLoadout => 'Eliminar equipamiento';
 
   @override
-  String get confirmDeleteLoadout => '¿Estás segura de que quieres eliminar este cargamento?';
+  String get confirmDeleteLoadout =>
+      '¿Estás segura de que quieres eliminar este cargamento?';
 
   @override
   String get loadoutDeleted => 'Equipamiento eliminado';
@@ -2963,7 +3051,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backpackPurchaseFailedNotFound => 'Mochila no encontrada';
 
   @override
-  String get backpackPurchaseFailedAlready => 'Ya tienes una mochila. Sólo puedes usar uno a la vez.';
+  String get backpackPurchaseFailedAlready =>
+      'Ya tienes una mochila. Sólo puedes usar uno a la vez.';
 
   @override
   String backpackPurchaseFailedRank(Object current, Object required) {
@@ -2976,13 +3065,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get backpackPurchaseFailedVip => 'Esta mochila es solo para miembros VIP.';
+  String get backpackPurchaseFailedVip =>
+      'Esta mochila es solo para miembros VIP.';
 
   @override
   String get backpackUpgradeFailedNo => 'No tienes mochila para actualizar.';
 
   @override
-  String get backpackUpgradeFailedNotUpgrade => 'Esto no es una actualización. Elige una mochila más grande.';
+  String get backpackUpgradeFailedNotUpgrade =>
+      'Esto no es una actualización. Elige una mochila más grande.';
 
   @override
   String backpackUpgradeFailedRank(Object current, Object required) {
@@ -2995,13 +3086,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get backpackUpgradeFailedVip => 'Esta mochila es solo para miembros VIP.';
+  String get backpackUpgradeFailedVip =>
+      'Esta mochila es solo para miembros VIP.';
 
   @override
   String get arrested => '¡Detenida!';
 
   @override
-  String get jailMessage => '¡Fuiste arrestado durante tu viaje y todos tus bienes fueron confiscados!';
+  String get jailMessage =>
+      '¡Fuiste arrestado durante tu viaje y todos tus bienes fueron confiscados!';
 
   @override
   String get confirmAction => 'Estas segura';
@@ -3013,7 +3106,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get travelContinueConfirmTitle => '¿Continuar con el siguiente tramo?';
 
   @override
-  String get travelContinueConfirmBody => 'Los controles fronterizos están activos. ¿Continuar tu viaje?';
+  String get travelContinueConfirmBody =>
+      'Los controles fronterizos están activos. ¿Continuar tu viaje?';
 
   @override
   String get travelJourneyCompleteTitle => 'Viaje completo';
@@ -3061,7 +3155,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get hitDifferentCountry => 'Debes estar en el mismo país que el objetivo.';
+  String get hitDifferentCountry =>
+      'Debes estar en el mismo país que el objetivo.';
 
   @override
   String get counterBountyTitle => 'Colocar contrarrecompensa';
@@ -3101,7 +3196,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get counterBid => 'CONTRAOFERTA';
 
   @override
-  String get counterBidPlaced => '¡Contraoferta colocada! El contrato ha sido revertido.';
+  String get counterBidPlaced =>
+      '¡Contraoferta colocada! El contrato ha sido revertido.';
 
   @override
   String get attemptHit => 'Intento de golpe';
@@ -3198,7 +3294,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get youAreThePlacer => 'Eres la placer';
 
   @override
-  String get onlyTargetCanCounterBid => 'Sólo el objetivo puede realizar una contraoferta.';
+  String get onlyTargetCanCounterBid =>
+      'Sólo el objetivo puede realizar una contraoferta.';
 
   @override
   String get executeHit => 'Ejecutar golpe';
@@ -3329,13 +3426,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get factoryProduced => 'Producción actualizada';
 
   @override
-  String get factorySessionStarted => 'Producción iniciada: activo durante 8 horas, reclamo cada 10 minutos';
+  String get factorySessionStarted =>
+      'Producción iniciada: activo durante 8 horas, reclamo cada 10 minutos';
 
   @override
   String get ammoFactoryTitle => 'Fábrica de municiones';
 
   @override
-  String get ammoFactoryIntro => 'Produce en lotes; reclamas cada 10 minutos (hasta 8 horas de trabajo pendiente por sesión).';
+  String get ammoFactoryIntro =>
+      'Produce en lotes; reclamas cada 10 minutos (hasta 8 horas de trabajo pendiente por sesión).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Qué puedes hacer:';
@@ -3344,13 +3443,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ammoFactoryActionBuy => 'Compra una fábrica en tu país actual';
 
   @override
-  String get ammoFactoryActionProduce => 'Producción de reclamos (intervalo: 10 minutos, trabajo pendiente máximo: 8 horas por sesión)';
+  String get ammoFactoryActionProduce =>
+      'Producción de reclamos (intervalo: 10 minutos, trabajo pendiente máximo: 8 horas por sesión)';
 
   @override
-  String get ammoFactoryActionOutput => 'Actualice la producción al nivel 5 para obtener más rondas por reclamo';
+  String get ammoFactoryActionOutput =>
+      'Actualice la producción al nivel 5 para obtener más rondas por reclamo';
 
   @override
-  String get ammoFactoryActionQuality => 'Mejorar la calidad para obtener precios de mercado más fuertes';
+  String get ammoFactoryActionQuality =>
+      'Mejorar la calidad para obtener precios de mercado más fuertes';
 
   @override
   String get factoryUpgradeOutputSuccess => 'Salida mejorada';
@@ -3386,10 +3488,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get factoryProduceStatusCooldown => 'Enfriarse';
 
   @override
-  String get factorySessionActive => 'Ventana de producción: activa (intervalo de 10 min)';
+  String get factorySessionActive =>
+      'Ventana de producción: activa (intervalo de 10 min)';
 
   @override
-  String get factorySessionStopped => 'Ventana de producción: detenida (haga clic en Producir para iniciar una nueva ventana de 8 horas)';
+  String get factorySessionStopped =>
+      'Ventana de producción: detenida (haga clic en Producir para iniciar una nueva ventana de 8 horas)';
 
   @override
   String factorySessionEndsIn(String duration) {
@@ -3397,7 +3501,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get factoryNextProductionReady => 'Próxima producción: disponible ahora (presione Producir para reclamar)';
+  String get factoryNextProductionReady =>
+      'Próxima producción: disponible ahora (presione Producir para reclamar)';
 
   @override
   String factoryNextProductionIn(String duration) {
@@ -3726,7 +3831,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get toolsNotEnoughMoney => 'You do not have enough money!';
 
   @override
-  String get toolsNotEnoughMoneyRepair => 'You do not have enough money for repair!';
+  String get toolsNotEnoughMoneyRepair =>
+      'You do not have enough money for repair!';
 
   @override
   String get toolsBuyError => 'Error while buying';
@@ -3760,16 +3866,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeOutcomeCaught => 'Atrapado por la policía';
 
   @override
-  String get crimeOutcomeVehicleBreakdownBefore => 'Su vehículo se averió antes de llegar a la escena del crimen.';
+  String get crimeOutcomeVehicleBreakdownBefore =>
+      'Su vehículo se averió antes de llegar a la escena del crimen.';
 
   @override
-  String get crimeOutcomeVehicleBreakdownDuring => 'El vehículo se averió durante la fuga; la mayor parte del botín se abandonó';
+  String get crimeOutcomeVehicleBreakdownDuring =>
+      'El vehículo se averió durante la fuga; la mayor parte del botín se abandonó';
 
   @override
-  String get crimeOutcomeOutOfFuel => 'Se quedó sin combustible durante la fuga: huyó a pie, perdió el botín y el vehículo';
+  String get crimeOutcomeOutOfFuel =>
+      'Se quedó sin combustible durante la fuga: huyó a pie, perdió el botín y el vehículo';
 
   @override
-  String get crimeOutcomeToolBroke => 'Su herramienta se rompió durante el crimen, dejando evidencia';
+  String get crimeOutcomeToolBroke =>
+      'Su herramienta se rompió durante el crimen, dejando evidencia';
 
   @override
   String get crimeOutcomeFledNoLoot => 'Huyó de la escena sin botín.';
@@ -3798,10 +3908,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get icuIntensiveCareTitle => 'UCI';
 
   @override
-  String get icuInjuredLine => 'Resultaste gravemente herido en tus actividades delictivas.';
+  String get icuInjuredLine =>
+      'Resultaste gravemente herido en tus actividades delictivas.';
 
   @override
-  String get icuUnconsciousLine => 'Estás en cuidados intensivos e inconsciente.';
+  String get icuUnconsciousLine =>
+      'Estás en cuidados intensivos e inconsciente.';
 
   @override
   String get icuRecoveryTimeLabel => 'Tiempo de recuperación:';
@@ -3810,7 +3922,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get icuWakeHp => 'Despiertas con 10 HP';
 
   @override
-  String get icuNoActionsHint => 'No puedes realizar acciones durante este tiempo.\n¡Cuida más tu salud!';
+  String get icuNoActionsHint =>
+      'No puedes realizar acciones durante este tiempo.\n¡Cuida más tu salud!';
 
   @override
   String jailBailPaidSnackbar(int amount) {
@@ -3852,7 +3965,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get jailCannotActWhileIn => 'No puedes cometer crímenes, trabajar o viajar mientras cumples condena.';
+  String get jailCannotActWhileIn =>
+      'No puedes cometer crímenes, trabajar o viajar mientras cumples condena.';
 
   @override
   String get jailAttemptEscape => 'Intentar fuga';
@@ -3909,16 +4023,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehicleSelectedForCrimes => '¡Vehículo seleccionado para delitos!';
 
   @override
-  String get vehicleDeselectedForCrimes => '¡Vehículo no seleccionado por delitos!';
+  String get vehicleDeselectedForCrimes =>
+      '¡Vehículo no seleccionado por delitos!';
 
   @override
-  String get vehicleWrongCountry => 'El vehículo debe estar en el mismo país que usted.';
+  String get vehicleWrongCountry =>
+      'El vehículo debe estar en el mismo país que usted.';
 
   @override
   String get failedSelectVehicle => 'No se pudo seleccionar el vehículo';
 
   @override
-  String get failedDeselectVehicle => 'No se pudo anular la selección del vehículo';
+  String get failedDeselectVehicle =>
+      'No se pudo anular la selección del vehículo';
 
   @override
   String get selectedForCrimesBadge => 'Seleccionado por crímenes';
@@ -3993,7 +4110,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionNoAvailableDistricts => 'No hay distritos disponibles';
 
   @override
-  String get prostitutionNoOwnedDistricts => 'Aún no eres propietario de ningún distrito';
+  String get prostitutionNoOwnedDistricts =>
+      'Aún no eres propietario de ningún distrito';
 
   @override
   String get prostitutionRooms => 'alojamiento';
@@ -4077,7 +4195,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionMoveFailed => 'Movimiento fallido';
 
   @override
-  String get prostitutionNoStreetProstitutes => 'No hay prostitutas disponibles en la calle.';
+  String get prostitutionNoStreetProstitutes =>
+      'No hay prostitutas disponibles en la calle.';
 
   @override
   String get prostitutionSelectProstitute => 'Seleccionar prostituta';
@@ -4164,7 +4283,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vipEventsTabTitle => 'Eventos VIP';
 
   @override
-  String get vipEventsDescription => '¡Asigna prostitutas a eventos VIP para obtener ganancias adicionales!';
+  String get vipEventsDescription =>
+      '¡Asigna prostitutas a eventos VIP para obtener ganancias adicionales!';
 
   @override
   String get vipEventsActive => 'Eventos activos';
@@ -4277,7 +4397,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionLeaderboardUnranked => 'Sin clasificar';
 
   @override
-  String get prostitutionLeaderboardNoData => 'Aún no hay datos de clasificación';
+  String get prostitutionLeaderboardNoData =>
+      'Aún no hay datos de clasificación';
 
   @override
   String get prostitutionLeaderboardButton => 'Tabla de clasificación';
@@ -4289,7 +4410,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionLeaderboardAchievements => 'Logros';
 
   @override
-  String get prostitutionLeaderboardLoadFailed => 'No se pudo cargar la tabla de clasificación';
+  String get prostitutionLeaderboardLoadFailed =>
+      'No se pudo cargar la tabla de clasificación';
 
   @override
   String get achievementsTitle => 'Logros';
@@ -4353,10 +4475,12 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get achievementsNoRewardConfigured => 'Aún no se ha configurado ninguna recompensa';
+  String get achievementsNoRewardConfigured =>
+      'Aún no se ha configurado ninguna recompensa';
 
   @override
-  String get achievementsRewardOnUnlock => 'Recibirás esta recompensa una vez que se desbloquee el logro.';
+  String get achievementsRewardOnUnlock =>
+      'Recibirás esta recompensa una vez que se desbloquee el logro.';
 
   @override
   String get achievementsDateToday => 'Hoy';
@@ -4379,37 +4503,43 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementJobItSpecialistTitle => 'Especialista en TI';
 
   @override
-  String get achievementJobItSpecialistDescription => 'Completa tu primer turno como programadora';
+  String get achievementJobItSpecialistDescription =>
+      'Completa tu primer turno como programadora';
 
   @override
   String get achievementJobLawyerTitle => 'Abogado callejero';
 
   @override
-  String get achievementJobLawyerDescription => 'Completa tu primer turno como Abogado';
+  String get achievementJobLawyerDescription =>
+      'Completa tu primer turno como Abogado';
 
   @override
   String get achievementJobDoctorTitle => 'Doctora subterránea';
 
   @override
-  String get achievementJobDoctorDescription => 'Completa tu primer turno como doctora';
+  String get achievementJobDoctorDescription =>
+      'Completa tu primer turno como doctora';
 
   @override
   String get achievementSchoolCertifiedTitle => 'Estudiante certificada';
 
   @override
-  String get achievementSchoolCertifiedDescription => 'Obtén 3 certificaciones escolares';
+  String get achievementSchoolCertifiedDescription =>
+      'Obtén 3 certificaciones escolares';
 
   @override
   String get achievementSchoolMultiCertifiedTitle => 'Multicertificado';
 
   @override
-  String get achievementSchoolMultiCertifiedDescription => 'Obtén 6 certificaciones escolares';
+  String get achievementSchoolMultiCertifiedDescription =>
+      'Obtén 6 certificaciones escolares';
 
   @override
   String get achievementSchoolTrackSpecialistTitle => 'Especialista en pista';
 
   @override
-  String get achievementSchoolTrackSpecialistDescription => 'Maximiza 3 pistas escolares';
+  String get achievementSchoolTrackSpecialistDescription =>
+      'Maximiza 3 pistas escolares';
 
   @override
   String get schoolMenuLabel => 'Escuela';
@@ -4421,7 +4551,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get schoolTitle => 'Escuela y educación';
 
   @override
-  String get schoolIntro => 'Desbloquee trabajos y activos a través de niveles y certificaciones.';
+  String get schoolIntro =>
+      'Desbloquee trabajos y activos a través de niveles y certificaciones.';
 
   @override
   String get schoolTracksTitle => 'Educaciones disponibles';
@@ -4479,13 +4610,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get schoolGateAssetCasinoPurchase => 'Activo: compra de casino';
 
   @override
-  String get schoolGateAssetAmmoFactoryPurchase => 'Activo: Compra de fábrica de munición';
+  String get schoolGateAssetAmmoFactoryPurchase =>
+      'Activo: Compra de fábrica de munición';
 
   @override
-  String get schoolGateAssetAmmoOutputUpgrade => 'Activo: mejora de la producción de munición';
+  String get schoolGateAssetAmmoOutputUpgrade =>
+      'Activo: mejora de la producción de munición';
 
   @override
-  String get schoolGateAssetAmmoQualityUpgrade => 'Activo: mejora de la calidad de la munición';
+  String get schoolGateAssetAmmoQualityUpgrade =>
+      'Activo: mejora de la calidad de la munición';
 
   @override
   String schoolGateAssetGeneric(String target) {
@@ -4501,22 +4635,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get educationDialogDefaultTitle => '🔒 Se requiere educación';
 
   @override
-  String get educationDialogFallbackMessage => 'Requisitos no cumplidos. Completar los requisitos educativos para continuar.';
+  String get educationDialogFallbackMessage =>
+      'Requisitos no cumplidos. Completar los requisitos educativos para continuar.';
 
   @override
   String get educationDialogClose => 'Cerca';
 
   @override
-  String get educationLockedJobsSectionTitle => '🔒 Trabajos bloqueados (se requiere educación)';
+  String get educationLockedJobsSectionTitle =>
+      '🔒 Trabajos bloqueados (se requiere educación)';
 
   @override
-  String get educationAmmoOutputUpgradeLockedTitle => '🔒 Actualización de salida bloqueada';
+  String get educationAmmoOutputUpgradeLockedTitle =>
+      '🔒 Actualización de salida bloqueada';
 
   @override
-  String get educationAmmoQualityUpgradeLockedTitle => '🔒 Actualización de calidad bloqueada';
+  String get educationAmmoQualityUpgradeLockedTitle =>
+      '🔒 Actualización de calidad bloqueada';
 
   @override
-  String get educationAmmoFactoryPurchaseLockedTitle => '🔒 Compra de fábrica bloqueada';
+  String get educationAmmoFactoryPurchaseLockedTitle =>
+      '🔒 Compra de fábrica bloqueada';
 
   @override
   String educationRequirementRankProgress(int requiredRank, int currentRank) {
@@ -4527,12 +4666,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get educationRequirementTrackLevelTitle => 'Nivel educativo';
 
   @override
-  String educationRequirementTrackLevelProgress(String trackName, int requiredLevel, int currentLevel) {
+  String educationRequirementTrackLevelProgress(
+    String trackName,
+    int requiredLevel,
+    int currentLevel,
+  ) {
     return '$trackName nivel $requiredLevel requerido · Actual $currentLevel';
   }
 
   @override
-  String get educationRequirementCertificationTitle => 'Certificación requerida';
+  String get educationRequirementCertificationTitle =>
+      'Certificación requerida';
 
   @override
   String get educationRequirementGenericTitle => 'Requisito';
@@ -4559,22 +4703,28 @@ class AppLocalizationsEs extends AppLocalizations {
   String get educationTrackNameIt => 'ÉL';
 
   @override
-  String get schoolTrackDescriptionAviation => 'Teoría de vuelo, navegación y operación de aeronaves.';
+  String get schoolTrackDescriptionAviation =>
+      'Teoría de vuelo, navegación y operación de aeronaves.';
 
   @override
-  String get schoolTrackDescriptionLaw => 'Derecho penal, procedimiento y práctica judicial.';
+  String get schoolTrackDescriptionLaw =>
+      'Derecho penal, procedimiento y práctica judicial.';
 
   @override
-  String get schoolTrackDescriptionMedicine => 'Respuesta a emergencias, diagnóstico y práctica médica.';
+  String get schoolTrackDescriptionMedicine =>
+      'Respuesta a emergencias, diagnóstico y práctica médica.';
 
   @override
-  String get schoolTrackDescriptionFinance => 'Contabilidad, inversiones y operaciones comerciales.';
+  String get schoolTrackDescriptionFinance =>
+      'Contabilidad, inversiones y operaciones comerciales.';
 
   @override
-  String get schoolTrackDescriptionEngineering => 'Sistemas mecánicos, seguridad industrial y fabricación.';
+  String get schoolTrackDescriptionEngineering =>
+      'Sistemas mecánicos, seguridad industrial y fabricación.';
 
   @override
-  String get schoolTrackDescriptionIt => 'Desarrollo de software, sistemas y operaciones de redes.';
+  String get schoolTrackDescriptionIt =>
+      'Desarrollo de software, sistemas y operaciones de redes.';
 
   @override
   String schoolTrackCooldownActive(int seconds) {
@@ -4582,13 +4732,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get schoolTrackMaxLevelReached => 'La pista ya está en el nivel máximo.';
+  String get schoolTrackMaxLevelReached =>
+      'La pista ya está en el nivel máximo.';
 
   @override
   String get schoolTrackStartFailed => 'No se pudo iniciar el entrenamiento';
 
   @override
-  String get educationCertSoftwareEngineer => 'Certificación de ingeniero de software';
+  String get educationCertSoftwareEngineer =>
+      'Certificación de ingeniero de software';
 
   @override
   String get educationCertBarExam => 'Examen de la barra';
@@ -4603,13 +4755,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get educationCertFlightBasic => 'Licencia de vuelo básica';
 
   @override
-  String get educationCertIndustrialSafety => 'Certificación de Seguridad Industrial';
+  String get educationCertIndustrialSafety =>
+      'Certificación de Seguridad Industrial';
 
   @override
-  String get educationCertFinancialAnalyst => 'Certificación de analista financiero';
+  String get educationCertFinancialAnalyst =>
+      'Certificación de analista financiero';
 
   @override
-  String get educationCertCasinoManagement => 'Certificación de gestión de casinos';
+  String get educationCertCasinoManagement =>
+      'Certificación de gestión de casinos';
 
   @override
   String get educationCertParamedic => 'Certificación de paramédico';
@@ -4627,7 +4782,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rivalryChallengeTitle => 'Jugador de desafío';
 
   @override
-  String get rivalryChallengeHint => 'Ingresa una ID de jugador para iniciar una rivalidad.';
+  String get rivalryChallengeHint =>
+      'Ingresa una ID de jugador para iniciar una rivalidad.';
 
   @override
   String get rivalryPlayerIdHint => 'ID del jugador';
@@ -4700,7 +4856,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get rivalryConfirmWarning => 'El éxito no está garantizado y puedes perder dinero.';
+  String get rivalryConfirmWarning =>
+      'El éxito no está garantizado y puedes perder dinero.';
 
   @override
   String get rivalryExecuteButton => 'Ejecutar';
@@ -4709,13 +4866,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rivalryEffectTipPolice => 'Aumentar la presión policial rival';
 
   @override
-  String get rivalryEffectStealCustomer => 'Robar parte del flujo de caja rival';
+  String get rivalryEffectStealCustomer =>
+      'Robar parte del flujo de caja rival';
 
   @override
-  String get rivalryEffectDamageReputation => 'Menor progreso de las prostitutas rivales';
+  String get rivalryEffectDamageReputation =>
+      'Menor progreso de las prostitutas rivales';
 
   @override
-  String get rivalryEffectBribeEmployee => 'Obligar a una prostituta rival a ir a un estado arrestado';
+  String get rivalryEffectBribeEmployee =>
+      'Obligar a una prostituta rival a ir a un estado arrestado';
 
   @override
   String get prostitutionUnderAttackTitle => 'Tu imperio está bajo ataque';
@@ -4729,10 +4889,229 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prostitutionUnderAttackAction => 'rivalidad abierta';
 
   @override
+  String get prostitutionBetrayalDefaultMessage =>
+      'Betrayal! Your nightclub was hit by an intel leak.';
+
+  @override
+  String get prostitutionLoadError => 'Error loading data';
+
+  @override
+  String get prostitutionNoDistrictInCountry =>
+      'No Red Light District found in this country';
+
+  @override
+  String get prostitutionMovedToStreet => 'Moved to street';
+
+  @override
+  String get prostitutionArrestedCannotAssign =>
+      'This prostitute is arrested and cannot be assigned.';
+
+  @override
+  String get prostitutionNoNightclubVenue =>
+      'You do not have a nightclub venue yet to assign staff.';
+
+  @override
+  String get prostitutionNightclubVenueName => 'Nightclub';
+
+  @override
+  String prostitutionNightclubVenueNumbered(int id) {
+    return 'Nightclub #$id';
+  }
+
+  @override
+  String get prostitutionAssignedNightclub => 'Assigned to nightclub';
+
+  @override
+  String get prostitutionArrestedCannotWork =>
+      'This prostitute is arrested and cannot work.';
+
+  @override
+  String prostitutionShiftRestNeeded(String duration) {
+    return 'Needs $duration rest before the next shift.';
+  }
+
+  @override
+  String get prostitutionWorkShiftCompleted => 'Work shift completed';
+
+  @override
+  String get prostitutionNoWorkersToAssign =>
+      'No available prostitutes to send to work.';
+
+  @override
+  String prostitutionWorkAllSentCount(int count) {
+    return '$count prostitutes sent to work.';
+  }
+
+  @override
+  String prostitutionWorkAllPartial(int success, int failed) {
+    return '$success prostitutes sent to work, $failed failed.';
+  }
+
+  @override
+  String get prostitutionRecruitedDefault => 'Recruited!';
+
+  @override
+  String get prostitutionRecruitFailed => 'Recruitment failed';
+
+  @override
+  String get prostitutionRecruitConnectionError =>
+      'Recruitment failed due to a connection error';
+
+  @override
+  String get prostitutionEventUpdate => 'Event updated';
+
+  @override
+  String get prostitutionBuyPropertyFirst => 'Buy a house or apartment first';
+
+  @override
+  String prostitutionWorkAll(int count) {
+    return 'Work all ($count)';
+  }
+
+  @override
+  String get prostitutionNoHousingForRecruit =>
+      'No free housing slot. Buy or upgrade a house or apartment before recruiting more prostitutes.';
+
+  @override
+  String get prostitutionHousingTitle => 'Housing';
+
+  @override
+  String prostitutionHousingRentRule(int days) {
+    return 'Each prostitute must work at least one shift every $days days to cover rent.';
+  }
+
+  @override
+  String get prostitutionHousingSlots => 'Slots';
+
+  @override
+  String get prostitutionHousingFree => 'Free';
+
+  @override
+  String get prostitutionHousingHomes => 'Homes';
+
+  @override
+  String get prostitutionHousingAvgUpgrade => 'Avg upgrade';
+
+  @override
+  String get prostitutionHousingHappinessBonus => 'Happiness bonus';
+
+  @override
+  String get prostitutionHousingWeeklyRent => 'Weekly rent';
+
+  @override
+  String get prostitutionHousingAtRisk => 'At risk';
+
+  @override
+  String get prostitutionHousingSafe => 'Safe';
+
+  @override
+  String prostitutionBetrayalActiveDetail(int grams, int licenses) {
+    return 'Betrayal triggered: ${grams}g drugs seized, $licenses nightclub license(s) revoked.';
+  }
+
+  @override
+  String get prostitutionEarningsInsightTitle =>
+      'Earnings insight (active prostitutes)';
+
+  @override
+  String prostitutionEarningsStreetDetail(int count, int euros) {
+    return 'Street: $count • €$euros/hour';
+  }
+
+  @override
+  String prostitutionEarningsRldDetail(int count, int euros) {
+    return 'RLD: $count • €$euros/hour';
+  }
+
+  @override
+  String prostitutionEarningsNightclubDetail(int count, int euros) {
+    return 'Nightclub: $count • €$euros/hour';
+  }
+
+  @override
+  String prostitutionEarningsTotalDetail(int euros) {
+    return 'Total: €$euros/hour';
+  }
+
+  @override
+  String get prostitutionHappinessEcstatic => 'Ecstatic';
+
+  @override
+  String get prostitutionHappinessHappy => 'Happy';
+
+  @override
+  String get prostitutionHappinessStable => 'Stable';
+
+  @override
+  String get prostitutionHappinessStressed => 'Stressed';
+
+  @override
+  String get prostitutionHappinessMiserable => 'Miserable';
+
+  @override
+  String get prostitutionHousingExpired => 'Expired';
+
+  @override
+  String prostitutionHousingDaysLeft(int days) {
+    return '${days}d left';
+  }
+
+  @override
+  String get prostitutionHousingLessThanOneDay => 'Less than 1 day';
+
+  @override
+  String get prostitutionNightclubShort => 'Nightclub';
+
+  @override
+  String get prostitutionMoveToStreetButton => 'To street';
+
+  @override
+  String get prostitutionMoveToNightclubButton => 'To nightclub';
+
+  @override
+  String prostitutionEuroPerHour(String amount) {
+    return '€$amount/hour';
+  }
+
+  @override
+  String prostitutionHappinessDetail(String label, int score, String bonus) {
+    return 'Happiness $label ($score%) • Yield $bonus';
+  }
+
+  @override
+  String prostitutionHousingStatus(String status) {
+    return 'Housing: $status';
+  }
+
+  @override
+  String prostitutionWeeklyRentEuro(int amount) {
+    return 'Weekly rent €$amount';
+  }
+
+  @override
+  String get prostitutionWork8h => 'Work 8h';
+
+  @override
+  String prostitutionRestFor(String duration) {
+    return 'Rest $duration';
+  }
+
+  @override
+  String prostitutionNextShiftIn(String duration) {
+    return 'Next shift in $duration';
+  }
+
+  @override
+  String prostitutionTimeHoursMinutes(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
   String get rivalryProtectionTitle => 'Seguro de protección';
 
   @override
-  String get rivalryProtectionDescription => 'Reduce el impacto del sabotaje entrante en un 30% durante 7 días.';
+  String get rivalryProtectionDescription =>
+      'Reduce el impacto del sabotaje entrante en un 30% durante 7 días.';
 
   @override
   String get rivalryProtectionInactive => 'Sin protección activa';
@@ -4752,7 +5131,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementTitle_first_steps => 'Pinitos';
 
   @override
-  String get achievementDescription_first_steps => 'Recluta a tu primera prostituta';
+  String get achievementDescription_first_steps =>
+      'Recluta a tu primera prostituta';
 
   @override
   String get achievementTitle_growing_empire => 'Imperio en crecimiento';
@@ -4764,13 +5144,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementTitle_first_district => 'Primer Distrito';
 
   @override
-  String get achievementDescription_first_district => 'Compra tu primer barrio rojo';
+  String get achievementDescription_first_district =>
+      'Compra tu primer barrio rojo';
 
   @override
   String get achievementTitle_empire_builder => 'Constructor de imperios';
 
   @override
-  String get achievementDescription_empire_builder => 'Poseer 5 distritos de luz roja';
+  String get achievementDescription_empire_builder =>
+      'Poseer 5 distritos de luz roja';
 
   @override
   String get achievementTitle_district_master => 'Maestro de distrito';
@@ -4782,25 +5164,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementTitle_leveling_master => 'Maestro de nivelación';
 
   @override
-  String get achievementDescription_leveling_master => 'Lleva al máximo a una prostituta al nivel 10.';
+  String get achievementDescription_leveling_master =>
+      'Lleva al máximo a una prostituta al nivel 10.';
 
   @override
   String get achievementTitle_untouchable => 'Intocable';
 
   @override
-  String get achievementDescription_untouchable => 'Nunca te arresten durante 7 días consecutivos.';
+  String get achievementDescription_untouchable =>
+      'Nunca te arresten durante 7 días consecutivos.';
 
   @override
   String get achievementTitle_millionaire => 'Millonaria';
 
   @override
-  String get achievementDescription_millionaire => 'Acumular 1.000.000€ de ganancias totales';
+  String get achievementDescription_millionaire =>
+      'Acumular 1.000.000€ de ganancias totales';
 
   @override
   String get achievementTitle_high_roller => 'Gran apostador';
 
   @override
-  String get achievementDescription_high_roller => 'Acumular 5.000.000€ de ganancias totales';
+  String get achievementDescription_high_roller =>
+      'Acumular 5.000.000€ de ganancias totales';
 
   @override
   String get achievementTitle_vip_service => 'Servicio VIP';
@@ -4812,253 +5198,298 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementTitle_event_enthusiast => 'Entusiasta de eventos';
 
   @override
-  String get achievementDescription_event_enthusiast => 'Completa 25 eventos VIP.';
+  String get achievementDescription_event_enthusiast =>
+      'Completa 25 eventos VIP.';
 
   @override
   String get achievementTitle_security_expert => 'Experto en seguridad';
 
   @override
-  String get achievementDescription_security_expert => 'Maximizar el nivel de seguridad en todos los distritos de propiedad';
+  String get achievementDescription_security_expert =>
+      'Maximizar el nivel de seguridad en todos los distritos de propiedad';
 
   @override
   String get achievementTitle_luxury_provider => 'Proveedor de lujo';
 
   @override
-  String get achievementDescription_luxury_provider => 'Mejora 3 distritos al nivel VIP';
+  String get achievementDescription_luxury_provider =>
+      'Mejora 3 distritos al nivel VIP';
 
   @override
   String get achievementTitle_rivalry_victor => 'Vencedor de la rivalidad';
 
   @override
-  String get achievementDescription_rivalry_victor => 'Sabotea con éxito a tus rivales 10 veces.';
+  String get achievementDescription_rivalry_victor =>
+      'Sabotea con éxito a tus rivales 10 veces.';
 
   @override
   String get achievementTitle_untouchable_rival => 'Rival intocable';
 
   @override
-  String get achievementDescription_untouchable_rival => 'Defiéndete de 20 intentos de sabotaje.';
+  String get achievementDescription_untouchable_rival =>
+      'Defiéndete de 20 intentos de sabotaje.';
 
   @override
   String get achievementTitle_crime_first_blood => 'Crimen primera sangre';
 
   @override
-  String get achievementDescription_crime_first_blood => 'Completa con éxito tu primer crimen.';
+  String get achievementDescription_crime_first_blood =>
+      'Completa con éxito tu primer crimen.';
 
   @override
   String get achievementTitle_crime_hustler => 'Estafador del crimen';
 
   @override
-  String get achievementDescription_crime_hustler => 'Completa con éxito 5 crímenes.';
+  String get achievementDescription_crime_hustler =>
+      'Completa con éxito 5 crímenes.';
 
   @override
   String get achievementTitle_crime_novice => 'Novato en crimen';
 
   @override
-  String get achievementDescription_crime_novice => 'Completa con éxito 10 crímenes.';
+  String get achievementDescription_crime_novice =>
+      'Completa con éxito 10 crímenes.';
 
   @override
   String get achievementTitle_crime_operator => 'Operadora de delitos';
 
   @override
-  String get achievementDescription_crime_operator => 'Completa con éxito 25 crímenes.';
+  String get achievementDescription_crime_operator =>
+      'Completa con éxito 25 crímenes.';
 
   @override
   String get achievementTitle_crime_wave => 'Ola de crimen';
 
   @override
-  String get achievementDescription_crime_wave => 'Completa con éxito 50 crímenes.';
+  String get achievementDescription_crime_wave =>
+      'Completa con éxito 50 crímenes.';
 
   @override
   String get achievementTitle_crime_mastermind => 'Cerebro del crimen';
 
   @override
-  String get achievementDescription_crime_mastermind => 'Completa con éxito 100 crímenes.';
+  String get achievementDescription_crime_mastermind =>
+      'Completa con éxito 100 crímenes.';
 
   @override
   String get achievementTitle_the_godfather => 'el padrino';
 
   @override
-  String get achievementDescription_the_godfather => 'Completa con éxito 250 crímenes.';
+  String get achievementDescription_the_godfather =>
+      'Completa con éxito 250 crímenes.';
 
   @override
   String get achievementTitle_crime_emperor => 'Emperador del crimen';
 
   @override
-  String get achievementDescription_crime_emperor => 'Completa con éxito 500 crímenes.';
+  String get achievementDescription_crime_emperor =>
+      'Completa con éxito 500 crímenes.';
 
   @override
   String get achievementTitle_crime_legend => 'Leyenda del crimen';
 
   @override
-  String get achievementDescription_crime_legend => 'Completa con éxito 1000 crímenes.';
+  String get achievementDescription_crime_legend =>
+      'Completa con éxito 1000 crímenes.';
 
   @override
   String get achievementTitle_crime_getaway_driver => 'Conductora de escapada';
 
   @override
-  String get achievementDescription_crime_getaway_driver => 'Completa con éxito tu primer delito con un vehículo.';
+  String get achievementDescription_crime_getaway_driver =>
+      'Completa con éxito tu primer delito con un vehículo.';
 
   @override
   String get achievementTitle_crime_armed_and_ready => 'Armado y listo';
 
   @override
-  String get achievementDescription_crime_armed_and_ready => 'Completa con éxito tu primer crimen que requiere un arma.';
+  String get achievementDescription_crime_armed_and_ready =>
+      'Completa con éxito tu primer crimen que requiere un arma.';
 
   @override
   String get achievementTitle_crime_full_loadout => 'Equipamiento completo';
 
   @override
-  String get achievementDescription_crime_full_loadout => 'Completa con éxito un delito que requiere vehículo, arma y herramientas.';
+  String get achievementDescription_crime_full_loadout =>
+      'Completa con éxito un delito que requiere vehículo, arma y herramientas.';
 
   @override
   String get achievementTitle_crime_completionist => 'Completista del crimen';
 
   @override
-  String get achievementDescription_crime_completionist => 'Completa con éxito cada tipo de delito al menos una vez.';
+  String get achievementDescription_crime_completionist =>
+      'Completa con éxito cada tipo de delito al menos una vez.';
 
   @override
   String get achievementTitle_job_first_shift => 'Primer turno';
 
   @override
-  String get achievementDescription_job_first_shift => 'Completa con éxito tu primer trabajo';
+  String get achievementDescription_job_first_shift =>
+      'Completa con éxito tu primer trabajo';
 
   @override
   String get achievementTitle_job_hustler => 'Estafador de empleo';
 
   @override
-  String get achievementDescription_job_hustler => 'Completa con éxito 5 trabajos.';
+  String get achievementDescription_job_hustler =>
+      'Completa con éxito 5 trabajos.';
 
   @override
   String get achievementTitle_job_starter => 'Iniciador de trabajo';
 
   @override
-  String get achievementDescription_job_starter => 'Completa con éxito 10 trabajos.';
+  String get achievementDescription_job_starter =>
+      'Completa con éxito 10 trabajos.';
 
   @override
   String get achievementTitle_job_operator => 'Operadora de trabajo';
 
   @override
-  String get achievementDescription_job_operator => 'Completa con éxito 25 trabajos.';
+  String get achievementDescription_job_operator =>
+      'Completa con éxito 25 trabajos.';
 
   @override
   String get achievementTitle_job_grinder => 'Molinillo de trabajo';
 
   @override
-  String get achievementDescription_job_grinder => 'Completa con éxito 50 trabajos.';
+  String get achievementDescription_job_grinder =>
+      'Completa con éxito 50 trabajos.';
 
   @override
   String get achievementTitle_job_master => 'maestro de trabajo';
 
   @override
-  String get achievementDescription_job_master => 'Completa con éxito 100 trabajos.';
+  String get achievementDescription_job_master =>
+      'Completa con éxito 100 trabajos.';
 
   @override
   String get achievementTitle_job_expert => 'Experto en Trabajo';
 
   @override
-  String get achievementDescription_job_expert => 'Completa con éxito 250 trabajos.';
+  String get achievementDescription_job_expert =>
+      'Completa con éxito 250 trabajos.';
 
   @override
   String get achievementTitle_job_elite => 'Élite laboral';
 
   @override
-  String get achievementDescription_job_elite => 'Completa con éxito 500 trabajos.';
+  String get achievementDescription_job_elite =>
+      'Completa con éxito 500 trabajos.';
 
   @override
   String get achievementTitle_job_legend => 'Leyenda del trabajo';
 
   @override
-  String get achievementDescription_job_legend => 'Completa con éxito 1000 trabajos.';
+  String get achievementDescription_job_legend =>
+      'Completa con éxito 1000 trabajos.';
 
   @override
   String get achievementTitle_job_completionist => 'Completador de Trabajo';
 
   @override
-  String get achievementDescription_job_completionist => 'Completa con éxito cada tipo de trabajo al menos una vez.';
+  String get achievementDescription_job_completionist =>
+      'Completa con éxito cada tipo de trabajo al menos una vez.';
 
   @override
   String get achievementTitle_job_educated_worker => 'Trabajadora educada';
 
   @override
-  String get achievementDescription_job_educated_worker => 'Completar 1 trabajo que tenga requisitos educativos.';
+  String get achievementDescription_job_educated_worker =>
+      'Completar 1 trabajo que tenga requisitos educativos.';
 
   @override
   String get achievementTitle_job_certified_hustler => 'Estafador certificado';
 
   @override
-  String get achievementDescription_job_certified_hustler => 'Completa 25 trabajos con requisitos educativos.';
+  String get achievementDescription_job_certified_hustler =>
+      'Completa 25 trabajos con requisitos educativos.';
 
   @override
-  String get achievementTitle_job_education_completionist => 'Completista de trabajos educativos';
+  String get achievementTitle_job_education_completionist =>
+      'Completista de trabajos educativos';
 
   @override
-  String get achievementDescription_job_education_completionist => 'Completa cada tipo de trabajo relacionado con la educación al menos una vez.';
+  String get achievementDescription_job_education_completionist =>
+      'Completa cada tipo de trabajo relacionado con la educación al menos una vez.';
 
   @override
   String get achievementTitle_job_it_specialist => 'Especialista en TI';
 
   @override
-  String get achievementDescription_job_it_specialist => 'Completa tu primer turno como programadora';
+  String get achievementDescription_job_it_specialist =>
+      'Completa tu primer turno como programadora';
 
   @override
   String get achievementTitle_job_lawyer => 'Abogado callejero';
 
   @override
-  String get achievementDescription_job_lawyer => 'Completa tu primer turno como Abogado';
+  String get achievementDescription_job_lawyer =>
+      'Completa tu primer turno como Abogado';
 
   @override
   String get achievementTitle_job_doctor => 'Doctora subterránea';
 
   @override
-  String get achievementDescription_job_doctor => 'Completa tu primer turno como doctora';
+  String get achievementDescription_job_doctor =>
+      'Completa tu primer turno como doctora';
 
   @override
   String get achievementTitle_school_certified => 'Estudiante certificada';
 
   @override
-  String get achievementDescription_school_certified => 'Obtén 3 certificaciones escolares';
+  String get achievementDescription_school_certified =>
+      'Obtén 3 certificaciones escolares';
 
   @override
   String get achievementTitle_school_multi_certified => 'Multicertificado';
 
   @override
-  String get achievementDescription_school_multi_certified => 'Obtén 6 certificaciones escolares';
+  String get achievementDescription_school_multi_certified =>
+      'Obtén 6 certificaciones escolares';
 
   @override
-  String get achievementTitle_school_track_specialist => 'Especialista en pista';
+  String get achievementTitle_school_track_specialist =>
+      'Especialista en pista';
 
   @override
-  String get achievementDescription_school_track_specialist => 'Maximiza 3 pistas escolares';
+  String get achievementDescription_school_track_specialist =>
+      'Maximiza 3 pistas escolares';
 
   @override
-  String get achievementTitle_school_freshman => 'estudiante de primer año de escuela';
+  String get achievementTitle_school_freshman =>
+      'estudiante de primer año de escuela';
 
   @override
-  String get achievementDescription_school_freshman => 'Alcanzar el nivel educativo 1';
+  String get achievementDescription_school_freshman =>
+      'Alcanzar el nivel educativo 1';
 
   @override
   String get achievementTitle_school_scholar => 'Académico de la escuela';
 
   @override
-  String get achievementDescription_school_scholar => 'Alcanzar el nivel educativo 3';
+  String get achievementDescription_school_scholar =>
+      'Alcanzar el nivel educativo 3';
 
   @override
   String get achievementTitle_school_graduate => 'Graduado de la escuela';
 
   @override
-  String get achievementDescription_school_graduate => 'Alcanzar el nivel educativo 5';
+  String get achievementDescription_school_graduate =>
+      'Alcanzar el nivel educativo 5';
 
   @override
   String get achievementTitle_school_mastermind => 'Mente maestra académica';
 
   @override
-  String get achievementDescription_school_mastermind => 'Alcanzar el nivel educativo 10';
+  String get achievementDescription_school_mastermind =>
+      'Alcanzar el nivel educativo 10';
 
   @override
   String get achievementTitle_school_doctorate => 'Doctorado en la calle';
 
   @override
-  String get achievementDescription_school_doctorate => 'Alcanzar el nivel educativo 20';
+  String get achievementDescription_school_doctorate =>
+      'Alcanzar el nivel educativo 20';
 
   @override
   String get achievementTitle_road_bandit => 'Bandido del camino';
@@ -5079,7 +5510,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementDescription_sea_raider => 'Roba 3 barcos';
 
   @override
-  String get achievementTitle_captain_of_smugglers => 'Capitán de contrabandistas';
+  String get achievementTitle_captain_of_smugglers =>
+      'Capitán de contrabandistas';
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Roba 12 barcos';
@@ -5100,19 +5532,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementTitle_chemist_apprentice => 'Aprendiz de Químico';
 
   @override
-  String get achievementDescription_chemist_apprentice => 'Completa 10 producciones de drogas.';
+  String get achievementDescription_chemist_apprentice =>
+      'Completa 10 producciones de drogas.';
 
   @override
   String get achievementTitle_narco_chemist => 'Narcoquímico';
 
   @override
-  String get achievementDescription_narco_chemist => 'Completa 100 producciones de drogas.';
+  String get achievementDescription_narco_chemist =>
+      'Completa 100 producciones de drogas.';
 
   @override
   String get achievementTitle_street_merchant => 'Comerciante callejera';
 
   @override
-  String get achievementDescription_street_merchant => 'Completa 25 intercambios';
+  String get achievementDescription_street_merchant =>
+      'Completa 25 intercambios';
 
   @override
   String get achievementTitle_trade_tycoon => 'Magnate del comercio';
@@ -5124,127 +5559,149 @@ class AppLocalizationsEs extends AppLocalizations {
   String get achievementTitle_prostitute_lineup => 'Alineación construida';
 
   @override
-  String get achievementDescription_prostitute_lineup => 'Recluta a 10 prostitutas.';
+  String get achievementDescription_prostitute_lineup =>
+      'Recluta a 10 prostitutas.';
 
   @override
   String get achievementTitle_prostitute_network => 'Red de calles';
 
   @override
-  String get achievementDescription_prostitute_network => 'Recluta a 25 prostitutas.';
+  String get achievementDescription_prostitute_network =>
+      'Recluta a 25 prostitutas.';
 
   @override
   String get achievementTitle_prostitute_syndicate => 'Sindicato';
 
   @override
-  String get achievementDescription_prostitute_syndicate => 'Recluta a 50 prostitutas.';
+  String get achievementDescription_prostitute_syndicate =>
+      'Recluta a 50 prostitutas.';
 
   @override
   String get achievementTitle_prostitute_dynasty => 'Dinastía';
 
   @override
-  String get achievementDescription_prostitute_dynasty => 'Recluta 100 prostitutas';
+  String get achievementDescription_prostitute_dynasty =>
+      'Recluta 100 prostitutas';
 
   @override
   String get achievementTitle_prostitute_empire_250 => 'Imperio 250';
 
   @override
-  String get achievementDescription_prostitute_empire_250 => 'Recluta 250 prostitutas.';
+  String get achievementDescription_prostitute_empire_250 =>
+      'Recluta 250 prostitutas.';
 
   @override
   String get achievementTitle_prostitute_cartel_500 => 'Cartel 500';
 
   @override
-  String get achievementDescription_prostitute_cartel_500 => 'Recluta 500 prostitutas';
+  String get achievementDescription_prostitute_cartel_500 =>
+      'Recluta 500 prostitutas';
 
   @override
   String get achievementTitle_prostitute_legend_1000 => 'Leyenda 1000';
 
   @override
-  String get achievementDescription_prostitute_legend_1000 => 'Recluta 1000 prostitutas';
+  String get achievementDescription_prostitute_legend_1000 =>
+      'Recluta 1000 prostitutas';
 
   @override
   String get achievementTitle_vip_prostitute_level_10 => 'Principiante VIP';
 
   @override
-  String get achievementDescription_vip_prostitute_level_10 => 'Alcanza el nivel 3 con una prostituta VIP.';
+  String get achievementDescription_vip_prostitute_level_10 =>
+      'Alcanza el nivel 3 con una prostituta VIP.';
 
   @override
   String get achievementTitle_vip_prostitute_level_25 => 'Cabeza de cartel VIP';
 
   @override
-  String get achievementDescription_vip_prostitute_level_25 => 'Alcanza el nivel 5 con una prostituta VIP.';
+  String get achievementDescription_vip_prostitute_level_25 =>
+      'Alcanza el nivel 5 con una prostituta VIP.';
 
   @override
   String get achievementTitle_vip_prostitute_level_50 => 'Icono VIP';
 
   @override
-  String get achievementDescription_vip_prostitute_level_50 => 'Alcanza el nivel 7 con una prostituta VIP.';
+  String get achievementDescription_vip_prostitute_level_50 =>
+      'Alcanza el nivel 7 con una prostituta VIP.';
 
   @override
   String get achievementTitle_vip_prostitute_level_100 => 'Leyenda VIP';
 
   @override
-  String get achievementDescription_vip_prostitute_level_100 => 'Alcanza el nivel 10 con una prostituta VIP.';
+  String get achievementDescription_vip_prostitute_level_100 =>
+      'Alcanza el nivel 10 con una prostituta VIP.';
 
   @override
   String get achievementTitle_nightclub_opening_night => 'Noche inaugural';
 
   @override
-  String get achievementDescription_nightclub_opening_night => 'Abre tu primera discoteca';
+  String get achievementDescription_nightclub_opening_night =>
+      'Abre tu primera discoteca';
 
   @override
   String get achievementTitle_nightclub_headliner => 'Booker cabeza de cartel';
 
   @override
-  String get achievementDescription_nightclub_headliner => 'Reserva 10 turnos de DJ para tu imperio de discotecas';
+  String get achievementDescription_nightclub_headliner =>
+      'Reserva 10 turnos de DJ para tu imperio de discotecas';
 
   @override
   String get achievementTitle_nightclub_full_house => 'Casa llena';
 
   @override
-  String get achievementDescription_nightclub_full_house => 'Lleve la multitud de un club nocturno al 90% de su capacidad';
+  String get achievementDescription_nightclub_full_house =>
+      'Lleve la multitud de un club nocturno al 90% de su capacidad';
 
   @override
   String get achievementTitle_nightclub_cash_machine => 'cajero automático';
 
   @override
-  String get achievementDescription_nightclub_cash_machine => 'Gana 250.000 € en ingresos totales en discotecas';
+  String get achievementDescription_nightclub_cash_machine =>
+      'Gana 250.000 € en ingresos totales en discotecas';
 
   @override
   String get achievementTitle_nightclub_empire => 'Imperio de la vida nocturna';
 
   @override
-  String get achievementDescription_nightclub_empire => 'Gana 1.000.000€ de ingresos totales en discotecas';
+  String get achievementDescription_nightclub_empire =>
+      'Gana 1.000.000€ de ingresos totales en discotecas';
 
   @override
   String get achievementTitle_nightclub_staffing_boss => 'Jefa de personal';
 
   @override
-  String get achievementDescription_nightclub_staffing_boss => 'Dirige a 3 miembros activos de la tripulación del club nocturno al mismo tiempo.';
+  String get achievementDescription_nightclub_staffing_boss =>
+      'Dirige a 3 miembros activos de la tripulación del club nocturno al mismo tiempo.';
 
   @override
   String get achievementTitle_nightclub_vip_room => 'Sala VIP';
 
   @override
-  String get achievementDescription_nightclub_vip_room => 'Asigna 2 miembros del equipo VIP a tu club nocturno';
+  String get achievementDescription_nightclub_vip_room =>
+      'Asigna 2 miembros del equipo VIP a tu club nocturno';
 
   @override
   String get achievementTitle_nightclub_head_of_security => 'Jefa de Seguridad';
 
   @override
-  String get achievementDescription_nightclub_head_of_security => 'Contrata seguridad de discoteca por 10 turnos.';
+  String get achievementDescription_nightclub_head_of_security =>
+      'Contrata seguridad de discoteca por 10 turnos.';
 
   @override
   String get achievementTitle_nightclub_podium_finish => 'Final del podio';
 
   @override
-  String get achievementDescription_nightclub_podium_finish => 'Termina entre los 3 primeros de una temporada semanal de discotecas.';
+  String get achievementDescription_nightclub_podium_finish =>
+      'Termina entre los 3 primeros de una temporada semanal de discotecas.';
 
   @override
-  String get achievementTitle_nightclub_season_champion => 'Campeona de la temporada';
+  String get achievementTitle_nightclub_season_champion =>
+      'Campeona de la temporada';
 
   @override
-  String get achievementDescription_nightclub_season_champion => 'Gana una temporada de discoteca semanal';
+  String get achievementDescription_nightclub_season_champion =>
+      'Gana una temporada de discoteca semanal';
 
   @override
   String get nightclubManagementTitle => 'Gestión de discotecas';
@@ -5259,7 +5716,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubEmptyTitle => 'Aún no se ha encontrado ninguna discoteca';
 
   @override
-  String get nightclubEmptyBody => 'Primero compre una discoteca en Propiedades para activar este sistema.';
+  String get nightclubEmptyBody =>
+      'Primero compre una discoteca en Propiedades para activar este sistema.';
 
   @override
   String get nightclubLocationTitle => 'Ubicación del club nocturno';
@@ -5387,12 +5845,21 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String nightclubStaffBoostMix(String sales, String price, String vibe, String security, String vipPlayer, String vipStaff, String vipAssigned) {
+  String nightclubStaffBoostMix(
+    String sales,
+    String price,
+    String vibe,
+    String security,
+    String vipPlayer,
+    String vipStaff,
+    String vipAssigned,
+  ) {
     return 'Combinación de impulso: ventas x$sales | precio x$price | ambiente x$vibe | seguridad x$security | jugador vip x$vipPlayer | personal vip x$vipStaff ($vipAssigned)';
   }
 
   @override
-  String get nightclubSelectCrewMember => 'Seleccionar miembro de la tripulación';
+  String get nightclubSelectCrewMember =>
+      'Seleccionar miembro de la tripulación';
 
   @override
   String get nightclubAssignShift => 'Asignar turno de discoteca';
@@ -5407,7 +5874,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubNoCrewAssigned => 'Aún no hay tripulación asignada';
 
   @override
-  String get nightclubCrewBoostDescription => 'Aumenta la demanda y el margen en tu club';
+  String get nightclubCrewBoostDescription =>
+      'Aumenta la demanda y el margen en tu club';
 
   @override
   String get nightclubRemove => 'Eliminar';
@@ -5470,7 +5938,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubAssignCrewSuccess => 'Miembro de la tripulación asignado';
 
   @override
-  String get nightclubRemoveCrewSuccess => 'Miembro de la tripulación eliminado';
+  String get nightclubRemoveCrewSuccess =>
+      'Miembro de la tripulación eliminado';
 
   @override
   String get nightclubStoreDrugsSuccess => 'Drogas almacenadas';
@@ -5523,7 +5992,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nightclubTheftTypeRival => 'Sabotaje rival';
 
   @override
-  String get theftCooldownRedeemTitle => '¿Saltar el tiempo de reutilización por robo?';
+  String get theftCooldownRedeemTitle =>
+      '¿Saltar el tiempo de reutilización por robo?';
 
   @override
   String theftCooldownRedeemMessage(int cost, int balance) {
@@ -5531,7 +6001,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get theftCooldownRedeemDontShowAgain => 'No volver a mostrar esta confirmación';
+  String get theftCooldownRedeemDontShowAgain =>
+      'No volver a mostrar esta confirmación';
 
   @override
   String theftCooldownRedeemConfirmAction(int credits) {
@@ -5539,25 +6010,32 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get theftCooldownRedeemNotAvailable => 'La aceleración de crédito no está disponible para este tiempo de reutilización en este momento.';
+  String get theftCooldownRedeemNotAvailable =>
+      'La aceleración de crédito no está disponible para este tiempo de reutilización en este momento.';
 
   @override
-  String get theftCooldownRedeemNoActiveCooldown => 'No hay tiempo de reutilización de robo activo para restablecer.';
+  String get theftCooldownRedeemNoActiveCooldown =>
+      'No hay tiempo de reutilización de robo activo para restablecer.';
 
   @override
-  String get theftCooldownRedeemInsufficientCredits => 'No hay suficientes créditos.';
+  String get theftCooldownRedeemInsufficientCredits =>
+      'No hay suficientes créditos.';
 
   @override
-  String get theftCooldownRedeemFailed => 'No se pudieron aplicar créditos al tiempo de reutilización.';
+  String get theftCooldownRedeemFailed =>
+      'No se pudieron aplicar créditos al tiempo de reutilización.';
 
   @override
-  String get theftCooldownRedeemSuccess => 'Se ha completado el tiempo de reutilización.';
+  String get theftCooldownRedeemSuccess =>
+      'Se ha completado el tiempo de reutilización.';
 
   @override
-  String get settingsTheftCooldownConfirmTitle => 'Tiempo de reutilización por robo (créditos)';
+  String get settingsTheftCooldownConfirmTitle =>
+      'Tiempo de reutilización por robo (créditos)';
 
   @override
-  String get settingsTheftCooldownConfirmSubtitle => 'Solicite confirmación antes de gastar créditos para omitir el tiempo de reutilización por robo de vehículos. Desactívalo para canjearlo con un solo toque (icono de un rayo al lado del temporizador).';
+  String get settingsTheftCooldownConfirmSubtitle =>
+      'Solicite confirmación antes de gastar créditos para omitir el tiempo de reutilización por robo de vehículos. Desactívalo para canjearlo con un solo toque (icono de un rayo al lado del temporizador).';
 
   @override
   String get supportTicketsScreenTitle => 'Tickets de soporte';
@@ -5572,7 +6050,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportPickImageFailed => 'No se pudo seleccionar la imagen';
 
   @override
-  String get supportSubjectMessageMinLength => 'Rellena el asunto y el mensaje (mín. 3 caracteres).';
+  String get supportSubjectMessageMinLength =>
+      'Rellena el asunto y el mensaje (mín. 3 caracteres).';
 
   @override
   String get supportTicketCreated => 'Ticket creado.';
@@ -5590,7 +6069,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportDeleteTicketTitle => 'Eliminar ticket';
 
   @override
-  String get supportDeleteTicketBody => '¿Seguro que quieres eliminar este ticket? Esta acción no se puede deshacer.';
+  String get supportDeleteTicketBody =>
+      '¿Seguro que quieres eliminar este ticket? Esta acción no se puede deshacer.';
 
   @override
   String get supportTicketDeleted => 'Ticket eliminado.';
@@ -5680,13 +6160,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportMyTickets => 'Mis tickets';
 
   @override
-  String get supportMyTicketsIntro => 'El soporte responde ahora directamente en esta pantalla. Opcionalmente puedes seguir recibiendo una notificación push cuando tu ticket se actualice.';
+  String get supportMyTicketsIntro =>
+      'El soporte responde ahora directamente en esta pantalla. Opcionalmente puedes seguir recibiendo una notificación push cuando tu ticket se actualice.';
 
   @override
-  String get supportNoTicketsYet => 'Aún no tienes tickets. Crea un nuevo informe abajo.';
+  String get supportNoTicketsYet =>
+      'Aún no tienes tickets. Crea un nuevo informe abajo.';
 
   @override
-  String get supportSelectTicketPrompt => 'Selecciona un ticket para abrir la conversación.';
+  String get supportSelectTicketPrompt =>
+      'Selecciona un ticket para abrir la conversación.';
 
   @override
   String get supportConversation => 'Conversación';
@@ -5701,7 +6184,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportReplyToTicket => 'Responder a este ticket';
 
   @override
-  String get supportReplyFieldHint => 'Usa este campo cuando el soporte pida más información o quieras enviar una actualización. La bandeja de entrada y las push siguen avisando de nuevas respuestas del soporte.';
+  String get supportReplyFieldHint =>
+      'Usa este campo cuando el soporte pida más información o quieras enviar una actualización. La bandeja de entrada y las push siguen avisando de nuevas respuestas del soporte.';
 
   @override
   String get supportYourReply => 'Tu respuesta';
@@ -5713,7 +6197,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportNewTicket => 'Nuevo ticket';
 
   @override
-  String get supportNewTicketIntro => 'Crea un nuevo informe aquí. El soporte puede responder por bandeja/push y en esta pantalla, para seguir la conversación en un solo lugar.';
+  String get supportNewTicketIntro =>
+      'Crea un nuevo informe aquí. El soporte puede responder por bandeja/push y en esta pantalla, para seguir la conversación en un solo lugar.';
 
   @override
   String get supportTicketReceivedBanner => 'Ticket recibido';
@@ -5724,7 +6209,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get supportTicketReceivedDetail => 'El ticket aparece ahora arriba en tu lista. Las nuevas respuestas del soporte también llegan como mensaje en la bandeja y como notificación push.';
+  String get supportTicketReceivedDetail =>
+      'El ticket aparece ahora arriba en tu lista. Las nuevas respuestas del soporte también llegan como mensaje en la bandeja y como notificación push.';
 
   @override
   String get supportFieldCategory => 'Categoría';
@@ -5742,7 +6228,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportReferenceOptional => 'Referencia (opcional)';
 
   @override
-  String get supportReferenceHint => 'Por ejemplo id de pedido, nombre de pantalla, país o contexto breve';
+  String get supportReferenceHint =>
+      'Por ejemplo id de pedido, nombre de pantalla, país o contexto breve';
 
   @override
   String get supportAddScreenshot => 'Añadir captura';
@@ -5871,34 +6358,42 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gameEventStatusDraft => 'Borrador';
 
   @override
-  String get gameEventTmplWeeklyVehicleTheftHuntTitle => 'Caza de robos semanal';
+  String get gameEventTmplWeeklyVehicleTheftHuntTitle =>
+      'Caza de robos semanal';
 
   @override
-  String get gameEventTmplWeeklyVehicleTheftHuntDesc => 'Roba tantos vehículos como puedas durante la ventana del evento.';
+  String get gameEventTmplWeeklyVehicleTheftHuntDesc =>
+      'Roba tantos vehículos como puedas durante la ventana del evento.';
 
   @override
   String get gameEventTmplSmugglingSurgeTitle => 'Oleada de contrabando';
 
   @override
-  String get gameEventTmplSmugglingSurgeDesc => 'Mueve el mayor volumen de contrabando en esta ronda.';
+  String get gameEventTmplSmugglingSurgeDesc =>
+      'Mueve el mayor volumen de contrabando en esta ronda.';
 
   @override
-  String get gameEventTmplLabOutputChallengeTitle => 'Desafío de producción del laboratorio';
+  String get gameEventTmplLabOutputChallengeTitle =>
+      'Desafío de producción del laboratorio';
 
   @override
-  String get gameEventTmplLabOutputChallengeDesc => 'Produce la mayor cantidad mientras el evento esté activo.';
+  String get gameEventTmplLabOutputChallengeDesc =>
+      'Produce la mayor cantidad mientras el evento esté activo.';
 
   @override
-  String get gameEventTmplStreetCrimeSpreeTitle => 'Racha de crímenes callejeros';
+  String get gameEventTmplStreetCrimeSpreeTitle =>
+      'Racha de crímenes callejeros';
 
   @override
-  String get gameEventTmplStreetCrimeSpreeDesc => 'Completa tantos crímenes como puedas mientras el evento esté en curso.';
+  String get gameEventTmplStreetCrimeSpreeDesc =>
+      'Completa tantos crímenes como puedas mientras el evento esté en curso.';
 
   @override
   String get gameScreenLoadError => 'No se pudieron cargar los eventos.';
 
   @override
-  String get gameScreenDetailsLoadError => 'No se pudieron cargar los detalles del evento.';
+  String get gameScreenDetailsLoadError =>
+      'No se pudieron cargar los detalles del evento.';
 
   @override
   String get gameScreenSectionLive => 'Eventos en vivo';
@@ -5990,12 +6485,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evStreamAuthLogin => 'Bienvenido de nuevo.';
 
   @override
-  String evStreamCrimeSuccess(String crimeName, String reward, String xpGained) {
+  String evStreamCrimeSuccess(
+    String crimeName,
+    String reward,
+    String xpGained,
+  ) {
     return '¡Completaste con éxito $crimeName! +EUR $reward, +$xpGained XP';
   }
 
   @override
-  String evStreamCrimeSuccessJailed(String crimeName, String reward, String xpGained, int minutes) {
+  String evStreamCrimeSuccessJailed(
+    String crimeName,
+    String reward,
+    String xpGained,
+    int minutes,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
@@ -6012,7 +6516,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evStreamCrimeSeizedWeapon => ' La policía confiscó tu arma.';
 
   @override
-  String evStreamCrimeSuccessCleared(String crimeName, int count, String xpGained) {
+  String evStreamCrimeSuccessCleared(
+    String crimeName,
+    int count,
+    String xpGained,
+  ) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -6083,7 +6591,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evStreamJobErrorInvalid => 'Trabajo no válido';
 
   @override
-  String get evStreamJobErrorLevel => 'Tu rango es demasiado bajo para este trabajo';
+  String get evStreamJobErrorLevel =>
+      'Tu rango es demasiado bajo para este trabajo';
 
   @override
   String evStreamJobErrorCooldown(int minutes) {
@@ -6127,7 +6636,12 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String evStreamCryptoSell(String quantity, String symbol, String total, String pnl) {
+  String evStreamCryptoSell(
+    String quantity,
+    String symbol,
+    String total,
+    String pnl,
+  ) {
     return 'Vendiste $quantity $symbol por €$total (PyG €$pnl)';
   }
 
@@ -6137,12 +6651,22 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String evStreamCryptoOrderFilled(String order, String side, String quantity, String symbol, String price) {
+  String evStreamCryptoOrderFilled(
+    String order,
+    String side,
+    String quantity,
+    String symbol,
+    String price,
+  ) {
     return '$order $side ejecutada: $quantity $symbol a €$price';
   }
 
   @override
-  String evStreamCryptoOrderTriggered(String trig, String symbol, String price) {
+  String evStreamCryptoOrderTriggered(
+    String trig,
+    String symbol,
+    String price,
+  ) {
     return '$trig activada para $symbol a €$price';
   }
 
@@ -6253,13 +6777,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evStreamPoliceEscaped => 'Escapaste de la policía.';
 
   @override
-  String get evStreamFbiRaid => '¡Redada del FBI! Perdiste propiedades y dinero.';
+  String get evStreamFbiRaid =>
+      '¡Redada del FBI! Perdiste propiedades y dinero.';
 
   @override
   String get evStreamErrInsufficientFunds => 'Dinero insuficiente';
 
   @override
-  String get evStreamErrInsufficientHealth => 'Salud insuficiente para esta acción';
+  String get evStreamErrInsufficientHealth =>
+      'Salud insuficiente para esta acción';
 
   @override
   String evStreamErrInsufficientRank(String rank) {
@@ -6292,7 +6818,8 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get evStreamErrRescuerJailed => 'No puedes rescatar a otros mientras estás en la cárcel';
+  String get evStreamErrRescuerJailed =>
+      'No puedes rescatar a otros mientras estás en la cárcel';
 
   @override
   String get evStreamErrTargetNotJailed => 'Ese jugador no está en la cárcel';
@@ -6304,7 +6831,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evStreamJailbreakOk => '¡Fuga conseguida! El jugador está libre.';
 
   @override
-  String get evStreamJailbreakFail => '¡Fuga fallida! El jugador sigue en la cárcel.';
+  String get evStreamJailbreakFail =>
+      '¡Fuga fallida! El jugador sigue en la cárcel.';
 
   @override
   String evStreamJailbreakCaught(String mins) {
@@ -6328,7 +6856,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get evStreamNoCriminalRecord => 'No tienes antecedentes que borrar';
 
   @override
-  String get evStreamWeaponSelectRequired => 'Selecciona un arma para el crimen antes de cometerlo';
+  String get evStreamWeaponSelectRequired =>
+      'Selecciona un arma para el crimen antes de cometerlo';
 
   @override
   String evStreamWeaponNotSuitable(String types) {
@@ -6350,16 +6879,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get crimeWeaponSectionTitle => 'Arma para crímenes';
 
   @override
-  String get crimeWeaponInstruction => 'Elige qué arma llevada usas por defecto en crímenes que requieren una.';
+  String get crimeWeaponInstruction =>
+      'Elige qué arma llevada usas por defecto en crímenes que requieren una.';
 
   @override
-  String get crimeWeaponEmptyInventoryHelp => 'Compra o mueve primero un arma utilizable a tu inventario portátil.';
+  String get crimeWeaponEmptyInventoryHelp =>
+      'Compra o mueve primero un arma utilizable a tu inventario portátil.';
 
   @override
   String get crimeWeaponSelectHint => 'Selecciona un arma para crímenes';
 
   @override
-  String get crimeWeaponNoSelectionNote => 'Sin selección, los crímenes con arma no se pueden iniciar.';
+  String get crimeWeaponNoSelectionNote =>
+      'Sin selección, los crímenes con arma no se pueden iniciar.';
 
   @override
   String crimeWeaponSelectedStatus(String weaponLine) {
@@ -6367,16 +6899,20 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get crimeSetWeaponFailed => 'No se pudo guardar el arma para crímenes.';
+  String get crimeSetWeaponFailed =>
+      'No se pudo guardar el arma para crímenes.';
 
   @override
-  String get crimeChooseWeaponBeforeCommit => 'Elige primero un arma arriba o desde el inventario.';
+  String get crimeChooseWeaponBeforeCommit =>
+      'Elige primero un arma arriba o desde el inventario.';
 
   @override
-  String get crimeWeaponFooterNote => 'Los crímenes con arma usan el arma seleccionada arriba.';
+  String get crimeWeaponFooterNote =>
+      'Los crímenes con arma usan el arma seleccionada arriba.';
 
   @override
-  String get crimeCriminalRecordWipeDesc => 'Falsifica expedientes y borra tu historial criminal completo si la operación tiene éxito.';
+  String get crimeCriminalRecordWipeDesc =>
+      'Falsifica expedientes y borra tu historial criminal completo si la operación tiene éxito.';
 
   @override
   String crimeCardSuccessChance(int percent) {
@@ -6387,7 +6923,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cooldownTimeLeft => 'Tiempo restante';
 
   @override
-  String get cooldownMustWaitExplanation => 'Debes esperar antes de volver a realizar esta acción.';
+  String get cooldownMustWaitExplanation =>
+      'Debes esperar antes de volver a realizar esta acción.';
 
   @override
   String get cooldownAlreadyFinished => 'El tiempo de espera ya terminó.';
@@ -6396,7 +6933,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cooldownNotEnoughCredits => 'Créditos insuficientes.';
 
   @override
-  String get cooldownNoActiveToReset => 'No hay tiempo de espera activo que reiniciar.';
+  String get cooldownNoActiveToReset =>
+      'No hay tiempo de espera activo que reiniciar.';
 
   @override
   String get cooldownNotAvailableNow => 'No disponible ahora.';
@@ -6405,7 +6943,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cooldownRedeemFailed => 'No se pudo acelerar con créditos.';
 
   @override
-  String get cooldownFinishedInstantly => 'Tiempo de espera terminado al instante.';
+  String get cooldownFinishedInstantly =>
+      'Tiempo de espera terminado al instante.';
 
   @override
   String cooldownSpeedUpNow(int cost) {

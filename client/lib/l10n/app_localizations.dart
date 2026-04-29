@@ -68,7 +68,8 @@ import 'app_localizations_pt.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -76,7 +77,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -88,12 +90,13 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
@@ -104,7 +107,7 @@ abstract class AppLocalizations {
     Locale('it'),
     Locale('nl'),
     Locale('pl'),
-    Locale('pt')
+    Locale('pt'),
   ];
 
   /// The title of the application
@@ -8559,7 +8562,11 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{trackName} level {requiredLevel} required · Current {currentLevel}'**
-  String educationRequirementTrackLevelProgress(String trackName, int requiredLevel, int currentLevel);
+  String educationRequirementTrackLevelProgress(
+    String trackName,
+    int requiredLevel,
+    int currentLevel,
+  );
 
   /// No description provided for @educationRequirementCertificationTitle.
   ///
@@ -8926,6 +8933,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open rivalry'**
   String get prostitutionUnderAttackAction;
+
+  /// No description provided for @prostitutionBetrayalDefaultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Betrayal! Your nightclub was hit by an intel leak.'**
+  String get prostitutionBetrayalDefaultMessage;
+
+  /// No description provided for @prostitutionLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading data'**
+  String get prostitutionLoadError;
+
+  /// No description provided for @prostitutionNoDistrictInCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'No Red Light District found in this country'**
+  String get prostitutionNoDistrictInCountry;
+
+  /// No description provided for @prostitutionMovedToStreet.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved to street'**
+  String get prostitutionMovedToStreet;
+
+  /// No description provided for @prostitutionArrestedCannotAssign.
+  ///
+  /// In en, this message translates to:
+  /// **'This prostitute is arrested and cannot be assigned.'**
+  String get prostitutionArrestedCannotAssign;
+
+  /// No description provided for @prostitutionNoNightclubVenue.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have a nightclub venue yet to assign staff.'**
+  String get prostitutionNoNightclubVenue;
+
+  /// No description provided for @prostitutionNightclubVenueName.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub'**
+  String get prostitutionNightclubVenueName;
+
+  /// No description provided for @prostitutionNightclubVenueNumbered.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub #{id}'**
+  String prostitutionNightclubVenueNumbered(int id);
+
+  /// No description provided for @prostitutionAssignedNightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to nightclub'**
+  String get prostitutionAssignedNightclub;
+
+  /// No description provided for @prostitutionArrestedCannotWork.
+  ///
+  /// In en, this message translates to:
+  /// **'This prostitute is arrested and cannot work.'**
+  String get prostitutionArrestedCannotWork;
+
+  /// No description provided for @prostitutionShiftRestNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs {duration} rest before the next shift.'**
+  String prostitutionShiftRestNeeded(String duration);
+
+  /// No description provided for @prostitutionWorkShiftCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Work shift completed'**
+  String get prostitutionWorkShiftCompleted;
+
+  /// No description provided for @prostitutionNoWorkersToAssign.
+  ///
+  /// In en, this message translates to:
+  /// **'No available prostitutes to send to work.'**
+  String get prostitutionNoWorkersToAssign;
+
+  /// No description provided for @prostitutionWorkAllSentCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} prostitutes sent to work.'**
+  String prostitutionWorkAllSentCount(int count);
+
+  /// No description provided for @prostitutionWorkAllPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'{success} prostitutes sent to work, {failed} failed.'**
+  String prostitutionWorkAllPartial(int success, int failed);
+
+  /// No description provided for @prostitutionRecruitedDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Recruited!'**
+  String get prostitutionRecruitedDefault;
+
+  /// No description provided for @prostitutionRecruitFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Recruitment failed'**
+  String get prostitutionRecruitFailed;
+
+  /// No description provided for @prostitutionRecruitConnectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Recruitment failed due to a connection error'**
+  String get prostitutionRecruitConnectionError;
+
+  /// No description provided for @prostitutionEventUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Event updated'**
+  String get prostitutionEventUpdate;
+
+  /// No description provided for @prostitutionBuyPropertyFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy a house or apartment first'**
+  String get prostitutionBuyPropertyFirst;
+
+  /// No description provided for @prostitutionWorkAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Work all ({count})'**
+  String prostitutionWorkAll(int count);
+
+  /// No description provided for @prostitutionNoHousingForRecruit.
+  ///
+  /// In en, this message translates to:
+  /// **'No free housing slot. Buy or upgrade a house or apartment before recruiting more prostitutes.'**
+  String get prostitutionNoHousingForRecruit;
+
+  /// No description provided for @prostitutionHousingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing'**
+  String get prostitutionHousingTitle;
+
+  /// No description provided for @prostitutionHousingRentRule.
+  ///
+  /// In en, this message translates to:
+  /// **'Each prostitute must work at least one shift every {days} days to cover rent.'**
+  String prostitutionHousingRentRule(int days);
+
+  /// No description provided for @prostitutionHousingSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Slots'**
+  String get prostitutionHousingSlots;
+
+  /// No description provided for @prostitutionHousingFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get prostitutionHousingFree;
+
+  /// No description provided for @prostitutionHousingHomes.
+  ///
+  /// In en, this message translates to:
+  /// **'Homes'**
+  String get prostitutionHousingHomes;
+
+  /// No description provided for @prostitutionHousingAvgUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg upgrade'**
+  String get prostitutionHousingAvgUpgrade;
+
+  /// No description provided for @prostitutionHousingHappinessBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Happiness bonus'**
+  String get prostitutionHousingHappinessBonus;
+
+  /// No description provided for @prostitutionHousingWeeklyRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly rent'**
+  String get prostitutionHousingWeeklyRent;
+
+  /// No description provided for @prostitutionHousingAtRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'At risk'**
+  String get prostitutionHousingAtRisk;
+
+  /// No description provided for @prostitutionHousingSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe'**
+  String get prostitutionHousingSafe;
+
+  /// No description provided for @prostitutionBetrayalActiveDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Betrayal triggered: {grams}g drugs seized, {licenses} nightclub license(s) revoked.'**
+  String prostitutionBetrayalActiveDetail(int grams, int licenses);
+
+  /// No description provided for @prostitutionEarningsInsightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings insight (active prostitutes)'**
+  String get prostitutionEarningsInsightTitle;
+
+  /// No description provided for @prostitutionEarningsStreetDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Street: {count} • €{euros}/hour'**
+  String prostitutionEarningsStreetDetail(int count, int euros);
+
+  /// No description provided for @prostitutionEarningsRldDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'RLD: {count} • €{euros}/hour'**
+  String prostitutionEarningsRldDetail(int count, int euros);
+
+  /// No description provided for @prostitutionEarningsNightclubDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub: {count} • €{euros}/hour'**
+  String prostitutionEarningsNightclubDetail(int count, int euros);
+
+  /// No description provided for @prostitutionEarningsTotalDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: €{euros}/hour'**
+  String prostitutionEarningsTotalDetail(int euros);
+
+  /// No description provided for @prostitutionHappinessEcstatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Ecstatic'**
+  String get prostitutionHappinessEcstatic;
+
+  /// No description provided for @prostitutionHappinessHappy.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy'**
+  String get prostitutionHappinessHappy;
+
+  /// No description provided for @prostitutionHappinessStable.
+  ///
+  /// In en, this message translates to:
+  /// **'Stable'**
+  String get prostitutionHappinessStable;
+
+  /// No description provided for @prostitutionHappinessStressed.
+  ///
+  /// In en, this message translates to:
+  /// **'Stressed'**
+  String get prostitutionHappinessStressed;
+
+  /// No description provided for @prostitutionHappinessMiserable.
+  ///
+  /// In en, this message translates to:
+  /// **'Miserable'**
+  String get prostitutionHappinessMiserable;
+
+  /// No description provided for @prostitutionHousingExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get prostitutionHousingExpired;
+
+  /// No description provided for @prostitutionHousingDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d left'**
+  String prostitutionHousingDaysLeft(int days);
+
+  /// No description provided for @prostitutionHousingLessThanOneDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Less than 1 day'**
+  String get prostitutionHousingLessThanOneDay;
+
+  /// No description provided for @prostitutionNightclubShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub'**
+  String get prostitutionNightclubShort;
+
+  /// No description provided for @prostitutionMoveToStreetButton.
+  ///
+  /// In en, this message translates to:
+  /// **'To street'**
+  String get prostitutionMoveToStreetButton;
+
+  /// No description provided for @prostitutionMoveToNightclubButton.
+  ///
+  /// In en, this message translates to:
+  /// **'To nightclub'**
+  String get prostitutionMoveToNightclubButton;
+
+  /// No description provided for @prostitutionEuroPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'€{amount}/hour'**
+  String prostitutionEuroPerHour(String amount);
+
+  /// No description provided for @prostitutionHappinessDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Happiness {label} ({score}%) • Yield {bonus}'**
+  String prostitutionHappinessDetail(String label, int score, String bonus);
+
+  /// No description provided for @prostitutionHousingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing: {status}'**
+  String prostitutionHousingStatus(String status);
+
+  /// No description provided for @prostitutionWeeklyRentEuro.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly rent €{amount}'**
+  String prostitutionWeeklyRentEuro(int amount);
+
+  /// No description provided for @prostitutionWork8h.
+  ///
+  /// In en, this message translates to:
+  /// **'Work 8h'**
+  String get prostitutionWork8h;
+
+  /// No description provided for @prostitutionRestFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest {duration}'**
+  String prostitutionRestFor(String duration);
+
+  /// No description provided for @prostitutionNextShiftIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next shift in {duration}'**
+  String prostitutionNextShiftIn(String duration);
+
+  /// No description provided for @prostitutionTimeHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String prostitutionTimeHoursMinutes(int hours, int minutes);
 
   /// No description provided for @rivalryProtectionTitle.
   ///
@@ -10239,7 +10588,15 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Boost mix: sales x{sales} | price x{price} | vibe x{vibe} | security x{security} | vip player x{vipPlayer} | vip staff x{vipStaff} ({vipAssigned})'**
-  String nightclubStaffBoostMix(String sales, String price, String vibe, String security, String vipPlayer, String vipStaff, String vipAssigned);
+  String nightclubStaffBoostMix(
+    String sales,
+    String price,
+    String vibe,
+    String security,
+    String vipPlayer,
+    String vipStaff,
+    String vipAssigned,
+  );
 
   /// No description provided for @nightclubSelectCrewMember.
   ///
@@ -11379,7 +11736,12 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP — but caught! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.'**
-  String evStreamCrimeSuccessJailed(String crimeName, String reward, String xpGained, int minutes);
+  String evStreamCrimeSuccessJailed(
+    String crimeName,
+    String reward,
+    String xpGained,
+    int minutes,
+  );
 
   /// No description provided for @evStreamCrimeSeizedVehicle.
   ///
@@ -11397,7 +11759,11 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Successfully completed {crimeName}! Criminal record cleared: {count, plural, one{1 conviction} other{{count} convictions}} removed. +{xpGained} XP'**
-  String evStreamCrimeSuccessCleared(String crimeName, int count, String xpGained);
+  String evStreamCrimeSuccessCleared(
+    String crimeName,
+    int count,
+    String xpGained,
+  );
 
   /// No description provided for @evStreamCrimeFailedArrested.
   ///
@@ -11511,7 +11877,12 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Sold {quantity} {symbol} for €{total} (P&L €{pnl})'**
-  String evStreamCryptoSell(String quantity, String symbol, String total, String pnl);
+  String evStreamCryptoSell(
+    String quantity,
+    String symbol,
+    String total,
+    String pnl,
+  );
 
   /// No description provided for @evStreamCryptoAlert.
   ///
@@ -11523,7 +11894,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{order} {side} filled: {quantity} {symbol} at €{price}'**
-  String evStreamCryptoOrderFilled(String order, String side, String quantity, String symbol, String price);
+  String evStreamCryptoOrderFilled(
+    String order,
+    String side,
+    String quantity,
+    String symbol,
+    String price,
+  );
 
   /// No description provided for @evStreamCryptoOrderTriggered.
   ///
@@ -12108,7 +12485,8 @@ abstract class AppLocalizations {
   String get crimeOutcomeDefaultTitle;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -12117,31 +12495,46 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en', 'es', 'fr', 'it', 'nl', 'pl', 'pt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+    'de',
+    'en',
+    'es',
+    'fr',
+    'it',
+    'nl',
+    'pl',
+    'pt',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'de': return AppLocalizationsDe();
-    case 'en': return AppLocalizationsEn();
-    case 'es': return AppLocalizationsEs();
-    case 'fr': return AppLocalizationsFr();
-    case 'it': return AppLocalizationsIt();
-    case 'nl': return AppLocalizationsNl();
-    case 'pl': return AppLocalizationsPl();
-    case 'pt': return AppLocalizationsPt();
+    case 'de':
+      return AppLocalizationsDe();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'it':
+      return AppLocalizationsIt();
+    case 'nl':
+      return AppLocalizationsNl();
+    case 'pl':
+      return AppLocalizationsPl();
+    case 'pt':
+      return AppLocalizationsPt();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

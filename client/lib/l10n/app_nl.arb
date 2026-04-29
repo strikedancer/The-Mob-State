@@ -3776,5 +3776,219 @@
     }
   },
   "prostitutionOccupiedShort": "Bezet",
-  "prostitutionNotApplicable": "N.v.t."
+  "prostitutionNotApplicable": "N.v.t.",
+  "prostitutionBetrayalDefaultMessage": "Verraad! Je nightclub werd getroffen door een informatielek.",
+  "prostitutionLoadError": "Fout bij laden van gegevens",
+  "prostitutionNoDistrictInCountry": "Geen Red Light District in dit land",
+  "prostitutionMovedToStreet": "Verplaatst naar straat",
+  "prostitutionArrestedCannotAssign": "Deze hoer is gearresteerd en kan niet worden toegewezen.",
+  "prostitutionNoNightclubVenue": "Je hebt nog geen nightclub-locatie om personeel toe te wijzen.",
+  "prostitutionNightclubVenueName": "Nightclub",
+  "prostitutionNightclubVenueNumbered": "Nightclub #{id}",
+  "@prostitutionNightclubVenueNumbered": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionAssignedNightclub": "Toegewezen aan nightclub",
+  "prostitutionArrestedCannotWork": "Deze hoer is gearresteerd en kan niet werken.",
+  "prostitutionShiftRestNeeded": "Nog {duration} rust nodig voor de volgende shift.",
+  "@prostitutionShiftRestNeeded": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionWorkShiftCompleted": "Dienst afgerond",
+  "prostitutionNoWorkersToAssign": "Geen beschikbare hoeren om te laten werken.",
+  "prostitutionWorkAllSentCount": "{count} hoeren naar werk gestuurd.",
+  "@prostitutionWorkAllSentCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionWorkAllPartial": "{success} naar werk gestuurd, {failed} mislukt.",
+  "@prostitutionWorkAllPartial": {
+    "placeholders": {
+      "success": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionRecruitedDefault": "Geworven!",
+  "prostitutionRecruitFailed": "Werving mislukt",
+  "prostitutionRecruitConnectionError": "Werving mislukt door een verbindingsfout",
+  "prostitutionEventUpdate": "Evenement bijgewerkt",
+  "prostitutionBuyPropertyFirst": "Koop eerst een huis of appartement",
+  "prostitutionWorkAll": "Alle laten werken ({count})",
+  "@prostitutionWorkAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionNoHousingForRecruit": "Geen vrije huisvestingsslot. Koop of upgrade een huis of appartement voordat je meer hoeren werft.",
+  "prostitutionHousingTitle": "Huisvesting",
+  "prostitutionHousingRentRule": "Elke hoer moet minimaal één shift per {days} dagen werken om de huur te betalen.",
+  "@prostitutionHousingRentRule": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionHousingSlots": "Plekken",
+  "prostitutionHousingFree": "Vrij",
+  "prostitutionHousingHomes": "Woningen",
+  "prostitutionHousingAvgUpgrade": "Gem. upgrade",
+  "prostitutionHousingHappinessBonus": "Gelukbonus",
+  "prostitutionHousingWeeklyRent": "Weekhuur",
+  "prostitutionHousingAtRisk": "In gevaar",
+  "prostitutionHousingSafe": "Veilig",
+  "prostitutionBetrayalActiveDetail": "Verraad geactiveerd: {grams}g drugs in beslag genomen, {licenses} nightclublicentie(s) ingetrokken.",
+  "@prostitutionBetrayalActiveDetail": {
+    "placeholders": {
+      "grams": {
+        "type": "int"
+      },
+      "licenses": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsInsightTitle": "Inzicht verdiensten (actieve hoeren)",
+  "prostitutionEarningsStreetDetail": "Straat: {count} • €{euros}/uur",
+  "@prostitutionEarningsStreetDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsRldDetail": "RLD: {count} • €{euros}/uur",
+  "@prostitutionEarningsRldDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsNightclubDetail": "Nightclub: {count} • €{euros}/uur",
+  "@prostitutionEarningsNightclubDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionEarningsTotalDetail": "Totaal: €{euros}/uur",
+  "@prostitutionEarningsTotalDetail": {
+    "placeholders": {
+      "euros": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionHappinessEcstatic": "Extatisch",
+  "prostitutionHappinessHappy": "Blij",
+  "prostitutionHappinessStable": "Stabiel",
+  "prostitutionHappinessStressed": "Gestrest",
+  "prostitutionHappinessMiserable": "Miserabel",
+  "prostitutionHousingExpired": "Verlopen",
+  "prostitutionHousingDaysLeft": "nog {days} d",
+  "@prostitutionHousingDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionHousingLessThanOneDay": "Minder dan 1 dag",
+  "prostitutionNightclubShort": "Nightclub",
+  "prostitutionMoveToStreetButton": "Naar straat",
+  "prostitutionMoveToNightclubButton": "Naar nightclub",
+  "prostitutionEuroPerHour": "€{amount}/uur",
+  "@prostitutionEuroPerHour": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionHappinessDetail": "Geluk {label} ({score}%) • Opbrengst {bonus}",
+  "@prostitutionHappinessDetail": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "score": {
+        "type": "int"
+      },
+      "bonus": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionHousingStatus": "Huisvesting: {status}",
+  "@prostitutionHousingStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionWeeklyRentEuro": "Weekhuur €{amount}",
+  "@prostitutionWeeklyRentEuro": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "prostitutionWork8h": "Werk 8 uur",
+  "prostitutionRestFor": "Rust {duration}",
+  "@prostitutionRestFor": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionNextShiftIn": "Volgende shift over {duration}",
+  "@prostitutionNextShiftIn": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionTimeHoursMinutes": "{hours} u {minutes} m",
+  "@prostitutionTimeHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }
