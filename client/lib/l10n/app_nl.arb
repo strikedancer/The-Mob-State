@@ -3635,5 +3635,65 @@
         "type": "int"
       }
     }
-  }
+  },
+  "icuIntensiveCareTitle": "Intensive care",
+  "icuInjuredLine": "Je bent ernstig gewond geraakt tijdens je criminele activiteiten.",
+  "icuUnconsciousLine": "Je ligt op de intensive care en bent buiten bewustzijn.",
+  "icuRecoveryTimeLabel": "Herstel tijd:",
+  "icuWakeHp": "Je komt bij met 10 HP",
+  "icuNoActionsHint": "Tijdens deze tijd kun je geen acties uitvoeren.\nWees voorzichtiger met je gezondheid!",
+  "jailBailPaidSnackbar": "🎉 Je bent vrij! Borg betaald: €{amount}",
+  "@jailBailPaidSnackbar": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailInsufficientBail": "Niet genoeg geld voor borg (€{amount})",
+  "@jailInsufficientBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCooldownWait": "Wacht nog {seconds}s",
+  "@jailCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "jailEscapeSuccess": "🎉 Ontsnapping gelukt! Je bent vrij.",
+  "jailEscapeFailed": "Ontsnapping mislukt. Straf verlengd met {penalty}.",
+  "@jailEscapeFailed": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "jailEscapeGenericFailure": "Uitbraak mislukt",
+  "jailErrorPrefix": "Fout: {message}",
+  "@jailErrorPrefix": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "jailTimeLeft": "Resterende tijd",
+  "jailPayBail": "Betaal borg (€{amount})",
+  "@jailPayBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCannotActWhileIn": "Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.",
+  "jailAttemptEscape": "Probeer uitbraak",
+  "jailYouAreInJail": "Je zit in de cel"
 }

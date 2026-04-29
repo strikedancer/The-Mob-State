@@ -3731,6 +3731,76 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get icuIntensiveCareTitle => 'Intensive care';
+
+  @override
+  String get icuInjuredLine =>
+      'Je bent ernstig gewond geraakt tijdens je criminele activiteiten.';
+
+  @override
+  String get icuUnconsciousLine =>
+      'Je ligt op de intensive care en bent buiten bewustzijn.';
+
+  @override
+  String get icuRecoveryTimeLabel => 'Herstel tijd:';
+
+  @override
+  String get icuWakeHp => 'Je komt bij met 10 HP';
+
+  @override
+  String get icuNoActionsHint =>
+      'Tijdens deze tijd kun je geen acties uitvoeren.\nWees voorzichtiger met je gezondheid!';
+
+  @override
+  String jailBailPaidSnackbar(int amount) {
+    return '🎉 Je bent vrij! Borg betaald: €$amount';
+  }
+
+  @override
+  String jailInsufficientBail(int amount) {
+    return 'Niet genoeg geld voor borg (€$amount)';
+  }
+
+  @override
+  String jailCooldownWait(int seconds) {
+    return 'Wacht nog ${seconds}s';
+  }
+
+  @override
+  String get jailEscapeSuccess => '🎉 Ontsnapping gelukt! Je bent vrij.';
+
+  @override
+  String jailEscapeFailed(String penalty) {
+    return 'Ontsnapping mislukt. Straf verlengd met $penalty.';
+  }
+
+  @override
+  String get jailEscapeGenericFailure => 'Uitbraak mislukt';
+
+  @override
+  String jailErrorPrefix(String message) {
+    return 'Fout: $message';
+  }
+
+  @override
+  String get jailTimeLeft => 'Resterende tijd';
+
+  @override
+  String jailPayBail(int amount) {
+    return 'Betaal borg (€$amount)';
+  }
+
+  @override
+  String get jailCannotActWhileIn =>
+      'Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.';
+
+  @override
+  String get jailAttemptEscape => 'Probeer uitbraak';
+
+  @override
+  String get jailYouAreInJail => 'Je zit in de cel';
+
+  @override
   String get vehicleCondition => 'Conditie';
 
   @override

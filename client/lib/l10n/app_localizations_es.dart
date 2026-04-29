@@ -3753,6 +3753,76 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get icuIntensiveCareTitle => 'UCI';
+
+  @override
+  String get icuInjuredLine =>
+      'Resultaste gravemente herido en tus actividades delictivas.';
+
+  @override
+  String get icuUnconsciousLine =>
+      'Estás en cuidados intensivos e inconsciente.';
+
+  @override
+  String get icuRecoveryTimeLabel => 'Tiempo de recuperación:';
+
+  @override
+  String get icuWakeHp => 'Despiertas con 10 HP';
+
+  @override
+  String get icuNoActionsHint =>
+      'No puedes realizar acciones durante este tiempo.\n¡Cuida más tu salud!';
+
+  @override
+  String jailBailPaidSnackbar(int amount) {
+    return '🎉 ¡Libre! Fianza pagada: €$amount';
+  }
+
+  @override
+  String jailInsufficientBail(int amount) {
+    return 'Dinero insuficiente para la fianza (€$amount)';
+  }
+
+  @override
+  String jailCooldownWait(int seconds) {
+    return 'Espera: ${seconds}s';
+  }
+
+  @override
+  String get jailEscapeSuccess => '🎉 ¡Fuga conseguido! Estás libre.';
+
+  @override
+  String jailEscapeFailed(String penalty) {
+    return 'Fuga fallida. Condena ampliada $penalty.';
+  }
+
+  @override
+  String get jailEscapeGenericFailure => 'Fuga fallida';
+
+  @override
+  String jailErrorPrefix(String message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get jailTimeLeft => 'Tiempo restante';
+
+  @override
+  String jailPayBail(int amount) {
+    return 'Pagar fianza (€$amount)';
+  }
+
+  @override
+  String get jailCannotActWhileIn =>
+      'No puedes cometer crímenes, trabajar o viajar mientras cumples condena.';
+
+  @override
+  String get jailAttemptEscape => 'Intentar fuga';
+
+  @override
+  String get jailYouAreInJail => 'Estás en prisión';
+
+  @override
   String get vehicleCondition => 'Condición';
 
   @override

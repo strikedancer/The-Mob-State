@@ -3635,5 +3635,65 @@
         "type": "int"
       }
     }
-  }
+  },
+  "icuIntensiveCareTitle": "Intensive care",
+  "icuInjuredLine": "You were seriously injured during your criminal activities.",
+  "icuUnconsciousLine": "You are now in intensive care and unconscious.",
+  "icuRecoveryTimeLabel": "Recovery time:",
+  "icuWakeHp": "You wake up with 10 HP",
+  "icuNoActionsHint": "You cannot perform actions during this time.\nBe more careful with your health!",
+  "jailBailPaidSnackbar": "🎉 You're free! Bail paid: €{amount}",
+  "@jailBailPaidSnackbar": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailInsufficientBail": "Not enough money for bail (€{amount})",
+  "@jailInsufficientBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCooldownWait": "Please wait: {seconds}s",
+  "@jailCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "jailEscapeSuccess": "Escape succeeded! You are free.",
+  "jailEscapeFailed": "Escape failed. Sentence extended by {penalty}.",
+  "@jailEscapeFailed": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "jailEscapeGenericFailure": "Escape failed",
+  "jailErrorPrefix": "Error: {message}",
+  "@jailErrorPrefix": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "jailTimeLeft": "Time left",
+  "jailPayBail": "Pay bail (€{amount})",
+  "@jailPayBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCannotActWhileIn": "You cannot commit crimes, work, or travel while serving your sentence.",
+  "jailAttemptEscape": "Attempt escape",
+  "jailYouAreInJail": "You are in jail"
 }

@@ -1,13 +1,15 @@
 /**
  * Translation Service
- * Handles email and notification translations (full NL/EN catalogs; other UI languages fall back to EN with targeted patches).
+ * Full email HTML: `en` and `nl`. In-app + FCM push: all allowlisted player languages
+ * (see `playerNotificationBundlesExtra.ts` and `getTranslations`).
  */
 
 import { normalizePlayerLanguage, type SupportedPlayerLanguage } from '../config/supportedLanguages';
+import { NOTIFICATION_BUNDLES_I18N } from '../i18n/playerNotificationBundlesExtra';
 
 export type Language = SupportedPlayerLanguage;
 
-interface Translations {
+export interface Translations {
   email: {
     verification: {
       subject: string;
@@ -355,11 +357,11 @@ const translations: Record<'en' | 'nl', Translations> = {
       cryptoTradeExecuted: {
         title: (side) => side === 'BUY' ? 'Crypto Buy Executed' : 'Crypto Sell Executed',
         body: (symbol, quantity, totalValue, realizedProfit) => {
-          const base = `${sideLabel(side)} ${quantity} ${symbol} for EUR ${totalValue}`;
+          const base = `${quantity} ${symbol} for EUR ${totalValue}`;
           if (realizedProfit !== undefined) {
-            return `${base} (PnL: EUR ${realizedProfit})`;
+            return `Trade: ${base} (PnL: EUR ${realizedProfit})`;
           }
-          return base;
+          return `Trade: ${base}`;
         },
       },
       cryptoPriceAlert: {
@@ -564,11 +566,11 @@ const translations: Record<'en' | 'nl', Translations> = {
       cryptoTradeExecuted: {
         title: (side) => side === 'BUY' ? 'Crypto aankoop uitgevoerd' : 'Crypto verkoop uitgevoerd',
         body: (symbol, quantity, totalValue, realizedProfit) => {
-          const base = `${sideLabelNl(side)} ${quantity} ${symbol} voor EUR ${totalValue}`;
+          const base = `${quantity} ${symbol} voor EUR ${totalValue}`;
           if (realizedProfit !== undefined) {
-            return `${base} (Resultaat: EUR ${realizedProfit})`;
+            return `Transactie: ${base} (Resultaat: EUR ${realizedProfit})`;
           }
-          return base;
+          return `Transactie: ${base}`;
         },
       },
       cryptoPriceAlert: {
@@ -696,93 +698,6 @@ function impactLabelNl(impact: 'BULLISH' | 'BEARISH' | 'NEUTRAL'): string {
   return 'Neutraal';
 }
 
-const supportTicketPushByLocale: Partial<
-  Record<
-    SupportedPlayerLanguage,
-    { title: string; body: (ticketId: string, subject: string) => string }
-  >
-> = {
-  es: {
-    title: 'Actualización de soporte',
-    body: (ticketId, subject) =>
-      `El ticket #${ticketId} tiene una nueva respuesta: ${subject}`,
-  },
-  de: {
-    title: 'Support-Ticket aktualisiert',
-    body: (ticketId, subject) =>
-      `Ticket #${ticketId}: neue Support-Antwort — ${subject}`,
-  },
-  fr: {
-    title: 'Mise à jour du ticket support',
-    body: (ticketId, subject) =>
-      `Le ticket #${ticketId} a une nouvelle réponse : ${subject}`,
-  },
-  it: {
-    title: 'Aggiornamento ticket di supporto',
-    body: (ticketId, subject) =>
-      `Il ticket #${ticketId} ha una nuova risposta: ${subject}`,
-  },
-  pl: {
-    title: 'Aktualizacja zgłoszenia',
-    body: (ticketId, subject) =>
-      `Zgłoszenie #${ticketId} — nowa odpowiedź pomocy: ${subject}`,
-  },
-  pt: {
-    title: 'Atualização do ticket de suporte',
-    body: (ticketId, subject) =>
-      `O ticket #${ticketId} tem uma nova resposta: ${subject}`,
-  },
-};
-
-const cooldownExpiredPushByLocale: Partial<
-  Record<
-    SupportedPlayerLanguage,
-    { title: string; body: (actionName: string) => string }
-  >
-> = {
-  es: {
-    title: '⏰ ¡Listo para actuar!',
-    body: (actionName) =>
-      `El tiempo de espera de ${actionName} ha terminado. Vuelve a por ello.`,
-  },
-  de: {
-    title: '⏰ Bereit für die Aktion!',
-    body: (actionName) => `Deine ${actionName}-Abklingzeit ist abgelaufen. Lege los!`,
-  },
-  fr: {
-    title: "⏰ C'est l'heure d'agir !",
-    body: (actionName) => `Le délai d'attente (${actionName}) est terminé. C'est reparti !`,
-  },
-  it: {
-    title: '⏰ Pronto all’azione!',
-    body: (actionName) => `Il cooldown per ${actionName} è scaduto. Torna in azione!`,
-  },
-  pl: {
-    title: '⏰ Gotowe do akcji!',
-    body: (actionName) => `Czas odniesienia (${actionName}) minął. Wracaj do gry!`,
-  },
-  pt: {
-    title: '⏰ Hora de agir!',
-    body: (actionName) => `O tempo de espera de ${actionName} acabou. Volte ao jogo!`,
-  },
-};
-
-function withPlayerLanguagePushPatches(base: Translations, lang: SupportedPlayerLanguage): Translations {
-  const st = supportTicketPushByLocale[lang];
-  const cd = cooldownExpiredPushByLocale[lang];
-  if (!st && !cd) {
-    return base;
-  }
-  return {
-    ...base,
-    notification: {
-      ...base.notification,
-      ...(st ? { supportTicketUpdate: st } : {}),
-      ...(cd ? { cooldownExpired: cd } : {}),
-    },
-  };
-}
-
 export const translationService = {
   /**
    * Get translations for a specific language
@@ -795,12 +710,16 @@ export const translationService = {
     if (lang === 'en') {
       return translations.en;
     }
-    return withPlayerLanguagePushPatches(translations.en, lang);
+    const extra = NOTIFICATION_BUNDLES_I18N[lang];
+    if (extra) {
+      return { ...translations.en, notification: extra };
+    }
+    return translations.en;
   },
 
   /**
    * Player UI language (BCP-47 base codes supported by the game client).
-   * Email HTML templates exist for `nl` and `en` only; other codes still receive correct **push** copy where patched (e.g. support ticket updates).
+   * Email HTML templates exist for `nl` and `en` only. Push/inbox copy for `de`, `fr`, `es`, `it`, `pl`, `pt` comes from `playerNotificationBundlesExtra.ts`.
    */
   getPlayerLanguage(player: { preferredLanguage?: string }): Language {
     return normalizePlayerLanguage(player.preferredLanguage);

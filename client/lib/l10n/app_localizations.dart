@@ -6908,6 +6908,114 @@ abstract class AppLocalizations {
   /// **'-{percent}% durability'**
   String crimeOutcomeToolDurabilityValue(int percent);
 
+  /// No description provided for @icuIntensiveCareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Intensive care'**
+  String get icuIntensiveCareTitle;
+
+  /// No description provided for @icuInjuredLine.
+  ///
+  /// In en, this message translates to:
+  /// **'You were seriously injured during your criminal activities.'**
+  String get icuInjuredLine;
+
+  /// No description provided for @icuUnconsciousLine.
+  ///
+  /// In en, this message translates to:
+  /// **'You are now in intensive care and unconscious.'**
+  String get icuUnconsciousLine;
+
+  /// No description provided for @icuRecoveryTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery time:'**
+  String get icuRecoveryTimeLabel;
+
+  /// No description provided for @icuWakeHp.
+  ///
+  /// In en, this message translates to:
+  /// **'You wake up with 10 HP'**
+  String get icuWakeHp;
+
+  /// No description provided for @icuNoActionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot perform actions during this time.\nBe more careful with your health!'**
+  String get icuNoActionsHint;
+
+  /// No description provided for @jailBailPaidSnackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 You\'re free! Bail paid: €{amount}'**
+  String jailBailPaidSnackbar(int amount);
+
+  /// No description provided for @jailInsufficientBail.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money for bail (€{amount})'**
+  String jailInsufficientBail(int amount);
+
+  /// No description provided for @jailCooldownWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait: {seconds}s'**
+  String jailCooldownWait(int seconds);
+
+  /// No description provided for @jailEscapeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Escape succeeded! You are free.'**
+  String get jailEscapeSuccess;
+
+  /// No description provided for @jailEscapeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Escape failed. Sentence extended by {penalty}.'**
+  String jailEscapeFailed(String penalty);
+
+  /// No description provided for @jailEscapeGenericFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Escape failed'**
+  String get jailEscapeGenericFailure;
+
+  /// No description provided for @jailErrorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String jailErrorPrefix(String message);
+
+  /// No description provided for @jailTimeLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Time left'**
+  String get jailTimeLeft;
+
+  /// No description provided for @jailPayBail.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay bail (€{amount})'**
+  String jailPayBail(int amount);
+
+  /// No description provided for @jailCannotActWhileIn.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot commit crimes, work, or travel while serving your sentence.'**
+  String get jailCannotActWhileIn;
+
+  /// No description provided for @jailAttemptEscape.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt escape'**
+  String get jailAttemptEscape;
+
+  /// No description provided for @jailYouAreInJail.
+  ///
+  /// In en, this message translates to:
+  /// **'You are in jail'**
+  String get jailYouAreInJail;
+
   /// No description provided for @vehicleCondition.
   ///
   /// In en, this message translates to:

@@ -4,6 +4,9 @@
  * Preserves {placeholders} in strings. Keeps @metadata blocks identical to English.
  *
  * Usage: node scripts/translate_app_arb_from_en.mjs
+ *        node scripts/translate_app_arb_from_en.mjs --langs=de,fr,it,pl,pt
+ * (Omit `es` and `nl` if those ARBs are hand-curated; this overwrites the whole target file.)
+ *
  * Env: optional — uses scripts/.translate_cache.json
  */
 import fs from 'fs';
@@ -18,7 +21,15 @@ const l10nDir = path.join(root, 'client', 'lib', 'l10n');
 const templatePath = path.join(l10nDir, 'app_en.arb');
 const cachePath = path.join(__dirname, '.translate_cache.json');
 
-const TARGETS = ['de', 'fr', 'es', 'it', 'pl', 'pt'];
+const defaultTargets = ['de', 'fr', 'es', 'it', 'pl', 'pt'];
+const langsArg = process.argv.find((a) => a.startsWith('--langs='));
+const TARGETS = langsArg
+  ? langsArg
+      .split('=')[1]
+      .split(',')
+      .map((c) => c.trim().toLowerCase())
+      .filter((c) => /^[a-z]{2}$/.test(c))
+  : defaultTargets;
 const DELAY_MS = 120;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -82,6 +93,11 @@ async function trText(text, to) {
 }
 
 async function main() {
+  if (TARGETS.length === 0) {
+    console.error('No valid --langs= codes (expected e.g. de,fr,it,pl,pt).');
+    process.exit(1);
+  }
+  console.log('translate_app_arb_from_en: target locales:', TARGETS.join(', '));
   const en = JSON.parse(fs.readFileSync(templatePath, 'utf8'));
   const keys = Object.keys(en);
 

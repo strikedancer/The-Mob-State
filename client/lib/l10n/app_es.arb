@@ -3635,5 +3635,65 @@
         "type": "int"
       }
     }
-  }
+  },
+  "icuIntensiveCareTitle": "UCI",
+  "icuInjuredLine": "Resultaste gravemente herido en tus actividades delictivas.",
+  "icuUnconsciousLine": "Estás en cuidados intensivos e inconsciente.",
+  "icuRecoveryTimeLabel": "Tiempo de recuperación:",
+  "icuWakeHp": "Despiertas con 10 HP",
+  "icuNoActionsHint": "No puedes realizar acciones durante este tiempo.\n¡Cuida más tu salud!",
+  "jailBailPaidSnackbar": "🎉 ¡Libre! Fianza pagada: €{amount}",
+  "@jailBailPaidSnackbar": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailInsufficientBail": "Dinero insuficiente para la fianza (€{amount})",
+  "@jailInsufficientBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCooldownWait": "Espera: {seconds}s",
+  "@jailCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "jailEscapeSuccess": "🎉 ¡Fuga conseguida! Estás libre.",
+  "jailEscapeFailed": "Fuga fallida. Condena ampliada {penalty}.",
+  "@jailEscapeFailed": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "jailEscapeGenericFailure": "Fuga fallida",
+  "jailErrorPrefix": "Error: {message}",
+  "@jailErrorPrefix": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "jailTimeLeft": "Tiempo restante",
+  "jailPayBail": "Pagar fianza (€{amount})",
+  "@jailPayBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCannotActWhileIn": "No puedes cometer crímenes, trabajar o viajar mientras cumples condena.",
+  "jailAttemptEscape": "Intentar fuga",
+  "jailYouAreInJail": "Estás en prisión"
 }

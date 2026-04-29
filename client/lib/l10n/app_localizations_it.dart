@@ -3746,6 +3746,76 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get icuIntensiveCareTitle => 'Intensive care';
+
+  @override
+  String get icuInjuredLine =>
+      'You were seriously injured during your criminal activities.';
+
+  @override
+  String get icuUnconsciousLine =>
+      'You are now in intensive care and unconscious.';
+
+  @override
+  String get icuRecoveryTimeLabel => 'Recovery time:';
+
+  @override
+  String get icuWakeHp => 'You wake up with 10 HP';
+
+  @override
+  String get icuNoActionsHint =>
+      'You cannot perform actions during this time.\nBe more careful with your health!';
+
+  @override
+  String jailBailPaidSnackbar(int amount) {
+    return '🎉 You\'re free! Bail paid: €$amount';
+  }
+
+  @override
+  String jailInsufficientBail(int amount) {
+    return 'Not enough money for bail (€$amount)';
+  }
+
+  @override
+  String jailCooldownWait(int seconds) {
+    return 'Please wait: ${seconds}s';
+  }
+
+  @override
+  String get jailEscapeSuccess => 'Escape succeeded! You are free.';
+
+  @override
+  String jailEscapeFailed(String penalty) {
+    return 'Escape failed. Sentence extended by $penalty.';
+  }
+
+  @override
+  String get jailEscapeGenericFailure => 'Escape failed';
+
+  @override
+  String jailErrorPrefix(String message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get jailTimeLeft => 'Time left';
+
+  @override
+  String jailPayBail(int amount) {
+    return 'Pay bail (€$amount)';
+  }
+
+  @override
+  String get jailCannotActWhileIn =>
+      'You cannot commit crimes, work, or travel while serving your sentence.';
+
+  @override
+  String get jailAttemptEscape => 'Attempt escape';
+
+  @override
+  String get jailYouAreInJail => 'You are in jail';
+
+  @override
   String get vehicleCondition => 'Condizione';
 
   @override

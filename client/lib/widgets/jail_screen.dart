@@ -178,10 +178,9 @@ class _JailOverlayState extends State<JailOverlay> {
           await authProvider.refreshPlayer();
 
             final amount =
-              (data['params']?['amount'] as num?)?.toInt() ??
-              _calculateDisplayedBailAmount();
+                (data['params']?['amount'] as num?)?.toInt() ??
+                _calculateDisplayedBailAmount();
           final l10n = AppLocalizations.of(context)!;
-          final isDutch = l10n.localeName == 'nl';
 
           _timer?.cancel();
           setState(() {
@@ -189,9 +188,7 @@ class _JailOverlayState extends State<JailOverlay> {
           });
 
           _showTopRightNotification(
-            isDutch
-                ? '🎉 Je bent vrij! Borg betaald: €$amount'
-                : '🎉 You\'re free! Bail paid: €$amount',
+            l10n.jailBailPaidSnackbar(amount),
             backgroundColor: Colors.green.shade700,
             icon: Icons.check_circle_outline,
           );
@@ -202,14 +199,11 @@ class _JailOverlayState extends State<JailOverlay> {
       } else if (data['event'] == 'error.insufficient_funds') {
         if (mounted) {
           final l10n = AppLocalizations.of(context)!;
-          final isDutch = l10n.localeName == 'nl';
           final requiredAmount =
               (data['params']?['required'] as num?)?.toInt() ??
               _calculateDisplayedBailAmount();
           _showTopRightNotification(
-            isDutch
-                ? 'Niet genoeg geld voor borg (€$requiredAmount)'
-                : 'Not enough money for bail (€$requiredAmount)',
+            l10n.jailInsufficientBail(requiredAmount),
             backgroundColor: Colors.red.shade700,
             icon: Icons.error_outline,
           );
@@ -217,14 +211,11 @@ class _JailOverlayState extends State<JailOverlay> {
       } else if (data['event'] == 'error.cooldown') {
         if (mounted) {
           final l10n = AppLocalizations.of(context)!;
-          final isDutch = l10n.localeName == 'nl';
           final params = data['params'] as Map<String, dynamic>?;
           final remainingSeconds =
               (params?['remainingSeconds'] as num?)?.toInt() ?? 0;
           _showTopRightNotification(
-            isDutch
-                ? 'Cooldown actief: wacht nog ${remainingSeconds}s'
-                : 'Cooldown active: wait ${remainingSeconds}s',
+            l10n.jailCooldownWait(remainingSeconds),
             backgroundColor: Colors.orange.shade700,
             icon: Icons.hourglass_top,
           );
@@ -261,7 +252,6 @@ class _JailOverlayState extends State<JailOverlay> {
       if (!mounted) return;
 
       final l10n = AppLocalizations.of(context)!;
-      final isDutch = l10n.localeName == 'nl';
 
       if (event == 'prison.escape_success') {
         _timer?.cancel();
@@ -270,9 +260,7 @@ class _JailOverlayState extends State<JailOverlay> {
         });
 
         _showTopRightNotification(
-          isDutch
-              ? '🎉 Ontsnapping gelukt! Je bent vrij.'
-              : '🎉 Escape succeeded! You are free.',
+          l10n.jailEscapeSuccess,
           backgroundColor: Colors.green.shade700,
           icon: Icons.check_circle_outline,
         );
@@ -288,35 +276,35 @@ class _JailOverlayState extends State<JailOverlay> {
           });
         }
 
-        final penaltyText = '${formatAdaptiveDurationFromSeconds(penaltySeconds, localeName: isDutch ? 'nl' : 'en')}';
+        final penaltyText = formatAdaptiveDurationFromSeconds(
+          penaltySeconds,
+          localeName: l10n.localeName,
+        );
 
         _showTopRightNotification(
-          isDutch
-              ? '❌ Ontsnapping mislukt. Straf verlengd met $penaltyText.'
-              : '❌ Escape failed. Sentence extended by $penaltyText.',
+          l10n.jailEscapeFailed(penaltyText),
           backgroundColor: Colors.orange.shade700,
           icon: Icons.warning_amber_rounded,
         );
       } else if (event == 'error.cooldown') {
         final remainingSeconds = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
         _showTopRightNotification(
-          isDutch
-              ? 'Cooldown actief: wacht nog ${remainingSeconds}s'
-              : 'Cooldown active: wait ${remainingSeconds}s',
+          l10n.jailCooldownWait(remainingSeconds),
           backgroundColor: Colors.red.shade700,
           icon: Icons.hourglass_top,
         );
       } else {
         _showTopRightNotification(
-          isDutch ? 'Uitbraak mislukt' : 'Escape failed',
+          l10n.jailEscapeGenericFailure,
           backgroundColor: Colors.red.shade700,
           icon: Icons.error_outline,
         );
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         _showTopRightNotification(
-          'Error: $e',
+          l10n.jailErrorPrefix(e.toString()),
           backgroundColor: Colors.red.shade700,
           icon: Icons.error_outline,
         );
@@ -333,7 +321,6 @@ class _JailOverlayState extends State<JailOverlay> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDutch = l10n.localeName == 'nl';
     final screenSize = MediaQuery.of(context).size;
     final compactWidth = screenSize.width < 430;
     final compactHeight = screenSize.height < 760;
@@ -375,9 +362,7 @@ class _JailOverlayState extends State<JailOverlay> {
           builder: (context, constraints) {
             final narrowHeader = constraints.maxWidth < 430;
             final bodyPadding = EdgeInsets.all(compact ? 16 : 20);
-            final buttonLabel = isDutch
-                ? 'Betaal Borg €${_calculateDisplayedBailAmount()}'
-                : 'Pay Bail €${_calculateDisplayedBailAmount()}';
+            final buttonLabel = l10n.jailPayBail(_calculateDisplayedBailAmount());
 
             Widget buildTimerChip() {
               return Container(
@@ -394,7 +379,7 @@ class _JailOverlayState extends State<JailOverlay> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      isDutch ? 'Resterende tijd' : 'Time left',
+                      l10n.jailTimeLeft,
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: compact ? 10.5 : 11,
@@ -430,9 +415,7 @@ class _JailOverlayState extends State<JailOverlay> {
                         border: Border.all(color: Colors.white24),
                       ),
                       child: Text(
-                        isDutch
-                            ? 'Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.'
-                            : 'You cannot commit crimes, work, or travel while serving your sentence.',
+                        l10n.jailCannotActWhileIn,
                         style: TextStyle(
                           fontSize: compact ? 14 : 15,
                           color: Colors.white,
@@ -493,7 +476,7 @@ class _JailOverlayState extends State<JailOverlay> {
                               )
                             : const Icon(Icons.lock_open),
                         label: Text(
-                          isDutch ? 'Probeer uitbraak' : 'Attempt escape',
+                          l10n.jailAttemptEscape,
                           textAlign: TextAlign.center,
                         ),
                         style: OutlinedButton.styleFrom(
@@ -533,7 +516,7 @@ class _JailOverlayState extends State<JailOverlay> {
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    isDutch ? 'Je zit in de cel' : 'You are in jail',
+                                    l10n.jailYouAreInJail,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -565,7 +548,7 @@ class _JailOverlayState extends State<JailOverlay> {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
-                                      isDutch ? 'Je zit in de cel' : 'You are in jail',
+                                      l10n.jailYouAreInJail,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(

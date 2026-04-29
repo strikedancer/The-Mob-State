@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import 'responsive_modal.dart';
 
@@ -77,7 +78,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
       return const SizedBox.shrink();
     }
 
-    final isDutch = Localizations.localeOf(context).languageCode == 'nl';
+    final l10n = AppLocalizations.of(context)!;
 
     return ResponsiveModalLayout(
       backgroundColor: Colors.black.withOpacity(0.95),
@@ -129,7 +130,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
                     ),
                     SizedBox(height: compact ? 24 : 40),
                     Text(
-                      isDutch ? '🏥 INTENSIVE CARE' : '🏥 INTENSIVE CARE',
+                      '🏥 ${l10n.icuIntensiveCareTitle}',
                       style: TextStyle(
                         fontSize: compact ? 24 : 32,
                         fontWeight: FontWeight.bold,
@@ -150,9 +151,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
                       child: Column(
                         children: [
                           Text(
-                            isDutch
-                                ? 'Je bent ernstig gewond geraakt tijdens je criminele activiteiten.'
-                                : 'You were seriously injured during your criminal activities.',
+                            l10n.icuInjuredLine,
                             style: TextStyle(
                               fontSize: compact ? 14 : 16,
                               color: Colors.white70,
@@ -161,9 +160,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
                           ),
                           SizedBox(height: compact ? 14 : 20),
                           Text(
-                            isDutch
-                                ? 'Je ligt nu op de intensive care en bent buiten bewustzijn.'
-                                : 'You are now in intensive care and unconscious.',
+                            l10n.icuUnconsciousLine,
                             style: TextStyle(
                               fontSize: compact ? 13 : 14,
                               color: Colors.white60,
@@ -184,7 +181,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
                             child: Column(
                               children: [
                                 Text(
-                                  isDutch ? 'Herstel tijd:' : 'Recovery time:',
+                                  l10n.icuRecoveryTimeLabel,
                                   style: TextStyle(
                                     fontSize: compact ? 13 : 14,
                                     color: Colors.white54,
@@ -205,9 +202,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            isDutch
-                                ? 'Je komt bij met 10 HP'
-                                : 'You wake up with 10 HP',
+                            l10n.icuWakeHp,
                             style: TextStyle(
                               fontSize: compact ? 11 : 12,
                               color: Colors.green[300],
@@ -238,9 +233,7 @@ class _ICUOverlayState extends State<ICUOverlay> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              isDutch
-                                  ? 'Tijdens deze tijd kun je geen acties uitvoeren.\nWees voorzichtiger met je gezondheid!'
-                                  : 'You cannot perform actions during this time.\nBe more careful with your health!',
+                              l10n.icuNoActionsHint,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.white60,
