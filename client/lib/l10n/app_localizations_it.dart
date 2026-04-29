@@ -691,6 +691,81 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get messageSystemBadge => 'SISTEMA';
+
+  @override
+  String get messageSystemInboxPreview => 'Obiettivi e messaggi di sistema';
+
+  @override
+  String get messageSystemThreadSubtitle => 'Obiettivi e messaggi di sistema';
+
+  @override
+  String get messageSystemThreadEmptyDetail =>
+      'Obiettivi e messaggi di sistema compaiono qui automaticamente.';
+
+  @override
+  String get messageSendFirst => 'Invia il primo messaggio!';
+
+  @override
+  String chatFriendRankLine(int rank) {
+    return '★ Grado $rank';
+  }
+
+  @override
+  String errorLoadingMessages(String error) {
+    return 'Errore durante il caricamento dei messaggi: $error';
+  }
+
+  @override
+  String get messageDeleteOwnOnly => 'Puoi eliminare solo i tuoi messaggi';
+
+  @override
+  String get messageDeleteTitle => 'Elimina messaggio';
+
+  @override
+  String get messageDeleteBody =>
+      'Questo messaggio verrà eliminato in modo permanente.';
+
+  @override
+  String get messageSendFailed => 'Invio del messaggio non riuscito';
+
+  @override
+  String get messageDeleteFailed => 'Eliminazione del messaggio non riuscita';
+
+  @override
+  String get investigationWindowExpired =>
+      'Finestra d’indagine scaduta (24 ore).';
+
+  @override
+  String get investigationStartedInboxHint =>
+      'Indagine avviata. Controlla la posta in arrivo per il rapporto del detective.';
+
+  @override
+  String get investigationAlreadyInProgress =>
+      'Questa indagine è già in corso o completata.';
+
+  @override
+  String investigationStartFailed(String error) {
+    return 'Impossibile avviare l’indagine: $error';
+  }
+
+  @override
+  String get investigationExpired => 'Indagine scaduta';
+
+  @override
+  String get investigationStarted => 'Indagine avviata';
+
+  @override
+  String get investigationStarting => 'Avvio in corso...';
+
+  @override
+  String get startMurderInvestigation => 'Avvia indagine sull’omicidio';
+
+  @override
+  String get systemMessagesReadOnlyHint =>
+      'Non è possibile rispondere ai messaggi di sistema';
+
+  @override
   String get helpAndGuide => 'Aiuto e guida';
 
   @override

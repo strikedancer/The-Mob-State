@@ -1376,6 +1376,132 @@ abstract class AppLocalizations {
   /// **'Error loading conversations: {error}'**
   String errorLoadingConversations(String error);
 
+  /// No description provided for @messageSystemBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'SYSTEM'**
+  String get messageSystemBadge;
+
+  /// No description provided for @messageSystemInboxPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements and system messages'**
+  String get messageSystemInboxPreview;
+
+  /// No description provided for @messageSystemThreadSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements and system messages'**
+  String get messageSystemThreadSubtitle;
+
+  /// No description provided for @messageSystemThreadEmptyDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements and system messages appear here automatically.'**
+  String get messageSystemThreadEmptyDetail;
+
+  /// No description provided for @messageSendFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the first message!'**
+  String get messageSendFirst;
+
+  /// No description provided for @chatFriendRankLine.
+  ///
+  /// In en, this message translates to:
+  /// **'★ Rank {rank}'**
+  String chatFriendRankLine(int rank);
+
+  /// No description provided for @errorLoadingMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading messages: {error}'**
+  String errorLoadingMessages(String error);
+
+  /// No description provided for @messageDeleteOwnOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only delete your own messages'**
+  String get messageDeleteOwnOnly;
+
+  /// No description provided for @messageDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete message'**
+  String get messageDeleteTitle;
+
+  /// No description provided for @messageDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This message will be permanently deleted.'**
+  String get messageDeleteBody;
+
+  /// No description provided for @messageSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send message'**
+  String get messageSendFailed;
+
+  /// No description provided for @messageDeleteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete message'**
+  String get messageDeleteFailed;
+
+  /// No description provided for @investigationWindowExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation window expired (24 hours).'**
+  String get investigationWindowExpired;
+
+  /// No description provided for @investigationStartedInboxHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation started. Check your inbox for the detective report.'**
+  String get investigationStartedInboxHint;
+
+  /// No description provided for @investigationAlreadyInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'This investigation is already in progress or completed.'**
+  String get investigationAlreadyInProgress;
+
+  /// No description provided for @investigationStartFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start investigation: {error}'**
+  String investigationStartFailed(String error);
+
+  /// No description provided for @investigationExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation expired'**
+  String get investigationExpired;
+
+  /// No description provided for @investigationStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation started'**
+  String get investigationStarted;
+
+  /// No description provided for @investigationStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting...'**
+  String get investigationStarting;
+
+  /// No description provided for @startMurderInvestigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Start murder investigation'**
+  String get startMurderInvestigation;
+
+  /// No description provided for @systemMessagesReadOnlyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'System messages cannot be replied to'**
+  String get systemMessagesReadOnlyHint;
+
   /// No description provided for @helpAndGuide.
   ///
   /// In en, this message translates to:

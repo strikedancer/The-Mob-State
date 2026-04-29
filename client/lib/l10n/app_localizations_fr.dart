@@ -699,6 +699,80 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get messageSystemBadge => 'SYSTÈME';
+
+  @override
+  String get messageSystemInboxPreview => 'Succès et messages système';
+
+  @override
+  String get messageSystemThreadSubtitle => 'Succès et messages système';
+
+  @override
+  String get messageSystemThreadEmptyDetail =>
+      'Les succès et messages système s’affichent ici automatiquement.';
+
+  @override
+  String get messageSendFirst => 'Envoyez le premier message !';
+
+  @override
+  String chatFriendRankLine(int rank) {
+    return '★ Rang $rank';
+  }
+
+  @override
+  String errorLoadingMessages(String error) {
+    return 'Erreur de chargement des messages : $error';
+  }
+
+  @override
+  String get messageDeleteOwnOnly =>
+      'Vous ne pouvez supprimer que vos propres messages';
+
+  @override
+  String get messageDeleteTitle => 'Supprimer le message';
+
+  @override
+  String get messageDeleteBody => 'Ce message sera définitivement supprimé.';
+
+  @override
+  String get messageSendFailed => 'Échec de l’envoi du message';
+
+  @override
+  String get messageDeleteFailed => 'Échec de la suppression du message';
+
+  @override
+  String get investigationWindowExpired => 'Fenêtre d’enquête expirée (24 h).';
+
+  @override
+  String get investigationStartedInboxHint =>
+      'Enquête lancée. Consulte ta boîte de réception pour le rapport du détective.';
+
+  @override
+  String get investigationAlreadyInProgress =>
+      'Cette enquête est déjà en cours ou terminée.';
+
+  @override
+  String investigationStartFailed(String error) {
+    return 'Impossible de lancer l’enquête : $error';
+  }
+
+  @override
+  String get investigationExpired => 'Enquête expirée';
+
+  @override
+  String get investigationStarted => 'Enquête lancée';
+
+  @override
+  String get investigationStarting => 'Démarrage...';
+
+  @override
+  String get startMurderInvestigation => 'Lancer l’enquête sur le meurtre';
+
+  @override
+  String get systemMessagesReadOnlyHint =>
+      'Les messages système ne peuvent pas recevoir de réponse';
+
+  @override
   String get helpAndGuide => 'Aide et guide';
 
   @override

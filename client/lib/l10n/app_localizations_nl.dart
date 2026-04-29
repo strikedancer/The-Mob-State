@@ -687,6 +687,81 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get messageSystemBadge => 'SYSTEEM';
+
+  @override
+  String get messageSystemInboxPreview => 'Achievements en systeemberichten';
+
+  @override
+  String get messageSystemThreadSubtitle => 'Achievements en systeemberichten';
+
+  @override
+  String get messageSystemThreadEmptyDetail =>
+      'Achievement- en systeemberichten verschijnen hier automatisch.';
+
+  @override
+  String get messageSendFirst => 'Stuur het eerste bericht!';
+
+  @override
+  String chatFriendRankLine(int rank) {
+    return '★ Rank $rank';
+  }
+
+  @override
+  String errorLoadingMessages(String error) {
+    return 'Fout bij laden berichten: $error';
+  }
+
+  @override
+  String get messageDeleteOwnOnly =>
+      'Je kunt alleen je eigen berichten verwijderen';
+
+  @override
+  String get messageDeleteTitle => 'Bericht verwijderen';
+
+  @override
+  String get messageDeleteBody => 'Dit bericht wordt permanent verwijderd.';
+
+  @override
+  String get messageSendFailed => 'Versturen mislukt';
+
+  @override
+  String get messageDeleteFailed => 'Verwijderen mislukt';
+
+  @override
+  String get investigationWindowExpired =>
+      'Onderzoeksvenster verlopen (24 uur).';
+
+  @override
+  String get investigationStartedInboxHint =>
+      'Onderzoek gestart. Check je inbox voor het detective-rapport.';
+
+  @override
+  String get investigationAlreadyInProgress =>
+      'Dit onderzoek loopt al of is al afgerond.';
+
+  @override
+  String investigationStartFailed(String error) {
+    return 'Onderzoek starten mislukt: $error';
+  }
+
+  @override
+  String get investigationExpired => 'Onderzoek verlopen';
+
+  @override
+  String get investigationStarted => 'Onderzoek gestart';
+
+  @override
+  String get investigationStarting => 'Bezig...';
+
+  @override
+  String get startMurderInvestigation => 'Start moordonderzoek';
+
+  @override
+  String get systemMessagesReadOnlyHint =>
+      'Systeemberichten kunnen niet beantwoord worden';
+
+  @override
   String get helpAndGuide => 'Help & Guide';
 
   @override

@@ -10,6 +10,7 @@ import '../widgets/message_bubble.dart';
 import '../utils/avatar_helper.dart';
 import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../l10n/app_localizations.dart';
 
 class ChatScreen extends StatefulWidget {
   final int friendId;
@@ -43,9 +44,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final Set<int> _investigationCompletedCaseIds = <int>{};
 
   bool get _isSystemThread => widget.friendId == 0;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -170,10 +168,11 @@ class _ChatScreenState extends State<ChatScreen> {
     } catch (e) {
       print('[ChatScreen] Error loading messages: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('${_tr('Fout bij laden berichten', 'Error loading messages')}: $e'),
+            content: Text(l10n.errorLoadingMessages(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -198,6 +197,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final message = _messageController.text.trim();
     if (message.isEmpty || _sending) return;
 
+    final l10n = AppLocalizations.of(context)!;
     setState(() => _sending = true);
 
     try {
@@ -214,7 +214,7 @@ class _ChatScreenState extends State<ChatScreen> {
       } else {
         final data = jsonDecode(response.body);
         final errorMessage =
-            data['params']?['error'] ?? data['error'] ?? 'Fout bij versturen';
+            data['params']?['error'] ?? data['error'] ?? l10n.messageSendFailed;
         throw Exception(errorMessage);
       }
     } catch (e) {
@@ -223,7 +223,7 @@ class _ChatScreenState extends State<ChatScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('${_tr('Fout', 'Error')}: $e'),
+            content: Text(l10n.error(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -234,11 +234,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _deleteMessage(DirectMessage message) async {
+    final l10n = AppLocalizations.of(context)!;
     if (message.senderId != _currentUserId) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Je kunt alleen je eigen berichten verwijderen', 'You can only delete your own messages')),
+          content: Text(l10n.messageDeleteOwnOnly),
           backgroundColor: Colors.red,
         ),
       );
@@ -247,12 +248,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) {
+        final dl10n = AppLocalizations.of(context)!;
+        return AlertDialog(
         backgroundColor: const Color(0xFF2A2A2A),
         title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
+          dl10n.confirmAction,
           style: const TextStyle(color: Colors.white),
         ),
         content: Column(
@@ -260,9 +261,7 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Bericht verwijderen'
-                  : 'Delete message',
+              dl10n.messageDeleteTitle,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -270,9 +269,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Dit bericht wordt permanent verwijderd.'
-                  : 'This message will be permanently deleted.',
+              dl10n.messageDeleteBody,
               style: const TextStyle(color: Colors.grey),
             ),
           ],
@@ -281,22 +278,19 @@ class _ChatScreenState extends State<ChatScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Annuleren'
-                  : 'Cancel',
+              dl10n.cancel,
             ),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Verwijderen'
-                  : 'Delete',
+              dl10n.delete,
             ),
           ),
         ],
-      ),
+      );
+      },
     );
 
     if (confirm != true) return;
@@ -306,7 +300,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final response = await apiClient.delete('/messages/${message.id}');
 
       if (response.statusCode != 200) {
-        throw Exception('Fout bij verwijderen');
+        throw Exception(l10n.messageDeleteFailed);
       }
     } catch (e) {
       print('[ChatScreen] Error deleting message: $e');
@@ -314,7 +308,7 @@ class _ChatScreenState extends State<ChatScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('${_tr('Fout', 'Error')}: $e'),
+            content: Text(l10n.error(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -367,6 +361,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _startMurderCaseInvestigation(_MurderCaseMeta meta) async {
+    final l10n = AppLocalizations.of(context)!;
     if (_investigationPendingCaseIds.contains(meta.caseId) || _investigationCompletedCaseIds.contains(meta.caseId)) {
       return;
     }
@@ -375,7 +370,7 @@ class _ChatScreenState extends State<ChatScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Onderzoeksvenster verlopen (24 uur).', 'Investigation window expired (24 hours).')),
+          content: Text(l10n.investigationWindowExpired),
           backgroundColor: Colors.orange,
         ),
       );
@@ -397,10 +392,7 @@ class _ChatScreenState extends State<ChatScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_tr(
-              'Onderzoek gestart. Check je inbox voor het detective-rapport.',
-              'Investigation started. Check your inbox for the detective report.',
-            )),
+            content: Text(l10n.investigationStartedInboxHint),
             backgroundColor: const Color(0xFF1F8B24),
           ),
         );
@@ -417,7 +409,7 @@ class _ChatScreenState extends State<ChatScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(_tr('Onderzoeksvenster verlopen (24 uur).', 'Investigation window expired (24 hours).')),
+              content: Text(l10n.investigationWindowExpired),
               backgroundColor: Colors.orange,
             ),
           );
@@ -428,10 +420,7 @@ class _ChatScreenState extends State<ChatScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(_tr(
-                'Dit onderzoek loopt al of is al afgerond.',
-                'This investigation is already in progress or completed.',
-              )),
+              content: Text(l10n.investigationAlreadyInProgress),
               backgroundColor: Colors.blueGrey,
             ),
           );
@@ -443,7 +432,7 @@ class _ChatScreenState extends State<ChatScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text('${_tr('Onderzoek starten mislukt', 'Failed to start investigation')}: $e'),
+          content: Text(l10n.investigationStartFailed(e.toString())),
           backgroundColor: Colors.red,
         ),
       );
@@ -503,6 +492,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
@@ -540,8 +530,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     Text(
                       _isSystemThread
-                          ? 'Achievement- en systeemberichten'
-                          : '★ Rank ${widget.friendRank}',
+                          ? l10n.messageSystemThreadSubtitle
+                          : l10n.chatFriendRankLine(widget.friendRank),
                       style: TextStyle(
                         color: Colors.grey[400],
                         fontSize: 12,
@@ -575,7 +565,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'Nog geen berichten',
+                              l10n.noDirectMessagesYet,
                               style: TextStyle(
                                 color: Colors.grey[600],
                                 fontSize: 18,
@@ -584,8 +574,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             const SizedBox(height: 8),
                             Text(
                               _isSystemThread
-                                  ? 'Achievement- en systeemberichten verschijnen hier automatisch.'
-                                  : 'Stuur het eerste bericht!',
+                                  ? l10n.messageSystemThreadEmptyDetail
+                                  : l10n.messageSendFirst,
                               style: TextStyle(
                                 color: Colors.grey[700],
                                 fontSize: 14,
@@ -599,6 +589,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         itemCount: _messages.length,
                         itemBuilder: (context, index) {
+                          final itemL10n = AppLocalizations.of(context)!;
                           final message = _messages[index];
                           final caseMeta = _extractMurderCaseMeta(message.message);
                           final canShowAction = _isSystemThread &&
@@ -629,12 +620,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                       icon: const Icon(Icons.search, size: 16),
                                       label: Text(
                                         isExpired
-                                            ? _tr('Onderzoek verlopen', 'Investigation expired')
+                                            ? itemL10n.investigationExpired
                                             : isCompleted
-                                                ? _tr('Onderzoek gestart', 'Investigation started')
+                                                ? itemL10n.investigationStarted
                                                 : isPending
-                                                    ? _tr('Bezig...', 'Starting...')
-                                                    : _tr('Start moordonderzoek', 'Start murder investigation'),
+                                                    ? itemL10n.investigationStarting
+                                                    : itemL10n.startMurderInvestigation,
                                       ),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: const Color(0xFF36454F),
@@ -655,7 +646,7 @@ class _ChatScreenState extends State<ChatScreen> {
             onSend: _sendMessage,
             enabled: !_sending && !_isSystemThread,
             hint: _isSystemThread
-                ? 'Systeemberichten kunnen niet beantwoord worden'
+                ? l10n.systemMessagesReadOnlyHint
                 : null,
           ),
         ],

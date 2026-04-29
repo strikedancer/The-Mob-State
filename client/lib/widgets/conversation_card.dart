@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../models/direct_message.dart';
 import '../utils/avatar_helper.dart';
 
@@ -17,6 +18,7 @@ class ConversationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isSystemThread = conversation.friendId == 0;
 
     return Material(
@@ -70,18 +72,18 @@ class ConversationCard extends StatelessWidget {
                                     color: const Color(0xFF6B4E00),
                                     borderRadius: BorderRadius.circular(999),
                                   ),
-                                  child: const Row(
+                                  child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.emoji_events,
                                         color: Color(0xFFFFD700),
                                         size: 12,
                                       ),
-                                      SizedBox(width: 4),
+                                      const SizedBox(width: 4),
                                       Text(
-                                        'SYSTEEM',
-                                        style: TextStyle(
+                                        l10n.messageSystemBadge,
+                                        style: const TextStyle(
                                           color: Color(0xFFFFE082),
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
@@ -147,8 +149,8 @@ class ConversationCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             isSystemThread
-                                ? 'Achievement en systeemberichten'
-                                : (conversation.lastMessage ?? 'Nog geen berichten'),
+                                ? l10n.messageSystemInboxPreview
+                                : (conversation.lastMessage ?? l10n.noDirectMessagesYet),
                             style: TextStyle(
                               color: conversation.unreadCount > 0
                                 ? Colors.white

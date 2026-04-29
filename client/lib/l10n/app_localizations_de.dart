@@ -696,6 +696,81 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get messageSystemBadge => 'SYSTEM';
+
+  @override
+  String get messageSystemInboxPreview => 'Erfolge und Systemnachrichten';
+
+  @override
+  String get messageSystemThreadSubtitle => 'Erfolge und Systemnachrichten';
+
+  @override
+  String get messageSystemThreadEmptyDetail =>
+      'Erfolge und Systemnachrichten erscheinen hier automatisch.';
+
+  @override
+  String get messageSendFirst => 'Sende die erste Nachricht!';
+
+  @override
+  String chatFriendRankLine(int rank) {
+    return '★ Rang $rank';
+  }
+
+  @override
+  String errorLoadingMessages(String error) {
+    return 'Fehler beim Laden der Nachrichten: $error';
+  }
+
+  @override
+  String get messageDeleteOwnOnly =>
+      'Du kannst nur deine eigenen Nachrichten löschen';
+
+  @override
+  String get messageDeleteTitle => 'Nachricht löschen';
+
+  @override
+  String get messageDeleteBody => 'Diese Nachricht wird dauerhaft gelöscht.';
+
+  @override
+  String get messageSendFailed => 'Nachricht konnte nicht gesendet werden';
+
+  @override
+  String get messageDeleteFailed => 'Nachricht konnte nicht gelöscht werden';
+
+  @override
+  String get investigationWindowExpired =>
+      'Ermittlungsfenster abgelaufen (24 Stunden).';
+
+  @override
+  String get investigationStartedInboxHint =>
+      'Ermittlung gestartet. Prüfe dein Postfach auf den Detektivbericht.';
+
+  @override
+  String get investigationAlreadyInProgress =>
+      'Diese Ermittlung läuft bereits oder ist abgeschlossen.';
+
+  @override
+  String investigationStartFailed(String error) {
+    return 'Ermittlung konnte nicht gestartet werden: $error';
+  }
+
+  @override
+  String get investigationExpired => 'Ermittlung abgelaufen';
+
+  @override
+  String get investigationStarted => 'Ermittlung gestartet';
+
+  @override
+  String get investigationStarting => 'Wird gestartet...';
+
+  @override
+  String get startMurderInvestigation => 'Mordermittlung starten';
+
+  @override
+  String get systemMessagesReadOnlyHint =>
+      'Auf Systemnachrichten kann nicht geantwortet werden';
+
+  @override
   String get helpAndGuide => 'Hilfe und Anleitung';
 
   @override

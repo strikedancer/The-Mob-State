@@ -689,6 +689,82 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get messageSystemBadge => 'SISTEMA';
+
+  @override
+  String get messageSystemInboxPreview => 'Conquistas e mensagens do sistema';
+
+  @override
+  String get messageSystemThreadSubtitle => 'Conquistas e mensagens do sistema';
+
+  @override
+  String get messageSystemThreadEmptyDetail =>
+      'Conquistas e mensagens do sistema aparecem aqui automaticamente.';
+
+  @override
+  String get messageSendFirst => 'Envia a primeira mensagem!';
+
+  @override
+  String chatFriendRankLine(int rank) {
+    return '★ Patente $rank';
+  }
+
+  @override
+  String errorLoadingMessages(String error) {
+    return 'Erro ao carregar mensagens: $error';
+  }
+
+  @override
+  String get messageDeleteOwnOnly =>
+      'Só podes apagar as tuas próprias mensagens';
+
+  @override
+  String get messageDeleteTitle => 'Eliminar mensagem';
+
+  @override
+  String get messageDeleteBody =>
+      'Esta mensagem será eliminada permanentemente.';
+
+  @override
+  String get messageSendFailed => 'Falha ao enviar a mensagem';
+
+  @override
+  String get messageDeleteFailed => 'Falha ao eliminar a mensagem';
+
+  @override
+  String get investigationWindowExpired =>
+      'Janela de investigação expirada (24 horas).';
+
+  @override
+  String get investigationStartedInboxHint =>
+      'Investigação iniciada. Verifica a caixa de entrada para o relatório do detetive.';
+
+  @override
+  String get investigationAlreadyInProgress =>
+      'Esta investigação já está em curso ou concluída.';
+
+  @override
+  String investigationStartFailed(String error) {
+    return 'Falha ao iniciar a investigação: $error';
+  }
+
+  @override
+  String get investigationExpired => 'Investigação expirada';
+
+  @override
+  String get investigationStarted => 'Investigação iniciada';
+
+  @override
+  String get investigationStarting => 'A iniciar...';
+
+  @override
+  String get startMurderInvestigation => 'Iniciar investigação de homicídio';
+
+  @override
+  String get systemMessagesReadOnlyHint =>
+      'Não é possível responder a mensagens do sistema';
+
+  @override
   String get helpAndGuide => 'Ajuda e Guia';
 
   @override

@@ -686,6 +686,80 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get messageSystemBadge => 'SYSTEM';
+
+  @override
+  String get messageSystemInboxPreview => 'Achievements and system messages';
+
+  @override
+  String get messageSystemThreadSubtitle => 'Achievements and system messages';
+
+  @override
+  String get messageSystemThreadEmptyDetail =>
+      'Achievements and system messages appear here automatically.';
+
+  @override
+  String get messageSendFirst => 'Send the first message!';
+
+  @override
+  String chatFriendRankLine(int rank) {
+    return '★ Rank $rank';
+  }
+
+  @override
+  String errorLoadingMessages(String error) {
+    return 'Error loading messages: $error';
+  }
+
+  @override
+  String get messageDeleteOwnOnly => 'You can only delete your own messages';
+
+  @override
+  String get messageDeleteTitle => 'Delete message';
+
+  @override
+  String get messageDeleteBody => 'This message will be permanently deleted.';
+
+  @override
+  String get messageSendFailed => 'Failed to send message';
+
+  @override
+  String get messageDeleteFailed => 'Failed to delete message';
+
+  @override
+  String get investigationWindowExpired =>
+      'Investigation window expired (24 hours).';
+
+  @override
+  String get investigationStartedInboxHint =>
+      'Investigation started. Check your inbox for the detective report.';
+
+  @override
+  String get investigationAlreadyInProgress =>
+      'This investigation is already in progress or completed.';
+
+  @override
+  String investigationStartFailed(String error) {
+    return 'Failed to start investigation: $error';
+  }
+
+  @override
+  String get investigationExpired => 'Investigation expired';
+
+  @override
+  String get investigationStarted => 'Investigation started';
+
+  @override
+  String get investigationStarting => 'Starting...';
+
+  @override
+  String get startMurderInvestigation => 'Start murder investigation';
+
+  @override
+  String get systemMessagesReadOnlyHint =>
+      'System messages cannot be replied to';
+
+  @override
   String get helpAndGuide => 'Help & Guide';
 
   @override

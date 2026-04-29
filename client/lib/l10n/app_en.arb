@@ -369,6 +369,48 @@
       }
     }
   },
+  "messageSystemBadge": "SYSTEM",
+  "messageSystemInboxPreview": "Achievements and system messages",
+  "messageSystemThreadSubtitle": "Achievements and system messages",
+  "messageSystemThreadEmptyDetail": "Achievements and system messages appear here automatically.",
+  "messageSendFirst": "Send the first message!",
+  "chatFriendRankLine": "★ Rank {rank}",
+  "@chatFriendRankLine": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "errorLoadingMessages": "Error loading messages: {error}",
+  "@errorLoadingMessages": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "messageDeleteOwnOnly": "You can only delete your own messages",
+  "messageDeleteTitle": "Delete message",
+  "messageDeleteBody": "This message will be permanently deleted.",
+  "messageSendFailed": "Failed to send message",
+  "messageDeleteFailed": "Failed to delete message",
+  "investigationWindowExpired": "Investigation window expired (24 hours).",
+  "investigationStartedInboxHint": "Investigation started. Check your inbox for the detective report.",
+  "investigationAlreadyInProgress": "This investigation is already in progress or completed.",
+  "investigationStartFailed": "Failed to start investigation: {error}",
+  "@investigationStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "investigationExpired": "Investigation expired",
+  "investigationStarted": "Investigation started",
+  "investigationStarting": "Starting...",
+  "startMurderInvestigation": "Start murder investigation",
+  "systemMessagesReadOnlyHint": "System messages cannot be replied to",
   "helpAndGuide": "Help & Guide",
   "quickActions": "Quick Actions",
   "liveEvents": "Live Events",
