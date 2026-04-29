@@ -3695,5 +3695,8 @@
   },
   "jailCannotActWhileIn": "No puedes cometer crímenes, trabajar o viajar mientras cumples condena.",
   "jailAttemptEscape": "Intentar fuga",
-  "jailYouAreInJail": "Estás en prisión"
+  "jailYouAreInJail": "Estás en prisión",
+  "vehicleOpsHeatLevelLow": "Bajo",
+  "vehicleOpsHeatLevelMedium": "Medio",
+  "vehicleOpsHeatLevelHigh": "Alto"
 }

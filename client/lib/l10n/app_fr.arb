@@ -3695,5 +3695,8 @@
   "cooldownTitleAppeal": "Temps de recharge d'appel",
   "cooldownTitleSchool": "Temps de recharge pour l'école",
   "cooldownTitleGeneric": "Refroidir",
-  "crimeOutcomeDefaultTitle": "Résultat du crime"
+  "crimeOutcomeDefaultTitle": "Résultat du crime",
+  "vehicleOpsHeatLevelLow": "Faible",
+  "vehicleOpsHeatLevelMedium": "Moyen",
+  "vehicleOpsHeatLevelHigh": "Élevé"
 }

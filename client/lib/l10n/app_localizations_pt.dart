@@ -1412,6 +1412,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vehicleOpsHeat => 'Aquecer';
 
   @override
+  String get vehicleOpsHeatLevelLow => 'Baixo';
+
+  @override
+  String get vehicleOpsHeatLevelMedium => 'Médio';
+
+  @override
+  String get vehicleOpsHeatLevelHigh => 'Alto';
+
+  @override
   String get vehicleOpsReputation => 'Representante';
 
   @override

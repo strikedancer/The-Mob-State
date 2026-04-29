@@ -3695,5 +3695,8 @@
   "cooldownTitleAppeal": "Odwołaj się do czasu odnowienia",
   "cooldownTitleSchool": "Odmłodzenie szkoły",
   "cooldownTitleGeneric": "Czas odnowienia",
-  "crimeOutcomeDefaultTitle": "Wynik przestępstwa"
+  "crimeOutcomeDefaultTitle": "Wynik przestępstwa",
+  "vehicleOpsHeatLevelLow": "Niski",
+  "vehicleOpsHeatLevelMedium": "Średni",
+  "vehicleOpsHeatLevelHigh": "Wysoki"
 }

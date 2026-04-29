@@ -938,7 +938,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rankProgress => 'Rangvoortgang';
 
   @override
-  String get cash => 'Cash';
+  String get cash => 'Geld';
 
   @override
   String get sessionRecap => 'Sessie-overzicht';
@@ -1083,7 +1083,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String secondsAgo(String seconds) {
-    return '${seconds}s ago';
+    return '${seconds}s geleden';
   }
 
   @override
@@ -1219,7 +1219,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get free => 'GRATIS';
 
   @override
-  String get crewWars => 'Crew Wars';
+  String get crewWars => 'Crew-oorlogen';
 
   @override
   String get status => 'Status';
@@ -1243,13 +1243,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewPoints => 'Crew punten';
 
   @override
-  String get warRank => 'Oorlogs rank';
+  String get warRank => 'Oorlogsrang';
 
   @override
-  String get seasonRank => 'Seizoensrank';
+  String get seasonRank => 'Seizoensrang';
 
   @override
-  String get openTargets => 'Open targets';
+  String get openTargets => 'Openstaande doelen';
 
   @override
   String get phaseEndsIn => 'Fase eindigt over';
@@ -1276,7 +1276,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get totalEarned => 'Totaal verdiend';
 
   @override
-  String get crewBank => 'Crew bank';
+  String get crewBank => 'Crewbank';
 
   @override
   String get dashboardEconomy24h => 'Economie 24u';
@@ -1349,7 +1349,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Rekruteer prostituee';
 
   @override
-  String get dashboardCrewWars => 'Crew Wars';
+  String get dashboardCrewWars => 'Crew-oorlogen';
 
   @override
   String get dashboardStatusLabel => 'Status';
@@ -1367,13 +1367,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardCrewPoints => 'Crew punten';
 
   @override
-  String get dashboardWarRank => 'Oorlogs rank';
+  String get dashboardWarRank => 'Oorlogsrang';
 
   @override
-  String get dashboardSeasonRank => 'Seizoensrank';
+  String get dashboardSeasonRank => 'Seizoensrang';
 
   @override
-  String get dashboardOpenTargets => 'Open targets';
+  String get dashboardOpenTargets => 'Openstaande doelen';
 
   @override
   String get dashboardPhaseEndsIn => 'Fase eindigt over';
@@ -1400,16 +1400,25 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardTotalEarned => 'Totaal verdiend';
 
   @override
-  String get dashboardVehicleOps => 'Voertuig ops';
+  String get dashboardVehicleOps => 'Voertuigoperaties';
 
   @override
   String get dashboardKillProgress => 'Moordvoortgang';
 
   @override
-  String get vehicleOpsHeat => 'Heat';
+  String get vehicleOpsHeat => 'Hitte';
 
   @override
-  String get vehicleOpsReputation => 'Rep';
+  String get vehicleOpsHeatLevelLow => 'Laag';
+
+  @override
+  String get vehicleOpsHeatLevelMedium => 'Middel';
+
+  @override
+  String get vehicleOpsHeatLevelHigh => 'Hoog';
+
+  @override
+  String get vehicleOpsReputation => 'Reputatie';
 
   @override
   String get vehicleOpsPartsTrendUp => 'onderdelenmarkt stijgt';
@@ -1421,19 +1430,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleOpsPartsTrendStable => 'onderdelenmarkt stabiel';
 
   @override
-  String get vehicleOpsBlacklistActive => 'Blacklist actief';
+  String get vehicleOpsBlacklistActive => 'Zwarte lijst actief';
 
   @override
-  String get vehicleOpsNoBlacklist => 'Geen blacklist';
+  String get vehicleOpsNoBlacklist => 'Geen zwarte lijst';
 
   @override
-  String get crewRoleLeader => 'Leader';
+  String get crewRoleLeader => 'Leider';
 
   @override
-  String get crewRoleCoLeader => 'Co-leader';
+  String get crewRoleCoLeader => 'Co-leider';
 
   @override
-  String get crewRoleMember => 'Member';
+  String get crewRoleMember => 'Lid';
 
   @override
   String get vehicleOpsHotspot => 'Hotspot';
@@ -1442,22 +1451,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleOpsCrew => 'Crew';
 
   @override
-  String get vehicleOpsCrewMatch => 'Crew match';
+  String get vehicleOpsCrewMatch => 'Crew-match';
 
   @override
-  String get vehicleOpsChop => 'Chop';
+  String get vehicleOpsChop => 'Sloperij';
 
   @override
   String get vehicleOpsContract => 'Contract';
 
   @override
-  String get vehicleOpsCounter => 'Counter';
+  String get vehicleOpsCounter => 'Tegenactie';
 
   @override
   String get vehicleOpsContracts => 'Contracten';
 
   @override
-  String get vehicleOpsClaims => 'Claims';
+  String get vehicleOpsClaims => 'Schadeclaims';
 
   @override
   String get vehicleOpsSeason => 'Seizoen';
@@ -1478,10 +1487,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardCrewRole => 'Crew-rol';
 
   @override
-  String get dashboardUnavailable => 'unavailable';
+  String get dashboardUnavailable => 'niet beschikbaar';
 
   @override
-  String get vehicleOps => 'Voertuig ops';
+  String get vehicleOps => 'Voertuigoperaties';
 
   @override
   String get car => 'Auto';
@@ -4389,7 +4398,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String schoolGateRankProgress(int current, int required) {
-    return 'Speler rank: $current/$required';
+    return 'Spelerrang: $current/$required';
   }
 
   @override
@@ -4455,7 +4464,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String educationRequirementRankProgress(int requiredRank, int currentRank) {
-    return 'Nodig: speler rank $requiredRank · Huidig: speler rank $currentRank';
+    return 'Nodig: spelerrang $requiredRank · Huidig: spelerrang $currentRank';
   }
 
   @override

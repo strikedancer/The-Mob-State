@@ -3695,5 +3695,8 @@
   "cooldownTitleAppeal": "Recarga de recurso",
   "cooldownTitleSchool": "Tempo de espera da escola",
   "cooldownTitleGeneric": "Esfriar",
-  "crimeOutcomeDefaultTitle": "Resultado do crime"
+  "crimeOutcomeDefaultTitle": "Resultado do crime",
+  "vehicleOpsHeatLevelLow": "Baixo",
+  "vehicleOpsHeatLevelMedium": "Médio",
+  "vehicleOpsHeatLevelHigh": "Alto"
 }

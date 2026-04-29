@@ -2726,6 +2726,24 @@ abstract class AppLocalizations {
   /// **'Heat'**
   String get vehicleOpsHeat;
 
+  /// No description provided for @vehicleOpsHeatLevelLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get vehicleOpsHeatLevelLow;
+
+  /// No description provided for @vehicleOpsHeatLevelMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get vehicleOpsHeatLevelMedium;
+
+  /// No description provided for @vehicleOpsHeatLevelHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get vehicleOpsHeatLevelHigh;
+
   /// No description provided for @vehicleOpsReputation.
   ///
   /// In en, this message translates to:

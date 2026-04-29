@@ -1423,6 +1423,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get vehicleOpsHeat => 'Chaleur';
 
   @override
+  String get vehicleOpsHeatLevelLow => 'Faible';
+
+  @override
+  String get vehicleOpsHeatLevelMedium => 'Moyen';
+
+  @override
+  String get vehicleOpsHeatLevelHigh => 'Élevé';
+
+  @override
   String get vehicleOpsReputation => 'Représentante';
 
   @override

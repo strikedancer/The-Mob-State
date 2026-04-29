@@ -138,6 +138,20 @@ String _killProgressLabel(BuildContext context) {
   return l10n.dashboardKillProgress;
 }
 
+String _localizedVehicleOpsHeatLevel(AppLocalizations l10n, String raw) {
+  switch (raw.trim().toUpperCase()) {
+    case 'LOW':
+      return l10n.vehicleOpsHeatLevelLow;
+    case 'MEDIUM':
+    case 'MID':
+      return l10n.vehicleOpsHeatLevelMedium;
+    case 'HIGH':
+      return l10n.vehicleOpsHeatLevelHigh;
+    default:
+      return raw;
+  }
+}
+
 const Color _dashboardGold = Color(0xFFFFB347);
 const Color _dashboardBgStart = Color(0xFF160707);
 const Color _dashboardBgMid = Color(0xFF261010);
@@ -4299,7 +4313,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
             runSpacing: 6,
             children: [
               Text(
-                '${l10n.vehicleOpsHeat} ${category.heatCurrent} (${category.heatLevel})',
+                '${l10n.vehicleOpsHeat} ${category.heatCurrent} (${_localizedVehicleOpsHeatLevel(l10n, category.heatLevel)})',
                 style: const TextStyle(color: Colors.white70, fontSize: 12),
               ),
               Text(
