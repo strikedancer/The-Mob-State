@@ -6336,4 +6336,175 @@ class AppLocalizationsEs extends AppLocalizations {
   String evStreamUnknownKey(String key) {
     return '$key';
   }
+
+  @override
+  String get connectionErrorGeneric => 'Error de conexión';
+
+  @override
+  String get crimeWeaponSectionTitle => 'Arma para crímenes';
+
+  @override
+  String get crimeWeaponInstruction =>
+      'Elige qué arma llevada usas por defecto en crímenes que requieren una.';
+
+  @override
+  String get crimeWeaponEmptyInventoryHelp =>
+      'Compra o mueve primero un arma utilizable a tu inventario portátil.';
+
+  @override
+  String get crimeWeaponSelectHint => 'Selecciona un arma para crímenes';
+
+  @override
+  String get crimeWeaponNoSelectionNote =>
+      'Sin selección, los crímenes con arma no se pueden iniciar.';
+
+  @override
+  String crimeWeaponSelectedStatus(String weaponLine) {
+    return 'Seleccionado: $weaponLine. Algunos crímenes exigen además un tipo de arma compatible.';
+  }
+
+  @override
+  String get crimeSetWeaponFailed =>
+      'No se pudo guardar el arma para crímenes.';
+
+  @override
+  String get crimeChooseWeaponBeforeCommit =>
+      'Elige primero un arma arriba o desde el inventario.';
+
+  @override
+  String get crimeWeaponFooterNote =>
+      'Los crímenes con arma usan el arma seleccionada arriba.';
+
+  @override
+  String get crimeCriminalRecordWipeDesc =>
+      'Falsifica expedientes y borra tu historial criminal completo si la operación tiene éxito.';
+
+  @override
+  String crimeCardSuccessChance(int percent) {
+    return '$percent% de éxito';
+  }
+
+  @override
+  String get cooldownTimeLeft => 'Tiempo restante';
+
+  @override
+  String get cooldownMustWaitExplanation =>
+      'Debes esperar antes de volver a realizar esta acción.';
+
+  @override
+  String get cooldownAlreadyFinished => 'El tiempo de espera ya terminó.';
+
+  @override
+  String get cooldownNotEnoughCredits => 'Créditos insuficientes.';
+
+  @override
+  String get cooldownNoActiveToReset =>
+      'No hay tiempo de espera activo que reiniciar.';
+
+  @override
+  String get cooldownNotAvailableNow => 'No disponible ahora.';
+
+  @override
+  String get cooldownRedeemFailed => 'No se pudo acelerar con créditos.';
+
+  @override
+  String get cooldownFinishedInstantly =>
+      'Tiempo de espera terminado al instante.';
+
+  @override
+  String cooldownSpeedUpNow(int cost) {
+    return 'Acelerar ahora (-$cost créditos)';
+  }
+
+  @override
+  String cooldownCreditBalanceLine(int balance) {
+    return 'Saldo: $balance créditos';
+  }
+
+  @override
+  String get cooldownLoadingCreditOptions => 'Cargando opciones de créditos…';
+
+  @override
+  String get cooldownWaitCrime => 'La policía está muy alerta…';
+
+  @override
+  String get cooldownWaitJob => 'Descansando antes de volver a trabajar';
+
+  @override
+  String get cooldownWaitTravel => 'El próximo vuelo sale en';
+
+  @override
+  String get cooldownWaitHeist => 'Preparando el golpe…';
+
+  @override
+  String get cooldownWaitAppeal => 'El tribunal está ocupado…';
+
+  @override
+  String get cooldownWaitDefault => 'Un momento…';
+
+  @override
+  String get weaponLabelKnife => 'Cuchillo';
+
+  @override
+  String get weaponLabelHandgun9mm => 'Pistola (9 mm)';
+
+  @override
+  String get weaponLabelHandgunHeavy => 'Pistola pesada (.45)';
+
+  @override
+  String get weaponLabelSmgCompact => 'Subfusil compacto';
+
+  @override
+  String get weaponLabelShotgunPump => 'Escopeta (bomba)';
+
+  @override
+  String get weaponLabelMolotov => 'Cóctel molotov';
+
+  @override
+  String get weaponLabelSmgSuppressed => 'Subfusil con silenciador';
+
+  @override
+  String get weaponLabelShotgunTactical => 'Escopeta táctica';
+
+  @override
+  String get weaponLabelAssaultRifle => 'Fusil de asalto (AK-47)';
+
+  @override
+  String get weaponLabelGrenadeFlash => 'Granada aturdidora';
+
+  @override
+  String get weaponLabelGrenadeFrag => 'Granada de fragmentación';
+
+  @override
+  String get weaponLabelSniperStandard => 'Rifle de francotirador';
+
+  @override
+  String get weaponLabelAssaultRifleVip => 'Fusil de asalto de élite';
+
+  @override
+  String get weaponLabelSniperVip => 'Francotirador de élite';
+
+  @override
+  String get cooldownTitleCrime => 'Tiempo de espera: crímenes';
+
+  @override
+  String get cooldownTitleJob => 'Tiempo de espera: trabajo';
+
+  @override
+  String get cooldownTitleTravel => 'Tiempo de espera: viaje';
+
+  @override
+  String get cooldownTitleHeist => 'Tiempo de espera: golpe';
+
+  @override
+  String get cooldownTitleAppeal => 'Tiempo de espera: apelación';
+
+  @override
+  String get cooldownTitleSchool => 'Tiempo de espera: escuela';
+
+  @override
+  String get cooldownTitleGeneric => 'Tiempo de espera';
+
+  @override
+  String get crimeOutcomeDefaultTitle => 'Resultado del crimen';
 }

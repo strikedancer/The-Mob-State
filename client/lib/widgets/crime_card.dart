@@ -396,7 +396,7 @@ class _CrimeCardState extends State<CrimeCard> {
                           children: [
                             // Left: Success percentage
                             Text(
-                              '$successChance% kans',
+                              l10n.crimeCardSuccessChance(successChance),
                               style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,

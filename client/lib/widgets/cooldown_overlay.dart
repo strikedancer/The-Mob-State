@@ -84,10 +84,6 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     );
   }
 
-  String _tr(String nl, String en) => localeOf(context) == 'nl' ? nl : en;
-
-  String localeOf(BuildContext context) =>
-      AppLocalizations.of(context)?.localeName ?? 'en';
 
   Future<void> _loadCooldownCreditAction() async {
     final actionType = _effectiveCooldownActionType;
@@ -150,24 +146,21 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     }
   }
 
-  String _redeemDisabledReason() {
+  String _redeemDisabledReason(AppLocalizations l10n) {
     if (_cooldownResetItemKey == null || _cooldownResetItemKey!.isEmpty) {
       return '';
     }
     if (_secondsLeft <= 0) {
-      return _tr('Cooldown is al klaar.', 'Cooldown already finished.');
+      return l10n.cooldownAlreadyFinished;
     }
     if (_creditBalance < _cooldownResetCost) {
-      return _tr('Onvoldoende credits.', 'Not enough credits.');
+      return l10n.cooldownNotEnoughCredits;
     }
     if (!_canRedeemNow) {
       if (_cooldownUnavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE') {
-        return _tr(
-          'Geen actieve cooldown om te resetten.',
-          'No active cooldown to reset.',
-        );
+        return l10n.cooldownNoActiveToReset;
       }
-      return _tr('Nu niet beschikbaar.', 'Not available right now.');
+      return l10n.cooldownNotAvailableNow;
     }
     return '';
   }
@@ -189,10 +182,8 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
 
       if (!mounted) return;
       if (response.statusCode != 200) {
-        final fallback = _tr(
-          'Versnellen met credits mislukt.',
-          'Failed to speed up with credits.',
-        );
+        final l10n = AppLocalizations.of(context)!;
+        final fallback = l10n.cooldownRedeemFailed;
         final message = (payload['error'] ?? payload['message'] ?? fallback)
             .toString();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -202,12 +193,9 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
         return;
       }
 
+      final l10nOk = AppLocalizations.of(context)!;
       final successMessage =
-          (payload['message'] ??
-                  _tr(
-                    'Cooldown direct afgerond.',
-                    'Cooldown finished instantly.',
-                  ))
+          (payload['message'] ?? l10nOk.cooldownFinishedInstantly)
               .toString();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(successMessage), backgroundColor: Colors.green),
@@ -220,14 +208,10 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
       widget.onExpired?.call();
     } catch (_) {
       if (!mounted) return;
+      final l10nErr = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            _tr(
-              'Versnellen met credits mislukt.',
-              'Failed to speed up with credits.',
-            ),
-          ),
+          content: Text(l10nErr.cooldownRedeemFailed),
           backgroundColor: Colors.red,
         ),
       );
@@ -247,7 +231,6 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final locale = l10n.localeName;
 
     // Determine which background image to use
     String? backgroundImagePath;
@@ -263,7 +246,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
 
     final canShowCooldownCreditAction =
         _cooldownResetItemKey != null && _cooldownResetItemKey!.isNotEmpty;
-    final redeemDisabledReason = _redeemDisabledReason();
+    final redeemDisabledReason = _redeemDisabledReason(l10n);
     final redeemDisabled =
         _loadingCreditAction ||
         _redeemingCreditAction ||
@@ -286,7 +269,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              locale == 'nl' ? 'Resterende tijd' : 'Time left',
+              l10n.cooldownTimeLeft,
               style: const TextStyle(
                 color: Colors.white70,
                 fontSize: 11,
@@ -430,7 +413,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    '${_cooldownInfo.getActionName(locale)} Cooldown',
+                                    _cooldownScreenTitle(l10n),
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: compactWidth ? 18 : 21,
@@ -460,7 +443,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
-                                      '${_cooldownInfo.getActionName(locale)} Cooldown',
+                                      _cooldownScreenTitle(l10n),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
@@ -540,7 +523,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _getWaitMessage(locale),
+                                        _waitMessage(l10n),
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: compactWidth ? 14 : 16,
@@ -549,9 +532,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                       ),
                                       const SizedBox(height: 6),
                                       Text(
-                                        locale == 'nl'
-                                            ? 'Je moet wachten voordat je deze actie opnieuw kunt uitvoeren.'
-                                            : 'You must wait before you can perform this action again.',
+                                        l10n.cooldownMustWaitExplanation,
                                         style: TextStyle(
                                           fontSize: compactWidth ? 13 : 15,
                                           color: Colors.grey[200],
@@ -575,10 +556,7 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                             const SizedBox(width: 8),
                                             Expanded(
                                               child: Text(
-                                                _tr(
-                                                  'Credits-opties laden...',
-                                                  'Loading credit options...',
-                                                ),
+                                                l10n.cooldownLoadingCreditOptions,
                                                 style: TextStyle(
                                                   color: Colors.grey[300],
                                                   fontSize: compactWidth
@@ -618,9 +596,8 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                               foregroundColor: Colors.black,
                                             ),
                                             label: Text(
-                                              _tr(
-                                                'Versnel nu (-$_cooldownResetCost credits)',
-                                                'Speed up now (-$_cooldownResetCost credits)',
+                                              l10n.cooldownSpeedUpNow(
+                                                _cooldownResetCost,
                                               ),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -629,9 +606,8 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
                                         ),
                                         const SizedBox(height: 6),
                                         Text(
-                                          _tr(
-                                            'Saldo: $_creditBalance credits',
-                                            'Balance: $_creditBalance credits',
+                                          l10n.cooldownCreditBalanceLine(
+                                            _creditBalance,
                                           ),
                                           style: TextStyle(
                                             color: Colors.grey[300],
@@ -716,28 +692,39 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
     }
   }
 
-  String _getWaitMessage(String locale) {
+  String _cooldownScreenTitle(AppLocalizations l10n) {
     switch (widget.actionType) {
       case 'crime':
-        return locale == 'nl'
-            ? 'De heat is te hoog...'
-            : 'The heat is too high...';
+        return l10n.cooldownTitleCrime;
       case 'job':
-        return locale == 'nl'
-            ? 'Neemt rust voordat je weer kan werken'
-            : 'Taking a rest before you can work again';
+        return l10n.cooldownTitleJob;
       case 'travel':
-        return locale == 'nl'
-            ? 'Volgende vlucht vertrekt over'
-            : 'Next flight departs in';
+        return l10n.cooldownTitleTravel;
       case 'heist':
-        return locale == 'nl'
-            ? 'Plan wordt voorbereid...'
-            : 'Planning the heist...';
+        return l10n.cooldownTitleHeist;
       case 'appeal':
-        return locale == 'nl' ? 'Rechtbank is bezet...' : 'Court is busy...';
+        return l10n.cooldownTitleAppeal;
+      case 'school':
+        return l10n.cooldownTitleSchool;
       default:
-        return locale == 'nl' ? 'Even geduld...' : 'Please wait...';
+        return l10n.cooldownTitleGeneric;
+    }
+  }
+
+  String _waitMessage(AppLocalizations l10n) {
+    switch (widget.actionType) {
+      case 'crime':
+        return l10n.cooldownWaitCrime;
+      case 'job':
+        return l10n.cooldownWaitJob;
+      case 'travel':
+        return l10n.cooldownWaitTravel;
+      case 'heist':
+        return l10n.cooldownWaitHeist;
+      case 'appeal':
+        return l10n.cooldownWaitAppeal;
+      default:
+        return l10n.cooldownWaitDefault;
     }
   }
 }

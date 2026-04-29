@@ -3528,5 +3528,84 @@
         "type": "String"
       }
     }
-  }
+  },
+  "connectionErrorGeneric": "Error de conexión",
+  "crimeWeaponSectionTitle": "Arma para crímenes",
+  "crimeWeaponInstruction": "Elige qué arma llevada usas por defecto en crímenes que requieren una.",
+  "crimeWeaponEmptyInventoryHelp": "Compra o mueve primero un arma utilizable a tu inventario portátil.",
+  "crimeWeaponSelectHint": "Selecciona un arma para crímenes",
+  "crimeWeaponNoSelectionNote": "Sin selección, los crímenes con arma no se pueden iniciar.",
+  "crimeWeaponSelectedStatus": "Seleccionado: {weaponLine}. Algunos crímenes exigen además un tipo de arma compatible.",
+  "@crimeWeaponSelectedStatus": {
+    "placeholders": {
+      "weaponLine": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeSetWeaponFailed": "No se pudo guardar el arma para crímenes.",
+  "crimeChooseWeaponBeforeCommit": "Elige primero un arma arriba o desde el inventario.",
+  "crimeWeaponFooterNote": "Los crímenes con arma usan el arma seleccionada arriba.",
+  "crimeCriminalRecordWipeDesc": "Falsifica expedientes y borra tu historial criminal completo si la operación tiene éxito.",
+  "crimeCardSuccessChance": "{percent}% de éxito",
+  "@crimeCardSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "cooldownTimeLeft": "Tiempo restante",
+  "cooldownMustWaitExplanation": "Debes esperar antes de volver a realizar esta acción.",
+  "cooldownAlreadyFinished": "El tiempo de espera ya terminó.",
+  "cooldownNotEnoughCredits": "Créditos insuficientes.",
+  "cooldownNoActiveToReset": "No hay tiempo de espera activo que reiniciar.",
+  "cooldownNotAvailableNow": "No disponible ahora.",
+  "cooldownRedeemFailed": "No se pudo acelerar con créditos.",
+  "cooldownFinishedInstantly": "Tiempo de espera terminado al instante.",
+  "cooldownSpeedUpNow": "Acelerar ahora (-{cost} créditos)",
+  "@cooldownSpeedUpNow": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "cooldownCreditBalanceLine": "Saldo: {balance} créditos",
+  "@cooldownCreditBalanceLine": {
+    "placeholders": {
+      "balance": {
+        "type": "int"
+      }
+    }
+  },
+  "cooldownLoadingCreditOptions": "Cargando opciones de créditos…",
+  "cooldownWaitCrime": "La policía está muy alerta…",
+  "cooldownWaitJob": "Descansando antes de volver a trabajar",
+  "cooldownWaitTravel": "El próximo vuelo sale en",
+  "cooldownWaitHeist": "Preparando el golpe…",
+  "cooldownWaitAppeal": "El tribunal está ocupado…",
+  "cooldownWaitDefault": "Un momento…",
+  "weaponLabelKnife": "Cuchillo",
+  "weaponLabelHandgun9mm": "Pistola (9 mm)",
+  "weaponLabelHandgunHeavy": "Pistola pesada (.45)",
+  "weaponLabelSmgCompact": "Subfusil compacto",
+  "weaponLabelShotgunPump": "Escopeta (bomba)",
+  "weaponLabelMolotov": "Cóctel molotov",
+  "weaponLabelSmgSuppressed": "Subfusil con silenciador",
+  "weaponLabelShotgunTactical": "Escopeta táctica",
+  "weaponLabelAssaultRifle": "Fusil de asalto (AK-47)",
+  "weaponLabelGrenadeFlash": "Granada aturdidora",
+  "weaponLabelGrenadeFrag": "Granada de fragmentación",
+  "weaponLabelSniperStandard": "Rifle de francotirador",
+  "weaponLabelAssaultRifleVip": "Fusil de asalto de élite",
+  "weaponLabelSniperVip": "Francotirador de élite",
+  "cooldownTitleCrime": "Tiempo de espera: crímenes",
+  "cooldownTitleJob": "Tiempo de espera: trabajo",
+  "cooldownTitleTravel": "Tiempo de espera: viaje",
+  "cooldownTitleHeist": "Tiempo de espera: golpe",
+  "cooldownTitleAppeal": "Tiempo de espera: apelación",
+  "cooldownTitleSchool": "Tiempo de espera: escuela",
+  "cooldownTitleGeneric": "Tiempo de espera",
+  "crimeOutcomeDefaultTitle": "Resultado del crimen"
 }

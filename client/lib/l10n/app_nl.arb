@@ -3528,5 +3528,84 @@
         "type": "String"
       }
     }
-  }
+  },
+  "connectionErrorGeneric": "Verbindingsfout",
+  "crimeWeaponSectionTitle": "Crime-wapen",
+  "crimeWeaponInstruction": "Kies hier welk gedragen wapen je standaard gebruikt voor crimes die een wapen vereisen.",
+  "crimeWeaponEmptyInventoryHelp": "Koop of verplaats eerst een bruikbaar wapen naar je carried inventory.",
+  "crimeWeaponSelectHint": "Selecteer een wapen voor crimes",
+  "crimeWeaponNoSelectionNote": "Zonder selectie starten gewapende crimes niet.",
+  "crimeWeaponSelectedStatus": "Geselecteerd: {weaponLine}. Sommige crimes eisen daarnaast nog een passend wapentype.",
+  "@crimeWeaponSelectedStatus": {
+    "placeholders": {
+      "weaponLine": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeSetWeaponFailed": "Instellen van crime-wapen mislukt.",
+  "crimeChooseWeaponBeforeCommit": "Kies eerst een crime-wapen bovenaan dit scherm of via Inventaris.",
+  "crimeWeaponFooterNote": "Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.",
+  "crimeCriminalRecordWipeDesc": "Verval dossiers en wis je volledige strafblad als de operatie slaagt.",
+  "crimeCardSuccessChance": "{percent}% kans",
+  "@crimeCardSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "cooldownTimeLeft": "Resterende tijd",
+  "cooldownMustWaitExplanation": "Je moet wachten voordat je deze actie opnieuw kunt uitvoeren.",
+  "cooldownAlreadyFinished": "Cooldown is al klaar.",
+  "cooldownNotEnoughCredits": "Onvoldoende credits.",
+  "cooldownNoActiveToReset": "Geen actieve cooldown om te resetten.",
+  "cooldownNotAvailableNow": "Nu niet beschikbaar.",
+  "cooldownRedeemFailed": "Versnellen met credits mislukt.",
+  "cooldownFinishedInstantly": "Cooldown direct afgerond.",
+  "cooldownSpeedUpNow": "Versnel nu (-{cost} credits)",
+  "@cooldownSpeedUpNow": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "cooldownCreditBalanceLine": "Saldo: {balance} credits",
+  "@cooldownCreditBalanceLine": {
+    "placeholders": {
+      "balance": {
+        "type": "int"
+      }
+    }
+  },
+  "cooldownLoadingCreditOptions": "Credits-opties laden...",
+  "cooldownWaitCrime": "De heat is te hoog...",
+  "cooldownWaitJob": "Neemt rust voordat je weer kan werken",
+  "cooldownWaitTravel": "Volgende vlucht vertrekt over",
+  "cooldownWaitHeist": "Plan wordt voorbereid...",
+  "cooldownWaitAppeal": "Rechtbank is bezet...",
+  "cooldownWaitDefault": "Even geduld...",
+  "weaponLabelKnife": "Mes",
+  "weaponLabelHandgun9mm": "Pistool (9mm)",
+  "weaponLabelHandgunHeavy": "Zwaar Pistool (.45)",
+  "weaponLabelSmgCompact": "Compacte SMG",
+  "weaponLabelShotgunPump": "Shotgun (Pump)",
+  "weaponLabelMolotov": "Molotovcocktail",
+  "weaponLabelSmgSuppressed": "SMG (Suppressor)",
+  "weaponLabelShotgunTactical": "Tactische Shotgun",
+  "weaponLabelAssaultRifle": "Aanvalsgeweer (AK-47)",
+  "weaponLabelGrenadeFlash": "Flashbang",
+  "weaponLabelGrenadeFrag": "Fragmentatiegranaat",
+  "weaponLabelSniperStandard": "Sluipschuttersgeweer",
+  "weaponLabelAssaultRifleVip": "Aanvalsgeweer Elite",
+  "weaponLabelSniperVip": "Sluipschutter Elite",
+  "cooldownTitleCrime": "Misdaad cooldown",
+  "cooldownTitleJob": "Werk cooldown",
+  "cooldownTitleTravel": "Reizen cooldown",
+  "cooldownTitleHeist": "Overval cooldown",
+  "cooldownTitleAppeal": "Hoger beroep cooldown",
+  "cooldownTitleSchool": "Opleiding cooldown",
+  "cooldownTitleGeneric": "Cooldown",
+  "crimeOutcomeDefaultTitle": "Crime-resultaat"
 }

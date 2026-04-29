@@ -734,16 +734,51 @@ const supportTicketPushByLocale: Partial<
   },
 };
 
-function withSupportTicketPushLocale(base: Translations, lang: SupportedPlayerLanguage): Translations {
-  const patch = supportTicketPushByLocale[lang];
-  if (!patch) {
+const cooldownExpiredPushByLocale: Partial<
+  Record<
+    SupportedPlayerLanguage,
+    { title: string; body: (actionName: string) => string }
+  >
+> = {
+  es: {
+    title: '⏰ ¡Listo para actuar!',
+    body: (actionName) =>
+      `El tiempo de espera de ${actionName} ha terminado. Vuelve a por ello.`,
+  },
+  de: {
+    title: '⏰ Bereit für die Aktion!',
+    body: (actionName) => `Deine ${actionName}-Abklingzeit ist abgelaufen. Lege los!`,
+  },
+  fr: {
+    title: "⏰ C'est l'heure d'agir !",
+    body: (actionName) => `Le délai d'attente (${actionName}) est terminé. C'est reparti !`,
+  },
+  it: {
+    title: '⏰ Pronto all’azione!',
+    body: (actionName) => `Il cooldown per ${actionName} è scaduto. Torna in azione!`,
+  },
+  pl: {
+    title: '⏰ Gotowe do akcji!',
+    body: (actionName) => `Czas odniesienia (${actionName}) minął. Wracaj do gry!`,
+  },
+  pt: {
+    title: '⏰ Hora de agir!',
+    body: (actionName) => `O tempo de espera de ${actionName} acabou. Volte ao jogo!`,
+  },
+};
+
+function withPlayerLanguagePushPatches(base: Translations, lang: SupportedPlayerLanguage): Translations {
+  const st = supportTicketPushByLocale[lang];
+  const cd = cooldownExpiredPushByLocale[lang];
+  if (!st && !cd) {
     return base;
   }
   return {
     ...base,
     notification: {
       ...base.notification,
-      supportTicketUpdate: patch,
+      ...(st ? { supportTicketUpdate: st } : {}),
+      ...(cd ? { cooldownExpired: cd } : {}),
     },
   };
 }
@@ -760,7 +795,7 @@ export const translationService = {
     if (lang === 'en') {
       return translations.en;
     }
-    return withSupportTicketPushLocale(translations.en, lang);
+    return withPlayerLanguagePushPatches(translations.en, lang);
   },
 
   /**

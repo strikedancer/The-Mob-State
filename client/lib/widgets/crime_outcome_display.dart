@@ -185,7 +185,7 @@ class CrimeOutcomeDisplay extends StatelessWidget {
       case 'fled_no_loot':
         return l10n.crimeOutcomeFledNoLoot;
       default:
-        return 'Crime Result';
+        return l10n.crimeOutcomeDefaultTitle;
     }
   }
 }

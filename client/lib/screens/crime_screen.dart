@@ -15,6 +15,7 @@ import '../widgets/cooldown_overlay.dart';
 import '../widgets/crime_card.dart';
 import '../widgets/crime_result_overlay.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/weapon_display_name.dart';
 
 class CrimeScreen extends StatefulWidget {
   const CrimeScreen({super.key});
@@ -51,10 +52,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
     _loadTools();
     _loadSelectedCrimeVehicle();
     _loadCrimeWeaponSelection();
-  }
-
-  String _tr(String nl, String en) {
-    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
   }
 
   Future<void> _loadTools() async {
@@ -148,10 +145,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
         context,
         SnackBar(
           content: Text(
-            _tr(
-              'Instellen van crime-wapen mislukt.',
-              'Failed to set crime weapon.',
-            ),
+            AppLocalizations.of(context)!.crimeSetWeaponFailed,
           ),
           backgroundColor: Colors.red,
         ),
@@ -196,7 +190,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  _tr('Crime-wapen', 'Crime weapon'),
+                  l10n.crimeWeaponSectionTitle,
                   style: const TextStyle(
                     color: Color(0xFFD4AF37),
                     fontWeight: FontWeight.bold,
@@ -213,10 +207,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            _tr(
-              'Kies hier welk gedragen wapen je standaard gebruikt voor crimes die een wapen vereisen.',
-              'Choose which carried weapon you use by default for crimes that require one.',
-            ),
+            l10n.crimeWeaponInstruction,
             style: const TextStyle(color: Colors.white70, fontSize: 12.5),
           ),
           const SizedBox(height: 10),
@@ -232,10 +223,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Koop of verplaats eerst een bruikbaar wapen naar je carried inventory.',
-                'Buy or move a usable weapon into your carried inventory first.',
-              ),
+              l10n.crimeWeaponEmptyInventoryHelp,
               style: const TextStyle(color: Colors.white60, fontSize: 12),
             ),
           ] else ...[
@@ -261,10 +249,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
               ),
               style: const TextStyle(color: Colors.white),
               hint: Text(
-                _tr(
-                  'Selecteer een wapen voor crimes',
-                  'Select a weapon for crimes',
-                ),
+                l10n.crimeWeaponSelectHint,
                 style: const TextStyle(color: Colors.white70),
               ),
               items: _weaponInventory
@@ -272,7 +257,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                     (weapon) => DropdownMenuItem<String>(
                       value: weapon['weaponId'] as String,
                       child: Text(
-                        '${weapon['name'] ?? weapon['weaponId']} (${weapon['condition']}%)',
+                        crimeWeaponLine(l10n, weapon),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -287,14 +272,8 @@ class _CrimeScreenState extends State<CrimeScreen> {
             const SizedBox(height: 8),
             Text(
               _selectedCrimeWeaponId == null
-                  ? _tr(
-                      'Zonder selectie starten gewapende crimes niet.',
-                      'Without a selection, weapon-based crimes will not start.',
-                    )
-                  : _tr(
-                      'Geselecteerd: $selectedWeaponLabel. Sommige crimes eisen daarnaast nog een passend wapentype.',
-                      'Selected: $selectedWeaponLabel. Some crimes still require a matching weapon type on top of that.',
-                    ),
+                  ? l10n.crimeWeaponNoSelectionNote
+                  : l10n.crimeWeaponSelectedStatus(selectedWeaponLabel!),
               style: TextStyle(
                 color: _selectedCrimeWeaponId == null
                     ? Colors.orange
@@ -361,8 +340,10 @@ class _CrimeScreenState extends State<CrimeScreen> {
         });
       }
     } catch (e) {
+      if (!mounted) return;
+      final loc = AppLocalizations.of(context)!;
       setState(() {
-        _error = 'Verbindingsfout';
+        _error = loc.connectionErrorGeneric;
         _isLoading = false;
       });
     }
@@ -396,8 +377,10 @@ class _CrimeScreenState extends State<CrimeScreen> {
         });
       }
     } catch (e) {
+      if (!mounted) return;
+      final loc = AppLocalizations.of(context)!;
       setState(() {
-        _error = 'Verbindingsfout';
+        _error = loc.connectionErrorGeneric;
         _isLoading = false;
       });
     }
@@ -411,10 +394,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
         context,
         SnackBar(
           content: Text(
-            _tr(
-              'Kies eerst een crime-wapen bovenaan dit scherm of via Inventaris.',
-              'Choose a crime weapon at the top of this screen or via Inventory first.',
-            ),
+            l10n.crimeChooseWeaponBeforeCommit,
           ),
           backgroundColor: Colors.orange,
           action: SnackBarAction(
@@ -881,9 +861,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
       case 'corrupt_official':
         return l10n.crimeCorruptOfficialDesc;
       case 'criminal_record_wipe':
-        return l10n.localeName == 'nl'
-            ? 'Verval dossiers en wis je volledige strafblad als de operatie slaagt.'
-            : 'Forge court files and wipe your full criminal record if the operation succeeds.';
+        return l10n.crimeCriminalRecordWipeDesc;
       default:
         return crime.description ?? '';
     }
@@ -993,10 +971,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
                           child: Text(
-                            _tr(
-                              'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.',
-                              'Weapon-based crimes use the selected crime weapon above.',
-                            ),
+                            l10n.crimeWeaponFooterNote,
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,

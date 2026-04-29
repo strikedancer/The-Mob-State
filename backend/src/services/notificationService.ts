@@ -1,10 +1,64 @@
 import admin from 'firebase-admin';
 import fs from 'fs';
 import prisma from '../lib/prisma';
-import { normalizePlayerLanguage } from '../config/supportedLanguages';
+import { normalizePlayerLanguage, type SupportedPlayerLanguage } from '../config/supportedLanguages';
 import { translationService, type Language } from './translationService';
 import { playerNotificationPreferenceService } from './playerNotificationPreferenceService';
 import { systemLogService } from './systemLogService';
+
+/** Push body uses this word for `cooldown_expired` per language. */
+const COOLDOWN_ACTION_LABEL: Record<string, Partial<Record<SupportedPlayerLanguage, string>>> = {
+  crime: { en: 'crime', nl: 'misdaad', es: 'crimen', de: 'Verbrechen', fr: 'crime', it: 'reato', pl: 'przestępstwo', pt: 'crime' },
+  job: { en: 'job', nl: 'werk', es: 'trabajo', de: 'Job', fr: 'travail', it: 'lavoro', pl: 'praca', pt: 'trabalho' },
+  vehicle_theft: {
+    en: 'vehicle theft',
+    nl: 'voertuig stelen',
+    es: 'robo de vehículo',
+    de: 'Fahrzeugdiebstahl',
+    fr: 'vol de véhicule',
+    it: 'furto di veicolo',
+    pl: 'kradzież pojazdu',
+    pt: 'roubo de veículo',
+  },
+  motorcycle_theft: {
+    en: 'motorcycle theft',
+    nl: 'motor stelen',
+    es: 'robo de moto',
+    de: 'Motorraddiebstahl',
+    fr: 'vol de moto',
+    it: 'furto di moto',
+    pl: 'kradzież motocykla',
+    pt: 'roubo de mota',
+  },
+  boat_theft: {
+    en: 'boat theft',
+    nl: 'boot stelen',
+    es: 'robo de barco',
+    de: 'Bootsdiebstahl',
+    fr: 'vol de bateau',
+    it: 'furto di barca',
+    pl: 'kradzież łodzi',
+    pt: 'roubo de barco',
+  },
+  prostitute_recruit: {
+    en: 'prostitute recruitment',
+    nl: 'hoeren werven',
+    es: 'reclutamiento',
+    de: 'Rekrutierung',
+    fr: 'recrutement',
+    it: 'reclutamento',
+    pl: 'rekrutacja',
+    pt: 'recrutamento',
+  },
+};
+
+function labelForCooldownAction(actionType: string, lang: SupportedPlayerLanguage): string {
+  const row = COOLDOWN_ACTION_LABEL[actionType];
+  if (row) {
+    return row[lang] ?? row.en ?? actionType;
+  }
+  return actionType;
+}
 
 type FirebaseServiceAccountShape = {
   project_id?: string;
@@ -899,15 +953,7 @@ export class NotificationService {
     try {
       const resolvedLanguage = await this.resolveLanguageForPlayer(playerId, language);
       const t = translationService.getTranslations(resolvedLanguage);
-      const actionNames: Record<string, Record<Language, string>> = {
-        crime: { en: 'crime', nl: 'misdaad' },
-        job: { en: 'job', nl: 'werk' },
-        vehicle_theft: { en: 'vehicle theft', nl: 'voertuig stelen' },
-        motorcycle_theft: { en: 'motorcycle theft', nl: 'motor stelen' },
-        boat_theft: { en: 'boat theft', nl: 'boot stelen' },
-        prostitute_recruit: { en: 'prostitute recruitment', nl: 'hoeren werven' },
-      };
-      const actionName = actionNames[actionType]?.[resolvedLanguage] ?? actionType;
+      const actionName = labelForCooldownAction(actionType, resolvedLanguage);
       await this.sendToPlayer(
         playerId,
         t.notification.cooldownExpired.title,

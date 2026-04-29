@@ -6273,4 +6273,172 @@ class AppLocalizationsEn extends AppLocalizations {
   String evStreamUnknownKey(String key) {
     return '$key';
   }
+
+  @override
+  String get connectionErrorGeneric => 'Connection error';
+
+  @override
+  String get crimeWeaponSectionTitle => 'Crime weapon';
+
+  @override
+  String get crimeWeaponInstruction =>
+      'Choose which carried weapon you use by default for crimes that require one.';
+
+  @override
+  String get crimeWeaponEmptyInventoryHelp =>
+      'Buy or move a usable weapon into your carried inventory first.';
+
+  @override
+  String get crimeWeaponSelectHint => 'Select a weapon for crimes';
+
+  @override
+  String get crimeWeaponNoSelectionNote =>
+      'Without a selection, weapon-based crimes will not start.';
+
+  @override
+  String crimeWeaponSelectedStatus(String weaponLine) {
+    return 'Selected: $weaponLine. Some crimes still require a matching weapon type on top of that.';
+  }
+
+  @override
+  String get crimeSetWeaponFailed => 'Failed to set crime weapon.';
+
+  @override
+  String get crimeChooseWeaponBeforeCommit =>
+      'Choose a crime weapon at the top of this screen or via Inventory first.';
+
+  @override
+  String get crimeWeaponFooterNote =>
+      'Weapon-based crimes use the selected crime weapon above.';
+
+  @override
+  String get crimeCriminalRecordWipeDesc =>
+      'Forge court files and wipe your full criminal record if the operation succeeds.';
+
+  @override
+  String crimeCardSuccessChance(int percent) {
+    return '$percent% success chance';
+  }
+
+  @override
+  String get cooldownTimeLeft => 'Time left';
+
+  @override
+  String get cooldownMustWaitExplanation =>
+      'You must wait before you can perform this action again.';
+
+  @override
+  String get cooldownAlreadyFinished => 'Cooldown already finished.';
+
+  @override
+  String get cooldownNotEnoughCredits => 'Not enough credits.';
+
+  @override
+  String get cooldownNoActiveToReset => 'No active cooldown to reset.';
+
+  @override
+  String get cooldownNotAvailableNow => 'Not available right now.';
+
+  @override
+  String get cooldownRedeemFailed => 'Failed to speed up with credits.';
+
+  @override
+  String get cooldownFinishedInstantly => 'Cooldown finished instantly.';
+
+  @override
+  String cooldownSpeedUpNow(int cost) {
+    return 'Speed up now (-$cost credits)';
+  }
+
+  @override
+  String cooldownCreditBalanceLine(int balance) {
+    return 'Balance: $balance credits';
+  }
+
+  @override
+  String get cooldownLoadingCreditOptions => 'Loading credit options…';
+
+  @override
+  String get cooldownWaitCrime => 'The heat is too high…';
+
+  @override
+  String get cooldownWaitJob => 'Taking a rest before you can work again';
+
+  @override
+  String get cooldownWaitTravel => 'Next flight departs in';
+
+  @override
+  String get cooldownWaitHeist => 'Planning the heist…';
+
+  @override
+  String get cooldownWaitAppeal => 'Court is busy…';
+
+  @override
+  String get cooldownWaitDefault => 'Please wait…';
+
+  @override
+  String get weaponLabelKnife => 'Knife';
+
+  @override
+  String get weaponLabelHandgun9mm => 'Pistol (9mm)';
+
+  @override
+  String get weaponLabelHandgunHeavy => 'Heavy Pistol (.45)';
+
+  @override
+  String get weaponLabelSmgCompact => 'Compact SMG';
+
+  @override
+  String get weaponLabelShotgunPump => 'Shotgun (pump)';
+
+  @override
+  String get weaponLabelMolotov => 'Molotov cocktail';
+
+  @override
+  String get weaponLabelSmgSuppressed => 'Suppressed SMG';
+
+  @override
+  String get weaponLabelShotgunTactical => 'Tactical Shotgun';
+
+  @override
+  String get weaponLabelAssaultRifle => 'Assault rifle (AK-47)';
+
+  @override
+  String get weaponLabelGrenadeFlash => 'Flash grenade';
+
+  @override
+  String get weaponLabelGrenadeFrag => 'Fragmentation grenade';
+
+  @override
+  String get weaponLabelSniperStandard => 'Sniper rifle';
+
+  @override
+  String get weaponLabelAssaultRifleVip => 'Elite assault rifle';
+
+  @override
+  String get weaponLabelSniperVip => 'Elite sniper rifle';
+
+  @override
+  String get cooldownTitleCrime => 'Crime cooldown';
+
+  @override
+  String get cooldownTitleJob => 'Job cooldown';
+
+  @override
+  String get cooldownTitleTravel => 'Travel cooldown';
+
+  @override
+  String get cooldownTitleHeist => 'Heist cooldown';
+
+  @override
+  String get cooldownTitleAppeal => 'Appeal cooldown';
+
+  @override
+  String get cooldownTitleSchool => 'School cooldown';
+
+  @override
+  String get cooldownTitleGeneric => 'Cooldown';
+
+  @override
+  String get crimeOutcomeDefaultTitle => 'Crime result';
 }

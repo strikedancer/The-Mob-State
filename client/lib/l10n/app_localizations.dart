@@ -11259,6 +11259,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{key}'**
   String evStreamUnknownKey(String key);
+
+  /// No description provided for @connectionErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error'**
+  String get connectionErrorGeneric;
+
+  /// No description provided for @crimeWeaponSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime weapon'**
+  String get crimeWeaponSectionTitle;
+
+  /// No description provided for @crimeWeaponInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose which carried weapon you use by default for crimes that require one.'**
+  String get crimeWeaponInstruction;
+
+  /// No description provided for @crimeWeaponEmptyInventoryHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy or move a usable weapon into your carried inventory first.'**
+  String get crimeWeaponEmptyInventoryHelp;
+
+  /// No description provided for @crimeWeaponSelectHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a weapon for crimes'**
+  String get crimeWeaponSelectHint;
+
+  /// No description provided for @crimeWeaponNoSelectionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Without a selection, weapon-based crimes will not start.'**
+  String get crimeWeaponNoSelectionNote;
+
+  /// No description provided for @crimeWeaponSelectedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: {weaponLine}. Some crimes still require a matching weapon type on top of that.'**
+  String crimeWeaponSelectedStatus(String weaponLine);
+
+  /// No description provided for @crimeSetWeaponFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to set crime weapon.'**
+  String get crimeSetWeaponFailed;
+
+  /// No description provided for @crimeChooseWeaponBeforeCommit.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a crime weapon at the top of this screen or via Inventory first.'**
+  String get crimeChooseWeaponBeforeCommit;
+
+  /// No description provided for @crimeWeaponFooterNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon-based crimes use the selected crime weapon above.'**
+  String get crimeWeaponFooterNote;
+
+  /// No description provided for @crimeCriminalRecordWipeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Forge court files and wipe your full criminal record if the operation succeeds.'**
+  String get crimeCriminalRecordWipeDesc;
+
+  /// No description provided for @crimeCardSuccessChance.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% success chance'**
+  String crimeCardSuccessChance(int percent);
+
+  /// No description provided for @cooldownTimeLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Time left'**
+  String get cooldownTimeLeft;
+
+  /// No description provided for @cooldownMustWaitExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'You must wait before you can perform this action again.'**
+  String get cooldownMustWaitExplanation;
+
+  /// No description provided for @cooldownAlreadyFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown already finished.'**
+  String get cooldownAlreadyFinished;
+
+  /// No description provided for @cooldownNotEnoughCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough credits.'**
+  String get cooldownNotEnoughCredits;
+
+  /// No description provided for @cooldownNoActiveToReset.
+  ///
+  /// In en, this message translates to:
+  /// **'No active cooldown to reset.'**
+  String get cooldownNoActiveToReset;
+
+  /// No description provided for @cooldownNotAvailableNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available right now.'**
+  String get cooldownNotAvailableNow;
+
+  /// No description provided for @cooldownRedeemFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to speed up with credits.'**
+  String get cooldownRedeemFailed;
+
+  /// No description provided for @cooldownFinishedInstantly.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown finished instantly.'**
+  String get cooldownFinishedInstantly;
+
+  /// No description provided for @cooldownSpeedUpNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up now (-{cost} credits)'**
+  String cooldownSpeedUpNow(int cost);
+
+  /// No description provided for @cooldownCreditBalanceLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance: {balance} credits'**
+  String cooldownCreditBalanceLine(int balance);
+
+  /// No description provided for @cooldownLoadingCreditOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading credit options…'**
+  String get cooldownLoadingCreditOptions;
+
+  /// No description provided for @cooldownWaitCrime.
+  ///
+  /// In en, this message translates to:
+  /// **'The heat is too high…'**
+  String get cooldownWaitCrime;
+
+  /// No description provided for @cooldownWaitJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Taking a rest before you can work again'**
+  String get cooldownWaitJob;
+
+  /// No description provided for @cooldownWaitTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next flight departs in'**
+  String get cooldownWaitTravel;
+
+  /// No description provided for @cooldownWaitHeist.
+  ///
+  /// In en, this message translates to:
+  /// **'Planning the heist…'**
+  String get cooldownWaitHeist;
+
+  /// No description provided for @cooldownWaitAppeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Court is busy…'**
+  String get cooldownWaitAppeal;
+
+  /// No description provided for @cooldownWaitDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait…'**
+  String get cooldownWaitDefault;
+
+  /// No description provided for @weaponLabelKnife.
+  ///
+  /// In en, this message translates to:
+  /// **'Knife'**
+  String get weaponLabelKnife;
+
+  /// No description provided for @weaponLabelHandgun9mm.
+  ///
+  /// In en, this message translates to:
+  /// **'Pistol (9mm)'**
+  String get weaponLabelHandgun9mm;
+
+  /// No description provided for @weaponLabelHandgunHeavy.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavy Pistol (.45)'**
+  String get weaponLabelHandgunHeavy;
+
+  /// No description provided for @weaponLabelSmgCompact.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact SMG'**
+  String get weaponLabelSmgCompact;
+
+  /// No description provided for @weaponLabelShotgunPump.
+  ///
+  /// In en, this message translates to:
+  /// **'Shotgun (pump)'**
+  String get weaponLabelShotgunPump;
+
+  /// No description provided for @weaponLabelMolotov.
+  ///
+  /// In en, this message translates to:
+  /// **'Molotov cocktail'**
+  String get weaponLabelMolotov;
+
+  /// No description provided for @weaponLabelSmgSuppressed.
+  ///
+  /// In en, this message translates to:
+  /// **'Suppressed SMG'**
+  String get weaponLabelSmgSuppressed;
+
+  /// No description provided for @weaponLabelShotgunTactical.
+  ///
+  /// In en, this message translates to:
+  /// **'Tactical Shotgun'**
+  String get weaponLabelShotgunTactical;
+
+  /// No description provided for @weaponLabelAssaultRifle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assault rifle (AK-47)'**
+  String get weaponLabelAssaultRifle;
+
+  /// No description provided for @weaponLabelGrenadeFlash.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash grenade'**
+  String get weaponLabelGrenadeFlash;
+
+  /// No description provided for @weaponLabelGrenadeFrag.
+  ///
+  /// In en, this message translates to:
+  /// **'Fragmentation grenade'**
+  String get weaponLabelGrenadeFrag;
+
+  /// No description provided for @weaponLabelSniperStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Sniper rifle'**
+  String get weaponLabelSniperStandard;
+
+  /// No description provided for @weaponLabelAssaultRifleVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite assault rifle'**
+  String get weaponLabelAssaultRifleVip;
+
+  /// No description provided for @weaponLabelSniperVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite sniper rifle'**
+  String get weaponLabelSniperVip;
+
+  /// No description provided for @cooldownTitleCrime.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime cooldown'**
+  String get cooldownTitleCrime;
+
+  /// No description provided for @cooldownTitleJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Job cooldown'**
+  String get cooldownTitleJob;
+
+  /// No description provided for @cooldownTitleTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel cooldown'**
+  String get cooldownTitleTravel;
+
+  /// No description provided for @cooldownTitleHeist.
+  ///
+  /// In en, this message translates to:
+  /// **'Heist cooldown'**
+  String get cooldownTitleHeist;
+
+  /// No description provided for @cooldownTitleAppeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal cooldown'**
+  String get cooldownTitleAppeal;
+
+  /// No description provided for @cooldownTitleSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'School cooldown'**
+  String get cooldownTitleSchool;
+
+  /// No description provided for @cooldownTitleGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown'**
+  String get cooldownTitleGeneric;
+
+  /// No description provided for @crimeOutcomeDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime result'**
+  String get crimeOutcomeDefaultTitle;
 }
 
 class _AppLocalizationsDelegate
