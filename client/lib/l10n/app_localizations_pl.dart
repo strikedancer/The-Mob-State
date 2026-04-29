@@ -351,39 +351,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crimeCorruptOfficialDesc => 'Przekupić urzędnika za przysługi';
 
   @override
-  String get crimeEliminateWitnessName => 'Eliminate Witness';
+  String get crimeEliminateWitnessName => 'Wyeliminuj świadka';
 
   @override
-  String get crimeEliminateWitnessDesc => 'Eliminate a witness before trial';
+  String get crimeEliminateWitnessDesc => 'Wyeliminuj świadka przed rozprawą';
 
   @override
-  String get crimeDiamondHeistName => 'Diamond Transport Heist';
+  String get crimeDiamondHeistName => 'Napad na diamentowy transport';
 
   @override
-  String get crimeDiamondHeistDesc => 'Hijack a transport of rough diamonds';
+  String get crimeDiamondHeistDesc => 'Porwij transport surowca diamentowego';
 
   @override
-  String get crimeEvidenceRoomHeistName => 'Evidence Room Heist';
+  String get crimeEvidenceRoomHeistName => 'Napad na pokój z dowodami';
 
   @override
   String get crimeEvidenceRoomHeistDesc =>
-      'Steal evidence from a federal storage facility';
+      'Ukradnij dowody z federalnego magazynu';
 
   @override
-  String get crimeMuseumHeistName => 'Museum Heist';
+  String get crimeMuseumHeistName => 'Napad na muzeum';
 
   @override
-  String get crimeMuseumHeistDesc => 'Steal valuable artifacts from a museum';
+  String get crimeMuseumHeistDesc => 'Ukradnij cenne artefakty z muzeum';
 
   @override
-  String get crimeBossAssassinationName => 'Rival Boss Assassination';
+  String get crimeBossAssassinationName => 'Zabójstwo rywalizującego bossa';
 
   @override
   String get crimeBossAssassinationDesc =>
-      'Eliminate the leader of a rival organization';
+      'Wyeliminuj przywódcę konkurencyjnej organizacji';
 
   @override
-  String get crimeCriminalRecordWipeName => 'Wipe Criminal Record';
+  String get crimeCriminalRecordWipeName => 'Wyczyść rejestr karny';
 
   @override
   String get tooltipCrimeRequiresTools => 'Wymagane narzędzia';
@@ -401,14 +401,14 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tooltipCrimeRequiresViolence => 'Wymagana przemoc';
 
   @override
-  String get tooltipCrimeRequiresWeapon => 'Weapon required';
+  String get tooltipCrimeRequiresWeapon => 'Wymagana broń';
 
   @override
-  String get tooltipCrimeRequirementsHeading => 'Required:';
+  String get tooltipCrimeRequirementsHeading => 'Wymagany:';
 
   @override
   String get crimeCriminalRecordWipeTooltip =>
-      'Wipes your full criminal record on success. Only available if you already have convictions.';
+      'Jeśli się powiedzie, wymazuje całą twoją kartotekę kryminalną. Dostępne tylko wtedy, gdy masz już wyroki skazujące.';
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
@@ -722,7 +722,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get messages => 'Wiadomości';
 
   @override
-  String get noDirectMessagesYet => 'Brak wiadomości';
+  String get noDirectMessagesYet => 'Nie ma jeszcze żadnych wiadomości';
 
   @override
   String get sendMessageToFriendsHint => 'Wyślij wiadomość do znajomych!';
@@ -736,15 +736,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get messageSystemBadge => 'SYSTEM';
 
   @override
-  String get messageSystemInboxPreview => 'Osiągnięcia i wiadomości systemowe';
+  String get messageSystemInboxPreview => 'Osiągnięcia i komunikaty systemowe';
 
   @override
   String get messageSystemThreadSubtitle =>
-      'Osiągnięcia i wiadomości systemowe';
+      'Osiągnięcia i komunikaty systemowe';
 
   @override
   String get messageSystemThreadEmptyDetail =>
-      'Osiągnięcia i wiadomości systemowe pojawiają się tutaj automatycznie.';
+      'Osiągnięcia i komunikaty systemowe pojawiają się tutaj automatycznie.';
 
   @override
   String get messageSendFirst => 'Wyślij pierwszą wiadomość!';
@@ -776,29 +776,29 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get investigationWindowExpired =>
-      'Okno śledztwa wygasło (24 godziny).';
+      'Upłynął okres dochodzenia (24 godziny).';
 
   @override
   String get investigationStartedInboxHint =>
-      'Śledztwo rozpoczęte. Sprawdź skrzynkę odbiorczą, aby zobaczyć raport detektywa.';
+      'Rozpoczęło się śledztwo. Sprawdź swoją skrzynkę odbiorczą, aby otrzymać raport detektywa.';
 
   @override
   String get investigationAlreadyInProgress =>
-      'To śledztwo już trwa lub zostało zakończone.';
+      'Dochodzenie to jest już w toku lub zostało zakończone.';
 
   @override
   String investigationStartFailed(String error) {
-    return 'Nie udało się rozpocząć śledztwa: $error';
+    return 'Nie udało się rozpocząć dochodzenia: $error';
   }
 
   @override
-  String get investigationExpired => 'Śledztwo wygasło';
+  String get investigationExpired => 'Dochodzenie wygasło';
 
   @override
-  String get investigationStarted => 'Śledztwo rozpoczęte';
+  String get investigationStarted => 'Rozpoczęło się śledztwo';
 
   @override
-  String get investigationStarting => 'Trwa uruchamianie...';
+  String get investigationStarting => 'Startowy...';
 
   @override
   String get startMurderInvestigation =>
@@ -806,7 +806,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get systemMessagesReadOnlyHint =>
-      'Nie można odpowiadać na wiadomości systemowe';
+      'Na wiadomości systemowe nie można odpowiedzieć';
 
   @override
   String get helpAndGuide => 'Pomoc i przewodnik';
@@ -877,7 +877,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get vaultYourCredits => 'Twoje kredyty';
 
   @override
-  String get vaultChooseStake => 'Wybierz stawkę';
+  String get vaultChooseStake => 'Wybierz swoją stawkę';
 
   @override
   String vaultStakeCredits(int stake) {
@@ -885,7 +885,6 @@ class AppLocalizationsPl extends AppLocalizations {
       stake,
       locale: localeName,
       other: '$stake kredytów',
-      few: '$stake kredyty',
       one: '$stake kredyt',
     );
     return '$_temp0';
@@ -900,38 +899,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String get vaultCodeLabel => 'Kod';
 
   @override
-  String get vaultSubmitStake => 'Wyślij stawkę';
+  String get vaultSubmitStake => 'Prześlij stawkę';
 
   @override
-  String get vaultWrongCodesTitle => 'Złe kody (ten miesiąc)';
+  String get vaultWrongCodesTitle => 'Błędne kody (w tym miesiącu)';
 
   @override
-  String get vaultShowWrongCodes => 'Pokaż';
+  String get vaultShowWrongCodes => 'Pokazywać';
 
   @override
-  String get vaultHideWrongCodes => 'Ukryj';
+  String get vaultHideWrongCodes => 'Ukrywać';
 
   @override
-  String get vaultNoWrongCodesYet => 'Brak zapisanych złych kodów.';
+  String get vaultNoWrongCodesYet =>
+      'Nie zapisano jeszcze żadnych błędnych kodów.';
 
   @override
-  String get couldNotLoadVaultStatus => 'Nie udało się wczytać statusu.';
+  String get couldNotLoadVaultStatus => 'Nie udało się wczytać stanu.';
 
   @override
-  String get vaultEnterFourDigitCode => 'Wpisz 4-cyfrowy kod.';
+  String get vaultEnterFourDigitCode => 'Wprowadź 4-cyfrowy kod.';
 
   @override
   String get vaultAttemptSuccessGeneric => 'Sukces.';
 
   @override
-  String get vaultAttemptFailedGeneric => 'Niepowodzenie.';
+  String get vaultAttemptFailedGeneric => 'Przegrany.';
 
   @override
-  String get vaultAttemptFailedRetry => 'Niepowodzenie. Spróbuj ponownie.';
+  String get vaultAttemptFailedRetry => 'Przegrany. Spróbuj ponownie.';
 
   @override
   String dashboardNewMessagesCount(int count) {
-    return '$count nowych wiadomości';
+    return '$count nowe wiadomości';
   }
 
   @override
@@ -3692,7 +3692,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get toolBurnerPhone => 'Telefon Palnika';
 
   @override
-  String get toolThermalDrill => 'Thermal Drill';
+  String get toolThermalDrill => 'Wiertarka termiczna';
 
   @override
   String get crimeOutcomeSuccess => 'Kryminał udany!';
@@ -3720,94 +3720,94 @@ class AppLocalizationsPl extends AppLocalizations {
   String get crimeOutcomeFledNoLoot => 'Uciekł z miejsca zdarzenia bez łupów';
 
   @override
-  String get crimeResultMoneyLabel => 'Money';
+  String get crimeResultMoneyLabel => 'Pieniądze';
 
   @override
   String get crimeResultXpLabel => 'XP';
 
   @override
-  String get crimeOutcomeRowReward => 'Reward:';
+  String get crimeOutcomeRowReward => 'Nagroda:';
 
   @override
-  String get crimeOutcomeRowXp => 'XP:';
+  String get crimeOutcomeRowXp => 'PD:';
 
   @override
-  String get crimeOutcomeRowTools => 'Tools:';
+  String get crimeOutcomeRowTools => 'Narzędzia:';
 
   @override
   String crimeOutcomeToolDurabilityValue(int percent) {
-    return '-$percent% durability';
+    return '-$percent% trwałości';
   }
 
   @override
-  String get icuIntensiveCareTitle => 'Intensive care';
+  String get icuIntensiveCareTitle => 'Intensywna terapia';
 
   @override
   String get icuInjuredLine =>
-      'You were seriously injured during your criminal activities.';
+      'W trakcie działalności przestępczej odniosłeś poważne obrażenia.';
 
   @override
   String get icuUnconsciousLine =>
-      'You are now in intensive care and unconscious.';
+      'Jesteś teraz na oddziale intensywnej terapii i jesteś nieprzytomny.';
 
   @override
-  String get icuRecoveryTimeLabel => 'Recovery time:';
+  String get icuRecoveryTimeLabel => 'Czas regeneracji:';
 
   @override
-  String get icuWakeHp => 'You wake up with 10 HP';
+  String get icuWakeHp => 'Budzisz się z 10 HP';
 
   @override
   String get icuNoActionsHint =>
-      'You cannot perform actions during this time.\nBe more careful with your health!';
+      'W tym czasie nie można wykonywać żadnych czynności. \nUważaj bardziej na swoje zdrowie!';
 
   @override
   String jailBailPaidSnackbar(int amount) {
-    return '🎉 You\'re free! Bail paid: €$amount';
+    return '🎉 Jesteś wolny! Zapłacona kaucja: $amount €';
   }
 
   @override
   String jailInsufficientBail(int amount) {
-    return 'Not enough money for bail (€$amount)';
+    return 'Za mało pieniędzy na kaucję ($amount €)';
   }
 
   @override
   String jailCooldownWait(int seconds) {
-    return 'Please wait: ${seconds}s';
+    return 'Proszę czekać: $seconds s';
   }
 
   @override
-  String get jailEscapeSuccess => 'Escape succeeded! You are free.';
+  String get jailEscapeSuccess => 'Ucieczka się powiodła! Jesteś wolny.';
 
   @override
   String jailEscapeFailed(String penalty) {
-    return 'Escape failed. Sentence extended by $penalty.';
+    return 'Ucieczka nie powiodła się. Zdanie przedłużone o $penalty.';
   }
 
   @override
-  String get jailEscapeGenericFailure => 'Escape failed';
+  String get jailEscapeGenericFailure => 'Ucieczka nie powiodła się';
 
   @override
   String jailErrorPrefix(String message) {
-    return 'Error: $message';
+    return 'Błąd: $message';
   }
 
   @override
-  String get jailTimeLeft => 'Time left';
+  String get jailTimeLeft => 'Pozostał czas';
 
   @override
   String jailPayBail(int amount) {
-    return 'Pay bail (€$amount)';
+    return 'Zapłać kaucję ($amount €)';
   }
 
   @override
   String get jailCannotActWhileIn =>
-      'You cannot commit crimes, work, or travel while serving your sentence.';
+      'Podczas odbywania kary nie możesz popełniać przestępstw, pracować ani podróżować.';
 
   @override
-  String get jailAttemptEscape => 'Attempt escape';
+  String get jailAttemptEscape => 'Próba ucieczki';
 
   @override
-  String get jailYouAreInJail => 'You are in jail';
+  String get jailYouAreInJail => 'Jesteś w więzieniu';
 
   @override
   String get vehicleCondition => 'Stan';
@@ -5615,447 +5615,454 @@ class AppLocalizationsPl extends AppLocalizations {
       'Poproś o potwierdzenie przed wydaniem kredytów, aby pominąć czas odnowienia kradzieży pojazdu. Wyłącz, aby zrealizować jednym dotknięciem (ikona błyskawicy obok minutnika).';
 
   @override
-  String get supportTicketsScreenTitle => 'Support tickets';
+  String get supportTicketsScreenTitle => 'Bilety wsparcia';
 
   @override
-  String get supportLoadTicketsFailed => 'Failed to load tickets';
+  String get supportLoadTicketsFailed => 'Nie udało się załadować biletów';
 
   @override
-  String get supportLoadTicketFailed => 'Failed to load ticket';
+  String get supportLoadTicketFailed => 'Nie udało się załadować biletu';
 
   @override
-  String get supportPickImageFailed => 'Failed to select image';
+  String get supportPickImageFailed => 'Nie udało się wybrać obrazu';
 
   @override
   String get supportSubjectMessageMinLength =>
-      'Fill in subject and message (min. 3 chars).';
+      'Wpisz temat i wiadomość (min. 3 znaki).';
 
   @override
-  String get supportTicketCreated => 'Ticket created.';
+  String get supportTicketCreated => 'Utworzono bilet.';
 
   @override
-  String get supportCreateTicketFailed => 'Failed to create ticket';
+  String get supportCreateTicketFailed => 'Nie udało się utworzyć biletu';
 
   @override
-  String get supportReplySent => 'Reply sent.';
+  String get supportReplySent => 'Odpowiedź wysłana.';
 
   @override
-  String get supportReplySendFailed => 'Failed to send reply';
+  String get supportReplySendFailed => 'Nie udało się wysłać odpowiedzi';
 
   @override
-  String get supportDeleteTicketTitle => 'Delete ticket';
+  String get supportDeleteTicketTitle => 'Usuń bilet';
 
   @override
   String get supportDeleteTicketBody =>
-      'Are you sure you want to delete this ticket? This action cannot be undone.';
+      'Czy na pewno chcesz usunąć ten bilet? Tej akcji nie można cofnąć.';
 
   @override
-  String get supportTicketDeleted => 'Ticket deleted.';
+  String get supportTicketDeleted => 'Bilet został usunięty.';
 
   @override
-  String get supportDeleteTicketFailed => 'Failed to delete ticket';
+  String get supportDeleteTicketFailed => 'Nie udało się usunąć biletu';
 
   @override
-  String get supportUnknownError => 'Unknown error';
+  String get supportUnknownError => 'Nieznany błąd';
 
   @override
-  String get supportStatusNew => 'New';
+  String get supportStatusNew => 'Nowy';
 
   @override
-  String get supportStatusTriage => 'Triage';
+  String get supportStatusTriage => 'Ocena stanu zdrowia rannych';
 
   @override
-  String get supportStatusInProgress => 'In progress';
+  String get supportStatusInProgress => 'W toku';
 
   @override
-  String get supportStatusWaitingPlayer => 'Waiting for player';
+  String get supportStatusWaitingPlayer => 'Czekam na gracza';
 
   @override
-  String get supportStatusBlocked => 'Blocked';
+  String get supportStatusBlocked => 'Zablokowany';
 
   @override
-  String get supportStatusResolved => 'Resolved';
+  String get supportStatusResolved => 'Rozwiązany';
 
   @override
-  String get supportStatusClosed => 'Closed';
+  String get supportStatusClosed => 'Zamknięte';
 
   @override
-  String get supportStatusArchived => 'Archived';
+  String get supportStatusArchived => 'Zarchiwizowane';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Błąd';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'Pytanie';
 
   @override
-  String get supportCategoryFeedback => 'Feedback';
+  String get supportCategoryFeedback => 'Informacja zwrotna';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'Inny';
 
   @override
-  String get supportPriorityLow => 'Low';
+  String get supportPriorityLow => 'Niski';
 
   @override
-  String get supportPriorityHigh => 'High';
+  String get supportPriorityHigh => 'Wysoki';
 
   @override
-  String get supportPriorityUrgent => 'Urgent';
+  String get supportPriorityUrgent => 'Pilny';
 
   @override
-  String get supportPriorityNormal => 'Normal';
+  String get supportPriorityNormal => 'Normalna';
 
   @override
   String supportTimeDaysAgo(int count) {
-    return '${count}d ago';
+    return '${count}d temu';
   }
 
   @override
   String supportTimeHoursAgo(int count) {
-    return '${count}h ago';
+    return '${count}h temu';
   }
 
   @override
   String supportTimeMinutesAgo(int count) {
-    return '${count}m ago';
+    return '$count m temu';
   }
 
   @override
-  String get supportTimeJustNow => 'just now';
+  String get supportTimeJustNow => 'właśnie';
 
   @override
-  String get supportSenderSupport => 'Support';
+  String get supportSenderSupport => 'Wsparcie';
 
   @override
-  String get supportSenderYou => 'You';
+  String get supportSenderYou => 'Ty';
 
   @override
-  String get supportImageLoadFailed => 'Failed to load image.';
+  String get supportImageLoadFailed => 'Nie udało się załadować obrazu.';
 
   @override
-  String get supportMyTickets => 'My tickets';
+  String get supportMyTickets => 'Moje bilety';
 
   @override
   String get supportMyTicketsIntro =>
-      'Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.';
+      'Wsparcie odpowiada teraz bezpośrednio na tym ekranie. Nadal możesz opcjonalnie otrzymać powiadomienie push, gdy Twój bilet zostanie zaktualizowany.';
 
   @override
   String get supportNoTicketsYet =>
-      'You do not have any tickets yet. Create a new report below.';
+      'Nie masz jeszcze żadnych biletów. Utwórz nowy raport poniżej.';
 
   @override
   String get supportSelectTicketPrompt =>
-      'Select a ticket to open the conversation.';
+      'Wybierz zgłoszenie, aby otworzyć rozmowę.';
 
   @override
-  String get supportConversation => 'Conversation';
+  String get supportConversation => 'Rozmowa';
 
   @override
-  String get supportNoMessagesYet => 'No messages yet.';
+  String get supportNoMessagesYet => 'Nie ma jeszcze żadnych wiadomości.';
 
   @override
-  String get supportAttachments => 'Attachments';
+  String get supportAttachments => 'Załączniki';
 
   @override
-  String get supportReplyToTicket => 'Reply to this ticket';
+  String get supportReplyToTicket => 'Odpowiedz na to zgłoszenie';
 
   @override
   String get supportReplyFieldHint =>
-      'Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.';
+      'Użyj tego pola, gdy wsparcie poprosi o więcej informacji lub gdy chcesz udostępnić aktualizację. Skrzynka odbiorcza i push pozostają kanałami powiadomień o nowych odpowiedziach pomocy technicznej.';
 
   @override
-  String get supportYourReply => 'Your reply';
+  String get supportYourReply => 'Twoja odpowiedź';
 
   @override
-  String get supportSendReply => 'Send reply';
+  String get supportSendReply => 'Wyślij odpowiedź';
 
   @override
-  String get supportNewTicket => 'New ticket';
+  String get supportNewTicket => 'Nowy bilet';
 
   @override
   String get supportNewTicketIntro =>
-      'Create a new report here. Support can then reply through inbox/push and in this screen, so you can continue the conversation in one place.';
+      'Utwórz tutaj nowy raport. Zespół pomocy może następnie odpowiedzieć za pośrednictwem skrzynki odbiorczej/push i na tym ekranie, dzięki czemu możesz kontynuować rozmowę w jednym miejscu.';
 
   @override
-  String get supportTicketReceivedBanner => 'Ticket received';
+  String get supportTicketReceivedBanner => 'Otrzymano bilet';
 
   @override
   String supportTicketNumberLine(int id) {
-    return 'Ticket number: #$id';
+    return 'Numer biletu: #$id';
   }
 
   @override
   String get supportTicketReceivedDetail =>
-      'The ticket now appears directly in your list above. New support replies also arrive as inbox messages and push notifications.';
+      'Bilet pojawi się teraz bezpośrednio na liście powyżej. Nowe odpowiedzi pomocy technicznej pojawiają się także w postaci wiadomości w skrzynce odbiorczej i powiadomień push.';
 
   @override
-  String get supportFieldCategory => 'Category';
+  String get supportFieldCategory => 'Kategoria';
 
   @override
-  String get supportFieldModule => 'Module';
+  String get supportFieldModule => 'Moduł';
 
   @override
-  String get supportFieldSubject => 'Subject';
+  String get supportFieldSubject => 'Temat';
 
   @override
-  String get supportFieldMessage => 'Message';
+  String get supportFieldMessage => 'Wiadomość';
 
   @override
-  String get supportReferenceOptional => 'Reference (optional)';
+  String get supportReferenceOptional => 'Odniesienie (opcjonalnie)';
 
   @override
   String get supportReferenceHint =>
-      'For example order id, screen name, country or short context';
+      'Na przykład identyfikator zamówienia, nazwa ekranowa, kraj lub krótki kontekst';
 
   @override
-  String get supportAddScreenshot => 'Add screenshot';
+  String get supportAddScreenshot => 'Dodaj zrzut ekranu';
 
   @override
-  String get supportSubmit => 'Submit';
+  String get supportSubmit => 'Składać';
 
   @override
-  String get supportLastMessagePrefix => 'Last: ';
+  String get supportLastMessagePrefix => 'Ostatni:';
 
   @override
-  String get supportReferenceLabel => 'Reference';
+  String get supportReferenceLabel => 'Odniesienie';
 
   @override
-  String get supportMod_support => 'General support';
+  String get supportMod_support => 'Ogólne wsparcie';
 
   @override
-  String get supportMod_dashboard => 'Dashboard';
+  String get supportMod_dashboard => 'Panel';
 
   @override
-  String get supportMod_messages => 'Messages / inbox';
+  String get supportMod_messages => 'Wiadomości / skrzynka odbiorcza';
 
   @override
-  String get supportMod_notifications => 'Notifications / push';
+  String get supportMod_notifications => 'Powiadomienia / push';
 
   @override
-  String get supportMod_payments => 'Payments / premium';
+  String get supportMod_payments => 'Płatności / składki';
 
   @override
   String get supportMod_bank => 'Bank';
 
   @override
-  String get supportMod_crypto => 'Crypto';
+  String get supportMod_crypto => 'Krypto';
 
   @override
-  String get supportMod_travel => 'Travel';
+  String get supportMod_travel => 'Podróż';
 
   @override
-  String get supportMod_properties => 'Properties';
+  String get supportMod_properties => 'Właściwości';
 
   @override
-  String get supportMod_inventory => 'Inventory / storage';
+  String get supportMod_inventory => 'Zapasy / magazynowanie';
 
   @override
-  String get supportMod_loadouts => 'Loadouts / equipment';
+  String get supportMod_loadouts => 'Ładunki / wyposażenie';
 
   @override
-  String get supportMod_crimes => 'Crimes';
+  String get supportMod_crimes => 'Zbrodnie';
 
   @override
-  String get supportMod_jobs => 'Work / jobs';
+  String get supportMod_jobs => 'Praca/praca';
 
   @override
-  String get supportMod_vehicles => 'Car / bike / boat theft';
+  String get supportMod_vehicles => 'Kradzież samochodu / roweru / łodzi';
 
   @override
-  String get supportMod_garage => 'Garage';
+  String get supportMod_garage => 'Garaż';
 
   @override
   String get supportMod_marina => 'Marina';
 
   @override
-  String get supportMod_aviation => 'Aviation';
+  String get supportMod_aviation => 'Lotnictwo';
 
   @override
-  String get supportMod_smuggling => 'Smuggling';
+  String get supportMod_smuggling => 'Przemyt';
 
   @override
-  String get supportMod_drugs => 'Drugs';
+  String get supportMod_drugs => 'Narkotyki';
 
   @override
-  String get supportMod_nightclub => 'Nightclub';
+  String get supportMod_nightclub => 'Klub nocny';
 
   @override
-  String get supportMod_prostitution => 'Prostitution';
+  String get supportMod_prostitution => 'Prostytucja';
 
   @override
-  String get supportMod_crew => 'Crew';
+  String get supportMod_crew => 'Załoga';
 
   @override
-  String get supportMod_friends => 'Friends / players';
+  String get supportMod_friends => 'Przyjaciele / gracze';
 
   @override
-  String get supportMod_hitlist => 'Hitlist';
+  String get supportMod_hitlist => 'Lista hitów';
 
   @override
-  String get supportMod_security => 'Security / FBI';
+  String get supportMod_security => 'Bezpieczeństwo / FBI';
 
   @override
-  String get supportMod_prison => 'Prison / court';
+  String get supportMod_prison => 'Więzienie / sąd';
 
   @override
-  String get supportMod_casino => 'Casino';
+  String get supportMod_casino => 'Kasyno';
 
   @override
-  String get supportMod_school => 'School / training';
+  String get supportMod_school => 'Szkoła / szkolenie';
 
   @override
-  String get supportMod_achievements => 'Achievements';
+  String get supportMod_achievements => 'Osiągnięcia';
 
   @override
-  String get supportMod_profile => 'Profile';
+  String get supportMod_profile => 'Profil';
 
   @override
-  String get supportMod_settings => 'Settings';
+  String get supportMod_settings => 'Ustawienia';
 
   @override
-  String get supportMod_events => 'Events / leaderboard';
+  String get supportMod_events => 'Wydarzenia / tabela wyników';
 
   @override
-  String get supportMod_other => 'Other';
+  String get supportMod_other => 'Inny';
 
   @override
-  String get gameEventDefaultTitle => 'Event';
+  String get gameEventDefaultTitle => 'Wydarzenie';
 
   @override
-  String get gameEventStatusActive => 'Active';
+  String get gameEventStatusActive => 'Aktywny';
 
   @override
-  String get gameEventStatusScheduled => 'Scheduled';
+  String get gameEventStatusScheduled => 'Zaplanowany';
 
   @override
-  String get gameEventStatusCompleted => 'Completed';
+  String get gameEventStatusCompleted => 'Zakończony';
 
   @override
-  String get gameEventStatusDraft => 'Draft';
+  String get gameEventStatusDraft => 'Projekt';
 
   @override
-  String get gameEventTmplWeeklyVehicleTheftHuntTitle => 'Weekly Theft Hunt';
+  String get gameEventTmplWeeklyVehicleTheftHuntTitle =>
+      'Cotygodniowe polowanie na kradzieże';
 
   @override
   String get gameEventTmplWeeklyVehicleTheftHuntDesc =>
-      'Steal as many vehicles as you can during the event window.';
+      'Ukradnij jak najwięcej pojazdów w oknie wydarzenia.';
 
   @override
-  String get gameEventTmplSmugglingSurgeTitle => 'Smuggling Surge';
+  String get gameEventTmplSmugglingSurgeTitle => 'Fala przemytu';
 
   @override
   String get gameEventTmplSmugglingSurgeDesc =>
-      'Move the most smuggled contraband this round.';
+      'Przenieś w tej rundzie najczęściej przemycaną kontrabandę.';
 
   @override
-  String get gameEventTmplLabOutputChallengeTitle => 'Lab Output Challenge';
+  String get gameEventTmplLabOutputChallengeTitle =>
+      'Wyzwanie dotyczące wyników laboratorium';
 
   @override
   String get gameEventTmplLabOutputChallengeDesc =>
-      'Produce the most output while the event is live.';
+      'Wytwórz jak najwięcej wyników podczas trwania wydarzenia.';
 
   @override
-  String get gameEventTmplStreetCrimeSpreeTitle => 'Street Crime Spree';
+  String get gameEventTmplStreetCrimeSpreeTitle =>
+      'Uliczny szał przestępczości';
 
   @override
   String get gameEventTmplStreetCrimeSpreeDesc =>
-      'Complete as many crimes as possible in the live window.';
+      'Dokonaj jak największej liczby przestępstw w oknie na żywo.';
 
   @override
-  String get gameScreenLoadError => 'Could not load events.';
+  String get gameScreenLoadError => 'Nie udało się wczytać wydarzeń.';
 
   @override
-  String get gameScreenDetailsLoadError => 'Could not load event details.';
+  String get gameScreenDetailsLoadError =>
+      'Nie udało się wczytać szczegółów wydarzenia.';
 
   @override
-  String get gameScreenSectionLive => 'Live Events';
+  String get gameScreenSectionLive => 'Wydarzenia na żywo';
 
   @override
-  String get gameScreenNoActive => 'There are no active events right now.';
+  String get gameScreenNoActive =>
+      'W tej chwili nie ma żadnych aktywnych wydarzeń.';
 
   @override
-  String get gameScreenSectionUpcoming => 'Upcoming Events';
+  String get gameScreenSectionUpcoming => 'Nadchodzące wydarzenia';
 
   @override
-  String get gameScreenNoUpcoming => 'There are no scheduled events.';
+  String get gameScreenNoUpcoming => 'Brak zaplanowanych wydarzeń.';
 
   @override
   String gameScreenStatusPrefix(String value) {
-    return 'Status: $value';
+    return 'Stan: $value';
   }
 
   @override
   String gameScreenStartLine(String date) {
-    return 'Start: $date';
+    return 'Początek: $date';
   }
 
   @override
   String gameScreenEndLine(String date) {
-    return 'End: $date';
+    return 'Koniec: $date';
   }
 
   @override
-  String get gameScreenYourProgress => 'Your progress';
+  String get gameScreenYourProgress => 'Twój postęp';
 
   @override
   String gameScreenScore(String value) {
-    return 'Score: $value';
+    return 'Wynik: $value';
   }
 
   @override
   String gameScreenRank(String value) {
-    return 'Rank: $value';
+    return 'Ranga: $value';
   }
 
   @override
-  String get gameScreenLeaderboard => 'Leaderboard (top 10)';
+  String get gameScreenLeaderboard => 'Tabela liderów (top 10)';
 
   @override
-  String get gameScreenNoLeaderboard => 'No leaderboard data yet.';
+  String get gameScreenNoLeaderboard => 'Brak jeszcze danych o tabeli liderów.';
 
   @override
-  String get gameScreenUnknownPlayer => 'Unknown';
+  String get gameScreenUnknownPlayer => 'Nieznany';
 
   @override
-  String get gameCardActive => 'Active';
+  String get gameCardActive => 'Aktywny';
 
   @override
-  String get gameCardScheduled => 'Planned';
+  String get gameCardScheduled => 'Planowany';
 
   @override
   String gameCardYourScore(String value) {
-    return 'Your score: $value';
+    return 'Twój wynik: $value';
   }
 
   @override
   String gameCardYourRank(String value) {
-    return 'Your rank: $value';
+    return 'Twoja ranga: $value';
   }
 
   @override
-  String get gameCardTapDetails => 'Tap for details and leaderboard';
+  String get gameCardTapDetails =>
+      'Kliknij, aby wyświetlić szczegóły i tabelę wyników';
 
   @override
-  String get eventFeedDisconnected => 'Disconnected from the event stream';
+  String get eventFeedDisconnected => 'Odłączono od strumienia zdarzeń';
 
   @override
-  String get eventFeedReconnecting => 'Reconnecting...';
+  String get eventFeedReconnecting => 'Ponowne łączenie...';
 
   @override
-  String get eventFeedConnectedWaiting => 'Connected — waiting for events…';
+  String get eventFeedConnectedWaiting => 'Połączono — czekam na wydarzenia…';
 
   @override
-  String get eventFeedConnecting => 'Connecting to the event stream…';
+  String get eventFeedConnecting => 'Łączę ze strumieniem wydarzeń…';
 
   @override
-  String get evStreamConnectionEstablished => 'Connected to the event stream';
+  String get evStreamConnectionEstablished =>
+      'Połączono ze strumieniem zdarzeń';
 
   @override
-  String get evStreamAuthRegistered => 'Account created successfully.';
+  String get evStreamAuthRegistered => 'Konto utworzone pomyślnie.';
 
   @override
-  String get evStreamAuthLogin => 'Welcome back.';
+  String get evStreamAuthLogin => 'Witamy z powrotem.';
 
   @override
   String evStreamCrimeSuccess(
@@ -6063,7 +6070,7 @@ class AppLocalizationsPl extends AppLocalizations {
     String reward,
     String xpGained,
   ) {
-    return 'Successfully completed $crimeName! +EUR $reward, +$xpGained XP';
+    return 'Pomyślnie ukończono $crimeName! +EUR $reward, +$xpGained PD';
   }
 
   @override
@@ -6076,19 +6083,21 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: '1 minute',
+      other: '$minutes minut',
+      many: '$minutes minut',
+      few: '$minutes minuty',
+      one: '1 minuta',
     );
-    return 'Successfully completed $crimeName! +EUR $reward, +$xpGained XP — but caught! Jailed for $_temp0.';
+    return 'Ukończono $crimeName! +$reward EUR, +$xpGained PD — złapany! Wyrok: $_temp0.';
   }
 
   @override
   String get evStreamCrimeSeizedVehicle =>
-      ' Your vehicle was seized by the police.';
+      'Twój pojazd został zatrzymany przez policję.';
 
   @override
   String get evStreamCrimeSeizedWeapon =>
-      ' Your weapon was confiscated by the police.';
+      'Twoja broń została skonfiskowana przez policję.';
 
   @override
   String evStreamCrimeSuccessCleared(
@@ -6099,15 +6108,15 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count convictions',
+      other: '$count wyroki skazujące',
       one: '1 conviction',
     );
-    return 'Successfully completed $crimeName! Criminal record cleared: $_temp0 removed. +$xpGained XP';
+    return 'Pomyślnie ukończono $crimeName! Rejestr karny oczyszczony: usunięto $_temp0. +$xpGained PD';
   }
 
   @override
   String evStreamCrimeFailedArrested(String authority, String crimeName) {
-    return 'Arrested by $authority during a $crimeName attempt.';
+    return 'Zatrzymany przez $authority podczas próby $crimeName.';
   }
 
   @override
@@ -6115,20 +6124,22 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: '1 minute',
+      other: '$minutes minut',
+      many: '$minutes minut',
+      few: '$minutes minuty',
+      one: '1 minuta',
     );
-    return 'Caught during $crimeName! Jailed for $_temp0.';
+    return 'Złapany podczas $crimeName! Wyrok: $_temp0.';
   }
 
   @override
   String evStreamCrimeFailedBase(String crimeName) {
-    return 'Failed to complete $crimeName';
+    return 'Nie udało się ukończyć $crimeName';
   }
 
   @override
   String evStreamChaseDamage(String pct) {
-    return ' Your vehicle took $pct% damage during the chase.';
+    return 'Twój pojazd odniósł $pct% uszkodzeń podczas pościgu.';
   }
 
   @override
@@ -6136,77 +6147,82 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: '1 minute',
+      other: '$minutes minut',
+      many: '$minutes minut',
+      few: '$minutes minuty',
+      one: '1 minuta',
     );
-    return 'Caught during $crimeName! Jailed for $_temp0.';
+    return 'Złapany podczas $crimeName! Wyrok: $_temp0.';
   }
 
   @override
   String evStreamJobSuccess(String jobName, String earnings, String xpGained) {
-    return 'Completed work as $jobName! +€$earnings, +$xpGained XP';
+    return 'Ukończono pracę jako $jobName! +€$earnings, +$xpGained PD';
   }
 
   @override
   String evStreamJobSuccessEdu(String pct) {
-    return ' (Education bonus +$pct%)';
+    return '(Premia edukacyjna +$pct%)';
   }
 
   @override
   String evStreamJobFailedXp(String jobName, String xpLost) {
-    return 'Failed to complete job as $jobName. −$xpLost XP';
+    return 'Nie udało się ukończyć zadania jako $jobName. −$xpLost PD';
   }
 
   @override
   String evStreamJobFailed(String jobName) {
-    return 'Failed to complete job as $jobName';
+    return 'Nie udało się ukończyć zadania jako $jobName';
   }
 
   @override
-  String get evStreamJobErrorInvalid => 'Invalid job';
+  String get evStreamJobErrorInvalid => 'Nieprawidłowa praca';
 
   @override
-  String get evStreamJobErrorLevel => 'Your rank is too low for this job';
+  String get evStreamJobErrorLevel =>
+      'Twoja ranga jest zbyt niska dla tej pracy';
 
   @override
   String evStreamJobErrorCooldown(int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes more minutes',
-      one: '1 more minute',
+      other: 'jeszcze $minutes minut',
+      many: 'jeszcze $minutes minut',
+      few: 'jeszcze $minutes minuty',
+      one: 'jeszcze 1 minutę',
     );
-    return 'This job is on cooldown. Wait $_temp0';
+    return 'Ta praca ma cooldown. Czekaj $_temp0';
   }
 
   @override
   String evStreamJobErrorGeneric(String reason) {
-    return 'Job error: $reason';
+    return 'Błąd zadania: $reason';
   }
 
   @override
   String evStreamTravelDeparted(String dest, String cost) {
-    return 'Flying to $dest… −€$cost';
+    return 'Lecę do $dest… −€$cost';
   }
 
   @override
   String evStreamTravelArrived(String country) {
-    return 'Arrived in $country.';
+    return 'Przybył w $country.';
   }
 
   @override
   String evStreamBankDeposit(String amount) {
-    return 'Deposited €$amount to the bank';
+    return 'Wpłacił $amount € do banku';
   }
 
   @override
   String evStreamBankWithdraw(String amount) {
-    return 'Withdrew €$amount from the bank';
+    return 'Wypłacił z banku $amount €';
   }
 
   @override
   String evStreamCryptoBuy(String quantity, String symbol, String total) {
-    return 'Bought $quantity $symbol for €$total';
+    return 'Kupiłem $quantity $symbol za $total €';
   }
 
   @override
@@ -6216,12 +6232,12 @@ class AppLocalizationsPl extends AppLocalizations {
     String total,
     String pnl,
   ) {
-    return 'Sold $quantity $symbol for €$total (P&L €$pnl)';
+    return 'Sprzedano $quantity $symbol za $total € (zysk i straty $pnl €)';
   }
 
   @override
   String evStreamCryptoAlert(String symbol, String price, String chg) {
-    return '$symbol alert: €$price ($chg% 24h)';
+    return '$symbol alert: $price € ($chg% 24h)';
   }
 
   @override
@@ -6232,7 +6248,7 @@ class AppLocalizationsPl extends AppLocalizations {
     String symbol,
     String price,
   ) {
-    return '$order $side filled: $quantity $symbol at €$price';
+    return '$order $side wypełnione: $quantity $symbol przy cenie $price';
   }
 
   @override
@@ -6241,128 +6257,127 @@ class AppLocalizationsPl extends AppLocalizations {
     String symbol,
     String price,
   ) {
-    return '$trig triggered for $symbol at €$price';
+    return '$trig aktywowane za $symbol przy cenie $price';
   }
 
   @override
   String evStreamCryptoRegime(String regime, String move) {
-    return 'Market regime changed to $regime ($move% 24h)';
+    return 'Reżim rynkowy zmieniony na $regime ($move% 24h)';
   }
 
   @override
   String evStreamCryptoNews(String sentiment, String headline) {
-    return '$sentiment news: $headline';
+    return '$sentiment aktualności: $headline';
   }
 
   @override
   String evStreamCryptoMissionDaily(String title, String reward) {
-    return 'Daily mission complete: $title (+EUR $reward)';
+    return 'Ukończenie misji dziennej: $title (+ $reward EUR)';
   }
 
   @override
   String evStreamCryptoMissionWeekly(String title, String reward) {
-    return 'Weekly mission complete: $title (+EUR $reward)';
+    return 'Tygodniowe ukończenie misji: $title (+EUR $reward)';
   }
 
   @override
   String evStreamCryptoLeaderboard(String rank, String reward) {
-    return 'Crypto leaderboard reward: #$rank (+EUR $reward)';
+    return 'Nagroda za ranking kryptowalut: #$rank (+EUR $reward)';
   }
 
   @override
-  String get evStreamRegimeBull => 'bullish';
+  String get evStreamRegimeBull => 'zwyżkowy';
 
   @override
-  String get evStreamRegimeBear => 'bearish';
+  String get evStreamRegimeBear => 'niedźwiedzi';
 
   @override
-  String get evStreamRegimeSideways => 'sideways';
+  String get evStreamRegimeSideways => 'bokiem';
 
   @override
-  String get evStreamImpactBull => 'Bullish';
+  String get evStreamImpactBull => 'Zwyżkowy';
 
   @override
-  String get evStreamImpactBear => 'Bearish';
+  String get evStreamImpactBear => 'Niedźwiedzi';
 
   @override
-  String get evStreamImpactNeutral => 'Neutral';
+  String get evStreamImpactNeutral => 'Neutralny';
 
   @override
   String evStreamPropertyBought(String name, String cost) {
-    return 'Purchased $name for €$cost';
+    return 'Kupiono $name za $cost €';
   }
 
   @override
   String evStreamCrewCreated(String name) {
-    return 'Created crew: $name';
+    return 'Utworzona Crew: $name';
   }
 
   @override
   String evStreamCrewJoined(String name) {
-    return 'Joined crew: $name';
+    return 'Dołączył do załogi: $name';
   }
 
   @override
   String evStreamCrewWarDeclared(String a, String b, String type) {
-    return 'Crew war declared: #$a vs #$b ($type)';
+    return 'Wypowiedzona wojna załogi: #$a kontra #$b ($type)';
   }
 
   @override
   String evStreamCrewWarStarted(String a, String b) {
-    return 'Crew war started: #$a vs #$b';
+    return 'Rozpoczęła się wojna załóg: #$a kontra #$b';
   }
 
   @override
   String evStreamCrewLockdown(String id) {
-    return 'Crew war #$id is in lockdown';
+    return 'Wojna załogowa #$id jest zamknięta';
   }
 
   @override
   String evStreamCrewResolved(String id, String winner) {
-    return 'Crew war #$id resolved. Winner: crew #$winner';
+    return 'Wojna załogi nr $id rozwiązana. Zwycięzca: Crew #$winner';
   }
 
   @override
   String evStreamCrewAction(String action, String points) {
-    return 'Crew war action: $action (+$points pt)';
+    return 'Akcja wojenna załogi: $action (+$points pkt)';
   }
 
   @override
   String evStreamHeistOk(String name, String money) {
-    return 'Heist “$name” successful! +€$money';
+    return 'Napad „$name” udany! +€$money';
   }
 
   @override
   String evStreamHeistFail(String name) {
-    return 'Heist “$name” failed.';
+    return 'Napad „$name” nie powiódł się.';
   }
 
   @override
   String evStreamHospital(String hp, String cost) {
-    return 'Treated in hospital! +$hp health, −€$cost';
+    return 'Leczony w szpitalu! +$hp zdrowia, −€$cost';
   }
 
   @override
   String evStreamPoliceArrested(String mins) {
-    return 'Arrested! Jailed for $mins minutes';
+    return 'Aresztowany! Uwięziony na $mins minut';
   }
 
   @override
-  String get evStreamPoliceEscaped => 'You escaped the police.';
+  String get evStreamPoliceEscaped => 'Uciekłeś policji.';
 
   @override
-  String get evStreamFbiRaid => 'FBI raid! You lost property and money.';
+  String get evStreamFbiRaid => 'Nalot FBI! Straciłeś majątek i pieniądze.';
 
   @override
-  String get evStreamErrInsufficientFunds => 'Not enough money';
+  String get evStreamErrInsufficientFunds => 'Za mało pieniędzy';
 
   @override
-  String get evStreamErrInsufficientHealth =>
-      'Not enough health for this action';
+  String get evStreamErrInsufficientHealth => 'Za mało zdrowia na tę akcję';
 
   @override
   String evStreamErrInsufficientRank(String rank) {
-    return 'Requires rank $rank';
+    return 'Wymaga rangi $rank';
   }
 
   @override
@@ -6370,56 +6385,59 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes more minutes',
-      one: '1 more minute',
+      other: '$minutes minut',
+      many: '$minutes minut',
+      few: '$minutes minuty',
+      one: '1 minutę',
     );
-    return 'You are in jail for $_temp0';
+    return 'Jesteś w więzieniu jeszcze $_temp0';
   }
 
   @override
-  String get evStreamErrNoHealthDefault =>
-      'You need to rest and recover your health';
+  String get evStreamErrNoHealthDefault => 'Musisz odpocząć i odzyskać zdrowie';
 
   @override
   String evStreamErrCooldown(int seconds) {
     String _temp0 = intl.Intl.pluralLogic(
       seconds,
       locale: localeName,
-      other: '$seconds seconds',
-      one: '1 second',
+      other: '$seconds sekund',
+      many: '$seconds sekund',
+      few: '$seconds sekundy',
+      one: '1 sekundę',
     );
-    return 'Wait $_temp0 before trying again';
+    return 'Poczekaj $_temp0, zanim spróbujesz ponownie';
   }
 
   @override
   String get evStreamErrRescuerJailed =>
-      'You cannot help others while you are in jail';
+      'Będąc w więzieniu, nie możesz pomagać innym';
 
   @override
-  String get evStreamErrTargetNotJailed => 'That player is not in jail';
+  String get evStreamErrTargetNotJailed => 'Ten gracz nie przebywa w więzieniu';
 
   @override
-  String get evStreamErrCannotRescueSelf => 'You cannot free yourself';
+  String get evStreamErrCannotRescueSelf => 'Nie możesz się uwolnić';
 
   @override
-  String get evStreamJailbreakOk => 'Jailbreak successful! The player is free.';
+  String get evStreamJailbreakOk => 'Pomyślny jailbreak! Gracz jest wolny.';
 
   @override
   String get evStreamJailbreakFail =>
-      'Jailbreak failed! The player is still in jail.';
+      'Nie udało się jailbreakować! Gracz nadal przebywa w więzieniu.';
 
   @override
   String evStreamJailbreakCaught(String mins) {
-    return 'Jailbreak failed! You were caught and jailed for $mins minutes.';
+    return 'Nie udało się jailbreakować! Zostałeś złapany i osadzony w więzieniu na $mins minut.';
   }
 
   @override
   String evStreamBailPaid(String amount) {
-    return 'Bail paid: €$amount. You are free.';
+    return 'Zapłacona kaucja: $amount €. Jesteś wolny.';
   }
 
   @override
-  String get evStreamErrInternal => 'Something went wrong. Please try again.';
+  String get evStreamErrInternal => 'Coś poszło nie tak. Spróbuj ponownie.';
 
   @override
   String evStreamTest(String msg) {
@@ -6427,19 +6445,20 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get evStreamNoCriminalRecord => 'You have no criminal record to clear';
+  String get evStreamNoCriminalRecord =>
+      'Nie masz żadnej karalności do oczyszczenia';
 
   @override
   String get evStreamWeaponSelectRequired =>
-      'Select a crime weapon before committing this crime';
+      'Wybierz broń przestępstwa przed popełnieniem tego przestępstwa';
 
   @override
   String evStreamWeaponNotSuitable(String types) {
-    return 'You need a suitable weapon: $types';
+    return 'Potrzebujesz odpowiedniej broni: $types';
   }
 
   @override
-  String get evStreamJobFallbackName => 'job';
+  String get evStreamJobFallbackName => 'stanowisko';
 
   @override
   String evStreamUnknownKey(String key) {
@@ -6447,170 +6466,173 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get connectionErrorGeneric => 'Connection error';
+  String get connectionErrorGeneric => 'Błąd połączenia';
 
   @override
-  String get crimeWeaponSectionTitle => 'Crime weapon';
+  String get crimeWeaponSectionTitle => 'Broń zbrodni';
 
   @override
   String get crimeWeaponInstruction =>
-      'Choose which carried weapon you use by default for crimes that require one.';
+      'Wybierz, której broni używasz domyślnie w przypadku przestępstw, które jej wymagają.';
 
   @override
   String get crimeWeaponEmptyInventoryHelp =>
-      'Buy or move a usable weapon into your carried inventory first.';
+      'Najpierw kup lub przenieś użyteczną broń do swojego ekwipunku.';
 
   @override
-  String get crimeWeaponSelectHint => 'Select a weapon for crimes';
+  String get crimeWeaponSelectHint => 'Wybierz broń do zbrodni';
 
   @override
   String get crimeWeaponNoSelectionNote =>
-      'Without a selection, weapon-based crimes will not start.';
+      'Bez selekcji przestępstwa z użyciem broni nie zostaną rozpoczęte.';
 
   @override
   String crimeWeaponSelectedStatus(String weaponLine) {
-    return 'Selected: $weaponLine. Some crimes still require a matching weapon type on top of that.';
+    return 'Wybrano: $weaponLine. Niektóre przestępstwa nadal wymagają dodatkowo odpowiedniego rodzaju broni.';
   }
 
   @override
-  String get crimeSetWeaponFailed => 'Failed to set crime weapon.';
+  String get crimeSetWeaponFailed => 'Nie udało się ustawić broni zbrodni.';
 
   @override
   String get crimeChooseWeaponBeforeCommit =>
-      'Choose a crime weapon at the top of this screen or via Inventory first.';
+      'Wybierz broń zbrodni na górze tego ekranu lub najpierw w Inwentarzu.';
 
   @override
   String get crimeWeaponFooterNote =>
-      'Weapon-based crimes use the selected crime weapon above.';
+      'Przestępstwa z użyciem broni wykorzystują wybraną powyżej broń przestępczą.';
 
   @override
   String get crimeCriminalRecordWipeDesc =>
-      'Forge court files and wipe your full criminal record if the operation succeeds.';
+      'Sfałszuj akta sądowe i wyczyść całą kartotekę karną, jeśli operacja się powiedzie.';
 
   @override
   String crimeCardSuccessChance(int percent) {
-    return '$percent% success chance';
+    return '$percent% szans na sukces';
   }
 
   @override
-  String get cooldownTimeLeft => 'Time left';
+  String get cooldownTimeLeft => 'Pozostał czas';
 
   @override
   String get cooldownMustWaitExplanation =>
-      'You must wait before you can perform this action again.';
+      'Musisz poczekać, zanim będziesz mógł ponownie wykonać tę akcję.';
 
   @override
-  String get cooldownAlreadyFinished => 'Cooldown already finished.';
+  String get cooldownAlreadyFinished => 'Ochłodzenie już się skończyło.';
 
   @override
-  String get cooldownNotEnoughCredits => 'Not enough credits.';
+  String get cooldownNotEnoughCredits => 'Za mało kredytów.';
 
   @override
-  String get cooldownNoActiveToReset => 'No active cooldown to reset.';
+  String get cooldownNoActiveToReset =>
+      'Brak aktywnego czasu odnowienia do zresetowania.';
 
   @override
-  String get cooldownNotAvailableNow => 'Not available right now.';
+  String get cooldownNotAvailableNow => 'Niedostępne w tej chwili.';
 
   @override
-  String get cooldownRedeemFailed => 'Failed to speed up with credits.';
+  String get cooldownRedeemFailed =>
+      'Nie udało się przyspieszyć za pomocą kredytów.';
 
   @override
-  String get cooldownFinishedInstantly => 'Cooldown finished instantly.';
+  String get cooldownFinishedInstantly => 'Cooldown zakończył się natychmiast.';
 
   @override
   String cooldownSpeedUpNow(int cost) {
-    return 'Speed up now (-$cost credits)';
+    return 'Przyspiesz teraz (-$cost kredytów)';
   }
 
   @override
   String cooldownCreditBalanceLine(int balance) {
-    return 'Balance: $balance credits';
+    return 'Saldo: $balance kredytów';
   }
 
   @override
-  String get cooldownLoadingCreditOptions => 'Loading credit options…';
+  String get cooldownLoadingCreditOptions => 'Ładowanie opcji kredytowych…';
 
   @override
-  String get cooldownWaitCrime => 'The heat is too high…';
+  String get cooldownWaitCrime => 'Upał jest zbyt wysoki…';
 
   @override
-  String get cooldownWaitJob => 'Taking a rest before you can work again';
+  String get cooldownWaitJob =>
+      'Odpocznij, zanim będziesz mógł ponownie pracować';
 
   @override
-  String get cooldownWaitTravel => 'Next flight departs in';
+  String get cooldownWaitTravel => 'Następny lot odlatuje za';
 
   @override
-  String get cooldownWaitHeist => 'Planning the heist…';
+  String get cooldownWaitHeist => 'Planowanie napadu…';
 
   @override
-  String get cooldownWaitAppeal => 'Court is busy…';
+  String get cooldownWaitAppeal => 'Sąd jest zajęty…';
 
   @override
-  String get cooldownWaitDefault => 'Please wait…';
+  String get cooldownWaitDefault => 'Proszę czekać…';
 
   @override
-  String get weaponLabelKnife => 'Knife';
+  String get weaponLabelKnife => 'Nóż';
 
   @override
-  String get weaponLabelHandgun9mm => 'Pistol (9mm)';
+  String get weaponLabelHandgun9mm => 'Pistolet (9mm)';
 
   @override
-  String get weaponLabelHandgunHeavy => 'Heavy Pistol (.45)';
+  String get weaponLabelHandgunHeavy => 'Ciężki pistolet (.45)';
 
   @override
-  String get weaponLabelSmgCompact => 'Compact SMG';
+  String get weaponLabelSmgCompact => 'Kompaktowy pistolet maszynowy';
 
   @override
-  String get weaponLabelShotgunPump => 'Shotgun (pump)';
+  String get weaponLabelShotgunPump => 'Strzelba (pompa)';
 
   @override
-  String get weaponLabelMolotov => 'Molotov cocktail';
+  String get weaponLabelMolotov => 'Koktajl Mołotowa';
 
   @override
-  String get weaponLabelSmgSuppressed => 'Suppressed SMG';
+  String get weaponLabelSmgSuppressed => 'Stłumiony pistolet maszynowy';
 
   @override
-  String get weaponLabelShotgunTactical => 'Tactical Shotgun';
+  String get weaponLabelShotgunTactical => 'Strzelba taktyczna';
 
   @override
-  String get weaponLabelAssaultRifle => 'Assault rifle (AK-47)';
+  String get weaponLabelAssaultRifle => 'Karabin szturmowy (AK-47)';
 
   @override
-  String get weaponLabelGrenadeFlash => 'Flash grenade';
+  String get weaponLabelGrenadeFlash => 'Granat błyskowy';
 
   @override
-  String get weaponLabelGrenadeFrag => 'Fragmentation grenade';
+  String get weaponLabelGrenadeFrag => 'Granat odłamkowy';
 
   @override
-  String get weaponLabelSniperStandard => 'Sniper rifle';
+  String get weaponLabelSniperStandard => 'Karabin snajperski';
 
   @override
-  String get weaponLabelAssaultRifleVip => 'Elite assault rifle';
+  String get weaponLabelAssaultRifleVip => 'Elitarny karabin szturmowy';
 
   @override
-  String get weaponLabelSniperVip => 'Elite sniper rifle';
+  String get weaponLabelSniperVip => 'Elitarny karabin snajperski';
 
   @override
-  String get cooldownTitleCrime => 'Crime cooldown';
+  String get cooldownTitleCrime => 'Umorzenie przestępczości';
 
   @override
-  String get cooldownTitleJob => 'Job cooldown';
+  String get cooldownTitleJob => 'Czas odnowienia pracy';
 
   @override
-  String get cooldownTitleTravel => 'Travel cooldown';
+  String get cooldownTitleTravel => 'Czas odnowienia podróży';
 
   @override
-  String get cooldownTitleHeist => 'Heist cooldown';
+  String get cooldownTitleHeist => 'Czas odnowienia napadu';
 
   @override
-  String get cooldownTitleAppeal => 'Appeal cooldown';
+  String get cooldownTitleAppeal => 'Odwołaj się do czasu odnowienia';
 
   @override
-  String get cooldownTitleSchool => 'School cooldown';
+  String get cooldownTitleSchool => 'Odmłodzenie szkoły';
 
   @override
-  String get cooldownTitleGeneric => 'Cooldown';
+  String get cooldownTitleGeneric => 'Czas odnowienia';
 
   @override
-  String get crimeOutcomeDefaultTitle => 'Crime result';
+  String get crimeOutcomeDefaultTitle => 'Wynik przestępstwa';
 }

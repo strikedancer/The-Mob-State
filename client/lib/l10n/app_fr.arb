@@ -144,11 +144,25 @@
   "crimeStealYachtDesc": "Voler un yacht de luxe",
   "crimeCorruptOfficialName": "Pot-de-vin officiel",
   "crimeCorruptOfficialDesc": "Soudoyer un fonctionnaire pour obtenir des faveurs",
+  "crimeEliminateWitnessName": "Éliminer le témoin",
+  "crimeEliminateWitnessDesc": "Éliminer un témoin avant le procès",
+  "crimeDiamondHeistName": "Vol de transport de diamants",
+  "crimeDiamondHeistDesc": "Détourner un transport de diamants bruts",
+  "crimeEvidenceRoomHeistName": "Vol de la salle des preuves",
+  "crimeEvidenceRoomHeistDesc": "Voler des preuves dans un entrepôt fédéral",
+  "crimeMuseumHeistName": "Vol de musée",
+  "crimeMuseumHeistDesc": "Voler des objets précieux dans un musée",
+  "crimeBossAssassinationName": "Assassinat d'un boss rival",
+  "crimeBossAssassinationDesc": "Éliminer le leader d'une organisation rivale",
+  "crimeCriminalRecordWipeName": "Effacer le casier judiciaire",
   "tooltipCrimeRequiresTools": "Outils requis",
   "tooltipCrimeRequiresVehicle": "Véhicule requis",
   "tooltipCrimeRequiresDrugs": "Médicaments requis",
   "tooltipCrimeHighValue": "Opération à haute valeur ajoutée",
   "tooltipCrimeRequiresViolence": "Violence requise",
+  "tooltipCrimeRequiresWeapon": "Arme requise",
+  "tooltipCrimeRequirementsHeading": "Requis:",
+  "crimeCriminalRecordWipeTooltip": "Efface complètement votre casier judiciaire en cas de succès. Uniquement disponible si vous avez déjà des condamnations.",
   "crimeErrorDrugsRequired": "Il vous faut au moins {quantity}g de : {drugs}",
   "@crimeErrorDrugsRequired": {
     "placeholders": {
@@ -361,28 +375,56 @@
   "messages": "Messages",
   "noDirectMessagesYet": "Pas encore de messages",
   "sendMessageToFriendsHint": "Envoyez un message à vos amis !",
-  "errorLoadingConversations": "Erreur lors du chargement des conversations : {error}",
+  "errorLoadingConversations": "Erreur lors du chargement des conversations : {error}",
+  "@errorLoadingConversations": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "messageSystemBadge": "SYSTÈME",
-  "messageSystemInboxPreview": "Succès et messages système",
-  "messageSystemThreadSubtitle": "Succès et messages système",
-  "messageSystemThreadEmptyDetail": "Les succès et messages système s’affichent ici automatiquement.",
-  "messageSendFirst": "Envoyez le premier message !",
+  "messageSystemInboxPreview": "Réalisations et messages système",
+  "messageSystemThreadSubtitle": "Réalisations et messages système",
+  "messageSystemThreadEmptyDetail": "Les succès et les messages système apparaissent automatiquement ici.",
+  "messageSendFirst": "Envoyez le premier message !",
   "chatFriendRankLine": "★ Rang {rank}",
-  "errorLoadingMessages": "Erreur de chargement des messages : {error}",
+  "@chatFriendRankLine": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "errorLoadingMessages": "Messages d'erreur lors du chargement : {error}",
+  "@errorLoadingMessages": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "messageDeleteOwnOnly": "Vous ne pouvez supprimer que vos propres messages",
   "messageDeleteTitle": "Supprimer le message",
   "messageDeleteBody": "Ce message sera définitivement supprimé.",
-  "messageSendFailed": "Échec de l’envoi du message",
+  "messageSendFailed": "Échec de l'envoi du message",
   "messageDeleteFailed": "Échec de la suppression du message",
-  "investigationWindowExpired": "Fenêtre d’enquête expirée (24 h).",
-  "investigationStartedInboxHint": "Enquête lancée. Consulte ta boîte de réception pour le rapport du détective.",
+  "investigationWindowExpired": "La fenêtre d'enquête a expiré (24 heures).",
+  "investigationStartedInboxHint": "L'enquête a commencé. Vérifiez votre boîte de réception pour le rapport de détective.",
   "investigationAlreadyInProgress": "Cette enquête est déjà en cours ou terminée.",
-  "investigationStartFailed": "Impossible de lancer l’enquête : {error}",
+  "investigationStartFailed": "Échec du démarrage de l'enquête : {error}",
+  "@investigationStartFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "investigationExpired": "Enquête expirée",
-  "investigationStarted": "Enquête lancée",
-  "investigationStarting": "Démarrage...",
-  "startMurderInvestigation": "Lancer l’enquête sur le meurtre",
-  "systemMessagesReadOnlyHint": "Les messages système ne peuvent pas recevoir de réponse",
+  "investigationStarted": "L'enquête a commencé",
+  "investigationStarting": "Départ...",
+  "startMurderInvestigation": "Démarrer une enquête pour meurtre",
+  "systemMessagesReadOnlyHint": "Il est impossible de répondre aux messages système",
   "helpAndGuide": "Aide et guide",
   "quickActions": "Actions rapides",
   "liveEvents": "Événements en direct",
@@ -402,24 +444,52 @@
   "territory": "Territoire",
   "achievements": "Réalisations",
   "menuCrackVault": "Cassez le coffre-fort",
-  "vaultHeroTagline": "Devine le code et gros lots à la clé.",
-  "vaultSeasonLabel": "Saison : {range}",
-  "vaultYourCredits": "Tes crédits",
-  "vaultChooseStake": "Choisis ta mise",
+  "vaultHeroTagline": "Devinez le code et gagnez de gros prix.",
+  "vaultSeasonLabel": "Saison : {range}",
+  "@vaultSeasonLabel": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      }
+    }
+  },
+  "vaultYourCredits": "Vos crédits",
+  "vaultChooseStake": "Choisissez votre mise",
   "vaultStakeCredits": "{stake, plural, one{{stake} crédit} other{{stake} crédits}}",
-  "vaultExpectedPrize": "Prix attendu : +{reward} crédits",
+  "@vaultStakeCredits": {
+    "placeholders": {
+      "stake": {
+        "type": "int"
+      }
+    }
+  },
+  "vaultExpectedPrize": "Prix ​​attendu : +{reward} crédits",
+  "@vaultExpectedPrize": {
+    "placeholders": {
+      "reward": {
+        "type": "int"
+      }
+    }
+  },
   "vaultCodeLabel": "Code",
-  "vaultSubmitStake": "Valider la mise",
+  "vaultSubmitStake": "Soumettre la mise",
   "vaultWrongCodesTitle": "Mauvais codes (ce mois-ci)",
-  "vaultShowWrongCodes": "Afficher",
-  "vaultHideWrongCodes": "Masquer",
-  "vaultNoWrongCodesYet": "Aucun mauvais code enregistré pour l’instant.",
+  "vaultShowWrongCodes": "Montrer",
+  "vaultHideWrongCodes": "Cacher",
+  "vaultNoWrongCodesYet": "Aucun code erroné n'a encore été enregistré.",
   "couldNotLoadVaultStatus": "Impossible de charger le statut.",
-  "vaultEnterFourDigitCode": "Saisis un code à 4 chiffres.",
-  "vaultAttemptSuccessGeneric": "OK.",
-  "vaultAttemptFailedGeneric": "Échec.",
-  "vaultAttemptFailedRetry": "Échec. Réessaie.",
+  "vaultEnterFourDigitCode": "Entrez un code à 4 chiffres.",
+  "vaultAttemptSuccessGeneric": "Succès.",
+  "vaultAttemptFailedGeneric": "Échoué.",
+  "vaultAttemptFailedRetry": "Échoué. Veuillez réessayer.",
   "dashboardNewMessagesCount": "{count} nouveaux messages",
+  "@dashboardNewMessagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "rankProgress": "Progression du classement",
   "cash": "Espèces",
   "sessionRecap": "Récapitulatif de la séance",
@@ -1864,6 +1934,7 @@
   "toolNightVision": "Vision nocturne",
   "toolGpsJammer": "Brouilleur GPS",
   "toolBurnerPhone": "Téléphone graveur",
+  "toolThermalDrill": "Perceuse thermique",
   "crimeOutcomeSuccess": "Crime réussi !",
   "crimeOutcomeCaught": "Arrêté par la police",
   "crimeOutcomeVehicleBreakdownBefore": "Votre véhicule est en panne avant d'arriver sur les lieux du crime",
@@ -1871,6 +1942,79 @@
   "crimeOutcomeOutOfFuel": "Manque de carburant lors de l'évasion - fuite à pied, perte du butin et du véhicule",
   "crimeOutcomeToolBroke": "Votre outil s'est cassé pendant le crime, laissant des preuves",
   "crimeOutcomeFledNoLoot": "J'ai fui les lieux sans butin",
+  "crimeResultMoneyLabel": "Argent",
+  "crimeResultXpLabel": "XP",
+  "crimeOutcomeRowReward": "Récompense:",
+  "crimeOutcomeRowXp": "XP :",
+  "crimeOutcomeRowTools": "Outils:",
+  "crimeOutcomeToolDurabilityValue": "-{percent}% de durabilité",
+  "@crimeOutcomeToolDurabilityValue": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "icuIntensiveCareTitle": "Soins intensifs",
+  "icuInjuredLine": "Vous avez été grièvement blessé lors de vos activités criminelles.",
+  "icuUnconsciousLine": "Vous êtes désormais aux soins intensifs et inconscient.",
+  "icuRecoveryTimeLabel": "Temps de récupération :",
+  "icuWakeHp": "Tu te réveilles avec 10 HP",
+  "icuNoActionsHint": "Vous ne pouvez pas effectuer d'actions pendant cette période. \nSoyez plus prudent avec votre santé !",
+  "jailBailPaidSnackbar": "🎉 Vous êtes libre ! Caution payée : {amount}€",
+  "@jailBailPaidSnackbar": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailInsufficientBail": "Pas assez d'argent pour la caution (€{amount})",
+  "@jailInsufficientBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCooldownWait": "Veuillez patienter : {seconds}s",
+  "@jailCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "jailEscapeSuccess": "Évasion réussie ! Vous êtes libre.",
+  "jailEscapeFailed": "L'évasion a échoué. Phrase prolongée de {penalty}.",
+  "@jailEscapeFailed": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "jailEscapeGenericFailure": "L'évasion a échoué",
+  "jailErrorPrefix": "Erreur : {message}",
+  "@jailErrorPrefix": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "jailTimeLeft": "Temps restant",
+  "jailPayBail": "Payer une caution (€{amount})",
+  "@jailPayBail": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "jailCannotActWhileIn": "Vous ne pouvez pas commettre de crimes, travailler ou voyager pendant que vous purgez votre peine.",
+  "jailAttemptEscape": "Tentative d'évasion",
+  "jailYouAreInJail": "Tu es en prison",
   "vehicleCondition": "Condition",
   "vehicleFuel": "Carburant",
   "vehicleSpeed": "Vitesse",
@@ -2732,93 +2876,37 @@
   "theftCooldownRedeemSuccess": "Le temps de recharge est terminé.",
   "settingsTheftCooldownConfirmTitle": "Temps de recharge pour vol (crédits)",
   "settingsTheftCooldownConfirmSubtitle": "Demandez une confirmation avant de dépenser des crédits pour éviter le temps de recharge du vol de véhicule. Désactivez-le pour l'échanger en un seul clic (icône en forme d'éclair à côté de la minuterie).",
-  "@errorLoadingConversations": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@chatFriendRankLine": {
-    "placeholders": {
-      "rank": {
-        "type": "int"
-      }
-    }
-  },
-  "@errorLoadingMessages": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@investigationStartFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "@vaultSeasonLabel": {
-    "placeholders": {
-      "range": {
-        "type": "String"
-      }
-    }
-  },
-  "@vaultStakeCredits": {
-    "placeholders": {
-      "stake": {
-        "type": "int"
-      }
-    }
-  },
-  "@vaultExpectedPrize": {
-    "placeholders": {
-      "reward": {
-        "type": "int"
-      }
-    }
-  },
-  "@dashboardNewMessagesCount": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "supportTicketsScreenTitle": "Support tickets",
-  "supportLoadTicketsFailed": "Failed to load tickets",
-  "supportLoadTicketFailed": "Failed to load ticket",
-  "supportPickImageFailed": "Failed to select image",
-  "supportSubjectMessageMinLength": "Fill in subject and message (min. 3 chars).",
-  "supportTicketCreated": "Ticket created.",
-  "supportCreateTicketFailed": "Failed to create ticket",
-  "supportReplySent": "Reply sent.",
-  "supportReplySendFailed": "Failed to send reply",
-  "supportDeleteTicketTitle": "Delete ticket",
-  "supportDeleteTicketBody": "Are you sure you want to delete this ticket? This action cannot be undone.",
-  "supportTicketDeleted": "Ticket deleted.",
-  "supportDeleteTicketFailed": "Failed to delete ticket",
-  "supportUnknownError": "Unknown error",
-  "supportStatusNew": "New",
+  "supportTicketsScreenTitle": "Billets d'assistance",
+  "supportLoadTicketsFailed": "Échec du chargement des billets",
+  "supportLoadTicketFailed": "Échec du chargement du ticket",
+  "supportPickImageFailed": "Échec de la sélection de l'image",
+  "supportSubjectMessageMinLength": "Remplissez le sujet et le message (min. 3 caractères).",
+  "supportTicketCreated": "Billet créé.",
+  "supportCreateTicketFailed": "Échec de la création du ticket",
+  "supportReplySent": "Réponse envoyée.",
+  "supportReplySendFailed": "Échec de l'envoi de la réponse",
+  "supportDeleteTicketTitle": "Supprimer le billet",
+  "supportDeleteTicketBody": "Êtes-vous sûr de vouloir supprimer ce ticket ? Cette action ne peut pas être annulée.",
+  "supportTicketDeleted": "Billet supprimé.",
+  "supportDeleteTicketFailed": "Échec de la suppression du ticket",
+  "supportUnknownError": "Erreur inconnue",
+  "supportStatusNew": "Nouvelle",
   "supportStatusTriage": "Triage",
-  "supportStatusInProgress": "In progress",
-  "supportStatusWaitingPlayer": "Waiting for player",
-  "supportStatusBlocked": "Blocked",
-  "supportStatusResolved": "Resolved",
-  "supportStatusClosed": "Closed",
-  "supportStatusArchived": "Archived",
-  "supportCategoryBug": "Bug",
+  "supportStatusInProgress": "En cours",
+  "supportStatusWaitingPlayer": "En attente du joueur",
+  "supportStatusBlocked": "Bloquée",
+  "supportStatusResolved": "Résolue",
+  "supportStatusClosed": "Fermée",
+  "supportStatusArchived": "Archivé",
+  "supportCategoryBug": "Bogue",
   "supportCategoryQuestion": "Question",
-  "supportCategoryFeedback": "Feedback",
-  "supportCategoryOther": "Other",
-  "supportPriorityLow": "Low",
-  "supportPriorityHigh": "High",
-  "supportPriorityUrgent": "Urgent",
-  "supportPriorityNormal": "Normal",
-  "supportTimeDaysAgo": "{count}d ago",
+  "supportCategoryFeedback": "Retour",
+  "supportCategoryOther": "Autre",
+  "supportPriorityLow": "Faible",
+  "supportPriorityHigh": "Haut",
+  "supportPriorityUrgent": "Urgente",
+  "supportPriorityNormal": "Normale",
+  "supportTimeDaysAgo": "il y a {count}d",
   "@supportTimeDaysAgo": {
     "placeholders": {
       "count": {
@@ -2826,7 +2914,7 @@
       }
     }
   },
-  "supportTimeHoursAgo": "{count}h ago",
+  "supportTimeHoursAgo": "il y a {count}h",
   "@supportTimeHoursAgo": {
     "placeholders": {
       "count": {
@@ -2834,7 +2922,7 @@
       }
     }
   },
-  "supportTimeMinutesAgo": "{count}m ago",
+  "supportTimeMinutesAgo": "il y a {count}m",
   "@supportTimeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -2842,25 +2930,25 @@
       }
     }
   },
-  "supportTimeJustNow": "just now",
-  "supportSenderSupport": "Support",
-  "supportSenderYou": "You",
-  "supportImageLoadFailed": "Failed to load image.",
-  "supportMyTickets": "My tickets",
-  "supportMyTicketsIntro": "Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.",
-  "supportNoTicketsYet": "You do not have any tickets yet. Create a new report below.",
-  "supportSelectTicketPrompt": "Select a ticket to open the conversation.",
+  "supportTimeJustNow": "tout à l' heure",
+  "supportSenderSupport": "Soutien",
+  "supportSenderYou": "Toi",
+  "supportImageLoadFailed": "Échec du chargement de l'image.",
+  "supportMyTickets": "Mes billets",
+  "supportMyTicketsIntro": "Le support répond désormais directement dans cet écran. Vous pouvez toujours éventuellement recevoir une notification push lorsque votre ticket reçoit une mise à jour.",
+  "supportNoTicketsYet": "Vous n'avez pas encore de billets. Créez un nouveau rapport ci-dessous.",
+  "supportSelectTicketPrompt": "Sélectionnez un ticket pour ouvrir la conversation.",
   "supportConversation": "Conversation",
-  "supportNoMessagesYet": "No messages yet.",
-  "supportAttachments": "Attachments",
-  "supportReplyToTicket": "Reply to this ticket",
-  "supportReplyFieldHint": "Use this field when support asks for more information or when you want to provide an update. Inbox and push remain notification channels for new support replies.",
-  "supportYourReply": "Your reply",
-  "supportSendReply": "Send reply",
-  "supportNewTicket": "New ticket",
-  "supportNewTicketIntro": "Create a new report here. Support can then reply through inbox/push and in this screen, so you can continue the conversation in one place.",
-  "supportTicketReceivedBanner": "Ticket received",
-  "supportTicketNumberLine": "Ticket number: #{id}",
+  "supportNoMessagesYet": "Aucun message pour l'instant.",
+  "supportAttachments": "Pièces jointes",
+  "supportReplyToTicket": "Répondre à ce ticket",
+  "supportReplyFieldHint": "Utilisez ce champ lorsque l'assistance demande plus d'informations ou lorsque vous souhaitez fournir une mise à jour. La boîte de réception et le push restent des canaux de notification pour les nouvelles réponses d'assistance.",
+  "supportYourReply": "Votre réponse",
+  "supportSendReply": "Envoyer la réponse",
+  "supportNewTicket": "Nouveau billet",
+  "supportNewTicketIntro": "Créez un nouveau rapport ici. L'assistance peut ensuite répondre via la boîte de réception/push et sur cet écran, afin que vous puissiez poursuivre la conversation au même endroit.",
+  "supportTicketReceivedBanner": "Billet reçu",
+  "supportTicketNumberLine": "Numéro de billet : #{id}",
   "@supportTicketNumberLine": {
     "placeholders": {
       "id": {
@@ -2868,70 +2956,70 @@
       }
     }
   },
-  "supportTicketReceivedDetail": "The ticket now appears directly in your list above. New support replies also arrive as inbox messages and push notifications.",
-  "supportFieldCategory": "Category",
+  "supportTicketReceivedDetail": "Le ticket apparaît désormais directement dans votre liste ci-dessus. De nouvelles réponses d'assistance arrivent également sous forme de messages de boîte de réception et de notifications push.",
+  "supportFieldCategory": "Catégorie",
   "supportFieldModule": "Module",
-  "supportFieldSubject": "Subject",
+  "supportFieldSubject": "Sujette",
   "supportFieldMessage": "Message",
-  "supportReferenceOptional": "Reference (optional)",
-  "supportReferenceHint": "For example order id, screen name, country or short context",
-  "supportAddScreenshot": "Add screenshot",
-  "supportSubmit": "Submit",
-  "supportLastMessagePrefix": "Last: ",
-  "supportReferenceLabel": "Reference",
-  "supportMod_support": "General support",
-  "supportMod_dashboard": "Dashboard",
-  "supportMod_messages": "Messages / inbox",
-  "supportMod_notifications": "Notifications / push",
-  "supportMod_payments": "Payments / premium",
-  "supportMod_bank": "Bank",
-  "supportMod_crypto": "Crypto",
-  "supportMod_travel": "Travel",
-  "supportMod_properties": "Properties",
-  "supportMod_inventory": "Inventory / storage",
-  "supportMod_loadouts": "Loadouts / equipment",
+  "supportReferenceOptional": "Référence (facultatif)",
+  "supportReferenceHint": "Par exemple, l'identifiant de la commande, le nom d'écran, le pays ou un bref contexte",
+  "supportAddScreenshot": "Ajouter une capture d'écran",
+  "supportSubmit": "Soumettre",
+  "supportLastMessagePrefix": "Dernière:",
+  "supportReferenceLabel": "Référence",
+  "supportMod_support": "Assistance générale",
+  "supportMod_dashboard": "Tableau de bord",
+  "supportMod_messages": "Messages/boîte de réception",
+  "supportMod_notifications": "Notifications/push",
+  "supportMod_payments": "Paiements / prime",
+  "supportMod_bank": "Banque",
+  "supportMod_crypto": "Cryptomonnaie",
+  "supportMod_travel": "Voyage",
+  "supportMod_properties": "Propriétés",
+  "supportMod_inventory": "Inventaire / stockage",
+  "supportMod_loadouts": "Chargements / équipement",
   "supportMod_crimes": "Crimes",
-  "supportMod_jobs": "Work / jobs",
-  "supportMod_vehicles": "Car / bike / boat theft",
+  "supportMod_jobs": "Travail / emplois",
+  "supportMod_vehicles": "Vol de voiture / vélo / bateau",
   "supportMod_garage": "Garage",
   "supportMod_marina": "Marina",
   "supportMod_aviation": "Aviation",
-  "supportMod_smuggling": "Smuggling",
-  "supportMod_drugs": "Drugs",
-  "supportMod_nightclub": "Nightclub",
+  "supportMod_smuggling": "Contrebande",
+  "supportMod_drugs": "Drogues",
+  "supportMod_nightclub": "Discothèque",
   "supportMod_prostitution": "Prostitution",
-  "supportMod_crew": "Crew",
-  "supportMod_friends": "Friends / players",
-  "supportMod_hitlist": "Hitlist",
-  "supportMod_security": "Security / FBI",
-  "supportMod_prison": "Prison / court",
+  "supportMod_crew": "Équipage",
+  "supportMod_friends": "Amis/joueurs",
+  "supportMod_hitlist": "Liste de résultats",
+  "supportMod_security": "Sécurité / FBI",
+  "supportMod_prison": "Prison/tribunal",
   "supportMod_casino": "Casino",
-  "supportMod_school": "School / training",
-  "supportMod_achievements": "Achievements",
-  "supportMod_profile": "Profile",
-  "supportMod_settings": "Settings",
-  "supportMod_events": "Events / leaderboard",
-  "supportMod_other": "Other",
-  "gameEventDefaultTitle": "Event",
+  "supportMod_school": "Ecole / formation",
+  "supportMod_achievements": "Réalisations",
+  "supportMod_profile": "Profil",
+  "supportMod_settings": "Paramètres",
+  "supportMod_events": "Événements / classement",
+  "supportMod_other": "Autre",
+  "gameEventDefaultTitle": "Événement",
   "gameEventStatusActive": "Active",
-  "gameEventStatusScheduled": "Scheduled",
-  "gameEventStatusCompleted": "Completed",
-  "gameEventStatusDraft": "Draft",
-  "gameEventTmplWeeklyVehicleTheftHuntTitle": "Weekly Theft Hunt",
-  "gameEventTmplWeeklyVehicleTheftHuntDesc": "Steal as many vehicles as you can during the event window.",
-  "gameEventTmplSmugglingSurgeTitle": "Smuggling Surge",
-  "gameEventTmplSmugglingSurgeDesc": "Move the most smuggled contraband this round.",
-  "gameEventTmplLabOutputChallengeTitle": "Lab Output Challenge",
-  "gameEventTmplLabOutputChallengeDesc": "Produce the most output while the event is live.",
-  "gameEventTmplStreetCrimeSpreeTitle": "Street Crime Spree",
-  "gameEventTmplStreetCrimeSpreeDesc": "Complete as many crimes as possible in the live window.",
-  "gameScreenLoadError": "Could not load events.",
-  "gameScreenDetailsLoadError": "Could not load event details.",
-  "gameScreenSectionLive": "Live Events",
-  "gameScreenNoActive": "There are no active events right now.",
-  "gameScreenSectionUpcoming": "Upcoming Events",
-  "gameScreenNoUpcoming": "There are no scheduled events.",
-  "gameScreenStatusPrefix": "Status: {value}",
+  "gameEventStatusScheduled": "Programmé",
+  "gameEventStatusCompleted": "Complété",
+  "gameEventStatusDraft": "Brouillon",
+  "gameEventTmplWeeklyVehicleTheftHuntTitle": "Chasse au vol hebdomadaire",
+  "gameEventTmplWeeklyVehicleTheftHuntDesc": "Volez autant de véhicules que possible pendant la fenêtre de l'événement.",
+  "gameEventTmplSmugglingSurgeTitle": "Augmentation de la contrebande",
+  "gameEventTmplSmugglingSurgeDesc": "Déplacez la contrebande la plus introduite ce tour-ci.",
+  "gameEventTmplLabOutputChallengeTitle": "Défi des résultats de laboratoire",
+  "gameEventTmplLabOutputChallengeDesc": "Produisez le plus de résultats pendant que l’événement est en direct.",
+  "gameEventTmplStreetCrimeSpreeTitle": "Frénésie de crimes de rue",
+  "gameEventTmplStreetCrimeSpreeDesc": "Complétez autant de crimes que possible dans la fenêtre en direct.",
+  "gameScreenLoadError": "Impossible de charger les événements.",
+  "gameScreenDetailsLoadError": "Impossible de charger les détails de l'événement.",
+  "gameScreenSectionLive": "Événements en direct",
+  "gameScreenNoActive": "Il n'y a aucun événement actif pour le moment.",
+  "gameScreenSectionUpcoming": "Événements à venir",
+  "gameScreenNoUpcoming": "Il n'y a aucun événement programmé.",
+  "gameScreenStatusPrefix": "Statut : {value}",
   "@gameScreenStatusPrefix": {
     "placeholders": {
       "value": {
@@ -2939,7 +3027,7 @@
       }
     }
   },
-  "gameScreenStartLine": "Start: {date}",
+  "gameScreenStartLine": "Début : {date}",
   "@gameScreenStartLine": {
     "placeholders": {
       "date": {
@@ -2947,7 +3035,7 @@
       }
     }
   },
-  "gameScreenEndLine": "End: {date}",
+  "gameScreenEndLine": "Fin : {date}",
   "@gameScreenEndLine": {
     "placeholders": {
       "date": {
@@ -2955,8 +3043,8 @@
       }
     }
   },
-  "gameScreenYourProgress": "Your progress",
-  "gameScreenScore": "Score: {value}",
+  "gameScreenYourProgress": "Votre progression",
+  "gameScreenScore": "Note : {value}",
   "@gameScreenScore": {
     "placeholders": {
       "value": {
@@ -2964,7 +3052,7 @@
       }
     }
   },
-  "gameScreenRank": "Rank: {value}",
+  "gameScreenRank": "Rang : {value}",
   "@gameScreenRank": {
     "placeholders": {
       "value": {
@@ -2972,12 +3060,12 @@
       }
     }
   },
-  "gameScreenLeaderboard": "Leaderboard (top 10)",
-  "gameScreenNoLeaderboard": "No leaderboard data yet.",
-  "gameScreenUnknownPlayer": "Unknown",
+  "gameScreenLeaderboard": "Classement (top 10)",
+  "gameScreenNoLeaderboard": "Aucune donnée de classement pour l'instant.",
+  "gameScreenUnknownPlayer": "Inconnue",
   "gameCardActive": "Active",
-  "gameCardScheduled": "Planned",
-  "gameCardYourScore": "Your score: {value}",
+  "gameCardScheduled": "Prévue",
+  "gameCardYourScore": "Votre note : {value}",
   "@gameCardYourScore": {
     "placeholders": {
       "value": {
@@ -2985,7 +3073,7 @@
       }
     }
   },
-  "gameCardYourRank": "Your rank: {value}",
+  "gameCardYourRank": "Votre rang : {value}",
   "@gameCardYourRank": {
     "placeholders": {
       "value": {
@@ -2993,15 +3081,15 @@
       }
     }
   },
-  "gameCardTapDetails": "Tap for details and leaderboard",
-  "eventFeedDisconnected": "Disconnected from the event stream",
-  "eventFeedReconnecting": "Reconnecting...",
-  "eventFeedConnectedWaiting": "Connected — waiting for events…",
-  "eventFeedConnecting": "Connecting to the event stream…",
-  "evStreamConnectionEstablished": "Connected to the event stream",
-  "evStreamAuthRegistered": "Account created successfully.",
-  "evStreamAuthLogin": "Welcome back.",
-  "evStreamCrimeSuccess": "Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP",
+  "gameCardTapDetails": "Appuyez pour plus de détails et le classement",
+  "eventFeedDisconnected": "Déconnecté du flux d'événements",
+  "eventFeedReconnecting": "Reconnexion...",
+  "eventFeedConnectedWaiting": "Connecté — en attente des événements…",
+  "eventFeedConnecting": "Connexion au flux d'événements…",
+  "evStreamConnectionEstablished": "Connecté au flux d'événements",
+  "evStreamAuthRegistered": "Compte créé avec succès.",
+  "evStreamAuthLogin": "Content de te revoir.",
+  "evStreamCrimeSuccess": "{crimeName} terminé avec succès ! +EUR {reward}, +{xpGained} XP",
   "@evStreamCrimeSuccess": {
     "placeholders": {
       "crimeName": {
@@ -3015,7 +3103,7 @@
       }
     }
   },
-  "evStreamCrimeSuccessJailed": "Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP — but caught! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "evStreamCrimeSuccessJailed": "{crimeName} réussi ! +EUR {reward}, +{xpGained} XP — attrapé ! Emprisonné {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
   "@evStreamCrimeSuccessJailed": {
     "placeholders": {
       "crimeName": {
@@ -3032,9 +3120,9 @@
       }
     }
   },
-  "evStreamCrimeSeizedVehicle": " Your vehicle was seized by the police.",
-  "evStreamCrimeSeizedWeapon": " Your weapon was confiscated by the police.",
-  "evStreamCrimeSuccessCleared": "Successfully completed {crimeName}! Criminal record cleared: {count, plural, one{1 conviction} other{{count} convictions}} removed. +{xpGained} XP",
+  "evStreamCrimeSeizedVehicle": "Votre véhicule a été saisi par la police.",
+  "evStreamCrimeSeizedWeapon": "Votre arme a été confisquée par la police.",
+  "evStreamCrimeSuccessCleared": "{crimeName} réussi ! Casier effacé : {count, plural, one{1 condamnation} other{{count} condamnations}} supprimées. +{xpGained} XP",
   "@evStreamCrimeSuccessCleared": {
     "placeholders": {
       "crimeName": {
@@ -3048,7 +3136,7 @@
       }
     }
   },
-  "evStreamCrimeFailedArrested": "Arrested by {authority} during a {crimeName} attempt.",
+  "evStreamCrimeFailedArrested": "Arrêté par {authority} lors d'une tentative {crimeName}.",
   "@evStreamCrimeFailedArrested": {
     "placeholders": {
       "authority": {
@@ -3059,7 +3147,7 @@
       }
     }
   },
-  "evStreamCrimeFailedJailed": "Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "evStreamCrimeFailedJailed": "Pris pendant {crimeName} ! Emprisonné {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
   "@evStreamCrimeFailedJailed": {
     "placeholders": {
       "crimeName": {
@@ -3070,7 +3158,7 @@
       }
     }
   },
-  "evStreamCrimeFailedBase": "Failed to complete {crimeName}",
+  "evStreamCrimeFailedBase": "Échec de la réalisation {crimeName}",
   "@evStreamCrimeFailedBase": {
     "placeholders": {
       "crimeName": {
@@ -3078,7 +3166,7 @@
       }
     }
   },
-  "evStreamChaseDamage": " Your vehicle took {pct}% damage during the chase.",
+  "evStreamChaseDamage": "Votre véhicule a subi {pct} % de dégâts pendant la poursuite.",
   "@evStreamChaseDamage": {
     "placeholders": {
       "pct": {
@@ -3086,7 +3174,7 @@
       }
     }
   },
-  "evStreamCrimeJailed": "Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "evStreamCrimeJailed": "Pris pendant {crimeName} ! Emprisonné {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
   "@evStreamCrimeJailed": {
     "placeholders": {
       "crimeName": {
@@ -3097,7 +3185,7 @@
       }
     }
   },
-  "evStreamJobSuccess": "Completed work as {jobName}! +€{earnings}, +{xpGained} XP",
+  "evStreamJobSuccess": "Travail terminé en tant que {jobName} ! +{earnings}€, +{xpGained} XP",
   "@evStreamJobSuccess": {
     "placeholders": {
       "jobName": {
@@ -3111,7 +3199,7 @@
       }
     }
   },
-  "evStreamJobSuccessEdu": " (Education bonus +{pct}%)",
+  "evStreamJobSuccessEdu": "(Prime d'éducation +{pct}%)",
   "@evStreamJobSuccessEdu": {
     "placeholders": {
       "pct": {
@@ -3119,7 +3207,7 @@
       }
     }
   },
-  "evStreamJobFailedXp": "Failed to complete job as {jobName}. −{xpLost} XP",
+  "evStreamJobFailedXp": "Échec de la réalisation du travail en tant que {jobName}. −{xpLost} XP",
   "@evStreamJobFailedXp": {
     "placeholders": {
       "jobName": {
@@ -3130,7 +3218,7 @@
       }
     }
   },
-  "evStreamJobFailed": "Failed to complete job as {jobName}",
+  "evStreamJobFailed": "Échec de la réalisation du travail en tant que {jobName}",
   "@evStreamJobFailed": {
     "placeholders": {
       "jobName": {
@@ -3138,9 +3226,9 @@
       }
     }
   },
-  "evStreamJobErrorInvalid": "Invalid job",
-  "evStreamJobErrorLevel": "Your rank is too low for this job",
-  "evStreamJobErrorCooldown": "This job is on cooldown. Wait {minutes, plural, one{1 more minute} other{{minutes} more minutes}}",
+  "evStreamJobErrorInvalid": "Emploi invalide",
+  "evStreamJobErrorLevel": "Votre rang est trop bas pour ce poste",
+  "evStreamJobErrorCooldown": "Ce travail est en recharge. Attends {minutes, plural, one{1 minute de plus} other{{minutes} minutes de plus}}",
   "@evStreamJobErrorCooldown": {
     "placeholders": {
       "minutes": {
@@ -3148,7 +3236,7 @@
       }
     }
   },
-  "evStreamJobErrorGeneric": "Job error: {reason}",
+  "evStreamJobErrorGeneric": "Erreur de tâche : {reason}",
   "@evStreamJobErrorGeneric": {
     "placeholders": {
       "reason": {
@@ -3156,7 +3244,7 @@
       }
     }
   },
-  "evStreamTravelDeparted": "Flying to {dest}… −€{cost}",
+  "evStreamTravelDeparted": "Vol vers {dest}… −€{cost}",
   "@evStreamTravelDeparted": {
     "placeholders": {
       "dest": {
@@ -3167,7 +3255,7 @@
       }
     }
   },
-  "evStreamTravelArrived": "Arrived in {country}.",
+  "evStreamTravelArrived": "Arrivé en {country}.",
   "@evStreamTravelArrived": {
     "placeholders": {
       "country": {
@@ -3175,8 +3263,8 @@
       }
     }
   },
-  "evStreamBankDeposit": "Deposited €{amount} to the bank",
-  "evStreamBankWithdraw": "Withdrew €{amount} from the bank",
+  "evStreamBankDeposit": "Déposé {amount} € à la banque",
+  "evStreamBankWithdraw": "Retrait {amount} € de la banque",
   "@evStreamBankDeposit": {
     "placeholders": {
       "amount": {
@@ -3191,7 +3279,7 @@
       }
     }
   },
-  "evStreamCryptoBuy": "Bought {quantity} {symbol} for €{total}",
+  "evStreamCryptoBuy": "Acheté {quantity} {symbol} pour {total}€",
   "@evStreamCryptoBuy": {
     "placeholders": {
       "quantity": {
@@ -3205,7 +3293,7 @@
       }
     }
   },
-  "evStreamCryptoSell": "Sold {quantity} {symbol} for €{total} (P&L €{pnl})",
+  "evStreamCryptoSell": "Vendu {quantity} {symbol} pour {total}€ (P&L {pnl}€)",
   "@evStreamCryptoSell": {
     "placeholders": {
       "quantity": {
@@ -3222,7 +3310,7 @@
       }
     }
   },
-  "evStreamCryptoAlert": "{symbol} alert: €{price} ({chg}% 24h)",
+  "evStreamCryptoAlert": "{symbol} alerte : {price}€ ({chg}% 24h)",
   "@evStreamCryptoAlert": {
     "placeholders": {
       "symbol": {
@@ -3236,7 +3324,7 @@
       }
     }
   },
-  "evStreamCryptoOrderFilled": "{order} {side} filled: {quantity} {symbol} at €{price}",
+  "evStreamCryptoOrderFilled": "{order} {side} rempli : {quantity} {symbol} à {price}€",
   "@evStreamCryptoOrderFilled": {
     "placeholders": {
       "order": {
@@ -3256,7 +3344,7 @@
       }
     }
   },
-  "evStreamCryptoOrderTriggered": "{trig} triggered for {symbol} at €{price}",
+  "evStreamCryptoOrderTriggered": "{trig} déclenché pour {symbol} à {price}€",
   "@evStreamCryptoOrderTriggered": {
     "placeholders": {
       "trig": {
@@ -3270,7 +3358,7 @@
       }
     }
   },
-  "evStreamCryptoRegime": "Market regime changed to {regime} ({move}% 24h)",
+  "evStreamCryptoRegime": "Le régime du marché est passé à {regime} ({move}% 24h)",
   "@evStreamCryptoRegime": {
     "placeholders": {
       "regime": {
@@ -3281,7 +3369,7 @@
       }
     }
   },
-  "evStreamCryptoNews": "{sentiment} news: {headline}",
+  "evStreamCryptoNews": "{sentiment} actualité : {headline}",
   "@evStreamCryptoNews": {
     "placeholders": {
       "sentiment": {
@@ -3292,8 +3380,8 @@
       }
     }
   },
-  "evStreamCryptoMissionDaily": "Daily mission complete: {title} (+EUR {reward})",
-  "evStreamCryptoMissionWeekly": "Weekly mission complete: {title} (+EUR {reward})",
+  "evStreamCryptoMissionDaily": "Mission quotidienne terminée : {title} (+EUR {reward})",
+  "evStreamCryptoMissionWeekly": "Mission hebdomadaire terminée : {title} (+EUR {reward})",
   "@evStreamCryptoMissionDaily": {
     "placeholders": {
       "title": {
@@ -3314,7 +3402,7 @@
       }
     }
   },
-  "evStreamCryptoLeaderboard": "Crypto leaderboard reward: #{rank} (+EUR {reward})",
+  "evStreamCryptoLeaderboard": "Récompense du classement Crypto : #{rank} (+EUR {reward})",
   "@evStreamCryptoLeaderboard": {
     "placeholders": {
       "rank": {
@@ -3325,13 +3413,13 @@
       }
     }
   },
-  "evStreamRegimeBull": "bullish",
-  "evStreamRegimeBear": "bearish",
-  "evStreamRegimeSideways": "sideways",
-  "evStreamImpactBull": "Bullish",
-  "evStreamImpactBear": "Bearish",
-  "evStreamImpactNeutral": "Neutral",
-  "evStreamPropertyBought": "Purchased {name} for €{cost}",
+  "evStreamRegimeBull": "haussière",
+  "evStreamRegimeBear": "baissier",
+  "evStreamRegimeSideways": "de côté",
+  "evStreamImpactBull": "Haussière",
+  "evStreamImpactBear": "Baissier",
+  "evStreamImpactNeutral": "Neutre",
+  "evStreamPropertyBought": "Acheté {name} pour {cost}€",
   "@evStreamPropertyBought": {
     "placeholders": {
       "name": {
@@ -3342,8 +3430,8 @@
       }
     }
   },
-  "evStreamCrewCreated": "Created crew: {name}",
-  "evStreamCrewJoined": "Joined crew: {name}",
+  "evStreamCrewCreated": "Equipage créé : {name}",
+  "evStreamCrewJoined": "Équipage rejoint : {name}",
   "@evStreamCrewCreated": {
     "placeholders": {
       "name": {
@@ -3358,8 +3446,8 @@
       }
     }
   },
-  "evStreamCrewWarDeclared": "Crew war declared: #{a} vs #{b} ({type})",
-  "evStreamCrewWarStarted": "Crew war started: #{a} vs #{b}",
+  "evStreamCrewWarDeclared": "Guerre d'équipage déclarée : #{a} contre #{b} ({type})",
+  "evStreamCrewWarStarted": "La guerre des équipages a commencé : #{a} contre #{b}",
   "@evStreamCrewWarDeclared": {
     "placeholders": {
       "a": {
@@ -3383,9 +3471,9 @@
       }
     }
   },
-  "evStreamCrewLockdown": "Crew war #{id} is in lockdown",
-  "evStreamCrewResolved": "Crew war #{id} resolved. Winner: crew #{winner}",
-  "evStreamCrewAction": "Crew war action: {action} (+{points} pt)",
+  "evStreamCrewLockdown": "La guerre des équipages #{id} est bloquée",
+  "evStreamCrewResolved": "Guerre d'équipage #{id} résolue. Gagnant : équipage #{winner}",
+  "evStreamCrewAction": "Action de guerre d'équipage : {action} (+{points} pt)",
   "@evStreamCrewLockdown": {
     "placeholders": {
       "id": {
@@ -3413,8 +3501,8 @@
       }
     }
   },
-  "evStreamHeistOk": "Heist “{name}” successful! +€{money}",
-  "evStreamHeistFail": "Heist “{name}” failed.",
+  "evStreamHeistOk": "Braquage « {name} » réussi ! +{money}€",
+  "evStreamHeistFail": "Le braquage « {name} » a échoué.",
   "@evStreamHeistOk": {
     "placeholders": {
       "name": {
@@ -3432,7 +3520,7 @@
       }
     }
   },
-  "evStreamHospital": "Treated in hospital! +{hp} health, −€{cost}",
+  "evStreamHospital": "Soigné à l'hôpital ! +{hp} santé, −€{cost}",
   "@evStreamHospital": {
     "placeholders": {
       "hp": {
@@ -3443,9 +3531,9 @@
       }
     }
   },
-  "evStreamPoliceArrested": "Arrested! Jailed for {mins} minutes",
-  "evStreamPoliceEscaped": "You escaped the police.",
-  "evStreamFbiRaid": "FBI raid! You lost property and money.",
+  "evStreamPoliceArrested": "Arrêté! Emprisonné pendant {mins} minutes",
+  "evStreamPoliceEscaped": "Vous avez échappé à la police.",
+  "evStreamFbiRaid": "Raid du FBI ! Vous avez perdu des biens et de l'argent.",
   "@evStreamPoliceArrested": {
     "placeholders": {
       "mins": {
@@ -3453,21 +3541,21 @@
       }
     }
   },
-  "evStreamErrInsufficientFunds": "Not enough money",
-  "evStreamErrInsufficientHealth": "Not enough health for this action",
-  "evStreamErrInsufficientRank": "Requires rank {rank}",
-  "evStreamErrJailed": "You are in jail for {minutes, plural, one{1 more minute} other{{minutes} more minutes}}",
-  "evStreamErrNoHealthDefault": "You need to rest and recover your health",
-  "evStreamErrCooldown": "Wait {seconds, plural, one{1 second} other{{seconds} seconds}} before trying again",
-  "evStreamErrRescuerJailed": "You cannot help others while you are in jail",
-  "evStreamErrTargetNotJailed": "That player is not in jail",
-  "evStreamErrCannotRescueSelf": "You cannot free yourself",
-  "evStreamJailbreakOk": "Jailbreak successful! The player is free.",
-  "evStreamJailbreakFail": "Jailbreak failed! The player is still in jail.",
-  "evStreamJailbreakCaught": "Jailbreak failed! You were caught and jailed for {mins} minutes.",
-  "evStreamBailPaid": "Bail paid: €{amount}. You are free.",
-  "evStreamErrInternal": "Something went wrong. Please try again.",
-  "evStreamTest": "Test: {msg}",
+  "evStreamErrInsufficientFunds": "Pas assez d'argent",
+  "evStreamErrInsufficientHealth": "Pas assez de santé pour cette action",
+  "evStreamErrInsufficientRank": "Nécessite le rang {rank}",
+  "evStreamErrJailed": "Tu es en prison encore {minutes, plural, one{1 minute} other{{minutes} minutes}}",
+  "evStreamErrNoHealthDefault": "Vous avez besoin de vous reposer et de retrouver votre santé",
+  "evStreamErrCooldown": "Attends {seconds, plural, one{1 seconde} other{{seconds} secondes}} avant de réessayer",
+  "evStreamErrRescuerJailed": "Vous ne pouvez pas aider les autres pendant que vous êtes en prison",
+  "evStreamErrTargetNotJailed": "Ce joueur n'est pas en prison",
+  "evStreamErrCannotRescueSelf": "Tu ne peux pas te libérer",
+  "evStreamJailbreakOk": "Jailbreak réussi ! Le joueur est libre.",
+  "evStreamJailbreakFail": "Le jailbreak a échoué ! Le joueur est toujours en prison.",
+  "evStreamJailbreakCaught": "Le jailbreak a échoué ! Vous avez été arrêté et emprisonné pendant {mins} minutes.",
+  "evStreamBailPaid": "Caution payée : {amount}€. Vous êtes libre.",
+  "evStreamErrInternal": "Quelque chose s'est mal passé. Veuillez réessayer.",
+  "evStreamTest": "Test : {msg}",
   "@evStreamErrJailed": {
     "placeholders": {
       "minutes": {
@@ -3510,9 +3598,9 @@
       }
     }
   },
-  "evStreamNoCriminalRecord": "You have no criminal record to clear",
-  "evStreamWeaponSelectRequired": "Select a crime weapon before committing this crime",
-  "evStreamWeaponNotSuitable": "You need a suitable weapon: {types}",
+  "evStreamNoCriminalRecord": "Vous n'avez pas de casier judiciaire à effacer",
+  "evStreamWeaponSelectRequired": "Sélectionnez une arme du crime avant de commettre ce crime",
+  "evStreamWeaponNotSuitable": "Il vous faut une arme adaptée : {types}",
   "@evStreamWeaponNotSuitable": {
     "placeholders": {
       "types": {
@@ -3520,7 +3608,7 @@
       }
     }
   },
-  "evStreamJobFallbackName": "job",
+  "evStreamJobFallbackName": "emploi",
   "evStreamUnknownKey": "{key}",
   "@evStreamUnknownKey": {
     "placeholders": {
@@ -3529,13 +3617,13 @@
       }
     }
   },
-  "connectionErrorGeneric": "Connection error",
-  "crimeWeaponSectionTitle": "Crime weapon",
-  "crimeWeaponInstruction": "Choose which carried weapon you use by default for crimes that require one.",
-  "crimeWeaponEmptyInventoryHelp": "Buy or move a usable weapon into your carried inventory first.",
-  "crimeWeaponSelectHint": "Select a weapon for crimes",
-  "crimeWeaponNoSelectionNote": "Without a selection, weapon-based crimes will not start.",
-  "crimeWeaponSelectedStatus": "Selected: {weaponLine}. Some crimes still require a matching weapon type on top of that.",
+  "connectionErrorGeneric": "Erreur de connexion",
+  "crimeWeaponSectionTitle": "Arme du crime",
+  "crimeWeaponInstruction": "Choisissez l'arme que vous utilisez par défaut pour les crimes qui en nécessitent une.",
+  "crimeWeaponEmptyInventoryHelp": "Achetez ou déplacez d’abord une arme utilisable dans votre inventaire transporté.",
+  "crimeWeaponSelectHint": "Sélectionnez une arme pour les crimes",
+  "crimeWeaponNoSelectionNote": "Sans sélection, les crimes basés sur les armes ne commenceront pas.",
+  "crimeWeaponSelectedStatus": "Sélectionné : {weaponLine}. Certains crimes nécessitent en plus un type d’arme correspondant.",
   "@crimeWeaponSelectedStatus": {
     "placeholders": {
       "weaponLine": {
@@ -3543,11 +3631,11 @@
       }
     }
   },
-  "crimeSetWeaponFailed": "Failed to set crime weapon.",
-  "crimeChooseWeaponBeforeCommit": "Choose a crime weapon at the top of this screen or via Inventory first.",
-  "crimeWeaponFooterNote": "Weapon-based crimes use the selected crime weapon above.",
-  "crimeCriminalRecordWipeDesc": "Forge court files and wipe your full criminal record if the operation succeeds.",
-  "crimeCardSuccessChance": "{percent}% success chance",
+  "crimeSetWeaponFailed": "Échec de la configuration de l'arme du crime.",
+  "crimeChooseWeaponBeforeCommit": "Choisissez d'abord une arme du crime en haut de cet écran ou via l'inventaire.",
+  "crimeWeaponFooterNote": "Les crimes commis à l'aide d'armes utilisent l'arme criminelle sélectionnée ci-dessus.",
+  "crimeCriminalRecordWipeDesc": "Forgez des dossiers judiciaires et effacez l’intégralité de votre casier judiciaire si l’opération réussit.",
+  "crimeCardSuccessChance": "{percent}% de chances de réussite",
   "@crimeCardSuccessChance": {
     "placeholders": {
       "percent": {
@@ -3555,15 +3643,15 @@
       }
     }
   },
-  "cooldownTimeLeft": "Time left",
-  "cooldownMustWaitExplanation": "You must wait before you can perform this action again.",
-  "cooldownAlreadyFinished": "Cooldown already finished.",
-  "cooldownNotEnoughCredits": "Not enough credits.",
-  "cooldownNoActiveToReset": "No active cooldown to reset.",
-  "cooldownNotAvailableNow": "Not available right now.",
-  "cooldownRedeemFailed": "Failed to speed up with credits.",
-  "cooldownFinishedInstantly": "Cooldown finished instantly.",
-  "cooldownSpeedUpNow": "Speed up now (-{cost} credits)",
+  "cooldownTimeLeft": "Temps restant",
+  "cooldownMustWaitExplanation": "Vous devez attendre avant de pouvoir effectuer à nouveau cette action.",
+  "cooldownAlreadyFinished": "Le temps de recharge est déjà terminé.",
+  "cooldownNotEnoughCredits": "Pas assez de crédits.",
+  "cooldownNoActiveToReset": "Aucun temps de recharge actif à réinitialiser.",
+  "cooldownNotAvailableNow": "Non disponible pour le moment.",
+  "cooldownRedeemFailed": "Impossible d'accélérer avec les crédits.",
+  "cooldownFinishedInstantly": "Le temps de recharge s'est terminé instantanément.",
+  "cooldownSpeedUpNow": "Accélérez maintenant (-{cost} crédits)",
   "@cooldownSpeedUpNow": {
     "placeholders": {
       "cost": {
@@ -3571,7 +3659,7 @@
       }
     }
   },
-  "cooldownCreditBalanceLine": "Balance: {balance} credits",
+  "cooldownCreditBalanceLine": "Solde : {balance} crédits",
   "@cooldownCreditBalanceLine": {
     "placeholders": {
       "balance": {
@@ -3579,121 +3667,33 @@
       }
     }
   },
-  "cooldownLoadingCreditOptions": "Loading credit options…",
-  "cooldownWaitCrime": "The heat is too high…",
-  "cooldownWaitJob": "Taking a rest before you can work again",
-  "cooldownWaitTravel": "Next flight departs in",
-  "cooldownWaitHeist": "Planning the heist…",
-  "cooldownWaitAppeal": "Court is busy…",
-  "cooldownWaitDefault": "Please wait…",
-  "weaponLabelKnife": "Knife",
-  "weaponLabelHandgun9mm": "Pistol (9mm)",
-  "weaponLabelHandgunHeavy": "Heavy Pistol (.45)",
-  "weaponLabelSmgCompact": "Compact SMG",
-  "weaponLabelShotgunPump": "Shotgun (pump)",
-  "weaponLabelMolotov": "Molotov cocktail",
-  "weaponLabelSmgSuppressed": "Suppressed SMG",
-  "weaponLabelShotgunTactical": "Tactical Shotgun",
-  "weaponLabelAssaultRifle": "Assault rifle (AK-47)",
-  "weaponLabelGrenadeFlash": "Flash grenade",
-  "weaponLabelGrenadeFrag": "Fragmentation grenade",
-  "weaponLabelSniperStandard": "Sniper rifle",
-  "weaponLabelAssaultRifleVip": "Elite assault rifle",
-  "weaponLabelSniperVip": "Elite sniper rifle",
-  "cooldownTitleCrime": "Crime cooldown",
-  "cooldownTitleJob": "Job cooldown",
-  "cooldownTitleTravel": "Travel cooldown",
-  "cooldownTitleHeist": "Heist cooldown",
-  "cooldownTitleAppeal": "Appeal cooldown",
-  "cooldownTitleSchool": "School cooldown",
-  "cooldownTitleGeneric": "Cooldown",
-  "crimeOutcomeDefaultTitle": "Crime result",
-  "crimeEliminateWitnessName": "Eliminate Witness",
-  "crimeEliminateWitnessDesc": "Eliminate a witness before trial",
-  "crimeDiamondHeistName": "Diamond Transport Heist",
-  "crimeDiamondHeistDesc": "Hijack a transport of rough diamonds",
-  "crimeEvidenceRoomHeistName": "Evidence Room Heist",
-  "crimeEvidenceRoomHeistDesc": "Steal evidence from a federal storage facility",
-  "crimeMuseumHeistName": "Museum Heist",
-  "crimeMuseumHeistDesc": "Steal valuable artifacts from a museum",
-  "crimeBossAssassinationName": "Rival Boss Assassination",
-  "crimeBossAssassinationDesc": "Eliminate the leader of a rival organization",
-  "crimeCriminalRecordWipeName": "Wipe Criminal Record",
-  "tooltipCrimeRequiresWeapon": "Weapon required",
-  "tooltipCrimeRequirementsHeading": "Required:",
-  "crimeCriminalRecordWipeTooltip": "Wipes your full criminal record on success. Only available if you already have convictions.",
-  "toolThermalDrill": "Thermal Drill",
-  "crimeResultMoneyLabel": "Money",
-  "crimeResultXpLabel": "XP",
-  "crimeOutcomeRowReward": "Reward:",
-  "crimeOutcomeRowXp": "XP:",
-  "crimeOutcomeRowTools": "Tools:",
-  "crimeOutcomeToolDurabilityValue": "-{percent}% durability",
-  "@crimeOutcomeToolDurabilityValue": {
-    "placeholders": {
-      "percent": {
-        "type": "int"
-      }
-    }
-  },
-  "icuIntensiveCareTitle": "Intensive care",
-  "icuInjuredLine": "You were seriously injured during your criminal activities.",
-  "icuUnconsciousLine": "You are now in intensive care and unconscious.",
-  "icuRecoveryTimeLabel": "Recovery time:",
-  "icuWakeHp": "You wake up with 10 HP",
-  "icuNoActionsHint": "You cannot perform actions during this time.\nBe more careful with your health!",
-  "jailBailPaidSnackbar": "🎉 You're free! Bail paid: €{amount}",
-  "@jailBailPaidSnackbar": {
-    "placeholders": {
-      "amount": {
-        "type": "int"
-      }
-    }
-  },
-  "jailInsufficientBail": "Not enough money for bail (€{amount})",
-  "@jailInsufficientBail": {
-    "placeholders": {
-      "amount": {
-        "type": "int"
-      }
-    }
-  },
-  "jailCooldownWait": "Please wait: {seconds}s",
-  "@jailCooldownWait": {
-    "placeholders": {
-      "seconds": {
-        "type": "int"
-      }
-    }
-  },
-  "jailEscapeSuccess": "Escape succeeded! You are free.",
-  "jailEscapeFailed": "Escape failed. Sentence extended by {penalty}.",
-  "@jailEscapeFailed": {
-    "placeholders": {
-      "penalty": {
-        "type": "String"
-      }
-    }
-  },
-  "jailEscapeGenericFailure": "Escape failed",
-  "jailErrorPrefix": "Error: {message}",
-  "@jailErrorPrefix": {
-    "placeholders": {
-      "message": {
-        "type": "String"
-      }
-    }
-  },
-  "jailTimeLeft": "Time left",
-  "jailPayBail": "Pay bail (€{amount})",
-  "@jailPayBail": {
-    "placeholders": {
-      "amount": {
-        "type": "int"
-      }
-    }
-  },
-  "jailCannotActWhileIn": "You cannot commit crimes, work, or travel while serving your sentence.",
-  "jailAttemptEscape": "Attempt escape",
-  "jailYouAreInJail": "You are in jail"
+  "cooldownLoadingCreditOptions": "Chargement des options de crédit…",
+  "cooldownWaitCrime": "La chaleur est trop forte…",
+  "cooldownWaitJob": "Se reposer avant de pouvoir travailler à nouveau",
+  "cooldownWaitTravel": "Le prochain vol décolle à",
+  "cooldownWaitHeist": "Planification du braquage…",
+  "cooldownWaitAppeal": "Le tribunal est occupé…",
+  "cooldownWaitDefault": "S'il vous plaît, attendez…",
+  "weaponLabelKnife": "Couteau",
+  "weaponLabelHandgun9mm": "Pistolet (9mm)",
+  "weaponLabelHandgunHeavy": "Pistolet lourd (.45)",
+  "weaponLabelSmgCompact": "Mitrailleuse compacte",
+  "weaponLabelShotgunPump": "Fusil de chasse (à pompe)",
+  "weaponLabelMolotov": "Cocktail Molotov",
+  "weaponLabelSmgSuppressed": "SMG supprimé",
+  "weaponLabelShotgunTactical": "Fusil de chasse tactique",
+  "weaponLabelAssaultRifle": "Fusil d'assaut (AK-47)",
+  "weaponLabelGrenadeFlash": "Grenade éclair",
+  "weaponLabelGrenadeFrag": "Grenade à fragmentation",
+  "weaponLabelSniperStandard": "Fusil de précision",
+  "weaponLabelAssaultRifleVip": "Fusil d'assaut d'élite",
+  "weaponLabelSniperVip": "Fusil de précision d'élite",
+  "cooldownTitleCrime": "Temps de recharge du crime",
+  "cooldownTitleJob": "Temps de recharge du travail",
+  "cooldownTitleTravel": "Temps de recharge du voyage",
+  "cooldownTitleHeist": "Temps de recharge du braquage",
+  "cooldownTitleAppeal": "Temps de recharge d'appel",
+  "cooldownTitleSchool": "Temps de recharge pour l'école",
+  "cooldownTitleGeneric": "Refroidir",
+  "crimeOutcomeDefaultTitle": "Résultat du crime"
 }

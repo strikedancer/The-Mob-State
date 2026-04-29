@@ -3789,7 +3789,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get jailEscapeSuccess => '🎉 ¡Fuga conseguido! Estás libre.';
+  String get jailEscapeSuccess => '🎉 ¡Fuga conseguida! Estás libre.';
 
   @override
   String jailEscapeFailed(String penalty) {
