@@ -36,7 +36,6 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
       widget.tool.toolId,
       widget.tool.name,
     );
-    final toolCategory = localizedToolCategory(l10n, widget.tool.type);
     final imageAsset = 'assets/images/tools/${widget.tool.toolId}_tool.png';
     final durabilityPercent = widget.tool.durabilityPercent;
     final durabilityColor = _getDurabilityColor(durabilityPercent);
@@ -244,30 +243,8 @@ class _InventoryToolCardState extends State<InventoryToolCard> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 1,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.build,
-                                  size: 12,
-                                  color: Colors.grey[400],
-                                ),
-                                const SizedBox(width: 4),
-                                Expanded(
-                                  child: Text(
-                                    toolCategory,
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.grey[400],
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
                             ),
                           ],
                         ),
