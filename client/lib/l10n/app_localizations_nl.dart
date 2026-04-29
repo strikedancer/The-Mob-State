@@ -81,8 +81,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forgotPasswordTitle => 'Wachtwoord Herstellen';
 
   @override
-  String get forgotPasswordDescription =>
-      'Voer uw e-mailadres in en we sturen u een link om uw wachtwoord te herstellen.';
+  String get forgotPasswordDescription => 'Voer uw e-mailadres in en we sturen u een link om uw wachtwoord te herstellen.';
 
   @override
   String get resetPasswordButton => 'VERSTUUR HERSTELLINK';
@@ -213,8 +212,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeStealCarPartsName => 'Autoonderdelen Stelen';
 
   @override
-  String get crimeStealCarPartsDesc =>
-      'Steel onderdelen van geparkeerde auto\'s';
+  String get crimeStealCarPartsDesc => 'Steel onderdelen van geparkeerde auto\'s';
 
   @override
   String get crimeHijackTruckName => 'Vrachtwagen Kapen';
@@ -322,8 +320,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeProtectionRacketName => 'Beschermingsgeld';
 
   @override
-  String get crimeProtectionRacketDesc =>
-      'Laat ondernemers beschermingsgeld betalen';
+  String get crimeProtectionRacketDesc => 'Laat ondernemers beschermingsgeld betalen';
 
   @override
   String get crimeCasinoHeistName => 'Casino Overval';
@@ -353,36 +350,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeEliminateWitnessName => 'Getuige elimineren';
 
   @override
-  String get crimeEliminateWitnessDesc =>
-      'Elimineer een getuige voor een proces';
+  String get crimeEliminateWitnessDesc => 'Elimineer een getuige voor een proces';
 
   @override
   String get crimeDiamondHeistName => 'Diamanttransport-overval';
 
   @override
-  String get crimeDiamondHeistDesc =>
-      'Kaap een transport met onbewerkte diamanten';
+  String get crimeDiamondHeistDesc => 'Kaap een transport met onbewerkte diamanten';
 
   @override
   String get crimeEvidenceRoomHeistName => 'Bewijsarchief-overval';
 
   @override
-  String get crimeEvidenceRoomHeistDesc =>
-      'Steel bewijs uit een federale opslagfaciliteit';
+  String get crimeEvidenceRoomHeistDesc => 'Steel bewijs uit een federale opslagfaciliteit';
 
   @override
   String get crimeMuseumHeistName => 'Museumoverval';
 
   @override
-  String get crimeMuseumHeistDesc =>
-      'Steel waardevolle artefacten uit een museum';
+  String get crimeMuseumHeistDesc => 'Steel waardevolle artefacten uit een museum';
 
   @override
   String get crimeBossAssassinationName => 'Rivaliserende boss vermoorden';
 
   @override
-  String get crimeBossAssassinationDesc =>
-      'Elimineer de leider van een rivaliserende organisatie';
+  String get crimeBossAssassinationDesc => 'Elimineer de leider van een rivaliserende organisatie';
 
   @override
   String get crimeCriminalRecordWipeName => 'Strafblad wissen';
@@ -409,8 +401,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tooltipCrimeRequirementsHeading => 'Vereist:';
 
   @override
-  String get crimeCriminalRecordWipeTooltip =>
-      'Wist je volledige strafblad bij succes. Alleen zinvol als je al veroordelingen hebt.';
+  String get crimeCriminalRecordWipeTooltip => 'Wist je volledige strafblad bij succes. Alleen zinvol als je al veroordelingen hebt.';
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
@@ -505,8 +496,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get jobElectricianName => 'Elektricien';
 
   @override
-  String get jobElectricianDesc =>
-      'Installeer en repareer elektrische systemen';
+  String get jobElectricianDesc => 'Installeer en repareer elektrische systemen';
 
   @override
   String get jobPlumberName => 'Loodgieter';
@@ -615,8 +605,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get travelRiskPerLeg =>
-      'Risico: per etappe (je kunt gepakt worden en alles kwijt raken)';
+  String get travelRiskPerLeg => 'Risico: per etappe (je kunt gepakt worden en alles kwijt raken)';
 
   @override
   String get travelStart => 'Start';
@@ -744,8 +733,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get messageSystemThreadSubtitle => 'Achievements en systeemberichten';
 
   @override
-  String get messageSystemThreadEmptyDetail =>
-      'Achievement- en systeemberichten verschijnen hier automatisch.';
+  String get messageSystemThreadEmptyDetail => 'Achievement- en systeemberichten verschijnen hier automatisch.';
 
   @override
   String get messageSendFirst => 'Stuur het eerste bericht!';
@@ -761,8 +749,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get messageDeleteOwnOnly =>
-      'Je kunt alleen je eigen berichten verwijderen';
+  String get messageDeleteOwnOnly => 'Je kunt alleen je eigen berichten verwijderen';
 
   @override
   String get messageDeleteTitle => 'Bericht verwijderen';
@@ -777,16 +764,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get messageDeleteFailed => 'Verwijderen mislukt';
 
   @override
-  String get investigationWindowExpired =>
-      'Onderzoeksvenster verlopen (24 uur).';
+  String get investigationWindowExpired => 'Onderzoeksvenster verlopen (24 uur).';
 
   @override
-  String get investigationStartedInboxHint =>
-      'Onderzoek gestart. Check je inbox voor het detective-rapport.';
+  String get investigationStartedInboxHint => 'Onderzoek gestart. Check je inbox voor het detective-rapport.';
 
   @override
-  String get investigationAlreadyInProgress =>
-      'Dit onderzoek loopt al of is al afgerond.';
+  String get investigationAlreadyInProgress => 'Dit onderzoek loopt al of is al afgerond.';
 
   @override
   String investigationStartFailed(String error) {
@@ -806,8 +790,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get startMurderInvestigation => 'Start moordonderzoek';
 
   @override
-  String get systemMessagesReadOnlyHint =>
-      'Systeemberichten kunnen niet beantwoord worden';
+  String get systemMessagesReadOnlyHint => 'Systeemberichten kunnen niet beantwoord worden';
 
   @override
   String get helpAndGuide => 'Hulp & gids';
@@ -1067,8 +1050,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dailyGoalTitle_weekly_job_10 => 'Week: 10× werken';
 
   @override
-  String get dailyGoalTitle_weekly_vehicle_theft_5 =>
-      'Week: steel 5 voertuigen';
+  String get dailyGoalTitle_weekly_vehicle_theft_5 => 'Week: steel 5 voertuigen';
 
   @override
   String get dailyGoalTitle_weekly_travel_3 => 'Week: 3 reizen';
@@ -1188,8 +1170,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nextEventStartsIn => 'Volgende event start over';
 
   @override
-  String get vehiclesActiveListedTransit =>
-      'Voertuigen actief/te koop/onderweg';
+  String get vehiclesActiveListedTransit => 'Voertuigen actief/te koop/onderweg';
 
   @override
   String get livePlayerEvents => 'Live speler-events';
@@ -1321,8 +1302,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardNextEventStartsIn => 'Volgende event start over';
 
   @override
-  String get dashboardVehiclesActiveListedTransit =>
-      'Voertuigen actief/te koop/onderweg';
+  String get dashboardVehiclesActiveListedTransit => 'Voertuigen actief/te koop/onderweg';
 
   @override
   String get dashboardLivePlayerEvents => 'Live speler-events';
@@ -1622,42 +1602,34 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsSystemNotificationsTitle => 'System notifications for app';
 
   @override
-  String get settingsPushPermissionAllowedLinked =>
-      'Permission: allowed, device linked';
+  String get settingsPushPermissionAllowedLinked => 'Permission: allowed, device linked';
 
   @override
-  String get settingsPushPermissionAllowedRelinking =>
-      'Permission: allowed, device is re-linking';
+  String get settingsPushPermissionAllowedRelinking => 'Permission: allowed, device is re-linking';
 
   @override
-  String get settingsPushPermissionProvisionalLinked =>
-      'Permission: provisional, device linked';
+  String get settingsPushPermissionProvisionalLinked => 'Permission: provisional, device linked';
 
   @override
-  String get settingsPushPermissionProvisionalRelinking =>
-      'Permission: provisional, device is re-linking';
+  String get settingsPushPermissionProvisionalRelinking => 'Permission: provisional, device is re-linking';
 
   @override
   String get settingsPushPermissionDenied => 'Permission: denied';
 
   @override
-  String get settingsPushPermissionNotRequested =>
-      'Permission: not requested yet';
+  String get settingsPushPermissionNotRequested => 'Permission: not requested yet';
 
   @override
   String get settingsPushPermissionUnknown => 'Permission: unknown';
 
   @override
-  String get settingsDeviceTokenRegistered =>
-      'Device token registered on server';
+  String get settingsDeviceTokenRegistered => 'Device token registered on server';
 
   @override
-  String get settingsDeviceTokenNotRegistered =>
-      'No device token registered yet';
+  String get settingsDeviceTokenNotRegistered => 'No device token registered yet';
 
   @override
-  String get settingsPushHelpText =>
-      'Use this button to request browser/iPhone permission again and register your push token.';
+  String get settingsPushHelpText => 'Use this button to request browser/iPhone permission again and register your push token.';
 
   @override
   String get working => 'Working...';
@@ -1666,12 +1638,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsEnablePush => 'Enable push';
 
   @override
-  String get settingsPushEnabledToast =>
-      'Push notifications enabled. New notifications will now be received.';
+  String get settingsPushEnabledToast => 'Push notifications enabled. New notifications will now be received.';
 
   @override
-  String get settingsPushDisabledInSystem =>
-      'Push is disabled in your browser/iPhone settings. Enable notifications for this app.';
+  String get settingsPushDisabledInSystem => 'Push is disabled in your browser/iPhone settings. Enable notifications for this app.';
 
   @override
   String settingsEnablePushFailed(String error) {
@@ -1685,8 +1655,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsPushLivePlayerEventsTitle => 'Push: live player events';
 
   @override
-  String get settingsPushLivePlayerEventsSubtitle =>
-      'Start and end of recurring competition events (e.g. top-score rounds).';
+  String get settingsPushLivePlayerEventsSubtitle => 'Start and end of recurring competition events (e.g. top-score rounds).';
 
   @override
   String get settingsCryptoNotificationsTitle => 'Crypto Notifications';
@@ -1695,79 +1664,67 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsCryptoPushTradesTitle => 'Push: Trades';
 
   @override
-  String get settingsCryptoPushTradesSubtitle =>
-      'Push notification for buy/sell trades';
+  String get settingsCryptoPushTradesSubtitle => 'Push notification for buy/sell trades';
 
   @override
   String get settingsCryptoPushPriceAlertsTitle => 'Push: Price alerts';
 
   @override
-  String get settingsCryptoPushPriceAlertsSubtitle =>
-      'Push notification for relevant price moves';
+  String get settingsCryptoPushPriceAlertsSubtitle => 'Push notification for relevant price moves';
 
   @override
   String get settingsCryptoPushOrdersTitle => 'Push: Orders';
 
   @override
-  String get settingsCryptoPushOrdersSubtitle =>
-      'Push notification when order is triggered or filled';
+  String get settingsCryptoPushOrdersSubtitle => 'Push notification when order is triggered or filled';
 
   @override
   String get settingsCryptoPushMissionsTitle => 'Push: Missions';
 
   @override
-  String get settingsCryptoPushMissionsSubtitle =>
-      'Push notification when a crypto mission is completed';
+  String get settingsCryptoPushMissionsSubtitle => 'Push notification when a crypto mission is completed';
 
   @override
   String get settingsCryptoPushLeaderboardTitle => 'Push: Leaderboard';
 
   @override
-  String get settingsCryptoPushLeaderboardSubtitle =>
-      'Push notification for crypto leaderboard rewards';
+  String get settingsCryptoPushLeaderboardSubtitle => 'Push notification for crypto leaderboard rewards';
 
   @override
   String get settingsCryptoInAppTradesTitle => 'In-app: Trades';
 
   @override
-  String get settingsCryptoInAppTradesSubtitle =>
-      'Show trade events in your event feed';
+  String get settingsCryptoInAppTradesSubtitle => 'Show trade events in your event feed';
 
   @override
   String get settingsCryptoInAppPriceAlertsTitle => 'In-app: Price alerts';
 
   @override
-  String get settingsCryptoInAppPriceAlertsSubtitle =>
-      'Show price alert events in your event feed';
+  String get settingsCryptoInAppPriceAlertsSubtitle => 'Show price alert events in your event feed';
 
   @override
   String get settingsCryptoInAppOrdersTitle => 'In-app: Orders';
 
   @override
-  String get settingsCryptoInAppOrdersSubtitle =>
-      'Show order events in your event feed';
+  String get settingsCryptoInAppOrdersSubtitle => 'Show order events in your event feed';
 
   @override
   String get settingsCryptoInAppMissionsTitle => 'In-app: Missions';
 
   @override
-  String get settingsCryptoInAppMissionsSubtitle =>
-      'Show mission completions in your event feed';
+  String get settingsCryptoInAppMissionsSubtitle => 'Show mission completions in your event feed';
 
   @override
   String get settingsCryptoInAppLeaderboardTitle => 'In-app: Leaderboard';
 
   @override
-  String get settingsCryptoInAppLeaderboardSubtitle =>
-      'Show leaderboard rewards in your event feed';
+  String get settingsCryptoInAppLeaderboardSubtitle => 'Show leaderboard rewards in your event feed';
 
   @override
-  String get settingsAvatarChangeWeeklyLimit =>
-      'You can only change your avatar once per week';
+  String get settingsAvatarChangeWeeklyLimit => 'You can only change your avatar once per week';
 
   @override
-  String get settingsUsernameChangeMonthlyLimit =>
-      'You can only change your username once per month';
+  String get settingsUsernameChangeMonthlyLimit => 'You can only change your username once per month';
 
   @override
   String get settingsSaved => 'Instellingen opgeslagen';
@@ -1832,8 +1789,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get drinkBeer => 'Bier';
 
   @override
-  String get foodInfo3 =>
-      '• Koop eten en drinken om je stats op peil te houden';
+  String get foodInfo3 => '• Koop eten en drinken om je stats op peil te houden';
 
   @override
   String get friends => 'Vrienden';
@@ -1863,8 +1819,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get noOwnedProperties => 'Je hebt nog geen eigendommen';
 
   @override
-  String get buyFirstPropertyHint =>
-      'Koop je eerste eigendom in de \"Beschikbaar\" tab';
+  String get buyFirstPropertyHint => 'Koop je eerste eigendom in de \"Beschikbaar\" tab';
 
   @override
   String buyPropertyConfirm(String name, String price) {
@@ -2076,8 +2031,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get casinoPurchasePriceLabel => 'Aankoopprijs:';
 
   @override
-  String get casinoOwnerInfo =>
-      'Als eigenaar beheer je de casino bankroll en verdien je geld wanneer spelers verliezen!';
+  String get casinoOwnerInfo => 'Als eigenaar beheer je de casino bankroll en verdien je geld wanneer spelers verliezen!';
 
   @override
   String get casinoGameSlotsName => 'Gokautomaat';
@@ -2089,22 +2043,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get casinoGameBlackjackName => 'Blackjack';
 
   @override
-  String get casinoGameBlackjackDesc =>
-      'Versla de dealer en win tot 2x je inzet!';
+  String get casinoGameBlackjackDesc => 'Versla de dealer en win tot 2x je inzet!';
 
   @override
   String get casinoGameRouletteName => 'Roulette';
 
   @override
-  String get casinoGameRouletteDesc =>
-      'Kies je nummer en win tot 35x je inzet!';
+  String get casinoGameRouletteDesc => 'Kies je nummer en win tot 35x je inzet!';
 
   @override
   String get casinoGameDiceName => 'Dobbelstenen';
 
   @override
-  String get casinoGameDiceDesc =>
-      'Gooi de dobbelstenen en win tot 6x je inzet!';
+  String get casinoGameDiceDesc => 'Gooi de dobbelstenen en win tot 6x je inzet!';
 
   @override
   String get difficultyEasy => 'MAKKELIJK';
@@ -2186,8 +2137,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get casinoManagementInfoTitle => 'Casino Beheer Info';
 
   @override
-  String get casinoManagementInfo5 =>
-      '• Je kunt op elk moment geld storten of opnemen';
+  String get casinoManagementInfo5 => '• Je kunt op elk moment geld storten of opnemen';
 
   @override
   String get retry => 'Opnieuw proberen';
@@ -2331,8 +2281,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get yourHealth => 'Je Gezondheid';
 
   @override
-  String get criticalHealthWarning =>
-      '⚠️ KRITIEK! Je moet direct naar het ziekenhuis!';
+  String get criticalHealthWarning => '⚠️ KRITIEK! Je moet direct naar het ziekenhuis!';
 
   @override
   String get lowHealthWarning => '⚠️ Lage gezondheid! Wees voorzichtig.';
@@ -2344,15 +2293,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get contrabandFlowersName => 'Bloemen';
 
   @override
-  String get contrabandFlowersDesc =>
-      'Nederlandse tulpen en andere bloemen voor internationale handel';
+  String get contrabandFlowersDesc => 'Nederlandse tulpen en andere bloemen voor internationale handel';
 
   @override
   String get contrabandElectronicsName => 'Elektronica';
 
   @override
-  String get contrabandElectronicsDesc =>
-      'Geavanceerde elektronica en computeronderdelen';
+  String get contrabandElectronicsDesc => 'Geavanceerde elektronica en computeronderdelen';
 
   @override
   String get contrabandDiamondsName => 'Diamanten';
@@ -2370,8 +2317,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get contrabandPharmaceuticalsName => 'Farmaceutica';
 
   @override
-  String get contrabandPharmaceuticalsDesc =>
-      'Zeldzame farmaceutische producten';
+  String get contrabandPharmaceuticalsDesc => 'Zeldzame farmaceutische producten';
 
   @override
   String get multiplier => 'Multiplier';
@@ -2448,8 +2394,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get youAreDead => 'Je bent dood! Game over.';
 
   @override
-  String get emergencyOnly =>
-      'Spoedeisende hulp is alleen beschikbaar bij <10 HP';
+  String get emergencyOnly => 'Spoedeisende hulp is alleen beschikbaar bij <10 HP';
 
   @override
   String emergencyTreatment(String hp) {
@@ -2481,8 +2426,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get sellBoat => 'Boot Verkopen';
 
   @override
-  String get confirmSellVehicle =>
-      'Weet je zeker dat je dit voertuig wilt verkopen?';
+  String get confirmSellVehicle => 'Weet je zeker dat je dit voertuig wilt verkopen?';
 
   @override
   String get confirmSellBoat => 'Weet je zeker dat je deze boot wilt verkopen?';
@@ -2614,8 +2558,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get casinoBought => 'Casino succesvol gekocht! 🎰';
 
   @override
-  String get errorBuyCasino =>
-      'Er is een fout opgetreden bij het kopen van het casino';
+  String get errorBuyCasino => 'Er is een fout opgetreden bij het kopen van het casino';
 
   @override
   String minimumDeposit(String amount) {
@@ -2666,8 +2609,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get emergencyInfo =>
-      '• 🊘 Spoedeisende Hulp is GRATIS bij <10 HP (+20 HP)';
+  String get emergencyInfo => '• 🊘 Spoedeisende Hulp is GRATIS bij <10 HP (+20 HP)';
 
   @override
   String get hospitalInfo1 => '• Gezondheid daalt bij het plegen van misdaden';
@@ -2689,8 +2631,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get hospitalInfo5 => '• ⏱️ 1 uur cooldown tussen behandelingen';
 
   @override
-  String get hospitalInfo6 =>
-      '• 💚 Passief herstel: +5 HP per 5 minuten (als HP > 0)';
+  String get hospitalInfo6 => '• 💚 Passief herstel: +5 HP per 5 minuten (als HP > 0)';
 
   @override
   String get medicalTreatment => 'Medische Behandeling';
@@ -2717,8 +2658,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get crimeErrorVehicleRequired =>
-      '🚗 Deze misdaad vereist een voertuig';
+  String get crimeErrorVehicleRequired => '🚗 Deze misdaad vereist een voertuig';
 
   @override
   String get crimeErrorVehicleNotFound => '🚗 Voertuig niet gevonden';
@@ -2727,8 +2667,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeErrorNotVehicleOwner => '🚗 Je bezit dit voertuig niet';
 
   @override
-  String get crimeErrorVehicleBroken =>
-      '🚗 Je voertuig is kapot en moet gerepareerd worden';
+  String get crimeErrorVehicleBroken => '🚗 Je voertuig is kapot en moet gerepareerd worden';
 
   @override
   String get crimeErrorNoFuel => '⛽ Je voertuig heeft geen brandstof meer';
@@ -2740,12 +2679,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeErrorInvalidCrimeId => '❌ Ongeldige misdaad';
 
   @override
-  String get crimeErrorWeaponRequired =>
-      '🔫 Je hebt een wapen nodig voor deze misdaad';
+  String get crimeErrorWeaponRequired => '🔫 Je hebt een wapen nodig voor deze misdaad';
 
   @override
-  String get crimeErrorWeaponBroken =>
-      '🔫 Je wapen is kapot en moet gerepareerd worden';
+  String get crimeErrorWeaponBroken => '🔫 Je wapen is kapot en moet gerepareerd worden';
 
   @override
   String get crimeErrorNoAmmo => '🔫 Je hebt geen munitie meer';
@@ -2754,8 +2691,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeErrorGeneric => '❌ Er is iets misgegaan bij deze misdaad';
 
   @override
-  String get inventoryFull =>
-      '🎒 Je inventaris is vol! Sla gereedschap op in een property';
+  String get inventoryFull => '🎒 Je inventaris is vol! Sla gereedschap op in een property';
 
   @override
   String get storageFull => '📦 Property opslag is vol';
@@ -2824,8 +2760,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get noProperties => 'Geen properties';
 
   @override
-  String get buyPropertyForStorage =>
-      'Koop een property om gereedschap op te slaan';
+  String get buyPropertyForStorage => 'Koop een property om gereedschap op te slaan';
 
   @override
   String get noToolsInStorage => 'Geen gereedschap in opslag';
@@ -2846,8 +2781,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get deleteLoadout => 'Verwijder Loadout';
 
   @override
-  String get confirmDeleteLoadout =>
-      'Weet je zeker dat je deze loadout wilt verwijderen?';
+  String get confirmDeleteLoadout => 'Weet je zeker dat je deze loadout wilt verwijderen?';
 
   @override
   String get loadoutDeleted => 'Loadout verwijderd';
@@ -3029,8 +2963,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get backpackPurchaseFailedNotFound => 'Rugzak niet gevonden';
 
   @override
-  String get backpackPurchaseFailedAlready =>
-      'Je hebt al een rugzak. Je kunt maar één tegelijk gebruiken.';
+  String get backpackPurchaseFailedAlready => 'Je hebt al een rugzak. Je kunt maar één tegelijk gebruiken.';
 
   @override
   String backpackPurchaseFailedRank(Object current, Object required) {
@@ -3043,15 +2976,13 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get backpackPurchaseFailedVip =>
-      'Deze rugzak is alleen voor VIP leden';
+  String get backpackPurchaseFailedVip => 'Deze rugzak is alleen voor VIP leden';
 
   @override
   String get backpackUpgradeFailedNo => 'Je hebt geen rugzak om te upgraden';
 
   @override
-  String get backpackUpgradeFailedNotUpgrade =>
-      'Dit is geen upgrade. Kies een grotere rugzak.';
+  String get backpackUpgradeFailedNotUpgrade => 'Dit is geen upgrade. Kies een grotere rugzak.';
 
   @override
   String backpackUpgradeFailedRank(Object current, Object required) {
@@ -3070,8 +3001,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get arrested => 'Gearresteerd!';
 
   @override
-  String get jailMessage =>
-      'Je bent gearresteerd tijdens je reis en alle goederen zijn in beslag genomen!';
+  String get jailMessage => 'Je bent gearresteerd tijdens je reis en alle goederen zijn in beslag genomen!';
 
   @override
   String get confirmAction => 'Weet je het zeker?';
@@ -3083,15 +3013,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get travelContinueConfirmTitle => 'Doorgaan naar de volgende etappe?';
 
   @override
-  String get travelContinueConfirmBody =>
-      'Grenscontroles zijn actief. Wil je doorgaan?';
+  String get travelContinueConfirmBody => 'Grenscontroles zijn actief. Wil je doorgaan?';
 
   @override
   String get travelJourneyCompleteTitle => 'Reis voltooid';
 
   @override
-  String get travelJourneyCompleteBody =>
-      'Je bent veilig op je bestemming aangekomen.';
+  String get travelJourneyCompleteBody => 'Je bent veilig op je bestemming aangekomen.';
 
   @override
   String get hitlist => 'Moordlijst';
@@ -3133,8 +3061,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get hitDifferentCountry =>
-      'Je moet in hetzelfde land zijn als het doelwit';
+  String get hitDifferentCountry => 'Je moet in hetzelfde land zijn als het doelwit';
 
   @override
   String get counterBountyTitle => 'Tegen-bod plaatsen';
@@ -3174,8 +3101,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get counterBid => 'Tegen-bod';
 
   @override
-  String get counterBidPlaced =>
-      'Tegen-bod geplaatst! Het contract is omgekeerd.';
+  String get counterBidPlaced => 'Tegen-bod geplaatst! Het contract is omgekeerd.';
 
   @override
   String get attemptHit => 'Moord uitvoeren';
@@ -3272,8 +3198,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get youAreThePlacer => 'Je bent de plaatser';
 
   @override
-  String get onlyTargetCanCounterBid =>
-      'Alleen het doelwit kan een tegen-bod plaatsen';
+  String get onlyTargetCanCounterBid => 'Alleen het doelwit kan een tegen-bod plaatsen';
 
   @override
   String get executeHit => 'Moord uitvoeren';
@@ -3353,8 +3278,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ammoPurchased => 'Munitie gekocht';
 
   @override
-  String get purchaseCooldown =>
-      'Je moet wachten voordat je opnieuw kunt kopen';
+  String get purchaseCooldown => 'Je moet wachten voordat je opnieuw kunt kopen';
 
   @override
   String get insufficientStock => 'Niet genoeg voorraad beschikbaar';
@@ -3405,15 +3329,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryProduced => 'Productie bijgewerkt';
 
   @override
-  String get factorySessionStarted =>
-      'Productie gestart: 8 uur actief, claim elke 10 minuten';
+  String get factorySessionStarted => 'Productie gestart: 8 uur actief, claim elke 10 minuten';
 
   @override
   String get ammoFactoryTitle => 'Munitiefabriek';
 
   @override
-  String get ammoFactoryIntro =>
-      'Werkt in batches; je kunt elke 10 minuten productie innen (tot 8 uur backlog per sessie).';
+  String get ammoFactoryIntro => 'Werkt in batches; je kunt elke 10 minuten productie innen (tot 8 uur backlog per sessie).';
 
   @override
   String get ammoFactoryWhatYouCanDo => 'Wat je kunt doen:';
@@ -3422,16 +3344,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ammoFactoryActionBuy => 'Koop een fabriek in je huidige land';
 
   @override
-  String get ammoFactoryActionProduce =>
-      'Incasseer productie (interval: 10 minuten, max backlog: 8 uur per sessie)';
+  String get ammoFactoryActionProduce => 'Incasseer productie (interval: 10 minuten, max backlog: 8 uur per sessie)';
 
   @override
-  String get ammoFactoryActionOutput =>
-      'Upgrade output tot level 5 voor meer patronen per claim';
+  String get ammoFactoryActionOutput => 'Upgrade output tot level 5 voor meer patronen per claim';
 
   @override
-  String get ammoFactoryActionQuality =>
-      'Upgrade kwaliteit voor sterkere marktprijzen';
+  String get ammoFactoryActionQuality => 'Upgrade kwaliteit voor sterkere marktprijzen';
 
   @override
   String get factoryUpgradeOutputSuccess => 'Output geupgrade';
@@ -3467,12 +3386,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryProduceStatusCooldown => 'Cooldown';
 
   @override
-  String get factorySessionActive =>
-      'Productie venster: actief (10 min interval)';
+  String get factorySessionActive => 'Productie venster: actief (10 min interval)';
 
   @override
-  String get factorySessionStopped =>
-      'Productie venster: gestopt (klik Produce om opnieuw 8 uur te starten)';
+  String get factorySessionStopped => 'Productie venster: gestopt (klik Produce om opnieuw 8 uur te starten)';
 
   @override
   String factorySessionEndsIn(String duration) {
@@ -3480,8 +3397,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get factoryNextProductionReady =>
-      'Volgende productie: nu beschikbaar (druk op Produce om te innen)';
+  String get factoryNextProductionReady => 'Volgende productie: nu beschikbaar (druk op Produce om te innen)';
 
   @override
   String factoryNextProductionIn(String duration) {
@@ -3645,6 +3561,48 @@ class AppLocalizationsNl extends AppLocalizations {
   String get countryCanada => 'Canada';
 
   @override
+  String get countryPortugal => 'Portugal';
+
+  @override
+  String get countryIreland => 'Ierland';
+
+  @override
+  String get countryLuxembourg => 'Luxemburg';
+
+  @override
+  String get countryAustria => 'Oostenrijk';
+
+  @override
+  String get countryDenmark => 'Denemarken';
+
+  @override
+  String get countrySweden => 'Zweden';
+
+  @override
+  String get countryNorway => 'Noorwegen';
+
+  @override
+  String get countryFinland => 'Finland';
+
+  @override
+  String get countryPoland => 'Polen';
+
+  @override
+  String get countryCzechia => 'Tsjechië';
+
+  @override
+  String get countryGreece => 'Griekenland';
+
+  @override
+  String get countryTurkey => 'Turkije';
+
+  @override
+  String get countryUae => 'Verenigde Arabische Emiraten';
+
+  @override
+  String get countryDubai => 'Dubai';
+
+  @override
   String get toolBoltCutter => 'Betonschaar';
 
   @override
@@ -3768,8 +3726,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get toolsNotEnoughMoney => 'Je hebt niet genoeg geld!';
 
   @override
-  String get toolsNotEnoughMoneyRepair =>
-      'Je hebt niet genoeg geld voor reparatie!';
+  String get toolsNotEnoughMoneyRepair => 'Je hebt niet genoeg geld voor reparatie!';
 
   @override
   String get toolsBuyError => 'Fout bij kopen';
@@ -3803,20 +3760,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeOutcomeCaught => 'Gepakt door de politie';
 
   @override
-  String get crimeOutcomeVehicleBreakdownBefore =>
-      'Je auto is kapot gegaan voordat je de locatie bereikte';
+  String get crimeOutcomeVehicleBreakdownBefore => 'Je auto is kapot gegaan voordat je de locatie bereikte';
 
   @override
-  String get crimeOutcomeVehicleBreakdownDuring =>
-      'Auto kapot tijdens vlucht - meeste buit achtergelaten';
+  String get crimeOutcomeVehicleBreakdownDuring => 'Auto kapot tijdens vlucht - meeste buit achtergelaten';
 
   @override
-  String get crimeOutcomeOutOfFuel =>
-      'Brandstof opgeraakt tijdens vlucht - te voet gevlucht, buit en auto verloren';
+  String get crimeOutcomeOutOfFuel => 'Brandstof opgeraakt tijdens vlucht - te voet gevlucht, buit en auto verloren';
 
   @override
-  String get crimeOutcomeToolBroke =>
-      'Je gereedschap brak tijdens de misdaad en liet bewijs achter';
+  String get crimeOutcomeToolBroke => 'Je gereedschap brak tijdens de misdaad en liet bewijs achter';
 
   @override
   String get crimeOutcomeFledNoLoot => 'Gevlucht zonder buit';
@@ -3845,12 +3798,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get icuIntensiveCareTitle => 'Intensive care';
 
   @override
-  String get icuInjuredLine =>
-      'Je bent ernstig gewond geraakt tijdens je criminele activiteiten.';
+  String get icuInjuredLine => 'Je bent ernstig gewond geraakt tijdens je criminele activiteiten.';
 
   @override
-  String get icuUnconsciousLine =>
-      'Je ligt op de intensive care en bent buiten bewustzijn.';
+  String get icuUnconsciousLine => 'Je ligt op de intensive care en bent buiten bewustzijn.';
 
   @override
   String get icuRecoveryTimeLabel => 'Herstel tijd:';
@@ -3859,8 +3810,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get icuWakeHp => 'Je komt bij met 10 HP';
 
   @override
-  String get icuNoActionsHint =>
-      'Tijdens deze tijd kun je geen acties uitvoeren.\nWees voorzichtiger met je gezondheid!';
+  String get icuNoActionsHint => 'Tijdens deze tijd kun je geen acties uitvoeren.\nWees voorzichtiger met je gezondheid!';
 
   @override
   String jailBailPaidSnackbar(int amount) {
@@ -3902,8 +3852,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get jailCannotActWhileIn =>
-      'Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.';
+  String get jailCannotActWhileIn => 'Je kunt geen misdaden plegen, werken of reizen tijdens je celstraf.';
 
   @override
   String get jailAttemptEscape => 'Probeer uitbraak';
@@ -3960,12 +3909,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleSelectedForCrimes => 'Voertuig geselecteerd voor misdaden!';
 
   @override
-  String get vehicleDeselectedForCrimes =>
-      'Voertuig gedeselecteerd voor misdaden!';
+  String get vehicleDeselectedForCrimes => 'Voertuig gedeselecteerd voor misdaden!';
 
   @override
-  String get vehicleWrongCountry =>
-      'Voertuig moet in hetzelfde land zijn als jij';
+  String get vehicleWrongCountry => 'Voertuig moet in hetzelfde land zijn als jij';
 
   @override
   String get failedSelectVehicle => 'Fout bij selecteren voertuig';
@@ -4090,6 +4037,32 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionDistrictNotFound => 'District niet gevonden';
 
   @override
+  String get prostitutionDistrictOwnedBadge => 'In eigendom';
+
+  @override
+  String get prostitutionOwnerLabel => 'Eigenaar:';
+
+  @override
+  String get prostitutionForSale => 'Te koop';
+
+  @override
+  String get prostitutionRoomsLabel => 'Kamers:';
+
+  @override
+  String get prostitutionRoomsRented => 'verhuurd';
+
+  @override
+  String prostitutionRldAppBarTitle(String country) {
+    return 'Red Light District ($country)';
+  }
+
+  @override
+  String get prostitutionOccupiedShort => 'Bezet';
+
+  @override
+  String get prostitutionNotApplicable => 'N.v.t.';
+
+  @override
   String get back => 'Terug';
 
   @override
@@ -4104,8 +4077,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionMoveFailed => 'Verplaatsing mislukt';
 
   @override
-  String get prostitutionNoStreetProstitutes =>
-      'Geen prostituees op straat beschikbaar';
+  String get prostitutionNoStreetProstitutes => 'Geen prostituees op straat beschikbaar';
 
   @override
   String get prostitutionSelectProstitute => 'Selecteer Prostituee';
@@ -4192,8 +4164,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vipEventsTabTitle => 'VIP Events';
 
   @override
-  String get vipEventsDescription =>
-      'Wijs prostituees toe aan VIP events voor bonus inkomsten!';
+  String get vipEventsDescription => 'Wijs prostituees toe aan VIP events voor bonus inkomsten!';
 
   @override
   String get vipEventsActive => 'Actieve Events';
@@ -4385,8 +4356,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementsNoRewardConfigured => 'Nog geen reward ingesteld';
 
   @override
-  String get achievementsRewardOnUnlock =>
-      'Je ontvangt deze reward zodra de achievement is ontgrendeld.';
+  String get achievementsRewardOnUnlock => 'Je ontvangt deze reward zodra de achievement is ontgrendeld.';
 
   @override
   String get achievementsDateToday => 'Vandaag';
@@ -4409,43 +4379,37 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementJobItSpecialistTitle => 'IT Specialist';
 
   @override
-  String get achievementJobItSpecialistDescription =>
-      'Voltooi je eerste shift als Programmeur';
+  String get achievementJobItSpecialistDescription => 'Voltooi je eerste shift als Programmeur';
 
   @override
   String get achievementJobLawyerTitle => 'Straatadvocaat';
 
   @override
-  String get achievementJobLawyerDescription =>
-      'Voltooi je eerste shift als Advocaat';
+  String get achievementJobLawyerDescription => 'Voltooi je eerste shift als Advocaat';
 
   @override
   String get achievementJobDoctorTitle => 'Ondergrondse Dokter';
 
   @override
-  String get achievementJobDoctorDescription =>
-      'Voltooi je eerste shift als Dokter';
+  String get achievementJobDoctorDescription => 'Voltooi je eerste shift als Dokter';
 
   @override
   String get achievementSchoolCertifiedTitle => 'Gecertificeerde Student';
 
   @override
-  String get achievementSchoolCertifiedDescription =>
-      'Behaal 3 schoolcertificaten';
+  String get achievementSchoolCertifiedDescription => 'Behaal 3 schoolcertificaten';
 
   @override
   String get achievementSchoolMultiCertifiedTitle => 'Multi-Gecertificeerd';
 
   @override
-  String get achievementSchoolMultiCertifiedDescription =>
-      'Behaal 6 schoolcertificaten';
+  String get achievementSchoolMultiCertifiedDescription => 'Behaal 6 schoolcertificaten';
 
   @override
   String get achievementSchoolTrackSpecialistTitle => 'Track Specialist';
 
   @override
-  String get achievementSchoolTrackSpecialistDescription =>
-      'Max 3 school-tracks';
+  String get achievementSchoolTrackSpecialistDescription => 'Max 3 school-tracks';
 
   @override
   String get schoolMenuLabel => 'School';
@@ -4457,8 +4421,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get schoolTitle => 'School & Opleiding';
 
   @override
-  String get schoolIntro =>
-      'Ontgrendel jobs en assets via levels en certificaten.';
+  String get schoolIntro => 'Ontgrendel jobs en assets via levels en certificaten.';
 
   @override
   String get schoolTracksTitle => 'Beschikbare opleidingen';
@@ -4516,16 +4479,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get schoolGateAssetCasinoPurchase => 'Asset: Casino aankoop';
 
   @override
-  String get schoolGateAssetAmmoFactoryPurchase =>
-      'Asset: Munitiefabriek aankoop';
+  String get schoolGateAssetAmmoFactoryPurchase => 'Asset: Munitiefabriek aankoop';
 
   @override
-  String get schoolGateAssetAmmoOutputUpgrade =>
-      'Asset: Munitiefabriek output upgrade';
+  String get schoolGateAssetAmmoOutputUpgrade => 'Asset: Munitiefabriek output upgrade';
 
   @override
-  String get schoolGateAssetAmmoQualityUpgrade =>
-      'Asset: Munitiefabriek quality upgrade';
+  String get schoolGateAssetAmmoQualityUpgrade => 'Asset: Munitiefabriek quality upgrade';
 
   @override
   String schoolGateAssetGeneric(String target) {
@@ -4541,27 +4501,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get educationDialogDefaultTitle => '🔒 Opleiding vereist';
 
   @override
-  String get educationDialogFallbackMessage =>
-      'Vereisten niet gehaald. Voltooi opleidingseisen om verder te gaan.';
+  String get educationDialogFallbackMessage => 'Vereisten niet gehaald. Voltooi opleidingseisen om verder te gaan.';
 
   @override
   String get educationDialogClose => 'Sluiten';
 
   @override
-  String get educationLockedJobsSectionTitle =>
-      '🔒 Vergrendelde jobs (opleiding vereist)';
+  String get educationLockedJobsSectionTitle => '🔒 Vergrendelde jobs (opleiding vereist)';
 
   @override
-  String get educationAmmoOutputUpgradeLockedTitle =>
-      '🔒 Output upgrade vergrendeld';
+  String get educationAmmoOutputUpgradeLockedTitle => '🔒 Output upgrade vergrendeld';
 
   @override
-  String get educationAmmoQualityUpgradeLockedTitle =>
-      '🔒 Kwaliteit upgrade vergrendeld';
+  String get educationAmmoQualityUpgradeLockedTitle => '🔒 Kwaliteit upgrade vergrendeld';
 
   @override
-  String get educationAmmoFactoryPurchaseLockedTitle =>
-      '🔒 Fabriek aankoop vergrendeld';
+  String get educationAmmoFactoryPurchaseLockedTitle => '🔒 Fabriek aankoop vergrendeld';
 
   @override
   String educationRequirementRankProgress(int requiredRank, int currentRank) {
@@ -4572,11 +4527,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get educationRequirementTrackLevelTitle => 'Opleidingsniveau';
 
   @override
-  String educationRequirementTrackLevelProgress(
-    String trackName,
-    int requiredLevel,
-    int currentLevel,
-  ) {
+  String educationRequirementTrackLevelProgress(String trackName, int requiredLevel, int currentLevel) {
     return '$trackName level $requiredLevel vereist · Huidig $currentLevel';
   }
 
@@ -4608,28 +4559,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get educationTrackNameIt => 'IT';
 
   @override
-  String get schoolTrackDescriptionAviation =>
-      'Vliegtheorie, navigatie en vliegtuigbediening.';
+  String get schoolTrackDescriptionAviation => 'Vliegtheorie, navigatie en vliegtuigbediening.';
 
   @override
-  String get schoolTrackDescriptionLaw =>
-      'Strafrecht, procedures en praktijk in de rechtszaal.';
+  String get schoolTrackDescriptionLaw => 'Strafrecht, procedures en praktijk in de rechtszaal.';
 
   @override
-  String get schoolTrackDescriptionMedicine =>
-      'Spoedzorg, diagnostiek en medische praktijk.';
+  String get schoolTrackDescriptionMedicine => 'Spoedzorg, diagnostiek en medische praktijk.';
 
   @override
-  String get schoolTrackDescriptionFinance =>
-      'Boekhouding, investeringen en bedrijfsvoering.';
+  String get schoolTrackDescriptionFinance => 'Boekhouding, investeringen en bedrijfsvoering.';
 
   @override
-  String get schoolTrackDescriptionEngineering =>
-      'Mechanische systemen, industriële veiligheid en productie.';
+  String get schoolTrackDescriptionEngineering => 'Mechanische systemen, industriële veiligheid en productie.';
 
   @override
-  String get schoolTrackDescriptionIt =>
-      'Softwareontwikkeling, systemen en netwerkbeheer.';
+  String get schoolTrackDescriptionIt => 'Softwareontwikkeling, systemen en netwerkbeheer.';
 
   @override
   String schoolTrackCooldownActive(int seconds) {
@@ -4682,8 +4627,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rivalryChallengeTitle => 'Daag speler uit';
 
   @override
-  String get rivalryChallengeHint =>
-      'Voer een speler-ID in om een rivaliteit te starten.';
+  String get rivalryChallengeHint => 'Voer een speler-ID in om een rivaliteit te starten.';
 
   @override
   String get rivalryPlayerIdHint => 'Speler-ID';
@@ -4756,8 +4700,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get rivalryConfirmWarning =>
-      'Succes is niet gegarandeerd en je kunt geld verliezen.';
+  String get rivalryConfirmWarning => 'Succes is niet gegarandeerd en je kunt geld verliezen.';
 
   @override
   String get rivalryExecuteButton => 'Uitvoeren';
@@ -4766,16 +4709,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rivalryEffectTipPolice => 'Verhoog politiedruk op rivaal';
 
   @override
-  String get rivalryEffectStealCustomer =>
-      'Steel een deel van rivaliserende inkomsten';
+  String get rivalryEffectStealCustomer => 'Steel een deel van rivaliserende inkomsten';
 
   @override
-  String get rivalryEffectDamageReputation =>
-      'Verlaag voortgang van rivaliserende prostituees';
+  String get rivalryEffectDamageReputation => 'Verlaag voortgang van rivaliserende prostituees';
 
   @override
-  String get rivalryEffectBribeEmployee =>
-      'Zet één rivaliserende prostituee op busted';
+  String get rivalryEffectBribeEmployee => 'Zet één rivaliserende prostituee op busted';
 
   @override
   String get prostitutionUnderAttackTitle => 'Je imperium ligt onder aanval';
@@ -4792,8 +4732,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rivalryProtectionTitle => 'Beschermingsverzekering';
 
   @override
-  String get rivalryProtectionDescription =>
-      'Vermindert inkomende sabotage-impact met 30% voor 7 dagen.';
+  String get rivalryProtectionDescription => 'Vermindert inkomende sabotage-impact met 30% voor 7 dagen.';
 
   @override
   String get rivalryProtectionInactive => 'Geen actieve bescherming';
@@ -4807,8 +4746,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rivalryProtectionBuy => 'Koop bescherming (€25k/week)';
 
   @override
-  String get rivalryProtectionActivated =>
-      'Beschermingsverzekering geactiveerd';
+  String get rivalryProtectionActivated => 'Beschermingsverzekering geactiveerd';
 
   @override
   String get achievementTitle_first_steps => 'Eerste Stappen';
@@ -4826,50 +4764,43 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementTitle_first_district => 'Eerste District';
 
   @override
-  String get achievementDescription_first_district =>
-      'Koop je eerste red light district';
+  String get achievementDescription_first_district => 'Koop je eerste red light district';
 
   @override
   String get achievementTitle_empire_builder => 'Imperiumbouwer';
 
   @override
-  String get achievementDescription_empire_builder =>
-      'Bezitt 5 red light districts';
+  String get achievementDescription_empire_builder => 'Bezitt 5 red light districts';
 
   @override
   String get achievementTitle_district_master => 'District Meester';
 
   @override
-  String get achievementDescription_district_master =>
-      'Bezitt 10 red light districts';
+  String get achievementDescription_district_master => 'Bezitt 10 red light districts';
 
   @override
   String get achievementTitle_leveling_master => 'Level Meester';
 
   @override
-  String get achievementDescription_leveling_master =>
-      'Breng een hoer naar level 10';
+  String get achievementDescription_leveling_master => 'Breng een hoer naar level 10';
 
   @override
   String get achievementTitle_untouchable => 'Onaantastbaar';
 
   @override
-  String get achievementDescription_untouchable =>
-      'Word 7 dagen op rij niet busted';
+  String get achievementDescription_untouchable => 'Word 7 dagen op rij niet busted';
 
   @override
   String get achievementTitle_millionaire => 'Miljonair';
 
   @override
-  String get achievementDescription_millionaire =>
-      'Verdien in totaal €1.000.000';
+  String get achievementDescription_millionaire => 'Verdien in totaal €1.000.000';
 
   @override
   String get achievementTitle_high_roller => 'High Roller';
 
   @override
-  String get achievementDescription_high_roller =>
-      'Verdien in totaal €5.000.000';
+  String get achievementDescription_high_roller => 'Verdien in totaal €5.000.000';
 
   @override
   String get achievementTitle_vip_service => 'VIP Service';
@@ -4887,127 +4818,109 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementTitle_security_expert => 'Beveiligingsexpert';
 
   @override
-  String get achievementDescription_security_expert =>
-      'Maximaliseer security op al je districten';
+  String get achievementDescription_security_expert => 'Maximaliseer security op al je districten';
 
   @override
   String get achievementTitle_luxury_provider => 'Luxe Aanbieder';
 
   @override
-  String get achievementDescription_luxury_provider =>
-      'Upgrade 3 districten naar VIP-tier';
+  String get achievementDescription_luxury_provider => 'Upgrade 3 districten naar VIP-tier';
 
   @override
   String get achievementTitle_rivalry_victor => 'Rivaliteit Overwinnaar';
 
   @override
-  String get achievementDescription_rivalry_victor =>
-      'Saboteer rivalen 10 keer succesvol';
+  String get achievementDescription_rivalry_victor => 'Saboteer rivalen 10 keer succesvol';
 
   @override
   String get achievementTitle_untouchable_rival => 'Onaantastbare Rivaal';
 
   @override
-  String get achievementDescription_untouchable_rival =>
-      'Verdedig 20 sabotagepogingen';
+  String get achievementDescription_untouchable_rival => 'Verdedig 20 sabotagepogingen';
 
   @override
   String get achievementTitle_crime_first_blood => 'Eerste Bloed';
 
   @override
-  String get achievementDescription_crime_first_blood =>
-      'Voltooi je eerste misdaad succesvol';
+  String get achievementDescription_crime_first_blood => 'Voltooi je eerste misdaad succesvol';
 
   @override
   String get achievementTitle_crime_hustler => 'Misdaad Hustler';
 
   @override
-  String get achievementDescription_crime_hustler =>
-      'Voltooi 5 misdaden succesvol';
+  String get achievementDescription_crime_hustler => 'Voltooi 5 misdaden succesvol';
 
   @override
   String get achievementTitle_crime_novice => 'Misdaad Beginner';
 
   @override
-  String get achievementDescription_crime_novice =>
-      'Voltooi 10 misdaden succesvol';
+  String get achievementDescription_crime_novice => 'Voltooi 10 misdaden succesvol';
 
   @override
   String get achievementTitle_crime_operator => 'Misdaad Operator';
 
   @override
-  String get achievementDescription_crime_operator =>
-      'Voltooi 25 misdaden succesvol';
+  String get achievementDescription_crime_operator => 'Voltooi 25 misdaden succesvol';
 
   @override
   String get achievementTitle_crime_wave => 'Misdaadgolf';
 
   @override
-  String get achievementDescription_crime_wave =>
-      'Voltooi 50 misdaden succesvol';
+  String get achievementDescription_crime_wave => 'Voltooi 50 misdaden succesvol';
 
   @override
   String get achievementTitle_crime_mastermind => 'Misdaad Mastermind';
 
   @override
-  String get achievementDescription_crime_mastermind =>
-      'Voltooi 100 misdaden succesvol';
+  String get achievementDescription_crime_mastermind => 'Voltooi 100 misdaden succesvol';
 
   @override
   String get achievementTitle_the_godfather => 'The Godfather';
 
   @override
-  String get achievementDescription_the_godfather =>
-      'Voltooi 250 misdaden succesvol';
+  String get achievementDescription_the_godfather => 'Voltooi 250 misdaden succesvol';
 
   @override
   String get achievementTitle_crime_emperor => 'Misdaad Keizer';
 
   @override
-  String get achievementDescription_crime_emperor =>
-      'Voltooi 500 misdaden succesvol';
+  String get achievementDescription_crime_emperor => 'Voltooi 500 misdaden succesvol';
 
   @override
   String get achievementTitle_crime_legend => 'Misdaad Legende';
 
   @override
-  String get achievementDescription_crime_legend =>
-      'Voltooi 1000 misdaden succesvol';
+  String get achievementDescription_crime_legend => 'Voltooi 1000 misdaden succesvol';
 
   @override
   String get achievementTitle_crime_getaway_driver => 'Vluchtauto Chauffeur';
 
   @override
-  String get achievementDescription_crime_getaway_driver =>
-      'Voltooi je eerste misdaad met voertuig';
+  String get achievementDescription_crime_getaway_driver => 'Voltooi je eerste misdaad met voertuig';
 
   @override
   String get achievementTitle_crime_armed_and_ready => 'Gewapend en Klaar';
 
   @override
-  String get achievementDescription_crime_armed_and_ready =>
-      'Voltooi je eerste misdaad met wapenvereiste';
+  String get achievementDescription_crime_armed_and_ready => 'Voltooi je eerste misdaad met wapenvereiste';
 
   @override
   String get achievementTitle_crime_full_loadout => 'Volledige Uitrusting';
 
   @override
-  String get achievementDescription_crime_full_loadout =>
-      'Voltooi een misdaad met voertuig, wapen en tools';
+  String get achievementDescription_crime_full_loadout => 'Voltooi een misdaad met voertuig, wapen en tools';
 
   @override
   String get achievementTitle_crime_completionist => 'Misdaad Completionist';
 
   @override
-  String get achievementDescription_crime_completionist =>
-      'Voltooi elk misdaadtype minstens één keer';
+  String get achievementDescription_crime_completionist => 'Voltooi elk misdaadtype minstens één keer';
 
   @override
   String get achievementTitle_job_first_shift => 'Eerste Shift';
 
   @override
-  String get achievementDescription_job_first_shift =>
-      'Voltooi je eerste job succesvol';
+  String get achievementDescription_job_first_shift => 'Voltooi je eerste job succesvol';
 
   @override
   String get achievementTitle_job_hustler => 'Werk Hustler';
@@ -5061,73 +4974,61 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementTitle_job_completionist => 'Werk Completionist';
 
   @override
-  String get achievementDescription_job_completionist =>
-      'Voltooi elk jobtype minstens één keer';
+  String get achievementDescription_job_completionist => 'Voltooi elk jobtype minstens één keer';
 
   @override
   String get achievementTitle_job_educated_worker => 'Opgeleide Werker';
 
   @override
-  String get achievementDescription_job_educated_worker =>
-      'Voltooi 1 job met opleidingseisen';
+  String get achievementDescription_job_educated_worker => 'Voltooi 1 job met opleidingseisen';
 
   @override
-  String get achievementTitle_job_certified_hustler =>
-      'Gecertificeerde Hustler';
+  String get achievementTitle_job_certified_hustler => 'Gecertificeerde Hustler';
 
   @override
-  String get achievementDescription_job_certified_hustler =>
-      'Voltooi 25 jobs met opleidingseisen';
+  String get achievementDescription_job_certified_hustler => 'Voltooi 25 jobs met opleidingseisen';
 
   @override
-  String get achievementTitle_job_education_completionist =>
-      'Educatie Job Completionist';
+  String get achievementTitle_job_education_completionist => 'Educatie Job Completionist';
 
   @override
-  String get achievementDescription_job_education_completionist =>
-      'Voltooi elk education-gated jobtype minstens één keer';
+  String get achievementDescription_job_education_completionist => 'Voltooi elk education-gated jobtype minstens één keer';
 
   @override
   String get achievementTitle_job_it_specialist => 'IT Specialist';
 
   @override
-  String get achievementDescription_job_it_specialist =>
-      'Voltooi je eerste shift als Programmeur';
+  String get achievementDescription_job_it_specialist => 'Voltooi je eerste shift als Programmeur';
 
   @override
   String get achievementTitle_job_lawyer => 'Straatadvocaat';
 
   @override
-  String get achievementDescription_job_lawyer =>
-      'Voltooi je eerste shift als Advocaat';
+  String get achievementDescription_job_lawyer => 'Voltooi je eerste shift als Advocaat';
 
   @override
   String get achievementTitle_job_doctor => 'Ondergrondse Dokter';
 
   @override
-  String get achievementDescription_job_doctor =>
-      'Voltooi je eerste shift als Dokter';
+  String get achievementDescription_job_doctor => 'Voltooi je eerste shift als Dokter';
 
   @override
   String get achievementTitle_school_certified => 'Gecertificeerde Student';
 
   @override
-  String get achievementDescription_school_certified =>
-      'Behaal 3 schoolcertificaten';
+  String get achievementDescription_school_certified => 'Behaal 3 schoolcertificaten';
 
   @override
   String get achievementTitle_school_multi_certified => 'Multi-Gecertificeerd';
 
   @override
-  String get achievementDescription_school_multi_certified =>
-      'Behaal 6 schoolcertificaten';
+  String get achievementDescription_school_multi_certified => 'Behaal 6 schoolcertificaten';
 
   @override
   String get achievementTitle_school_track_specialist => 'Track Specialist';
 
   @override
-  String get achievementDescription_school_track_specialist =>
-      'Max 3 school-tracks';
+  String get achievementDescription_school_track_specialist => 'Max 3 school-tracks';
 
   @override
   String get achievementTitle_school_freshman => 'School Freshman';
@@ -5151,8 +5052,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementTitle_school_mastermind => 'Academische Mastermind';
 
   @override
-  String get achievementDescription_school_mastermind =>
-      'Bereik schoollevel 10';
+  String get achievementDescription_school_mastermind => 'Bereik schoollevel 10';
 
   @override
   String get achievementTitle_school_doctorate => 'Straatdoctoraat';
@@ -5179,8 +5079,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementDescription_sea_raider => 'Steel 3 boten';
 
   @override
-  String get achievementTitle_captain_of_smugglers =>
-      'Kapitein van Smokkelaars';
+  String get achievementTitle_captain_of_smugglers => 'Kapitein van Smokkelaars';
 
   @override
   String get achievementDescription_captain_of_smugglers => 'Steel 12 boten';
@@ -5201,15 +5100,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementTitle_chemist_apprentice => 'Chemie Leerling';
 
   @override
-  String get achievementDescription_chemist_apprentice =>
-      'Voltooi 10 drugsproducties';
+  String get achievementDescription_chemist_apprentice => 'Voltooi 10 drugsproducties';
 
   @override
   String get achievementTitle_narco_chemist => 'Narco Chemicus';
 
   @override
-  String get achievementDescription_narco_chemist =>
-      'Voltooi 100 drugsproducties';
+  String get achievementDescription_narco_chemist => 'Voltooi 100 drugsproducties';
 
   @override
   String get achievementTitle_street_merchant => 'Straathandelaar';
@@ -5251,120 +5148,103 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementTitle_prostitute_empire_250 => 'Imperium 250';
 
   @override
-  String get achievementDescription_prostitute_empire_250 =>
-      'Recruit 250 hoeren';
+  String get achievementDescription_prostitute_empire_250 => 'Recruit 250 hoeren';
 
   @override
   String get achievementTitle_prostitute_cartel_500 => 'Cartel 500';
 
   @override
-  String get achievementDescription_prostitute_cartel_500 =>
-      'Recruit 500 hoeren';
+  String get achievementDescription_prostitute_cartel_500 => 'Recruit 500 hoeren';
 
   @override
   String get achievementTitle_prostitute_legend_1000 => 'Legende 1000';
 
   @override
-  String get achievementDescription_prostitute_legend_1000 =>
-      'Recruit 1000 hoeren';
+  String get achievementDescription_prostitute_legend_1000 => 'Recruit 1000 hoeren';
 
   @override
   String get achievementTitle_vip_prostitute_level_10 => 'VIP Beginner';
 
   @override
-  String get achievementDescription_vip_prostitute_level_10 =>
-      'Bereik level 3 met een VIP-hoer';
+  String get achievementDescription_vip_prostitute_level_10 => 'Bereik level 3 met een VIP-hoer';
 
   @override
   String get achievementTitle_vip_prostitute_level_25 => 'VIP Headliner';
 
   @override
-  String get achievementDescription_vip_prostitute_level_25 =>
-      'Bereik level 5 met een VIP-hoer';
+  String get achievementDescription_vip_prostitute_level_25 => 'Bereik level 5 met een VIP-hoer';
 
   @override
   String get achievementTitle_vip_prostitute_level_50 => 'VIP Icoon';
 
   @override
-  String get achievementDescription_vip_prostitute_level_50 =>
-      'Bereik level 7 met een VIP-hoer';
+  String get achievementDescription_vip_prostitute_level_50 => 'Bereik level 7 met een VIP-hoer';
 
   @override
   String get achievementTitle_vip_prostitute_level_100 => 'VIP Legende';
 
   @override
-  String get achievementDescription_vip_prostitute_level_100 =>
-      'Bereik level 10 met een VIP-hoer';
+  String get achievementDescription_vip_prostitute_level_100 => 'Bereik level 10 met een VIP-hoer';
 
   @override
   String get achievementTitle_nightclub_opening_night => 'Openingsnacht';
 
   @override
-  String get achievementDescription_nightclub_opening_night =>
-      'Open je eerste nightclub venue';
+  String get achievementDescription_nightclub_opening_night => 'Open je eerste nightclub venue';
 
   @override
   String get achievementTitle_nightclub_headliner => 'Headliner Booker';
 
   @override
-  String get achievementDescription_nightclub_headliner =>
-      'Boek 10 DJ-shifts voor je nightclub-imperium';
+  String get achievementDescription_nightclub_headliner => 'Boek 10 DJ-shifts voor je nightclub-imperium';
 
   @override
   String get achievementTitle_nightclub_full_house => 'Vol Huis';
 
   @override
-  String get achievementDescription_nightclub_full_house =>
-      'Breng een nightclub crowd naar 90% capaciteit';
+  String get achievementDescription_nightclub_full_house => 'Breng een nightclub crowd naar 90% capaciteit';
 
   @override
   String get achievementTitle_nightclub_cash_machine => 'Cash Machine';
 
   @override
-  String get achievementDescription_nightclub_cash_machine =>
-      'Verdien in totaal €250.000 nightclub-omzet';
+  String get achievementDescription_nightclub_cash_machine => 'Verdien in totaal €250.000 nightclub-omzet';
 
   @override
   String get achievementTitle_nightclub_empire => 'Nightlife Imperium';
 
   @override
-  String get achievementDescription_nightclub_empire =>
-      'Verdien in totaal €1.000.000 nightclub-omzet';
+  String get achievementDescription_nightclub_empire => 'Verdien in totaal €1.000.000 nightclub-omzet';
 
   @override
   String get achievementTitle_nightclub_staffing_boss => 'Staffing Boss';
 
   @override
-  String get achievementDescription_nightclub_staffing_boss =>
-      'Laat 3 actieve nightclub-crewmembers tegelijk draaien';
+  String get achievementDescription_nightclub_staffing_boss => 'Laat 3 actieve nightclub-crewmembers tegelijk draaien';
 
   @override
   String get achievementTitle_nightclub_vip_room => 'VIP Room';
 
   @override
-  String get achievementDescription_nightclub_vip_room =>
-      'Wijs 2 VIP-crewmembers toe aan je nightclub';
+  String get achievementDescription_nightclub_vip_room => 'Wijs 2 VIP-crewmembers toe aan je nightclub';
 
   @override
   String get achievementTitle_nightclub_head_of_security => 'Hoofd Beveiliging';
 
   @override
-  String get achievementDescription_nightclub_head_of_security =>
-      'Huur 10 beveiligingsshifts voor je nightclub';
+  String get achievementDescription_nightclub_head_of_security => 'Huur 10 beveiligingsshifts voor je nightclub';
 
   @override
   String get achievementTitle_nightclub_podium_finish => 'Podiumplek';
 
   @override
-  String get achievementDescription_nightclub_podium_finish =>
-      'Eindig in de top 3 van een wekelijkse nightclub-season';
+  String get achievementDescription_nightclub_podium_finish => 'Eindig in de top 3 van een wekelijkse nightclub-season';
 
   @override
   String get achievementTitle_nightclub_season_champion => 'Season Kampioen';
 
   @override
-  String get achievementDescription_nightclub_season_champion =>
-      'Win een wekelijkse nightclub-season';
+  String get achievementDescription_nightclub_season_champion => 'Win een wekelijkse nightclub-season';
 
   @override
   String get nightclubManagementTitle => 'Nachtclub Beheer';
@@ -5379,8 +5259,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubEmptyTitle => 'Nog geen nachtclub gevonden';
 
   @override
-  String get nightclubEmptyBody =>
-      'Koop eerst een nachtclub in Eigendommen om dit systeem te activeren.';
+  String get nightclubEmptyBody => 'Koop eerst een nachtclub in Eigendommen om dit systeem te activeren.';
 
   @override
   String get nightclubLocationTitle => 'Nachtclub Locatie';
@@ -5508,15 +5387,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String nightclubStaffBoostMix(
-    String sales,
-    String price,
-    String vibe,
-    String security,
-    String vipPlayer,
-    String vipStaff,
-    String vipAssigned,
-  ) {
+  String nightclubStaffBoostMix(String sales, String price, String vibe, String security, String vipPlayer, String vipStaff, String vipAssigned) {
     return 'Boost mix: sales x$sales | prijs x$price | vibe x$vibe | security x$security | vip speler x$vipPlayer | vip dames x$vipStaff ($vipAssigned)';
   }
 
@@ -5536,8 +5407,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get nightclubNoCrewAssigned => 'Nog geen crew toegewezen';
 
   @override
-  String get nightclubCrewBoostDescription =>
-      'Verhoogt vraag en marge in je club';
+  String get nightclubCrewBoostDescription => 'Verhoogt vraag en marge in je club';
 
   @override
   String get nightclubRemove => 'Verwijder';
@@ -5669,19 +5539,16 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get theftCooldownRedeemNotAvailable =>
-      'Versnellen met credits is nu niet beschikbaar voor deze cooldown.';
+  String get theftCooldownRedeemNotAvailable => 'Versnellen met credits is nu niet beschikbaar voor deze cooldown.';
 
   @override
-  String get theftCooldownRedeemNoActiveCooldown =>
-      'Geen actieve stelen-cooldown om te resetten.';
+  String get theftCooldownRedeemNoActiveCooldown => 'Geen actieve stelen-cooldown om te resetten.';
 
   @override
   String get theftCooldownRedeemInsufficientCredits => 'Onvoldoende credits.';
 
   @override
-  String get theftCooldownRedeemFailed =>
-      'Kon credits niet toepassen op de cooldown.';
+  String get theftCooldownRedeemFailed => 'Kon credits niet toepassen op de cooldown.';
 
   @override
   String get theftCooldownRedeemSuccess => 'Cooldown beëindigd.';
@@ -5690,8 +5557,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsTheftCooldownConfirmTitle => 'Stelen-cooldown (credits)';
 
   @override
-  String get settingsTheftCooldownConfirmSubtitle =>
-      'Vraag bevestiging voordat je credits uitgeeft om de voertuigdiefstal-cooldown over te slaan. Zet uit om in één tik te verzilveren (bliksem naast de timer).';
+  String get settingsTheftCooldownConfirmSubtitle => 'Vraag bevestiging voordat je credits uitgeeft om de voertuigdiefstal-cooldown over te slaan. Zet uit om in één tik te verzilveren (bliksem naast de timer).';
 
   @override
   String get supportTicketsScreenTitle => 'Supporttickets';
@@ -5706,8 +5572,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportPickImageFailed => 'Afbeelding kiezen mislukt';
 
   @override
-  String get supportSubjectMessageMinLength =>
-      'Vul onderwerp en bericht in (min. 3 tekens).';
+  String get supportSubjectMessageMinLength => 'Vul onderwerp en bericht in (min. 3 tekens).';
 
   @override
   String get supportTicketCreated => 'Ticket aangemaakt.';
@@ -5725,8 +5590,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportDeleteTicketTitle => 'Ticket verwijderen';
 
   @override
-  String get supportDeleteTicketBody =>
-      'Weet je zeker dat je dit ticket wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.';
+  String get supportDeleteTicketBody => 'Weet je zeker dat je dit ticket wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.';
 
   @override
   String get supportTicketDeleted => 'Ticket verwijderd.';
@@ -5816,16 +5680,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportMyTickets => 'Mijn tickets';
 
   @override
-  String get supportMyTicketsIntro =>
-      'Support reageert voortaan rechtstreeks in dit scherm. Je kunt optioneel nog wel een pushmelding krijgen als er een update op je ticket is.';
+  String get supportMyTicketsIntro => 'Support reageert voortaan rechtstreeks in dit scherm. Je kunt optioneel nog wel een pushmelding krijgen als er een update op je ticket is.';
 
   @override
-  String get supportNoTicketsYet =>
-      'Je hebt nog geen tickets. Maak hieronder een nieuwe melding aan.';
+  String get supportNoTicketsYet => 'Je hebt nog geen tickets. Maak hieronder een nieuwe melding aan.';
 
   @override
-  String get supportSelectTicketPrompt =>
-      'Selecteer een ticket om het gesprek te openen.';
+  String get supportSelectTicketPrompt => 'Selecteer een ticket om het gesprek te openen.';
 
   @override
   String get supportConversation => 'Gesprek';
@@ -5840,8 +5701,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportReplyToTicket => 'Reageer op dit ticket';
 
   @override
-  String get supportReplyFieldHint =>
-      'Gebruik dit veld als support meer informatie vraagt of als je een update wilt doorgeven. Inbox en push blijven alleen meldingen van nieuwe supportreacties.';
+  String get supportReplyFieldHint => 'Gebruik dit veld als support meer informatie vraagt of als je een update wilt doorgeven. Inbox en push blijven alleen meldingen van nieuwe supportreacties.';
 
   @override
   String get supportYourReply => 'Jouw reactie';
@@ -5853,8 +5713,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportNewTicket => 'Nieuw ticket';
 
   @override
-  String get supportNewTicketIntro =>
-      'Maak hier een nieuwe melding aan. Support kan daarna antwoorden via inbox/push en in dit scherm, zodat je het gesprek op 1 plek kunt voortzetten.';
+  String get supportNewTicketIntro => 'Maak hier een nieuwe melding aan. Support kan daarna antwoorden via inbox/push en in dit scherm, zodat je het gesprek op 1 plek kunt voortzetten.';
 
   @override
   String get supportTicketReceivedBanner => 'Ticket ontvangen';
@@ -5865,8 +5724,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get supportTicketReceivedDetail =>
-      'Het ticket staat nu direct bovenin je lijst. Nieuwe supportreacties komen ook als inboxbericht en pushmelding binnen.';
+  String get supportTicketReceivedDetail => 'Het ticket staat nu direct bovenin je lijst. Nieuwe supportreacties komen ook als inboxbericht en pushmelding binnen.';
 
   @override
   String get supportFieldCategory => 'Categorie';
@@ -5884,8 +5742,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportReferenceOptional => 'Referentie (optioneel)';
 
   @override
-  String get supportReferenceHint =>
-      'Bijv. order-id, schermnaam, land of korte context';
+  String get supportReferenceHint => 'Bijv. order-id, schermnaam, land of korte context';
 
   @override
   String get supportAddScreenshot => 'Screenshot toevoegen';
@@ -6014,40 +5871,34 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gameEventStatusDraft => 'Concept';
 
   @override
-  String get gameEventTmplWeeklyVehicleTheftHuntTitle =>
-      'Wekelijkse Diefstaljacht';
+  String get gameEventTmplWeeklyVehicleTheftHuntTitle => 'Wekelijkse Diefstaljacht';
 
   @override
-  String get gameEventTmplWeeklyVehicleTheftHuntDesc =>
-      'Steel zoveel mogelijk voertuigen tijdens het eventvenster.';
+  String get gameEventTmplWeeklyVehicleTheftHuntDesc => 'Steel zoveel mogelijk voertuigen tijdens het eventvenster.';
 
   @override
   String get gameEventTmplSmugglingSurgeTitle => 'Smokkelgolf';
 
   @override
-  String get gameEventTmplSmugglingSurgeDesc =>
-      'Beweeg zoveel mogelijk smokkel in deze ronde.';
+  String get gameEventTmplSmugglingSurgeDesc => 'Beweeg zoveel mogelijk smokkel in deze ronde.';
 
   @override
   String get gameEventTmplLabOutputChallengeTitle => 'Lab-output Uitdaging';
 
   @override
-  String get gameEventTmplLabOutputChallengeDesc =>
-      'Produceer de meeste productie tijdens het event.';
+  String get gameEventTmplLabOutputChallengeDesc => 'Produceer de meeste productie tijdens het event.';
 
   @override
   String get gameEventTmplStreetCrimeSpreeTitle => 'Straat Crime Spree';
 
   @override
-  String get gameEventTmplStreetCrimeSpreeDesc =>
-      'Pleg zoveel mogelijk misdaden in het actieve venster.';
+  String get gameEventTmplStreetCrimeSpreeDesc => 'Pleg zoveel mogelijk misdaden in het actieve venster.';
 
   @override
   String get gameScreenLoadError => 'Events konden niet geladen worden.';
 
   @override
-  String get gameScreenDetailsLoadError =>
-      'Eventdetails konden niet geladen worden.';
+  String get gameScreenDetailsLoadError => 'Eventdetails konden niet geladen worden.';
 
   @override
   String get gameScreenSectionLive => 'Live events';
@@ -6139,21 +5990,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get evStreamAuthLogin => 'Welkom terug.';
 
   @override
-  String evStreamCrimeSuccess(
-    String crimeName,
-    String reward,
-    String xpGained,
-  ) {
+  String evStreamCrimeSuccess(String crimeName, String reward, String xpGained) {
     return 'Succesvol $crimeName gepleegd! +EUR $reward, +$xpGained XP';
   }
 
   @override
-  String evStreamCrimeSuccessJailed(
-    String crimeName,
-    String reward,
-    String xpGained,
-    int minutes,
-  ) {
+  String evStreamCrimeSuccessJailed(String crimeName, String reward, String xpGained, int minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
@@ -6164,19 +6006,13 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get evStreamCrimeSeizedVehicle =>
-      ' Je voertuig is in beslag genomen door de politie.';
+  String get evStreamCrimeSeizedVehicle => ' Je voertuig is in beslag genomen door de politie.';
 
   @override
-  String get evStreamCrimeSeizedWeapon =>
-      ' Je wapen is in beslag genomen door de politie.';
+  String get evStreamCrimeSeizedWeapon => ' Je wapen is in beslag genomen door de politie.';
 
   @override
-  String evStreamCrimeSuccessCleared(
-    String crimeName,
-    int count,
-    String xpGained,
-  ) {
+  String evStreamCrimeSuccessCleared(String crimeName, int count, String xpGained) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -6291,12 +6127,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String evStreamCryptoSell(
-    String quantity,
-    String symbol,
-    String total,
-    String pnl,
-  ) {
+  String evStreamCryptoSell(String quantity, String symbol, String total, String pnl) {
     return 'Verkocht $quantity $symbol voor €$total (resultaat €$pnl)';
   }
 
@@ -6306,22 +6137,12 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String evStreamCryptoOrderFilled(
-    String order,
-    String side,
-    String quantity,
-    String symbol,
-    String price,
-  ) {
+  String evStreamCryptoOrderFilled(String order, String side, String quantity, String symbol, String price) {
     return '$order $side uitgevoerd: $quantity $symbol op €$price';
   }
 
   @override
-  String evStreamCryptoOrderTriggered(
-    String trig,
-    String symbol,
-    String price,
-  ) {
+  String evStreamCryptoOrderTriggered(String trig, String symbol, String price) {
     return '$trig geactiveerd voor $symbol op €$price';
   }
 
@@ -6438,8 +6259,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get evStreamErrInsufficientFunds => 'Onvoldoende geld';
 
   @override
-  String get evStreamErrInsufficientHealth =>
-      'Onvoldoende gezondheid voor deze actie';
+  String get evStreamErrInsufficientHealth => 'Onvoldoende gezondheid voor deze actie';
 
   @override
   String evStreamErrInsufficientRank(String rank) {
@@ -6458,8 +6278,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get evStreamErrNoHealthDefault =>
-      'Je moet rusten en gezondheid herstellen';
+  String get evStreamErrNoHealthDefault => 'Je moet rusten en gezondheid herstellen';
 
   @override
   String evStreamErrCooldown(int seconds) {
@@ -6473,8 +6292,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get evStreamErrRescuerJailed =>
-      'Je kunt anderen niet bevrijden in de cel';
+  String get evStreamErrRescuerJailed => 'Je kunt anderen niet bevrijden in de cel';
 
   @override
   String get evStreamErrTargetNotJailed => 'Deze speler zit niet in de cel';
@@ -6486,8 +6304,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get evStreamJailbreakOk => 'Uitbraak geslaagd! De speler is vrij.';
 
   @override
-  String get evStreamJailbreakFail =>
-      'Uitbraak mislukt! De speler zit nog in de cel.';
+  String get evStreamJailbreakFail => 'Uitbraak mislukt! De speler zit nog in de cel.';
 
   @override
   String evStreamJailbreakCaught(String mins) {
@@ -6533,19 +6350,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeWeaponSectionTitle => 'Crime-wapen';
 
   @override
-  String get crimeWeaponInstruction =>
-      'Kies hier welk gedragen wapen je standaard gebruikt voor crimes die een wapen vereisen.';
+  String get crimeWeaponInstruction => 'Kies hier welk gedragen wapen je standaard gebruikt voor crimes die een wapen vereisen.';
 
   @override
-  String get crimeWeaponEmptyInventoryHelp =>
-      'Koop of verplaats eerst een bruikbaar wapen naar je carried inventory.';
+  String get crimeWeaponEmptyInventoryHelp => 'Koop of verplaats eerst een bruikbaar wapen naar je carried inventory.';
 
   @override
   String get crimeWeaponSelectHint => 'Selecteer een wapen voor crimes';
 
   @override
-  String get crimeWeaponNoSelectionNote =>
-      'Zonder selectie starten gewapende crimes niet.';
+  String get crimeWeaponNoSelectionNote => 'Zonder selectie starten gewapende crimes niet.';
 
   @override
   String crimeWeaponSelectedStatus(String weaponLine) {
@@ -6556,16 +6370,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeSetWeaponFailed => 'Instellen van crime-wapen mislukt.';
 
   @override
-  String get crimeChooseWeaponBeforeCommit =>
-      'Kies eerst een crime-wapen bovenaan dit scherm of via Inventaris.';
+  String get crimeChooseWeaponBeforeCommit => 'Kies eerst een crime-wapen bovenaan dit scherm of via Inventaris.';
 
   @override
-  String get crimeWeaponFooterNote =>
-      'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.';
+  String get crimeWeaponFooterNote => 'Gewapende crimes gebruiken het geselecteerde crime-wapen hierboven.';
 
   @override
-  String get crimeCriminalRecordWipeDesc =>
-      'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
+  String get crimeCriminalRecordWipeDesc => 'Verval dossiers en wis je volledige strafblad als de operatie slaagt.';
 
   @override
   String crimeCardSuccessChance(int percent) {
@@ -6576,8 +6387,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get cooldownTimeLeft => 'Resterende tijd';
 
   @override
-  String get cooldownMustWaitExplanation =>
-      'Je moet wachten voordat je deze actie opnieuw kunt uitvoeren.';
+  String get cooldownMustWaitExplanation => 'Je moet wachten voordat je deze actie opnieuw kunt uitvoeren.';
 
   @override
   String get cooldownAlreadyFinished => 'Cooldown is al klaar.';

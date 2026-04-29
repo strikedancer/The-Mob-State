@@ -4,6 +4,7 @@ import '../services/prostitution_service.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/country_helper.dart';
 
 class RedLightDistrictDetailScreen extends StatefulWidget {
   final int districtId;
@@ -53,8 +54,12 @@ class _RedLightDistrictDetailScreenState
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(context, 
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(l10n.error(e.toString())),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -140,32 +145,6 @@ class _RedLightDistrictDetailScreenState
     }
   }
 
-  String _getCountryName(String code) {
-    final countries = {
-      'NL': 'Nederland',
-      'BE': 'België',
-      'DE': 'Duitsland',
-      'FR': 'Frankrijk',
-      'IT': 'Italië',
-      'ES': 'Spanje',
-      'PT': 'Portugal',
-      'GB': 'Verenigd Koninkrijk',
-      'IE': 'Ierland',
-      'LU': 'Luxemburg',
-      'CH': 'Zwitserland',
-      'AT': 'Oostenrijk',
-      'DK': 'Denemarken',
-      'SE': 'Zweden',
-      'NO': 'Noorwegen',
-      'FI': 'Finland',
-      'PL': 'Polen',
-      'CZ': 'Tsjechië',
-      'GR': 'Griekenland',
-      'TR': 'Turkije',
-    };
-    return countries[code] ?? code;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -225,6 +204,10 @@ class _RedLightDistrictDetailScreenState
     }
 
     final district = _district!;
+    final countryLabel = CountryHelper.getLocalizedCountryName(
+      district.countryCode,
+      l10n,
+    );
 
     final content = RefreshIndicator(
       onRefresh: _loadData,
@@ -236,7 +219,7 @@ class _RedLightDistrictDetailScreenState
           children: [
             // District Name
             Text(
-              _getCountryName(district.countryCode),
+              countryLabel,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 16),
@@ -251,7 +234,7 @@ class _RedLightDistrictDetailScreenState
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(l10n.prostitutionMyDistricts),
-                        Text(_getCountryName(district.countryCode)),
+                        Text(countryLabel),
                       ],
                     ),
                   ],
@@ -327,7 +310,7 @@ class _RedLightDistrictDetailScreenState
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    _getCountryName(district.countryCode),
+                    countryLabel,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
@@ -340,7 +323,7 @@ class _RedLightDistrictDetailScreenState
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(_getCountryName(district.countryCode))),
+      appBar: AppBar(title: Text(l10n.prostitutionRldAppBarTitle(countryLabel))),
       body: content,
     );
   }

@@ -1921,6 +1921,20 @@
   "countryAustralia": "Australia",
   "countrySouthAfrica": "South Africa",
   "countryCanada": "Canada",
+  "countryPortugal": "Portugal",
+  "countryIreland": "Ireland",
+  "countryLuxembourg": "Luxembourg",
+  "countryAustria": "Austria",
+  "countryDenmark": "Denmark",
+  "countrySweden": "Sweden",
+  "countryNorway": "Norway",
+  "countryFinland": "Finland",
+  "countryPoland": "Poland",
+  "countryCzechia": "Czechia",
+  "countryGreece": "Greece",
+  "countryTurkey": "Turkey",
+  "countryUae": "United Arab Emirates",
+  "countryDubai": "Dubai",
   "toolBoltCutter": "Bolt Cutter",
   "toolCarTheftTools": "Car Theft Tools",
   "toolBurglaryKit": "Burglary Kit",
@@ -2135,6 +2149,21 @@
   "prostitutionPurchaseFailed": "Purchase failed",
   "prostitutionDistrictManagement": "District Management",
   "prostitutionDistrictNotFound": "District not found",
+  "prostitutionDistrictOwnedBadge": "Owned",
+  "prostitutionOwnerLabel": "Owner:",
+  "prostitutionForSale": "For sale",
+  "prostitutionRoomsLabel": "Rooms:",
+  "prostitutionRoomsRented": "rented",
+  "prostitutionRldAppBarTitle": "Red Light District ({country})",
+  "@prostitutionRldAppBarTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionOccupiedShort": "Occupied",
+  "prostitutionNotApplicable": "N/A",
   "back": "Back",
   "prostitutionMoveToStreetConfirm": "Are you sure you want to move {name} from the Red Light District to the street?",
   "@prostitutionMoveToStreetConfirm": {

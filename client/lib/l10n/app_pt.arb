@@ -3747,5 +3747,34 @@
   },
   "toolsBadgeInventoryFull": "FULL",
   "toolsBadgeBroken": "BROKEN",
-  "toolsBadgeRepair": "REPAIR"
+  "toolsBadgeRepair": "REPAIR",
+  "countryPortugal": "Portugal",
+  "countryIreland": "Ireland",
+  "countryLuxembourg": "Luxembourg",
+  "countryAustria": "Austria",
+  "countryDenmark": "Denmark",
+  "countrySweden": "Sweden",
+  "countryNorway": "Norway",
+  "countryFinland": "Finland",
+  "countryPoland": "Poland",
+  "countryCzechia": "Czechia",
+  "countryGreece": "Greece",
+  "countryTurkey": "Turkey",
+  "countryUae": "United Arab Emirates",
+  "countryDubai": "Dubai",
+  "prostitutionDistrictOwnedBadge": "Owned",
+  "prostitutionOwnerLabel": "Owner:",
+  "prostitutionForSale": "For sale",
+  "prostitutionRoomsLabel": "Rooms:",
+  "prostitutionRoomsRented": "rented",
+  "prostitutionRldAppBarTitle": "Red Light District ({country})",
+  "@prostitutionRldAppBarTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionOccupiedShort": "Occupied",
+  "prostitutionNotApplicable": "N/A"
 }

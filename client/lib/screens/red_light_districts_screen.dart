@@ -8,6 +8,7 @@ import 'player_profile_screen.dart';
 
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/country_helper.dart';
 
 class RedLightDistrictsScreen extends StatefulWidget {
   final bool embedded;
@@ -91,11 +92,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-        ),
+        title: Text(l10n.confirmAction),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +104,10 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
             const SizedBox(height: 8),
             Text(
               l10n.prostitutionPurchaseConfirmMessage(
-                district.countryCode,
+                CountryHelper.getLocalizedCountryName(
+                  district.countryCode,
+                  l10n,
+                ),
                 district.purchasePrice,
               ),
             ),
@@ -173,32 +173,6 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
     }
   }
 
-  String _getCountryName(String countryCode) {
-    final names = {
-      'netherlands': 'Nederland',
-      'belgium': 'België',
-      'germany': 'Duitsland',
-      'france': 'Frankrijk',
-      'spain': 'Spanje',
-      'italy': 'Italië',
-      'uk': 'Verenigd Koninkrijk',
-      'usa': 'Verenigde Staten',
-      'mexico': 'Mexico',
-      'colombia': 'Colombia',
-      'brazil': 'Brazilië',
-      'argentina': 'Argentinië',
-      'russia': 'Rusland',
-      'turkey': 'Turkije',
-      'thailand': 'Thailand',
-      'japan': 'Japan',
-      'china': 'China',
-      'australia': 'Australië',
-      'southafrica': 'Zuid-Afrika',
-      'dubai': 'Dubai',
-    };
-    return names[countryCode] ?? countryCode;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -241,8 +215,11 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
     // Dynamic title based on active tab
     String title = l10n.prostitutionRedLightDistricts;
     if (_tabController.index == 0 && _currentCountryDistrict != null) {
-      final countryName = _getCountryName(_currentCountryDistrict!.countryCode);
-      title = 'Red Light District ($countryName)';
+      final countryName = CountryHelper.getLocalizedCountryName(
+        _currentCountryDistrict!.countryCode,
+        l10n,
+      );
+      title = l10n.prostitutionRldAppBarTitle(countryName);
     }
 
     return Scaffold(
@@ -318,7 +295,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                       child: Text(
                         isAvailable
                             ? l10n.prostitutionAvailable
-                            : 'In eigendom',
+                            : l10n.prostitutionDistrictOwnedBadge,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -347,7 +324,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                         Icon(Icons.person, color: Colors.purple, size: 20),
                         const SizedBox(width: 8),
                         Text(
-                          'Eigenaar:',
+                          l10n.prostitutionOwnerLabel,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -367,8 +344,10 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                             child: Text(
                               district.owner != null
                                   ? (district.owner!['username'] as String? ??
-                                        'Onbekend')
-                                  : (isAvailable ? 'Te koop' : 'Onbekend'),
+                                        l10n.unknown)
+                                  : (isAvailable
+                                        ? l10n.prostitutionForSale
+                                        : l10n.unknown),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -389,7 +368,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                         Icon(Icons.meeting_room, color: Colors.blue, size: 20),
                         const SizedBox(width: 8),
                         Text(
-                          'Kamers:',
+                          l10n.prostitutionRoomsLabel,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -398,7 +377,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '${hasStats ? district.stats!.occupiedRooms : 'N/B'} / 3.000.000',
+                          '${hasStats ? district.stats!.occupiedRooms : l10n.prostitutionNotApplicable} / 3.000.000',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -406,7 +385,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          'verhuurd',
+                          l10n.prostitutionRoomsRented,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -538,7 +517,10 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _getCountryName(district.countryCode),
+                    CountryHelper.getLocalizedCountryName(
+                      district.countryCode,
+                      l10n,
+                    ),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -563,7 +545,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                       ),
                     ),
                     Text(
-                      'Bezet',
+                      l10n.prostitutionOccupiedShort,
                       style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       overflow: TextOverflow.ellipsis,
                     ),

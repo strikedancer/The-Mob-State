@@ -68,8 +68,7 @@ import 'app_localizations_pt.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -77,8 +76,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -90,13 +88,12 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
@@ -107,7 +104,7 @@ abstract class AppLocalizations {
     Locale('it'),
     Locale('nl'),
     Locale('pl'),
-    Locale('pt'),
+    Locale('pt')
   ];
 
   /// The title of the application
@@ -6746,6 +6743,90 @@ abstract class AppLocalizations {
   /// **'Canada'**
   String get countryCanada;
 
+  /// No description provided for @countryPortugal.
+  ///
+  /// In en, this message translates to:
+  /// **'Portugal'**
+  String get countryPortugal;
+
+  /// No description provided for @countryIreland.
+  ///
+  /// In en, this message translates to:
+  /// **'Ireland'**
+  String get countryIreland;
+
+  /// No description provided for @countryLuxembourg.
+  ///
+  /// In en, this message translates to:
+  /// **'Luxembourg'**
+  String get countryLuxembourg;
+
+  /// No description provided for @countryAustria.
+  ///
+  /// In en, this message translates to:
+  /// **'Austria'**
+  String get countryAustria;
+
+  /// No description provided for @countryDenmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Denmark'**
+  String get countryDenmark;
+
+  /// No description provided for @countrySweden.
+  ///
+  /// In en, this message translates to:
+  /// **'Sweden'**
+  String get countrySweden;
+
+  /// No description provided for @countryNorway.
+  ///
+  /// In en, this message translates to:
+  /// **'Norway'**
+  String get countryNorway;
+
+  /// No description provided for @countryFinland.
+  ///
+  /// In en, this message translates to:
+  /// **'Finland'**
+  String get countryFinland;
+
+  /// No description provided for @countryPoland.
+  ///
+  /// In en, this message translates to:
+  /// **'Poland'**
+  String get countryPoland;
+
+  /// No description provided for @countryCzechia.
+  ///
+  /// In en, this message translates to:
+  /// **'Czechia'**
+  String get countryCzechia;
+
+  /// No description provided for @countryGreece.
+  ///
+  /// In en, this message translates to:
+  /// **'Greece'**
+  String get countryGreece;
+
+  /// No description provided for @countryTurkey.
+  ///
+  /// In en, this message translates to:
+  /// **'Turkey'**
+  String get countryTurkey;
+
+  /// No description provided for @countryUae.
+  ///
+  /// In en, this message translates to:
+  /// **'United Arab Emirates'**
+  String get countryUae;
+
+  /// No description provided for @countryDubai.
+  ///
+  /// In en, this message translates to:
+  /// **'Dubai'**
+  String get countryDubai;
+
   /// No description provided for @toolBoltCutter.
   ///
   /// In en, this message translates to:
@@ -7573,6 +7654,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'District not found'**
   String get prostitutionDistrictNotFound;
+
+  /// No description provided for @prostitutionDistrictOwnedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned'**
+  String get prostitutionDistrictOwnedBadge;
+
+  /// No description provided for @prostitutionOwnerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner:'**
+  String get prostitutionOwnerLabel;
+
+  /// No description provided for @prostitutionForSale.
+  ///
+  /// In en, this message translates to:
+  /// **'For sale'**
+  String get prostitutionForSale;
+
+  /// No description provided for @prostitutionRoomsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooms:'**
+  String get prostitutionRoomsLabel;
+
+  /// No description provided for @prostitutionRoomsRented.
+  ///
+  /// In en, this message translates to:
+  /// **'rented'**
+  String get prostitutionRoomsRented;
+
+  /// No description provided for @prostitutionRldAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Red Light District ({country})'**
+  String prostitutionRldAppBarTitle(String country);
+
+  /// No description provided for @prostitutionOccupiedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupied'**
+  String get prostitutionOccupiedShort;
+
+  /// No description provided for @prostitutionNotApplicable.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get prostitutionNotApplicable;
 
   /// No description provided for @back.
   ///
@@ -8430,11 +8559,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{trackName} level {requiredLevel} required · Current {currentLevel}'**
-  String educationRequirementTrackLevelProgress(
-    String trackName,
-    int requiredLevel,
-    int currentLevel,
-  );
+  String educationRequirementTrackLevelProgress(String trackName, int requiredLevel, int currentLevel);
 
   /// No description provided for @educationRequirementCertificationTitle.
   ///
@@ -10114,15 +10239,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Boost mix: sales x{sales} | price x{price} | vibe x{vibe} | security x{security} | vip player x{vipPlayer} | vip staff x{vipStaff} ({vipAssigned})'**
-  String nightclubStaffBoostMix(
-    String sales,
-    String price,
-    String vibe,
-    String security,
-    String vipPlayer,
-    String vipStaff,
-    String vipAssigned,
-  );
+  String nightclubStaffBoostMix(String sales, String price, String vibe, String security, String vipPlayer, String vipStaff, String vipAssigned);
 
   /// No description provided for @nightclubSelectCrewMember.
   ///
@@ -11262,12 +11379,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP — but caught! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.'**
-  String evStreamCrimeSuccessJailed(
-    String crimeName,
-    String reward,
-    String xpGained,
-    int minutes,
-  );
+  String evStreamCrimeSuccessJailed(String crimeName, String reward, String xpGained, int minutes);
 
   /// No description provided for @evStreamCrimeSeizedVehicle.
   ///
@@ -11285,11 +11397,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Successfully completed {crimeName}! Criminal record cleared: {count, plural, one{1 conviction} other{{count} convictions}} removed. +{xpGained} XP'**
-  String evStreamCrimeSuccessCleared(
-    String crimeName,
-    int count,
-    String xpGained,
-  );
+  String evStreamCrimeSuccessCleared(String crimeName, int count, String xpGained);
 
   /// No description provided for @evStreamCrimeFailedArrested.
   ///
@@ -11403,12 +11511,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Sold {quantity} {symbol} for €{total} (P&L €{pnl})'**
-  String evStreamCryptoSell(
-    String quantity,
-    String symbol,
-    String total,
-    String pnl,
-  );
+  String evStreamCryptoSell(String quantity, String symbol, String total, String pnl);
 
   /// No description provided for @evStreamCryptoAlert.
   ///
@@ -11420,13 +11523,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{order} {side} filled: {quantity} {symbol} at €{price}'**
-  String evStreamCryptoOrderFilled(
-    String order,
-    String side,
-    String quantity,
-    String symbol,
-    String price,
-  );
+  String evStreamCryptoOrderFilled(String order, String side, String quantity, String symbol, String price);
 
   /// No description provided for @evStreamCryptoOrderTriggered.
   ///
@@ -12011,8 +12108,7 @@ abstract class AppLocalizations {
   String get crimeOutcomeDefaultTitle;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -12021,46 +12117,31 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) => <String>[
-    'de',
-    'en',
-    'es',
-    'fr',
-    'it',
-    'nl',
-    'pl',
-    'pt',
-  ].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'es', 'fr', 'it', 'nl', 'pl', 'pt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'de':
-      return AppLocalizationsDe();
-    case 'en':
-      return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
-    case 'fr':
-      return AppLocalizationsFr();
-    case 'it':
-      return AppLocalizationsIt();
-    case 'nl':
-      return AppLocalizationsNl();
-    case 'pl':
-      return AppLocalizationsPl();
-    case 'pt':
-      return AppLocalizationsPt();
+    case 'de': return AppLocalizationsDe();
+    case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
+    case 'fr': return AppLocalizationsFr();
+    case 'it': return AppLocalizationsIt();
+    case 'nl': return AppLocalizationsNl();
+    case 'pl': return AppLocalizationsPl();
+    case 'pt': return AppLocalizationsPt();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

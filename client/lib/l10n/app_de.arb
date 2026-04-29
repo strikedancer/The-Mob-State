@@ -3747,5 +3747,34 @@
   },
   "toolsBadgeInventoryFull": "FULL",
   "toolsBadgeBroken": "BROKEN",
-  "toolsBadgeRepair": "REPAIR"
+  "toolsBadgeRepair": "REPAIR",
+  "countryPortugal": "Portugal",
+  "countryIreland": "Irland",
+  "countryLuxembourg": "Luxemburg",
+  "countryAustria": "Österreich",
+  "countryDenmark": "Dänemark",
+  "countrySweden": "Schweden",
+  "countryNorway": "Norwegen",
+  "countryFinland": "Finnland",
+  "countryPoland": "Polen",
+  "countryCzechia": "Tschechien",
+  "countryGreece": "Griechenland",
+  "countryTurkey": "Türkei",
+  "countryUae": "Vereinigte Arabische Emirate",
+  "countryDubai": "Dubai",
+  "prostitutionDistrictOwnedBadge": "Im Besitz",
+  "prostitutionOwnerLabel": "Eigentümer:",
+  "prostitutionForSale": "Zu verkaufen",
+  "prostitutionRoomsLabel": "Zimmer:",
+  "prostitutionRoomsRented": "vermietet",
+  "prostitutionRldAppBarTitle": "Rotlichtviertel ({country})",
+  "@prostitutionRldAppBarTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "prostitutionOccupiedShort": "Belegt",
+  "prostitutionNotApplicable": "k. A."
 }
