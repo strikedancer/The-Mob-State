@@ -99,7 +99,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get dashboardTimeouts => 'Timeouts';
+  String get dashboardTimeouts => 'Timers';
 
   @override
   String get dashboardTimeoutCrime => 'Misdaad';
@@ -941,19 +941,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get cash => 'Cash';
 
   @override
-  String get sessionRecap => 'Session recap';
+  String get sessionRecap => 'Sessie-overzicht';
 
   @override
-  String get nameLabel => 'Name';
+  String get nameLabel => 'Naam';
 
   @override
-  String get countryLabel => 'Country';
+  String get countryLabel => 'Land';
 
   @override
   String get wantedLevel => 'Gezocht Niveau';
 
   @override
-  String get fbiHeat => 'FBI Heat';
+  String get fbiHeat => 'FBI-heat';
 
   @override
   String get properties => 'Eigendommen';
@@ -962,82 +962,82 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicles => 'Voertuigen';
 
   @override
-  String get netWorth => 'Net worth';
+  String get netWorth => 'Netto waarde';
 
   @override
-  String get securityLabel => 'Security';
+  String get securityLabel => 'Beveiliging';
 
   @override
-  String get noSecurity => 'No security';
+  String get noSecurity => 'Geen beveiliging';
 
   @override
-  String get weaponLabel => 'Weapon';
+  String get weaponLabel => 'Wapen';
 
   @override
-  String get vehicleLabel => 'Vehicle';
+  String get vehicleLabel => 'Voertuig';
 
   @override
-  String get none => 'None';
+  String get none => 'Geen';
 
   @override
-  String get statistics => 'Statistics';
+  String get statistics => 'Statistieken';
 
   @override
-  String get breakouts => 'Breakouts';
+  String get breakouts => 'Uitbraken';
 
   @override
-  String get murders => 'Murders';
+  String get murders => 'Moorden';
 
   @override
-  String get hitlistContracts => 'Hitlist contracts';
+  String get hitlistContracts => 'Hitlist-contracten';
 
   @override
-  String get carsStolen => 'Cars stolen';
+  String get carsStolen => 'Auto\'s gestolen';
 
   @override
-  String get boatsStolen => 'Boats stolen';
+  String get boatsStolen => 'Boten gestolen';
 
   @override
-  String get crimeAttempts => 'Crime attempts';
+  String get crimeAttempts => 'Misdaadpogingen';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Geslaagd';
 
   @override
-  String get jobAttempts => 'Job attempts';
+  String get jobAttempts => 'Werkpogingen';
 
   @override
-  String get streetProstitutes => 'Street prostitutes';
+  String get streetProstitutes => 'Straatprostituees';
 
   @override
-  String get rldProstitutes => 'RLD prostitutes';
+  String get rldProstitutes => 'RLD-prostituees';
 
   @override
-  String get travels => 'Travels';
+  String get travels => 'Reizen';
 
   @override
-  String get bullets => 'Bullets';
+  String get bullets => 'Kogels';
 
   @override
-  String get moneyStatusLabel => 'Money status';
+  String get moneyStatusLabel => 'Geldstatus';
 
   @override
-  String get moneyStatusPoor => 'Poor';
+  String get moneyStatusPoor => 'Arm';
 
   @override
-  String get moneyStatusRising => 'Rising';
+  String get moneyStatusRising => 'Stijgend';
 
   @override
-  String get moneyStatusRich => 'Rich';
+  String get moneyStatusRich => 'Rijk';
 
   @override
-  String get moneyStatusMultimillionaire => 'Multimillionaire';
+  String get moneyStatusMultimillionaire => 'Multimiljonair';
 
   @override
   String get rankBeginner => 'Beginner';
 
   @override
-  String get rankCriminal => 'Criminal';
+  String get rankCriminal => 'Crimineel';
 
   @override
   String get rankGangster => 'Gangster';
@@ -1049,37 +1049,37 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rankGodfather => 'Godfather';
 
   @override
-  String get dailyGoalTitle_crime_3 => 'Do 3 crimes';
+  String get dailyGoalTitle_crime_3 => 'Pleeg 3 misdaden';
 
   @override
-  String get dailyGoalTitle_job_2 => 'Work 2 times';
+  String get dailyGoalTitle_job_2 => 'Werk 2 keer';
 
   @override
-  String get dailyGoalTitle_vehicle_theft_1 => 'Steal 1 vehicle';
+  String get dailyGoalTitle_vehicle_theft_1 => 'Steel 1 voertuig';
 
   @override
-  String get dailyGoalTitle_travel_1 => 'Complete 1 travel';
+  String get dailyGoalTitle_travel_1 => 'Maak 1 reis';
 
   @override
-  String get dailyGoalTitle_weekly_crime_20 => 'Weekly: 20 crimes';
+  String get dailyGoalTitle_weekly_crime_20 => 'Week: 20 misdaden';
 
   @override
-  String get dailyGoalTitle_weekly_job_10 => 'Weekly: work 10 times';
+  String get dailyGoalTitle_weekly_job_10 => 'Week: 10× werken';
 
   @override
   String get dailyGoalTitle_weekly_vehicle_theft_5 =>
-      'Weekly: steal 5 vehicles';
+      'Week: steel 5 voertuigen';
 
   @override
-  String get dailyGoalTitle_weekly_travel_3 => 'Weekly: 3 travels';
+  String get dailyGoalTitle_weekly_travel_3 => 'Week: 3 reizen';
 
   @override
   String dailyGoalReward(String cash, String xp) {
-    return 'Reward: +$cash and +$xp XP';
+    return 'Beloning: +$cash en +$xp XP';
   }
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'Zojuist';
 
   @override
   String secondsAgo(String seconds) {
@@ -1097,122 +1097,123 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get last10EventsLive => 'Last 10 events (live).';
+  String get last10EventsLive => 'Laatste 10 events (live).';
 
   @override
-  String get noEventsYetSession => 'No events yet in this session.';
+  String get noEventsYetSession => 'Nog geen events in deze sessie.';
 
   @override
-  String get clearRecap => 'Clear recap';
+  String get clearRecap => 'Recap wissen';
 
   @override
-  String get weeklyGoalClaimed => 'Weekly goal claimed!';
+  String get weeklyGoalClaimed => 'Weekdoel geclaimd!';
 
   @override
-  String get dailyGoalClaimed => 'Daily goal claimed!';
+  String get dailyGoalClaimed => 'Dagdoel geclaimd!';
 
   @override
-  String get failed => 'Failed.';
+  String get failed => 'Mislukt.';
 
   @override
-  String get failedPleaseTryAgain => 'Failed. Please try again.';
+  String get failedPleaseTryAgain => 'Mislukt. Probeer opnieuw.';
 
   @override
-  String get dailyGoals => 'Daily goals';
+  String get dailyGoals => 'Dagdoelen';
 
   @override
-  String get weeklyGoals => 'Weekly goals';
+  String get weeklyGoals => 'Weekdoelen';
 
   @override
-  String get claimed => 'Claimed';
+  String get claimed => 'Geclaimd';
 
   @override
-  String get ready => 'Ready';
+  String get ready => 'Klaar';
 
   @override
   String get claim => 'Claim';
 
   @override
   String readyToClaim(String count) {
-    return '$count ready to claim';
+    return '$count klaar om te claimen';
   }
 
   @override
   String completedOutOfTotal(String completed, String total) {
-    return '$completed/$total completed';
+    return '$completed/$total voltooid';
   }
 
   @override
-  String get noPlayerData => 'No player data';
+  String get noPlayerData => 'Geen spelerdata';
 
   @override
-  String get economy24h => 'Economy 24h';
+  String get economy24h => 'Economie 24u';
 
   @override
-  String get grossIncome => 'Gross income';
+  String get grossIncome => 'Bruto inkomsten';
 
   @override
-  String get propertySpend => 'Property spend';
+  String get propertySpend => 'Vastgoed kosten';
 
   @override
-  String get netCashflow => 'Net cashflow';
+  String get netCashflow => 'Netto cashflow';
 
   @override
-  String get trendVsPrevious => 'Trend vs previous';
+  String get trendVsPrevious => 'Trend t.o.v. vorige';
 
   @override
-  String get activity7d => 'Activity 7d';
+  String get activity7d => 'Activiteit 7d';
 
   @override
-  String get vehicleThefts => 'Vehicle thefts';
+  String get vehicleThefts => 'Voertuig diefstallen';
 
   @override
-  String get opsOverview => 'Ops Overview';
+  String get opsOverview => 'Ops overzicht';
 
   @override
-  String get activeCooldowns => 'Active cooldowns';
+  String get activeCooldowns => 'Actieve cooldowns';
 
   @override
-  String get longestTimer => 'Longest timer';
+  String get longestTimer => 'Langste timer';
 
   @override
-  String get activeProduction => 'Active production';
+  String get activeProduction => 'Actieve productie';
 
   @override
-  String get productionReadyIn => 'Production ready in';
+  String get productionReadyIn => 'Productie klaar over';
 
   @override
   String get nightclubEvents => 'Nightclub events';
 
   @override
-  String get nextEventStartsIn => 'Next event starts in';
+  String get nextEventStartsIn => 'Volgende event start over';
 
   @override
-  String get vehiclesActiveListedTransit => 'Vehicles active/listed/transit';
+  String get vehiclesActiveListedTransit =>
+      'Voertuigen actief/te koop/onderweg';
 
   @override
-  String get livePlayerEvents => 'Live player events';
+  String get livePlayerEvents => 'Live speler-events';
 
   @override
-  String get openEvents => 'Open Events';
+  String get openEvents => 'Open events';
 
   @override
-  String get notificationsAndRisk => 'Notifications & Risk';
+  String get notificationsAndRisk => 'Notificaties & risico';
 
   @override
-  String get unreadDm => 'Unread DM';
+  String get unreadDm => 'Ongelezen DM';
 
   @override
-  String get supportWaitingOnYou => 'Support waiting on you';
+  String get supportWaitingOnYou => 'Support wacht op jou';
 
   @override
-  String get eventsLast24h => 'Events last 24h';
+  String get eventsLast24h => 'Events laatste 24u';
 
   @override
-  String get riskScore => 'Risk score';
+  String get riskScore => 'Risicoscore';
 
   @override
-  String get recruitProstitute => 'Recruit prostitute';
+  String get recruitProstitute => 'Rekruteer prostituee';
 
   @override
   String get free => 'GRATIS';
@@ -1224,7 +1225,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get status => 'Status';
 
   @override
-  String get canDeclare => 'Can declare';
+  String get canDeclare => 'Kan verklaren';
 
   @override
   String get yes => 'Ja';
@@ -1236,116 +1237,116 @@ class AppLocalizationsNl extends AppLocalizations {
   String get type => 'Type';
 
   @override
-  String get opponent => 'Opponent';
+  String get opponent => 'Tegenstander';
 
   @override
-  String get crewPoints => 'Crew points';
+  String get crewPoints => 'Crew punten';
 
   @override
-  String get warRank => 'War rank';
+  String get warRank => 'Oorlogs rank';
 
   @override
-  String get seasonRank => 'Season rank';
+  String get seasonRank => 'Seizoensrank';
 
   @override
   String get openTargets => 'Open targets';
 
   @override
-  String get phaseEndsIn => 'Phase ends in';
+  String get phaseEndsIn => 'Fase eindigt over';
 
   @override
   String get crewTerritory => 'Crew Territory';
 
   @override
-  String get regions => 'Regions';
+  String get regions => 'Regio\'s';
 
   @override
-  String get countriesCaptured => 'Countries captured';
+  String get countriesCaptured => 'Landen veroverd';
 
   @override
-  String get payout => 'Payout';
+  String get payout => 'Uitbetaling';
 
   @override
-  String get earningPerHour => 'Earning now per hour';
+  String get earningPerHour => 'Opbrengst per uur (nu)';
 
   @override
-  String get earningPerDay => 'Earning now per day';
+  String get earningPerDay => 'Opbrengst per dag (nu)';
 
   @override
-  String get totalEarned => 'Total earned';
+  String get totalEarned => 'Totaal verdiend';
 
   @override
   String get crewBank => 'Crew bank';
 
   @override
-  String get dashboardEconomy24h => 'Economy 24h';
+  String get dashboardEconomy24h => 'Economie 24u';
 
   @override
-  String get dashboardGrossIncome => 'Gross income';
+  String get dashboardGrossIncome => 'Bruto inkomsten';
 
   @override
-  String get dashboardPropertySpend => 'Property spend';
+  String get dashboardPropertySpend => 'Vastgoed kosten';
 
   @override
-  String get dashboardNetCashflow => 'Net cashflow';
+  String get dashboardNetCashflow => 'Netto cashflow';
 
   @override
-  String get dashboardTrendVsPrevious => 'Trend vs previous';
+  String get dashboardTrendVsPrevious => 'Trend t.o.v. vorige';
 
   @override
-  String get dashboardActivity7d => 'Activity 7d';
+  String get dashboardActivity7d => 'Activiteit 7d';
 
   @override
-  String get dashboardVehicleThefts => 'Vehicle thefts';
+  String get dashboardVehicleThefts => 'Voertuig diefstallen';
 
   @override
-  String get dashboardOpsOverview => 'Ops Overview';
+  String get dashboardOpsOverview => 'Ops overzicht';
 
   @override
-  String get dashboardActiveCooldowns => 'Active cooldowns';
+  String get dashboardActiveCooldowns => 'Actieve cooldowns';
 
   @override
-  String get dashboardLongestTimer => 'Longest timer';
+  String get dashboardLongestTimer => 'Langste timer';
 
   @override
-  String get dashboardActiveProduction => 'Active production';
+  String get dashboardActiveProduction => 'Actieve productie';
 
   @override
-  String get dashboardProductionReadyIn => 'Production ready in';
+  String get dashboardProductionReadyIn => 'Productie klaar over';
 
   @override
   String get dashboardNightclubEvents => 'Nightclub events';
 
   @override
-  String get dashboardNextEventStartsIn => 'Next event starts in';
+  String get dashboardNextEventStartsIn => 'Volgende event start over';
 
   @override
   String get dashboardVehiclesActiveListedTransit =>
-      'Vehicles active/listed/transit';
+      'Voertuigen actief/te koop/onderweg';
 
   @override
-  String get dashboardLivePlayerEvents => 'Live player events';
+  String get dashboardLivePlayerEvents => 'Live speler-events';
 
   @override
-  String get dashboardOpenEvents => 'Open Events';
+  String get dashboardOpenEvents => 'Open events';
 
   @override
-  String get dashboardNotificationsAndRisk => 'Notifications & Risk';
+  String get dashboardNotificationsAndRisk => 'Notificaties & risico';
 
   @override
-  String get dashboardUnreadDm => 'Unread DM';
+  String get dashboardUnreadDm => 'Ongelezen DM';
 
   @override
-  String get dashboardSupportWaitingOnYou => 'Support waiting on you';
+  String get dashboardSupportWaitingOnYou => 'Support wacht op jou';
 
   @override
-  String get dashboardEventsLast24h => 'Events last 24h';
+  String get dashboardEventsLast24h => 'Events laatste 24u';
 
   @override
-  String get dashboardRiskScore => 'Risk score';
+  String get dashboardRiskScore => 'Risicoscore';
 
   @override
-  String get dashboardRecruitProstitute => 'Recruit prostitute';
+  String get dashboardRecruitProstitute => 'Rekruteer prostituee';
 
   @override
   String get dashboardCrewWars => 'Crew Wars';
@@ -1354,55 +1355,55 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardStatusLabel => 'Status';
 
   @override
-  String get dashboardCanDeclare => 'Can declare';
+  String get dashboardCanDeclare => 'Kan verklaren';
 
   @override
   String get dashboardTypeLabel => 'Type';
 
   @override
-  String get dashboardOpponent => 'Opponent';
+  String get dashboardOpponent => 'Tegenstander';
 
   @override
-  String get dashboardCrewPoints => 'Crew points';
+  String get dashboardCrewPoints => 'Crew punten';
 
   @override
-  String get dashboardWarRank => 'War rank';
+  String get dashboardWarRank => 'Oorlogs rank';
 
   @override
-  String get dashboardSeasonRank => 'Season rank';
+  String get dashboardSeasonRank => 'Seizoensrank';
 
   @override
   String get dashboardOpenTargets => 'Open targets';
 
   @override
-  String get dashboardPhaseEndsIn => 'Phase ends in';
+  String get dashboardPhaseEndsIn => 'Fase eindigt over';
 
   @override
   String get dashboardCrewTerritory => 'Crew Territory';
 
   @override
-  String get dashboardRegions => 'Regions';
+  String get dashboardRegions => 'Regio\'s';
 
   @override
-  String get dashboardCountriesCaptured => 'Countries captured';
+  String get dashboardCountriesCaptured => 'Landen veroverd';
 
   @override
-  String get dashboardPayout => 'Payout';
+  String get dashboardPayout => 'Uitbetaling';
 
   @override
-  String get dashboardEarningPerHour => 'Earning now per hour';
+  String get dashboardEarningPerHour => 'Opbrengst per uur (nu)';
 
   @override
-  String get dashboardEarningPerDay => 'Earning now per day';
+  String get dashboardEarningPerDay => 'Opbrengst per dag (nu)';
 
   @override
-  String get dashboardTotalEarned => 'Total earned';
+  String get dashboardTotalEarned => 'Totaal verdiend';
 
   @override
-  String get dashboardVehicleOps => 'Vehicle Ops';
+  String get dashboardVehicleOps => 'Voertuig ops';
 
   @override
-  String get dashboardKillProgress => 'Kill Progress';
+  String get dashboardKillProgress => 'Kill progress';
 
   @override
   String get vehicleOpsHeat => 'Heat';
@@ -1411,19 +1412,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleOpsReputation => 'Rep';
 
   @override
-  String get vehicleOpsPartsTrendUp => 'parts market rising';
+  String get vehicleOpsPartsTrendUp => 'onderdelenmarkt stijgt';
 
   @override
-  String get vehicleOpsPartsTrendDown => 'parts market falling';
+  String get vehicleOpsPartsTrendDown => 'onderdelenmarkt daalt';
 
   @override
-  String get vehicleOpsPartsTrendStable => 'parts market stable';
+  String get vehicleOpsPartsTrendStable => 'onderdelenmarkt stabiel';
 
   @override
-  String get vehicleOpsBlacklistActive => 'Blacklist active';
+  String get vehicleOpsBlacklistActive => 'Blacklist actief';
 
   @override
-  String get vehicleOpsNoBlacklist => 'No blacklist';
+  String get vehicleOpsNoBlacklist => 'Geen blacklist';
 
   @override
   String get crewRoleLeader => 'Leader';
@@ -1453,22 +1454,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleOpsCounter => 'Counter';
 
   @override
-  String get vehicleOpsContracts => 'Contracts';
+  String get vehicleOpsContracts => 'Contracten';
 
   @override
   String get vehicleOpsClaims => 'Claims';
 
   @override
-  String get vehicleOpsSeason => 'Season';
+  String get vehicleOpsSeason => 'Seizoen';
 
   @override
-  String get dashboardCar => 'Car';
+  String get dashboardCar => 'Auto';
 
   @override
-  String get dashboardMotorcycle => 'Motorcycle';
+  String get dashboardMotorcycle => 'Motor';
 
   @override
-  String get dashboardBoat => 'Boat';
+  String get dashboardBoat => 'Boot';
 
   @override
   String get dashboardCrewAccess => 'Crew-toegang';
@@ -1480,7 +1481,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardUnavailable => 'unavailable';
 
   @override
-  String get vehicleOps => 'Vehicle Ops';
+  String get vehicleOps => 'Voertuig ops';
 
   @override
   String get car => 'Auto';
