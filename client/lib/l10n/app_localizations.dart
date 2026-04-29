@@ -10567,6 +10567,698 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get supportMod_other;
+
+  /// No description provided for @gameEventDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get gameEventDefaultTitle;
+
+  /// No description provided for @gameEventStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get gameEventStatusActive;
+
+  /// No description provided for @gameEventStatusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get gameEventStatusScheduled;
+
+  /// No description provided for @gameEventStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get gameEventStatusCompleted;
+
+  /// No description provided for @gameEventStatusDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get gameEventStatusDraft;
+
+  /// No description provided for @gameEventTmplWeeklyVehicleTheftHuntTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Theft Hunt'**
+  String get gameEventTmplWeeklyVehicleTheftHuntTitle;
+
+  /// No description provided for @gameEventTmplWeeklyVehicleTheftHuntDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal as many vehicles as you can during the event window.'**
+  String get gameEventTmplWeeklyVehicleTheftHuntDesc;
+
+  /// No description provided for @gameEventTmplSmugglingSurgeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling Surge'**
+  String get gameEventTmplSmugglingSurgeTitle;
+
+  /// No description provided for @gameEventTmplSmugglingSurgeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Move the most smuggled contraband this round.'**
+  String get gameEventTmplSmugglingSurgeDesc;
+
+  /// No description provided for @gameEventTmplLabOutputChallengeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lab Output Challenge'**
+  String get gameEventTmplLabOutputChallengeTitle;
+
+  /// No description provided for @gameEventTmplLabOutputChallengeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Produce the most output while the event is live.'**
+  String get gameEventTmplLabOutputChallengeDesc;
+
+  /// No description provided for @gameEventTmplStreetCrimeSpreeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Street Crime Spree'**
+  String get gameEventTmplStreetCrimeSpreeTitle;
+
+  /// No description provided for @gameEventTmplStreetCrimeSpreeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete as many crimes as possible in the live window.'**
+  String get gameEventTmplStreetCrimeSpreeDesc;
+
+  /// No description provided for @gameScreenLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load events.'**
+  String get gameScreenLoadError;
+
+  /// No description provided for @gameScreenDetailsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load event details.'**
+  String get gameScreenDetailsLoadError;
+
+  /// No description provided for @gameScreenSectionLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Events'**
+  String get gameScreenSectionLive;
+
+  /// No description provided for @gameScreenNoActive.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no active events right now.'**
+  String get gameScreenNoActive;
+
+  /// No description provided for @gameScreenSectionUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Events'**
+  String get gameScreenSectionUpcoming;
+
+  /// No description provided for @gameScreenNoUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no scheduled events.'**
+  String get gameScreenNoUpcoming;
+
+  /// No description provided for @gameScreenStatusPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {value}'**
+  String gameScreenStatusPrefix(String value);
+
+  /// No description provided for @gameScreenStartLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Start: {date}'**
+  String gameScreenStartLine(String date);
+
+  /// No description provided for @gameScreenEndLine.
+  ///
+  /// In en, this message translates to:
+  /// **'End: {date}'**
+  String gameScreenEndLine(String date);
+
+  /// No description provided for @gameScreenYourProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your progress'**
+  String get gameScreenYourProgress;
+
+  /// No description provided for @gameScreenScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Score: {value}'**
+  String gameScreenScore(String value);
+
+  /// No description provided for @gameScreenRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank: {value}'**
+  String gameScreenRank(String value);
+
+  /// No description provided for @gameScreenLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard (top 10)'**
+  String get gameScreenLeaderboard;
+
+  /// No description provided for @gameScreenNoLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'No leaderboard data yet.'**
+  String get gameScreenNoLeaderboard;
+
+  /// No description provided for @gameScreenUnknownPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get gameScreenUnknownPlayer;
+
+  /// No description provided for @gameCardActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get gameCardActive;
+
+  /// No description provided for @gameCardScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get gameCardScheduled;
+
+  /// No description provided for @gameCardYourScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Your score: {value}'**
+  String gameCardYourScore(String value);
+
+  /// No description provided for @gameCardYourRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rank: {value}'**
+  String gameCardYourRank(String value);
+
+  /// No description provided for @gameCardTapDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for details and leaderboard'**
+  String get gameCardTapDetails;
+
+  /// No description provided for @eventFeedDisconnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected from the event stream'**
+  String get eventFeedDisconnected;
+
+  /// No description provided for @eventFeedReconnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnecting...'**
+  String get eventFeedReconnecting;
+
+  /// No description provided for @eventFeedConnectedWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected — waiting for events…'**
+  String get eventFeedConnectedWaiting;
+
+  /// No description provided for @eventFeedConnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting to the event stream…'**
+  String get eventFeedConnecting;
+
+  /// No description provided for @evStreamConnectionEstablished.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to the event stream'**
+  String get evStreamConnectionEstablished;
+
+  /// No description provided for @evStreamAuthRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully.'**
+  String get evStreamAuthRegistered;
+
+  /// No description provided for @evStreamAuthLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back.'**
+  String get evStreamAuthLogin;
+
+  /// No description provided for @evStreamCrimeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP'**
+  String evStreamCrimeSuccess(String crimeName, String reward, String xpGained);
+
+  /// No description provided for @evStreamCrimeSuccessJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP — but caught! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.'**
+  String evStreamCrimeSuccessJailed(
+    String crimeName,
+    String reward,
+    String xpGained,
+    int minutes,
+  );
+
+  /// No description provided for @evStreamCrimeSeizedVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **' Your vehicle was seized by the police.'**
+  String get evStreamCrimeSeizedVehicle;
+
+  /// No description provided for @evStreamCrimeSeizedWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **' Your weapon was confiscated by the police.'**
+  String get evStreamCrimeSeizedWeapon;
+
+  /// No description provided for @evStreamCrimeSuccessCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully completed {crimeName}! Criminal record cleared: {count, plural, one{1 conviction} other{{count} convictions}} removed. +{xpGained} XP'**
+  String evStreamCrimeSuccessCleared(
+    String crimeName,
+    int count,
+    String xpGained,
+  );
+
+  /// No description provided for @evStreamCrimeFailedArrested.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrested by {authority} during a {crimeName} attempt.'**
+  String evStreamCrimeFailedArrested(String authority, String crimeName);
+
+  /// No description provided for @evStreamCrimeFailedJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.'**
+  String evStreamCrimeFailedJailed(String crimeName, int minutes);
+
+  /// No description provided for @evStreamCrimeFailedBase.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to complete {crimeName}'**
+  String evStreamCrimeFailedBase(String crimeName);
+
+  /// No description provided for @evStreamChaseDamage.
+  ///
+  /// In en, this message translates to:
+  /// **' Your vehicle took {pct}% damage during the chase.'**
+  String evStreamChaseDamage(String pct);
+
+  /// No description provided for @evStreamCrimeJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.'**
+  String evStreamCrimeJailed(String crimeName, int minutes);
+
+  /// No description provided for @evStreamJobSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed work as {jobName}! +€{earnings}, +{xpGained} XP'**
+  String evStreamJobSuccess(String jobName, String earnings, String xpGained);
+
+  /// No description provided for @evStreamJobSuccessEdu.
+  ///
+  /// In en, this message translates to:
+  /// **' (Education bonus +{pct}%)'**
+  String evStreamJobSuccessEdu(String pct);
+
+  /// No description provided for @evStreamJobFailedXp.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to complete job as {jobName}. −{xpLost} XP'**
+  String evStreamJobFailedXp(String jobName, String xpLost);
+
+  /// No description provided for @evStreamJobFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to complete job as {jobName}'**
+  String evStreamJobFailed(String jobName);
+
+  /// No description provided for @evStreamJobErrorInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid job'**
+  String get evStreamJobErrorInvalid;
+
+  /// No description provided for @evStreamJobErrorLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rank is too low for this job'**
+  String get evStreamJobErrorLevel;
+
+  /// No description provided for @evStreamJobErrorCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'This job is on cooldown. Wait {minutes, plural, one{1 more minute} other{{minutes} more minutes}}'**
+  String evStreamJobErrorCooldown(int minutes);
+
+  /// No description provided for @evStreamJobErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Job error: {reason}'**
+  String evStreamJobErrorGeneric(String reason);
+
+  /// No description provided for @evStreamTravelDeparted.
+  ///
+  /// In en, this message translates to:
+  /// **'Flying to {dest}… −€{cost}'**
+  String evStreamTravelDeparted(String dest, String cost);
+
+  /// No description provided for @evStreamTravelArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrived in {country}.'**
+  String evStreamTravelArrived(String country);
+
+  /// No description provided for @evStreamBankDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposited €{amount} to the bank'**
+  String evStreamBankDeposit(String amount);
+
+  /// No description provided for @evStreamBankWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrew €{amount} from the bank'**
+  String evStreamBankWithdraw(String amount);
+
+  /// No description provided for @evStreamCryptoBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Bought {quantity} {symbol} for €{total}'**
+  String evStreamCryptoBuy(String quantity, String symbol, String total);
+
+  /// No description provided for @evStreamCryptoSell.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold {quantity} {symbol} for €{total} (P&L €{pnl})'**
+  String evStreamCryptoSell(
+    String quantity,
+    String symbol,
+    String total,
+    String pnl,
+  );
+
+  /// No description provided for @evStreamCryptoAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'{symbol} alert: €{price} ({chg}% 24h)'**
+  String evStreamCryptoAlert(String symbol, String price, String chg);
+
+  /// No description provided for @evStreamCryptoOrderFilled.
+  ///
+  /// In en, this message translates to:
+  /// **'{order} {side} filled: {quantity} {symbol} at €{price}'**
+  String evStreamCryptoOrderFilled(
+    String order,
+    String side,
+    String quantity,
+    String symbol,
+    String price,
+  );
+
+  /// No description provided for @evStreamCryptoOrderTriggered.
+  ///
+  /// In en, this message translates to:
+  /// **'{trig} triggered for {symbol} at €{price}'**
+  String evStreamCryptoOrderTriggered(String trig, String symbol, String price);
+
+  /// No description provided for @evStreamCryptoRegime.
+  ///
+  /// In en, this message translates to:
+  /// **'Market regime changed to {regime} ({move}% 24h)'**
+  String evStreamCryptoRegime(String regime, String move);
+
+  /// No description provided for @evStreamCryptoNews.
+  ///
+  /// In en, this message translates to:
+  /// **'{sentiment} news: {headline}'**
+  String evStreamCryptoNews(String sentiment, String headline);
+
+  /// No description provided for @evStreamCryptoMissionDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily mission complete: {title} (+EUR {reward})'**
+  String evStreamCryptoMissionDaily(String title, String reward);
+
+  /// No description provided for @evStreamCryptoMissionWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly mission complete: {title} (+EUR {reward})'**
+  String evStreamCryptoMissionWeekly(String title, String reward);
+
+  /// No description provided for @evStreamCryptoLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto leaderboard reward: #{rank} (+EUR {reward})'**
+  String evStreamCryptoLeaderboard(String rank, String reward);
+
+  /// No description provided for @evStreamRegimeBull.
+  ///
+  /// In en, this message translates to:
+  /// **'bullish'**
+  String get evStreamRegimeBull;
+
+  /// No description provided for @evStreamRegimeBear.
+  ///
+  /// In en, this message translates to:
+  /// **'bearish'**
+  String get evStreamRegimeBear;
+
+  /// No description provided for @evStreamRegimeSideways.
+  ///
+  /// In en, this message translates to:
+  /// **'sideways'**
+  String get evStreamRegimeSideways;
+
+  /// No description provided for @evStreamImpactBull.
+  ///
+  /// In en, this message translates to:
+  /// **'Bullish'**
+  String get evStreamImpactBull;
+
+  /// No description provided for @evStreamImpactBear.
+  ///
+  /// In en, this message translates to:
+  /// **'Bearish'**
+  String get evStreamImpactBear;
+
+  /// No description provided for @evStreamImpactNeutral.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get evStreamImpactNeutral;
+
+  /// No description provided for @evStreamPropertyBought.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchased {name} for €{cost}'**
+  String evStreamPropertyBought(String name, String cost);
+
+  /// No description provided for @evStreamCrewCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created crew: {name}'**
+  String evStreamCrewCreated(String name);
+
+  /// No description provided for @evStreamCrewJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined crew: {name}'**
+  String evStreamCrewJoined(String name);
+
+  /// No description provided for @evStreamCrewWarDeclared.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war declared: #{a} vs #{b} ({type})'**
+  String evStreamCrewWarDeclared(String a, String b, String type);
+
+  /// No description provided for @evStreamCrewWarStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war started: #{a} vs #{b}'**
+  String evStreamCrewWarStarted(String a, String b);
+
+  /// No description provided for @evStreamCrewLockdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war #{id} is in lockdown'**
+  String evStreamCrewLockdown(String id);
+
+  /// No description provided for @evStreamCrewResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war #{id} resolved. Winner: crew #{winner}'**
+  String evStreamCrewResolved(String id, String winner);
+
+  /// No description provided for @evStreamCrewAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war action: {action} (+{points} pt)'**
+  String evStreamCrewAction(String action, String points);
+
+  /// No description provided for @evStreamHeistOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Heist “{name}” successful! +€{money}'**
+  String evStreamHeistOk(String name, String money);
+
+  /// No description provided for @evStreamHeistFail.
+  ///
+  /// In en, this message translates to:
+  /// **'Heist “{name}” failed.'**
+  String evStreamHeistFail(String name);
+
+  /// No description provided for @evStreamHospital.
+  ///
+  /// In en, this message translates to:
+  /// **'Treated in hospital! +{hp} health, −€{cost}'**
+  String evStreamHospital(String hp, String cost);
+
+  /// No description provided for @evStreamPoliceArrested.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrested! Jailed for {mins} minutes'**
+  String evStreamPoliceArrested(String mins);
+
+  /// No description provided for @evStreamPoliceEscaped.
+  ///
+  /// In en, this message translates to:
+  /// **'You escaped the police.'**
+  String get evStreamPoliceEscaped;
+
+  /// No description provided for @evStreamFbiRaid.
+  ///
+  /// In en, this message translates to:
+  /// **'FBI raid! You lost property and money.'**
+  String get evStreamFbiRaid;
+
+  /// No description provided for @evStreamErrInsufficientFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money'**
+  String get evStreamErrInsufficientFunds;
+
+  /// No description provided for @evStreamErrInsufficientHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough health for this action'**
+  String get evStreamErrInsufficientHealth;
+
+  /// No description provided for @evStreamErrInsufficientRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires rank {rank}'**
+  String evStreamErrInsufficientRank(String rank);
+
+  /// No description provided for @evStreamErrJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'You are in jail for {minutes, plural, one{1 more minute} other{{minutes} more minutes}}'**
+  String evStreamErrJailed(int minutes);
+
+  /// No description provided for @evStreamErrNoHealthDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to rest and recover your health'**
+  String get evStreamErrNoHealthDefault;
+
+  /// No description provided for @evStreamErrCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait {seconds, plural, one{1 second} other{{seconds} seconds}} before trying again'**
+  String evStreamErrCooldown(int seconds);
+
+  /// No description provided for @evStreamErrRescuerJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot help others while you are in jail'**
+  String get evStreamErrRescuerJailed;
+
+  /// No description provided for @evStreamErrTargetNotJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'That player is not in jail'**
+  String get evStreamErrTargetNotJailed;
+
+  /// No description provided for @evStreamErrCannotRescueSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot free yourself'**
+  String get evStreamErrCannotRescueSelf;
+
+  /// No description provided for @evStreamJailbreakOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Jailbreak successful! The player is free.'**
+  String get evStreamJailbreakOk;
+
+  /// No description provided for @evStreamJailbreakFail.
+  ///
+  /// In en, this message translates to:
+  /// **'Jailbreak failed! The player is still in jail.'**
+  String get evStreamJailbreakFail;
+
+  /// No description provided for @evStreamJailbreakCaught.
+  ///
+  /// In en, this message translates to:
+  /// **'Jailbreak failed! You were caught and jailed for {mins} minutes.'**
+  String evStreamJailbreakCaught(String mins);
+
+  /// No description provided for @evStreamBailPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Bail paid: €{amount}. You are free.'**
+  String evStreamBailPaid(String amount);
+
+  /// No description provided for @evStreamErrInternal.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get evStreamErrInternal;
+
+  /// No description provided for @evStreamTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Test: {msg}'**
+  String evStreamTest(String msg);
+
+  /// No description provided for @evStreamNoCriminalRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no criminal record to clear'**
+  String get evStreamNoCriminalRecord;
+
+  /// No description provided for @evStreamWeaponSelectRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a crime weapon before committing this crime'**
+  String get evStreamWeaponSelectRequired;
+
+  /// No description provided for @evStreamWeaponNotSuitable.
+  ///
+  /// In en, this message translates to:
+  /// **'You need a suitable weapon: {types}'**
+  String evStreamWeaponNotSuitable(String types);
+
+  /// No description provided for @evStreamJobFallbackName.
+  ///
+  /// In en, this message translates to:
+  /// **'job'**
+  String get evStreamJobFallbackName;
+
+  /// No description provided for @evStreamUnknownKey.
+  ///
+  /// In en, this message translates to:
+  /// **'{key}'**
+  String evStreamUnknownKey(String key);
 }
 
 class _AppLocalizationsDelegate

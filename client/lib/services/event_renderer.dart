@@ -1,836 +1,430 @@
 import '../l10n/app_localizations.dart';
 
-/// Service to render backend events with localized messages
-/// Takes eventKey and params, returns user-friendly localized string
+/// Renders backend event stream keys with [AppLocalizations] (all player locales).
 class EventRenderer {
   final AppLocalizations l10n;
 
   EventRenderer(this.l10n);
 
-  /// Render an event with its parameters
   String renderEvent(String eventKey, Map<String, dynamic> params) {
-    // Check locale and use appropriate language
-    if (l10n.localeName == 'nl') {
-      return _renderEventNL(eventKey, params);
-    }
-    return _renderEventEN(eventKey, params);
-  }
-
-  /// Render event with English localization
-  String _renderEventEN(String eventKey, Map<String, dynamic> params) {
-    // Return formatted string based on eventKey
     switch (eventKey) {
-      // Connection events
       case 'connection.established':
-        return 'Connected to event stream';
-
-      // Auth events
+        return l10n.evStreamConnectionEstablished;
       case 'auth.registered':
-        return 'Account successfully created!';
+        return l10n.evStreamAuthRegistered;
       case 'auth.login':
-        return 'Welcome back!';
+        return l10n.evStreamAuthLogin;
 
-      // Crime events
       case 'crime.success':
-        final reward = (params['reward'] as num?)?.toInt();
-        final xpGained = (params['xpGained'] as num?)?.toInt();
-        final crimeName = params['crimeName'] as String?;
-        final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = (params['jailTime'] as num?)?.toInt();
-        final vehicleConfiscated =
-            params['vehicleConfiscated'] as bool? ?? false;
-        final weaponConfiscated =
-            params['weaponConfiscated'] as bool? ?? false;
-        final clearedRecordCount =
-            (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
-
-        if (jailed && jailTime != null && jailTime > 0) {
-          final minutes = jailTime;
-          String message =
-              'Successfully completed $crimeName! +EUR ${reward ?? 0}, +${xpGained ?? 0} XP - BUT CAUGHT! Jailed for $minutes minute${minutes != 1 ? 's' : ''}!';
-          if (vehicleConfiscated) {
-            message += ' Your vehicle was seized by police!';
-          }
-          if (weaponConfiscated) {
-            message += ' Your weapon was confiscated by police!';
-          }
-          return message;
-        }
-        if (clearedRecordCount > 0) {
-          return 'Successfully completed $crimeName! Criminal record wiped: $clearedRecordCount conviction${clearedRecordCount != 1 ? 's' : ''} removed. +${xpGained ?? 0} XP';
-        }
-        return 'Successfully completed $crimeName! +EUR ${reward ?? 0}, +${xpGained ?? 0} XP';
-
+        return _crimeSuccess(params);
       case 'crime.failed':
-        final crimeName = params['crimeName'] as String?;
-        final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = (params['jailTime'] as num?)?.toInt();
-        final arrested = params['arrested'] as bool? ?? false;
-        final arrestingAuthority = params['arrestingAuthority'] as String?;
-        final vehicleConfiscated =
-            params['vehicleConfiscated'] as bool? ?? false;
-        final weaponConfiscated =
-          params['weaponConfiscated'] as bool? ?? false;
-        final vehicleChaseDamage =
-          (params['vehicleChaseDamage'] as num?)?.toInt();
-
-        String message = '';
-
-        if (arrested && arrestingAuthority != null) {
-          message =
-              'Arrested by $arrestingAuthority during $crimeName attempt!';
-        } else if (jailed && jailTime != null && jailTime > 0) {
-          final minutes = jailTime;
-          message =
-              'Caught during $crimeName! Jailed for $minutes minute${minutes != 1 ? 's' : ''}!';
-        } else {
-          message = 'Failed to complete $crimeName';
-        }
-
-        // Add vehicle consequences
-        if (vehicleConfiscated) {
-          message += ' Your vehicle was seized by police!';
-        } else if (vehicleChaseDamage != null && vehicleChaseDamage > 0) {
-          message +=
-              ' Your vehicle took $vehicleChaseDamage% damage during the chase!';
-        }
-        if (weaponConfiscated) {
-          message += ' Your weapon was confiscated by police!';
-        }
-
-        return message;
-
+        return _crimeFailed(params);
       case 'crime.jailed':
       case 'crime.caught':
-        final crimeName = params['crimeName'] as String?;
-        final jailTime = (params['jailTime'] as num?)?.toInt(); // in MINUTES
-        final minutes = jailTime != null && jailTime > 0 ? jailTime : 0;
-        return 'Caught during $crimeName! Jailed for $minutes minute${minutes != 1 ? 's' : ''}';
+        return _crimeJailedShort(params);
 
-      // Job events
       case 'job.completed':
       case 'job.success':
-        final earnings = params['earnings'] as int?;
-        final xpGained = params['xpGained'] as int?;
-        final jobName = params['jobName'] as String?;
-        final jobId = params['jobId'] as String?;
-        final educationBonusPercent =
-            (params['educationBonusPercent'] as num?)?.toInt() ?? 0;
-        final displayName = jobName ?? jobId ?? 'job';
-        final baseMessage =
-            'Completed work as $displayName! +€${earnings ?? 0}, +${xpGained ?? 0} XP';
-        if (educationBonusPercent > 0) {
-          return '$baseMessage (Education bonus +$educationBonusPercent%)';
-        }
-        return baseMessage;
-
+        return _jobSuccess(params);
       case 'job.failed':
-        final jobName = params['jobName'] as String?;
-        final jobId = params['jobId'] as String?;
-        final xpLost = (params['xpLost'] as num?)?.toInt() ?? 0;
-        final displayName = jobName ?? jobId ?? 'job';
-        if (xpLost > 0) {
-          return 'Failed to complete job as $displayName. -$xpLost XP';
-        }
-        return 'Failed to complete job as $displayName';
-
+        return _jobFailed(params);
       case 'job.error':
-        final reason = params['reason'] as String?;
-        final minutesRemaining = params['minutesRemaining'] as int?;
+        return _jobError(params);
 
-        switch (reason) {
-          case 'INVALID_JOB_ID':
-            return 'Invalid job';
-          case 'LEVEL_TOO_LOW':
-            return 'Your rank is too low for this job';
-          case 'ON_COOLDOWN':
-            return 'This job is on cooldown. Wait ${minutesRemaining ?? 0} more minutes';
-          default:
-            return 'Job error: ${reason ?? 'unknown'}';
-        }
-
-      // Travel events
       case 'travel.departed':
-        final destination = params['destination'] as String?;
-        final cost = params['cost'] as int?;
-        return 'Flying to $destination... -€${cost ?? 0}';
-
+        return l10n.evStreamTravelDeparted(
+          params['destination']?.toString() ?? '—',
+          '${params['cost'] ?? 0}',
+        );
       case 'travel.arrived':
-        final country = params['country'] as String?;
-        return 'Arrived in $country!';
+        return l10n.evStreamTravelArrived(
+          params['country']?.toString() ?? '—',
+        );
 
-      // Bank events
       case 'bank.deposit':
-        final amount = params['amount'] as int?;
-        return 'Deposited €${amount ?? 0} to bank account';
-
+        return l10n.evStreamBankDeposit('${params['amount'] ?? 0}');
       case 'bank.withdraw':
-        final amount = params['amount'] as int?;
-        return 'Withdrew €${amount ?? 0} from bank account';
+        return l10n.evStreamBankWithdraw('${params['amount'] ?? 0}');
 
-      // Crypto events
       case 'crypto.buy':
-        final symbol = params['symbol'] as String? ?? 'UNKNOWN';
-        final quantity = _asNumber(params['quantity']);
-        final totalCost = _asNumber(params['totalCost']);
-        return 'Bought ${_fmt(quantity, 8)} $symbol for €${_fmt(totalCost, 2)}';
-
+        return l10n.evStreamCryptoBuy(
+          _fmt(_asNumber(params['quantity']), 8),
+          params['symbol']?.toString() ?? '—',
+          _fmt(_asNumber(params['totalCost']), 2),
+        );
       case 'crypto.sell':
-        final symbol = params['symbol'] as String? ?? 'UNKNOWN';
-        final quantity = _asNumber(params['quantity']);
-        final totalValue = _asNumber(params['totalValue']);
-        final realizedProfit = _asNumber(params['realizedProfit']);
-        return 'Sold ${_fmt(quantity, 8)} $symbol for €${_fmt(totalValue, 2)} (PnL €${_fmt(realizedProfit, 2)})';
-
+        return l10n.evStreamCryptoSell(
+          _fmt(_asNumber(params['quantity']), 8),
+          params['symbol']?.toString() ?? '—',
+          _fmt(_asNumber(params['totalValue']), 2),
+          _fmt(_asNumber(params['realizedProfit']), 2),
+        );
       case 'crypto.alert.price':
-        final symbol = params['symbol'] as String? ?? 'UNKNOWN';
-        final currentPrice = _asNumber(params['currentPrice']);
-        final changePct = _asNumber(params['changePct']);
-        return '$symbol alert: €${_fmt(currentPrice, 8)} (${_fmt(changePct, 2)}% 24h)';
-
+        return l10n.evStreamCryptoAlert(
+          params['symbol']?.toString() ?? '—',
+          _fmt(_asNumber(params['currentPrice']), 8),
+          _fmt(_asNumber(params['changePct']), 2),
+        );
       case 'crypto.order.filled':
-        final symbol = params['symbol'] as String? ?? 'UNKNOWN';
-        final orderType = params['orderType'] as String? ?? 'LIMIT';
-        final side = params['side'] as String? ?? 'BUY';
-        final quantity = _asNumber(params['quantity']);
-        final fillPrice = _asNumber(params['fillPrice']);
-        return '$orderType $side filled: ${_fmt(quantity, 8)} $symbol at €${_fmt(fillPrice, 8)}';
-
+        return l10n.evStreamCryptoOrderFilled(
+          params['orderType']?.toString() ?? 'LIMIT',
+          params['side']?.toString() ?? 'BUY',
+          _fmt(_asNumber(params['quantity']), 8),
+          params['symbol']?.toString() ?? '—',
+          _fmt(_asNumber(params['fillPrice']), 8),
+        );
       case 'crypto.order.triggered':
-        final symbol = params['symbol'] as String? ?? 'UNKNOWN';
-        final triggerType = params['triggerType'] as String? ?? 'STOP_LOSS';
-        final triggerPrice = _asNumber(params['triggerPrice']);
-        return '$triggerType triggered for $symbol at €${_fmt(triggerPrice, 8)}';
-
+        return l10n.evStreamCryptoOrderTriggered(
+          params['triggerType']?.toString() ?? 'STOP_LOSS',
+          params['symbol']?.toString() ?? '—',
+          _fmt(_asNumber(params['triggerPrice']), 8),
+        );
       case 'crypto.market.regime':
-        final regime = params['regime'] as String? ?? 'SIDEWAYS';
-        final marketMovePct = _asNumber(params['marketMovePct']);
-        return 'Market regime changed to ${_regimeLabelEn(regime)} (${_fmt(marketMovePct, 2)}% 24h)';
-
+        final regime = params['regime']?.toString() ?? 'SIDEWAYS';
+        return l10n.evStreamCryptoRegime(
+          _regimeLabel(regime),
+          _fmt(_asNumber(params['marketMovePct']), 2),
+        );
       case 'crypto.market.news':
-        final impact = params['impact'] as String? ?? 'NEUTRAL';
-        final headline = params['headline'] as String? ?? 'No headline';
-        return '${_impactLabelEn(impact)} news: $headline';
-
+        return l10n.evStreamCryptoNews(
+          _impactLabel(params['impact']?.toString() ?? 'NEUTRAL'),
+          params['headline']?.toString() ?? '—',
+        );
       case 'crypto.mission.completed':
-        final missionType = params['missionType'] as String? ?? 'DAILY';
-        final missionTitle =
-            params['missionTitle'] as String? ?? 'Crypto mission';
-        final rewardMoney = _asNumber(params['rewardMoney']);
-        final prefix = missionType == 'WEEKLY'
-            ? 'Weekly mission'
-            : 'Daily mission';
-        return '$prefix complete: $missionTitle (+EUR ${_fmt(rewardMoney, 2)})';
-
+        final missionType = params['missionType']?.toString() ?? 'DAILY';
+        final title = params['missionTitle']?.toString() ?? '—';
+        final reward = _fmt(_asNumber(params['rewardMoney']), 2);
+        return missionType == 'WEEKLY'
+            ? l10n.evStreamCryptoMissionWeekly(title, reward)
+            : l10n.evStreamCryptoMissionDaily(title, reward);
       case 'crypto.leaderboard.reward':
-        final rank = params['rank']?.toString() ?? '-';
-        final rewardMoney = _asNumber(params['rewardMoney']);
-        return 'Crypto leaderboard reward: #$rank (+EUR ${_fmt(rewardMoney, 2)})';
+        return l10n.evStreamCryptoLeaderboard(
+          params['rank']?.toString() ?? '—',
+          _fmt(_asNumber(params['rewardMoney']), 2),
+        );
 
-      // Property events
       case 'property.purchased':
-        final propertyName = params['propertyName'] as String?;
-        final cost = params['cost'] as int?;
-        return 'Purchased $propertyName for €${cost ?? 0}';
+        return l10n.evStreamPropertyBought(
+          params['propertyName']?.toString() ?? '—',
+          '${params['cost'] ?? 0}',
+        );
 
-      // Crew events
       case 'crew.created':
-        final crewName = params['crewName'] as String?;
-        return 'Created crew: $crewName';
-
+        return l10n.evStreamCrewCreated(
+          params['crewName']?.toString() ?? '—',
+        );
       case 'crew.joined':
-        final crewName = params['crewName'] as String?;
-        return 'Joined crew: $crewName';
-
+        return l10n.evStreamCrewJoined(
+          params['crewName']?.toString() ?? '—',
+        );
       case 'crew.war_declared':
-        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
-        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
-        final warType = params['warType'] as String? ?? 'war';
-        return 'Crew war declared: #$attackerCrewId vs #$defenderCrewId ($warType)';
-
+        return l10n.evStreamCrewWarDeclared(
+          params['attackerCrewId']?.toString() ?? '—',
+          params['defenderCrewId']?.toString() ?? '—',
+          params['warType']?.toString() ?? '—',
+        );
       case 'crew.war_started':
-        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
-        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
-        return 'Crew war started: #$attackerCrewId vs #$defenderCrewId';
-
+        return l10n.evStreamCrewWarStarted(
+          params['attackerCrewId']?.toString() ?? '—',
+          params['defenderCrewId']?.toString() ?? '—',
+        );
       case 'crew.war_lockdown':
-        final warId = params['warId']?.toString() ?? '-';
-        return 'Crew war #$warId entered lockdown';
-
+        return l10n.evStreamCrewLockdown(
+          params['warId']?.toString() ?? '—',
+        );
       case 'crew.war_resolved':
-        final warId = params['warId']?.toString() ?? '-';
-        final winnerCrewId = params['winnerCrewId']?.toString() ?? '-';
-        return 'Crew war #$warId resolved. Winner: crew #$winnerCrewId';
-
+        return l10n.evStreamCrewResolved(
+          params['warId']?.toString() ?? '—',
+          params['winnerCrewId']?.toString() ?? '—',
+        );
       case 'crew.war_action':
-        final actionType = params['actionType'] as String? ?? 'action';
-        final pointsAwarded = params['pointsAwarded']?.toString() ?? '0';
-        return 'Crew war action: $actionType (+$pointsAwarded pt)';
+        return l10n.evStreamCrewAction(
+          params['actionType']?.toString() ?? 'action',
+          params['pointsAwarded']?.toString() ?? '0',
+        );
 
-      // Heist events
       case 'heist.success':
-        final money = params['money'] as int?;
-        final heistName = params['heistName'] as String?;
-        return 'Heist "$heistName" successful! +€${money ?? 0}';
-
+        return l10n.evStreamHeistOk(
+          params['heistName']?.toString() ?? '—',
+          '${params['money'] ?? 0}',
+        );
       case 'heist.failed':
-        final heistName = params['heistName'] as String?;
-        return 'Heist "$heistName" failed!';
+        return l10n.evStreamHeistFail(
+          params['heistName']?.toString() ?? '—',
+        );
 
-      // Hospital events
       case 'hospital.healed':
-        final cost = params['cost'] as int?;
-        final healthGained = params['healthGained'] as int?;
-        return 'Healed at hospital! +${healthGained ?? 0} health, -€${cost ?? 0}';
+        return l10n.evStreamHospital(
+          '${params['healthGained'] ?? 0}',
+          '${params['cost'] ?? 0}',
+        );
 
-      // Police events
       case 'police.arrested':
-        final jailTime = params['jailTime'] as int?;
-        return 'Arrested! Jailed for ${jailTime ?? 0} minutes';
-
+        return l10n.evStreamPoliceArrested('${params['jailTime'] ?? 0}');
       case 'police.escaped':
-        return 'Escaped from police!';
-
-      // FBI events
+        return l10n.evStreamPoliceEscaped;
       case 'fbi.raided':
-        return 'Raided by FBI! Lost property and money';
+        return l10n.evStreamFbiRaid;
 
-      // Error events
       case 'error.insufficient_funds':
-        return 'Insufficient funds';
-
+        return l10n.evStreamErrInsufficientFunds;
       case 'error.insufficient_health':
-        return 'Not enough health to perform this action';
-
+        return l10n.evStreamErrInsufficientHealth;
       case 'error.insufficient_rank':
-        final requiredRank = params['requiredRank'] as int?;
-        return 'Requires rank ${requiredRank ?? 0}';
-
+        return l10n.evStreamErrInsufficientRank('${params['requiredRank'] ?? 0}');
       case 'error.jailed':
-        final remainingTime = params['remainingTime'] as int?;
-        final minutes = remainingTime != null && remainingTime > 0
-            ? (remainingTime / 60).ceil()
-            : 0;
-        return 'You are in jail for $minutes more minute${minutes != 1 ? 's' : ''}';
-
+        return l10n.evStreamErrJailed(
+          (() {
+            final t = (params['remainingTime'] as num?)?.toInt() ?? 0;
+            if (t <= 0) {
+              return 0;
+            }
+            return (t / 60).ceil();
+          })(),
+        );
       case 'error.noHealth':
-        final message = params['message'] as String?;
-        return message ?? 'You need to rest and recover your health';
+        final m = params['message'] as String?;
+        if (m != null && m.isNotEmpty) {
+          return m;
+        }
+        return l10n.evStreamErrNoHealthDefault;
 
-      // Crime error events
       case 'crime.error':
-        final reason = params['reason'] as String?;
-        final message = params['message'] as String?;
-
-        // If backend provides a custom message, use it
-        if (message != null && message.isNotEmpty) {
-          return message;
-        }
-
-        switch (reason) {
-          case 'TOOL_REQUIRED':
-            final tools = params['tools'] as String? ?? 'gereedschap';
-            return l10n.crimeErrorToolRequired(tools);
-          case 'TOOL_IN_STORAGE':
-            final tools = params['tools'] as String? ?? 'gereedschap';
-            return l10n.crimeErrorToolInStorage(tools);
-          case 'VEHICLE_REQUIRED':
-            return l10n.crimeErrorVehicleRequired;
-          case 'VEHICLE_NOT_FOUND':
-            return l10n.crimeErrorVehicleNotFound;
-          case 'NOT_VEHICLE_OWNER':
-            return l10n.crimeErrorNotVehicleOwner;
-          case 'VEHICLE_BROKEN':
-            return l10n.crimeErrorVehicleBroken;
-          case 'NO_FUEL':
-            return l10n.crimeErrorNoFuel;
-          case 'LEVEL_TOO_LOW':
-            return l10n.crimeErrorLevelTooLow;
-          case 'NO_CRIMINAL_RECORD':
-            return 'You do not have a criminal record to wipe';
-          case 'INVALID_CRIME_ID':
-            return l10n.crimeErrorInvalidCrimeId;
-          case 'WEAPON_REQUIRED':
-            return l10n.crimeErrorWeaponRequired;
-          case 'WEAPON_SELECTION_REQUIRED':
-            return 'Select a crime weapon before committing this crime';
-          case 'WEAPON_NOT_SUITABLE':
-            final suitableTypes = params['suitableTypes'] as String? ?? '';
-            final weaponNames = _translateWeaponTypes(suitableTypes, false);
-            return 'You need a suitable weapon: $weaponNames';
-          case 'WEAPON_BROKEN':
-            return l10n.crimeErrorWeaponBroken;
-          case 'NO_AMMO':
-            return l10n.crimeErrorNoAmmo;
-          case 'DRUGS_REQUIRED':
-            final minDrugQuantity =
-                (params['minDrugQuantity'] as num?)?.toInt() ?? 1;
-            final requiredDrugs =
-                (params['requiredDrugs'] as List<dynamic>?)
-                    ?.map((d) => d.toString().replaceAll('_', ' '))
-                    .join(', ') ??
-                'drugs';
-            return l10n.crimeErrorDrugsRequired(
-              minDrugQuantity.toString(),
-              requiredDrugs,
-            );
-          default:
-            return l10n.crimeErrorGeneric;
-        }
-
+        return _crimeError(params);
       case 'error.cooldown':
-        final remainingSeconds = params['remainingSeconds'] as int? ?? 0;
-        return 'Wait $remainingSeconds seconds before trying again';
-
+        return l10n.evStreamErrCooldown(
+          (params['remainingSeconds'] as int?) ?? 0,
+        );
       case 'error.rescuer_jailed':
-        return 'You cannot rescue others while in jail';
-
+        return l10n.evStreamErrRescuerJailed;
       case 'error.target_not_jailed':
-        return 'Target player is not in jail';
-
+        return l10n.evStreamErrTargetNotJailed;
       case 'error.cannot_rescue_self':
-        return 'You cannot rescue yourself';
+        return l10n.evStreamErrCannotRescueSelf;
 
-      // Jailbreak events
       case 'jailbreak.success':
-        return '🎉 Jailbreak successful! Player freed!';
-
+        return l10n.evStreamJailbreakOk;
       case 'jailbreak.failed':
-        return '❌ Jailbreak failed! Player still in jail.';
-
+        return l10n.evStreamJailbreakFail;
       case 'jailbreak.caught':
-        final jailTime = params['rescuerJailTime'] as int?;
-        return '🚔 Jailbreak failed! You got caught and jailed for ${jailTime ?? 0} minutes!';
-
+        return l10n.evStreamJailbreakCaught(
+          '${(params['rescuerJailTime'] as int?) ?? 0}',
+        );
       case 'bail.paid':
-        final amount = params['amount'] as int?;
-        return '💰 Bail paid: €${amount ?? 0}. You are free!';
-
+        return l10n.evStreamBailPaid('${params['amount'] ?? 0}');
       case 'error.internal':
-        return 'An error occurred. Please try again';
-
-      // Test events
+        return l10n.evStreamErrInternal;
       case 'test.broadcast':
-        final message = params['message'] as String?;
-        return '🧪 TEST: ${message ?? 'Test event received'}';
+        return l10n.evStreamTest(
+          params['message']?.toString() ?? '—',
+        );
 
-      // Default fallback
       default:
-        return eventKey; // Return raw key if no translation found
+        return l10n.evStreamUnknownKey(eventKey);
     }
   }
 
-  /// Render event with Dutch localization
-  String _renderEventNL(String eventKey, Map<String, dynamic> params) {
-    switch (eventKey) {
-      // Connection events
-      case 'connection.established':
-        return 'Verbonden met event stream';
+  String _crimeSuccess(Map<String, dynamic> params) {
+    final reward = (params['reward'] as num?)?.toInt() ?? 0;
+    final xpGained = (params['xpGained'] as num?)?.toInt() ?? 0;
+    final crimeName = params['crimeName']?.toString() ?? '—';
+    final jailed = params['jailed'] as bool? ?? false;
+    final jailTime = (params['jailTime'] as num?)?.toInt();
+    final vehicleConfiscated = params['vehicleConfiscated'] as bool? ?? false;
+    final weaponConfiscated = params['weaponConfiscated'] as bool? ?? false;
+    final clearedRecordCount = (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
 
-      // Auth events
-      case 'auth.registered':
-        return 'Account succesvol aangemaakt!';
-      case 'auth.login':
-        return 'Welkom terug!';
+    if (jailed && jailTime != null && jailTime > 0) {
+      var s = l10n.evStreamCrimeSuccessJailed(
+        crimeName,
+        reward.toString(),
+        xpGained.toString(),
+        jailTime,
+      );
+      if (vehicleConfiscated) {
+        s += l10n.evStreamCrimeSeizedVehicle;
+      }
+      if (weaponConfiscated) {
+        s += l10n.evStreamCrimeSeizedWeapon;
+      }
+      return s;
+    }
+    if (clearedRecordCount > 0) {
+      return l10n.evStreamCrimeSuccessCleared(
+        crimeName,
+        clearedRecordCount,
+        xpGained.toString(),
+      );
+    }
+    return l10n.evStreamCrimeSuccess(
+      crimeName,
+      reward.toString(),
+      xpGained.toString(),
+    );
+  }
 
-      // Crime events
-      case 'crime.success':
-        final reward = (params['reward'] as num?)?.toInt();
-        final xpGained = (params['xpGained'] as num?)?.toInt();
-        final crimeName = params['crimeName'] as String?;
-        final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = (params['jailTime'] as num?)?.toInt();
-        final vehicleConfiscated =
-            params['vehicleConfiscated'] as bool? ?? false;
-        final weaponConfiscated =
-            params['weaponConfiscated'] as bool? ?? false;
-        final clearedRecordCount =
-            (params['clearedRecordCount'] as num?)?.toInt() ?? 0;
+  String _crimeFailed(Map<String, dynamic> params) {
+    final crimeName = params['crimeName']?.toString() ?? '—';
+    final jailed = params['jailed'] as bool? ?? false;
+    final jailTime = (params['jailTime'] as num?)?.toInt();
+    final arrested = params['arrested'] as bool? ?? false;
+    final vehicleConfiscated = params['vehicleConfiscated'] as bool? ?? false;
+    final weaponConfiscated = params['weaponConfiscated'] as bool? ?? false;
+    final vehicleChaseDamage = (params['vehicleChaseDamage'] as num?)?.toInt();
 
-        if (jailed && jailTime != null && jailTime > 0) {
-          final minutes = jailTime;
-          final minuteLabel = minutes == 1 ? 'minuut' : 'minuten';
-          String message =
-              'Succesvol $crimeName gepleegd! +€${reward ?? 0}, +${xpGained ?? 0} XP - MAAR GEPAKT! $minutes $minuteLabel!';
-          if (vehicleConfiscated) {
-            message += ' Je voertuig is in beslag genomen door de politie!';
-          }
-          if (weaponConfiscated) {
-            message += ' Je wapen is in beslag genomen door de politie!';
-          }
-          return message;
-        }
-        if (clearedRecordCount > 0) {
-          return 'Succesvol $crimeName gepleegd! Strafblad gewist: $clearedRecordCount veroordeling${clearedRecordCount != 1 ? 'en' : ''} verwijderd. +${xpGained ?? 0} XP';
-        }
-        return 'Succesvol $crimeName gepleegd! +€${reward ?? 0}, +${xpGained ?? 0} XP';
+    String message;
+    if (arrested && params['arrestingAuthority'] != null) {
+      final auth = params['arrestingAuthority']?.toString() ?? 'police';
+      final authority = auth == 'FBI' ? 'FBI' : auth;
+      message = l10n.evStreamCrimeFailedArrested(authority, crimeName);
+    } else if (jailed && jailTime != null && jailTime > 0) {
+      message = l10n.evStreamCrimeFailedJailed(crimeName, jailTime);
+    } else {
+      message = l10n.evStreamCrimeFailedBase(crimeName);
+    }
+    if (vehicleConfiscated) {
+      message += l10n.evStreamCrimeSeizedVehicle;
+    } else if (vehicleChaseDamage != null && vehicleChaseDamage > 0) {
+      message += l10n.evStreamChaseDamage(vehicleChaseDamage.toString());
+    }
+    if (weaponConfiscated) {
+      message += l10n.evStreamCrimeSeizedWeapon;
+    }
+    return message;
+  }
 
-      case 'crime.failed':
-        final crimeName = params['crimeName'] as String?;
-        final jailed = params['jailed'] as bool? ?? false;
-        final jailTime = (params['jailTime'] as num?)?.toInt();
-        final arrested = params['arrested'] as bool? ?? false;
-        final arrestingAuthority = params['arrestingAuthority'] as String?;
-        final vehicleConfiscated =
-            params['vehicleConfiscated'] as bool? ?? false;
-        final weaponConfiscated =
-          params['weaponConfiscated'] as bool? ?? false;
-        final vehicleChaseDamage =
-          (params['vehicleChaseDamage'] as num?)?.toInt();
+  String _crimeJailedShort(Map<String, dynamic> params) {
+    final crimeName = params['crimeName']?.toString() ?? '—';
+    final minutes = (params['jailTime'] as num?)?.toInt() ?? 0;
+    return l10n.evStreamCrimeJailed(crimeName, minutes);
+  }
 
-        String message = '';
+  String _jobSuccess(Map<String, dynamic> params) {
+    final jobName = params['jobName'] as String? ??
+        params['jobId'] as String? ??
+        l10n.evStreamJobFallbackName;
+    final earnings = '${params['earnings'] ?? 0}';
+    final xpGained = '${params['xpGained'] ?? 0}';
+    final educationBonusPercent =
+        (params['educationBonusPercent'] as num?)?.toInt() ?? 0;
+    var base = l10n.evStreamJobSuccess(jobName, earnings, xpGained);
+    if (educationBonusPercent > 0) {
+      base += l10n.evStreamJobSuccessEdu(educationBonusPercent.toString());
+    }
+    return base;
+  }
 
-        if (arrested && arrestingAuthority != null) {
-          final authority = arrestingAuthority == 'FBI' ? 'FBI' : 'politie';
-          message = 'Gearresteerd door $authority tijdens $crimeName poging!';
-        } else if (jailed && jailTime != null && jailTime > 0) {
-          final minutes = jailTime;
-          final minuteLabel = minutes == 1 ? 'minuut' : 'minuten';
-          message = 'Gepakt tijdens $crimeName! $minutes $minuteLabel!';
-        } else {
-          message = 'Misdrijf $crimeName mislukt';
-        }
+  String _jobFailed(Map<String, dynamic> params) {
+    final jobName = params['jobName'] as String? ??
+        params['jobId'] as String? ??
+        l10n.evStreamJobFallbackName;
+    final xpLost = (params['xpLost'] as num?)?.toInt() ?? 0;
+    if (xpLost > 0) {
+      return l10n.evStreamJobFailedXp(jobName, xpLost.toString());
+    }
+    return l10n.evStreamJobFailed(jobName);
+  }
 
-        // Add vehicle consequences
-        if (vehicleConfiscated) {
-          message += ' Je voertuig is in beslag genomen door de politie!';
-        } else if (vehicleChaseDamage != null && vehicleChaseDamage > 0) {
-          message +=
-              ' Je voertuig heeft $vehicleChaseDamage% schade opgelopen tijdens de achtervolging!';
-        }
-        if (weaponConfiscated) {
-          message += ' Je wapen is in beslag genomen door de politie!';
-        }
-
-        return message;
-
-      case 'crime.jailed':
-      case 'crime.caught':
-        final crimeName = params['crimeName'] as String?;
-        final jailTime = (params['jailTime'] as num?)?.toInt(); // in MINUTES
-        final minutes = jailTime != null && jailTime > 0 ? jailTime : 0;
-        final minuteLabel = minutes == 1 ? 'minuut' : 'minuten';
-        return 'Gepakt tijdens $crimeName! $minutes $minuteLabel!';
-
-      // Job events
-      case 'job.completed':
-      case 'job.success':
-        final earnings = params['earnings'] as int?;
-        final xpGained = params['xpGained'] as int?;
-        final jobName = params['jobName'] as String?;
-        final jobId = params['jobId'] as String?;
-        final educationBonusPercent =
-            (params['educationBonusPercent'] as num?)?.toInt() ?? 0;
-        final displayName = jobName ?? jobId ?? 'werk';
-        final baseMessage =
-            'Werk als $displayName voltooid! +€${earnings ?? 0}, +${xpGained ?? 0} XP';
-        if (educationBonusPercent > 0) {
-          return '$baseMessage (Opleidingsbonus +$educationBonusPercent%)';
-        }
-        return baseMessage;
-
-      case 'job.failed':
-        final jobName = params['jobName'] as String?;
-        final jobId = params['jobId'] as String?;
-        final xpLost = (params['xpLost'] as num?)?.toInt() ?? 0;
-        final displayName = jobName ?? jobId ?? 'werk';
-        if (xpLost > 0) {
-          return 'Werk als $displayName mislukt. -$xpLost XP';
-        }
-        return 'Werk als $displayName mislukt';
-
-      case 'job.error':
-        final reason = params['reason'] as String?;
-        final minutesRemaining = params['minutesRemaining'] as int?;
-
-        switch (reason) {
-          case 'INVALID_JOB_ID':
-            return 'Ongeldig werk';
-          case 'LEVEL_TOO_LOW':
-            return 'Je rank is te laag voor dit werk';
-          case 'ON_COOLDOWN':
-            return 'Dit werk heeft cooldown. Wacht nog ${minutesRemaining ?? 0} minuten';
-          default:
-            return 'Werk fout: ${reason ?? 'onbekend'}';
-        }
-
-      // Travel events
-      case 'travel.departed':
-        final destination = params['destination'] as String?;
-        final cost = params['cost'] as int?;
-        return 'Vliegt naar $destination... -€${cost ?? 0}';
-
-      case 'travel.arrived':
-        final country = params['country'] as String?;
-        return 'Aangekomen in $country!';
-
-      // Bank events
-      case 'bank.deposit':
-        final amount = params['amount'] as int?;
-        return '€${amount ?? 0} gestort op bankrekening';
-
-      case 'bank.withdraw':
-        final amount = params['amount'] as int?;
-        return '€${amount ?? 0} opgenomen van bankrekening';
-
-      // Crypto events
-      case 'crypto.buy':
-        final symbol = params['symbol'] as String? ?? 'ONBEKEND';
-        final quantity = _asNumber(params['quantity']);
-        final totalCost = _asNumber(params['totalCost']);
-        return 'Kocht ${_fmt(quantity, 8)} $symbol voor €${_fmt(totalCost, 2)}';
-
-      case 'crypto.sell':
-        final symbol = params['symbol'] as String? ?? 'ONBEKEND';
-        final quantity = _asNumber(params['quantity']);
-        final totalValue = _asNumber(params['totalValue']);
-        final realizedProfit = _asNumber(params['realizedProfit']);
-        return 'Verkocht ${_fmt(quantity, 8)} $symbol voor €${_fmt(totalValue, 2)} (Resultaat €${_fmt(realizedProfit, 2)})';
-
-      case 'crypto.alert.price':
-        final symbol = params['symbol'] as String? ?? 'ONBEKEND';
-        final currentPrice = _asNumber(params['currentPrice']);
-        final changePct = _asNumber(params['changePct']);
-        return '$symbol alert: €${_fmt(currentPrice, 8)} (${_fmt(changePct, 2)}% 24u)';
-
-      case 'crypto.order.filled':
-        final symbol = params['symbol'] as String? ?? 'ONBEKEND';
-        final orderType = params['orderType'] as String? ?? 'LIMIT';
-        final side = params['side'] as String? ?? 'BUY';
-        final quantity = _asNumber(params['quantity']);
-        final fillPrice = _asNumber(params['fillPrice']);
-        return '$orderType $side uitgevoerd: ${_fmt(quantity, 8)} $symbol op €${_fmt(fillPrice, 8)}';
-
-      case 'crypto.order.triggered':
-        final symbol = params['symbol'] as String? ?? 'ONBEKEND';
-        final triggerType = params['triggerType'] as String? ?? 'STOP_LOSS';
-        final triggerPrice = _asNumber(params['triggerPrice']);
-        return '$triggerType geactiveerd voor $symbol op €${_fmt(triggerPrice, 8)}';
-
-      case 'crypto.market.regime':
-        final regime = params['regime'] as String? ?? 'SIDEWAYS';
-        final marketMovePct = _asNumber(params['marketMovePct']);
-        return 'Marktregime gewijzigd naar ${_regimeLabelNl(regime)} (${_fmt(marketMovePct, 2)}% 24u)';
-
-      case 'crypto.market.news':
-        final impact = params['impact'] as String? ?? 'NEUTRAL';
-        final headline = params['headline'] as String? ?? 'Geen kopregel';
-        return '${_impactLabelNl(impact)} nieuws: $headline';
-
-      case 'crypto.mission.completed':
-        final missionType = params['missionType'] as String? ?? 'DAILY';
-        final missionTitle =
-            params['missionTitle'] as String? ?? 'Crypto missie';
-        final rewardMoney = _asNumber(params['rewardMoney']);
-        final prefix = missionType == 'WEEKLY'
-            ? 'Wekelijkse missie'
-            : 'Dagelijkse missie';
-        return '$prefix voltooid: $missionTitle (+EUR ${_fmt(rewardMoney, 2)})';
-
-      case 'crypto.leaderboard.reward':
-        final rank = params['rank']?.toString() ?? '-';
-        final rewardMoney = _asNumber(params['rewardMoney']);
-        return 'Crypto leaderboard beloning: #$rank (+EUR ${_fmt(rewardMoney, 2)})';
-
-      // Property events
-      case 'property.purchased':
-        final propertyName = params['propertyName'] as String?;
-        final cost = params['cost'] as int?;
-        return '$propertyName gekocht voor €${cost ?? 0}';
-
-      // Crew events
-      case 'crew.created':
-        final crewName = params['crewName'] as String?;
-        return 'Crew aangemaakt: $crewName';
-
-      case 'crew.joined':
-        final crewName = params['crewName'] as String?;
-        return 'Crew binnengekomen: $crewName';
-
-      case 'crew.war_declared':
-        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
-        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
-        final warType = params['warType'] as String? ?? 'war';
-        return 'Crew-oorlog verklaard: #$attackerCrewId vs #$defenderCrewId ($warType)';
-
-      case 'crew.war_started':
-        final attackerCrewId = params['attackerCrewId']?.toString() ?? '-';
-        final defenderCrewId = params['defenderCrewId']?.toString() ?? '-';
-        return 'Crew-oorlog gestart: #$attackerCrewId vs #$defenderCrewId';
-
-      case 'crew.war_lockdown':
-        final warId = params['warId']?.toString() ?? '-';
-        return 'Crew-oorlog #$warId zit nu in lockdown';
-
-      case 'crew.war_resolved':
-        final warId = params['warId']?.toString() ?? '-';
-        final winnerCrewId = params['winnerCrewId']?.toString() ?? '-';
-        return 'Crew-oorlog #$warId afgerond. Winnaar: crew #$winnerCrewId';
-
-      case 'crew.war_action':
-        final actionType = params['actionType'] as String? ?? 'actie';
-        final pointsAwarded = params['pointsAwarded']?.toString() ?? '0';
-        return 'Crew-oorlogsactie: $actionType (+$pointsAwarded pt)';
-
-      // Heist events
-      case 'heist.success':
-        final money = params['money'] as int?;
-        final heistName = params['heistName'] as String?;
-        return 'Overval "$heistName" geslaagd! +€${money ?? 0}';
-
-      case 'heist.failed':
-        final heistName = params['heistName'] as String?;
-        return 'Overval "$heistName" mislukt!';
-
-      // Hospital events
-      case 'hospital.healed':
-        final cost = params['cost'] as int?;
-        final healthGained = params['healthGained'] as int?;
-        return 'Genezen in ziekenhuis! +${healthGained ?? 0} gezondheid, -€${cost ?? 0}';
-
-      // Police events
-      case 'police.arrested':
-        final jailTime = params['jailTime'] as int?;
-        return 'Gearresteerd! ${jailTime ?? 0} minuten cel';
-
-      case 'police.escaped':
-        return 'Ontsnapt van de politie!';
-
-      // FBI events
-      case 'fbi.raided':
-        return 'FBI inval! Bezittingen en geld verloren';
-
-      // Error events
-      case 'error.insufficient_funds':
-        return 'Onvoldoende geld';
-
-      case 'error.insufficient_health':
-        return 'Niet genoeg gezondheid voor deze actie';
-
-      case 'error.insufficient_rank':
-        final requiredRank = params['requiredRank'] as int?;
-        return 'Vereist rank ${requiredRank ?? 0}';
-
-      case 'error.jailed':
-        final remainingTime = params['remainingTime'] as int?;
-        final minutes = remainingTime != null && remainingTime > 0
-            ? (remainingTime / 60).ceil()
-            : 0;
-        final minuteLabel = minutes == 1 ? 'minuut' : 'minuten';
-        return 'Je zit nog $minutes $minuteLabel in de cel';
-
-      case 'error.noHealth':
-        return 'Je moet rusten en je gezondheid herstellen';
-
-      // Crime error events (Dutch)
-      case 'crime.error':
-        final reason = params['reason'] as String?;
-        final message = params['message'] as String?;
-
-        // If backend provides a custom message, use it
-        if (message != null && message.isNotEmpty) {
-          return message;
-        }
-
-        switch (reason) {
-          case 'TOOL_REQUIRED':
-            final tools = params['tools'] as String? ?? 'gereedschap';
-            return l10n.crimeErrorToolRequired(tools);
-          case 'TOOL_IN_STORAGE':
-            final tools = params['tools'] as String? ?? 'gereedschap';
-            return l10n.crimeErrorToolInStorage(tools);
-          case 'VEHICLE_REQUIRED':
-            return l10n.crimeErrorVehicleRequired;
-          case 'VEHICLE_NOT_FOUND':
-            return l10n.crimeErrorVehicleNotFound;
-          case 'NOT_VEHICLE_OWNER':
-            return l10n.crimeErrorNotVehicleOwner;
-          case 'VEHICLE_BROKEN':
-            return l10n.crimeErrorVehicleBroken;
-          case 'NO_FUEL':
-            return l10n.crimeErrorNoFuel;
-          case 'LEVEL_TOO_LOW':
-            return l10n.crimeErrorLevelTooLow;
-          case 'NO_CRIMINAL_RECORD':
-            return 'Je hebt geen strafblad om te wissen';
-          case 'INVALID_CRIME_ID':
-            return l10n.crimeErrorInvalidCrimeId;
-          case 'WEAPON_REQUIRED':
-            return l10n.crimeErrorWeaponRequired;
-          case 'WEAPON_SELECTION_REQUIRED':
-            return 'Kies eerst een crime-wapen voordat je deze misdaad start';
-          case 'WEAPON_NOT_SUITABLE':
-            final suitableTypes = params['suitableTypes'] as String? ?? '';
-            final weaponNames = _translateWeaponTypes(suitableTypes, true);
-            return 'Je hebt een geschikt wapen nodig: $weaponNames';
-          case 'WEAPON_BROKEN':
-            return l10n.crimeErrorWeaponBroken;
-          case 'NO_AMMO':
-            return l10n.crimeErrorNoAmmo;
-          case 'DRUGS_REQUIRED':
-            final minDrugQuantity =
-                (params['minDrugQuantity'] as num?)?.toInt() ?? 1;
-            final requiredDrugs =
-                (params['requiredDrugs'] as List<dynamic>?)
-                    ?.map((d) => d.toString().replaceAll('_', ' '))
-                    .join(', ') ??
-                'drugs';
-            return l10n.crimeErrorDrugsRequired(
-              minDrugQuantity.toString(),
-              requiredDrugs,
-            );
-          default:
-            return l10n.crimeErrorGeneric;
-        }
-
-      case 'error.cooldown':
-        final remainingSeconds = params['remainingSeconds'] as int? ?? 0;
-        return 'Wacht $remainingSeconds seconden voordat je het opnieuw probeert';
-
-      case 'error.rescuer_jailed':
-        return 'Je kunt anderen niet bevrijden terwijl je in de cel zit';
-
-      case 'error.target_not_jailed':
-        return 'Deze speler zit niet in de cel';
-
-      case 'error.cannot_rescue_self':
-        return 'Je kunt jezelf niet bevrijden';
-
-      // Jailbreak events
-      case 'jailbreak.success':
-        return '🎉 Uitbraak geslaagd! Speler bevrijd!';
-
-      case 'jailbreak.failed':
-        return '❌ Uitbraak mislukt! Speler zit nog in de cel.';
-
-      case 'jailbreak.caught':
-        final jailTime = params['rescuerJailTime'] as int?;
-        return '🚔 Uitbraak mislukt! Je bent gepakt en zit ${jailTime ?? 0} minuten in de cel!';
-
-      case 'bail.paid':
-        final amount = params['amount'] as int?;
-        return '💰 Borg betaald: €${amount ?? 0}. Je bent vrij!';
-
-      case 'error.internal':
-        return 'Er is een fout opgetreden. Probeer opnieuw';
-
-      // Test events
-      case 'test.broadcast':
-        final message = params['message'] as String?;
-        return '🧪 TEST: ${message ?? 'Test event received'}';
-
+  String _jobError(Map<String, dynamic> params) {
+    final reason = params['reason'] as String?;
+    final minutesRemaining = params['minutesRemaining'] as int?;
+    switch (reason) {
+      case 'INVALID_JOB_ID':
+        return l10n.evStreamJobErrorInvalid;
+      case 'LEVEL_TOO_LOW':
+        return l10n.evStreamJobErrorLevel;
+      case 'ON_COOLDOWN':
+        return l10n.evStreamJobErrorCooldown(minutesRemaining ?? 0);
       default:
-        return eventKey;
+        return l10n.evStreamJobErrorGeneric(reason ?? 'unknown');
     }
   }
 
-  /// Translate weapon type IDs to readable names
-  /// Returns comma-separated list of weapon names
-  String _translateWeaponTypes(String types, bool isDutch) {
+  String _crimeError(Map<String, dynamic> params) {
+    final message = params['message'] as String?;
+    if (message != null && message.isNotEmpty) {
+      return message;
+    }
+    final reason = params['reason'] as String?;
+    final useNlWeaponNames = l10n.localeName.toLowerCase().startsWith('nl');
+    switch (reason) {
+      case 'TOOL_REQUIRED':
+        return l10n.crimeErrorToolRequired(
+          params['tools'] as String? ?? 'tools',
+        );
+      case 'TOOL_IN_STORAGE':
+        return l10n.crimeErrorToolInStorage(
+          params['tools'] as String? ?? 'tools',
+        );
+      case 'VEHICLE_REQUIRED':
+        return l10n.crimeErrorVehicleRequired;
+      case 'VEHICLE_NOT_FOUND':
+        return l10n.crimeErrorVehicleNotFound;
+      case 'NOT_VEHICLE_OWNER':
+        return l10n.crimeErrorNotVehicleOwner;
+      case 'VEHICLE_BROKEN':
+        return l10n.crimeErrorVehicleBroken;
+      case 'NO_FUEL':
+        return l10n.crimeErrorNoFuel;
+      case 'LEVEL_TOO_LOW':
+        return l10n.crimeErrorLevelTooLow;
+      case 'NO_CRIMINAL_RECORD':
+        return l10n.evStreamNoCriminalRecord;
+      case 'INVALID_CRIME_ID':
+        return l10n.crimeErrorInvalidCrimeId;
+      case 'WEAPON_REQUIRED':
+        return l10n.crimeErrorWeaponRequired;
+      case 'WEAPON_SELECTION_REQUIRED':
+        return l10n.evStreamWeaponSelectRequired;
+      case 'WEAPON_NOT_SUITABLE':
+        final st = params['suitableTypes'] as String? ?? '';
+        return l10n.evStreamWeaponNotSuitable(
+          _weaponTypesList(st, useNlWeaponNames),
+        );
+      case 'WEAPON_BROKEN':
+        return l10n.crimeErrorWeaponBroken;
+      case 'NO_AMMO':
+        return l10n.crimeErrorNoAmmo;
+      case 'DRUGS_REQUIRED':
+        final minDrugQuantity = (params['minDrugQuantity'] as num?)?.toInt() ?? 1;
+        final requiredDrugs = (params['requiredDrugs'] as List<dynamic>?)
+                ?.map((d) => d.toString().replaceAll('_', ' '))
+                .join(', ') ??
+            'drugs';
+        return l10n.crimeErrorDrugsRequired(
+          minDrugQuantity.toString(),
+          requiredDrugs,
+        );
+      default:
+        return l10n.crimeErrorGeneric;
+    }
+  }
+
+  String _regimeLabel(String regime) {
+    switch (regime.toUpperCase()) {
+      case 'BULL':
+        return l10n.evStreamRegimeBull;
+      case 'BEAR':
+        return l10n.evStreamRegimeBear;
+      default:
+        return l10n.evStreamRegimeSideways;
+    }
+  }
+
+  String _impactLabel(String impact) {
+    switch (impact.toUpperCase()) {
+      case 'BULLISH':
+        return l10n.evStreamImpactBull;
+      case 'BEARISH':
+        return l10n.evStreamImpactBear;
+      default:
+        return l10n.evStreamImpactNeutral;
+    }
+  }
+
+  String _weaponTypesList(String types, bool dutch) {
     if (types.isEmpty) return '';
-
-    final typeList = types.split(',');
-    final Map<String, String> weaponNamesEN = {
+    const en = {
       'knife': 'knife',
       'handgun': 'handgun/pistol',
       'shotgun': 'shotgun',
@@ -838,8 +432,7 @@ class EventRenderer {
       'sniper': 'sniper rifle',
       'smg': 'submachine gun',
     };
-
-    final Map<String, String> weaponNamesNL = {
+    const nl = {
       'knife': 'mes',
       'handgun': 'pistool',
       'shotgun': 'jachtgeweer',
@@ -847,76 +440,32 @@ class EventRenderer {
       'sniper': 'sluipschuttersgeweer',
       'smg': 'automatisch pistool',
     };
-
-    final names = typeList.map((type) {
-      final cleanType = type.trim();
-      return isDutch
-          ? (weaponNamesNL[cleanType] ?? cleanType)
-          : (weaponNamesEN[cleanType] ?? cleanType);
-    }).toList();
-
+    final m = dutch ? nl : en;
+    final names = types
+        .split(',')
+        .map((t) => m[t.trim()] ?? t.trim())
+        .toList();
+    if (names.isEmpty) {
+      return '';
+    }
     if (names.length == 1) {
       return names[0];
-    } else if (names.length == 2) {
-      return isDutch
+    }
+    if (names.length == 2) {
+      return dutch
           ? '${names[0]} of ${names[1]}'
           : '${names[0]} or ${names[1]}';
-    } else {
-      final lastItem = names.removeLast();
-      final joined = names.join(', ');
-      return isDutch ? '$joined of $lastItem' : '$joined or $lastItem';
     }
+    final last = names.removeLast();
+    final join = names.join(', ');
+    return dutch ? '$join of $last' : '$join or $last';
   }
 
-  double _asNumber(dynamic value) {
+  static double _asNumber(dynamic value) {
     if (value is num) {
       return value.toDouble();
     }
     return double.tryParse(value?.toString() ?? '') ?? 0;
-  }
-
-  String _regimeLabelEn(String regime) {
-    switch (regime.toUpperCase()) {
-      case 'BULL':
-        return 'bullish';
-      case 'BEAR':
-        return 'bearish';
-      default:
-        return 'sideways';
-    }
-  }
-
-  String _regimeLabelNl(String regime) {
-    switch (regime.toUpperCase()) {
-      case 'BULL':
-        return 'stijgend';
-      case 'BEAR':
-        return 'dalend';
-      default:
-        return 'zijwaarts';
-    }
-  }
-
-  String _impactLabelEn(String impact) {
-    switch (impact.toUpperCase()) {
-      case 'BULLISH':
-        return 'Bullish';
-      case 'BEARISH':
-        return 'Bearish';
-      default:
-        return 'Neutral';
-    }
-  }
-
-  String _impactLabelNl(String impact) {
-    switch (impact.toUpperCase()) {
-      case 'BULLISH':
-        return 'Positief';
-      case 'BEARISH':
-        return 'Negatief';
-      default:
-        return 'Neutraal';
-    }
   }
 
   String _fmt(double value, int decimals) => value.toStringAsFixed(decimals);

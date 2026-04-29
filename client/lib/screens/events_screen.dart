@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 
 class EventsScreen extends StatefulWidget {
@@ -19,9 +21,6 @@ class _EventsScreenState extends State<EventsScreen> {
   List<Map<String, dynamic>> _active = const [];
   List<Map<String, dynamic>> _upcoming = const [];
   Map<int, Map<String, dynamic>> _progressByEvent = const {};
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -70,42 +69,26 @@ class _EventsScreenState extends State<EventsScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _isLoading = false);
+      final l10n = AppLocalizations.of(context);
+      if (l10n == null) return;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr('Events konden niet geladen worden.', 'Could not load events.'),
-          ),
+          content: Text(l10n.gameScreenLoadError),
           backgroundColor: Colors.red,
         ),
       );
     }
   }
 
-  String _eventTitle(Map<String, dynamic> event) {
-    final template = event['template'] as Map<String, dynamic>?;
-    if (template == null) return 'Event';
-    final title = _isNl ? template['titleNl'] : template['titleEn'];
-    return (title?.toString().trim().isNotEmpty ?? false)
-        ? title.toString()
-        : (template['titleEn']?.toString() ??
-              template['key']?.toString() ??
-              'Event');
-  }
-
-  String _eventShortDescription(Map<String, dynamic> event) {
-    final template = event['template'] as Map<String, dynamic>?;
-    if (template == null) return '';
-    final value = _isNl
-        ? template['shortDescriptionNl']
-        : template['shortDescriptionEn'];
-    return value?.toString() ?? '';
-  }
-
   String _formatDateTime(String? iso) {
-    if (iso == null || iso.isEmpty) return '-';
+    if (iso == null || iso.isEmpty) {
+      return '—';
+    }
     final parsed = DateTime.tryParse(iso);
-    if (parsed == null) return '-';
+    if (parsed == null) {
+      return '—';
+    }
     final local = parsed.toLocal();
     final day = local.day.toString().padLeft(2, '0');
     final month = local.month.toString().padLeft(2, '0');
@@ -133,29 +116,35 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Future<void> _openEventDetails(Map<String, dynamic> event) async {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return;
+    }
+
     final eventId = (event['id'] as num?)?.toInt();
     if (eventId == null) {
       return;
     }
 
     final details = await _loadEventDetails(eventId);
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     if (details == null) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Eventdetails konden niet geladen worden.',
-              'Could not load event details.',
-            ),
-          ),
+          content: Text(l10n.gameScreenDetailsLoadError),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
+
+    final template = details['template'] is Map
+        ? Map<String, dynamic>.from(details['template'] as Map)
+        : null;
 
     await showDialog<void>(
       context: context,
@@ -177,7 +166,7 @@ class _EventsScreenState extends State<EventsScreen> {
         return AlertDialog(
           backgroundColor: const Color(0xFF111722),
           title: Text(
-            _eventTitle(details),
+            localizedGameEventTitle(l10n, template),
             style: const TextStyle(color: Colors.white),
           ),
           content: SizedBox(
@@ -187,26 +176,35 @@ class _EventsScreenState extends State<EventsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _eventShortDescription(details),
+                    localizedGameEventShortDescription(l10n, template),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${_tr('Status', 'Status')}: ${details['status'] ?? '-'}',
+                    l10n.gameScreenStatusPrefix(
+                      localizedGameEventLiveStatus(
+                        l10n,
+                        details['status']?.toString(),
+                      ),
+                    ),
                     style: const TextStyle(color: Colors.white),
                   ),
                   Text(
-                    '${_tr('Start', 'Start')}: ${_formatDateTime(details['startedAt']?.toString())}',
+                    l10n.gameScreenStartLine(
+                      _formatDateTime(details['startedAt']?.toString()),
+                    ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   Text(
-                    '${_tr('Einde', 'End')}: ${_formatDateTime(details['endsAt']?.toString())}',
+                    l10n.gameScreenEndLine(
+                      _formatDateTime(details['endsAt']?.toString()),
+                    ),
                     style: const TextStyle(color: Colors.white70),
                   ),
                   if (myProgress != null) ...[
                     const SizedBox(height: 14),
                     Text(
-                      _tr('Jouw voortgang', 'Your progress'),
+                      l10n.gameScreenYourProgress,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -214,17 +212,21 @@ class _EventsScreenState extends State<EventsScreen> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      '${_tr('Score', 'Score')}: ${((myProgress['score'] as num?) ?? 0).toStringAsFixed(0)}',
+                      l10n.gameScreenScore(
+                        ((myProgress['score'] as num?) ?? 0).toStringAsFixed(0),
+                      ),
                       style: const TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      '${_tr('Rank', 'Rank')}: ${(myProgress['rank'] as num?)?.toInt() ?? '-'}',
+                      l10n.gameScreenRank(
+                        (myProgress['rank'] as num?)?.toInt().toString() ?? '—',
+                      ),
                       style: const TextStyle(color: Colors.white70),
                     ),
                   ],
                   const SizedBox(height: 14),
                   Text(
-                    _tr('Leaderboard (Top 10)', 'Leaderboard (Top 10)'),
+                    l10n.gameScreenLeaderboard,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
@@ -233,10 +235,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   const SizedBox(height: 8),
                   if (topParticipants.isEmpty)
                     Text(
-                      _tr(
-                        'Nog geen leaderboard data.',
-                        'No leaderboard data yet.',
-                      ),
+                      l10n.gameScreenNoLeaderboard,
                       style: const TextStyle(color: Colors.white60),
                     )
                   else
@@ -248,7 +247,7 @@ class _EventsScreenState extends State<EventsScreen> {
                       final score = (entry['score'] as num?)?.toDouble() ?? 0;
                       final username =
                           player['username']?.toString() ??
-                          _tr('Onbekend', 'Unknown');
+                          l10n.gameScreenUnknownPlayer;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 6),
                         child: Row(
@@ -283,7 +282,7 @@ class _EventsScreenState extends State<EventsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(_tr('Sluiten', 'Close')),
+              child: Text(l10n.close),
             ),
           ],
         );
@@ -291,7 +290,14 @@ class _EventsScreenState extends State<EventsScreen> {
     );
   }
 
-  Widget _buildEventCard(Map<String, dynamic> event, {required bool isActive}) {
+  Widget _buildEventCard(
+    AppLocalizations l10n,
+    Map<String, dynamic> event, {
+    required bool isActive,
+  }) {
+    final template = event['template'] is Map
+        ? Map<String, dynamic>.from(event['template'] as Map)
+        : null;
     final eventId = (event['id'] as num?)?.toInt();
     final progress = eventId != null ? _progressByEvent[eventId] : null;
     final score = (progress?['score'] as num?)?.toDouble();
@@ -312,7 +318,7 @@ class _EventsScreenState extends State<EventsScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      _eventTitle(event),
+                      localizedGameEventTitle(l10n, template),
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -336,8 +342,8 @@ class _EventsScreenState extends State<EventsScreen> {
                     ),
                     child: Text(
                       isActive
-                          ? _tr('Actief', 'Active')
-                          : _tr('Gepland', 'Scheduled'),
+                          ? l10n.gameCardActive
+                          : l10n.gameCardScheduled,
                       style: TextStyle(
                         color: isActive
                             ? Colors.greenAccent
@@ -350,28 +356,39 @@ class _EventsScreenState extends State<EventsScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-              if (_eventShortDescription(event).isNotEmpty)
+              if (localizedGameEventShortDescription(
+                l10n,
+                template,
+              ).isNotEmpty)
                 Text(
-                  _eventShortDescription(event),
+                  localizedGameEventShortDescription(l10n, template),
                   style: const TextStyle(color: Colors.white70),
                 ),
               const SizedBox(height: 10),
               Text(
-                '${_tr('Start', 'Start')}: ${_formatDateTime(event['startedAt']?.toString())}',
+                l10n.gameScreenStartLine(
+                  _formatDateTime(event['startedAt']?.toString()),
+                ),
                 style: const TextStyle(color: Colors.white60, fontSize: 12),
               ),
               Text(
-                '${_tr('Einde', 'End')}: ${_formatDateTime(event['endsAt']?.toString())}',
+                l10n.gameScreenEndLine(
+                  _formatDateTime(event['endsAt']?.toString()),
+                ),
                 style: const TextStyle(color: Colors.white60, fontSize: 12),
               ),
               if (progress != null) ...[
                 const SizedBox(height: 10),
                 Text(
-                  '${_tr('Jouw score', 'Your score')}: ${(score ?? 0).toStringAsFixed(0)}',
+                  l10n.gameCardYourScore(
+                    (score ?? 0).toStringAsFixed(0),
+                  ),
                   style: const TextStyle(color: Colors.white),
                 ),
                 Text(
-                  '${_tr('Jouw rank', 'Your rank')}: ${rank ?? '-'}',
+                  l10n.gameCardYourRank(
+                    rank?.toString() ?? '—',
+                  ),
                   style: const TextStyle(color: Colors.white),
                 ),
                 if (progressPercent != null)
@@ -388,10 +405,7 @@ class _EventsScreenState extends State<EventsScreen> {
               ],
               const SizedBox(height: 10),
               Text(
-                _tr(
-                  'Tik voor details en leaderboard',
-                  'Tap for details and leaderboard',
-                ),
+                l10n.gameCardTapDetails,
                 style: const TextStyle(
                   color: Colors.lightBlueAccent,
                   fontSize: 12,
@@ -406,6 +420,7 @@ class _EventsScreenState extends State<EventsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -416,7 +431,7 @@ class _EventsScreenState extends State<EventsScreen> {
         padding: const EdgeInsets.all(12),
         children: [
           Text(
-            _tr('Live Events', 'Live Events'),
+            l10n.gameScreenSectionLive,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -426,16 +441,15 @@ class _EventsScreenState extends State<EventsScreen> {
           const SizedBox(height: 10),
           if (_active.isEmpty)
             Text(
-              _tr(
-                'Er zijn nu geen actieve events.',
-                'There are no active events right now.',
-              ),
+              l10n.gameScreenNoActive,
               style: const TextStyle(color: Colors.white70),
             ),
-          ..._active.map((event) => _buildEventCard(event, isActive: true)),
+          ..._active.map(
+            (event) => _buildEventCard(l10n, event, isActive: true),
+          ),
           const SizedBox(height: 18),
           Text(
-            _tr('Aankomende Events', 'Upcoming Events'),
+            l10n.gameScreenSectionUpcoming,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -445,13 +459,12 @@ class _EventsScreenState extends State<EventsScreen> {
           const SizedBox(height: 10),
           if (_upcoming.isEmpty)
             Text(
-              _tr(
-                'Er zijn geen geplande events.',
-                'There are no upcoming events.',
-              ),
+              l10n.gameScreenNoUpcoming,
               style: const TextStyle(color: Colors.white70),
             ),
-          ..._upcoming.map((event) => _buildEventCard(event, isActive: false)),
+          ..._upcoming.map(
+            (event) => _buildEventCard(l10n, event, isActive: false),
+          ),
         ],
       ),
     );

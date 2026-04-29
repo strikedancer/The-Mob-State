@@ -5806,4 +5806,531 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get supportMod_other => 'Otro';
+
+  @override
+  String get gameEventDefaultTitle => 'Event';
+
+  @override
+  String get gameEventStatusActive => 'Active';
+
+  @override
+  String get gameEventStatusScheduled => 'Scheduled';
+
+  @override
+  String get gameEventStatusCompleted => 'Completed';
+
+  @override
+  String get gameEventStatusDraft => 'Draft';
+
+  @override
+  String get gameEventTmplWeeklyVehicleTheftHuntTitle => 'Weekly Theft Hunt';
+
+  @override
+  String get gameEventTmplWeeklyVehicleTheftHuntDesc =>
+      'Steal as many vehicles as you can during the event window.';
+
+  @override
+  String get gameEventTmplSmugglingSurgeTitle => 'Smuggling Surge';
+
+  @override
+  String get gameEventTmplSmugglingSurgeDesc =>
+      'Move the most smuggled contraband this round.';
+
+  @override
+  String get gameEventTmplLabOutputChallengeTitle => 'Lab Output Challenge';
+
+  @override
+  String get gameEventTmplLabOutputChallengeDesc =>
+      'Produce the most output while the event is live.';
+
+  @override
+  String get gameEventTmplStreetCrimeSpreeTitle => 'Street Crime Spree';
+
+  @override
+  String get gameEventTmplStreetCrimeSpreeDesc =>
+      'Complete as many crimes as possible in the live window.';
+
+  @override
+  String get gameScreenLoadError => 'Could not load events.';
+
+  @override
+  String get gameScreenDetailsLoadError => 'Could not load event details.';
+
+  @override
+  String get gameScreenSectionLive => 'Live Events';
+
+  @override
+  String get gameScreenNoActive => 'There are no active events right now.';
+
+  @override
+  String get gameScreenSectionUpcoming => 'Upcoming Events';
+
+  @override
+  String get gameScreenNoUpcoming => 'There are no scheduled events.';
+
+  @override
+  String gameScreenStatusPrefix(String value) {
+    return 'Status: $value';
+  }
+
+  @override
+  String gameScreenStartLine(String date) {
+    return 'Start: $date';
+  }
+
+  @override
+  String gameScreenEndLine(String date) {
+    return 'End: $date';
+  }
+
+  @override
+  String get gameScreenYourProgress => 'Your progress';
+
+  @override
+  String gameScreenScore(String value) {
+    return 'Score: $value';
+  }
+
+  @override
+  String gameScreenRank(String value) {
+    return 'Rank: $value';
+  }
+
+  @override
+  String get gameScreenLeaderboard => 'Leaderboard (top 10)';
+
+  @override
+  String get gameScreenNoLeaderboard => 'No leaderboard data yet.';
+
+  @override
+  String get gameScreenUnknownPlayer => 'Unknown';
+
+  @override
+  String get gameCardActive => 'Active';
+
+  @override
+  String get gameCardScheduled => 'Planned';
+
+  @override
+  String gameCardYourScore(String value) {
+    return 'Your score: $value';
+  }
+
+  @override
+  String gameCardYourRank(String value) {
+    return 'Your rank: $value';
+  }
+
+  @override
+  String get gameCardTapDetails => 'Tap for details and leaderboard';
+
+  @override
+  String get eventFeedDisconnected => 'Disconnected from the event stream';
+
+  @override
+  String get eventFeedReconnecting => 'Reconnecting...';
+
+  @override
+  String get eventFeedConnectedWaiting => 'Connected — waiting for events…';
+
+  @override
+  String get eventFeedConnecting => 'Connecting to the event stream…';
+
+  @override
+  String get evStreamConnectionEstablished => 'Connected to the event stream';
+
+  @override
+  String get evStreamAuthRegistered => 'Account created successfully.';
+
+  @override
+  String get evStreamAuthLogin => 'Welcome back.';
+
+  @override
+  String evStreamCrimeSuccess(
+    String crimeName,
+    String reward,
+    String xpGained,
+  ) {
+    return 'Successfully completed $crimeName! +EUR $reward, +$xpGained XP';
+  }
+
+  @override
+  String evStreamCrimeSuccessJailed(
+    String crimeName,
+    String reward,
+    String xpGained,
+    int minutes,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes minutes',
+      one: '1 minute',
+    );
+    return 'Successfully completed $crimeName! +EUR $reward, +$xpGained XP — but caught! Jailed for $_temp0.';
+  }
+
+  @override
+  String get evStreamCrimeSeizedVehicle =>
+      ' Your vehicle was seized by the police.';
+
+  @override
+  String get evStreamCrimeSeizedWeapon =>
+      ' Your weapon was confiscated by the police.';
+
+  @override
+  String evStreamCrimeSuccessCleared(
+    String crimeName,
+    int count,
+    String xpGained,
+  ) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count convictions',
+      one: '1 conviction',
+    );
+    return 'Successfully completed $crimeName! Criminal record cleared: $_temp0 removed. +$xpGained XP';
+  }
+
+  @override
+  String evStreamCrimeFailedArrested(String authority, String crimeName) {
+    return 'Arrested by $authority during a $crimeName attempt.';
+  }
+
+  @override
+  String evStreamCrimeFailedJailed(String crimeName, int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes minutes',
+      one: '1 minute',
+    );
+    return 'Caught during $crimeName! Jailed for $_temp0.';
+  }
+
+  @override
+  String evStreamCrimeFailedBase(String crimeName) {
+    return 'Failed to complete $crimeName';
+  }
+
+  @override
+  String evStreamChaseDamage(String pct) {
+    return ' Your vehicle took $pct% damage during the chase.';
+  }
+
+  @override
+  String evStreamCrimeJailed(String crimeName, int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes minutes',
+      one: '1 minute',
+    );
+    return 'Caught during $crimeName! Jailed for $_temp0.';
+  }
+
+  @override
+  String evStreamJobSuccess(String jobName, String earnings, String xpGained) {
+    return 'Completed work as $jobName! +€$earnings, +$xpGained XP';
+  }
+
+  @override
+  String evStreamJobSuccessEdu(String pct) {
+    return ' (Education bonus +$pct%)';
+  }
+
+  @override
+  String evStreamJobFailedXp(String jobName, String xpLost) {
+    return 'Failed to complete job as $jobName. −$xpLost XP';
+  }
+
+  @override
+  String evStreamJobFailed(String jobName) {
+    return 'Failed to complete job as $jobName';
+  }
+
+  @override
+  String get evStreamJobErrorInvalid => 'Invalid job';
+
+  @override
+  String get evStreamJobErrorLevel => 'Your rank is too low for this job';
+
+  @override
+  String evStreamJobErrorCooldown(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes more minutes',
+      one: '1 more minute',
+    );
+    return 'This job is on cooldown. Wait $_temp0';
+  }
+
+  @override
+  String evStreamJobErrorGeneric(String reason) {
+    return 'Job error: $reason';
+  }
+
+  @override
+  String evStreamTravelDeparted(String dest, String cost) {
+    return 'Flying to $dest… −€$cost';
+  }
+
+  @override
+  String evStreamTravelArrived(String country) {
+    return 'Arrived in $country.';
+  }
+
+  @override
+  String evStreamBankDeposit(String amount) {
+    return 'Deposited €$amount to the bank';
+  }
+
+  @override
+  String evStreamBankWithdraw(String amount) {
+    return 'Withdrew €$amount from the bank';
+  }
+
+  @override
+  String evStreamCryptoBuy(String quantity, String symbol, String total) {
+    return 'Bought $quantity $symbol for €$total';
+  }
+
+  @override
+  String evStreamCryptoSell(
+    String quantity,
+    String symbol,
+    String total,
+    String pnl,
+  ) {
+    return 'Sold $quantity $symbol for €$total (P&L €$pnl)';
+  }
+
+  @override
+  String evStreamCryptoAlert(String symbol, String price, String chg) {
+    return '$symbol alert: €$price ($chg% 24h)';
+  }
+
+  @override
+  String evStreamCryptoOrderFilled(
+    String order,
+    String side,
+    String quantity,
+    String symbol,
+    String price,
+  ) {
+    return '$order $side filled: $quantity $symbol at €$price';
+  }
+
+  @override
+  String evStreamCryptoOrderTriggered(
+    String trig,
+    String symbol,
+    String price,
+  ) {
+    return '$trig triggered for $symbol at €$price';
+  }
+
+  @override
+  String evStreamCryptoRegime(String regime, String move) {
+    return 'Market regime changed to $regime ($move% 24h)';
+  }
+
+  @override
+  String evStreamCryptoNews(String sentiment, String headline) {
+    return '$sentiment news: $headline';
+  }
+
+  @override
+  String evStreamCryptoMissionDaily(String title, String reward) {
+    return 'Daily mission complete: $title (+EUR $reward)';
+  }
+
+  @override
+  String evStreamCryptoMissionWeekly(String title, String reward) {
+    return 'Weekly mission complete: $title (+EUR $reward)';
+  }
+
+  @override
+  String evStreamCryptoLeaderboard(String rank, String reward) {
+    return 'Crypto leaderboard reward: #$rank (+EUR $reward)';
+  }
+
+  @override
+  String get evStreamRegimeBull => 'bullish';
+
+  @override
+  String get evStreamRegimeBear => 'bearish';
+
+  @override
+  String get evStreamRegimeSideways => 'sideways';
+
+  @override
+  String get evStreamImpactBull => 'Bullish';
+
+  @override
+  String get evStreamImpactBear => 'Bearish';
+
+  @override
+  String get evStreamImpactNeutral => 'Neutral';
+
+  @override
+  String evStreamPropertyBought(String name, String cost) {
+    return 'Purchased $name for €$cost';
+  }
+
+  @override
+  String evStreamCrewCreated(String name) {
+    return 'Created crew: $name';
+  }
+
+  @override
+  String evStreamCrewJoined(String name) {
+    return 'Joined crew: $name';
+  }
+
+  @override
+  String evStreamCrewWarDeclared(String a, String b, String type) {
+    return 'Crew war declared: #$a vs #$b ($type)';
+  }
+
+  @override
+  String evStreamCrewWarStarted(String a, String b) {
+    return 'Crew war started: #$a vs #$b';
+  }
+
+  @override
+  String evStreamCrewLockdown(String id) {
+    return 'Crew war #$id is in lockdown';
+  }
+
+  @override
+  String evStreamCrewResolved(String id, String winner) {
+    return 'Crew war #$id resolved. Winner: crew #$winner';
+  }
+
+  @override
+  String evStreamCrewAction(String action, String points) {
+    return 'Crew war action: $action (+$points pt)';
+  }
+
+  @override
+  String evStreamHeistOk(String name, String money) {
+    return 'Heist “$name” successful! +€$money';
+  }
+
+  @override
+  String evStreamHeistFail(String name) {
+    return 'Heist “$name” failed.';
+  }
+
+  @override
+  String evStreamHospital(String hp, String cost) {
+    return 'Treated in hospital! +$hp health, −€$cost';
+  }
+
+  @override
+  String evStreamPoliceArrested(String mins) {
+    return 'Arrested! Jailed for $mins minutes';
+  }
+
+  @override
+  String get evStreamPoliceEscaped => 'You escaped the police.';
+
+  @override
+  String get evStreamFbiRaid => 'FBI raid! You lost property and money.';
+
+  @override
+  String get evStreamErrInsufficientFunds => 'Not enough money';
+
+  @override
+  String get evStreamErrInsufficientHealth =>
+      'Not enough health for this action';
+
+  @override
+  String evStreamErrInsufficientRank(String rank) {
+    return 'Requires rank $rank';
+  }
+
+  @override
+  String evStreamErrJailed(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes more minutes',
+      one: '1 more minute',
+    );
+    return 'You are in jail for $_temp0';
+  }
+
+  @override
+  String get evStreamErrNoHealthDefault =>
+      'You need to rest and recover your health';
+
+  @override
+  String evStreamErrCooldown(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: '$seconds seconds',
+      one: '1 second',
+    );
+    return 'Wait $_temp0 before trying again';
+  }
+
+  @override
+  String get evStreamErrRescuerJailed =>
+      'You cannot help others while you are in jail';
+
+  @override
+  String get evStreamErrTargetNotJailed => 'That player is not in jail';
+
+  @override
+  String get evStreamErrCannotRescueSelf => 'You cannot free yourself';
+
+  @override
+  String get evStreamJailbreakOk => 'Jailbreak successful! The player is free.';
+
+  @override
+  String get evStreamJailbreakFail =>
+      'Jailbreak failed! The player is still in jail.';
+
+  @override
+  String evStreamJailbreakCaught(String mins) {
+    return 'Jailbreak failed! You were caught and jailed for $mins minutes.';
+  }
+
+  @override
+  String evStreamBailPaid(String amount) {
+    return 'Bail paid: €$amount. You are free.';
+  }
+
+  @override
+  String get evStreamErrInternal => 'Something went wrong. Please try again.';
+
+  @override
+  String evStreamTest(String msg) {
+    return 'Test: $msg';
+  }
+
+  @override
+  String get evStreamNoCriminalRecord => 'You have no criminal record to clear';
+
+  @override
+  String get evStreamWeaponSelectRequired =>
+      'Select a crime weapon before committing this crime';
+
+  @override
+  String evStreamWeaponNotSuitable(String types) {
+    return 'You need a suitable weapon: $types';
+  }
+
+  @override
+  String get evStreamJobFallbackName => 'job';
+
+  @override
+  String evStreamUnknownKey(String key) {
+    return '$key';
+  }
 }

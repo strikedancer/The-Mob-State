@@ -29,12 +29,12 @@ class EventFeed extends StatelessWidget {
                 const Icon(Icons.signal_wifi_off, size: 48, color: Colors.grey),
                 const SizedBox(height: 16),
                 Text(
-                  'Disconnected from event stream',
+                  l10n.eventFeedDisconnected,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Reconnecting...',
+                  l10n.eventFeedReconnecting,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
@@ -55,9 +55,9 @@ class EventFeed extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  eventProvider.isConnected 
-                      ? 'Connected - waiting for events...'
-                      : 'Connecting to event stream...',
+                  eventProvider.isConnected
+                      ? l10n.eventFeedConnectedWaiting
+                      : l10n.eventFeedConnecting,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ],
@@ -79,7 +79,7 @@ class EventFeed extends StatelessWidget {
           itemBuilder: (context, index) {
             final event = displayEvents[index];
             final message = renderer.renderEvent(event.eventKey, event.params);
-            final timeAgo = _formatTimeAgo(event.timestamp);
+            final timeAgo = _formatTimeAgo(l10n, event.timestamp);
 
             return ListTile(
               dense: true,
@@ -140,21 +140,18 @@ class EventFeed extends StatelessWidget {
   }
 
   /// Format timestamp as relative time
-  String _formatTimeAgo(DateTime timestamp) {
+  String _formatTimeAgo(AppLocalizations l10n, DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
     if (difference.inSeconds < 60) {
-      return 'Just now';
+      return l10n.supportTimeJustNow;
     } else if (difference.inMinutes < 60) {
-      final minutes = difference.inMinutes;
-      return '$minutes minute${minutes == 1 ? '' : 's'} ago';
+      return l10n.supportTimeMinutesAgo(difference.inMinutes);
     } else if (difference.inHours < 24) {
-      final hours = difference.inHours;
-      return '$hours hour${hours == 1 ? '' : 's'} ago';
+      return l10n.supportTimeHoursAgo(difference.inHours);
     } else {
-      final days = difference.inDays;
-      return '$days day${days == 1 ? '' : 's'} ago';
+      return l10n.supportTimeDaysAgo(difference.inDays);
     }
   }
 }

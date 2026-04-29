@@ -2911,5 +2911,622 @@
   "supportMod_profile": "Profile",
   "supportMod_settings": "Settings",
   "supportMod_events": "Events / leaderboard",
-  "supportMod_other": "Other"
+  "supportMod_other": "Other",
+  "gameEventDefaultTitle": "Event",
+  "gameEventStatusActive": "Active",
+  "gameEventStatusScheduled": "Scheduled",
+  "gameEventStatusCompleted": "Completed",
+  "gameEventStatusDraft": "Draft",
+  "gameEventTmplWeeklyVehicleTheftHuntTitle": "Weekly Theft Hunt",
+  "gameEventTmplWeeklyVehicleTheftHuntDesc": "Steal as many vehicles as you can during the event window.",
+  "gameEventTmplSmugglingSurgeTitle": "Smuggling Surge",
+  "gameEventTmplSmugglingSurgeDesc": "Move the most smuggled contraband this round.",
+  "gameEventTmplLabOutputChallengeTitle": "Lab Output Challenge",
+  "gameEventTmplLabOutputChallengeDesc": "Produce the most output while the event is live.",
+  "gameEventTmplStreetCrimeSpreeTitle": "Street Crime Spree",
+  "gameEventTmplStreetCrimeSpreeDesc": "Complete as many crimes as possible in the live window.",
+  "gameScreenLoadError": "Could not load events.",
+  "gameScreenDetailsLoadError": "Could not load event details.",
+  "gameScreenSectionLive": "Live Events",
+  "gameScreenNoActive": "There are no active events right now.",
+  "gameScreenSectionUpcoming": "Upcoming Events",
+  "gameScreenNoUpcoming": "There are no scheduled events.",
+  "gameScreenStatusPrefix": "Status: {value}",
+  "@gameScreenStatusPrefix": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenStartLine": "Start: {date}",
+  "@gameScreenStartLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenEndLine": "End: {date}",
+  "@gameScreenEndLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenYourProgress": "Your progress",
+  "gameScreenScore": "Score: {value}",
+  "@gameScreenScore": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenRank": "Rank: {value}",
+  "@gameScreenRank": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenLeaderboard": "Leaderboard (top 10)",
+  "gameScreenNoLeaderboard": "No leaderboard data yet.",
+  "gameScreenUnknownPlayer": "Unknown",
+  "gameCardActive": "Active",
+  "gameCardScheduled": "Planned",
+  "gameCardYourScore": "Your score: {value}",
+  "@gameCardYourScore": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardYourRank": "Your rank: {value}",
+  "@gameCardYourRank": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardTapDetails": "Tap for details and leaderboard",
+  "eventFeedDisconnected": "Disconnected from the event stream",
+  "eventFeedReconnecting": "Reconnecting...",
+  "eventFeedConnectedWaiting": "Connected — waiting for events…",
+  "eventFeedConnecting": "Connecting to the event stream…",
+  "evStreamConnectionEstablished": "Connected to the event stream",
+  "evStreamAuthRegistered": "Account created successfully.",
+  "evStreamAuthLogin": "Welcome back.",
+  "evStreamCrimeSuccess": "Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP",
+  "@evStreamCrimeSuccess": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      },
+      "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeSuccessJailed": "Successfully completed {crimeName}! +EUR {reward}, +{xpGained} XP — but caught! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "@evStreamCrimeSuccessJailed": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      },
+      "xpGained": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamCrimeSeizedVehicle": " Your vehicle was seized by the police.",
+  "evStreamCrimeSeizedWeapon": " Your weapon was confiscated by the police.",
+  "evStreamCrimeSuccessCleared": "Successfully completed {crimeName}! Criminal record cleared: {count, plural, one{1 conviction} other{{count} convictions}} removed. +{xpGained} XP",
+  "@evStreamCrimeSuccessCleared": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeFailedArrested": "Arrested by {authority} during a {crimeName} attempt.",
+  "@evStreamCrimeFailedArrested": {
+    "placeholders": {
+      "authority": {
+        "type": "String"
+      },
+      "crimeName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeFailedJailed": "Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "@evStreamCrimeFailedJailed": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamCrimeFailedBase": "Failed to complete {crimeName}",
+  "@evStreamCrimeFailedBase": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamChaseDamage": " Your vehicle took {pct}% damage during the chase.",
+  "@evStreamChaseDamage": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeJailed": "Caught during {crimeName}! Jailed for {minutes, plural, one{1 minute} other{{minutes} minutes}}.",
+  "@evStreamCrimeJailed": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamJobSuccess": "Completed work as {jobName}! +€{earnings}, +{xpGained} XP",
+  "@evStreamJobSuccess": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      },
+      "earnings": {
+        "type": "String"
+      },
+      "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobSuccessEdu": " (Education bonus +{pct}%)",
+  "@evStreamJobSuccessEdu": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobFailedXp": "Failed to complete job as {jobName}. −{xpLost} XP",
+  "@evStreamJobFailedXp": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      },
+      "xpLost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobFailed": "Failed to complete job as {jobName}",
+  "@evStreamJobFailed": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobErrorInvalid": "Invalid job",
+  "evStreamJobErrorLevel": "Your rank is too low for this job",
+  "evStreamJobErrorCooldown": "This job is on cooldown. Wait {minutes, plural, one{1 more minute} other{{minutes} more minutes}}",
+  "@evStreamJobErrorCooldown": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamJobErrorGeneric": "Job error: {reason}",
+  "@evStreamJobErrorGeneric": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamTravelDeparted": "Flying to {dest}… −€{cost}",
+  "@evStreamTravelDeparted": {
+    "placeholders": {
+      "dest": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamTravelArrived": "Arrived in {country}.",
+  "@evStreamTravelArrived": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamBankDeposit": "Deposited €{amount} to the bank",
+  "evStreamBankWithdraw": "Withdrew €{amount} from the bank",
+  "@evStreamBankDeposit": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamBankWithdraw": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoBuy": "Bought {quantity} {symbol} for €{total}",
+  "@evStreamCryptoBuy": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoSell": "Sold {quantity} {symbol} for €{total} (P&L €{pnl})",
+  "@evStreamCryptoSell": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "pnl": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoAlert": "{symbol} alert: €{price} ({chg}% 24h)",
+  "@evStreamCryptoAlert": {
+    "placeholders": {
+      "symbol": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "chg": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoOrderFilled": "{order} {side} filled: {quantity} {symbol} at €{price}",
+  "@evStreamCryptoOrderFilled": {
+    "placeholders": {
+      "order": {
+        "type": "String"
+      },
+      "side": {
+        "type": "String"
+      },
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoOrderTriggered": "{trig} triggered for {symbol} at €{price}",
+  "@evStreamCryptoOrderTriggered": {
+    "placeholders": {
+      "trig": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoRegime": "Market regime changed to {regime} ({move}% 24h)",
+  "@evStreamCryptoRegime": {
+    "placeholders": {
+      "regime": {
+        "type": "String"
+      },
+      "move": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoNews": "{sentiment} news: {headline}",
+  "@evStreamCryptoNews": {
+    "placeholders": {
+      "sentiment": {
+        "type": "String"
+      },
+      "headline": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoMissionDaily": "Daily mission complete: {title} (+EUR {reward})",
+  "evStreamCryptoMissionWeekly": "Weekly mission complete: {title} (+EUR {reward})",
+  "@evStreamCryptoMissionDaily": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCryptoMissionWeekly": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoLeaderboard": "Crypto leaderboard reward: #{rank} (+EUR {reward})",
+  "@evStreamCryptoLeaderboard": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRegimeBull": "bullish",
+  "evStreamRegimeBear": "bearish",
+  "evStreamRegimeSideways": "sideways",
+  "evStreamImpactBull": "Bullish",
+  "evStreamImpactBear": "Bearish",
+  "evStreamImpactNeutral": "Neutral",
+  "evStreamPropertyBought": "Purchased {name} for €{cost}",
+  "@evStreamPropertyBought": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrewCreated": "Created crew: {name}",
+  "evStreamCrewJoined": "Joined crew: {name}",
+  "@evStreamCrewCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrewWarDeclared": "Crew war declared: #{a} vs #{b} ({type})",
+  "evStreamCrewWarStarted": "Crew war started: #{a} vs #{b}",
+  "@evStreamCrewWarDeclared": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewWarStarted": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrewLockdown": "Crew war #{id} is in lockdown",
+  "evStreamCrewResolved": "Crew war #{id} resolved. Winner: crew #{winner}",
+  "evStreamCrewAction": "Crew war action: {action} (+{points} pt)",
+  "@evStreamCrewLockdown": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewResolved": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      },
+      "winner": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      },
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamHeistOk": "Heist “{name}” successful! +€{money}",
+  "evStreamHeistFail": "Heist “{name}” failed.",
+  "@evStreamHeistOk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "money": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamHeistFail": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamHospital": "Treated in hospital! +{hp} health, −€{cost}",
+  "@evStreamHospital": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamPoliceArrested": "Arrested! Jailed for {mins} minutes",
+  "evStreamPoliceEscaped": "You escaped the police.",
+  "evStreamFbiRaid": "FBI raid! You lost property and money.",
+  "@evStreamPoliceArrested": {
+    "placeholders": {
+      "mins": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamErrInsufficientFunds": "Not enough money",
+  "evStreamErrInsufficientHealth": "Not enough health for this action",
+  "evStreamErrInsufficientRank": "Requires rank {rank}",
+  "evStreamErrJailed": "You are in jail for {minutes, plural, one{1 more minute} other{{minutes} more minutes}}",
+  "evStreamErrNoHealthDefault": "You need to rest and recover your health",
+  "evStreamErrCooldown": "Wait {seconds, plural, one{1 second} other{{seconds} seconds}} before trying again",
+  "evStreamErrRescuerJailed": "You cannot help others while you are in jail",
+  "evStreamErrTargetNotJailed": "That player is not in jail",
+  "evStreamErrCannotRescueSelf": "You cannot free yourself",
+  "evStreamJailbreakOk": "Jailbreak successful! The player is free.",
+  "evStreamJailbreakFail": "Jailbreak failed! The player is still in jail.",
+  "evStreamJailbreakCaught": "Jailbreak failed! You were caught and jailed for {mins} minutes.",
+  "evStreamBailPaid": "Bail paid: €{amount}. You are free.",
+  "evStreamErrInternal": "Something went wrong. Please try again.",
+  "evStreamTest": "Test: {msg}",
+  "@evStreamErrJailed": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@evStreamErrInsufficientRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamErrCooldown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@evStreamJailbreakCaught": {
+    "placeholders": {
+      "mins": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamBailPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamTest": {
+    "placeholders": {
+      "msg": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamNoCriminalRecord": "You have no criminal record to clear",
+  "evStreamWeaponSelectRequired": "Select a crime weapon before committing this crime",
+  "evStreamWeaponNotSuitable": "You need a suitable weapon: {types}",
+  "@evStreamWeaponNotSuitable": {
+    "placeholders": {
+      "types": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobFallbackName": "job",
+  "evStreamUnknownKey": "{key}",
+  "@evStreamUnknownKey": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  }
 }

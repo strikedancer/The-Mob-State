@@ -2911,5 +2911,622 @@
         "type": "int"
       }
     }
+  },
+  "gameEventDefaultTitle": "Event",
+  "gameEventStatusActive": "Actief",
+  "gameEventStatusScheduled": "Gepland",
+  "gameEventStatusCompleted": "Afgerond",
+  "gameEventStatusDraft": "Concept",
+  "gameEventTmplWeeklyVehicleTheftHuntTitle": "Wekelijkse Diefstaljacht",
+  "gameEventTmplWeeklyVehicleTheftHuntDesc": "Steel zoveel mogelijk voertuigen tijdens het eventvenster.",
+  "gameEventTmplSmugglingSurgeTitle": "Smokkelgolf",
+  "gameEventTmplSmugglingSurgeDesc": "Beweeg zoveel mogelijk smokkel in deze ronde.",
+  "gameEventTmplLabOutputChallengeTitle": "Lab-output Uitdaging",
+  "gameEventTmplLabOutputChallengeDesc": "Produceer de meeste productie tijdens het event.",
+  "gameEventTmplStreetCrimeSpreeTitle": "Straat Crime Spree",
+  "gameEventTmplStreetCrimeSpreeDesc": "Pleg zoveel mogelijk misdaden in het actieve venster.",
+  "gameScreenLoadError": "Events konden niet geladen worden.",
+  "gameScreenDetailsLoadError": "Eventdetails konden niet geladen worden.",
+  "gameScreenSectionLive": "Live events",
+  "gameScreenNoActive": "Er zijn nu geen actieve events.",
+  "gameScreenSectionUpcoming": "Aankomende events",
+  "gameScreenNoUpcoming": "Er zijn geen geplande events.",
+  "gameScreenStatusPrefix": "Status: {value}",
+  "@gameScreenStatusPrefix": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenStartLine": "Start: {date}",
+  "@gameScreenStartLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenEndLine": "Einde: {date}",
+  "@gameScreenEndLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenYourProgress": "Jouw voortgang",
+  "gameScreenScore": "Score: {value}",
+  "@gameScreenScore": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenRank": "Rank: {value}",
+  "@gameScreenRank": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameScreenLeaderboard": "Leaderboard (top 10)",
+  "gameScreenNoLeaderboard": "Nog geen leaderboard data.",
+  "gameScreenUnknownPlayer": "Onbekend",
+  "gameCardActive": "Actief",
+  "gameCardScheduled": "Gepland",
+  "gameCardYourScore": "Jouw score: {value}",
+  "@gameCardYourScore": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardYourRank": "Jouw rank: {value}",
+  "@gameCardYourRank": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "gameCardTapDetails": "Tik voor details en leaderboard",
+  "eventFeedDisconnected": "Geen verbinding met de event stream",
+  "eventFeedReconnecting": "Opnieuw verbinden...",
+  "eventFeedConnectedWaiting": "Verbonden — wachten op events…",
+  "eventFeedConnecting": "Verbinden met de event stream…",
+  "evStreamConnectionEstablished": "Verbonden met event stream",
+  "evStreamAuthRegistered": "Account succesvol aangemaakt.",
+  "evStreamAuthLogin": "Welkom terug.",
+  "evStreamCrimeSuccess": "Succesvol {crimeName} gepleegd! +EUR {reward}, +{xpGained} XP",
+  "@evStreamCrimeSuccess": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      },
+      "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeSuccessJailed": "Succesvol {crimeName} gepleegd! +EUR {reward}, +{xpGained} XP — maar gepakt! {minutes, plural, one{1 minuut} other{{minutes} minuten}} detentie.",
+  "@evStreamCrimeSuccessJailed": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      },
+      "xpGained": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamCrimeSeizedVehicle": " Je voertuig is in beslag genomen door de politie.",
+  "evStreamCrimeSeizedWeapon": " Je wapen is in beslag genomen door de politie.",
+  "evStreamCrimeSuccessCleared": "Succesvol {crimeName} gepleegd! Strafblad gewist: {count, plural, one{1 veroordeling} other{{count} veroordelingen}}. +{xpGained} XP",
+  "@evStreamCrimeSuccessCleared": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeFailedArrested": "Gearresteerd door {authority} tijdens een {crimeName}-poging.",
+  "@evStreamCrimeFailedArrested": {
+    "placeholders": {
+      "authority": {
+        "type": "String"
+      },
+      "crimeName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeFailedJailed": "Gepakt tijdens {crimeName}! {minutes, plural, one{1 minuut} other{{minutes} minuten}} detentie.",
+  "@evStreamCrimeFailedJailed": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamCrimeFailedBase": "Misdrijf {crimeName} mislukt",
+  "@evStreamCrimeFailedBase": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamChaseDamage": " Je voertuig kreeg {pct}% schade tijdens de achtervolging.",
+  "@evStreamChaseDamage": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrimeJailed": "Gepakt tijdens {crimeName}! {minutes, plural, one{1 minuut} other{{minutes} minuten}} detentie.",
+  "@evStreamCrimeJailed": {
+    "placeholders": {
+      "crimeName": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamJobSuccess": "Werk als {jobName} voltooid! +€{earnings}, +{xpGained} XP",
+  "@evStreamJobSuccess": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      },
+      "earnings": {
+        "type": "String"
+      },
+      "xpGained": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobSuccessEdu": " (Opleidingsbonus +{pct}%)",
+  "@evStreamJobSuccessEdu": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobFailedXp": "Werk als {jobName} mislukt. −{xpLost} XP",
+  "@evStreamJobFailedXp": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      },
+      "xpLost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobFailed": "Werk als {jobName} mislukt",
+  "@evStreamJobFailed": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobErrorInvalid": "Ongeldig werk",
+  "evStreamJobErrorLevel": "Je rank is te laag voor dit werk",
+  "evStreamJobErrorCooldown": "Dit werk heeft cooldown. Wacht {minutes, plural, one{nog 1 minuut} other{nog {minutes} minuten}}",
+  "@evStreamJobErrorCooldown": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "evStreamJobErrorGeneric": "Werkfout: {reason}",
+  "@evStreamJobErrorGeneric": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamTravelDeparted": "Vliegt naar {dest}… −€{cost}",
+  "@evStreamTravelDeparted": {
+    "placeholders": {
+      "dest": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamTravelArrived": "Aangekomen in {country}.",
+  "@evStreamTravelArrived": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamBankDeposit": "€{amount} gestort op de bankrekening",
+  "evStreamBankWithdraw": "€{amount} opgenomen van de bankrekening",
+  "@evStreamBankDeposit": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamBankWithdraw": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoBuy": "Kocht {quantity} {symbol} voor €{total}",
+  "@evStreamCryptoBuy": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoSell": "Verkocht {quantity} {symbol} voor €{total} (resultaat €{pnl})",
+  "@evStreamCryptoSell": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "pnl": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoAlert": "{symbol} alert: €{price} ({chg}% 24u)",
+  "@evStreamCryptoAlert": {
+    "placeholders": {
+      "symbol": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "chg": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoOrderFilled": "{order} {side} uitgevoerd: {quantity} {symbol} op €{price}",
+  "@evStreamCryptoOrderFilled": {
+    "placeholders": {
+      "order": {
+        "type": "String"
+      },
+      "side": {
+        "type": "String"
+      },
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoOrderTriggered": "{trig} geactiveerd voor {symbol} op €{price}",
+  "@evStreamCryptoOrderTriggered": {
+    "placeholders": {
+      "trig": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoRegime": "Marktregime: {regime} ({move}% 24u)",
+  "@evStreamCryptoRegime": {
+    "placeholders": {
+      "regime": {
+        "type": "String"
+      },
+      "move": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoNews": "{sentiment} nieuws: {headline}",
+  "@evStreamCryptoNews": {
+    "placeholders": {
+      "sentiment": {
+        "type": "String"
+      },
+      "headline": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoMissionDaily": "Dagmissie voltooid: {title} (+EUR {reward})",
+  "evStreamCryptoMissionWeekly": "Weekmissie voltooid: {title} (+EUR {reward})",
+  "@evStreamCryptoMissionDaily": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCryptoMissionWeekly": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCryptoLeaderboard": "Crypto leaderboard-beloning: #{rank} (+EUR {reward})",
+  "@evStreamCryptoLeaderboard": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamRegimeBull": "stijgend",
+  "evStreamRegimeBear": "dalend",
+  "evStreamRegimeSideways": "zijwaarts",
+  "evStreamImpactBull": "Positief",
+  "evStreamImpactBear": "Negatief",
+  "evStreamImpactNeutral": "Neutraal",
+  "evStreamPropertyBought": "{name} gekocht voor €{cost}",
+  "@evStreamPropertyBought": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrewCreated": "Crew aangemaakt: {name}",
+  "evStreamCrewJoined": "Bij crew gegaan: {name}",
+  "@evStreamCrewCreated": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrewWarDeclared": "Crew-oorlog verklaard: #{a} vs #{b} ({type})",
+  "evStreamCrewWarStarted": "Crew-oorlog gestart: #{a} vs #{b}",
+  "@evStreamCrewWarDeclared": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewWarStarted": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamCrewLockdown": "Crew-oorlog #{id} zit in lockdown",
+  "evStreamCrewResolved": "Crew-oorlog #{id} afgerond. Winnaar: crew #{winner}",
+  "evStreamCrewAction": "Crew-oorlog actie: {action} (+{points} ptn)",
+  "@evStreamCrewLockdown": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewResolved": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      },
+      "winner": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamCrewAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      },
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamHeistOk": "Overval “{name}” geslaagd! +€{money}",
+  "evStreamHeistFail": "Overval “{name}” mislukt.",
+  "@evStreamHeistOk": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "money": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamHeistFail": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamHospital": "Genezen in ziekenhuis! +{hp} gezondheid, −€{cost}",
+  "@evStreamHospital": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamPoliceArrested": "Gearresteerd! {mins} minuten cel",
+  "evStreamPoliceEscaped": "Je bent ontsnapt aan de politie.",
+  "evStreamFbiRaid": "FBI-inval! Je verloor bezit en geld.",
+  "@evStreamPoliceArrested": {
+    "placeholders": {
+      "mins": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamErrInsufficientFunds": "Onvoldoende geld",
+  "evStreamErrInsufficientHealth": "Onvoldoende gezondheid voor deze actie",
+  "evStreamErrInsufficientRank": "Vereist rank {rank}",
+  "evStreamErrJailed": "Je zit nog {minutes, plural, one{1 minuut} other{{minutes} minuten}} in de cel",
+  "evStreamErrNoHealthDefault": "Je moet rusten en gezondheid herstellen",
+  "evStreamErrCooldown": "Wacht {seconds, plural, one{1 seconde} other{{seconds} seconden}} voordat je opnieuw probeert",
+  "evStreamErrRescuerJailed": "Je kunt anderen niet bevrijden in de cel",
+  "evStreamErrTargetNotJailed": "Deze speler zit niet in de cel",
+  "evStreamErrCannotRescueSelf": "Je kunt jezelf niet bevrijden",
+  "evStreamJailbreakOk": "Uitbraak geslaagd! De speler is vrij.",
+  "evStreamJailbreakFail": "Uitbraak mislukt! De speler zit nog in de cel.",
+  "evStreamJailbreakCaught": "Uitbraak mislukt! Je bent gepakt: {mins} minuten cel.",
+  "evStreamBailPaid": "Borg betaald: €{amount}. Je bent vrij.",
+  "evStreamErrInternal": "Er ging iets mis. Probeer opnieuw.",
+  "evStreamTest": "Test: {msg}",
+  "@evStreamErrJailed": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@evStreamErrInsufficientRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamErrCooldown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "@evStreamJailbreakCaught": {
+    "placeholders": {
+      "mins": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamBailPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@evStreamTest": {
+    "placeholders": {
+      "msg": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamNoCriminalRecord": "Je hebt geen strafblad om te wissen",
+  "evStreamWeaponSelectRequired": "Kies eerst een misdaad-wapen",
+  "evStreamWeaponNotSuitable": "Je hebt een geschikt wapen nodig: {types}",
+  "@evStreamWeaponNotSuitable": {
+    "placeholders": {
+      "types": {
+        "type": "String"
+      }
+    }
+  },
+  "evStreamJobFallbackName": "werk",
+  "evStreamUnknownKey": "{key}",
+  "@evStreamUnknownKey": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
   }
 }

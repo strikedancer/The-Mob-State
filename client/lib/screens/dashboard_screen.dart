@@ -17,6 +17,7 @@ import '../utils/fontawesome_icons.dart';
 import '../utils/formatters.dart';
 import '../widgets/event_feed.dart';
 import '../widgets/icu_overlay.dart';
+import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
 import '../services/event_renderer.dart';
 import 'crime_screen.dart';
@@ -3295,20 +3296,6 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
     }
   }
 
-  String _gameEventTitleFromMap(Map<String, dynamic> event) {
-    final template = event['template'] as Map<String, dynamic>?;
-    if (template == null) {
-      return 'Event';
-    }
-    final title = _isNl ? template['titleNl'] : template['titleEn'];
-    if (title != null && title.toString().trim().isNotEmpty) {
-      return title.toString();
-    }
-    return template['titleEn']?.toString() ??
-        template['key']?.toString() ??
-        'Event';
-  }
-
   String _formatCooldown(int seconds) {
     return formatAdaptiveDurationFromSeconds(
       seconds,
@@ -3841,21 +3828,28 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       ),
                       const SizedBox(height: 8),
                       ..._gameEventsActive.take(3).map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              '• ${_gameEventTitleFromMap(e)}',
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 13,
+                        (e) {
+                          final template = e['template'] is Map
+                              ? Map<String, dynamic>.from(
+                                  e['template'] as Map,
+                                )
+                              : null;
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 6),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '• ${localizedGameEventTitle(l10n, template)}',
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 13,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                       TextButton(
                         onPressed: () {
