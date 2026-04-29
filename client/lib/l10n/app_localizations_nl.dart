@@ -810,13 +810,13 @@ class AppLocalizationsNl extends AppLocalizations {
       'Systeemberichten kunnen niet beantwoord worden';
 
   @override
-  String get helpAndGuide => 'Help & Guide';
+  String get helpAndGuide => 'Hulp & gids';
 
   @override
-  String get quickActions => 'Quick Actions';
+  String get quickActions => 'Snelle acties';
 
   @override
-  String get liveEvents => 'Live Events';
+  String get liveEvents => 'Live events';
 
   @override
   String get support => 'Support';
@@ -825,10 +825,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get events => 'Events';
 
   @override
-  String get aviation => 'Aviation';
+  String get aviation => 'Luchtvaart';
 
   @override
-  String get premiumAndCredits => 'Premium & Credits';
+  String get premiumAndCredits => 'Premium & credits';
 
   @override
   String get bank => 'Bank';
@@ -855,13 +855,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleHeist => 'Voertuig stelen';
 
   @override
-  String get tuneShop => 'Tune Shop';
+  String get tuneShop => 'Tuning shop';
 
   @override
   String get territory => 'Territorium';
 
   @override
-  String get achievements => 'Achievements';
+  String get achievements => 'Prestaties';
 
   @override
   String get menuCrackVault => 'Kraak de Kluis';
@@ -1471,10 +1471,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardBoat => 'Boat';
 
   @override
-  String get dashboardCrewAccess => 'Crew access';
+  String get dashboardCrewAccess => 'Crew-toegang';
 
   @override
-  String get dashboardCrewRole => 'Crew role';
+  String get dashboardCrewRole => 'Crew-rol';
 
   @override
   String get dashboardUnavailable => 'unavailable';
@@ -1483,43 +1483,43 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleOps => 'Vehicle Ops';
 
   @override
-  String get car => 'Car';
+  String get car => 'Auto';
 
   @override
-  String get motorcycle => 'Motorcycle';
+  String get motorcycle => 'Motor';
 
   @override
-  String get boat => 'Boat';
+  String get boat => 'Boot';
 
   @override
-  String get crewAccess => 'Crew access';
+  String get crewAccess => 'Crew-toegang';
 
   @override
-  String get crewRole => 'Crew role';
+  String get crewRole => 'Crew-rol';
 
   @override
-  String get unavailable => 'unavailable';
+  String get unavailable => 'niet beschikbaar';
 
   @override
-  String get quickActionsCrimesSubtitle => 'Commit criminal acts';
+  String get quickActionsCrimesSubtitle => 'Pleeg misdaden';
 
   @override
   String get quickActionsVehicleHeistSubtitle => 'Auto, motor en boot';
 
   @override
-  String get quickActionsTuneShopSubtitle => 'Parts and upgrades';
+  String get quickActionsTuneShopSubtitle => 'Onderdelen en upgrades';
 
   @override
-  String get quickActionsEventsSubtitle => 'Active and upcoming events';
+  String get quickActionsEventsSubtitle => 'Actieve en aankomende events';
 
   @override
-  String get quickActionsJobsSubtitle => 'Earn legal money';
+  String get quickActionsJobsSubtitle => 'Verdien legaal geld';
 
   @override
-  String get quickActionsCasinoSubtitle => 'Gamble your money';
+  String get quickActionsCasinoSubtitle => 'Gok met je geld';
 
   @override
-  String get quickActionsBankSubtitle => 'Manage your global balance';
+  String get quickActionsBankSubtitle => 'Beheer je globale saldo';
 
   @override
   String money(String amount) {
