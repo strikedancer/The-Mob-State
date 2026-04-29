@@ -1358,6 +1358,24 @@ abstract class AppLocalizations {
   /// **'Messages'**
   String get messages;
 
+  /// No description provided for @noDirectMessagesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet'**
+  String get noDirectMessagesYet;
+
+  /// No description provided for @sendMessageToFriendsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a message to your friends!'**
+  String get sendMessageToFriendsHint;
+
+  /// No description provided for @errorLoadingConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading conversations: {error}'**
+  String errorLoadingConversations(String error);
+
   /// No description provided for @helpAndGuide.
   ///
   /// In en, this message translates to:

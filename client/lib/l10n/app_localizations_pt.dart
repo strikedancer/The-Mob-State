@@ -678,6 +678,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get messages => 'Mensagens';
 
   @override
+  String get noDirectMessagesYet => 'Ainda sem mensagens';
+
+  @override
+  String get sendMessageToFriendsHint => 'Envia uma mensagem aos teus amigos!';
+
+  @override
+  String errorLoadingConversations(String error) {
+    return 'Erro ao carregar conversas: $error';
+  }
+
+  @override
   String get helpAndGuide => 'Ajuda e Guia';
 
   @override

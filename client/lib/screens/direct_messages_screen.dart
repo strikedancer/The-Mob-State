@@ -9,6 +9,7 @@ import '../widgets/conversation_card.dart';
 import 'chat_screen.dart';
 import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
+import '../l10n/app_localizations.dart';
 
 class DirectMessagesScreen extends StatefulWidget {
   const DirectMessagesScreen({super.key});
@@ -23,9 +24,6 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
   StreamSubscription? _eventSubscription;
   int _totalUnread = 0;
   Conversation? _openConversation;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -164,9 +162,10 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
       print('[DirectMessages] Error loading conversations: $e');
       print('[DirectMessages] Stack trace: $stackTrace');
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('${_tr('Fout bij laden gesprekken', 'Error loading conversations')}: $e'),
+            content: Text(l10n.errorLoadingConversations(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -226,6 +225,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     // Show chat inline if a conversation is selected
     if (_openConversation != null) {
       return ChatScreen(
@@ -243,9 +243,9 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
         backgroundColor: const Color(0xFF1E1E1E),
         title: Row(
           children: [
-            const Text(
-              'Berichten',
-              style: TextStyle(color: Colors.white),
+            Text(
+              l10n.messages,
+              style: const TextStyle(color: Colors.white),
             ),
             if (_totalUnread > 0) ...[
               const SizedBox(width: 8),
@@ -295,7 +295,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Nog geen berichten',
+                      l10n.noDirectMessagesYet,
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 18,
@@ -303,7 +303,7 @@ class _DirectMessagesScreenState extends State<DirectMessagesScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Stuur een bericht naar je vrienden!',
+                      l10n.sendMessageToFriendsHint,
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 14,

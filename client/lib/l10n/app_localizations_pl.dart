@@ -677,6 +677,17 @@ class AppLocalizationsPl extends AppLocalizations {
   String get messages => 'Wiadomości';
 
   @override
+  String get noDirectMessagesYet => 'Brak wiadomości';
+
+  @override
+  String get sendMessageToFriendsHint => 'Wyślij wiadomość do znajomych!';
+
+  @override
+  String errorLoadingConversations(String error) {
+    return 'Błąd ładowania rozmów: $error';
+  }
+
+  @override
   String get helpAndGuide => 'Pomoc i przewodnik';
 
   @override

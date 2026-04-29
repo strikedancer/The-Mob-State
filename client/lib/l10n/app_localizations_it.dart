@@ -680,6 +680,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get messages => 'Messaggi';
 
   @override
+  String get noDirectMessagesYet => 'Nessun messaggio ancora';
+
+  @override
+  String get sendMessageToFriendsHint => 'Invia un messaggio ai tuoi amici!';
+
+  @override
+  String errorLoadingConversations(String error) {
+    return 'Errore durante il caricamento delle conversazioni: $error';
+  }
+
+  @override
   String get helpAndGuide => 'Aiuto e guida';
 
   @override

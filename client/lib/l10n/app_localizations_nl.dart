@@ -676,6 +676,17 @@ class AppLocalizationsNl extends AppLocalizations {
   String get messages => 'Messages';
 
   @override
+  String get noDirectMessagesYet => 'Nog geen berichten';
+
+  @override
+  String get sendMessageToFriendsHint => 'Stuur een bericht naar je vrienden!';
+
+  @override
+  String errorLoadingConversations(String error) {
+    return 'Fout bij laden gesprekken: $error';
+  }
+
+  @override
   String get helpAndGuide => 'Help & Guide';
 
   @override

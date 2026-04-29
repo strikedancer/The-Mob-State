@@ -684,6 +684,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get messages => 'Nachrichten';
 
   @override
+  String get noDirectMessagesYet => 'Noch keine Nachrichten';
+
+  @override
+  String get sendMessageToFriendsHint =>
+      'Sende deinen Freunden eine Nachricht!';
+
+  @override
+  String errorLoadingConversations(String error) {
+    return 'Fehler beim Laden der Konversationen: $error';
+  }
+
+  @override
   String get helpAndGuide => 'Hilfe und Anleitung';
 
   @override

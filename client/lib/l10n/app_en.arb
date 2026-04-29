@@ -359,6 +359,16 @@
   "menu": "Menu",
   "account": "Account",
   "messages": "Messages",
+  "noDirectMessagesYet": "No messages yet",
+  "sendMessageToFriendsHint": "Send a message to your friends!",
+  "errorLoadingConversations": "Error loading conversations: {error}",
+  "@errorLoadingConversations": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "helpAndGuide": "Help & Guide",
   "quickActions": "Quick Actions",
   "liveEvents": "Live Events",
