@@ -113,13 +113,13 @@ class CrimeOutcomeDisplay extends StatelessWidget {
               child: Column(
                 children: [
                   _OutcomeRow(
-                    label: 'Reward:',
+                    label: l10n.crimeOutcomeRowReward,
                     value: '€${reward.toStringAsFixed(0)}',
                     valueColor: reward > 0 ? Colors.green : Colors.red,
                   ),
                   const SizedBox(height: 8),
                   _OutcomeRow(
-                    label: 'XP:',
+                    label: l10n.crimeOutcomeRowXp,
                     value: '+$xpGained',
                     valueColor: Colors.blue,
                   ),
@@ -134,8 +134,10 @@ class CrimeOutcomeDisplay extends StatelessWidget {
                   if (toolDamageSustained != null) ...[
                     const SizedBox(height: 8),
                     _OutcomeRow(
-                      label: 'Tools:',
-                      value: '-$toolDamageSustained% durability',
+                      label: l10n.crimeOutcomeRowTools,
+                      value: l10n.crimeOutcomeToolDurabilityValue(
+                        toolDamageSustained!,
+                      ),
                       valueColor: Colors.deepOrange,
                     ),
                   ],
@@ -155,7 +157,7 @@ class CrimeOutcomeDisplay extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                   child: Text(
-                    'OK',
+                    l10n.ok,
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

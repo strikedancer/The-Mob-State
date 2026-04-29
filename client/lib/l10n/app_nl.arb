@@ -3607,5 +3607,33 @@
   "cooldownTitleAppeal": "Hoger beroep cooldown",
   "cooldownTitleSchool": "Opleiding cooldown",
   "cooldownTitleGeneric": "Cooldown",
-  "crimeOutcomeDefaultTitle": "Crime-resultaat"
+  "crimeOutcomeDefaultTitle": "Crime-resultaat",
+  "crimeEliminateWitnessName": "Getuige elimineren",
+  "crimeEliminateWitnessDesc": "Elimineer een getuige voor een proces",
+  "crimeDiamondHeistName": "Diamanttransport-overval",
+  "crimeDiamondHeistDesc": "Kaap een transport met onbewerkte diamanten",
+  "crimeEvidenceRoomHeistName": "Bewijsarchief-overval",
+  "crimeEvidenceRoomHeistDesc": "Steel bewijs uit een federale opslagfaciliteit",
+  "crimeMuseumHeistName": "Museumoverval",
+  "crimeMuseumHeistDesc": "Steel waardevolle artefacten uit een museum",
+  "crimeBossAssassinationName": "Rivaliserende boss vermoorden",
+  "crimeBossAssassinationDesc": "Elimineer de leider van een rivaliserende organisatie",
+  "crimeCriminalRecordWipeName": "Strafblad wissen",
+  "tooltipCrimeRequiresWeapon": "Wapen vereist",
+  "tooltipCrimeRequirementsHeading": "Vereist:",
+  "crimeCriminalRecordWipeTooltip": "Wist je volledige strafblad bij succes. Alleen zinvol als je al veroordelingen hebt.",
+  "toolThermalDrill": "Thermische boor",
+  "crimeResultMoneyLabel": "Geld",
+  "crimeResultXpLabel": "XP",
+  "crimeOutcomeRowReward": "Beloning:",
+  "crimeOutcomeRowXp": "XP:",
+  "crimeOutcomeRowTools": "Gereedschap:",
+  "crimeOutcomeToolDurabilityValue": "-{percent}% duurzaamheid",
+  "@crimeOutcomeToolDurabilityValue": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

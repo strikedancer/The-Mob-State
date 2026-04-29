@@ -3607,5 +3607,33 @@
   "cooldownTitleAppeal": "Tiempo de espera: apelación",
   "cooldownTitleSchool": "Tiempo de espera: escuela",
   "cooldownTitleGeneric": "Tiempo de espera",
-  "crimeOutcomeDefaultTitle": "Resultado del crimen"
+  "crimeOutcomeDefaultTitle": "Resultado del crimen",
+  "crimeEliminateWitnessName": "Eliminar testigo",
+  "crimeEliminateWitnessDesc": "Elimina a un testigo antes del juicio",
+  "crimeDiamondHeistName": "Atraco al transporte de diamantes",
+  "crimeDiamondHeistDesc": "Intercepta un transporte de diamantes en bruto",
+  "crimeEvidenceRoomHeistName": "Asalto a la sala de pruebas",
+  "crimeEvidenceRoomHeistDesc": "Roba pruebas de un almacén federal",
+  "crimeMuseumHeistName": "Atraco al museo",
+  "crimeMuseumHeistDesc": "Roba artefactos valiosos de un museo",
+  "crimeBossAssassinationName": "Asesinato del jefe rival",
+  "crimeBossAssassinationDesc": "Elimina al líder de una organización criminal rival",
+  "crimeCriminalRecordWipeName": "Borrar antecedentes penales",
+  "tooltipCrimeRequiresWeapon": "Arma requerida",
+  "tooltipCrimeRequirementsHeading": "Requisitos:",
+  "crimeCriminalRecordWipeTooltip": "Borra por completo tus antecedentes penales si ten éxito. Solo tiene sentido si ya tienes condenas.",
+  "toolThermalDrill": "Taladro térmico",
+  "crimeResultMoneyLabel": "Dinero",
+  "crimeResultXpLabel": "XP",
+  "crimeOutcomeRowReward": "Recompensa:",
+  "crimeOutcomeRowXp": "XP:",
+  "crimeOutcomeRowTools": "Herramientas:",
+  "crimeOutcomeToolDurabilityValue": "-{percent}% de durabilidad",
+  "@crimeOutcomeToolDurabilityValue": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  }
 }

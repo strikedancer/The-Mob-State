@@ -138,7 +138,7 @@ class _CrimeCardState extends State<CrimeCard> {
           case 'burner_phone':
             return l10n.toolBurnerPhone;
           case 'thermal_drill':
-            return 'Thermische Boor';
+            return l10n.toolThermalDrill;
           default:
             return toolId;
         }
@@ -153,7 +153,7 @@ class _CrimeCardState extends State<CrimeCard> {
 
     // Add weapon requirement
     if (widget.crime.requiredWeapon == true) {
-      requirements.add('🔫 Wapen vereist');
+      requirements.add('🔫 ${l10n.tooltipCrimeRequiresWeapon}');
     }
 
     // Add drug requirements
@@ -170,7 +170,7 @@ class _CrimeCardState extends State<CrimeCard> {
 
     // If has requirements, return combined tooltip
     if (requirements.isNotEmpty) {
-      return 'Vereist:\n${requirements.join('\n')}';
+      return '${l10n.tooltipCrimeRequirementsHeading}\n${requirements.join('\n')}';
     }
 
     // Default tooltips for other crime types
@@ -189,9 +189,7 @@ class _CrimeCardState extends State<CrimeCard> {
         return l10n.tooltipCrimeRequiresViolence;
 
       case 'criminal_record_wipe':
-        return l10n.localeName == 'nl'
-            ? 'Wis je volledige strafblad bij succes. Alleen beschikbaar als je al veroordelingen hebt.'
-            : 'Wipes your full criminal record on success. Only useful if you already have convictions.';
+        return l10n.crimeCriminalRecordWipeTooltip;
 
       default:
         return null;

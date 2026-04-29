@@ -349,6 +349,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crimeCorruptOfficialDesc => 'Bribe an official for favors';
 
   @override
+  String get crimeEliminateWitnessName => 'Eliminate Witness';
+
+  @override
+  String get crimeEliminateWitnessDesc => 'Eliminate a witness before trial';
+
+  @override
+  String get crimeDiamondHeistName => 'Diamond Transport Heist';
+
+  @override
+  String get crimeDiamondHeistDesc => 'Hijack a transport of rough diamonds';
+
+  @override
+  String get crimeEvidenceRoomHeistName => 'Evidence Room Heist';
+
+  @override
+  String get crimeEvidenceRoomHeistDesc =>
+      'Steal evidence from a federal storage facility';
+
+  @override
+  String get crimeMuseumHeistName => 'Museum Heist';
+
+  @override
+  String get crimeMuseumHeistDesc => 'Steal valuable artifacts from a museum';
+
+  @override
+  String get crimeBossAssassinationName => 'Rival Boss Assassination';
+
+  @override
+  String get crimeBossAssassinationDesc =>
+      'Eliminate the leader of a rival organization';
+
+  @override
+  String get crimeCriminalRecordWipeName => 'Wipe Criminal Record';
+
+  @override
   String get tooltipCrimeRequiresTools => 'Tools Required';
 
   @override
@@ -362,6 +397,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tooltipCrimeRequiresViolence => 'Violence Required';
+
+  @override
+  String get tooltipCrimeRequiresWeapon => 'Weapon required';
+
+  @override
+  String get tooltipCrimeRequirementsHeading => 'Required:';
+
+  @override
+  String get crimeCriminalRecordWipeTooltip =>
+      'Wipes your full criminal record on success. Only available if you already have convictions.';
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
@@ -3627,6 +3672,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toolBurnerPhone => 'Burner Phone';
 
   @override
+  String get toolThermalDrill => 'Thermal Drill';
+
+  @override
   String get crimeOutcomeSuccess => 'Crime successful!';
 
   @override
@@ -3650,6 +3698,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get crimeOutcomeFledNoLoot => 'Fled the scene without loot';
+
+  @override
+  String get crimeResultMoneyLabel => 'Money';
+
+  @override
+  String get crimeResultXpLabel => 'XP';
+
+  @override
+  String get crimeOutcomeRowReward => 'Reward:';
+
+  @override
+  String get crimeOutcomeRowXp => 'XP:';
+
+  @override
+  String get crimeOutcomeRowTools => 'Tools:';
+
+  @override
+  String crimeOutcomeToolDurabilityValue(int percent) {
+    return '-$percent% durability';
+  }
 
   @override
   String get vehicleCondition => 'Condition';

@@ -350,6 +350,44 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crimeCorruptOfficialDesc => 'Koop een ambtenaar om voor gunsten';
 
   @override
+  String get crimeEliminateWitnessName => 'Getuige elimineren';
+
+  @override
+  String get crimeEliminateWitnessDesc =>
+      'Elimineer een getuige voor een proces';
+
+  @override
+  String get crimeDiamondHeistName => 'Diamanttransport-overval';
+
+  @override
+  String get crimeDiamondHeistDesc =>
+      'Kaap een transport met onbewerkte diamanten';
+
+  @override
+  String get crimeEvidenceRoomHeistName => 'Bewijsarchief-overval';
+
+  @override
+  String get crimeEvidenceRoomHeistDesc =>
+      'Steel bewijs uit een federale opslagfaciliteit';
+
+  @override
+  String get crimeMuseumHeistName => 'Museumoverval';
+
+  @override
+  String get crimeMuseumHeistDesc =>
+      'Steel waardevolle artefacten uit een museum';
+
+  @override
+  String get crimeBossAssassinationName => 'Rivaliserende boss vermoorden';
+
+  @override
+  String get crimeBossAssassinationDesc =>
+      'Elimineer de leider van een rivaliserende organisatie';
+
+  @override
+  String get crimeCriminalRecordWipeName => 'Strafblad wissen';
+
+  @override
   String get tooltipCrimeRequiresTools => 'Gereedschap vereist';
 
   @override
@@ -363,6 +401,16 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get tooltipCrimeRequiresViolence => 'Geweld vereist';
+
+  @override
+  String get tooltipCrimeRequiresWeapon => 'Wapen vereist';
+
+  @override
+  String get tooltipCrimeRequirementsHeading => 'Vereist:';
+
+  @override
+  String get crimeCriminalRecordWipeTooltip =>
+      'Wist je volledige strafblad bij succes. Alleen zinvol als je al veroordelingen hebt.';
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
@@ -3635,6 +3683,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get toolBurnerPhone => 'Wegwerp Telefoon';
 
   @override
+  String get toolThermalDrill => 'Thermische boor';
+
+  @override
   String get crimeOutcomeSuccess => 'Misdaad geslaagd!';
 
   @override
@@ -3658,6 +3709,26 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crimeOutcomeFledNoLoot => 'Gevlucht zonder buit';
+
+  @override
+  String get crimeResultMoneyLabel => 'Geld';
+
+  @override
+  String get crimeResultXpLabel => 'XP';
+
+  @override
+  String get crimeOutcomeRowReward => 'Beloning:';
+
+  @override
+  String get crimeOutcomeRowXp => 'XP:';
+
+  @override
+  String get crimeOutcomeRowTools => 'Gereedschap:';
+
+  @override
+  String crimeOutcomeToolDurabilityValue(int percent) {
+    return '-$percent% duurzaamheid';
+  }
 
   @override
   String get vehicleCondition => 'Conditie';

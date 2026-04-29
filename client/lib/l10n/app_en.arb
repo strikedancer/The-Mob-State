@@ -144,11 +144,25 @@
   "crimeStealYachtDesc": "Steal a luxury yacht",
   "crimeCorruptOfficialName": "Bribe Official",
   "crimeCorruptOfficialDesc": "Bribe an official for favors",
+  "crimeEliminateWitnessName": "Eliminate Witness",
+  "crimeEliminateWitnessDesc": "Eliminate a witness before trial",
+  "crimeDiamondHeistName": "Diamond Transport Heist",
+  "crimeDiamondHeistDesc": "Hijack a transport of rough diamonds",
+  "crimeEvidenceRoomHeistName": "Evidence Room Heist",
+  "crimeEvidenceRoomHeistDesc": "Steal evidence from a federal storage facility",
+  "crimeMuseumHeistName": "Museum Heist",
+  "crimeMuseumHeistDesc": "Steal valuable artifacts from a museum",
+  "crimeBossAssassinationName": "Rival Boss Assassination",
+  "crimeBossAssassinationDesc": "Eliminate the leader of a rival organization",
+  "crimeCriminalRecordWipeName": "Wipe Criminal Record",
   "tooltipCrimeRequiresTools": "Tools Required",
   "tooltipCrimeRequiresVehicle": "Vehicle Required",
   "tooltipCrimeRequiresDrugs": "Drugs required",
   "tooltipCrimeHighValue": "High Value Operation",
   "tooltipCrimeRequiresViolence": "Violence Required",
+  "tooltipCrimeRequiresWeapon": "Weapon required",
+  "tooltipCrimeRequirementsHeading": "Required:",
+  "crimeCriminalRecordWipeTooltip": "Wipes your full criminal record on success. Only available if you already have convictions.",
   "crimeErrorDrugsRequired": "You need at least {quantity}g of: {drugs}",
   "@crimeErrorDrugsRequired": {
     "placeholders": {
@@ -1920,6 +1934,7 @@
   "toolNightVision": "Night Vision",
   "toolGpsJammer": "GPS Jammer",
   "toolBurnerPhone": "Burner Phone",
+  "toolThermalDrill": "Thermal Drill",
   "crimeOutcomeSuccess": "Crime successful!",
   "crimeOutcomeCaught": "Caught by police",
   "crimeOutcomeVehicleBreakdownBefore": "Your vehicle broke down before reaching the crime scene",
@@ -1927,6 +1942,19 @@
   "crimeOutcomeOutOfFuel": "Ran out of fuel during escape - fled on foot, lost loot and vehicle",
   "crimeOutcomeToolBroke": "Your tool broke during the crime, leaving evidence",
   "crimeOutcomeFledNoLoot": "Fled the scene without loot",
+  "crimeResultMoneyLabel": "Money",
+  "crimeResultXpLabel": "XP",
+  "crimeOutcomeRowReward": "Reward:",
+  "crimeOutcomeRowXp": "XP:",
+  "crimeOutcomeRowTools": "Tools:",
+  "crimeOutcomeToolDurabilityValue": "-{percent}% durability",
+  "@crimeOutcomeToolDurabilityValue": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "vehicleCondition": "Condition",
   "vehicleFuel": "Fuel",
   "vehicleSpeed": "Speed",

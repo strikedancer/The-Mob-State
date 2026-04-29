@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'responsive_modal.dart';
+import '../l10n/app_localizations.dart';
 
 class CrimeResultOverlay extends StatelessWidget {
   final String crimeName;
@@ -26,7 +27,7 @@ class CrimeResultOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDutch = Localizations.localeOf(context).languageCode == 'nl';
+    final l10n = AppLocalizations.of(context)!;
 
     return ResponsiveModalLayout(
       embedded: embedded,
@@ -74,7 +75,7 @@ class CrimeResultOverlay extends StatelessWidget {
                         width: compactWidth ? double.infinity : 220,
                         child: _ResultStat(
                           icon: Icons.euro,
-                          label: isDutch ? 'Geld' : 'Money',
+                          label: l10n.crimeResultMoneyLabel,
                           value: '+€${_formatNumber(reward)}',
                           color: Colors.green,
                         ),
@@ -83,7 +84,7 @@ class CrimeResultOverlay extends StatelessWidget {
                         width: compactWidth ? double.infinity : 220,
                         child: _ResultStat(
                           icon: Icons.auto_awesome,
-                          label: 'XP',
+                          label: l10n.crimeResultXpLabel,
                           value: '+$xpGained',
                           color: Colors.blue,
                         ),
@@ -98,7 +99,7 @@ class CrimeResultOverlay extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size.fromHeight(compactWidth ? 48 : 54),
                       ),
-                      child: Text(isDutch ? 'Verder' : 'Continue'),
+                      child: Text(l10n.continueAction),
                     ),
                   ),
                 ],

@@ -770,6 +770,72 @@ abstract class AppLocalizations {
   /// **'Bribe an official for favors'**
   String get crimeCorruptOfficialDesc;
 
+  /// No description provided for @crimeEliminateWitnessName.
+  ///
+  /// In en, this message translates to:
+  /// **'Eliminate Witness'**
+  String get crimeEliminateWitnessName;
+
+  /// No description provided for @crimeEliminateWitnessDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Eliminate a witness before trial'**
+  String get crimeEliminateWitnessDesc;
+
+  /// No description provided for @crimeDiamondHeistName.
+  ///
+  /// In en, this message translates to:
+  /// **'Diamond Transport Heist'**
+  String get crimeDiamondHeistName;
+
+  /// No description provided for @crimeDiamondHeistDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hijack a transport of rough diamonds'**
+  String get crimeDiamondHeistDesc;
+
+  /// No description provided for @crimeEvidenceRoomHeistName.
+  ///
+  /// In en, this message translates to:
+  /// **'Evidence Room Heist'**
+  String get crimeEvidenceRoomHeistName;
+
+  /// No description provided for @crimeEvidenceRoomHeistDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal evidence from a federal storage facility'**
+  String get crimeEvidenceRoomHeistDesc;
+
+  /// No description provided for @crimeMuseumHeistName.
+  ///
+  /// In en, this message translates to:
+  /// **'Museum Heist'**
+  String get crimeMuseumHeistName;
+
+  /// No description provided for @crimeMuseumHeistDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal valuable artifacts from a museum'**
+  String get crimeMuseumHeistDesc;
+
+  /// No description provided for @crimeBossAssassinationName.
+  ///
+  /// In en, this message translates to:
+  /// **'Rival Boss Assassination'**
+  String get crimeBossAssassinationName;
+
+  /// No description provided for @crimeBossAssassinationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Eliminate the leader of a rival organization'**
+  String get crimeBossAssassinationDesc;
+
+  /// No description provided for @crimeCriminalRecordWipeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Wipe Criminal Record'**
+  String get crimeCriminalRecordWipeName;
+
   /// No description provided for @tooltipCrimeRequiresTools.
   ///
   /// In en, this message translates to:
@@ -799,6 +865,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Violence Required'**
   String get tooltipCrimeRequiresViolence;
+
+  /// No description provided for @tooltipCrimeRequiresWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon required'**
+  String get tooltipCrimeRequiresWeapon;
+
+  /// No description provided for @tooltipCrimeRequirementsHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Required:'**
+  String get tooltipCrimeRequirementsHeading;
+
+  /// No description provided for @crimeCriminalRecordWipeTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Wipes your full criminal record on success. Only available if you already have convictions.'**
+  String get crimeCriminalRecordWipeTooltip;
 
   /// No description provided for @crimeErrorDrugsRequired.
   ///
@@ -6740,6 +6824,12 @@ abstract class AppLocalizations {
   /// **'Burner Phone'**
   String get toolBurnerPhone;
 
+  /// No description provided for @toolThermalDrill.
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal Drill'**
+  String get toolThermalDrill;
+
   /// No description provided for @crimeOutcomeSuccess.
   ///
   /// In en, this message translates to:
@@ -6781,6 +6871,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fled the scene without loot'**
   String get crimeOutcomeFledNoLoot;
+
+  /// No description provided for @crimeResultMoneyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Money'**
+  String get crimeResultMoneyLabel;
+
+  /// No description provided for @crimeResultXpLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'XP'**
+  String get crimeResultXpLabel;
+
+  /// No description provided for @crimeOutcomeRowReward.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward:'**
+  String get crimeOutcomeRowReward;
+
+  /// No description provided for @crimeOutcomeRowXp.
+  ///
+  /// In en, this message translates to:
+  /// **'XP:'**
+  String get crimeOutcomeRowXp;
+
+  /// No description provided for @crimeOutcomeRowTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools:'**
+  String get crimeOutcomeRowTools;
+
+  /// No description provided for @crimeOutcomeToolDurabilityValue.
+  ///
+  /// In en, this message translates to:
+  /// **'-{percent}% durability'**
+  String crimeOutcomeToolDurabilityValue(int percent);
 
   /// No description provided for @vehicleCondition.
   ///

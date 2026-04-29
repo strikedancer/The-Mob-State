@@ -649,7 +649,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
           if (eventKey.contains('success')) {
             setState(() {
-              _resultCrimeName = crime.name;
+              _resultCrimeName = _localizedCrimeName(crime, l10n);
               _crimeReward = reward;
               _crimeXpGained = xpGained;
               _showCrimeResult = reward > 0 || xpGained > 0;
@@ -789,10 +789,18 @@ class _CrimeScreenState extends State<CrimeScreen> {
         return l10n.crimeStealYachtName;
       case 'corrupt_official':
         return l10n.crimeCorruptOfficialName;
+      case 'eliminate_witness':
+        return l10n.crimeEliminateWitnessName;
+      case 'diamond_heist':
+        return l10n.crimeDiamondHeistName;
+      case 'evidence_room_heist':
+        return l10n.crimeEvidenceRoomHeistName;
+      case 'museum_heist':
+        return l10n.crimeMuseumHeistName;
+      case 'boss_assassination':
+        return l10n.crimeBossAssassinationName;
       case 'criminal_record_wipe':
-        return l10n.localeName == 'nl'
-            ? 'Strafblad Wissen'
-            : 'Wipe Criminal Record';
+        return l10n.crimeCriminalRecordWipeName;
       default:
         return crime.name;
     }
@@ -860,6 +868,16 @@ class _CrimeScreenState extends State<CrimeScreen> {
         return l10n.crimeStealYachtDesc;
       case 'corrupt_official':
         return l10n.crimeCorruptOfficialDesc;
+      case 'eliminate_witness':
+        return l10n.crimeEliminateWitnessDesc;
+      case 'diamond_heist':
+        return l10n.crimeDiamondHeistDesc;
+      case 'evidence_room_heist':
+        return l10n.crimeEvidenceRoomHeistDesc;
+      case 'museum_heist':
+        return l10n.crimeMuseumHeistDesc;
+      case 'boss_assassination':
+        return l10n.crimeBossAssassinationDesc;
       case 'criminal_record_wipe':
         return l10n.crimeCriminalRecordWipeDesc;
       default:

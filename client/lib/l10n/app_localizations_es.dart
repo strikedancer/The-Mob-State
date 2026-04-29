@@ -359,6 +359,42 @@ class AppLocalizationsEs extends AppLocalizations {
       'Sobornar a una funcionaria para favores';
 
   @override
+  String get crimeEliminateWitnessName => 'Eliminar testigo';
+
+  @override
+  String get crimeEliminateWitnessDesc =>
+      'Elimina a un testigo antes del juicio';
+
+  @override
+  String get crimeDiamondHeistName => 'Atraco al transporte de diamantes';
+
+  @override
+  String get crimeDiamondHeistDesc =>
+      'Intercepta un transporte de diamantes en bruto';
+
+  @override
+  String get crimeEvidenceRoomHeistName => 'Asalto a la sala de pruebas';
+
+  @override
+  String get crimeEvidenceRoomHeistDesc => 'Roba pruebas de un almacén federal';
+
+  @override
+  String get crimeMuseumHeistName => 'Atraco al museo';
+
+  @override
+  String get crimeMuseumHeistDesc => 'Roba artefactos valiosos de un museo';
+
+  @override
+  String get crimeBossAssassinationName => 'Asesinato del jefe rival';
+
+  @override
+  String get crimeBossAssassinationDesc =>
+      'Elimina al líder de una organización criminal rival';
+
+  @override
+  String get crimeCriminalRecordWipeName => 'Borrar antecedentes penales';
+
+  @override
   String get tooltipCrimeRequiresTools => 'Herramientas necesarias';
 
   @override
@@ -372,6 +408,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tooltipCrimeRequiresViolence => 'Se requiere violencia';
+
+  @override
+  String get tooltipCrimeRequiresWeapon => 'Arma requerida';
+
+  @override
+  String get tooltipCrimeRequirementsHeading => 'Requisitos:';
+
+  @override
+  String get crimeCriminalRecordWipeTooltip =>
+      'Borra por completo tus antecedentes penales si ten éxito. Solo tiene sentido si ya tienes condenas.';
 
   @override
   String crimeErrorDrugsRequired(String quantity, String drugs) {
@@ -3659,6 +3705,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get toolBurnerPhone => 'Teléfono quemador';
 
   @override
+  String get toolThermalDrill => 'Taladro térmico';
+
+  @override
   String get crimeOutcomeSuccess => '¡Crimen exitoso!';
 
   @override
@@ -3682,6 +3731,26 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get crimeOutcomeFledNoLoot => 'Huyó de la escena sin botín.';
+
+  @override
+  String get crimeResultMoneyLabel => 'Dinero';
+
+  @override
+  String get crimeResultXpLabel => 'XP';
+
+  @override
+  String get crimeOutcomeRowReward => 'Recompensa:';
+
+  @override
+  String get crimeOutcomeRowXp => 'XP:';
+
+  @override
+  String get crimeOutcomeRowTools => 'Herramientas:';
+
+  @override
+  String crimeOutcomeToolDurabilityValue(int percent) {
+    return '-$percent% de durabilidad';
+  }
 
   @override
   String get vehicleCondition => 'Condición';
