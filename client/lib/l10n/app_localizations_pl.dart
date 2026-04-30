@@ -3499,6 +3499,70 @@ class AppLocalizationsPl extends AppLocalizations {
       'Ulepsz jakość, aby uzyskać wyższe ceny rynkowe';
 
   @override
+  String get ammoFactoryBlackMarketTitle => 'Sprzedam amunicję';
+
+  @override
+  String get ammoFactoryBlackMarketBody =>
+      'Fabryka amunicji nie sprzedaje naboi bezpośrednio z tego ekranu. Korzystaj z Czarnego Rynku, aby kupować i sprzedawać amunicję.';
+
+  @override
+  String get ammoFactoryActionBlackMarket =>
+      'Kupuj i sprzedawaj amunicję na Czarnym Rynku, a nie bezpośrednio z fabryki.';
+
+  @override
+  String get ammoFactoryErrCountryRequired => 'Kraj jest wymagany';
+
+  @override
+  String get ammoFactoryErrPlayerNotFound => 'Nie znaleziono gracza';
+
+  @override
+  String get ammoFactoryErrWrongCountry =>
+      'Aby kupić tę fabrykę, musisz znajdować się w tym samym kraju';
+
+  @override
+  String get ammoFactoryErrCouldNotPurchase => 'Nie udało się kupić fabryki';
+
+  @override
+  String get ammoFactoryErrAlreadyOwned => 'Fabryka jest już własnością';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyBuy =>
+      'Za mało pieniędzy na zakup fabryki';
+
+  @override
+  String get ammoFactoryErrCouldNotProduce =>
+      'Nie udało się wyprodukować amunicji';
+
+  @override
+  String get ammoFactoryErrNotOwned => 'Nie jesteś właścicielem fabryki';
+
+  @override
+  String get ammoFactoryErrOnCooldown => 'Fabryka jest w fazie odnowienia';
+
+  @override
+  String get ammoFactoryErrInactive =>
+      'Własność fabryki utracona z powodu bezczynności';
+
+  @override
+  String get ammoFactoryErrCouldNotUpgrade => 'Nie można uaktualnić fabryki';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyUpgrade =>
+      'Za mało pieniędzy na modernizację fabryki';
+
+  @override
+  String get ammoFactoryErrMaxLevel =>
+      'Fabryka jest już na maksymalnym poziomie';
+
+  @override
+  String get ammoFactoryErrInvalidUpgradeType =>
+      'Typ uaktualnienia musi być wyjściowy lub jakościowy';
+
+  @override
+  String get ammoFactoryErrEducationNotMet =>
+      'Niespełnione wymagania edukacyjne';
+
+  @override
   String get factoryUpgradeOutputSuccess => 'Wyjście ulepszone';
 
   @override

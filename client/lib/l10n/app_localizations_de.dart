@@ -3466,12 +3466,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String ammoRoundsPerBox(String rounds) {
-    return '$rounds Runden pro Box';
+    return '$rounds Schuss pro Box';
   }
 
   @override
   String ammoYouWillReceive(String rounds) {
-    return 'Sie erhalten: $rounds Runden';
+    return 'Sie erhalten: $rounds Schuss';
   }
 
   @override
@@ -3480,13 +3480,13 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get ammoRounds => 'Runden';
+  String get ammoRounds => 'Schuss';
 
   @override
   String get ammoBoxesUnit => 'Boxen';
 
   @override
-  String get ammoStock => 'Aktie';
+  String get ammoStock => 'Vorrat';
 
   @override
   String get ammoQuality => 'Qualität';
@@ -3526,6 +3526,72 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get ammoFactoryActionQuality =>
       'Verbessern Sie die Qualität für höhere Marktpreise';
+
+  @override
+  String get ammoFactoryBlackMarketTitle => 'Munition zu verkaufen';
+
+  @override
+  String get ammoFactoryBlackMarketBody =>
+      'Die Munitionsfabrik verkauft über diesen Bildschirm keine Kugeln direkt. Nutzen Sie den Schwarzmarkt zum Kauf und Verkauf von Munition.';
+
+  @override
+  String get ammoFactoryActionBlackMarket =>
+      'Kaufen und verkaufen Sie Munition über den Schwarzmarkt, nicht direkt in der Fabrik.';
+
+  @override
+  String get ammoFactoryErrCountryRequired => 'Land ist erforderlich';
+
+  @override
+  String get ammoFactoryErrPlayerNotFound => 'Spieler nicht gefunden';
+
+  @override
+  String get ammoFactoryErrWrongCountry =>
+      'Sie müssen im selben Land sein, um diese Fabrik zu kaufen';
+
+  @override
+  String get ammoFactoryErrCouldNotPurchase =>
+      'Fabrik konnte nicht gekauft werden';
+
+  @override
+  String get ammoFactoryErrAlreadyOwned => 'Die Fabrik ist bereits im Besitz';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyBuy =>
+      'Nicht genug Geld, um eine Fabrik zu kaufen';
+
+  @override
+  String get ammoFactoryErrCouldNotProduce =>
+      'Es konnte keine Munition produziert werden';
+
+  @override
+  String get ammoFactoryErrNotOwned => 'Sie besitzen keine Fabrik';
+
+  @override
+  String get ammoFactoryErrOnCooldown => 'Die Fabrik befindet sich im Cooldown';
+
+  @override
+  String get ammoFactoryErrInactive =>
+      'Das Eigentum an der Fabrik ging aufgrund von Inaktivität verloren';
+
+  @override
+  String get ammoFactoryErrCouldNotUpgrade =>
+      'Die Fabrik konnte nicht aktualisiert werden';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyUpgrade =>
+      'Nicht genug Geld, um die Fabrik zu modernisieren';
+
+  @override
+  String get ammoFactoryErrMaxLevel =>
+      'Werksseitig ist bereits die maximale Stufe erreicht';
+
+  @override
+  String get ammoFactoryErrInvalidUpgradeType =>
+      'Der Upgrade-Typ muss „Ausgabe“ oder „Qualität“ sein';
+
+  @override
+  String get ammoFactoryErrEducationNotMet =>
+      'Bildungsvoraussetzungen nicht erfüllt';
 
   @override
   String get factoryUpgradeOutputSuccess => 'Ausgabe aktualisiert';

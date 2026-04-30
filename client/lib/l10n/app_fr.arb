@@ -1716,7 +1716,7 @@
   "invalidQuantity": "Quantité invalide",
   "nextAmmoPurchase": "Prochain achat disponible dans",
   "ammoBoxes": "Boîtes",
-  "ammoRoundsPerBox": "{rounds} tours par boîte",
+  "ammoRoundsPerBox": "{rounds} cartouches par boîte",
   "@ammoRoundsPerBox": {
     "placeholders": {
       "rounds": {
@@ -1724,7 +1724,7 @@
       }
     }
   },
-  "ammoYouWillReceive": "Vous recevrez : {rounds} tours",
+  "ammoYouWillReceive": "Vous recevrez : {rounds} cartouches",
   "@ammoYouWillReceive": {
     "placeholders": {
       "rounds": {
@@ -1740,9 +1740,9 @@
       }
     }
   },
-  "ammoRounds": "tours",
+  "ammoRounds": "cartouches",
   "ammoBoxesUnit": "boîtes",
-  "ammoStock": "Action",
+  "ammoStock": "Stock",
   "ammoQuality": "Qualité",
   "factoryBought": "Acheté en usine",
   "factoryProduced": "Production mise à jour",
@@ -1762,9 +1762,9 @@
   "factoryOutputLevel": "Niveau de sortie",
   "factoryQualityLevel": "Niveau de qualité",
   "factoryLastProduced": "Dernière production",
-  "factoryProduceStatusLabel": "Statut du produit",
+  "factoryProduceStatusLabel": "État de la production",
   "factoryProduceStatusReady": "Prêt",
-  "factoryProduceStatusCooldown": "Refroidir",
+  "factoryProduceStatusCooldown": "Temps d’attente",
   "factorySessionActive": "Fenêtre de production : active (intervalle de 10 min)",
   "factorySessionStopped": "Fenêtre de production : arrêtée (cliquez sur Produire pour démarrer une nouvelle fenêtre de 8 heures)",
   "factorySessionEndsIn": "La fenêtre se termine par : {duration}",
@@ -4288,5 +4288,23 @@
   "educationCertProcessElectricsSpecialist": "Certification de spécialiste en électricité de procédés",
   "educationCertClandestineChemist": "Certification de chimiste clandestin",
   "educationCertNarcoGridArchitect": "Certification d'architecte de réseau Narco",
-  "cooldownWaitSchool": "Catch your breath before the next lesson…"
+  "cooldownWaitSchool": "Catch your breath before the next lesson…",
+  "ammoFactoryBlackMarketTitle": "Munitions à vendre",
+  "ammoFactoryBlackMarketBody": "L'usine de munitions ne vend pas de balles directement depuis cet écran. Utilisez le marché noir pour acheter et vendre des munitions.",
+  "ammoFactoryActionBlackMarket": "Achetez et vendez des munitions sur le marché noir, et non directement depuis l'usine.",
+  "ammoFactoryErrCountryRequired": "Le pays est requis",
+  "ammoFactoryErrPlayerNotFound": "Joueur introuvable",
+  "ammoFactoryErrWrongCountry": "Vous devez être dans le même pays pour acheter cette usine",
+  "ammoFactoryErrCouldNotPurchase": "Impossible d'acheter l'usine",
+  "ammoFactoryErrAlreadyOwned": "L'usine appartient déjà",
+  "ammoFactoryErrInsufficientMoneyBuy": "Pas assez d'argent pour acheter une usine",
+  "ammoFactoryErrCouldNotProduce": "Impossible de produire des munitions",
+  "ammoFactoryErrNotOwned": "Vous ne possédez pas d'usine",
+  "ammoFactoryErrOnCooldown": "L'usine est en refroidissement",
+  "ammoFactoryErrInactive": "Propriété de l'usine perdue en raison de l'inactivité",
+  "ammoFactoryErrCouldNotUpgrade": "Impossible de mettre à niveau l'usine",
+  "ammoFactoryErrInsufficientMoneyUpgrade": "Pas assez d'argent pour moderniser l'usine",
+  "ammoFactoryErrMaxLevel": "L'usine est déjà au niveau maximum",
+  "ammoFactoryErrInvalidUpgradeType": "Le type de mise à niveau doit être de sortie ou de qualité",
+  "ammoFactoryErrEducationNotMet": "Exigences de formation non remplies"
 }

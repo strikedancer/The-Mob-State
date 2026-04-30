@@ -6476,6 +6476,114 @@ abstract class AppLocalizations {
   /// **'Upgrade quality for stronger market prices'**
   String get ammoFactoryActionQuality;
 
+  /// No description provided for @ammoFactoryBlackMarketTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo for sale'**
+  String get ammoFactoryBlackMarketTitle;
+
+  /// No description provided for @ammoFactoryBlackMarketBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The ammo factory does not sell bullets directly from this screen. Use the Black Market for buying and selling ammo.'**
+  String get ammoFactoryBlackMarketBody;
+
+  /// No description provided for @ammoFactoryActionBlackMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy and sell ammo through the Black Market, not directly from the factory.'**
+  String get ammoFactoryActionBlackMarket;
+
+  /// No description provided for @ammoFactoryErrCountryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Country is required'**
+  String get ammoFactoryErrCountryRequired;
+
+  /// No description provided for @ammoFactoryErrPlayerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Player not found'**
+  String get ammoFactoryErrPlayerNotFound;
+
+  /// No description provided for @ammoFactoryErrWrongCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be in the same country to buy this factory'**
+  String get ammoFactoryErrWrongCountry;
+
+  /// No description provided for @ammoFactoryErrCouldNotPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not purchase factory'**
+  String get ammoFactoryErrCouldNotPurchase;
+
+  /// No description provided for @ammoFactoryErrAlreadyOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Factory is already owned'**
+  String get ammoFactoryErrAlreadyOwned;
+
+  /// No description provided for @ammoFactoryErrInsufficientMoneyBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money to buy factory'**
+  String get ammoFactoryErrInsufficientMoneyBuy;
+
+  /// No description provided for @ammoFactoryErrCouldNotProduce.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not produce ammo'**
+  String get ammoFactoryErrCouldNotProduce;
+
+  /// No description provided for @ammoFactoryErrNotOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not own a factory'**
+  String get ammoFactoryErrNotOwned;
+
+  /// No description provided for @ammoFactoryErrOnCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Factory is on cooldown'**
+  String get ammoFactoryErrOnCooldown;
+
+  /// No description provided for @ammoFactoryErrInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Factory ownership lost due to inactivity'**
+  String get ammoFactoryErrInactive;
+
+  /// No description provided for @ammoFactoryErrCouldNotUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not upgrade factory'**
+  String get ammoFactoryErrCouldNotUpgrade;
+
+  /// No description provided for @ammoFactoryErrInsufficientMoneyUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money to upgrade factory'**
+  String get ammoFactoryErrInsufficientMoneyUpgrade;
+
+  /// No description provided for @ammoFactoryErrMaxLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Factory is already max level'**
+  String get ammoFactoryErrMaxLevel;
+
+  /// No description provided for @ammoFactoryErrInvalidUpgradeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade type must be output or quality'**
+  String get ammoFactoryErrInvalidUpgradeType;
+
+  /// No description provided for @ammoFactoryErrEducationNotMet.
+  ///
+  /// In en, this message translates to:
+  /// **'Education requirements not met'**
+  String get ammoFactoryErrEducationNotMet;
+
   /// No description provided for @factoryUpgradeOutputSuccess.
   ///
   /// In en, this message translates to:

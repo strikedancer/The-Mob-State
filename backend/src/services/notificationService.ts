@@ -60,6 +60,16 @@ const COOLDOWN_ACTION_LABEL: Record<string, Partial<Record<SupportedPlayerLangua
     pl: 'szkoła',
     pt: 'escola',
   },
+  ammo_factory: {
+    en: 'ammo factory',
+    nl: 'munitiefabriek',
+    es: 'fábrica de munición',
+    de: 'Munitionsfabrik',
+    fr: 'usine de munitions',
+    it: 'fabbrica di munizioni',
+    pl: 'fabryka amunicji',
+    pt: 'fábrica de munições',
+  },
 };
 
 function labelForCooldownAction(actionType: string, lang: SupportedPlayerLanguage): string {

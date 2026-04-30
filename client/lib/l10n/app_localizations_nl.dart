@@ -3493,6 +3493,68 @@ class AppLocalizationsNl extends AppLocalizations {
       'Upgrade kwaliteit voor sterkere marktprijzen';
 
   @override
+  String get ammoFactoryBlackMarketTitle => 'Munitie te koop';
+
+  @override
+  String get ammoFactoryBlackMarketBody =>
+      'De munitiefabriek verkoopt geen kogels rechtstreeks vanuit dit scherm. Voor kopen en verkopen van munitie gebruik je de Zwarte Markt.';
+
+  @override
+  String get ammoFactoryActionBlackMarket =>
+      'Koop en verkoop munitie via de Zwarte Markt, niet rechtstreeks via de fabriek.';
+
+  @override
+  String get ammoFactoryErrCountryRequired => 'Land is verplicht';
+
+  @override
+  String get ammoFactoryErrPlayerNotFound => 'Speler niet gevonden';
+
+  @override
+  String get ammoFactoryErrWrongCountry =>
+      'Je moet in hetzelfde land zijn om deze fabriek te kopen';
+
+  @override
+  String get ammoFactoryErrCouldNotPurchase =>
+      'Fabriek kon niet worden gekocht';
+
+  @override
+  String get ammoFactoryErrAlreadyOwned => 'Fabriek heeft al een eigenaar';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyBuy =>
+      'Niet genoeg geld om de fabriek te kopen';
+
+  @override
+  String get ammoFactoryErrCouldNotProduce => 'Kon geen munitie produceren';
+
+  @override
+  String get ammoFactoryErrNotOwned => 'Je bezit geen fabriek';
+
+  @override
+  String get ammoFactoryErrOnCooldown => 'Fabriek heeft nog afkoeltijd';
+
+  @override
+  String get ammoFactoryErrInactive =>
+      'Fabrikeigendom verloren door inactiviteit';
+
+  @override
+  String get ammoFactoryErrCouldNotUpgrade => 'Kon fabriek niet upgraden';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyUpgrade =>
+      'Niet genoeg geld om te upgraden';
+
+  @override
+  String get ammoFactoryErrMaxLevel => 'Fabriek heeft al het maximale niveau';
+
+  @override
+  String get ammoFactoryErrInvalidUpgradeType =>
+      'Upgrade-type moet output of quality zijn';
+
+  @override
+  String get ammoFactoryErrEducationNotMet => 'Opleidingseisen niet voldaan';
+
+  @override
   String get factoryUpgradeOutputSuccess => 'Output geupgrade';
 
   @override
@@ -3523,7 +3585,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryProduceStatusReady => 'Klaar';
 
   @override
-  String get factoryProduceStatusCooldown => 'Afkoelen';
+  String get factoryProduceStatusCooldown => 'Cooldown';
 
   @override
   String get factorySessionActive =>

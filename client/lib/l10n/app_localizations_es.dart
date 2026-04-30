@@ -3512,6 +3512,69 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mejorar la calidad para obtener precios de mercado más fuertes';
 
   @override
+  String get ammoFactoryBlackMarketTitle => 'Munición a la venta';
+
+  @override
+  String get ammoFactoryBlackMarketBody =>
+      'La fábrica de munición no vende balas directamente desde esta pantalla. Utilice el mercado negro para comprar y vender munición.';
+
+  @override
+  String get ammoFactoryActionBlackMarket =>
+      'Compra y vende munición a través del Mercado Negro, no directamente desde la fábrica.';
+
+  @override
+  String get ammoFactoryErrCountryRequired => 'Se requiere país';
+
+  @override
+  String get ammoFactoryErrPlayerNotFound => 'Jugadora no encontrada';
+
+  @override
+  String get ammoFactoryErrWrongCountry =>
+      'Debes estar en el mismo país para comprar esta fábrica.';
+
+  @override
+  String get ammoFactoryErrCouldNotPurchase => 'No se pudo comprar la fábrica';
+
+  @override
+  String get ammoFactoryErrAlreadyOwned => 'La fábrica ya es propiedad';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyBuy =>
+      'No hay suficiente dinero para comprar una fábrica.';
+
+  @override
+  String get ammoFactoryErrCouldNotProduce => 'No se pudo producir munición';
+
+  @override
+  String get ammoFactoryErrNotOwned => 'No eres dueño de una fábrica.';
+
+  @override
+  String get ammoFactoryErrOnCooldown => 'La fábrica está en enfriamiento.';
+
+  @override
+  String get ammoFactoryErrInactive =>
+      'Propiedad de la fábrica perdida debido a la inactividad';
+
+  @override
+  String get ammoFactoryErrCouldNotUpgrade =>
+      'No se pudo actualizar la fábrica';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyUpgrade =>
+      'No hay suficiente dinero para mejorar la fábrica';
+
+  @override
+  String get ammoFactoryErrMaxLevel => 'La fábrica ya está en el nivel máximo.';
+
+  @override
+  String get ammoFactoryErrInvalidUpgradeType =>
+      'El tipo de actualización debe ser salida o calidad.';
+
+  @override
+  String get ammoFactoryErrEducationNotMet =>
+      'Requisitos educativos no cumplidos.';
+
+  @override
   String get factoryUpgradeOutputSuccess => 'Salida mejorada';
 
   @override
@@ -3536,13 +3599,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get factoryLastProduced => 'último producido';
 
   @override
-  String get factoryProduceStatusLabel => 'Estado del producto';
+  String get factoryProduceStatusLabel => 'Estado de producción';
 
   @override
   String get factoryProduceStatusReady => 'Listo';
 
   @override
-  String get factoryProduceStatusCooldown => 'Enfriarse';
+  String get factoryProduceStatusCooldown => 'En espera';
 
   @override
   String get factorySessionActive =>

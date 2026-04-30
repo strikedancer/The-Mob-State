@@ -950,7 +950,7 @@
   "factoryLastProduced": "Laatst geproduceerd",
   "factoryProduceStatusLabel": "Produceerstatus",
   "factoryProduceStatusReady": "Klaar",
-  "factoryProduceStatusCooldown": "Afkoelen",
+  "factoryProduceStatusCooldown": "Cooldown",
   "factorySessionActive": "Productie venster: actief (10 min interval)",
   "factorySessionStopped": "Productie venster: gestopt (klik Produce om opnieuw 8 uur te starten)",
   "factorySessionEndsIn": "Venster eindigt over: {duration}",
@@ -4288,5 +4288,23 @@
         "type": "int"
       }
     }
-  }
+  },
+  "ammoFactoryBlackMarketTitle": "Munitie te koop",
+  "ammoFactoryBlackMarketBody": "De munitiefabriek verkoopt geen kogels rechtstreeks vanuit dit scherm. Voor kopen en verkopen van munitie gebruik je de Zwarte Markt.",
+  "ammoFactoryActionBlackMarket": "Koop en verkoop munitie via de Zwarte Markt, niet rechtstreeks via de fabriek.",
+  "ammoFactoryErrCountryRequired": "Land is verplicht",
+  "ammoFactoryErrPlayerNotFound": "Speler niet gevonden",
+  "ammoFactoryErrWrongCountry": "Je moet in hetzelfde land zijn om deze fabriek te kopen",
+  "ammoFactoryErrCouldNotPurchase": "Fabriek kon niet worden gekocht",
+  "ammoFactoryErrAlreadyOwned": "Fabriek heeft al een eigenaar",
+  "ammoFactoryErrInsufficientMoneyBuy": "Niet genoeg geld om de fabriek te kopen",
+  "ammoFactoryErrCouldNotProduce": "Kon geen munitie produceren",
+  "ammoFactoryErrNotOwned": "Je bezit geen fabriek",
+  "ammoFactoryErrOnCooldown": "Fabriek heeft nog afkoeltijd",
+  "ammoFactoryErrInactive": "Fabrikeigendom verloren door inactiviteit",
+  "ammoFactoryErrCouldNotUpgrade": "Kon fabriek niet upgraden",
+  "ammoFactoryErrInsufficientMoneyUpgrade": "Niet genoeg geld om te upgraden",
+  "ammoFactoryErrMaxLevel": "Fabriek heeft al het maximale niveau",
+  "ammoFactoryErrInvalidUpgradeType": "Upgrade-type moet output of quality zijn",
+  "ammoFactoryErrEducationNotMet": "Opleidingseisen niet voldaan"
 }

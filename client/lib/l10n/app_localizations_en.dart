@@ -3479,6 +3479,67 @@ class AppLocalizationsEn extends AppLocalizations {
       'Upgrade quality for stronger market prices';
 
   @override
+  String get ammoFactoryBlackMarketTitle => 'Ammo for sale';
+
+  @override
+  String get ammoFactoryBlackMarketBody =>
+      'The ammo factory does not sell bullets directly from this screen. Use the Black Market for buying and selling ammo.';
+
+  @override
+  String get ammoFactoryActionBlackMarket =>
+      'Buy and sell ammo through the Black Market, not directly from the factory.';
+
+  @override
+  String get ammoFactoryErrCountryRequired => 'Country is required';
+
+  @override
+  String get ammoFactoryErrPlayerNotFound => 'Player not found';
+
+  @override
+  String get ammoFactoryErrWrongCountry =>
+      'You must be in the same country to buy this factory';
+
+  @override
+  String get ammoFactoryErrCouldNotPurchase => 'Could not purchase factory';
+
+  @override
+  String get ammoFactoryErrAlreadyOwned => 'Factory is already owned';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyBuy =>
+      'Not enough money to buy factory';
+
+  @override
+  String get ammoFactoryErrCouldNotProduce => 'Could not produce ammo';
+
+  @override
+  String get ammoFactoryErrNotOwned => 'You do not own a factory';
+
+  @override
+  String get ammoFactoryErrOnCooldown => 'Factory is on cooldown';
+
+  @override
+  String get ammoFactoryErrInactive =>
+      'Factory ownership lost due to inactivity';
+
+  @override
+  String get ammoFactoryErrCouldNotUpgrade => 'Could not upgrade factory';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyUpgrade =>
+      'Not enough money to upgrade factory';
+
+  @override
+  String get ammoFactoryErrMaxLevel => 'Factory is already max level';
+
+  @override
+  String get ammoFactoryErrInvalidUpgradeType =>
+      'Upgrade type must be output or quality';
+
+  @override
+  String get ammoFactoryErrEducationNotMet => 'Education requirements not met';
+
+  @override
   String get factoryUpgradeOutputSuccess => 'Output upgraded';
 
   @override

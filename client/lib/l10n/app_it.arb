@@ -1724,7 +1724,7 @@
       }
     }
   },
-  "ammoYouWillReceive": "Riceverai: {rounds} giri",
+  "ammoYouWillReceive": "Riceverai: {rounds} colpi",
   "@ammoYouWillReceive": {
     "placeholders": {
       "rounds": {
@@ -1740,9 +1740,9 @@
       }
     }
   },
-  "ammoRounds": "giri",
+  "ammoRounds": "colpi",
   "ammoBoxesUnit": "scatole",
-  "ammoStock": "Azione",
+  "ammoStock": "Scorte",
   "ammoQuality": "Qualità",
   "factoryBought": "Acquistato in fabbrica",
   "factoryProduced": "Produzione aggiornata",
@@ -1762,9 +1762,9 @@
   "factoryOutputLevel": "Livello di uscita",
   "factoryQualityLevel": "Livello di qualità",
   "factoryLastProduced": "Ultimo prodotto",
-  "factoryProduceStatusLabel": "Produrre lo stato",
-  "factoryProduceStatusReady": "Pronta",
-  "factoryProduceStatusCooldown": "Raffreddare",
+  "factoryProduceStatusLabel": "Stato produzione",
+  "factoryProduceStatusReady": "Pronto",
+  "factoryProduceStatusCooldown": "In attesa",
   "factorySessionActive": "Finestra di produzione: attiva (intervallo di 10 minuti)",
   "factorySessionStopped": "Finestra di produzione: interrotta (fai clic su Produci per avviare una nuova finestra di 8 ore)",
   "factorySessionEndsIn": "La finestra termina con: {duration}",
@@ -4288,5 +4288,23 @@
   "educationCertProcessElectricsSpecialist": "Certificazione di specialista in componenti elettrici di processo",
   "educationCertClandestineChemist": "Certificazione di chimico clandestino",
   "educationCertNarcoGridArchitect": "Certificazione di Narco Grid Architect",
-  "cooldownWaitSchool": "Catch your breath before the next lesson…"
+  "cooldownWaitSchool": "Catch your breath before the next lesson…",
+  "ammoFactoryBlackMarketTitle": "Munizioni in vendita",
+  "ammoFactoryBlackMarketBody": "La fabbrica di munizioni non vende proiettili direttamente da questa schermata. Usa il mercato nero per acquistare e vendere munizioni.",
+  "ammoFactoryActionBlackMarket": "Acquista e vendi munizioni attraverso il mercato nero, non direttamente dalla fabbrica.",
+  "ammoFactoryErrCountryRequired": "Il Paese è obbligatorio",
+  "ammoFactoryErrPlayerNotFound": "Giocatore non trovato",
+  "ammoFactoryErrWrongCountry": "Devi essere nello stesso paese per acquistare questa fabbrica",
+  "ammoFactoryErrCouldNotPurchase": "Impossibile acquistare la fabbrica",
+  "ammoFactoryErrAlreadyOwned": "La fabbrica è già di proprietà",
+  "ammoFactoryErrInsufficientMoneyBuy": "Non abbastanza soldi per comprare la fabbrica",
+  "ammoFactoryErrCouldNotProduce": "Impossibile produrre munizioni",
+  "ammoFactoryErrNotOwned": "Non possiedi una fabbrica",
+  "ammoFactoryErrOnCooldown": "La fabbrica è in fase di raffreddamento",
+  "ammoFactoryErrInactive": "Perdita della proprietà della fabbrica a causa dell'inattività",
+  "ammoFactoryErrCouldNotUpgrade": "Impossibile aggiornare la fabbrica",
+  "ammoFactoryErrInsufficientMoneyUpgrade": "Non abbastanza soldi per aggiornare la fabbrica",
+  "ammoFactoryErrMaxLevel": "La fabbrica è già al livello massimo",
+  "ammoFactoryErrInvalidUpgradeType": "Il tipo di aggiornamento deve essere output o qualità",
+  "ammoFactoryErrEducationNotMet": "Requisiti di istruzione non soddisfatti"
 }

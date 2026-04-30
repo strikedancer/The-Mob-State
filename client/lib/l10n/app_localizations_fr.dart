@@ -3469,12 +3469,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String ammoRoundsPerBox(String rounds) {
-    return '$rounds tours par boîte';
+    return '$rounds cartouches par boîte';
   }
 
   @override
   String ammoYouWillReceive(String rounds) {
-    return 'Vous recevrez : $rounds tours';
+    return 'Vous recevrez : $rounds cartouches';
   }
 
   @override
@@ -3483,13 +3483,13 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get ammoRounds => 'tours';
+  String get ammoRounds => 'cartouches';
 
   @override
   String get ammoBoxesUnit => 'boîtes';
 
   @override
-  String get ammoStock => 'Action';
+  String get ammoStock => 'Stock';
 
   @override
   String get ammoQuality => 'Qualité';
@@ -3530,6 +3530,70 @@ class AppLocalizationsFr extends AppLocalizations {
       'Améliorez la qualité pour des prix de marché plus élevés';
 
   @override
+  String get ammoFactoryBlackMarketTitle => 'Munitions à vendre';
+
+  @override
+  String get ammoFactoryBlackMarketBody =>
+      'L\'usine de munitions ne vend pas de balles directement depuis cet écran. Utilisez le marché noir pour acheter et vendre des munitions.';
+
+  @override
+  String get ammoFactoryActionBlackMarket =>
+      'Achetez et vendez des munitions sur le marché noir, et non directement depuis l\'usine.';
+
+  @override
+  String get ammoFactoryErrCountryRequired => 'Le pays est requis';
+
+  @override
+  String get ammoFactoryErrPlayerNotFound => 'Joueur introuvable';
+
+  @override
+  String get ammoFactoryErrWrongCountry =>
+      'Vous devez être dans le même pays pour acheter cette usine';
+
+  @override
+  String get ammoFactoryErrCouldNotPurchase => 'Impossible d\'acheter l\'usine';
+
+  @override
+  String get ammoFactoryErrAlreadyOwned => 'L\'usine appartient déjà';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyBuy =>
+      'Pas assez d\'argent pour acheter une usine';
+
+  @override
+  String get ammoFactoryErrCouldNotProduce =>
+      'Impossible de produire des munitions';
+
+  @override
+  String get ammoFactoryErrNotOwned => 'Vous ne possédez pas d\'usine';
+
+  @override
+  String get ammoFactoryErrOnCooldown => 'L\'usine est en refroidissement';
+
+  @override
+  String get ammoFactoryErrInactive =>
+      'Propriété de l\'usine perdue en raison de l\'inactivité';
+
+  @override
+  String get ammoFactoryErrCouldNotUpgrade =>
+      'Impossible de mettre à niveau l\'usine';
+
+  @override
+  String get ammoFactoryErrInsufficientMoneyUpgrade =>
+      'Pas assez d\'argent pour moderniser l\'usine';
+
+  @override
+  String get ammoFactoryErrMaxLevel => 'L\'usine est déjà au niveau maximum';
+
+  @override
+  String get ammoFactoryErrInvalidUpgradeType =>
+      'Le type de mise à niveau doit être de sortie ou de qualité';
+
+  @override
+  String get ammoFactoryErrEducationNotMet =>
+      'Exigences de formation non remplies';
+
+  @override
   String get factoryUpgradeOutputSuccess => 'Sortie améliorée';
 
   @override
@@ -3554,13 +3618,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get factoryLastProduced => 'Dernière production';
 
   @override
-  String get factoryProduceStatusLabel => 'Statut du produit';
+  String get factoryProduceStatusLabel => 'État de la production';
 
   @override
   String get factoryProduceStatusReady => 'Prêt';
 
   @override
-  String get factoryProduceStatusCooldown => 'Refroidir';
+  String get factoryProduceStatusCooldown => 'Temps d’attente';
 
   @override
   String get factorySessionActive =>

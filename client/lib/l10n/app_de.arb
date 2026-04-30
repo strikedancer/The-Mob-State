@@ -1716,7 +1716,7 @@
   "invalidQuantity": "Ungültige Menge",
   "nextAmmoPurchase": "Nächster Kauf verfügbar in",
   "ammoBoxes": "Boxen",
-  "ammoRoundsPerBox": "{rounds} Runden pro Box",
+  "ammoRoundsPerBox": "{rounds} Schuss pro Box",
   "@ammoRoundsPerBox": {
     "placeholders": {
       "rounds": {
@@ -1724,7 +1724,7 @@
       }
     }
   },
-  "ammoYouWillReceive": "Sie erhalten: {rounds} Runden",
+  "ammoYouWillReceive": "Sie erhalten: {rounds} Schuss",
   "@ammoYouWillReceive": {
     "placeholders": {
       "rounds": {
@@ -1740,9 +1740,9 @@
       }
     }
   },
-  "ammoRounds": "Runden",
+  "ammoRounds": "Schuss",
   "ammoBoxesUnit": "Boxen",
-  "ammoStock": "Aktie",
+  "ammoStock": "Vorrat",
   "ammoQuality": "Qualität",
   "factoryBought": "Fabrik gekauft",
   "factoryProduced": "Produktion aktualisiert",
@@ -4288,5 +4288,23 @@
   "educationCertProcessElectricsSpecialist": "Zertifizierung zum Prozesselektriker",
   "educationCertClandestineChemist": "Zertifizierung als Geheimchemiker",
   "educationCertNarcoGridArchitect": "Narco Grid Architect-Zertifizierung",
-  "cooldownWaitSchool": "Catch your breath before the next lesson…"
+  "cooldownWaitSchool": "Catch your breath before the next lesson…",
+  "ammoFactoryBlackMarketTitle": "Munition zu verkaufen",
+  "ammoFactoryBlackMarketBody": "Die Munitionsfabrik verkauft über diesen Bildschirm keine Kugeln direkt. Nutzen Sie den Schwarzmarkt zum Kauf und Verkauf von Munition.",
+  "ammoFactoryActionBlackMarket": "Kaufen und verkaufen Sie Munition über den Schwarzmarkt, nicht direkt in der Fabrik.",
+  "ammoFactoryErrCountryRequired": "Land ist erforderlich",
+  "ammoFactoryErrPlayerNotFound": "Spieler nicht gefunden",
+  "ammoFactoryErrWrongCountry": "Sie müssen im selben Land sein, um diese Fabrik zu kaufen",
+  "ammoFactoryErrCouldNotPurchase": "Fabrik konnte nicht gekauft werden",
+  "ammoFactoryErrAlreadyOwned": "Die Fabrik ist bereits im Besitz",
+  "ammoFactoryErrInsufficientMoneyBuy": "Nicht genug Geld, um eine Fabrik zu kaufen",
+  "ammoFactoryErrCouldNotProduce": "Es konnte keine Munition produziert werden",
+  "ammoFactoryErrNotOwned": "Sie besitzen keine Fabrik",
+  "ammoFactoryErrOnCooldown": "Die Fabrik befindet sich im Cooldown",
+  "ammoFactoryErrInactive": "Das Eigentum an der Fabrik ging aufgrund von Inaktivität verloren",
+  "ammoFactoryErrCouldNotUpgrade": "Die Fabrik konnte nicht aktualisiert werden",
+  "ammoFactoryErrInsufficientMoneyUpgrade": "Nicht genug Geld, um die Fabrik zu modernisieren",
+  "ammoFactoryErrMaxLevel": "Werksseitig ist bereits die maximale Stufe erreicht",
+  "ammoFactoryErrInvalidUpgradeType": "Der Upgrade-Typ muss „Ausgabe“ oder „Qualität“ sein",
+  "ammoFactoryErrEducationNotMet": "Bildungsvoraussetzungen nicht erfüllt"
 }

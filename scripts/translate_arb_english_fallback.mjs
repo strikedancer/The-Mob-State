@@ -15,6 +15,8 @@
  *     (alleen keys die met "territory" beginnen; handige batch voor één scherm)
  *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=school,education,achievementSchool,achievementTitle_school_,achievementDescription_school_,supportMod_school
  *     (komma's = meerdere prefixes; key matcht als hij met één ervan begint)
+ *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=ammoFactory
+ *     (Munitiefabriek-scherm: black market infotekst + API-foutcodes)
  *
  * Zie ook: translate_app_arb_from_en.mjs (volledige ARB overschrijven) en verify_arb_parity.mjs.
  */

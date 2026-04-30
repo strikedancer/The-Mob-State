@@ -241,9 +241,15 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
           return;
         }
 
-        final message =
-            data['message']?.toString() ??
-            (l10n?.hitError(data.toString()) ?? 'Error: $data');
+        final message = l10n != null
+            ? _ammoFactoryFailureMessage(
+                l10n,
+                data,
+                data.toString(),
+                operation: 'upgrade',
+              )
+            : (data['message']?.toString() ??
+                'Error: $data');
         showTopRightFromSnackBar(
           context,
           SnackBar(
@@ -298,9 +304,15 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
           return;
         }
 
-        final message =
-            data['message']?.toString() ??
-            (l10n?.hitError(data.toString()) ?? 'Error: $data');
+        final message = l10n != null
+            ? _ammoFactoryFailureMessage(
+                l10n,
+                data,
+                data.toString(),
+                operation: 'buy',
+              )
+            : (data['message']?.toString() ??
+                'Error: $data');
         showTopRightFromSnackBar(
           context,
           SnackBar(
@@ -342,9 +354,15 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         }
         await _loadData();
       } else if (mounted) {
-        final message =
-            data['message']?.toString() ??
-            (l10n?.hitError(data.toString()) ?? 'Error: $data');
+        final message = l10n != null
+            ? _ammoFactoryFailureMessage(
+                l10n,
+                data,
+                data.toString(),
+                operation: 'produce',
+              )
+            : (data['message']?.toString() ??
+                'Error: $data');
         showTopRightFromSnackBar(
           context,
           SnackBar(
@@ -413,6 +431,70 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     );
     if (sessionEnd == null || lastProducedAt == null) return false;
     return _now.isBefore(sessionEnd);
+  }
+
+  /// Maps API [error] codes from `/ammo-factories/*` to localized messages.
+  /// [operation] disambiguates `INSUFFICIENT_MONEY` and generic fallbacks.
+  String? _localizedAmmoFactoryApiError(
+    AppLocalizations l10n,
+    String? errorCode, {
+    required String operation,
+  }) {
+    switch (errorCode) {
+      case 'MISSING_COUNTRY':
+        return l10n.ammoFactoryErrCountryRequired;
+      case 'PLAYER_NOT_FOUND':
+        return l10n.ammoFactoryErrPlayerNotFound;
+      case 'WRONG_COUNTRY':
+        return l10n.ammoFactoryErrWrongCountry;
+      case 'FACTORY_OWNED':
+        return l10n.ammoFactoryErrAlreadyOwned;
+      case 'INSUFFICIENT_MONEY':
+        return operation == 'upgrade'
+            ? l10n.ammoFactoryErrInsufficientMoneyUpgrade
+            : l10n.ammoFactoryErrInsufficientMoneyBuy;
+      case 'EDUCATION_REQUIREMENTS_NOT_MET':
+        return l10n.ammoFactoryErrEducationNotMet;
+      case 'FACTORY_NOT_OWNED':
+        return l10n.ammoFactoryErrNotOwned;
+      case 'COOLDOWN':
+        return l10n.ammoFactoryErrOnCooldown;
+      case 'FACTORY_INACTIVE':
+        return l10n.ammoFactoryErrInactive;
+      case 'MAX_LEVEL':
+        return l10n.ammoFactoryErrMaxLevel;
+      case 'INVALID_UPGRADE_TYPE':
+        return l10n.ammoFactoryErrInvalidUpgradeType;
+      default:
+        return null;
+    }
+  }
+
+  String _ammoFactoryFailureMessage(
+    AppLocalizations l10n,
+    Map<String, dynamic> data,
+    String fallbackGeneric, {
+    required String operation,
+  }) {
+    final code = data['error']?.toString();
+    final mapped = _localizedAmmoFactoryApiError(
+      l10n,
+      code,
+      operation: operation,
+    );
+    if (mapped != null) return mapped;
+    final raw = data['message']?.toString();
+    if (raw != null && raw.isNotEmpty) return raw;
+    if (operation == 'produce') {
+      return l10n.ammoFactoryErrCouldNotProduce;
+    }
+    if (operation == 'upgrade') {
+      return l10n.ammoFactoryErrCouldNotUpgrade;
+    }
+    if (operation == 'buy') {
+      return l10n.ammoFactoryErrCouldNotPurchase;
+    }
+    return l10n.hitError(fallbackGeneric);
   }
 
   String _formatDuration(Duration duration) {
@@ -531,7 +613,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                     '• ${l10n?.ammoFactoryActionQuality ?? 'Upgrade quality for stronger market prices'}',
                   ),
                   Text(
-                    '• ${Localizations.localeOf(context).languageCode == 'nl' ? 'Koop en verkoop munitie via de Zwarte Markt, niet vanuit de fabriek.' : 'Buy and sell ammo through the Black Market, not directly from the factory.'}',
+                    '• ${l10n?.ammoFactoryActionBlackMarket ?? 'Buy and sell ammo through the Black Market, not directly from the factory.'}',
                   ),
                 ],
               ),
