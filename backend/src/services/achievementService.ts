@@ -1,5 +1,7 @@
+import { formatAchievementInboxMessage, getAchievementUnlockedActivityLogMessage } from '../i18n/achievementInboxI18n';
 import { activityService } from './activityService';
 import { directMessageService } from './directMessageService';
+import { translationService } from './translationService';
 import { PrismaClient } from '@prisma/client';
 import crimesData from '../../content/crimes.json';
 import jobsData from '../../content/jobs.json';
@@ -2858,8 +2860,7 @@ export async function checkAndUnlockAchievements(
       where: { id: playerId },
       select: { preferredLanguage: true },
     });
-    const language = player?.preferredLanguage === 'nl' ? 'nl' : 'en';
-    const numberLocale = language === 'nl' ? 'nl-NL' : 'en-US';
+    const language = translationService.getPlayerLanguage({ preferredLanguage: player?.preferredLanguage });
 
     // Get already unlocked achievements
     const existingAchievements = await prisma.prostitutionAchievement.findMany({
@@ -2929,9 +2930,7 @@ export async function checkAndUnlockAchievements(
           await activityService.logActivity(
             playerId,
             'ACHIEVEMENT',
-            language === 'nl'
-              ? `Prestatie vrijgespeeld: ${achievement.title}`
-              : `Achievement unlocked: ${achievement.title}`,
+            getAchievementUnlockedActivityLogMessage(language, achievement.title),
             {
               achievementId: achievement.id,
               achievementTitle: achievement.title,
@@ -2943,36 +2942,18 @@ export async function checkAndUnlockAchievements(
             true
           );
 
-          const rewardLines =
-            language === 'nl'
-              ? [
-                  `🏆 Prestatie vrijgespeeld: ${achievement.title}`,
-                  '',
-                  achievement.description,
-                  '',
-                  'Beloning:',
-                  `• Geld: €${rewardMoney.toLocaleString(numberLocale)}`,
-                  `• XP: ${rewardXp.toLocaleString(numberLocale)}`,
-                  `• Reputatie: +${rewardReputation.toLocaleString(numberLocale)}`,
-                  '',
-                  `🎖 Badge: ${achievement.icon} ${achievement.title}`,
-                  `[[achievement:${achievement.category}/${achievement.id}]]`,
-                ]
-              : [
-                  `🏆 Achievement Unlocked: ${achievement.title}`,
-                  '',
-                  achievement.description,
-                  '',
-                  'Reward:',
-                  `• Money: €${rewardMoney.toLocaleString(numberLocale)}`,
-                  `• XP: ${rewardXp.toLocaleString(numberLocale)}`,
-                  `• Reputation: +${rewardReputation.toLocaleString(numberLocale)}`,
-                  '',
-                  `🎖 Badge: ${achievement.icon} ${achievement.title}`,
-                  `[[achievement:${achievement.category}/${achievement.id}]]`,
-                ];
+          const inboxText = formatAchievementInboxMessage(language, {
+            title: achievement.title,
+            description: achievement.description,
+            icon: achievement.icon,
+            rewardMoney,
+            rewardXp,
+            rewardReputation,
+            category: achievement.category,
+            id: achievement.id,
+          });
 
-          await directMessageService.sendSystemMessage(playerId, rewardLines.join('\n'));
+          await directMessageService.sendSystemMessage(playerId, inboxText);
         } catch (rewardError) {
           console.error(`[AchievementService] Error processing reward for achievement ${type} (player ${playerId}):`, rewardError);
           // Don't throw - continue processing other achievements even if one reward fails

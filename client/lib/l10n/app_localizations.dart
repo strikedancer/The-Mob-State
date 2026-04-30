@@ -8390,6 +8390,78 @@ abstract class AppLocalizations {
   /// **'Category'**
   String get achievementsCategory;
 
+  /// No description provided for @achievementsSectionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get achievementsSectionProgress;
+
+  /// No description provided for @achievementsPercentComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% complete'**
+  String achievementsPercentComplete(int percent);
+
+  /// No description provided for @achievementsCategoryNameProstitution.
+  ///
+  /// In en, this message translates to:
+  /// **'Prostitution'**
+  String get achievementsCategoryNameProstitution;
+
+  /// No description provided for @achievementsCategoryNameRld.
+  ///
+  /// In en, this message translates to:
+  /// **'RLD'**
+  String get achievementsCategoryNameRld;
+
+  /// No description provided for @achievementsCategoryNameCrimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Crimes'**
+  String get achievementsCategoryNameCrimes;
+
+  /// No description provided for @achievementsCategoryNameJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs'**
+  String get achievementsCategoryNameJobs;
+
+  /// No description provided for @achievementsCategoryNameSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'School'**
+  String get achievementsCategoryNameSchool;
+
+  /// No description provided for @achievementsCategoryNameVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles'**
+  String get achievementsCategoryNameVehicles;
+
+  /// No description provided for @achievementsCategoryNameTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get achievementsCategoryNameTravel;
+
+  /// No description provided for @achievementsCategoryNameDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get achievementsCategoryNameDrugs;
+
+  /// No description provided for @achievementsCategoryNameTrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade'**
+  String get achievementsCategoryNameTrade;
+
+  /// No description provided for @achievementsCategoryNameGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get achievementsCategoryNameGeneral;
+
   /// No description provided for @achievementJobItSpecialistTitle.
   ///
   /// In en, this message translates to:

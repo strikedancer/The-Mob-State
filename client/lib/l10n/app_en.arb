@@ -2364,6 +2364,25 @@
   },
   "achievementsDetails": "Details",
   "achievementsCategory": "Category",
+  "achievementsSectionProgress": "Progress",
+  "achievementsPercentComplete": "{percent}% complete",
+  "@achievementsPercentComplete": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsCategoryNameProstitution": "Prostitution",
+  "achievementsCategoryNameRld": "RLD",
+  "achievementsCategoryNameCrimes": "Crimes",
+  "achievementsCategoryNameJobs": "Jobs",
+  "achievementsCategoryNameSchool": "School",
+  "achievementsCategoryNameVehicles": "Vehicles",
+  "achievementsCategoryNameTravel": "Travel",
+  "achievementsCategoryNameDrugs": "Drugs",
+  "achievementsCategoryNameTrade": "Trade",
+  "achievementsCategoryNameGeneral": "General",
   "achievementJobItSpecialistTitle": "IT Specialist",
   "achievementJobItSpecialistDescription": "Complete your first shift as a Programmer",
   "achievementJobLawyerTitle": "Street Lawyer",

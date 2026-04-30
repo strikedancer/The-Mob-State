@@ -4026,5 +4026,24 @@
         "type": "int"
       }
     }
-  }
+  },
+  "achievementsSectionProgress": "Progresso",
+  "achievementsPercentComplete": "{percent} % completato",
+  "@achievementsPercentComplete": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsCategoryNameProstitution": "Prostituzione",
+  "achievementsCategoryNameRld": "RLD",
+  "achievementsCategoryNameCrimes": "Crimini",
+  "achievementsCategoryNameJobs": "Lavori",
+  "achievementsCategoryNameSchool": "Scuola",
+  "achievementsCategoryNameVehicles": "Veicoli",
+  "achievementsCategoryNameTravel": "Viaggi",
+  "achievementsCategoryNameDrugs": "Droga",
+  "achievementsCategoryNameTrade": "Commercio",
+  "achievementsCategoryNameGeneral": "Generale"
 }

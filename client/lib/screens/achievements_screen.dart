@@ -21,9 +21,6 @@ class _AchievementsScreenState extends State<AchievementsScreen>
   PlayerAchievementProgress? _progress;
   String _errorMessage = '';
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   @override
   void initState() {
     super.initState();
@@ -46,6 +43,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
   }
 
   Future<void> _loadAchievements() async {
+    final t = AppLocalizations.of(context)!;
     setState(() {
       _isLoading = true;
       _errorMessage = '';
@@ -63,13 +61,14 @@ class _AchievementsScreenState extends State<AchievementsScreen>
         });
       } else {
         setState(() {
-          _errorMessage = result['message'] ?? 'Failed to load achievements';
+          _errorMessage =
+              result['message'] as String? ?? t.achievementLoadFailed;
           _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Error: $e';
+        _errorMessage = t.error(e.toString());
         _isLoading = false;
       });
     }
@@ -425,25 +424,40 @@ class _AchievementsScreenState extends State<AchievementsScreen>
     }
   }
 
-  String _categoryLabel(String category) {
-    const labels = {
-      'prostitution': 'Hoeren',
-      'rld': 'RLD',
-      'crimes': 'Crimes',
-      'jobs': 'Werk',
-      'school': 'School',
-      'vehicles': 'Auto/Boot',
-      'travel': 'Reizen',
-      'drugs': 'Drugs',
-      'trade': 'Handel',
-      'social': 'Social',
-      'mastery': 'Mastery',
-      'progression': 'Progressie',
-      'wealth': 'Rijkdom',
-      'power': 'Macht',
-    };
-
-    return labels[category] ?? category;
+  String _localizedCategoryLabel(String category) {
+    final t = AppLocalizations.of(context)!;
+    switch (category) {
+      case 'progression':
+        return t.achievementsCategoryProgression;
+      case 'wealth':
+        return t.achievementsCategoryWealth;
+      case 'power':
+        return t.achievementsCategoryPower;
+      case 'social':
+        return t.achievementsCategorySocial;
+      case 'mastery':
+        return t.achievementsCategoryMastery;
+      case 'prostitution':
+        return t.achievementsCategoryNameProstitution;
+      case 'rld':
+        return t.achievementsCategoryNameRld;
+      case 'crimes':
+        return t.achievementsCategoryNameCrimes;
+      case 'jobs':
+        return t.achievementsCategoryNameJobs;
+      case 'school':
+        return t.achievementsCategoryNameSchool;
+      case 'vehicles':
+        return t.achievementsCategoryNameVehicles;
+      case 'travel':
+        return t.achievementsCategoryNameTravel;
+      case 'drugs':
+        return t.achievementsCategoryNameDrugs;
+      case 'trade':
+        return t.achievementsCategoryNameTrade;
+      default:
+        return t.achievementsCategoryNameGeneral;
+    }
   }
 
   List<String> _orderedCategories() {
@@ -508,7 +522,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadAchievements,
-            tooltip: 'Refresh',
+            tooltip: t.refresh,
           ),
         ],
       ),
@@ -521,6 +535,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
   }
 
   Widget _buildErrorView() {
+    final t = AppLocalizations.of(context)!;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -531,7 +546,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _loadAchievements,
-            child: const Text('Retry'),
+            child: Text(t.retry),
           ),
         ],
       ),
@@ -551,6 +566,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
 
   Widget _buildProgressHeader() {
     if (_progress == null) return const SizedBox();
+    final t = AppLocalizations.of(context)!;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -567,7 +583,10 @@ class _AchievementsScreenState extends State<AchievementsScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Progress', style: Theme.of(context).textTheme.titleLarge),
+              Text(
+                t.achievementsSectionProgress,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               Text(
                 '${_progress!.unlockedCount}/${_progress!.totalAchievements}',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -600,10 +619,11 @@ class _AchievementsScreenState extends State<AchievementsScreen>
   }
 
   Widget _buildAchievementsList() {
+    final t = AppLocalizations.of(context)!;
     final categories = _orderedCategories();
 
     if (categories.isEmpty) {
-      return Center(child: Text(_tr('Geen prestaties gevonden', 'No achievements found')));
+      return Center(child: Text(t.achievementNoData));
     }
 
     return ListView.builder(
@@ -646,7 +666,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
           Row(
             children: [
               Text(
-                _categoryLabel(category),
+                _localizedCategoryLabel(category),
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
@@ -1145,7 +1165,7 @@ class _AchievementsScreenState extends State<AchievementsScreen>
               const SizedBox(height: 8),
               Chip(
                 label: Text(
-                  achievement.categoryName,
+                  _localizedCategoryLabel(achievement.category),
                   style: TextStyle(
                     color: categoryOnColor,
                     fontSize: 12,

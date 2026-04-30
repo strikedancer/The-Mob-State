@@ -4026,5 +4026,24 @@
         "type": "int"
       }
     }
-  }
+  },
+  "achievementsSectionProgress": "Voortgang",
+  "achievementsPercentComplete": "{percent}% voltooid",
+  "@achievementsPercentComplete": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsCategoryNameProstitution": "Prostitutie",
+  "achievementsCategoryNameRld": "RLD",
+  "achievementsCategoryNameCrimes": "Misdaden",
+  "achievementsCategoryNameJobs": "Werk",
+  "achievementsCategoryNameSchool": "School",
+  "achievementsCategoryNameVehicles": "Voertuigen",
+  "achievementsCategoryNameTravel": "Reizen",
+  "achievementsCategoryNameDrugs": "Drugs",
+  "achievementsCategoryNameTrade": "Handel",
+  "achievementsCategoryNameGeneral": "Algemeen"
 }

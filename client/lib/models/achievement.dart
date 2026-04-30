@@ -124,40 +124,6 @@ class Achievement {
     };
   }
 
-  // Helper to get category name
-  String get categoryName {
-    switch (category) {
-      case 'progression':
-        return 'Progression';
-      case 'prostitution':
-        return 'Prostitutie';
-      case 'rld':
-        return 'RLD';
-      case 'crimes':
-        return 'Crimes';
-      case 'jobs':
-        return 'Werk';
-      case 'vehicles':
-        return 'Voertuigen';
-      case 'travel':
-        return 'Reizen';
-      case 'drugs':
-        return 'Drugs';
-      case 'trade':
-        return 'Handel';
-      case 'wealth':
-        return 'Wealth';
-      case 'power':
-        return 'Power';
-      case 'social':
-        return 'Social';
-      case 'mastery':
-        return 'Mastery';
-      default:
-        return 'General';
-    }
-  }
-
   // Helper to get formatted rewards
   String get rewardText {
     final List<String> rewards = [];

@@ -4543,6 +4543,44 @@ class AppLocalizationsPl extends AppLocalizations {
   String get achievementsCategory => 'Kategoria';
 
   @override
+  String get achievementsSectionProgress => 'Postęp';
+
+  @override
+  String achievementsPercentComplete(int percent) {
+    return '$percent% ukończone';
+  }
+
+  @override
+  String get achievementsCategoryNameProstitution => 'Prostytucja';
+
+  @override
+  String get achievementsCategoryNameRld => 'RLD';
+
+  @override
+  String get achievementsCategoryNameCrimes => 'Przestępstwa';
+
+  @override
+  String get achievementsCategoryNameJobs => 'Prace';
+
+  @override
+  String get achievementsCategoryNameSchool => 'Szkoła';
+
+  @override
+  String get achievementsCategoryNameVehicles => 'Pojazdy';
+
+  @override
+  String get achievementsCategoryNameTravel => 'Podróże';
+
+  @override
+  String get achievementsCategoryNameDrugs => 'Narkotyki';
+
+  @override
+  String get achievementsCategoryNameTrade => 'Handel';
+
+  @override
+  String get achievementsCategoryNameGeneral => 'Ogólne';
+
+  @override
   String get achievementJobItSpecialistTitle => 'Specjalista IT';
 
   @override

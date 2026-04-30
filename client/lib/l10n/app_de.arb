@@ -4026,5 +4026,24 @@
         "type": "int"
       }
     }
-  }
+  },
+  "achievementsSectionProgress": "Fortschritt",
+  "achievementsPercentComplete": "{percent} % abgeschlossen",
+  "@achievementsPercentComplete": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsCategoryNameProstitution": "Prostitution",
+  "achievementsCategoryNameRld": "RLD",
+  "achievementsCategoryNameCrimes": "Verbrechen",
+  "achievementsCategoryNameJobs": "Jobs",
+  "achievementsCategoryNameSchool": "Schule",
+  "achievementsCategoryNameVehicles": "Fahrzeuge",
+  "achievementsCategoryNameTravel": "Reisen",
+  "achievementsCategoryNameDrugs": "Drogen",
+  "achievementsCategoryNameTrade": "Handel",
+  "achievementsCategoryNameGeneral": "Allgemein"
 }
