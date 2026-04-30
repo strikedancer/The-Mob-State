@@ -927,6 +927,8 @@
     }
   },
   "ammoRounds": "kogels",
+  "ammoGeneric": "Munitie",
+  "ammoPerCrimeSuffix": "per misdaad",
   "ammoBoxesUnit": "dozen",
   "ammoStock": "Voorraad",
   "ammoQuality": "Kwaliteit",

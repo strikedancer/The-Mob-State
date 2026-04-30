@@ -24,9 +24,6 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
 
   static const ammoPurchaseCooldownMinutes = 30;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   @override
   void initState() {
     super.initState();
@@ -130,15 +127,14 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
           final boxes = int.tryParse(controller.text) ?? 1;
           final totalRounds = boxes * boxSize;
           final totalCost = totalRounds * pricePerRound;
-          final isDutch = Localizations.localeOf(context).languageCode == 'nl';
 
           return AlertDialog(
-            title: Text(isDutch ? 'Weet je het zeker?' : 'Are you sure?'),
+            title: Text(l10n?.confirmAction ?? 'Are you sure?'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  l10n?.buyAmmo ?? (isDutch ? 'Munitie kopen' : 'Buy ammo'),
+                  l10n?.buyAmmo ?? 'Buy Ammo',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
@@ -372,7 +368,11 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
                     return Card(
                       child: ListTile(
                         leading: _buildAmmoImage(ammo['ammoType']),
-                        title: Text(ammo['name'] ?? ammo['ammoType'] ?? _tr('Munitie', 'Ammo')),
+                        title: Text(
+                          ammo['name'] ??
+                              ammo['ammoType'] ??
+                              (l10n?.ammoGeneric ?? 'Ammo'),
+                        ),
                         subtitle: Text(
                           '${l10n?.ammoStock ?? 'Stock'}: $quantity ${l10n?.ammoRounds ?? 'rounds'} • $boxSize/${l10n?.ammoBoxesUnit ?? 'box'} • €$pricePerRound/${l10n?.ammoRounds ?? 'round'}\n${l10n?.ammoQuality ?? 'Quality'}: $quality',
                         ),
@@ -404,7 +404,11 @@ class _AmmoMarketScreenState extends State<AmmoMarketScreen>
                     return Card(
                       child: ListTile(
                         leading: _buildAmmoImage(ammo['ammoType']),
-                        title: Text(ammo['name'] ?? ammo['ammoType'] ?? _tr('Munitie', 'Ammo')),
+                        title: Text(
+                          ammo['name'] ??
+                              ammo['ammoType'] ??
+                              (l10n?.ammoGeneric ?? 'Ammo'),
+                        ),
                         subtitle: Text(
                           '$quantity ${l10n?.ammoRounds ?? 'rounds'} ($boxes ${l10n?.ammoBoxesUnit ?? 'boxes'}${remaining > 0 ? ' + $remaining' : ''}) • ${l10n?.ammoQuality ?? 'Quality'}: $quality',
                         ),

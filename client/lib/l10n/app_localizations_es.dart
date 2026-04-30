@@ -3468,6 +3468,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ammoRounds => 'rondas';
 
   @override
+  String get ammoGeneric => 'Munición';
+
+  @override
+  String get ammoPerCrimeSuffix => 'por delito';
+
+  @override
   String get ammoBoxesUnit => 'cajas';
 
   @override

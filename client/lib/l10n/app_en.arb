@@ -1780,6 +1780,8 @@
     }
   },
   "ammoRounds": "rounds",
+  "ammoGeneric": "Ammo",
+  "ammoPerCrimeSuffix": "per crime",
   "ammoBoxesUnit": "boxes",
   "ammoStock": "Stock",
   "ammoQuality": "Quality",

@@ -6398,6 +6398,18 @@ abstract class AppLocalizations {
   /// **'rounds'**
   String get ammoRounds;
 
+  /// No description provided for @ammoGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo'**
+  String get ammoGeneric;
+
+  /// No description provided for @ammoPerCrimeSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'per crime'**
+  String get ammoPerCrimeSuffix;
+
   /// No description provided for @ammoBoxesUnit.
   ///
   /// In en, this message translates to:

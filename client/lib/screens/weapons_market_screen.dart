@@ -113,6 +113,9 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final authProvider = Provider.of<AuthProvider>(context);
+    final ammoLabel = l10n?.ammoGeneric ?? 'Ammo';
+    final perCrime = l10n?.ammoPerCrimeSuffix ?? 'per crime';
+    final unknownName = l10n?.unknown ?? 'Unknown';
 
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -159,9 +162,9 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
                       subtitle += ' • ${l10n?.vipOnly ?? 'VIP only'}';
                     }
                     if (requiresAmmo && ammoType != null) {
-                      subtitle += '\n${Localizations.localeOf(context).languageCode == 'nl' ? 'Munitie' : 'Ammo'}: $ammoType';
+                      subtitle += '\n$ammoLabel: $ammoType';
                       if (ammoPerCrime != null) {
-                        subtitle += ' ($ammoPerCrime ${Localizations.localeOf(context).languageCode == 'nl' ? 'per misdaad' : 'per crime'})';
+                        subtitle += ' ($ammoPerCrime $perCrime)';
                       }
                     }
 
@@ -170,9 +173,7 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
                         leading: _buildWeaponImage(weapon),
                         title: Text(
                           weapon['name'] ??
-                              (Localizations.localeOf(context).languageCode == 'nl'
-                                  ? 'Onbekend'
-                                  : 'Unknown'),
+                              unknownName,
                         ),
                         subtitle: Text(subtitle),
                         trailing: ElevatedButton(
@@ -199,9 +200,9 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
                     String subtitle =
                         '${l10n?.condition ?? 'Condition'}: $condition%';
                     if (requiresAmmo && ammoType != null) {
-                      subtitle += '\n${Localizations.localeOf(context).languageCode == 'nl' ? 'Munitie' : 'Ammo'}: $ammoType';
+                      subtitle += '\n$ammoLabel: $ammoType';
                       if (ammoPerCrime != null) {
-                        subtitle += ' ($ammoPerCrime ${Localizations.localeOf(context).languageCode == 'nl' ? 'per misdaad' : 'per crime'})';
+                        subtitle += ' ($ammoPerCrime $perCrime)';
                       }
                     }
 
@@ -209,7 +210,7 @@ class _WeaponsMarketScreenState extends State<WeaponsMarketScreen>
                       child: ListTile(
                         leading: _buildWeaponImage(weapon),
                         title: Text(
-                          weapon['name'] ?? weapon['weaponName'] ?? (Localizations.localeOf(context).languageCode == 'nl' ? 'Onbekend' : 'Unknown'),
+                          weapon['name'] ?? weapon['weaponName'] ?? unknownName,
                         ),
                         subtitle: Text(subtitle),
                         trailing: Text('x$quantity'),

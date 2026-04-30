@@ -4306,5 +4306,7 @@
   "ammoFactoryErrInsufficientMoneyUpgrade": "Non abbastanza soldi per aggiornare la fabbrica",
   "ammoFactoryErrMaxLevel": "La fabbrica è già al livello massimo",
   "ammoFactoryErrInvalidUpgradeType": "Il tipo di aggiornamento deve essere output o qualità",
-  "ammoFactoryErrEducationNotMet": "Requisiti di istruzione non soddisfatti"
+  "ammoFactoryErrEducationNotMet": "Requisiti di istruzione non soddisfatti",
+  "ammoGeneric": "Munizioni",
+  "ammoPerCrimeSuffix": "per crimine"
 }

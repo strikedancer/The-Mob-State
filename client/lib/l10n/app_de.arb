@@ -4306,5 +4306,7 @@
   "ammoFactoryErrInsufficientMoneyUpgrade": "Nicht genug Geld, um die Fabrik zu modernisieren",
   "ammoFactoryErrMaxLevel": "Werksseitig ist bereits die maximale Stufe erreicht",
   "ammoFactoryErrInvalidUpgradeType": "Der Upgrade-Typ muss „Ausgabe“ oder „Qualität“ sein",
-  "ammoFactoryErrEducationNotMet": "Bildungsvoraussetzungen nicht erfüllt"
+  "ammoFactoryErrEducationNotMet": "Bildungsvoraussetzungen nicht erfüllt",
+  "ammoGeneric": "Munition",
+  "ammoPerCrimeSuffix": "pro Verbrechen"
 }

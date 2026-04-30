@@ -3435,6 +3435,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ammoRounds => 'rounds';
 
   @override
+  String get ammoGeneric => 'Ammo';
+
+  @override
+  String get ammoPerCrimeSuffix => 'per crime';
+
+  @override
   String get ammoBoxesUnit => 'boxes';
 
   @override

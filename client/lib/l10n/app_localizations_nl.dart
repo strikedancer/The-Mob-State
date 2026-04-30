@@ -3449,6 +3449,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ammoRounds => 'kogels';
 
   @override
+  String get ammoGeneric => 'Munitie';
+
+  @override
+  String get ammoPerCrimeSuffix => 'per misdaad';
+
+  @override
   String get ammoBoxesUnit => 'dozen';
 
   @override

@@ -3455,6 +3455,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get ammoRounds => 'rundy';
 
   @override
+  String get ammoGeneric => 'Amunicja';
+
+  @override
+  String get ammoPerCrimeSuffix => 'za przestępstwo';
+
+  @override
   String get ammoBoxesUnit => 'pudełka';
 
   @override
