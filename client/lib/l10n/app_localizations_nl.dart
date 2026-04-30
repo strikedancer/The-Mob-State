@@ -7077,4 +7077,431 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get crimeOutcomeDefaultTitle => 'Crime-resultaat';
+
+  @override
+  String get territoryContestStatusPreparing => 'Voorbereiding';
+
+  @override
+  String get territoryContestStatusActive => 'Actief';
+
+  @override
+  String get territoryContestStatusLockdown => 'Lockdown';
+
+  @override
+  String get territoryContestStatusResolved => 'Afgerond';
+
+  @override
+  String get territoryContestStatusCancelled => 'Geannuleerd';
+
+  @override
+  String get territoryContestHintPreparing =>
+      'De contest loopt nu in voorbereiding. Zodra de prep-tijd voorbij is, wordt dit gebied automatisch actief en kun je acties uitvoeren.';
+
+  @override
+  String get territoryContestHintLockdown =>
+      'Deze contest zit in lockdown. Er kunnen nu geen nieuwe acties meer worden gedaan; de uitkomst volgt automatisch.';
+
+  @override
+  String get territoryNow => 'Nu';
+
+  @override
+  String get territoryRoleAttacker => 'Aanvaller';
+
+  @override
+  String get territoryRoleDefender => 'Verdediger';
+
+  @override
+  String get territoryValueLow => 'Laag';
+
+  @override
+  String get territoryValueAverage => 'Gemiddeld';
+
+  @override
+  String get territoryValueHigh => 'Hoog';
+
+  @override
+  String get territoryValueTop => 'Top';
+
+  @override
+  String get territoryTagCapital => 'Bestuurlijk centrum';
+
+  @override
+  String get territoryTagHarbor => 'Haven';
+
+  @override
+  String get territoryTagIndustry => 'Industrie';
+
+  @override
+  String get territoryTagBorder => 'Grensregio';
+
+  @override
+  String get territoryTagLogistics => 'Logistiek knooppunt';
+
+  @override
+  String get territoryActionPatrol => 'Patrouille';
+
+  @override
+  String get territoryActionIntelScan => 'Intel scan';
+
+  @override
+  String get territoryActionSabotage => 'Sabotage';
+
+  @override
+  String get territoryActionSupplyRun => 'Bevoorrading';
+
+  @override
+  String get territoryActionRaid => 'Inval';
+
+  @override
+  String get territoryActionDefense => 'Verdedigen';
+
+  @override
+  String get territoryBonusStrategicRegion => 'Strategische regio';
+
+  @override
+  String get territoryBonusAdjacentSupport => 'Aangrenzende steun';
+
+  @override
+  String get territoryBonusWarPressure => 'War pressure';
+
+  @override
+  String get territoryBonusHqLevel => 'HQ level';
+
+  @override
+  String get territoryBonusCrewMissionLevel => 'Crew missielevel';
+
+  @override
+  String get territoryBonusCrewBuildings => 'Crew bijgebouwen';
+
+  @override
+  String get territoryBonusOther => 'Overig';
+
+  @override
+  String territoryPointsLogicLine(
+    int basePoints,
+    int bonusPoints,
+    int totalPoints,
+  ) {
+    return 'basis $basePoints + bonus $bonusPoints = $totalPoints contestpunten';
+  }
+
+  @override
+  String get territoryErrorNotInCrew =>
+      'Je moet eerst in een crew zitten om territorium aan te vallen.';
+
+  @override
+  String get territoryErrorContestAlreadyActive =>
+      'Voor dit gebied loopt al een contest. De kaart wordt ververst met de actuele status.';
+
+  @override
+  String get territoryErrorCrewContestLimit =>
+      'Je crew heeft al het maximum aantal gelijktijdige contests bereikt.';
+
+  @override
+  String get territoryErrorRegionsCap =>
+      'Je crew bezit al het maximum aantal gebieden.';
+
+  @override
+  String get territoryErrorContestNotActive =>
+      'Deze contest is nog niet actief. Wacht tot de voorbereidingsfase voorbij is.';
+
+  @override
+  String get territoryErrorActionCooldown =>
+      'Je moet even wachten voor je opnieuw een territory-actie kunt doen.';
+
+  @override
+  String get territoryErrorActionRoleMismatch =>
+      'Deze actie hoort bij de andere kant van de contest.';
+
+  @override
+  String get territoryErrorHqLevelRequired =>
+      'Je HQ-level is nog te laag voor deze territory-actie.';
+
+  @override
+  String get territoryErrorDailyCap =>
+      'Je hebt je dagelijkse limiet voor territory-acties bereikt.';
+
+  @override
+  String get territoryErrorWrongCountry =>
+      'Je kunt alle landen bekijken, maar territory-acties werken alleen in het land waar je nu bent.';
+
+  @override
+  String get territoryErrorUnknown => 'Onbekende territory-fout.';
+
+  @override
+  String get territoryLegendUnderContest => 'In strijd';
+
+  @override
+  String get territoryLegendNeutral => 'Neutraal';
+
+  @override
+  String get territoryTabMap => 'Kaart';
+
+  @override
+  String get territoryTabLeaderboard => 'Ranglijst';
+
+  @override
+  String get territoryTabSeason => 'Seizoen';
+
+  @override
+  String get territorySelectCountryTooltip => 'Kies land';
+
+  @override
+  String get territoryUnavailableMessage =>
+      'Territorium is momenteel niet beschikbaar.';
+
+  @override
+  String get territoryMapHintTapMain =>
+      'Tik op een gebied op de kaart om gebiedsinformatie en de aanvalsknop in een modal te openen.';
+
+  @override
+  String get territoryMapHintTapPanel =>
+      'Klik op een gebied om direct de modal met gebiedsinformatie en aanvalsacties te openen.';
+
+  @override
+  String get territoryMapHintMobile =>
+      'Op mobiel kun je met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen voor kleine gebieden.';
+
+  @override
+  String get territoryMapHintColors =>
+      'Regio-kleuren tonen eigendom; oranje = actieve contest.';
+
+  @override
+  String territoryMapOverviewTitle(String country) {
+    return '$country kaart (crew controle)';
+  }
+
+  @override
+  String get territoryLegendTitle => 'Legenda';
+
+  @override
+  String territoryYourCrewLine(String name) {
+    return 'Jouw crew: $name';
+  }
+
+  @override
+  String get territoryDetailRegionPreviewTitle => 'Gebiedsweergave';
+
+  @override
+  String get territoryDetailRegionPreviewSubtitle =>
+      'Alleen het aangeklikte gebied, zonder de rest van de kaart.';
+
+  @override
+  String get territoryNeutralTerritory => 'Neutraal gebied';
+
+  @override
+  String get territoryDetailOwner => 'Eigenaar';
+
+  @override
+  String get territoryDetailNeutral => 'Neutraal';
+
+  @override
+  String get territoryDetailStability => 'Stabiliteit';
+
+  @override
+  String get territoryDetailEffectiveStability => 'Effectieve stabiliteit';
+
+  @override
+  String get territoryDetailControl => 'Controle';
+
+  @override
+  String get territoryDetailValueTier => 'Waarde';
+
+  @override
+  String get territoryDetailPayout => 'Uitbetaling';
+
+  @override
+  String get territoryDetailStrategicRole => 'Strategische rol';
+
+  @override
+  String get territoryDetailAdjacentOwned => 'Aangrenzende eigen regio\'s';
+
+  @override
+  String get territoryDetailActionBonuses => 'Actiebonussen';
+
+  @override
+  String get territoryDetailBonusInfo => 'Bonus uitleg';
+
+  @override
+  String get territoryDetailBonusInfoBody =>
+      'Deze bonussen verhogen alleen je contestpunten per actie. De €-uitbetaling van het gebied blijft gelijk.';
+
+  @override
+  String get territoryDetailWarPressure => 'War pressure';
+
+  @override
+  String get territoryDetailAttackPressure => 'aanvalsdruk';
+
+  @override
+  String get territoryDetailStabilityWord => 'stabiliteit';
+
+  @override
+  String get territoryWarRoleTheater => 'theater-regio';
+
+  @override
+  String get territoryWarRoleAdjacent => 'aangrenzende regio';
+
+  @override
+  String get territoryWarRoleTarget => 'doelregio';
+
+  @override
+  String get territoryWarPressureEndsIn => 'War pressure eindigt over';
+
+  @override
+  String get territoryDetailIncomeHour => 'Opbrengst per uur';
+
+  @override
+  String get territoryDetailIncomeDay => 'Opbrengst per dag';
+
+  @override
+  String get territoryDetailYourCrew => 'Jouw crew';
+
+  @override
+  String get territoryDetailContestStatus => 'Contest status';
+
+  @override
+  String get territoryDetailYourRole => 'Jouw rol';
+
+  @override
+  String get territoryDetailYourHqLevel => 'Jouw HQ level';
+
+  @override
+  String get territoryDetailActionsUnlockIn => 'Acties starten over';
+
+  @override
+  String get territoryDetailActionsCloseIn => 'Acties sluiten over';
+
+  @override
+  String get territoryDetailContestEndsIn => 'Contest eindigt over';
+
+  @override
+  String get territoryDetailCooldownPerAction => 'Cooldown per actie';
+
+  @override
+  String get territoryDetailYourCooldown => 'Jouw cooldown';
+
+  @override
+  String get territoryNoticeCrewOnly =>
+      'Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.';
+
+  @override
+  String territoryNoticeWrongCountry(
+    String viewingCountry,
+    String playerCountry,
+  ) {
+    return 'Je bekijkt $viewingCountry, maar je bent nu in $playerCountry. Je kunt deze kaart wel bekijken, alleen aanvallen en contest-acties zijn pas beschikbaar zodra je naar dit land reist.';
+  }
+
+  @override
+  String get territoryNoticeOwnRegion => 'Je crew controleert dit gebied al.';
+
+  @override
+  String get territoryNoticeDefenderPrep =>
+      'Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.';
+
+  @override
+  String get territoryConfirmDefense => 'Verdediging bevestigen';
+
+  @override
+  String get territoryAttack => 'Aanvallen';
+
+  @override
+  String get territoryAttackerActions => 'Aanvalsacties';
+
+  @override
+  String get territoryDefenderActions => 'Verdedigingsacties';
+
+  @override
+  String get territoryContestActions => 'Contestacties';
+
+  @override
+  String get territoryIntelShort => 'Intel';
+
+  @override
+  String get territoryRequiresHqShort => 'vereist HQ';
+
+  @override
+  String territoryHqLockedNotice(String actions) {
+    return 'Vereist hoger HQ-level voor: $actions.';
+  }
+
+  @override
+  String get territoryNotInContestNotice =>
+      'Je zit niet aan deze contest gekoppeld, dus je kunt hier geen acties uitvoeren.';
+
+  @override
+  String territoryContestOtherCountryNotice(String country) {
+    return 'Deze contest loopt in een ander land. Je kunt hem volgen, maar pas meedoen zodra je fysiek in $country bent.';
+  }
+
+  @override
+  String get territoryLeaderboardEmpty => 'Nog geen territorium gecontroleerd.';
+
+  @override
+  String territoryLeaderboardRegionsCount(int count) {
+    return '$count regio\'s';
+  }
+
+  @override
+  String get territorySeasonNone => 'Geen actief seizoen gevonden.';
+
+  @override
+  String get territorySeasonCurrent => 'Huidig seizoen';
+
+  @override
+  String get territorySeasonKey => 'Sleutel';
+
+  @override
+  String get territorySeasonStatus => 'Status';
+
+  @override
+  String get territorySeasonStart => 'Start';
+
+  @override
+  String get territorySeasonEnd => 'Einde';
+
+  @override
+  String get territoryDialogAttackTitle => 'Aanvallen?';
+
+  @override
+  String territoryDialogAttackBody(String regionKey) {
+    return 'Wil je een contest starten voor $regionKey?';
+  }
+
+  @override
+  String get territorySnackJoinCrewFirst =>
+      'Sluit je eerst aan bij een crew om territorium aan te vallen.';
+
+  @override
+  String territorySnackContestStarted(String status) {
+    return 'Contest gestart. Status: $status. Wacht tot de voorbereidingsfase voorbij is voor acties.';
+  }
+
+  @override
+  String territorySnackContestAlreadyLive(String status) {
+    return 'De contest is al gestart en de kaart is ververst. Status: $status.';
+  }
+
+  @override
+  String territoryPointsDelta(String points) {
+    return '+$points punten!';
+  }
+
+  @override
+  String get territorySnackDefenseConfirmed =>
+      'Verdediging bevestigd. Zodra de actieve fase start, kun je verdedigingsacties uitvoeren.';
+
+  @override
+  String get territorySnackContestRefreshed =>
+      'De conteststatus is ververst. Je ziet nu direct de actuele verdedigingsfase.';
+
+  @override
+  String territoryHqTooltipLocked(int required, int current) {
+    return 'Vereist HQ level $required. Huidig HQ level: $current.';
+  }
+
+  @override
+  String territoryHqButtonLocked(String label, int level) {
+    return '$label (vereist HQ $level)';
+  }
 }

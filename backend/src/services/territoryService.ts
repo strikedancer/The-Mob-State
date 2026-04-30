@@ -2,7 +2,7 @@ import prisma from '../lib/prisma';
 import { getCrewStorageCapacity } from './crewBuildingService';
 import { directMessageService } from './directMessageService';
 import { notificationService } from './notificationService';
-import { translationService } from './translationService';
+import { translationService, type Language } from './translationService';
 
 // ---------------------------------------------------------------------------
 // Territory Service
@@ -2082,87 +2082,56 @@ async function _recalcContestControl(contestId: number, regionKey: string, actor
 
 async function _notifyCrewContestStarted(crewId: number, regionKey: string, contestId: number): Promise<void> {
   const players = await _getCrewPlayers(crewId);
+  const contestIdStr = String(contestId);
   for (const p of players) {
+    const lang = await _getPlayerLanguage(p.id);
+    const n = translationService.getTranslations(lang).notification;
     await notificationService.sendToPlayer(
       p.id,
-      'Gebied aangevallen! / Region under attack!',
-      `Regio ${regionKey} wordt aangevallen (contest #${contestId}).`,
-      { type: 'territory_contest_started', regionKey, contestId: String(contestId) },
+      n.territoryContestStarted.title,
+      n.territoryContestStarted.pushBody(regionKey, contestIdStr),
+      { type: 'territory_contest_started', regionKey, contestId: contestIdStr },
     ).catch(() => {});
-    await _sendTerritoryInboxMessage(
-      p.id,
-      (language) => language === 'nl'
-        ? [
-            'Gebied aangevallen!',
-            '',
-            `Regio: ${regionKey}`,
-            `Contest: #${contestId}`,
-            'Een andere crew heeft een territoriumaanval gestart.',
-          ].join('\n')
-        : [
-            'Region under attack!',
-            '',
-            `Region: ${regionKey}`,
-            `Contest: #${contestId}`,
-            'Another crew has started a territory attack.',
-          ].join('\n'),
-    ).catch(() => {});
+    await _sendTerritoryInboxMessage(p.id, (language) => {
+      const tr = translationService.getTranslations(language).notification;
+      return tr.territoryContestStarted.inboxMessage(regionKey, contestIdStr);
+    }).catch(() => {});
   }
 }
 
 async function _notifyCrewRegionCaptured(crewId: number, regionKey: string): Promise<void> {
   const players = await _getCrewPlayers(crewId);
   for (const p of players) {
+    const lang = await _getPlayerLanguage(p.id);
+    const n = translationService.getTranslations(lang).notification;
     await notificationService.sendToPlayer(
       p.id,
-      'Gebied veroverd! / Region captured!',
-      `Jullie crew heeft ${regionKey} veroverd. / Your crew captured ${regionKey}.`,
+      n.territoryCaptured.title,
+      n.territoryCaptured.pushBody(regionKey),
       { type: 'territory_captured', regionKey },
     ).catch(() => {});
-    await _sendTerritoryInboxMessage(
-      p.id,
-      (language) => language === 'nl'
-        ? [
-            'Gebied veroverd!',
-            '',
-            `Regio: ${regionKey}`,
-            'Jullie crew heeft deze regio succesvol overgenomen.',
-          ].join('\n')
-        : [
-            'Region captured!',
-            '',
-            `Region: ${regionKey}`,
-            'Your crew successfully captured this region.',
-          ].join('\n'),
-    ).catch(() => {});
+    await _sendTerritoryInboxMessage(p.id, (language) => {
+      const tr = translationService.getTranslations(language).notification;
+      return tr.territoryCaptured.inboxMessage(regionKey);
+    }).catch(() => {});
   }
 }
 
 async function _notifyCrewRegionLost(crewId: number, regionKey: string): Promise<void> {
   const players = await _getCrewPlayers(crewId);
   for (const p of players) {
+    const lang = await _getPlayerLanguage(p.id);
+    const n = translationService.getTranslations(lang).notification;
     await notificationService.sendToPlayer(
       p.id,
-      'Gebied verloren! / Region lost!',
-      `${regionKey} is overgenomen door een andere crew. / ${regionKey} was taken by another crew.`,
+      n.territoryLost.title,
+      n.territoryLost.pushBody(regionKey),
       { type: 'territory_lost', regionKey },
     ).catch(() => {});
-    await _sendTerritoryInboxMessage(
-      p.id,
-      (language) => language === 'nl'
-        ? [
-            'Gebied verloren!',
-            '',
-            `Regio: ${regionKey}`,
-            'Deze regio is overgenomen door een andere crew.',
-          ].join('\n')
-        : [
-            'Region lost!',
-            '',
-            `Region: ${regionKey}`,
-            'This region was taken by another crew.',
-          ].join('\n'),
-    ).catch(() => {});
+    await _sendTerritoryInboxMessage(p.id, (language) => {
+      const tr = translationService.getTranslations(language).notification;
+      return tr.territoryLost.inboxMessage(regionKey);
+    }).catch(() => {});
   }
 }
 
@@ -2173,18 +2142,27 @@ async function _getCrewPlayers(crewId: number): Promise<Array<{ id: number }>> {
   );
 }
 
+async function _getPlayerLanguage(playerId: number): Promise<Language> {
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    select: { preferredLanguage: true },
+  });
+  return translationService.getPlayerLanguage(player ?? {});
+}
+
 async function _sendTerritoryInboxMessage(
   playerId: number,
-  buildMessage: (language: string) => string,
+  buildMessage: (language: Language) => string,
 ): Promise<void> {
   const player = await prisma.player.findUnique({
     where: { id: playerId },
     select: { preferredLanguage: true },
   });
   const language = translationService.getPlayerLanguage(player ?? {});
+  const sender = translationService.getTranslations(language).common.territorySystemSender;
   await directMessageService.sendSystemMessage(playerId, buildMessage(language), {
     sendPush: false,
-    senderName: 'Territory Control',
+    senderName: sender,
   });
 }
 

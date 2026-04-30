@@ -16,6 +16,7 @@ import 'package:path_drawing/path_drawing.dart';
 
 import '../providers/auth_provider.dart';
 import '../services/territory_service.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 
@@ -144,18 +145,42 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   // â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   late TabController _tabController;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
   bool get _hasCrew => _myCrewId != null;
-  String _t(String nl, String en) => _isNl ? nl : en;
+
+  AppLocalizations get _l10n => AppLocalizations.of(context)!;
   int get _actionCooldownSeconds =>
       (_overview['config']?['actionCooldownSeconds'] as num?)?.toInt() ?? 0;
 
   String _countryDisplayName(Map<String, dynamic> country) {
-    return _isNl
-        ? (country['displayNameNl'] as String? ??
-              (country['countryCode'] as String? ?? ''))
-        : (country['displayNameEn'] as String? ??
-              (country['countryCode'] as String? ?? ''));
+    final lang = Localizations.localeOf(context).languageCode.toLowerCase();
+    if (lang == 'nl') {
+      return (country['displayNameNl'] as String?) ??
+          (country['displayNameEn'] as String?) ??
+          (country['countryCode'] as String? ?? '');
+    }
+    return (country['displayNameEn'] as String?) ??
+        (country['displayNameNl'] as String?) ??
+        (country['countryCode'] as String? ?? '');
+  }
+
+  String _localizedRegionNameFromMap(Map<String, dynamic> region) {
+    final lang = Localizations.localeOf(context).languageCode.toLowerCase();
+    if (lang == 'nl') {
+      return (region['nameNl'] as String?) ??
+          (region['nameEn'] as String?) ??
+          '';
+    }
+    return (region['nameEn'] as String?) ??
+        (region['nameNl'] as String?) ??
+        '';
+  }
+
+  String _bonusApiLabel(Map<dynamic, dynamic> rawBonus) {
+    final lang = Localizations.localeOf(context).languageCode.toLowerCase();
+    if (lang == 'nl') {
+      return (rawBonus['labelNl'] as String?)?.trim() ?? '';
+    }
+    return (rawBonus['labelEn'] as String?)?.trim() ?? '';
   }
 
   String _countryDisplayNameByCode(String countryCode) {
@@ -300,34 +325,30 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   }
 
   String _displayContestStatus(String status) {
+    final t = _l10n;
     switch (status.toLowerCase()) {
       case 'preparing':
-        return _t('Voorbereiding', 'Preparation');
+        return t.territoryContestStatusPreparing;
       case 'active':
-        return _t('Actief', 'Active');
+        return t.territoryContestStatusActive;
       case 'lockdown':
-        return _t('Lockdown', 'Lockdown');
+        return t.territoryContestStatusLockdown;
       case 'resolved':
-        return _t('Afgerond', 'Resolved');
+        return t.territoryContestStatusResolved;
       case 'cancelled':
-        return _t('Geannuleerd', 'Cancelled');
+        return t.territoryContestStatusCancelled;
       default:
         return status;
     }
   }
 
   String? _contestHint(String? status) {
+    final t = _l10n;
     switch (status?.toLowerCase()) {
       case 'preparing':
-        return _t(
-          'De contest loopt nu in voorbereiding. Zodra de prep-tijd voorbij is, wordt dit gebied automatisch actief en kun je acties uitvoeren.',
-          'This contest is currently in preparation. Once prep time ends, the region automatically becomes active and actions unlock.',
-        );
+        return t.territoryContestHintPreparing;
       case 'lockdown':
-        return _t(
-          'Deze contest zit in lockdown. Er kunnen nu geen nieuwe acties meer worden gedaan; de uitkomst volgt automatisch.',
-          'This contest is in lockdown. No new actions can be taken now; the outcome resolves automatically.',
-        );
+        return t.territoryContestHintLockdown;
       default:
         return null;
     }
@@ -354,12 +375,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   }
 
   String _countdownLabel(DateTime? targetAt) {
+    final t = _l10n;
     if (targetAt == null) {
-      return _t('Onbekend', 'Unknown');
+      return t.unknown;
     }
     final remaining = targetAt.difference(DateTime.now());
     if (remaining.isNegative || remaining.inSeconds <= 0) {
-      return _t('Nu', 'Now');
+      return t.territoryNow;
     }
     return _formatDuration(remaining);
   }
@@ -398,98 +420,101 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   }
 
   String _displayContestRole(String role) {
+    final t = _l10n;
     switch (role.toLowerCase()) {
       case 'attacker':
-        return _t('Aanvaller', 'Attacker');
+        return t.territoryRoleAttacker;
       case 'defender':
-        return _t('Verdediger', 'Defender');
+        return t.territoryRoleDefender;
       default:
         return role;
     }
   }
 
   String _valueTierLabel(int tier) {
+    final t = _l10n;
     switch (tier) {
       case 1:
-        return _t('Laag', 'Low');
+        return t.territoryValueLow;
       case 2:
-        return _t('Gemiddeld', 'Average');
+        return t.territoryValueAverage;
       case 3:
-        return _t('Hoog', 'High');
+        return t.territoryValueHigh;
       default:
-        return _t('Top', 'Top');
+        return t.territoryValueTop;
     }
   }
 
   String _incomeIntervalLabel(int minutes) {
+    final t = _l10n;
     if (minutes <= 0) {
-      return _t('Niet ingesteld', 'Not configured');
+      return t.dashboardTerritoryIncomeNotConfigured;
     }
     if (minutes == 60) {
-      return _t('ieder uur', 'every hour');
+      return t.dashboardTerritoryIncomeEveryHours(1);
     }
     if (minutes % 60 == 0) {
       final hours = minutes ~/ 60;
-      return _t(
-        'iedere $hours uur',
-        'every $hours hour${hours == 1 ? '' : 's'}',
-      );
+      return t.dashboardTerritoryIncomeEveryHours(hours);
     }
-    return _t('elke $minutes min', 'every $minutes min');
+    return t.dashboardTerritoryIncomeEveryMinutes(minutes);
   }
 
   String _strategicTagLabel(String tag) {
+    final t = _l10n;
     switch (tag.toLowerCase()) {
       case 'capital':
-        return _t('Bestuurlijk centrum', 'Administrative center');
+        return t.territoryTagCapital;
       case 'harbor':
-        return _t('Haven', 'Harbor');
+        return t.territoryTagHarbor;
       case 'industry':
-        return _t('Industrie', 'Industry');
+        return t.territoryTagIndustry;
       case 'border':
-        return _t('Grensregio', 'Border region');
+        return t.territoryTagBorder;
       case 'logistics':
-        return _t('Logistiek knooppunt', 'Logistics hub');
+        return t.territoryTagLogistics;
       default:
         return tag;
     }
   }
 
   String _actionTypeLabel(String rawActionType) {
+    final t = _l10n;
     switch (rawActionType.toLowerCase()) {
       case 'patrol':
-        return _t('Patrouille', 'Patrol');
+        return t.territoryActionPatrol;
       case 'intel_scan':
-        return _t('Intel scan', 'Intel scan');
+        return t.territoryActionIntelScan;
       case 'sabotage':
-        return _t('Sabotage', 'Sabotage');
+        return t.territoryActionSabotage;
       case 'supply_run':
-        return _t('Bevoorrading', 'Supply run');
+        return t.territoryActionSupplyRun;
       case 'raid':
-        return _t('Inval', 'Raid');
+        return t.territoryActionRaid;
       case 'defense':
-        return _t('Verdedigen', 'Defense');
+        return t.territoryActionDefense;
       default:
         return rawActionType;
     }
   }
 
   String _bonusSourceLabel(String rawSource) {
+    final t = _l10n;
     switch (rawSource.toLowerCase()) {
       case 'strategic-tag':
-        return _t('Strategische regio', 'Strategic region');
+        return t.territoryBonusStrategicRegion;
       case 'adjacency':
-        return _t('Aangrenzende steun', 'Adjacent support');
+        return t.territoryBonusAdjacentSupport;
       case 'war-aftermath':
-        return _t('War pressure', 'War pressure');
+        return t.territoryBonusWarPressure;
       case 'hq-level':
-        return _t('HQ level', 'HQ level');
+        return t.territoryBonusHqLevel;
       case 'crew-mission-level':
-        return _t('Crew missielevel', 'Crew mission level');
+        return t.territoryBonusCrewMissionLevel;
       case 'crew-building':
-        return _t('Crew bijgebouwen', 'Crew side buildings');
+        return t.territoryBonusCrewBuildings;
       default:
-        return _t('Overig', 'Other');
+        return t.territoryBonusOther;
     }
   }
 
@@ -555,11 +580,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       if (actionType == null || actionType.isEmpty) continue;
       final bonusPoints = (rawBonus['bonusPoints'] as num?)?.toInt() ?? 0;
       if (bonusPoints <= 0) continue;
-      final sourceLabel =
-          (_isNl
-                  ? (rawBonus['labelNl'] as String?)
-                  : (rawBonus['labelEn'] as String?))
-              ?.trim();
+      final sourceLabel = _bonusApiLabel(rawBonus);
       final sourceType = (rawBonus['source'] as String?)?.trim().toLowerCase();
       if (sourceLabel == null || sourceLabel.isEmpty) continue;
 
@@ -614,9 +635,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       ].where((entry) => entry.trim().isNotEmpty).join(' | ');
       final basePoints = _actionBasePoints(actionType);
       final totalPointsWithBase = basePoints + totalPoints;
-      final pointsLogicLabel = _t(
-        'basis $basePoints + bonus $totalPoints = $totalPointsWithBase contestpunten',
-        'base $basePoints + bonus $totalPoints = $totalPointsWithBase contest points',
+      final pointsLogicLabel = _l10n.territoryPointsLogicLine(
+        basePoints,
+        totalPoints,
+        totalPointsWithBase,
       );
       actionLabels.add(
         details.isEmpty
@@ -641,62 +663,31 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   }
 
   String _territoryErrorMessage(Object? rawEvent) {
+    final t = _l10n;
     final event = rawEvent?.toString() ?? '';
     switch (event) {
       case 'error.not_in_crew':
-        return _t(
-          'Je moet eerst in een crew zitten om territorium aan te vallen.',
-          'You must join a crew before you can attack territory.',
-        );
+        return t.territoryErrorNotInCrew;
       case 'territory.contest_already_active':
-        return _t(
-          'Voor dit gebied loopt al een contest. De kaart wordt ververst met de actuele status.',
-          'A contest is already running for this region. Refreshing the map to the latest state.',
-        );
+        return t.territoryErrorContestAlreadyActive;
       case 'territory.crew_contest_limit_reached':
-        return _t(
-          'Je crew heeft al het maximum aantal gelijktijdige contests bereikt.',
-          'Your crew has already reached the concurrent contest limit.',
-        );
+        return t.territoryErrorCrewContestLimit;
       case 'territory.regions_cap_reached':
-        return _t(
-          'Je crew bezit al het maximum aantal gebieden.',
-          'Your crew already owns the maximum number of regions.',
-        );
+        return t.territoryErrorRegionsCap;
       case 'territory.contest_not_active':
-        return _t(
-          'Deze contest is nog niet actief. Wacht tot de voorbereidingsfase voorbij is.',
-          'This contest is not active yet. Wait for the preparation phase to finish.',
-        );
+        return t.territoryErrorContestNotActive;
       case 'territory.action_cooldown':
-        return _t(
-          'Je moet even wachten voor je opnieuw een territory-actie kunt doen.',
-          'You need to wait before performing another territory action.',
-        );
+        return t.territoryErrorActionCooldown;
       case 'territory.action_role_mismatch':
-        return _t(
-          'Deze actie hoort bij de andere kant van de contest.',
-          'This action belongs to the other side of the contest.',
-        );
+        return t.territoryErrorActionRoleMismatch;
       case 'territory.hq_level_required':
-        return _t(
-          'Je HQ-level is nog te laag voor deze territory-actie.',
-          'Your HQ level is too low for this territory action.',
-        );
+        return t.territoryErrorHqLevelRequired;
       case 'territory.daily_cap_reached':
-        return _t(
-          'Je hebt je dagelijkse limiet voor territory-acties bereikt.',
-          'You have reached your daily limit for territory actions.',
-        );
+        return t.territoryErrorDailyCap;
       case 'territory.action_outside_current_country':
-        return _t(
-          'Je kunt alle landen bekijken, maar territory-acties werken alleen in het land waar je nu bent.',
-          'You can view every country, but territory actions only work in the country where you are currently located.',
-        );
+        return t.territoryErrorWrongCountry;
       default:
-        return event.isEmpty
-            ? _t('Onbekende territory-fout.', 'Unknown territory error.')
-            : event;
+        return event.isEmpty ? t.territoryErrorUnknown : event;
     }
   }
 
@@ -799,7 +790,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   String _currentCountryLabel() {
     final country = _mapData['country'] as Map<String, dynamic>?;
     if (country == null) return _selectedCountryCode.toUpperCase();
-    final label = _isNl
+    final lang = Localizations.localeOf(context).languageCode.toLowerCase();
+    final label = lang == 'nl'
         ? (country['displayNameNl'] as String?)
         : (country['displayNameEn'] as String?);
     if (label != null && label.trim().isNotEmpty) {
@@ -939,15 +931,17 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     _SvgRegionShape shape,
   ) {
     if (region == null) return shape.name ?? shape.id;
-    return _isNl
-        ? (region['nameNl'] as String? ??
-              region['regionKey'] as String? ??
-              shape.name ??
-              shape.id)
-        : (region['nameEn'] as String? ??
-              region['regionKey'] as String? ??
-              shape.name ??
-              shape.id);
+    final lang = Localizations.localeOf(context).languageCode.toLowerCase();
+    if (lang == 'nl') {
+      return (region['nameNl'] as String? ??
+          region['regionKey'] as String? ??
+          shape.name ??
+          shape.id);
+    }
+    return (region['nameEn'] as String? ??
+        region['regionKey'] as String? ??
+        shape.name ??
+        shape.id);
   }
 
   void _updateHoveredRegion(String? svgElementId, {bool clearTooltip = false}) {
@@ -1299,11 +1293,11 @@ class _TerritoryScreenState extends State<TerritoryScreen>
 
     return <_TerritoryLegendEntry>[
       _TerritoryLegendEntry(
-        label: _t('In strijd', 'Under contest'),
+        label: _l10n.territoryLegendUnderContest,
         colorHex: '#F59E0B',
       ),
       _TerritoryLegendEntry(
-        label: _t('Neutraal', 'Neutral'),
+        label: _l10n.territoryLegendNeutral,
         colorHex: '#D1D5DB',
       ),
       ...crewEntries,
@@ -1451,14 +1445,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     }
 
     if (!_isTerritoryEnabled) {
+      final t = AppLocalizations.of(context)!;
       return Scaffold(
-        appBar: AppBar(title: Text(_t('Territorium', 'Territory'))),
+        appBar: AppBar(title: Text(t.territory)),
         body: Center(
           child: Text(
-            _t(
-              'Territorium is momenteel niet beschikbaar.',
-              'Territory is currently unavailable.',
-            ),
+            t.territoryUnavailableMessage,
             style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.center,
           ),
@@ -1466,21 +1458,22 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       );
     }
 
+    final t = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(_t('Territorium', 'Territory')),
+        title: Text(t.territory),
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: _t('Kaart', 'Map')),
-            Tab(text: _t('Ranglijst', 'Leaderboard')),
-            Tab(text: _t('Seizoen', 'Season')),
+            Tab(text: t.territoryTabMap),
+            Tab(text: t.territoryTabLeaderboard),
+            Tab(text: t.territoryTabSeason),
           ],
         ),
         actions: [
           if (_countries.length > 1)
             PopupMenuButton<String>(
-              tooltip: _t('Kies land', 'Select country'),
+              tooltip: t.territorySelectCountryTooltip,
               icon: const Icon(Icons.language),
               onSelected: (countryCode) {
                 if (countryCode == _selectedCountryCode) return;
@@ -1518,7 +1511,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             ),
           IconButton(
             icon: const Icon(Icons.refresh),
-            tooltip: _t('Vernieuwen', 'Refresh'),
+            tooltip: t.refresh,
             onPressed: _loadData,
           ),
         ],
@@ -1545,10 +1538,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
             child: Text(
-              _t(
-                'Tik op een gebied op de kaart om gebiedsinformatie en de aanvalsknop in een modal te openen.',
-                'Tap a region on the map to open territory information and the attack button in a modal.',
-              ),
+              _l10n.territoryMapHintTapMain,
               style: TextStyle(color: Colors.grey[700], fontSize: 12),
             ),
           ),
@@ -1572,9 +1562,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isNl
-                  ? '${_currentCountryLabel()} kaart (crew controle)'
-                  : '${_currentCountryLabel()} map (crew control)',
+              _l10n.territoryMapOverviewTitle(_currentCountryLabel()),
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),
@@ -1694,30 +1682,21 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _t(
-                        'Klik op een gebied om direct de modal met gebiedsinformatie en aanvalsacties te openen.',
-                        'Tap a region to directly open the modal with territory information and attack actions.',
-                      ),
+                      _l10n.territoryMapHintTapPanel,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _t(
-                        'Op mobiel kun je met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen voor kleine gebieden.',
-                        'On mobile you can pinch in and out with two fingers and drag the zoomed map directly for smaller regions.',
-                      ),
+                      _l10n.territoryMapHintMobile,
                       style: TextStyle(color: Colors.grey[700], fontSize: 12),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _t(
-                        'Regio-kleuren tonen eigendom; oranje = actieve contest.',
-                        'Region colors show ownership; orange = active contest.',
-                      ),
+                      _l10n.territoryMapHintColors,
                       style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      _t('Legenda', 'Legend'),
+                      _l10n.territoryLegendTitle,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
@@ -1733,10 +1712,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      _t(
-                        'Jouw crew: ${_myCrewName ?? '-'}',
-                        'Your crew: ${_myCrewName ?? '-'}',
-                      ),
+                      _l10n.territoryYourCrewLine(_myCrewName ?? '-'),
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
@@ -1777,9 +1753,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     Map<String, dynamic> region, {
     VoidCallback? onClose,
   }) {
-    final regionName = _isNl
-        ? (region['nameNl'] as String? ?? '')
-        : (region['nameEn'] as String? ?? '');
+    final regionName = _localizedRegionNameFromMap(region);
     final ownerName = region['ownerCrewName'] as String?;
     final stability = (region['stability'] as num?)?.toInt() ?? 100;
     final controlPercent = (region['controlPercent'] as num?)?.toDouble() ?? 0;
@@ -1888,132 +1862,127 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         })
         .toList(growable: false);
 
+    final t = _l10n;
     final detailContent = <Widget>[
       _detailRow(
-        _t('Eigenaar', 'Owner'),
-        ownerName ?? _t('Neutraal', 'Neutral'),
+        t.territoryDetailOwner,
+        ownerName ?? t.territoryDetailNeutral,
       ),
-      _detailRow(_t('Stabiliteit', 'Stability'), '$stability%'),
+      _detailRow(t.territoryDetailStability, '$stability%'),
       if (effectiveStability != stability)
         _detailRow(
-          _t('Effectieve stabiliteit', 'Effective stability'),
+          t.territoryDetailEffectiveStability,
           '$effectiveStability%',
         ),
       _detailRow(
-        _t('Controle', 'Control'),
+        t.territoryDetailControl,
         '${controlPercent.toStringAsFixed(controlPercent.truncateToDouble() == controlPercent ? 0 : 1)}%',
       ),
       _detailRow(
-        _t('Waarde', 'Value tier'),
+        t.territoryDetailValueTier,
         '$incomeTierLabel (${('â­' * tier)})',
       ),
       _detailRow(
-        _t('Uitbetaling', 'Payout'),
+        t.territoryDetailPayout,
         '${formatCurrency(passiveIncomeCash)} Â· ${_incomeIntervalLabel(passiveIncomeIntervalMinutes)}',
       ),
       if (strategicTags.isNotEmpty)
         _detailRow(
-          _t('Strategische rol', 'Strategic role'),
+          t.territoryDetailStrategicRole,
           strategicTags.join(' Â· '),
         ),
       if (adjacentOwnedRegions > 0)
         _detailRow(
-          _t('Aangrenzende eigen regio\'s', 'Adjacent owned regions'),
+          t.territoryDetailAdjacentOwned,
           '$adjacentOwnedRegions',
         ),
       if (strategicBonusesLabel.isNotEmpty)
         _detailRow(
-          _t('Actiebonussen', 'Action bonuses'),
+          t.territoryDetailActionBonuses,
           strategicBonusesLabel,
         ),
       if (strategicBonusesLabel.isNotEmpty)
         _detailRow(
-          _t('Bonus uitleg', 'Bonus info'),
-          _t(
-            'Deze bonussen verhogen alleen je contestpunten per actie. De €-uitbetaling van het gebied blijft gelijk.',
-            'These bonuses only increase your contest points per action. The region € payout stays the same.',
-          ),
+          t.territoryDetailBonusInfo,
+          t.territoryDetailBonusInfoBody,
         ),
       if (activeWarPressure != null)
         _detailRow(
-          _t('War pressure', 'War pressure'),
-          '${warPressureCrewName ?? _t('Onbekend', 'Unknown')} Â· +$warPressureBonus ${_t('aanvalsdruk', 'attack pressure')} Â· -$warPressurePenalty ${_t('stabiliteit', 'stability')} Â· ${warPressureRegionRole == 'theater'
-              ? _t('theater-regio', 'theater region')
+          t.territoryDetailWarPressure,
+          '${warPressureCrewName ?? t.unknown} Â· +$warPressureBonus ${t.territoryDetailAttackPressure} Â· -$warPressurePenalty ${t.territoryDetailStabilityWord} Â· ${warPressureRegionRole == 'theater'
+              ? t.territoryWarRoleTheater
               : warPressureRegionRole == 'adjacent'
-              ? _t('aangrenzende regio', 'adjacent region')
-              : _t('doelregio', 'target region')}',
+              ? t.territoryWarRoleAdjacent
+              : t.territoryWarRoleTarget}',
         ),
       if (activeWarPressure != null && warPressureEndsAt != null)
         _detailRow(
-          _t('War pressure eindigt over', 'War pressure ends in'),
+          t.territoryWarPressureEndsIn,
           _countdownLabel(warPressureEndsAt),
         ),
       _detailRow(
-        _t('Opbrengst per uur', 'Income per hour'),
+        t.territoryDetailIncomeHour,
         formatCurrency(passiveIncomeCashHourly),
       ),
       _detailRow(
-        _t('Opbrengst per dag', 'Income per day'),
+        t.territoryDetailIncomeDay,
         formatCurrency(passiveIncomeCashDaily),
       ),
       if (_myCrewName != null)
-        _detailRow(_t('Jouw crew', 'Your crew'), _myCrewName!),
+        _detailRow(t.territoryDetailYourCrew, _myCrewName!),
       if (contestStatus != null)
         _detailRow(
-          _t('Contest status', 'Contest status'),
+          t.territoryDetailContestStatus,
           _displayContestStatus(contestStatus),
         ),
       if (attackerCrewName != null)
-        _detailRow(_t('Aanvaller', 'Attacker'), attackerCrewName),
+        _detailRow(t.territoryRoleAttacker, attackerCrewName),
       if (defenderCrewName != null)
-        _detailRow(_t('Verdediger', 'Defender'), defenderCrewName),
+        _detailRow(t.territoryRoleDefender, defenderCrewName),
       if (contestRole != null)
         _detailRow(
-          _t('Jouw rol', 'Your role'),
+          t.territoryDetailYourRole,
           _displayContestRole(contestRole),
         ),
-      _detailRow(_t('Jouw HQ level', 'Your HQ level'), '$viewerHqGlobalLevel'),
+      _detailRow(t.territoryDetailYourHqLevel, '$viewerHqGlobalLevel'),
       if (contestStatus == 'preparing')
         _detailRow(
-          _t('Acties starten over', 'Actions unlock in'),
+          t.territoryDetailActionsUnlockIn,
           _countdownLabel(contestActiveAt),
         ),
       if (contestStatus == 'active')
         _detailRow(
-          _t('Acties sluiten over', 'Actions close in'),
+          t.territoryDetailActionsCloseIn,
           _countdownLabel(contestLockdownAt),
         ),
       if (hasContest)
         _detailRow(
-          _t('Contest eindigt over', 'Contest ends in'),
+          t.territoryDetailContestEndsIn,
           _countdownLabel(contestResolveAt),
         ),
       if (_actionCooldownSeconds > 0)
         _detailRow(
-          _t('Cooldown per actie', 'Cooldown per action'),
+          t.territoryDetailCooldownPerAction,
           _formatDuration(Duration(seconds: _actionCooldownSeconds)),
         ),
       if (viewerCooldownSecondsRemaining > 0)
         _detailRow(
-          _t('Jouw cooldown', 'Your cooldown'),
+          t.territoryDetailYourCooldown,
           _formatDuration(Duration(seconds: viewerCooldownSecondsRemaining)),
         ),
       const SizedBox(height: 16),
       if (!_hasCrew)
         _buildInfoNotice(
-          _t(
-            'Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.',
-            'Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.',
-          ),
+          t.territoryNoticeCrewOnly,
           borderColor: Colors.orange.shade700,
           backgroundColor: Colors.orange.withValues(alpha: 0.1),
           icon: Icons.groups_rounded,
         ),
       if (_hasCrew && !canActInSelectedCountry)
         _buildInfoNotice(
-          _t(
-            'Je bekijkt ${_currentCountryLabel()}, maar je bent nu in $playerCountryLabel. Je kunt deze kaart wel bekijken, alleen aanvallen en contest-acties zijn pas beschikbaar zodra je naar dit land reist.',
-            'You are viewing ${_currentCountryLabel()}, but you are currently in $playerCountryLabel. You can browse this map, but attacks and contest actions only unlock after you travel to this country.',
+          t.territoryNoticeWrongCountry(
+            _currentCountryLabel(),
+            playerCountryLabel,
           ),
           borderColor: Colors.blueGrey.shade700,
           backgroundColor: Colors.blueGrey.withValues(alpha: 0.08),
@@ -2030,10 +1999,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       ],
       if (contestStatus == null && isMyCrewRegion)
         _buildInfoNotice(
-          _t(
-            'Je crew controleert dit gebied al.',
-            'Your crew already controls this region.',
-          ),
+          t.territoryNoticeOwnRegion,
           borderColor: Colors.green.shade700,
           backgroundColor: Colors.green.withValues(alpha: 0.1),
           icon: Icons.verified,
@@ -2042,17 +2008,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           isDefender &&
           canActInSelectedCountry) ...[
         _buildInfoNotice(
-          _t(
-            'Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.',
-            'Your crew is defending this region. Once the active phase starts, you will only see defensive actions.',
-          ),
+          t.territoryNoticeDefenderPrep,
           borderColor: Colors.blue.shade700,
           backgroundColor: Colors.blue.withValues(alpha: 0.1),
           icon: Icons.shield,
         ),
         const SizedBox(height: 12),
         _buildActionButton(
-          label: _t('Verdediging bevestigen', 'Confirm defense'),
+          label: t.territoryConfirmDefense,
           icon: Icons.shield,
           color: Colors.blue[700]!,
           onTap: () => _joinDefense(contestId),
@@ -2063,7 +2026,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           !isMyCrewRegion &&
           canActInSelectedCountry)
         _buildActionButton(
-          label: _t('Aanvallen', 'Attack'),
+          label: t.territoryAttack,
           icon: Icons.gps_fixed,
           color: Colors.red[700]!,
           onTap: () => _confirmStartContest(region['regionKey'] as String),
@@ -2074,10 +2037,10 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         const SizedBox(height: 8),
         Text(
           isAttacker
-              ? _t('Aanvalsacties', 'Attacker actions')
+              ? t.territoryAttackerActions
               : (isDefender
-                    ? _t('Verdedigingsacties', 'Defender actions')
-                    : _t('Contestacties', 'Contest actions')),
+                    ? t.territoryDefenderActions
+                    : t.territoryContestActions),
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
@@ -2087,21 +2050,21 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           children: [
             if (isAttacker) ...[
               _smallActionButton(
-                _t('Intel', 'Intel scan'),
+                t.territoryIntelShort,
                 'intel_scan',
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['intel_scan'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
               ),
               _smallActionButton(
-                _t('Sabotage', 'Sabotage'),
+                t.territoryActionSabotage,
                 'sabotage',
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['sabotage'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
               ),
               _smallActionButton(
-                _t('Inval', 'Raid'),
+                t.territoryActionRaid,
                 'raid',
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['raid'] ?? 0,
@@ -2110,21 +2073,21 @@ class _TerritoryScreenState extends State<TerritoryScreen>
             ],
             if (isDefender) ...[
               _smallActionButton(
-                _t('Patrouille', 'Patrol'),
+                t.territoryActionPatrol,
                 'patrol',
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['patrol'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
               ),
               _smallActionButton(
-                _t('Bevoorrading', 'Supply run'),
+                t.territoryActionSupplyRun,
                 'supply_run',
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['supply_run'] ?? 0,
                 viewerHqLevel: viewerHqGlobalLevel,
               ),
               _smallActionButton(
-                _t('Verdedigen', 'Defense'),
+                t.territoryActionDefense,
                 'defense',
                 contestId,
                 requiredHqLevel: actionUnlockHqLevels['defense'] ?? 0,
@@ -2137,9 +2100,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: _buildInfoNotice(
-              _t(
-                'Vereist hoger HQ-level voor: ${lockedAttackerActions.map(_actionTypeLabel).join(', ')}.',
-                'Higher HQ level required for: ${lockedAttackerActions.map(_actionTypeLabel).join(', ')}.',
+              t.territoryHqLockedNotice(
+                lockedAttackerActions.map(_actionTypeLabel).join(', '),
               ),
               borderColor: Colors.orange.shade700,
               backgroundColor: Colors.orange.withValues(alpha: 0.12),
@@ -2150,9 +2112,8 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: _buildInfoNotice(
-              _t(
-                'Vereist hoger HQ-level voor: ${lockedDefenderActions.map(_actionTypeLabel).join(', ')}.',
-                'Higher HQ level required for: ${lockedDefenderActions.map(_actionTypeLabel).join(', ')}.',
+              t.territoryHqLockedNotice(
+                lockedDefenderActions.map(_actionTypeLabel).join(', '),
               ),
               borderColor: Colors.orange.shade700,
               backgroundColor: Colors.orange.withValues(alpha: 0.12),
@@ -2168,10 +2129,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: _buildInfoNotice(
-            _t(
-              'Je zit niet aan deze contest gekoppeld, dus je kunt hier geen acties uitvoeren.',
-              'You are not part of this contest, so you cannot perform actions here.',
-            ),
+            t.territoryNotInContestNotice,
             borderColor: Colors.blueGrey.shade600,
             backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
             icon: Icons.lock_outline,
@@ -2183,10 +2141,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: _buildInfoNotice(
-            _t(
-              'Deze contest loopt in een ander land. Je kunt hem volgen, maar pas meedoen zodra je fysiek in ${_currentCountryLabel()} bent.',
-              'This contest is taking place in another country. You can follow it, but you can only join once you are physically in ${_currentCountryLabel()}.',
-            ),
+            t.territoryContestOtherCountryNotice(_currentCountryLabel()),
             borderColor: Colors.blueGrey.shade600,
             backgroundColor: Colors.blueGrey.withValues(alpha: 0.1),
             icon: Icons.lock_outline,
@@ -2287,15 +2242,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _t('Gebiedsweergave', 'Region preview'),
+            _l10n.territoryDetailRegionPreviewTitle,
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 4),
           Text(
-            _t(
-              'Alleen het aangeklikte gebied, zonder de rest van de kaart.',
-              'Only the selected region, without the rest of the map.',
-            ),
+            _l10n.territoryDetailRegionPreviewSubtitle,
             style: TextStyle(color: Colors.grey[600], fontSize: 11.5),
           ),
           const SizedBox(height: 12),
@@ -2338,7 +2290,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           ),
           const SizedBox(height: 4),
           Text(
-            ownerName ?? _t('Neutraal gebied', 'Neutral territory'),
+            ownerName ?? _l10n.territoryNeutralTerritory,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.grey[700], fontSize: 12.5),
@@ -2391,15 +2343,13 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     required int requiredHqLevel,
     required int viewerHqLevel,
   }) {
+    final t = _l10n;
     final isLocked = requiredHqLevel > viewerHqLevel;
     final buttonLabel = isLocked
-        ? '$label (${_t('vereist HQ', 'requires HQ')} $requiredHqLevel)'
+        ? t.territoryHqButtonLocked(label, requiredHqLevel)
         : label;
     final tooltipMessage = isLocked
-        ? _t(
-            'Vereist HQ level $requiredHqLevel. Huidig HQ level: $viewerHqLevel.',
-            'Requires HQ level $requiredHqLevel. Current HQ level: $viewerHqLevel.',
-          )
+        ? t.territoryHqTooltipLocked(requiredHqLevel, viewerHqLevel)
         : '';
     final button = OutlinedButton(
       onPressed: _isActing || isLocked
@@ -2418,10 +2368,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     if (_leaderboard.isEmpty) {
       return Center(
         child: Text(
-          _t(
-            'Nog geen territorium gecontroleerd.',
-            'No territory controlled yet.',
-          ),
+          _l10n.territoryLeaderboardEmpty,
         ),
       );
     }
@@ -2440,7 +2387,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           ),
           title: Text(entry['crewName'] as String? ?? ''),
           trailing: Text(
-            '${entry['regionsOwned']} ${_t('regio\'s', 'regions')}',
+            _l10n.territoryLeaderboardRegionsCount(
+              (entry['regionsOwned'] as num?)?.toInt() ?? 0,
+            ),
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         );
@@ -2455,7 +2404,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     if (season == null) {
       return Center(
         child: Text(
-          _t('Geen actief seizoen gevonden.', 'No active season found.'),
+          _l10n.territorySeasonNone,
         ),
       );
     }
@@ -2471,14 +2420,14 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _t('Huidig seizoen', 'Current season'),
+            _l10n.territorySeasonCurrent,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          _detailRow(_t('Sleutel', 'Key'), key),
-          _detailRow(_t('Status', 'Status'), status),
-          _detailRow(_t('Start', 'Start'), startsAt),
-          _detailRow(_t('Einde', 'End'), endsAt),
+          _detailRow(_l10n.territorySeasonKey, key),
+          _detailRow(_l10n.territorySeasonStatus, status),
+          _detailRow(_l10n.territorySeasonStart, startsAt),
+          _detailRow(_l10n.territorySeasonEnd, endsAt),
         ],
       ),
     );
@@ -2487,16 +2436,12 @@ class _TerritoryScreenState extends State<TerritoryScreen>
   // â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   Future<void> _confirmStartContest(String regionKey) async {
+    final t = _l10n;
     if (!_hasCrew) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _t(
-              'Sluit je eerst aan bij een crew om territorium aan te vallen.',
-              'Join a crew first to attack territory.',
-            ),
-          ),
+          content: Text(t.territorySnackJoinCrewFirst),
           backgroundColor: Colors.orange,
           duration: const Duration(seconds: 4),
         ),
@@ -2507,21 +2452,16 @@ class _TerritoryScreenState extends State<TerritoryScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(_t('Aanvallen?', 'Attack?')),
-        content: Text(
-          _t(
-            'Wil je een contest starten voor $regionKey?',
-            'Start a contest for $regionKey?',
-          ),
-        ),
+        title: Text(t.territoryDialogAttackTitle),
+        content: Text(t.territoryDialogAttackBody(regionKey)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_t('Annuleer', 'Cancel')),
+            child: Text(t.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(_t('Aanvallen', 'Attack')),
+            child: Text(t.territoryAttack),
           ),
         ],
       ),
@@ -2541,12 +2481,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _t(
-              'Contest gestart. Status: $contestStatus. Wacht tot de voorbereidingsfase voorbij is voor acties.',
-              'Contest started. Status: $contestStatus. Wait for the preparation phase to finish before taking actions.',
-            ),
-          ),
+          content: Text(t.territorySnackContestStarted(contestStatus)),
           backgroundColor: Colors.green,
           duration: const Duration(seconds: 5),
         ),
@@ -2560,12 +2495,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              _t(
-                'De contest is al gestart en de kaart is ververst. Status: $liveStatus.',
-                'The contest is already started and the map has been refreshed. Status: $liveStatus.',
-              ),
-            ),
+            content: Text(t.territorySnackContestAlreadyLive(liveStatus)),
             backgroundColor: Colors.orange,
             duration: const Duration(seconds: 5),
           ),
@@ -2594,7 +2524,9 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_t('+$pts punten!', '+$pts points!')),
+          content: Text(
+            _l10n.territoryPointsDelta(pts.toString()),
+          ),
           backgroundColor: Colors.blue,
           duration: const Duration(seconds: 3),
         ),
@@ -2637,12 +2569,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _t(
-              'Verdediging bevestigd. Zodra de actieve fase start, kun je verdedigingsacties uitvoeren.',
-              'Defense confirmed. Once the active phase starts, you can perform defensive actions.',
-            ),
-          ),
+          content: Text(_l10n.territorySnackDefenseConfirmed),
           backgroundColor: Colors.green,
           duration: const Duration(seconds: 4),
         ),
@@ -2656,12 +2583,7 @@ class _TerritoryScreenState extends State<TerritoryScreen>
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(
-                _t(
-                  'De conteststatus is ververst. Je ziet nu direct de actuele verdedigingsfase.',
-                  'The contest state has been refreshed. You can now immediately see the current defense phase.',
-                ),
-              ),
+              content: Text(_l10n.territorySnackContestRefreshed),
               backgroundColor: Colors.orange,
               duration: const Duration(seconds: 4),
             ),

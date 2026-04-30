@@ -4045,5 +4045,234 @@
   "cooldownTitleAppeal": "Appeal cooldown",
   "cooldownTitleSchool": "School cooldown",
   "cooldownTitleGeneric": "Cooldown",
-  "crimeOutcomeDefaultTitle": "Crime result"
+  "crimeOutcomeDefaultTitle": "Crime result",
+  "territoryContestStatusPreparing": "Preparation",
+  "territoryContestStatusActive": "Active",
+  "territoryContestStatusLockdown": "Lockdown",
+  "territoryContestStatusResolved": "Resolved",
+  "territoryContestStatusCancelled": "Cancelled",
+  "territoryContestHintPreparing": "This contest is currently in preparation. Once prep time ends, the region automatically becomes active and actions unlock.",
+  "territoryContestHintLockdown": "This contest is in lockdown. No new actions can be taken now; the outcome resolves automatically.",
+  "territoryNow": "Now",
+  "territoryRoleAttacker": "Attacker",
+  "territoryRoleDefender": "Defender",
+  "territoryValueLow": "Low",
+  "territoryValueAverage": "Average",
+  "territoryValueHigh": "High",
+  "territoryValueTop": "Top",
+  "territoryTagCapital": "Administrative center",
+  "territoryTagHarbor": "Harbor",
+  "territoryTagIndustry": "Industry",
+  "territoryTagBorder": "Border region",
+  "territoryTagLogistics": "Logistics hub",
+  "territoryActionPatrol": "Patrol",
+  "territoryActionIntelScan": "Intel scan",
+  "territoryActionSabotage": "Sabotage",
+  "territoryActionSupplyRun": "Supply run",
+  "territoryActionRaid": "Raid",
+  "territoryActionDefense": "Defense",
+  "territoryBonusStrategicRegion": "Strategic region",
+  "territoryBonusAdjacentSupport": "Adjacent support",
+  "territoryBonusWarPressure": "War pressure",
+  "territoryBonusHqLevel": "HQ level",
+  "territoryBonusCrewMissionLevel": "Crew mission level",
+  "territoryBonusCrewBuildings": "Crew side buildings",
+  "territoryBonusOther": "Other",
+  "territoryPointsLogicLine": "base {basePoints} + bonus {bonusPoints} = {totalPoints} contest points",
+  "territoryErrorNotInCrew": "You must join a crew before you can attack territory.",
+  "territoryErrorContestAlreadyActive": "A contest is already running for this region. Refreshing the map to the latest state.",
+  "territoryErrorCrewContestLimit": "Your crew has already reached the concurrent contest limit.",
+  "territoryErrorRegionsCap": "Your crew already owns the maximum number of regions.",
+  "territoryErrorContestNotActive": "This contest is not active yet. Wait for the preparation phase to finish.",
+  "territoryErrorActionCooldown": "You need to wait before performing another territory action.",
+  "territoryErrorActionRoleMismatch": "This action belongs to the other side of the contest.",
+  "territoryErrorHqLevelRequired": "Your HQ level is too low for this territory action.",
+  "territoryErrorDailyCap": "You have reached your daily limit for territory actions.",
+  "territoryErrorWrongCountry": "You can view every country, but territory actions only work in the country where you are currently located.",
+  "territoryErrorUnknown": "Unknown territory error.",
+  "territoryLegendUnderContest": "Under contest",
+  "territoryLegendNeutral": "Neutral",
+  "territoryTabMap": "Map",
+  "territoryTabLeaderboard": "Leaderboard",
+  "territoryTabSeason": "Season",
+  "territorySelectCountryTooltip": "Select country",
+  "territoryUnavailableMessage": "Territory is currently unavailable.",
+  "territoryMapHintTapMain": "Tap a region on the map to open territory information and the attack button in a modal.",
+  "territoryMapHintTapPanel": "Tap a region to directly open the modal with territory information and attack actions.",
+  "territoryMapHintMobile": "On mobile you can pinch in and out with two fingers and drag the zoomed map directly for smaller regions.",
+  "territoryMapHintColors": "Region colors show ownership; orange = active contest.",
+  "territoryMapOverviewTitle": "{country} map (crew control)",
+  "territoryLegendTitle": "Legend",
+  "territoryYourCrewLine": "Your crew: {name}",
+  "territoryDetailRegionPreviewTitle": "Region preview",
+  "territoryDetailRegionPreviewSubtitle": "Only the selected region, without the rest of the map.",
+  "territoryNeutralTerritory": "Neutral territory",
+  "territoryDetailOwner": "Owner",
+  "territoryDetailNeutral": "Neutral",
+  "territoryDetailStability": "Stability",
+  "territoryDetailEffectiveStability": "Effective stability",
+  "territoryDetailControl": "Control",
+  "territoryDetailValueTier": "Value tier",
+  "territoryDetailPayout": "Payout",
+  "territoryDetailStrategicRole": "Strategic role",
+  "territoryDetailAdjacentOwned": "Adjacent owned regions",
+  "territoryDetailActionBonuses": "Action bonuses",
+  "territoryDetailBonusInfo": "Bonus info",
+  "territoryDetailBonusInfoBody": "These bonuses only increase your contest points per action. The region € payout stays the same.",
+  "territoryDetailWarPressure": "War pressure",
+  "territoryDetailAttackPressure": "attack pressure",
+  "territoryDetailStabilityWord": "stability",
+  "territoryWarRoleTheater": "theater region",
+  "territoryWarRoleAdjacent": "adjacent region",
+  "territoryWarRoleTarget": "target region",
+  "territoryWarPressureEndsIn": "War pressure ends in",
+  "territoryDetailIncomeHour": "Income per hour",
+  "territoryDetailIncomeDay": "Income per day",
+  "territoryDetailYourCrew": "Your crew",
+  "territoryDetailContestStatus": "Contest status",
+  "territoryDetailYourRole": "Your role",
+  "territoryDetailYourHqLevel": "Your HQ level",
+  "territoryDetailActionsUnlockIn": "Actions unlock in",
+  "territoryDetailActionsCloseIn": "Actions close in",
+  "territoryDetailContestEndsIn": "Contest ends in",
+  "territoryDetailCooldownPerAction": "Cooldown per action",
+  "territoryDetailYourCooldown": "Your cooldown",
+  "territoryNoticeCrewOnly": "Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.",
+  "territoryNoticeWrongCountry": "You are viewing {viewingCountry}, but you are currently in {playerCountry}. You can browse this map, but attacks and contest actions only unlock after you travel to this country.",
+  "territoryNoticeOwnRegion": "Your crew already controls this region.",
+  "territoryNoticeDefenderPrep": "Your crew is defending this region. Once the active phase starts, you will only see defensive actions.",
+  "territoryConfirmDefense": "Confirm defense",
+  "territoryAttack": "Attack",
+  "territoryAttackerActions": "Attacker actions",
+  "territoryDefenderActions": "Defender actions",
+  "territoryContestActions": "Contest actions",
+  "territoryIntelShort": "Intel scan",
+  "territoryRequiresHqShort": "requires HQ",
+  "territoryHqLockedNotice": "Higher HQ level required for: {actions}.",
+  "territoryNotInContestNotice": "You are not part of this contest, so you cannot perform actions here.",
+  "territoryContestOtherCountryNotice": "This contest is taking place in another country. You can follow it, but you can only join once you are physically in {country}.",
+  "territoryLeaderboardEmpty": "No territory controlled yet.",
+  "territoryLeaderboardRegionsCount": "{count} regions",
+  "territorySeasonNone": "No active season found.",
+  "territorySeasonCurrent": "Current season",
+  "territorySeasonKey": "Key",
+  "territorySeasonStatus": "Status",
+  "territorySeasonStart": "Start",
+  "territorySeasonEnd": "End",
+  "territoryDialogAttackTitle": "Attack?",
+  "territoryDialogAttackBody": "Start a contest for {regionKey}?",
+  "territorySnackJoinCrewFirst": "Join a crew first to attack territory.",
+  "territorySnackContestStarted": "Contest started. Status: {status}. Wait for the preparation phase to finish before taking actions.",
+  "territorySnackContestAlreadyLive": "The contest is already started and the map has been refreshed. Status: {status}.",
+  "territoryPointsDelta": "+{points} points!",
+  "territorySnackDefenseConfirmed": "Defense confirmed. Once the active phase starts, you can perform defensive actions.",
+  "territorySnackContestRefreshed": "The contest state has been refreshed. You can now immediately see the current defense phase.",
+  "territoryHqTooltipLocked": "Requires HQ level {required}. Current HQ level: {current}.",
+  "territoryHqButtonLocked": "{label} (requires HQ {level})",
+  "@territoryPointsLogicLine": {
+    "placeholders": {
+      "basePoints": {
+        "type": "int"
+      },
+      "bonusPoints": {
+        "type": "int"
+      },
+      "totalPoints": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryMapOverviewTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryYourCrewLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryNoticeWrongCountry": {
+    "placeholders": {
+      "viewingCountry": {
+        "type": "String"
+      },
+      "playerCountry": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryHqLockedNotice": {
+    "placeholders": {
+      "actions": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryContestOtherCountryNotice": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryLeaderboardRegionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryDialogAttackBody": {
+    "placeholders": {
+      "regionKey": {
+        "type": "String"
+      }
+    }
+  },
+  "@territorySnackContestStarted": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@territorySnackContestAlreadyLive": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryPointsDelta": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryHqTooltipLocked": {
+    "placeholders": {
+      "required": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryHqButtonLocked": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -12645,6 +12645,751 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Crime result'**
   String get crimeOutcomeDefaultTitle;
+
+  /// No description provided for @territoryContestStatusPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation'**
+  String get territoryContestStatusPreparing;
+
+  /// No description provided for @territoryContestStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get territoryContestStatusActive;
+
+  /// No description provided for @territoryContestStatusLockdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Lockdown'**
+  String get territoryContestStatusLockdown;
+
+  /// No description provided for @territoryContestStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get territoryContestStatusResolved;
+
+  /// No description provided for @territoryContestStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get territoryContestStatusCancelled;
+
+  /// No description provided for @territoryContestHintPreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'This contest is currently in preparation. Once prep time ends, the region automatically becomes active and actions unlock.'**
+  String get territoryContestHintPreparing;
+
+  /// No description provided for @territoryContestHintLockdown.
+  ///
+  /// In en, this message translates to:
+  /// **'This contest is in lockdown. No new actions can be taken now; the outcome resolves automatically.'**
+  String get territoryContestHintLockdown;
+
+  /// No description provided for @territoryNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get territoryNow;
+
+  /// No description provided for @territoryRoleAttacker.
+  ///
+  /// In en, this message translates to:
+  /// **'Attacker'**
+  String get territoryRoleAttacker;
+
+  /// No description provided for @territoryRoleDefender.
+  ///
+  /// In en, this message translates to:
+  /// **'Defender'**
+  String get territoryRoleDefender;
+
+  /// No description provided for @territoryValueLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get territoryValueLow;
+
+  /// No description provided for @territoryValueAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get territoryValueAverage;
+
+  /// No description provided for @territoryValueHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get territoryValueHigh;
+
+  /// No description provided for @territoryValueTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get territoryValueTop;
+
+  /// No description provided for @territoryTagCapital.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrative center'**
+  String get territoryTagCapital;
+
+  /// No description provided for @territoryTagHarbor.
+  ///
+  /// In en, this message translates to:
+  /// **'Harbor'**
+  String get territoryTagHarbor;
+
+  /// No description provided for @territoryTagIndustry.
+  ///
+  /// In en, this message translates to:
+  /// **'Industry'**
+  String get territoryTagIndustry;
+
+  /// No description provided for @territoryTagBorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Border region'**
+  String get territoryTagBorder;
+
+  /// No description provided for @territoryTagLogistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics hub'**
+  String get territoryTagLogistics;
+
+  /// No description provided for @territoryActionPatrol.
+  ///
+  /// In en, this message translates to:
+  /// **'Patrol'**
+  String get territoryActionPatrol;
+
+  /// No description provided for @territoryActionIntelScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Intel scan'**
+  String get territoryActionIntelScan;
+
+  /// No description provided for @territoryActionSabotage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sabotage'**
+  String get territoryActionSabotage;
+
+  /// No description provided for @territoryActionSupplyRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Supply run'**
+  String get territoryActionSupplyRun;
+
+  /// No description provided for @territoryActionRaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid'**
+  String get territoryActionRaid;
+
+  /// No description provided for @territoryActionDefense.
+  ///
+  /// In en, this message translates to:
+  /// **'Defense'**
+  String get territoryActionDefense;
+
+  /// No description provided for @territoryBonusStrategicRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Strategic region'**
+  String get territoryBonusStrategicRegion;
+
+  /// No description provided for @territoryBonusAdjacentSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjacent support'**
+  String get territoryBonusAdjacentSupport;
+
+  /// No description provided for @territoryBonusWarPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'War pressure'**
+  String get territoryBonusWarPressure;
+
+  /// No description provided for @territoryBonusHqLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ level'**
+  String get territoryBonusHqLevel;
+
+  /// No description provided for @territoryBonusCrewMissionLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew mission level'**
+  String get territoryBonusCrewMissionLevel;
+
+  /// No description provided for @territoryBonusCrewBuildings.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew side buildings'**
+  String get territoryBonusCrewBuildings;
+
+  /// No description provided for @territoryBonusOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get territoryBonusOther;
+
+  /// No description provided for @territoryPointsLogicLine.
+  ///
+  /// In en, this message translates to:
+  /// **'base {basePoints} + bonus {bonusPoints} = {totalPoints} contest points'**
+  String territoryPointsLogicLine(
+    int basePoints,
+    int bonusPoints,
+    int totalPoints,
+  );
+
+  /// No description provided for @territoryErrorNotInCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'You must join a crew before you can attack territory.'**
+  String get territoryErrorNotInCrew;
+
+  /// No description provided for @territoryErrorContestAlreadyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'A contest is already running for this region. Refreshing the map to the latest state.'**
+  String get territoryErrorContestAlreadyActive;
+
+  /// No description provided for @territoryErrorCrewContestLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew has already reached the concurrent contest limit.'**
+  String get territoryErrorCrewContestLimit;
+
+  /// No description provided for @territoryErrorRegionsCap.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew already owns the maximum number of regions.'**
+  String get territoryErrorRegionsCap;
+
+  /// No description provided for @territoryErrorContestNotActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This contest is not active yet. Wait for the preparation phase to finish.'**
+  String get territoryErrorContestNotActive;
+
+  /// No description provided for @territoryErrorActionCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'You need to wait before performing another territory action.'**
+  String get territoryErrorActionCooldown;
+
+  /// No description provided for @territoryErrorActionRoleMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'This action belongs to the other side of the contest.'**
+  String get territoryErrorActionRoleMismatch;
+
+  /// No description provided for @territoryErrorHqLevelRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your HQ level is too low for this territory action.'**
+  String get territoryErrorHqLevelRequired;
+
+  /// No description provided for @territoryErrorDailyCap.
+  ///
+  /// In en, this message translates to:
+  /// **'You have reached your daily limit for territory actions.'**
+  String get territoryErrorDailyCap;
+
+  /// No description provided for @territoryErrorWrongCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'You can view every country, but territory actions only work in the country where you are currently located.'**
+  String get territoryErrorWrongCountry;
+
+  /// No description provided for @territoryErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown territory error.'**
+  String get territoryErrorUnknown;
+
+  /// No description provided for @territoryLegendUnderContest.
+  ///
+  /// In en, this message translates to:
+  /// **'Under contest'**
+  String get territoryLegendUnderContest;
+
+  /// No description provided for @territoryLegendNeutral.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get territoryLegendNeutral;
+
+  /// No description provided for @territoryTabMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get territoryTabMap;
+
+  /// No description provided for @territoryTabLeaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get territoryTabLeaderboard;
+
+  /// No description provided for @territoryTabSeason.
+  ///
+  /// In en, this message translates to:
+  /// **'Season'**
+  String get territoryTabSeason;
+
+  /// No description provided for @territorySelectCountryTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select country'**
+  String get territorySelectCountryTooltip;
+
+  /// No description provided for @territoryUnavailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory is currently unavailable.'**
+  String get territoryUnavailableMessage;
+
+  /// No description provided for @territoryMapHintTapMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a region on the map to open territory information and the attack button in a modal.'**
+  String get territoryMapHintTapMain;
+
+  /// No description provided for @territoryMapHintTapPanel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a region to directly open the modal with territory information and attack actions.'**
+  String get territoryMapHintTapPanel;
+
+  /// No description provided for @territoryMapHintMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'On mobile you can pinch in and out with two fingers and drag the zoomed map directly for smaller regions.'**
+  String get territoryMapHintMobile;
+
+  /// No description provided for @territoryMapHintColors.
+  ///
+  /// In en, this message translates to:
+  /// **'Region colors show ownership; orange = active contest.'**
+  String get territoryMapHintColors;
+
+  /// No description provided for @territoryMapOverviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{country} map (crew control)'**
+  String territoryMapOverviewTitle(String country);
+
+  /// No description provided for @territoryLegendTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Legend'**
+  String get territoryLegendTitle;
+
+  /// No description provided for @territoryYourCrewLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew: {name}'**
+  String territoryYourCrewLine(String name);
+
+  /// No description provided for @territoryDetailRegionPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Region preview'**
+  String get territoryDetailRegionPreviewTitle;
+
+  /// No description provided for @territoryDetailRegionPreviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the selected region, without the rest of the map.'**
+  String get territoryDetailRegionPreviewSubtitle;
+
+  /// No description provided for @territoryNeutralTerritory.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral territory'**
+  String get territoryNeutralTerritory;
+
+  /// No description provided for @territoryDetailOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get territoryDetailOwner;
+
+  /// No description provided for @territoryDetailNeutral.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get territoryDetailNeutral;
+
+  /// No description provided for @territoryDetailStability.
+  ///
+  /// In en, this message translates to:
+  /// **'Stability'**
+  String get territoryDetailStability;
+
+  /// No description provided for @territoryDetailEffectiveStability.
+  ///
+  /// In en, this message translates to:
+  /// **'Effective stability'**
+  String get territoryDetailEffectiveStability;
+
+  /// No description provided for @territoryDetailControl.
+  ///
+  /// In en, this message translates to:
+  /// **'Control'**
+  String get territoryDetailControl;
+
+  /// No description provided for @territoryDetailValueTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Value tier'**
+  String get territoryDetailValueTier;
+
+  /// No description provided for @territoryDetailPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout'**
+  String get territoryDetailPayout;
+
+  /// No description provided for @territoryDetailStrategicRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Strategic role'**
+  String get territoryDetailStrategicRole;
+
+  /// No description provided for @territoryDetailAdjacentOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjacent owned regions'**
+  String get territoryDetailAdjacentOwned;
+
+  /// No description provided for @territoryDetailActionBonuses.
+  ///
+  /// In en, this message translates to:
+  /// **'Action bonuses'**
+  String get territoryDetailActionBonuses;
+
+  /// No description provided for @territoryDetailBonusInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Bonus info'**
+  String get territoryDetailBonusInfo;
+
+  /// No description provided for @territoryDetailBonusInfoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'These bonuses only increase your contest points per action. The region € payout stays the same.'**
+  String get territoryDetailBonusInfoBody;
+
+  /// No description provided for @territoryDetailWarPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'War pressure'**
+  String get territoryDetailWarPressure;
+
+  /// No description provided for @territoryDetailAttackPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'attack pressure'**
+  String get territoryDetailAttackPressure;
+
+  /// No description provided for @territoryDetailStabilityWord.
+  ///
+  /// In en, this message translates to:
+  /// **'stability'**
+  String get territoryDetailStabilityWord;
+
+  /// No description provided for @territoryWarRoleTheater.
+  ///
+  /// In en, this message translates to:
+  /// **'theater region'**
+  String get territoryWarRoleTheater;
+
+  /// No description provided for @territoryWarRoleAdjacent.
+  ///
+  /// In en, this message translates to:
+  /// **'adjacent region'**
+  String get territoryWarRoleAdjacent;
+
+  /// No description provided for @territoryWarRoleTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'target region'**
+  String get territoryWarRoleTarget;
+
+  /// No description provided for @territoryWarPressureEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'War pressure ends in'**
+  String get territoryWarPressureEndsIn;
+
+  /// No description provided for @territoryDetailIncomeHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Income per hour'**
+  String get territoryDetailIncomeHour;
+
+  /// No description provided for @territoryDetailIncomeDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Income per day'**
+  String get territoryDetailIncomeDay;
+
+  /// No description provided for @territoryDetailYourCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew'**
+  String get territoryDetailYourCrew;
+
+  /// No description provided for @territoryDetailContestStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest status'**
+  String get territoryDetailContestStatus;
+
+  /// No description provided for @territoryDetailYourRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role'**
+  String get territoryDetailYourRole;
+
+  /// No description provided for @territoryDetailYourHqLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your HQ level'**
+  String get territoryDetailYourHqLevel;
+
+  /// No description provided for @territoryDetailActionsUnlockIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions unlock in'**
+  String get territoryDetailActionsUnlockIn;
+
+  /// No description provided for @territoryDetailActionsCloseIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions close in'**
+  String get territoryDetailActionsCloseIn;
+
+  /// No description provided for @territoryDetailContestEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest ends in'**
+  String get territoryDetailContestEndsIn;
+
+  /// No description provided for @territoryDetailCooldownPerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown per action'**
+  String get territoryDetailCooldownPerAction;
+
+  /// No description provided for @territoryDetailYourCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cooldown'**
+  String get territoryDetailYourCooldown;
+
+  /// No description provided for @territoryNoticeCrewOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.'**
+  String get territoryNoticeCrewOnly;
+
+  /// No description provided for @territoryNoticeWrongCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'You are viewing {viewingCountry}, but you are currently in {playerCountry}. You can browse this map, but attacks and contest actions only unlock after you travel to this country.'**
+  String territoryNoticeWrongCountry(
+    String viewingCountry,
+    String playerCountry,
+  );
+
+  /// No description provided for @territoryNoticeOwnRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew already controls this region.'**
+  String get territoryNoticeOwnRegion;
+
+  /// No description provided for @territoryNoticeDefenderPrep.
+  ///
+  /// In en, this message translates to:
+  /// **'Your crew is defending this region. Once the active phase starts, you will only see defensive actions.'**
+  String get territoryNoticeDefenderPrep;
+
+  /// No description provided for @territoryConfirmDefense.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm defense'**
+  String get territoryConfirmDefense;
+
+  /// No description provided for @territoryAttack.
+  ///
+  /// In en, this message translates to:
+  /// **'Attack'**
+  String get territoryAttack;
+
+  /// No description provided for @territoryAttackerActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Attacker actions'**
+  String get territoryAttackerActions;
+
+  /// No description provided for @territoryDefenderActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Defender actions'**
+  String get territoryDefenderActions;
+
+  /// No description provided for @territoryContestActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest actions'**
+  String get territoryContestActions;
+
+  /// No description provided for @territoryIntelShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Intel scan'**
+  String get territoryIntelShort;
+
+  /// No description provided for @territoryRequiresHqShort.
+  ///
+  /// In en, this message translates to:
+  /// **'requires HQ'**
+  String get territoryRequiresHqShort;
+
+  /// No description provided for @territoryHqLockedNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Higher HQ level required for: {actions}.'**
+  String territoryHqLockedNotice(String actions);
+
+  /// No description provided for @territoryNotInContestNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not part of this contest, so you cannot perform actions here.'**
+  String get territoryNotInContestNotice;
+
+  /// No description provided for @territoryContestOtherCountryNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'This contest is taking place in another country. You can follow it, but you can only join once you are physically in {country}.'**
+  String territoryContestOtherCountryNotice(String country);
+
+  /// No description provided for @territoryLeaderboardEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No territory controlled yet.'**
+  String get territoryLeaderboardEmpty;
+
+  /// No description provided for @territoryLeaderboardRegionsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} regions'**
+  String territoryLeaderboardRegionsCount(int count);
+
+  /// No description provided for @territorySeasonNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No active season found.'**
+  String get territorySeasonNone;
+
+  /// No description provided for @territorySeasonCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current season'**
+  String get territorySeasonCurrent;
+
+  /// No description provided for @territorySeasonKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Key'**
+  String get territorySeasonKey;
+
+  /// No description provided for @territorySeasonStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get territorySeasonStatus;
+
+  /// No description provided for @territorySeasonStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get territorySeasonStart;
+
+  /// No description provided for @territorySeasonEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get territorySeasonEnd;
+
+  /// No description provided for @territoryDialogAttackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attack?'**
+  String get territoryDialogAttackTitle;
+
+  /// No description provided for @territoryDialogAttackBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a contest for {regionKey}?'**
+  String territoryDialogAttackBody(String regionKey);
+
+  /// No description provided for @territorySnackJoinCrewFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a crew first to attack territory.'**
+  String get territorySnackJoinCrewFirst;
+
+  /// No description provided for @territorySnackContestStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Contest started. Status: {status}. Wait for the preparation phase to finish before taking actions.'**
+  String territorySnackContestStarted(String status);
+
+  /// No description provided for @territorySnackContestAlreadyLive.
+  ///
+  /// In en, this message translates to:
+  /// **'The contest is already started and the map has been refreshed. Status: {status}.'**
+  String territorySnackContestAlreadyLive(String status);
+
+  /// No description provided for @territoryPointsDelta.
+  ///
+  /// In en, this message translates to:
+  /// **'+{points} points!'**
+  String territoryPointsDelta(String points);
+
+  /// No description provided for @territorySnackDefenseConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Defense confirmed. Once the active phase starts, you can perform defensive actions.'**
+  String get territorySnackDefenseConfirmed;
+
+  /// No description provided for @territorySnackContestRefreshed.
+  ///
+  /// In en, this message translates to:
+  /// **'The contest state has been refreshed. You can now immediately see the current defense phase.'**
+  String get territorySnackContestRefreshed;
+
+  /// No description provided for @territoryHqTooltipLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires HQ level {required}. Current HQ level: {current}.'**
+  String territoryHqTooltipLocked(int required, int current);
+
+  /// No description provided for @territoryHqButtonLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} (requires HQ {level})'**
+  String territoryHqButtonLocked(String label, int level);
 }
 
 class _AppLocalizationsDelegate

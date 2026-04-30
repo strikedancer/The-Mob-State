@@ -142,6 +142,41 @@ const notificationDE: Translations['notification'] = {
     title: '💰 Geld erhalten',
     body: (senderUsername, amount) => `${senderUsername} hat dir €${amount} überwiesen.`,
   },
+  territoryContestStarted: {
+    title: 'Territorium unter Angriff!',
+    pushBody: (regionKey, contestId) =>
+      `Region ${regionKey} wird angegriffen (Contest #${contestId}).`,
+    inboxMessage: (regionKey, contestId) =>
+      [
+        'Territorium unter Angriff!',
+        '',
+        `Region: ${regionKey}`,
+        `Contest: #${contestId}`,
+        'Eine andere Crew hat einen Territoriumsangriff gestartet.',
+      ].join('\n'),
+  },
+  territoryCaptured: {
+    title: 'Region erobert!',
+    pushBody: (regionKey) => `Eure Crew hat ${regionKey} erobert.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Region erobert!',
+        '',
+        `Region: ${regionKey}`,
+        'Eure Crew hat diese Region erfolgreich übernommen.',
+      ].join('\n'),
+  },
+  territoryLost: {
+    title: 'Region verloren!',
+    pushBody: (regionKey) => `${regionKey} wurde von einer anderen Crew übernommen.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Region verloren!',
+        '',
+        `Region: ${regionKey}`,
+        'Diese Region wurde von einer anderen Crew übernommen.',
+      ].join('\n'),
+  },
 };
 
 // —— FR ——
@@ -280,6 +315,41 @@ const notificationFR: Translations['notification'] = {
     title: '💰 Argent reçu',
     body: (senderUsername, amount) => `${senderUsername} t'a viré €${amount}.`,
   },
+  territoryContestStarted: {
+    title: 'Région attaquée !',
+    pushBody: (regionKey, contestId) =>
+      `La région ${regionKey} est attaquée (contest n°${contestId}).`,
+    inboxMessage: (regionKey, contestId) =>
+      [
+        'Région attaquée !',
+        '',
+        `Région : ${regionKey}`,
+        `Contest : #${contestId}`,
+        'Une autre crew a lancé une attaque territoriale.',
+      ].join('\n'),
+  },
+  territoryCaptured: {
+    title: 'Région capturée !',
+    pushBody: (regionKey) => `Ta crew a capturé ${regionKey}.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Région capturée !',
+        '',
+        `Région : ${regionKey}`,
+        'Ta crew a repris cette région avec succès.',
+      ].join('\n'),
+  },
+  territoryLost: {
+    title: 'Région perdue !',
+    pushBody: (regionKey) => `${regionKey} a été prise par une autre crew.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Région perdue !',
+        '',
+        `Région : ${regionKey}`,
+        'Cette région a été prise par une autre crew.',
+      ].join('\n'),
+  },
 };
 
 // —— ES ——
@@ -416,6 +486,41 @@ const notificationES: Translations['notification'] = {
   bankTransferReceived: {
     title: '💰 Dinero recibido',
     body: (senderUsername, amount) => `${senderUsername} te transferió €${amount}.`,
+  },
+  territoryContestStarted: {
+    title: '¡Región bajo ataque!',
+    pushBody: (regionKey, contestId) =>
+      `La región ${regionKey} está bajo ataque (contest #${contestId}).`,
+    inboxMessage: (regionKey, contestId) =>
+      [
+        '¡Región bajo ataque!',
+        '',
+        `Región: ${regionKey}`,
+        `Contest: #${contestId}`,
+        'Otra crew ha iniciado un ataque territorial.',
+      ].join('\n'),
+  },
+  territoryCaptured: {
+    title: '¡Región capturada!',
+    pushBody: (regionKey) => `Tu crew capturó ${regionKey}.`,
+    inboxMessage: (regionKey) =>
+      [
+        '¡Región capturada!',
+        '',
+        `Región: ${regionKey}`,
+        'Tu crew tomó esta región con éxito.',
+      ].join('\n'),
+  },
+  territoryLost: {
+    title: '¡Región perdida!',
+    pushBody: (regionKey) => `${regionKey} fue tomada por otra crew.`,
+    inboxMessage: (regionKey) =>
+      [
+        '¡Región perdida!',
+        '',
+        `Región: ${regionKey}`,
+        'Esta región fue tomada por otra crew.',
+      ].join('\n'),
   },
 };
 
@@ -555,6 +660,41 @@ const notificationIT: Translations['notification'] = {
     title: '💰 Denaro ricevuto',
     body: (senderUsername, amount) => `${senderUsername} ha trasferito €${amount} al tuo conto.`,
   },
+  territoryContestStarted: {
+    title: 'Regione sotto attacco!',
+    pushBody: (regionKey, contestId) =>
+      `La regione ${regionKey} è sotto attacco (contest #${contestId}).`,
+    inboxMessage: (regionKey, contestId) =>
+      [
+        'Regione sotto attacco!',
+        '',
+        `Regione: ${regionKey}`,
+        `Contest: #${contestId}`,
+        "Un'altra crew ha avviato un attacco territoriale.",
+      ].join('\n'),
+  },
+  territoryCaptured: {
+    title: 'Regione conquistata!',
+    pushBody: (regionKey) => `La tua crew ha conquistato ${regionKey}.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Regione conquistata!',
+        '',
+        `Regione: ${regionKey}`,
+        'La tua crew ha conquistato questa regione.',
+      ].join('\n'),
+  },
+  territoryLost: {
+    title: 'Regione persa!',
+    pushBody: (regionKey) => `${regionKey} è stata presa da un’altra crew.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Regione persa!',
+        '',
+        `Regione: ${regionKey}`,
+        'Questa regione è stata presa da un’altra crew.',
+      ].join('\n'),
+  },
 };
 
 // —— PL ——
@@ -687,6 +827,41 @@ const notificationPL: Translations['notification'] = {
   bankTransferReceived: {
     title: '💰 Otrzymano pieniądze',
     body: (senderUsername, amount) => `${senderUsername} przelał €${amount} na konto bankowe.`,
+  },
+  territoryContestStarted: {
+    title: 'Region pod atakiem!',
+    pushBody: (regionKey, contestId) =>
+      `Region ${regionKey} jest atakowany (contest #${contestId}).`,
+    inboxMessage: (regionKey, contestId) =>
+      [
+        'Region pod atakiem!',
+        '',
+        `Region: ${regionKey}`,
+        `Contest: #${contestId}`,
+        'Inna ekipa rozpoczęła atak terytorialny.',
+      ].join('\n'),
+  },
+  territoryCaptured: {
+    title: 'Region przejęty!',
+    pushBody: (regionKey) => `Twoja ekipa przejęła ${regionKey}.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Region przejęty!',
+        '',
+        `Region: ${regionKey}`,
+        'Twoja ekipa pomyślnie przejęła ten region.',
+      ].join('\n'),
+  },
+  territoryLost: {
+    title: 'Region utracony!',
+    pushBody: (regionKey) => `${regionKey} został przejęty przez inną ekipę.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Region utracony!',
+        '',
+        `Region: ${regionKey}`,
+        'Ten region został przejęty przez inną ekipę.',
+      ].join('\n'),
   },
 };
 
@@ -822,6 +997,41 @@ const notificationPT: Translations['notification'] = {
   bankTransferReceived: {
     title: '💰 Dinheiro recebido',
     body: (senderUsername, amount) => `${senderUsername} transferiu €${amount} para a tua conta bancária.`,
+  },
+  territoryContestStarted: {
+    title: 'Região sob ataque!',
+    pushBody: (regionKey, contestId) =>
+      `A região ${regionKey} está sob ataque (contest #${contestId}).`,
+    inboxMessage: (regionKey, contestId) =>
+      [
+        'Região sob ataque!',
+        '',
+        `Região: ${regionKey}`,
+        `Contest: #${contestId}`,
+        'Outra crew iniciou um ataque territorial.',
+      ].join('\n'),
+  },
+  territoryCaptured: {
+    title: 'Região capturada!',
+    pushBody: (regionKey) => `A tua crew capturou ${regionKey}.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Região capturada!',
+        '',
+        `Região: ${regionKey}`,
+        'A tua crew capturou esta região com sucesso.',
+      ].join('\n'),
+  },
+  territoryLost: {
+    title: 'Região perdida!',
+    pushBody: (regionKey) => `${regionKey} foi tomada por outra crew.`,
+    inboxMessage: (regionKey) =>
+      [
+        'Região perdida!',
+        '',
+        `Região: ${regionKey}`,
+        'Esta região foi tomada por outra crew.',
+      ].join('\n'),
   },
 };
 

@@ -201,11 +201,27 @@ export interface Translations {
       title: string;
       body: (senderUsername: string, amount: string) => string;
     };
+    territoryContestStarted: {
+      title: string;
+      pushBody: (regionKey: string, contestId: string) => string;
+      inboxMessage: (regionKey: string, contestId: string) => string;
+    };
+    territoryCaptured: {
+      title: string;
+      pushBody: (regionKey: string) => string;
+      inboxMessage: (regionKey: string) => string;
+    };
+    territoryLost: {
+      title: string;
+      pushBody: (regionKey: string) => string;
+      inboxMessage: (regionKey: string) => string;
+    };
   };
   common: {
     footer: string;
     automatedMessage: string;
     appName: string;
+    territorySystemSender: string;
   };
 }
 
@@ -412,11 +428,47 @@ const translations: Record<'en' | 'nl', Translations> = {
         title: '💰 Money Received',
         body: (senderUsername, amount) => `${senderUsername} transferred €${amount} to your bank account.`,
       },
+      territoryContestStarted: {
+        title: 'Region under attack!',
+        pushBody: (regionKey, contestId) =>
+          `Region ${regionKey} is under attack (contest #${contestId}).`,
+        inboxMessage: (regionKey, contestId) =>
+          [
+            'Region under attack!',
+            '',
+            `Region: ${regionKey}`,
+            `Contest: #${contestId}`,
+            'Another crew has started a territory attack.',
+          ].join('\n'),
+      },
+      territoryCaptured: {
+        title: 'Region captured!',
+        pushBody: (regionKey) => `Your crew captured ${regionKey}.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Region captured!',
+            '',
+            `Region: ${regionKey}`,
+            'Your crew successfully captured this region.',
+          ].join('\n'),
+      },
+      territoryLost: {
+        title: 'Region lost!',
+        pushBody: (regionKey) => `${regionKey} was taken by another crew.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Region lost!',
+            '',
+            `Region: ${regionKey}`,
+            'This region was taken by another crew.',
+          ].join('\n'),
+      },
     },
     common: {
       footer: '© 2026 The Mob State. All rights reserved.',
       automatedMessage: 'This is an automated message, please do not reply.',
       appName: 'THE MOB STATE',
+      territorySystemSender: 'Territory Control',
     },
   },
   nl: {
@@ -621,11 +673,47 @@ const translations: Record<'en' | 'nl', Translations> = {
         title: '💰 Geld ontvangen',
         body: (senderUsername, amount) => `${senderUsername} heeft €${amount} naar je bankrekening overgemaakt.`,
       },
+      territoryContestStarted: {
+        title: 'Gebied onder aanval!',
+        pushBody: (regionKey, contestId) =>
+          `Regio ${regionKey} wordt aangevallen (contest #${contestId}).`,
+        inboxMessage: (regionKey, contestId) =>
+          [
+            'Gebied aangevallen!',
+            '',
+            `Regio: ${regionKey}`,
+            `Contest: #${contestId}`,
+            'Een andere crew heeft een territoriumaanval gestart.',
+          ].join('\n'),
+      },
+      territoryCaptured: {
+        title: 'Gebied veroverd!',
+        pushBody: (regionKey) => `Jullie crew heeft ${regionKey} veroverd.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Gebied veroverd!',
+            '',
+            `Regio: ${regionKey}`,
+            'Jullie crew heeft deze regio succesvol overgenomen.',
+          ].join('\n'),
+      },
+      territoryLost: {
+        title: 'Gebied verloren!',
+        pushBody: (regionKey) => `${regionKey} is overgenomen door een andere crew.`,
+        inboxMessage: (regionKey) =>
+          [
+            'Gebied verloren!',
+            '',
+            `Regio: ${regionKey}`,
+            'Deze regio is overgenomen door een andere crew.',
+          ].join('\n'),
+      },
     },
     common: {
       footer: '© 2026 The Mob State. Alle rechten voorbehouden.',
       automatedMessage: 'Dit is een geautomatiseerd bericht, gelieve niet te antwoorden.',
       appName: 'THE MOB STATE',
+      territorySystemSender: 'Territoriumbeheer',
     },
   },
 };

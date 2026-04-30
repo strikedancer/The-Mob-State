@@ -4045,5 +4045,234 @@
   "achievementsCategoryNameTravel": "Reizen",
   "achievementsCategoryNameDrugs": "Drugs",
   "achievementsCategoryNameTrade": "Handel",
-  "achievementsCategoryNameGeneral": "Algemeen"
+  "achievementsCategoryNameGeneral": "Algemeen",
+  "territoryContestStatusPreparing": "Voorbereiding",
+  "territoryContestStatusActive": "Actief",
+  "territoryContestStatusLockdown": "Lockdown",
+  "territoryContestStatusResolved": "Afgerond",
+  "territoryContestStatusCancelled": "Geannuleerd",
+  "territoryContestHintPreparing": "De contest loopt nu in voorbereiding. Zodra de prep-tijd voorbij is, wordt dit gebied automatisch actief en kun je acties uitvoeren.",
+  "territoryContestHintLockdown": "Deze contest zit in lockdown. Er kunnen nu geen nieuwe acties meer worden gedaan; de uitkomst volgt automatisch.",
+  "territoryNow": "Nu",
+  "territoryRoleAttacker": "Aanvaller",
+  "territoryRoleDefender": "Verdediger",
+  "territoryValueLow": "Laag",
+  "territoryValueAverage": "Gemiddeld",
+  "territoryValueHigh": "Hoog",
+  "territoryValueTop": "Top",
+  "territoryTagCapital": "Bestuurlijk centrum",
+  "territoryTagHarbor": "Haven",
+  "territoryTagIndustry": "Industrie",
+  "territoryTagBorder": "Grensregio",
+  "territoryTagLogistics": "Logistiek knooppunt",
+  "territoryActionPatrol": "Patrouille",
+  "territoryActionIntelScan": "Intel scan",
+  "territoryActionSabotage": "Sabotage",
+  "territoryActionSupplyRun": "Bevoorrading",
+  "territoryActionRaid": "Inval",
+  "territoryActionDefense": "Verdedigen",
+  "territoryBonusStrategicRegion": "Strategische regio",
+  "territoryBonusAdjacentSupport": "Aangrenzende steun",
+  "territoryBonusWarPressure": "War pressure",
+  "territoryBonusHqLevel": "HQ level",
+  "territoryBonusCrewMissionLevel": "Crew missielevel",
+  "territoryBonusCrewBuildings": "Crew bijgebouwen",
+  "territoryBonusOther": "Overig",
+  "territoryPointsLogicLine": "basis {basePoints} + bonus {bonusPoints} = {totalPoints} contestpunten",
+  "territoryErrorNotInCrew": "Je moet eerst in een crew zitten om territorium aan te vallen.",
+  "territoryErrorContestAlreadyActive": "Voor dit gebied loopt al een contest. De kaart wordt ververst met de actuele status.",
+  "territoryErrorCrewContestLimit": "Je crew heeft al het maximum aantal gelijktijdige contests bereikt.",
+  "territoryErrorRegionsCap": "Je crew bezit al het maximum aantal gebieden.",
+  "territoryErrorContestNotActive": "Deze contest is nog niet actief. Wacht tot de voorbereidingsfase voorbij is.",
+  "territoryErrorActionCooldown": "Je moet even wachten voor je opnieuw een territory-actie kunt doen.",
+  "territoryErrorActionRoleMismatch": "Deze actie hoort bij de andere kant van de contest.",
+  "territoryErrorHqLevelRequired": "Je HQ-level is nog te laag voor deze territory-actie.",
+  "territoryErrorDailyCap": "Je hebt je dagelijkse limiet voor territory-acties bereikt.",
+  "territoryErrorWrongCountry": "Je kunt alle landen bekijken, maar territory-acties werken alleen in het land waar je nu bent.",
+  "territoryErrorUnknown": "Onbekende territory-fout.",
+  "territoryLegendUnderContest": "In strijd",
+  "territoryLegendNeutral": "Neutraal",
+  "territoryTabMap": "Kaart",
+  "territoryTabLeaderboard": "Ranglijst",
+  "territoryTabSeason": "Seizoen",
+  "territorySelectCountryTooltip": "Kies land",
+  "territoryUnavailableMessage": "Territorium is momenteel niet beschikbaar.",
+  "territoryMapHintTapMain": "Tik op een gebied op de kaart om gebiedsinformatie en de aanvalsknop in een modal te openen.",
+  "territoryMapHintTapPanel": "Klik op een gebied om direct de modal met gebiedsinformatie en aanvalsacties te openen.",
+  "territoryMapHintMobile": "Op mobiel kun je met twee vingers in- en uitzoomen en de ingezoomde kaart direct verslepen voor kleine gebieden.",
+  "territoryMapHintColors": "Regio-kleuren tonen eigendom; oranje = actieve contest.",
+  "territoryMapOverviewTitle": "{country} kaart (crew controle)",
+  "territoryLegendTitle": "Legenda",
+  "territoryYourCrewLine": "Jouw crew: {name}",
+  "territoryDetailRegionPreviewTitle": "Gebiedsweergave",
+  "territoryDetailRegionPreviewSubtitle": "Alleen het aangeklikte gebied, zonder de rest van de kaart.",
+  "territoryNeutralTerritory": "Neutraal gebied",
+  "territoryDetailOwner": "Eigenaar",
+  "territoryDetailNeutral": "Neutraal",
+  "territoryDetailStability": "Stabiliteit",
+  "territoryDetailEffectiveStability": "Effectieve stabiliteit",
+  "territoryDetailControl": "Controle",
+  "territoryDetailValueTier": "Waarde",
+  "territoryDetailPayout": "Uitbetaling",
+  "territoryDetailStrategicRole": "Strategische rol",
+  "territoryDetailAdjacentOwned": "Aangrenzende eigen regio's",
+  "territoryDetailActionBonuses": "Actiebonussen",
+  "territoryDetailBonusInfo": "Bonus uitleg",
+  "territoryDetailBonusInfoBody": "Deze bonussen verhogen alleen je contestpunten per actie. De €-uitbetaling van het gebied blijft gelijk.",
+  "territoryDetailWarPressure": "War pressure",
+  "territoryDetailAttackPressure": "aanvalsdruk",
+  "territoryDetailStabilityWord": "stabiliteit",
+  "territoryWarRoleTheater": "theater-regio",
+  "territoryWarRoleAdjacent": "aangrenzende regio",
+  "territoryWarRoleTarget": "doelregio",
+  "territoryWarPressureEndsIn": "War pressure eindigt over",
+  "territoryDetailIncomeHour": "Opbrengst per uur",
+  "territoryDetailIncomeDay": "Opbrengst per dag",
+  "territoryDetailYourCrew": "Jouw crew",
+  "territoryDetailContestStatus": "Contest status",
+  "territoryDetailYourRole": "Jouw rol",
+  "territoryDetailYourHqLevel": "Jouw HQ level",
+  "territoryDetailActionsUnlockIn": "Acties starten over",
+  "territoryDetailActionsCloseIn": "Acties sluiten over",
+  "territoryDetailContestEndsIn": "Contest eindigt over",
+  "territoryDetailCooldownPerAction": "Cooldown per actie",
+  "territoryDetailYourCooldown": "Jouw cooldown",
+  "territoryNoticeCrewOnly": "Territorium is alleen speelbaar voor crewleden. Maak eerst een crew aan of sluit je bij een crew aan, daarna kun je neutrale gebieden aanvallen.",
+  "territoryNoticeWrongCountry": "Je bekijkt {viewingCountry}, maar je bent nu in {playerCountry}. Je kunt deze kaart wel bekijken, alleen aanvallen en contest-acties zijn pas beschikbaar zodra je naar dit land reist.",
+  "territoryNoticeOwnRegion": "Je crew controleert dit gebied al.",
+  "territoryNoticeDefenderPrep": "Jouw crew verdedigt dit gebied. Zodra de actieve fase start, krijg je alleen verdedigende acties te zien.",
+  "territoryConfirmDefense": "Verdediging bevestigen",
+  "territoryAttack": "Aanvallen",
+  "territoryAttackerActions": "Aanvalsacties",
+  "territoryDefenderActions": "Verdedigingsacties",
+  "territoryContestActions": "Contestacties",
+  "territoryIntelShort": "Intel",
+  "territoryRequiresHqShort": "vereist HQ",
+  "territoryHqLockedNotice": "Vereist hoger HQ-level voor: {actions}.",
+  "territoryNotInContestNotice": "Je zit niet aan deze contest gekoppeld, dus je kunt hier geen acties uitvoeren.",
+  "territoryContestOtherCountryNotice": "Deze contest loopt in een ander land. Je kunt hem volgen, maar pas meedoen zodra je fysiek in {country} bent.",
+  "territoryLeaderboardEmpty": "Nog geen territorium gecontroleerd.",
+  "territoryLeaderboardRegionsCount": "{count} regio's",
+  "territorySeasonNone": "Geen actief seizoen gevonden.",
+  "territorySeasonCurrent": "Huidig seizoen",
+  "territorySeasonKey": "Sleutel",
+  "territorySeasonStatus": "Status",
+  "territorySeasonStart": "Start",
+  "territorySeasonEnd": "Einde",
+  "territoryDialogAttackTitle": "Aanvallen?",
+  "territoryDialogAttackBody": "Wil je een contest starten voor {regionKey}?",
+  "territorySnackJoinCrewFirst": "Sluit je eerst aan bij een crew om territorium aan te vallen.",
+  "territorySnackContestStarted": "Contest gestart. Status: {status}. Wacht tot de voorbereidingsfase voorbij is voor acties.",
+  "territorySnackContestAlreadyLive": "De contest is al gestart en de kaart is ververst. Status: {status}.",
+  "territoryPointsDelta": "+{points} punten!",
+  "territorySnackDefenseConfirmed": "Verdediging bevestigd. Zodra de actieve fase start, kun je verdedigingsacties uitvoeren.",
+  "territorySnackContestRefreshed": "De conteststatus is ververst. Je ziet nu direct de actuele verdedigingsfase.",
+  "territoryHqTooltipLocked": "Vereist HQ level {required}. Huidig HQ level: {current}.",
+  "territoryHqButtonLocked": "{label} (vereist HQ {level})",
+  "@territoryPointsLogicLine": {
+    "placeholders": {
+      "basePoints": {
+        "type": "int"
+      },
+      "bonusPoints": {
+        "type": "int"
+      },
+      "totalPoints": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryMapOverviewTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryYourCrewLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryNoticeWrongCountry": {
+    "placeholders": {
+      "viewingCountry": {
+        "type": "String"
+      },
+      "playerCountry": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryHqLockedNotice": {
+    "placeholders": {
+      "actions": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryContestOtherCountryNotice": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryLeaderboardRegionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryDialogAttackBody": {
+    "placeholders": {
+      "regionKey": {
+        "type": "String"
+      }
+    }
+  },
+  "@territorySnackContestStarted": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@territorySnackContestAlreadyLive": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryPointsDelta": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "@territoryHqTooltipLocked": {
+    "placeholders": {
+      "required": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "@territoryHqButtonLocked": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  }
 }
