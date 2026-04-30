@@ -3501,6 +3501,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get restoreCritical => 'Restore +20 HP (critical condition)';
 
   @override
+  String get hospitalCooldownTitle => 'Treatment in recovery period';
+
+  @override
+  String hospitalCooldownNextAvailable(String duration) {
+    return 'Next treatment available in: $duration';
+  }
+
+  @override
+  String get hospitalMedicalStatusTitle => 'Medical Status';
+
+  @override
+  String hospitalIcuRemaining(String duration) {
+    return 'ICU: $duration';
+  }
+
+  @override
+  String hospitalHpLine(String hp) {
+    return 'HP $hp/100';
+  }
+
+  @override
+  String get hospitalIcuTriageTitle => 'ICU & triage overview';
+
+  @override
+  String hospitalIcuPatientRemaining(String duration) {
+    return 'Patient in ICU. Remaining time: $duration';
+  }
+
+  @override
+  String get hospitalCriticalStatusDetected =>
+      'Critical status detected. Emergency care recommended.';
+
+  @override
+  String get hospitalStableStatus => 'Stable. Regular treatment available.';
+
+  @override
+  String get hospitalRefreshMedicalRecord => 'Refresh medical record';
+
+  @override
+  String get hospitalStandardTreatmentTitle => 'Standard treatment';
+
+  @override
+  String hospitalStandardTreatmentSubtitle(String amount) {
+    return 'Affordable • restore up to $amount HP';
+  }
+
+  @override
+  String get hospitalIntensiveTreatmentTitle => 'Intensive treatment';
+
+  @override
+  String hospitalIntensiveTreatmentSubtitle(String amount) {
+    return 'Faster recovery • up to $amount HP';
+  }
+
+  @override
+  String hospitalIntensiveTreatmentInfoLine(String cost, String amount) {
+    return '• Intensive treatment: €$cost for up to $amount HP recovery.';
+  }
+
+  @override
   String restoreUp(String amount) {
     return 'Restore up to $amount HP';
   }

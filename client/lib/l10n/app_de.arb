@@ -5049,5 +5049,72 @@
       }
     }
   },
-  "crewJailbreakRescueButton": "Rettung"
+  "crewJailbreakRescueButton": "Rettung",
+  "hospitalCooldownTitle": "Behandlung in der Erholungsphase",
+  "hospitalCooldownNextAvailable": "Nächste Behandlung verfügbar in: {duration}",
+  "@hospitalCooldownNextAvailable": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalMedicalStatusTitle": "Medizinischer Status",
+  "hospitalIcuRemaining": "Intensivstation: {duration}",
+  "@hospitalIcuRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalHpLine": "PS {hp}/100",
+  "@hospitalHpLine": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIcuTriageTitle": "Übersicht über Intensivstation und Triage",
+  "hospitalIcuPatientRemaining": "Patient auf der Intensivstation. Verbleibende Zeit: {duration}",
+  "@hospitalIcuPatientRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalCriticalStatusDetected": "Kritischer Status erkannt. Notfallversorgung empfohlen.",
+  "hospitalStableStatus": "Stabil. Regelmäßige Behandlung möglich.",
+  "hospitalRefreshMedicalRecord": "Krankenakte aktualisieren",
+  "hospitalStandardTreatmentTitle": "Standardbehandlung",
+  "hospitalStandardTreatmentSubtitle": "Erschwinglich • Wiederherstellung von bis zu {amount} HP",
+  "@hospitalStandardTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentTitle": "Intensive Behandlung",
+  "hospitalIntensiveTreatmentSubtitle": "Schnellere Wiederherstellung • bis zu {amount} HP",
+  "@hospitalIntensiveTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentInfoLine": "• Intensivbehandlung: {cost} € für bis zu {amount} HP-Erholung.",
+  "@hospitalIntensiveTreatmentInfoLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

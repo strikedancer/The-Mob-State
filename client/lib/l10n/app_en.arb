@@ -2130,6 +2130,73 @@
   "hospitalInfo6": "• 💚 Passive healing: +5 HP per 5 minutes (if HP > 0)",
   "medicalTreatment": "Medical Treatment",
   "restoreCritical": "Restore +20 HP (critical condition)",
+  "hospitalCooldownTitle": "Treatment in recovery period",
+  "hospitalCooldownNextAvailable": "Next treatment available in: {duration}",
+  "@hospitalCooldownNextAvailable": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalMedicalStatusTitle": "Medical Status",
+  "hospitalIcuRemaining": "ICU: {duration}",
+  "@hospitalIcuRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalHpLine": "HP {hp}/100",
+  "@hospitalHpLine": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIcuTriageTitle": "ICU & triage overview",
+  "hospitalIcuPatientRemaining": "Patient in ICU. Remaining time: {duration}",
+  "@hospitalIcuPatientRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalCriticalStatusDetected": "Critical status detected. Emergency care recommended.",
+  "hospitalStableStatus": "Stable. Regular treatment available.",
+  "hospitalRefreshMedicalRecord": "Refresh medical record",
+  "hospitalStandardTreatmentTitle": "Standard treatment",
+  "hospitalStandardTreatmentSubtitle": "Affordable • restore up to {amount} HP",
+  "@hospitalStandardTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentTitle": "Intensive treatment",
+  "hospitalIntensiveTreatmentSubtitle": "Faster recovery • up to {amount} HP",
+  "@hospitalIntensiveTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentInfoLine": "• Intensive treatment: €{cost} for up to {amount} HP recovery.",
+  "@hospitalIntensiveTreatmentInfoLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "restoreUp": "Restore up to {amount} HP",
   "@restoreUp": {
     "placeholders": {

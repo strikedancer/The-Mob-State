@@ -5049,5 +5049,72 @@
       }
     }
   },
-  "crewJailbreakRescueButton": "Sauvetage"
+  "crewJailbreakRescueButton": "Sauvetage",
+  "hospitalCooldownTitle": "Traitement en période de récupération",
+  "hospitalCooldownNextAvailable": "Prochain soin disponible en : {duration}",
+  "@hospitalCooldownNextAvailable": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalMedicalStatusTitle": "Statut médical",
+  "hospitalIcuRemaining": "USI : {duration}",
+  "@hospitalIcuRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalHpLine": "PV {hp}/100",
+  "@hospitalHpLine": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIcuTriageTitle": "Aperçu des soins intensifs et du triage",
+  "hospitalIcuPatientRemaining": "Patient en soins intensifs. Temps restant : {duration}",
+  "@hospitalIcuPatientRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalCriticalStatusDetected": "État critique détecté. Soins d'urgence recommandés.",
+  "hospitalStableStatus": "Écurie. Traitement régulier disponible.",
+  "hospitalRefreshMedicalRecord": "Actualiser le dossier médical",
+  "hospitalStandardTreatmentTitle": "Traitement standard",
+  "hospitalStandardTreatmentSubtitle": "Abordable • restaure jusqu'à {amount} HP",
+  "@hospitalStandardTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentTitle": "Traitement intensif",
+  "hospitalIntensiveTreatmentSubtitle": "Récupération plus rapide • jusqu'à {amount} HP",
+  "@hospitalIntensiveTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentInfoLine": "• Traitement intensif : {cost}€ pour une récupération jusqu'à {amount} HP.",
+  "@hospitalIntensiveTreatmentInfoLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

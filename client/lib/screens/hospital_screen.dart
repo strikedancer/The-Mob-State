@@ -25,9 +25,6 @@ class _HospitalScreenState extends State<HospitalScreen> {
   int _cooldownRemainingSeconds = 0;
   Timer? _cooldownTimer;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   @override
   void initState() {
     super.initState();
@@ -108,13 +105,15 @@ class _HospitalScreenState extends State<HospitalScreen> {
   }
 
   String _formatTime(int seconds) {
+    final l10n = AppLocalizations.of(context)!;
     return formatAdaptiveDurationFromSeconds(
       seconds,
-      localeName: _isNl ? 'nl' : 'en',
+      localeName: l10n.localeName,
     );
   }
 
   List<Widget> _buildCooldownBanner() {
+    final l10n = AppLocalizations.of(context)!;
     return [
       Container(
         width: double.infinity,
@@ -133,10 +132,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _tr(
-                      'Behandeling in herstelperiode',
-                      'Treatment in recovery period',
-                    ),
+                    l10n.hospitalCooldownTitle,
                     style: TextStyle(
                       color: Colors.orange,
                       fontWeight: FontWeight.bold,
@@ -145,9 +141,8 @@ class _HospitalScreenState extends State<HospitalScreen> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    _tr(
-                      'Volgende behandeling beschikbaar over: ${_formatTime(_cooldownRemainingSeconds)}',
-                      'Next treatment available in: ${_formatTime(_cooldownRemainingSeconds)}',
+                    l10n.hospitalCooldownNextAvailable(
+                      _formatTime(_cooldownRemainingSeconds),
                     ),
                     style: const TextStyle(color: Colors.white70, fontSize: 12),
                   ),
@@ -236,7 +231,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('${l10n.error}: $e'),
+            content: Text(l10n.error(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -307,13 +302,14 @@ class _HospitalScreenState extends State<HospitalScreen> {
   @override
   Widget build(BuildContext context) {
     const goldColor = Color(0xFFD4AF37);
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             const Icon(Icons.local_hospital, color: goldColor),
             const SizedBox(width: 8),
-            Text(AppLocalizations.of(context)!.hospital),
+            Text(l10n.hospital),
           ],
         ),
         backgroundColor: const Color(0xFF1A1A1A),
@@ -409,7 +405,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      _tr('Medische Status', 'Medical Status'),
+                                      l10n.hospitalMedicalStatusTitle,
                                       style: TextStyle(
                                         color: Color(0xFFD4AF37),
                                         fontWeight: FontWeight.bold,
@@ -420,7 +416,9 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                 ),
                                 if (_isInICU)
                                   Text(
-                                    'ICU: ${_formatTime(_icuRemainingSeconds)}',
+                                    l10n.hospitalIcuRemaining(
+                                      _formatTime(_icuRemainingSeconds),
+                                    ),
                                     style: const TextStyle(
                                       color: Colors.orange,
                                       fontWeight: FontWeight.w600,
@@ -433,7 +431,9 @@ class _HospitalScreenState extends State<HospitalScreen> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'HP ${player.health}/100',
+                                    l10n.hospitalHpLine(
+                                      player.health.toString(),
+                                    ),
                                     style: const TextStyle(
                                       color: Colors.white70,
                                     ),
@@ -505,7 +505,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
 
                       // Treatment Options
                       Text(
-                        AppLocalizations.of(context)!.treatmentOptions,
+                        l10n.treatmentOptions,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -534,10 +534,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    _tr(
-                                      'ICU & triage overzicht',
-                                      'ICU & triage overview',
-                                    ),
+                                    l10n.hospitalIcuTriageTitle,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -548,19 +545,12 @@ class _HospitalScreenState extends State<HospitalScreen> {
                               const SizedBox(height: 8),
                               Text(
                                 _isInICU
-                                    ? _tr(
-                                        'Patiënt ligt op IC. Resterende tijd: ${_formatTime(_icuRemainingSeconds)}',
-                                        'Patient in ICU. Remaining time: ${_formatTime(_icuRemainingSeconds)}',
+                                    ? l10n.hospitalIcuPatientRemaining(
+                                        _formatTime(_icuRemainingSeconds),
                                       )
                                     : isCritical
-                                    ? _tr(
-                                        'Kritieke status gedetecteerd. Spoedhulp is aanbevolen.',
-                                        'Critical status detected. Emergency care recommended.',
-                                      )
-                                    : _tr(
-                                        'Stabiel. Reguliere behandeling beschikbaar.',
-                                        'Stable. Regular treatment available.',
-                                      ),
+                                    ? l10n.hospitalCriticalStatusDetected
+                                    : l10n.hospitalStableStatus,
                                 style: const TextStyle(
                                   color: Colors.white70,
                                   height: 1.4,
@@ -575,10 +565,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                       : _refreshMedicalStatus,
                                   icon: const Icon(Icons.refresh, size: 16),
                                   label: Text(
-                                    _tr(
-                                      'Ververs medisch dossier',
-                                      'Refresh medical record',
-                                    ),
+                                    l10n.hospitalRefreshMedicalRecord,
                                   ),
                                   style: OutlinedButton.styleFrom(
                                     foregroundColor: const Color(0xFFD4AF37),
@@ -625,7 +612,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                         Row(
                                           children: [
                                             Text(
-                                              '🊘 ${AppLocalizations.of(context)!.emergencyHelp}',
+                                              l10n.emergencyHelp,
                                               style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -716,19 +703,15 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _tr(
-                                          'Standaard behandeling',
-                                          'Standard treatment',
-                                        ),
+                                        l10n.hospitalStandardTreatmentTitle,
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       Text(
-                                        _tr(
-                                          'Betaalbaar • herstel tot $standardHealAmount HP',
-                                          'Affordable • restore up to $standardHealAmount HP',
+                                        l10n.hospitalStandardTreatmentSubtitle(
+                                          standardHealAmount.toString(),
                                         ),
                                         style: TextStyle(
                                           fontSize: 13,
@@ -737,7 +720,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        '${AppLocalizations.of(context)!.cost}: €$standardCost',
+                                        '${l10n.cost}: €$standardCost',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
@@ -814,19 +797,15 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _tr(
-                                          'Intensieve behandeling',
-                                          'Intensive treatment',
-                                        ),
+                                        l10n.hospitalIntensiveTreatmentTitle,
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       Text(
-                                        _tr(
-                                          'Sneller herstellen • tot $intensiveHealAmount HP',
-                                          'Faster recovery • up to $intensiveHealAmount HP',
+                                        l10n.hospitalIntensiveTreatmentSubtitle(
+                                          intensiveHealAmount.toString(),
                                         ),
                                         style: TextStyle(
                                           fontSize: 13,
@@ -835,7 +814,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        '${AppLocalizations.of(context)!.cost}: €$intensiveCost',
+                                        '${l10n.cost}: €$intensiveCost',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
@@ -899,7 +878,7 @@ class _HospitalScreenState extends State<HospitalScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  AppLocalizations.of(context)!.information,
+                                  l10n.information,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
@@ -911,21 +890,17 @@ class _HospitalScreenState extends State<HospitalScreen> {
                             const SizedBox(height: 8),
                             Text(
                               [
-                                AppLocalizations.of(context)!.hospitalInfo1,
-                                AppLocalizations.of(context)!.hospitalInfo2,
-                                AppLocalizations.of(context)!.emergencyInfo,
-                                AppLocalizations.of(
-                                  context,
-                                )!.hospitalInfo3(standardCost.toString()),
-                                AppLocalizations.of(
-                                  context,
-                                )!.hospitalInfo4(standardHealAmount.toString()),
-                                _tr(
-                                  'Intensieve behandeling: €$intensiveCost voor tot $intensiveHealAmount HP herstel.',
-                                  'Intensive treatment: €$intensiveCost for up to $intensiveHealAmount HP recovery.',
+                                l10n.hospitalInfo1,
+                                l10n.hospitalInfo2,
+                                l10n.emergencyInfo,
+                                l10n.hospitalInfo3(standardCost.toString()),
+                                l10n.hospitalInfo4(standardHealAmount.toString()),
+                                l10n.hospitalIntensiveTreatmentInfoLine(
+                                  intensiveCost.toString(),
+                                  intensiveHealAmount.toString(),
                                 ),
-                                AppLocalizations.of(context)!.hospitalInfo5,
-                                AppLocalizations.of(context)!.hospitalInfo6,
+                                l10n.hospitalInfo5,
+                                l10n.hospitalInfo6,
                               ].join('\n'),
                               style: TextStyle(
                                 fontSize: 12,

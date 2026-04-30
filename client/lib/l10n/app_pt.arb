@@ -5049,5 +5049,72 @@
       }
     }
   },
-  "crewJailbreakRescueButton": "Resgatar"
+  "crewJailbreakRescueButton": "Resgatar",
+  "hospitalCooldownTitle": "Tratamento em período de recuperação",
+  "hospitalCooldownNextAvailable": "Próximo tratamento disponível em: {duration}",
+  "@hospitalCooldownNextAvailable": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalMedicalStatusTitle": "Estado Médico",
+  "hospitalIcuRemaining": "UTI: {duration}",
+  "@hospitalIcuRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalHpLine": "PV {hp}/100",
+  "@hospitalHpLine": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIcuTriageTitle": "Visão geral da UTI e da triagem",
+  "hospitalIcuPatientRemaining": "Paciente na UTI. Tempo restante: {duration}",
+  "@hospitalIcuPatientRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalCriticalStatusDetected": "Status crítico detectado. Atendimento de emergência recomendado.",
+  "hospitalStableStatus": "Estável. Tratamento regular disponível.",
+  "hospitalRefreshMedicalRecord": "Atualizar prontuário médico",
+  "hospitalStandardTreatmentTitle": "Tratamento padrão",
+  "hospitalStandardTreatmentSubtitle": "Acessível • restaura até {amount} HP",
+  "@hospitalStandardTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentTitle": "Tratamento intensivo",
+  "hospitalIntensiveTreatmentSubtitle": "Recuperação mais rápida • até {amount} HP",
+  "@hospitalIntensiveTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentInfoLine": "• Tratamento intensivo: €{cost} para recuperação de até {amount} HP.",
+  "@hospitalIntensiveTreatmentInfoLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

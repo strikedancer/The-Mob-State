@@ -639,6 +639,73 @@
   "hospitalInfo6": "• 💚 Passief herstel: +5 HP per 5 minuten (als HP > 0)",
   "medicalTreatment": "Medische Behandeling",
   "restoreCritical": "Herstel +20 HP (kritieke toestand)",
+  "hospitalCooldownTitle": "Behandeling in herstelperiode",
+  "hospitalCooldownNextAvailable": "Volgende behandeling beschikbaar over: {duration}",
+  "@hospitalCooldownNextAvailable": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalMedicalStatusTitle": "Medische Status",
+  "hospitalIcuRemaining": "ICU: {duration}",
+  "@hospitalIcuRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalHpLine": "PK {hp}/100",
+  "@hospitalHpLine": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIcuTriageTitle": "ICU & triage overzicht",
+  "hospitalIcuPatientRemaining": "Patiënt ligt op IC. Resterende tijd: {duration}",
+  "@hospitalIcuPatientRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalCriticalStatusDetected": "Kritieke status gedetecteerd. Spoedhulp is aanbevolen.",
+  "hospitalStableStatus": "Stabiel. Reguliere behandeling beschikbaar.",
+  "hospitalRefreshMedicalRecord": "Ververs medisch dossier",
+  "hospitalStandardTreatmentTitle": "Standaard behandeling",
+  "hospitalStandardTreatmentSubtitle": "Betaalbaar • herstel tot {amount} HP",
+  "@hospitalStandardTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentTitle": "Intensieve behandeling",
+  "hospitalIntensiveTreatmentSubtitle": "Sneller herstellen • tot {amount} HP",
+  "@hospitalIntensiveTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentInfoLine": "• Intensieve behandeling: €{cost} voor tot {amount} HP herstel.",
+  "@hospitalIntensiveTreatmentInfoLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "restoreUp": "Herstel tot {amount} HP",
   "cost": "Kosten",
   "crimeErrorToolRequired": "⚒️ Je hebt {tools} nodig voor deze misdaad",

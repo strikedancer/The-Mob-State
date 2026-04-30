@@ -5049,5 +5049,72 @@
       }
     }
   },
-  "crewJailbreakRescueButton": "Salvare"
+  "crewJailbreakRescueButton": "Salvare",
+  "hospitalCooldownTitle": "Trattamento nel periodo di recupero",
+  "hospitalCooldownNextAvailable": "Prossimo trattamento disponibile tra: {duration}",
+  "@hospitalCooldownNextAvailable": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalMedicalStatusTitle": "Stato medico",
+  "hospitalIcuRemaining": "terapia intensiva: {duration}",
+  "@hospitalIcuRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalHpLine": "HP {hp}/100",
+  "@hospitalHpLine": {
+    "placeholders": {
+      "hp": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIcuTriageTitle": "Panoramica sulle unità di terapia intensiva e triage",
+  "hospitalIcuPatientRemaining": "Paziente in terapia intensiva. Tempo rimanente: {duration}",
+  "@hospitalIcuPatientRemaining": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalCriticalStatusDetected": "Stato critico rilevato. Si consiglia il pronto soccorso.",
+  "hospitalStableStatus": "Stabile. Trattamento regolare disponibile.",
+  "hospitalRefreshMedicalRecord": "Aggiorna la cartella clinica",
+  "hospitalStandardTreatmentTitle": "Trattamento standard",
+  "hospitalStandardTreatmentSubtitle": "Conveniente • ripristina fino a {amount} HP",
+  "@hospitalStandardTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentTitle": "Trattamento intensivo",
+  "hospitalIntensiveTreatmentSubtitle": "Recupero più veloce • fino a {amount} HP",
+  "@hospitalIntensiveTreatmentSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "hospitalIntensiveTreatmentInfoLine": "• Trattamento intensivo: €{cost} per un recupero fino a {amount} HP.",
+  "@hospitalIntensiveTreatmentInfoLine": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 }

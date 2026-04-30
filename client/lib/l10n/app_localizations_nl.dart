@@ -3517,6 +3517,67 @@ class AppLocalizationsNl extends AppLocalizations {
   String get restoreCritical => 'Herstel +20 HP (kritieke toestand)';
 
   @override
+  String get hospitalCooldownTitle => 'Behandeling in herstelperiode';
+
+  @override
+  String hospitalCooldownNextAvailable(String duration) {
+    return 'Volgende behandeling beschikbaar over: $duration';
+  }
+
+  @override
+  String get hospitalMedicalStatusTitle => 'Medische Status';
+
+  @override
+  String hospitalIcuRemaining(String duration) {
+    return 'ICU: $duration';
+  }
+
+  @override
+  String hospitalHpLine(String hp) {
+    return 'PK $hp/100';
+  }
+
+  @override
+  String get hospitalIcuTriageTitle => 'ICU & triage overzicht';
+
+  @override
+  String hospitalIcuPatientRemaining(String duration) {
+    return 'Patiënt ligt op IC. Resterende tijd: $duration';
+  }
+
+  @override
+  String get hospitalCriticalStatusDetected =>
+      'Kritieke status gedetecteerd. Spoedhulp is aanbevolen.';
+
+  @override
+  String get hospitalStableStatus =>
+      'Stabiel. Reguliere behandeling beschikbaar.';
+
+  @override
+  String get hospitalRefreshMedicalRecord => 'Ververs medisch dossier';
+
+  @override
+  String get hospitalStandardTreatmentTitle => 'Standaard behandeling';
+
+  @override
+  String hospitalStandardTreatmentSubtitle(String amount) {
+    return 'Betaalbaar • herstel tot $amount HP';
+  }
+
+  @override
+  String get hospitalIntensiveTreatmentTitle => 'Intensieve behandeling';
+
+  @override
+  String hospitalIntensiveTreatmentSubtitle(String amount) {
+    return 'Sneller herstellen • tot $amount HP';
+  }
+
+  @override
+  String hospitalIntensiveTreatmentInfoLine(String cost, String amount) {
+    return '• Intensieve behandeling: €$cost voor tot $amount HP herstel.';
+  }
+
+  @override
   String restoreUp(String amount) {
     return 'Herstel tot $amount HP';
   }

@@ -6339,6 +6339,96 @@ abstract class AppLocalizations {
   /// **'Restore +20 HP (critical condition)'**
   String get restoreCritical;
 
+  /// No description provided for @hospitalCooldownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Treatment in recovery period'**
+  String get hospitalCooldownTitle;
+
+  /// No description provided for @hospitalCooldownNextAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Next treatment available in: {duration}'**
+  String hospitalCooldownNextAvailable(String duration);
+
+  /// No description provided for @hospitalMedicalStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Status'**
+  String get hospitalMedicalStatusTitle;
+
+  /// No description provided for @hospitalIcuRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'ICU: {duration}'**
+  String hospitalIcuRemaining(String duration);
+
+  /// No description provided for @hospitalHpLine.
+  ///
+  /// In en, this message translates to:
+  /// **'HP {hp}/100'**
+  String hospitalHpLine(String hp);
+
+  /// No description provided for @hospitalIcuTriageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ICU & triage overview'**
+  String get hospitalIcuTriageTitle;
+
+  /// No description provided for @hospitalIcuPatientRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Patient in ICU. Remaining time: {duration}'**
+  String hospitalIcuPatientRemaining(String duration);
+
+  /// No description provided for @hospitalCriticalStatusDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical status detected. Emergency care recommended.'**
+  String get hospitalCriticalStatusDetected;
+
+  /// No description provided for @hospitalStableStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Stable. Regular treatment available.'**
+  String get hospitalStableStatus;
+
+  /// No description provided for @hospitalRefreshMedicalRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh medical record'**
+  String get hospitalRefreshMedicalRecord;
+
+  /// No description provided for @hospitalStandardTreatmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard treatment'**
+  String get hospitalStandardTreatmentTitle;
+
+  /// No description provided for @hospitalStandardTreatmentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Affordable • restore up to {amount} HP'**
+  String hospitalStandardTreatmentSubtitle(String amount);
+
+  /// No description provided for @hospitalIntensiveTreatmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Intensive treatment'**
+  String get hospitalIntensiveTreatmentTitle;
+
+  /// No description provided for @hospitalIntensiveTreatmentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Faster recovery • up to {amount} HP'**
+  String hospitalIntensiveTreatmentSubtitle(String amount);
+
+  /// No description provided for @hospitalIntensiveTreatmentInfoLine.
+  ///
+  /// In en, this message translates to:
+  /// **'• Intensive treatment: €{cost} for up to {amount} HP recovery.'**
+  String hospitalIntensiveTreatmentInfoLine(String cost, String amount);
+
   /// No description provided for @restoreUp.
   ///
   /// In en, this message translates to:
