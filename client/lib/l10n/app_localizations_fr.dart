@@ -4181,6 +4181,70 @@ class AppLocalizationsFr extends AppLocalizations {
   String get worn => 'Porté';
 
   @override
+  String get replaceArmor => 'Remplacer';
+
+  @override
+  String get bodyguardProductName => 'Garde du corps';
+
+  @override
+  String securityLoadError(String error) {
+    return 'Erreur de chargement de la sécurité : $error';
+  }
+
+  @override
+  String get securityStatusLoadFailed =>
+      'Impossible de charger l\'état de sécurité.';
+
+  @override
+  String armorConditionLine(String percent, String base) {
+    return 'État $percent% · base $base';
+  }
+
+  @override
+  String dailyWageAmount(String amount) {
+    return 'Salaire journalier $amount';
+  }
+
+  @override
+  String dailySystemCostLine(String amount) {
+    return 'Coût quotidien du système : $amount';
+  }
+
+  @override
+  String nextPayrollAt(String datetime) {
+    return 'Prochaine paie : $datetime';
+  }
+
+  @override
+  String get bodyguardsLeaveIfUnpaid =>
+      'Si vous ne pouvez pas payer le salaire journalier, tous les gardes du corps partent.';
+
+  @override
+  String get armorOneAtATimeHint =>
+      'Vous ne pouvez porter qu’une seule armure à la fois. Une nouvelle armure remplace toujours votre armure actuelle.';
+
+  @override
+  String armorDefenseNowAtCondition(String defense, String percent) {
+    return 'Maintenant +$defense à $percent%';
+  }
+
+  @override
+  String get couldNotBuyBodyguard => 'Impossible d\'acheter un garde du corps';
+
+  @override
+  String get couldNotBuyArmor => 'Impossible d\'acheter une armure';
+
+  @override
+  String get armorAlreadyEquippedLong =>
+      'Vous portez déjà cette armure. Vous ne pouvez porter qu’une seule armure à la fois.';
+
+  @override
+  String get securityErrorArmorNotFound => 'Armure introuvable';
+
+  @override
+  String get securityErrorMinQuantity => 'La quantité doit être d\'au moins 1';
+
+  @override
   String get hit => 'FRAPPER';
 
   @override

@@ -5116,5 +5116,69 @@
         "type": "String"
       }
     }
-  }
+  },
+  "replaceArmor": "Sostituire",
+  "bodyguardProductName": "Guardia del corpo",
+  "securityLoadError": "Errore durante il caricamento della sicurezza: {error}",
+  "@securityLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "securityStatusLoadFailed": "Impossibile caricare lo stato di sicurezza.",
+  "armorConditionLine": "Condizione {percent}% · base {base}",
+  "@armorConditionLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyWageAmount": "Salario giornaliero {amount}",
+  "@dailyWageAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySystemCostLine": "Costo giornaliero del sistema: {amount}",
+  "@dailySystemCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayrollAt": "Prossima busta paga: {datetime}",
+  "@nextPayrollAt": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardsLeaveIfUnpaid": "Se non puoi pagare la paga giornaliera, tutte le guardie del corpo se ne vanno.",
+  "armorOneAtATimeHint": "Puoi indossare solo 1 armatura alla volta. Una nuova armatura sostituisce sempre quella attuale.",
+  "armorDefenseNowAtCondition": "Adesso +{defense} al {percent}%",
+  "@armorDefenseNowAtCondition": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotBuyBodyguard": "Impossibile acquistare la guardia del corpo",
+  "couldNotBuyArmor": "Impossibile acquistare l'armatura",
+  "armorAlreadyEquippedLong": "Indossi già quest'armatura. Puoi indossare solo 1 armatura alla volta.",
+  "securityErrorArmorNotFound": "Armatura non trovata",
+  "securityErrorMinQuantity": "La quantità deve essere almeno 1"
 }

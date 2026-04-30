@@ -894,7 +894,7 @@
   "attemptHit": "Moord uitvoeren",
   "selectWeapon": "Selecteer het wapen en munitie voor deze moord",
   "youAreTargeted": "Je bent op de moordlijst",
-  "security": "Veiligheid",
+  "security": "Beveiliging",
   "currentDefense": "Huidige Verdediging",
   "totalDefense": "Totale Verdediging",
   "currentArmor": "Huidige Armor",
@@ -915,6 +915,70 @@
   "defense": "Verdediging",
   "defenseIncrease": "{armor} gekocht! +{defense} verdediging",
   "worn": "Gedragen",
+  "replaceArmor": "Vervangen",
+  "bodyguardProductName": "Lijfwacht",
+  "securityLoadError": "Fout bij laden beveiliging: {error}",
+  "@securityLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "securityStatusLoadFailed": "Kon beveiligingsstatus niet laden.",
+  "armorConditionLine": "Conditie {percent}% · basis {base}",
+  "@armorConditionLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyWageAmount": "Dagloon {amount}",
+  "@dailyWageAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySystemCostLine": "Dagelijkse systeemkost: {amount}",
+  "@dailySystemCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayrollAt": "Volgende afschrijving: {datetime}",
+  "@nextPayrollAt": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardsLeaveIfUnpaid": "Kun je het dagloon niet betalen, dan lopen alle lijfwachten weg.",
+  "armorOneAtATimeHint": "Je kunt maar 1 pantser tegelijk dragen. Een nieuw vest vervangt altijd je huidige vest.",
+  "armorDefenseNowAtCondition": "Nu +{defense} bij {percent}%",
+  "@armorDefenseNowAtCondition": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotBuyBodyguard": "Lijfwacht kopen mislukt",
+  "couldNotBuyArmor": "Pantser kopen mislukt",
+  "armorAlreadyEquippedLong": "Je draagt dit vest al. Je kunt maar 1 pantser tegelijk dragen.",
+  "securityErrorArmorNotFound": "Pantser niet gevonden",
+  "securityErrorMinQuantity": "Hoeveelheid moet minimaal 1 zijn",
   "hit": "MOORD",
   "counterBidLabel": "TEGEN-BOD",
   "daysAgo": "{count} dag{plural} geleden",
@@ -926,7 +990,7 @@
   "onlyTargetCanCounterBid": "Alleen het doelwit kan een tegen-bod plaatsen",
   "executeHit": "Moord uitvoeren",
   "moneyNotEnough": "Je hebt niet genoeg geld",
-  "securityScreen": "Veiligheid",
+  "securityScreen": "Beveiliging",
   "currentDefenseStatus": "Huidige Verdedigingsstatus",
   "noWeapons": "Je hebt geen wapens in je inventaris",
   "ammoQuantity": "Munitie Hoeveelheid",

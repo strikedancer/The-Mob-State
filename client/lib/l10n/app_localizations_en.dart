@@ -4112,6 +4112,69 @@ class AppLocalizationsEn extends AppLocalizations {
   String get worn => 'Worn';
 
   @override
+  String get replaceArmor => 'Replace';
+
+  @override
+  String get bodyguardProductName => 'Bodyguard';
+
+  @override
+  String securityLoadError(String error) {
+    return 'Error loading security: $error';
+  }
+
+  @override
+  String get securityStatusLoadFailed => 'Could not load security status.';
+
+  @override
+  String armorConditionLine(String percent, String base) {
+    return 'Condition $percent% · base $base';
+  }
+
+  @override
+  String dailyWageAmount(String amount) {
+    return 'Daily wage $amount';
+  }
+
+  @override
+  String dailySystemCostLine(String amount) {
+    return 'Daily system cost: $amount';
+  }
+
+  @override
+  String nextPayrollAt(String datetime) {
+    return 'Next payroll: $datetime';
+  }
+
+  @override
+  String get bodyguardsLeaveIfUnpaid =>
+      'If you cannot pay the daily wage, all bodyguards leave.';
+
+  @override
+  String get armorOneAtATimeHint =>
+      'You can only wear 1 armor at a time. A new armor always replaces your current one.';
+
+  @override
+  String armorDefenseNowAtCondition(String defense, String percent) {
+    return 'Now +$defense at $percent%';
+  }
+
+  @override
+  String get couldNotBuyBodyguard => 'Could not buy bodyguard';
+
+  @override
+  String get couldNotBuyArmor => 'Could not buy armor';
+
+  @override
+  String get armorAlreadyEquippedLong =>
+      'You already wear this armor. You can only wear 1 armor at a time.';
+
+  @override
+  String get securityErrorArmorNotFound => 'Armor not found';
+
+  @override
+  String get securityErrorMinQuantity => 'Quantity must be at least 1';
+
+  @override
   String get hit => 'HIT';
 
   @override

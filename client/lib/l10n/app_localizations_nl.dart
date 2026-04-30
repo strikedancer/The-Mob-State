@@ -4066,7 +4066,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get youAreTargeted => 'Je bent op de moordlijst';
 
   @override
-  String get security => 'Veiligheid';
+  String get security => 'Beveiliging';
 
   @override
   String get currentDefense => 'Huidige Verdediging';
@@ -4131,6 +4131,69 @@ class AppLocalizationsNl extends AppLocalizations {
   String get worn => 'Gedragen';
 
   @override
+  String get replaceArmor => 'Vervangen';
+
+  @override
+  String get bodyguardProductName => 'Lijfwacht';
+
+  @override
+  String securityLoadError(String error) {
+    return 'Fout bij laden beveiliging: $error';
+  }
+
+  @override
+  String get securityStatusLoadFailed => 'Kon beveiligingsstatus niet laden.';
+
+  @override
+  String armorConditionLine(String percent, String base) {
+    return 'Conditie $percent% · basis $base';
+  }
+
+  @override
+  String dailyWageAmount(String amount) {
+    return 'Dagloon $amount';
+  }
+
+  @override
+  String dailySystemCostLine(String amount) {
+    return 'Dagelijkse systeemkost: $amount';
+  }
+
+  @override
+  String nextPayrollAt(String datetime) {
+    return 'Volgende afschrijving: $datetime';
+  }
+
+  @override
+  String get bodyguardsLeaveIfUnpaid =>
+      'Kun je het dagloon niet betalen, dan lopen alle lijfwachten weg.';
+
+  @override
+  String get armorOneAtATimeHint =>
+      'Je kunt maar 1 pantser tegelijk dragen. Een nieuw vest vervangt altijd je huidige vest.';
+
+  @override
+  String armorDefenseNowAtCondition(String defense, String percent) {
+    return 'Nu +$defense bij $percent%';
+  }
+
+  @override
+  String get couldNotBuyBodyguard => 'Lijfwacht kopen mislukt';
+
+  @override
+  String get couldNotBuyArmor => 'Pantser kopen mislukt';
+
+  @override
+  String get armorAlreadyEquippedLong =>
+      'Je draagt dit vest al. Je kunt maar 1 pantser tegelijk dragen.';
+
+  @override
+  String get securityErrorArmorNotFound => 'Pantser niet gevonden';
+
+  @override
+  String get securityErrorMinQuantity => 'Hoeveelheid moet minimaal 1 zijn';
+
+  @override
   String get hit => 'MOORD';
 
   @override
@@ -4161,7 +4224,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get moneyNotEnough => 'Je hebt niet genoeg geld';
 
   @override
-  String get securityScreen => 'Veiligheid';
+  String get securityScreen => 'Beveiliging';
 
   @override
   String get currentDefenseStatus => 'Huidige Verdedigingsstatus';

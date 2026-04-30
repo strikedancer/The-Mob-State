@@ -7425,6 +7425,102 @@ abstract class AppLocalizations {
   /// **'Worn'**
   String get worn;
 
+  /// No description provided for @replaceArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get replaceArmor;
+
+  /// No description provided for @bodyguardProductName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bodyguard'**
+  String get bodyguardProductName;
+
+  /// No description provided for @securityLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading security: {error}'**
+  String securityLoadError(String error);
+
+  /// No description provided for @securityStatusLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load security status.'**
+  String get securityStatusLoadFailed;
+
+  /// No description provided for @armorConditionLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Condition {percent}% · base {base}'**
+  String armorConditionLine(String percent, String base);
+
+  /// No description provided for @dailyWageAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily wage {amount}'**
+  String dailyWageAmount(String amount);
+
+  /// No description provided for @dailySystemCostLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily system cost: {amount}'**
+  String dailySystemCostLine(String amount);
+
+  /// No description provided for @nextPayrollAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Next payroll: {datetime}'**
+  String nextPayrollAt(String datetime);
+
+  /// No description provided for @bodyguardsLeaveIfUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'If you cannot pay the daily wage, all bodyguards leave.'**
+  String get bodyguardsLeaveIfUnpaid;
+
+  /// No description provided for @armorOneAtATimeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only wear 1 armor at a time. A new armor always replaces your current one.'**
+  String get armorOneAtATimeHint;
+
+  /// No description provided for @armorDefenseNowAtCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Now +{defense} at {percent}%'**
+  String armorDefenseNowAtCondition(String defense, String percent);
+
+  /// No description provided for @couldNotBuyBodyguard.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not buy bodyguard'**
+  String get couldNotBuyBodyguard;
+
+  /// No description provided for @couldNotBuyArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not buy armor'**
+  String get couldNotBuyArmor;
+
+  /// No description provided for @armorAlreadyEquippedLong.
+  ///
+  /// In en, this message translates to:
+  /// **'You already wear this armor. You can only wear 1 armor at a time.'**
+  String get armorAlreadyEquippedLong;
+
+  /// No description provided for @securityErrorArmorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Armor not found'**
+  String get securityErrorArmorNotFound;
+
+  /// No description provided for @securityErrorMinQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity must be at least 1'**
+  String get securityErrorMinQuantity;
+
   /// No description provided for @hit.
   ///
   /// In en, this message translates to:

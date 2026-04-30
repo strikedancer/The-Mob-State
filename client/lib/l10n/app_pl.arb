@@ -5116,5 +5116,69 @@
         "type": "String"
       }
     }
-  }
+  },
+  "replaceArmor": "Zastępować",
+  "bodyguardProductName": "Goryl",
+  "securityLoadError": "Błąd podczas ładowania zabezpieczeń: {error}",
+  "@securityLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "securityStatusLoadFailed": "Nie można wczytać stanu zabezpieczeń.",
+  "armorConditionLine": "Warunek {percent}% · podstawa {base}",
+  "@armorConditionLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyWageAmount": "Dzienna stawka {amount}",
+  "@dailyWageAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySystemCostLine": "Dzienny koszt systemu: {amount}",
+  "@dailySystemCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayrollAt": "Następna lista płac: {datetime}",
+  "@nextPayrollAt": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardsLeaveIfUnpaid": "Jeśli nie możesz zapłacić dziennej pensji, wszyscy ochroniarze odchodzą.",
+  "armorOneAtATimeHint": "Możesz nosić tylko 1 zbroję na raz. Nowa zbroja zawsze zastępuje obecną.",
+  "armorDefenseNowAtCondition": "Teraz +{defense} przy {percent}%",
+  "@armorDefenseNowAtCondition": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotBuyBodyguard": "Nie udało się kupić ochroniarza",
+  "couldNotBuyArmor": "Nie można było kupić zbroi",
+  "armorAlreadyEquippedLong": "Już nosisz tę zbroję. Możesz nosić tylko 1 zbroję na raz.",
+  "securityErrorArmorNotFound": "Nie znaleziono zbroi",
+  "securityErrorMinQuantity": "Ilość musi wynosić co najmniej 1"
 }

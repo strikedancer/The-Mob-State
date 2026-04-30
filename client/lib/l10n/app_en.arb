@@ -2456,6 +2456,70 @@
     }
   },
   "worn": "Worn",
+  "replaceArmor": "Replace",
+  "bodyguardProductName": "Bodyguard",
+  "securityLoadError": "Error loading security: {error}",
+  "@securityLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "securityStatusLoadFailed": "Could not load security status.",
+  "armorConditionLine": "Condition {percent}% · base {base}",
+  "@armorConditionLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyWageAmount": "Daily wage {amount}",
+  "@dailyWageAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySystemCostLine": "Daily system cost: {amount}",
+  "@dailySystemCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayrollAt": "Next payroll: {datetime}",
+  "@nextPayrollAt": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardsLeaveIfUnpaid": "If you cannot pay the daily wage, all bodyguards leave.",
+  "armorOneAtATimeHint": "You can only wear 1 armor at a time. A new armor always replaces your current one.",
+  "armorDefenseNowAtCondition": "Now +{defense} at {percent}%",
+  "@armorDefenseNowAtCondition": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotBuyBodyguard": "Could not buy bodyguard",
+  "couldNotBuyArmor": "Could not buy armor",
+  "armorAlreadyEquippedLong": "You already wear this armor. You can only wear 1 armor at a time.",
+  "securityErrorArmorNotFound": "Armor not found",
+  "securityErrorMinQuantity": "Quantity must be at least 1",
   "hit": "HIT",
   "counterBidLabel": "COUNTER-BID",
   "daysAgo": "{count} day{plural} ago",

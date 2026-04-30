@@ -4174,6 +4174,70 @@ class AppLocalizationsDe extends AppLocalizations {
   String get worn => 'Getragen';
 
   @override
+  String get replaceArmor => 'Ersetzen';
+
+  @override
+  String get bodyguardProductName => 'Leibwächterin';
+
+  @override
+  String securityLoadError(String error) {
+    return 'Fehler beim Laden der Sicherheit: $error';
+  }
+
+  @override
+  String get securityStatusLoadFailed =>
+      'Der Sicherheitsstatus konnte nicht geladen werden.';
+
+  @override
+  String armorConditionLine(String percent, String base) {
+    return 'Zustand $percent% · Basis $base';
+  }
+
+  @override
+  String dailyWageAmount(String amount) {
+    return 'Tageslohn $amount';
+  }
+
+  @override
+  String dailySystemCostLine(String amount) {
+    return 'Tägliche Systemkosten: $amount';
+  }
+
+  @override
+  String nextPayrollAt(String datetime) {
+    return 'Nächste Gehaltsabrechnung: $datetime';
+  }
+
+  @override
+  String get bodyguardsLeaveIfUnpaid =>
+      'Wenn Sie den Tageslohn nicht bezahlen können, gehen alle Leibwächter.';
+
+  @override
+  String get armorOneAtATimeHint =>
+      'Du kannst jeweils nur 1 Rüstung tragen. Eine neue Rüstung ersetzt immer Ihre aktuelle.';
+
+  @override
+  String armorDefenseNowAtCondition(String defense, String percent) {
+    return 'Jetzt +$defense bei $percent %';
+  }
+
+  @override
+  String get couldNotBuyBodyguard => 'Bodyguard konnte nicht gekauft werden';
+
+  @override
+  String get couldNotBuyArmor => 'Rüstung konnte nicht gekauft werden';
+
+  @override
+  String get armorAlreadyEquippedLong =>
+      'Du trägst diese Rüstung bereits. Du kannst jeweils nur 1 Rüstung tragen.';
+
+  @override
+  String get securityErrorArmorNotFound => 'Rüstung nicht gefunden';
+
+  @override
+  String get securityErrorMinQuantity => 'Die Menge muss mindestens 1 betragen';
+
+  @override
   String get hit => 'SCHLAG';
 
   @override

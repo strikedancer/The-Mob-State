@@ -4154,6 +4154,71 @@ class AppLocalizationsIt extends AppLocalizations {
   String get worn => 'Logora';
 
   @override
+  String get replaceArmor => 'Sostituire';
+
+  @override
+  String get bodyguardProductName => 'Guardia del corpo';
+
+  @override
+  String securityLoadError(String error) {
+    return 'Errore durante il caricamento della sicurezza: $error';
+  }
+
+  @override
+  String get securityStatusLoadFailed =>
+      'Impossibile caricare lo stato di sicurezza.';
+
+  @override
+  String armorConditionLine(String percent, String base) {
+    return 'Condizione $percent% · base $base';
+  }
+
+  @override
+  String dailyWageAmount(String amount) {
+    return 'Salario giornaliero $amount';
+  }
+
+  @override
+  String dailySystemCostLine(String amount) {
+    return 'Costo giornaliero del sistema: $amount';
+  }
+
+  @override
+  String nextPayrollAt(String datetime) {
+    return 'Prossima busta paga: $datetime';
+  }
+
+  @override
+  String get bodyguardsLeaveIfUnpaid =>
+      'Se non puoi pagare la paga giornaliera, tutte le guardie del corpo se ne vanno.';
+
+  @override
+  String get armorOneAtATimeHint =>
+      'Puoi indossare solo 1 armatura alla volta. Una nuova armatura sostituisce sempre quella attuale.';
+
+  @override
+  String armorDefenseNowAtCondition(String defense, String percent) {
+    return 'Adesso +$defense al $percent%';
+  }
+
+  @override
+  String get couldNotBuyBodyguard =>
+      'Impossibile acquistare la guardia del corpo';
+
+  @override
+  String get couldNotBuyArmor => 'Impossibile acquistare l\'armatura';
+
+  @override
+  String get armorAlreadyEquippedLong =>
+      'Indossi già quest\'armatura. Puoi indossare solo 1 armatura alla volta.';
+
+  @override
+  String get securityErrorArmorNotFound => 'Armatura non trovata';
+
+  @override
+  String get securityErrorMinQuantity => 'La quantità deve essere almeno 1';
+
+  @override
   String get hit => 'COLPO';
 
   @override

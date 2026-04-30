@@ -5116,5 +5116,69 @@
         "type": "String"
       }
     }
-  }
+  },
+  "replaceArmor": "Substituir",
+  "bodyguardProductName": "Escolta",
+  "securityLoadError": "Erro ao carregar segurança: {error}",
+  "@securityLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "securityStatusLoadFailed": "Não foi possível carregar o status de segurança.",
+  "armorConditionLine": "Condição {percent}% · base {base}",
+  "@armorConditionLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyWageAmount": "Salário diário {amount}",
+  "@dailyWageAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySystemCostLine": "Custo diário do sistema: {amount}",
+  "@dailySystemCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayrollAt": "Próxima folha de pagamento: {datetime}",
+  "@nextPayrollAt": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardsLeaveIfUnpaid": "Se você não puder pagar o salário diário, todos os guarda-costas vão embora.",
+  "armorOneAtATimeHint": "Você só pode usar 1 armadura por vez. Uma nova armadura sempre substitui a atual.",
+  "armorDefenseNowAtCondition": "Agora +{defense} em {percent}%",
+  "@armorDefenseNowAtCondition": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotBuyBodyguard": "Não foi possível comprar guarda-costas",
+  "couldNotBuyArmor": "Não foi possível comprar armadura",
+  "armorAlreadyEquippedLong": "Você já usa essa armadura. Você só pode usar 1 armadura por vez.",
+  "securityErrorArmorNotFound": "Armadura não encontrada",
+  "securityErrorMinQuantity": "A quantidade deve ser pelo menos 1"
 }

@@ -5116,5 +5116,69 @@
         "type": "String"
       }
     }
-  }
+  },
+  "replaceArmor": "Remplacer",
+  "bodyguardProductName": "Garde du corps",
+  "securityLoadError": "Erreur de chargement de la sécurité : {error}",
+  "@securityLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "securityStatusLoadFailed": "Impossible de charger l'état de sécurité.",
+  "armorConditionLine": "État {percent}% · base {base}",
+  "@armorConditionLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyWageAmount": "Salaire journalier {amount}",
+  "@dailyWageAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySystemCostLine": "Coût quotidien du système : {amount}",
+  "@dailySystemCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayrollAt": "Prochaine paie : {datetime}",
+  "@nextPayrollAt": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardsLeaveIfUnpaid": "Si vous ne pouvez pas payer le salaire journalier, tous les gardes du corps partent.",
+  "armorOneAtATimeHint": "Vous ne pouvez porter qu’une seule armure à la fois. Une nouvelle armure remplace toujours votre armure actuelle.",
+  "armorDefenseNowAtCondition": "Maintenant +{defense} à {percent}%",
+  "@armorDefenseNowAtCondition": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotBuyBodyguard": "Impossible d'acheter un garde du corps",
+  "couldNotBuyArmor": "Impossible d'acheter une armure",
+  "armorAlreadyEquippedLong": "Vous portez déjà cette armure. Vous ne pouvez porter qu’une seule armure à la fois.",
+  "securityErrorArmorNotFound": "Armure introuvable",
+  "securityErrorMinQuantity": "La quantité doit être d'au moins 1"
 }

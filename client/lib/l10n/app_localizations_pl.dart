@@ -4147,6 +4147,70 @@ class AppLocalizationsPl extends AppLocalizations {
   String get worn => 'Noszony';
 
   @override
+  String get replaceArmor => 'Zastępować';
+
+  @override
+  String get bodyguardProductName => 'Goryl';
+
+  @override
+  String securityLoadError(String error) {
+    return 'Błąd podczas ładowania zabezpieczeń: $error';
+  }
+
+  @override
+  String get securityStatusLoadFailed =>
+      'Nie można wczytać stanu zabezpieczeń.';
+
+  @override
+  String armorConditionLine(String percent, String base) {
+    return 'Warunek $percent% · podstawa $base';
+  }
+
+  @override
+  String dailyWageAmount(String amount) {
+    return 'Dzienna stawka $amount';
+  }
+
+  @override
+  String dailySystemCostLine(String amount) {
+    return 'Dzienny koszt systemu: $amount';
+  }
+
+  @override
+  String nextPayrollAt(String datetime) {
+    return 'Następna lista płac: $datetime';
+  }
+
+  @override
+  String get bodyguardsLeaveIfUnpaid =>
+      'Jeśli nie możesz zapłacić dziennej pensji, wszyscy ochroniarze odchodzą.';
+
+  @override
+  String get armorOneAtATimeHint =>
+      'Możesz nosić tylko 1 zbroję na raz. Nowa zbroja zawsze zastępuje obecną.';
+
+  @override
+  String armorDefenseNowAtCondition(String defense, String percent) {
+    return 'Teraz +$defense przy $percent%';
+  }
+
+  @override
+  String get couldNotBuyBodyguard => 'Nie udało się kupić ochroniarza';
+
+  @override
+  String get couldNotBuyArmor => 'Nie można było kupić zbroi';
+
+  @override
+  String get armorAlreadyEquippedLong =>
+      'Już nosisz tę zbroję. Możesz nosić tylko 1 zbroję na raz.';
+
+  @override
+  String get securityErrorArmorNotFound => 'Nie znaleziono zbroi';
+
+  @override
+  String get securityErrorMinQuantity => 'Ilość musi wynosić co najmniej 1';
+
+  @override
   String get hit => 'UDERZYĆ';
 
   @override

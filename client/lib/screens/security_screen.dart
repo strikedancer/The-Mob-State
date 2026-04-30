@@ -31,41 +31,63 @@ class _SecurityScreenState extends State<SecurityScreen> {
   }
 
   void _initializeArmorTypes() {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     armorTypes = [
       {
         'id': 'light_armor',
-        'name': l10n?.lightArmor ?? 'Light Armor',
-        'description': l10n?.basicProtection ?? 'Basic protection',
+        'name': l10n.lightArmor,
+        'description': l10n.basicProtection,
         'price': 5000,
         'armor': 20,
       },
       {
         'id': 'heavy_armor',
-        'name': l10n?.heavyArmor ?? 'Heavy Armor',
-        'description': l10n?.strongProtection ?? 'Strong protection',
+        'name': l10n.heavyArmor,
+        'description': l10n.strongProtection,
         'price': 20000,
         'armor': 50,
       },
       {
         'id': 'bulletproof_vest',
-        'name': l10n?.bulletproofVest ?? 'Bulletproof Vest',
-        'description': l10n?.veryStrongProtection ?? 'Very strong protection',
+        'name': l10n.bulletproofVest,
+        'description': l10n.veryStrongProtection,
         'price': 50000,
         'armor': 100,
       },
       {
         'id': 'tactical_suit',
-        'name': l10n?.tacticalSuit ?? 'Tactical Outfit',
-        'description': l10n?.premiumProtection ?? 'Premium protection',
+        'name': l10n.tacticalSuit,
+        'description': l10n.premiumProtection,
         'price': 75000,
         'armor': 150,
       },
     ];
   }
 
-  String _tr(String nl, String en) {
-    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
+  String _securityBuyFailureMessage(
+    AppLocalizations l10n,
+    Map<String, dynamic> data, {
+    required bool armorPurchase,
+  }) {
+    final code = data['error']?.toString();
+    switch (code) {
+      case 'INSUFFICIENT_MONEY':
+        return l10n.moneyNotEnough;
+      case 'INVALID_QUANTITY':
+        return l10n.securityErrorMinQuantity;
+      case 'ARMOR_NOT_FOUND':
+        return l10n.securityErrorArmorNotFound;
+      case 'ARMOR_ALREADY_EQUIPPED':
+        return l10n.armorAlreadyEquippedLong;
+      default:
+        final m = data['message']?.toString();
+        if (m != null && m.isNotEmpty) {
+          return m;
+        }
+        return armorPurchase
+            ? l10n.couldNotBuyArmor
+            : l10n.couldNotBuyBodyguard;
+    }
   }
 
   String _formatDateTime(String? value) {
@@ -82,7 +104,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
     final month = parsed.month.toString().padLeft(2, '0');
     final hour = parsed.hour.toString().padLeft(2, '0');
     final minute = parsed.minute.toString().padLeft(2, '0');
-    return '$day/$month ${hour}:$minute';
+    return '$day/$month $hour:$minute';
   }
 
   @override
@@ -103,11 +125,11 @@ class _SecurityScreenState extends State<SecurityScreen> {
       }
     } catch (e) {
       if (mounted) {
-        final l10n = AppLocalizations.of(context);
+        final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(l10n?.hitlistLoadError(e.toString()) ?? 'Error: $e'),
+            content: Text(l10n.securityLoadError(e.toString())),
           ),
         );
       }
@@ -117,13 +139,13 @@ class _SecurityScreenState extends State<SecurityScreen> {
   }
 
   Future<void> _buyBodyguard() async {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     try {
       final response = await _apiClient.post('/security/buy-bodyguards', {
         'quantity': 1,
       });
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
 
       if (data['success'] == true) {
         _loadSecurityStatus();
@@ -132,8 +154,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
             context,
             SnackBar(
               content: Text(
-                l10n?.defenseIncrease('Bodyguard', '10') ??
-                    'Bodyguard bought! +10 defense',
+                l10n.defenseIncrease(l10n.bodyguardProductName, '10'),
               ),
             ),
           );
@@ -143,22 +164,23 @@ class _SecurityScreenState extends State<SecurityScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(data['message'] ?? 'Could not buy bodyguard'),
+              content: Text(
+                _securityBuyFailureMessage(l10n, data, armorPurchase: false),
+              ),
             ),
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        final errorMsg =
-            AppLocalizations.of(context)?.hitError(e.toString()) ?? 'Error: $e';
+        final errorMsg = AppLocalizations.of(context)!.hitError(e.toString());
         showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     }
   }
 
   Future<void> _buyArmor(String armorId) async {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final armor = armorTypes.firstWhere((a) => a['id'] == armorId);
 
     try {
@@ -166,14 +188,15 @@ class _SecurityScreenState extends State<SecurityScreen> {
         '/security/buy-armor/$armorId',
         {},
       );
-      final data = jsonDecode(response.body);
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
 
       if (data['success'] == true) {
         _loadSecurityStatus();
         if (mounted) {
-          final msg =
-              l10n?.defenseIncrease(armor['name'], armor['armor'].toString()) ??
-              '${armor['name']} bought! +${armor['armor']} defense';
+          final msg = l10n.defenseIncrease(
+            armor['name'] as String,
+            armor['armor'].toString(),
+          );
           showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
         }
       } else {
@@ -181,15 +204,17 @@ class _SecurityScreenState extends State<SecurityScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(_armorErrorMessage(data) ?? 'Could not buy armor'),
+              content: Text(
+                _armorErrorMessage(l10n, data) ??
+                    _securityBuyFailureMessage(l10n, data, armorPurchase: true),
+              ),
             ),
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        final errorMsg =
-            AppLocalizations.of(context)?.hitError(e.toString()) ?? 'Error: $e';
+        final errorMsg = AppLocalizations.of(context)!.hitError(e.toString());
         showTopRightFromSnackBar(context, SnackBar(content: Text(errorMsg)));
       }
     }
@@ -215,13 +240,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
     return (_securityStatus?['baseArmor'] ?? 0) > 0;
   }
 
-  String? _armorErrorMessage(dynamic data) {
+  String? _armorErrorMessage(AppLocalizations l10n, Map<String, dynamic> data) {
     final errorCode = data['error']?.toString();
     if (errorCode == 'ARMOR_ALREADY_EQUIPPED') {
-      return _tr(
-        'Je draagt dit vest al. Je kunt maar 1 armor tegelijk dragen.',
-        'You already wear this armor. You can only wear 1 armor at a time.',
-      );
+      return l10n.armorAlreadyEquippedLong;
     }
 
     return data['message']?.toString();
@@ -231,26 +253,26 @@ class _SecurityScreenState extends State<SecurityScreen> {
     required bool isCurrentArmor,
     required bool isCurrentArmorDamaged,
     required bool hasActiveArmor,
-    required AppLocalizations? l10n,
+    required AppLocalizations l10n,
   }) {
     if (isCurrentArmorDamaged) {
-      return _tr('Vervangen', 'Replace');
+      return l10n.replaceArmor;
     }
 
     if (!isCurrentArmor && hasActiveArmor) {
-      return _tr('Vervangen', 'Replace');
+      return l10n.replaceArmor;
     }
 
-    return l10n?.buy ?? 'Buy';
+    return l10n.buy;
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n?.security ?? 'Security'),
+        title: Text(l10n.security),
         centerTitle: true,
       ),
       body: _isLoading
@@ -262,11 +284,11 @@ class _SecurityScreenState extends State<SecurityScreen> {
                 children: [
                   const Icon(Icons.error, size: 64, color: Colors.red),
                   const SizedBox(height: 16),
-                  Text(l10n?.currentDefenseStatus ?? 'Error loading security'),
+                  Text(l10n.securityStatusLoadFailed),
                   const SizedBox(height: 32),
                   ElevatedButton(
                     onPressed: _loadSecurityStatus,
-                    child: Text(l10n?.refresh ?? 'Try again'),
+                    child: Text(l10n.retry),
                   ),
                 ],
               ),
@@ -285,7 +307,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            l10n?.currentDefense ?? 'Current Defense',
+                            l10n.currentDefense,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -300,7 +322,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(l10n?.totalDefense ?? 'Total Defense'),
+                                  Text(l10n.totalDefense),
                                   Text(
                                     '${_calculateDefense()}',
                                     style: const TextStyle(
@@ -314,7 +336,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(l10n?.currentArmor ?? 'Current Armor'),
+                                  Text(l10n.currentArmor),
                                   Text(
                                     '${_securityStatus['armor'] ?? 0}',
                                     style: const TextStyle(
@@ -324,9 +346,9 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                   ),
                                   if ((_securityStatus['baseArmor'] ?? 0) > 0)
                                     Text(
-                                      _tr(
-                                        'Conditie ${_armorCondition()}% · basis ${_securityStatus['baseArmor']}',
-                                        'Condition ${_armorCondition()}% · base ${_securityStatus['baseArmor']}',
+                                      l10n.armorConditionLine(
+                                        '${_armorCondition()}',
+                                        '${_securityStatus['baseArmor']}',
                                       ),
                                       style: const TextStyle(
                                         fontSize: 12,
@@ -338,7 +360,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(l10n?.bodyguards ?? 'Bodyguards'),
+                                  Text(l10n.bodyguards),
                                   Text(
                                     '${_securityStatus['bodyguards'] ?? 0}',
                                     style: const TextStyle(
@@ -347,9 +369,11 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                     ),
                                   ),
                                   Text(
-                                    _tr(
-                                      'Dagloon ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
-                                      'Daily wage ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
+                                    l10n.dailyWageAmount(
+                                      formatCurrency(
+                                        _securityStatus['bodyguardDailyCost'] ??
+                                            0,
+                                      ),
                                     ),
                                     style: const TextStyle(
                                       fontSize: 12,
@@ -368,7 +392,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
                   // Bodyguards Section
                   Text(
-                    l10n?.buyBodyguards ?? 'Buy Bodyguards',
+                    l10n.buyBodyguards,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -382,34 +406,33 @@ class _SecurityScreenState extends State<SecurityScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            l10n?.protectorsFollow ??
-                                'Protectors that follow you',
+                            l10n.protectorsFollow,
                           ),
                           Text(
-                            l10n?.eachGivesDefense ?? 'Each gives +10 defense',
+                            l10n.eachGivesDefense,
                             style: const TextStyle(color: Colors.grey),
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            _tr(
-                              'Dagelijkse systeemkost: ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
-                              'Daily system cost: ${formatCurrency(_securityStatus['bodyguardDailyCost'] ?? 0)}',
+                            l10n.dailySystemCostLine(
+                              formatCurrency(
+                                _securityStatus['bodyguardDailyCost'] ?? 0,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            _tr(
-                              'Volgende afschrijving: ${_formatDateTime(_securityStatus['bodyguardUpkeepDueAt'] as String?)}',
-                              'Next payroll: ${_formatDateTime(_securityStatus['bodyguardUpkeepDueAt'] as String?)}',
+                            l10n.nextPayrollAt(
+                              _formatDateTime(
+                                _securityStatus['bodyguardUpkeepDueAt']
+                                    as String?,
+                              ),
                             ),
                             style: const TextStyle(color: Colors.grey),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            _tr(
-                              'Kun je het dagloon niet betalen, dan lopen alle lijfwachten weg.',
-                              'If you cannot pay the daily wage, all bodyguards leave.',
-                            ),
+                            l10n.bodyguardsLeaveIfUnpaid,
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.grey,
@@ -423,8 +446,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    l10n?.bodyguardPrice ??
-                                        'Price per Bodyguard',
+                                    l10n.bodyguardPrice,
                                   ),
                                   const Text(
                                     '€10.000',
@@ -439,7 +461,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                               ElevatedButton.icon(
                                 onPressed: _buyBodyguard,
                                 icon: const Icon(Icons.person_add),
-                                label: Text(l10n?.buy ?? 'Buy'),
+                                label: Text(l10n.buy),
                               ),
                             ],
                           ),
@@ -451,7 +473,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
                   // Armor Section
                   Text(
-                    l10n?.armor ?? 'Armor',
+                    l10n.armor,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -459,10 +481,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    _tr(
-                      'Je kunt maar 1 armor tegelijk dragen. Een nieuw vest vervangt altijd je huidige vest.',
-                      'You can only wear 1 armor at a time. A new armor always replaces your current one.',
-                    ),
+                    l10n.armorOneAtATimeHint,
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   const SizedBox(height: 12),
@@ -556,9 +575,9 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                                     0) >
                                                 0)
                                           Text(
-                                            _tr(
-                                              'Nu +${_securityStatus['armor']} bij ${_armorCondition()}%',
-                                              'Now +${_securityStatus['armor']} at ${_armorCondition()}%',
+                                            l10n.armorDefenseNowAtCondition(
+                                              '${_securityStatus['armor']}',
+                                              '${_armorCondition()}',
                                             ),
                                             style: const TextStyle(
                                               fontSize: 12,
@@ -599,7 +618,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                                     else
                                       Chip(
                                         label: Text(
-                                          l10n?.worn ?? 'Worn',
+                                          l10n.worn,
                                           style: const TextStyle(
                                             color: _activeArmorText,
                                           ),

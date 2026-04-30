@@ -5116,5 +5116,69 @@
         "type": "String"
       }
     }
-  }
+  },
+  "replaceArmor": "Ersetzen",
+  "bodyguardProductName": "Leibwächterin",
+  "securityLoadError": "Fehler beim Laden der Sicherheit: {error}",
+  "@securityLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "securityStatusLoadFailed": "Der Sicherheitsstatus konnte nicht geladen werden.",
+  "armorConditionLine": "Zustand {percent}% · Basis {base}",
+  "@armorConditionLine": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "dailyWageAmount": "Tageslohn {amount}",
+  "@dailyWageAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "dailySystemCostLine": "Tägliche Systemkosten: {amount}",
+  "@dailySystemCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayrollAt": "Nächste Gehaltsabrechnung: {datetime}",
+  "@nextPayrollAt": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "bodyguardsLeaveIfUnpaid": "Wenn Sie den Tageslohn nicht bezahlen können, gehen alle Leibwächter.",
+  "armorOneAtATimeHint": "Du kannst jeweils nur 1 Rüstung tragen. Eine neue Rüstung ersetzt immer Ihre aktuelle.",
+  "armorDefenseNowAtCondition": "Jetzt +{defense} bei {percent} %",
+  "@armorDefenseNowAtCondition": {
+    "placeholders": {
+      "defense": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotBuyBodyguard": "Bodyguard konnte nicht gekauft werden",
+  "couldNotBuyArmor": "Rüstung konnte nicht gekauft werden",
+  "armorAlreadyEquippedLong": "Du trägst diese Rüstung bereits. Du kannst jeweils nur 1 Rüstung tragen.",
+  "securityErrorArmorNotFound": "Rüstung nicht gefunden",
+  "securityErrorMinQuantity": "Die Menge muss mindestens 1 betragen"
 }

@@ -4142,6 +4142,70 @@ class AppLocalizationsPt extends AppLocalizations {
   String get worn => 'Desgastada';
 
   @override
+  String get replaceArmor => 'Substituir';
+
+  @override
+  String get bodyguardProductName => 'Escolta';
+
+  @override
+  String securityLoadError(String error) {
+    return 'Erro ao carregar segurança: $error';
+  }
+
+  @override
+  String get securityStatusLoadFailed =>
+      'Não foi possível carregar o status de segurança.';
+
+  @override
+  String armorConditionLine(String percent, String base) {
+    return 'Condição $percent% · base $base';
+  }
+
+  @override
+  String dailyWageAmount(String amount) {
+    return 'Salário diário $amount';
+  }
+
+  @override
+  String dailySystemCostLine(String amount) {
+    return 'Custo diário do sistema: $amount';
+  }
+
+  @override
+  String nextPayrollAt(String datetime) {
+    return 'Próxima folha de pagamento: $datetime';
+  }
+
+  @override
+  String get bodyguardsLeaveIfUnpaid =>
+      'Se você não puder pagar o salário diário, todos os guarda-costas vão embora.';
+
+  @override
+  String get armorOneAtATimeHint =>
+      'Você só pode usar 1 armadura por vez. Uma nova armadura sempre substitui a atual.';
+
+  @override
+  String armorDefenseNowAtCondition(String defense, String percent) {
+    return 'Agora +$defense em $percent%';
+  }
+
+  @override
+  String get couldNotBuyBodyguard => 'Não foi possível comprar guarda-costas';
+
+  @override
+  String get couldNotBuyArmor => 'Não foi possível comprar armadura';
+
+  @override
+  String get armorAlreadyEquippedLong =>
+      'Você já usa essa armadura. Você só pode usar 1 armadura por vez.';
+
+  @override
+  String get securityErrorArmorNotFound => 'Armadura não encontrada';
+
+  @override
+  String get securityErrorMinQuantity => 'A quantidade deve ser pelo menos 1';
+
+  @override
   String get hit => 'BATER';
 
   @override
