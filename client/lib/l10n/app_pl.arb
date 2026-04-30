@@ -1823,7 +1823,7 @@
       }
     }
   },
-  "shootingTrain": "Pociąg",
+  "shootingTrain": "Trenuj",
   "gym": "Sala gimnastyczna",
   "gymTrainSuccess": "Szkolenie zakończone",
   "gymSessions": "Sesje: {count}/100",
@@ -4327,5 +4327,32 @@
   "gymHowItWorksBullet2": "• Każda sesja daje premię +0,08%.",
   "gymHowItWorksBullet3": "• Maksymalnie 100 sesji (łącznie +8%)",
   "gymHowItWorksBullet4": "• Zwiększa wskaźnik powodzenia przestępstwa",
-  "gymHowItWorksBullet5": "• Stały bonus, liczy się każda sesja"
+  "gymHowItWorksBullet5": "• Stały bonus, liczy się każda sesja",
+  "shootingIntro": "Popraw swoją dokładność i zwiększ skuteczność przestępstw",
+  "shootingMaxSessionsReached": "Osiągnięto maksymalną liczbę sesji szkoleniowych",
+  "shootingTrainingProgressTitle": "Postęp szkoleniowy",
+  "shootingSessionsCompletedLabel": "Ukończone sesje:",
+  "shootingProgressCompleteSuffix": "kompletny",
+  "shootingCurrentBonusTitle": "Aktualny bonus",
+  "shootingAccuracyBonusLabel": "Premia za dokładność",
+  "shootingMaximumLabel": "Maksymalny",
+  "shootingBonusAppliedToCrimes": "Bonus ten jest stosowany do wszystkich prób popełnienia przestępstwa",
+  "shootingReadyToTrain": "Gotowy do treningu",
+  "shootingTrainingCooldownTitle": "Czas odnowienia treningu",
+  "shootingCooldownLabel": "Następna sesja o: {time}",
+  "@shootingCooldownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingCooldownHint": "Pomiędzy sesjami treningowymi należy odczekać 1 godzinę",
+  "shootingTrainingInProgress": "Szkolenie...",
+  "shootingHowItWorksTitle": "Jak to działa?",
+  "shootingHowItWorksBullet1": "• Trenuj co godzinę, aby zwiększyć dokładność",
+  "shootingHowItWorksBullet2": "• Każda sesja daje premię +0,1%.",
+  "shootingHowItWorksBullet3": "• Maksymalnie 100 sesji (łącznie +10%)",
+  "shootingHowItWorksBullet4": "• Zwiększa wskaźnik powodzenia przestępstwa",
+  "shootingHowItWorksBullet5": "• Stały bonus, liczy się każda sesja"
 }

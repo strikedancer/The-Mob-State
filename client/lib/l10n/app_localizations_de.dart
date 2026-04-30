@@ -3678,7 +3678,78 @@ class AppLocalizationsDe extends AppLocalizations {
   String get factoryBuy => 'Kaufen';
 
   @override
+  String get shootingIntro =>
+      'Verbessern Sie Ihre Genauigkeit und erhöhen Sie Ihre Erfolgsquote bei Straftaten';
+
+  @override
   String get shootingTrainSuccess => 'Ausbildung abgeschlossen';
+
+  @override
+  String get shootingMaxSessionsReached =>
+      'Maximale Trainingseinheiten erreicht';
+
+  @override
+  String get shootingTrainingProgressTitle => 'Trainingsfortschritt';
+
+  @override
+  String get shootingSessionsCompletedLabel => 'Abgeschlossene Sitzungen:';
+
+  @override
+  String get shootingProgressCompleteSuffix => 'vollständig';
+
+  @override
+  String get shootingCurrentBonusTitle => 'Aktueller Bonus';
+
+  @override
+  String get shootingAccuracyBonusLabel => 'Genauigkeitsbonus';
+
+  @override
+  String get shootingMaximumLabel => 'Maximal';
+
+  @override
+  String get shootingBonusAppliedToCrimes =>
+      'Dieser Bonus wird auf alle Ihre Kriminalitätsversuche angewendet';
+
+  @override
+  String get shootingReadyToTrain => 'Bereit zum Training';
+
+  @override
+  String get shootingTrainingCooldownTitle => 'Abklingzeit des Trainings';
+
+  @override
+  String shootingCooldownLabel(String time) {
+    return 'Nächste Sitzung um: $time';
+  }
+
+  @override
+  String get shootingCooldownHint =>
+      'Zwischen den Trainingseinheiten müssen Sie 1 Stunde warten';
+
+  @override
+  String get shootingTrainingInProgress => 'Ausbildung...';
+
+  @override
+  String get shootingHowItWorksTitle => 'Wie funktioniert es?';
+
+  @override
+  String get shootingHowItWorksBullet1 =>
+      '• Trainieren Sie jede Stunde, um die Genauigkeit zu steigern';
+
+  @override
+  String get shootingHowItWorksBullet2 =>
+      '• Jede Sitzung bringt einen Bonus von +0,1 %';
+
+  @override
+  String get shootingHowItWorksBullet3 =>
+      '• Maximal 100 Sitzungen (+10 % insgesamt)';
+
+  @override
+  String get shootingHowItWorksBullet4 =>
+      '• Erhöht Ihre Erfolgsquote bei Straftaten';
+
+  @override
+  String get shootingHowItWorksBullet5 =>
+      '• Permanenter Bonus, jede Sitzung zählt';
 
   @override
   String shootingSessions(String count) {
@@ -3696,7 +3767,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get shootingTrain => 'Zug';
+  String get shootingTrain => 'Trainieren';
 
   @override
   String get gym => 'Fitnessstudio';

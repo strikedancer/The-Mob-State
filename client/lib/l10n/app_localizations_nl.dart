@@ -3639,7 +3639,76 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryBuy => 'Kopen';
 
   @override
+  String get shootingIntro =>
+      'Verbeter je precisie en verhoog je slagingskans bij misdaden';
+
+  @override
   String get shootingTrainSuccess => 'Training voltooid';
+
+  @override
+  String get shootingMaxSessionsReached =>
+      'Maximum aantal trainingssessies bereikt';
+
+  @override
+  String get shootingTrainingProgressTitle => 'Training Voortgang';
+
+  @override
+  String get shootingSessionsCompletedLabel => 'Sessies voltooid:';
+
+  @override
+  String get shootingProgressCompleteSuffix => 'compleet';
+
+  @override
+  String get shootingCurrentBonusTitle => 'Huidige Bonus';
+
+  @override
+  String get shootingAccuracyBonusLabel => 'Precisie Bonus';
+
+  @override
+  String get shootingMaximumLabel => 'Maximum';
+
+  @override
+  String get shootingBonusAppliedToCrimes =>
+      'Deze bonus wordt toegepast op al je misdaadpogingen';
+
+  @override
+  String get shootingReadyToTrain => 'Klaar om te trainen';
+
+  @override
+  String get shootingTrainingCooldownTitle => 'Training Cooldown';
+
+  @override
+  String shootingCooldownLabel(String time) {
+    return 'Volgende sessie om: $time';
+  }
+
+  @override
+  String get shootingCooldownHint =>
+      'Je moet 1 uur wachten tussen trainingssessies';
+
+  @override
+  String get shootingTrainingInProgress => 'Bezig met trainen...';
+
+  @override
+  String get shootingHowItWorksTitle => 'Hoe werkt het?';
+
+  @override
+  String get shootingHowItWorksBullet1 =>
+      '• Train elk uur voor een precisieboost';
+
+  @override
+  String get shootingHowItWorksBullet2 => '• Elke sessie geeft +0.1% bonus';
+
+  @override
+  String get shootingHowItWorksBullet3 =>
+      '• Maximum van 100 sessies (+10% totaal)';
+
+  @override
+  String get shootingHowItWorksBullet4 =>
+      '• Verhoogt je slagingskans bij misdaden';
+
+  @override
+  String get shootingHowItWorksBullet5 => '• Blijvende bonus; elke sessie telt';
 
   @override
   String shootingSessions(String count) {

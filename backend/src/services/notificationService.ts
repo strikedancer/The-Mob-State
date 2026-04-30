@@ -80,6 +80,16 @@ const COOLDOWN_ACTION_LABEL: Record<string, Partial<Record<SupportedPlayerLangua
     pl: 'siłownia',
     pt: 'ginásio',
   },
+  shooting_range: {
+    en: 'shooting range',
+    nl: 'schietbaan',
+    es: 'campo de tiro',
+    de: 'Schießstand',
+    fr: 'champ de tir',
+    it: 'poligono di tiro',
+    pl: 'strzelnica',
+    pt: 'campo de tiro',
+  },
 };
 
 function labelForCooldownAction(actionType: string, lang: SupportedPlayerLanguage): string {

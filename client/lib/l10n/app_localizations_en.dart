@@ -3624,7 +3624,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String get factoryBuy => 'Buy';
 
   @override
+  String get shootingIntro =>
+      'Improve your accuracy and increase your crime success rate';
+
+  @override
   String get shootingTrainSuccess => 'Training complete';
+
+  @override
+  String get shootingMaxSessionsReached => 'Maximum training sessions reached';
+
+  @override
+  String get shootingTrainingProgressTitle => 'Training Progress';
+
+  @override
+  String get shootingSessionsCompletedLabel => 'Sessions completed:';
+
+  @override
+  String get shootingProgressCompleteSuffix => 'complete';
+
+  @override
+  String get shootingCurrentBonusTitle => 'Current Bonus';
+
+  @override
+  String get shootingAccuracyBonusLabel => 'Accuracy Bonus';
+
+  @override
+  String get shootingMaximumLabel => 'Maximum';
+
+  @override
+  String get shootingBonusAppliedToCrimes =>
+      'This bonus is applied to all your crime attempts';
+
+  @override
+  String get shootingReadyToTrain => 'Ready to train';
+
+  @override
+  String get shootingTrainingCooldownTitle => 'Training Cooldown';
+
+  @override
+  String shootingCooldownLabel(String time) {
+    return 'Next session at: $time';
+  }
+
+  @override
+  String get shootingCooldownHint =>
+      'You must wait 1 hour between training sessions';
+
+  @override
+  String get shootingTrainingInProgress => 'Training...';
+
+  @override
+  String get shootingHowItWorksTitle => 'How does it work?';
+
+  @override
+  String get shootingHowItWorksBullet1 =>
+      '• Train every hour for an accuracy boost';
+
+  @override
+  String get shootingHowItWorksBullet2 => '• Each session gives +0.1% bonus';
+
+  @override
+  String get shootingHowItWorksBullet3 =>
+      '• Maximum of 100 sessions (+10% total)';
+
+  @override
+  String get shootingHowItWorksBullet4 => '• Increases your crime success rate';
+
+  @override
+  String get shootingHowItWorksBullet5 =>
+      '• Permanent bonus, every session counts';
 
   @override
   String shootingSessions(String count) {

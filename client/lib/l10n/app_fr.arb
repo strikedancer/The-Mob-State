@@ -4327,5 +4327,32 @@
   "gymHowItWorksBullet2": "• Chaque session donne +0,08 % de bonus",
   "gymHowItWorksBullet3": "• Maximum de 100 séances (+8% au total)",
   "gymHowItWorksBullet4": "• Augmente votre taux de réussite en matière de crime",
-  "gymHowItWorksBullet5": "• Bonus permanent, chaque session compte"
+  "gymHowItWorksBullet5": "• Bonus permanent, chaque session compte",
+  "shootingIntro": "Améliorez votre précision et augmentez votre taux de réussite en matière de criminalité",
+  "shootingMaxSessionsReached": "Nombre maximum d'entraînements atteint",
+  "shootingTrainingProgressTitle": "Progrès de la formation",
+  "shootingSessionsCompletedLabel": "Séances terminées :",
+  "shootingProgressCompleteSuffix": "complète",
+  "shootingCurrentBonusTitle": "Bonus actuel",
+  "shootingAccuracyBonusLabel": "Bonus de précision",
+  "shootingMaximumLabel": "Maximum",
+  "shootingBonusAppliedToCrimes": "Ce bonus est appliqué à toutes vos tentatives de crime",
+  "shootingReadyToTrain": "Prêt à s'entraîner",
+  "shootingTrainingCooldownTitle": "Temps de recharge de l'entraînement",
+  "shootingCooldownLabel": "Prochaine séance à : {time}",
+  "@shootingCooldownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingCooldownHint": "Vous devez attendre 1 heure entre les entraînements",
+  "shootingTrainingInProgress": "Entraînement...",
+  "shootingHowItWorksTitle": "Comment ça marche ?",
+  "shootingHowItWorksBullet1": "• Entraînez-vous toutes les heures pour améliorer la précision",
+  "shootingHowItWorksBullet2": "• Chaque session donne +0,1 % de bonus",
+  "shootingHowItWorksBullet3": "• Maximum de 100 séances (+10 % au total)",
+  "shootingHowItWorksBullet4": "• Augmente votre taux de réussite en matière de crime",
+  "shootingHowItWorksBullet5": "• Bonus permanent, chaque session compte"
 }

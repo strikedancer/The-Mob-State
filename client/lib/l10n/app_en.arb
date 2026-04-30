@@ -1857,7 +1857,34 @@
     }
   },
   "factoryBuy": "Buy",
+  "shootingIntro": "Improve your accuracy and increase your crime success rate",
   "shootingTrainSuccess": "Training complete",
+  "shootingMaxSessionsReached": "Maximum training sessions reached",
+  "shootingTrainingProgressTitle": "Training Progress",
+  "shootingSessionsCompletedLabel": "Sessions completed:",
+  "shootingProgressCompleteSuffix": "complete",
+  "shootingCurrentBonusTitle": "Current Bonus",
+  "shootingAccuracyBonusLabel": "Accuracy Bonus",
+  "shootingMaximumLabel": "Maximum",
+  "shootingBonusAppliedToCrimes": "This bonus is applied to all your crime attempts",
+  "shootingReadyToTrain": "Ready to train",
+  "shootingTrainingCooldownTitle": "Training Cooldown",
+  "shootingCooldownLabel": "Next session at: {time}",
+  "@shootingCooldownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingCooldownHint": "You must wait 1 hour between training sessions",
+  "shootingTrainingInProgress": "Training...",
+  "shootingHowItWorksTitle": "How does it work?",
+  "shootingHowItWorksBullet1": "• Train every hour for an accuracy boost",
+  "shootingHowItWorksBullet2": "• Each session gives +0.1% bonus",
+  "shootingHowItWorksBullet3": "• Maximum of 100 sessions (+10% total)",
+  "shootingHowItWorksBullet4": "• Increases your crime success rate",
+  "shootingHowItWorksBullet5": "• Permanent bonus, every session counts",
   "shootingSessions": "Sessions: {count}/100",
   "@shootingSessions": {
     "placeholders": {

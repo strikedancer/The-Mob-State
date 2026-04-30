@@ -6734,11 +6734,131 @@ abstract class AppLocalizations {
   /// **'Buy'**
   String get factoryBuy;
 
+  /// No description provided for @shootingIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Improve your accuracy and increase your crime success rate'**
+  String get shootingIntro;
+
   /// No description provided for @shootingTrainSuccess.
   ///
   /// In en, this message translates to:
   /// **'Training complete'**
   String get shootingTrainSuccess;
+
+  /// No description provided for @shootingMaxSessionsReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum training sessions reached'**
+  String get shootingMaxSessionsReached;
+
+  /// No description provided for @shootingTrainingProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training Progress'**
+  String get shootingTrainingProgressTitle;
+
+  /// No description provided for @shootingSessionsCompletedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions completed:'**
+  String get shootingSessionsCompletedLabel;
+
+  /// No description provided for @shootingProgressCompleteSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'complete'**
+  String get shootingProgressCompleteSuffix;
+
+  /// No description provided for @shootingCurrentBonusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Bonus'**
+  String get shootingCurrentBonusTitle;
+
+  /// No description provided for @shootingAccuracyBonusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy Bonus'**
+  String get shootingAccuracyBonusLabel;
+
+  /// No description provided for @shootingMaximumLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum'**
+  String get shootingMaximumLabel;
+
+  /// No description provided for @shootingBonusAppliedToCrimes.
+  ///
+  /// In en, this message translates to:
+  /// **'This bonus is applied to all your crime attempts'**
+  String get shootingBonusAppliedToCrimes;
+
+  /// No description provided for @shootingReadyToTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to train'**
+  String get shootingReadyToTrain;
+
+  /// No description provided for @shootingTrainingCooldownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training Cooldown'**
+  String get shootingTrainingCooldownTitle;
+
+  /// No description provided for @shootingCooldownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next session at: {time}'**
+  String shootingCooldownLabel(String time);
+
+  /// No description provided for @shootingCooldownHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You must wait 1 hour between training sessions'**
+  String get shootingCooldownHint;
+
+  /// No description provided for @shootingTrainingInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Training...'**
+  String get shootingTrainingInProgress;
+
+  /// No description provided for @shootingHowItWorksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How does it work?'**
+  String get shootingHowItWorksTitle;
+
+  /// No description provided for @shootingHowItWorksBullet1.
+  ///
+  /// In en, this message translates to:
+  /// **'• Train every hour for an accuracy boost'**
+  String get shootingHowItWorksBullet1;
+
+  /// No description provided for @shootingHowItWorksBullet2.
+  ///
+  /// In en, this message translates to:
+  /// **'• Each session gives +0.1% bonus'**
+  String get shootingHowItWorksBullet2;
+
+  /// No description provided for @shootingHowItWorksBullet3.
+  ///
+  /// In en, this message translates to:
+  /// **'• Maximum of 100 sessions (+10% total)'**
+  String get shootingHowItWorksBullet3;
+
+  /// No description provided for @shootingHowItWorksBullet4.
+  ///
+  /// In en, this message translates to:
+  /// **'• Increases your crime success rate'**
+  String get shootingHowItWorksBullet4;
+
+  /// No description provided for @shootingHowItWorksBullet5.
+  ///
+  /// In en, this message translates to:
+  /// **'• Permanent bonus, every session counts'**
+  String get shootingHowItWorksBullet5;
 
   /// No description provided for @shootingSessions.
   ///

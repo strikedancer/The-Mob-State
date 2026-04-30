@@ -987,6 +987,33 @@
   },
   "factoryBuy": "Kopen",
   "shootingTrainSuccess": "Training voltooid",
+  "shootingIntro": "Verbeter je precisie en verhoog je slagingskans bij misdaden",
+  "shootingMaxSessionsReached": "Maximum aantal trainingssessies bereikt",
+  "shootingTrainingProgressTitle": "Training Voortgang",
+  "shootingSessionsCompletedLabel": "Sessies voltooid:",
+  "shootingProgressCompleteSuffix": "compleet",
+  "shootingCurrentBonusTitle": "Huidige Bonus",
+  "shootingAccuracyBonusLabel": "Precisie Bonus",
+  "shootingMaximumLabel": "Maximum",
+  "shootingBonusAppliedToCrimes": "Deze bonus wordt toegepast op al je misdaadpogingen",
+  "shootingReadyToTrain": "Klaar om te trainen",
+  "shootingTrainingCooldownTitle": "Training Cooldown",
+  "shootingCooldownLabel": "Volgende sessie om: {time}",
+  "@shootingCooldownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingCooldownHint": "Je moet 1 uur wachten tussen trainingssessies",
+  "shootingTrainingInProgress": "Bezig met trainen...",
+  "shootingHowItWorksTitle": "Hoe werkt het?",
+  "shootingHowItWorksBullet1": "• Train elk uur voor een precisieboost",
+  "shootingHowItWorksBullet2": "• Elke sessie geeft +0.1% bonus",
+  "shootingHowItWorksBullet3": "• Maximum van 100 sessies (+10% totaal)",
+  "shootingHowItWorksBullet4": "• Verhoogt je slagingskans bij misdaden",
+  "shootingHowItWorksBullet5": "• Blijvende bonus; elke sessie telt",
   "shootingSessions": "Sessies: {count}/100",
   "@shootingSessions": {
     "placeholders": {

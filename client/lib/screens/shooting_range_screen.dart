@@ -55,9 +55,29 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
         }
         await _loadStatus();
       } else if (mounted) {
-        final message =
-            data['message']?.toString() ??
-            (l10n?.hitError(data.toString()) ?? 'Error: $data');
+        final errorCode = data['error']?.toString();
+        String message;
+
+        switch (errorCode) {
+          case 'MAX_SESSIONS':
+            message = l10n?.shootingMaxSessionsReached ??
+                'Maximum training sessions reached';
+            break;
+          case 'COOLDOWN':
+            final nextTrainAtRaw = data['nextTrainAt']?.toString();
+            final nextTrainAt = nextTrainAtRaw != null
+                ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
+                : null;
+            final nextLabel = nextTrainAt != null
+                ? DateFormat('HH:mm').format(nextTrainAt)
+                : '-';
+            message = l10n?.shootingCooldown(nextLabel) ??
+                'Next session at $nextLabel';
+            break;
+          default:
+            message = data['message']?.toString() ??
+                (l10n?.hitError(data.toString()) ?? 'Error: $data');
+        }
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(message)));
@@ -141,7 +161,8 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Verbeter je precisie en verhoog je crime slagingskans',
+                                  l10n?.shootingIntro ??
+                                      'Improve your accuracy and increase your crime success rate',
                                   style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(color: Colors.grey[600]),
                                 ),
@@ -165,7 +186,8 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Training Voortgang',
+                        l10n?.shootingTrainingProgressTitle ??
+                            'Training Progress',
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
@@ -174,7 +196,8 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Sessies voltooid:',
+                            l10n?.shootingSessionsCompletedLabel ??
+                                'Sessions completed:',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           Text(
@@ -201,7 +224,7 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${(progress * 100).toStringAsFixed(0)}% compleet',
+                        '${(progress * 100).toStringAsFixed(0)}% ${l10n?.shootingProgressCompleteSuffix ?? 'complete'}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -221,7 +244,7 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Huidige Bonus',
+                        l10n?.shootingCurrentBonusTitle ?? 'Current Bonus',
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
@@ -258,9 +281,10 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  const Text(
-                                    'Accuracy Bonus',
-                                    style: TextStyle(
+                                  Text(
+                                    l10n?.shootingAccuracyBonusLabel ??
+                                        'Accuracy Bonus',
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.white70,
                                     ),
@@ -292,9 +316,9 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const Text(
-                                    'Maximum',
-                                    style: TextStyle(
+                                  Text(
+                                    l10n?.shootingMaximumLabel ?? 'Maximum',
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
                                     ),
@@ -323,7 +347,8 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Deze bonus wordt toegepast op al je crime pogingen',
+                                l10n?.shootingBonusAppliedToCrimes ??
+                                    'This bonus is applied to all your crime attempts',
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.blue.shade900,
@@ -356,8 +381,10 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                           const SizedBox(width: 8),
                           Text(
                             canTrain
-                                ? 'Klaar om te trainen'
-                                : 'Training Cooldown',
+                                ? (l10n?.shootingReadyToTrain ??
+                                      'Ready to train')
+                                : (l10n?.shootingTrainingCooldownTitle ??
+                                      'Training Cooldown'),
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
@@ -374,14 +401,16 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Volgende sessie om: $nextTrainLabel',
+                              l10n?.shootingCooldownLabel(nextTrainLabel) ??
+                                  'Next session at: $nextTrainLabel',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Je moet 1 uur wachten tussen training sessies',
+                          l10n?.shootingCooldownHint ??
+                              'You must wait 1 hour between training sessions',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.grey[600]),
                         ),
@@ -414,7 +443,8 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                               : const Icon(Icons.gps_fixed),
                           label: Text(
                             _isTraining
-                                ? 'Bezig met trainen...'
+                                ? (l10n?.shootingTrainingInProgress ??
+                                      'Training...')
                                 : (l10n?.shootingTrain ?? 'Train'),
                             style: const TextStyle(
                               fontSize: 16,
@@ -446,18 +476,34 @@ class _ShootingRangeScreenState extends State<ShootingRangeScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Hoe werkt het?',
+                            l10n?.shootingHowItWorksTitle ??
+                                'How does it work?',
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       const SizedBox(height: 12),
-                      _buildInfoRow('• Train elke uur voor een accuracy boost'),
-                      _buildInfoRow('• Elke sessie geeft +0.1% bonus'),
-                      _buildInfoRow('• Maximum van 100 sessies (+10% totaal)'),
-                      _buildInfoRow('• Verhoogt je crime slagingskans'),
-                      _buildInfoRow('• Blijvende bonus, elke sessie telt'),
+                      _buildInfoRow(
+                        l10n?.shootingHowItWorksBullet1 ??
+                            '• Train every hour for an accuracy boost',
+                      ),
+                      _buildInfoRow(
+                        l10n?.shootingHowItWorksBullet2 ??
+                            '• Each session gives +0.1% bonus',
+                      ),
+                      _buildInfoRow(
+                        l10n?.shootingHowItWorksBullet3 ??
+                            '• Maximum of 100 sessions (+10% total)',
+                      ),
+                      _buildInfoRow(
+                        l10n?.shootingHowItWorksBullet4 ??
+                            '• Increases your crime success rate',
+                      ),
+                      _buildInfoRow(
+                        l10n?.shootingHowItWorksBullet5 ??
+                            '• Permanent bonus, every session counts',
+                      ),
                     ],
                   ),
                 ),

@@ -3659,7 +3659,78 @@ class AppLocalizationsEs extends AppLocalizations {
   String get factoryBuy => 'Comprar';
 
   @override
+  String get shootingIntro =>
+      'Mejore su precisión y aumente su tasa de éxito en delitos';
+
+  @override
   String get shootingTrainSuccess => 'Entrenamiento completa';
+
+  @override
+  String get shootingMaxSessionsReached =>
+      'Se alcanzó el máximo de sesiones de entrenamiento';
+
+  @override
+  String get shootingTrainingProgressTitle => 'Progreso del entrenamiento';
+
+  @override
+  String get shootingSessionsCompletedLabel => 'Sesiones completadas:';
+
+  @override
+  String get shootingProgressCompleteSuffix => 'completa';
+
+  @override
+  String get shootingCurrentBonusTitle => 'Bono actual';
+
+  @override
+  String get shootingAccuracyBonusLabel => 'Bonificación de precisión';
+
+  @override
+  String get shootingMaximumLabel => 'Máxima';
+
+  @override
+  String get shootingBonusAppliedToCrimes =>
+      'Este bono se aplica a todos tus intentos de delito.';
+
+  @override
+  String get shootingReadyToTrain => 'Listo para entrenar';
+
+  @override
+  String get shootingTrainingCooldownTitle => 'Enfriamiento de entrenamiento';
+
+  @override
+  String shootingCooldownLabel(String time) {
+    return 'Próxima sesión a las: $time';
+  }
+
+  @override
+  String get shootingCooldownHint =>
+      'Debes esperar 1 hora entre entrenamientos.';
+
+  @override
+  String get shootingTrainingInProgress => 'Capacitación...';
+
+  @override
+  String get shootingHowItWorksTitle => '¿Cómo funciona?';
+
+  @override
+  String get shootingHowItWorksBullet1 =>
+      '• Entrena cada hora para aumentar la precisión';
+
+  @override
+  String get shootingHowItWorksBullet2 =>
+      '• Cada sesión otorga un bono de +0,1%';
+
+  @override
+  String get shootingHowItWorksBullet3 =>
+      '• Máximo de 100 sesiones (+10% total)';
+
+  @override
+  String get shootingHowItWorksBullet4 =>
+      '• Aumenta su tasa de éxito en el crimen';
+
+  @override
+  String get shootingHowItWorksBullet5 =>
+      '• Bono permanente, cada sesión cuenta';
 
   @override
   String shootingSessions(String count) {
@@ -3677,7 +3748,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get shootingTrain => 'Tren';
+  String get shootingTrain => 'Entrenar';
 
   @override
   String get gym => 'Gimnasia';

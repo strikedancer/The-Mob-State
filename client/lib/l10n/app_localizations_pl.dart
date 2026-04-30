@@ -3647,7 +3647,77 @@ class AppLocalizationsPl extends AppLocalizations {
   String get factoryBuy => 'Kupić';
 
   @override
+  String get shootingIntro =>
+      'Popraw swoją dokładność i zwiększ skuteczność przestępstw';
+
+  @override
   String get shootingTrainSuccess => 'Szkolenie zakończone';
+
+  @override
+  String get shootingMaxSessionsReached =>
+      'Osiągnięto maksymalną liczbę sesji szkoleniowych';
+
+  @override
+  String get shootingTrainingProgressTitle => 'Postęp szkoleniowy';
+
+  @override
+  String get shootingSessionsCompletedLabel => 'Ukończone sesje:';
+
+  @override
+  String get shootingProgressCompleteSuffix => 'kompletny';
+
+  @override
+  String get shootingCurrentBonusTitle => 'Aktualny bonus';
+
+  @override
+  String get shootingAccuracyBonusLabel => 'Premia za dokładność';
+
+  @override
+  String get shootingMaximumLabel => 'Maksymalny';
+
+  @override
+  String get shootingBonusAppliedToCrimes =>
+      'Bonus ten jest stosowany do wszystkich prób popełnienia przestępstwa';
+
+  @override
+  String get shootingReadyToTrain => 'Gotowy do treningu';
+
+  @override
+  String get shootingTrainingCooldownTitle => 'Czas odnowienia treningu';
+
+  @override
+  String shootingCooldownLabel(String time) {
+    return 'Następna sesja o: $time';
+  }
+
+  @override
+  String get shootingCooldownHint =>
+      'Pomiędzy sesjami treningowymi należy odczekać 1 godzinę';
+
+  @override
+  String get shootingTrainingInProgress => 'Szkolenie...';
+
+  @override
+  String get shootingHowItWorksTitle => 'Jak to działa?';
+
+  @override
+  String get shootingHowItWorksBullet1 =>
+      '• Trenuj co godzinę, aby zwiększyć dokładność';
+
+  @override
+  String get shootingHowItWorksBullet2 => '• Każda sesja daje premię +0,1%.';
+
+  @override
+  String get shootingHowItWorksBullet3 =>
+      '• Maksymalnie 100 sesji (łącznie +10%)';
+
+  @override
+  String get shootingHowItWorksBullet4 =>
+      '• Zwiększa wskaźnik powodzenia przestępstwa';
+
+  @override
+  String get shootingHowItWorksBullet5 =>
+      '• Stały bonus, liczy się każda sesja';
 
   @override
   String shootingSessions(String count) {
@@ -3665,7 +3735,7 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get shootingTrain => 'Pociąg';
+  String get shootingTrain => 'Trenuj';
 
   @override
   String get gym => 'Sala gimnastyczna';

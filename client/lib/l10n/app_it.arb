@@ -1823,7 +1823,7 @@
       }
     }
   },
-  "shootingTrain": "Treno",
+  "shootingTrain": "Allenati",
   "gym": "Palestra",
   "gymTrainSuccess": "Formazione completata",
   "gymSessions": "Sessioni: {count}/100",
@@ -4327,5 +4327,32 @@
   "gymHowItWorksBullet2": "• Ogni sessione dà +0,08% di bonus",
   "gymHowItWorksBullet3": "• Massimo di 100 sessioni (+8% totale)",
   "gymHowItWorksBullet4": "• Aumenta il tasso di successo del crimine",
-  "gymHowItWorksBullet5": "• Bonus permanente, ogni sessione conta"
+  "gymHowItWorksBullet5": "• Bonus permanente, ogni sessione conta",
+  "shootingIntro": "Migliora la tua precisione e aumenta il tasso di successo del crimine",
+  "shootingMaxSessionsReached": "Raggiunto il numero massimo di sessioni di allenamento",
+  "shootingTrainingProgressTitle": "Progresso della formazione",
+  "shootingSessionsCompletedLabel": "Sessioni completate:",
+  "shootingProgressCompleteSuffix": "completare",
+  "shootingCurrentBonusTitle": "Bonus attuale",
+  "shootingAccuracyBonusLabel": "Bonus di precisione",
+  "shootingMaximumLabel": "Massimo",
+  "shootingBonusAppliedToCrimes": "Questo bonus viene applicato a tutti i tuoi tentativi di crimine",
+  "shootingReadyToTrain": "Pronti per allenarsi",
+  "shootingTrainingCooldownTitle": "Recupero dell'allenamento",
+  "shootingCooldownLabel": "Prossima sessione alle: {time}",
+  "@shootingCooldownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingCooldownHint": "È necessario attendere 1 ora tra le sessioni di allenamento",
+  "shootingTrainingInProgress": "Formazione...",
+  "shootingHowItWorksTitle": "Come funziona?",
+  "shootingHowItWorksBullet1": "• Allenati ogni ora per aumentare la precisione",
+  "shootingHowItWorksBullet2": "• Ogni sessione dà +0,1% di bonus",
+  "shootingHowItWorksBullet3": "• Massimo di 100 sessioni (+10% totale)",
+  "shootingHowItWorksBullet4": "• Aumenta il tasso di successo del crimine",
+  "shootingHowItWorksBullet5": "• Bonus permanente, ogni sessione conta"
 }

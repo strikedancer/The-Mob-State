@@ -1753,7 +1753,7 @@
       }
     }
   },
-  "shootingTrain": "Tren",
+  "shootingTrain": "Entrenar",
   "gym": "Gimnasia",
   "gymTrainSuccess": "Entrenamiento completa",
   "gymSessions": "Sesiones: {count}/100",
@@ -4327,5 +4327,32 @@
   "gymHowItWorksBullet2": "• Cada sesión otorga un bono de +0,08%",
   "gymHowItWorksBullet3": "• Máximo de 100 sesiones (+8% total)",
   "gymHowItWorksBullet4": "• Aumenta su tasa de éxito en el crimen",
-  "gymHowItWorksBullet5": "• Bono permanente, cada sesión cuenta"
+  "gymHowItWorksBullet5": "• Bono permanente, cada sesión cuenta",
+  "shootingIntro": "Mejore su precisión y aumente su tasa de éxito en delitos",
+  "shootingMaxSessionsReached": "Se alcanzó el máximo de sesiones de entrenamiento",
+  "shootingTrainingProgressTitle": "Progreso del entrenamiento",
+  "shootingSessionsCompletedLabel": "Sesiones completadas:",
+  "shootingProgressCompleteSuffix": "completa",
+  "shootingCurrentBonusTitle": "Bono actual",
+  "shootingAccuracyBonusLabel": "Bonificación de precisión",
+  "shootingMaximumLabel": "Máxima",
+  "shootingBonusAppliedToCrimes": "Este bono se aplica a todos tus intentos de delito.",
+  "shootingReadyToTrain": "Listo para entrenar",
+  "shootingTrainingCooldownTitle": "Enfriamiento de entrenamiento",
+  "shootingCooldownLabel": "Próxima sesión a las: {time}",
+  "@shootingCooldownLabel": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "shootingCooldownHint": "Debes esperar 1 hora entre entrenamientos.",
+  "shootingTrainingInProgress": "Capacitación...",
+  "shootingHowItWorksTitle": "¿Cómo funciona?",
+  "shootingHowItWorksBullet1": "• Entrena cada hora para aumentar la precisión",
+  "shootingHowItWorksBullet2": "• Cada sesión otorga un bono de +0,1%",
+  "shootingHowItWorksBullet3": "• Máximo de 100 sesiones (+10% total)",
+  "shootingHowItWorksBullet4": "• Aumenta su tasa de éxito en el crimen",
+  "shootingHowItWorksBullet5": "• Bono permanente, cada sesión cuenta"
 }

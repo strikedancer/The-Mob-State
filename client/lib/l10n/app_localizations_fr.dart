@@ -3678,7 +3678,79 @@ class AppLocalizationsFr extends AppLocalizations {
   String get factoryBuy => 'Acheter';
 
   @override
+  String get shootingIntro =>
+      'Améliorez votre précision et augmentez votre taux de réussite en matière de criminalité';
+
+  @override
   String get shootingTrainSuccess => 'Formation terminée';
+
+  @override
+  String get shootingMaxSessionsReached =>
+      'Nombre maximum d\'entraînements atteint';
+
+  @override
+  String get shootingTrainingProgressTitle => 'Progrès de la formation';
+
+  @override
+  String get shootingSessionsCompletedLabel => 'Séances terminées :';
+
+  @override
+  String get shootingProgressCompleteSuffix => 'complète';
+
+  @override
+  String get shootingCurrentBonusTitle => 'Bonus actuel';
+
+  @override
+  String get shootingAccuracyBonusLabel => 'Bonus de précision';
+
+  @override
+  String get shootingMaximumLabel => 'Maximum';
+
+  @override
+  String get shootingBonusAppliedToCrimes =>
+      'Ce bonus est appliqué à toutes vos tentatives de crime';
+
+  @override
+  String get shootingReadyToTrain => 'Prêt à s\'entraîner';
+
+  @override
+  String get shootingTrainingCooldownTitle =>
+      'Temps de recharge de l\'entraînement';
+
+  @override
+  String shootingCooldownLabel(String time) {
+    return 'Prochaine séance à : $time';
+  }
+
+  @override
+  String get shootingCooldownHint =>
+      'Vous devez attendre 1 heure entre les entraînements';
+
+  @override
+  String get shootingTrainingInProgress => 'Entraînement...';
+
+  @override
+  String get shootingHowItWorksTitle => 'Comment ça marche ?';
+
+  @override
+  String get shootingHowItWorksBullet1 =>
+      '• Entraînez-vous toutes les heures pour améliorer la précision';
+
+  @override
+  String get shootingHowItWorksBullet2 =>
+      '• Chaque session donne +0,1 % de bonus';
+
+  @override
+  String get shootingHowItWorksBullet3 =>
+      '• Maximum de 100 séances (+10 % au total)';
+
+  @override
+  String get shootingHowItWorksBullet4 =>
+      '• Augmente votre taux de réussite en matière de crime';
+
+  @override
+  String get shootingHowItWorksBullet5 =>
+      '• Bonus permanent, chaque session compte';
 
   @override
   String shootingSessions(String count) {
