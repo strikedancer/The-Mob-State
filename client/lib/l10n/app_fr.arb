@@ -4929,5 +4929,125 @@
         "type": "String"
       }
     }
-  }
+  },
+  "prisonTitle": "Prison",
+  "prisonLoadFailed": "Échec du chargement des prisonniers",
+  "prisonNoPrisonersFound": "Aucun prisonnier trouvé",
+  "prisonRankLine": "Rang : {rank}",
+  "@prisonRankLine": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonRankYouLine": "Rang : {rank} · Vous",
+  "@prisonRankYouLine": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonRemainingTimeLine": "Temps restant : {duration}",
+  "@prisonRemainingTimeLine": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonBailLine": "Caution : {amount}€",
+  "@prisonBailLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonPayBailButton": "Payer une caution",
+  "prisonBuyOutButton": "Rachat",
+  "prisonAttemptEscapeButton": "Tentative d'évasion",
+  "prisonJailbreakButton": "Jailbreak",
+  "prisonActionFailed": "❌ L'action a échoué",
+  "prisonBuyoutSuccess": "✅ Acheté {username} pour {amount}€",
+  "@prisonBuyoutSuccess": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonPaidBailSuccess": "✅ Vous avez payé une caution de {amount}€ et êtes libre",
+  "@prisonPaidBailSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonEscapeSuccess": "✅Évasion réussie ! Vous êtes libre.",
+  "prisonEscapeFailed": "❌ L'évasion a échoué. Phrase prolongée de {penalty}.",
+  "@prisonEscapeFailed": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonCooldownActive": "⏱️ Cooldown actif : attendez {duration}",
+  "@prisonCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonEscapeGenericFailure": "❌ L'évasion a échoué",
+  "prisonErrorInsufficientFunds": "❌ Pas assez d'argent",
+  "prisonErrorTargetNotJailed": "❌ La cible n'est plus en prison",
+  "prisonErrorCannotBuyoutSelf": "❌ Vous ne pouvez pas vous racheter",
+  "prisonErrorPlayerNotFound": "❌ Joueur introuvable",
+  "prisonJailbreakSuccess": "✅ Jailbreak réussi ! Le prisonnier est libre.",
+  "prisonJailbreakCaught": "🚔 Le jailbreak a échoué, vous vous êtes fait prendre ({minutes} min de prison).",
+  "@prisonJailbreakCaught": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonJailbreakFailed": "❌ Le jailbreak a échoué. Le prisonnier est toujours enfermé.",
+  "prisonErrorRescuerJailed": "❌ Vous êtes vous-même en prison",
+  "prisonJailbreakGenericFailure": "❌ Le jailbreak a échoué",
+  "crewJailbreakTitle": "🚔 Équipage emprisonné",
+  "crewJailbreakLoadFailed": "Échec du chargement des membres emprisonnés",
+  "crewJailbreakEmptyTitle": "🎉 Personne en prison !",
+  "crewJailbreakEmptyBody": "Tous les membres d'équipage sont libres",
+  "crewJailbreakAttemptFor": "Tentative de jailbreak pour {username} :",
+  "@crewJailbreakAttemptFor": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "crewJailbreakRiskSuccess": "En cas de réussite : Joueur libéré !",
+  "crewJailbreakRiskFailChance": "En cas d'échec : 60 % de chances de réussite",
+  "crewJailbreakRiskCaughtPenalty": "Attrapé : 30-60 min de prison + recherché +10",
+  "crewJailbreakTip": "Les chances de réussite augmentent avec le rang et le bonus d'équipage !",
+  "crewJailbreakAttemptButton": "Tentative de jailbreak",
+  "crewJailbreakActionFailed": "❌ L'action a échoué",
+  "crewJailbreakMemberJailTimeLine": "⏱️ {minutes} minutes de prison",
+  "@crewJailbreakMemberJailTimeLine": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "crewJailbreakRescueButton": "Sauvetage"
 }

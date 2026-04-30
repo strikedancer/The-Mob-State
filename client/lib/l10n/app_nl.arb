@@ -3439,6 +3439,126 @@
   "vehicleOpsPartsTrendStable": "onderdelenmarkt stabiel",
   "vehicleOpsBlacklistActive": "Zwarte lijst actief",
   "vehicleOpsNoBlacklist": "Geen zwarte lijst",
+  "prisonTitle": "Gevangenis",
+  "prisonLoadFailed": "Kon gevangenen niet laden",
+  "prisonNoPrisonersFound": "Geen gevangenen gevonden",
+  "prisonRankLine": "Rang: {rank}",
+  "@prisonRankLine": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonRankYouLine": "Rank: {rank} · Jij",
+  "@prisonRankYouLine": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonRemainingTimeLine": "Resterende tijd: {duration}",
+  "@prisonRemainingTimeLine": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonBailLine": "Borg: €{amount}",
+  "@prisonBailLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonPayBailButton": "Betaal borg",
+  "prisonBuyOutButton": "Uitkopen",
+  "prisonAttemptEscapeButton": "Probeer uitbraak",
+  "prisonJailbreakButton": "Uitbreken",
+  "prisonActionFailed": "❌ Actie mislukt",
+  "prisonBuyoutSuccess": "✅ {username} is vrijgekocht voor €{amount}",
+  "@prisonBuyoutSuccess": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonPaidBailSuccess": "✅ Je bent vrijgekocht voor €{amount}",
+  "@prisonPaidBailSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonEscapeSuccess": "✅ Ontsnapping gelukt! Je bent vrij.",
+  "prisonEscapeFailed": "❌ Ontsnapping mislukt. Straf verlengd met {penalty}.",
+  "@prisonEscapeFailed": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonCooldownActive": "⏱️ Cooldown actief: wacht nog {duration}",
+  "@prisonCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonEscapeGenericFailure": "❌ Uitbraak mislukt",
+  "prisonErrorInsufficientFunds": "❌ Onvoldoende geld",
+  "prisonErrorTargetNotJailed": "❌ Doelwit zit niet meer in de gevangenis",
+  "prisonErrorCannotBuyoutSelf": "❌ Je kunt jezelf niet uitkopen",
+  "prisonErrorPlayerNotFound": "❌ Speler niet gevonden",
+  "prisonJailbreakSuccess": "✅ Uitbraak gelukt! Gevangene is vrij.",
+  "prisonJailbreakCaught": "🚔 Uitbraak mislukt, je bent gepakt ({minutes} min cel).",
+  "@prisonJailbreakCaught": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonJailbreakFailed": "❌ Uitbraak mislukt. Gevangene zit nog vast.",
+  "prisonErrorRescuerJailed": "❌ Jij zit zelf in de cel",
+  "prisonJailbreakGenericFailure": "❌ Uitbraak mislukt",
+  "crewJailbreakTitle": "🚔 Gevangen Crew",
+  "crewJailbreakLoadFailed": "Kon crew gevangenen niet laden",
+  "crewJailbreakEmptyTitle": "🎉 Niemand in de cel!",
+  "crewJailbreakEmptyBody": "Alle crew members zijn vrij",
+  "crewJailbreakAttemptFor": "Uitbraakpoging voor {username}:",
+  "@crewJailbreakAttemptFor": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "crewJailbreakRiskSuccess": "Bij succes: Speler vrij!",
+  "crewJailbreakRiskFailChance": "Bij mislukking: 60% kans gepakt",
+  "crewJailbreakRiskCaughtPenalty": "Gepakt: 30-60 min cel + wanted +10",
+  "crewJailbreakTip": "Succes kans verhoogt met rank en crew bonus!",
+  "crewJailbreakAttemptButton": "Probeer uitbraak",
+  "crewJailbreakActionFailed": "❌ Actie mislukt",
+  "crewJailbreakMemberJailTimeLine": "⏱️ {minutes} minuten cel",
+  "@crewJailbreakMemberJailTimeLine": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "crewJailbreakRescueButton": "Bevrijd",
   "crewRoleLeader": "Leider",
   "crewRoleCoLeader": "Co-leider",
   "crewRoleMember": "Lid",

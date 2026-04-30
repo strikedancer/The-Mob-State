@@ -1321,6 +1321,127 @@
   "vehicleOpsPartsTrendStable": "parts market stable",
   "vehicleOpsBlacklistActive": "Blacklist active",
   "vehicleOpsNoBlacklist": "No blacklist",
+  "prisonTitle": "Prison",
+  "prisonLoadFailed": "Failed to load prisoners",
+  "prisonNoPrisonersFound": "No prisoners found",
+  "prisonRankLine": "Rank: {rank}",
+  "@prisonRankLine": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonRankYouLine": "Rank: {rank} · You",
+  "@prisonRankYouLine": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonRemainingTimeLine": "Remaining time: {duration}",
+  "@prisonRemainingTimeLine": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonBailLine": "Bail: €{amount}",
+  "@prisonBailLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonPayBailButton": "Pay bail",
+  "prisonBuyOutButton": "Buy out",
+  "prisonAttemptEscapeButton": "Attempt escape",
+  "prisonJailbreakButton": "Jailbreak",
+  "prisonActionFailed": "❌ Action failed",
+  "prisonBuyoutSuccess": "✅ Bought out {username} for €{amount}",
+  "@prisonBuyoutSuccess": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonPaidBailSuccess": "✅ You paid bail for €{amount} and are free",
+  "@prisonPaidBailSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonEscapeSuccess": "✅ Escape succeeded! You are free.",
+  "prisonEscapeFailed": "❌ Escape failed. Sentence extended by {penalty}.",
+  "@prisonEscapeFailed": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonCooldownActive": "⏱️ Cooldown active: wait {duration}",
+  "@prisonCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonEscapeGenericFailure": "❌ Escape failed",
+  "prisonErrorInsufficientFunds": "❌ Not enough money",
+  "prisonErrorTargetNotJailed": "❌ Target is no longer in prison",
+  "prisonErrorCannotBuyoutSelf": "❌ You cannot buy yourself out",
+  "prisonErrorPlayerNotFound": "❌ Player not found",
+  "prisonJailbreakSuccess": "✅ Jailbreak succeeded! Prisoner is free.",
+  "prisonJailbreakCaught": "🚔 Jailbreak failed, you got caught ({minutes} min jail).",
+  "@prisonJailbreakCaught": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "prisonJailbreakFailed": "❌ Jailbreak failed. Prisoner is still locked up.",
+  "prisonErrorRescuerJailed": "❌ You are in jail yourself",
+  "prisonJailbreakGenericFailure": "❌ Jailbreak failed",
+
+  "crewJailbreakTitle": "🚔 Jailed Crew",
+  "crewJailbreakLoadFailed": "Failed to load jailed members",
+  "crewJailbreakEmptyTitle": "🎉 No one in jail!",
+  "crewJailbreakEmptyBody": "All crew members are free",
+  "crewJailbreakAttemptFor": "Jailbreak attempt for {username}:",
+  "@crewJailbreakAttemptFor": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "crewJailbreakRiskSuccess": "If successful: Player freed!",
+  "crewJailbreakRiskFailChance": "If failed: 60% chance caught",
+  "crewJailbreakRiskCaughtPenalty": "Caught: 30-60 min jail + wanted +10",
+  "crewJailbreakTip": "Success chance increases with rank and crew bonus!",
+  "crewJailbreakAttemptButton": "Attempt Jailbreak",
+  "crewJailbreakActionFailed": "❌ Action failed",
+  "crewJailbreakMemberJailTimeLine": "⏱️ {minutes} minutes in jail",
+  "@crewJailbreakMemberJailTimeLine": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "crewJailbreakRescueButton": "Rescue",
   "crewRoleLeader": "Leader",
   "crewRoleCoLeader": "Co-leader",
   "crewRoleMember": "Member",

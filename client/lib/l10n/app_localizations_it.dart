@@ -2115,6 +2115,155 @@ class AppLocalizationsIt extends AppLocalizations {
   String get vehicleOpsNoBlacklist => 'Nessuna lista nera';
 
   @override
+  String get prisonTitle => 'Prigione';
+
+  @override
+  String get prisonLoadFailed => 'Impossibile caricare i prigionieri';
+
+  @override
+  String get prisonNoPrisonersFound => 'Nessun prigioniero trovato';
+
+  @override
+  String prisonRankLine(String rank) {
+    return 'Classifica: $rank';
+  }
+
+  @override
+  String prisonRankYouLine(String rank) {
+    return 'Grado: $rank · Tu';
+  }
+
+  @override
+  String prisonRemainingTimeLine(String duration) {
+    return 'Tempo rimanente: $duration';
+  }
+
+  @override
+  String prisonBailLine(String amount) {
+    return 'Cauzione: €$amount';
+  }
+
+  @override
+  String get prisonPayBailButton => 'Paga la cauzione';
+
+  @override
+  String get prisonBuyOutButton => 'Acquistare';
+
+  @override
+  String get prisonAttemptEscapeButton => 'Tentativo di fuga';
+
+  @override
+  String get prisonJailbreakButton => 'Jailbreak';
+
+  @override
+  String get prisonActionFailed => '❌ Azione fallita';
+
+  @override
+  String prisonBuyoutSuccess(String username, String amount) {
+    return '✅ Acquistato $username per €$amount';
+  }
+
+  @override
+  String prisonPaidBailSuccess(String amount) {
+    return '✅ Hai pagato la cauzione di €$amount e sei libero';
+  }
+
+  @override
+  String get prisonEscapeSuccess => '✅ Fuga riuscita! Sei libero.';
+
+  @override
+  String prisonEscapeFailed(String penalty) {
+    return '❌ Fuga fallita. Frase estesa di $penalty.';
+  }
+
+  @override
+  String prisonCooldownActive(String duration) {
+    return '⏱️ Cooldown attivo: attendi $duration';
+  }
+
+  @override
+  String get prisonEscapeGenericFailure => '❌ Fuga fallita';
+
+  @override
+  String get prisonErrorInsufficientFunds => '❌Non abbastanza soldi';
+
+  @override
+  String get prisonErrorTargetNotJailed => '❌ Target non è più in prigione';
+
+  @override
+  String get prisonErrorCannotBuyoutSelf => '❌ Non puoi comprarti';
+
+  @override
+  String get prisonErrorPlayerNotFound => '❌ Giocatore non trovato';
+
+  @override
+  String get prisonJailbreakSuccess =>
+      '✅ Jailbreak riuscito! Il prigioniero è libero.';
+
+  @override
+  String prisonJailbreakCaught(String minutes) {
+    return '🚔 Jailbreak fallito, sei stato catturato ($minutes min jail).';
+  }
+
+  @override
+  String get prisonJailbreakFailed =>
+      '❌ Il jailbreak non è riuscito. Il prigioniero è ancora rinchiuso.';
+
+  @override
+  String get prisonErrorRescuerJailed => '❌ Anche tu sei in prigione';
+
+  @override
+  String get prisonJailbreakGenericFailure => '❌ Il jailbreak non è riuscito';
+
+  @override
+  String get crewJailbreakTitle => '🚔 Crew in prigione';
+
+  @override
+  String get crewJailbreakLoadFailed =>
+      'Impossibile caricare i membri incarcerati';
+
+  @override
+  String get crewJailbreakEmptyTitle => '🎉 Nessuno in carcere!';
+
+  @override
+  String get crewJailbreakEmptyBody => 'Tutti i membri dell\'Crew sono liberi';
+
+  @override
+  String crewJailbreakAttemptFor(String username) {
+    return 'Tentativo di jailbreak per $username:';
+  }
+
+  @override
+  String get crewJailbreakRiskSuccess =>
+      'In caso di successo: giocatore liberato!';
+
+  @override
+  String get crewJailbreakRiskFailChance =>
+      'Se fallisce: 60% di possibilità di essere catturato';
+
+  @override
+  String get crewJailbreakRiskCaughtPenalty =>
+      'Catturato: 30-60 minuti di prigione + ricercato +10';
+
+  @override
+  String get crewJailbreakTip =>
+      'Le possibilità di successo aumentano con il grado e il bonus dell\'Crew!';
+
+  @override
+  String get crewJailbreakAttemptButton => 'Tentativo di jailbreak';
+
+  @override
+  String get crewJailbreakActionFailed => '❌ Azione fallita';
+
+  @override
+  String crewJailbreakMemberJailTimeLine(String minutes) {
+    return '⏱️ $minutes minuti di carcere';
+  }
+
+  @override
+  String get crewJailbreakRescueButton => 'Salvare';
+
+  @override
   String get crewRoleLeader => 'Leader';
 
   @override

@@ -2110,6 +2110,154 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vehicleOpsNoBlacklist => 'Sem lista negra';
 
   @override
+  String get prisonTitle => 'Prisão';
+
+  @override
+  String get prisonLoadFailed => 'Falha ao carregar prisioneiros';
+
+  @override
+  String get prisonNoPrisonersFound => 'Nenhum prisioneiro encontrado';
+
+  @override
+  String prisonRankLine(String rank) {
+    return 'Classificação: $rank';
+  }
+
+  @override
+  String prisonRankYouLine(String rank) {
+    return 'Classificação: $rank · Você';
+  }
+
+  @override
+  String prisonRemainingTimeLine(String duration) {
+    return 'Tempo restante: $duration';
+  }
+
+  @override
+  String prisonBailLine(String amount) {
+    return 'Fiança: €$amount';
+  }
+
+  @override
+  String get prisonPayBailButton => 'Pagar fiança';
+
+  @override
+  String get prisonBuyOutButton => 'Compre';
+
+  @override
+  String get prisonAttemptEscapeButton => 'Tentativa de fuga';
+
+  @override
+  String get prisonJailbreakButton => 'Fuga de presos';
+
+  @override
+  String get prisonActionFailed => '❌ Ação falhou';
+
+  @override
+  String prisonBuyoutSuccess(String username, String amount) {
+    return '✅ Comprei $username por €$amount';
+  }
+
+  @override
+  String prisonPaidBailSuccess(String amount) {
+    return '✅ Você pagou fiança de €$amount e está livre';
+  }
+
+  @override
+  String get prisonEscapeSuccess => '✅ Fuga com sucesso! Você está livre.';
+
+  @override
+  String prisonEscapeFailed(String penalty) {
+    return '❌ A fuga falhou. Sentença estendida por $penalty.';
+  }
+
+  @override
+  String prisonCooldownActive(String duration) {
+    return '⏱️ Cooldown ativo: espere $duration';
+  }
+
+  @override
+  String get prisonEscapeGenericFailure => '❌ Falha na fuga';
+
+  @override
+  String get prisonErrorInsufficientFunds => '❌ Não há dinheiro suficiente';
+
+  @override
+  String get prisonErrorTargetNotJailed => '❌ O alvo não está mais na prisão';
+
+  @override
+  String get prisonErrorCannotBuyoutSelf =>
+      '❌ Você não pode comprar a sua parte';
+
+  @override
+  String get prisonErrorPlayerNotFound => '❌ Jogador não encontrado';
+
+  @override
+  String get prisonJailbreakSuccess =>
+      '✅ Jailbreak bem-sucedido! O prisioneiro está livre.';
+
+  @override
+  String prisonJailbreakCaught(String minutes) {
+    return '🚔 O jailbreak falhou, você foi pego ($minutes min de prisão).';
+  }
+
+  @override
+  String get prisonJailbreakFailed =>
+      '❌ Falha no jailbreak. O prisioneiro ainda está preso.';
+
+  @override
+  String get prisonErrorRescuerJailed => '❌ Você mesmo está na prisão';
+
+  @override
+  String get prisonJailbreakGenericFailure => '❌ Falha no jailbreak';
+
+  @override
+  String get crewJailbreakTitle => '🚔 Crew presa';
+
+  @override
+  String get crewJailbreakLoadFailed => 'Falha ao carregar membros presos';
+
+  @override
+  String get crewJailbreakEmptyTitle => '🎉Ninguém na prisão!';
+
+  @override
+  String get crewJailbreakEmptyBody => 'Todos os membros da Crew são gratuitos';
+
+  @override
+  String crewJailbreakAttemptFor(String username) {
+    return 'Tentativa de jailbreak para $username:';
+  }
+
+  @override
+  String get crewJailbreakRiskSuccess => 'Se bem sucedido: Jogador libertado!';
+
+  @override
+  String get crewJailbreakRiskFailChance =>
+      'Se falhar: 60% de chance de ser pego';
+
+  @override
+  String get crewJailbreakRiskCaughtPenalty =>
+      'Pego: 30-60 min de prisão + procurado +10';
+
+  @override
+  String get crewJailbreakTip =>
+      'A chance de sucesso aumenta com o bônus de classificação e Crew!';
+
+  @override
+  String get crewJailbreakAttemptButton => 'Tentativa de jailbreak';
+
+  @override
+  String get crewJailbreakActionFailed => '❌ Ação falhou';
+
+  @override
+  String crewJailbreakMemberJailTimeLine(String minutes) {
+    return '⏱️ $minutes minutos de prisão';
+  }
+
+  @override
+  String get crewJailbreakRescueButton => 'Resgatar';
+
+  @override
   String get crewRoleLeader => 'Líder';
 
   @override

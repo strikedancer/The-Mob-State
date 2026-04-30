@@ -195,7 +195,6 @@ class _PrisonScreenState extends State<PrisonScreen> {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final event = data['event'] as String? ?? 'error.internal';
       final l10n = AppLocalizations.of(context)!;
-      final isDutch = l10n.localeName == 'nl';
 
       if (!mounted) {
         return;
@@ -214,15 +213,13 @@ class _PrisonScreenState extends State<PrisonScreen> {
             0;
 
         _showTopRightNotification(
-          isDutch
-              ? '✅ $targetUsername is vrijgekocht voor €$amount'
-              : '✅ Bought out $targetUsername for €$amount',
+          l10n.prisonBuyoutSuccess(targetUsername, amount.toString()),
           backgroundColor: Colors.green.shade700,
           icon: Icons.check_circle_outline,
         );
       } else {
         final params = (data['params'] as Map<String, dynamic>?) ?? {};
-        final message = _resolveActionError(event, isDutch, params);
+        final message = _resolveActionError(event, l10n, params);
         _showTopRightNotification(
           message,
           backgroundColor: Colors.red.shade700,
@@ -234,9 +231,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
     } catch (_) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        final isDutch = l10n.localeName == 'nl';
         _showTopRightNotification(
-          isDutch ? '❌ Actie mislukt' : '❌ Action failed',
+          l10n.prisonActionFailed,
           backgroundColor: Colors.red.shade700,
           icon: Icons.error_outline,
         );
@@ -264,13 +260,12 @@ class _PrisonScreenState extends State<PrisonScreen> {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final event = data['event'] as String? ?? 'error.internal';
       final l10n = AppLocalizations.of(context)!;
-      final isDutch = l10n.localeName == 'nl';
 
       if (!mounted) {
         return;
       }
 
-      final message = _resolveJailbreakEvent(event, data, isDutch);
+      final message = _resolveJailbreakEvent(event, data, l10n);
       _showTopRightNotification(
         message,
         backgroundColor: event == 'jailbreak.success'
@@ -289,9 +284,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
     } catch (_) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        final isDutch = l10n.localeName == 'nl';
         _showTopRightNotification(
-          isDutch ? '❌ Actie mislukt' : '❌ Action failed',
+          l10n.prisonActionFailed,
           backgroundColor: Colors.red.shade700,
           icon: Icons.error_outline,
         );
@@ -319,7 +313,6 @@ class _PrisonScreenState extends State<PrisonScreen> {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final event = data['event'] as String? ?? 'error.internal';
       final l10n = AppLocalizations.of(context)!;
-      final isDutch = l10n.localeName == 'nl';
 
       if (!mounted) {
         return;
@@ -332,15 +325,13 @@ class _PrisonScreenState extends State<PrisonScreen> {
                 ?.toInt() ??
             0;
         _showTopRightNotification(
-          isDutch
-              ? '✅ Je bent vrijgekocht voor €$amount'
-              : '✅ You paid bail for €$amount and are free',
+          l10n.prisonPaidBailSuccess(amount.toString()),
           backgroundColor: Colors.green.shade700,
           icon: Icons.check_circle_outline,
         );
       } else {
         final params = (data['params'] as Map<String, dynamic>?) ?? {};
-        final message = _resolveActionError(event, isDutch, params);
+        final message = _resolveActionError(event, l10n, params);
         _showTopRightNotification(
           message,
           backgroundColor: Colors.red.shade700,
@@ -352,9 +343,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
     } catch (_) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        final isDutch = l10n.localeName == 'nl';
         _showTopRightNotification(
-          isDutch ? '❌ Actie mislukt' : '❌ Action failed',
+          l10n.prisonActionFailed,
           backgroundColor: Colors.red.shade700,
           icon: Icons.error_outline,
         );
@@ -383,7 +373,6 @@ class _PrisonScreenState extends State<PrisonScreen> {
       final event = data['event'] as String? ?? 'error.internal';
       final params = (data['params'] as Map<String, dynamic>?) ?? {};
       final l10n = AppLocalizations.of(context)!;
-      final isDutch = l10n.localeName == 'nl';
 
       if (!mounted) {
         return;
@@ -394,31 +383,30 @@ class _PrisonScreenState extends State<PrisonScreen> {
       IconData icon;
 
       if (event == 'prison.escape_success') {
-        message = isDutch
-            ? '✅ Ontsnapping gelukt! Je bent vrij.'
-            : '✅ Escape succeeded! You are free.';
+        message = l10n.prisonEscapeSuccess;
         backgroundColor = Colors.green.shade700;
         icon = Icons.check_circle_outline;
       } else if (event == 'prison.escape_failed') {
         final penalty = (params['penaltySeconds'] as num?)?.toInt() ?? 0;
         final penaltyText = formatAdaptiveDurationFromSeconds(
           penalty,
-          localeName: isDutch ? 'nl' : 'en',
+          localeName: l10n.localeName,
         );
-        message = isDutch
-            ? '❌ Ontsnapping mislukt. Straf verlengd met $penaltyText.'
-            : '❌ Escape failed. Sentence extended by $penaltyText.';
+        message = l10n.prisonEscapeFailed(penaltyText);
         backgroundColor = Colors.orange.shade700;
         icon = Icons.warning_amber_rounded;
       } else if (event == 'error.cooldown') {
         final remaining = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
-        message = isDutch
-            ? '⏱️ Cooldown actief: wacht nog ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'nl')}'
-            : '⏱️ Cooldown active: wait ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'en')}';
+        message = l10n.prisonCooldownActive(
+          formatAdaptiveDurationFromSeconds(
+            remaining,
+            localeName: l10n.localeName,
+          ),
+        );
         backgroundColor = Colors.red.shade700;
         icon = Icons.hourglass_top;
       } else {
-        message = isDutch ? '❌ Uitbraak mislukt' : '❌ Escape failed';
+        message = l10n.prisonEscapeGenericFailure;
         backgroundColor = Colors.red.shade700;
         icon = Icons.error_outline;
       }
@@ -433,9 +421,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
     } catch (_) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
-        final isDutch = l10n.localeName == 'nl';
         _showTopRightNotification(
-          isDutch ? '❌ Actie mislukt' : '❌ Action failed',
+          l10n.prisonActionFailed,
           backgroundColor: Colors.red.shade700,
           icon: Icons.error_outline,
         );
@@ -451,72 +438,64 @@ class _PrisonScreenState extends State<PrisonScreen> {
 
   String _resolveActionError(
     String event,
-    bool isDutch,
+    AppLocalizations l10n,
     Map<String, dynamic> params,
   ) {
     switch (event) {
       case 'error.insufficient_funds':
-        return isDutch ? '❌ Onvoldoende geld' : '❌ Not enough money';
+        return l10n.prisonErrorInsufficientFunds;
       case 'error.cooldown':
         final remaining = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
-        return isDutch
-            ? '⏱️ Cooldown actief: wacht nog ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'nl')}'
-            : '⏱️ Cooldown active: wait ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'en')}';
+        return l10n.prisonCooldownActive(
+          formatAdaptiveDurationFromSeconds(
+            remaining,
+            localeName: l10n.localeName,
+          ),
+        );
       case 'error.target_not_jailed':
-        return isDutch
-            ? '❌ Doelwit zit niet meer in de gevangenis'
-            : '❌ Target is no longer in prison';
+        return l10n.prisonErrorTargetNotJailed;
       case 'error.cannot_buyout_self':
-        return isDutch
-            ? '❌ Je kunt jezelf niet uitkopen'
-            : '❌ You cannot buy yourself out';
+        return l10n.prisonErrorCannotBuyoutSelf;
       case 'error.player_not_found':
-        return isDutch ? '❌ Speler niet gevonden' : '❌ Player not found';
+        return l10n.prisonErrorPlayerNotFound;
       default:
-        return isDutch ? '❌ Actie mislukt' : '❌ Action failed';
+        return l10n.prisonActionFailed;
     }
   }
 
   String _resolveJailbreakEvent(
     String event,
     Map<String, dynamic> data,
-    bool isDutch,
+    AppLocalizations l10n,
   ) {
     final params = (data['params'] as Map<String, dynamic>?) ?? {};
     final rescuerJailTime = (params['rescuerJailTime'] as num?)?.toInt() ?? 0;
 
     switch (event) {
       case 'jailbreak.success':
-        return isDutch
-            ? '✅ Uitbraak gelukt! Gevangene is vrij.'
-            : '✅ Jailbreak succeeded! Prisoner is free.';
+        return l10n.prisonJailbreakSuccess;
       case 'jailbreak.caught':
-        return isDutch
-            ? '🚔 Uitbraak mislukt, je bent gepakt ($rescuerJailTime min cel).'
-            : '🚔 Jailbreak failed, you got caught ($rescuerJailTime min jail).';
+        return l10n.prisonJailbreakCaught(rescuerJailTime.toString());
       case 'jailbreak.failed':
-        return isDutch
-            ? '❌ Uitbraak mislukt. Gevangene zit nog vast.'
-            : '❌ Jailbreak failed. Prisoner is still locked up.';
+        return l10n.prisonJailbreakFailed;
       case 'error.rescuer_jailed':
-        return isDutch
-            ? '❌ Jij zit zelf in de cel'
-            : '❌ You are in jail yourself';
+        return l10n.prisonErrorRescuerJailed;
       case 'error.target_not_jailed':
-        return isDutch
-            ? '❌ Doelwit zit niet meer in de gevangenis'
-            : '❌ Target is no longer in prison';
+        return l10n.prisonErrorTargetNotJailed;
       case 'error.cooldown':
         {
           final remaining = (params['remainingSeconds'] as num?)?.toInt() ?? 0;
-          return isDutch
-              ? '⏱️ Cooldown actief: wacht nog ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'nl')}'
-              : '⏱️ Cooldown active: wait ${formatAdaptiveDurationFromSeconds(remaining, localeName: 'en')}';
+          return l10n.prisonCooldownActive(
+            formatAdaptiveDurationFromSeconds(
+              remaining,
+              localeName: l10n.localeName,
+            ),
+          );
         }
       case 'error.player_not_found':
-        return isDutch ? '❌ Speler niet gevonden' : '❌ Player not found';
+        return l10n.prisonErrorPlayerNotFound;
       default:
-        return isDutch ? '❌ Uitbraak mislukt' : '❌ Jailbreak failed';
+        return l10n.prisonJailbreakGenericFailure;
     }
   }
 
@@ -531,11 +510,10 @@ class _PrisonScreenState extends State<PrisonScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDutch = l10n.localeName == 'nl';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isDutch ? 'Gevangenis' : 'Prison'),
+        title: Text(l10n.prisonTitle),
         actions: [
           IconButton(
             onPressed: _isLoading || _isActing ? null : _loadPrisoners,
@@ -548,9 +526,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
           : _error != null
           ? Center(
               child: Text(
-                isDutch
-                    ? 'Kon gevangenen niet laden'
-                    : 'Failed to load prisoners',
+                l10n.prisonLoadFailed,
                 style: const TextStyle(color: Colors.red),
               ),
             )
@@ -560,9 +536,7 @@ class _PrisonScreenState extends State<PrisonScreen> {
                   child: _prisoners.isEmpty
                       ? Center(
                           child: Text(
-                            isDutch
-                                ? 'Geen gevangenen gevonden'
-                                : 'No prisoners found',
+                            l10n.prisonNoPrisonersFound,
                             style: TextStyle(color: Colors.grey.shade600),
                           ),
                         )
@@ -616,22 +590,16 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                     const SizedBox(height: 6),
                                     Text(
                                       isCurrentViewer
-                                          ? (isDutch
-                                                ? 'Rank: $rank · Jij'
-                                                : 'Rank: $rank · You')
-                                          : (isDutch
-                                                ? 'Rank: $rank'
-                                                : 'Rank: $rank'),
+                                          ? l10n.prisonRankYouLine(rank.toString())
+                                          : l10n.prisonRankLine(rank.toString()),
                                     ),
                                     Text(
-                                      isDutch
-                                          ? 'Resterende tijd: ${_formatDuration(remainingSeconds)}'
-                                          : 'Remaining time: ${_formatDuration(remainingSeconds)}',
+                                      l10n.prisonRemainingTimeLine(
+                                        _formatDuration(remainingSeconds),
+                                      ),
                                     ),
                                     Text(
-                                      isDutch
-                                          ? 'Borg: €$bailCost'
-                                          : 'Bail: €$bailCost',
+                                      l10n.prisonBailLine(bailCost.toString()),
                                     ),
                                     const SizedBox(height: 10),
                                     Row(
@@ -646,8 +614,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                             icon: const Icon(Icons.payments),
                                             label: Text(
                                               isCurrentViewer
-                                                  ? (isDutch ? 'Betaal borg' : 'Pay bail')
-                                                  : (isDutch ? 'Uitkopen' : 'Buy out'),
+                                                  ? l10n.prisonPayBailButton
+                                                  : l10n.prisonBuyOutButton,
                                             ),
                                           ),
                                         ),
@@ -664,8 +632,8 @@ class _PrisonScreenState extends State<PrisonScreen> {
                                             icon: const Icon(Icons.lock_open),
                                             label: Text(
                                               isCurrentViewer
-                                                  ? (isDutch ? 'Probeer uitbraak' : 'Attempt escape')
-                                                  : (isDutch ? 'Uitbreken' : 'Jailbreak'),
+                                                  ? l10n.prisonAttemptEscapeButton
+                                                  : l10n.prisonJailbreakButton,
                                             ),
                                           ),
                                         ),

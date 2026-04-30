@@ -2107,6 +2107,151 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleOpsNoBlacklist => 'Geen zwarte lijst';
 
   @override
+  String get prisonTitle => 'Gevangenis';
+
+  @override
+  String get prisonLoadFailed => 'Kon gevangenen niet laden';
+
+  @override
+  String get prisonNoPrisonersFound => 'Geen gevangenen gevonden';
+
+  @override
+  String prisonRankLine(String rank) {
+    return 'Rang: $rank';
+  }
+
+  @override
+  String prisonRankYouLine(String rank) {
+    return 'Rank: $rank · Jij';
+  }
+
+  @override
+  String prisonRemainingTimeLine(String duration) {
+    return 'Resterende tijd: $duration';
+  }
+
+  @override
+  String prisonBailLine(String amount) {
+    return 'Borg: €$amount';
+  }
+
+  @override
+  String get prisonPayBailButton => 'Betaal borg';
+
+  @override
+  String get prisonBuyOutButton => 'Uitkopen';
+
+  @override
+  String get prisonAttemptEscapeButton => 'Probeer uitbraak';
+
+  @override
+  String get prisonJailbreakButton => 'Uitbreken';
+
+  @override
+  String get prisonActionFailed => '❌ Actie mislukt';
+
+  @override
+  String prisonBuyoutSuccess(String username, String amount) {
+    return '✅ $username is vrijgekocht voor €$amount';
+  }
+
+  @override
+  String prisonPaidBailSuccess(String amount) {
+    return '✅ Je bent vrijgekocht voor €$amount';
+  }
+
+  @override
+  String get prisonEscapeSuccess => '✅ Ontsnapping gelukt! Je bent vrij.';
+
+  @override
+  String prisonEscapeFailed(String penalty) {
+    return '❌ Ontsnapping mislukt. Straf verlengd met $penalty.';
+  }
+
+  @override
+  String prisonCooldownActive(String duration) {
+    return '⏱️ Cooldown actief: wacht nog $duration';
+  }
+
+  @override
+  String get prisonEscapeGenericFailure => '❌ Uitbraak mislukt';
+
+  @override
+  String get prisonErrorInsufficientFunds => '❌ Onvoldoende geld';
+
+  @override
+  String get prisonErrorTargetNotJailed =>
+      '❌ Doelwit zit niet meer in de gevangenis';
+
+  @override
+  String get prisonErrorCannotBuyoutSelf => '❌ Je kunt jezelf niet uitkopen';
+
+  @override
+  String get prisonErrorPlayerNotFound => '❌ Speler niet gevonden';
+
+  @override
+  String get prisonJailbreakSuccess => '✅ Uitbraak gelukt! Gevangene is vrij.';
+
+  @override
+  String prisonJailbreakCaught(String minutes) {
+    return '🚔 Uitbraak mislukt, je bent gepakt ($minutes min cel).';
+  }
+
+  @override
+  String get prisonJailbreakFailed =>
+      '❌ Uitbraak mislukt. Gevangene zit nog vast.';
+
+  @override
+  String get prisonErrorRescuerJailed => '❌ Jij zit zelf in de cel';
+
+  @override
+  String get prisonJailbreakGenericFailure => '❌ Uitbraak mislukt';
+
+  @override
+  String get crewJailbreakTitle => '🚔 Gevangen Crew';
+
+  @override
+  String get crewJailbreakLoadFailed => 'Kon crew gevangenen niet laden';
+
+  @override
+  String get crewJailbreakEmptyTitle => '🎉 Niemand in de cel!';
+
+  @override
+  String get crewJailbreakEmptyBody => 'Alle crew members zijn vrij';
+
+  @override
+  String crewJailbreakAttemptFor(String username) {
+    return 'Uitbraakpoging voor $username:';
+  }
+
+  @override
+  String get crewJailbreakRiskSuccess => 'Bij succes: Speler vrij!';
+
+  @override
+  String get crewJailbreakRiskFailChance => 'Bij mislukking: 60% kans gepakt';
+
+  @override
+  String get crewJailbreakRiskCaughtPenalty =>
+      'Gepakt: 30-60 min cel + wanted +10';
+
+  @override
+  String get crewJailbreakTip => 'Succes kans verhoogt met rank en crew bonus!';
+
+  @override
+  String get crewJailbreakAttemptButton => 'Probeer uitbraak';
+
+  @override
+  String get crewJailbreakActionFailed => '❌ Actie mislukt';
+
+  @override
+  String crewJailbreakMemberJailTimeLine(String minutes) {
+    return '⏱️ $minutes minuten cel';
+  }
+
+  @override
+  String get crewJailbreakRescueButton => 'Bevrijd';
+
+  @override
   String get crewRoleLeader => 'Leider';
 
   @override

@@ -223,8 +223,9 @@ class _JailOverlayState extends State<JailOverlay> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         _showTopRightNotification(
-          'Error: $e',
+          l10n.jailErrorPrefix(e.toString()),
           backgroundColor: Colors.red.shade700,
           icon: Icons.error_outline,
         );

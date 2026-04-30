@@ -3819,6 +3819,246 @@ abstract class AppLocalizations {
   /// **'No blacklist'**
   String get vehicleOpsNoBlacklist;
 
+  /// No description provided for @prisonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prison'**
+  String get prisonTitle;
+
+  /// No description provided for @prisonLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load prisoners'**
+  String get prisonLoadFailed;
+
+  /// No description provided for @prisonNoPrisonersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No prisoners found'**
+  String get prisonNoPrisonersFound;
+
+  /// No description provided for @prisonRankLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank: {rank}'**
+  String prisonRankLine(String rank);
+
+  /// No description provided for @prisonRankYouLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank: {rank} · You'**
+  String prisonRankYouLine(String rank);
+
+  /// No description provided for @prisonRemainingTimeLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining time: {duration}'**
+  String prisonRemainingTimeLine(String duration);
+
+  /// No description provided for @prisonBailLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Bail: €{amount}'**
+  String prisonBailLine(String amount);
+
+  /// No description provided for @prisonPayBailButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay bail'**
+  String get prisonPayBailButton;
+
+  /// No description provided for @prisonBuyOutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy out'**
+  String get prisonBuyOutButton;
+
+  /// No description provided for @prisonAttemptEscapeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt escape'**
+  String get prisonAttemptEscapeButton;
+
+  /// No description provided for @prisonJailbreakButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Jailbreak'**
+  String get prisonJailbreakButton;
+
+  /// No description provided for @prisonActionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Action failed'**
+  String get prisonActionFailed;
+
+  /// No description provided for @prisonBuyoutSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Bought out {username} for €{amount}'**
+  String prisonBuyoutSuccess(String username, String amount);
+
+  /// No description provided for @prisonPaidBailSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ You paid bail for €{amount} and are free'**
+  String prisonPaidBailSuccess(String amount);
+
+  /// No description provided for @prisonEscapeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Escape succeeded! You are free.'**
+  String get prisonEscapeSuccess;
+
+  /// No description provided for @prisonEscapeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Escape failed. Sentence extended by {penalty}.'**
+  String prisonEscapeFailed(String penalty);
+
+  /// No description provided for @prisonCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'⏱️ Cooldown active: wait {duration}'**
+  String prisonCooldownActive(String duration);
+
+  /// No description provided for @prisonEscapeGenericFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Escape failed'**
+  String get prisonEscapeGenericFailure;
+
+  /// No description provided for @prisonErrorInsufficientFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Not enough money'**
+  String get prisonErrorInsufficientFunds;
+
+  /// No description provided for @prisonErrorTargetNotJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Target is no longer in prison'**
+  String get prisonErrorTargetNotJailed;
+
+  /// No description provided for @prisonErrorCannotBuyoutSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ You cannot buy yourself out'**
+  String get prisonErrorCannotBuyoutSelf;
+
+  /// No description provided for @prisonErrorPlayerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Player not found'**
+  String get prisonErrorPlayerNotFound;
+
+  /// No description provided for @prisonJailbreakSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Jailbreak succeeded! Prisoner is free.'**
+  String get prisonJailbreakSuccess;
+
+  /// No description provided for @prisonJailbreakCaught.
+  ///
+  /// In en, this message translates to:
+  /// **'🚔 Jailbreak failed, you got caught ({minutes} min jail).'**
+  String prisonJailbreakCaught(String minutes);
+
+  /// No description provided for @prisonJailbreakFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Jailbreak failed. Prisoner is still locked up.'**
+  String get prisonJailbreakFailed;
+
+  /// No description provided for @prisonErrorRescuerJailed.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ You are in jail yourself'**
+  String get prisonErrorRescuerJailed;
+
+  /// No description provided for @prisonJailbreakGenericFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Jailbreak failed'**
+  String get prisonJailbreakGenericFailure;
+
+  /// No description provided for @crewJailbreakTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🚔 Jailed Crew'**
+  String get crewJailbreakTitle;
+
+  /// No description provided for @crewJailbreakLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load jailed members'**
+  String get crewJailbreakLoadFailed;
+
+  /// No description provided for @crewJailbreakEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 No one in jail!'**
+  String get crewJailbreakEmptyTitle;
+
+  /// No description provided for @crewJailbreakEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'All crew members are free'**
+  String get crewJailbreakEmptyBody;
+
+  /// No description provided for @crewJailbreakAttemptFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Jailbreak attempt for {username}:'**
+  String crewJailbreakAttemptFor(String username);
+
+  /// No description provided for @crewJailbreakRiskSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'If successful: Player freed!'**
+  String get crewJailbreakRiskSuccess;
+
+  /// No description provided for @crewJailbreakRiskFailChance.
+  ///
+  /// In en, this message translates to:
+  /// **'If failed: 60% chance caught'**
+  String get crewJailbreakRiskFailChance;
+
+  /// No description provided for @crewJailbreakRiskCaughtPenalty.
+  ///
+  /// In en, this message translates to:
+  /// **'Caught: 30-60 min jail + wanted +10'**
+  String get crewJailbreakRiskCaughtPenalty;
+
+  /// No description provided for @crewJailbreakTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Success chance increases with rank and crew bonus!'**
+  String get crewJailbreakTip;
+
+  /// No description provided for @crewJailbreakAttemptButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt Jailbreak'**
+  String get crewJailbreakAttemptButton;
+
+  /// No description provided for @crewJailbreakActionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Action failed'**
+  String get crewJailbreakActionFailed;
+
+  /// No description provided for @crewJailbreakMemberJailTimeLine.
+  ///
+  /// In en, this message translates to:
+  /// **'⏱️ {minutes} minutes in jail'**
+  String crewJailbreakMemberJailTimeLine(String minutes);
+
+  /// No description provided for @crewJailbreakRescueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Rescue'**
+  String get crewJailbreakRescueButton;
+
   /// No description provided for @crewRoleLeader.
   ///
   /// In en, this message translates to:

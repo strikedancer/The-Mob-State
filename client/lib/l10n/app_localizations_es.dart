@@ -2121,6 +2121,156 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehicleOpsNoBlacklist => 'Sin lista negra';
 
   @override
+  String get prisonTitle => 'Prisión';
+
+  @override
+  String get prisonLoadFailed => 'No pudo cargar prisioneras';
+
+  @override
+  String get prisonNoPrisonersFound => 'No se encontraron prisioneras';
+
+  @override
+  String prisonRankLine(String rank) {
+    return 'Rango: $rank';
+  }
+
+  @override
+  String prisonRankYouLine(String rank) {
+    return 'Rango: $rank · Tú';
+  }
+
+  @override
+  String prisonRemainingTimeLine(String duration) {
+    return 'Tiempo restante: $duration';
+  }
+
+  @override
+  String prisonBailLine(String amount) {
+    return 'Fianza: €$amount';
+  }
+
+  @override
+  String get prisonPayBailButton => 'pagar la fianza';
+
+  @override
+  String get prisonBuyOutButton => 'Comprar la parte';
+
+  @override
+  String get prisonAttemptEscapeButton => 'intento de escape';
+
+  @override
+  String get prisonJailbreakButton => 'Fuga';
+
+  @override
+  String get prisonActionFailed => '❌ La acción falló';
+
+  @override
+  String prisonBuyoutSuccess(String username, String amount) {
+    return '✅ Comprado $username por ⟦1€⟧';
+  }
+
+  @override
+  String prisonPaidBailSuccess(String amount) {
+    return '✅ Pagaste fianza por $amount€ y estás libre';
+  }
+
+  @override
+  String get prisonEscapeSuccess => '✅ ¡Escapada exitosa! Eres libre.';
+
+  @override
+  String prisonEscapeFailed(String penalty) {
+    return '❌ La fuga falló. Sentencia ampliada por $penalty.';
+  }
+
+  @override
+  String prisonCooldownActive(String duration) {
+    return '⏱️ Enfriamiento activo: espera $duration';
+  }
+
+  @override
+  String get prisonEscapeGenericFailure => '❌ Error de escape';
+
+  @override
+  String get prisonErrorInsufficientFunds => '❌ No hay suficiente dinero';
+
+  @override
+  String get prisonErrorTargetNotJailed => '❌ Target ya no está en prisión';
+
+  @override
+  String get prisonErrorCannotBuyoutSelf =>
+      '❌ No puedes comprar tu propia parte';
+
+  @override
+  String get prisonErrorPlayerNotFound => '❌ Jugadora no encontrada';
+
+  @override
+  String get prisonJailbreakSuccess =>
+      '✅ ¡El jailbreak fue exitoso! El prisionero está libre.';
+
+  @override
+  String prisonJailbreakCaught(String minutes) {
+    return '🚔 Jailbreak falló, te atraparon ($minutes min cárcel).';
+  }
+
+  @override
+  String get prisonJailbreakFailed =>
+      '❌ Jailbreak falló. El prisionero sigue encerrado.';
+
+  @override
+  String get prisonErrorRescuerJailed => '❌ Tú mismo estás en la cárcel';
+
+  @override
+  String get prisonJailbreakGenericFailure => '❌ Falló el jailbreak';
+
+  @override
+  String get crewJailbreakTitle => '🚔 Crew encarcelada';
+
+  @override
+  String get crewJailbreakLoadFailed =>
+      'No se pudo cargar a las miembros encarceladas';
+
+  @override
+  String get crewJailbreakEmptyTitle => '🎉 ¡Nadie en la cárcel!';
+
+  @override
+  String get crewJailbreakEmptyBody =>
+      'Todos los miembros de la Crew son libres.';
+
+  @override
+  String crewJailbreakAttemptFor(String username) {
+    return 'Intento de jailbreak para $username:';
+  }
+
+  @override
+  String get crewJailbreakRiskSuccess => 'Si tiene éxito: ¡Jugador liberada!';
+
+  @override
+  String get crewJailbreakRiskFailChance =>
+      'Si falla: 60% de posibilidades de ser atrapado';
+
+  @override
+  String get crewJailbreakRiskCaughtPenalty =>
+      'Atrapado: 30-60 min de cárcel + buscado +10';
+
+  @override
+  String get crewJailbreakTip =>
+      '¡Las posibilidades de éxito aumentan con el rango y la bonificación de Crew!';
+
+  @override
+  String get crewJailbreakAttemptButton => 'Intentar fugarse';
+
+  @override
+  String get crewJailbreakActionFailed => '❌ La acción falló';
+
+  @override
+  String crewJailbreakMemberJailTimeLine(String minutes) {
+    return '⏱️ $minutes minutos de cárcel';
+  }
+
+  @override
+  String get crewJailbreakRescueButton => 'Rescate';
+
+  @override
   String get crewRoleLeader => 'Líder';
 
   @override

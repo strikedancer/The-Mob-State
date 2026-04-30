@@ -55,13 +55,13 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
         });
       } else {
         setState(() {
-          _error = 'Failed to load jailed members';
+          _error = 'error.internal';
           _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _error = 'Error: $e';
+        _error = 'error.internal';
         _isLoading = false;
       });
     }
@@ -70,7 +70,6 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
   Future<void> _attemptJailbreak(JailedMember member) async {
     // Show confirmation dialog with risks
     final l10n = AppLocalizations.of(context)!;
-    final isDutch = Localizations.localeOf(context).languageCode == 'nl';
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -79,7 +78,7 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
           children: [
             const Icon(Icons.warning, color: Colors.orange),
             const SizedBox(width: 10),
-            Text(isDutch ? 'Weet je het zeker?' : 'Are you sure?'),
+            Text(l10n.confirmAction),
           ],
         ),
         content: Column(
@@ -87,26 +86,24 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              isDutch
-                  ? 'Uitbraakpoging voor ${member.username}:'
-                  : 'Jailbreak attempt for ${member.username}:',
+              l10n.crewJailbreakAttemptFor(member.username),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 15),
             _buildRiskItem(
               Icons.check_circle,
               Colors.green,
-              isDutch ? 'Bij succes: Speler vrij!' : 'If successful: Player freed!',
+              l10n.crewJailbreakRiskSuccess,
             ),
             _buildRiskItem(
               Icons.cancel,
               Colors.orange,
-              isDutch ? 'Bij mislukking: 60% kans gepakt' : 'If failed: 60% chance caught',
+              l10n.crewJailbreakRiskFailChance,
             ),
             _buildRiskItem(
               Icons.dangerous,
               Colors.red,
-              isDutch ? 'Gepakt: 30-60 min cel + wanted +10' : 'Caught: 30-60 min jail + wanted +10',
+              l10n.crewJailbreakRiskCaughtPenalty,
             ),
             const SizedBox(height: 15),
             Container(
@@ -116,9 +113,7 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                isDutch
-                    ? 'Succes kans verhoogt met rank en crew bonus!'
-                    : 'Success chance increases with rank and crew bonus!',
+                l10n.crewJailbreakTip,
                 style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
               ),
             ),
@@ -127,14 +122,14 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(isDutch ? 'Annuleren' : 'Cancel'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange,
             ),
-            child: Text(isDutch ? 'Probeer uitbraak' : 'Attempt Jailbreak'),
+            child: Text(l10n.crewJailbreakAttemptButton),
           ),
         ],
       ),
@@ -185,7 +180,7 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text(l10n.crewJailbreakActionFailed),
             backgroundColor: Colors.red,
           ),
         );
@@ -214,11 +209,11 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDutch = Localizations.localeOf(context).languageCode == 'nl';
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isDutch ? '🚔 Gevangen Crew' : '🚔 Jailed Crew'),
+        title: Text(l10n.crewJailbreakTitle),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -227,11 +222,14 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(_error!, style: const TextStyle(color: Colors.red)),
+                      Text(
+                        l10n.crewJailbreakLoadFailed,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: _loadJailedMembers,
-                        child: const Text('Retry'),
+                        child: Text(l10n.retry),
                       ),
                     ],
                   ),
@@ -244,14 +242,12 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
                           const Icon(Icons.celebration, size: 80, color: Colors.green),
                           const SizedBox(height: 20),
                           Text(
-                            isDutch ? '🎉 Niemand in de cel!' : '🎉 No one in jail!',
+                            l10n.crewJailbreakEmptyTitle,
                             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            isDutch
-                                ? 'Alle crew members zijn vrij'
-                                : 'All crew members are free',
+                            l10n.crewJailbreakEmptyBody,
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                         ],
@@ -274,9 +270,9 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             subtitle: Text(
-                              isDutch
-                                  ? '⏱️ ${member.jailTime} minuten cel'
-                                  : '⏱️ ${member.jailTime} minutes in jail',
+                              l10n.crewJailbreakMemberJailTimeLine(
+                                member.jailTime.toString(),
+                              ),
                             ),
                             trailing: ElevatedButton.icon(
                               onPressed: _isRescuing ? null : () => _attemptJailbreak(member),
@@ -287,7 +283,7 @@ class _CrewJailbreakScreenState extends State<CrewJailbreakScreen> {
                                       child: CircularProgressIndicator(strokeWidth: 2),
                                     )
                                   : const Icon(Icons.vpn_key),
-                              label: Text(isDutch ? 'Bevrijd' : 'Rescue'),
+                              label: Text(l10n.crewJailbreakRescueButton),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.orange,
                               ),

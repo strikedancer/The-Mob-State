@@ -2111,6 +2111,156 @@ class AppLocalizationsPl extends AppLocalizations {
   String get vehicleOpsNoBlacklist => 'Brak czarnej listy';
 
   @override
+  String get prisonTitle => 'Więzienie';
+
+  @override
+  String get prisonLoadFailed => 'Nie udało się załadować więźniów';
+
+  @override
+  String get prisonNoPrisonersFound => 'Nie znaleziono więźniów';
+
+  @override
+  String prisonRankLine(String rank) {
+    return 'Ranga: $rank';
+  }
+
+  @override
+  String prisonRankYouLine(String rank) {
+    return 'Ranga: $rank · Ty';
+  }
+
+  @override
+  String prisonRemainingTimeLine(String duration) {
+    return 'Pozostały czas: $duration';
+  }
+
+  @override
+  String prisonBailLine(String amount) {
+    return 'Kaucja: $amount €';
+  }
+
+  @override
+  String get prisonPayBailButton => 'Zapłać kaucję';
+
+  @override
+  String get prisonBuyOutButton => 'Wykup';
+
+  @override
+  String get prisonAttemptEscapeButton => 'Próba ucieczki';
+
+  @override
+  String get prisonJailbreakButton => 'Jailbreak';
+
+  @override
+  String get prisonActionFailed => '❌ Akcja nie powiodła się';
+
+  @override
+  String prisonBuyoutSuccess(String username, String amount) {
+    return '✅ Wykupiony $username za $amount';
+  }
+
+  @override
+  String prisonPaidBailSuccess(String amount) {
+    return '✅ Zapłaciłeś kaucję w wysokości $amount € i jesteś bezpłatny';
+  }
+
+  @override
+  String get prisonEscapeSuccess => '✅Ucieczka się powiodła! Jesteś wolny.';
+
+  @override
+  String prisonEscapeFailed(String penalty) {
+    return '❌ Ucieczka nie powiodła się. Zdanie przedłużone o $penalty.';
+  }
+
+  @override
+  String prisonCooldownActive(String duration) {
+    return '⏱️ Aktywny czas odnowienia: czekaj $duration';
+  }
+
+  @override
+  String get prisonEscapeGenericFailure => '❌ Ucieczka nie powiodła się';
+
+  @override
+  String get prisonErrorInsufficientFunds => '❌ Za mało pieniędzy';
+
+  @override
+  String get prisonErrorTargetNotJailed =>
+      '❌ Target nie przebywa już w więzieniu';
+
+  @override
+  String get prisonErrorCannotBuyoutSelf => '❌ Nie możesz się przekupić';
+
+  @override
+  String get prisonErrorPlayerNotFound => '❌ Nie znaleziono gracza';
+
+  @override
+  String get prisonJailbreakSuccess =>
+      '✅ Jailbreak powiódł się! Więzień jest wolny.';
+
+  @override
+  String prisonJailbreakCaught(String minutes) {
+    return '🚔 Jailbreak nie powiódł się, zostałeś złapany ($minutes min więzienia).';
+  }
+
+  @override
+  String get prisonJailbreakFailed =>
+      '❌ Jailbreak nie powiódł się. Więzień nadal przebywa w zamknięciu.';
+
+  @override
+  String get prisonErrorRescuerJailed => '❌ Sam jesteś w więzieniu';
+
+  @override
+  String get prisonJailbreakGenericFailure => '❌ Jailbreak nie powiódł się';
+
+  @override
+  String get crewJailbreakTitle => '🚔 Uwięziona Crew';
+
+  @override
+  String get crewJailbreakLoadFailed =>
+      'Nie udało się załadować uwięzionych członków';
+
+  @override
+  String get crewJailbreakEmptyTitle => '🎉 Nikt nie siedzi w więzieniu!';
+
+  @override
+  String get crewJailbreakEmptyBody => 'Wszyscy członkowie załogi są wolni';
+
+  @override
+  String crewJailbreakAttemptFor(String username) {
+    return 'Próba jailbreaka dla $username:';
+  }
+
+  @override
+  String get crewJailbreakRiskSuccess =>
+      'Jeśli się powiedzie: Gracz uwolniony!';
+
+  @override
+  String get crewJailbreakRiskFailChance =>
+      'W przypadku niepowodzenia: 60% szans na złapanie';
+
+  @override
+  String get crewJailbreakRiskCaughtPenalty =>
+      'Złapany: 30-60 min więzienia + poszukiwany +10';
+
+  @override
+  String get crewJailbreakTip =>
+      'Szansa na sukces wzrasta wraz z rangą i premią dla załogi!';
+
+  @override
+  String get crewJailbreakAttemptButton => 'Próba jailbreaku';
+
+  @override
+  String get crewJailbreakActionFailed => '❌ Akcja nie powiodła się';
+
+  @override
+  String crewJailbreakMemberJailTimeLine(String minutes) {
+    return '⏱️ $minutes minut w więzieniu';
+  }
+
+  @override
+  String get crewJailbreakRescueButton => 'Ratunek';
+
+  @override
   String get crewRoleLeader => 'Lider';
 
   @override
