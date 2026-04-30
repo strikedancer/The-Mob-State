@@ -4274,5 +4274,19 @@
         "type": "int"
       }
     }
-  }
+  },
+  "schoolGateAssetDrugFacilitySlotsTier1": "Atout : mise à niveau de l'emplacement d'un établissement pharmaceutique I",
+  "schoolGateAssetDrugFacilitySlotsTier2": "Atout : Mise à niveau II de l'emplacement de l'établissement pharmaceutique",
+  "schoolGateAssetDrugFacilitySlotsTier3": "Atout : mise à niveau de l'emplacement de l'établissement pharmaceutique III",
+  "schoolGateAssetDrugFacilitySlotsTier4": "Atout : mise à niveau de l'emplacement de l'établissement pharmaceutique IV",
+  "schoolGateAssetDrugFacilityEquipmentTier1": "Atout : Mise à niveau de l'équipement d'un établissement pharmaceutique I",
+  "schoolGateAssetDrugFacilityEquipmentTier2": "Atout : Mise à niveau de l'équipement des installations pharmaceutiques II",
+  "schoolGateAssetDrugFacilityEquipmentTier3": "Atout : Mise à niveau de l'équipement des installations pharmaceutiques III",
+  "educationTrackNameNarcotics": "Ingénierie des stupéfiants",
+  "schoolTrackDescriptionNarcotics": "Culture contrôlée, processus électriques et production chimique avancée.",
+  "educationCertHydroponicSpecialist": "Certification de spécialiste en culture hydroponique",
+  "educationCertProcessElectricsSpecialist": "Certification de spécialiste en électricité de procédés",
+  "educationCertClandestineChemist": "Certification de chimiste clandestin",
+  "educationCertNarcoGridArchitect": "Certification d'architecte de réseau Narco",
+  "cooldownWaitSchool": "Catch your breath before the next lesson…"
 }

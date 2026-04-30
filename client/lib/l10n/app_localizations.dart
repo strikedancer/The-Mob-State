@@ -8654,6 +8654,48 @@ abstract class AppLocalizations {
   /// **'Asset: Ammo quality upgrade'**
   String get schoolGateAssetAmmoQualityUpgrade;
 
+  /// No description provided for @schoolGateAssetDrugFacilitySlotsTier1.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility slot upgrade I'**
+  String get schoolGateAssetDrugFacilitySlotsTier1;
+
+  /// No description provided for @schoolGateAssetDrugFacilitySlotsTier2.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility slot upgrade II'**
+  String get schoolGateAssetDrugFacilitySlotsTier2;
+
+  /// No description provided for @schoolGateAssetDrugFacilitySlotsTier3.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility slot upgrade III'**
+  String get schoolGateAssetDrugFacilitySlotsTier3;
+
+  /// No description provided for @schoolGateAssetDrugFacilitySlotsTier4.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility slot upgrade IV'**
+  String get schoolGateAssetDrugFacilitySlotsTier4;
+
+  /// No description provided for @schoolGateAssetDrugFacilityEquipmentTier1.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility equipment upgrade I'**
+  String get schoolGateAssetDrugFacilityEquipmentTier1;
+
+  /// No description provided for @schoolGateAssetDrugFacilityEquipmentTier2.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility equipment upgrade II'**
+  String get schoolGateAssetDrugFacilityEquipmentTier2;
+
+  /// No description provided for @schoolGateAssetDrugFacilityEquipmentTier3.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset: Drug facility equipment upgrade III'**
+  String get schoolGateAssetDrugFacilityEquipmentTier3;
+
   /// No description provided for @schoolGateAssetGeneric.
   ///
   /// In en, this message translates to:
@@ -8784,6 +8826,12 @@ abstract class AppLocalizations {
   /// **'IT'**
   String get educationTrackNameIt;
 
+  /// No description provided for @educationTrackNameNarcotics.
+  ///
+  /// In en, this message translates to:
+  /// **'Narcotics Engineering'**
+  String get educationTrackNameNarcotics;
+
   /// No description provided for @schoolTrackDescriptionAviation.
   ///
   /// In en, this message translates to:
@@ -8820,6 +8868,12 @@ abstract class AppLocalizations {
   /// **'Software development, systems, and network operations.'**
   String get schoolTrackDescriptionIt;
 
+  /// No description provided for @schoolTrackDescriptionNarcotics.
+  ///
+  /// In en, this message translates to:
+  /// **'Controlled cultivation, process electrics and advanced chemical production.'**
+  String get schoolTrackDescriptionNarcotics;
+
   /// No description provided for @schoolTrackCooldownActive.
   ///
   /// In en, this message translates to:
@@ -8837,6 +8891,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to start training'**
   String get schoolTrackStartFailed;
+
+  /// No description provided for @educationCertHydroponicSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Hydroponics Specialist Certification'**
+  String get educationCertHydroponicSpecialist;
+
+  /// No description provided for @educationCertProcessElectricsSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Process Electrics Specialist Certification'**
+  String get educationCertProcessElectricsSpecialist;
+
+  /// No description provided for @educationCertClandestineChemist.
+  ///
+  /// In en, this message translates to:
+  /// **'Clandestine Chemist Certification'**
+  String get educationCertClandestineChemist;
+
+  /// No description provided for @educationCertNarcoGridArchitect.
+  ///
+  /// In en, this message translates to:
+  /// **'Narco Grid Architect Certification'**
+  String get educationCertNarcoGridArchitect;
 
   /// No description provided for @educationCertSoftwareEngineer.
   ///
@@ -12507,6 +12585,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Court is busy…'**
   String get cooldownWaitAppeal;
+
+  /// No description provided for @cooldownWaitSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'Catch your breath before the next lesson…'**
+  String get cooldownWaitSchool;
 
   /// No description provided for @cooldownWaitDefault.
   ///

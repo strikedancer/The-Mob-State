@@ -13,6 +13,8 @@
  *   cd scripts && node translate_arb_english_fallback.mjs --max=100
  *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,fr,it,pl,pt --prefix=territory
  *     (alleen keys die met "territory" beginnen; handige batch voor één scherm)
+ *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=school,education,achievementSchool,achievementTitle_school_,achievementDescription_school_,supportMod_school
+ *     (komma's = meerdere prefixes; key matcht als hij met één ervan begint)
  *
  * Zie ook: translate_app_arb_from_en.mjs (volledige ARB overschrijven) en verify_arb_parity.mjs.
  */
@@ -44,7 +46,18 @@ const LANG_FILTER = langsArg
   : null;
 
 const prefixArg = args.find((a) => a.startsWith('--prefix='));
-const KEY_PREFIX = prefixArg ? prefixArg.split('=')[1] : null;
+const KEY_PREFIXES = prefixArg
+  ? prefixArg
+      .split('=')[1]
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean)
+  : null;
+
+function keyMatchesPrefixes(key) {
+  if (!KEY_PREFIXES || KEY_PREFIXES.length === 0) return true;
+  return KEY_PREFIXES.some((prefix) => key.startsWith(prefix));
+}
 
 const DELAY_MS = 120;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -124,7 +137,7 @@ function isIcuSelectOrPlural(s) {
 function fallbackKeys(en, target) {
   const keys = [];
   for (const k of stringKeys(en)) {
-    if (KEY_PREFIX && !k.startsWith(KEY_PREFIX)) continue;
+    if (!keyMatchesPrefixes(k)) continue;
     if (target[k] === undefined) continue;
     if (target[k] !== en[k]) continue;
     if (isIcuSelectOrPlural(en[k])) continue;

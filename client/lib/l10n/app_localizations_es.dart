@@ -4717,6 +4717,34 @@ class AppLocalizationsEs extends AppLocalizations {
       'Activo: mejora de la calidad de la munición';
 
   @override
+  String get schoolGateAssetDrugFacilitySlotsTier1 =>
+      'Activo: Actualización de espacio para instalaciones farmacéuticas I';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier2 =>
+      'Activo: Actualización de espacio para instalaciones farmacéuticas II';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier3 =>
+      'Activo: Actualización de espacio para instalaciones farmacéuticas III';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier4 =>
+      'Activo: Actualización de espacio para instalaciones farmacéuticas IV';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier1 =>
+      'Activo: Actualización del equipo de las instalaciones farmacéuticas I';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier2 =>
+      'Activo: Actualización del equipo de las instalaciones farmacéuticas II';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier3 =>
+      'Activo: Actualización del equipo de las instalaciones farmacéuticas III';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Activo: $target';
   }
@@ -4798,6 +4826,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get educationTrackNameIt => 'ÉL';
 
   @override
+  String get educationTrackNameNarcotics => 'Ingeniería de Narcóticos';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Teoría de vuelo, navegación y operación de aeronaves.';
 
@@ -4822,6 +4853,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Desarrollo de software, sistemas y operaciones de redes.';
 
   @override
+  String get schoolTrackDescriptionNarcotics =>
+      'Cultivo controlado, proceso eléctrico y producción química avanzada.';
+
+  @override
   String schoolTrackCooldownActive(int seconds) {
     return 'Enfriamiento activo: ${seconds}s restantes';
   }
@@ -4832,6 +4867,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get schoolTrackStartFailed => 'No se pudo iniciar el entrenamiento';
+
+  @override
+  String get educationCertHydroponicSpecialist =>
+      'Certificación de especialista en hidroponía';
+
+  @override
+  String get educationCertProcessElectricsSpecialist =>
+      'Certificación de Especialista en Electricidad de Procesos';
+
+  @override
+  String get educationCertClandestineChemist =>
+      'Certificación de Químico Clandestino';
+
+  @override
+  String get educationCertNarcoGridArchitect =>
+      'Certificación de arquitecto Narco Grid';
 
   @override
   String get educationCertSoftwareEngineer =>
@@ -7068,6 +7119,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cooldownWaitAppeal => 'El tribunal está ocupado…';
+
+  @override
+  String get cooldownWaitSchool => 'Catch your breath before the next lesson…';
 
   @override
   String get cooldownWaitDefault => 'Un momento…';

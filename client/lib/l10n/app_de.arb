@@ -4274,5 +4274,19 @@
         "type": "int"
       }
     }
-  }
+  },
+  "schoolGateAssetDrugFacilitySlotsTier1": "Aktivposten: Erweiterung des Steckplatzes für Arzneimitteleinrichtungen I",
+  "schoolGateAssetDrugFacilitySlotsTier2": "Aktivposten: Erweiterung des Steckplatzes für Arzneimitteleinrichtungen II",
+  "schoolGateAssetDrugFacilitySlotsTier3": "Aktivposten: Erweiterung des Steckplatzes für Arzneimitteleinrichtungen III",
+  "schoolGateAssetDrugFacilitySlotsTier4": "Aktivposten: Upgrade IV für den Arzneimitteleinrichtungsplatz",
+  "schoolGateAssetDrugFacilityEquipmentTier1": "Vermögenswert: Modernisierung der Ausrüstung der Arzneimitteleinrichtung I",
+  "schoolGateAssetDrugFacilityEquipmentTier2": "Vermögenswert: Modernisierung der Ausrüstung der Arzneimitteleinrichtung II",
+  "schoolGateAssetDrugFacilityEquipmentTier3": "Vermögenswert: Modernisierung der Ausrüstung der Arzneimitteleinrichtung III",
+  "educationTrackNameNarcotics": "Betäubungsmitteltechnik",
+  "schoolTrackDescriptionNarcotics": "Kontrollierter Anbau, Prozesselektrik und fortschrittliche chemische Produktion.",
+  "educationCertHydroponicSpecialist": "Zertifizierung zum Hydroponik-Spezialisten",
+  "educationCertProcessElectricsSpecialist": "Zertifizierung zum Prozesselektriker",
+  "educationCertClandestineChemist": "Zertifizierung als Geheimchemiker",
+  "educationCertNarcoGridArchitect": "Narco Grid Architect-Zertifizierung",
+  "cooldownWaitSchool": "Catch your breath before the next lesson…"
 }

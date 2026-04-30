@@ -50,6 +50,16 @@ const COOLDOWN_ACTION_LABEL: Record<string, Partial<Record<SupportedPlayerLangua
     pl: 'rekrutacja',
     pt: 'recrutamento',
   },
+  school: {
+    en: 'school',
+    nl: 'opleiding',
+    es: 'escuela',
+    de: 'Schule',
+    fr: 'école',
+    it: 'scuola',
+    pl: 'szkoła',
+    pt: 'escola',
+  },
 };
 
 function labelForCooldownAction(actionType: string, lang: SupportedPlayerLanguage): string {

@@ -255,7 +255,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
   }
 
   String _certDisplayName(String certificationId, AppLocalizations l10n) {
-    final isNl = l10n.localeName.startsWith('nl');
     switch (certificationId) {
       case 'software_engineer':
         return l10n.educationCertSoftwareEngineer;
@@ -276,15 +275,13 @@ class _SchoolScreenState extends State<SchoolScreen> {
       case 'paramedic_cert':
         return l10n.educationCertParamedic;
       case 'hydroponic_specialist':
-        return isNl ? 'Hydroponics Specialist' : 'Hydroponics Specialist';
+        return l10n.educationCertHydroponicSpecialist;
       case 'process_electrics_specialist':
-        return isNl
-            ? 'Process Electrics Specialist'
-            : 'Process Electrics Specialist';
+        return l10n.educationCertProcessElectricsSpecialist;
       case 'clandestine_chemist':
-        return isNl ? 'Clandestien Chemicus' : 'Clandestine Chemist';
+        return l10n.educationCertClandestineChemist;
       case 'narco_grid_architect':
-        return isNl ? 'Narco Grid Architect' : 'Narco Grid Architect';
+        return l10n.educationCertNarcoGridArchitect;
       default:
         return certificationId;
     }
@@ -295,7 +292,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
     String fallback,
     AppLocalizations l10n,
   ) {
-    final isNl = l10n.localeName.startsWith('nl');
     switch (trackId) {
       case 'aviation':
         return l10n.educationTrackNameAviation;
@@ -310,7 +306,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
       case 'it':
         return l10n.educationTrackNameIt;
       case 'narcotics':
-        return isNl ? 'Narcotica Technologie' : 'Narcotics Engineering';
+        return l10n.educationTrackNameNarcotics;
       default:
         return fallback;
     }
@@ -321,7 +317,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
     String fallback,
     AppLocalizations l10n,
   ) {
-    final isNl = l10n.localeName.startsWith('nl');
     switch (trackId) {
       case 'aviation':
         return l10n.schoolTrackDescriptionAviation;
@@ -336,9 +331,7 @@ class _SchoolScreenState extends State<SchoolScreen> {
       case 'it':
         return l10n.schoolTrackDescriptionIt;
       case 'narcotics':
-        return isNl
-            ? 'Gecontroleerde teelt, proces-elektra en geavanceerde chemische productie.'
-            : 'Controlled cultivation, process electrics and advanced chemical production.';
+        return l10n.schoolTrackDescriptionNarcotics;
       default:
         return fallback;
     }
@@ -426,7 +419,6 @@ class _SchoolScreenState extends State<SchoolScreen> {
 
   String _gateTargetLabel(String targetType, String targetId) {
     final l10n = AppLocalizations.of(context)!;
-    final isNl = l10n.localeName.startsWith('nl');
 
     if (targetType == 'job') {
       return l10n.schoolGateJobTarget(targetId);
@@ -443,33 +435,19 @@ class _SchoolScreenState extends State<SchoolScreen> {
         case 'ammo_factory_upgrade_quality':
           return l10n.schoolGateAssetAmmoQualityUpgrade;
         case 'drug_facility_upgrade_slots_tier_1':
-          return isNl
-              ? 'Asset: Drugsfaciliteit slot-upgrade I'
-              : 'Asset: Drug facility slot upgrade I';
+          return l10n.schoolGateAssetDrugFacilitySlotsTier1;
         case 'drug_facility_upgrade_slots_tier_2':
-          return isNl
-              ? 'Asset: Drugsfaciliteit slot-upgrade II'
-              : 'Asset: Drug facility slot upgrade II';
+          return l10n.schoolGateAssetDrugFacilitySlotsTier2;
         case 'drug_facility_upgrade_slots_tier_3':
-          return isNl
-              ? 'Asset: Drugsfaciliteit slot-upgrade III'
-              : 'Asset: Drug facility slot upgrade III';
+          return l10n.schoolGateAssetDrugFacilitySlotsTier3;
         case 'drug_facility_upgrade_slots_tier_4':
-          return isNl
-              ? 'Asset: Drugsfaciliteit slot-upgrade IV'
-              : 'Asset: Drug facility slot upgrade IV';
+          return l10n.schoolGateAssetDrugFacilitySlotsTier4;
         case 'drug_facility_upgrade_equipment_tier_1':
-          return isNl
-              ? 'Asset: Drugsfaciliteit apparatuur-upgrade I'
-              : 'Asset: Drug facility equipment upgrade I';
+          return l10n.schoolGateAssetDrugFacilityEquipmentTier1;
         case 'drug_facility_upgrade_equipment_tier_2':
-          return isNl
-              ? 'Asset: Drugsfaciliteit apparatuur-upgrade II'
-              : 'Asset: Drug facility equipment upgrade II';
+          return l10n.schoolGateAssetDrugFacilityEquipmentTier2;
         case 'drug_facility_upgrade_equipment_tier_3':
-          return isNl
-              ? 'Asset: Drugsfaciliteit apparatuur-upgrade III'
-              : 'Asset: Drug facility equipment upgrade III';
+          return l10n.schoolGateAssetDrugFacilityEquipmentTier3;
         default:
           return l10n.schoolGateAssetGeneric(targetId);
       }

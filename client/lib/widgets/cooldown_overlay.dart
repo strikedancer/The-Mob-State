@@ -723,6 +723,8 @@ class _CooldownOverlayState extends State<CooldownOverlay> {
         return l10n.cooldownWaitHeist;
       case 'appeal':
         return l10n.cooldownWaitAppeal;
+      case 'school':
+        return l10n.cooldownWaitSchool;
       default:
         return l10n.cooldownWaitDefault;
     }

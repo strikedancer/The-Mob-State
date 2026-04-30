@@ -4274,5 +4274,19 @@
         "type": "int"
       }
     }
-  }
+  },
+  "schoolGateAssetDrugFacilitySlotsTier1": "Zasób: ulepszenie miejsca w placówce narkotykowej I",
+  "schoolGateAssetDrugFacilitySlotsTier2": "Zasób: Ulepszenie miejsca w placówce narkotykowej II",
+  "schoolGateAssetDrugFacilitySlotsTier3": "Zasób: Ulepszenie miejsca w placówce narkotykowej III",
+  "schoolGateAssetDrugFacilitySlotsTier4": "Zasób: ulepszenie miejsca w placówce narkotykowej IV",
+  "schoolGateAssetDrugFacilityEquipmentTier1": "Zasób: Ulepszenie wyposażenia placówki farmaceutycznej I",
+  "schoolGateAssetDrugFacilityEquipmentTier2": "Zasób: Ulepszenie wyposażenia placówki farmaceutycznej II",
+  "schoolGateAssetDrugFacilityEquipmentTier3": "Zasób: Ulepszenie wyposażenia placówki farmaceutycznej III",
+  "educationTrackNameNarcotics": "Inżynieria Narkotyków",
+  "schoolTrackDescriptionNarcotics": "Kontrolowana uprawa, elektryka procesowa i zaawansowana produkcja chemiczna.",
+  "educationCertHydroponicSpecialist": "Certyfikat specjalisty hydroponiki",
+  "educationCertProcessElectricsSpecialist": "Certyfikat Specjalisty Elektryki Procesowej",
+  "educationCertClandestineChemist": "Certyfikat Tajnego Chemika",
+  "educationCertNarcoGridArchitect": "Certyfikat architekta Narco Grid",
+  "cooldownWaitSchool": "Catch your breath before the next lesson…"
 }

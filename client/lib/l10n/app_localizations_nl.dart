@@ -4693,6 +4693,34 @@ class AppLocalizationsNl extends AppLocalizations {
       'Asset: Munitiefabriek quality upgrade';
 
   @override
+  String get schoolGateAssetDrugFacilitySlotsTier1 =>
+      'Asset: Drugsfaciliteit slot-upgrade I';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier2 =>
+      'Asset: Drugsfaciliteit slot-upgrade II';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier3 =>
+      'Asset: Drugsfaciliteit slot-upgrade III';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier4 =>
+      'Asset: Drugsfaciliteit slot-upgrade IV';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier1 =>
+      'Asset: Drugsfaciliteit apparatuur-upgrade I';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier2 =>
+      'Asset: Drugsfaciliteit apparatuur-upgrade II';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier3 =>
+      'Asset: Drugsfaciliteit apparatuur-upgrade III';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Activa: $target';
   }
@@ -4773,6 +4801,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get educationTrackNameIt => 'HET';
 
   @override
+  String get educationTrackNameNarcotics => 'Narcoticatechnologie';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Vliegtheorie, navigatie en vliegtuigbediening.';
 
@@ -4797,6 +4828,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Softwareontwikkeling, systemen en netwerkbeheer.';
 
   @override
+  String get schoolTrackDescriptionNarcotics =>
+      'Gecontroleerde teelt, proces-elektra en geavanceerde chemische productie.';
+
+  @override
   String schoolTrackCooldownActive(int seconds) {
     return 'Cooldown actief: nog ${seconds}s';
   }
@@ -4806,6 +4841,22 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get schoolTrackStartFailed => 'Opleiding starten mislukt';
+
+  @override
+  String get educationCertHydroponicSpecialist =>
+      'Hydroponics specialist certificaat';
+
+  @override
+  String get educationCertProcessElectricsSpecialist =>
+      'Proceselektrica specialist certificaat';
+
+  @override
+  String get educationCertClandestineChemist =>
+      'Clandestien chemicus certificaat';
+
+  @override
+  String get educationCertNarcoGridArchitect =>
+      'Narco grid architect certificaat';
 
   @override
   String get educationCertSoftwareEngineer => 'Software Engineer Certificaat';
@@ -7008,6 +7059,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get cooldownWaitAppeal => 'Rechtbank is bezet...';
+
+  @override
+  String get cooldownWaitSchool => 'Haal even adem voor de volgende les…';
 
   @override
   String get cooldownWaitDefault => 'Even geduld...';

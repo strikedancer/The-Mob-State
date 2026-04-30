@@ -4274,5 +4274,19 @@
         "type": "int"
       }
     }
-  }
+  },
+  "schoolGateAssetDrugFacilitySlotsTier1": "Risorsa: potenziamento slot struttura farmaceutica I",
+  "schoolGateAssetDrugFacilitySlotsTier2": "Risorsa: potenziamento slot struttura farmaceutica II",
+  "schoolGateAssetDrugFacilitySlotsTier3": "Risorsa: potenziamento slot struttura farmaceutica III",
+  "schoolGateAssetDrugFacilitySlotsTier4": "Risorsa: potenziamento slot struttura farmaceutica IV",
+  "schoolGateAssetDrugFacilityEquipmentTier1": "Risorsa: potenziamento delle attrezzature della struttura farmaceutica I",
+  "schoolGateAssetDrugFacilityEquipmentTier2": "Risorsa: Aggiornamento delle attrezzature della struttura farmaceutica II",
+  "schoolGateAssetDrugFacilityEquipmentTier3": "Risorsa: Aggiornamento delle attrezzature della struttura farmaceutica III",
+  "educationTrackNameNarcotics": "Ingegneria dei narcotici",
+  "schoolTrackDescriptionNarcotics": "Coltivazione controllata, processi elettrici e produzione chimica avanzata.",
+  "educationCertHydroponicSpecialist": "Certificazione di specialista in coltura idroponica",
+  "educationCertProcessElectricsSpecialist": "Certificazione di specialista in componenti elettrici di processo",
+  "educationCertClandestineChemist": "Certificazione di chimico clandestino",
+  "educationCertNarcoGridArchitect": "Certificazione di Narco Grid Architect",
+  "cooldownWaitSchool": "Catch your breath before the next lesson…"
 }

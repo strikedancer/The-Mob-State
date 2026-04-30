@@ -4737,6 +4737,34 @@ class AppLocalizationsFr extends AppLocalizations {
       'Atout : amélioration de la qualité des munitions';
 
   @override
+  String get schoolGateAssetDrugFacilitySlotsTier1 =>
+      'Atout : mise à niveau de l\'emplacement d\'un établissement pharmaceutique I';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier2 =>
+      'Atout : Mise à niveau II de l\'emplacement de l\'établissement pharmaceutique';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier3 =>
+      'Atout : mise à niveau de l\'emplacement de l\'établissement pharmaceutique III';
+
+  @override
+  String get schoolGateAssetDrugFacilitySlotsTier4 =>
+      'Atout : mise à niveau de l\'emplacement de l\'établissement pharmaceutique IV';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier1 =>
+      'Atout : Mise à niveau de l\'équipement d\'un établissement pharmaceutique I';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier2 =>
+      'Atout : Mise à niveau de l\'équipement des installations pharmaceutiques II';
+
+  @override
+  String get schoolGateAssetDrugFacilityEquipmentTier3 =>
+      'Atout : Mise à niveau de l\'équipement des installations pharmaceutiques III';
+
+  @override
   String schoolGateAssetGeneric(String target) {
     return 'Actif : $target';
   }
@@ -4817,6 +4845,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get educationTrackNameIt => 'IL';
 
   @override
+  String get educationTrackNameNarcotics => 'Ingénierie des stupéfiants';
+
+  @override
   String get schoolTrackDescriptionAviation =>
       'Théorie du vol, navigation et exploitation des aéronefs.';
 
@@ -4841,6 +4872,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Développement de logiciels, systèmes et opérations réseau.';
 
   @override
+  String get schoolTrackDescriptionNarcotics =>
+      'Culture contrôlée, processus électriques et production chimique avancée.';
+
+  @override
   String schoolTrackCooldownActive(int seconds) {
     return 'Temps de recharge actif : ${seconds}s restants';
   }
@@ -4851,6 +4886,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get schoolTrackStartFailed => 'Échec du démarrage de la formation';
+
+  @override
+  String get educationCertHydroponicSpecialist =>
+      'Certification de spécialiste en culture hydroponique';
+
+  @override
+  String get educationCertProcessElectricsSpecialist =>
+      'Certification de spécialiste en électricité de procédés';
+
+  @override
+  String get educationCertClandestineChemist =>
+      'Certification de chimiste clandestin';
+
+  @override
+  String get educationCertNarcoGridArchitect =>
+      'Certification d\'architecte de réseau Narco';
 
   @override
   String get educationCertSoftwareEngineer =>
@@ -7090,6 +7141,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cooldownWaitAppeal => 'Le tribunal est occupé…';
+
+  @override
+  String get cooldownWaitSchool => 'Catch your breath before the next lesson…';
 
   @override
   String get cooldownWaitDefault => 'S\'il vous plaît, attendez…';

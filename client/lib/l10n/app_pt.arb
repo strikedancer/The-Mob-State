@@ -4274,5 +4274,19 @@
         "type": "int"
       }
     }
-  }
+  },
+  "schoolGateAssetDrugFacilitySlotsTier1": "Ativo: Atualização de slot de instalação de medicamentos I",
+  "schoolGateAssetDrugFacilitySlotsTier2": "Ativo: Atualização II do slot da instalação de medicamentos",
+  "schoolGateAssetDrugFacilitySlotsTier3": "Ativo: Atualização de slot de instalação de medicamentos III",
+  "schoolGateAssetDrugFacilitySlotsTier4": "Ativo: Atualização IV do slot da instalação de medicamentos",
+  "schoolGateAssetDrugFacilityEquipmentTier1": "Ativo: Atualização de equipamento de instalação de medicamentos I",
+  "schoolGateAssetDrugFacilityEquipmentTier2": "Ativo: Atualização de equipamento de instalação de medicamentos II",
+  "schoolGateAssetDrugFacilityEquipmentTier3": "Ativo: Atualização de equipamento de instalação de medicamentos III",
+  "educationTrackNameNarcotics": "Engenharia de Narcóticos",
+  "schoolTrackDescriptionNarcotics": "Cultivo controlado, processos elétricos e produção química avançada.",
+  "educationCertHydroponicSpecialist": "Certificação de Especialista em Hidroponia",
+  "educationCertProcessElectricsSpecialist": "Certificação de Especialista em Elétrica de Processo",
+  "educationCertClandestineChemist": "Certificação de Químico Clandestino",
+  "educationCertNarcoGridArchitect": "Certificação Narco Grid Architect",
+  "cooldownWaitSchool": "Catch your breath before the next lesson…"
 }
