@@ -7166,102 +7166,102 @@ class AppLocalizationsDe extends AppLocalizations {
   String get crimeOutcomeDefaultTitle => 'Kriminalitätsergebnis';
 
   @override
-  String get territoryContestStatusPreparing => 'Preparation';
+  String get territoryContestStatusPreparing => 'Vorbereitung';
 
   @override
-  String get territoryContestStatusActive => 'Active';
+  String get territoryContestStatusActive => 'Aktiv';
 
   @override
-  String get territoryContestStatusLockdown => 'Lockdown';
+  String get territoryContestStatusLockdown => 'Sperrung';
 
   @override
-  String get territoryContestStatusResolved => 'Resolved';
+  String get territoryContestStatusResolved => 'Gelöst';
 
   @override
-  String get territoryContestStatusCancelled => 'Cancelled';
+  String get territoryContestStatusCancelled => 'Abgesagt';
 
   @override
   String get territoryContestHintPreparing =>
-      'This contest is currently in preparation. Once prep time ends, the region automatically becomes active and actions unlock.';
+      'Dieser Wettbewerb ist derzeit in Vorbereitung. Sobald die Vorbereitungszeit abgelaufen ist, wird die Region automatisch aktiv und Aktionen werden freigeschaltet.';
 
   @override
   String get territoryContestHintLockdown =>
-      'This contest is in lockdown. No new actions can be taken now; the outcome resolves automatically.';
+      'Dieser Wettbewerb ist gesperrt. Derzeit können keine neuen Maßnahmen ergriffen werden; Das Ergebnis wird automatisch aufgelöst.';
 
   @override
-  String get territoryNow => 'Now';
+  String get territoryNow => 'Jetzt';
 
   @override
-  String get territoryRoleAttacker => 'Attacker';
+  String get territoryRoleAttacker => 'Angreiferin';
 
   @override
-  String get territoryRoleDefender => 'Defender';
+  String get territoryRoleDefender => 'Verteidigerin';
 
   @override
-  String get territoryValueLow => 'Low';
+  String get territoryValueLow => 'Niedrig';
 
   @override
-  String get territoryValueAverage => 'Average';
+  String get territoryValueAverage => 'Durchschnitt';
 
   @override
-  String get territoryValueHigh => 'High';
+  String get territoryValueHigh => 'Hoch';
 
   @override
-  String get territoryValueTop => 'Top';
+  String get territoryValueTop => 'Spitze';
 
   @override
-  String get territoryTagCapital => 'Administrative center';
+  String get territoryTagCapital => 'Verwaltungszentrum';
 
   @override
-  String get territoryTagHarbor => 'Harbor';
+  String get territoryTagHarbor => 'Hafen';
 
   @override
-  String get territoryTagIndustry => 'Industry';
+  String get territoryTagIndustry => 'Industrie';
 
   @override
-  String get territoryTagBorder => 'Border region';
+  String get territoryTagBorder => 'Grenzregion';
 
   @override
-  String get territoryTagLogistics => 'Logistics hub';
+  String get territoryTagLogistics => 'Logistikdrehscheibe';
 
   @override
-  String get territoryActionPatrol => 'Patrol';
+  String get territoryActionPatrol => 'Patrouillieren';
 
   @override
-  String get territoryActionIntelScan => 'Intel scan';
+  String get territoryActionIntelScan => 'Intel-Scan';
 
   @override
   String get territoryActionSabotage => 'Sabotage';
 
   @override
-  String get territoryActionSupplyRun => 'Supply run';
+  String get territoryActionSupplyRun => 'Versorgungslauf';
 
   @override
-  String get territoryActionRaid => 'Raid';
+  String get territoryActionRaid => 'Überfall';
 
   @override
-  String get territoryActionDefense => 'Defense';
+  String get territoryActionDefense => 'Verteidigung';
 
   @override
-  String get territoryBonusStrategicRegion => 'Strategic region';
+  String get territoryBonusStrategicRegion => 'Strategische Region';
 
   @override
-  String get territoryBonusAdjacentSupport => 'Adjacent support';
+  String get territoryBonusAdjacentSupport => 'Angrenzende Unterstützung';
 
   @override
-  String get territoryBonusWarPressure => 'War pressure';
+  String get territoryBonusWarPressure => 'Kriegsdruck';
 
   @override
-  String get territoryBonusHqLevel => 'HQ level';
+  String get territoryBonusHqLevel => 'HQ-Ebene';
 
   @override
-  String get territoryBonusCrewMissionLevel => 'Crew mission level';
+  String get territoryBonusCrewMissionLevel => 'Level der Besatzungsmission';
 
   @override
-  String get territoryBonusCrewBuildings => 'Crew side buildings';
+  String get territoryBonusCrewBuildings => 'Mannschaftsnebengebäude';
 
   @override
-  String get territoryBonusOther => 'Other';
+  String get territoryBonusOther => 'Andere';
 
   @override
   String territoryPointsLogicLine(
@@ -7269,275 +7269,275 @@ class AppLocalizationsDe extends AppLocalizations {
     int bonusPoints,
     int totalPoints,
   ) {
-    return 'base $basePoints + bonus $bonusPoints = $totalPoints contest points';
+    return 'Basis $basePoints + Bonus $bonusPoints = $totalPoints Wettbewerbspunkte';
   }
 
   @override
   String get territoryErrorNotInCrew =>
-      'You must join a crew before you can attack territory.';
+      'Sie müssen sich einer Crew anschließen, bevor Sie Territorium angreifen können.';
 
   @override
   String get territoryErrorContestAlreadyActive =>
-      'A contest is already running for this region. Refreshing the map to the latest state.';
+      'Für diese Region läuft bereits ein Wettbewerb. Aktualisieren der Karte auf den neuesten Stand.';
 
   @override
   String get territoryErrorCrewContestLimit =>
-      'Your crew has already reached the concurrent contest limit.';
+      'Ihre Crew hat bereits das Limit für gleichzeitige Wettbewerbe erreicht.';
 
   @override
   String get territoryErrorRegionsCap =>
-      'Your crew already owns the maximum number of regions.';
+      'Ihre Crew besitzt bereits die maximale Anzahl an Regionen.';
 
   @override
   String get territoryErrorContestNotActive =>
-      'This contest is not active yet. Wait for the preparation phase to finish.';
+      'Dieser Wettbewerb ist noch nicht aktiv. Warten Sie, bis die Vorbereitungsphase abgeschlossen ist.';
 
   @override
   String get territoryErrorActionCooldown =>
-      'You need to wait before performing another territory action.';
+      'Sie müssen warten, bevor Sie eine weitere Gebietsaktion durchführen.';
 
   @override
   String get territoryErrorActionRoleMismatch =>
-      'This action belongs to the other side of the contest.';
+      'Diese Aktion gehört zur anderen Seite des Wettbewerbs.';
 
   @override
   String get territoryErrorHqLevelRequired =>
-      'Your HQ level is too low for this territory action.';
+      'Ihr HQ-Level ist für diese Gebietsaktion zu niedrig.';
 
   @override
   String get territoryErrorDailyCap =>
-      'You have reached your daily limit for territory actions.';
+      'Sie haben Ihr Tageslimit für Gebietsaktionen erreicht.';
 
   @override
   String get territoryErrorWrongCountry =>
-      'You can view every country, but territory actions only work in the country where you are currently located.';
+      'Sie können jedes Land anzeigen, Gebietsaktionen funktionieren jedoch nur in dem Land, in dem Sie sich gerade befinden.';
 
   @override
-  String get territoryErrorUnknown => 'Unknown territory error.';
+  String get territoryErrorUnknown => 'Fehler wegen unbekanntem Gebiet.';
 
   @override
-  String get territoryLegendUnderContest => 'Under contest';
+  String get territoryLegendUnderContest => 'Im Wettbewerb';
 
   @override
   String get territoryLegendNeutral => 'Neutral';
 
   @override
-  String get territoryTabMap => 'Map';
+  String get territoryTabMap => 'Karte';
 
   @override
-  String get territoryTabLeaderboard => 'Leaderboard';
+  String get territoryTabLeaderboard => 'Bestenliste';
 
   @override
-  String get territoryTabSeason => 'Season';
+  String get territoryTabSeason => 'Jahreszeit';
 
   @override
-  String get territorySelectCountryTooltip => 'Select country';
+  String get territorySelectCountryTooltip => 'Land auswählen';
 
   @override
   String get territoryUnavailableMessage =>
-      'Territory is currently unavailable.';
+      'Das Gebiet ist derzeit nicht verfügbar.';
 
   @override
   String get territoryMapHintTapMain =>
-      'Tap a region on the map to open territory information and the attack button in a modal.';
+      'Tippen Sie auf eine Region auf der Karte, um Gebietsinformationen und die Angriffsschaltfläche in einem Modal zu öffnen.';
 
   @override
   String get territoryMapHintTapPanel =>
-      'Tap a region to directly open the modal with territory information and attack actions.';
+      'Tippen Sie auf eine Region, um das Modal mit Gebietsinformationen und Angriffsaktionen direkt zu öffnen.';
 
   @override
   String get territoryMapHintMobile =>
-      'On mobile you can pinch in and out with two fingers and drag the zoomed map directly for smaller regions.';
+      'Auf Mobilgeräten können Sie mit zwei Fingern hinein- und herausziehen und die gezoomte Karte direkt für kleinere Regionen ziehen.';
 
   @override
   String get territoryMapHintColors =>
-      'Region colors show ownership; orange = active contest.';
+      'Die Farben der Region zeigen den Besitz an; Orange = aktiver Wettbewerb.';
 
   @override
   String territoryMapOverviewTitle(String country) {
-    return '$country map (crew control)';
+    return '$country Karte (Besatzungskontrolle)';
   }
 
   @override
-  String get territoryLegendTitle => 'Legend';
+  String get territoryLegendTitle => 'Legende';
 
   @override
   String territoryYourCrewLine(String name) {
-    return 'Your crew: $name';
+    return 'Ihre Crew: $name';
   }
 
   @override
-  String get territoryDetailRegionPreviewTitle => 'Region preview';
+  String get territoryDetailRegionPreviewTitle => 'Regionsvorschau';
 
   @override
   String get territoryDetailRegionPreviewSubtitle =>
-      'Only the selected region, without the rest of the map.';
+      'Nur die ausgewählte Region, ohne den Rest der Karte.';
 
   @override
-  String get territoryNeutralTerritory => 'Neutral territory';
+  String get territoryNeutralTerritory => 'Neutrales Territorium';
 
   @override
-  String get territoryDetailOwner => 'Owner';
+  String get territoryDetailOwner => 'Eigentümer';
 
   @override
   String get territoryDetailNeutral => 'Neutral';
 
   @override
-  String get territoryDetailStability => 'Stability';
+  String get territoryDetailStability => 'Stabilität';
 
   @override
-  String get territoryDetailEffectiveStability => 'Effective stability';
+  String get territoryDetailEffectiveStability => 'Effektive Stabilität';
 
   @override
-  String get territoryDetailControl => 'Control';
+  String get territoryDetailControl => 'Kontrolle';
 
   @override
-  String get territoryDetailValueTier => 'Value tier';
+  String get territoryDetailValueTier => 'Wertstufe';
 
   @override
-  String get territoryDetailPayout => 'Payout';
+  String get territoryDetailPayout => 'Auszahlung';
 
   @override
-  String get territoryDetailStrategicRole => 'Strategic role';
+  String get territoryDetailStrategicRole => 'Strategische Rolle';
 
   @override
-  String get territoryDetailAdjacentOwned => 'Adjacent owned regions';
+  String get territoryDetailAdjacentOwned => 'Angrenzende Eigentumsregionen';
 
   @override
-  String get territoryDetailActionBonuses => 'Action bonuses';
+  String get territoryDetailActionBonuses => 'Aktionsboni';
 
   @override
-  String get territoryDetailBonusInfo => 'Bonus info';
+  String get territoryDetailBonusInfo => 'Bonusinfo';
 
   @override
   String get territoryDetailBonusInfoBody =>
-      'These bonuses only increase your contest points per action. The region € payout stays the same.';
+      'Diese Boni erhöhen nur Ihre Wettbewerbspunkte pro Aktion. Die Auszahlung der Region € bleibt gleich.';
 
   @override
-  String get territoryDetailWarPressure => 'War pressure';
+  String get territoryDetailWarPressure => 'Kriegsdruck';
 
   @override
-  String get territoryDetailAttackPressure => 'attack pressure';
+  String get territoryDetailAttackPressure => 'Angriffsdruck';
 
   @override
-  String get territoryDetailStabilityWord => 'stability';
+  String get territoryDetailStabilityWord => 'Stabilität';
 
   @override
-  String get territoryWarRoleTheater => 'theater region';
+  String get territoryWarRoleTheater => 'Theaterregion';
 
   @override
-  String get territoryWarRoleAdjacent => 'adjacent region';
+  String get territoryWarRoleAdjacent => 'angrenzende Region';
 
   @override
-  String get territoryWarRoleTarget => 'target region';
+  String get territoryWarRoleTarget => 'Zielregion';
 
   @override
-  String get territoryWarPressureEndsIn => 'War pressure ends in';
+  String get territoryWarPressureEndsIn => 'Der Kriegsdruck endet in';
 
   @override
-  String get territoryDetailIncomeHour => 'Income per hour';
+  String get territoryDetailIncomeHour => 'Einkommen pro Stunde';
 
   @override
-  String get territoryDetailIncomeDay => 'Income per day';
+  String get territoryDetailIncomeDay => 'Einkommen pro Tag';
 
   @override
-  String get territoryDetailYourCrew => 'Your crew';
+  String get territoryDetailYourCrew => 'Ihre Crew';
 
   @override
-  String get territoryDetailContestStatus => 'Contest status';
+  String get territoryDetailContestStatus => 'Wettbewerbsstatus';
 
   @override
-  String get territoryDetailYourRole => 'Your role';
+  String get territoryDetailYourRole => 'Deine Rolle';
 
   @override
-  String get territoryDetailYourHqLevel => 'Your HQ level';
+  String get territoryDetailYourHqLevel => 'Ihr HQ-Level';
 
   @override
-  String get territoryDetailActionsUnlockIn => 'Actions unlock in';
+  String get territoryDetailActionsUnlockIn => 'Aktionen werden freigeschaltet';
 
   @override
-  String get territoryDetailActionsCloseIn => 'Actions close in';
+  String get territoryDetailActionsCloseIn => 'Die Aktionen stehen vor der Tür';
 
   @override
-  String get territoryDetailContestEndsIn => 'Contest ends in';
+  String get territoryDetailContestEndsIn => 'Der Wettbewerb endet in';
 
   @override
-  String get territoryDetailCooldownPerAction => 'Cooldown per action';
+  String get territoryDetailCooldownPerAction => 'Abklingzeit pro Aktion';
 
   @override
-  String get territoryDetailYourCooldown => 'Your cooldown';
+  String get territoryDetailYourCooldown => 'Deine Abklingzeit';
 
   @override
   String get territoryNoticeCrewOnly =>
-      'Territory is only playable for crew members. Create or join a crew first, then you can attack neutral regions.';
+      'Territory ist nur für Besatzungsmitglieder spielbar. Erstellen Sie zunächst eine Crew oder treten Sie einer bei, dann können Sie neutrale Regionen angreifen.';
 
   @override
   String territoryNoticeWrongCountry(
     String viewingCountry,
     String playerCountry,
   ) {
-    return 'You are viewing $viewingCountry, but you are currently in $playerCountry. You can browse this map, but attacks and contest actions only unlock after you travel to this country.';
+    return 'Sie sehen $viewingCountry, aber Sie befinden sich derzeit in $playerCountry. Sie können diese Karte durchsuchen, Angriffe und Wettbewerbsaktionen werden jedoch erst freigeschaltet, nachdem Sie in dieses Land gereist sind.';
   }
 
   @override
   String get territoryNoticeOwnRegion =>
-      'Your crew already controls this region.';
+      'Ihre Crew kontrolliert diese Region bereits.';
 
   @override
   String get territoryNoticeDefenderPrep =>
-      'Your crew is defending this region. Once the active phase starts, you will only see defensive actions.';
+      'Ihre Crew verteidigt diese Region. Sobald die aktive Phase beginnt, werden Ihnen nur noch defensive Aktionen angezeigt.';
 
   @override
-  String get territoryConfirmDefense => 'Confirm defense';
+  String get territoryConfirmDefense => 'Verteidigung bestätigen';
 
   @override
-  String get territoryAttack => 'Attack';
+  String get territoryAttack => 'Angriff';
 
   @override
-  String get territoryAttackerActions => 'Attacker actions';
+  String get territoryAttackerActions => 'Aktionen des Angreifers';
 
   @override
-  String get territoryDefenderActions => 'Defender actions';
+  String get territoryDefenderActions => 'Aktionen des Verteidigers';
 
   @override
-  String get territoryContestActions => 'Contest actions';
+  String get territoryContestActions => 'Wettbewerbsaktionen';
 
   @override
-  String get territoryIntelShort => 'Intel scan';
+  String get territoryIntelShort => 'Intel-Scan';
 
   @override
-  String get territoryRequiresHqShort => 'requires HQ';
+  String get territoryRequiresHqShort => 'erfordert HQ';
 
   @override
   String territoryHqLockedNotice(String actions) {
-    return 'Higher HQ level required for: $actions.';
+    return 'Höhere HQ-Stufe erforderlich für: $actions.';
   }
 
   @override
   String get territoryNotInContestNotice =>
-      'You are not part of this contest, so you cannot perform actions here.';
+      'Sie nehmen nicht an diesem Wettbewerb teil und können daher hier keine Aktionen durchführen.';
 
   @override
   String territoryContestOtherCountryNotice(String country) {
-    return 'This contest is taking place in another country. You can follow it, but you can only join once you are physically in $country.';
+    return 'Dieser Wettbewerb findet in einem anderen Land statt. Du kannst ihm folgen, aber erst beitreten, wenn du dich physisch in $country befindest.';
   }
 
   @override
-  String get territoryLeaderboardEmpty => 'No territory controlled yet.';
+  String get territoryLeaderboardEmpty => 'Noch kein Territorium kontrolliert.';
 
   @override
   String territoryLeaderboardRegionsCount(int count) {
-    return '$count regions';
+    return '$count Regionen';
   }
 
   @override
-  String get territorySeasonNone => 'No active season found.';
+  String get territorySeasonNone => 'Keine aktive Saison gefunden.';
 
   @override
-  String get territorySeasonCurrent => 'Current season';
+  String get territorySeasonCurrent => 'Aktuelle Saison';
 
   @override
-  String get territorySeasonKey => 'Key';
+  String get territorySeasonKey => 'Schlüssel';
 
   @override
   String get territorySeasonStatus => 'Status';
@@ -7546,50 +7546,50 @@ class AppLocalizationsDe extends AppLocalizations {
   String get territorySeasonStart => 'Start';
 
   @override
-  String get territorySeasonEnd => 'End';
+  String get territorySeasonEnd => 'Ende';
 
   @override
-  String get territoryDialogAttackTitle => 'Attack?';
+  String get territoryDialogAttackTitle => 'Angriff?';
 
   @override
   String territoryDialogAttackBody(String regionKey) {
-    return 'Start a contest for $regionKey?';
+    return 'Einen Wettbewerb für $regionKey starten?';
   }
 
   @override
   String get territorySnackJoinCrewFirst =>
-      'Join a crew first to attack territory.';
+      'Schließen Sie sich zunächst einer Crew an, um das Territorium anzugreifen.';
 
   @override
   String territorySnackContestStarted(String status) {
-    return 'Contest started. Status: $status. Wait for the preparation phase to finish before taking actions.';
+    return 'Der Wettbewerb hat begonnen. Status: $status. Warten Sie, bis die Vorbereitungsphase abgeschlossen ist, bevor Sie Maßnahmen ergreifen.';
   }
 
   @override
   String territorySnackContestAlreadyLive(String status) {
-    return 'The contest is already started and the map has been refreshed. Status: $status.';
+    return 'Der Wettbewerb hat bereits begonnen und die Karte wurde aktualisiert. Status: $status.';
   }
 
   @override
   String territoryPointsDelta(String points) {
-    return '+$points points!';
+    return '+$points Punkte!';
   }
 
   @override
   String get territorySnackDefenseConfirmed =>
-      'Defense confirmed. Once the active phase starts, you can perform defensive actions.';
+      'Verteidigung bestätigt. Sobald die aktive Phase beginnt, können Sie Verteidigungsaktionen durchführen.';
 
   @override
   String get territorySnackContestRefreshed =>
-      'The contest state has been refreshed. You can now immediately see the current defense phase.';
+      'Der Wettbewerbsstatus wurde aktualisiert. Sie können nun sofort die aktuelle Verteidigungsphase sehen.';
 
   @override
   String territoryHqTooltipLocked(int required, int current) {
-    return 'Requires HQ level $required. Current HQ level: $current.';
+    return 'Erfordert HQ-Level $required. Aktuelle HQ-Stufe: $current.';
   }
 
   @override
   String territoryHqButtonLocked(String label, int level) {
-    return '$label (requires HQ $level)';
+    return '$label (erfordert HQ $level)';
   }
 }

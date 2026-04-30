@@ -11,6 +11,8 @@
  *   cd scripts && node translate_arb_english_fallback.mjs --report
  *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,nl,es,fr,it,pl,pt
  *   cd scripts && node translate_arb_english_fallback.mjs --max=100
+ *   cd scripts && node translate_arb_english_fallback.mjs --langs=de,fr,it,pl,pt --prefix=territory
+ *     (alleen keys die met "territory" beginnen; handige batch voor één scherm)
  *
  * Zie ook: translate_app_arb_from_en.mjs (volledige ARB overschrijven) en verify_arb_parity.mjs.
  */
@@ -40,6 +42,9 @@ const LANG_FILTER = langsArg
         .filter((c) => /^[a-z]{2}$/.test(c)),
     )
   : null;
+
+const prefixArg = args.find((a) => a.startsWith('--prefix='));
+const KEY_PREFIX = prefixArg ? prefixArg.split('=')[1] : null;
 
 const DELAY_MS = 120;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -119,6 +124,7 @@ function isIcuSelectOrPlural(s) {
 function fallbackKeys(en, target) {
   const keys = [];
   for (const k of stringKeys(en)) {
+    if (KEY_PREFIX && !k.startsWith(KEY_PREFIX)) continue;
     if (target[k] === undefined) continue;
     if (target[k] !== en[k]) continue;
     if (isIcuSelectOrPlural(en[k])) continue;

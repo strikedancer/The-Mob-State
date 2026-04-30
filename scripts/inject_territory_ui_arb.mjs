@@ -3,6 +3,8 @@
  * Merges scripts/territory_ui_l10n_data.json into app_en.arb and patches app_nl.arb values.
  * Run: node scripts/inject_territory_ui_arb.mjs
  * Then: node scripts/merge_arb_missing_from_en.mjs app_de.arb (etc.) && flutter gen-l10n
+ * Keys die in de/fr/es/it/pl/pt nog Engels zijn (zelfde string als EN): vanaf scripts/
+ *   node translate_arb_english_fallback.mjs --langs=de,fr,es,it,pl,pt --prefix=territory
  */
 import fs from 'fs';
 import path from 'path';
