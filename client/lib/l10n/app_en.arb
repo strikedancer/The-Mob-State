@@ -1884,7 +1884,13 @@
   },
   "shootingTrain": "Train",
   "gym": "Gym",
+  "gymIntro": "Train your strength and increase your crime success rate",
   "gymTrainSuccess": "Training complete",
+  "gymMaxSessionsReached": "Maximum sessions reached",
+  "gymTrainingProgressTitle": "Training Progress",
+  "gymSessionsCompletedLabel": "Sessions completed:",
+  "gymProgressCompleteSuffix": "complete",
+  "gymCurrentBonusTitle": "Current Bonus",
   "gymSessions": "Sessions: {count}/100",
   "@gymSessions": {
     "placeholders": {
@@ -1893,6 +1899,8 @@
       }
     }
   },
+  "gymStrengthBonusLabel": "Strength Bonus",
+  "gymMaximumLabel": "Maximum",
   "gymStrengthBonus": "Strength bonus: {bonus}%",
   "@gymStrengthBonus": {
     "placeholders": {
@@ -1901,6 +1909,9 @@
       }
     }
   },
+  "gymBonusAppliedToCrimes": "This bonus is applied to all your crime attempts",
+  "gymReadyToTrain": "Ready to train",
+  "gymTrainingCooldownTitle": "Training Cooldown",
   "gymCooldown": "Next session at {time}",
   "@gymCooldown": {
     "placeholders": {
@@ -1909,7 +1920,15 @@
       }
     }
   },
+  "gymCooldownHint": "You must wait 1 hour between training sessions",
   "gymTrain": "Train",
+  "gymTrainingInProgress": "Training...",
+  "gymHowItWorksTitle": "How does it work?",
+  "gymHowItWorksBullet1": "• Train every hour for a strength boost",
+  "gymHowItWorksBullet2": "• Each session gives +0.08% bonus",
+  "gymHowItWorksBullet3": "• Maximum of 100 sessions (+8% total)",
+  "gymHowItWorksBullet4": "• Increases your crime success rate",
+  "gymHowItWorksBullet5": "• Permanent bonus, every session counts",
   "buyAmmo": "Buy Ammo",
   "factoryPurchaseCost": "Purchase Cost: €{cost}",
   "@factoryPurchaseCost": {

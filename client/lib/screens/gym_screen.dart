@@ -18,9 +18,6 @@ class _GymScreenState extends State<GymScreen> {
   bool _isTraining = false;
   Map<String, dynamic>? _status;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
   @override
   void initState() {
     super.initState();
@@ -32,14 +29,11 @@ class _GymScreenState extends State<GymScreen> {
     try {
       final response = await _apiClient.get('/gym/status');
       final data = jsonDecode(response.body);
-      print('[GYM] Status response: ${response.body}');
-      print('[GYM] Parsed status: ${data['status']}');
       setState(() {
         _status = data['status'] as Map<String, dynamic>?;
         _isLoading = false;
       });
     } catch (e) {
-      print('[GYM] Error loading status: $e');
       setState(() => _isLoading = false);
     }
   }
@@ -61,9 +55,28 @@ class _GymScreenState extends State<GymScreen> {
         }
         await _loadStatus();
       } else if (mounted) {
-        final message =
-            data['message']?.toString() ??
-            (l10n?.hitError(data.toString()) ?? 'Error: $data');
+        final reason = data['params']?['reason']?.toString();
+        String message;
+
+        switch (reason) {
+          case 'MAX_SESSIONS':
+            message =
+                l10n?.gymMaxSessionsReached ?? 'Maximum sessions reached';
+            break;
+          case 'COOLDOWN':
+            final nextTrainAtRaw = data['params']?['nextTrainAt']?.toString();
+            final nextTrainAt = nextTrainAtRaw != null
+                ? DateTime.tryParse(nextTrainAtRaw)?.toLocal()
+                : null;
+            final nextLabel = nextTrainAt != null
+                ? DateFormat('HH:mm').format(nextTrainAt)
+                : '-';
+            message = l10n?.gymCooldown(nextLabel) ?? 'Next session at $nextLabel';
+            break;
+          default:
+            message =
+                l10n?.unknownError ?? (l10n?.hitError(data.toString()) ?? 'Error: $data');
+        }
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(message)));
@@ -91,11 +104,6 @@ class _GymScreenState extends State<GymScreen> {
     final canTrain = status['canTrain'] == true;
     final progress = sessions / 100;
     final maxBonus = 8.0;
-
-    print('[GYM] Build - status: $status');
-    print('[GYM] Build - canTrain: $canTrain (raw: ${status['canTrain']})');
-    print('[GYM] Build - _isTraining: $_isTraining');
-    print('[GYM] Build - Button enabled: ${!_isTraining && canTrain}');
 
     if (_isLoading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -150,10 +158,8 @@ class _GymScreenState extends State<GymScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  _tr(
-                                    'Train je kracht en verhoog je crime slagingskans',
-                                    'Train your strength and increase your crime success rate',
-                                  ),
+                                  l10n?.gymIntro ??
+                                      'Train your strength and increase your crime success rate',
                                   style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(color: Colors.grey[600]),
                                 ),
@@ -177,7 +183,7 @@ class _GymScreenState extends State<GymScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _tr('Training Voortgang', 'Training Progress'),
+                        l10n?.gymTrainingProgressTitle ?? 'Training Progress',
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
@@ -186,7 +192,8 @@ class _GymScreenState extends State<GymScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            _tr('Sessies voltooid:', 'Sessions completed:'),
+                            l10n?.gymSessionsCompletedLabel ??
+                                'Sessions completed:',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           Text(
@@ -211,7 +218,7 @@ class _GymScreenState extends State<GymScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${(progress * 100).toStringAsFixed(0)}% ${_tr('compleet', 'complete')}',
+                        '${(progress * 100).toStringAsFixed(0)}% ${l10n?.gymProgressCompleteSuffix ?? 'complete'}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -231,7 +238,7 @@ class _GymScreenState extends State<GymScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _tr('Huidige Bonus', 'Current Bonus'),
+                        l10n?.gymCurrentBonusTitle ?? 'Current Bonus',
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
@@ -269,7 +276,8 @@ class _GymScreenState extends State<GymScreen> {
                                     ),
                                   ),
                                   Text(
-                                    _tr('Kracht Bonus', 'Strength Bonus'),
+                                    l10n?.gymStrengthBonusLabel ??
+                                        'Strength Bonus',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.white70,
@@ -302,9 +310,9 @@ class _GymScreenState extends State<GymScreen> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const Text(
-                                    'Maximum',
-                                    style: TextStyle(
+                                  Text(
+                                    l10n?.gymMaximumLabel ?? 'Maximum',
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
                                     ),
@@ -333,10 +341,8 @@ class _GymScreenState extends State<GymScreen> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                _tr(
-                                  'Deze bonus wordt toegepast op al je crime pogingen',
-                                  'This bonus is applied to all your crime attempts',
-                                ),
+                                l10n?.gymBonusAppliedToCrimes ??
+                                    'This bonus is applied to all your crime attempts',
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.blue.shade900,
@@ -369,8 +375,9 @@ class _GymScreenState extends State<GymScreen> {
                           const SizedBox(width: 8),
                           Text(
                             canTrain
-                                ? _tr('Klaar om te trainen', 'Ready to train')
-                                : _tr('Training Cooldown', 'Training Cooldown'),
+                                ? (l10n?.gymReadyToTrain ?? 'Ready to train')
+                                : (l10n?.gymTrainingCooldownTitle ??
+                                      'Training Cooldown'),
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
@@ -387,20 +394,16 @@ class _GymScreenState extends State<GymScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              _tr(
-                                'Volgende sessie om: $nextTrainLabel',
-                                'Next session at: $nextTrainLabel',
-                              ),
+                              l10n?.gymCooldown(nextTrainLabel) ??
+                                  'Next session at $nextTrainLabel',
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _tr(
-                            'Je moet 1 uur wachten tussen training sessies',
-                            'You must wait 1 hour between training sessions',
-                          ),
+                          l10n?.gymCooldownHint ??
+                              'You must wait 1 hour between training sessions',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.grey[600]),
                         ),
@@ -433,7 +436,8 @@ class _GymScreenState extends State<GymScreen> {
                               : const Icon(Icons.fitness_center),
                           label: Text(
                             _isTraining
-                                ? _tr('Bezig met trainen...', 'Training...')
+                                ? (l10n?.gymTrainingInProgress ??
+                                      'Training...')
                                 : (l10n?.gymTrain ?? 'Train'),
                             style: const TextStyle(
                               fontSize: 16,
@@ -465,7 +469,7 @@ class _GymScreenState extends State<GymScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            _tr('Hoe werkt het?', 'How does it work?'),
+                            l10n?.gymHowItWorksTitle ?? 'How does it work?',
                             style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
@@ -473,34 +477,24 @@ class _GymScreenState extends State<GymScreen> {
                       ),
                       const SizedBox(height: 12),
                       _buildInfoRow(
-                        _tr(
-                          '• Train elke uur voor een kracht boost',
-                          '• Train every hour for a strength boost',
-                        ),
+                        l10n?.gymHowItWorksBullet1 ??
+                            '• Train every hour for a strength boost',
                       ),
                       _buildInfoRow(
-                        _tr(
-                          '• Elke sessie geeft +0.08% bonus',
-                          '• Each session gives +0.08% bonus',
-                        ),
+                        l10n?.gymHowItWorksBullet2 ??
+                            '• Each session gives +0.08% bonus',
                       ),
                       _buildInfoRow(
-                        _tr(
-                          '• Maximum van 100 sessies (+8% totaal)',
-                          '• Maximum of 100 sessions (+8% total)',
-                        ),
+                        l10n?.gymHowItWorksBullet3 ??
+                            '• Maximum of 100 sessions (+8% total)',
                       ),
                       _buildInfoRow(
-                        _tr(
-                          '• Verhoogt je crime slagingskans',
-                          '• Increases your crime success rate',
-                        ),
+                        l10n?.gymHowItWorksBullet4 ??
+                            '• Increases your crime success rate',
                       ),
                       _buildInfoRow(
-                        _tr(
-                          '• Blijvende bonus, elke sessie telt',
-                          '• Permanent bonus, every session counts',
-                        ),
+                        l10n?.gymHowItWorksBullet5 ??
+                            '• Permanent bonus, every session counts',
                       ),
                     ],
                   ),

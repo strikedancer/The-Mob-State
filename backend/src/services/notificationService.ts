@@ -70,6 +70,16 @@ const COOLDOWN_ACTION_LABEL: Record<string, Partial<Record<SupportedPlayerLangua
     pl: 'fabryka amunicji',
     pt: 'fábrica de munições',
   },
+  gym: {
+    en: 'gym',
+    nl: 'sportschool',
+    es: 'gimnasio',
+    de: 'Fitnessstudio',
+    fr: 'salle de sport',
+    it: 'palestra',
+    pl: 'siłownia',
+    pt: 'ginásio',
+  },
 };
 
 function labelForCooldownAction(actionType: string, lang: SupportedPlayerLanguage): string {

@@ -3671,7 +3671,26 @@ class AppLocalizationsPl extends AppLocalizations {
   String get gym => 'Sala gimnastyczna';
 
   @override
+  String get gymIntro =>
+      'Trenuj swoją siłę i zwiększ wskaźnik skuteczności przestępstw';
+
+  @override
   String get gymTrainSuccess => 'Szkolenie zakończone';
+
+  @override
+  String get gymMaxSessionsReached => 'Osiągnięto maksymalną liczbę sesji';
+
+  @override
+  String get gymTrainingProgressTitle => 'Postęp szkoleniowy';
+
+  @override
+  String get gymSessionsCompletedLabel => 'Ukończone sesje:';
+
+  @override
+  String get gymProgressCompleteSuffix => 'kompletny';
+
+  @override
+  String get gymCurrentBonusTitle => 'Aktualny bonus';
 
   @override
   String gymSessions(String count) {
@@ -3679,9 +3698,25 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get gymStrengthBonusLabel => 'Bonus za siłę';
+
+  @override
+  String get gymMaximumLabel => 'Maksymalny';
+
+  @override
   String gymStrengthBonus(String bonus) {
     return 'Bonus do siły: $bonus%';
   }
+
+  @override
+  String get gymBonusAppliedToCrimes =>
+      'Bonus ten jest stosowany do wszystkich prób popełnienia przestępstwa';
+
+  @override
+  String get gymReadyToTrain => 'Gotowy do treningu';
+
+  @override
+  String get gymTrainingCooldownTitle => 'Czas odnowienia treningu';
 
   @override
   String gymCooldown(String time) {
@@ -3689,7 +3724,33 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
+  String get gymCooldownHint =>
+      'Pomiędzy sesjami treningowymi należy odczekać 1 godzinę';
+
+  @override
   String get gymTrain => 'Pociąg';
+
+  @override
+  String get gymTrainingInProgress => 'Szkolenie...';
+
+  @override
+  String get gymHowItWorksTitle => 'Jak to działa?';
+
+  @override
+  String get gymHowItWorksBullet1 => '• Trenuj co godzinę, aby zwiększyć siłę';
+
+  @override
+  String get gymHowItWorksBullet2 => '• Każda sesja daje premię +0,08%.';
+
+  @override
+  String get gymHowItWorksBullet3 => '• Maksymalnie 100 sesji (łącznie +8%)';
+
+  @override
+  String get gymHowItWorksBullet4 =>
+      '• Zwiększa wskaźnik powodzenia przestępstwa';
+
+  @override
+  String get gymHowItWorksBullet5 => '• Stały bonus, liczy się każda sesja';
 
   @override
   String get buyAmmo => 'Kup amunicję';

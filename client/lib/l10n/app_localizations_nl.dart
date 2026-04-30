@@ -3663,7 +3663,26 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gym => 'Sportschool';
 
   @override
+  String get gymIntro =>
+      'Train je kracht en verhoog je slagingskans bij misdaden';
+
+  @override
   String get gymTrainSuccess => 'Training voltooid';
+
+  @override
+  String get gymMaxSessionsReached => 'Maximum aantal sessies bereikt';
+
+  @override
+  String get gymTrainingProgressTitle => 'Training Voortgang';
+
+  @override
+  String get gymSessionsCompletedLabel => 'Sessies voltooid:';
+
+  @override
+  String get gymProgressCompleteSuffix => 'compleet';
+
+  @override
+  String get gymCurrentBonusTitle => 'Huidige Bonus';
 
   @override
   String gymSessions(String count) {
@@ -3671,9 +3690,25 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get gymStrengthBonusLabel => 'Kracht Bonus';
+
+  @override
+  String get gymMaximumLabel => 'Maximum';
+
+  @override
   String gymStrengthBonus(String bonus) {
     return 'Kracht bonus: $bonus%';
   }
+
+  @override
+  String get gymBonusAppliedToCrimes =>
+      'Deze bonus wordt toegepast op al je misdaadpogingen';
+
+  @override
+  String get gymReadyToTrain => 'Klaar om te trainen';
+
+  @override
+  String get gymTrainingCooldownTitle => 'Training Cooldown';
 
   @override
   String gymCooldown(String time) {
@@ -3681,7 +3716,31 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get gymCooldownHint => 'Je moet 1 uur wachten tussen trainingssessies';
+
+  @override
   String get gymTrain => 'Trainen';
+
+  @override
+  String get gymTrainingInProgress => 'Bezig met trainen...';
+
+  @override
+  String get gymHowItWorksTitle => 'Hoe werkt het?';
+
+  @override
+  String get gymHowItWorksBullet1 => '• Train elk uur voor een krachtboost';
+
+  @override
+  String get gymHowItWorksBullet2 => '• Elke sessie geeft +0.08% bonus';
+
+  @override
+  String get gymHowItWorksBullet3 => '• Maximum van 100 sessies (+8% totaal)';
+
+  @override
+  String get gymHowItWorksBullet4 => '• Verhoogt je slagingskans bij misdaden';
+
+  @override
+  String get gymHowItWorksBullet5 => '• Blijvende bonus; elke sessie telt';
 
   @override
   String get buyAmmo => 'Munitie Kopen';

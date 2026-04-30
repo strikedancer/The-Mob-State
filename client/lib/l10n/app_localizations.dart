@@ -6770,11 +6770,47 @@ abstract class AppLocalizations {
   /// **'Gym'**
   String get gym;
 
+  /// No description provided for @gymIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Train your strength and increase your crime success rate'**
+  String get gymIntro;
+
   /// No description provided for @gymTrainSuccess.
   ///
   /// In en, this message translates to:
   /// **'Training complete'**
   String get gymTrainSuccess;
+
+  /// No description provided for @gymMaxSessionsReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum sessions reached'**
+  String get gymMaxSessionsReached;
+
+  /// No description provided for @gymTrainingProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training Progress'**
+  String get gymTrainingProgressTitle;
+
+  /// No description provided for @gymSessionsCompletedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sessions completed:'**
+  String get gymSessionsCompletedLabel;
+
+  /// No description provided for @gymProgressCompleteSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'complete'**
+  String get gymProgressCompleteSuffix;
+
+  /// No description provided for @gymCurrentBonusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Bonus'**
+  String get gymCurrentBonusTitle;
 
   /// No description provided for @gymSessions.
   ///
@@ -6782,11 +6818,41 @@ abstract class AppLocalizations {
   /// **'Sessions: {count}/100'**
   String gymSessions(String count);
 
+  /// No description provided for @gymStrengthBonusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength Bonus'**
+  String get gymStrengthBonusLabel;
+
+  /// No description provided for @gymMaximumLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum'**
+  String get gymMaximumLabel;
+
   /// No description provided for @gymStrengthBonus.
   ///
   /// In en, this message translates to:
   /// **'Strength bonus: {bonus}%'**
   String gymStrengthBonus(String bonus);
+
+  /// No description provided for @gymBonusAppliedToCrimes.
+  ///
+  /// In en, this message translates to:
+  /// **'This bonus is applied to all your crime attempts'**
+  String get gymBonusAppliedToCrimes;
+
+  /// No description provided for @gymReadyToTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to train'**
+  String get gymReadyToTrain;
+
+  /// No description provided for @gymTrainingCooldownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training Cooldown'**
+  String get gymTrainingCooldownTitle;
 
   /// No description provided for @gymCooldown.
   ///
@@ -6794,11 +6860,59 @@ abstract class AppLocalizations {
   /// **'Next session at {time}'**
   String gymCooldown(String time);
 
+  /// No description provided for @gymCooldownHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You must wait 1 hour between training sessions'**
+  String get gymCooldownHint;
+
   /// No description provided for @gymTrain.
   ///
   /// In en, this message translates to:
   /// **'Train'**
   String get gymTrain;
+
+  /// No description provided for @gymTrainingInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Training...'**
+  String get gymTrainingInProgress;
+
+  /// No description provided for @gymHowItWorksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How does it work?'**
+  String get gymHowItWorksTitle;
+
+  /// No description provided for @gymHowItWorksBullet1.
+  ///
+  /// In en, this message translates to:
+  /// **'• Train every hour for a strength boost'**
+  String get gymHowItWorksBullet1;
+
+  /// No description provided for @gymHowItWorksBullet2.
+  ///
+  /// In en, this message translates to:
+  /// **'• Each session gives +0.08% bonus'**
+  String get gymHowItWorksBullet2;
+
+  /// No description provided for @gymHowItWorksBullet3.
+  ///
+  /// In en, this message translates to:
+  /// **'• Maximum of 100 sessions (+8% total)'**
+  String get gymHowItWorksBullet3;
+
+  /// No description provided for @gymHowItWorksBullet4.
+  ///
+  /// In en, this message translates to:
+  /// **'• Increases your crime success rate'**
+  String get gymHowItWorksBullet4;
+
+  /// No description provided for @gymHowItWorksBullet5.
+  ///
+  /// In en, this message translates to:
+  /// **'• Permanent bonus, every session counts'**
+  String get gymHowItWorksBullet5;
 
   /// No description provided for @buyAmmo.
   ///

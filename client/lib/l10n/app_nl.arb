@@ -1013,7 +1013,13 @@
   },
   "shootingTrain": "Trainen",
   "gym": "Sportschool",
+  "gymIntro": "Train je kracht en verhoog je slagingskans bij misdaden",
   "gymTrainSuccess": "Training voltooid",
+  "gymMaxSessionsReached": "Maximum aantal sessies bereikt",
+  "gymTrainingProgressTitle": "Training Voortgang",
+  "gymSessionsCompletedLabel": "Sessies voltooid:",
+  "gymProgressCompleteSuffix": "compleet",
+  "gymCurrentBonusTitle": "Huidige Bonus",
   "gymSessions": "Sessies: {count}/100",
   "@gymSessions": {
     "placeholders": {
@@ -1039,6 +1045,19 @@
     }
   },
   "gymTrain": "Trainen",
+  "gymStrengthBonusLabel": "Kracht Bonus",
+  "gymMaximumLabel": "Maximum",
+  "gymBonusAppliedToCrimes": "Deze bonus wordt toegepast op al je misdaadpogingen",
+  "gymReadyToTrain": "Klaar om te trainen",
+  "gymTrainingCooldownTitle": "Training Cooldown",
+  "gymCooldownHint": "Je moet 1 uur wachten tussen trainingssessies",
+  "gymTrainingInProgress": "Bezig met trainen...",
+  "gymHowItWorksTitle": "Hoe werkt het?",
+  "gymHowItWorksBullet1": "• Train elk uur voor een krachtboost",
+  "gymHowItWorksBullet2": "• Elke sessie geeft +0.08% bonus",
+  "gymHowItWorksBullet3": "• Maximum van 100 sessies (+8% totaal)",
+  "gymHowItWorksBullet4": "• Verhoogt je slagingskans bij misdaden",
+  "gymHowItWorksBullet5": "• Blijvende bonus; elke sessie telt",
   "buyAmmo": "Munitie Kopen",
   "factoryPurchaseCost": "Aankoopkosten: €{cost}",
   "@factoryPurchaseCost": {
