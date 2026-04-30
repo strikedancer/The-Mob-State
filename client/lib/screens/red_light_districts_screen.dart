@@ -338,7 +338,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                                 ? () => _openPlayerProfile(
                                     district.ownerId!,
                                     district.owner!['username'] as String? ??
-                                        'Onbekend',
+                                        l10n.unknown,
                                   )
                                 : null,
                             child: Text(
@@ -415,8 +415,10 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                           const SizedBox(width: 8),
                           Text(
                             hasStats
-                                ? '€${district.stats!.hourlyIncome}/h'
-                                : 'N/B',
+                                ? l10n.prostitutionEuroPerHour(
+                                    district.stats!.hourlyIncome.toString(),
+                                  )
+                                : l10n.prostitutionNotApplicable,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -557,7 +559,7 @@ class _RedLightDistrictsScreenState extends State<RedLightDistrictsScreen>
                 child: Column(
                   children: [
                     Text(
-                      '€$hourlyIncome/h',
+                      l10n.prostitutionEuroPerHour(hourlyIncome.toString()),
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

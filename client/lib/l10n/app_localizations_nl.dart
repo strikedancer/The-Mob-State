@@ -4120,7 +4120,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get prostitutionLocation => 'Locatie';
 
   @override
-  String get prostitutionMoveToRedLight => 'Verplaats naar Red Light';
+  String get prostitutionMoveToRedLight => 'Naar rosse buurt';
 
   @override
   String get prostitutionMoveToRldShort => 'Naar RLD';

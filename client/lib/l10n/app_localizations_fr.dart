@@ -4159,7 +4159,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prostitutionLocation => 'Emplacement';
 
   @override
-  String get prostitutionMoveToRedLight => 'Passer au feu rouge';
+  String get prostitutionMoveToRedLight => 'Aller au quartier rouge';
 
   @override
   String get prostitutionMoveToRldShort => 'Vers RLD';

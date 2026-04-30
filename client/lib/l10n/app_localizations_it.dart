@@ -4131,7 +4131,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get prostitutionLocation => 'Posizione';
 
   @override
-  String get prostitutionMoveToRedLight => 'Passare al semaforo rosso';
+  String get prostitutionMoveToRedLight => 'Vai al quartiere a luci rosse';
 
   @override
   String get prostitutionMoveToRldShort => 'Al RLD';
