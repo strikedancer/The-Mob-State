@@ -952,7 +952,7 @@
   "factoryLastProduced": "Laatst geproduceerd",
   "factoryProduceStatusLabel": "Produceerstatus",
   "factoryProduceStatusReady": "Klaar",
-  "factoryProduceStatusCooldown": "Cooldown",
+  "factoryProduceStatusCooldown": "Afkoelen",
   "factorySessionActive": "Productie venster: actief (10 min interval)",
   "factorySessionStopped": "Productie venster: gestopt (klik Produce om opnieuw 8 uur te starten)",
   "factorySessionEndsIn": "Venster eindigt over: {duration}",
@@ -994,10 +994,10 @@
   "shootingProgressCompleteSuffix": "compleet",
   "shootingCurrentBonusTitle": "Huidige Bonus",
   "shootingAccuracyBonusLabel": "Precisie Bonus",
-  "shootingMaximumLabel": "Maximum",
+  "shootingMaximumLabel": "Maximaal",
   "shootingBonusAppliedToCrimes": "Deze bonus wordt toegepast op al je misdaadpogingen",
   "shootingReadyToTrain": "Klaar om te trainen",
-  "shootingTrainingCooldownTitle": "Training Cooldown",
+  "shootingTrainingCooldownTitle": "Cooldown trainen",
   "shootingCooldownLabel": "Volgende sessie om: {time}",
   "@shootingCooldownLabel": {
     "placeholders": {
@@ -1073,10 +1073,10 @@
   },
   "gymTrain": "Trainen",
   "gymStrengthBonusLabel": "Kracht Bonus",
-  "gymMaximumLabel": "Maximum",
+  "gymMaximumLabel": "Maximaal",
   "gymBonusAppliedToCrimes": "Deze bonus wordt toegepast op al je misdaadpogingen",
   "gymReadyToTrain": "Klaar om te trainen",
-  "gymTrainingCooldownTitle": "Training Cooldown",
+  "gymTrainingCooldownTitle": "Cooldown trainen",
   "gymCooldownHint": "Je moet 1 uur wachten tussen trainingssessies",
   "gymTrainingInProgress": "Bezig met trainen...",
   "gymHowItWorksTitle": "Hoe werkt het?",
@@ -2645,6 +2645,526 @@
   "crypto": "Crypto",
   "smuggling": "Smokkelen",
   "vehicleHeist": "Voertuig stelen",
+  "vehicleHeistTitle": "Voertuig stelen",
+  "vehicleHeistTabSubtitleCar": "Steel auto's voor cash en onderdelen.",
+  "vehicleHeistTabSubtitleMotorcycle": "Steel motoren voor cash en onderdelen.",
+  "vehicleHeistTabSubtitleBoat": "Steel boten voor cash en onderdelen.",
+  "vehicleHeistReady": "Klaar",
+  "vehicleHeistMotorStorage": "Motorstalling",
+  "vehicleHeistCapacityPolicyCar": "Autocapaciteit wordt gedeeld over alle auto-heists.",
+  "vehicleHeistCapacityPolicyMotorcycle": "Motorcapaciteit wordt gedeeld over alle motor-heists.",
+  "vehicleHeistCapacityPolicyBoat": "Bootcapaciteit wordt gedeeld over alle boot-heists.",
+  "vehicleHeistRankRequired": "Rank vereist: {rank}",
+  "@vehicleHeistRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCapacityLine": "Opslag: {stored}/{total} (baan lvl {level})",
+  "@vehicleHeistCapacityLine": {
+    "placeholders": {
+      "stored": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistStealCar": "Steel auto",
+  "vehicleHeistStealMotorcycle": "Steel motor",
+  "vehicleHeistStealBoat": "Steel boot",
+  "vehicleHeistGenericVehicle": "voertuig",
+  "vehicleHeistSuccessStolen": "Gelukt: {vehicle} gestolen.",
+  "@vehicleHeistSuccessStolen": {
+    "placeholders": {
+      "vehicle": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCooldownActive": "Cooldown actief: {duration}",
+  "@vehicleHeistCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistArrested": "Je bent gearresteerd ({minutes} min gevangenis).",
+  "@vehicleHeistArrested": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistUntil": "tot",
+  "vehicleHeistRegionalLockActive": "Regionale lock actief.",
+  "vehicleHeistStealFailed": "Stelen mislukt.",
+  "vehicleHeistUpgradeCompleted": "Upgrade voltooid.",
+  "vehicleHeistUpgradeFailed": "Upgrade mislukt.",
+  "vehicleHeistCatalogTitleCars": "Beschikbare auto's",
+  "vehicleHeistCatalogTitleMotorcycles": "Beschikbare motoren",
+  "vehicleHeistCatalogTitleBoats": "Beschikbare boten",
+  "vehicleHeistCatalogEmpty": "Geen voertuigen in deze catalogus.",
+  "vehicleHeistRarityCommon": "Gewoon",
+  "vehicleHeistRarityUncommon": "Ongewoon",
+  "vehicleHeistRarityRare": "Zeldzaam",
+  "vehicleHeistRarityEpic": "Episch",
+  "vehicleHeistRarityLegendary": "Legendarisch",
+  "vehicleHeistEventOnlyTag": "Alleen event",
+  "vehicleHeistCatalogValue": "Waarde: {value}",
+  "@vehicleHeistCatalogValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogRank": "Rang: {rank}",
+  "@vehicleHeistCatalogRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogInGameAvailability": "In-game beschikbaarheid: {label}",
+  "@vehicleHeistCatalogInGameAvailability": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogMostCommonIn": "Meest voorkomend in: {country}",
+  "@vehicleHeistCatalogMostCommonIn": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogCountries": "Landen: {countries}",
+  "@vehicleHeistCatalogCountries": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistUpgradeCost": "Upgraden ({cost})",
+  "@vehicleHeistUpgradeCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistUpgradeRankRequired": "Upgrade geblokkeerd: rank {rank} vereist",
+  "@vehicleHeistUpgradeRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistUpgradeLocked": "Upgrade geblokkeerd",
+  "vehicleHeistSpeedUpWithCredits": "Versnel voor {credits} credits",
+  "@vehicleHeistSpeedUpWithCredits": {
+    "placeholders": {
+      "credits": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistSpeedUpWithCreditsNextScreen": "Versnel (volgend scherm)",
+  "vehicleHeistExpand": "Openen",
+  "vehicleHeistCollapse": "Sluiten",
+  "vehicleHeistActive": "ACTIEF",
+  "vehicleHeistOff": "uit",
+  "catalog": "Catalogus",
+  "vehicleHeistOpsHotspotRunButton": "Hotspot-run",
+  "vehicleHeistOpsHotspotRunTitle": "Hotspot-run",
+  "vehicleHeistOpsHotspotSuccess": "Hotspot-run voltooid: +{reward}",
+  "@vehicleHeistOpsHotspotSuccess": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsHotspotCooldownActive": "Hotspot cooldown actief ({duration})",
+  "@vehicleHeistOpsHotspotCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsHotspotFailedHeatIncreased": "Hotspot mislukt. Hitte verhoogd.",
+  "vehicleHeistOpsCrewOpButton": "Crew-actie",
+  "vehicleHeistOpsCrewOpTitle": "Crew-actie",
+  "vehicleHeistOpsCrewSuccess": "Crew-actie voltooid: jij verdiende {reward}",
+  "@vehicleHeistOpsCrewSuccess": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewRequired": "Crew vereist.",
+  "vehicleHeistOpsCrewCooldownActive": "Crew cooldown actief ({duration})",
+  "@vehicleHeistOpsCrewCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewFailed": "Crew-actie mislukt.",
+  "vehicleHeistOpsCrewJoinToUnlock": "Join een crew om crew-acties te ontgrendelen",
+  "vehicleHeistOpsCrewRequiredYes": "Crew vereist: ja",
+  "vehicleHeistOpsCrewRequiredNoJoinFirst": "Crew vereist: nee (join eerst een crew)",
+  "vehicleHeistOpsBuyPartsButton": "Koop onderdelen",
+  "vehicleHeistOpsBuyPartsTitle": "Koop onderdelen",
+  "vehicleHeistOpsBuyPartsPrompt": "Welke onderdelen kopen? ({type})",
+  "@vehicleHeistOpsBuyPartsPrompt": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsPartsPurchased": "Onderdelen gekocht: -{cost}",
+  "@vehicleHeistOpsPartsPurchased": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsPartsPurchaseFailed": "Onderdelen aankoop mislukt.",
+  "vehicleHeistOpsClaimContractButton": "Claim contract",
+  "vehicleHeistOpsClaimContractTitle": "Contract claimen",
+  "vehicleHeistOpsChopContractCompleted": "Contract afgerond: +{reward}",
+  "@vehicleHeistOpsChopContractCompleted": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsChopNoEligibleVehicle": "Geen geschikt voertuig in je inventaris voor dit contract.",
+  "vehicleHeistOpsChopContractCooldownActive": "Contract cooldown actief ({duration})",
+  "@vehicleHeistOpsChopContractCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsChopContractClaimFailed": "Contract claim mislukt.",
+  "vehicleHeistOpsInsuranceButton": "Verzekering",
+  "vehicleHeistOpsInsuranceTitle": "Smokkelverzekering",
+  "vehicleHeistOpsInsuranceBody": "Kies een dekking voor deze voertuigcategorie.",
+  "vehicleHeistOpsInsuranceTierBasic": "Basis",
+  "vehicleHeistOpsInsuranceTierPro": "Pro",
+  "vehicleHeistOpsInsuranceActive": "Verzekering actief ({tier}) voor {price}.",
+  "@vehicleHeistOpsInsuranceActive": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsInsurancePurchaseFailed": "Verzekering aankopen mislukt.",
+  "vehicleHeistOpsCrewMatchButton": "Crew-duel",
+  "vehicleHeistOpsCrewMatchWon": "Crew match gewonnen: +{reward}",
+  "@vehicleHeistOpsCrewMatchWon": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewMatchLost": "Crew match verloren: +{reward} troost",
+  "@vehicleHeistOpsCrewMatchLost": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewMatchFailed": "Crew matchmaking mislukt.",
+  "vehicleHeistOpsCounterButton": "Tegenactie",
+  "vehicleHeistOpsCounterSuccess": "Counter-intercept geslaagd: +{reward}",
+  "@vehicleHeistOpsCounterSuccess": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCounterFailed": "Tegenintercept niet beschikbaar of mislukt.",
+  "vehicleHeistOpsOpsContractButton": "Ops-contract",
+  "vehicleHeistOpsOpsContractTitle": "Ops-contract",
+  "vehicleHeistOpsContractCompleted": "Ops contract afgerond: +{reward}",
+  "@vehicleHeistOpsContractCompleted": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsContractFailedOrCooldown": "Ops contract mislukt of op cooldown.",
+  "vehicleHeistOpsClaimDisputeButton": "Claim betwisten",
+  "vehicleHeistOpsNoOpenClaims": "Geen open verzekeringsclaims.",
+  "vehicleHeistOpsNoValidClaimFound": "Geen geldige claim gevonden.",
+  "vehicleHeistOpsClaimApproved": "Claim goedgekeurd: +{amount}",
+  "@vehicleHeistOpsClaimApproved": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsClaimRejected": "Claim afgewezen: -{amount}",
+  "@vehicleHeistOpsClaimRejected": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsClaimResolutionFailed": "Claim-afhandeling mislukt.",
+  "vehicleHeistOpsIntelTitle": "Voertuig Ops Inlichtingen",
+  "vehicleHeistOpsIntelRefreshTooltip": "Ververs inlichtingen",
+  "vehicleHeistOpsIntelTapToExpand": "Tik om te openen en alle acties te zien.",
+  "vehicleHeistOpsIntelHeatPill": "Hitte {current} ({level})",
+  "@vehicleHeistOpsIntelHeatPill": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPolicePill": "Politie: {name}",
+  "@vehicleHeistOpsIntelPolicePill": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelRepPill": "Reputatie lvl {level}",
+  "@vehicleHeistOpsIntelRepPill": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPartsMarketPill": "Onderdelenmarkt: {trend}",
+  "@vehicleHeistOpsIntelPartsMarketPill": {
+    "placeholders": {
+      "trend": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelHotspotLine": "Hotspot: {name}",
+  "@vehicleHeistOpsIntelHotspotLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelHotspotRewardLine": "Beloning: {min} - {max}",
+  "@vehicleHeistOpsIntelHotspotRewardLine": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelWhyCashLine": "Waarom krijg je geld: succesvolle ops-acties betalen direct uit op zakgeld.",
+  "vehicleHeistOpsIntelCashRangePayout": "Contant: {min} - {max}",
+  "@vehicleHeistOpsIntelCashRangePayout": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelYouCashRangePayout": "Jij: {min} - {max}",
+  "@vehicleHeistOpsIntelYouCashRangePayout": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCashPayout": "Contant: {amount}",
+  "@vehicleHeistOpsIntelCashPayout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelContractsPayout": "Contracten: {count}{fromPart}",
+  "@vehicleHeistOpsIntelContractsPayout": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "fromPart": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelContractsFrom": " | vanaf {amount}",
+  "@vehicleHeistOpsIntelContractsFrom": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPartsPricesLine": "Partsprijzen (auto/motor/boot): {car} / {motorcycle} / {boat}",
+  "@vehicleHeistOpsIntelPartsPricesLine": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      },
+      "motorcycle": {
+        "type": "String"
+      },
+      "boat": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPartsMarketRefreshLine": "Onderdelenmarkt refresh: {cooldown}",
+  "@vehicleHeistOpsIntelPartsMarketRefreshLine": {
+    "placeholders": {
+      "cooldown": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCrewLine": "Crew: {name} ({size} leden)",
+  "@vehicleHeistOpsIntelCrewLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelChopRewardLine": "Chop-contract beloning: {reward}",
+  "@vehicleHeistOpsIntelChopRewardLine": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelInterceptWindowLine": "Intercept-venster: {status}",
+  "@vehicleHeistOpsIntelInterceptWindowLine": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelBlacklistLine": "Zwarte lijst: {reason}",
+  "@vehicleHeistOpsIntelBlacklistLine": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelBlacklistNoneLine": "Blacklist: geen",
+  "vehicleHeistOpsIntelInsuranceActiveLine": "Verzekering: {tier} actief",
+  "@vehicleHeistOpsIntelInsuranceActiveLine": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelInsuranceInactiveLine": "Verzekering: niet actief",
+  "vehicleHeistOpsIntelCountryModifierLine": "Landmodifier: {name} ({multiplier}x)",
+  "@vehicleHeistOpsIntelCountryModifierLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "multiplier": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCrewSeasonLine": "Crew-seizoen: {season} | punten {points}",
+  "@vehicleHeistOpsIntelCrewSeasonLine": {
+    "placeholders": {
+      "season": {
+        "type": "String"
+      },
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelContractsCooldownLine": "Contracten: {count} | cooldown {cooldown}",
+  "@vehicleHeistOpsIntelContractsCooldownLine": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "cooldown": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCounterCooldownLine": "Tegenactie cooldown: {cooldown} | open claims: {claims}",
+  "@vehicleHeistOpsIntelCounterCooldownLine": {
+    "placeholders": {
+      "cooldown": {
+        "type": "String"
+      },
+      "claims": {
+        "type": "String"
+      }
+    }
+  },
   "tuneShop": "Tuning shop",
   "tuneShopIntro": "Sloop voertuigen voor onderdelen en upgrade snelheid, stealth en pantser. Onderdelen zijn per categorie gedeeld (auto/motor/boot), dus je kunt elk voertuig binnen dezelfde categorie tunen.",
   "tuneShopCarPartsLabel": "Auto-onderdelen",
@@ -2659,7 +3179,7 @@
   "tuneShopStatStealth": "Stealth",
   "tuneShopStatArmor": "Pantser",
   "tuneShopValueMultiplierPrefix": "Waarde x",
-  "tuneShopUpgradeButton": "Upgrade",
+  "tuneShopUpgradeButton": "Upgraden",
   "tuneShopMaxLabel": "MAX",
   "tuneShopPartsAbbrev": "ond",
   "tuneShopUpgradeCompleted": "Upgrade voltooid",
@@ -4160,7 +4680,7 @@
   "achievementsCategoryNameSchool": "School",
   "achievementsCategoryNameVehicles": "Voertuigen",
   "achievementsCategoryNameTravel": "Reizen",
-  "achievementsCategoryNameDrugs": "Drugs",
+  "achievementsCategoryNameDrugs": "Geneesmiddelen",
   "achievementsCategoryNameTrade": "Handel",
   "achievementsCategoryNameGeneral": "Algemeen",
   "territoryContestStatusPreparing": "Voorbereiding",
@@ -4176,22 +4696,22 @@
   "territoryValueLow": "Laag",
   "territoryValueAverage": "Gemiddeld",
   "territoryValueHigh": "Hoog",
-  "territoryValueTop": "Top",
+  "territoryValueTop": "Bovenkant",
   "territoryTagCapital": "Bestuurlijk centrum",
   "territoryTagHarbor": "Haven",
   "territoryTagIndustry": "Industrie",
   "territoryTagBorder": "Grensregio",
   "territoryTagLogistics": "Logistiek knooppunt",
   "territoryActionPatrol": "Patrouille",
-  "territoryActionIntelScan": "Intel scan",
+  "territoryActionIntelScan": "Intel-scan",
   "territoryActionSabotage": "Sabotage",
   "territoryActionSupplyRun": "Bevoorrading",
   "territoryActionRaid": "Inval",
   "territoryActionDefense": "Verdedigen",
   "territoryBonusStrategicRegion": "Strategische regio",
   "territoryBonusAdjacentSupport": "Aangrenzende steun",
-  "territoryBonusWarPressure": "War pressure",
-  "territoryBonusHqLevel": "HQ level",
+  "territoryBonusWarPressure": "Oorlogsdruk",
+  "territoryBonusHqLevel": "HQ-niveau",
   "territoryBonusCrewMissionLevel": "Crew missielevel",
   "territoryBonusCrewBuildings": "Crew bijgebouwen",
   "territoryBonusOther": "Overig",
@@ -4236,7 +4756,7 @@
   "territoryDetailActionBonuses": "Actiebonussen",
   "territoryDetailBonusInfo": "Bonus uitleg",
   "territoryDetailBonusInfoBody": "Deze bonussen verhogen alleen je contestpunten per actie. De €-uitbetaling van het gebied blijft gelijk.",
-  "territoryDetailWarPressure": "War pressure",
+  "territoryDetailWarPressure": "Oorlogsdruk",
   "territoryDetailAttackPressure": "aanvalsdruk",
   "territoryDetailStabilityWord": "stabiliteit",
   "territoryWarRoleTheater": "theater-regio",
@@ -4246,7 +4766,7 @@
   "territoryDetailIncomeHour": "Opbrengst per uur",
   "territoryDetailIncomeDay": "Opbrengst per dag",
   "territoryDetailYourCrew": "Jouw crew",
-  "territoryDetailContestStatus": "Contest status",
+  "territoryDetailContestStatus": "Wedstrijdstatus",
   "territoryDetailYourRole": "Jouw rol",
   "territoryDetailYourHqLevel": "Jouw HQ level",
   "territoryDetailActionsUnlockIn": "Acties starten over",
@@ -4274,7 +4794,7 @@
   "territorySeasonCurrent": "Huidig seizoen",
   "territorySeasonKey": "Sleutel",
   "territorySeasonStatus": "Status",
-  "territorySeasonStart": "Start",
+  "territorySeasonStart": "Begin",
   "territorySeasonEnd": "Einde",
   "territoryDialogAttackTitle": "Aanvallen?",
   "territoryDialogAttackBody": "Wil je een contest starten voor {regionKey}?",

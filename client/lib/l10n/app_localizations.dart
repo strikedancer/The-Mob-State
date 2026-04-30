@@ -1676,6 +1676,769 @@ abstract class AppLocalizations {
   /// **'Vehicle Heist'**
   String get vehicleHeist;
 
+  /// No description provided for @vehicleHeistTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Heist'**
+  String get vehicleHeistTitle;
+
+  /// No description provided for @vehicleHeistTabSubtitleCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal cars for cash and parts.'**
+  String get vehicleHeistTabSubtitleCar;
+
+  /// No description provided for @vehicleHeistTabSubtitleMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal motorcycles for cash and parts.'**
+  String get vehicleHeistTabSubtitleMotorcycle;
+
+  /// No description provided for @vehicleHeistTabSubtitleBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal boats for cash and parts.'**
+  String get vehicleHeistTabSubtitleBoat;
+
+  /// No description provided for @vehicleHeistReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get vehicleHeistReady;
+
+  /// No description provided for @vehicleHeistMotorStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle storage'**
+  String get vehicleHeistMotorStorage;
+
+  /// No description provided for @vehicleHeistCapacityPolicyCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car capacity is shared across all car heists.'**
+  String get vehicleHeistCapacityPolicyCar;
+
+  /// No description provided for @vehicleHeistCapacityPolicyMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle capacity is shared across all motorcycle heists.'**
+  String get vehicleHeistCapacityPolicyMotorcycle;
+
+  /// No description provided for @vehicleHeistCapacityPolicyBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat capacity is shared across all boat heists.'**
+  String get vehicleHeistCapacityPolicyBoat;
+
+  /// No description provided for @vehicleHeistRankRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank required: {rank}'**
+  String vehicleHeistRankRequired(String rank);
+
+  /// No description provided for @vehicleHeistCapacityLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage: {stored}/{total} (lane lvl {level})'**
+  String vehicleHeistCapacityLine(String stored, String total, String level);
+
+  /// No description provided for @vehicleHeistStealCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal car'**
+  String get vehicleHeistStealCar;
+
+  /// No description provided for @vehicleHeistStealMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal motorcycle'**
+  String get vehicleHeistStealMotorcycle;
+
+  /// No description provided for @vehicleHeistStealBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal boat'**
+  String get vehicleHeistStealBoat;
+
+  /// No description provided for @vehicleHeistGenericVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'vehicle'**
+  String get vehicleHeistGenericVehicle;
+
+  /// No description provided for @vehicleHeistSuccessStolen.
+  ///
+  /// In en, this message translates to:
+  /// **'Success: {vehicle} stolen.'**
+  String vehicleHeistSuccessStolen(String vehicle);
+
+  /// No description provided for @vehicleHeistCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown active: {duration}'**
+  String vehicleHeistCooldownActive(String duration);
+
+  /// No description provided for @vehicleHeistArrested.
+  ///
+  /// In en, this message translates to:
+  /// **'You got arrested ({minutes} min jail).'**
+  String vehicleHeistArrested(String minutes);
+
+  /// No description provided for @vehicleHeistUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'until'**
+  String get vehicleHeistUntil;
+
+  /// No description provided for @vehicleHeistRegionalLockActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional lock active.'**
+  String get vehicleHeistRegionalLockActive;
+
+  /// No description provided for @vehicleHeistStealFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal action failed.'**
+  String get vehicleHeistStealFailed;
+
+  /// No description provided for @vehicleHeistUpgradeCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade completed.'**
+  String get vehicleHeistUpgradeCompleted;
+
+  /// No description provided for @vehicleHeistUpgradeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade failed.'**
+  String get vehicleHeistUpgradeFailed;
+
+  /// No description provided for @vehicleHeistCatalogTitleCars.
+  ///
+  /// In en, this message translates to:
+  /// **'Available cars'**
+  String get vehicleHeistCatalogTitleCars;
+
+  /// No description provided for @vehicleHeistCatalogTitleMotorcycles.
+  ///
+  /// In en, this message translates to:
+  /// **'Available motorcycles'**
+  String get vehicleHeistCatalogTitleMotorcycles;
+
+  /// No description provided for @vehicleHeistCatalogTitleBoats.
+  ///
+  /// In en, this message translates to:
+  /// **'Available boats'**
+  String get vehicleHeistCatalogTitleBoats;
+
+  /// No description provided for @vehicleHeistCatalogEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicles in this catalog.'**
+  String get vehicleHeistCatalogEmpty;
+
+  /// No description provided for @vehicleHeistRarityCommon.
+  ///
+  /// In en, this message translates to:
+  /// **'Common'**
+  String get vehicleHeistRarityCommon;
+
+  /// No description provided for @vehicleHeistRarityUncommon.
+  ///
+  /// In en, this message translates to:
+  /// **'Uncommon'**
+  String get vehicleHeistRarityUncommon;
+
+  /// No description provided for @vehicleHeistRarityRare.
+  ///
+  /// In en, this message translates to:
+  /// **'Rare'**
+  String get vehicleHeistRarityRare;
+
+  /// No description provided for @vehicleHeistRarityEpic.
+  ///
+  /// In en, this message translates to:
+  /// **'Epic'**
+  String get vehicleHeistRarityEpic;
+
+  /// No description provided for @vehicleHeistRarityLegendary.
+  ///
+  /// In en, this message translates to:
+  /// **'Legendary'**
+  String get vehicleHeistRarityLegendary;
+
+  /// No description provided for @vehicleHeistEventOnlyTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Event-only'**
+  String get vehicleHeistEventOnlyTag;
+
+  /// No description provided for @vehicleHeistCatalogValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value: {value}'**
+  String vehicleHeistCatalogValue(String value);
+
+  /// No description provided for @vehicleHeistCatalogRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank: {rank}'**
+  String vehicleHeistCatalogRank(String rank);
+
+  /// No description provided for @vehicleHeistCatalogInGameAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'In-game availability: {label}'**
+  String vehicleHeistCatalogInGameAvailability(String label);
+
+  /// No description provided for @vehicleHeistCatalogMostCommonIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Most common in: {country}'**
+  String vehicleHeistCatalogMostCommonIn(String country);
+
+  /// No description provided for @vehicleHeistCatalogCountries.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries: {countries}'**
+  String vehicleHeistCatalogCountries(String countries);
+
+  /// No description provided for @vehicleHeistUpgradeCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade ({cost})'**
+  String vehicleHeistUpgradeCost(String cost);
+
+  /// No description provided for @vehicleHeistUpgradeRankRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade locked: rank {rank} required'**
+  String vehicleHeistUpgradeRankRequired(String rank);
+
+  /// No description provided for @vehicleHeistUpgradeLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade locked'**
+  String get vehicleHeistUpgradeLocked;
+
+  /// No description provided for @vehicleHeistSpeedUpWithCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up for {credits} credits'**
+  String vehicleHeistSpeedUpWithCredits(String credits);
+
+  /// No description provided for @vehicleHeistSpeedUpWithCreditsNextScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up (next screen)'**
+  String get vehicleHeistSpeedUpWithCreditsNextScreen;
+
+  /// No description provided for @vehicleHeistExpand.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand'**
+  String get vehicleHeistExpand;
+
+  /// No description provided for @vehicleHeistCollapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get vehicleHeistCollapse;
+
+  /// No description provided for @vehicleHeistActive.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE'**
+  String get vehicleHeistActive;
+
+  /// No description provided for @vehicleHeistOff.
+  ///
+  /// In en, this message translates to:
+  /// **'off'**
+  String get vehicleHeistOff;
+
+  /// No description provided for @catalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalog'**
+  String get catalog;
+
+  /// No description provided for @vehicleHeistOpsHotspotRunButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Run Hotspot'**
+  String get vehicleHeistOpsHotspotRunButton;
+
+  /// No description provided for @vehicleHeistOpsHotspotRunTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot run'**
+  String get vehicleHeistOpsHotspotRunTitle;
+
+  /// No description provided for @vehicleHeistOpsHotspotSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot run completed: +{reward}'**
+  String vehicleHeistOpsHotspotSuccess(String reward);
+
+  /// No description provided for @vehicleHeistOpsHotspotCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot cooldown active ({duration})'**
+  String vehicleHeistOpsHotspotCooldownActive(String duration);
+
+  /// No description provided for @vehicleHeistOpsHotspotFailedHeatIncreased.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot failed. Heat increased.'**
+  String get vehicleHeistOpsHotspotFailedHeatIncreased;
+
+  /// No description provided for @vehicleHeistOpsCrewOpButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Op'**
+  String get vehicleHeistOpsCrewOpButton;
+
+  /// No description provided for @vehicleHeistOpsCrewOpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew op'**
+  String get vehicleHeistOpsCrewOpTitle;
+
+  /// No description provided for @vehicleHeistOpsCrewSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew op completed: you earned {reward}'**
+  String vehicleHeistOpsCrewSuccess(String reward);
+
+  /// No description provided for @vehicleHeistOpsCrewRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew required.'**
+  String get vehicleHeistOpsCrewRequired;
+
+  /// No description provided for @vehicleHeistOpsCrewCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew op cooldown active ({duration})'**
+  String vehicleHeistOpsCrewCooldownActive(String duration);
+
+  /// No description provided for @vehicleHeistOpsCrewFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew op failed.'**
+  String get vehicleHeistOpsCrewFailed;
+
+  /// No description provided for @vehicleHeistOpsCrewJoinToUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a crew to unlock crew actions'**
+  String get vehicleHeistOpsCrewJoinToUnlock;
+
+  /// No description provided for @vehicleHeistOpsCrewRequiredYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew required: yes'**
+  String get vehicleHeistOpsCrewRequiredYes;
+
+  /// No description provided for @vehicleHeistOpsCrewRequiredNoJoinFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew required: no (join a crew first)'**
+  String get vehicleHeistOpsCrewRequiredNoJoinFirst;
+
+  /// No description provided for @vehicleHeistOpsBuyPartsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Parts'**
+  String get vehicleHeistOpsBuyPartsButton;
+
+  /// No description provided for @vehicleHeistOpsBuyPartsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy parts'**
+  String get vehicleHeistOpsBuyPartsTitle;
+
+  /// No description provided for @vehicleHeistOpsBuyPartsPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy which parts? ({type})'**
+  String vehicleHeistOpsBuyPartsPrompt(String type);
+
+  /// No description provided for @vehicleHeistOpsPartsPurchased.
+  ///
+  /// In en, this message translates to:
+  /// **'Parts purchased: -{cost}'**
+  String vehicleHeistOpsPartsPurchased(String cost);
+
+  /// No description provided for @vehicleHeistOpsPartsPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Parts purchase failed.'**
+  String get vehicleHeistOpsPartsPurchaseFailed;
+
+  /// No description provided for @vehicleHeistOpsClaimContractButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim Contract'**
+  String get vehicleHeistOpsClaimContractButton;
+
+  /// No description provided for @vehicleHeistOpsClaimContractTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim contract'**
+  String get vehicleHeistOpsClaimContractTitle;
+
+  /// No description provided for @vehicleHeistOpsChopContractCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract completed: +{reward}'**
+  String vehicleHeistOpsChopContractCompleted(String reward);
+
+  /// No description provided for @vehicleHeistOpsChopNoEligibleVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'No eligible vehicle in inventory for this contract.'**
+  String get vehicleHeistOpsChopNoEligibleVehicle;
+
+  /// No description provided for @vehicleHeistOpsChopContractCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract cooldown active ({duration})'**
+  String vehicleHeistOpsChopContractCooldownActive(String duration);
+
+  /// No description provided for @vehicleHeistOpsChopContractClaimFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract claim failed.'**
+  String get vehicleHeistOpsChopContractClaimFailed;
+
+  /// No description provided for @vehicleHeistOpsInsuranceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance'**
+  String get vehicleHeistOpsInsuranceButton;
+
+  /// No description provided for @vehicleHeistOpsInsuranceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contraband Insurance'**
+  String get vehicleHeistOpsInsuranceTitle;
+
+  /// No description provided for @vehicleHeistOpsInsuranceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a coverage tier for this vehicle category.'**
+  String get vehicleHeistOpsInsuranceBody;
+
+  /// No description provided for @vehicleHeistOpsInsuranceTierBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get vehicleHeistOpsInsuranceTierBasic;
+
+  /// No description provided for @vehicleHeistOpsInsuranceTierPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro'**
+  String get vehicleHeistOpsInsuranceTierPro;
+
+  /// No description provided for @vehicleHeistOpsInsuranceActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance active ({tier}) for {price}.'**
+  String vehicleHeistOpsInsuranceActive(String tier, String price);
+
+  /// No description provided for @vehicleHeistOpsInsurancePurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance purchase failed.'**
+  String get vehicleHeistOpsInsurancePurchaseFailed;
+
+  /// No description provided for @vehicleHeistOpsCrewMatchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Match'**
+  String get vehicleHeistOpsCrewMatchButton;
+
+  /// No description provided for @vehicleHeistOpsCrewMatchWon.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew match won: +{reward}'**
+  String vehicleHeistOpsCrewMatchWon(String reward);
+
+  /// No description provided for @vehicleHeistOpsCrewMatchLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew match lost: +{reward} consolation'**
+  String vehicleHeistOpsCrewMatchLost(String reward);
+
+  /// No description provided for @vehicleHeistOpsCrewMatchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew matchmaking failed.'**
+  String get vehicleHeistOpsCrewMatchFailed;
+
+  /// No description provided for @vehicleHeistOpsCounterButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter'**
+  String get vehicleHeistOpsCounterButton;
+
+  /// No description provided for @vehicleHeistOpsCounterSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-intercept success: +{reward}'**
+  String vehicleHeistOpsCounterSuccess(String reward);
+
+  /// No description provided for @vehicleHeistOpsCounterFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-intercept unavailable or failed.'**
+  String get vehicleHeistOpsCounterFailed;
+
+  /// No description provided for @vehicleHeistOpsOpsContractButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops Contract'**
+  String get vehicleHeistOpsOpsContractButton;
+
+  /// No description provided for @vehicleHeistOpsOpsContractTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops Contract'**
+  String get vehicleHeistOpsOpsContractTitle;
+
+  /// No description provided for @vehicleHeistOpsContractCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops contract completed: +{reward}'**
+  String vehicleHeistOpsContractCompleted(String reward);
+
+  /// No description provided for @vehicleHeistOpsContractFailedOrCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Ops contract failed or on cooldown.'**
+  String get vehicleHeistOpsContractFailedOrCooldown;
+
+  /// No description provided for @vehicleHeistOpsClaimDisputeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim dispute'**
+  String get vehicleHeistOpsClaimDisputeButton;
+
+  /// No description provided for @vehicleHeistOpsNoOpenClaims.
+  ///
+  /// In en, this message translates to:
+  /// **'No open insurance claims.'**
+  String get vehicleHeistOpsNoOpenClaims;
+
+  /// No description provided for @vehicleHeistOpsNoValidClaimFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No valid claim found.'**
+  String get vehicleHeistOpsNoValidClaimFound;
+
+  /// No description provided for @vehicleHeistOpsClaimApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim approved: +{amount}'**
+  String vehicleHeistOpsClaimApproved(String amount);
+
+  /// No description provided for @vehicleHeistOpsClaimRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim rejected: -{amount}'**
+  String vehicleHeistOpsClaimRejected(String amount);
+
+  /// No description provided for @vehicleHeistOpsClaimResolutionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim resolution failed.'**
+  String get vehicleHeistOpsClaimResolutionFailed;
+
+  /// No description provided for @vehicleHeistOpsIntelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Ops Intelligence'**
+  String get vehicleHeistOpsIntelTitle;
+
+  /// No description provided for @vehicleHeistOpsIntelRefreshTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh intelligence'**
+  String get vehicleHeistOpsIntelRefreshTooltip;
+
+  /// No description provided for @vehicleHeistOpsIntelTapToExpand.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to expand and view all actions.'**
+  String get vehicleHeistOpsIntelTapToExpand;
+
+  /// No description provided for @vehicleHeistOpsIntelHeatPill.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat {current} ({level})'**
+  String vehicleHeistOpsIntelHeatPill(String current, String level);
+
+  /// No description provided for @vehicleHeistOpsIntelPolicePill.
+  ///
+  /// In en, this message translates to:
+  /// **'Police: {name}'**
+  String vehicleHeistOpsIntelPolicePill(String name);
+
+  /// No description provided for @vehicleHeistOpsIntelRepPill.
+  ///
+  /// In en, this message translates to:
+  /// **'Rep lvl {level}'**
+  String vehicleHeistOpsIntelRepPill(String level);
+
+  /// No description provided for @vehicleHeistOpsIntelPartsMarketPill.
+  ///
+  /// In en, this message translates to:
+  /// **'Parts market: {trend}'**
+  String vehicleHeistOpsIntelPartsMarketPill(String trend);
+
+  /// No description provided for @vehicleHeistOpsIntelHotspotLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotspot: {name}'**
+  String vehicleHeistOpsIntelHotspotLine(String name);
+
+  /// No description provided for @vehicleHeistOpsIntelHotspotRewardLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward: {min} - {max}'**
+  String vehicleHeistOpsIntelHotspotRewardLine(String min, String max);
+
+  /// No description provided for @vehicleHeistOpsIntelWhyCashLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Why you get cash: successful ops actions pay out directly to wallet cash.'**
+  String get vehicleHeistOpsIntelWhyCashLine;
+
+  /// No description provided for @vehicleHeistOpsIntelCashRangePayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash: {min} - {max}'**
+  String vehicleHeistOpsIntelCashRangePayout(String min, String max);
+
+  /// No description provided for @vehicleHeistOpsIntelYouCashRangePayout.
+  ///
+  /// In en, this message translates to:
+  /// **'You: {min} - {max}'**
+  String vehicleHeistOpsIntelYouCashRangePayout(String min, String max);
+
+  /// No description provided for @vehicleHeistOpsIntelCashPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash: {amount}'**
+  String vehicleHeistOpsIntelCashPayout(String amount);
+
+  /// No description provided for @vehicleHeistOpsIntelContractsPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts: {count}{fromPart}'**
+  String vehicleHeistOpsIntelContractsPayout(String count, String fromPart);
+
+  /// No description provided for @vehicleHeistOpsIntelContractsFrom.
+  ///
+  /// In en, this message translates to:
+  /// **' | from {amount}'**
+  String vehicleHeistOpsIntelContractsFrom(String amount);
+
+  /// No description provided for @vehicleHeistOpsIntelPartsPricesLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Part prices (car/motorcycle/boat): {car} / {motorcycle} / {boat}'**
+  String vehicleHeistOpsIntelPartsPricesLine(
+    String car,
+    String motorcycle,
+    String boat,
+  );
+
+  /// No description provided for @vehicleHeistOpsIntelPartsMarketRefreshLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Parts market refresh: {cooldown}'**
+  String vehicleHeistOpsIntelPartsMarketRefreshLine(String cooldown);
+
+  /// No description provided for @vehicleHeistOpsIntelCrewLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew: {name} ({size} members)'**
+  String vehicleHeistOpsIntelCrewLine(String name, String size);
+
+  /// No description provided for @vehicleHeistOpsIntelChopRewardLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Chop contract reward: {reward}'**
+  String vehicleHeistOpsIntelChopRewardLine(String reward);
+
+  /// No description provided for @vehicleHeistOpsIntelInterceptWindowLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Intercept window: {status}'**
+  String vehicleHeistOpsIntelInterceptWindowLine(String status);
+
+  /// No description provided for @vehicleHeistOpsIntelBlacklistLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Blacklist: {reason}'**
+  String vehicleHeistOpsIntelBlacklistLine(String reason);
+
+  /// No description provided for @vehicleHeistOpsIntelBlacklistNoneLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Blacklist: none'**
+  String get vehicleHeistOpsIntelBlacklistNoneLine;
+
+  /// No description provided for @vehicleHeistOpsIntelInsuranceActiveLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance: {tier} active'**
+  String vehicleHeistOpsIntelInsuranceActiveLine(String tier);
+
+  /// No description provided for @vehicleHeistOpsIntelInsuranceInactiveLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance: inactive'**
+  String get vehicleHeistOpsIntelInsuranceInactiveLine;
+
+  /// No description provided for @vehicleHeistOpsIntelCountryModifierLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Country modifier: {name} ({multiplier}x)'**
+  String vehicleHeistOpsIntelCountryModifierLine(
+    String name,
+    String multiplier,
+  );
+
+  /// No description provided for @vehicleHeistOpsIntelCrewSeasonLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew season: {season} | points {points}'**
+  String vehicleHeistOpsIntelCrewSeasonLine(String season, String points);
+
+  /// No description provided for @vehicleHeistOpsIntelContractsCooldownLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts: {count} | cooldown {cooldown}'**
+  String vehicleHeistOpsIntelContractsCooldownLine(
+    String count,
+    String cooldown,
+  );
+
+  /// No description provided for @vehicleHeistOpsIntelCounterCooldownLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter cooldown: {cooldown} | open claims: {claims}'**
+  String vehicleHeistOpsIntelCounterCooldownLine(
+    String cooldown,
+    String claims,
+  );
+
   /// No description provided for @tuneShop.
   ///
   /// In en, this message translates to:

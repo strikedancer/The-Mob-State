@@ -856,6 +856,519 @@ class AppLocalizationsIt extends AppLocalizations {
   String get vehicleHeist => 'Furto di veicoli';
 
   @override
+  String get vehicleHeistTitle => 'Furto di veicoli';
+
+  @override
+  String get vehicleHeistTabSubtitleCar =>
+      'Ruba auto per contanti e pezzi di ricambio.';
+
+  @override
+  String get vehicleHeistTabSubtitleMotorcycle =>
+      'Ruba motociclette in cambio di contanti e pezzi di ricambio.';
+
+  @override
+  String get vehicleHeistTabSubtitleBoat =>
+      'Ruba barche in cambio di contanti e pezzi di ricambio.';
+
+  @override
+  String get vehicleHeistReady => 'Pronta';
+
+  @override
+  String get vehicleHeistMotorStorage => 'Deposito moto';
+
+  @override
+  String get vehicleHeistCapacityPolicyCar =>
+      'La capacità dell\'auto è condivisa tra tutti i furti d\'auto.';
+
+  @override
+  String get vehicleHeistCapacityPolicyMotorcycle =>
+      'La capacità della motocicletta è condivisa tra tutte le rapine in moto.';
+
+  @override
+  String get vehicleHeistCapacityPolicyBoat =>
+      'La capacità della barca è condivisa tra tutti i colpi di barca.';
+
+  @override
+  String vehicleHeistRankRequired(String rank) {
+    return 'Grado richiesto: $rank';
+  }
+
+  @override
+  String vehicleHeistCapacityLine(String stored, String total, String level) {
+    return 'Deposito: $stored/$total (corsia livello $level)';
+  }
+
+  @override
+  String get vehicleHeistStealCar => 'Rubare l\'auto';
+
+  @override
+  String get vehicleHeistStealMotorcycle => 'Rubare la moto';
+
+  @override
+  String get vehicleHeistStealBoat => 'Rubare la barca';
+
+  @override
+  String get vehicleHeistGenericVehicle => 'veicolo';
+
+  @override
+  String vehicleHeistSuccessStolen(String vehicle) {
+    return 'Successo: $vehicle rubato.';
+  }
+
+  @override
+  String vehicleHeistCooldownActive(String duration) {
+    return 'Tempo di recupero attivo: $duration';
+  }
+
+  @override
+  String vehicleHeistArrested(String minutes) {
+    return 'Sei stato arrestato ($minutes min carcere).';
+  }
+
+  @override
+  String get vehicleHeistUntil => 'Fino a';
+
+  @override
+  String get vehicleHeistRegionalLockActive => 'Blocco regionale attivo.';
+
+  @override
+  String get vehicleHeistStealFailed => 'Azione di furto non riuscita.';
+
+  @override
+  String get vehicleHeistUpgradeCompleted => 'Aggiornamento completato.';
+
+  @override
+  String get vehicleHeistUpgradeFailed => 'Aggiornamento non riuscito.';
+
+  @override
+  String get vehicleHeistCatalogTitleCars => 'Auto disponibili';
+
+  @override
+  String get vehicleHeistCatalogTitleMotorcycles => 'Moto disponibili';
+
+  @override
+  String get vehicleHeistCatalogTitleBoats => 'Barche disponibili';
+
+  @override
+  String get vehicleHeistCatalogEmpty => 'Nessun veicolo in questo catalogo.';
+
+  @override
+  String get vehicleHeistRarityCommon => 'Comune';
+
+  @override
+  String get vehicleHeistRarityUncommon => 'Non comune';
+
+  @override
+  String get vehicleHeistRarityRare => 'Rara';
+
+  @override
+  String get vehicleHeistRarityEpic => 'Epica';
+
+  @override
+  String get vehicleHeistRarityLegendary => 'Leggendaria';
+
+  @override
+  String get vehicleHeistEventOnlyTag => 'Solo evento';
+
+  @override
+  String vehicleHeistCatalogValue(String value) {
+    return 'Valore: $value';
+  }
+
+  @override
+  String vehicleHeistCatalogRank(String rank) {
+    return 'Classifica: $rank';
+  }
+
+  @override
+  String vehicleHeistCatalogInGameAvailability(String label) {
+    return 'Disponibilità nel gioco: $label';
+  }
+
+  @override
+  String vehicleHeistCatalogMostCommonIn(String country) {
+    return 'Più comune in: $country';
+  }
+
+  @override
+  String vehicleHeistCatalogCountries(String countries) {
+    return 'Paesi: $countries';
+  }
+
+  @override
+  String vehicleHeistUpgradeCost(String cost) {
+    return 'Aggiornamento ($cost)';
+  }
+
+  @override
+  String vehicleHeistUpgradeRankRequired(String rank) {
+    return 'Aggiornamento bloccato: grado $rank richiesto';
+  }
+
+  @override
+  String get vehicleHeistUpgradeLocked => 'Aggiornamento bloccato';
+
+  @override
+  String vehicleHeistSpeedUpWithCredits(String credits) {
+    return 'Accelera per $credits crediti';
+  }
+
+  @override
+  String get vehicleHeistSpeedUpWithCreditsNextScreen =>
+      'Accelera (schermata successiva)';
+
+  @override
+  String get vehicleHeistExpand => 'Espandere';
+
+  @override
+  String get vehicleHeistCollapse => 'Crollo';
+
+  @override
+  String get vehicleHeistActive => 'ATTIVA';
+
+  @override
+  String get vehicleHeistOff => 'spenta';
+
+  @override
+  String get catalog => 'Catalogare';
+
+  @override
+  String get vehicleHeistOpsHotspotRunButton => 'Esegui Hotspot';
+
+  @override
+  String get vehicleHeistOpsHotspotRunTitle => 'Esecuzione dell\'hotspot';
+
+  @override
+  String vehicleHeistOpsHotspotSuccess(String reward) {
+    return 'Corsa all\'hotspot completata: +$reward';
+  }
+
+  @override
+  String vehicleHeistOpsHotspotCooldownActive(String duration) {
+    return 'Cooldown dell\'hotspot attivo ($duration)';
+  }
+
+  @override
+  String get vehicleHeistOpsHotspotFailedHeatIncreased =>
+      'L\'hotspot non è riuscito. Il calore è aumentato.';
+
+  @override
+  String get vehicleHeistOpsCrewOpButton => 'Crew op';
+
+  @override
+  String get vehicleHeistOpsCrewOpTitle => 'Crew op';
+
+  @override
+  String vehicleHeistOpsCrewSuccess(String reward) {
+    return 'Operazione Crew completata: hai guadagnato $reward';
+  }
+
+  @override
+  String get vehicleHeistOpsCrewRequired => 'Crew richiesto.';
+
+  @override
+  String vehicleHeistOpsCrewCooldownActive(String duration) {
+    return 'Tempo di recupero dell\'operazione Crew attivo ($duration)';
+  }
+
+  @override
+  String get vehicleHeistOpsCrewFailed => 'Operazione dell\'Crew fallita.';
+
+  @override
+  String get vehicleHeistOpsCrewJoinToUnlock =>
+      'Unisciti a un Crew per sbloccare le azioni dell\'Crew';
+
+  @override
+  String get vehicleHeistOpsCrewRequiredYes => 'Crew richiesto: sì';
+
+  @override
+  String get vehicleHeistOpsCrewRequiredNoJoinFirst =>
+      'Crew richiesto: no (unisciti prima a un Crew)';
+
+  @override
+  String get vehicleHeistOpsBuyPartsButton => 'Acquista parti';
+
+  @override
+  String get vehicleHeistOpsBuyPartsTitle => 'Acquista parti';
+
+  @override
+  String vehicleHeistOpsBuyPartsPrompt(String type) {
+    return 'Acquistare quali parti? ($type)';
+  }
+
+  @override
+  String vehicleHeistOpsPartsPurchased(String cost) {
+    return 'Parti acquistate: -$cost';
+  }
+
+  @override
+  String get vehicleHeistOpsPartsPurchaseFailed =>
+      'Acquisto delle parti non riuscito.';
+
+  @override
+  String get vehicleHeistOpsClaimContractButton => 'Richiedi contratto';
+
+  @override
+  String get vehicleHeistOpsClaimContractTitle => 'Reclamare il contratto';
+
+  @override
+  String vehicleHeistOpsChopContractCompleted(String reward) {
+    return 'Contratto completato: +$reward';
+  }
+
+  @override
+  String get vehicleHeistOpsChopNoEligibleVehicle =>
+      'Nessun veicolo idoneo nell\'inventario per questo contratto.';
+
+  @override
+  String vehicleHeistOpsChopContractCooldownActive(String duration) {
+    return 'Tempo di recupero del contratto attivo ($duration)';
+  }
+
+  @override
+  String get vehicleHeistOpsChopContractClaimFailed =>
+      'La richiesta di contratto non è riuscita.';
+
+  @override
+  String get vehicleHeistOpsInsuranceButton => 'Assicurazione';
+
+  @override
+  String get vehicleHeistOpsInsuranceTitle =>
+      'Assicurazione contro il contrabbando';
+
+  @override
+  String get vehicleHeistOpsInsuranceBody =>
+      'Scegli un livello di copertura per questa categoria di veicoli.';
+
+  @override
+  String get vehicleHeistOpsInsuranceTierBasic => 'Di base';
+
+  @override
+  String get vehicleHeistOpsInsuranceTierPro => 'Pro';
+
+  @override
+  String vehicleHeistOpsInsuranceActive(String tier, String price) {
+    return 'Assicurazione attiva ($tier) per $price.';
+  }
+
+  @override
+  String get vehicleHeistOpsInsurancePurchaseFailed =>
+      'L\'acquisto dell\'assicurazione non è riuscito.';
+
+  @override
+  String get vehicleHeistOpsCrewMatchButton => 'Partita dell\'Crew';
+
+  @override
+  String vehicleHeistOpsCrewMatchWon(String reward) {
+    return 'Partita dell\'Crew vinta: +$reward';
+  }
+
+  @override
+  String vehicleHeistOpsCrewMatchLost(String reward) {
+    return 'Partita dell\'Crew persa: +$reward consolazione';
+  }
+
+  @override
+  String get vehicleHeistOpsCrewMatchFailed =>
+      'Il matchmaking dell\'Crew è fallito.';
+
+  @override
+  String get vehicleHeistOpsCounterButton => 'Contatrice';
+
+  @override
+  String vehicleHeistOpsCounterSuccess(String reward) {
+    return 'Successo contro-intercettazione: +$reward';
+  }
+
+  @override
+  String get vehicleHeistOpsCounterFailed =>
+      'Controintercettazione non disponibile o fallita.';
+
+  @override
+  String get vehicleHeistOpsOpsContractButton => 'Contratto operativo';
+
+  @override
+  String get vehicleHeistOpsOpsContractTitle => 'Contratto operativo';
+
+  @override
+  String vehicleHeistOpsContractCompleted(String reward) {
+    return 'Contratto operativo completato: +$reward';
+  }
+
+  @override
+  String get vehicleHeistOpsContractFailedOrCooldown =>
+      'Contratto operativo fallito o in ricarica.';
+
+  @override
+  String get vehicleHeistOpsClaimDisputeButton => 'Rivendica controversia';
+
+  @override
+  String get vehicleHeistOpsNoOpenClaims =>
+      'Nessuna richiesta di risarcimento assicurativa aperta.';
+
+  @override
+  String get vehicleHeistOpsNoValidClaimFound =>
+      'Nessuna richiesta valida trovata.';
+
+  @override
+  String vehicleHeistOpsClaimApproved(String amount) {
+    return 'Reclamo approvato: +$amount';
+  }
+
+  @override
+  String vehicleHeistOpsClaimRejected(String amount) {
+    return 'Reclamo rifiutato: -$amount';
+  }
+
+  @override
+  String get vehicleHeistOpsClaimResolutionFailed =>
+      'La risoluzione del reclamo non è riuscita.';
+
+  @override
+  String get vehicleHeistOpsIntelTitle => 'Intelligenza operativa dei veicoli';
+
+  @override
+  String get vehicleHeistOpsIntelRefreshTooltip => 'Aggiorna l\'intelligenza';
+
+  @override
+  String get vehicleHeistOpsIntelTapToExpand =>
+      'Tocca per espandere e visualizzare tutte le azioni.';
+
+  @override
+  String vehicleHeistOpsIntelHeatPill(String current, String level) {
+    return 'Calore $current ($level)';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPolicePill(String name) {
+    return 'Polizia: $name';
+  }
+
+  @override
+  String vehicleHeistOpsIntelRepPill(String level) {
+    return 'Rappresentazione livello $level';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPartsMarketPill(String trend) {
+    return 'Mercato dei ricambi: $trend';
+  }
+
+  @override
+  String vehicleHeistOpsIntelHotspotLine(String name) {
+    return 'Punto caldo: $name';
+  }
+
+  @override
+  String vehicleHeistOpsIntelHotspotRewardLine(String min, String max) {
+    return 'Ricompensa: $min - $max';
+  }
+
+  @override
+  String get vehicleHeistOpsIntelWhyCashLine =>
+      'Perché ottieni contanti: le azioni operative di successo pagano direttamente nel denaro del portafoglio.';
+
+  @override
+  String vehicleHeistOpsIntelCashRangePayout(String min, String max) {
+    return 'Contanti: $min - $max';
+  }
+
+  @override
+  String vehicleHeistOpsIntelYouCashRangePayout(String min, String max) {
+    return 'Tu: $min - $max';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCashPayout(String amount) {
+    return 'Contanti: $amount';
+  }
+
+  @override
+  String vehicleHeistOpsIntelContractsPayout(String count, String fromPart) {
+    return 'Contratti: $count$fromPart';
+  }
+
+  @override
+  String vehicleHeistOpsIntelContractsFrom(String amount) {
+    return '| da $amount';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPartsPricesLine(
+    String car,
+    String motorcycle,
+    String boat,
+  ) {
+    return 'Prezzi parziali (auto/moto/barca): $car / $motorcycle / $boat';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPartsMarketRefreshLine(String cooldown) {
+    return 'Aggiornamento mercato ricambi: $cooldown';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCrewLine(String name, String size) {
+    return 'Crew: $name ($size membri)';
+  }
+
+  @override
+  String vehicleHeistOpsIntelChopRewardLine(String reward) {
+    return 'Ricompensa contratto Chop: $reward';
+  }
+
+  @override
+  String vehicleHeistOpsIntelInterceptWindowLine(String status) {
+    return 'Finestra di intercettazione: $status';
+  }
+
+  @override
+  String vehicleHeistOpsIntelBlacklistLine(String reason) {
+    return 'Lista nera: $reason';
+  }
+
+  @override
+  String get vehicleHeistOpsIntelBlacklistNoneLine => 'Lista nera: nessuna';
+
+  @override
+  String vehicleHeistOpsIntelInsuranceActiveLine(String tier) {
+    return 'Assicurazione: $tier attiva';
+  }
+
+  @override
+  String get vehicleHeistOpsIntelInsuranceInactiveLine =>
+      'Assicurazione: inattiva';
+
+  @override
+  String vehicleHeistOpsIntelCountryModifierLine(
+    String name,
+    String multiplier,
+  ) {
+    return 'Modificatore paese: $name (${multiplier}x)';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCrewSeasonLine(String season, String points) {
+    return 'Stagione dell\'Crew: $season | punti $points';
+  }
+
+  @override
+  String vehicleHeistOpsIntelContractsCooldownLine(
+    String count,
+    String cooldown,
+  ) {
+    return 'Contratti: $count | tempo di recupero $cooldown';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCounterCooldownLine(
+    String cooldown,
+    String claims,
+  ) {
+    return 'Tempo di recupero del contatore: $cooldown | reclami aperti: $claims';
+  }
+
+  @override
   String get tuneShop => 'Negozio di sintonizzazione';
 
   @override
@@ -7436,7 +7949,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get cooldownWaitAppeal => 'La Corte è occupata...';
 
   @override
-  String get cooldownWaitSchool => 'Catch your breath before the next lesson…';
+  String get cooldownWaitSchool =>
+      'Riprendi fiato prima della prossima lezione...';
 
   @override
   String get cooldownWaitDefault => 'Attendere prego…';

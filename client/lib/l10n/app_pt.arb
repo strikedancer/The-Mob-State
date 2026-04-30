@@ -4288,7 +4288,7 @@
   "educationCertProcessElectricsSpecialist": "Certificação de Especialista em Elétrica de Processo",
   "educationCertClandestineChemist": "Certificação de Químico Clandestino",
   "educationCertNarcoGridArchitect": "Certificação Narco Grid Architect",
-  "cooldownWaitSchool": "Catch your breath before the next lesson…",
+  "cooldownWaitSchool": "Recupere o fôlego antes da próxima lição…",
   "ammoFactoryBlackMarketTitle": "Munição à venda",
   "ammoFactoryBlackMarketBody": "A fábrica de munição não vende balas diretamente nesta tela. Use o Mercado Negro para comprar e vender munição.",
   "ammoFactoryActionBlackMarket": "Compre e venda munição no Mercado Negro, não diretamente da fábrica.",
@@ -4409,5 +4409,525 @@
       }
     }
   },
-  "tuneShopErrorInvalidStat": "Estatística de ajuste inválida"
+  "tuneShopErrorInvalidStat": "Estatística de ajuste inválida",
+  "vehicleHeistTitle": "Assalto a veículos",
+  "vehicleHeistTabSubtitleCar": "Roube carros por dinheiro e peças.",
+  "vehicleHeistTabSubtitleMotorcycle": "Roube motocicletas em troca de dinheiro e peças.",
+  "vehicleHeistTabSubtitleBoat": "Roube barcos em troca de dinheiro e peças.",
+  "vehicleHeistReady": "Preparar",
+  "vehicleHeistMotorStorage": "Armazenamento de motocicleta",
+  "vehicleHeistCapacityPolicyCar": "A capacidade dos carros é compartilhada entre todos os assaltos a carros.",
+  "vehicleHeistCapacityPolicyMotorcycle": "A capacidade das motocicletas é compartilhada em todos os assaltos a motocicletas.",
+  "vehicleHeistCapacityPolicyBoat": "A capacidade do barco é compartilhada entre todos os assaltos a barcos.",
+  "vehicleHeistRankRequired": "Classificação necessária: {rank}",
+  "@vehicleHeistRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCapacityLine": "Armazenamento: {stored}/{total} (nível da pista {level})",
+  "@vehicleHeistCapacityLine": {
+    "placeholders": {
+      "stored": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistStealCar": "Roubar carro",
+  "vehicleHeistStealMotorcycle": "Roubar motocicleta",
+  "vehicleHeistStealBoat": "Roubar barco",
+  "vehicleHeistUpgradeCost": "Atualizar ({cost})",
+  "@vehicleHeistUpgradeCost": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistUpgradeRankRequired": "Atualização bloqueada: classificação {rank} necessária",
+  "@vehicleHeistUpgradeRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistUpgradeLocked": "Atualização bloqueada",
+  "vehicleHeistSpeedUpWithCredits": "Acelere para {credits} créditos",
+  "@vehicleHeistSpeedUpWithCredits": {
+    "placeholders": {
+      "credits": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistSpeedUpWithCreditsNextScreen": "Acelerar (próxima tela)",
+  "vehicleHeistExpand": "Expandir",
+  "vehicleHeistCollapse": "Colapso",
+  "vehicleHeistActive": "ATIVA",
+  "vehicleHeistOff": "desligada",
+  "catalog": "Catálogo",
+  "vehicleHeistOpsHotspotRunButton": "Executar ponto de acesso",
+  "vehicleHeistOpsHotspotRunTitle": "Execução de ponto de acesso",
+  "vehicleHeistOpsHotspotSuccess": "Execução do hotspot concluída: +{reward}",
+  "@vehicleHeistOpsHotspotSuccess": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsHotspotCooldownActive": "Recarga do ponto de acesso ativo ({duration})",
+  "@vehicleHeistOpsHotspotCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsHotspotFailedHeatIncreased": "O ponto de acesso falhou. O calor aumentou.",
+  "vehicleHeistOpsCrewOpButton": "Operação da Crew",
+  "vehicleHeistOpsCrewOpTitle": "Operação da Crew",
+  "vehicleHeistOpsCrewSuccess": "Operação da Crew concluída: você ganhou {reward}",
+  "@vehicleHeistOpsCrewSuccess": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewRequired": "É necessária Crew.",
+  "vehicleHeistOpsCrewCooldownActive": "Tempo de espera da operação da Crew ativo ({duration})",
+  "@vehicleHeistOpsCrewCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewFailed": "A operação da Crew falhou.",
+  "vehicleHeistOpsCrewJoinToUnlock": "Junte-se a uma Crew para desbloquear ações da Crew",
+  "vehicleHeistOpsCrewRequiredYes": "Crew necessária: sim",
+  "vehicleHeistOpsCrewRequiredNoJoinFirst": "Crew necessária: não (junte-se a uma Crew primeiro)",
+  "vehicleHeistOpsBuyPartsButton": "Comprar peças",
+  "vehicleHeistOpsBuyPartsTitle": "Compre peças",
+  "vehicleHeistOpsBuyPartsPrompt": "Comprar quais peças? ({type})",
+  "@vehicleHeistOpsBuyPartsPrompt": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsPartsPurchased": "Peças compradas: -{cost}",
+  "@vehicleHeistOpsPartsPurchased": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsPartsPurchaseFailed": "Falha na compra de peças.",
+  "vehicleHeistOpsClaimContractButton": "Contrato de reivindicação",
+  "vehicleHeistOpsClaimContractTitle": "Contrato de reivindicação",
+  "vehicleHeistOpsChopContractCompleted": "Contrato concluído: +{reward}",
+  "@vehicleHeistOpsChopContractCompleted": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsChopNoEligibleVehicle": "Nenhum veículo elegível em estoque para este contrato.",
+  "vehicleHeistOpsChopContractCooldownActive": "Recarga do contrato ativa ({duration})",
+  "@vehicleHeistOpsChopContractCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsChopContractClaimFailed": "A reivindicação do contrato falhou.",
+  "vehicleHeistOpsInsuranceButton": "Seguro",
+  "vehicleHeistOpsInsuranceTitle": "Seguro contrabando",
+  "vehicleHeistOpsInsuranceBody": "Escolha um nível de cobertura para esta categoria de veículo.",
+  "vehicleHeistOpsInsuranceTierBasic": "Básica",
+  "vehicleHeistOpsInsuranceTierPro": "Pró",
+  "vehicleHeistOpsInsuranceActive": "Seguro ativo ({tier}) por {price}.",
+  "@vehicleHeistOpsInsuranceActive": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsInsurancePurchaseFailed": "Falha na compra do seguro.",
+  "vehicleHeistOpsCrewMatchButton": "Partida da Crew",
+  "vehicleHeistOpsCrewMatchWon": "Partida da Crew vencida: +{reward}",
+  "@vehicleHeistOpsCrewMatchWon": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewMatchLost": "Partida da Crew perdida: +{reward} consolação",
+  "@vehicleHeistOpsCrewMatchLost": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCrewMatchFailed": "A combinação da Crew falhou.",
+  "vehicleHeistOpsCounterButton": "Contadora",
+  "vehicleHeistOpsCounterSuccess": "Sucesso na contra-interceptação: +{reward}",
+  "@vehicleHeistOpsCounterSuccess": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsCounterFailed": "Contra-interceptação indisponível ou com falha.",
+  "vehicleHeistOpsOpsContractButton": "Contrato de operações",
+  "vehicleHeistOpsOpsContractTitle": "Contrato de operações",
+  "vehicleHeistOpsContractCompleted": "Contrato de operações concluído: +{reward}",
+  "@vehicleHeistOpsContractCompleted": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsContractFailedOrCooldown": "O contrato de operações falhou ou está em espera.",
+  "vehicleHeistOpsClaimDisputeButton": "Disputa de reivindicação",
+  "vehicleHeistOpsNoOpenClaims": "Nenhuma reclamação de seguro aberta.",
+  "vehicleHeistOpsNoValidClaimFound": "Nenhuma reivindicação válida encontrada.",
+  "vehicleHeistOpsClaimApproved": "Reivindicação aprovada: +{amount}",
+  "@vehicleHeistOpsClaimApproved": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsClaimRejected": "Reivindicação rejeitada: -{amount}",
+  "@vehicleHeistOpsClaimRejected": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsClaimResolutionFailed": "Falha na resolução da reivindicação.",
+  "vehicleHeistOpsIntelTitle": "Inteligência de operações de veículos",
+  "vehicleHeistOpsIntelRefreshTooltip": "Atualizar inteligência",
+  "vehicleHeistOpsIntelTapToExpand": "Toque para expandir e visualizar todas as ações.",
+  "vehicleHeistOpsIntelHeatPill": "Calor {current} ({level})",
+  "@vehicleHeistOpsIntelHeatPill": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPolicePill": "Polícia: {name}",
+  "@vehicleHeistOpsIntelPolicePill": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelRepPill": "Nível de representante {level}",
+  "@vehicleHeistOpsIntelRepPill": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPartsMarketPill": "Mercado de peças: {trend}",
+  "@vehicleHeistOpsIntelPartsMarketPill": {
+    "placeholders": {
+      "trend": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelHotspotLine": "Ponto de acesso: {name}",
+  "@vehicleHeistOpsIntelHotspotLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelHotspotRewardLine": "Recompensa: {min} - {max}",
+  "@vehicleHeistOpsIntelHotspotRewardLine": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelWhyCashLine": "Por que você recebe dinheiro: ações operacionais bem-sucedidas são pagas diretamente no dinheiro da carteira.",
+  "vehicleHeistOpsIntelCashRangePayout": "Dinheiro: {min} - {max}",
+  "@vehicleHeistOpsIntelCashRangePayout": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelYouCashRangePayout": "Você: {min} - {max}",
+  "@vehicleHeistOpsIntelYouCashRangePayout": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCashPayout": "Dinheiro: {amount}",
+  "@vehicleHeistOpsIntelCashPayout": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelContractsPayout": "Contratos: {count}{fromPart}",
+  "@vehicleHeistOpsIntelContractsPayout": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "fromPart": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelContractsFrom": "| de {amount}",
+  "@vehicleHeistOpsIntelContractsFrom": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPartsPricesLine": "Preços das peças (carro/moto/barco): {car} / {motorcycle} / {boat}",
+  "@vehicleHeistOpsIntelPartsPricesLine": {
+    "placeholders": {
+      "car": {
+        "type": "String"
+      },
+      "motorcycle": {
+        "type": "String"
+      },
+      "boat": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelPartsMarketRefreshLine": "Atualização do mercado de peças: {cooldown}",
+  "@vehicleHeistOpsIntelPartsMarketRefreshLine": {
+    "placeholders": {
+      "cooldown": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCrewLine": "Crew: {name} ({size} membros)",
+  "@vehicleHeistOpsIntelCrewLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelChopRewardLine": "Corte a recompensa do contrato: {reward}",
+  "@vehicleHeistOpsIntelChopRewardLine": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelInterceptWindowLine": "Janela de interceptação: {status}",
+  "@vehicleHeistOpsIntelInterceptWindowLine": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelBlacklistLine": "Lista negra: {reason}",
+  "@vehicleHeistOpsIntelBlacklistLine": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelBlacklistNoneLine": "Lista negra: nenhuma",
+  "vehicleHeistOpsIntelInsuranceActiveLine": "Seguro: {tier} ativo",
+  "@vehicleHeistOpsIntelInsuranceActiveLine": {
+    "placeholders": {
+      "tier": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelInsuranceInactiveLine": "Seguro: inativo",
+  "vehicleHeistOpsIntelCountryModifierLine": "Modificador de país: {name} ({multiplier}x)",
+  "@vehicleHeistOpsIntelCountryModifierLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "multiplier": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCrewSeasonLine": "Temporada da Crew: {season} | pontos {points}",
+  "@vehicleHeistOpsIntelCrewSeasonLine": {
+    "placeholders": {
+      "season": {
+        "type": "String"
+      },
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelContractsCooldownLine": "Contratos: {count} | tempo de espera {cooldown}",
+  "@vehicleHeistOpsIntelContractsCooldownLine": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "cooldown": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistOpsIntelCounterCooldownLine": "Tempo de espera do contador: {cooldown} | reivindicações abertas: {claims}",
+  "@vehicleHeistOpsIntelCounterCooldownLine": {
+    "placeholders": {
+      "cooldown": {
+        "type": "String"
+      },
+      "claims": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistGenericVehicle": "veículo",
+  "vehicleHeistSuccessStolen": "Sucesso: {vehicle} roubado.",
+  "@vehicleHeistSuccessStolen": {
+    "placeholders": {
+      "vehicle": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCooldownActive": "Tempo de espera ativo: {duration}",
+  "@vehicleHeistCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistArrested": "Você foi preso ({minutes} min de prisão).",
+  "@vehicleHeistArrested": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistUntil": "até",
+  "vehicleHeistRegionalLockActive": "Bloqueio regional ativo.",
+  "vehicleHeistStealFailed": "Falha na ação de roubo.",
+  "vehicleHeistUpgradeCompleted": "Atualização concluída.",
+  "vehicleHeistUpgradeFailed": "Falha na atualização.",
+  "vehicleHeistCatalogTitleCars": "Carros disponíveis",
+  "vehicleHeistCatalogTitleMotorcycles": "Motocicletas disponíveis",
+  "vehicleHeistCatalogTitleBoats": "Barcos disponíveis",
+  "vehicleHeistCatalogEmpty": "Nenhum veículo neste catálogo.",
+  "vehicleHeistRarityCommon": "Comum",
+  "vehicleHeistRarityUncommon": "Incomum",
+  "vehicleHeistRarityRare": "Crua",
+  "vehicleHeistRarityEpic": "Épica",
+  "vehicleHeistRarityLegendary": "Lendária",
+  "vehicleHeistEventOnlyTag": "Somente evento",
+  "vehicleHeistCatalogValue": "Valor: {value}",
+  "@vehicleHeistCatalogValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogRank": "Classificação: {rank}",
+  "@vehicleHeistCatalogRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogInGameAvailability": "Disponibilidade no jogo: {label}",
+  "@vehicleHeistCatalogInGameAvailability": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogMostCommonIn": "Mais comum em: {country}",
+  "@vehicleHeistCatalogMostCommonIn": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "vehicleHeistCatalogCountries": "Países: {countries}",
+  "@vehicleHeistCatalogCountries": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      }
+    }
+  }
 }

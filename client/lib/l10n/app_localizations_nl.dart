@@ -855,6 +855,515 @@ class AppLocalizationsNl extends AppLocalizations {
   String get vehicleHeist => 'Voertuig stelen';
 
   @override
+  String get vehicleHeistTitle => 'Voertuig stelen';
+
+  @override
+  String get vehicleHeistTabSubtitleCar =>
+      'Steel auto\'s voor cash en onderdelen.';
+
+  @override
+  String get vehicleHeistTabSubtitleMotorcycle =>
+      'Steel motoren voor cash en onderdelen.';
+
+  @override
+  String get vehicleHeistTabSubtitleBoat =>
+      'Steel boten voor cash en onderdelen.';
+
+  @override
+  String get vehicleHeistReady => 'Klaar';
+
+  @override
+  String get vehicleHeistMotorStorage => 'Motorstalling';
+
+  @override
+  String get vehicleHeistCapacityPolicyCar =>
+      'Autocapaciteit wordt gedeeld over alle auto-heists.';
+
+  @override
+  String get vehicleHeistCapacityPolicyMotorcycle =>
+      'Motorcapaciteit wordt gedeeld over alle motor-heists.';
+
+  @override
+  String get vehicleHeistCapacityPolicyBoat =>
+      'Bootcapaciteit wordt gedeeld over alle boot-heists.';
+
+  @override
+  String vehicleHeistRankRequired(String rank) {
+    return 'Rank vereist: $rank';
+  }
+
+  @override
+  String vehicleHeistCapacityLine(String stored, String total, String level) {
+    return 'Opslag: $stored/$total (baan lvl $level)';
+  }
+
+  @override
+  String get vehicleHeistStealCar => 'Steel auto';
+
+  @override
+  String get vehicleHeistStealMotorcycle => 'Steel motor';
+
+  @override
+  String get vehicleHeistStealBoat => 'Steel boot';
+
+  @override
+  String get vehicleHeistGenericVehicle => 'voertuig';
+
+  @override
+  String vehicleHeistSuccessStolen(String vehicle) {
+    return 'Gelukt: $vehicle gestolen.';
+  }
+
+  @override
+  String vehicleHeistCooldownActive(String duration) {
+    return 'Cooldown actief: $duration';
+  }
+
+  @override
+  String vehicleHeistArrested(String minutes) {
+    return 'Je bent gearresteerd ($minutes min gevangenis).';
+  }
+
+  @override
+  String get vehicleHeistUntil => 'tot';
+
+  @override
+  String get vehicleHeistRegionalLockActive => 'Regionale lock actief.';
+
+  @override
+  String get vehicleHeistStealFailed => 'Stelen mislukt.';
+
+  @override
+  String get vehicleHeistUpgradeCompleted => 'Upgrade voltooid.';
+
+  @override
+  String get vehicleHeistUpgradeFailed => 'Upgrade mislukt.';
+
+  @override
+  String get vehicleHeistCatalogTitleCars => 'Beschikbare auto\'s';
+
+  @override
+  String get vehicleHeistCatalogTitleMotorcycles => 'Beschikbare motoren';
+
+  @override
+  String get vehicleHeistCatalogTitleBoats => 'Beschikbare boten';
+
+  @override
+  String get vehicleHeistCatalogEmpty => 'Geen voertuigen in deze catalogus.';
+
+  @override
+  String get vehicleHeistRarityCommon => 'Gewoon';
+
+  @override
+  String get vehicleHeistRarityUncommon => 'Ongewoon';
+
+  @override
+  String get vehicleHeistRarityRare => 'Zeldzaam';
+
+  @override
+  String get vehicleHeistRarityEpic => 'Episch';
+
+  @override
+  String get vehicleHeistRarityLegendary => 'Legendarisch';
+
+  @override
+  String get vehicleHeistEventOnlyTag => 'Alleen event';
+
+  @override
+  String vehicleHeistCatalogValue(String value) {
+    return 'Waarde: $value';
+  }
+
+  @override
+  String vehicleHeistCatalogRank(String rank) {
+    return 'Rang: $rank';
+  }
+
+  @override
+  String vehicleHeistCatalogInGameAvailability(String label) {
+    return 'In-game beschikbaarheid: $label';
+  }
+
+  @override
+  String vehicleHeistCatalogMostCommonIn(String country) {
+    return 'Meest voorkomend in: $country';
+  }
+
+  @override
+  String vehicleHeistCatalogCountries(String countries) {
+    return 'Landen: $countries';
+  }
+
+  @override
+  String vehicleHeistUpgradeCost(String cost) {
+    return 'Upgraden ($cost)';
+  }
+
+  @override
+  String vehicleHeistUpgradeRankRequired(String rank) {
+    return 'Upgrade geblokkeerd: rank $rank vereist';
+  }
+
+  @override
+  String get vehicleHeistUpgradeLocked => 'Upgrade geblokkeerd';
+
+  @override
+  String vehicleHeistSpeedUpWithCredits(String credits) {
+    return 'Versnel voor $credits credits';
+  }
+
+  @override
+  String get vehicleHeistSpeedUpWithCreditsNextScreen =>
+      'Versnel (volgend scherm)';
+
+  @override
+  String get vehicleHeistExpand => 'Openen';
+
+  @override
+  String get vehicleHeistCollapse => 'Sluiten';
+
+  @override
+  String get vehicleHeistActive => 'ACTIEF';
+
+  @override
+  String get vehicleHeistOff => 'uit';
+
+  @override
+  String get catalog => 'Catalogus';
+
+  @override
+  String get vehicleHeistOpsHotspotRunButton => 'Hotspot-run';
+
+  @override
+  String get vehicleHeistOpsHotspotRunTitle => 'Hotspot-run';
+
+  @override
+  String vehicleHeistOpsHotspotSuccess(String reward) {
+    return 'Hotspot-run voltooid: +$reward';
+  }
+
+  @override
+  String vehicleHeistOpsHotspotCooldownActive(String duration) {
+    return 'Hotspot cooldown actief ($duration)';
+  }
+
+  @override
+  String get vehicleHeistOpsHotspotFailedHeatIncreased =>
+      'Hotspot mislukt. Hitte verhoogd.';
+
+  @override
+  String get vehicleHeistOpsCrewOpButton => 'Crew-actie';
+
+  @override
+  String get vehicleHeistOpsCrewOpTitle => 'Crew-actie';
+
+  @override
+  String vehicleHeistOpsCrewSuccess(String reward) {
+    return 'Crew-actie voltooid: jij verdiende $reward';
+  }
+
+  @override
+  String get vehicleHeistOpsCrewRequired => 'Crew vereist.';
+
+  @override
+  String vehicleHeistOpsCrewCooldownActive(String duration) {
+    return 'Crew cooldown actief ($duration)';
+  }
+
+  @override
+  String get vehicleHeistOpsCrewFailed => 'Crew-actie mislukt.';
+
+  @override
+  String get vehicleHeistOpsCrewJoinToUnlock =>
+      'Join een crew om crew-acties te ontgrendelen';
+
+  @override
+  String get vehicleHeistOpsCrewRequiredYes => 'Crew vereist: ja';
+
+  @override
+  String get vehicleHeistOpsCrewRequiredNoJoinFirst =>
+      'Crew vereist: nee (join eerst een crew)';
+
+  @override
+  String get vehicleHeistOpsBuyPartsButton => 'Koop onderdelen';
+
+  @override
+  String get vehicleHeistOpsBuyPartsTitle => 'Koop onderdelen';
+
+  @override
+  String vehicleHeistOpsBuyPartsPrompt(String type) {
+    return 'Welke onderdelen kopen? ($type)';
+  }
+
+  @override
+  String vehicleHeistOpsPartsPurchased(String cost) {
+    return 'Onderdelen gekocht: -$cost';
+  }
+
+  @override
+  String get vehicleHeistOpsPartsPurchaseFailed =>
+      'Onderdelen aankoop mislukt.';
+
+  @override
+  String get vehicleHeistOpsClaimContractButton => 'Claim contract';
+
+  @override
+  String get vehicleHeistOpsClaimContractTitle => 'Contract claimen';
+
+  @override
+  String vehicleHeistOpsChopContractCompleted(String reward) {
+    return 'Contract afgerond: +$reward';
+  }
+
+  @override
+  String get vehicleHeistOpsChopNoEligibleVehicle =>
+      'Geen geschikt voertuig in je inventaris voor dit contract.';
+
+  @override
+  String vehicleHeistOpsChopContractCooldownActive(String duration) {
+    return 'Contract cooldown actief ($duration)';
+  }
+
+  @override
+  String get vehicleHeistOpsChopContractClaimFailed =>
+      'Contract claim mislukt.';
+
+  @override
+  String get vehicleHeistOpsInsuranceButton => 'Verzekering';
+
+  @override
+  String get vehicleHeistOpsInsuranceTitle => 'Smokkelverzekering';
+
+  @override
+  String get vehicleHeistOpsInsuranceBody =>
+      'Kies een dekking voor deze voertuigcategorie.';
+
+  @override
+  String get vehicleHeistOpsInsuranceTierBasic => 'Basis';
+
+  @override
+  String get vehicleHeistOpsInsuranceTierPro => 'Pro';
+
+  @override
+  String vehicleHeistOpsInsuranceActive(String tier, String price) {
+    return 'Verzekering actief ($tier) voor $price.';
+  }
+
+  @override
+  String get vehicleHeistOpsInsurancePurchaseFailed =>
+      'Verzekering aankopen mislukt.';
+
+  @override
+  String get vehicleHeistOpsCrewMatchButton => 'Crew-duel';
+
+  @override
+  String vehicleHeistOpsCrewMatchWon(String reward) {
+    return 'Crew match gewonnen: +$reward';
+  }
+
+  @override
+  String vehicleHeistOpsCrewMatchLost(String reward) {
+    return 'Crew match verloren: +$reward troost';
+  }
+
+  @override
+  String get vehicleHeistOpsCrewMatchFailed => 'Crew matchmaking mislukt.';
+
+  @override
+  String get vehicleHeistOpsCounterButton => 'Tegenactie';
+
+  @override
+  String vehicleHeistOpsCounterSuccess(String reward) {
+    return 'Counter-intercept geslaagd: +$reward';
+  }
+
+  @override
+  String get vehicleHeistOpsCounterFailed =>
+      'Tegenintercept niet beschikbaar of mislukt.';
+
+  @override
+  String get vehicleHeistOpsOpsContractButton => 'Ops-contract';
+
+  @override
+  String get vehicleHeistOpsOpsContractTitle => 'Ops-contract';
+
+  @override
+  String vehicleHeistOpsContractCompleted(String reward) {
+    return 'Ops contract afgerond: +$reward';
+  }
+
+  @override
+  String get vehicleHeistOpsContractFailedOrCooldown =>
+      'Ops contract mislukt of op cooldown.';
+
+  @override
+  String get vehicleHeistOpsClaimDisputeButton => 'Claim betwisten';
+
+  @override
+  String get vehicleHeistOpsNoOpenClaims => 'Geen open verzekeringsclaims.';
+
+  @override
+  String get vehicleHeistOpsNoValidClaimFound => 'Geen geldige claim gevonden.';
+
+  @override
+  String vehicleHeistOpsClaimApproved(String amount) {
+    return 'Claim goedgekeurd: +$amount';
+  }
+
+  @override
+  String vehicleHeistOpsClaimRejected(String amount) {
+    return 'Claim afgewezen: -$amount';
+  }
+
+  @override
+  String get vehicleHeistOpsClaimResolutionFailed =>
+      'Claim-afhandeling mislukt.';
+
+  @override
+  String get vehicleHeistOpsIntelTitle => 'Voertuig Ops Inlichtingen';
+
+  @override
+  String get vehicleHeistOpsIntelRefreshTooltip => 'Ververs inlichtingen';
+
+  @override
+  String get vehicleHeistOpsIntelTapToExpand =>
+      'Tik om te openen en alle acties te zien.';
+
+  @override
+  String vehicleHeistOpsIntelHeatPill(String current, String level) {
+    return 'Hitte $current ($level)';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPolicePill(String name) {
+    return 'Politie: $name';
+  }
+
+  @override
+  String vehicleHeistOpsIntelRepPill(String level) {
+    return 'Reputatie lvl $level';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPartsMarketPill(String trend) {
+    return 'Onderdelenmarkt: $trend';
+  }
+
+  @override
+  String vehicleHeistOpsIntelHotspotLine(String name) {
+    return 'Hotspot: $name';
+  }
+
+  @override
+  String vehicleHeistOpsIntelHotspotRewardLine(String min, String max) {
+    return 'Beloning: $min - $max';
+  }
+
+  @override
+  String get vehicleHeistOpsIntelWhyCashLine =>
+      'Waarom krijg je geld: succesvolle ops-acties betalen direct uit op zakgeld.';
+
+  @override
+  String vehicleHeistOpsIntelCashRangePayout(String min, String max) {
+    return 'Contant: $min - $max';
+  }
+
+  @override
+  String vehicleHeistOpsIntelYouCashRangePayout(String min, String max) {
+    return 'Jij: $min - $max';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCashPayout(String amount) {
+    return 'Contant: $amount';
+  }
+
+  @override
+  String vehicleHeistOpsIntelContractsPayout(String count, String fromPart) {
+    return 'Contracten: $count$fromPart';
+  }
+
+  @override
+  String vehicleHeistOpsIntelContractsFrom(String amount) {
+    return ' | vanaf $amount';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPartsPricesLine(
+    String car,
+    String motorcycle,
+    String boat,
+  ) {
+    return 'Partsprijzen (auto/motor/boot): $car / $motorcycle / $boat';
+  }
+
+  @override
+  String vehicleHeistOpsIntelPartsMarketRefreshLine(String cooldown) {
+    return 'Onderdelenmarkt refresh: $cooldown';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCrewLine(String name, String size) {
+    return 'Crew: $name ($size leden)';
+  }
+
+  @override
+  String vehicleHeistOpsIntelChopRewardLine(String reward) {
+    return 'Chop-contract beloning: $reward';
+  }
+
+  @override
+  String vehicleHeistOpsIntelInterceptWindowLine(String status) {
+    return 'Intercept-venster: $status';
+  }
+
+  @override
+  String vehicleHeistOpsIntelBlacklistLine(String reason) {
+    return 'Zwarte lijst: $reason';
+  }
+
+  @override
+  String get vehicleHeistOpsIntelBlacklistNoneLine => 'Blacklist: geen';
+
+  @override
+  String vehicleHeistOpsIntelInsuranceActiveLine(String tier) {
+    return 'Verzekering: $tier actief';
+  }
+
+  @override
+  String get vehicleHeistOpsIntelInsuranceInactiveLine =>
+      'Verzekering: niet actief';
+
+  @override
+  String vehicleHeistOpsIntelCountryModifierLine(
+    String name,
+    String multiplier,
+  ) {
+    return 'Landmodifier: $name (${multiplier}x)';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCrewSeasonLine(String season, String points) {
+    return 'Crew-seizoen: $season | punten $points';
+  }
+
+  @override
+  String vehicleHeistOpsIntelContractsCooldownLine(
+    String count,
+    String cooldown,
+  ) {
+    return 'Contracten: $count | cooldown $cooldown';
+  }
+
+  @override
+  String vehicleHeistOpsIntelCounterCooldownLine(
+    String cooldown,
+    String claims,
+  ) {
+    return 'Tegenactie cooldown: $cooldown | open claims: $claims';
+  }
+
+  @override
   String get tuneShop => 'Tuning shop';
 
   @override
@@ -899,7 +1408,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tuneShopValueMultiplierPrefix => 'Waarde x';
 
   @override
-  String get tuneShopUpgradeButton => 'Upgrade';
+  String get tuneShopUpgradeButton => 'Upgraden';
 
   @override
   String get tuneShopMaxLabel => 'MAX';
@@ -3696,7 +4205,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get factoryProduceStatusReady => 'Klaar';
 
   @override
-  String get factoryProduceStatusCooldown => 'Cooldown';
+  String get factoryProduceStatusCooldown => 'Afkoelen';
 
   @override
   String get factorySessionActive =>
@@ -3770,7 +4279,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get shootingAccuracyBonusLabel => 'Precisie Bonus';
 
   @override
-  String get shootingMaximumLabel => 'Maximum';
+  String get shootingMaximumLabel => 'Maximaal';
 
   @override
   String get shootingBonusAppliedToCrimes =>
@@ -3780,7 +4289,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get shootingReadyToTrain => 'Klaar om te trainen';
 
   @override
-  String get shootingTrainingCooldownTitle => 'Training Cooldown';
+  String get shootingTrainingCooldownTitle => 'Cooldown trainen';
 
   @override
   String shootingCooldownLabel(String time) {
@@ -3867,7 +4376,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gymStrengthBonusLabel => 'Kracht Bonus';
 
   @override
-  String get gymMaximumLabel => 'Maximum';
+  String get gymMaximumLabel => 'Maximaal';
 
   @override
   String gymStrengthBonus(String bonus) {
@@ -3882,7 +4391,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gymReadyToTrain => 'Klaar om te trainen';
 
   @override
-  String get gymTrainingCooldownTitle => 'Training Cooldown';
+  String get gymTrainingCooldownTitle => 'Cooldown trainen';
 
   @override
   String gymCooldown(String time) {
@@ -4863,7 +5372,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get achievementsCategoryNameTravel => 'Reizen';
 
   @override
-  String get achievementsCategoryNameDrugs => 'Drugs';
+  String get achievementsCategoryNameDrugs => 'Geneesmiddelen';
 
   @override
   String get achievementsCategoryNameTrade => 'Handel';
@@ -7475,7 +7984,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryValueHigh => 'Hoog';
 
   @override
-  String get territoryValueTop => 'Top';
+  String get territoryValueTop => 'Bovenkant';
 
   @override
   String get territoryTagCapital => 'Bestuurlijk centrum';
@@ -7496,7 +8005,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryActionPatrol => 'Patrouille';
 
   @override
-  String get territoryActionIntelScan => 'Intel scan';
+  String get territoryActionIntelScan => 'Intel-scan';
 
   @override
   String get territoryActionSabotage => 'Sabotage';
@@ -7517,10 +8026,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryBonusAdjacentSupport => 'Aangrenzende steun';
 
   @override
-  String get territoryBonusWarPressure => 'War pressure';
+  String get territoryBonusWarPressure => 'Oorlogsdruk';
 
   @override
-  String get territoryBonusHqLevel => 'HQ level';
+  String get territoryBonusHqLevel => 'HQ-niveau';
 
   @override
   String get territoryBonusCrewMissionLevel => 'Crew missielevel';
@@ -7682,7 +8191,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Deze bonussen verhogen alleen je contestpunten per actie. De €-uitbetaling van het gebied blijft gelijk.';
 
   @override
-  String get territoryDetailWarPressure => 'War pressure';
+  String get territoryDetailWarPressure => 'Oorlogsdruk';
 
   @override
   String get territoryDetailAttackPressure => 'aanvalsdruk';
@@ -7712,7 +8221,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territoryDetailYourCrew => 'Jouw crew';
 
   @override
-  String get territoryDetailContestStatus => 'Contest status';
+  String get territoryDetailContestStatus => 'Wedstrijdstatus';
 
   @override
   String get territoryDetailYourRole => 'Jouw rol';
@@ -7810,7 +8319,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get territorySeasonStatus => 'Status';
 
   @override
-  String get territorySeasonStart => 'Start';
+  String get territorySeasonStart => 'Begin';
 
   @override
   String get territorySeasonEnd => 'Einde';
