@@ -109,12 +109,12 @@ export function formatAchievementInboxMessage(
     rewardXp: number;
     rewardReputation: number;
     category: string;
-    id: string;
+    achievementId: string;
   }
 ): string {
   const locale = ACHIEVEMENT_NUMBER_LOCALE[language] ?? 'en-US';
   const p = INBOX[language] ?? INBOX.en;
-  const { title, description, icon, rewardMoney, rewardXp, rewardReputation, category, id } = input;
+  const { title, description, icon, rewardMoney, rewardXp, rewardReputation, category, achievementId } = input;
 
   const m = rewardMoney.toLocaleString(locale);
   const x = rewardXp.toLocaleString(locale);
@@ -131,7 +131,7 @@ export function formatAchievementInboxMessage(
     p.lineReputation(r),
     '',
     p.badgeLine(icon, title),
-    `[[achievement:${category}/${id}]]`,
+    `[[achievement:${category}/${achievementId}]]`,
   ];
 
   return lines.join('\n');
@@ -139,7 +139,7 @@ export function formatAchievementInboxMessage(
 
 export function getAchievementUnlockedActivityLogMessage(
   language: SupportedPlayerLanguage,
-  title: string
+  displayTitle: string
 ): string {
-  return (ACTIVITY[language] ?? ACTIVITY.en)(title);
+  return (ACTIVITY[language] ?? ACTIVITY.en)(displayTitle);
 }

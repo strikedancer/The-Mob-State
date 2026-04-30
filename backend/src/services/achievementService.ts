@@ -1,3 +1,4 @@
+import { resolveAchievementCopy } from '../i18n/achievementArbResolve';
 import { formatAchievementInboxMessage, getAchievementUnlockedActivityLogMessage } from '../i18n/achievementInboxI18n';
 import { activityService } from './activityService';
 import { directMessageService } from './directMessageService';
@@ -2927,13 +2928,18 @@ export async function checkAndUnlockAchievements(
             });
           }
 
+          const arbCopy = resolveAchievementCopy(language, achievement.id, {
+            title: achievement.title,
+            description: achievement.description,
+          });
+
           await activityService.logActivity(
             playerId,
             'ACHIEVEMENT',
-            getAchievementUnlockedActivityLogMessage(language, achievement.title),
+            getAchievementUnlockedActivityLogMessage(language, arbCopy.title),
             {
               achievementId: achievement.id,
-              achievementTitle: achievement.title,
+              achievementTitle: arbCopy.title,
               reward: rewardMoney,
               xpGained: rewardXp,
               reputationGained: rewardReputation,
@@ -2943,14 +2949,14 @@ export async function checkAndUnlockAchievements(
           );
 
           const inboxText = formatAchievementInboxMessage(language, {
-            title: achievement.title,
-            description: achievement.description,
+            title: arbCopy.title,
+            description: arbCopy.description,
             icon: achievement.icon,
             rewardMoney,
             rewardXp,
             rewardReputation,
             category: achievement.category,
-            id: achievement.id,
+            achievementId: achievement.id,
           });
 
           await directMessageService.sendSystemMessage(playerId, inboxText);
