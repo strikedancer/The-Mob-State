@@ -441,6 +441,61 @@
   "tools": "tools",
   "vehicleHeist": "Vehicle Heist",
   "tuneShop": "Tune Shop",
+  "tuneShopIntro": "Scrap vehicles for parts and upgrade speed, stealth and armor. Parts are shared per category (car/motorcycle/boat), so you can tune any vehicle within the same category.",
+  "tuneShopCarPartsLabel": "Car parts",
+  "tuneShopMotorcyclePartsLabel": "Motorcycle parts",
+  "tuneShopBoatPartsLabel": "Boat parts",
+  "tuneShopEmptyTitle": "No vehicles available for tuning",
+  "tuneShopEmptyBody": "Steal some vehicles first and scrap a few for parts.",
+  "tuneShopVehicleTypeCar": "Car",
+  "tuneShopVehicleTypeMotorcycle": "Motorcycle",
+  "tuneShopVehicleTypeBoat": "Boat",
+  "tuneShopStatSpeed": "Speed",
+  "tuneShopStatStealth": "Stealth",
+  "tuneShopStatArmor": "Armor",
+  "tuneShopValueMultiplierPrefix": "Value x",
+  "tuneShopUpgradeButton": "Upgrade",
+  "tuneShopMaxLabel": "MAX",
+  "tuneShopPartsAbbrev": "pts",
+  "tuneShopUpgradeCompleted": "Upgrade completed",
+  "tuneShopUpgradeFailed": "Upgrade failed",
+  "tuneShopLockedVehicleInTransit": "Tuning locked: vehicle is in transit.",
+  "tuneShopLockedVehicleInRepair": "Tuning locked: vehicle is in repair.",
+  "tuneShopLockedCooldownActive": "Tuning cooldown active: {duration} remaining.",
+  "@tuneShopLockedCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorVehicleNotFound": "Vehicle not found",
+  "tuneShopErrorNotOwner": "You do not own this vehicle",
+  "tuneShopErrorVehicleInTransit": "Tuning locked: vehicle is in transit.",
+  "tuneShopErrorVehicleInRepair": "Tuning locked: vehicle is in repair.",
+  "tuneShopErrorInsufficientFunds": "Not enough money",
+  "tuneShopErrorInsufficientParts": "Not enough parts",
+  "tuneShopErrorStatMaxed": "This tuning level is maxed",
+  "tuneShopErrorCooldownActive": "Tuning cooldown active: {duration} remaining.",
+  "@tuneShopErrorCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorConcurrencyLimit": "Limit reached: max {max} concurrent tuning, currently {active}.",
+  "@tuneShopErrorConcurrencyLimit": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorInvalidStat": "Invalid tuning stat",
   "territory": "Territory",
   "achievements": "Achievements",
   "menuCrackVault": "Crack the Vault",

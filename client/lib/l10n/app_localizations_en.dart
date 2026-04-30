@@ -853,6 +853,111 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tuneShop => 'Tune Shop';
 
   @override
+  String get tuneShopIntro =>
+      'Scrap vehicles for parts and upgrade speed, stealth and armor. Parts are shared per category (car/motorcycle/boat), so you can tune any vehicle within the same category.';
+
+  @override
+  String get tuneShopCarPartsLabel => 'Car parts';
+
+  @override
+  String get tuneShopMotorcyclePartsLabel => 'Motorcycle parts';
+
+  @override
+  String get tuneShopBoatPartsLabel => 'Boat parts';
+
+  @override
+  String get tuneShopEmptyTitle => 'No vehicles available for tuning';
+
+  @override
+  String get tuneShopEmptyBody =>
+      'Steal some vehicles first and scrap a few for parts.';
+
+  @override
+  String get tuneShopVehicleTypeCar => 'Car';
+
+  @override
+  String get tuneShopVehicleTypeMotorcycle => 'Motorcycle';
+
+  @override
+  String get tuneShopVehicleTypeBoat => 'Boat';
+
+  @override
+  String get tuneShopStatSpeed => 'Speed';
+
+  @override
+  String get tuneShopStatStealth => 'Stealth';
+
+  @override
+  String get tuneShopStatArmor => 'Armor';
+
+  @override
+  String get tuneShopValueMultiplierPrefix => 'Value x';
+
+  @override
+  String get tuneShopUpgradeButton => 'Upgrade';
+
+  @override
+  String get tuneShopMaxLabel => 'MAX';
+
+  @override
+  String get tuneShopPartsAbbrev => 'pts';
+
+  @override
+  String get tuneShopUpgradeCompleted => 'Upgrade completed';
+
+  @override
+  String get tuneShopUpgradeFailed => 'Upgrade failed';
+
+  @override
+  String get tuneShopLockedVehicleInTransit =>
+      'Tuning locked: vehicle is in transit.';
+
+  @override
+  String get tuneShopLockedVehicleInRepair =>
+      'Tuning locked: vehicle is in repair.';
+
+  @override
+  String tuneShopLockedCooldownActive(String duration) {
+    return 'Tuning cooldown active: $duration remaining.';
+  }
+
+  @override
+  String get tuneShopErrorVehicleNotFound => 'Vehicle not found';
+
+  @override
+  String get tuneShopErrorNotOwner => 'You do not own this vehicle';
+
+  @override
+  String get tuneShopErrorVehicleInTransit =>
+      'Tuning locked: vehicle is in transit.';
+
+  @override
+  String get tuneShopErrorVehicleInRepair =>
+      'Tuning locked: vehicle is in repair.';
+
+  @override
+  String get tuneShopErrorInsufficientFunds => 'Not enough money';
+
+  @override
+  String get tuneShopErrorInsufficientParts => 'Not enough parts';
+
+  @override
+  String get tuneShopErrorStatMaxed => 'This tuning level is maxed';
+
+  @override
+  String tuneShopErrorCooldownActive(String duration) {
+    return 'Tuning cooldown active: $duration remaining.';
+  }
+
+  @override
+  String tuneShopErrorConcurrencyLimit(String max, String active) {
+    return 'Limit reached: max $max concurrent tuning, currently $active.';
+  }
+
+  @override
+  String get tuneShopErrorInvalidStat => 'Invalid tuning stat';
+
+  @override
   String get territory => 'Territory';
 
   @override

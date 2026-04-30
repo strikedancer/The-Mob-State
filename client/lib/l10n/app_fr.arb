@@ -4354,5 +4354,60 @@
   "shootingHowItWorksBullet2": "• Chaque session donne +0,1 % de bonus",
   "shootingHowItWorksBullet3": "• Maximum de 100 séances (+10 % au total)",
   "shootingHowItWorksBullet4": "• Augmente votre taux de réussite en matière de crime",
-  "shootingHowItWorksBullet5": "• Bonus permanent, chaque session compte"
+  "shootingHowItWorksBullet5": "• Bonus permanent, chaque session compte",
+  "tuneShopIntro": "Mettez au rebut les véhicules pour les pièces et améliorez la vitesse, la furtivité et l'armure. Les pièces sont partagées par catégorie (voiture/moto/bateau), vous pouvez donc régler n'importe quel véhicule de la même catégorie.",
+  "tuneShopCarPartsLabel": "Pièces de voiture",
+  "tuneShopMotorcyclePartsLabel": "Pièces de moto",
+  "tuneShopBoatPartsLabel": "Pièces de bateau",
+  "tuneShopEmptyTitle": "Aucun véhicule disponible pour le réglage",
+  "tuneShopEmptyBody": "Volez d’abord quelques véhicules et jetez-en quelques-uns pour les pièces.",
+  "tuneShopVehicleTypeCar": "Voiture",
+  "tuneShopVehicleTypeMotorcycle": "Moto",
+  "tuneShopVehicleTypeBoat": "Bateau",
+  "tuneShopStatSpeed": "Vitesse",
+  "tuneShopStatStealth": "Furtivité",
+  "tuneShopStatArmor": "Armure",
+  "tuneShopValueMultiplierPrefix": "Valeur x",
+  "tuneShopUpgradeButton": "Mise à niveau",
+  "tuneShopMaxLabel": "MAXIMUM",
+  "tuneShopPartsAbbrev": "points",
+  "tuneShopUpgradeCompleted": "Mise à niveau terminée",
+  "tuneShopUpgradeFailed": "La mise à niveau a échoué",
+  "tuneShopLockedVehicleInTransit": "Tuning verrouillé : le véhicule est en transit.",
+  "tuneShopLockedVehicleInRepair": "Tuning verrouillé : le véhicule est en réparation.",
+  "tuneShopLockedCooldownActive": "Temps de recharge de réglage actif : {duration} restant.",
+  "@tuneShopLockedCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorVehicleNotFound": "Véhicule introuvable",
+  "tuneShopErrorNotOwner": "Vous n'êtes pas propriétaire de ce véhicule",
+  "tuneShopErrorVehicleInTransit": "Tuning verrouillé : le véhicule est en transit.",
+  "tuneShopErrorVehicleInRepair": "Tuning verrouillé : le véhicule est en réparation.",
+  "tuneShopErrorInsufficientFunds": "Pas assez d'argent",
+  "tuneShopErrorInsufficientParts": "Pas assez de pièces",
+  "tuneShopErrorStatMaxed": "Ce niveau de réglage est maximum",
+  "tuneShopErrorCooldownActive": "Temps de recharge de réglage actif : {duration} restant.",
+  "@tuneShopErrorCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorConcurrencyLimit": "Limite atteinte : maximum {max} réglage simultané, actuellement {active}.",
+  "@tuneShopErrorConcurrencyLimit": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorInvalidStat": "Statistique de réglage invalide"
 }

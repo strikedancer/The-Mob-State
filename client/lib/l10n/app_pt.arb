@@ -4354,5 +4354,60 @@
   "shootingHowItWorksBullet2": "• Cada sessão oferece bônus de +0,1%",
   "shootingHowItWorksBullet3": "• Máximo de 100 sessões (+10% do total)",
   "shootingHowItWorksBullet4": "• Aumenta sua taxa de sucesso criminal",
-  "shootingHowItWorksBullet5": "• Bônus permanente, cada sessão conta"
+  "shootingHowItWorksBullet5": "• Bônus permanente, cada sessão conta",
+  "tuneShopIntro": "Sucateie veículos em busca de peças e atualize velocidade, furtividade e armadura. As peças são compartilhadas por categoria (carro/moto/barco), para que você possa tunar qualquer veículo dentro da mesma categoria.",
+  "tuneShopCarPartsLabel": "Peças de carro",
+  "tuneShopMotorcyclePartsLabel": "Peças de motocicleta",
+  "tuneShopBoatPartsLabel": "Peças de barco",
+  "tuneShopEmptyTitle": "Nenhum veículo disponível para ajuste",
+  "tuneShopEmptyBody": "Roube alguns veículos primeiro e desfaça alguns para obter peças.",
+  "tuneShopVehicleTypeCar": "Carro",
+  "tuneShopVehicleTypeMotorcycle": "Motocicleta",
+  "tuneShopVehicleTypeBoat": "Barco",
+  "tuneShopStatSpeed": "Velocidade",
+  "tuneShopStatStealth": "Furtiva",
+  "tuneShopStatArmor": "Armadura",
+  "tuneShopValueMultiplierPrefix": "Valor x",
+  "tuneShopUpgradeButton": "Atualizar",
+  "tuneShopMaxLabel": "MÁX.",
+  "tuneShopPartsAbbrev": "pontos",
+  "tuneShopUpgradeCompleted": "Atualização concluída",
+  "tuneShopUpgradeFailed": "Falha na atualização",
+  "tuneShopLockedVehicleInTransit": "Tuning bloqueado: o veículo está em trânsito.",
+  "tuneShopLockedVehicleInRepair": "Tuning bloqueado: o veículo está em reparo.",
+  "tuneShopLockedCooldownActive": "Tempo de espera do ajuste ativo: {duration} restantes.",
+  "@tuneShopLockedCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorVehicleNotFound": "Veículo não encontrado",
+  "tuneShopErrorNotOwner": "Você não possui este veículo",
+  "tuneShopErrorVehicleInTransit": "Tuning bloqueado: o veículo está em trânsito.",
+  "tuneShopErrorVehicleInRepair": "Tuning bloqueado: o veículo está em reparo.",
+  "tuneShopErrorInsufficientFunds": "Não há dinheiro suficiente",
+  "tuneShopErrorInsufficientParts": "Peças insuficientes",
+  "tuneShopErrorStatMaxed": "Este nível de ajuste está no máximo",
+  "tuneShopErrorCooldownActive": "Tempo de espera do ajuste ativo: {duration} restantes.",
+  "@tuneShopErrorCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorConcurrencyLimit": "Limite atingido: máximo de {max} ajuste simultâneo, atualmente {active}.",
+  "@tuneShopErrorConcurrencyLimit": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorInvalidStat": "Estatística de ajuste inválida"
 }

@@ -2646,6 +2646,61 @@
   "smuggling": "Smokkelen",
   "vehicleHeist": "Voertuig stelen",
   "tuneShop": "Tuning shop",
+  "tuneShopIntro": "Sloop voertuigen voor onderdelen en upgrade snelheid, stealth en pantser. Onderdelen zijn per categorie gedeeld (auto/motor/boot), dus je kunt elk voertuig binnen dezelfde categorie tunen.",
+  "tuneShopCarPartsLabel": "Auto-onderdelen",
+  "tuneShopMotorcyclePartsLabel": "Motor-onderdelen",
+  "tuneShopBoatPartsLabel": "Boot-onderdelen",
+  "tuneShopEmptyTitle": "Geen voertuigen om te tunen",
+  "tuneShopEmptyBody": "Steel eerst voertuigen en sloop er een paar voor onderdelen.",
+  "tuneShopVehicleTypeCar": "Auto",
+  "tuneShopVehicleTypeMotorcycle": "Motor",
+  "tuneShopVehicleTypeBoat": "Boot",
+  "tuneShopStatSpeed": "Snelheid",
+  "tuneShopStatStealth": "Stealth",
+  "tuneShopStatArmor": "Pantser",
+  "tuneShopValueMultiplierPrefix": "Waarde x",
+  "tuneShopUpgradeButton": "Upgrade",
+  "tuneShopMaxLabel": "MAX",
+  "tuneShopPartsAbbrev": "ond",
+  "tuneShopUpgradeCompleted": "Upgrade voltooid",
+  "tuneShopUpgradeFailed": "Upgrade mislukt",
+  "tuneShopLockedVehicleInTransit": "Tuning geblokkeerd: voertuig is onderweg.",
+  "tuneShopLockedVehicleInRepair": "Tuning geblokkeerd: voertuig is in reparatie.",
+  "tuneShopLockedCooldownActive": "Tuning cooldown actief: nog {duration}.",
+  "@tuneShopLockedCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorVehicleNotFound": "Voertuig niet gevonden",
+  "tuneShopErrorNotOwner": "Je bezit dit voertuig niet",
+  "tuneShopErrorVehicleInTransit": "Tuning geblokkeerd: voertuig is onderweg.",
+  "tuneShopErrorVehicleInRepair": "Tuning geblokkeerd: voertuig is in reparatie.",
+  "tuneShopErrorInsufficientFunds": "Niet genoeg geld",
+  "tuneShopErrorInsufficientParts": "Niet genoeg onderdelen",
+  "tuneShopErrorStatMaxed": "Dit tuningniveau is maximaal",
+  "tuneShopErrorCooldownActive": "Tuning cooldown actief: nog {duration}.",
+  "@tuneShopErrorCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorConcurrencyLimit": "Limiet bereikt: max {max} tuning tegelijk, momenteel {active}.",
+  "@tuneShopErrorConcurrencyLimit": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorInvalidStat": "Ongeldige tuning-stat",
   "territory": "Territorium",
   "achievements": "Prestaties",
   "@vaultSeasonLabel": {

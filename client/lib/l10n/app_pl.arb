@@ -4354,5 +4354,60 @@
   "shootingHowItWorksBullet2": "• Każda sesja daje premię +0,1%.",
   "shootingHowItWorksBullet3": "• Maksymalnie 100 sesji (łącznie +10%)",
   "shootingHowItWorksBullet4": "• Zwiększa wskaźnik powodzenia przestępstwa",
-  "shootingHowItWorksBullet5": "• Stały bonus, liczy się każda sesja"
+  "shootingHowItWorksBullet5": "• Stały bonus, liczy się każda sesja",
+  "tuneShopIntro": "Złomuj pojazdy na części i ulepszaj prędkość, niewidzialność i pancerz. Części są podzielone według kategorii (samochód/motocykl/łódka), dzięki czemu możesz dostroić dowolny pojazd w tej samej kategorii.",
+  "tuneShopCarPartsLabel": "Części samochodowe",
+  "tuneShopMotorcyclePartsLabel": "Części motocyklowe",
+  "tuneShopBoatPartsLabel": "Części łodzi",
+  "tuneShopEmptyTitle": "Brak pojazdów do tuningu",
+  "tuneShopEmptyBody": "Najpierw ukradnij kilka pojazdów, a kilka zezłomuj na części.",
+  "tuneShopVehicleTypeCar": "Samochód",
+  "tuneShopVehicleTypeMotorcycle": "Motocykl",
+  "tuneShopVehicleTypeBoat": "Łódź",
+  "tuneShopStatSpeed": "Prędkość",
+  "tuneShopStatStealth": "Podstęp",
+  "tuneShopStatArmor": "Zbroja",
+  "tuneShopValueMultiplierPrefix": "Wartość x",
+  "tuneShopUpgradeButton": "Aktualizacja",
+  "tuneShopMaxLabel": "MAKS",
+  "tuneShopPartsAbbrev": "pkt",
+  "tuneShopUpgradeCompleted": "Aktualizacja zakończona",
+  "tuneShopUpgradeFailed": "Aktualizacja nie powiodła się",
+  "tuneShopLockedVehicleInTransit": "Strojenie zablokowane: pojazd jest w transporcie.",
+  "tuneShopLockedVehicleInRepair": "Strojenie zablokowane: pojazd jest w naprawie.",
+  "tuneShopLockedCooldownActive": "Aktywny czas odnowienia strojenia: pozostało {duration}.",
+  "@tuneShopLockedCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorVehicleNotFound": "Nie znaleziono pojazdu",
+  "tuneShopErrorNotOwner": "Nie jesteś właścicielem tego pojazdu",
+  "tuneShopErrorVehicleInTransit": "Strojenie zablokowane: pojazd jest w transporcie.",
+  "tuneShopErrorVehicleInRepair": "Strojenie zablokowane: pojazd jest w naprawie.",
+  "tuneShopErrorInsufficientFunds": "Za mało pieniędzy",
+  "tuneShopErrorInsufficientParts": "Za mało części",
+  "tuneShopErrorStatMaxed": "Ten poziom strojenia jest maksymalny",
+  "tuneShopErrorCooldownActive": "Aktywny czas odnowienia strojenia: pozostało {duration}.",
+  "@tuneShopErrorCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorConcurrencyLimit": "Osiągnięto limit: maks. {max} jednoczesne strojenie, obecnie {active}.",
+  "@tuneShopErrorConcurrencyLimit": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorInvalidStat": "Nieprawidłowa statystyka strojenia"
 }

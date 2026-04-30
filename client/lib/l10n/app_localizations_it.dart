@@ -859,6 +859,114 @@ class AppLocalizationsIt extends AppLocalizations {
   String get tuneShop => 'Negozio di sintonizzazione';
 
   @override
+  String get tuneShopIntro =>
+      'Rottama i veicoli per ricavarne parti e migliora la velocità, la furtività e l\'armatura. Le parti sono condivise per categoria (auto/moto/barca), quindi puoi mettere a punto qualsiasi veicolo all\'interno della stessa categoria.';
+
+  @override
+  String get tuneShopCarPartsLabel => 'Parti di automobili';
+
+  @override
+  String get tuneShopMotorcyclePartsLabel => 'Parti di motociclette';
+
+  @override
+  String get tuneShopBoatPartsLabel => 'Parti di barche';
+
+  @override
+  String get tuneShopEmptyTitle =>
+      'Nessun veicolo disponibile per la messa a punto';
+
+  @override
+  String get tuneShopEmptyBody =>
+      'Ruba prima alcuni veicoli e rottamane alcuni per le parti.';
+
+  @override
+  String get tuneShopVehicleTypeCar => 'Auto';
+
+  @override
+  String get tuneShopVehicleTypeMotorcycle => 'Motociclo';
+
+  @override
+  String get tuneShopVehicleTypeBoat => 'Barca';
+
+  @override
+  String get tuneShopStatSpeed => 'Velocità';
+
+  @override
+  String get tuneShopStatStealth => 'Furtività';
+
+  @override
+  String get tuneShopStatArmor => 'Armatura';
+
+  @override
+  String get tuneShopValueMultiplierPrefix => 'Valorex';
+
+  @override
+  String get tuneShopUpgradeButton => 'Aggiornamento';
+
+  @override
+  String get tuneShopMaxLabel => 'MASSIMO';
+
+  @override
+  String get tuneShopPartsAbbrev => 'punti';
+
+  @override
+  String get tuneShopUpgradeCompleted => 'Aggiornamento completato';
+
+  @override
+  String get tuneShopUpgradeFailed => 'Aggiornamento non riuscito';
+
+  @override
+  String get tuneShopLockedVehicleInTransit =>
+      'Tuning bloccato: il veicolo è in transito.';
+
+  @override
+  String get tuneShopLockedVehicleInRepair =>
+      'Tuning bloccato: il veicolo è in riparazione.';
+
+  @override
+  String tuneShopLockedCooldownActive(String duration) {
+    return 'Tempo di recupero dell\'ottimizzazione attivo: $duration rimanenti.';
+  }
+
+  @override
+  String get tuneShopErrorVehicleNotFound => 'Veicolo non trovato';
+
+  @override
+  String get tuneShopErrorNotOwner => 'Non possiedi questo veicolo';
+
+  @override
+  String get tuneShopErrorVehicleInTransit =>
+      'Tuning bloccato: il veicolo è in transito.';
+
+  @override
+  String get tuneShopErrorVehicleInRepair =>
+      'Tuning bloccato: il veicolo è in riparazione.';
+
+  @override
+  String get tuneShopErrorInsufficientFunds => 'Non abbastanza soldi';
+
+  @override
+  String get tuneShopErrorInsufficientParts => 'Parti insufficienti';
+
+  @override
+  String get tuneShopErrorStatMaxed =>
+      'Questo livello di sintonizzazione è al massimo';
+
+  @override
+  String tuneShopErrorCooldownActive(String duration) {
+    return 'Tempo di recupero dell\'ottimizzazione attivo: $duration rimanenti.';
+  }
+
+  @override
+  String tuneShopErrorConcurrencyLimit(String max, String active) {
+    return 'Limite raggiunto: max $max sintonizzazione simultanea, attualmente $active.';
+  }
+
+  @override
+  String get tuneShopErrorInvalidStat =>
+      'Statistica di ottimizzazione non valida';
+
+  @override
   String get territory => 'Territorio';
 
   @override

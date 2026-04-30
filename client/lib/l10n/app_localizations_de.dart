@@ -868,6 +868,112 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tuneShop => 'Tune-Shop';
 
   @override
+  String get tuneShopIntro =>
+      'Verschrotte Fahrzeuge für Teile und verbessere Geschwindigkeit, Tarnung und Panzerung. Teile werden pro Kategorie (Auto/Motorrad/Boot) gemeinsam genutzt, sodass Sie jedes Fahrzeug innerhalb derselben Kategorie tunen können.';
+
+  @override
+  String get tuneShopCarPartsLabel => 'Autoteile';
+
+  @override
+  String get tuneShopMotorcyclePartsLabel => 'Motorradteile';
+
+  @override
+  String get tuneShopBoatPartsLabel => 'Bootsteile';
+
+  @override
+  String get tuneShopEmptyTitle => 'Keine Fahrzeuge zum Tuning verfügbar';
+
+  @override
+  String get tuneShopEmptyBody =>
+      'Stehlen Sie zuerst einige Fahrzeuge und verschrotten Sie einige, um Ersatzteile zu erhalten.';
+
+  @override
+  String get tuneShopVehicleTypeCar => 'Auto';
+
+  @override
+  String get tuneShopVehicleTypeMotorcycle => 'Motorrad';
+
+  @override
+  String get tuneShopVehicleTypeBoat => 'Boot';
+
+  @override
+  String get tuneShopStatSpeed => 'Geschwindigkeit';
+
+  @override
+  String get tuneShopStatStealth => 'Heimlichkeit';
+
+  @override
+  String get tuneShopStatArmor => 'Rüstung';
+
+  @override
+  String get tuneShopValueMultiplierPrefix => 'Wert x';
+
+  @override
+  String get tuneShopUpgradeButton => 'Upgrade';
+
+  @override
+  String get tuneShopMaxLabel => 'MAX';
+
+  @override
+  String get tuneShopPartsAbbrev => 'Punkte';
+
+  @override
+  String get tuneShopUpgradeCompleted => 'Upgrade abgeschlossen';
+
+  @override
+  String get tuneShopUpgradeFailed => 'Das Upgrade ist fehlgeschlagen';
+
+  @override
+  String get tuneShopLockedVehicleInTransit =>
+      'Tuning gesperrt: Fahrzeug ist unterwegs.';
+
+  @override
+  String get tuneShopLockedVehicleInRepair =>
+      'Tuning gesperrt: Fahrzeug wird repariert.';
+
+  @override
+  String tuneShopLockedCooldownActive(String duration) {
+    return 'Tuning-Abklingzeit aktiv: $duration verbleibend.';
+  }
+
+  @override
+  String get tuneShopErrorVehicleNotFound => 'Fahrzeug nicht gefunden';
+
+  @override
+  String get tuneShopErrorNotOwner =>
+      'Sie sind nicht Eigentümer dieses Fahrzeugs';
+
+  @override
+  String get tuneShopErrorVehicleInTransit =>
+      'Tuning gesperrt: Fahrzeug ist unterwegs.';
+
+  @override
+  String get tuneShopErrorVehicleInRepair =>
+      'Tuning gesperrt: Fahrzeug wird repariert.';
+
+  @override
+  String get tuneShopErrorInsufficientFunds => 'Nicht genug Geld';
+
+  @override
+  String get tuneShopErrorInsufficientParts => 'Nicht genügend Teile';
+
+  @override
+  String get tuneShopErrorStatMaxed => 'Diese Tuning-Stufe ist maximal';
+
+  @override
+  String tuneShopErrorCooldownActive(String duration) {
+    return 'Tuning-Abklingzeit aktiv: $duration verbleibend.';
+  }
+
+  @override
+  String tuneShopErrorConcurrencyLimit(String max, String active) {
+    return 'Grenzwert erreicht: max. $max gleichzeitiges Tuning, derzeit $active.';
+  }
+
+  @override
+  String get tuneShopErrorInvalidStat => 'Ungültige Tuning-Statistik';
+
+  @override
   String get territory => 'Gebiet';
 
   @override

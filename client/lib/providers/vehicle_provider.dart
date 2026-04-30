@@ -31,6 +31,8 @@ class VehicleProvider with ChangeNotifier {
   Map<String, int> _tuningParts = {'car': 0, 'motorcycle': 0, 'boat': 0};
   String _garageStatusVehicleType = 'car';
   List<Map<String, dynamic>> _tuningVehicles = [];
+  String? _tuningUpgradeErrorReason;
+  Map<String, dynamic>? _tuningUpgradeErrorParams;
   bool _isLoading = false;
   String? _error;
 
@@ -72,6 +74,8 @@ class VehicleProvider with ChangeNotifier {
   bool get vehicleOpsLoading => _vehicleOpsLoading;
   Map<String, int> get tuningParts => _tuningParts;
   List<Map<String, dynamic>> get tuningVehicles => _tuningVehicles;
+  String? get tuningUpgradeErrorReason => _tuningUpgradeErrorReason;
+  Map<String, dynamic>? get tuningUpgradeErrorParams => _tuningUpgradeErrorParams;
   bool get isLoading => _isLoading;
   String? get error => _error;
 
@@ -936,23 +940,26 @@ class VehicleProvider with ChangeNotifier {
         await fetchTuningOverview();
         await fetchInventory();
         _error = null;
+        _tuningUpgradeErrorReason = null;
+        _tuningUpgradeErrorParams = null;
         notifyListeners();
         return true;
       }
 
-      final reason = data['params']?['reason']?.toString();
-      if (reason == 'TUNE_COOLDOWN_ACTIVE') {
-        final remaining =
-            (data['params']?['cooldownRemainingSeconds'] as num?)?.toInt() ?? 0;
-        _error =
-            'Tuning cooldown actief: nog ${_formatCooldownSeconds(remaining)}';
-      } else {
-        _error = _getErrorMessage(reason);
-      }
+      final params = (data['params'] as Map?)?.cast<String, dynamic>();
+      final reason = params?['reason']?.toString();
+      _tuningUpgradeErrorReason = reason;
+      _tuningUpgradeErrorParams = params;
+
+      // Keep legacy `_error` for other screens, but Tune Shop should localize based
+      // on reason/params.
+      _error = _getErrorMessage(reason);
       notifyListeners();
       return false;
     } catch (e) {
       _error = 'Er is een fout opgetreden';
+      _tuningUpgradeErrorReason = 'NETWORK_ERROR';
+      _tuningUpgradeErrorParams = null;
       notifyListeners();
       return false;
     }

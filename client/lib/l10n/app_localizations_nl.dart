@@ -858,6 +858,111 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tuneShop => 'Tuning shop';
 
   @override
+  String get tuneShopIntro =>
+      'Sloop voertuigen voor onderdelen en upgrade snelheid, stealth en pantser. Onderdelen zijn per categorie gedeeld (auto/motor/boot), dus je kunt elk voertuig binnen dezelfde categorie tunen.';
+
+  @override
+  String get tuneShopCarPartsLabel => 'Auto-onderdelen';
+
+  @override
+  String get tuneShopMotorcyclePartsLabel => 'Motor-onderdelen';
+
+  @override
+  String get tuneShopBoatPartsLabel => 'Boot-onderdelen';
+
+  @override
+  String get tuneShopEmptyTitle => 'Geen voertuigen om te tunen';
+
+  @override
+  String get tuneShopEmptyBody =>
+      'Steel eerst voertuigen en sloop er een paar voor onderdelen.';
+
+  @override
+  String get tuneShopVehicleTypeCar => 'Auto';
+
+  @override
+  String get tuneShopVehicleTypeMotorcycle => 'Motor';
+
+  @override
+  String get tuneShopVehicleTypeBoat => 'Boot';
+
+  @override
+  String get tuneShopStatSpeed => 'Snelheid';
+
+  @override
+  String get tuneShopStatStealth => 'Stealth';
+
+  @override
+  String get tuneShopStatArmor => 'Pantser';
+
+  @override
+  String get tuneShopValueMultiplierPrefix => 'Waarde x';
+
+  @override
+  String get tuneShopUpgradeButton => 'Upgrade';
+
+  @override
+  String get tuneShopMaxLabel => 'MAX';
+
+  @override
+  String get tuneShopPartsAbbrev => 'ond';
+
+  @override
+  String get tuneShopUpgradeCompleted => 'Upgrade voltooid';
+
+  @override
+  String get tuneShopUpgradeFailed => 'Upgrade mislukt';
+
+  @override
+  String get tuneShopLockedVehicleInTransit =>
+      'Tuning geblokkeerd: voertuig is onderweg.';
+
+  @override
+  String get tuneShopLockedVehicleInRepair =>
+      'Tuning geblokkeerd: voertuig is in reparatie.';
+
+  @override
+  String tuneShopLockedCooldownActive(String duration) {
+    return 'Tuning cooldown actief: nog $duration.';
+  }
+
+  @override
+  String get tuneShopErrorVehicleNotFound => 'Voertuig niet gevonden';
+
+  @override
+  String get tuneShopErrorNotOwner => 'Je bezit dit voertuig niet';
+
+  @override
+  String get tuneShopErrorVehicleInTransit =>
+      'Tuning geblokkeerd: voertuig is onderweg.';
+
+  @override
+  String get tuneShopErrorVehicleInRepair =>
+      'Tuning geblokkeerd: voertuig is in reparatie.';
+
+  @override
+  String get tuneShopErrorInsufficientFunds => 'Niet genoeg geld';
+
+  @override
+  String get tuneShopErrorInsufficientParts => 'Niet genoeg onderdelen';
+
+  @override
+  String get tuneShopErrorStatMaxed => 'Dit tuningniveau is maximaal';
+
+  @override
+  String tuneShopErrorCooldownActive(String duration) {
+    return 'Tuning cooldown actief: nog $duration.';
+  }
+
+  @override
+  String tuneShopErrorConcurrencyLimit(String max, String active) {
+    return 'Limiet bereikt: max $max tuning tegelijk, momenteel $active.';
+  }
+
+  @override
+  String get tuneShopErrorInvalidStat => 'Ongeldige tuning-stat';
+
+  @override
   String get territory => 'Territorium';
 
   @override

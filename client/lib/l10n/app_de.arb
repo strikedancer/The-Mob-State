@@ -4354,5 +4354,60 @@
   "shootingHowItWorksBullet2": "• Jede Sitzung bringt einen Bonus von +0,1 %",
   "shootingHowItWorksBullet3": "• Maximal 100 Sitzungen (+10 % insgesamt)",
   "shootingHowItWorksBullet4": "• Erhöht Ihre Erfolgsquote bei Straftaten",
-  "shootingHowItWorksBullet5": "• Permanenter Bonus, jede Sitzung zählt"
+  "shootingHowItWorksBullet5": "• Permanenter Bonus, jede Sitzung zählt",
+  "tuneShopIntro": "Verschrotte Fahrzeuge für Teile und verbessere Geschwindigkeit, Tarnung und Panzerung. Teile werden pro Kategorie (Auto/Motorrad/Boot) gemeinsam genutzt, sodass Sie jedes Fahrzeug innerhalb derselben Kategorie tunen können.",
+  "tuneShopCarPartsLabel": "Autoteile",
+  "tuneShopMotorcyclePartsLabel": "Motorradteile",
+  "tuneShopBoatPartsLabel": "Bootsteile",
+  "tuneShopEmptyTitle": "Keine Fahrzeuge zum Tuning verfügbar",
+  "tuneShopEmptyBody": "Stehlen Sie zuerst einige Fahrzeuge und verschrotten Sie einige, um Ersatzteile zu erhalten.",
+  "tuneShopVehicleTypeCar": "Auto",
+  "tuneShopVehicleTypeMotorcycle": "Motorrad",
+  "tuneShopVehicleTypeBoat": "Boot",
+  "tuneShopStatSpeed": "Geschwindigkeit",
+  "tuneShopStatStealth": "Heimlichkeit",
+  "tuneShopStatArmor": "Rüstung",
+  "tuneShopValueMultiplierPrefix": "Wert x",
+  "tuneShopUpgradeButton": "Upgrade",
+  "tuneShopMaxLabel": "MAX",
+  "tuneShopPartsAbbrev": "Punkte",
+  "tuneShopUpgradeCompleted": "Upgrade abgeschlossen",
+  "tuneShopUpgradeFailed": "Das Upgrade ist fehlgeschlagen",
+  "tuneShopLockedVehicleInTransit": "Tuning gesperrt: Fahrzeug ist unterwegs.",
+  "tuneShopLockedVehicleInRepair": "Tuning gesperrt: Fahrzeug wird repariert.",
+  "tuneShopLockedCooldownActive": "Tuning-Abklingzeit aktiv: {duration} verbleibend.",
+  "@tuneShopLockedCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorVehicleNotFound": "Fahrzeug nicht gefunden",
+  "tuneShopErrorNotOwner": "Sie sind nicht Eigentümer dieses Fahrzeugs",
+  "tuneShopErrorVehicleInTransit": "Tuning gesperrt: Fahrzeug ist unterwegs.",
+  "tuneShopErrorVehicleInRepair": "Tuning gesperrt: Fahrzeug wird repariert.",
+  "tuneShopErrorInsufficientFunds": "Nicht genug Geld",
+  "tuneShopErrorInsufficientParts": "Nicht genügend Teile",
+  "tuneShopErrorStatMaxed": "Diese Tuning-Stufe ist maximal",
+  "tuneShopErrorCooldownActive": "Tuning-Abklingzeit aktiv: {duration} verbleibend.",
+  "@tuneShopErrorCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorConcurrencyLimit": "Grenzwert erreicht: max. {max} gleichzeitiges Tuning, derzeit {active}.",
+  "@tuneShopErrorConcurrencyLimit": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorInvalidStat": "Ungültige Tuning-Statistik"
 }

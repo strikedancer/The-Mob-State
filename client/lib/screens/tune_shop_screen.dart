@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/vehicle_provider.dart';
+import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 
 class TuneShopScreen extends StatefulWidget {
@@ -20,9 +21,6 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   Timer? _ticker;
   DateTime _cooldownSnapshotAt = DateTime.now();
   bool _cooldownRefreshInProgress = false;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -63,6 +61,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
     final provider = context.read<VehicleProvider>();
     final ok = await provider.upgradeVehicleTuning(inventoryId, stat);
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
 
     setState(() {
       _cooldownSnapshotAt = DateTime.now();
@@ -72,17 +71,74 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Upgrade voltooid', 'Upgrade completed')),
+          content: Text(l10n?.tuneShopUpgradeCompleted ?? 'Upgrade completed'),
           backgroundColor: Colors.green.shade700,
           duration: const Duration(seconds: 3),
         ),
       );
     } else {
+      final reason = provider.tuningUpgradeErrorReason;
+      final params = provider.tuningUpgradeErrorParams;
+      final cooldownSeconds =
+          (params?['cooldownRemainingSeconds'] as num?)?.toInt() ?? 0;
+      final maxConcurrent =
+          (params?['maxConcurrent'] as num?)?.toInt() ?? 0;
+      final activeConcurrent =
+          (params?['activeConcurrent'] as num?)?.toInt() ?? 0;
+
+      String message;
+      switch (reason) {
+        case 'VEHICLE_NOT_FOUND':
+          message = l10n?.tuneShopErrorVehicleNotFound ?? 'Vehicle not found';
+          break;
+        case 'NOT_OWNER':
+          message = l10n?.tuneShopErrorNotOwner ?? 'Not the owner';
+          break;
+        case 'VEHICLE_IN_TRANSIT':
+          message = l10n?.tuneShopErrorVehicleInTransit ??
+              'Tuning locked: vehicle is in transit.';
+          break;
+        case 'VEHICLE_REPAIR_IN_PROGRESS':
+          message = l10n?.tuneShopErrorVehicleInRepair ??
+              'Tuning locked: vehicle is in repair.';
+          break;
+        case 'INSUFFICIENT_FUNDS':
+          message = l10n?.tuneShopErrorInsufficientFunds ??
+              'Not enough money';
+          break;
+        case 'INSUFFICIENT_PARTS':
+          message = l10n?.tuneShopErrorInsufficientParts ??
+              'Not enough parts';
+          break;
+        case 'TUNE_STAT_MAXED':
+          message = l10n?.tuneShopErrorStatMaxed ??
+              'This tuning level is maxed';
+          break;
+        case 'TUNE_COOLDOWN_ACTIVE':
+          message = l10n?.tuneShopErrorCooldownActive(
+                _formatCooldown(cooldownSeconds),
+              ) ??
+              'Tuning cooldown active';
+          break;
+        case 'TUNE_CONCURRENCY_LIMIT_REACHED':
+          message = l10n?.tuneShopErrorConcurrencyLimit(
+                maxConcurrent.toString(),
+                activeConcurrent.toString(),
+              ) ??
+              'Limit reached';
+          break;
+        case 'INVALID_TUNE_STAT':
+          message = l10n?.tuneShopErrorInvalidStat ?? 'Invalid stat';
+          break;
+        default:
+          message = provider.error ?? (l10n?.tuneShopUpgradeFailed ?? 'Upgrade failed');
+      }
+
       showTopRightFromSnackBar(
         context,
         SnackBar(
           content: Text(
-            provider.error ?? _tr('Upgrade mislukt', 'Upgrade failed'),
+            message,
           ),
           backgroundColor: Colors.red.shade700,
           duration: const Duration(seconds: 4),
@@ -103,24 +159,26 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   }
 
   String _typeLabel(String type) {
+    final l10n = AppLocalizations.of(context);
     switch (type) {
       case 'boat':
-        return _tr('Boot', 'Boat');
+        return l10n?.tuneShopVehicleTypeBoat ?? 'Boat';
       case 'motorcycle':
-        return _tr('Motor', 'Motorcycle');
+        return l10n?.tuneShopVehicleTypeMotorcycle ?? 'Motorcycle';
       default:
-        return _tr('Auto', 'Car');
+        return l10n?.tuneShopVehicleTypeCar ?? 'Car';
     }
   }
 
   String _statLabel(String stat) {
+    final l10n = AppLocalizations.of(context);
     switch (stat) {
       case 'stealth':
-        return _tr('Stealth', 'Stealth');
+        return l10n?.tuneShopStatStealth ?? 'Stealth';
       case 'armor':
-        return _tr('Pantser', 'Armor');
+        return l10n?.tuneShopStatArmor ?? 'Armor';
       default:
-        return _tr('Snelheid', 'Speed');
+        return l10n?.tuneShopStatSpeed ?? 'Speed';
     }
   }
 
@@ -185,13 +243,14 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   Widget build(BuildContext context) {
     final provider = context.watch<VehicleProvider>();
     final content = _buildContent(provider);
+    final l10n = AppLocalizations.of(context);
 
     if (widget.embedded) {
       return content;
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(_tr('TuneShop', 'Tune Shop'))),
+      appBar: AppBar(title: Text(l10n?.tuneShop ?? 'Tune Shop')),
       body: content,
     );
   }
@@ -264,6 +323,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   }
 
   Widget _buildHeaderCard() {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -283,13 +343,13 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
                   width: 48,
                   height: 48,
                   fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) =>
+                  errorBuilder: (context, error, stackTrace) =>
                       const SizedBox(width: 48, height: 48),
                 ),
               ),
               const SizedBox(width: 12),
               Text(
-                _tr('TuneShop', 'Tune Shop'),
+                l10n?.tuneShop ?? 'Tune Shop',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 22,
@@ -300,10 +360,8 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            _tr(
-              'Sloop voertuigen voor onderdelen en upgrade snelheid, stealth en pantser. Onderdelen zijn per categorie gedeeld (auto/motor/boot), dus je kunt elk voertuig binnen dezelfde categorie tunen.',
-              'Scrap vehicles for parts and upgrade speed, stealth and armor. Parts are shared per category (car/motorcycle/boat), so you can tune any vehicle within the same category.',
-            ),
+            l10n?.tuneShopIntro ??
+                'Scrap vehicles for parts and upgrade speed, stealth and armor. Parts are shared per category (car/motorcycle/boat), so you can tune any vehicle within the same category.',
             style: TextStyle(
               color: Colors.white.withOpacity(0.9),
               fontSize: 13,
@@ -316,6 +374,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   }
 
   Widget _buildPartsSummary(VehicleProvider provider) {
+    final l10n = AppLocalizations.of(context);
     final parts = provider.tuningParts;
 
     return Wrap(
@@ -323,19 +382,19 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
       runSpacing: 12,
       children: [
         _partsChip(
-          _tr('Auto onderdelen', 'Car parts'),
+          l10n?.tuneShopCarPartsLabel ?? 'Car parts',
           parts['car'] ?? 0,
           const Color(0xFF64B5F6),
           Icons.directions_car,
         ),
         _partsChip(
-          _tr('Motor onderdelen', 'Motorcycle parts'),
+          l10n?.tuneShopMotorcyclePartsLabel ?? 'Motorcycle parts',
           parts['motorcycle'] ?? 0,
           const Color(0xFFFFB74D),
           Icons.two_wheeler,
         ),
         _partsChip(
-          _tr('Boot onderdelen', 'Boat parts'),
+          l10n?.tuneShopBoatPartsLabel ?? 'Boat parts',
           parts['boat'] ?? 0,
           const Color(0xFF26A69A),
           Icons.directions_boat,
@@ -370,6 +429,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   }
 
   Widget _buildEmptyState() {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -385,10 +445,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
           ),
           const SizedBox(height: 10),
           Text(
-            _tr(
-              'Geen voertuigen om te tunen',
-              'No vehicles available for tuning',
-            ),
+            l10n?.tuneShopEmptyTitle ?? 'No vehicles available for tuning',
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
@@ -396,10 +453,8 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            _tr(
-              'Steel eerst een voertuig en sloop er een paar voor onderdelen.',
-              'Steal some vehicles first and scrap a few for parts.',
-            ),
+            l10n?.tuneShopEmptyBody ??
+                'Steal some vehicles first and scrap a few for parts.',
             style: TextStyle(color: Colors.white.withOpacity(0.8)),
             textAlign: TextAlign.center,
           ),
@@ -430,6 +485,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
   }
 
   Widget _vehicleCard(Map<String, dynamic> vehicle) {
+    final l10n = AppLocalizations.of(context);
     final vehicleType = (vehicle['vehicleType'] ?? 'car').toString();
     final levels =
         (vehicle['tuningLevels'] as Map<String, dynamic>? ?? const {});
@@ -512,7 +568,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '${_tr('Waarde x', 'Value x')}${tunedMultiplier.toStringAsFixed(2)}',
+                          '${l10n?.tuneShopValueMultiplierPrefix ?? 'Value x'}${tunedMultiplier.toStringAsFixed(2)}',
                           style: TextStyle(
                             color: Colors.amber.shade200,
                             fontSize: 12,
@@ -536,19 +592,15 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
             const SizedBox(height: 8),
             Text(
               lockReason == 'VEHICLE_IN_TRANSIT'
-                  ? _tr(
-                      'Tuning geblokkeerd: voertuig is onderweg.',
-                      'Tuning locked: vehicle is in transit.',
-                    )
+                  ? (l10n?.tuneShopLockedVehicleInTransit ??
+                      'Tuning locked: vehicle is in transit.')
                   : lockReason == 'TUNE_COOLDOWN_ACTIVE'
-                  ? _tr(
-                      'Tuning cooldown actief: nog ${_formatCooldown(cooldownRemaining)}.',
-                      'Tuning cooldown active: ${_formatCooldown(cooldownRemaining)} remaining.',
-                    )
-                  : _tr(
-                      'Tuning geblokkeerd: voertuig is in reparatie.',
-                      'Tuning locked: vehicle is in repair.',
-                    ),
+                  ? (l10n?.tuneShopLockedCooldownActive(
+                        _formatCooldown(cooldownRemaining),
+                      ) ??
+                      'Tuning cooldown active')
+                  : (l10n?.tuneShopLockedVehicleInRepair ??
+                      'Tuning locked: vehicle is in repair.'),
               style: const TextStyle(
                 color: Colors.orangeAccent,
                 fontSize: 11,
@@ -567,6 +619,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
     Map<String, dynamic> levels,
     Map<String, dynamic> costs,
   ) {
+    final l10n = AppLocalizations.of(context);
     final inventoryId = (vehicle['inventoryId'] as num?)?.toInt() ?? 0;
     final statLevel = (levels[stat] as num?)?.toInt() ?? 0;
     final statCost = (costs[stat] as Map<String, dynamic>? ?? const {});
@@ -591,7 +644,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
         ),
         if (maxed)
           Text(
-            _tr('MAX', 'MAX'),
+            l10n?.tuneShopMaxLabel ?? 'MAX',
             style: const TextStyle(
               color: Colors.greenAccent,
               fontSize: 12,
@@ -600,7 +653,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
           )
         else ...[
           Text(
-            '$partsCost ${_tr('ond', 'pts')} • €$moneyCost',
+            '$partsCost ${l10n?.tuneShopPartsAbbrev ?? 'pts'} • €$moneyCost',
             style: TextStyle(
               color: Colors.white.withOpacity(0.9),
               fontSize: 11,
@@ -617,7 +670,7 @@ class _TuneShopScreenState extends State<TuneShopScreen> {
                 foregroundColor: Colors.white,
               ),
               child: Text(
-                _tr('Upgrade', 'Upgrade'),
+                l10n?.tuneShopUpgradeButton ?? 'Upgrade',
                 style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,

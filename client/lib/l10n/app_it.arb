@@ -4354,5 +4354,60 @@
   "shootingHowItWorksBullet2": "• Ogni sessione dà +0,1% di bonus",
   "shootingHowItWorksBullet3": "• Massimo di 100 sessioni (+10% totale)",
   "shootingHowItWorksBullet4": "• Aumenta il tasso di successo del crimine",
-  "shootingHowItWorksBullet5": "• Bonus permanente, ogni sessione conta"
+  "shootingHowItWorksBullet5": "• Bonus permanente, ogni sessione conta",
+  "tuneShopIntro": "Rottama i veicoli per ricavarne parti e migliora la velocità, la furtività e l'armatura. Le parti sono condivise per categoria (auto/moto/barca), quindi puoi mettere a punto qualsiasi veicolo all'interno della stessa categoria.",
+  "tuneShopCarPartsLabel": "Parti di automobili",
+  "tuneShopMotorcyclePartsLabel": "Parti di motociclette",
+  "tuneShopBoatPartsLabel": "Parti di barche",
+  "tuneShopEmptyTitle": "Nessun veicolo disponibile per la messa a punto",
+  "tuneShopEmptyBody": "Ruba prima alcuni veicoli e rottamane alcuni per le parti.",
+  "tuneShopVehicleTypeCar": "Auto",
+  "tuneShopVehicleTypeMotorcycle": "Motociclo",
+  "tuneShopVehicleTypeBoat": "Barca",
+  "tuneShopStatSpeed": "Velocità",
+  "tuneShopStatStealth": "Furtività",
+  "tuneShopStatArmor": "Armatura",
+  "tuneShopValueMultiplierPrefix": "Valorex",
+  "tuneShopUpgradeButton": "Aggiornamento",
+  "tuneShopMaxLabel": "MASSIMO",
+  "tuneShopPartsAbbrev": "punti",
+  "tuneShopUpgradeCompleted": "Aggiornamento completato",
+  "tuneShopUpgradeFailed": "Aggiornamento non riuscito",
+  "tuneShopLockedVehicleInTransit": "Tuning bloccato: il veicolo è in transito.",
+  "tuneShopLockedVehicleInRepair": "Tuning bloccato: il veicolo è in riparazione.",
+  "tuneShopLockedCooldownActive": "Tempo di recupero dell'ottimizzazione attivo: {duration} rimanenti.",
+  "@tuneShopLockedCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorVehicleNotFound": "Veicolo non trovato",
+  "tuneShopErrorNotOwner": "Non possiedi questo veicolo",
+  "tuneShopErrorVehicleInTransit": "Tuning bloccato: il veicolo è in transito.",
+  "tuneShopErrorVehicleInRepair": "Tuning bloccato: il veicolo è in riparazione.",
+  "tuneShopErrorInsufficientFunds": "Non abbastanza soldi",
+  "tuneShopErrorInsufficientParts": "Parti insufficienti",
+  "tuneShopErrorStatMaxed": "Questo livello di sintonizzazione è al massimo",
+  "tuneShopErrorCooldownActive": "Tempo di recupero dell'ottimizzazione attivo: {duration} rimanenti.",
+  "@tuneShopErrorCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorConcurrencyLimit": "Limite raggiunto: max {max} sintonizzazione simultanea, attualmente {active}.",
+  "@tuneShopErrorConcurrencyLimit": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      },
+      "active": {
+        "type": "String"
+      }
+    }
+  },
+  "tuneShopErrorInvalidStat": "Statistica di ottimizzazione non valida"
 }

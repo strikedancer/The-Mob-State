@@ -857,6 +857,111 @@ class AppLocalizationsPl extends AppLocalizations {
   String get tuneShop => 'Sklep tuningowy';
 
   @override
+  String get tuneShopIntro =>
+      'Złomuj pojazdy na części i ulepszaj prędkość, niewidzialność i pancerz. Części są podzielone według kategorii (samochód/motocykl/łódka), dzięki czemu możesz dostroić dowolny pojazd w tej samej kategorii.';
+
+  @override
+  String get tuneShopCarPartsLabel => 'Części samochodowe';
+
+  @override
+  String get tuneShopMotorcyclePartsLabel => 'Części motocyklowe';
+
+  @override
+  String get tuneShopBoatPartsLabel => 'Części łodzi';
+
+  @override
+  String get tuneShopEmptyTitle => 'Brak pojazdów do tuningu';
+
+  @override
+  String get tuneShopEmptyBody =>
+      'Najpierw ukradnij kilka pojazdów, a kilka zezłomuj na części.';
+
+  @override
+  String get tuneShopVehicleTypeCar => 'Samochód';
+
+  @override
+  String get tuneShopVehicleTypeMotorcycle => 'Motocykl';
+
+  @override
+  String get tuneShopVehicleTypeBoat => 'Łódź';
+
+  @override
+  String get tuneShopStatSpeed => 'Prędkość';
+
+  @override
+  String get tuneShopStatStealth => 'Podstęp';
+
+  @override
+  String get tuneShopStatArmor => 'Zbroja';
+
+  @override
+  String get tuneShopValueMultiplierPrefix => 'Wartość x';
+
+  @override
+  String get tuneShopUpgradeButton => 'Aktualizacja';
+
+  @override
+  String get tuneShopMaxLabel => 'MAKS';
+
+  @override
+  String get tuneShopPartsAbbrev => 'pkt';
+
+  @override
+  String get tuneShopUpgradeCompleted => 'Aktualizacja zakończona';
+
+  @override
+  String get tuneShopUpgradeFailed => 'Aktualizacja nie powiodła się';
+
+  @override
+  String get tuneShopLockedVehicleInTransit =>
+      'Strojenie zablokowane: pojazd jest w transporcie.';
+
+  @override
+  String get tuneShopLockedVehicleInRepair =>
+      'Strojenie zablokowane: pojazd jest w naprawie.';
+
+  @override
+  String tuneShopLockedCooldownActive(String duration) {
+    return 'Aktywny czas odnowienia strojenia: pozostało $duration.';
+  }
+
+  @override
+  String get tuneShopErrorVehicleNotFound => 'Nie znaleziono pojazdu';
+
+  @override
+  String get tuneShopErrorNotOwner => 'Nie jesteś właścicielem tego pojazdu';
+
+  @override
+  String get tuneShopErrorVehicleInTransit =>
+      'Strojenie zablokowane: pojazd jest w transporcie.';
+
+  @override
+  String get tuneShopErrorVehicleInRepair =>
+      'Strojenie zablokowane: pojazd jest w naprawie.';
+
+  @override
+  String get tuneShopErrorInsufficientFunds => 'Za mało pieniędzy';
+
+  @override
+  String get tuneShopErrorInsufficientParts => 'Za mało części';
+
+  @override
+  String get tuneShopErrorStatMaxed => 'Ten poziom strojenia jest maksymalny';
+
+  @override
+  String tuneShopErrorCooldownActive(String duration) {
+    return 'Aktywny czas odnowienia strojenia: pozostało $duration.';
+  }
+
+  @override
+  String tuneShopErrorConcurrencyLimit(String max, String active) {
+    return 'Osiągnięto limit: maks. $max jednoczesne strojenie, obecnie $active.';
+  }
+
+  @override
+  String get tuneShopErrorInvalidStat => 'Nieprawidłowa statystyka strojenia';
+
+  @override
   String get territory => 'Terytorium';
 
   @override

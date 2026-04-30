@@ -1682,6 +1682,192 @@ abstract class AppLocalizations {
   /// **'Tune Shop'**
   String get tuneShop;
 
+  /// No description provided for @tuneShopIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Scrap vehicles for parts and upgrade speed, stealth and armor. Parts are shared per category (car/motorcycle/boat), so you can tune any vehicle within the same category.'**
+  String get tuneShopIntro;
+
+  /// No description provided for @tuneShopCarPartsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Car parts'**
+  String get tuneShopCarPartsLabel;
+
+  /// No description provided for @tuneShopMotorcyclePartsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle parts'**
+  String get tuneShopMotorcyclePartsLabel;
+
+  /// No description provided for @tuneShopBoatPartsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat parts'**
+  String get tuneShopBoatPartsLabel;
+
+  /// No description provided for @tuneShopEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicles available for tuning'**
+  String get tuneShopEmptyTitle;
+
+  /// No description provided for @tuneShopEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Steal some vehicles first and scrap a few for parts.'**
+  String get tuneShopEmptyBody;
+
+  /// No description provided for @tuneShopVehicleTypeCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get tuneShopVehicleTypeCar;
+
+  /// No description provided for @tuneShopVehicleTypeMotorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle'**
+  String get tuneShopVehicleTypeMotorcycle;
+
+  /// No description provided for @tuneShopVehicleTypeBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat'**
+  String get tuneShopVehicleTypeBoat;
+
+  /// No description provided for @tuneShopStatSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get tuneShopStatSpeed;
+
+  /// No description provided for @tuneShopStatStealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Stealth'**
+  String get tuneShopStatStealth;
+
+  /// No description provided for @tuneShopStatArmor.
+  ///
+  /// In en, this message translates to:
+  /// **'Armor'**
+  String get tuneShopStatArmor;
+
+  /// No description provided for @tuneShopValueMultiplierPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Value x'**
+  String get tuneShopValueMultiplierPrefix;
+
+  /// No description provided for @tuneShopUpgradeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get tuneShopUpgradeButton;
+
+  /// No description provided for @tuneShopMaxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'MAX'**
+  String get tuneShopMaxLabel;
+
+  /// No description provided for @tuneShopPartsAbbrev.
+  ///
+  /// In en, this message translates to:
+  /// **'pts'**
+  String get tuneShopPartsAbbrev;
+
+  /// No description provided for @tuneShopUpgradeCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade completed'**
+  String get tuneShopUpgradeCompleted;
+
+  /// No description provided for @tuneShopUpgradeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade failed'**
+  String get tuneShopUpgradeFailed;
+
+  /// No description provided for @tuneShopLockedVehicleInTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuning locked: vehicle is in transit.'**
+  String get tuneShopLockedVehicleInTransit;
+
+  /// No description provided for @tuneShopLockedVehicleInRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuning locked: vehicle is in repair.'**
+  String get tuneShopLockedVehicleInRepair;
+
+  /// No description provided for @tuneShopLockedCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuning cooldown active: {duration} remaining.'**
+  String tuneShopLockedCooldownActive(String duration);
+
+  /// No description provided for @tuneShopErrorVehicleNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle not found'**
+  String get tuneShopErrorVehicleNotFound;
+
+  /// No description provided for @tuneShopErrorNotOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not own this vehicle'**
+  String get tuneShopErrorNotOwner;
+
+  /// No description provided for @tuneShopErrorVehicleInTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuning locked: vehicle is in transit.'**
+  String get tuneShopErrorVehicleInTransit;
+
+  /// No description provided for @tuneShopErrorVehicleInRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuning locked: vehicle is in repair.'**
+  String get tuneShopErrorVehicleInRepair;
+
+  /// No description provided for @tuneShopErrorInsufficientFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money'**
+  String get tuneShopErrorInsufficientFunds;
+
+  /// No description provided for @tuneShopErrorInsufficientParts.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough parts'**
+  String get tuneShopErrorInsufficientParts;
+
+  /// No description provided for @tuneShopErrorStatMaxed.
+  ///
+  /// In en, this message translates to:
+  /// **'This tuning level is maxed'**
+  String get tuneShopErrorStatMaxed;
+
+  /// No description provided for @tuneShopErrorCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuning cooldown active: {duration} remaining.'**
+  String tuneShopErrorCooldownActive(String duration);
+
+  /// No description provided for @tuneShopErrorConcurrencyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit reached: max {max} concurrent tuning, currently {active}.'**
+  String tuneShopErrorConcurrencyLimit(String max, String active);
+
+  /// No description provided for @tuneShopErrorInvalidStat.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid tuning stat'**
+  String get tuneShopErrorInvalidStat;
+
   /// No description provided for @territory.
   ///
   /// In en, this message translates to:
