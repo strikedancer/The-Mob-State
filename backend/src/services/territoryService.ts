@@ -2092,10 +2092,11 @@ async function _notifyCrewContestStarted(crewId: number, regionKey: string, cont
       n.territoryContestStarted.pushBody(regionKey, contestIdStr),
       { type: 'territory_contest_started', regionKey, contestId: contestIdStr },
     ).catch(() => {});
-    await _sendTerritoryInboxMessage(p.id, (language) => {
-      const tr = translationService.getTranslations(language).notification;
-      return tr.territoryContestStarted.inboxMessage(regionKey, contestIdStr);
-    }).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      lang,
+      n.territoryContestStarted.inboxMessage(regionKey, contestIdStr),
+    ).catch(() => {});
   }
 }
 
@@ -2110,10 +2111,11 @@ async function _notifyCrewRegionCaptured(crewId: number, regionKey: string): Pro
       n.territoryCaptured.pushBody(regionKey),
       { type: 'territory_captured', regionKey },
     ).catch(() => {});
-    await _sendTerritoryInboxMessage(p.id, (language) => {
-      const tr = translationService.getTranslations(language).notification;
-      return tr.territoryCaptured.inboxMessage(regionKey);
-    }).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      lang,
+      n.territoryCaptured.inboxMessage(regionKey),
+    ).catch(() => {});
   }
 }
 
@@ -2128,10 +2130,11 @@ async function _notifyCrewRegionLost(crewId: number, regionKey: string): Promise
       n.territoryLost.pushBody(regionKey),
       { type: 'territory_lost', regionKey },
     ).catch(() => {});
-    await _sendTerritoryInboxMessage(p.id, (language) => {
-      const tr = translationService.getTranslations(language).notification;
-      return tr.territoryLost.inboxMessage(regionKey);
-    }).catch(() => {});
+    await _sendTerritoryInboxMessage(
+      p.id,
+      lang,
+      n.territoryLost.inboxMessage(regionKey),
+    ).catch(() => {});
   }
 }
 
@@ -2150,17 +2153,14 @@ async function _getPlayerLanguage(playerId: number): Promise<Language> {
   return translationService.getPlayerLanguage(player ?? {});
 }
 
+/** Push + inbox share the same resolved `language` (one `findUnique` per player per notify). */
 async function _sendTerritoryInboxMessage(
   playerId: number,
-  buildMessage: (language: Language) => string,
+  language: Language,
+  message: string,
 ): Promise<void> {
-  const player = await prisma.player.findUnique({
-    where: { id: playerId },
-    select: { preferredLanguage: true },
-  });
-  const language = translationService.getPlayerLanguage(player ?? {});
   const sender = translationService.getTranslations(language).common.territorySystemSender;
-  await directMessageService.sendSystemMessage(playerId, buildMessage(language), {
+  await directMessageService.sendSystemMessage(playerId, message, {
     sendPush: false,
     senderName: sender,
   });
