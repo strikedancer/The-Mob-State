@@ -779,7 +779,7 @@
   "buyProperty": "Eigendom Kopen",
   "propertyBought": "{name} gekocht!",
   "propertyUpgraded": "Eigendom geüpgraded naar level {level}!",
-  "errorLoadingProperties": "Fout bij laden eigenschappen",
+  "errorLoadingProperties": "Fout bij laden eigendommen",
   "errorUpgrading": "Fout bij upgraden",
   "networkError": "Netwerkfout: {error}",
   "unknownResponse": "Onbekende response",
@@ -7057,5 +7057,72 @@
         "type": "String"
       }
     }
-  }
+  },
+  "propertiesConfirmPurchaseTitle": "Weet je het zeker?",
+  "propertyTypeApartment": "Appartement",
+  "propertyTypeNightclub": "Nachtclub",
+  "propertyTypeShop": "Winkel",
+  "propertyStatStorageLabel": "📦 Opslag",
+  "propertyStatStorageSlotsRange": "{from} → {to} plekken",
+  "@propertyStatStorageSlotsRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatHousingCapacityLabel": "👩 Wooncapaciteit",
+  "propertyStatHousingWorkersRange": "{from} → {to} hoeren",
+  "@propertyStatHousingWorkersRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatStorageAmountSlots": "{amount} plekken",
+  "@propertyStatStorageAmountSlots": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityWithMax": "{current} hoeren (max {max} bij lvl {level})",
+  "@propertyHousingCapacityWithMax": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityMaxReached": "{current} hoeren ✅ max",
+  "@propertyHousingCapacityMaxReached": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyVipExtraSlots": "VIP +{count} plekken",
+  "@propertyVipExtraSlots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyManageNightclub": "Beheer nachtclub"
 }

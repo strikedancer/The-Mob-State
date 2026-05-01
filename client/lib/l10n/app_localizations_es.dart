@@ -2798,6 +2798,57 @@ class AppLocalizationsEs extends AppLocalizations {
   String get propertyShopName => 'Comercio';
 
   @override
+  String get propertiesConfirmPurchaseTitle => 'Estas segura';
+
+  @override
+  String get propertyTypeApartment => 'Departamento';
+
+  @override
+  String get propertyTypeNightclub => 'Club nocturno';
+
+  @override
+  String get propertyTypeShop => 'Comercio';
+
+  @override
+  String get propertyStatStorageLabel => '📦 Almacenamiento';
+
+  @override
+  String propertyStatStorageSlotsRange(int from, int to) {
+    return '$from → $to espacios';
+  }
+
+  @override
+  String get propertyStatHousingCapacityLabel => '👩 Capacidad de vivienda';
+
+  @override
+  String propertyStatHousingWorkersRange(int from, int to) {
+    return '$from → $to trabajadoras';
+  }
+
+  @override
+  String propertyStatStorageAmountSlots(int amount) {
+    return '$amount ranuras';
+  }
+
+  @override
+  String propertyHousingCapacityWithMax(int current, int max, int level) {
+    return '$current trabajadoras (máximo $max a nivel $level)';
+  }
+
+  @override
+  String propertyHousingCapacityMaxReached(int current) {
+    return '$current trabajadores • máx.';
+  }
+
+  @override
+  String propertyVipExtraSlots(int count) {
+    return 'VIP +$count espacios adicionales';
+  }
+
+  @override
+  String get propertyManageNightclub => 'Administrar discoteca';
+
+  @override
   String get blackMarket => 'Mercado negro';
 
   @override

@@ -1677,6 +1677,53 @@
   "propertyHouseName": "House",
   "propertyApartmentName": "Apartment",
   "propertyShopName": "Shop",
+  "propertiesConfirmPurchaseTitle": "Are you sure?",
+  "propertyTypeApartment": "Apartment",
+  "propertyTypeNightclub": "Nightclub",
+  "propertyTypeShop": "Shop",
+  "propertyStatStorageLabel": "📦 Storage",
+  "propertyStatStorageSlotsRange": "{from} → {to} slots",
+  "@propertyStatStorageSlotsRange": {
+    "placeholders": {
+      "from": {"type": "int"},
+      "to": {"type": "int"}
+    }
+  },
+  "propertyStatHousingCapacityLabel": "👩 Housing capacity",
+  "propertyStatHousingWorkersRange": "{from} → {to} workers",
+  "@propertyStatHousingWorkersRange": {
+    "placeholders": {
+      "from": {"type": "int"},
+      "to": {"type": "int"}
+    }
+  },
+  "propertyStatStorageAmountSlots": "{amount} slots",
+  "@propertyStatStorageAmountSlots": {
+    "placeholders": {
+      "amount": {"type": "int"}
+    }
+  },
+  "propertyHousingCapacityWithMax": "{current} workers (max {max} at level {level})",
+  "@propertyHousingCapacityWithMax": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "max": {"type": "int"},
+      "level": {"type": "int"}
+    }
+  },
+  "propertyHousingCapacityMaxReached": "{current} workers • max",
+  "@propertyHousingCapacityMaxReached": {
+    "placeholders": {
+      "current": {"type": "int"}
+    }
+  },
+  "propertyVipExtraSlots": "VIP +{count} extra slots",
+  "@propertyVipExtraSlots": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "propertyManageNightclub": "Manage nightclub",
   "blackMarket": "Black Market",
   "garage": "Garage",
   "garageCapacity": "Garage Capacity",

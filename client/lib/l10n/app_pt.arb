@@ -7057,5 +7057,72 @@
         "type": "String"
       }
     }
-  }
+  },
+  "propertiesConfirmPurchaseTitle": "Tem certeza?",
+  "propertyTypeApartment": "Apartamento",
+  "propertyTypeNightclub": "Boate",
+  "propertyTypeShop": "Comprar",
+  "propertyStatStorageLabel": "📦 Armazenamento",
+  "propertyStatStorageSlotsRange": "{from} → {to} vagas",
+  "@propertyStatStorageSlotsRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatHousingCapacityLabel": "👩 Capacidade habitacional",
+  "propertyStatHousingWorkersRange": "{from} → {to} trabalhadores",
+  "@propertyStatHousingWorkersRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatStorageAmountSlots": "{amount} vagas",
+  "@propertyStatStorageAmountSlots": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityWithMax": "{current} trabalhadores (máximo {max} no nível {level})",
+  "@propertyHousingCapacityWithMax": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityMaxReached": "{current} trabalhadores • máx.",
+  "@propertyHousingCapacityMaxReached": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyVipExtraSlots": "VIP +{count} slots extras",
+  "@propertyVipExtraSlots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyManageNightclub": "Gerenciar boate"
 }

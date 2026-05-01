@@ -5013,6 +5013,84 @@ abstract class AppLocalizations {
   /// **'Shop'**
   String get propertyShopName;
 
+  /// No description provided for @propertiesConfirmPurchaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get propertiesConfirmPurchaseTitle;
+
+  /// No description provided for @propertyTypeApartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment'**
+  String get propertyTypeApartment;
+
+  /// No description provided for @propertyTypeNightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Nightclub'**
+  String get propertyTypeNightclub;
+
+  /// No description provided for @propertyTypeShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get propertyTypeShop;
+
+  /// No description provided for @propertyStatStorageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'📦 Storage'**
+  String get propertyStatStorageLabel;
+
+  /// No description provided for @propertyStatStorageSlotsRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to} slots'**
+  String propertyStatStorageSlotsRange(int from, int to);
+
+  /// No description provided for @propertyStatHousingCapacityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'👩 Housing capacity'**
+  String get propertyStatHousingCapacityLabel;
+
+  /// No description provided for @propertyStatHousingWorkersRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} → {to} workers'**
+  String propertyStatHousingWorkersRange(int from, int to);
+
+  /// No description provided for @propertyStatStorageAmountSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} slots'**
+  String propertyStatStorageAmountSlots(int amount);
+
+  /// No description provided for @propertyHousingCapacityWithMax.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} workers (max {max} at level {level})'**
+  String propertyHousingCapacityWithMax(int current, int max, int level);
+
+  /// No description provided for @propertyHousingCapacityMaxReached.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} workers • max'**
+  String propertyHousingCapacityMaxReached(int current);
+
+  /// No description provided for @propertyVipExtraSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP +{count} extra slots'**
+  String propertyVipExtraSlots(int count);
+
+  /// No description provided for @propertyManageNightclub.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage nightclub'**
+  String get propertyManageNightclub;
+
   /// No description provided for @blackMarket.
   ///
   /// In en, this message translates to:

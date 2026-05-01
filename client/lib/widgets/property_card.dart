@@ -226,13 +226,13 @@ class PropertyCard extends StatelessWidget {
       case 'house':
         return '🏠 ${l10n.propertyTypeHouse}';
       case 'apartment':
-        return '🏢 Appartement';
+        return '🏢 ${l10n.propertyTypeApartment}';
       case 'warehouse':
         return '🏪 ${l10n.propertyTypeWarehouse}';
       case 'nightclub':
-        return '🎵 Nachtclub';
+        return '🎵 ${l10n.propertyTypeNightclub}';
       case 'shop':
-        return '🛒 Winkel';
+        return '🛒 ${l10n.propertyTypeShop}';
       case 'hotel':
         return '🏨 ${l10n.propertyTypeHotel}';
       case 'factory':
@@ -255,16 +255,22 @@ class PropertyCard extends StatelessWidget {
           definition!.storageCapacity[0] > 0) ...[
         SizedBox(height: 8),
         _buildStatRow(
-          '📦 Opslag',
-          '${definition!.storageCapacity[0]} → ${definition!.storageCapacity.last} slots',
+          l10n.propertyStatStorageLabel,
+          l10n.propertyStatStorageSlotsRange(
+            definition!.storageCapacity[0],
+            definition!.storageCapacity.last,
+          ),
         ),
       ],
       if ((definition!.id == 'house' || definition!.id == 'apartment') &&
           definition!.storageCapacity.isNotEmpty) ...[
         SizedBox(height: 8),
         _buildStatRow(
-          '👩 Wooncapaciteit',
-          '${(definition!.storageCapacity.first / 5).floor().clamp(1, 999)} → ${(definition!.storageCapacity.last / 5).floor().clamp(1, 999)} hoeren',
+          l10n.propertyStatHousingCapacityLabel,
+          l10n.propertyStatHousingWorkersRange(
+            (definition!.storageCapacity.first / 5).floor().clamp(1, 999),
+            (definition!.storageCapacity.last / 5).floor().clamp(1, 999),
+          ),
         ),
       ],
       SizedBox(height: 8),
@@ -342,7 +348,7 @@ class PropertyCard extends StatelessWidget {
               Icon(Icons.star, size: 14, color: Colors.amber[800]),
               const SizedBox(width: 4),
               Text(
-                'VIP +$vipBonusPerProperty plekken',
+                l10n.propertyVipExtraSlots(vipBonusPerProperty),
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.amber[900],
@@ -438,7 +444,7 @@ class PropertyCard extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: onManage,
             icon: Icon(Icons.nightlife),
-            label: Text('Beheer Nightclub'),
+            label: Text(l10n.propertyManageNightclub),
           ),
         ),
       ],

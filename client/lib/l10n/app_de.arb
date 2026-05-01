@@ -7057,5 +7057,72 @@
         "type": "String"
       }
     }
-  }
+  },
+  "propertiesConfirmPurchaseTitle": "Bist du sicher?",
+  "propertyTypeApartment": "Wohnung",
+  "propertyTypeNightclub": "Nachtclub",
+  "propertyTypeShop": "Geschäft",
+  "propertyStatStorageLabel": "📦 Lagerung",
+  "propertyStatStorageSlotsRange": "{from} → {to} Steckplätze",
+  "@propertyStatStorageSlotsRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatHousingCapacityLabel": "👩 Wohnkapazität",
+  "propertyStatHousingWorkersRange": "{from} → {to} Arbeiter",
+  "@propertyStatHousingWorkersRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatStorageAmountSlots": "{amount} Steckplätze",
+  "@propertyStatStorageAmountSlots": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityWithMax": "{current} Arbeiter (maximal {max} auf Stufe {level})",
+  "@propertyHousingCapacityWithMax": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityMaxReached": "{current} Arbeiter • max",
+  "@propertyHousingCapacityMaxReached": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyVipExtraSlots": "VIP +{count} zusätzliche Slots",
+  "@propertyVipExtraSlots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyManageNightclub": "Nightclub verwalten"
 }

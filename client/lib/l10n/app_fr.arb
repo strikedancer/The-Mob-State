@@ -7057,5 +7057,72 @@
         "type": "String"
       }
     }
-  }
+  },
+  "propertiesConfirmPurchaseTitle": "Es-tu sûr?",
+  "propertyTypeApartment": "Appartement",
+  "propertyTypeNightclub": "Discothèque",
+  "propertyTypeShop": "Boutique",
+  "propertyStatStorageLabel": "📦Stockage",
+  "propertyStatStorageSlotsRange": "{from} → {to} emplacements",
+  "@propertyStatStorageSlotsRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatHousingCapacityLabel": "👩 Capacité d'accueil",
+  "propertyStatHousingWorkersRange": "{from} → {to} travailleurs",
+  "@propertyStatHousingWorkersRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyStatStorageAmountSlots": "{amount} emplacements",
+  "@propertyStatStorageAmountSlots": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityWithMax": "{current} ouvriers (max {max} au niveau {level})",
+  "@propertyHousingCapacityWithMax": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyHousingCapacityMaxReached": "{current} travailleurs • max",
+  "@propertyHousingCapacityMaxReached": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyVipExtraSlots": "VIP +{count} emplacements supplémentaires",
+  "@propertyVipExtraSlots": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "propertyManageNightclub": "Gérer une discothèque"
 }

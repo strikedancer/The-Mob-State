@@ -168,48 +168,45 @@ class PropertyScreenState extends State<PropertyScreen>
     // Confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-        ),
-        content: ResponsiveDialogContent(
-          phoneMaxWidth: 320,
-          tabletMaxWidth: 380,
-          desktopMaxWidth: 440,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                Localizations.localeOf(context).languageCode == 'nl'
-                    ? 'Eigendom kopen'
-                    : 'Buy property',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                AppLocalizations.of(context)!.buyPropertyConfirm(
-                  property.name,
-                  property.basePrice.toString(),
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+        return AlertDialog(
+          title: Text(l10n.propertiesConfirmPurchaseTitle),
+          content: ResponsiveDialogContent(
+            phoneMaxWidth: 320,
+            tabletMaxWidth: 380,
+            desktopMaxWidth: 440,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.buyProperty,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ),
-            ],
+                const SizedBox(height: 8),
+                Text(
+                  l10n.buyPropertyConfirm(
+                    property.name,
+                    property.basePrice.toString(),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(AppLocalizations.of(context)!.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(AppLocalizations.of(context)!.buy),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(l10n.cancel),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              child: Text(l10n.buy),
+            ),
+          ],
+        );
+      },
     );
 
     if (confirmed != true) return;

@@ -2776,6 +2776,57 @@ class AppLocalizationsNl extends AppLocalizations {
   String get propertyShopName => 'Winkel';
 
   @override
+  String get propertiesConfirmPurchaseTitle => 'Weet je het zeker?';
+
+  @override
+  String get propertyTypeApartment => 'Appartement';
+
+  @override
+  String get propertyTypeNightclub => 'Nachtclub';
+
+  @override
+  String get propertyTypeShop => 'Winkel';
+
+  @override
+  String get propertyStatStorageLabel => '📦 Opslag';
+
+  @override
+  String propertyStatStorageSlotsRange(int from, int to) {
+    return '$from → $to plekken';
+  }
+
+  @override
+  String get propertyStatHousingCapacityLabel => '👩 Wooncapaciteit';
+
+  @override
+  String propertyStatHousingWorkersRange(int from, int to) {
+    return '$from → $to hoeren';
+  }
+
+  @override
+  String propertyStatStorageAmountSlots(int amount) {
+    return '$amount plekken';
+  }
+
+  @override
+  String propertyHousingCapacityWithMax(int current, int max, int level) {
+    return '$current hoeren (max $max bij lvl $level)';
+  }
+
+  @override
+  String propertyHousingCapacityMaxReached(int current) {
+    return '$current hoeren ✅ max';
+  }
+
+  @override
+  String propertyVipExtraSlots(int count) {
+    return 'VIP +$count plekken';
+  }
+
+  @override
+  String get propertyManageNightclub => 'Beheer nachtclub';
+
+  @override
   String get blackMarket => 'Zwarte Markt';
 
   @override
@@ -3978,7 +4029,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get errorLoadingProperties => 'Fout bij laden eigenschappen';
+  String get errorLoadingProperties => 'Fout bij laden eigendommen';
 
   @override
   String get errorUpgrading => 'Fout bij upgraden';
