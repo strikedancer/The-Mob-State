@@ -3267,39 +3267,41 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String crewChatErrorLoadingMessages(String error) {
-    return 'Error loading messages: $error';
+    return 'Fehler beim Laden der Nachrichten: $error';
   }
 
   @override
-  String get crewChatMessageTooLong => 'Message too long (max 500 characters)';
+  String get crewChatMessageTooLong =>
+      'Nachricht zu lang (maximal 500 Zeichen)';
 
   @override
   String crewChatErrorSending(String error) {
-    return 'Error sending message: $error';
+    return 'Fehler beim Senden der Nachricht: $error';
   }
 
   @override
   String crewChatErrorDelete(String error) {
-    return 'Could not delete message: $error';
+    return 'Nachricht konnte nicht gelöscht werden: $error';
   }
 
   @override
-  String get crewChatDeleteTitle => 'Delete message?';
+  String get crewChatDeleteTitle => 'Nachricht löschen?';
 
   @override
-  String get crewChatDeleteBody => 'This message will be permanently deleted.';
+  String get crewChatDeleteBody => 'Diese Nachricht wird dauerhaft gelöscht.';
 
   @override
-  String get crewChatCancel => 'Cancel';
+  String get crewChatCancel => 'Stornieren';
 
   @override
-  String get crewChatDelete => 'Delete';
+  String get crewChatDelete => 'Löschen';
 
   @override
-  String get crewChatNoMessages => 'No messages yet';
+  String get crewChatNoMessages => 'Noch keine Nachrichten';
 
   @override
-  String get crewChatEmptyHint => 'Send the first message to your crew!';
+  String get crewChatEmptyHint =>
+      'Senden Sie die erste Nachricht an Ihre Crew!';
 
   @override
   String get crewUiTr0 => 'HQ-Upgrade-Anforderungen';

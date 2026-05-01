@@ -7802,7 +7802,7 @@
   "crewUiTr142": "Next upgrade not available yet",
   "crewUiTr143": "HQ progression too low",
   "crewUiTr144": "HQ level too low for next upgrade",
-  "crewChatErrorLoadingMessages": "Error loading messages: {error}",
+  "crewChatErrorLoadingMessages": "Erro ao carregar mensagens: {error}",
   "@crewChatErrorLoadingMessages": {
     "placeholders": {
       "error": {
@@ -7810,8 +7810,8 @@
       }
     }
   },
-  "crewChatMessageTooLong": "Message too long (max 500 characters)",
-  "crewChatErrorSending": "Error sending message: {error}",
+  "crewChatMessageTooLong": "Mensagem muito longa (máximo de 500 caracteres)",
+  "crewChatErrorSending": "Erro ao enviar mensagem: {error}",
   "@crewChatErrorSending": {
     "placeholders": {
       "error": {
@@ -7819,7 +7819,7 @@
       }
     }
   },
-  "crewChatErrorDelete": "Could not delete message: {error}",
+  "crewChatErrorDelete": "Não foi possível excluir a mensagem: {error}",
   "@crewChatErrorDelete": {
     "placeholders": {
       "error": {
@@ -7827,10 +7827,10 @@
       }
     }
   },
-  "crewChatDeleteTitle": "Delete message?",
-  "crewChatDeleteBody": "This message will be permanently deleted.",
-  "crewChatCancel": "Cancel",
-  "crewChatDelete": "Delete",
-  "crewChatNoMessages": "No messages yet",
-  "crewChatEmptyHint": "Send the first message to your crew!"
+  "crewChatDeleteTitle": "Excluir mensagem?",
+  "crewChatDeleteBody": "Esta mensagem será excluída permanentemente.",
+  "crewChatCancel": "Cancelar",
+  "crewChatDelete": "Excluir",
+  "crewChatNoMessages": "Nenhuma mensagem ainda",
+  "crewChatEmptyHint": "Envie a primeira mensagem para sua Crew!"
 }

@@ -7801,5 +7801,36 @@
   "crewUiTr141": "Aggiornamento HQ bloccato: edifici laterali prima a L$requiredSideLevel",
   "crewUiTr142": "Il prossimo aggiornamento non è ancora disponibile",
   "crewUiTr143": "Progressione HQ troppo bassa",
-  "crewUiTr144": "Livello HQ troppo basso per il prossimo aggiornamento"
+  "crewUiTr144": "Livello HQ troppo basso per il prossimo aggiornamento",
+  "crewChatErrorLoadingMessages": "Errore durante il caricamento dei messaggi: {error}",
+  "@crewChatErrorLoadingMessages": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "crewChatMessageTooLong": "Messaggio troppo lungo (max 500 caratteri)",
+  "crewChatErrorSending": "Errore nell'invio del messaggio: {error}",
+  "@crewChatErrorSending": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "crewChatErrorDelete": "Impossibile eliminare il messaggio: {error}",
+  "@crewChatErrorDelete": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "crewChatDeleteTitle": "Eliminare il messaggio?",
+  "crewChatDeleteBody": "Questo messaggio verrà eliminato definitivamente.",
+  "crewChatCancel": "Cancellare",
+  "crewChatDelete": "Eliminare",
+  "crewChatNoMessages": "Nessun messaggio ancora",
+  "crewChatEmptyHint": "Invia il primo messaggio al tuo Crew!"
 }
