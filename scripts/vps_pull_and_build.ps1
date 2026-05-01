@@ -64,8 +64,8 @@ set -e
 cd REMOTE_PROJECT_DIR
 cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M) || true
 test -f .env.plesk && cp .env.plesk .env.plesk.bak-$(date +%F-%H%M) || true
-# Tracked crew-mission PNGs under runtime/ can conflict with old untracked copies on the server.
-git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ 2>/dev/null || true
+# Tracked PNGs under runtime/ can conflict with old untracked copies on the server.
+git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ runtime/client-images/avatars/ 2>/dev/null || true
 git pull origin main
 # Keep external image library in sync (nginx /images/* → runtime/client-images).
 mkdir -p runtime/client-images/vault runtime/client-images/avatars || true

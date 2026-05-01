@@ -258,7 +258,7 @@ Standaardcommandoblok voor backend-updates via PuTTY:
 cd /var/www/vhosts/themobstate.com/apps/mafia_game
 cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M)
 cp .env.plesk .env.plesk.bak-$(date +%F-%H%M)
-git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ 2>/dev/null || true
+git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ runtime/client-images/avatars/ 2>/dev/null || true
 git pull origin main
 mkdir -p runtime/client-images/vault runtime/client-images/avatars || true
 cp -f client/assets/images/vault/vault_banner.png runtime/client-images/vault/vault_banner.png || true
