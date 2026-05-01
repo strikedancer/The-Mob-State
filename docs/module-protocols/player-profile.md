@@ -23,7 +23,7 @@ Publieke spelersprofielen, profielnavigatie vanuit andere schermen, profielpriva
 - Prison/Leaderboards/Trade/Events -> Player Profile (andere spelers zichtbaar in lijsten)
 
 ## Registration (gender + starter avatar)
-- Nieuwe accounts kiezen bij registratie **mannelijk of vrouwelijk** (`LoginScreen`); de server slaat `gender` (`male` \| `female`) op en zet `avatar` op `default_1` / `default_2`. Bestaande accounts kunnen `gender` null hebben; avatars blijven via `settings` / rank-allowlist wisselbaar. Custom portret-PNG’s: `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API, zie `PROTOCOL_MASTER` AI-keys).
+- Nieuwe accounts kiezen bij registratie **mannelijk of vrouwelijk** (`LoginScreen`); de server slaat `gender` (`male` \| `female`) op en zet `avatar` op `default_1` / `default_2`. Bestaande accounts kunnen `gender` null hebben; avatars blijven via `settings` / rank-allowlist wisselbaar. Custom portret-PNG’s: `backend/scripts/generate_default_avatars_leonardo.py` (Leonardo API, zie `PROTOCOL_MASTER` AI-keys). **Flutter web:** registratie toont `AvatarHelper` → na asset-fallback `Image.network` naar `/images/avatars/default_*.png`; die bestanden moeten op de **externe client-image mount** staan (`runtime/client-images/avatars/`, sync via deploy-script uit `client/assets/images/avatars/`).
 
 ## Must Preserve
 - Duidelijke profielnavigatie vanaf avatars en namen.

@@ -230,7 +230,7 @@ Verplicht:
 - Zet de echte waarde in een server-side env-bestand dat niet in git staat, bij voorkeur `.env.plesk`, en gebruik dat bestand expliciet via `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
 - Productiesecrets of service-account payloads mogen nooit inline in een getrackte `docker-compose.plesk.yml` blijven staan; tracked compose-files zijn alleen voor placeholders en variabeleverwijzingen.
 
-**Starter avatars (`default_1` / `default_2`):** optioneel verversen met Leonardo — `backend/scripts/generate_default_avatars_leonardo.py` (schrijft naar `client/assets/images/avatars/` + `client/images/avatars/`).
+**Starter avatars (`default_1` / `default_2`):** optioneel verversen met Leonardo — `backend/scripts/generate_default_avatars_leonardo.py` (schrijft naar `client/assets/images/avatars/` + `client/images/avatars/`). **Productie (Flutter web):** `/images/avatars/*` komt van de **externe mount** (`runtime/client-images/`); na pull hoort `runtime/client-images/avatars/default_1.png` en `default_2.png` aanwezig te zijn (deploy-script kopieert ze uit `client/assets/…` mee met `vault_banner`).
 
 One-shot runbook (volgende keer in 1 keer uitvoeren):
 1. `git pull origin main`
@@ -260,6 +260,10 @@ cp docker-compose.plesk.yml docker-compose.plesk.yml.bak-$(date +%F-%H%M)
 cp .env.plesk .env.plesk.bak-$(date +%F-%H%M)
 git clean -fd -- runtime/client-images/crew_missions/cards/ runtime/client-images/crew_missions/scenes/ 2>/dev/null || true
 git pull origin main
+mkdir -p runtime/client-images/vault runtime/client-images/avatars || true
+cp -f client/assets/images/vault/vault_banner.png runtime/client-images/vault/vault_banner.png || true
+cp -f client/assets/images/avatars/default_1.png runtime/client-images/avatars/default_1.png || true
+cp -f client/assets/images/avatars/default_2.png runtime/client-images/avatars/default_2.png || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
