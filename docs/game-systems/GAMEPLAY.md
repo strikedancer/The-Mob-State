@@ -1122,7 +1122,7 @@ healing = 5 HP (if health > 0 && health < 100)
 - Juridische pagina’s: `/privacy` en `/digital-goods` (teksten volledig uit de client-ARB’s). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
 - Layout: hero-titel + pitch in een leesbare kolom (op desktop visueel meer naar het midden-rechts t.o.v. de achtergrond-titel), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan**. Ranglijsten: `GET /public/home` via dezelfde API-basis als de rest van de client (`AppConfig.apiBaseUrl`).
 - **CORS:** de API moet origins van de Flutter-web-shell (`https://themobstate.com`, `www`, `admin`) toestaan wanneer de client op een ander subdomein (`api.…`) aanroept; in productie worden die origins altijd met `ALLOWED_ORIGINS` geünioneerd (`config/index.ts`). Express zet `cors` vóór de Prisma-wachtmiddleware (`app.ts`) zodat ook fout- en 503-responses CORS-headers dragen.
-- **Health:** `GET /health` en `GET /health/*` gaan niet door de Prisma-wachtmiddleware; andere routes wachten wel op de database. Zo kun je op de VPS zien of het proces draait en wat `/health/details` over de DB meldt, ook als `GET /public/home` (nog) 503 geeft.
+- **Health:** `GET /health` en `GET /health/*` gaan niet door de Prisma-wachtmiddleware; andere routes wachten wel op de database. Zo kun je op de VPS zien of het proces draait en wat `/health/details` over de DB meldt, ook als `GET /public/home` (nog) 503 geeft. Zie `PROTOCOL_MASTER.md`: als `curl` op `api.themobstate.com` **Apache** + HTML 503 teruggeeft, bereikt de proxy Node niet — dat is geen CORS-fout in de app.
 - Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`.
 
 ---

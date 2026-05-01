@@ -728,8 +728,8 @@ docker compose -f docker-compose.prod.yml logs -f
 # Check all containers running
 docker compose -f docker-compose.prod.yml ps
 
-# Test health endpoint
-curl https://yourdomain.com/api/health
+# Test health endpoint (Express serves `/health`, not `/api/health`)
+curl https://yourdomain.com/health
 
 # Check nginx serving client
 curl https://yourdomain.com/
@@ -840,7 +840,7 @@ docker compose -f docker-compose.plesk.yml logs -f backend
 
 ```bash
 # Backend alive?
-curl -s https://api.themobstate.com/api/health | jq .
+curl -s https://api.themobstate.com/health | jq .
 
 # Admin panel responds?
 curl -s -I https://admin.themobstate.com/ | head -5

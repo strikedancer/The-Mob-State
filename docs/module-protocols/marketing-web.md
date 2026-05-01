@@ -21,3 +21,7 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 - Deep link `/privacy` laadt juridisch scherm; gasttaal wisselt mee.
 - Zonder token: `/public/home` retourneert JSON; geen e-mail of andere PII in het payload.
 - Cross-origin van `themobstate.com` → `api.themobstate.com`: backend **CORS** (shell-origins + `.env` union in `config/index.ts`; `cors` vóór Prisma in `app.ts` zodat 503’s nog leesbare CORS-headers hebben).
+
+## Live troubleshooting (ranglijsten / “CORS”)
+- Controleer eerst of **Node** antwoordt: `curl -sSI https://api.themobstate.com/health`. Bij een **werkende** upstream krijg je JSON of platte health-tekst (geen generieke HTML-foutpagina). **`Server: Apache` + `Content-Type: text/html` + 503** betekent: reverse proxy (Plesk) bereikt de backend-container niet — los **upstream-poort** + **Docker** op (`docker compose ps`, `logs backend`), niet de Flutter-CORS-code.
+- Als Node wél antwoordt maar ranglijsten leeg/fout: check `GET /public/home` en `/health/details` voor DB-status.
