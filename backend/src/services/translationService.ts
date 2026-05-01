@@ -1,11 +1,12 @@
 /**
  * Translation Service
- * Full email HTML: `en` and `nl`. In-app + FCM push: all allowlisted player languages
- * (see `playerNotificationBundlesExtra.ts` and `getTranslations`).
+ * Full email HTML: `nl`, `en`, and `de`/`fr`/`es`/`it`/`pl`/`pt` (see `playerEmailBundlesExtra.ts`).
+ * In-app + FCM push extras: `playerNotificationBundlesExtra.ts` merged in `getTranslations`.
  */
 
 import { normalizePlayerLanguage, type SupportedPlayerLanguage } from '../config/supportedLanguages';
 import { NOTIFICATION_BUNDLES_I18N } from '../i18n/playerNotificationBundlesExtra';
+import { EMAIL_BUNDLES_I18N } from '../i18n/playerEmailBundlesExtra';
 
 export type Language = SupportedPlayerLanguage;
 
@@ -19,6 +20,8 @@ export interface Translations {
       buttonText: string;
       expiryNote: string;
       ignoreNote: string;
+      securityLabel: string;
+      copyLinkHint: string;
     };
     passwordReset: {
       subject: string;
@@ -28,6 +31,8 @@ export interface Translations {
       buttonText: string;
       expiryNote: string;
       ignoreNote: string;
+      securityLabel: string;
+      copyLinkHint: string;
     };
     friendRequest: {
       subject: string;
@@ -236,6 +241,8 @@ const translations: Record<'en' | 'nl', Translations> = {
         buttonText: 'VERIFY EMAIL',
         expiryNote: 'This link will expire in 24 hours for security reasons.',
         ignoreNote: 'If you didn\'t create an account, you can safely ignore this email.',
+        securityLabel: 'Security note',
+        copyLinkHint: 'Or copy and paste this link into your browser:',
       },
       passwordReset: {
         subject: '🔐 Reset Your Password - The Mob State',
@@ -245,6 +252,8 @@ const translations: Record<'en' | 'nl', Translations> = {
         buttonText: 'RESET PASSWORD',
         expiryNote: 'This link will expire in 1 hour for security reasons.',
         ignoreNote: 'If you didn\'t request this, your password remains unchanged.',
+        securityLabel: 'Security note',
+        copyLinkHint: 'Or copy and paste this link into your browser:',
       },
       friendRequest: {
         subject: '🤝 New Friend Request - The Mob State',
@@ -481,6 +490,8 @@ const translations: Record<'en' | 'nl', Translations> = {
         buttonText: 'VERIFIEER EMAIL',
         expiryNote: 'Deze link verloopt om veiligheidsredenen over 24 uur.',
         ignoreNote: 'Als je geen account hebt aangemaakt, kun je deze e-mail veilig negeren.',
+        securityLabel: 'Beveiliging',
+        copyLinkHint: 'Of kopieer en plak deze link in je browser:',
       },
       passwordReset: {
         subject: '🔐 Reset Je Wachtwoord - The Mob State',
@@ -490,6 +501,8 @@ const translations: Record<'en' | 'nl', Translations> = {
         buttonText: 'RESET WACHTWOORD',
         expiryNote: 'Deze link verloopt om veiligheidsredenen over 1 uur.',
         ignoreNote: 'Als je dit niet hebt aangevraagd, blijft je wachtwoord ongewijzigd.',
+        securityLabel: 'Beveiliging',
+        copyLinkHint: 'Of kopieer en plak deze link in je browser:',
       },
       friendRequest: {
         subject: '🤝 Nieuw Vriendschapsverzoek - The Mob State',
@@ -798,16 +811,24 @@ export const translationService = {
     if (lang === 'en') {
       return translations.en;
     }
-    const extra = NOTIFICATION_BUNDLES_I18N[lang];
-    if (extra) {
-      return { ...translations.en, notification: extra };
+    const notifExtra = NOTIFICATION_BUNDLES_I18N[lang];
+    const emailExtra = EMAIL_BUNDLES_I18N[lang];
+    if (notifExtra || emailExtra) {
+      return {
+        ...translations.en,
+        email: emailExtra?.email ?? translations.en.email,
+        common: emailExtra?.common
+          ? { ...translations.en.common, ...emailExtra.common }
+          : translations.en.common,
+        notification: notifExtra ?? translations.en.notification,
+      };
     }
     return translations.en;
   },
 
   /**
    * Player UI language (BCP-47 base codes supported by the game client).
-   * Email HTML templates exist for `nl` and `en` only. Push/inbox copy for `de`, `fr`, `es`, `it`, `pl`, `pt` comes from `playerNotificationBundlesExtra.ts`.
+   * Email HTML uses `translationService` for all allowlisted languages (`playerEmailBundlesExtra.ts` for de/fr/es/it/pl/pt).
    */
   getPlayerLanguage(player: { preferredLanguage?: string }): Language {
     return normalizePlayerLanguage(player.preferredLanguage);

@@ -1,6 +1,6 @@
 /**
  * Full push + in-app notification copy for player languages de, fr, es, it, pl, pt.
- * EN/NL remain the primary catalogs in translationService (email HTML for those two only).
+ * Transactional email HTML for those languages lives in `playerEmailBundlesExtra.ts`; EN/NL email in `translationService.ts`.
  */
 import type { SupportedPlayerLanguage } from '../config/supportedLanguages';
 import type { Translations } from '../services/translationService';

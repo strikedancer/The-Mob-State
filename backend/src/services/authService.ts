@@ -108,7 +108,7 @@ export const authService = {
     // Send verification email if email provided
     if (email && verificationToken) {
       try {
-        await emailService.sendVerificationEmail(email, username, verificationToken);
+        await emailService.sendVerificationEmail(email, username, verificationToken, normalizedLanguage);
         console.log(`[AuthService] Verification email sent to ${email}`);
       } catch (error) {
         console.error('[AuthService] Failed to send verification email:', error);

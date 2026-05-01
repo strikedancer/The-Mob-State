@@ -3,6 +3,7 @@ import { authService } from '../services/authService';
 import { emailService } from '../services/emailService';
 import prisma from '../lib/prisma';
 import bcrypt from 'bcrypt';
+import { normalizePlayerLanguage } from '../config/supportedLanguages';
 
 const router = Router();
 
@@ -132,6 +133,7 @@ router.post('/request-password-reset', async (req: Request, res: Response) => {
     // Find player by email
     const player = await prisma.player.findFirst({
       where: { email },
+      select: { id: true, username: true, preferredLanguage: true },
     });
 
     // Always return success to prevent email enumeration
@@ -157,7 +159,12 @@ router.post('/request-password-reset', async (req: Request, res: Response) => {
 
     // Send password reset email
     try {
-      await emailService.sendPasswordResetEmail(email, player.username, resetToken);
+      await emailService.sendPasswordResetEmail(
+        email,
+        player.username,
+        resetToken,
+        normalizePlayerLanguage(player.preferredLanguage),
+      );
       console.log(`[Auth] Password reset email sent to ${email}`);
     } catch (error) {
       console.error('[Auth] Failed to send password reset email:', error);

@@ -1,17 +1,21 @@
 import { emailService } from './services/emailService';
+import { normalizePlayerLanguage } from './config/supportedLanguages';
 
 async function sendTestEmail() {
   try {
-    console.log('Sending test email to strikedancer@gmail.com...');
-    
+    const langArg = process.argv[2];
+    const language = normalizePlayerLanguage(langArg || 'en');
+    console.log(`Sending test email to strikedancer@gmail.com (${language})...`);
+
     // Generate a test token
     const testToken = emailService.generateToken();
-    
+
     // Send verification email
     await emailService.sendVerificationEmail(
       'strikedancer@gmail.com',
       'TestUser',
-      testToken
+      testToken,
+      language,
     );
     
     console.log('✅ Test email sent successfully!');

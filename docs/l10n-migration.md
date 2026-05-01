@@ -33,5 +33,5 @@ Zoek naar `_isNl`, `_isDutch`, `languageCode == 'nl'` in `client/lib` — tienta
 
 ## Server-teksten (e-mail, sommige templates)
 
-- [backend/src/services/translationService.ts](../backend/src/services/translationService.ts) blijft primair **NL + EN** voor volledige mailtemplates.
-- `getPlayerLanguage` mapt elke niet-NL spelerstaal naar **EN** voor die templates, tot er uitbreiding per taal is.
+- Transactionele HTML-mail (verificatie, reset, vriendschap, crew, casino-waarschuwing) gebruikt `translationService.getTranslations(preferredLanguage)`: **NL** en **EN** in [translationService.ts](../backend/src/services/translationService.ts), **de / fr / es / it / pl / pt** in [playerEmailBundlesExtra.ts](../backend/src/i18n/playerEmailBundlesExtra.ts) (merge in `getTranslations`, zelfde shape als EN).
+- Registratie-mail gebruikt de taal meegegeven bij register; wachtwoord-reset gebruikt `player.preferredLanguage` uit de database.

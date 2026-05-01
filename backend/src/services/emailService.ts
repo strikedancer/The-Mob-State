@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import { translationService, type Language } from './translationService';
+import { normalizePlayerLanguage } from '../config/supportedLanguages';
 import config from '../config';
 
 const normalizeBaseUrl = (url: string) => url.replace(/\/+$/, '');
@@ -116,80 +117,77 @@ export const emailService = {
   },
 
   /**
-   * Send email verification link
+   * Send email verification link (copy follows player preferredLanguage: nl, en, de, fr, es, it, pl, pt).
    */
-  async sendVerificationEmail(email: string, username: string, token: string): Promise<void> {
+  async sendVerificationEmail(
+    email: string,
+    username: string,
+    token: string,
+    language: Language = 'en',
+  ): Promise<void> {
+    const lang = normalizePlayerLanguage(language);
+    const t = translationService.getTranslations(lang);
+    const v = t.email.verification;
     const verificationUrl = `${apiBaseUrl}/auth/verify-email?token=${token}`;
 
     const htmlContent = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Your Email - The Mob State</title>
+  <title>${v.title} - ${t.common.appName}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #1a1a1a;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; padding: 40px 20px;">
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border: 2px solid #D4A574; border-radius: 10px; overflow: hidden;">
-          <!-- Header -->
           <tr>
             <td style="background: linear-gradient(90deg, #D4A574 0%, #B8945E 50%, #D4A574 100%); padding: 30px; text-align: center;">
               <h1 style="margin: 0; color: #000000; font-size: 32px; font-weight: bold; letter-spacing: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
-                THE MOB STATE
+                ${t.common.appName}
               </h1>
             </td>
           </tr>
-          
-          <!-- Content -->
           <tr>
             <td style="padding: 40px 30px;">
               <h2 style="color: #D4A574; margin: 0 0 20px 0; font-size: 24px; text-align: center;">
-                Verify Your Email Address
+                ${v.title}
               </h2>
-              
               <p style="color: #cccccc; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                Welcome to The Mob State, <strong style="color: #D4A574;">${username}</strong>!
+                ${v.greeting(username)}
               </p>
-              
               <p style="color: #cccccc; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
-                To complete your registration and start your criminal empire, please verify your email address by clicking the button below:
+                ${v.body}
               </p>
-              
-              <!-- Verification Button -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center" style="padding: 20px 0;">
                     <a href="${verificationUrl}" style="display: inline-block; background: linear-gradient(90deg, #D4A574 0%, #B8945E 50%, #D4A574 100%); color: #000000; text-decoration: none; padding: 15px 40px; border-radius: 5px; font-weight: bold; font-size: 18px; letter-spacing: 1.5px; box-shadow: 0 4px 8px rgba(212, 165, 116, 0.3);">
-                      VERIFY EMAIL
+                      ${v.buttonText}
                     </a>
                   </td>
                 </tr>
               </table>
-              
               <p style="color: #999999; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; text-align: center;">
-                Or copy and paste this link into your browser:
+                ${v.copyLinkHint}
               </p>
               <p style="color: #D4A574; font-size: 12px; word-break: break-all; text-align: center; margin: 10px 0;">
                 ${verificationUrl}
               </p>
-              
               <p style="color: #999999; font-size: 13px; line-height: 1.6; margin: 30px 0 0 0; border-top: 1px solid #333333; padding-top: 20px;">
-                <strong>Security Note:</strong> This link will expire in 24 hours. If you didn't create an account with The Mob State, please ignore this email.
+                <strong>${v.securityLabel}:</strong> ${v.expiryNote} ${v.ignoreNote}
               </p>
             </td>
           </tr>
-          
-          <!-- Footer -->
           <tr>
             <td style="background-color: #0d0d0d; padding: 20px; text-align: center;">
               <p style="color: #666666; font-size: 12px; margin: 0;">
-                © 2026 The Mob State. All rights reserved.
+                ${t.common.footer}
               </p>
               <p style="color: #666666; font-size: 12px; margin: 10px 0 0 0;">
-                This is an automated message, please do not reply.
+                ${t.common.automatedMessage}
               </p>
             </td>
           </tr>
@@ -204,88 +202,85 @@ export const emailService = {
     await transporter.sendMail({
       from: '"The Mob State" <noreply@themobstate.com>',
       to: email,
-      subject: '🔫 Verify Your Email - The Mob State',
+      subject: v.subject,
       html: htmlContent,
     });
 
-    console.log(`[EmailService] Verification email sent to ${email}`);
+    console.log(`[EmailService] Verification email sent to ${email} (${lang})`);
   },
 
   /**
-   * Send password reset link
+   * Send password reset link (localized like verification).
    */
-  async sendPasswordResetEmail(email: string, username: string, token: string): Promise<void> {
+  async sendPasswordResetEmail(
+    email: string,
+    username: string,
+    token: string,
+    language: Language = 'en',
+  ): Promise<void> {
+    const lang = normalizePlayerLanguage(language);
+    const t = translationService.getTranslations(lang);
+    const p = t.email.passwordReset;
     const resetUrl = `${appBaseUrl}/auth/reset-password?token=${token}`;
 
     const htmlContent = `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Your Password - The Mob State</title>
+  <title>${p.title} - ${t.common.appName}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #1a1a1a;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; padding: 40px 20px;">
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border: 2px solid #D4A574; border-radius: 10px; overflow: hidden;">
-          <!-- Header -->
           <tr>
             <td style="background: linear-gradient(90deg, #D4A574 0%, #B8945E 50%, #D4A574 100%); padding: 30px; text-align: center;">
               <h1 style="margin: 0; color: #000000; font-size: 32px; font-weight: bold; letter-spacing: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
-                THE MOB STATE
+                ${t.common.appName}
               </h1>
             </td>
           </tr>
-          
-          <!-- Content -->
           <tr>
             <td style="padding: 40px 30px;">
               <h2 style="color: #D4A574; margin: 0 0 20px 0; font-size: 24px; text-align: center;">
-                🔒 Reset Your Password
+                ${p.title}
               </h2>
-              
               <p style="color: #cccccc; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                Hey <strong style="color: #D4A574;">${username}</strong>,
+                ${p.greeting(username)}
               </p>
-              
               <p style="color: #cccccc; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
-                We received a request to reset your password for your The Mob State account. Click the button below to create a new password:
+                ${p.body}
               </p>
-              
-              <!-- Reset Button -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center" style="padding: 20px 0;">
                     <a href="${resetUrl}" style="display: inline-block; background: linear-gradient(90deg, #D4A574 0%, #B8945E 50%, #D4A574 100%); color: #000000; text-decoration: none; padding: 15px 40px; border-radius: 5px; font-weight: bold; font-size: 18px; letter-spacing: 1.5px; box-shadow: 0 4px 8px rgba(212, 165, 116, 0.3);">
-                      RESET PASSWORD
+                      ${p.buttonText}
                     </a>
                   </td>
                 </tr>
               </table>
-              
               <p style="color: #999999; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0; text-align: center;">
-                Or copy and paste this link into your browser:
+                ${p.copyLinkHint}
               </p>
               <p style="color: #D4A574; font-size: 12px; word-break: break-all; text-align: center; margin: 10px 0;">
                 ${resetUrl}
               </p>
-              
               <p style="color: #999999; font-size: 13px; line-height: 1.6; margin: 30px 0 0 0; border-top: 1px solid #333333; padding-top: 20px;">
-                <strong>Security Note:</strong> This link will expire in 1 hour. If you didn't request a password reset, please ignore this email or contact support if you have concerns about your account security.
+                <strong>${p.securityLabel}:</strong> ${p.expiryNote} ${p.ignoreNote}
               </p>
             </td>
           </tr>
-          
-          <!-- Footer -->
           <tr>
             <td style="background-color: #0d0d0d; padding: 20px; text-align: center;">
               <p style="color: #666666; font-size: 12px; margin: 0;">
-                © 2026 The Mob State. All rights reserved.
+                ${t.common.footer}
               </p>
               <p style="color: #666666; font-size: 12px; margin: 10px 0 0 0;">
-                This is an automated message, please do not reply.
+                ${t.common.automatedMessage}
               </p>
             </td>
           </tr>
@@ -300,11 +295,11 @@ export const emailService = {
     await transporter.sendMail({
       from: '"The Mob State" <noreply@themobstate.com>',
       to: email,
-      subject: '🔒 Reset Your Password - The Mob State',
+      subject: p.subject,
       html: htmlContent,
     });
 
-    console.log(`[EmailService] Password reset email sent to ${email}`);
+    console.log(`[EmailService] Password reset email sent to ${email} (${lang})`);
   },
 
   /**
