@@ -72,6 +72,7 @@ docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
 # If a prior deploy left 20260414223000_expand_support_workflow in failed state (P3018), clear it so idempotent SQL can re-apply. No-op when not failed.
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260415061500_expand_player_security" || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate deploy
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --build --no-deps client

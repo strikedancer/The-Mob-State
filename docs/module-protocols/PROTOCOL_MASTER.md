@@ -262,18 +262,20 @@ git pull origin main
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml config
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow" || true
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260415061500_expand_player_security" || true
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate deploy
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml up -d --no-deps backend
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml logs --tail=120 backend
 ```
 
-**Prisma P3018 (migratie faalde, o.a. duplicate column `sourceModule`):** de migratie `20260414223000_expand_support_workflow` is **idempotent** (`ADD COLUMN IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`, `CREATE TABLE IF NOT EXISTS`). Op de VPS moet een eerder **mislukte** poging eerst uit de migratiegeschiedenis worden gehaald, anders blokkeert `migrate deploy` nieuwe migraties:
+**Prisma P3018 (migratie faalde, o.a. duplicate column `sourceModule` / `bodyguardUpkeepDueAt`):** de migraties `20260414223000_expand_support_workflow` en `20260415061500_expand_player_security` zijn **idempotent** (`ADD COLUMN IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`, `CREATE TABLE IF NOT EXISTS`). Op de VPS moet een eerder **mislukte** poging eerst uit de migratiegeschiedenis worden gehaald, anders blokkeert `migrate deploy` nieuwe migraties:
 
 ```bash
 docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260414223000_expand_support_workflow"
+docker compose --env-file .env.plesk -f docker-compose.plesk.yml run --rm backend npx prisma migrate resolve --rolled-back "20260415061500_expand_player_security"
 ```
 
-Daarna opnieuw `migrate deploy` (of het volledige deploy-script). **Lokaal:** als je database deze migratie al met de **oude** SQL had toegepast en Prisma nu klaagt dat het migratiebestand is gewijzigd, werk dan de `checksum` in `_prisma_migrations` bij naar de SHA256 van het actuele `migration.sql` (of reset je dev-DB als dat mag).
+Daarna opnieuw `migrate deploy` (of het volledige deploy-script). **Lokaal:** als je database een van deze migraties al met de **oude** SQL had toegepast en Prisma nu klaagt dat het migratiebestand is gewijzigd, werk dan de `checksum` in `_prisma_migrations` bij naar de SHA256 van het actuele `migration.sql` (of reset je dev-DB als dat mag).
 
 Acceptatie-eis voor dit runbook:
 - Een PuTTY update-instructie is niet done zonder expliciete `--env-file .env.plesk` compose-commands.
