@@ -7832,5 +7832,76 @@
   "crewChatCancel": "Annuler",
   "crewChatDelete": "Supprimer",
   "crewChatNoMessages": "Pas encore de messages",
-  "crewChatEmptyHint": "Envoyez le premier message à votre équipage !"
+  "crewChatEmptyHint": "Envoyez le premier message à votre équipage !",
+  "aviationUiBuyConfirmTitle": "Acheter un avion ?",
+  "aviationUiBuyConfirmBody": "Voulez-vous acheter {name} pour {price} ?",
+  "@aviationUiBuyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiPurchaseFailed": "L'achat a échoué.",
+  "aviationUiPurchasedSuccess": "Avion acheté.",
+  "aviationUiLicenseActiveBlurb": "Licence active. L'achat d'un avion nécessite désormais une formation complète de pilote (Aviation niveau 5 + toutes les certifications).",
+  "aviationUiLicenseMissingBlurb": "Vous n'avez pas encore de licence aéronautique. Achetez une licence dans ce module avant d'acheter un avion.",
+  "aviationUiYourAircraft": "Votre avion",
+  "aviationUiNoOwnedAircraft": "Vous ne possédez pas encore d'avion.",
+  "aviationUiAvailableAircraft": "Avions disponibles",
+  "aviationUiFuelLabel": "Carburant : {fuel} / {max}",
+  "@aviationUiFuelLabel": {
+    "placeholders": {
+      "fuel": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiPriceLabel": "Prix ​​: {price}",
+  "@aviationUiPriceLabel": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiMinRank": "Rang minimum : {rank}",
+  "@aviationUiMinRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiSpeedMultiplier": "Vitesse x{value}",
+  "@aviationUiSpeedMultiplier": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiCargoCapacity": "Cargaison : {amount}",
+  "@aviationUiCargoCapacity": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiDefaultAircraftName": "Aéronef",
+  "aviationUiLoadError": "Impossible de charger les données aéronautiques : {error}",
+  "@aviationUiLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

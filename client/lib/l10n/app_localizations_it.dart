@@ -3289,6 +3289,70 @@ class AppLocalizationsIt extends AppLocalizations {
   String get crewChatEmptyHint => 'Invia il primo messaggio al tuo Crew!';
 
   @override
+  String get aviationUiBuyConfirmTitle => 'Acquistare aerei?';
+
+  @override
+  String aviationUiBuyConfirmBody(String name, String price) {
+    return 'Vuoi acquistare $name per $price?';
+  }
+
+  @override
+  String get aviationUiPurchaseFailed => 'Acquisto fallito.';
+
+  @override
+  String get aviationUiPurchasedSuccess => 'Aereo acquistato.';
+
+  @override
+  String get aviationUiLicenseActiveBlurb =>
+      'Licenza attiva. L\'acquisto dell\'aereo ora richiede una formazione completa del pilota (livello di aviazione 5 + tutte le certificazioni).';
+
+  @override
+  String get aviationUiLicenseMissingBlurb =>
+      'Non hai ancora la licenza di volo. Acquista una licenza in questo modulo prima di acquistare l\'aereo.';
+
+  @override
+  String get aviationUiYourAircraft => 'Il tuo aereo';
+
+  @override
+  String get aviationUiNoOwnedAircraft => 'Non possiedi ancora alcun aereo.';
+
+  @override
+  String get aviationUiAvailableAircraft => 'Aerei disponibili';
+
+  @override
+  String aviationUiFuelLabel(int fuel, int max) {
+    return 'Carburante: $fuel / $max';
+  }
+
+  @override
+  String aviationUiPriceLabel(String price) {
+    return 'Prezzo: $price';
+  }
+
+  @override
+  String aviationUiMinRank(int rank) {
+    return 'Grado minimo: $rank';
+  }
+
+  @override
+  String aviationUiSpeedMultiplier(String value) {
+    return 'Velocità x$value';
+  }
+
+  @override
+  String aviationUiCargoCapacity(int amount) {
+    return 'Carico: $amount';
+  }
+
+  @override
+  String get aviationUiDefaultAircraftName => 'Aereo';
+
+  @override
+  String aviationUiLoadError(String error) {
+    return 'Impossibile caricare i dati sull\'aviazione: $error';
+  }
+
+  @override
   String get crewUiTr0 => 'Requisiti di aggiornamento del quartier generale';
 
   @override

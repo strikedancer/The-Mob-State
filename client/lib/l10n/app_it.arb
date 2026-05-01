@@ -7832,5 +7832,76 @@
   "crewChatCancel": "Cancellare",
   "crewChatDelete": "Eliminare",
   "crewChatNoMessages": "Nessun messaggio ancora",
-  "crewChatEmptyHint": "Invia il primo messaggio al tuo Crew!"
+  "crewChatEmptyHint": "Invia il primo messaggio al tuo Crew!",
+  "aviationUiBuyConfirmTitle": "Acquistare aerei?",
+  "aviationUiBuyConfirmBody": "Vuoi acquistare {name} per {price}?",
+  "@aviationUiBuyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiPurchaseFailed": "Acquisto fallito.",
+  "aviationUiPurchasedSuccess": "Aereo acquistato.",
+  "aviationUiLicenseActiveBlurb": "Licenza attiva. L'acquisto dell'aereo ora richiede una formazione completa del pilota (livello di aviazione 5 + tutte le certificazioni).",
+  "aviationUiLicenseMissingBlurb": "Non hai ancora la licenza di volo. Acquista una licenza in questo modulo prima di acquistare l'aereo.",
+  "aviationUiYourAircraft": "Il tuo aereo",
+  "aviationUiNoOwnedAircraft": "Non possiedi ancora alcun aereo.",
+  "aviationUiAvailableAircraft": "Aerei disponibili",
+  "aviationUiFuelLabel": "Carburante: {fuel} / {max}",
+  "@aviationUiFuelLabel": {
+    "placeholders": {
+      "fuel": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiPriceLabel": "Prezzo: {price}",
+  "@aviationUiPriceLabel": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiMinRank": "Grado minimo: {rank}",
+  "@aviationUiMinRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiSpeedMultiplier": "Velocità x{value}",
+  "@aviationUiSpeedMultiplier": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiCargoCapacity": "Carico: {amount}",
+  "@aviationUiCargoCapacity": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiDefaultAircraftName": "Aereo",
+  "aviationUiLoadError": "Impossibile caricare i dati sull'aviazione: {error}",
+  "@aviationUiLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

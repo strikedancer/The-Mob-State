@@ -5925,6 +5925,102 @@ abstract class AppLocalizations {
   /// **'Send the first message to your crew!'**
   String get crewChatEmptyHint;
 
+  /// No description provided for @aviationUiBuyConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy aircraft?'**
+  String get aviationUiBuyConfirmTitle;
+
+  /// No description provided for @aviationUiBuyConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to buy {name} for {price}?'**
+  String aviationUiBuyConfirmBody(String name, String price);
+
+  /// No description provided for @aviationUiPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed.'**
+  String get aviationUiPurchaseFailed;
+
+  /// No description provided for @aviationUiPurchasedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft purchased.'**
+  String get aviationUiPurchasedSuccess;
+
+  /// No description provided for @aviationUiLicenseActiveBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'License active. Aircraft purchase now requires full pilot training (Aviation level 5 + all certifications).'**
+  String get aviationUiLicenseActiveBlurb;
+
+  /// No description provided for @aviationUiLicenseMissingBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have an aviation license yet. Buy a license in this module before purchasing aircraft.'**
+  String get aviationUiLicenseMissingBlurb;
+
+  /// No description provided for @aviationUiYourAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Your aircraft'**
+  String get aviationUiYourAircraft;
+
+  /// No description provided for @aviationUiNoOwnedAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not own any aircraft yet.'**
+  String get aviationUiNoOwnedAircraft;
+
+  /// No description provided for @aviationUiAvailableAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Available aircraft'**
+  String get aviationUiAvailableAircraft;
+
+  /// No description provided for @aviationUiFuelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel: {fuel} / {max}'**
+  String aviationUiFuelLabel(int fuel, int max);
+
+  /// No description provided for @aviationUiPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price: {price}'**
+  String aviationUiPriceLabel(String price);
+
+  /// No description provided for @aviationUiMinRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Min rank: {rank}'**
+  String aviationUiMinRank(int rank);
+
+  /// No description provided for @aviationUiSpeedMultiplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed x{value}'**
+  String aviationUiSpeedMultiplier(String value);
+
+  /// No description provided for @aviationUiCargoCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo: {amount}'**
+  String aviationUiCargoCapacity(int amount);
+
+  /// No description provided for @aviationUiDefaultAircraftName.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft'**
+  String get aviationUiDefaultAircraftName;
+
+  /// No description provided for @aviationUiLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load aviation data: {error}'**
+  String aviationUiLoadError(String error);
+
   /// No description provided for @crewUiTr0.
   ///
   /// In en, this message translates to:

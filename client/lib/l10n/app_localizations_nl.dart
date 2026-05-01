@@ -2784,388 +2784,395 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get crewUiAppCrews => 'Crews';
+  String get crewUiAppCrews => 'Bemanningen';
 
   @override
-  String get crewUiTabMyCrew => 'Overview';
+  String get crewUiTabMyCrew => 'Overzicht';
 
   @override
-  String get crewUiTabCrewHq => 'HQ & Upgrades';
+  String get crewUiTabCrewHq => 'Hoofdkantoor en upgrades';
 
   @override
-  String get crewUiTabStorageHub => 'Storage';
+  String get crewUiTabStorageHub => 'Opslag';
 
   @override
-  String get crewUiTabMembers => 'Members';
+  String get crewUiTabMembers => 'Leden';
 
   @override
-  String get crewUiTabWarRoom => 'War Room';
+  String get crewUiTabWarRoom => 'Oorlogskamer';
 
   @override
-  String get crewUiTabCrewMissions => 'Crew Missions';
+  String get crewUiTabCrewMissions => 'Bemanningsmissies';
 
   @override
-  String get crewUiTabCarStorage => 'Car/Motorcycle Storage';
+  String get crewUiTabCarStorage => 'Auto-/motorstalling';
 
   @override
-  String get crewUiTabBoatStorage => 'Boat Storage';
+  String get crewUiTabBoatStorage => 'Bootopslag';
 
   @override
-  String get crewUiTabWeaponStorage => 'Weapon Storage';
+  String get crewUiTabWeaponStorage => 'Wapenopslag';
 
   @override
-  String get crewUiTabAmmoStorage => 'Ammo Storage';
+  String get crewUiTabAmmoStorage => 'Munitie opslag';
 
   @override
-  String get crewUiTabDrugStorage => 'Drug Storage';
+  String get crewUiTabDrugStorage => 'Medicijnopslag';
 
   @override
-  String get crewUiTabCashStorage => 'Cash Storage';
+  String get crewUiTabCashStorage => 'Geldopslag';
 
   @override
-  String get crewUiTabAllCrews => 'Crews';
+  String get crewUiTabAllCrews => 'Bemanningen';
 
   @override
-  String get crewUiTabChat => 'Chat';
+  String get crewUiTabChat => 'Chatten';
 
   @override
-  String get crewUiActionCreateCrewShort => 'Create Crew (€50k)';
+  String get crewUiActionCreateCrewShort => 'Bemanning creëren (€50k)';
 
   @override
-  String get crewUiStateNotInCrewYet => 'You are not in a crew yet';
+  String get crewUiStateNotInCrewYet => 'Je zit nog niet in een crew';
 
   @override
-  String get crewUiActionCreateCrew => 'Create Crew (€50,000)';
+  String get crewUiActionCreateCrew => 'Bemanning aanmaken (€ 50.000)';
 
   @override
-  String get crewUiLabelCrewBank => 'Crew Bank:';
+  String get crewUiLabelCrewBank => 'Bemanningsbank:';
 
   @override
-  String get crewUiLabelDeposit => 'Deposit';
+  String get crewUiLabelDeposit => 'Borg';
 
   @override
-  String get crewUiLabelWithdraw => 'Withdraw';
+  String get crewUiLabelWithdraw => 'Terugtrekken';
 
   @override
-  String get crewUiLabelMyTrustScore => 'My Trust Score:';
+  String get crewUiLabelMyTrustScore => 'Mijn vertrouwensscore:';
 
   @override
-  String get crewUiActionDeleteCrew => 'Delete crew';
+  String get crewUiActionDeleteCrew => 'Bemanning verwijderen';
 
   @override
-  String get crewUiLabelCrewStats => 'Crew Stats:';
+  String get crewUiLabelCrewStats => 'Bemanningsstatistieken:';
 
   @override
-  String get crewUiActionLeaveCrew => 'Leave Crew';
+  String get crewUiActionLeaveCrew => 'Verlaat de bemanning';
 
   @override
-  String get crewUiSectionBuildings => 'HQ & Upgrades';
+  String get crewUiSectionBuildings => 'Hoofdkantoor en upgrades';
 
   @override
   String get crewUiHintBuildingsTabs =>
-      'Open HQ & Upgrades to manage HQ and all crew buildings from one place.';
+      'Open hoofdkwartier en upgrades om het hoofdkwartier en alle bemanningsgebouwen vanaf één plek te beheren.';
 
   @override
-  String get crewUiSectionCrewStorage => 'Crew Storage';
+  String get crewUiSectionCrewStorage => 'Bemanningsopslag';
 
   @override
-  String get crewUiStateNoStorageData => 'No storage data loaded';
+  String get crewUiStateNoStorageData => 'Geen opslaggegevens geladen';
 
   @override
-  String get crewUiActionAddCar => 'Add car/motorcycle';
+  String get crewUiActionAddCar => 'Auto/motor toevoegen';
 
   @override
-  String get crewUiActionAddBoat => 'Add boat';
+  String get crewUiActionAddBoat => 'Boot toevoegen';
 
   @override
-  String get crewUiActionAddWeapon => 'Add weapon';
+  String get crewUiActionAddWeapon => 'Wapen toevoegen';
 
   @override
-  String get crewUiActionAddAmmo => 'Add ammo';
+  String get crewUiActionAddAmmo => 'Voeg munitie toe';
 
   @override
-  String get crewUiActionAddDrugs => 'Add drugs';
+  String get crewUiActionAddDrugs => 'Voeg medicijnen toe';
 
   @override
-  String get crewUiSectionMembersOverview => 'Members overview';
+  String get crewUiSectionMembersOverview => 'Leden overzicht';
 
   @override
   String get crewUiHintMembersTab =>
-      'Open the Members tab above for member list and join requests.';
+      'Open het tabblad Leden hierboven voor een ledenlijst en lidmaatschapsverzoeken.';
 
   @override
-  String get crewUiActionGoToMembers => 'Go to Members';
+  String get crewUiActionGoToMembers => 'Ga naar Leden';
 
   @override
-  String get crewUiLabelCrewHq => 'Crew HQ';
+  String get crewUiLabelCrewHq => 'Hoofdkwartier van de bemanning';
 
   @override
-  String get crewUiActionGoToCrewHq => 'Go to Crew HQ';
+  String get crewUiActionGoToCrewHq =>
+      'Ga naar het hoofdkwartier van de bemanning';
 
   @override
-  String get crewUiActionGoToStorage => 'Go to Storage';
+  String get crewUiActionGoToStorage => 'Ga naar Opslag';
 
   @override
-  String get crewUiStateJoinCrewFirst => 'Create or join a crew first';
+  String get crewUiStateJoinCrewFirst =>
+      'Creëer of sluit je eerst aan bij een ploeg';
 
   @override
-  String get crewUiStateJoinRequests => 'Join Requests';
+  String get crewUiStateJoinRequests => 'Sluit je aan bij verzoeken';
 
   @override
-  String get crewUiStateNoJoinRequests => 'No pending requests';
+  String get crewUiStateNoJoinRequests => 'Geen openstaande verzoeken';
 
   @override
-  String get crewUiStateNoCrewsFound => 'No crews found';
+  String get crewUiStateNoCrewsFound => 'Geen bemanningen gevonden';
 
   @override
-  String get crewUiLabelMemberCount => 'Members';
+  String get crewUiLabelMemberCount => 'Leden';
 
   @override
-  String get crewUiBadgeMyCrew => 'My Crew';
+  String get crewUiBadgeMyCrew => 'Mijn bemanning';
 
   @override
-  String get crewUiActionJoin => 'Join';
+  String get crewUiActionJoin => 'Meedoen';
 
   @override
-  String get crewUiStateNotInCrew => 'You are not in a crew';
+  String get crewUiStateNotInCrew => 'Je zit niet in een ploeg';
 
   @override
-  String get crewUiHintChatJoinCrew => 'Create or join a crew to chat!';
+  String get crewUiHintChatJoinCrew =>
+      'Creëer of sluit je aan bij een team om te chatten!';
 
   @override
-  String get crewUiStatusNotOwned => 'Not owned';
+  String get crewUiStatusNotOwned => 'Niet eigendom';
 
   @override
-  String get crewUiLabelLevel => 'Level';
+  String get crewUiLabelLevel => 'Niveau';
 
   @override
-  String get crewUiLabelCapacity => 'Capacity';
+  String get crewUiLabelCapacity => 'Capaciteit';
 
   @override
-  String get crewUiLabelMemberCap => 'Member cap';
+  String get crewUiLabelMemberCap => 'Lid cap';
 
   @override
-  String get crewUiLabelParking => 'Parking';
+  String get crewUiLabelParking => 'Parkeren';
 
   @override
-  String get crewUiActionPurchase => 'Purchase';
+  String get crewUiActionPurchase => 'Aankoop';
 
   @override
-  String get crewUiActionUpgrade => 'Upgrade';
+  String get crewUiActionUpgrade => 'Upgraden';
 
   @override
   String get crewUiActionDetails => 'Details';
 
   @override
-  String get crewUiHelpCapsTitle => 'Level overview';
+  String get crewUiHelpCapsTitle => 'Niveau overzicht';
 
   @override
-  String get crewUiHelpLevel => 'Level';
+  String get crewUiHelpLevel => 'Niveau';
 
   @override
-  String get crewUiHelpCapacity => 'Cap';
+  String get crewUiHelpCapacity => 'Kap';
 
   @override
-  String get crewUiHelpUpgradeCost => 'Cost';
+  String get crewUiHelpUpgradeCost => 'Kosten';
 
   @override
-  String get crewUiHelpClose => 'Close';
+  String get crewUiHelpClose => 'Dichtbij';
 
   @override
-  String get crewUiHelpShowCaps => 'Show caps';
+  String get crewUiHelpShowCaps => 'Kapjes tonen';
 
   @override
-  String get crewUiSectionUpgradeHub => 'HQ & Upgrades';
+  String get crewUiSectionUpgradeHub => 'Hoofdkantoor en upgrades';
 
   @override
-  String get crewUiSectionStorageHub => 'Storage Hub';
+  String get crewUiSectionStorageHub => 'Opslaghub';
 
   @override
   String get crewUiHintStorageTab =>
-      'Use the Storage tab for deposits, balances and quick storage actions.';
+      'Gebruik het tabblad Opslag voor stortingen, saldi en snelle opslagacties.';
 
   @override
   String get crewUiHintUpgradeHub =>
-      'Manage HQ and all crew upgrades from one place here.';
+      'Beheer hier het hoofdkwartier en alle bemanningsupgrades vanaf één plek.';
 
   @override
-  String get crewUiSectionCrewMissions => 'Crew Missions';
+  String get crewUiSectionCrewMissions => 'Bemanningsmissies';
 
   @override
-  String get crewUiStateCrewMissionsEmpty => 'No crew missions available yet';
+  String get crewUiStateCrewMissionsEmpty =>
+      'Er zijn nog geen bemanningsmissies beschikbaar';
 
   @override
   String get crewUiStateCrewMissionNoCrew =>
-      'Join or create a crew to start missions.';
+      'Sluit je aan bij een team of creëer een team om missies te starten.';
 
   @override
-  String get crewUiActionStartMission => 'Start mission';
+  String get crewUiActionStartMission => 'Missie starten';
 
   @override
-  String get crewUiActionConfigureAndStartMission => 'Configure & start';
+  String get crewUiActionConfigureAndStartMission => 'Configureren en starten';
 
   @override
-  String get crewUiActionResolveMission => 'Resolve mission';
+  String get crewUiActionResolveMission => 'Missie oplossen';
 
   @override
-  String get crewUiActionClaimRewards => 'Claim rewards';
+  String get crewUiActionClaimRewards => 'Claim beloningen';
 
   @override
-  String get crewUiActionSpeedupCooldown => 'Speed up cooldown';
+  String get crewUiActionSpeedupCooldown => 'Versnel de cooldown';
 
   @override
-  String get crewUiActionConfirmSpeedupCooldown => 'Confirm speed up';
+  String get crewUiActionConfirmSpeedupCooldown => 'Bevestig de snelheid';
 
   @override
-  String get crewUiLabelActiveMission => 'Active mission';
+  String get crewUiLabelActiveMission => 'Actieve missie';
 
   @override
-  String get crewUiLabelRecentMissions => 'Recent missions';
+  String get crewUiLabelRecentMissions => 'Recente missies';
 
   @override
-  String get crewUiLabelMissionDuration => 'Duration';
+  String get crewUiLabelMissionDuration => 'Duur';
 
   @override
-  String get crewUiLabelMissionCooldown => 'Cooldown';
+  String get crewUiLabelMissionCooldown => 'Afkoelen';
 
   @override
-  String get crewUiLabelMissionTier => 'Tier';
+  String get crewUiLabelMissionTier => 'Laag';
 
   @override
-  String get crewUiLabelMissionRewards => 'Rewards';
+  String get crewUiLabelMissionRewards => 'Beloningen';
 
   @override
-  String get crewUiLabelCrewMissionProgress => 'Crew mission progression';
+  String get crewUiLabelCrewMissionProgress =>
+      'Voortgang van de bemanningsmissie';
 
   @override
-  String get crewUiLabelCrewMissionXp => 'Crew mission XP';
+  String get crewUiLabelCrewMissionXp => 'Bemanningsmissie XP';
 
   @override
-  String get crewUiLabelCrewMissionLevelBonus => 'Crew cash bonus';
+  String get crewUiLabelCrewMissionLevelBonus => 'Cashbonus voor de bemanning';
 
   @override
-  String get crewUiLabelCrewMissionNextLevelBonus => 'Next level bonus';
+  String get crewUiLabelCrewMissionNextLevelBonus =>
+      'Bonus op het volgende niveau';
 
   @override
   String get crewUiLabelMissionStatus => 'Status';
 
   @override
-  String get crewUiLabelCooldownActive => 'Cooldown active';
+  String get crewUiLabelCooldownActive => 'Afkoeling actief';
 
   @override
-  String get crewUiLabelRoleContributions => 'Role contributions';
+  String get crewUiLabelRoleContributions => 'Rol bijdragen';
 
   @override
-  String get crewUiLabelContribution => 'contribution';
+  String get crewUiLabelContribution => 'bijdrage';
 
   @override
-  String get crewUiLabelMultiplier => 'multiplier';
+  String get crewUiLabelMultiplier => 'vermenigvuldiger';
 
   @override
-  String get crewUiStatusMissionLocked => 'Locked';
+  String get crewUiStatusMissionLocked => 'Vergrendeld';
 
   @override
-  String get crewUiStatusInProgress => 'In progress';
+  String get crewUiStatusInProgress => 'In uitvoering';
 
   @override
-  String get crewUiStatusCompleted => 'Completed';
+  String get crewUiStatusCompleted => 'Voltooid';
 
   @override
-  String get crewUiStatusReady => 'Ready';
+  String get crewUiStatusReady => 'Klaar';
 
   @override
-  String get crewUiStatusRewardsClaimed => 'Rewards claimed';
+  String get crewUiStatusRewardsClaimed => 'Beloningen geclaimd';
 
   @override
-  String get crewUiStateMissionActionBusy => 'Action is being processed...';
+  String get crewUiStateMissionActionBusy => 'Actie wordt verwerkt...';
 
   @override
   String get crewUiHintMissionLeaderOnly =>
-      'Only leader/co-leader can start and resolve missions.';
+      'Alleen leider/co-leider kan missies starten en voltooien.';
 
   @override
-  String get crewUiDialogRoleAssignTitle => 'Assign roles';
+  String get crewUiDialogRoleAssignTitle => 'Wijs rollen toe';
 
   @override
   String get crewUiDialogRoleAssignSubtitle =>
-      'Choose a mission role per crew member.';
+      'Kies een missierol per bemanningslid.';
 
   @override
-  String get crewUiLabelRoleNone => 'Not assigned';
+  String get crewUiLabelRoleNone => 'Niet toegewezen';
 
   @override
   String get crewUiLabelRolePlanner => 'Planner';
 
   @override
-  String get crewUiLabelRoleEnforcer => 'Enforcer';
+  String get crewUiLabelRoleEnforcer => 'Handhaver';
 
   @override
-  String get crewUiLabelRoleLogistics => 'Logistics';
+  String get crewUiLabelRoleLogistics => 'Logistiek';
 
   @override
-  String get crewUiLabelRoleTech => 'Tech';
+  String get crewUiLabelRoleTech => 'Technologie';
 
   @override
   String get crewUiHintRoleBonus =>
-      'Each unique role: +3% success chance, -2% duration (max +12% / -8%).';
+      'Elke unieke rol: +3% kans op succes, -2% duur (max +12% / -8%).';
 
   @override
-  String get crewUiStateRoleAssignNoMembers => 'No crew members found.';
+  String get crewUiStateRoleAssignNoMembers => 'Geen bemanningsleden gevonden.';
 
   @override
-  String get crewUiStateRoleAssignPickOne => 'Select at least 1 role.';
+  String get crewUiStateRoleAssignPickOne => 'Selecteer minimaal 1 rol.';
 
   @override
   String get crewUiHintMissionLockedTier2 =>
-      'Tier 2 requires HQ 5+ and 2+ members.';
+      'Niveau 2 vereist HQ 5+ en 2+ leden.';
 
   @override
   String get crewUiHintMissionLockedTier3 =>
-      'Tier 3 requires HQ 9+ and 3+ members.';
+      'Niveau 3 vereist HQ 9+ en 3+ leden.';
 
   @override
-  String get crewUiHintMissionLockedDefault => 'Mission is still locked.';
+  String get crewUiHintMissionLockedDefault =>
+      'De missie is nog steeds vergrendeld.';
 
   @override
   String get crewUiMessageMissionOverviewLoadFailed =>
-      'Failed to load crew missions.';
+      'Kan bemanningsmissies niet laden.';
 
   @override
-  String get crewUiMessageMissionStarted => 'Mission started';
+  String get crewUiMessageMissionStarted => 'Missie begonnen';
 
   @override
-  String get crewUiMessageMissionResolved => 'Mission resolved';
+  String get crewUiMessageMissionResolved => 'Missie opgelost';
 
   @override
-  String get crewUiMessageMissionRewardsClaimed => 'Rewards claimed';
+  String get crewUiMessageMissionRewardsClaimed => 'Beloningen geclaimd';
 
   @override
-  String get crewUiMessageMissionCooldownSpedUp => 'Cooldown sped up';
+  String get crewUiMessageMissionCooldownSpedUp => 'De afkoeling is versneld';
 
   @override
   String get crewUiMessageMissionSpeedupQuoteFailed =>
-      'Could not load speedup price.';
+      'Kan de speedup-prijs niet laden.';
 
   @override
-  String get crewUiDialogSpeedupTitle => 'Speed up cooldown?';
+  String get crewUiDialogSpeedupTitle => 'Cooldown versnellen?';
 
   @override
   String crewUiDialogSpeedupBody(String credits, String minutes) {
-    return 'Instant finish costs $credits credits ($minutes min remaining).';
+    return 'Direct voltooien kost $credits credits ($minutes min resterend).';
   }
 
   @override
-  String get crewUiLabelCredits => 'credits';
+  String get crewUiLabelCredits => 'tegoeden';
 
   @override
-  String get crewUiStateLoadingPrice => 'Loading price...';
+  String get crewUiStateLoadingPrice => 'Prijs laden...';
 
   @override
-  String get crewUiActionCancel => 'Cancel';
+  String get crewUiActionCancel => 'Annuleren';
 
   @override
   String crewUiHqUpgradeSideBuildingsMessage(String level, String missing) {
-    return 'Upgrade all side buildings to at least level $level first.\n\nMissing:\n$missing';
+    return 'Upgrade eerst alle zijgebouwen naar minimaal niveau $level. \n\nOntbrekend: \n$missing';
   }
 
   @override
@@ -3177,34 +3184,34 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get crewUiMissionNoHistory => 'No history yet.';
+  String get crewUiMissionNoHistory => 'Nog geen geschiedenis.';
 
   @override
-  String get crewUiBuildingHq => 'Crew HQ';
+  String get crewUiBuildingHq => 'Hoofdkwartier van de bemanning';
 
   @override
-  String get crewUiBuildingCarStorage => 'Car/Motorcycle Storage';
+  String get crewUiBuildingCarStorage => 'Auto-/motorstalling';
 
   @override
-  String get crewUiBuildingBoatStorage => 'Boat Storage';
+  String get crewUiBuildingBoatStorage => 'Bootopslag';
 
   @override
-  String get crewUiBuildingWeaponStorage => 'Weapon Storage';
+  String get crewUiBuildingWeaponStorage => 'Wapenopslag';
 
   @override
-  String get crewUiBuildingAmmoStorage => 'Ammo Storage';
+  String get crewUiBuildingAmmoStorage => 'Munitie opslag';
 
   @override
-  String get crewUiBuildingDrugStorage => 'Drug Storage';
+  String get crewUiBuildingDrugStorage => 'Medicijnopslag';
 
   @override
-  String get crewUiBuildingCashStorage => 'Cash Storage';
+  String get crewUiBuildingCashStorage => 'Geldopslag';
 
   @override
-  String get crewUiWarActionKill => 'Kill';
+  String get crewUiWarActionKill => 'Doden';
 
   @override
-  String get crewUiWarActionMug => 'Mug';
+  String get crewUiWarActionMug => 'Mok';
 
   @override
   String get crewUiWarActionSabotage => 'Sabotage';
@@ -3213,500 +3220,568 @@ class AppLocalizationsNl extends AppLocalizations {
   String get crewUiWarActionIntel => 'Intel';
 
   @override
-  String get crewUiWarActionRaid => 'Raid';
+  String get crewUiWarActionRaid => 'Inval';
 
   @override
-  String get crewUiWarActionShield => 'Shield';
+  String get crewUiWarActionShield => 'Schild';
 
   @override
   String get crewUiWarActionBoost => 'Boost';
 
   @override
-  String get crewUiWarActionTerritory => 'Territory';
+  String get crewUiWarActionTerritory => 'Grondgebied';
 
   @override
   String crewUiWarTargetCrewSubtitle(String name, int count) {
-    return '$name ($count members)';
+    return '$name ($count leden)';
   }
 
   @override
   String crewChatErrorLoadingMessages(String error) {
-    return 'Fout bij het laden van berichten: $error';
+    return 'Error loading messages: $error';
   }
 
   @override
-  String get crewChatMessageTooLong => 'Bericht te lang (max. 500 tekens)';
+  String get crewChatMessageTooLong => 'Message too long (max 500 characters)';
 
   @override
   String crewChatErrorSending(String error) {
-    return 'Fout bij verzenden van bericht: $error';
+    return 'Error sending message: $error';
   }
 
   @override
   String crewChatErrorDelete(String error) {
-    return 'Kon bericht niet verwijderen: $error';
+    return 'Could not delete message: $error';
   }
 
   @override
-  String get crewChatDeleteTitle => 'Bericht verwijderen?';
+  String get crewChatDeleteTitle => 'Delete message?';
 
   @override
-  String get crewChatDeleteBody => 'Dit bericht wordt definitief verwijderd.';
+  String get crewChatDeleteBody => 'This message will be permanently deleted.';
 
   @override
-  String get crewChatCancel => 'Annuleren';
+  String get crewChatCancel => 'Cancel';
 
   @override
-  String get crewChatDelete => 'Verwijderen';
+  String get crewChatDelete => 'Delete';
 
   @override
-  String get crewChatNoMessages => 'Nog geen berichten';
+  String get crewChatNoMessages => 'No messages yet';
 
   @override
-  String get crewChatEmptyHint => 'Stuur het eerste bericht naar je crew!';
+  String get crewChatEmptyHint => 'Send the first message to your crew!';
 
   @override
-  String get crewUiTr0 => 'HQ upgrade requirements';
+  String get aviationUiBuyConfirmTitle => 'Vliegtuigen kopen?';
+
+  @override
+  String aviationUiBuyConfirmBody(String name, String price) {
+    return 'Wil je $name kopen voor $price?';
+  }
+
+  @override
+  String get aviationUiPurchaseFailed => 'Aankoop mislukt.';
+
+  @override
+  String get aviationUiPurchasedSuccess => 'Vliegtuig gekocht.';
+
+  @override
+  String get aviationUiLicenseActiveBlurb =>
+      'Licentie actief. Voor de aankoop van vliegtuigen is nu een volledige pilotenopleiding vereist (luchtvaartniveau 5 + alle certificeringen).';
+
+  @override
+  String get aviationUiLicenseMissingBlurb =>
+      'U heeft nog geen vliegbrevet. Koop een licentie in deze module voordat u vliegtuigen aanschaft.';
+
+  @override
+  String get aviationUiYourAircraft => 'Jouw vliegtuig';
+
+  @override
+  String get aviationUiNoOwnedAircraft => 'Je bezit nog geen vliegtuig.';
+
+  @override
+  String get aviationUiAvailableAircraft => 'Beschikbare vliegtuigen';
+
+  @override
+  String aviationUiFuelLabel(int fuel, int max) {
+    return 'Brandstof: $fuel / $max';
+  }
+
+  @override
+  String aviationUiPriceLabel(String price) {
+    return 'Prijs: $price';
+  }
+
+  @override
+  String aviationUiMinRank(int rank) {
+    return 'Min. rang: $rank';
+  }
+
+  @override
+  String aviationUiSpeedMultiplier(String value) {
+    return 'Snelheid x$value';
+  }
+
+  @override
+  String aviationUiCargoCapacity(int amount) {
+    return 'Lading: $amount';
+  }
+
+  @override
+  String get aviationUiDefaultAircraftName => 'Vliegtuigen';
+
+  @override
+  String aviationUiLoadError(String error) {
+    return 'Kan luchtvaartgegevens niet laden: $error';
+  }
+
+  @override
+  String get crewUiTr0 => 'Vereisten voor hoofdkwartierupgrades';
 
   @override
   String get crewUiTr1 =>
-      'Upgrade your current HQ style to max level to unlock the next style';
+      'Upgrade je huidige hoofdkwartierstijl naar het maximale niveau om de volgende stijl te ontgrendelen';
 
   @override
-  String get crewUiTr2 => 'Final HQ style reached';
+  String get crewUiTr2 => 'Definitieve hoofdkwartierstijl bereikt';
 
   @override
-  String get crewUiTr3 => 'VIP HQ required for level 11-15';
+  String get crewUiTr3 => 'VIP-hoofdkwartier vereist voor niveau 11-15';
 
   @override
   String get crewUiTr4 =>
-      'Upgrade all side buildings to the required level for this HQ style first';
+      'Upgrade eerst alle zijgebouwen naar het vereiste niveau voor deze hoofdkwartierstijl';
 
   @override
-  String get crewUiTr5 => 'Building already owned';
+  String get crewUiTr5 => 'Gebouw al in eigendom';
 
   @override
-  String get crewUiTr6 => 'Insufficient crew bank funds';
+  String get crewUiTr6 => 'Onvoldoende bankgeld voor de bemanning';
 
   @override
-  String get crewUiTr7 => 'HQ progression is too low for this upgrade';
+  String get crewUiTr7 =>
+      'De voortgang van het hoofdkwartier is te laag voor deze upgrade';
 
   @override
-  String get crewUiTr8 => 'Crew VIP required for level 11+';
+  String get crewUiTr8 => 'Crew VIP vereist voor niveau 11+';
 
   @override
   String get crewUiTr9 =>
-      'Starter deposit reached. Purchase cash storage first to unlock more crew bank space.';
+      'Starterstorting bereikt. Koop eerst geldopslag om meer bankruimte voor de bemanning te ontgrendelen.';
 
   @override
-  String get crewUiTr10 => 'Action failed';
+  String get crewUiTr10 => 'Actie mislukt';
 
   @override
-  String get crewUiTr11 => 'There is already an active crew mission.';
+  String get crewUiTr11 => 'Er is al een actieve bemanningsmissie.';
 
   @override
   String get crewUiTr12 =>
-      'A mission cooldown is still active. Wait for it to finish or speed it up with credits.';
+      'Er is nog steeds een missie-cooldown actief. Wacht tot het klaar is of versnel het met credits.';
 
   @override
-  String get crewUiTr13 => 'Mission not found.';
+  String get crewUiTr13 => 'Missie niet gevonden.';
 
   @override
-  String get crewUiTr14 => 'This tier is still locked.';
+  String get crewUiTr14 => 'Deze laag is nog steeds vergrendeld.';
 
   @override
-  String get crewUiTr15 => 'Mission run not found.';
+  String get crewUiTr15 => 'Missierun niet gevonden.';
 
   @override
-  String get crewUiTr16 => 'Mission is already resolved.';
+  String get crewUiTr16 => 'Missie is al opgelost.';
 
   @override
-  String get crewUiTr17 => 'Mission is not completed yet.';
+  String get crewUiTr17 => 'Missie is nog niet voltooid.';
 
   @override
-  String get crewUiTr18 => 'No active cooldown.';
+  String get crewUiTr18 => 'Geen actieve cooldown.';
 
   @override
-  String get crewUiTr19 => 'Insufficient credits.';
+  String get crewUiTr19 => 'Onvoldoende kredieten.';
 
   @override
-  String get crewUiTr20 => 'Failed to start mission.';
+  String get crewUiTr20 => 'Kan de missie niet starten.';
 
   @override
-  String get crewUiTr21 => 'Failed to resolve mission.';
+  String get crewUiTr21 => 'Kan de missie niet voltooien.';
 
   @override
-  String get crewUiTr22 => 'Failed to claim rewards.';
+  String get crewUiTr22 => 'Kan beloningen niet claimen.';
 
   @override
-  String get crewUiTr23 => 'Failed to speed up cooldown.';
+  String get crewUiTr23 => 'Kan de cooldown niet versnellen.';
 
   @override
-  String get crewUiTr24 => 'You are not in a crew.';
+  String get crewUiTr24 => 'Je zit niet in een ploeg.';
 
   @override
-  String get crewUiTr25 => 'Only the crew leader can do this.';
+  String get crewUiTr25 => 'Alleen de bemanningsleider kan dit doen.';
 
   @override
-  String get crewUiTr26 => 'Target crew not found.';
+  String get crewUiTr26 => 'Doelgroep niet gevonden.';
 
   @override
-  String get crewUiTr27 => 'This crew is already in a war.';
+  String get crewUiTr27 => 'Deze bemanning is al in oorlog.';
 
   @override
-  String get crewUiTr28 => 'At least 3 crew members are required.';
+  String get crewUiTr28 => 'Er zijn minimaal 3 bemanningsleden nodig.';
 
   @override
-  String get crewUiTr29 => 'War not found.';
+  String get crewUiTr29 => 'Oorlog niet gevonden.';
 
   @override
-  String get crewUiTr30 => 'This war is not active.';
+  String get crewUiTr30 => 'Deze oorlog is niet actief.';
 
   @override
-  String get crewUiTr31 => 'You cannot join this war right now.';
+  String get crewUiTr31 => 'Je kunt je nu niet aansluiten bij deze oorlog.';
 
   @override
-  String get crewUiTr32 => 'This action requires a target player.';
+  String get crewUiTr32 => 'Voor deze actie is een doelspeler vereist.';
 
   @override
-  String get crewUiTr33 => 'Anti-farm block: pick another target.';
+  String get crewUiTr33 => 'Anti-boerderijblok: kies een ander doelwit.';
 
   @override
-  String get crewUiTr34 => 'A VIP player is required for this action.';
+  String get crewUiTr34 => 'Voor deze actie is een VIP-speler vereist.';
 
   @override
-  String get crewUiTr35 => 'A VIP crew is required for this action.';
+  String get crewUiTr35 => 'Voor deze actie is een VIP-crew vereist.';
 
   @override
-  String get crewUiTr36 => 'Action limit reached for now.';
+  String get crewUiTr36 => 'Actielimiet voorlopig bereikt.';
 
   @override
   String crewUiTr37(String remaining) {
-    return 'Cooldown active: wait $remaining more minutes.';
+    return 'Cooldown actief: wacht nog $remaining minuten.';
   }
 
   @override
-  String get crewUiTr38 => 'Invalid territory selected.';
+  String get crewUiTr38 => 'Ongeldig gebied geselecteerd.';
 
   @override
-  String get crewUiTr39 => 'Crew war action failed.';
+  String get crewUiTr39 => 'De oorlogsactie van de bemanning mislukte.';
 
   @override
-  String get crewUiTr40 => 'Target player';
+  String get crewUiTr40 => 'Doelspeler';
 
   @override
-  String get crewUiTr41 => 'Kills';
+  String get crewUiTr41 => 'Doodt';
 
   @override
-  String get crewUiTr42 => 'Deaths';
+  String get crewUiTr42 => 'Sterfgevallen';
 
   @override
-  String get crewUiTr43 => 'Cancel';
+  String get crewUiTr43 => 'Annuleren';
 
   @override
-  String get crewUiTr44 => 'Confirm';
+  String get crewUiTr44 => 'Bevestigen';
 
   @override
-  String get crewUiTr45 => 'Leader';
+  String get crewUiTr45 => 'Leider';
 
   @override
-  String get crewUiTr46 => 'Co-leader';
+  String get crewUiTr46 => 'Co-leider';
 
   @override
-  String get crewUiTr47 => 'Member';
+  String get crewUiTr47 => 'Lid';
 
   @override
-  String get crewUiTr48 => 'Capital';
+  String get crewUiTr48 => 'Hoofdstad';
 
   @override
-  String get crewUiTr49 => 'Harbor';
+  String get crewUiTr49 => 'Haven';
 
   @override
-  String get crewUiTr50 => 'Industry';
+  String get crewUiTr50 => 'Industrie';
 
   @override
-  String get crewUiTr51 => 'Border';
+  String get crewUiTr51 => 'Grens';
 
   @override
-  String get crewUiTr52 => 'Logistics';
+  String get crewUiTr52 => 'Logistiek';
 
   @override
   String get crewUiTr53 => 'Claim';
 
   @override
-  String get crewUiTr54 => 'Tick';
+  String get crewUiTr54 => 'Vink aan';
 
   @override
-  String get crewUiTr55 => 'Select territory';
+  String get crewUiTr55 => 'Selecteer territorium';
 
   @override
-  String get crewUiTr56 => 'Select a target crew first.';
+  String get crewUiTr56 => 'Selecteer eerst een doelploeg.';
 
   @override
-  String get crewUiTr57 => 'Crew war declared.';
+  String get crewUiTr57 => 'Bemanningsoorlog verklaard.';
 
   @override
-  String get crewUiTr58 => 'Failed to declare crew war.';
+  String get crewUiTr58 =>
+      'Het is niet gelukt de bemanning de oorlog te verklaren.';
 
   @override
-  String get crewUiTr59 => 'You joined the war.';
+  String get crewUiTr59 => 'Jij sloot je aan bij de oorlog.';
 
   @override
-  String get crewUiTr60 => 'Failed to join the war.';
+  String get crewUiTr60 => 'Het is niet gelukt om deel te nemen aan de oorlog.';
 
   @override
-  String get crewUiTr61 => 'Crew war action completed.';
+  String get crewUiTr61 => 'Bemanningsoorlogsactie voltooid.';
 
   @override
-  String get crewUiTr62 => 'Kill War';
+  String get crewUiTr62 => 'Dood de oorlog';
 
   @override
-  String get crewUiTr63 => 'Economy War';
+  String get crewUiTr63 => 'Economie Oorlog';
 
   @override
-  String get crewUiTr64 => 'Territory War';
+  String get crewUiTr64 => 'Territoriumoorlog';
 
   @override
-  String get crewUiTr65 => 'Total War';
+  String get crewUiTr65 => 'Totale oorlog';
 
   @override
-  String get crewUiTr66 => 'Preparing';
+  String get crewUiTr66 => 'Voorbereiden';
 
   @override
-  String get crewUiTr67 => 'Active';
+  String get crewUiTr67 => 'Actief';
 
   @override
   String get crewUiTr68 => 'Lockdown';
 
   @override
-  String get crewUiTr69 => 'Resolved';
+  String get crewUiTr69 => 'Opgelost';
 
   @override
-  String get crewUiTr70 => 'Archived';
+  String get crewUiTr70 => 'Gearchiveerd';
 
   @override
-  String get crewUiTr71 => 'Cancelled';
+  String get crewUiTr71 => 'Geannuleerd';
 
   @override
-  String get crewUiTr72 => 'Crew VIP';
+  String get crewUiTr72 => 'Bemanning VIP';
 
   @override
-  String get crewUiTr73 => '€9.99/mo';
+  String get crewUiTr73 => '€ 9,99/maand';
 
   @override
-  String get crewUiTr74 => '€4.99/mo';
+  String get crewUiTr74 => '€ 4,99/maand';
 
   @override
-  String get crewUiTr75 => 'One-time purchases';
+  String get crewUiTr75 => 'Eenmalige aankopen';
 
   @override
-  String get crewUiTr76 => 'Only the leader can buy crew VIP';
+  String get crewUiTr76 => 'Alleen de leider kan bemannings-VIP kopen';
 
   @override
-  String get crewUiTr77 => 'Invalid product';
+  String get crewUiTr77 => 'Ongeldig product';
 
   @override
-  String get crewUiTr78 => 'Error opening payment page';
+  String get crewUiTr78 => 'Fout bij het openen van de betalingspagina';
 
   @override
-  String get crewUiTr79 => 'Are you sure?';
+  String get crewUiTr79 => 'Weet je het zeker?';
 
   @override
-  String get crewUiTr80 => 'Leave crew';
+  String get crewUiTr80 => 'Verlaat de bemanning';
 
   @override
-  String get crewUiTr81 => 'Are you sure you want to leave the crew?';
+  String get crewUiTr81 => 'Weet je zeker dat je de bemanning wilt verlaten?';
 
   @override
-  String get crewUiTr82 => 'Leave';
+  String get crewUiTr82 => 'Vertrekken';
 
   @override
-  String get crewUiTr83 => 'Left crew';
+  String get crewUiTr83 => 'Linker bemanning';
 
   @override
-  String get crewUiTr84 => 'Deposit to crew bank';
+  String get crewUiTr84 => 'Stort op de bemanningsbank';
 
   @override
-  String get crewUiTr85 => 'Withdraw from crew bank';
+  String get crewUiTr85 => 'Opnemen uit de bemanningsbank';
 
   @override
-  String get crewUiTr86 => 'Amount';
+  String get crewUiTr86 => 'Hoeveelheid';
 
   @override
-  String get crewUiTr87 => 'Invalid amount';
+  String get crewUiTr87 => 'Ongeldig bedrag';
 
   @override
-  String get crewUiTr88 => 'Not enough cash on hand';
+  String get crewUiTr88 => 'Niet genoeg contant geld bij de hand';
 
   @override
-  String get crewUiTr89 => 'Purchase cash storage first for the crew bank';
+  String get crewUiTr89 => 'Koop eerst geldopslag voor de bemanningsbank';
 
   @override
-  String get crewUiTr90 => 'Crew cash storage is full';
+  String get crewUiTr90 => 'De geldopslag van de bemanning is vol';
 
   @override
-  String get crewUiTr91 => 'Delete crew';
+  String get crewUiTr91 => 'Bemanning verwijderen';
 
   @override
   String get crewUiTr92 =>
-      'Are you sure you want to delete this crew? This cannot be undone.';
+      'Weet je zeker dat je deze ploeg wilt verwijderen? Dit kan niet ongedaan worden gemaakt.';
 
   @override
-  String get crewUiTr93 => 'Delete';
+  String get crewUiTr93 => 'Verwijderen';
 
   @override
-  String get crewUiTr94 => 'Next level';
+  String get crewUiTr94 => 'Volgende niveau';
 
   @override
-  String get crewUiTr95 => 'Cost';
+  String get crewUiTr95 => 'Kosten';
 
   @override
-  String get crewUiTr96 => 'Max level reached';
+  String get crewUiTr96 => 'Maximaal niveau bereikt';
 
   @override
-  String get crewUiTr97 => 'Building not owned';
+  String get crewUiTr97 => 'Gebouw niet in eigendom';
 
   @override
-  String get crewUiTr98 => 'Add car/motorcycle';
+  String get crewUiTr98 => 'Auto/motor toevoegen';
 
   @override
-  String get crewUiTr99 => 'Add boat';
+  String get crewUiTr99 => 'Boot toevoegen';
 
   @override
-  String get crewUiTr100 => 'Motorcycle';
+  String get crewUiTr100 => 'Motorfiets';
 
   @override
-  String get crewUiTr101 => 'Boat';
+  String get crewUiTr101 => 'Boot';
 
   @override
-  String get crewUiTr102 => 'Car';
+  String get crewUiTr102 => 'Auto';
 
   @override
-  String get crewUiTr103 => 'Select';
+  String get crewUiTr103 => 'Selecteer';
 
   @override
-  String get crewUiTr104 => 'Add';
+  String get crewUiTr104 => 'Toevoegen';
 
   @override
-  String get crewUiTr105 => 'Add weapon';
+  String get crewUiTr105 => 'Wapen toevoegen';
 
   @override
-  String get crewUiTr106 => 'Weapon';
+  String get crewUiTr106 => 'Wapen';
 
   @override
-  String get crewUiTr107 => 'Quantity';
+  String get crewUiTr107 => 'Hoeveelheid';
 
   @override
-  String get crewUiTr108 => 'Add ammo';
+  String get crewUiTr108 => 'Voeg munitie toe';
 
   @override
-  String get crewUiTr109 => 'Ammo type';
+  String get crewUiTr109 => 'Soort munitie';
 
   @override
-  String get crewUiTr110 => 'Add goods';
+  String get crewUiTr110 => 'Voeg goederen toe';
 
   @override
-  String get crewUiTr111 => 'Goods type';
+  String get crewUiTr111 => 'Soort goederen';
 
   @override
-  String get crewUiTr112 => 'Join a crew first to use Crew Wars.';
+  String get crewUiTr112 =>
+      'Sluit je eerst aan bij een bemanning om Crew Wars te gebruiken.';
 
   @override
-  String get crewUiTr113 => 'No opponent crew members are available to target.';
+  String get crewUiTr113 =>
+      'Er zijn geen bemanningsleden van de tegenstander beschikbaar om op te richten.';
 
   @override
-  String get crewUiTr114 => 'Select target player';
+  String get crewUiTr114 => 'Selecteer doelspeler';
 
   @override
-  String get crewUiTr115 => 'Season overview';
+  String get crewUiTr115 => 'Seizoensoverzicht';
 
   @override
-  String get crewUiTr116 => 'Active season';
+  String get crewUiTr116 => 'Actief seizoen';
 
   @override
-  String get crewUiTr117 => 'My role';
+  String get crewUiTr117 => 'Mijn rol';
 
   @override
-  String get crewUiTr118 => 'Crew can declare';
+  String get crewUiTr118 => 'Bemanning kan aangifte doen';
 
   @override
-  String get crewUiTr119 => 'Yes';
+  String get crewUiTr119 => 'Ja';
 
   @override
-  String get crewUiTr120 => 'No';
+  String get crewUiTr120 => 'Nee';
 
   @override
-  String get crewUiTr121 => 'Declare new war';
+  String get crewUiTr121 => 'Verklaar een nieuwe oorlog';
 
   @override
-  String get crewUiTr122 => 'Target crew';
+  String get crewUiTr122 => 'Doelgroep';
 
   @override
-  String get crewUiTr123 => 'War type';
+  String get crewUiTr123 => 'Oorlogstype';
 
   @override
-  String get crewUiTr124 => 'Declare war';
+  String get crewUiTr124 => 'Verklaar de oorlog';
 
   @override
-  String get crewUiTr125 => 'War territories';
+  String get crewUiTr125 => 'Oorlogsgebieden';
 
   @override
-  String get crewUiTr126 => 'Neutral';
+  String get crewUiTr126 => 'Neutrale';
 
   @override
-  String get crewUiTr127 => 'Opponent crew';
+  String get crewUiTr127 => 'Bemanning van de tegenstander';
 
   @override
-  String get crewUiTr128 => 'Active from';
+  String get crewUiTr128 => 'Actief vanaf';
 
   @override
-  String get crewUiTr129 => 'Join war';
+  String get crewUiTr129 => 'Sluit je aan bij de oorlog';
 
   @override
-  String get crewUiTr130 => 'Standings';
+  String get crewUiTr130 => 'Standen';
 
   @override
-  String get crewUiTr131 => 'Territories';
+  String get crewUiTr131 => 'Gebieden';
 
   @override
-  String get crewUiTr132 => 'Recent actions';
+  String get crewUiTr132 => 'Recente acties';
 
   @override
-  String get crewUiTr133 => 'No war actions yet.';
+  String get crewUiTr133 => 'Nog geen oorlogsacties.';
 
   @override
-  String get crewUiTr134 => 'vs';
+  String get crewUiTr134 => 'versus';
 
   @override
-  String get crewUiTr135 => 'Season leaderboard';
+  String get crewUiTr135 => 'Seizoen klassement';
 
   @override
-  String get crewUiTr136 => 'No season points yet.';
+  String get crewUiTr136 => 'Nog geen seizoenspunten.';
 
   @override
-  String get crewUiTr137 => 'Loot';
+  String get crewUiTr137 => 'Buit';
 
   @override
-  String get crewUiTr138 => 'Recent wars';
+  String get crewUiTr138 => 'Recente oorlogen';
 
   @override
-  String get crewUiTr139 => 'No recent wars yet.';
+  String get crewUiTr139 => 'Nog geen recente oorlogen.';
 
   @override
-  String get crewUiTr140 => 'Only the leader can purchase or upgrade';
+  String get crewUiTr140 => 'Alleen de leider kan kopen of upgraden';
 
   @override
   String get crewUiTr141 =>
-      'HQ upgrade blocked: side buildings first to L\$requiredSideLevel';
+      'Upgrade van het hoofdkwartier geblokkeerd: zijgebouwen eerst naar L\$requiredSideLevel';
 
   @override
-  String get crewUiTr142 => 'Next upgrade not available yet';
+  String get crewUiTr142 => 'Volgende upgrade nog niet beschikbaar';
 
   @override
-  String get crewUiTr143 => 'HQ progression too low';
+  String get crewUiTr143 => 'HQ-progressie te laag';
 
   @override
-  String get crewUiTr144 => 'HQ level too low for next upgrade';
+  String get crewUiTr144 => 'Hoofdkwartierniveau te laag voor volgende upgrade';
 
   @override
   String get premiumUiLoadError =>

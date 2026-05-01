@@ -1860,6 +1860,49 @@
   "crewChatDelete": "Delete",
   "crewChatNoMessages": "No messages yet",
   "crewChatEmptyHint": "Send the first message to your crew!",
+  "aviationUiBuyConfirmTitle": "Buy aircraft?",
+  "aviationUiBuyConfirmBody": "Do you want to buy {name} for {price}?",
+  "@aviationUiBuyConfirmBody": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "price": {"type": "String"}
+    }
+  },
+  "aviationUiPurchaseFailed": "Purchase failed.",
+  "aviationUiPurchasedSuccess": "Aircraft purchased.",
+  "aviationUiLicenseActiveBlurb": "License active. Aircraft purchase now requires full pilot training (Aviation level 5 + all certifications).",
+  "aviationUiLicenseMissingBlurb": "You do not have an aviation license yet. Buy a license in this module before purchasing aircraft.",
+  "aviationUiYourAircraft": "Your aircraft",
+  "aviationUiNoOwnedAircraft": "You do not own any aircraft yet.",
+  "aviationUiAvailableAircraft": "Available aircraft",
+  "aviationUiFuelLabel": "Fuel: {fuel} / {max}",
+  "@aviationUiFuelLabel": {
+    "placeholders": {
+      "fuel": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "aviationUiPriceLabel": "Price: {price}",
+  "@aviationUiPriceLabel": {
+    "placeholders": {"price": {"type": "String"}}
+  },
+  "aviationUiMinRank": "Min rank: {rank}",
+  "@aviationUiMinRank": {
+    "placeholders": {"rank": {"type": "int"}}
+  },
+  "aviationUiSpeedMultiplier": "Speed x{value}",
+  "@aviationUiSpeedMultiplier": {
+    "placeholders": {"value": {"type": "String"}}
+  },
+  "aviationUiCargoCapacity": "Cargo: {amount}",
+  "@aviationUiCargoCapacity": {
+    "placeholders": {"amount": {"type": "int"}}
+  },
+  "aviationUiDefaultAircraftName": "Aircraft",
+  "aviationUiLoadError": "Could not load aviation data: {error}",
+  "@aviationUiLoadError": {
+    "placeholders": {"error": {"type": "String"}}
+  },
   "crewUiTr0": "HQ upgrade requirements",
   "crewUiTr1": "Upgrade your current HQ style to max level to unlock the next style",
   "crewUiTr2": "Final HQ style reached",

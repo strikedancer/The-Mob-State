@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../utils/formatters.dart';
@@ -26,9 +27,6 @@ class _AviationScreenState extends State<AviationScreen> {
 
   List<Map<String, dynamic>> _aircraft = const [];
   List<Map<String, dynamic>> _owned = const [];
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -87,32 +85,63 @@ class _AviationScreenState extends State<AviationScreen> {
     return _aircraftImages[aircraftType.toLowerCase()] ?? 'aircraft/cessna.png';
   }
 
+  bool _useDutchNames(AppLocalizations l10n) =>
+      l10n.localeName.toLowerCase().startsWith('nl');
+
+  String _catalogName(Map<String, dynamic> item, AppLocalizations l10n) {
+    final useNl = _useDutchNames(l10n);
+    return (useNl ? item['name'] : (item['name_en'] ?? item['name']))
+            ?.toString() ??
+        item['id']?.toString() ??
+        '';
+  }
+
+  String _catalogDescription(Map<String, dynamic> item, AppLocalizations l10n) {
+    final useNl = _useDutchNames(l10n);
+    return (useNl
+            ? item['description']
+            : (item['description_en'] ?? item['description']))
+        ?.toString() ??
+        '';
+  }
+
+  String _ownedDisplayName(Map<String, dynamic> item, AppLocalizations l10n) {
+    final useNl = _useDutchNames(l10n);
+    return (useNl ? item['name'] : (item['name_en'] ?? item['name']))
+            ?.toString() ??
+        item['aircraftType']?.toString() ??
+        l10n.aviationUiDefaultAircraftName;
+  }
+
   Future<void> _buyAircraft(Map<String, dynamic> item) async {
     if (_isBuying) return;
 
+    final l10n = AppLocalizations.of(context)!;
     final aircraftType = item['id']?.toString() ?? '';
-    final aircraftName = item['name']?.toString() ?? aircraftType;
+    final aircraftName = _catalogName(item, l10n).isNotEmpty
+        ? _catalogName(item, l10n)
+        : aircraftType;
     final price = (item['price'] as num?)?.toInt() ?? 0;
     if (aircraftType.isEmpty) return;
 
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr('Vliegtuig kopen?', 'Buy aircraft?')),
+        title: Text(l10n.aviationUiBuyConfirmTitle),
         content: Text(
-          _tr(
-            'Wil je $aircraftName kopen voor ${formatCurrency(price)}?',
-            'Do you want to buy $aircraftName for ${formatCurrency(price)}?',
+          l10n.aviationUiBuyConfirmBody(
+            aircraftName,
+            formatCurrency(price),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(_tr('Kopen', 'Buy')),
+            child: Text(l10n.buy),
           ),
         ],
       ),
@@ -129,8 +158,7 @@ class _AviationScreenState extends State<AviationScreen> {
 
       if (response.statusCode >= 400 || (data['success'] == false)) {
         final message =
-            data['message']?.toString() ??
-            _tr('Aankoop mislukt.', 'Purchase failed.');
+            data['message']?.toString() ?? l10n.aviationUiPurchaseFailed;
         if (!mounted) return;
         showTopRightFromSnackBar(
           context,
@@ -153,8 +181,7 @@ class _AviationScreenState extends State<AviationScreen> {
           SnackBar(
             backgroundColor: Colors.green,
             content: Text(
-              data['message']?.toString() ??
-                  _tr('Vliegtuig gekocht.', 'Aircraft purchased.'),
+              data['message']?.toString() ?? l10n.aviationUiPurchasedSuccess,
             ),
           ),
         );
@@ -167,7 +194,7 @@ class _AviationScreenState extends State<AviationScreen> {
         context,
         SnackBar(
           backgroundColor: Colors.red,
-          content: Text('${_tr('Fout', 'Error')}: $e'),
+          content: Text(l10n.error(e.toString())),
         ),
       );
     } finally {
@@ -179,6 +206,8 @@ class _AviationScreenState extends State<AviationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -190,11 +219,14 @@ class _AviationScreenState extends State<AviationScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(_error!, textAlign: TextAlign.center),
+              Text(
+                l10n.aviationUiLoadError(_error!),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: _loadData,
-                child: Text(_tr('Opnieuw proberen', 'Retry')),
+                child: Text(l10n.retry),
               ),
             ],
           ),
@@ -212,20 +244,14 @@ class _AviationScreenState extends State<AviationScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _tr('Luchtvaart', 'Aviation'),
+                  l10n.aviation,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   _hasLicense
-                      ? _tr(
-                          'Licentie actief. Vliegtuigkoop vereist nu volledige pilot-opleiding (Aviation level 5 + alle certificaten).',
-                          'License active. Aircraft purchase now requires full pilot training (Aviation level 5 + all certifications).',
-                        )
-                      : _tr(
-                          'Je hebt nog geen vlieglicentie. Koop eerst een licentie via deze module voordat je vliegtuigen kunt kopen.',
-                          'You do not have an aviation license yet. Buy a license in this module before purchasing aircraft.',
-                        ),
+                      ? l10n.aviationUiLicenseActiveBlurb
+                      : l10n.aviationUiLicenseMissingBlurb,
                 ),
               ],
             ),
@@ -233,7 +259,7 @@ class _AviationScreenState extends State<AviationScreen> {
         ),
         const SizedBox(height: 12),
         Text(
-          _tr('Jouw vliegtuigen', 'Your aircraft'),
+          l10n.aviationUiYourAircraft,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
@@ -241,21 +267,12 @@ class _AviationScreenState extends State<AviationScreen> {
           Card(
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: Text(
-                _tr(
-                  'Je bezit nog geen vliegtuigen.',
-                  'You do not own any aircraft yet.',
-                ),
-              ),
+              child: Text(l10n.aviationUiNoOwnedAircraft),
             ),
           )
         else
           ..._owned.map((item) {
-            final name =
-                (_isNl ? item['name'] : (item['name_en'] ?? item['name']))
-                    ?.toString() ??
-                item['aircraftType']?.toString() ??
-                'Aircraft';
+            final name = _ownedDisplayName(item, l10n);
             final fuel = (item['fuel'] as num?)?.toInt() ?? 0;
             final maxFuel = (item['maxFuel'] as num?)?.toInt() ?? 0;
             final type = item['aircraftType']?.toString() ?? '';
@@ -268,35 +285,27 @@ class _AviationScreenState extends State<AviationScreen> {
                   child: WebAssetHelper.image(
                     _imageForAircraftType(type),
                     fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) =>
+                    errorBuilder: (context, error, stackTrace) =>
                         const Icon(Icons.flight, size: 28),
                   ),
                 ),
                 title: Text(name),
-                subtitle: Text(
-                  _tr('Brandstof: $fuel / $maxFuel', 'Fuel: $fuel / $maxFuel'),
-                ),
+                subtitle: Text(l10n.aviationUiFuelLabel(fuel, maxFuel)),
               ),
             );
           }),
         const SizedBox(height: 12),
         Text(
-          _tr('Beschikbare vliegtuigen', 'Available aircraft'),
+          l10n.aviationUiAvailableAircraft,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
         ..._aircraft.map((item) {
           final aircraftType = item['id']?.toString() ?? '';
-          final name =
-              (_isNl ? item['name'] : (item['name_en'] ?? item['name']))
-                  ?.toString() ??
-              aircraftType;
-          final description =
-              (_isNl
-                      ? item['description']
-                      : (item['description_en'] ?? item['description']))
-                  ?.toString() ??
-              '';
+          final name = _catalogName(item, l10n).isNotEmpty
+              ? _catalogName(item, l10n)
+              : aircraftType;
+          final description = _catalogDescription(item, l10n);
           final price = (item['price'] as num?)?.toInt() ?? 0;
           final minRank = (item['minRank'] as num?)?.toInt() ?? 0;
           final speedMultiplier =
@@ -318,7 +327,7 @@ class _AviationScreenState extends State<AviationScreen> {
                         child: WebAssetHelper.image(
                           _imageForAircraftType(aircraftType),
                           fit: BoxFit.contain,
-                          errorBuilder: (_, __, ___) =>
+                          errorBuilder: (context, error, stackTrace) =>
                               const Icon(Icons.flight, size: 36),
                         ),
                       ),
@@ -338,26 +347,15 @@ class _AviationScreenState extends State<AviationScreen> {
                             Text(description),
                             const SizedBox(height: 6),
                             Text(
-                              _tr(
-                                'Prijs: ${formatCurrency(price)}',
-                                'Price: ${formatCurrency(price)}',
+                              l10n.aviationUiPriceLabel(formatCurrency(price)),
+                            ),
+                            Text(l10n.aviationUiMinRank(minRank)),
+                            Text(
+                              l10n.aviationUiSpeedMultiplier(
+                                speedMultiplier.toStringAsFixed(1),
                               ),
                             ),
-                            Text(
-                              _tr('Min rank: $minRank', 'Min rank: $minRank'),
-                            ),
-                            Text(
-                              _tr(
-                                'Snelheid x${speedMultiplier.toStringAsFixed(1)}',
-                                'Speed x${speedMultiplier.toStringAsFixed(1)}',
-                              ),
-                            ),
-                            Text(
-                              _tr(
-                                'Cargo: $cargoCapacity',
-                                'Cargo: $cargoCapacity',
-                              ),
-                            ),
+                            Text(l10n.aviationUiCargoCapacity(cargoCapacity)),
                           ],
                         ),
                       ),
@@ -369,7 +367,7 @@ class _AviationScreenState extends State<AviationScreen> {
                     child: ElevatedButton.icon(
                       onPressed: _isBuying ? null : () => _buyAircraft(item),
                       icon: const Icon(Icons.shopping_cart),
-                      label: Text(_tr('Kopen', 'Buy')),
+                      label: Text(l10n.buy),
                     ),
                   ),
                 ],

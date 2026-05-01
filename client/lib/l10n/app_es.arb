@@ -7832,5 +7832,76 @@
   "crewChatCancel": "Cancelar",
   "crewChatDelete": "Borrar",
   "crewChatNoMessages": "Aún no hay mensajes",
-  "crewChatEmptyHint": "¡Envía el primer mensaje a tu equipo!"
+  "crewChatEmptyHint": "¡Envía el primer mensaje a tu equipo!",
+  "aviationUiBuyConfirmTitle": "¿Comprar aviones?",
+  "aviationUiBuyConfirmBody": "¿Quieres comprar {name} por {price}?",
+  "@aviationUiBuyConfirmBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiPurchaseFailed": "Compra fallida.",
+  "aviationUiPurchasedSuccess": "Aviones comprados.",
+  "aviationUiLicenseActiveBlurb": "Licencia activa. La compra de aeronaves ahora requiere capacitación completa de piloto (nivel de aviación 5 + todas las certificaciones).",
+  "aviationUiLicenseMissingBlurb": "Aún no tienes una licencia de aviación. Compre una licencia en este módulo antes de comprar un avión.",
+  "aviationUiYourAircraft": "Tu avión",
+  "aviationUiNoOwnedAircraft": "Aún no posee ningún avión.",
+  "aviationUiAvailableAircraft": "Aviones disponibles",
+  "aviationUiFuelLabel": "Combustible: {fuel} / {max}",
+  "@aviationUiFuelLabel": {
+    "placeholders": {
+      "fuel": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiPriceLabel": "Precio: {price}",
+  "@aviationUiPriceLabel": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiMinRank": "Rango mínimo: {rank}",
+  "@aviationUiMinRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiSpeedMultiplier": "Velocidad x{value}",
+  "@aviationUiSpeedMultiplier": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "aviationUiCargoCapacity": "Carga: {amount}",
+  "@aviationUiCargoCapacity": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "aviationUiDefaultAircraftName": "Aeronave",
+  "aviationUiLoadError": "No se pudieron cargar datos de aviación: {error}",
+  "@aviationUiLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }
