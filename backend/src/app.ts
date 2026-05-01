@@ -216,8 +216,9 @@ app.use('/admin-fix', adminFixRouter);
 app.use('/admin/npcs', adminNPCsRouter);
 app.use('/admin/game-events', adminGameEventsRouter);
 
-// Flutter web: deep links (e.g. /privacy) — serve index.html for GET when no API handler matched
-app.get('*', (req, res, next) => {
+// Flutter web: deep links (e.g. /privacy) — serve index.html for GET when no API handler matched.
+// Express 5 / path-to-regexp v8 rejects app.get('*', …) ("Missing parameter name"); use middleware instead.
+app.use((req, res, next) => {
   if (req.method !== 'GET') {
     return next();
   }

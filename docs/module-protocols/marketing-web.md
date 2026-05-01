@@ -11,7 +11,7 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 
 ## Backend
 - `backend/src/routes/publicMarketing.ts` — `GET /public/home` (read-only, geen auth), rate limit.
-- `backend/src/app.ts` — router op `/public`; SPA-fallback: GET naar onbekende niet-API-paden levert `client/build/web/index.html` wanneer aanwezig (deep links).
+- `backend/src/app.ts` — router op `/public`; SPA-fallback: GET naar onbekende niet-API-paden levert `client/build/web/index.html` wanneer aanwezig (deep links). Gebruik `app.use` met GET-gate i.p.v. `app.get('*', …)` (Express 5 / path-to-regexp v8).
 
 ## i18n
 - Keys: `landing*`, `legalPrivacy*`, `legalDigitalGoods*` in alle `app_*.arb`-bestanden.
