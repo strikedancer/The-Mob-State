@@ -6518,6 +6518,21 @@
       }
     }
   },
+  "crimeRequirementDrugsFull": "💊 {drugsRequired} (min {quantity}g): {names}",
+  "@crimeRequirementDrugsFull": {
+    "placeholders": {
+      "drugsRequired": {
+        "type": "String"
+      },
+      "quantity": {
+        "type": "String"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCommitUnexpectedError": "Something went wrong. Please try again.",
   "cooldownTimeLeft": "Time left",
   "cooldownMustWaitExplanation": "You must wait before you can perform this action again.",
   "cooldownAlreadyFinished": "Cooldown already finished.",

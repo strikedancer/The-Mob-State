@@ -11229,6 +11229,19 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String crimeRequirementDrugsFull(
+    String drugsRequired,
+    String quantity,
+    String names,
+  ) {
+    return '💊 $drugsRequired (min ${quantity}g) : $names';
+  }
+
+  @override
+  String get crimeCommitUnexpectedError =>
+      'Quelque chose s\'est mal passé. Veuillez réessayer.';
+
+  @override
   String get cooldownTimeLeft => 'Temps restant';
 
   @override

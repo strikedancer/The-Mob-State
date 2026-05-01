@@ -7931,5 +7931,20 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crimeRequirementDrugsFull": "💊 {drugsRequired} (min {quantity}g): {names}",
+  "@crimeRequirementDrugsFull": {
+    "placeholders": {
+      "drugsRequired": {
+        "type": "String"
+      },
+      "quantity": {
+        "type": "String"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCommitUnexpectedError": "Algo deu errado. Por favor, tente novamente."
 }

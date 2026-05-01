@@ -19520,6 +19520,22 @@ abstract class AppLocalizations {
   /// **'{percent}% success chance'**
   String crimeCardSuccessChance(int percent);
 
+  /// No description provided for @crimeRequirementDrugsFull.
+  ///
+  /// In en, this message translates to:
+  /// **'💊 {drugsRequired} (min {quantity}g): {names}'**
+  String crimeRequirementDrugsFull(
+    String drugsRequired,
+    String quantity,
+    String names,
+  );
+
+  /// No description provided for @crimeCommitUnexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get crimeCommitUnexpectedError;
+
   /// No description provided for @cooldownTimeLeft.
   ///
   /// In en, this message translates to:

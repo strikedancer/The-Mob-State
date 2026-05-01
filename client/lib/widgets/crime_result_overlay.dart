@@ -85,7 +85,7 @@ class CrimeResultOverlay extends StatelessWidget {
                         child: _ResultStat(
                           icon: Icons.auto_awesome,
                           label: l10n.crimeResultXpLabel,
-                          value: '+$xpGained',
+                          value: l10n.jobXpRewardShort(xpGained.toString()),
                           color: Colors.blue,
                         ),
                       ),

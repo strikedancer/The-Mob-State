@@ -7931,5 +7931,20 @@
         "type": "String"
       }
     }
-  }
+  },
+  "crimeRequirementDrugsFull": "💊 {drugsRequired} (mín. {quantity}g): {names}",
+  "@crimeRequirementDrugsFull": {
+    "placeholders": {
+      "drugsRequired": {
+        "type": "String"
+      },
+      "quantity": {
+        "type": "String"
+      },
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "crimeCommitUnexpectedError": "Algo salió mal. Por favor inténtalo de nuevo."
 }

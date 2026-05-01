@@ -14,6 +14,7 @@ import '../widgets/jail_screen.dart';
 import '../widgets/cooldown_overlay.dart';
 import '../widgets/crime_card.dart';
 import '../widgets/crime_result_overlay.dart';
+import '../utils/crime_localization.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/weapon_display_name.dart';
 
@@ -349,43 +350,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
     }
   }
 
-  Future<void> _loadCrimes() async {
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-
-    try {
-      final response = await _apiClient.get('/crimes');
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final crimesJson = data['crimes'] as List;
-        final crimes = crimesJson
-            .map((c) => Crime.fromJson(c))
-            .where((crime) => !_excludedCrimeIds.contains(crime.id))
-            .toList();
-        setState(() {
-          _crimes = crimes;
-          _isLoading = false;
-        });
-      } else {
-        setState(() {
-          final l10n = AppLocalizations.of(context)!;
-          _error = l10n.errorLoadingCrimes;
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (!mounted) return;
-      final loc = AppLocalizations.of(context)!;
-      setState(() {
-        _error = loc.connectionErrorGeneric;
-        _isLoading = false;
-      });
-    }
-  }
-
   Future<void> _commitCrime(Crime crime) async {
     final l10n = AppLocalizations.of(context)!;
 
@@ -529,10 +493,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
         });
 
         if (mounted) {
+          final toolsLabel =
+              toolsParam == 'unknown' ? l10n.unknown : toolsParam;
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text('⚒️ ${l10n.crimeErrorToolInStorage(toolsParam)}'),
+              content: Text(l10n.crimeErrorToolInStorage(toolsLabel)),
               backgroundColor: Colors.orange,
               duration: const Duration(seconds: 5),
               action: SnackBarAction(
@@ -649,7 +615,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
 
           if (eventKey.contains('success')) {
             setState(() {
-              _resultCrimeName = _localizedCrimeName(crime, l10n);
+              _resultCrimeName = CrimeLocalization.name(crime, l10n);
               _crimeReward = reward;
               _crimeXpGained = xpGained;
               _showCrimeResult = reward > 0 || xpGained > 0;
@@ -690,10 +656,11 @@ class _CrimeScreenState extends State<CrimeScreen> {
       });
 
       if (mounted) {
+        final loc = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('Er is een fout opgetreden'),
+            content: Text(loc.crimeCommitUnexpectedError),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 3),
           ),
@@ -726,164 +693,6 @@ class _CrimeScreenState extends State<CrimeScreen> {
     return toolNames.join(', ');
   }
   */
-
-  String _localizedCrimeName(Crime crime, AppLocalizations l10n) {
-    switch (crime.id) {
-      case 'pickpocket':
-        return l10n.crimePickpocketName;
-      case 'shoplift':
-        return l10n.crimeShopliftName;
-      case 'steal_bike':
-        return l10n.crimeStealBikeName;
-      case 'car_theft':
-        return l10n.crimeCarTheftName;
-      case 'burglary':
-        return l10n.crimeBurglaryName;
-      case 'rob_store':
-        return l10n.crimeRobStoreName;
-      case 'mug_person':
-        return l10n.crimeMugPersonName;
-      case 'steal_car_parts':
-        return l10n.crimeStealCarPartsName;
-      case 'hijack_truck':
-        return l10n.crimeHijackTruckName;
-      case 'atm_theft':
-        return l10n.crimeAtmTheftName;
-      case 'jewelry_heist':
-        return l10n.crimeJewelryHeistName;
-      case 'vandalism':
-        return l10n.crimeVandalismName;
-      case 'graffiti':
-        return l10n.crimeGraffitiName;
-      case 'drug_deal_small':
-        return l10n.crimeDrugDealSmallName;
-      case 'drug_deal_large':
-        return l10n.crimeDrugDealLargeName;
-      case 'extortion':
-        return l10n.crimeExtortionName;
-      case 'kidnapping':
-        return l10n.crimeKidnappingName;
-      case 'arson':
-        return l10n.crimeArsonName;
-      case 'smuggling':
-        return l10n.crimeSmugglingName;
-      case 'assassination':
-        return l10n.crimeAssassinationName;
-      case 'hack_account':
-        return l10n.crimeHackAccountName;
-      case 'counterfeit_money':
-        return l10n.crimeCounterfeitMoneyName;
-      case 'identity_theft':
-        return l10n.crimeIdentityTheftName;
-      case 'rob_armored_truck':
-        return l10n.crimeRobArmoredTruckName;
-      case 'art_theft':
-        return l10n.crimeArtTheftName;
-      case 'protection_racket':
-        return l10n.crimeProtectionRacketName;
-      case 'casino_heist':
-        return l10n.crimeCasinoHeistName;
-      case 'bank_robbery':
-        return l10n.crimeBankRobberyName;
-      case 'steal_yacht':
-        return l10n.crimeStealYachtName;
-      case 'corrupt_official':
-        return l10n.crimeCorruptOfficialName;
-      case 'eliminate_witness':
-        return l10n.crimeEliminateWitnessName;
-      case 'diamond_heist':
-        return l10n.crimeDiamondHeistName;
-      case 'evidence_room_heist':
-        return l10n.crimeEvidenceRoomHeistName;
-      case 'museum_heist':
-        return l10n.crimeMuseumHeistName;
-      case 'boss_assassination':
-        return l10n.crimeBossAssassinationName;
-      case 'criminal_record_wipe':
-        return l10n.crimeCriminalRecordWipeName;
-      default:
-        return crime.name;
-    }
-  }
-
-  String _localizedCrimeDescription(Crime crime, AppLocalizations l10n) {
-    switch (crime.id) {
-      case 'pickpocket':
-        return l10n.crimePickpocketDesc;
-      case 'shoplift':
-        return l10n.crimeShopliftDesc;
-      case 'steal_bike':
-        return l10n.crimeStealBikeDesc;
-      case 'car_theft':
-        return l10n.crimeCarTheftDesc;
-      case 'burglary':
-        return l10n.crimeBurglaryDesc;
-      case 'rob_store':
-        return l10n.crimeRobStoreDesc;
-      case 'mug_person':
-        return l10n.crimeMugPersonDesc;
-      case 'steal_car_parts':
-        return l10n.crimeStealCarPartsDesc;
-      case 'hijack_truck':
-        return l10n.crimeHijackTruckDesc;
-      case 'atm_theft':
-        return l10n.crimeAtmTheftDesc;
-      case 'jewelry_heist':
-        return l10n.crimeJewelryHeistDesc;
-      case 'vandalism':
-        return l10n.crimeVandalismDesc;
-      case 'graffiti':
-        return l10n.crimeGraffitiDesc;
-      case 'drug_deal_small':
-        return l10n.crimeDrugDealSmallDesc;
-      case 'drug_deal_large':
-        return l10n.crimeDrugDealLargeDesc;
-      case 'extortion':
-        return l10n.crimeExtortionDesc;
-      case 'kidnapping':
-        return l10n.crimeKidnappingDesc;
-      case 'arson':
-        return l10n.crimeArsonDesc;
-      case 'smuggling':
-        return l10n.crimeSmugglingDesc;
-      case 'assassination':
-        return l10n.crimeAssassinationDesc;
-      case 'hack_account':
-        return l10n.crimeHackAccountDesc;
-      case 'counterfeit_money':
-        return l10n.crimeCounterfeitMoneyDesc;
-      case 'identity_theft':
-        return l10n.crimeIdentityTheftDesc;
-      case 'rob_armored_truck':
-        return l10n.crimeRobArmoredTruckDesc;
-      case 'art_theft':
-        return l10n.crimeArtTheftDesc;
-      case 'protection_racket':
-        return l10n.crimeProtectionRacketDesc;
-      case 'casino_heist':
-        return l10n.crimeCasinoHeistDesc;
-      case 'bank_robbery':
-        return l10n.crimeBankRobberyDesc;
-      case 'steal_yacht':
-        return l10n.crimeStealYachtDesc;
-      case 'corrupt_official':
-        return l10n.crimeCorruptOfficialDesc;
-      case 'eliminate_witness':
-        return l10n.crimeEliminateWitnessDesc;
-      case 'diamond_heist':
-        return l10n.crimeDiamondHeistDesc;
-      case 'evidence_room_heist':
-        return l10n.crimeEvidenceRoomHeistDesc;
-      case 'museum_heist':
-        return l10n.crimeMuseumHeistDesc;
-      case 'boss_assassination':
-        return l10n.crimeBossAssassinationDesc;
-      case 'criminal_record_wipe':
-        return l10n.crimeCriminalRecordWipeDesc;
-      default:
-        return crime.description ?? '';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -938,7 +747,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
                   _cooldownIsSuccess = null;
                 });
                 // Load crimes after cooldown expires
-                _loadCrimes();
+                _checkJailStatusAndLoadCrimes();
               },
             )
           : _isLoading
@@ -951,10 +760,14 @@ class _CrimeScreenState extends State<CrimeScreen> {
                   Text(_error!, style: const TextStyle(color: Colors.red)),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () async {
-                      await _loadCrimes();
-                      await _loadCrimeWeaponSelection(showLoading: false);
-                    },
+                    onPressed: _isCommittingCrime
+                        ? null
+                        : () async {
+                            await _checkJailStatusAndLoadCrimes();
+                            await _loadCrimeWeaponSelection(
+                              showLoading: false,
+                            );
+                          },
                     child: Text(l10n.retry),
                   ),
                 ],
@@ -962,7 +775,7 @@ class _CrimeScreenState extends State<CrimeScreen> {
             )
           : RefreshIndicator(
               onRefresh: () async {
-                await _loadCrimes();
+                await _checkJailStatusAndLoadCrimes();
                 await _loadCrimeWeaponSelection(showLoading: false);
               },
               child: Container(
@@ -1028,12 +841,12 @@ class _CrimeScreenState extends State<CrimeScreen> {
                             );
                           }
 
-                          final localizedName = _localizedCrimeName(
+                          final localizedName = CrimeLocalization.name(
                             crime,
                             l10n,
                           );
                           final localizedDescription =
-                              _localizedCrimeDescription(crime, l10n);
+                              CrimeLocalization.description(crime, l10n);
 
                           return CrimeCard(
                             crime: crime,

@@ -128,7 +128,11 @@ class _CrimeCardState extends State<CrimeCard> {
           .join(', ');
       final minQty = widget.crime.minDrugQuantity ?? 1;
       requirements.add(
-        '💊 ${l10n.tooltipCrimeRequiresDrugs} (min ${minQty}g): $drugNames',
+        l10n.crimeRequirementDrugsFull(
+          l10n.tooltipCrimeRequiresDrugs,
+          minQty.toString(),
+          drugNames,
+        ),
       );
     }
 
@@ -372,7 +376,10 @@ class _CrimeCardState extends State<CrimeCard> {
                                 if (widget.crime.minPay > 0 ||
                                     widget.crime.maxPay > 0)
                                   Text(
-                                    '\$${widget.crime.minPay}-${widget.crime.maxPay}',
+                                    l10n.jobPayRangeEuro(
+                                      widget.crime.minPay.toString(),
+                                      widget.crime.maxPay.toString(),
+                                    ),
                                     style: TextStyle(
                                       fontSize: 9,
                                       fontWeight: FontWeight.w600,
@@ -381,7 +388,9 @@ class _CrimeCardState extends State<CrimeCard> {
                                   ),
                                 if (widget.crime.xpReward > 0)
                                   Text(
-                                    '+${widget.crime.xpReward} XP',
+                                    l10n.jobXpRewardShort(
+                                      widget.crime.xpReward.toString(),
+                                    ),
                                     style: TextStyle(
                                       fontSize: 9,
                                       fontWeight: FontWeight.w600,
