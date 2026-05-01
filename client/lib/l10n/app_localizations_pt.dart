@@ -833,6 +833,31 @@ class AppLocalizationsPt extends AppLocalizations {
   String get helpAndGuide => 'Ajuda e Guia';
 
   @override
+  String get helpUiManualTitle => 'Manual do jogo';
+
+  @override
+  String get helpUiSearchHint => 'Pesquise por módulo, explicação ou dica';
+
+  @override
+  String get helpUiTopicLabel => 'Tópico';
+
+  @override
+  String get helpUiAllChip => 'Todos';
+
+  @override
+  String get helpUiNoResultsTitle => 'Nenhum tópico encontrado';
+
+  @override
+  String get helpUiNoResultsBody =>
+      'Altere sua pesquisa ou categoria para ver os resultados novamente.';
+
+  @override
+  String get helpUiHowItWorks => 'Como funciona';
+
+  @override
+  String get helpUiTips => 'Dicas';
+
+  @override
   String get quickActions => 'Ações rápidas';
 
   @override

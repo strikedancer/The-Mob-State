@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 import '../data/help_content.dart';
-import 'support_tickets_screen.dart';
+import '../l10n/app_localizations.dart';
 
 class HelpScreen extends StatefulWidget {
   final bool embedded;
@@ -14,14 +14,13 @@ class HelpScreen extends StatefulWidget {
 }
 
 class _HelpScreenState extends State<HelpScreen> {
-  // Removed embedded support tickets logic
   final TextEditingController _searchController = TextEditingController();
   String _query = '';
   String? _selectedCategory;
   String? _selectedTopicId;
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
+  String _helpLanguageCode(BuildContext context) =>
+      Localizations.localeOf(context).languageCode;
 
   @override
   void dispose() {
@@ -29,21 +28,21 @@ class _HelpScreenState extends State<HelpScreen> {
     super.dispose();
   }
 
-  List<HelpTopic> _filteredTopics() {
+  List<HelpTopic> _filteredTopics(String lang) {
     final query = _query.trim().toLowerCase();
     return helpTopics.where((topic) {
       final categoryMatch =
           _selectedCategory == null ||
-          topic.category(_isNl) == _selectedCategory;
+          topic.category(lang) == _selectedCategory;
       final queryMatch =
-          query.isEmpty || topic.searchableText(_isNl).contains(query);
+          query.isEmpty || topic.searchableText(lang).contains(query);
       return categoryMatch && queryMatch;
     }).toList();
   }
 
-  List<String> _categories() {
+  List<String> _categories(String lang) {
     final categories =
-        helpTopics.map((topic) => topic.category(_isNl)).toSet().toList()
+        helpTopics.map((topic) => topic.category(lang)).toSet().toList()
           ..sort();
     return categories;
   }
@@ -60,35 +59,12 @@ class _HelpScreenState extends State<HelpScreen> {
     return match ?? topics.first;
   }
 
-  Future<void> _openTopicSheet(HelpTopic topic) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.92,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
-            child: _HelpTopicDetail(
-              topic: topic,
-              isNl: _isNl,
-              titleHow: _tr('Hoe werkt dit?', 'How does this work?'),
-              titleTips: _tr('Handige tips', 'Helpful tips'),
-              closeLabel: _tr('Sluiten', 'Close'),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final topics = _filteredTopics();
+    final l10n = AppLocalizations.of(context)!;
+    final lang = _helpLanguageCode(context);
+    final topics = _filteredTopics(lang);
     final selectedTopic = _resolveSelectedTopic(topics);
-    final isWide = MediaQuery.of(context).size.width >= 960;
 
     if (selectedTopic != null && _selectedTopicId != selectedTopic.id) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -99,59 +75,61 @@ class _HelpScreenState extends State<HelpScreen> {
     }
 
     Widget mainContent = ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.zero,
-      children: [
-        _buildHeader(context),
-        const SizedBox(height: 16),
-        _buildSearchBar(context),
-        const SizedBox(height: 12),
-        _buildCategoryChips(),
-        const SizedBox(height: 16),
-        if (topics.isEmpty)
-          _buildEmptyState()
-        else ...[
-          DropdownButtonFormField<String>(
-            value: selectedTopic?.id,
-            isExpanded: true,
-            dropdownColor: const Color(0xFF1F1F1F),
-            decoration: InputDecoration(
-              labelText: _tr('Onderwerp', 'Topic'),
-              labelStyle: const TextStyle(color: Colors.white70),
-              filled: true,
-              fillColor: Colors.white.withOpacity(0.04),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            items: topics
-                .map(
-                  (topic) => DropdownMenuItem<String>(
-                    value: topic.id,
-                    child: Text(topic.title(_isNl)),
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            children: [
+              _buildHeader(context, l10n),
+              const SizedBox(height: 16),
+              _buildSearchBar(context, l10n),
+              const SizedBox(height: 12),
+              _buildCategoryChips(l10n, lang),
+              const SizedBox(height: 16),
+              if (topics.isEmpty)
+                _buildEmptyState(l10n)
+              else ...[
+                DropdownButtonFormField<String>(
+                  value: selectedTopic?.id,
+                  isExpanded: true,
+                  dropdownColor: const Color(0xFF1F1F1F),
+                  decoration: InputDecoration(
+                    labelText: l10n.helpUiTopicLabel,
+                    labelStyle: const TextStyle(color: Colors.white70),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.04),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (value == null) return;
-              setState(() => _selectedTopicId = value);
-            },
-          ),
-          const SizedBox(height: 12),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: _buildCompactTopicDetail(selectedTopic!),
-            ),
-          ),
-        ],
-        const SizedBox(height: 20),
-      ],
-    );
+                  items: topics
+                      .map(
+                        (topic) => DropdownMenuItem<String>(
+                          value: topic.id,
+                          child: Text(topic.title(lang)),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+                    setState(() => _selectedTopicId = value);
+                  },
+                ),
+                const SizedBox(height: 12),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: _buildCompactTopicDetail(
+                      context,
+                      l10n,
+                      lang,
+                      selectedTopic!,
+                    ),
+                  ),
+                ),
+              ],
+              const SizedBox(height: 20),
+            ],
+          );
 
-    // Removed embedded support tickets logic
-
-    // In embedded mode (dashboard), don't wrap with ScrollConfiguration since dashboard provides it
     final compactBody = widget.embedded
         ? mainContent
         : ScrollConfiguration(
@@ -173,12 +151,12 @@ class _HelpScreenState extends State<HelpScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(_tr('Help & Uitleg', 'Help & Guide'))),
+      appBar: AppBar(title: Text(l10n.helpAndGuide)),
       body: Padding(padding: const EdgeInsets.all(16), child: compactBody),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -214,7 +192,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr('Spelhandleiding', 'Game Manual'),
+                      l10n.helpUiManualTitle,
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
@@ -228,15 +206,12 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget _buildSearchBar(BuildContext context) {
+  Widget _buildSearchBar(BuildContext context, AppLocalizations l10n) {
     return TextField(
       controller: _searchController,
       onChanged: (value) => setState(() => _query = value),
       decoration: InputDecoration(
-        hintText: _tr(
-          'Zoek op onderdeel, uitleg of tip',
-          'Search by module, explanation or tip',
-        ),
+        hintText: l10n.helpUiSearchHint,
         prefixIcon: const Icon(Icons.search),
         suffixIcon: _query.isEmpty
             ? null
@@ -252,14 +227,14 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget _buildCategoryChips() {
-    final categories = _categories();
+  Widget _buildCategoryChips(AppLocalizations l10n, String lang) {
+    final categories = _categories(lang);
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       children: [
         ChoiceChip(
-          label: Text(_tr('Alles', 'All')),
+          label: Text(l10n.helpUiAllChip),
           selected: _selectedCategory == null,
           onSelected: (_) => setState(() => _selectedCategory = null),
         ),
@@ -279,96 +254,12 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  Widget _buildWideLayout(List<HelpTopic> topics, HelpTopic selectedTopic) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 320,
-          child: Card(
-            child: ListView.separated(
-              padding: const EdgeInsets.all(12),
-              itemCount: topics.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                final topic = topics[index];
-                final selected = topic.id == selectedTopic.id;
-                return InkWell(
-                  onTap: () => setState(() => _selectedTopicId = topic.id),
-                  borderRadius: BorderRadius.circular(14),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 160),
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: selected
-                          ? Colors.amber.withOpacity(0.16)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: selected
-                            ? Colors.amber.withOpacity(0.40)
-                            : Colors.white12,
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(topic.icon, color: selected ? Colors.amber : null),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                topic.title(_isNl),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                topic.category(_isNl),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.amber.shade200,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                topic.summary(_isNl),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Colors.white70),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: _HelpTopicDetail(
-                topic: selectedTopic,
-                isNl: _isNl,
-                titleHow: _tr('Hoe werkt dit?', 'How does this work?'),
-                titleTips: _tr('Handige tips', 'Helpful tips'),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCompactTopicDetail(HelpTopic topic) {
+  Widget _buildCompactTopicDetail(
+    BuildContext context,
+    AppLocalizations l10n,
+    String lang,
+    HelpTopic topic,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -390,12 +281,12 @@ class _HelpScreenState extends State<HelpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    topic.title(_isNl),
+                    topic.title(lang),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    topic.category(_isNl),
+                    topic.category(lang),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.amber.shade200,
@@ -403,7 +294,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    topic.summary(_isNl),
+                    topic.summary(lang),
                     style: const TextStyle(color: Colors.white70),
                   ),
                 ],
@@ -413,21 +304,21 @@ class _HelpScreenState extends State<HelpScreen> {
         ),
         const SizedBox(height: 14),
         _DetailCard(
-          title: _tr('Hoe werkt dit?', 'How does this work?'),
+          title: l10n.helpUiHowItWorks,
           icon: Icons.route,
-          bullets: topic.howItWorks(_isNl),
+          bullets: topic.howItWorks(lang),
         ),
         const SizedBox(height: 12),
         _DetailCard(
-          title: _tr('Handige tips', 'Helpful tips'),
+          title: l10n.helpUiTips,
           icon: Icons.lightbulb,
-          bullets: topic.tips(_isNl),
+          bullets: topic.tips(lang),
         ),
       ],
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(AppLocalizations l10n) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -435,115 +326,17 @@ class _HelpScreenState extends State<HelpScreen> {
           const Icon(Icons.search_off, size: 48, color: Colors.white54),
           const SizedBox(height: 12),
           Text(
-            _tr('Geen onderdelen gevonden', 'No modules found'),
+            l10n.helpUiNoResultsTitle,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 8),
           Text(
-            _tr(
-              'Pas je zoekterm of categorie aan om weer resultaten te zien.',
-              'Adjust your search term or category to see results again.',
-            ),
+            l10n.helpUiNoResultsBody,
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white70),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _HelpTopicDetail extends StatelessWidget {
-  const _HelpTopicDetail({
-    required this.topic,
-    required this.isNl,
-    required this.titleHow,
-    required this.titleTips,
-    this.closeLabel,
-  });
-
-  final HelpTopic topic;
-  final bool isNl;
-  final String titleHow;
-  final String titleTips;
-  final String? closeLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (closeLabel != null)
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton.icon(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.close),
-              label: Text(closeLabel!),
-            ),
-          ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.14),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(topic.icon, color: Colors.amber),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    topic.category(isNl),
-                    style: TextStyle(
-                      color: Colors.amber.shade200,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    topic.title(isNl),
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Text(
-          topic.summary(isNl),
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(color: Colors.white70, height: 1.4),
-        ),
-        const SizedBox(height: 18),
-        Expanded(
-          child: ListView(
-            children: [
-              _DetailCard(
-                title: titleHow,
-                icon: Icons.route,
-                bullets: topic.howItWorks(isNl),
-              ),
-              const SizedBox(height: 12),
-              _DetailCard(
-                title: titleTips,
-                icon: Icons.lightbulb,
-                bullets: topic.tips(isNl),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

@@ -1616,6 +1616,54 @@ abstract class AppLocalizations {
   /// **'Help & Guide'**
   String get helpAndGuide;
 
+  /// No description provided for @helpUiManualTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Game manual'**
+  String get helpUiManualTitle;
+
+  /// No description provided for @helpUiSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by module, explanation or tip'**
+  String get helpUiSearchHint;
+
+  /// No description provided for @helpUiTopicLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic'**
+  String get helpUiTopicLabel;
+
+  /// No description provided for @helpUiAllChip.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get helpUiAllChip;
+
+  /// No description provided for @helpUiNoResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No topics found'**
+  String get helpUiNoResultsTitle;
+
+  /// No description provided for @helpUiNoResultsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Change your search or category to see results again.'**
+  String get helpUiNoResultsBody;
+
+  /// No description provided for @helpUiHowItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get helpUiHowItWorks;
+
+  /// No description provided for @helpUiTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get helpUiTips;
+
   /// No description provided for @quickActions.
   ///
   /// In en, this message translates to:

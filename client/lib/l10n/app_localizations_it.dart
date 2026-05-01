@@ -832,6 +832,31 @@ class AppLocalizationsIt extends AppLocalizations {
   String get helpAndGuide => 'Aiuto e guida';
 
   @override
+  String get helpUiManualTitle => 'Manuale del gioco';
+
+  @override
+  String get helpUiSearchHint => 'Cerca per modulo, spiegazione o suggerimento';
+
+  @override
+  String get helpUiTopicLabel => 'Argomento';
+
+  @override
+  String get helpUiAllChip => 'Tutto';
+
+  @override
+  String get helpUiNoResultsTitle => 'Nessun argomento trovato';
+
+  @override
+  String get helpUiNoResultsBody =>
+      'Modifica la ricerca o la categoria per visualizzare nuovamente i risultati.';
+
+  @override
+  String get helpUiHowItWorks => 'Come funziona';
+
+  @override
+  String get helpUiTips => 'Suggerimenti';
+
+  @override
   String get quickActions => 'Azioni rapide';
 
   @override

@@ -831,6 +831,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get helpAndGuide => 'Hulp & gids';
 
   @override
+  String get helpUiManualTitle => 'Handleiding voor het spel';
+
+  @override
+  String get helpUiSearchHint => 'Zoek op module, uitleg of tip';
+
+  @override
+  String get helpUiTopicLabel => 'Onderwerp';
+
+  @override
+  String get helpUiAllChip => 'Alle';
+
+  @override
+  String get helpUiNoResultsTitle => 'Geen onderwerpen gevonden';
+
+  @override
+  String get helpUiNoResultsBody =>
+      'Wijzig uw zoekopdracht of categorie om opnieuw resultaten te zien.';
+
+  @override
+  String get helpUiHowItWorks => 'Hoe het werkt';
+
+  @override
+  String get helpUiTips => 'Tips';
+
+  @override
   String get quickActions => 'Snelle acties';
 
   @override

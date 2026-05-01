@@ -31,26 +31,35 @@ class HelpTopic {
   final List<String> tipsEn;
   final String protocolPath;
 
-  String category(bool isNl) => isNl ? categoryNl : categoryEn;
-  String title(bool isNl) => isNl ? titleNl : titleEn;
-  String summary(bool isNl) => isNl ? summaryNl : summaryEn;
-  List<String> howItWorks(bool isNl) => isNl ? howNl : howEn;
-  List<String> tips(bool isNl) => isNl ? tipsNl : tipsEn;
+  /// Topic body is available in Dutch (`nl`) and English (`en`); other locales use English.
+  static bool useDutchCopy(String languageCode) =>
+      languageCode.toLowerCase() == 'nl';
 
-  String searchableText(bool isNl) {
+  String category(String languageCode) =>
+      useDutchCopy(languageCode) ? categoryNl : categoryEn;
+  String title(String languageCode) =>
+      useDutchCopy(languageCode) ? titleNl : titleEn;
+  String summary(String languageCode) =>
+      useDutchCopy(languageCode) ? summaryNl : summaryEn;
+  List<String> howItWorks(String languageCode) =>
+      useDutchCopy(languageCode) ? howNl : howEn;
+  List<String> tips(String languageCode) =>
+      useDutchCopy(languageCode) ? tipsNl : tipsEn;
+
+  String searchableText(String languageCode) {
     final buffer = StringBuffer()
-      ..write(title(isNl))
+      ..write(title(languageCode))
       ..write(' ')
-      ..write(summary(isNl))
+      ..write(summary(languageCode))
       ..write(' ')
-      ..write(category(isNl));
+      ..write(category(languageCode));
 
-    for (final item in howItWorks(isNl)) {
+    for (final item in howItWorks(languageCode)) {
       buffer
         ..write(' ')
         ..write(item);
     }
-    for (final item in tips(isNl)) {
+    for (final item in tips(languageCode)) {
       buffer
         ..write(' ')
         ..write(item);

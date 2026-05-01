@@ -7955,5 +7955,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "helpUiManualTitle": "Manual de juego",
+  "helpUiSearchHint": "Buscar por módulo, explicación o consejo",
+  "helpUiTopicLabel": "Tema",
+  "helpUiAllChip": "Toda",
+  "helpUiNoResultsTitle": "No se encontraron temas",
+  "helpUiNoResultsBody": "Cambie su búsqueda o categoría para ver los resultados nuevamente.",
+  "helpUiHowItWorks": "Cómo funciona",
+  "helpUiTips": "Consejos"
 }

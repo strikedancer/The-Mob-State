@@ -7955,5 +7955,13 @@
         "type": "String"
       }
     }
-  }
+  },
+  "helpUiManualTitle": "Handleiding voor het spel",
+  "helpUiSearchHint": "Zoek op module, uitleg of tip",
+  "helpUiTopicLabel": "Onderwerp",
+  "helpUiAllChip": "Alle",
+  "helpUiNoResultsTitle": "Geen onderwerpen gevonden",
+  "helpUiNoResultsBody": "Wijzig uw zoekopdracht of categorie om opnieuw resultaten te zien.",
+  "helpUiHowItWorks": "Hoe het werkt",
+  "helpUiTips": "Tips"
 }
