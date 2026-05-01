@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../config/app_config.dart';
+import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
 import '../services/drug_service.dart';
+import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 import '../widgets/education_requirements_dialog.dart';
@@ -23,9 +25,6 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
   Map<String, dynamic> _config = const {};
   List<DrugFacilityInfo> _facilities = const [];
   List<DrugProduction> _activeProductions = const [];
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   String _backgroundAsset(double width) {
     return 'assets/images/backgrounds/drug_facility_bg.png';
@@ -75,15 +74,11 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _isLoading = false);
+      final t = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Fout bij laden van faciliteiten: $e',
-              'Error while loading facilities: $e',
-            ),
-          ),
+          content: Text(t.drugsFacilitiesErrorLoading('$e')),
           backgroundColor: Colors.red,
         ),
       );
@@ -276,27 +271,30 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     }
   }
 
-  String _facilityNameById(int? facilityId) {
+  String _facilityNameById(AppLocalizations t, int? facilityId) {
     if (facilityId == null) {
-      return _tr('Onbekende faciliteit', 'Unknown facility');
+      return t.drugsFacUnknownFacility;
     }
     for (final facility in _facilities) {
       if (facility.id == facilityId) {
         return facility.displayName;
       }
     }
-    return _tr('Onbekende faciliteit', 'Unknown facility');
+    return t.drugsFacUnknownFacility;
   }
 
   Future<void> _buyFacility(String facilityType) async {
+    final t = AppLocalizations.of(context)!;
     final result = await _drugService.buyFacility(facilityType);
     if (!mounted) return;
+    final raw = result['message'] as String?;
+    final msg = raw != null && raw.isNotEmpty
+        ? localizeDrugClientMessage(t, raw)
+        : t.drugsFacUnknownMessage;
     showTopRightFromSnackBar(
       context,
       SnackBar(
-        content: Text(
-          result['message'] ?? _tr('Onbekende melding', 'Unknown message'),
-        ),
+        content: Text(msg),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
     );
@@ -306,6 +304,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
   }
 
   Future<void> _upgradeSlots(DrugFacilityInfo facility) async {
+    final t = AppLocalizations.of(context)!;
     final result = await _drugService.upgradeSlots(facility.id);
     if (!mounted) return;
 
@@ -317,25 +316,21 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
             ))) {
       await EducationRequirementsDialog.show(
         context,
-        title: _tr(
-          '🔒 Drugs upgrade vergrendeld',
-          '🔒 Drug upgrade locked',
-        ),
-        subtitle: _tr(
-          'Je hebt eerst de juiste Narcotica-opleidingen en certificaten nodig.',
-          'You first need the right Narcotics education levels and certifications.',
-        ),
+        title: t.drugsFacUpgradeLockedTitle,
+        subtitle: t.drugsFacUpgradeLockedBody,
         missingRequirements: (result['missing'] as List?) ?? const [],
       );
       return;
     }
 
+    final raw = result['message'] as String?;
+    final msg = raw != null && raw.isNotEmpty
+        ? localizeDrugClientMessage(t, raw)
+        : t.drugsFacUnknownMessage;
     showTopRightFromSnackBar(
       context,
       SnackBar(
-        content: Text(
-          result['message'] ?? _tr('Onbekende melding', 'Unknown message'),
-        ),
+        content: Text(msg),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
     );
@@ -348,6 +343,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
     DrugFacilityInfo facility,
     String upgradeType,
   ) async {
+    final t = AppLocalizations.of(context)!;
     final result = await _drugService.upgradeEquipment(
       facility.id,
       upgradeType,
@@ -362,25 +358,21 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
             ))) {
       await EducationRequirementsDialog.show(
         context,
-        title: _tr(
-          '🔒 Apparatuur upgrade vergrendeld',
-          '🔒 Equipment upgrade locked',
-        ),
-        subtitle: _tr(
-          'Train eerst je Narcotica-track om naar het volgende upgrade-niveau te gaan.',
-          'Train your Narcotics track first to unlock the next upgrade level.',
-        ),
+        title: t.drugsFacEquipLockedTitle,
+        subtitle: t.drugsFacEquipLockedBody,
         missingRequirements: (result['missing'] as List?) ?? const [],
       );
       return;
     }
 
+    final rawEq = result['message'] as String?;
+    final msgEq = rawEq != null && rawEq.isNotEmpty
+        ? localizeDrugClientMessage(t, rawEq)
+        : t.drugsFacUnknownMessage;
     showTopRightFromSnackBar(
       context,
       SnackBar(
-        content: Text(
-          result['message'] ?? _tr('Onbekende melding', 'Unknown message'),
-        ),
+        content: Text(msgEq),
         backgroundColor: result['success'] == true ? Colors.green : Colors.red,
       ),
     );
@@ -403,6 +395,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        final t = AppLocalizations.of(context)!;
         final width = constraints.maxWidth;
         final isMobile = width < 700;
         final padding = isMobile ? 12.0 : 20.0;
@@ -411,13 +404,13 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
           appBar: widget.showAppBar
               ? AppBar(
                   backgroundColor: const Color(0xCC111111),
-                  title: Text(_tr('Drug Faciliteiten', 'Drug Facilities')),
+                  title: Text(t.drugsFacilitiesTitle),
                   actions: [
                     if (!_isLoading && _facilities.isNotEmpty)
                       _KpiChip(
                         value:
                             '${_facilities.fold(0, (s, f) => s + f.activeProductions)}/${_facilities.fold(0, (s, f) => s + f.slots)}',
-                        label: _tr('slots', 'slots'),
+                        label: t.drugsSlotsLabel,
                         icon: Icons.grid_view_rounded,
                         color: const Color(0xFF48B8FF),
                       ),
@@ -475,10 +468,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    _tr(
-                                      'Beheer je drug faciliteiten',
-                                      'Manage your drug facilities',
-                                    ),
+                                    t.drugsFacilitiesHeroTitle,
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.w800,
@@ -487,10 +477,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    _tr(
-                                      'Faciliteiten zoals kas, paddenstoelenkwekerij, drugslab, crack kitchen en darkweb storefront bepalen welke drugs je kunt produceren, hoeveel plekken je hebt en hoe sterk je kwaliteit, opbrengst en snelheid zijn.',
-                                      'Facilities such as greenhouse, mushroom farm, drug lab, crack kitchen and darkweb storefront determine which drugs you can produce, how many slots you have and how strong your quality, yield and speed are.',
-                                    ),
+                                    t.drugsFacilitiesHeroBody,
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.74),
                                     ),
@@ -510,10 +497,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      _tr(
-                                        'Huidige Producties',
-                                        'Current Productions',
-                                      ),
+                                      t.drugsFacCurrentProductions,
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w800,
@@ -552,7 +536,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                                               const SizedBox(width: 8),
                                               Expanded(
                                                 child: Text(
-                                                  '${production.drugName} • ${production.quantity}g • ${_facilityNameById(production.facilityId)}',
+                                                  '${production.drugName} • ${production.quantity}g • ${_facilityNameById(t, production.facilityId)}',
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                   ),
@@ -582,6 +566,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                                   entry.value as Map<String, dynamic>;
                               final owned = _getOwnedFacility(facilityType);
                               return _buildFacilityCard(
+                                t,
                                 facilityType,
                                 config,
                                 owned,
@@ -599,6 +584,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
   }
 
   Widget _buildFacilityCard(
+    AppLocalizations t,
     String facilityType,
     Map<String, dynamic> config,
     DrugFacilityInfo? owned,
@@ -667,7 +653,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                 if (owned == null)
                   ElevatedButton(
                     onPressed: () => _buyFacility(facilityType),
-                    child: Text(_tr('Kopen', 'Buy')),
+                    child: Text(t.drugsFacBuy),
                   )
                 else
                   Container(
@@ -680,7 +666,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
-                      _tr('In bezit', 'Owned'),
+                      t.drugsFacOwned,
                       style: TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.bold,
@@ -695,11 +681,11 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
               runSpacing: 8,
               children: [
                 _buildStatChip(
-                  _tr('Prijs', 'Price'),
+                  t.drugsFacPrice,
                   '€${purchasePrice.toString()}',
                 ),
-                _buildStatChip(_tr('Rank', 'Rank'), '$requiredRank'),
-                _buildStatChip(_tr('Drugs', 'Drugs'), drugTypes.join(', ')),
+                _buildStatChip(t.drugsFacRank, '$requiredRank'),
+                _buildStatChip(t.drugsFacDrugTypes, drugTypes.join(', ')),
               ],
             ),
             if (owned != null) ...[
@@ -708,28 +694,28 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                 children: [
                   Expanded(
                     child: _buildBonusCard(
-                      _tr('Plekken', 'Slots'),
+                      t.drugsFacSlots,
                       '${owned.activeProductions}/${owned.slots}',
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: _buildBonusCard(
-                      _tr('Kwaliteit', 'Quality'),
+                      t.drugsFacQuality,
                       '+${(owned.qualityBonus * 100).round()}%',
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: _buildBonusCard(
-                      _tr('Opbrengst', 'Yield'),
+                      t.drugsFacYield,
                       '+${(owned.yieldBonus * 100).round()}%',
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: _buildBonusCard(
-                      _tr('Snelheid', 'Speed'),
+                      t.drugsFacSpeed,
                       '-${(owned.speedBonus * 100).round()}%',
                     ),
                   ),
@@ -746,10 +732,9 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                       icon: const Icon(Icons.add_box_outlined),
                       label: Text(
                         owned.isMaxSlots
-                            ? _tr('Max slots', 'Max slots')
-                            : _tr(
-                                'Upgrade slots (€${owned.nextSlotCost})',
-                                'Upgrade slots (€${owned.nextSlotCost})',
+                            ? t.drugsFacMaxSlots
+                            : t.drugsFacUpgradeSlots(
+                                '${owned.nextSlotCost}',
                               ),
                       ),
                     ),
@@ -758,7 +743,7 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                _tr('Apparatuur upgrades', 'Equipment upgrades'),
+                t.drugsFacEquipmentUpgrades,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -785,15 +770,18 @@ class _DrugFacilityScreenState extends State<DrugFacilityScreen> {
                     ),
                   ),
                   title: Text((upgrade['name'] ?? upgradeId).toString()),
-                  subtitle: Text('${_tr('Level', 'Level')} $current'),
+                  subtitle: Text('${t.level} $current'),
                   trailing: ElevatedButton(
                     onPressed: nextLevel == null
                         ? null
                         : () => _upgradeEquipment(owned, upgradeId),
                     child: Text(
                       nextLevel == null
-                          ? _tr('Max', 'Max')
-                          : '${_tr('Lvl', 'Lvl')} ${nextLevel['level']} (€${nextLevel['price']})',
+                          ? t.drugsFacMax
+                          : t.drugsFacLvlPrice(
+                              '${nextLevel['level']}',
+                              '${nextLevel['price']}',
+                            ),
                     ),
                   ),
                 );

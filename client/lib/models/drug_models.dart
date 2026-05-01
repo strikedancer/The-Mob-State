@@ -393,7 +393,7 @@ class DrugHeatInfo {
   factory DrugHeatInfo.fromJson(Map<String, dynamic> json) {
     return DrugHeatInfo(
       heat: json['heat'] ?? 0,
-      level: json['level'] ?? 'Laag',
+      level: json['level'] ?? 'Low',
       raidChance: (json['raidChance'] ?? 0.0).toDouble(),
     );
   }
@@ -451,7 +451,7 @@ class DrugStats {
       totalSlots: json['totalSlots'] ?? 0,
       efficiency: json['efficiency'] ?? 0,
       heat: json['heat'] ?? 0,
-      heatLevel: json['heatLevel'] ?? 'Laag',
+      heatLevel: json['heatLevel'] ?? 'Low',
       raidChance: (json['raidChance'] ?? 0.0).toDouble(),
       isVip: json['isVip'] ?? false,
       autoCollectEnabled: json['autoCollectEnabled'] ?? false,

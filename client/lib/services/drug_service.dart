@@ -340,9 +340,9 @@ class DrugService {
         final data = json.decode(response.body);
         if (data['success'] == true) return DrugHeatInfo.fromJson(data);
       }
-      return DrugHeatInfo(heat: 0, level: 'Laag', raidChance: 0);
+      return DrugHeatInfo(heat: 0, level: 'Low', raidChance: 0);
     } catch (e) {
-      return DrugHeatInfo(heat: 0, level: 'Laag', raidChance: 0);
+      return DrugHeatInfo(heat: 0, level: 'Low', raidChance: 0);
     }
   }
 

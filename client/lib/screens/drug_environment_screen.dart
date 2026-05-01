@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
 import '../providers/auth_provider.dart';
 import '../services/drug_service.dart';
+import '../utils/drug_localizations.dart';
 import 'drug_facility_screen.dart';
 import 'drug_inventory_screen.dart';
 import 'drug_production_screen.dart';
@@ -139,19 +141,17 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
     return result;
   }
 
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
-
-  String _webSubviewTitle(_DrugWebSubview section) {
+  String _webSubviewTitle(BuildContext context, _DrugWebSubview section) {
+    final t = AppLocalizations.of(context)!;
     switch (section) {
       case _DrugWebSubview.hub:
-        return _tr('Drugs Omgeving', 'Drug Environment');
+        return t.drugsHubTitle;
       case _DrugWebSubview.production:
-        return _tr('Drug Productie', 'Drug Production');
+        return t.drugsProdTitle;
       case _DrugWebSubview.facilities:
-        return _tr('Drug Faciliteiten', 'Drug Facilities');
+        return t.drugsFacilitiesTitle;
       case _DrugWebSubview.inventory:
-        return _tr('Drug Voorraad', 'Drug Inventory');
+        return t.drugsInvTitle;
     }
   }
 
@@ -167,7 +167,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
               _loadDashboardStats();
             },
           ),
-          title: Text(_webSubviewTitle(_webSubview)),
+          title: Text(_webSubviewTitle(context, _webSubview)),
         ),
         body: switch (_webSubview) {
           _DrugWebSubview.production => DrugProductionScreen(
@@ -201,10 +201,11 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
         final usedSlots = _usedSlots();
         final totalSlots = _totalSlots();
         final inventoryGrams = _totalInventoryGrams();
+        final t = AppLocalizations.of(context)!;
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(_tr('Drugs Omgeving', 'Drug Environment')),
+            title: Text(t.drugsHubTitle),
           ),
           body: Stack(
             children: [
@@ -302,31 +303,22 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                 runSpacing: 8,
                                 children: [
                                   _TopTag(
-                                    label: _tr(
-                                      'Ondergrondse Operaties',
-                                      'Underground Operations',
-                                    ),
+                                    label: t.drugsTagUndergroundOps,
                                     color: const Color(0xFF35C46A),
                                   ),
                                   _TopTag(
-                                    label: _tr(
-                                      'Mobiel Geoptimaliseerd',
-                                      'Mobile Optimized',
-                                    ),
+                                    label: t.drugsTagMobileOptimized,
                                     color: const Color(0xFF48B8FF),
                                   ),
                                   _TopTag(
-                                    label: _tr(
-                                      'Kwaliteit Gedreven',
-                                      'Quality Driven',
-                                    ),
+                                    label: t.drugsTagQualityDriven,
                                     color: const Color(0xFFF2B94B),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 14),
                               Text(
-                                _tr('Drugs Imperium', 'Drug Empire'),
+                                t.drugsEmpireTitle,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: titleSize,
@@ -341,10 +333,7 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                   maxWidth: 760,
                                 ),
                                 child: Text(
-                                  _tr(
-                                    'Beheer hier productie, faciliteiten en voorraad. Materialen koop je via de Zwarte Markt, de rest draait vanuit je eigen drugsomgeving.',
-                                    'Manage production, facilities and inventory here. Buy materials on the Black Market while the rest runs in your own drug environment.',
-                                  ),
+                                  t.drugsHubIntro,
                                   style: TextStyle(
                                     color: Colors.white.withOpacity(0.78),
                                     fontSize: isMobile ? 13 : 15,
@@ -358,29 +347,20 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                 runSpacing: 10,
                                 children: [
                                   _StatPill(
-                                    label: _tr(
-                                      'Materiaalstroom',
-                                      'Material flow',
-                                    ),
-                                    value: _tr('Zwarte Markt', 'Black Market'),
+                                    label: t.drugsStatMaterialFlow,
+                                    value: t.drugsStatBlackMarket,
                                     icon: Icons.science,
                                     color: const Color(0xFF48B8FF),
                                   ),
                                   _StatPill(
-                                    label: _tr(
-                                      'Productieketen',
-                                      'Production chain',
-                                    ),
-                                    value: _tr(
-                                      'Kas + Lab + Kitchen + Darkweb',
-                                      'Greenhouse + Lab + Kitchen + Darkweb',
-                                    ),
+                                    label: t.drugsStatProductionChain,
+                                    value: t.drugsStatProductionChainValue,
                                     icon: Icons.factory_outlined,
                                     color: const Color(0xFF35C46A),
                                   ),
                                   _StatPill(
-                                    label: _tr('Verkoopmodel', 'Sales model'),
-                                    value: _tr('Per kwaliteit', 'Per quality'),
+                                    label: t.drugsStatSalesModel,
+                                    value: t.drugsStatPerQuality,
                                     icon: Icons.workspace_premium_outlined,
                                     color: const Color(0xFFF2B94B),
                                   ),
@@ -398,16 +378,13 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                   runSpacing: 12,
                                   children: [
                                     _DashboardMetricCard(
-                                      label: _tr(
-                                        'Actieve batches',
-                                        'Active batches',
-                                      ),
+                                      label: t.drugsMetricActiveBatches,
                                       value: '${_activeProductions.length}',
                                       icon: Icons.timelapse,
                                       color: const Color(0xFF35C46A),
                                     ),
                                     _DashboardMetricCard(
-                                      label: _tr('Slotgebruik', 'Slot usage'),
+                                      label: t.drugsMetricSlotUsage,
                                       value: totalSlots > 0
                                           ? '$usedSlots/$totalSlots'
                                           : '0/0',
@@ -415,38 +392,29 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                                       color: const Color(0xFF48B8FF),
                                     ),
                                     _DashboardMetricCard(
-                                      label: _tr(
-                                        'Voorraadwaarde',
-                                        'Inventory value',
-                                      ),
+                                      label: t.drugsMetricInventoryValue,
                                       value:
                                           '€${_formatCompactMoney(inventoryValue)}',
                                       icon: Icons.euro,
                                       color: const Color(0xFFF2B94B),
                                     ),
                                     _DashboardMetricCard(
-                                      label: _tr(
-                                        'Voorraad gram',
-                                        'Inventory grams',
-                                      ),
+                                      label: t.drugsMetricInventoryGrams,
                                       value: '$inventoryGrams g',
                                       icon: Icons.inventory_2,
                                       color: const Color(0xFFC16CFF),
                                     ),
                                     _DashboardMetricCard(
-                                      label: _tr('Efficiëntie', 'Efficiency'),
+                                      label: t.drugsMetricEfficiency,
                                       value: '${_efficiencyScore().round()}%',
                                       icon: Icons.auto_graph,
                                       color: const Color(0xFFFF6B6B),
                                     ),
                                     if (_heatInfo != null)
                                       _DashboardMetricCard(
-                                        label: _tr(
-                                          'Politie Hitte',
-                                          'Police Heat',
-                                        ),
+                                        label: t.drugsMetricPoliceHeat,
                                         value:
-                                            '${_heatInfo!.heat} – ${_heatInfo!.level}',
+                                            '${_heatInfo!.heat} – ${drugHeatLevelLabel(t, _heatInfo!.level)}',
                                         icon: Icons.local_fire_department,
                                         color: _heatInfo!.color,
                                       ),
@@ -466,11 +434,8 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                       ),
                       const SizedBox(height: 18),
                       _SectionLabel(
-                        title: _tr('Operaties', 'Operations'),
-                        subtitle: _tr(
-                          'Kies een tak van je drugsimperium',
-                          'Choose a branch of your drug empire',
-                        ),
+                        title: t.drugsSectionOperations,
+                        subtitle: t.drugsSectionOperationsSubtitle,
                       ),
                       const SizedBox(height: 12),
                       GridView.count(
@@ -485,12 +450,9 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                         children: [
                           _DrugEntryCard(
                             icon: Icons.factory_outlined,
-                            eyebrow: _tr('Infrastructuur', 'Infrastructure'),
-                            title: _tr('Faciliteiten', 'Facilities'),
-                            subtitle: _tr(
-                              'Koop en upgrade kas, drugslab, crack kitchen en darkweb storefront voor meer slots, snelheid en kwaliteit.',
-                              'Buy and upgrade greenhouse, drug lab, crack kitchen and darkweb storefront for more slots, speed and quality.',
-                            ),
+                            eyebrow: t.drugsCardFacilitiesEyebrow,
+                            title: t.drugsCardFacilitiesTitle,
+                            subtitle: t.drugsCardFacilitiesBody,
                             color: const Color(0xFF48B8FF),
                             duration: const Duration(milliseconds: 680),
                             onTap: () => _openScreen(
@@ -501,12 +463,9 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                           ),
                           _DrugEntryCard(
                             icon: Icons.precision_manufacturing,
-                            eyebrow: _tr('Pijplijn', 'Pipeline'),
-                            title: _tr('Productie', 'Production'),
-                            subtitle: _tr(
-                              'Start batches, volg timers en verzamel output met kwaliteitsrollen.',
-                              'Start batches, track timers and collect output with quality rolls.',
-                            ),
+                            eyebrow: t.drugsCardProductionEyebrow,
+                            title: t.drugsCardProductionTitle,
+                            subtitle: t.drugsCardProductionBody,
                             color: const Color(0xFF35C46A),
                             duration: const Duration(milliseconds: 520),
                             onTap: () => _openScreen(
@@ -524,12 +483,9 @@ class _DrugEnvironmentScreenState extends State<DrugEnvironmentScreen> {
                           ),
                           _DrugEntryCard(
                             icon: Icons.inventory_2,
-                            eyebrow: _tr('Distributie', 'Distribution'),
-                            title: _tr('Voorraad', 'Inventory'),
-                            subtitle: _tr(
-                              'Bekijk stacks per kwaliteit en verkoop op maximale marktwaarde.',
-                              'View stacks by quality and sell at the best market value.',
-                            ),
+                            eyebrow: t.drugsCardInventoryEyebrow,
+                            title: t.drugsCardInventoryTitle,
+                            subtitle: t.drugsCardInventoryBody,
                             color: const Color(0xFFF2B94B),
                             duration: const Duration(milliseconds: 840),
                             onTap: () => _openScreen(
@@ -868,14 +824,6 @@ final _kQualityColors = <String, Color>{
   'C': const Color(0xFF888888),
   'D': const Color(0xFFFF6B6B),
 };
-final _kQualityLabels = <String, ({String nl, String en})>{
-  'S': (nl: 'Superieur', en: 'Superior'),
-  'A': (nl: 'Hoog', en: 'High'),
-  'B': (nl: 'Normaal+', en: 'Standard+'),
-  'C': (nl: 'Normaal', en: 'Standard'),
-  'D': (nl: 'Laag', en: 'Low'),
-};
-
 class _QualityDistributionSection extends StatelessWidget {
   final List<DrugInventory> inventory;
   final Map<String, int> gramsByGrade;
@@ -885,11 +833,28 @@ class _QualityDistributionSection extends StatelessWidget {
     required this.gramsByGrade,
   });
 
+  String _gradeLabel(AppLocalizations t, String grade) {
+    switch (grade) {
+      case 'S':
+        return t.drugsQualityGradeSuperior;
+      case 'A':
+        return t.drugsQualityGradeHigh;
+      case 'B':
+        return t.drugsQualityGradeStandardPlus;
+      case 'C':
+        return t.drugsQualityGradeStandard;
+      case 'D':
+        return t.drugsQualityGradeLow;
+      default:
+        return grade;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final totalGrams = gramsByGrade.values.fold(0, (a, b) => a + b);
     if (totalGrams == 0) return const SizedBox.shrink();
-    final isNl = Localizations.localeOf(context).languageCode == 'nl';
 
     final presentGrades = _kQualityOrder
         .where((g) => gramsByGrade.containsKey(g))
@@ -899,7 +864,7 @@ class _QualityDistributionSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isNl ? 'Kwaliteitsverdeling' : 'Quality distribution',
+          t.drugsQualityDistribution,
           style: TextStyle(
             color: Colors.white.withOpacity(0.68),
             fontSize: 12,
@@ -933,10 +898,7 @@ class _QualityDistributionSection extends StatelessWidget {
           children: presentGrades.map((grade) {
             final grams = gramsByGrade[grade]!;
             final color = _kQualityColors[grade] ?? Colors.grey;
-            final labelPack = _kQualityLabels[grade];
-            final label = labelPack == null
-                ? grade
-                : (isNl ? labelPack.nl : labelPack.en);
+            final label = _gradeLabel(t, grade);
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(

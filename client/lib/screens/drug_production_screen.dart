@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
 import '../services/drug_service.dart';
 import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'drug_facility_screen.dart';
+import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 
@@ -33,9 +35,6 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   bool _togglingAutoCollect = false;
   bool _showIncidentLegend = true;
   String? _vipQuickBuyingDrugId;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   String _backgroundAsset(double width) {
     return 'assets/images/backgrounds/drug_production_bg.png';
@@ -169,10 +168,11 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
+        final t = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_tr('Fout bij laden: $e', 'Error while loading: $e')),
+            content: Text(t.drugsClientErrorLoading('$e')),
           ),
         );
       }
@@ -211,20 +211,15 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     return (drug.productionTime * multiplier).round();
   }
 
-  String _formatMinutes(int minutes) {
-    final hourWord = _isNl ? 'uur' : 'hr';
-    if (minutes < 60) return '$minutes min';
-    final hours = minutes ~/ 60;
-    final mins = minutes % 60;
-    if (mins == 0) return '$hours $hourWord';
-    return '$hours $hourWord $mins min';
-  }
-
   String _getAdjustedTimeFormatted(
     DrugDefinition drug,
     DrugFacilityInfo? facility,
+    AppLocalizations t,
   ) {
-    return _formatMinutes(_getAdjustedProductionMinutes(drug, facility));
+    return formatDrugDuration(
+      t,
+      _getAdjustedProductionMinutes(drug, facility),
+    );
   }
 
   String _getAdjustedYieldFormatted(
@@ -237,18 +232,18 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     return '$minYield-$maxYield';
   }
 
-  String _getFacilityDisplayName(String facilityType) {
+  String _getFacilityDisplayName(String facilityType, AppLocalizations t) {
     switch (facilityType) {
       case 'greenhouse':
-        return _tr('Kas', 'Greenhouse');
+        return t.drugsFacilityGreenhouse;
       case 'crack_kitchen':
-        return _tr('Crack Kitchen', 'Crack Kitchen');
+        return t.drugsFacilityCrackKitchen;
       case 'darkweb_storefront':
-        return _tr('Darkweb Storefront', 'Darkweb Storefront');
+        return t.drugsFacilityDarkweb;
       case 'mushroom_farm':
-        return _tr('Paddenstoelenkweekhuis', 'Mushroom Farm');
+        return t.drugsFacilityMushroomFarm;
       default:
-        return _tr('Drugslab', 'Drug Lab');
+        return t.drugsFacilityDrugLab;
     }
   }
 
@@ -318,7 +313,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     return true;
   }
 
-  String _getMissingMaterials(DrugDefinition drug) {
+  String _getMissingMaterials(DrugDefinition drug, AppLocalizations t) {
     List<String> missing = [];
 
     for (final entry in drug.materials.entries) {
@@ -346,7 +341,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
     return missing.isEmpty
         ? ''
-        : '${_tr('Tekort', 'Missing')}: ${missing.join(', ')}';
+        : '${t.drugsProdMissingPrefix}: ${missing.join(', ')}';
   }
 
   List<_MissingMaterialLine> _getMissingMaterialLines(DrugDefinition drug) {
@@ -396,18 +391,14 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
   Future<void> _handleVipQuickBuyMaterials(DrugDefinition drug) async {
     if (_stats?.isVip != true) return;
+    final t = AppLocalizations.of(context)!;
 
     final missingLines = _getMissingMaterialLines(drug);
     if (missingLines.isEmpty) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Je hebt al genoeg materialen voor ${drug.displayName}',
-              'You already have enough materials for ${drug.displayName}',
-            ),
-          ),
+          content: Text(t.drugsVipAlreadyEnough(drug.displayName)),
           backgroundColor: Colors.orange,
         ),
       );
@@ -422,7 +413,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text(_tr('VIP snelle aankoop', 'VIP quick purchase')),
+          title: Text(t.drugsVipQuickBuyTitle),
           content: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520, maxHeight: 420),
             child: SingleChildScrollView(
@@ -431,10 +422,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _tr(
-                      'Koop in één klik alle ontbrekende materialen voor ${drug.displayName}?',
-                      'Buy all missing materials for ${drug.displayName} in one click?',
-                    ),
+                    t.drugsVipBuyPrompt(drug.displayName),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
@@ -448,7 +436,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                   ),
                   const Divider(height: 18),
                   Text(
-                    '${_tr('Totaal', 'Total')}: €${totalCost.toString()}',
+                    t.drugsVipTotal(totalCost.toString()),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -458,12 +446,12 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(_tr('Annuleren', 'Cancel')),
+              child: Text(t.cancel),
             ),
             ElevatedButton.icon(
               onPressed: () => Navigator.pop(dialogContext, true),
               icon: const Icon(Icons.flash_on),
-              label: Text(_tr('Kopen', 'Buy')),
+              label: Text(t.drugsFacBuy),
             ),
           ],
         );
@@ -486,8 +474,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
           content: Text(
             (result['message'] as String?) ??
                 (success
-                    ? _tr('Aankoop voltooid', 'Purchase completed')
-                    : _tr('Aankoop mislukt', 'Purchase failed')),
+                    ? t.drugsPurchaseCompleted
+                    : t.drugsPurchaseFailed),
           ),
           backgroundColor: success ? Colors.green : Colors.red,
         ),
@@ -506,6 +494,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
   Future<void> _startProduction(DrugDefinition drug) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final t = AppLocalizations.of(context)!;
 
     if (authProvider.currentPlayer!.rank < drug.requiredRank) {
       if (mounted) {
@@ -513,10 +502,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                'Je hebt rank ${drug.requiredRank} nodig',
-                'You need rank ${drug.requiredRank}',
-              ),
+              t.drugsProdNeedRank('${drug.requiredRank}'),
             ),
             backgroundColor: Colors.red,
           ),
@@ -530,7 +516,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_getMissingMaterials(drug)),
+            content: Text(_getMissingMaterials(drug, t)),
             backgroundColor: Colors.red,
           ),
         );
@@ -538,37 +524,28 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
       return;
     }
 
+    final facility = _getFacilityForDrug(drug.id);
+    final timeStr = _getAdjustedTimeFormatted(drug, facility, t);
+    final yieldStr = _getAdjustedYieldFormatted(drug, facility);
+
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          Localizations.localeOf(context).languageCode == 'nl'
-              ? 'Weet je het zeker?'
-              : 'Are you sure?',
-        ),
+      builder: (ctx) => AlertDialog(
+        title: Text(t.drugsProdConfirmTitle),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              Localizations.localeOf(context).languageCode == 'nl'
-                  ? 'Start ${drug.displayName} productie?'
-                  : 'Start ${drug.displayName} production?',
+              t.drugsProdConfirmBody(drug.displayName),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text(
-              '${_tr('Tijd', 'Time')}: ${_getAdjustedTimeFormatted(drug, _getFacilityForDrug(drug.id))}',
-            ),
-            Text(
-              '${_tr('Opbrengst', 'Yield')}: ${_getAdjustedYieldFormatted(drug, _getFacilityForDrug(drug.id))} ${_tr('gram', 'grams')}',
-            ),
+            Text(t.drugsProdTimeLine(timeStr)),
+            Text(t.drugsProdYieldLine(yieldStr)),
             const SizedBox(height: 10),
             Text(
-              _tr(
-                'Productie kan soms tegenvallen. Betere upgrades verlagen het risico, hoge drug heat verhoogt het risico.',
-                'Production can sometimes suffer setbacks. Better upgrades lower the risk, high drug heat increases it.',
-              ),
+              t.drugsProdRiskNote,
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey[700],
@@ -577,7 +554,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              _tr('Benodigde materialen:', 'Required materials:'),
+              t.drugsProdRequiredMaterialsHeader,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             ...drug.materials.entries.map((entry) {
@@ -588,13 +565,13 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(t.cancel),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Navigator.pop(ctx, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(_tr('Start Productie', 'Start Production')),
+            child: Text(t.drugsProdStartProductionButton),
           ),
         ],
       ),
@@ -615,13 +592,15 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
         );
         _loadData();
       } else {
+        final loc = AppLocalizations.of(context)!;
+        final raw = result['message'] as String?;
+        final msg = raw != null && raw.isNotEmpty
+            ? localizeDrugClientMessage(loc, raw)
+            : loc.drugsProdFailed;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              result['message'] ??
-                  _tr('Productie mislukt', 'Production failed'),
-            ),
+            content: Text(msg),
             backgroundColor: Colors.red,
           ),
         );
@@ -647,12 +626,15 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
           ),
         );
       } else {
+        final loc = AppLocalizations.of(context)!;
+        final raw = result['message'] as String?;
+        final msg = raw != null && raw.isNotEmpty
+            ? localizeDrugClientMessage(loc, raw)
+            : loc.drugsProdCollectFailed;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              result['message'] ?? _tr('Collecteren mislukt', 'Collect failed'),
-            ),
+            content: Text(msg),
             backgroundColor: Colors.red,
           ),
         );
@@ -720,6 +702,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        final t = AppLocalizations.of(context)!;
         final width = constraints.maxWidth;
         final isMobile = width < 700;
         final padding = isMobile ? 12.0 : 20.0;
@@ -727,14 +710,14 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
         return Scaffold(
           appBar: AppBar(
             backgroundColor: const Color(0xCC111111),
-            title: Text(_tr('Drug Productie', 'Drug Production')),
+            title: Text(t.drugsProdTitle),
             actions: [
-              if (!_isLoading) ..._buildProductionKpis(),
+              if (!_isLoading) ..._buildProductionKpis(t),
               if (_stats?.isVip == true)
                 Tooltip(
                   message: _stats?.autoCollectEnabled == true
-                      ? _tr('Auto-ophalen aan (VIP)', 'Auto-collect on (VIP)')
-                      : _tr('Auto-ophalen uit (VIP)', 'Auto-collect off (VIP)'),
+                      ? t.drugsProdAutoCollectOn
+                      : t.drugsProdAutoCollectOff,
                   child: IconButton(
                     icon: Icon(
                       Icons.autorenew,
@@ -803,9 +786,9 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Productielijn',
-                                      style: TextStyle(
+                                    Text(
+                                      t.drugsProdLineTitle,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 24,
                                         fontWeight: FontWeight.w800,
@@ -813,10 +796,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      _tr(
-                                        'Start batches, bewaak slotcapaciteit en stuur je kwaliteit via kas- en labupgrades.',
-                                        'Start batches, monitor slot capacity and tune quality via greenhouse and lab upgrades.',
-                                      ),
+                                      t.drugsProdLineSubtitle,
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.74),
                                         fontSize: isMobile ? 13 : 14,
@@ -829,10 +809,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                               // Active Productions
                               if (_activeProductions.isNotEmpty) ...[
                                 Text(
-                                  _tr(
-                                    'Actieve Producties',
-                                    'Active Productions',
-                                  ),
+                                  t.drugsProdActiveProductions,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -874,10 +851,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: Text(
-                                            _tr(
-                                              'Incidenten legenda',
-                                              'Incident legend',
-                                            ),
+                                            t.drugsProdIncidentLegend,
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w700,
@@ -886,8 +860,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                         ),
                                         Text(
                                           _showIncidentLegend
-                                              ? _tr('Verberg', 'Hide')
-                                              : _tr('Toon', 'Show'),
+                                              ? t.drugsProdHide
+                                              : t.drugsProdShow,
                                           style: const TextStyle(
                                             color: Colors.white70,
                                             fontSize: 12,
@@ -919,27 +893,27 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                         _buildLegendItem(
                                           Icons.schedule,
                                           Colors.amberAccent,
-                                          _tr('Vertraging', 'Delay'),
+                                          t.drugsProdLegendDelay,
                                         ),
                                         _buildLegendItem(
                                           Icons.bug_report_outlined,
                                           const Color(0xFF81C784),
-                                          _tr('Besmetting', 'Contamination'),
+                                          t.drugsProdLegendContamination,
                                         ),
                                         _buildLegendItem(
                                           Icons.inventory_2_outlined,
                                           Colors.deepOrangeAccent,
-                                          _tr('Opbrengstverlies', 'Yield loss'),
+                                          t.drugsProdLegendYieldLoss,
                                         ),
                                         _buildLegendItem(
                                           Icons.science_outlined,
                                           const Color(0xFFD1C4E9),
-                                          _tr('Instabiliteit', 'Instability'),
+                                          t.drugsProdLegendInstability,
                                         ),
                                         _buildLegendItem(
                                           Icons.warning_amber_rounded,
                                           Colors.redAccent,
-                                          _tr('Combinatie', 'Combined issue'),
+                                          t.drugsProdLegendCombined,
                                         ),
                                       ],
                                     ),
@@ -1019,7 +993,9 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                   ),
                                                   const SizedBox(height: 8),
                                                   Text(
-                                                    '${_tr('Opbrengst', 'Yield')}: ${production.quantity} ${_tr('gram', 'grams')}',
+                                                    t.drugsProdYieldGrams(
+                                                      '${production.quantity}',
+                                                    ),
                                                   ),
                                                   const SizedBox(height: 6),
                                                   Container(
@@ -1181,10 +1157,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                                   Colors.white,
                                                             ),
                                                         child: Text(
-                                                          _tr(
-                                                            'Ophalen',
-                                                            'Collect',
-                                                          ),
+                                                          t.drugsProdCollect,
                                                         ),
                                                       ),
                                                     )
@@ -1241,7 +1214,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
 
                               // Available Drugs
                               Text(
-                                _tr('Beschikbare Drugs', 'Available Drugs'),
+                                t.drugsProdAvailableDrugs,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -1253,10 +1226,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                               if (_drugs.isEmpty)
                                 Center(
                                   child: Text(
-                                    _tr(
-                                      'Geen drugs beschikbaar',
-                                      'No drugs available',
-                                    ),
+                                    t.drugsProdNoDrugs,
                                     style: const TextStyle(color: Colors.white),
                                   ),
                                 )
@@ -1289,6 +1259,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                             _getAdjustedTimeFormatted(
                                               drug,
                                               facility,
+                                              t,
                                             );
                                         final adjustedYield =
                                             _getAdjustedYieldFormatted(
@@ -1363,14 +1334,10 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                       if (_stats?.isVip == true)
                                                         Tooltip(
                                                           message: hasMaterials
-                                                              ? _tr(
-                                                                  'Alle materialen aanwezig',
-                                                                  'All materials available',
-                                                                )
-                                                              : _tr(
-                                                                  'VIP: koop ontbrekende materialen in 1 klik',
-                                                                  'VIP: buy missing materials in one click',
-                                                                ),
+                                                              ? t
+                                                                    .drugsProdVipMaterialsOk
+                                                              : t
+                                                                    .drugsProdVipBuyMissing,
                                                           child: IconButton(
                                                             visualDensity:
                                                                 VisualDensity
@@ -1399,7 +1366,10 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                   ),
                                                   const SizedBox(height: 8),
                                                   Text(
-                                                    _isNl
+                                                    Localizations.localeOf(
+                                                                  context,
+                                                                ).languageCode ==
+                                                                'nl'
                                                         ? drug.description
                                                         : drug.descriptionEn,
                                                     maxLines: 2,
@@ -1412,7 +1382,10 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                   ),
                                                   const SizedBox(height: 6),
                                                   Text(
-                                                    '${_tr('Tijd', 'Time')}: $adjustedTime | ${_tr('Opbrengst', 'Yield')}: ${adjustedYield}g',
+                                                    t.drugsProdTimeYieldLine(
+                                                      adjustedTime,
+                                                      adjustedYield,
+                                                    ),
                                                     style: TextStyle(
                                                       color: Colors.grey[300],
                                                     ),
@@ -1421,8 +1394,20 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                     const SizedBox(height: 4),
                                                     Text(
                                                       hasFacility
-                                                          ? '${_getFacilityDisplayName(facilityType)}: ${facility!.activeProductions}/${facility.slots} ${_tr('plekken gebruikt', 'slots used')}'
-                                                          : '${_getFacilityDisplayName(facilityType)} ${_tr('vereist', 'required')}',
+                                                          ? t.drugsProdSlotsUsedLine(
+                                                              _getFacilityDisplayName(
+                                                                facilityType,
+                                                                t,
+                                                              ),
+                                                              '${facility!.activeProductions}',
+                                                              '${facility.slots}',
+                                                            )
+                                                          : t.drugsProdFacilityRequired(
+                                                              _getFacilityDisplayName(
+                                                                facilityType,
+                                                                t,
+                                                              ),
+                                                            ),
                                                       style: TextStyle(
                                                         color: hasFacility
                                                             ? Colors
@@ -1510,9 +1495,8 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                   const SizedBox(height: 10),
                                                   if (!hasRank)
                                                     Text(
-                                                      _tr(
-                                                        'Rank ${drug.requiredRank} vereist',
-                                                        'Rank ${drug.requiredRank} required',
+                                                      t.drugsProdRankRequired(
+                                                        '${drug.requiredRank}',
                                                       ),
                                                       style: const TextStyle(
                                                         color: Colors.redAccent,
@@ -1521,10 +1505,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                   if (hasFacility &&
                                                       !hasFreeSlot)
                                                     Text(
-                                                      _tr(
-                                                        'Geen vrije productieslot beschikbaar',
-                                                        'No free production slot available',
-                                                      ),
+                                                      t.drugsProdNoFreeSlot,
                                                       style: const TextStyle(
                                                         color:
                                                             Colors.orangeAccent,
@@ -1534,6 +1515,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                     Text(
                                                       _getMissingMaterials(
                                                         drug,
+                                                        t,
                                                       ),
                                                       maxLines: 2,
                                                       overflow:
@@ -1557,10 +1539,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                           size: 16,
                                                         ),
                                                         label: Text(
-                                                          _tr(
-                                                            'Open faciliteiten',
-                                                            'Open facilities',
-                                                          ),
+                                                          t.drugsProdOpenFacilities,
                                                         ),
                                                       ),
                                                     ),
@@ -1586,10 +1565,7 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
                                                             Colors.white54,
                                                       ),
                                                       child: Text(
-                                                        _tr(
-                                                          'Start productie',
-                                                          'Start production',
-                                                        ),
+                                                        t.drugsProdStartProduction,
                                                       ),
                                                     ),
                                                   ),
@@ -1617,15 +1593,17 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
   Future<void> _toggleAutoCollect() async {
     setState(() => _togglingAutoCollect = true);
     try {
+      final loc = AppLocalizations.of(context)!;
       final result = await _drugService.toggleAutoCollect();
       if (mounted) {
+        final raw = result['message'] as String?;
+        final msg = raw != null && raw.isNotEmpty
+            ? localizeDrugClientMessage(loc, raw)
+            : loc.drugsProdAutoCollectUpdated;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              result['message'] ??
-                  _tr('Auto-ophalen bijgewerkt', 'Auto-collect updated'),
-            ),
+            content: Text(msg),
             backgroundColor: result['success'] == true
                 ? Colors.green
                 : Colors.red,
@@ -1638,19 +1616,19 @@ class _DrugProductionScreenState extends State<DrugProductionScreen>
     }
   }
 
-  List<Widget> _buildProductionKpis() {
+  List<Widget> _buildProductionKpis(AppLocalizations t) {
     final readyCount = _activeProductions.where((p) => p.isReady).length;
     return [
       _KpiChip(
         value: '${_activeProductions.length}',
-        label: _tr('actief', 'active'),
+        label: t.drugsProdKpiActive,
         icon: Icons.timelapse,
         color: const Color(0xFF35C46A),
       ),
       if (readyCount > 0)
         _KpiChip(
           value: '$readyCount',
-          label: _tr('klaar', 'ready'),
+          label: t.drugsProdKpiReady,
           icon: Icons.check_circle_outline,
           color: Colors.amber,
         ),

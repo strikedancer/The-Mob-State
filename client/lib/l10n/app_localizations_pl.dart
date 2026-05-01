@@ -7555,186 +7555,199 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String nightclubErrorLoading(String error) {
-    return 'Error loading nightclub: $error';
+    return 'Błąd ładowania klubu nocnego: $error';
   }
 
   @override
-  String get nightclubServiceErrorStats => 'Could not load nightclub stats';
+  String get nightclubServiceErrorStats =>
+      'Nie udało się wczytać statystyk klubu nocnego';
 
   @override
-  String get nightclubServiceErrorLeaderboard => 'Could not load leaderboard';
+  String get nightclubServiceErrorLeaderboard =>
+      'Nie udało się załadować tabeli liderów';
 
   @override
-  String get nightclubServiceErrorSeason => 'Could not load season ranking';
+  String get nightclubServiceErrorSeason => 'Nie można wczytać rankingu sezonu';
 
   @override
   String nightclubErrorWithDetail(String detail) {
-    return 'Error: $detail';
+    return 'Błąd: $detail';
   }
 
   @override
-  String get nightclubResidentDjContractFailed => 'Resident DJ contract failed';
+  String get nightclubResidentDjContractFailed =>
+      'Umowa z rezydentem DJ-em nie powiodła się';
 
   @override
-  String get nightclubScheduleEventFailed => 'Failed to schedule event';
+  String get nightclubScheduleEventFailed =>
+      'Nie udało się zaplanować wydarzenia';
 
   @override
-  String get nightclubMarketingUpgradeFailed => 'Marketing upgrade failed';
+  String get nightclubMarketingUpgradeFailed =>
+      'Aktualizacja oprogramowania marketingowego nie powiodła się';
 
   @override
-  String get nightclubUpgradeFailed => 'Upgrade failed';
+  String get nightclubUpgradeFailed => 'Aktualizacja nie powiodła się';
 
   @override
-  String get nightclubIncidentResponseFailed => 'Incident response failed';
+  String get nightclubIncidentResponseFailed =>
+      'Reakcja na incydent nie powiodła się';
 
   @override
-  String get nightclubRivalActionFailed => 'Rival action failed';
+  String get nightclubRivalActionFailed => 'Akcja rywala nie powiodła się';
 
   @override
-  String get nightclubSupplierContractFailed => 'Supplier contract failed';
+  String get nightclubSupplierContractFailed =>
+      'Umowa z dostawcą nie powiodła się';
 
   @override
-  String get nightclubPromoterFailed => 'Promoter failed';
+  String get nightclubPromoterFailed => 'Promotor poniósł porażkę';
 
   @override
-  String get nightclubHeatCooldownFailed => 'Heat cooldown failed';
+  String get nightclubHeatCooldownFailed =>
+      'Nie udało się ochłodzić ogrzewania';
 
   @override
-  String get nightclubSmugglingFailed => 'Smuggling failed';
+  String get nightclubSmugglingFailed => 'Przemyt się nie powiódł';
 
   @override
-  String get nightclubCounterIntelFailed => 'Counter-intel failed';
+  String get nightclubCounterIntelFailed => 'Kontrwywiad zawiódł';
 
   @override
-  String get nightclubHospitalityStockFailed => 'Hospitality stock failed';
+  String get nightclubHospitalityStockFailed =>
+      'Zasoby hotelarskie nie powiodły się';
 
   @override
-  String get nightclubHospitalityPricingFailed => 'Hospitality pricing failed';
+  String get nightclubHospitalityPricingFailed =>
+      'Ceny usług hotelarskich nie powiodły się';
 
   @override
   String nightclubCurrentVisitorsPct(String pct) {
-    return 'Current visitors: $pct%';
+    return 'Obecni odwiedzający: $pct%';
   }
 
   @override
-  String get nightclubCommandDeckTitle => 'Nightclub Command Deck';
+  String get nightclubCommandDeckTitle => 'Talia dowodzenia klubem nocnym';
 
   @override
-  String get nightclubOpsDeckRevenueToday => 'Revenue today';
+  String get nightclubOpsDeckRevenueToday => 'Przychody dzisiaj';
 
   @override
-  String get nightclubStockValueLabel => 'Stock value';
+  String get nightclubStockValueLabel => 'Wartość zapasów';
 
   @override
-  String get nightclubCrewOccupancy => 'Crew occupancy';
+  String get nightclubCrewOccupancy => 'Obłożenie załogi';
 
   @override
-  String get nightclubOperationalRisk => 'Operational risk';
+  String get nightclubOperationalRisk => 'Ryzyko operacyjne';
 
   @override
   String nightclubIncidents24h(String count) {
-    return '$count incidents (24h)';
+    return '$count incydentów (24h)';
   }
 
   @override
-  String get nightclubActiveCrewShifts => 'Active crew shifts';
+  String get nightclubActiveCrewShifts => 'Aktywne zmiany załogi';
 
   @override
-  String get nightclubRecentCrewHistory => 'Recent crew history';
+  String get nightclubRecentCrewHistory => 'Najnowsza historia załogi';
 
   @override
-  String get nightclubBadgeVip => 'VIP';
+  String get nightclubBadgeVip => 'VIP-a';
 
   @override
   String get nightclubBadgeStandard => 'STANDARD';
 
   @override
-  String get nightclubActiveDj => 'Active DJ';
+  String get nightclubActiveDj => 'Aktywny DJ';
 
   @override
-  String get nightclubActiveDjNone => 'Active DJ: none';
+  String get nightclubActiveDjNone => 'Aktywny DJ: brak';
 
   @override
   String nightclubUntilTime(String time) {
-    return 'until $time';
+    return 'do $time';
   }
 
   @override
-  String get nightclubActiveSecurity => 'Active security';
+  String get nightclubActiveSecurity => 'Aktywne bezpieczeństwo';
 
   @override
-  String get nightclubActiveSecurityNone => 'Active security: none';
+  String get nightclubActiveSecurityNone => 'Aktywne zabezpieczenia: brak';
 
   @override
-  String get nightclubNoDjsLoaded => 'No DJs loaded. Refresh the screen.';
+  String get nightclubNoDjsLoaded =>
+      'Nie załadowano żadnych DJ-ów. Odśwież ekran.';
 
   @override
   String get nightclubNoSecurityLoaded =>
-      'No security loaded. Refresh the screen.';
+      'Brak załadowanych zabezpieczeń. Odśwież ekran.';
 
   @override
-  String get nightclubCrowdBoost => 'Crowd boost';
+  String get nightclubCrowdBoost => 'Zwiększenie tłumu';
 
   @override
-  String get nightclubCostPerHour => 'Cost';
+  String get nightclubCostPerHour => 'Koszt';
 
   @override
-  String get nightclubReputationLabel => 'Reputation';
+  String get nightclubReputationLabel => 'Reputacja';
 
   @override
-  String get nightclubSpecialtyLabel => 'Specialty';
+  String get nightclubSpecialtyLabel => 'Specjalność';
 
   @override
-  String get nightclubTheftReduction => 'Theft reduction';
+  String get nightclubTheftReduction => 'Redukcja kradzieży';
 
   @override
-  String get nightclubShiftCost => 'Shift cost';
+  String get nightclubShiftCost => 'Koszt zmiany';
 
   @override
-  String get nightclubSelectedStock => 'Selected';
+  String get nightclubSelectedStock => 'Wybrany';
 
   @override
-  String get nightclubAvailableGrams => 'Available';
+  String get nightclubAvailableGrams => 'Dostępny';
 
   @override
-  String get nightclubMaxChip => 'MAX';
+  String get nightclubMaxChip => 'MAKS';
 
   @override
-  String get nightclubStoredInNightclub => 'Stored in nightclub';
+  String get nightclubStoredInNightclub => 'Przechowywany w nocnym klubie';
 
   @override
   String nightclubCurrentStockGrams(String grams) {
-    return 'Current stock: ${grams}g';
+    return 'Aktualne zapasy: ${grams}g';
   }
 
   @override
-  String get nightclubNoStoredDrugs => 'No stored drugs yet.';
+  String get nightclubNoStoredDrugs => 'Nie ma jeszcze przechowywanych leków.';
 
   @override
   String get nightclubStockZeroSoldOut =>
-      'Current stock is 0g (everything has been sold).';
+      'Aktualny stan magazynowy to 0g (wszystko zostało sprzedane).';
 
   @override
   String nightclubQualityWithValue(String value) {
-    return 'Quality: $value';
+    return 'Jakość: $value';
   }
 
   @override
   String nightclubGramsStock(String grams) {
-    return '${grams}g stock';
+    return '${grams}g zapasów';
   }
 
   @override
-  String get nightclubOperationsLabTitle => 'Operations Lab (11 systems)';
+  String get nightclubOperationsLabTitle =>
+      'Laboratorium Operacyjne (11 systemów)';
 
   @override
-  String get nightclubSectionResidentDjContract => '1) Resident DJ contract';
+  String get nightclubSectionResidentDjContract =>
+      '1) Umowa z DJ-em-rezydentem';
 
   @override
-  String get nightclubContractDiscount => 'Contract discount';
+  String get nightclubContractDiscount => 'Rabat kontraktowy';
 
   @override
-  String get nightclubContractDuration => 'Contract duration';
+  String get nightclubContractDuration => 'Czas trwania umowy';
 
   @override
   String nightclubContractDays(int count) {
@@ -7748,34 +7761,35 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get nightclubStartResidentContract => 'Start resident contract';
+  String get nightclubStartResidentContract => 'Rozpocznij umowę rezydenta';
 
   @override
-  String get nightclubSectionEventCalendar => '2) Dynamic event calendar';
+  String get nightclubSectionEventCalendar =>
+      '2) Dynamiczny kalendarz wydarzeń';
 
   @override
-  String get nightclubRecommendedToday => 'Recommended today';
+  String get nightclubRecommendedToday => 'Polecane dzisiaj';
 
   @override
-  String get nightclubEventTemplate => 'Event template';
+  String get nightclubEventTemplate => 'Szablon wydarzenia';
 
   @override
-  String get nightclubScheduleEventFiveMin => 'Schedule event (+5 min)';
+  String get nightclubScheduleEventFiveMin => 'Zaplanuj wydarzenie (+5 min)';
 
   @override
-  String get nightclubUpcomingEvents => 'Upcoming events';
+  String get nightclubUpcomingEvents => 'Nadchodzące wydarzenia';
 
   @override
-  String get nightclubSectionUpgradeTree => '3) Upgrade tree';
+  String get nightclubSectionUpgradeTree => '3) Drzewo ulepszeń';
 
   @override
-  String get nightclubUpgradeSoundRig => 'Sound rig';
+  String get nightclubUpgradeSoundRig => 'Zestaw dźwiękowy';
 
   @override
-  String get nightclubUpgradeVipLounge => 'VIP lounge';
+  String get nightclubUpgradeVipLounge => 'Salon VIP';
 
   @override
-  String get nightclubUpgradeSurveillance => 'Surveillance';
+  String get nightclubUpgradeSurveillance => 'Nadzór';
 
   @override
   String nightclubUpgradeWithCost(String name, String cost) {
@@ -7783,242 +7797,243 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get nightclubChooseUpgrade => 'Choose upgrade';
+  String get nightclubChooseUpgrade => 'Wybierz aktualizację';
 
   @override
   String get nightclubUpgradeAlreadyMaxMessage =>
-      'This upgrade is already max level.';
+      'To ulepszenie ma już maksymalny poziom.';
 
   @override
-  String get nightclubUpgradeAlreadyMaxed => 'Upgrade already maxed';
+  String get nightclubUpgradeAlreadyMaxed => 'Aktualizacja już maksymalna';
 
   @override
-  String get nightclubUpgradeNow => 'Upgrade now';
+  String get nightclubUpgradeNow => 'Uaktualnij teraz';
 
   @override
-  String get nightclubMarketingInvestment => 'Marketing investment';
+  String get nightclubMarketingInvestment => 'Inwestycja marketingowa';
 
   @override
-  String get nightclubInvestMarketing => 'Invest in marketing';
+  String get nightclubInvestMarketing => 'Inwestuj w marketing';
 
   @override
-  String get nightclubSectionPoliceHeat => '4) Police heat & incidents';
+  String get nightclubSectionPoliceHeat => '4) Policyjne upały i incydenty';
 
   @override
-  String get nightclubHeatLabel => 'Heat';
+  String get nightclubHeatLabel => 'Ciepło';
 
   @override
-  String get nightclubRaidRisk => 'Raid risk';
+  String get nightclubRaidRisk => 'Ryzyko napadu';
 
   @override
-  String get nightclubCooldownLabel => 'Cooldown';
+  String get nightclubCooldownLabel => 'Czas odnowienia';
 
   @override
-  String get nightclubStartHeatCooldown => 'Start heat cooldown';
+  String get nightclubStartHeatCooldown => 'Rozpocznij schładzanie ciepła';
 
   @override
-  String get nightclubBribe => 'Bribe';
+  String get nightclubBribe => 'Przekupić';
 
   @override
-  String get nightclubLockdown => 'Lockdown';
+  String get nightclubLockdown => 'Izolacja';
 
   @override
-  String get nightclubCounterIntelShort => 'Counter-intel';
+  String get nightclubCounterIntelShort => 'Kontrwywiad';
 
   @override
-  String get nightclubSectionStaffMorale => '5) Staff fatigue & morale';
+  String get nightclubSectionStaffMorale => '5) Zmęczenie i morale personelu';
 
   @override
   String get nightclubMorale => 'Morale';
 
   @override
-  String get nightclubFatigue => 'Fatigue';
+  String get nightclubFatigue => 'Zmęczenie';
 
   @override
-  String get nightclubStaffing => 'Staffing';
+  String get nightclubStaffing => 'Personel';
 
   @override
-  String get nightclubSectionSupplierPromoter => '6) Supplier & promoter';
+  String get nightclubSectionSupplierPromoter => '6) Dostawca i promotor';
 
   @override
-  String get nightclubSupplierContract => 'Supplier contract';
+  String get nightclubSupplierContract => 'Umowa dostawcy';
 
   @override
-  String get nightclubActivateSupplier => 'Activate supplier';
+  String get nightclubActivateSupplier => 'Aktywuj dostawcę';
 
   @override
-  String get nightclubPromoterProfile => 'Promoter profile';
+  String get nightclubPromoterProfile => 'Profil promotora';
 
   @override
-  String get nightclubHirePromoter => 'Hire promoter';
+  String get nightclubHirePromoter => 'Zatrudnij promotora';
 
   @override
-  String get nightclubSectionVipClientele => '7) VIP clientele & staff traits';
+  String get nightclubSectionVipClientele =>
+      '7) Cechy klientów VIP i personelu';
 
   @override
-  String get nightclubVipShare => 'VIP share';
+  String get nightclubVipShare => 'Udział VIP-a';
 
   @override
-  String get nightclubSpendMultiplier => 'Spend x';
+  String get nightclubSpendMultiplier => 'Wydaj x';
 
   @override
-  String get nightclubTier => 'Tier';
+  String get nightclubTier => 'Szczebel';
 
   @override
-  String get nightclubSectionSmugglingRoutes => '8) Smuggling routes';
+  String get nightclubSectionSmugglingRoutes => '8) Szlaki przemytu';
 
   @override
-  String get nightclubReady => 'Ready';
+  String get nightclubReady => 'Gotowy';
 
   @override
-  String get nightclubRoute => 'Route';
+  String get nightclubRoute => 'Trasa';
 
   @override
-  String get nightclubStartRoute => 'Start route';
+  String get nightclubStartRoute => 'Rozpocznij trasę';
 
   @override
-  String get nightclubLastRoute => 'Last route';
+  String get nightclubLastRoute => 'Ostatnia trasa';
 
   @override
   String nightclubRouteLockUntil(String date) {
-    return 'Route lock active until $date';
+    return 'Blokada trasy aktywna do $date';
   }
 
   @override
-  String get nightclubSectionBarKitchen => '9) Bar & Kitchen management';
+  String get nightclubSectionBarKitchen => '9) Zarządzanie barem i kuchnią';
 
   @override
-  String get nightclubServiceLevel => 'Service level';
+  String get nightclubServiceLevel => 'Poziom usług';
 
   @override
-  String get nightclubStockStatus => 'Stock status';
+  String get nightclubStockStatus => 'Stan zapasów';
 
   @override
-  String get nightclubSpoilageRisk => 'Spoilage risk';
+  String get nightclubSpoilageRisk => 'Ryzyko zepsucia';
 
   @override
-  String get nightclubDrinksFoodStock => 'Drinks/Food stock';
+  String get nightclubDrinksFoodStock => 'Zapasy napojów/żywności';
 
   @override
-  String get nightclubBuyStock => 'Buy stock';
+  String get nightclubBuyStock => 'Kup akcje';
 
   @override
-  String get nightclubMenuPricingMode => 'Menu pricing mode';
+  String get nightclubMenuPricingMode => 'Tryb cenowy menu';
 
   @override
-  String get nightclubApplyPricing => 'Apply pricing';
+  String get nightclubApplyPricing => 'Zastosuj ceny';
 
   @override
-  String get nightclubSectionRivals => '10) Rival clubs + counter-intel';
+  String get nightclubSectionRivals => '10) Wrogie kluby + kontrwywiad';
 
   @override
-  String get nightclubSearchPlayerName => 'Search player name';
+  String get nightclubSearchPlayerName => 'Wyszukaj nazwę gracza';
 
   @override
-  String get nightclubTargetName => 'Target (name)';
+  String get nightclubTargetName => 'Cel (nazwa)';
 
   @override
   String nightclubRivalCrowdLine(String name, String country, String pct) {
-    return '$name • $country • crowd $pct%';
+    return '$name • $country • tłum $pct%';
   }
 
   @override
-  String get nightclubSabotage => 'Sabotage';
+  String get nightclubSabotage => 'Sabotaż';
 
   @override
-  String get nightclubPromoWar => 'Promo war';
+  String get nightclubPromoWar => 'Wojna promocyjna';
 
   @override
-  String get nightclubCounterIntelSweep => 'Counter-intel sweep';
+  String get nightclubCounterIntelSweep => 'Akcja kontrwywiadowcza';
 
   @override
-  String get nightclubMitigation => 'Mitigation';
+  String get nightclubMitigation => 'Łagodzenie';
 
   @override
-  String get nightclubSectionTimeline => '11) Operations timeline';
+  String get nightclubSectionTimeline => '11) Harmonogram operacji';
 
   @override
-  String get nightclubNoTimelineEvents => 'No timeline events.';
+  String get nightclubNoTimelineEvents => 'Brak wydarzeń na osi czasu.';
 
   @override
-  String get nightclubOperationsAlerts => 'Operations alerts';
+  String get nightclubOperationsAlerts => 'Alerty operacyjne';
 
   @override
-  String get nightclubNoCriticalAlerts => 'No critical alerts.';
+  String get nightclubNoCriticalAlerts => 'Brak krytycznych alertów.';
 
   @override
-  String get nightclubQuickAction => 'Quick action';
+  String get nightclubQuickAction => 'Szybka akcja';
 
   @override
-  String get nightclubMgmtCrewTitle => 'Crew & shifts';
+  String get nightclubMgmtCrewTitle => 'Crew i zmiany';
 
   @override
   String get nightclubMgmtCrewSubtitle =>
-      'Staffing, performance and shift history.';
+      'Personel, wydajność i historia zmian.';
 
   @override
-  String get nightclubMgmtDrugsTitle => 'Drug storage';
+  String get nightclubMgmtDrugsTitle => 'Przechowywanie leków';
 
   @override
   String get nightclubMgmtDrugsSubtitle =>
-      'Manage and transfer inventory in grams.';
+      'Zarządzaj i przesyłaj zapasy w gramach.';
 
   @override
-  String get nightclubMgmtDjTitle => 'DJ command';
+  String get nightclubMgmtDjTitle => 'Komenda DJ-a';
 
   @override
   String get nightclubMgmtDjSubtitle =>
-      'Choose DJ, shift length and live crowd boost.';
+      'Wybierz DJ-a, długość zmiany i wzmocnienie tłumu na żywo.';
 
   @override
-  String get nightclubMgmtSecurityTitle => 'Security unit';
+  String get nightclubMgmtSecurityTitle => 'Jednostka bezpieczeństwa';
 
   @override
   String get nightclubMgmtSecuritySubtitle =>
-      'Theft reduction, costs and active security.';
+      'Redukcja kradzieży, kosztów i aktywne bezpieczeństwo.';
 
   @override
-  String get nightclubMgmtOpsLabTitle => 'Ops Lab';
+  String get nightclubMgmtOpsLabTitle => 'Laboratorium operacyjne';
 
   @override
   String nightclubMgmtOpsLabSubtitleAlert(String alerts, String smuggling) {
-    return 'Live alerts: $alerts | Smuggling: $smuggling';
+    return 'Alerty na żywo: $alerts | Przemyt: $smuggling';
   }
 
   @override
   String get nightclubMgmtOpsLabSubtitleDefault =>
-      '11 systems for events, upgrades, routes and rivals.';
+      '11 systemów dla wydarzeń, ulepszeń, tras i rywali.';
 
   @override
-  String get nightclubManagementPanelTitle => 'Nightclub management';
+  String get nightclubManagementPanelTitle => 'Zarządzanie klubem nocnym';
 
   @override
   String get nightclubChooseZoneHint =>
-      'Choose a management zone and control everything without nested inner-scroll.';
+      'Wybierz strefę zarządzania i kontroluj wszystko bez zagnieżdżonego przewijania wewnętrznego.';
 
   @override
-  String get nightclubChipCrew => 'Crew';
+  String get nightclubChipCrew => 'Załoga';
 
   @override
-  String get nightclubChipStorage => 'Storage';
+  String get nightclubChipStorage => 'Składowanie';
 
   @override
-  String get nightclubChipDjShift => 'DJ shift';
+  String get nightclubChipDjShift => 'Zmiana DJ-a';
 
   @override
-  String get nightclubChipSecurity => 'Security';
+  String get nightclubChipSecurity => 'Bezpieczeństwo';
 
   @override
-  String get nightclubChipOpsAlerts => 'Ops alerts';
+  String get nightclubChipOpsAlerts => 'Alerty operacyjne';
 
   @override
-  String get nightclubNone => 'None';
+  String get nightclubNone => 'Nic';
 
   @override
-  String get nightclubIntelligenceCardTitle => 'Nightclub Intelligence';
+  String get nightclubIntelligenceCardTitle => 'Inteligencja klubu nocnego';
 
   @override
-  String get nightclubSeasonStatus => 'Season status';
+  String get nightclubSeasonStatus => 'Stan sezonu';
 
   @override
   String nightclubSeasonCountdown(String days, String hours, String minutes) {
@@ -8027,7 +8042,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String nightclubShiftHours(String hours) {
-    return '$hours h';
+    return '$hours godz';
   }
 
   @override
@@ -10324,4 +10339,569 @@ class AppLocalizationsPl extends AppLocalizations {
   String cryptoClientErrorPrefix(String detail) {
     return 'Błąd: $detail';
   }
+
+  @override
+  String drugsClientErrorLoading(String error) {
+    return 'Błąd podczas ładowania: $error';
+  }
+
+  @override
+  String drugsFacilitiesErrorLoading(String error) {
+    return 'Błąd podczas ładowania obiektów: $error';
+  }
+
+  @override
+  String get drugsInvTitle => 'Inwentarz leków';
+
+  @override
+  String get drugsInvKpiGramsLabel => 'spis';
+
+  @override
+  String get drugsCutQualityDCannotCut => 'Gatunek D nie może być dalej cięty.';
+
+  @override
+  String get drugsCutFailed => 'Cięcie nie powiodło się';
+
+  @override
+  String get drugsSellFailed => 'Sprzedaż nie powiodła się';
+
+  @override
+  String drugsSellDialogTitle(String name) {
+    return 'Sprzedaj $name';
+  }
+
+  @override
+  String drugsInvAvailableQty(String qty) {
+    return 'Dostępne: $qty g';
+  }
+
+  @override
+  String drugsQualityWithGrade(String grade) {
+    return 'Jakość: $grade';
+  }
+
+  @override
+  String drugsCurrentPricePerGram(String price) {
+    return 'Obecna cena: $price € za gram';
+  }
+
+  @override
+  String get drugsPricesByCountry => 'Ceny według kraju:';
+
+  @override
+  String get drugsQuantityGramsField => 'Ilość (gramy)';
+
+  @override
+  String drugsInvTotalLine(String amount) {
+    return 'Razem: $amount €';
+  }
+
+  @override
+  String get drugsInvalidQuantity => 'Nieprawidłowa ilość';
+
+  @override
+  String get drugsSellAction => 'Sprzedać';
+
+  @override
+  String get drugsInvEmptyTitle => 'Brak leków w magazynie';
+
+  @override
+  String get drugsInvEmptySubtitle => 'Rozpocznij produkcję, aby stworzyć leki';
+
+  @override
+  String get drugsInvSectionHeader => 'Zapasy i dystrybucja';
+
+  @override
+  String get drugsInvSectionBody =>
+      'Sprzedawaj leki według jakości i różnic cenowych pomiędzy krajami.';
+
+  @override
+  String drugsInvCurrentLocation(String place) {
+    return 'Aktualna lokalizacja: $place';
+  }
+
+  @override
+  String drugsInvStockLine(String qty) {
+    return 'Zapasy: $qty g';
+  }
+
+  @override
+  String drugsInvCurrentValue(String amount) {
+    return 'Aktualna wartość: €$amount';
+  }
+
+  @override
+  String drugsInvMarketLine(String emoji, String pct) {
+    return 'Rynek: $emoji $pct%';
+  }
+
+  @override
+  String get drugsCutDialogTitle => 'Odetnij narkotyki';
+
+  @override
+  String drugsCutQualityBanner(String fromQ, String toQ, String pct) {
+    return 'Jakość $fromQ → $toQ: +$pct% więcej jednostek';
+  }
+
+  @override
+  String drugsCutResultLine(
+    String qty,
+    String qFrom,
+    String result,
+    String qTo,
+  ) {
+    return 'Wynik: $qty g $qFrom → $result g $qTo';
+  }
+
+  @override
+  String get drugsCutAction => 'Cięcie';
+
+  @override
+  String get drugsSlotsLabel => 'szczeliny';
+
+  @override
+  String get drugsFacilitiesTitle => 'Placówki narkotykowe';
+
+  @override
+  String get drugsFacilitiesHeroTitle =>
+      'Zarządzaj swoimi placówkami farmaceutycznymi';
+
+  @override
+  String get drugsFacilitiesHeroBody =>
+      'Obiekty takie jak szklarnia, pieczarkarnia, laboratorium narkotykowe, kuchnia z crackiem i witryna sklepowa w ciemnej sieci określają, jakie leki możesz produkować, ile masz miejsc oraz jak wysoka jest Twoja jakość, wydajność i szybkość.';
+
+  @override
+  String get drugsFacCurrentProductions => 'Aktualne produkcje';
+
+  @override
+  String get drugsFacUnknownFacility => 'Nieznany obiekt';
+
+  @override
+  String get drugsFacUnknownMessage => 'Nieznana wiadomość';
+
+  @override
+  String get drugsFacUpgradeLockedTitle => '🔒 Aktualizacja leku zablokowana';
+
+  @override
+  String get drugsFacUpgradeLockedBody =>
+      'Najpierw potrzebujesz odpowiedniego poziomu wykształcenia i certyfikatów w zakresie narkotyków.';
+
+  @override
+  String get drugsFacEquipLockedTitle =>
+      '🔒 Aktualizacja wyposażenia zablokowana';
+
+  @override
+  String get drugsFacEquipLockedBody =>
+      'Najpierw trenuj swoją ścieżkę Narkotyków, aby odblokować kolejny poziom ulepszenia.';
+
+  @override
+  String get drugsFacBuy => 'Kupić';
+
+  @override
+  String get drugsFacOwned => 'Posiadany';
+
+  @override
+  String get drugsFacPrice => 'Cena';
+
+  @override
+  String get drugsFacRank => 'Stopień';
+
+  @override
+  String get drugsFacDrugTypes => 'Narkotyki';
+
+  @override
+  String get drugsFacSlots => 'Sloty';
+
+  @override
+  String get drugsFacQuality => 'Jakość';
+
+  @override
+  String get drugsFacYield => 'Dawać';
+
+  @override
+  String get drugsFacSpeed => 'Prędkość';
+
+  @override
+  String get drugsFacMaxSlots => 'Maksymalna liczba slotów';
+
+  @override
+  String drugsFacUpgradeSlots(String cost) {
+    return 'Miejsca na ulepszenia ($cost €)';
+  }
+
+  @override
+  String get drugsFacEquipmentUpgrades => 'Ulepszenia sprzętu';
+
+  @override
+  String get drugsFacMax => 'Maks';
+
+  @override
+  String drugsFacLvlPrice(String level, String price) {
+    return 'Poziom $level ($price €)';
+  }
+
+  @override
+  String get drugsHubTitle => 'Środowisko narkotykowe';
+
+  @override
+  String get drugsSubviewProduction => 'Produkcja narkotyków';
+
+  @override
+  String get drugsSubviewFacilities => 'Placówki narkotykowe';
+
+  @override
+  String get drugsSubviewInventory => 'Inwentarz leków';
+
+  @override
+  String get drugsTagUndergroundOps => 'Operacje podziemne';
+
+  @override
+  String get drugsTagMobileOptimized =>
+      'Zoptymalizowany pod kątem urządzeń mobilnych';
+
+  @override
+  String get drugsTagQualityDriven => 'Nastawa na jakość';
+
+  @override
+  String get drugsEmpireTitle => 'Imperium narkotykowe';
+
+  @override
+  String get drugsHubIntro =>
+      'Zarządzaj tutaj produkcją, obiektami i zapasami. Kupuj materiały na Czarnym Rynku, a reszta odbywa się w Twoim własnym środowisku narkotykowym.';
+
+  @override
+  String get drugsStatMaterialFlow => 'Przepływ materiału';
+
+  @override
+  String get drugsStatBlackMarket => 'Czarny rynek';
+
+  @override
+  String get drugsStatProductionChain => 'Łańcuch produkcyjny';
+
+  @override
+  String get drugsStatProductionChainValue =>
+      'Szklarnia + laboratorium + kuchnia + Darkweb';
+
+  @override
+  String get drugsStatSalesModel => 'Model sprzedaży';
+
+  @override
+  String get drugsStatPerQuality => 'Według jakości';
+
+  @override
+  String get drugsMetricActiveBatches => 'Aktywne partie';
+
+  @override
+  String get drugsMetricSlotUsage => 'Wykorzystanie gniazda';
+
+  @override
+  String get drugsMetricInventoryValue => 'Wartość zapasów';
+
+  @override
+  String get drugsMetricInventoryGrams => 'Gram zapasów';
+
+  @override
+  String get drugsMetricEfficiency => 'Efektywność';
+
+  @override
+  String get drugsMetricPoliceHeat => 'Policyjny upał';
+
+  @override
+  String get drugsSectionOperations => 'Operacje';
+
+  @override
+  String get drugsSectionOperationsSubtitle =>
+      'Wybierz gałąź swojego imperium narkotykowego';
+
+  @override
+  String get drugsCardFacilitiesEyebrow => 'Infrastruktura';
+
+  @override
+  String get drugsCardFacilitiesTitle => 'Udogodnienia';
+
+  @override
+  String get drugsCardFacilitiesBody =>
+      'Kupuj i ulepszaj szklarnię, laboratorium narkotykowe, kuchnię crackową i witrynę sklepową w ciemnej sieci, aby uzyskać więcej miejsc, szybkość i jakość.';
+
+  @override
+  String get drugsCardProductionEyebrow => 'Rurociąg';
+
+  @override
+  String get drugsCardProductionTitle => 'Produkcja';
+
+  @override
+  String get drugsCardProductionBody =>
+      'Rozpoczynaj partie, śledź liczniki czasu i zbieraj wydruki za pomocą wysokiej jakości rolek.';
+
+  @override
+  String get drugsCardInventoryEyebrow => 'Dystrybucja';
+
+  @override
+  String get drugsCardInventoryTitle => 'Spis';
+
+  @override
+  String get drugsCardInventoryBody =>
+      'Przeglądaj stosy według jakości i sprzedawaj po najlepszej wartości rynkowej.';
+
+  @override
+  String get drugsQualityDistribution => 'Dystrybucja jakości';
+
+  @override
+  String get drugsQualityGradeSuperior => 'Znakomity';
+
+  @override
+  String get drugsQualityGradeHigh => 'Wysoki';
+
+  @override
+  String get drugsQualityGradeStandardPlus => 'Standardowy+';
+
+  @override
+  String get drugsQualityGradeStandard => 'Standard';
+
+  @override
+  String get drugsQualityGradeLow => 'Niski';
+
+  @override
+  String get drugsHeatLevelLow => 'Niski';
+
+  @override
+  String get drugsHeatLevelMedium => 'Średni';
+
+  @override
+  String get drugsHeatLevelHigh => 'Wysoki';
+
+  @override
+  String get drugsHeatLevelCritical => 'Krytyczny';
+
+  @override
+  String get drugsProdTitle => 'Produkcja narkotyków';
+
+  @override
+  String get drugsProdLineTitle => 'Linia produkcyjna';
+
+  @override
+  String get drugsProdLineSubtitle =>
+      'Rozpoczynaj partie, monitoruj pojemność gniazd i dostosowuj jakość poprzez modernizację szklarni i laboratoriów.';
+
+  @override
+  String get drugsProdActiveProductions => 'Aktywne produkcje';
+
+  @override
+  String get drugsProdIncidentLegend => 'Legenda o wydarzeniu';
+
+  @override
+  String get drugsProdHide => 'Ukrywać';
+
+  @override
+  String get drugsProdShow => 'Pokazywać';
+
+  @override
+  String get drugsProdLegendDelay => 'Opóźnienie';
+
+  @override
+  String get drugsProdLegendContamination => 'Zanieczyszczenie';
+
+  @override
+  String get drugsProdLegendYieldLoss => 'Utrata plonów';
+
+  @override
+  String get drugsProdLegendInstability => 'Niestabilność';
+
+  @override
+  String get drugsProdLegendCombined => 'Połączony problem';
+
+  @override
+  String get drugsProdCollect => 'Zbierać';
+
+  @override
+  String get drugsProdAvailableDrugs => 'Dostępne leki';
+
+  @override
+  String get drugsProdNoDrugs => 'Brak dostępnych leków';
+
+  @override
+  String get drugsProdAutoCollectOn => 'Odbiór automatyczny włączony (VIP)';
+
+  @override
+  String get drugsProdAutoCollectOff =>
+      'Wyłączenie automatycznego odbioru (VIP)';
+
+  @override
+  String get drugsProdVipMaterialsOk => 'Dostępne wszystkie materiały';
+
+  @override
+  String get drugsProdVipBuyMissing =>
+      'VIP: kup brakujące materiały jednym kliknięciem';
+
+  @override
+  String drugsProdTimeYieldLine(String time, String yield) {
+    return 'Czas: $time | Wydajność: ${yield}g';
+  }
+
+  @override
+  String drugsProdSlotsUsedLine(String facility, String used, String total) {
+    return '$facility: $used/$total wykorzystanych miejsc';
+  }
+
+  @override
+  String drugsProdFacilityRequired(String facility) {
+    return 'wymagane $facility';
+  }
+
+  @override
+  String drugsProdRankRequired(String rank) {
+    return 'Wymagana ranga $rank';
+  }
+
+  @override
+  String get drugsProdNoFreeSlot => 'Brak wolnego miejsca produkcyjnego';
+
+  @override
+  String get drugsProdOpenFacilities => 'Otwarte obiekty';
+
+  @override
+  String get drugsProdStartProduction => 'Rozpocznij produkcję';
+
+  @override
+  String get drugsProdAutoCollectUpdated =>
+      'Zaktualizowano automatyczne zbieranie';
+
+  @override
+  String get drugsProdKpiActive => 'aktywny';
+
+  @override
+  String get drugsProdKpiReady => 'gotowy';
+
+  @override
+  String drugsProdYieldGrams(String qty) {
+    return 'Wydajność: $qty gramów';
+  }
+
+  @override
+  String get drugsTimeMinSuffix => 'min';
+
+  @override
+  String drugsFmtMinutes(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String drugsFmtHoursOnly(String hours) {
+    return '$hours godz';
+  }
+
+  @override
+  String drugsFmtHoursMinutes(String hours, String minutes) {
+    return '$hours godz. $minutes min';
+  }
+
+  @override
+  String get drugsTimeHourEn => 'godz';
+
+  @override
+  String get drugsProdConfirmTitle => 'Czy jesteś pewien?';
+
+  @override
+  String drugsProdConfirmBody(String drugName) {
+    return 'Rozpocząć produkcję $drugName?';
+  }
+
+  @override
+  String drugsProdTimeLine(String time) {
+    return 'Czas: $time';
+  }
+
+  @override
+  String drugsProdYieldLine(String yield) {
+    return 'Wydajność: $yield gramów';
+  }
+
+  @override
+  String get drugsProdRiskNote =>
+      'Produkcja może czasami ponieść niepowodzenia. Lepsze ulepszenia zmniejszają ryzyko, wysoka temperatura leku je zwiększa.';
+
+  @override
+  String get drugsProdRequiredMaterialsHeader => 'Wymagane materiały:';
+
+  @override
+  String get drugsProdStartProductionButton => 'Rozpocznij produkcję';
+
+  @override
+  String get drugsProdFailed => 'Produkcja nie powiodła się';
+
+  @override
+  String get drugsProdCollectFailed => 'Zbieranie nie powiodło się';
+
+  @override
+  String drugsProdNeedRank(String rank) {
+    return 'Potrzebujesz rangi $rank';
+  }
+
+  @override
+  String get drugsProdMissingPrefix => 'Zaginiony';
+
+  @override
+  String get drugsFacilityGreenhouse => 'Szklarnia';
+
+  @override
+  String get drugsFacilityCrackKitchen => 'Pęknięta Kuchnia';
+
+  @override
+  String get drugsFacilityDarkweb => 'Witryna sklepu Darkweb';
+
+  @override
+  String get drugsFacilityMushroomFarm => 'Farma Grzybów';
+
+  @override
+  String get drugsFacilityDrugLab => 'Laboratorium narkotykowe';
+
+  @override
+  String get drugsVipQuickBuyTitle => 'Szybki zakup VIP';
+
+  @override
+  String drugsVipAlreadyEnough(String name) {
+    return 'Masz już wystarczającą ilość materiałów na $name';
+  }
+
+  @override
+  String drugsVipBuyPrompt(String name) {
+    return 'Kupić wszystkie brakujące materiały za $name jednym kliknięciem?';
+  }
+
+  @override
+  String drugsVipTotal(String amount) {
+    return 'Razem: $amount €';
+  }
+
+  @override
+  String get drugsPurchaseCompleted => 'Zakup zakończony';
+
+  @override
+  String get drugsPurchaseFailed => 'Zakup nie powiódł się';
+
+  @override
+  String get drugsServiceErrorGeneric => 'Błąd';
+
+  @override
+  String get drugsApiFailedBuyMaterial => 'Nie udało się kupić materiału';
+
+  @override
+  String get drugsApiFailedStartProduction =>
+      'Nie udało się rozpocząć produkcji';
+
+  @override
+  String get drugsApiFailedCollect => 'Nie udało się pobrać produkcji';
+
+  @override
+  String get drugsApiFailedSell => 'Nie udało się sprzedać narkotyków';
+
+  @override
+  String get drugsApiFailedCut => 'Nie udało się odstawić narkotyków';
+
+  @override
+  String get drugsApiFailedShipment => 'Nie udało się wysłać przesyłki';
+
+  @override
+  String get drugsApiFailedClaim =>
+      'Nie udało się odebrać przesyłek z magazynu';
 }

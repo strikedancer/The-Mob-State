@@ -10232,4 +10232,562 @@ class AppLocalizationsEn extends AppLocalizations {
   String cryptoClientErrorPrefix(String detail) {
     return 'Error: $detail';
   }
+
+  @override
+  String drugsClientErrorLoading(String error) {
+    return 'Error while loading: $error';
+  }
+
+  @override
+  String drugsFacilitiesErrorLoading(String error) {
+    return 'Error while loading facilities: $error';
+  }
+
+  @override
+  String get drugsInvTitle => 'Drug Inventory';
+
+  @override
+  String get drugsInvKpiGramsLabel => 'inventory';
+
+  @override
+  String get drugsCutQualityDCannotCut => 'Quality D cannot be cut further.';
+
+  @override
+  String get drugsCutFailed => 'Cutting failed';
+
+  @override
+  String get drugsSellFailed => 'Sale failed';
+
+  @override
+  String drugsSellDialogTitle(String name) {
+    return 'Sell $name';
+  }
+
+  @override
+  String drugsInvAvailableQty(String qty) {
+    return 'Available: $qty g';
+  }
+
+  @override
+  String drugsQualityWithGrade(String grade) {
+    return 'Quality: $grade';
+  }
+
+  @override
+  String drugsCurrentPricePerGram(String price) {
+    return 'Current price: €$price per gram';
+  }
+
+  @override
+  String get drugsPricesByCountry => 'Prices by country:';
+
+  @override
+  String get drugsQuantityGramsField => 'Quantity (grams)';
+
+  @override
+  String drugsInvTotalLine(String amount) {
+    return 'Total: €$amount';
+  }
+
+  @override
+  String get drugsInvalidQuantity => 'Invalid quantity';
+
+  @override
+  String get drugsSellAction => 'Sell';
+
+  @override
+  String get drugsInvEmptyTitle => 'No drugs in inventory';
+
+  @override
+  String get drugsInvEmptySubtitle => 'Start production to create drugs';
+
+  @override
+  String get drugsInvSectionHeader => 'Inventory & distribution';
+
+  @override
+  String get drugsInvSectionBody =>
+      'Sell drugs by quality and use price differences between countries.';
+
+  @override
+  String drugsInvCurrentLocation(String place) {
+    return 'Current location: $place';
+  }
+
+  @override
+  String drugsInvStockLine(String qty) {
+    return 'Inventory: $qty g';
+  }
+
+  @override
+  String drugsInvCurrentValue(String amount) {
+    return 'Current value: €$amount';
+  }
+
+  @override
+  String drugsInvMarketLine(String emoji, String pct) {
+    return 'Market: $emoji $pct%';
+  }
+
+  @override
+  String get drugsCutDialogTitle => 'Cut drugs';
+
+  @override
+  String drugsCutQualityBanner(String fromQ, String toQ, String pct) {
+    return 'Quality $fromQ → $toQ: +$pct% more units';
+  }
+
+  @override
+  String drugsCutResultLine(
+    String qty,
+    String qFrom,
+    String result,
+    String qTo,
+  ) {
+    return 'Result: $qty g $qFrom → $result g $qTo';
+  }
+
+  @override
+  String get drugsCutAction => 'Cut';
+
+  @override
+  String get drugsSlotsLabel => 'slots';
+
+  @override
+  String get drugsFacilitiesTitle => 'Drug Facilities';
+
+  @override
+  String get drugsFacilitiesHeroTitle => 'Manage your drug facilities';
+
+  @override
+  String get drugsFacilitiesHeroBody =>
+      'Facilities such as greenhouse, mushroom farm, drug lab, crack kitchen and darkweb storefront determine which drugs you can produce, how many slots you have and how strong your quality, yield and speed are.';
+
+  @override
+  String get drugsFacCurrentProductions => 'Current productions';
+
+  @override
+  String get drugsFacUnknownFacility => 'Unknown facility';
+
+  @override
+  String get drugsFacUnknownMessage => 'Unknown message';
+
+  @override
+  String get drugsFacUpgradeLockedTitle => '🔒 Drug upgrade locked';
+
+  @override
+  String get drugsFacUpgradeLockedBody =>
+      'You first need the right Narcotics education levels and certifications.';
+
+  @override
+  String get drugsFacEquipLockedTitle => '🔒 Equipment upgrade locked';
+
+  @override
+  String get drugsFacEquipLockedBody =>
+      'Train your Narcotics track first to unlock the next upgrade level.';
+
+  @override
+  String get drugsFacBuy => 'Buy';
+
+  @override
+  String get drugsFacOwned => 'Owned';
+
+  @override
+  String get drugsFacPrice => 'Price';
+
+  @override
+  String get drugsFacRank => 'Rank';
+
+  @override
+  String get drugsFacDrugTypes => 'Drugs';
+
+  @override
+  String get drugsFacSlots => 'Slots';
+
+  @override
+  String get drugsFacQuality => 'Quality';
+
+  @override
+  String get drugsFacYield => 'Yield';
+
+  @override
+  String get drugsFacSpeed => 'Speed';
+
+  @override
+  String get drugsFacMaxSlots => 'Max slots';
+
+  @override
+  String drugsFacUpgradeSlots(String cost) {
+    return 'Upgrade slots (€$cost)';
+  }
+
+  @override
+  String get drugsFacEquipmentUpgrades => 'Equipment upgrades';
+
+  @override
+  String get drugsFacMax => 'Max';
+
+  @override
+  String drugsFacLvlPrice(String level, String price) {
+    return 'Lvl $level (€$price)';
+  }
+
+  @override
+  String get drugsHubTitle => 'Drug Environment';
+
+  @override
+  String get drugsSubviewProduction => 'Drug Production';
+
+  @override
+  String get drugsSubviewFacilities => 'Drug Facilities';
+
+  @override
+  String get drugsSubviewInventory => 'Drug Inventory';
+
+  @override
+  String get drugsTagUndergroundOps => 'Underground Operations';
+
+  @override
+  String get drugsTagMobileOptimized => 'Mobile Optimized';
+
+  @override
+  String get drugsTagQualityDriven => 'Quality Driven';
+
+  @override
+  String get drugsEmpireTitle => 'Drug Empire';
+
+  @override
+  String get drugsHubIntro =>
+      'Manage production, facilities and inventory here. Buy materials on the Black Market while the rest runs in your own drug environment.';
+
+  @override
+  String get drugsStatMaterialFlow => 'Material flow';
+
+  @override
+  String get drugsStatBlackMarket => 'Black Market';
+
+  @override
+  String get drugsStatProductionChain => 'Production chain';
+
+  @override
+  String get drugsStatProductionChainValue =>
+      'Greenhouse + Lab + Kitchen + Darkweb';
+
+  @override
+  String get drugsStatSalesModel => 'Sales model';
+
+  @override
+  String get drugsStatPerQuality => 'Per quality';
+
+  @override
+  String get drugsMetricActiveBatches => 'Active batches';
+
+  @override
+  String get drugsMetricSlotUsage => 'Slot usage';
+
+  @override
+  String get drugsMetricInventoryValue => 'Inventory value';
+
+  @override
+  String get drugsMetricInventoryGrams => 'Inventory grams';
+
+  @override
+  String get drugsMetricEfficiency => 'Efficiency';
+
+  @override
+  String get drugsMetricPoliceHeat => 'Police Heat';
+
+  @override
+  String get drugsSectionOperations => 'Operations';
+
+  @override
+  String get drugsSectionOperationsSubtitle =>
+      'Choose a branch of your drug empire';
+
+  @override
+  String get drugsCardFacilitiesEyebrow => 'Infrastructure';
+
+  @override
+  String get drugsCardFacilitiesTitle => 'Facilities';
+
+  @override
+  String get drugsCardFacilitiesBody =>
+      'Buy and upgrade greenhouse, drug lab, crack kitchen and darkweb storefront for more slots, speed and quality.';
+
+  @override
+  String get drugsCardProductionEyebrow => 'Pipeline';
+
+  @override
+  String get drugsCardProductionTitle => 'Production';
+
+  @override
+  String get drugsCardProductionBody =>
+      'Start batches, track timers and collect output with quality rolls.';
+
+  @override
+  String get drugsCardInventoryEyebrow => 'Distribution';
+
+  @override
+  String get drugsCardInventoryTitle => 'Inventory';
+
+  @override
+  String get drugsCardInventoryBody =>
+      'View stacks by quality and sell at the best market value.';
+
+  @override
+  String get drugsQualityDistribution => 'Quality distribution';
+
+  @override
+  String get drugsQualityGradeSuperior => 'Superior';
+
+  @override
+  String get drugsQualityGradeHigh => 'High';
+
+  @override
+  String get drugsQualityGradeStandardPlus => 'Standard+';
+
+  @override
+  String get drugsQualityGradeStandard => 'Standard';
+
+  @override
+  String get drugsQualityGradeLow => 'Low';
+
+  @override
+  String get drugsHeatLevelLow => 'Low';
+
+  @override
+  String get drugsHeatLevelMedium => 'Medium';
+
+  @override
+  String get drugsHeatLevelHigh => 'High';
+
+  @override
+  String get drugsHeatLevelCritical => 'Critical';
+
+  @override
+  String get drugsProdTitle => 'Drug Production';
+
+  @override
+  String get drugsProdLineTitle => 'Production line';
+
+  @override
+  String get drugsProdLineSubtitle =>
+      'Start batches, monitor slot capacity and tune quality via greenhouse and lab upgrades.';
+
+  @override
+  String get drugsProdActiveProductions => 'Active Productions';
+
+  @override
+  String get drugsProdIncidentLegend => 'Incident legend';
+
+  @override
+  String get drugsProdHide => 'Hide';
+
+  @override
+  String get drugsProdShow => 'Show';
+
+  @override
+  String get drugsProdLegendDelay => 'Delay';
+
+  @override
+  String get drugsProdLegendContamination => 'Contamination';
+
+  @override
+  String get drugsProdLegendYieldLoss => 'Yield loss';
+
+  @override
+  String get drugsProdLegendInstability => 'Instability';
+
+  @override
+  String get drugsProdLegendCombined => 'Combined issue';
+
+  @override
+  String get drugsProdCollect => 'Collect';
+
+  @override
+  String get drugsProdAvailableDrugs => 'Available Drugs';
+
+  @override
+  String get drugsProdNoDrugs => 'No drugs available';
+
+  @override
+  String get drugsProdAutoCollectOn => 'Auto-collect on (VIP)';
+
+  @override
+  String get drugsProdAutoCollectOff => 'Auto-collect off (VIP)';
+
+  @override
+  String get drugsProdVipMaterialsOk => 'All materials available';
+
+  @override
+  String get drugsProdVipBuyMissing =>
+      'VIP: buy missing materials in one click';
+
+  @override
+  String drugsProdTimeYieldLine(String time, String yield) {
+    return 'Time: $time | Yield: ${yield}g';
+  }
+
+  @override
+  String drugsProdSlotsUsedLine(String facility, String used, String total) {
+    return '$facility: $used/$total slots used';
+  }
+
+  @override
+  String drugsProdFacilityRequired(String facility) {
+    return '$facility required';
+  }
+
+  @override
+  String drugsProdRankRequired(String rank) {
+    return 'Rank $rank required';
+  }
+
+  @override
+  String get drugsProdNoFreeSlot => 'No free production slot available';
+
+  @override
+  String get drugsProdOpenFacilities => 'Open facilities';
+
+  @override
+  String get drugsProdStartProduction => 'Start production';
+
+  @override
+  String get drugsProdAutoCollectUpdated => 'Auto-collect updated';
+
+  @override
+  String get drugsProdKpiActive => 'active';
+
+  @override
+  String get drugsProdKpiReady => 'ready';
+
+  @override
+  String drugsProdYieldGrams(String qty) {
+    return 'Yield: $qty grams';
+  }
+
+  @override
+  String get drugsTimeMinSuffix => 'min';
+
+  @override
+  String drugsFmtMinutes(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String drugsFmtHoursOnly(String hours) {
+    return '$hours hr';
+  }
+
+  @override
+  String drugsFmtHoursMinutes(String hours, String minutes) {
+    return '$hours hr $minutes min';
+  }
+
+  @override
+  String get drugsTimeHourEn => 'hr';
+
+  @override
+  String get drugsProdConfirmTitle => 'Are you sure?';
+
+  @override
+  String drugsProdConfirmBody(String drugName) {
+    return 'Start $drugName production?';
+  }
+
+  @override
+  String drugsProdTimeLine(String time) {
+    return 'Time: $time';
+  }
+
+  @override
+  String drugsProdYieldLine(String yield) {
+    return 'Yield: $yield grams';
+  }
+
+  @override
+  String get drugsProdRiskNote =>
+      'Production can sometimes suffer setbacks. Better upgrades lower the risk, high drug heat increases it.';
+
+  @override
+  String get drugsProdRequiredMaterialsHeader => 'Required materials:';
+
+  @override
+  String get drugsProdStartProductionButton => 'Start Production';
+
+  @override
+  String get drugsProdFailed => 'Production failed';
+
+  @override
+  String get drugsProdCollectFailed => 'Collect failed';
+
+  @override
+  String drugsProdNeedRank(String rank) {
+    return 'You need rank $rank';
+  }
+
+  @override
+  String get drugsProdMissingPrefix => 'Missing';
+
+  @override
+  String get drugsFacilityGreenhouse => 'Greenhouse';
+
+  @override
+  String get drugsFacilityCrackKitchen => 'Crack Kitchen';
+
+  @override
+  String get drugsFacilityDarkweb => 'Darkweb Storefront';
+
+  @override
+  String get drugsFacilityMushroomFarm => 'Mushroom Farm';
+
+  @override
+  String get drugsFacilityDrugLab => 'Drug Lab';
+
+  @override
+  String get drugsVipQuickBuyTitle => 'VIP quick purchase';
+
+  @override
+  String drugsVipAlreadyEnough(String name) {
+    return 'You already have enough materials for $name';
+  }
+
+  @override
+  String drugsVipBuyPrompt(String name) {
+    return 'Buy all missing materials for $name in one click?';
+  }
+
+  @override
+  String drugsVipTotal(String amount) {
+    return 'Total: €$amount';
+  }
+
+  @override
+  String get drugsPurchaseCompleted => 'Purchase completed';
+
+  @override
+  String get drugsPurchaseFailed => 'Purchase failed';
+
+  @override
+  String get drugsServiceErrorGeneric => 'Error';
+
+  @override
+  String get drugsApiFailedBuyMaterial => 'Failed to buy material';
+
+  @override
+  String get drugsApiFailedStartProduction => 'Failed to start production';
+
+  @override
+  String get drugsApiFailedCollect => 'Failed to collect production';
+
+  @override
+  String get drugsApiFailedSell => 'Failed to sell drugs';
+
+  @override
+  String get drugsApiFailedCut => 'Failed to cut drugs';
+
+  @override
+  String get drugsApiFailedShipment => 'Failed to send shipment';
+
+  @override
+  String get drugsApiFailedClaim => 'Failed to claim depot shipments';
 }

@@ -3174,6 +3174,409 @@
   "bank": "Bank",
   "tradeGoods": "Zwarte markt",
   "drugs": "Geneesmiddelen",
+  "drugsClientErrorLoading": "Fout bij laden: {error}",
+  "@drugsClientErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFacilitiesErrorLoading": "Fout bij laden faciliteiten: {error}",
+  "@drugsFacilitiesErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvTitle": "Drugsvoorraad",
+  "drugsInvKpiGramsLabel": "voorraad",
+  "drugsCutQualityDCannotCut": "Kwaliteit D kan niet verder worden gesneden.",
+  "drugsCutFailed": "Snijden mislukt",
+  "drugsSellFailed": "Verkoop mislukt",
+  "drugsSellDialogTitle": "Verkoop {name}",
+  "@drugsSellDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvAvailableQty": "Beschikbaar: {qty} g",
+  "@drugsInvAvailableQty": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsQualityWithGrade": "Kwaliteit: {grade}",
+  "@drugsQualityWithGrade": {
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCurrentPricePerGram": "Huidige prijs: €{price} per gram",
+  "@drugsCurrentPricePerGram": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsPricesByCountry": "Prijzen per land:",
+  "drugsQuantityGramsField": "Hoeveelheid (gram)",
+  "drugsInvTotalLine": "Totaal: €{amount}",
+  "@drugsInvTotalLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvalidQuantity": "Ongeldige hoeveelheid",
+  "drugsSellAction": "Verkopen",
+  "drugsInvEmptyTitle": "Geen drugs in voorraad",
+  "drugsInvEmptySubtitle": "Start productie om drugs te maken",
+  "drugsInvSectionHeader": "Voorraad & distributie",
+  "drugsInvSectionBody": "Verkoop drugs per kwaliteit en gebruik prijsverschillen tussen landen.",
+  "drugsInvCurrentLocation": "Huidige locatie: {place}",
+  "@drugsInvCurrentLocation": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvStockLine": "Voorraad: {qty} g",
+  "@drugsInvStockLine": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvCurrentValue": "Huidige waarde: €{amount}",
+  "@drugsInvCurrentValue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvMarketLine": "Markt: {emoji} {pct}%",
+  "@drugsInvMarketLine": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCutDialogTitle": "Drugs snijden",
+  "drugsCutQualityBanner": "Kwaliteit {fromQ} → {toQ}: +{pct}% meer eenheden",
+  "@drugsCutQualityBanner": {
+    "placeholders": {
+      "fromQ": {
+        "type": "String"
+      },
+      "toQ": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCutResultLine": "Resultaat: {qty} g {qFrom} → {result} g {qTo}",
+  "@drugsCutResultLine": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "qFrom": {
+        "type": "String"
+      },
+      "result": {
+        "type": "String"
+      },
+      "qTo": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCutAction": "Snijden",
+  "drugsSlotsLabel": "slots",
+  "drugsFacilitiesTitle": "Drugsfaciliteiten",
+  "drugsFacilitiesHeroTitle": "Beheer je drugsfaciliteiten",
+  "drugsFacilitiesHeroBody": "Faciliteiten zoals kas, paddenstoelenkwekerij, drugslab, crackkeuken en darkweb-winkel bepalen welke drugs je kunt produceren, hoeveel slots je hebt en hoe sterk kwaliteit, opbrengst en snelheid zijn.",
+  "drugsFacCurrentProductions": "Lopende producties",
+  "drugsFacUnknownFacility": "Onbekende faciliteit",
+  "drugsFacUnknownMessage": "Onbekend bericht",
+  "drugsFacUpgradeLockedTitle": "🔒 Drugsupgrade vergrendeld",
+  "drugsFacUpgradeLockedBody": "Je hebt eerst de juiste Narcotica-opleidingsniveaus en certificaten nodig.",
+  "drugsFacEquipLockedTitle": "🔒 Apparatuur-upgrade vergrendeld",
+  "drugsFacEquipLockedBody": "Train eerst je Narcotica-track om het volgende upgradeniveau te ontgrendelen.",
+  "drugsFacBuy": "Kopen",
+  "drugsFacOwned": "In bezit",
+  "drugsFacPrice": "Prijs",
+  "drugsFacRank": "Rank",
+  "drugsFacDrugTypes": "Drugs",
+  "drugsFacSlots": "Slots",
+  "drugsFacQuality": "Kwaliteit",
+  "drugsFacYield": "Opbrengst",
+  "drugsFacSpeed": "Snelheid",
+  "drugsFacMaxSlots": "Max. slots",
+  "drugsFacUpgradeSlots": "Slots upgraden (€{cost})",
+  "@drugsFacUpgradeSlots": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFacEquipmentUpgrades": "Apparatuur-upgrades",
+  "drugsFacMax": "Max",
+  "drugsFacLvlPrice": "Lvl {level} (€{price})",
+  "@drugsFacLvlPrice": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsHubTitle": "Drugsomgeving",
+  "drugsSubviewProduction": "Drugsproductie",
+  "drugsSubviewFacilities": "Drugsfaciliteiten",
+  "drugsSubviewInventory": "Drugsvoorraad",
+  "drugsTagUndergroundOps": "Ondergrondse operaties",
+  "drugsTagMobileOptimized": "Mobiel geoptimaliseerd",
+  "drugsTagQualityDriven": "Kwaliteitsgedreven",
+  "drugsEmpireTitle": "Drugsimperium",
+  "drugsHubIntro": "Beheer hier productie, faciliteiten en voorraad. Koop grondstoffen op de zwarte markt terwijl de rest in je eigen drugsomgeving draait.",
+  "drugsStatMaterialFlow": "Materiaalstroom",
+  "drugsStatBlackMarket": "Zwarte markt",
+  "drugsStatProductionChain": "Productieketen",
+  "drugsStatProductionChainValue": "Kas + lab + keuken + darkweb",
+  "drugsStatSalesModel": "Verkoopmodel",
+  "drugsStatPerQuality": "Per kwaliteit",
+  "drugsMetricActiveBatches": "Actieve batches",
+  "drugsMetricSlotUsage": "Slotgebruik",
+  "drugsMetricInventoryValue": "Voorraadwaarde",
+  "drugsMetricInventoryGrams": "Voorraad (gram)",
+  "drugsMetricEfficiency": "Efficiëntie",
+  "drugsMetricPoliceHeat": "Politiehitte",
+  "drugsSectionOperations": "Operaties",
+  "drugsSectionOperationsSubtitle": "Kies een poot van je drugsimperium",
+  "drugsCardFacilitiesEyebrow": "Infrastructuur",
+  "drugsCardFacilitiesTitle": "Faciliteiten",
+  "drugsCardFacilitiesBody": "Koop en upgrade kas, drugslab, crackkeuken en darkweb-winkel voor meer slots, snelheid en kwaliteit.",
+  "drugsCardProductionEyebrow": "Pijplijn",
+  "drugsCardProductionTitle": "Productie",
+  "drugsCardProductionBody": "Start batches, volg timers en verzamel output met kwaliteitsrolls.",
+  "drugsCardInventoryEyebrow": "Distributie",
+  "drugsCardInventoryTitle": "Voorraad",
+  "drugsCardInventoryBody": "Bekijk stapels per kwaliteit en verkoop tegen de beste marktwaarde.",
+  "drugsQualityDistribution": "Kwaliteitsverdeling",
+  "drugsQualityGradeSuperior": "Superieur",
+  "drugsQualityGradeHigh": "Hoog",
+  "drugsQualityGradeStandardPlus": "Standaard+",
+  "drugsQualityGradeStandard": "Standaard",
+  "drugsQualityGradeLow": "Laag",
+  "drugsHeatLevelLow": "Laag",
+  "drugsHeatLevelMedium": "Gemiddeld",
+  "drugsHeatLevelHigh": "Hoog",
+  "drugsHeatLevelCritical": "Kritiek",
+  "drugsProdTitle": "Drugsproductie",
+  "drugsProdLineTitle": "Productielijn",
+  "drugsProdLineSubtitle": "Start batches, monitor slotcapaciteit en stuur kwaliteit bij via kas- en lab-upgrades.",
+  "drugsProdActiveProductions": "Actieve producties",
+  "drugsProdIncidentLegend": "Incidentlegenda",
+  "drugsProdHide": "Verbergen",
+  "drugsProdShow": "Tonen",
+  "drugsProdLegendDelay": "Vertraging",
+  "drugsProdLegendContamination": "Besmetting",
+  "drugsProdLegendYieldLoss": "Opbrengstverlies",
+  "drugsProdLegendInstability": "Instabiliteit",
+  "drugsProdLegendCombined": "Gecombineerd probleem",
+  "drugsProdCollect": "Ophalen",
+  "drugsProdAvailableDrugs": "Beschikbare drugs",
+  "drugsProdNoDrugs": "Geen drugs beschikbaar",
+  "drugsProdAutoCollectOn": "Auto-oogst aan (VIP)",
+  "drugsProdAutoCollectOff": "Auto-oogst uit (VIP)",
+  "drugsProdVipMaterialsOk": "Alle materialen beschikbaar",
+  "drugsProdVipBuyMissing": "VIP: ontbrekende materialen in één klik kopen",
+  "drugsProdTimeYieldLine": "Tijd: {time} | Opbrengst: {yield} g",
+  "@drugsProdTimeYieldLine": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "yield": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdSlotsUsedLine": "{facility}: {used}/{total} slots in gebruik",
+  "@drugsProdSlotsUsedLine": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      },
+      "used": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdFacilityRequired": "{facility} vereist",
+  "@drugsProdFacilityRequired": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdRankRequired": "Rank {rank} vereist",
+  "@drugsProdRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdNoFreeSlot": "Geen vrije productieslot beschikbaar",
+  "drugsProdOpenFacilities": "Open faciliteiten",
+  "drugsProdStartProduction": "Start productie",
+  "drugsProdAutoCollectUpdated": "Auto-oogst bijgewerkt",
+  "drugsProdKpiActive": "actief",
+  "drugsProdKpiReady": "klaar",
+  "drugsProdYieldGrams": "Opbrengst: {qty} gram",
+  "@drugsProdYieldGrams": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsTimeMinSuffix": "min",
+  "drugsFmtMinutes": "{minutes} min",
+  "@drugsFmtMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFmtHoursOnly": "{hours} uur",
+  "@drugsFmtHoursOnly": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFmtHoursMinutes": "{hours} uur {minutes} min",
+  "@drugsFmtHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsTimeHourEn": "u",
+  "drugsProdConfirmTitle": "Weet je het zeker?",
+  "drugsProdConfirmBody": "{drugName}-productie starten?",
+  "@drugsProdConfirmBody": {
+    "placeholders": {
+      "drugName": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdTimeLine": "Tijd: {time}",
+  "@drugsProdTimeLine": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdYieldLine": "Opbrengst: {yield} gram",
+  "@drugsProdYieldLine": {
+    "placeholders": {
+      "yield": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdRiskNote": "Productie kan soms tegenslag krijgen. Betere upgrades verlagen het risico, hoge drugshitte verhoogt het.",
+  "drugsProdRequiredMaterialsHeader": "Benodigde materialen:",
+  "drugsProdStartProductionButton": "Start productie",
+  "drugsProdFailed": "Productie mislukt",
+  "drugsProdCollectFailed": "Oogsten mislukt",
+  "drugsProdNeedRank": "Je hebt rank {rank} nodig",
+  "@drugsProdNeedRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdMissingPrefix": "Ontbreekt",
+  "drugsFacilityGreenhouse": "Kas",
+  "drugsFacilityCrackKitchen": "Crackkeuken",
+  "drugsFacilityDarkweb": "Darkweb-winkel",
+  "drugsFacilityMushroomFarm": "Paddenstoelenkwekerij",
+  "drugsFacilityDrugLab": "Drugslab",
+  "drugsVipQuickBuyTitle": "VIP-snelaankoop",
+  "drugsVipAlreadyEnough": "Je hebt al genoeg materialen voor {name}",
+  "@drugsVipAlreadyEnough": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsVipBuyPrompt": "Alle ontbrekende materialen voor {name} in één klik kopen?",
+  "@drugsVipBuyPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsVipTotal": "Totaal: €{amount}",
+  "@drugsVipTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsPurchaseCompleted": "Aankoop voltooid",
+  "drugsPurchaseFailed": "Aankoop mislukt",
+  "drugsServiceErrorGeneric": "Fout",
+  "drugsApiFailedBuyMaterial": "Materiaal kopen mislukt",
+  "drugsApiFailedStartProduction": "Productie starten mislukt",
+  "drugsApiFailedCollect": "Productie oogsten mislukt",
+  "drugsApiFailedSell": "Drugs verkopen mislukt",
+  "drugsApiFailedCut": "Drugs snijden mislukt",
+  "drugsApiFailedShipment": "Zending versturen mislukt",
+  "drugsApiFailedClaim": "Depotzendingen claimen mislukt",
   "nightclub": "Nachtclub",
   "crypto": "Crypto",
   "smuggling": "Smokkelen",

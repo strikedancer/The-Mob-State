@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../models/drug_models.dart';
 import '../services/drug_service.dart';
 import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import '../utils/drug_localizations.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 
@@ -20,9 +22,6 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
   Map<String, DrugMarketPrice> _marketPrices = {};
   bool _isLoading = true;
   String? _currentCountry;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   String _backgroundAsset(double width) {
     return 'assets/images/backgrounds/drug_inventory_bg.png';
@@ -71,10 +70,11 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
+        final t = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_tr('Fout bij laden: $e', 'Error while loading: $e')),
+            content: Text(t.drugsClientErrorLoading('$e')),
           ),
         );
       }
@@ -100,16 +100,12 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
   }
 
   Future<void> _cutDrugs(DrugInventory drug) async {
+    final t = AppLocalizations.of(context)!;
     if (drug.quality == 'D') {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Kwaliteit D kan niet verder gesneden worden.',
-              'Quality D cannot be cut further.',
-            ),
-          ),
+          content: Text(t.drugsCutQualityDCannotCut),
           backgroundColor: Colors.orange,
         ),
       );
@@ -118,8 +114,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
     final qtyToShow = drug.quantity;
     final result = await showDialog<Map<String, dynamic>?>(
       context: context,
-      builder: (ctx) =>
-          _CutDrugsDialog(drug: drug, isNl: _isNl, maxQuantity: qtyToShow),
+      builder: (ctx) => _CutDrugsDialog(drug: drug, maxQuantity: qtyToShow),
     );
     if (result == null) return;
     final quantity = result['quantity'] as int;
@@ -129,12 +124,15 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
       quantity,
     );
     if (mounted) {
+      final loc = AppLocalizations.of(context)!;
+      final rawMsg = cutResult['message'] as String?;
+      final msg = rawMsg != null && rawMsg.isNotEmpty
+          ? localizeDrugClientMessage(loc, rawMsg)
+          : loc.drugsCutFailed;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            cutResult['message'] ?? _tr('Snijden mislukt', 'Cutting failed'),
-          ),
+          content: Text(msg),
           backgroundColor: cutResult['success'] == true
               ? Colors.green
               : Colors.red,
@@ -166,12 +164,15 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
 
         _loadData();
       } else {
+        final loc = AppLocalizations.of(context)!;
+        final rawMsg = result['message'] as String?;
+        final msg = rawMsg != null && rawMsg.isNotEmpty
+            ? localizeDrugClientMessage(loc, rawMsg)
+            : loc.drugsSellFailed;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              result['message'] ?? _tr('Verkoop mislukt', 'Sale failed'),
-            ),
+            content: Text(msg),
             backgroundColor: Colors.red,
           ),
         );
@@ -180,6 +181,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
   }
 
   Future<int?> _showSellDialog(DrugInventory drug) async {
+    final t = AppLocalizations.of(context)!;
     final controller = TextEditingController(text: '1');
     final baseCountryPrice = _getCurrentPrice(drug.drugType);
     final currentPrice = drug.effectivePrice > 0
@@ -190,13 +192,13 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
     return showDialog<int>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('${_tr('Verkoop', 'Sell')} ${drug.drugName}'),
+        title: Text(t.drugsSellDialogTitle(drug.drugName)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${_tr('Beschikbaar', 'Available')}: ${drug.quantity} ${_tr('gram', 'grams')}',
+              t.drugsInvAvailableQty('${drug.quantity}'),
             ),
             const SizedBox(height: 8),
             Container(
@@ -206,7 +208,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                 borderRadius: BorderRadius.circular(999),
               ),
               child: Text(
-                '${_tr('Kwaliteit', 'Quality')}: ${drug.qualityLabel}',
+                t.drugsQualityWithGrade(drug.qualityLabel),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _parseQualityColor(drug.qualityColor),
@@ -215,7 +217,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              '${_tr('Huidige prijs', 'Current price')}: €$currentPrice ${_tr('per gram', 'per gram')}',
+              t.drugsCurrentPricePerGram('$currentPrice'),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.green,
@@ -234,7 +236,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr('Prijzen per land:', 'Prices by country:'),
+                      t.drugsPricesByCountry,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 13,
@@ -248,7 +250,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                           (entry) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 2),
                             child: Text(
-                              '${_getCountryName(entry.key)}: €${(entry.value * drug.qualityMultiplier).round()}',
+                              '${drugCountryDisplayName(t, entry.key)}: €${(entry.value * drug.qualityMultiplier).round()}',
                               style: TextStyle(
                                 fontSize: 13,
                                 color: entry.key == _currentCountry
@@ -270,7 +272,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
               controller: controller,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: _tr('Hoeveelheid (gram)', 'Quantity (grams)'),
+                labelText: t.drugsQuantityGramsField,
                 border: const OutlineInputBorder(),
                 suffixText: '/ ${drug.quantity}',
               ),
@@ -282,7 +284,12 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                 final qty = int.tryParse(value.text) ?? 0;
                 final total = currentPrice * qty;
                 return Text(
-                  '${_tr('Totaal', 'Total')}: €${total.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}',
+                  t.drugsInvTotalLine(
+                    total.toString().replaceAllMapped(
+                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                      (Match m) => '${m[1]}.',
+                    ),
+                  ),
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -296,7 +303,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(t.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -307,9 +314,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                 showTopRightFromSnackBar(
                   context,
                   SnackBar(
-                    content: Text(
-                      _tr('Ongeldige hoeveelheid', 'Invalid quantity'),
-                    ),
+                    content: Text(t.drugsInvalidQuantity),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -319,44 +324,16 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
             ),
-            child: Text(_tr('Verkoop', 'Sell')),
+            child: Text(t.drugsSellAction),
           ),
         ],
       ),
     );
   }
 
-  String _getCountryName(String countryId) {
-    final names = <String, ({String nl, String en})>{
-      'netherlands': (nl: 'Nederland', en: 'Netherlands'),
-      'belgium': (nl: 'België', en: 'Belgium'),
-      'germany': (nl: 'Duitsland', en: 'Germany'),
-      'spain': (nl: 'Spanje', en: 'Spain'),
-      'france': (nl: 'Frankrijk', en: 'France'),
-      'uk': (nl: 'VK', en: 'UK'),
-      'united_kingdom': (nl: 'VK', en: 'UK'),
-      'italy': (nl: 'Italië', en: 'Italy'),
-      'usa': (nl: 'USA', en: 'USA'),
-      'mexico': (nl: 'Mexico', en: 'Mexico'),
-      'colombia': (nl: 'Colombia', en: 'Colombia'),
-      'brazil': (nl: 'Brazilië', en: 'Brazil'),
-      'argentina': (nl: 'Argentinië', en: 'Argentina'),
-      'japan': (nl: 'Japan', en: 'Japan'),
-      'china': (nl: 'China', en: 'China'),
-      'russia': (nl: 'Rusland', en: 'Russia'),
-      'turkey': (nl: 'Turkije', en: 'Turkey'),
-      'united_arab_emirates': (nl: 'VAE', en: 'UAE'),
-      'south_africa': (nl: 'Zuid-Afrika', en: 'South Africa'),
-      'australia': (nl: 'Australië', en: 'Australia'),
-      'switzerland': (nl: 'Zwitserland', en: 'Switzerland'),
-    };
-    final row = names[countryId];
-    if (row == null) return countryId;
-    return _isNl ? row.nl : row.en;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
 
     return LayoutBuilder(
@@ -368,12 +345,12 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: const Color(0xCC111111),
-            title: Text(_tr('Drug Voorraad', 'Drug Inventory')),
+            title: Text(t.drugsInvTitle),
             actions: [
               if (!_isLoading && _inventory.isNotEmpty)
                 _KpiChip(
                   value: '${_inventory.fold(0, (s, i) => s + i.quantity)}g',
-                  label: _tr('voorraad', 'inventory'),
+                  label: t.drugsInvKpiGramsLabel,
                   icon: Icons.inventory_2,
                   color: const Color(0xFFC16CFF),
                 ),
@@ -445,10 +422,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                       ),
                                       const SizedBox(height: 16),
                                       Text(
-                                        _tr(
-                                          'Geen drugs in voorraad',
-                                          'No drugs in inventory',
-                                        ),
+                                        t.drugsInvEmptyTitle,
                                         style: TextStyle(
                                           fontSize: 18,
                                           color: Colors.white,
@@ -457,10 +431,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        _tr(
-                                          'Start productie om drugs te maken',
-                                          'Start production to create drugs',
-                                        ),
+                                        t.drugsInvEmptySubtitle,
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.white.withOpacity(0.68),
@@ -483,10 +454,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          _tr(
-                                            'Voorraad & distributie',
-                                            'Inventory & distribution',
-                                          ),
+                                          t.drugsInvSectionHeader,
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 24,
@@ -495,10 +463,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                         ),
                                         const SizedBox(height: 8),
                                         Text(
-                                          _tr(
-                                            'Verkoop je drugs per kwaliteit en benut prijsverschillen tussen landen.',
-                                            'Sell drugs by quality and use price differences between countries.',
-                                          ),
+                                          t.drugsInvSectionBody,
                                           style: TextStyle(
                                             color: Colors.white.withOpacity(
                                               0.74,
@@ -527,7 +492,13 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                '${_tr('Huidige locatie', 'Current location')}: ${_getCountryName(_currentCountry ?? 'netherlands')}',
+                                                t.drugsInvCurrentLocation(
+                                                  drugCountryDisplayName(
+                                                    t,
+                                                    _currentCountry ??
+                                                        'netherlands',
+                                                  ),
+                                                ),
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16,
@@ -632,7 +603,9 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                   ),
                                                   const SizedBox(height: 10),
                                                   Text(
-                                                    '${_tr('Voorraad', 'Inventory')}: ${drug.quantity} ${_tr('gram', 'grams')}',
+                                                    t.drugsInvStockLine(
+                                                      '${drug.quantity}',
+                                                    ),
                                                   ),
                                                   const SizedBox(height: 6),
                                                   Container(
@@ -651,7 +624,9 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                           ),
                                                     ),
                                                     child: Text(
-                                                      '${_tr('Kwaliteit', 'Quality')}: ${drug.qualityLabel}',
+                                                      t.drugsQualityWithGrade(
+                                                        drug.qualityLabel,
+                                                      ),
                                                       style: TextStyle(
                                                         color:
                                                             _parseQualityColor(
@@ -664,7 +639,17 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                   ),
                                                   const SizedBox(height: 8),
                                                   Text(
-                                                    '${_tr('Huidige waarde', 'Current value')}: €${totalValue.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}',
+                                                    t.drugsInvCurrentValue(
+                                                      totalValue
+                                                          .toString()
+                                                          .replaceAllMapped(
+                                                            RegExp(
+                                                              r'(\d{1,3})(?=(\d{3})+(?!\d))',
+                                                            ),
+                                                            (Match m) =>
+                                                                '${m[1]}.',
+                                                          ),
+                                                    ),
                                                     style: const TextStyle(
                                                       color: Colors.green,
                                                       fontWeight:
@@ -676,7 +661,12 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                   )) ...[
                                                     const SizedBox(height: 4),
                                                     Text(
-                                                      '${_tr('Markt', 'Market')}: ${_marketPrices[drug.drugType]!.trendEmoji} ${(_marketPrices[drug.drugType]!.multiplier * 100).round()}%',
+                                                      t.drugsInvMarketLine(
+                                                        _marketPrices[drug
+                                                                .drugType]!
+                                                            .trendEmoji,
+                                                        '${(_marketPrices[drug.drugType]!.multiplier * 100).round()}',
+                                                      ),
                                                       style: TextStyle(
                                                         fontSize: 11,
                                                         color: Colors.white
@@ -696,10 +686,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                             size: 15,
                                                           ),
                                                           label: Text(
-                                                            _tr(
-                                                              'Verkoop',
-                                                              'Sell',
-                                                            ),
+                                                            t.drugsSellAction,
                                                             style:
                                                                 const TextStyle(
                                                                   fontSize: 12,
@@ -744,10 +731,7 @@ class _DrugInventoryScreenState extends State<DrugInventoryScreen> {
                                                               size: 15,
                                                             ),
                                                             label: Text(
-                                                              _tr(
-                                                                'Snijden',
-                                                                'Cut',
-                                                              ),
+                                                              t.drugsCutAction,
                                                               style: const TextStyle(
                                                                 fontSize: 12,
                                                                 fontWeight:
@@ -862,12 +846,10 @@ class _KpiChip extends StatelessWidget {
 
 class _CutDrugsDialog extends StatefulWidget {
   final DrugInventory drug;
-  final bool isNl;
   final int maxQuantity;
 
   const _CutDrugsDialog({
     required this.drug,
-    required this.isNl,
     required this.maxQuantity,
   });
 
@@ -877,8 +859,6 @@ class _CutDrugsDialog extends StatefulWidget {
 
 class _CutDrugsDialogState extends State<_CutDrugsDialog> {
   late TextEditingController _controller;
-
-  String _tr(String nl, String en) => widget.isNl ? nl : en;
 
   String _nextQuality(String q) {
     const map = {'S': 'A', 'A': 'B', 'B': 'C', 'C': 'D'};
@@ -904,11 +884,12 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final bonus = _bonusMultiplier(widget.drug.quality);
     final nextQ = _nextQuality(widget.drug.quality);
 
     return AlertDialog(
-      title: Text(_tr('Drugs snijden', 'Cut Drugs')),
+      title: Text(t.drugsCutDialogTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -921,9 +902,10 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
               border: Border.all(color: Colors.orange.withOpacity(0.6)),
             ),
             child: Text(
-              _tr(
-                'Kwaliteit ${widget.drug.quality} → $nextQ: +${(bonus * 100).round()}% meer eenheden',
-                'Quality ${widget.drug.quality} → $nextQ: +${(bonus * 100).round()}% more units',
+              t.drugsCutQualityBanner(
+                widget.drug.quality,
+                nextQ,
+                '${(bonus * 100).round()}',
               ),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -936,7 +918,7 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
             controller: _controller,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: _tr('Hoeveelheid (gram)', 'Quantity (grams)'),
+              labelText: t.drugsQuantityGramsField,
               border: const OutlineInputBorder(),
               suffixText: '/ ${widget.maxQuantity}',
             ),
@@ -948,8 +930,15 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
             builder: (context, TextEditingValue val, _) {
               final qty = int.tryParse(val.text) ?? 0;
               final result = (qty * (1 + bonus)).round();
+              final qTail =
+                  _nextQuality(nextQ) == nextQ ? '' : _nextQuality(nextQ);
               return Text(
-                '${_tr('Resultaat', 'Result')}: $qty g $nextQ → $result g ${_nextQuality(nextQ) == nextQ ? '' : nextQ}',
+                t.drugsCutResultLine(
+                  '$qty',
+                  nextQ,
+                  '$result',
+                  qTail,
+                ),
                 style: const TextStyle(color: Colors.white70),
               );
             },
@@ -959,7 +948,7 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(_tr('Annuleren', 'Cancel')),
+          child: Text(t.cancel),
         ),
         ElevatedButton(
           onPressed: () {
@@ -972,7 +961,7 @@ class _CutDrugsDialogState extends State<_CutDrugsDialog> {
             backgroundColor: Colors.deepOrange,
             foregroundColor: Colors.white,
           ),
-          child: Text(_tr('Snijden', 'Cut')),
+          child: Text(t.drugsCutAction),
         ),
       ],
     );

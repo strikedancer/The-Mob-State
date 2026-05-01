@@ -10248,4 +10248,562 @@ class AppLocalizationsNl extends AppLocalizations {
   String cryptoClientErrorPrefix(String detail) {
     return 'Fout: $detail';
   }
+
+  @override
+  String drugsClientErrorLoading(String error) {
+    return 'Fout bij laden: $error';
+  }
+
+  @override
+  String drugsFacilitiesErrorLoading(String error) {
+    return 'Fout bij laden faciliteiten: $error';
+  }
+
+  @override
+  String get drugsInvTitle => 'Drugsvoorraad';
+
+  @override
+  String get drugsInvKpiGramsLabel => 'voorraad';
+
+  @override
+  String get drugsCutQualityDCannotCut =>
+      'Kwaliteit D kan niet verder worden gesneden.';
+
+  @override
+  String get drugsCutFailed => 'Snijden mislukt';
+
+  @override
+  String get drugsSellFailed => 'Verkoop mislukt';
+
+  @override
+  String drugsSellDialogTitle(String name) {
+    return 'Verkoop $name';
+  }
+
+  @override
+  String drugsInvAvailableQty(String qty) {
+    return 'Beschikbaar: $qty g';
+  }
+
+  @override
+  String drugsQualityWithGrade(String grade) {
+    return 'Kwaliteit: $grade';
+  }
+
+  @override
+  String drugsCurrentPricePerGram(String price) {
+    return 'Huidige prijs: €$price per gram';
+  }
+
+  @override
+  String get drugsPricesByCountry => 'Prijzen per land:';
+
+  @override
+  String get drugsQuantityGramsField => 'Hoeveelheid (gram)';
+
+  @override
+  String drugsInvTotalLine(String amount) {
+    return 'Totaal: €$amount';
+  }
+
+  @override
+  String get drugsInvalidQuantity => 'Ongeldige hoeveelheid';
+
+  @override
+  String get drugsSellAction => 'Verkopen';
+
+  @override
+  String get drugsInvEmptyTitle => 'Geen drugs in voorraad';
+
+  @override
+  String get drugsInvEmptySubtitle => 'Start productie om drugs te maken';
+
+  @override
+  String get drugsInvSectionHeader => 'Voorraad & distributie';
+
+  @override
+  String get drugsInvSectionBody =>
+      'Verkoop drugs per kwaliteit en gebruik prijsverschillen tussen landen.';
+
+  @override
+  String drugsInvCurrentLocation(String place) {
+    return 'Huidige locatie: $place';
+  }
+
+  @override
+  String drugsInvStockLine(String qty) {
+    return 'Voorraad: $qty g';
+  }
+
+  @override
+  String drugsInvCurrentValue(String amount) {
+    return 'Huidige waarde: €$amount';
+  }
+
+  @override
+  String drugsInvMarketLine(String emoji, String pct) {
+    return 'Markt: $emoji $pct%';
+  }
+
+  @override
+  String get drugsCutDialogTitle => 'Drugs snijden';
+
+  @override
+  String drugsCutQualityBanner(String fromQ, String toQ, String pct) {
+    return 'Kwaliteit $fromQ → $toQ: +$pct% meer eenheden';
+  }
+
+  @override
+  String drugsCutResultLine(
+    String qty,
+    String qFrom,
+    String result,
+    String qTo,
+  ) {
+    return 'Resultaat: $qty g $qFrom → $result g $qTo';
+  }
+
+  @override
+  String get drugsCutAction => 'Snijden';
+
+  @override
+  String get drugsSlotsLabel => 'slots';
+
+  @override
+  String get drugsFacilitiesTitle => 'Drugsfaciliteiten';
+
+  @override
+  String get drugsFacilitiesHeroTitle => 'Beheer je drugsfaciliteiten';
+
+  @override
+  String get drugsFacilitiesHeroBody =>
+      'Faciliteiten zoals kas, paddenstoelenkwekerij, drugslab, crackkeuken en darkweb-winkel bepalen welke drugs je kunt produceren, hoeveel slots je hebt en hoe sterk kwaliteit, opbrengst en snelheid zijn.';
+
+  @override
+  String get drugsFacCurrentProductions => 'Lopende producties';
+
+  @override
+  String get drugsFacUnknownFacility => 'Onbekende faciliteit';
+
+  @override
+  String get drugsFacUnknownMessage => 'Onbekend bericht';
+
+  @override
+  String get drugsFacUpgradeLockedTitle => '🔒 Drugsupgrade vergrendeld';
+
+  @override
+  String get drugsFacUpgradeLockedBody =>
+      'Je hebt eerst de juiste Narcotica-opleidingsniveaus en certificaten nodig.';
+
+  @override
+  String get drugsFacEquipLockedTitle => '🔒 Apparatuur-upgrade vergrendeld';
+
+  @override
+  String get drugsFacEquipLockedBody =>
+      'Train eerst je Narcotica-track om het volgende upgradeniveau te ontgrendelen.';
+
+  @override
+  String get drugsFacBuy => 'Kopen';
+
+  @override
+  String get drugsFacOwned => 'In bezit';
+
+  @override
+  String get drugsFacPrice => 'Prijs';
+
+  @override
+  String get drugsFacRank => 'Rank';
+
+  @override
+  String get drugsFacDrugTypes => 'Drugs';
+
+  @override
+  String get drugsFacSlots => 'Slots';
+
+  @override
+  String get drugsFacQuality => 'Kwaliteit';
+
+  @override
+  String get drugsFacYield => 'Opbrengst';
+
+  @override
+  String get drugsFacSpeed => 'Snelheid';
+
+  @override
+  String get drugsFacMaxSlots => 'Max. slots';
+
+  @override
+  String drugsFacUpgradeSlots(String cost) {
+    return 'Slots upgraden (€$cost)';
+  }
+
+  @override
+  String get drugsFacEquipmentUpgrades => 'Apparatuur-upgrades';
+
+  @override
+  String get drugsFacMax => 'Max';
+
+  @override
+  String drugsFacLvlPrice(String level, String price) {
+    return 'Lvl $level (€$price)';
+  }
+
+  @override
+  String get drugsHubTitle => 'Drugsomgeving';
+
+  @override
+  String get drugsSubviewProduction => 'Drugsproductie';
+
+  @override
+  String get drugsSubviewFacilities => 'Drugsfaciliteiten';
+
+  @override
+  String get drugsSubviewInventory => 'Drugsvoorraad';
+
+  @override
+  String get drugsTagUndergroundOps => 'Ondergrondse operaties';
+
+  @override
+  String get drugsTagMobileOptimized => 'Mobiel geoptimaliseerd';
+
+  @override
+  String get drugsTagQualityDriven => 'Kwaliteitsgedreven';
+
+  @override
+  String get drugsEmpireTitle => 'Drugsimperium';
+
+  @override
+  String get drugsHubIntro =>
+      'Beheer hier productie, faciliteiten en voorraad. Koop grondstoffen op de zwarte markt terwijl de rest in je eigen drugsomgeving draait.';
+
+  @override
+  String get drugsStatMaterialFlow => 'Materiaalstroom';
+
+  @override
+  String get drugsStatBlackMarket => 'Zwarte markt';
+
+  @override
+  String get drugsStatProductionChain => 'Productieketen';
+
+  @override
+  String get drugsStatProductionChainValue => 'Kas + lab + keuken + darkweb';
+
+  @override
+  String get drugsStatSalesModel => 'Verkoopmodel';
+
+  @override
+  String get drugsStatPerQuality => 'Per kwaliteit';
+
+  @override
+  String get drugsMetricActiveBatches => 'Actieve batches';
+
+  @override
+  String get drugsMetricSlotUsage => 'Slotgebruik';
+
+  @override
+  String get drugsMetricInventoryValue => 'Voorraadwaarde';
+
+  @override
+  String get drugsMetricInventoryGrams => 'Voorraad (gram)';
+
+  @override
+  String get drugsMetricEfficiency => 'Efficiëntie';
+
+  @override
+  String get drugsMetricPoliceHeat => 'Politiehitte';
+
+  @override
+  String get drugsSectionOperations => 'Operaties';
+
+  @override
+  String get drugsSectionOperationsSubtitle =>
+      'Kies een poot van je drugsimperium';
+
+  @override
+  String get drugsCardFacilitiesEyebrow => 'Infrastructuur';
+
+  @override
+  String get drugsCardFacilitiesTitle => 'Faciliteiten';
+
+  @override
+  String get drugsCardFacilitiesBody =>
+      'Koop en upgrade kas, drugslab, crackkeuken en darkweb-winkel voor meer slots, snelheid en kwaliteit.';
+
+  @override
+  String get drugsCardProductionEyebrow => 'Pijplijn';
+
+  @override
+  String get drugsCardProductionTitle => 'Productie';
+
+  @override
+  String get drugsCardProductionBody =>
+      'Start batches, volg timers en verzamel output met kwaliteitsrolls.';
+
+  @override
+  String get drugsCardInventoryEyebrow => 'Distributie';
+
+  @override
+  String get drugsCardInventoryTitle => 'Voorraad';
+
+  @override
+  String get drugsCardInventoryBody =>
+      'Bekijk stapels per kwaliteit en verkoop tegen de beste marktwaarde.';
+
+  @override
+  String get drugsQualityDistribution => 'Kwaliteitsverdeling';
+
+  @override
+  String get drugsQualityGradeSuperior => 'Superieur';
+
+  @override
+  String get drugsQualityGradeHigh => 'Hoog';
+
+  @override
+  String get drugsQualityGradeStandardPlus => 'Standaard+';
+
+  @override
+  String get drugsQualityGradeStandard => 'Standaard';
+
+  @override
+  String get drugsQualityGradeLow => 'Laag';
+
+  @override
+  String get drugsHeatLevelLow => 'Laag';
+
+  @override
+  String get drugsHeatLevelMedium => 'Gemiddeld';
+
+  @override
+  String get drugsHeatLevelHigh => 'Hoog';
+
+  @override
+  String get drugsHeatLevelCritical => 'Kritiek';
+
+  @override
+  String get drugsProdTitle => 'Drugsproductie';
+
+  @override
+  String get drugsProdLineTitle => 'Productielijn';
+
+  @override
+  String get drugsProdLineSubtitle =>
+      'Start batches, monitor slotcapaciteit en stuur kwaliteit bij via kas- en lab-upgrades.';
+
+  @override
+  String get drugsProdActiveProductions => 'Actieve producties';
+
+  @override
+  String get drugsProdIncidentLegend => 'Incidentlegenda';
+
+  @override
+  String get drugsProdHide => 'Verbergen';
+
+  @override
+  String get drugsProdShow => 'Tonen';
+
+  @override
+  String get drugsProdLegendDelay => 'Vertraging';
+
+  @override
+  String get drugsProdLegendContamination => 'Besmetting';
+
+  @override
+  String get drugsProdLegendYieldLoss => 'Opbrengstverlies';
+
+  @override
+  String get drugsProdLegendInstability => 'Instabiliteit';
+
+  @override
+  String get drugsProdLegendCombined => 'Gecombineerd probleem';
+
+  @override
+  String get drugsProdCollect => 'Ophalen';
+
+  @override
+  String get drugsProdAvailableDrugs => 'Beschikbare drugs';
+
+  @override
+  String get drugsProdNoDrugs => 'Geen drugs beschikbaar';
+
+  @override
+  String get drugsProdAutoCollectOn => 'Auto-oogst aan (VIP)';
+
+  @override
+  String get drugsProdAutoCollectOff => 'Auto-oogst uit (VIP)';
+
+  @override
+  String get drugsProdVipMaterialsOk => 'Alle materialen beschikbaar';
+
+  @override
+  String get drugsProdVipBuyMissing =>
+      'VIP: ontbrekende materialen in één klik kopen';
+
+  @override
+  String drugsProdTimeYieldLine(String time, String yield) {
+    return 'Tijd: $time | Opbrengst: $yield g';
+  }
+
+  @override
+  String drugsProdSlotsUsedLine(String facility, String used, String total) {
+    return '$facility: $used/$total slots in gebruik';
+  }
+
+  @override
+  String drugsProdFacilityRequired(String facility) {
+    return '$facility vereist';
+  }
+
+  @override
+  String drugsProdRankRequired(String rank) {
+    return 'Rank $rank vereist';
+  }
+
+  @override
+  String get drugsProdNoFreeSlot => 'Geen vrije productieslot beschikbaar';
+
+  @override
+  String get drugsProdOpenFacilities => 'Open faciliteiten';
+
+  @override
+  String get drugsProdStartProduction => 'Start productie';
+
+  @override
+  String get drugsProdAutoCollectUpdated => 'Auto-oogst bijgewerkt';
+
+  @override
+  String get drugsProdKpiActive => 'actief';
+
+  @override
+  String get drugsProdKpiReady => 'klaar';
+
+  @override
+  String drugsProdYieldGrams(String qty) {
+    return 'Opbrengst: $qty gram';
+  }
+
+  @override
+  String get drugsTimeMinSuffix => 'min';
+
+  @override
+  String drugsFmtMinutes(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String drugsFmtHoursOnly(String hours) {
+    return '$hours uur';
+  }
+
+  @override
+  String drugsFmtHoursMinutes(String hours, String minutes) {
+    return '$hours uur $minutes min';
+  }
+
+  @override
+  String get drugsTimeHourEn => 'u';
+
+  @override
+  String get drugsProdConfirmTitle => 'Weet je het zeker?';
+
+  @override
+  String drugsProdConfirmBody(String drugName) {
+    return '$drugName-productie starten?';
+  }
+
+  @override
+  String drugsProdTimeLine(String time) {
+    return 'Tijd: $time';
+  }
+
+  @override
+  String drugsProdYieldLine(String yield) {
+    return 'Opbrengst: $yield gram';
+  }
+
+  @override
+  String get drugsProdRiskNote =>
+      'Productie kan soms tegenslag krijgen. Betere upgrades verlagen het risico, hoge drugshitte verhoogt het.';
+
+  @override
+  String get drugsProdRequiredMaterialsHeader => 'Benodigde materialen:';
+
+  @override
+  String get drugsProdStartProductionButton => 'Start productie';
+
+  @override
+  String get drugsProdFailed => 'Productie mislukt';
+
+  @override
+  String get drugsProdCollectFailed => 'Oogsten mislukt';
+
+  @override
+  String drugsProdNeedRank(String rank) {
+    return 'Je hebt rank $rank nodig';
+  }
+
+  @override
+  String get drugsProdMissingPrefix => 'Ontbreekt';
+
+  @override
+  String get drugsFacilityGreenhouse => 'Kas';
+
+  @override
+  String get drugsFacilityCrackKitchen => 'Crackkeuken';
+
+  @override
+  String get drugsFacilityDarkweb => 'Darkweb-winkel';
+
+  @override
+  String get drugsFacilityMushroomFarm => 'Paddenstoelenkwekerij';
+
+  @override
+  String get drugsFacilityDrugLab => 'Drugslab';
+
+  @override
+  String get drugsVipQuickBuyTitle => 'VIP-snelaankoop';
+
+  @override
+  String drugsVipAlreadyEnough(String name) {
+    return 'Je hebt al genoeg materialen voor $name';
+  }
+
+  @override
+  String drugsVipBuyPrompt(String name) {
+    return 'Alle ontbrekende materialen voor $name in één klik kopen?';
+  }
+
+  @override
+  String drugsVipTotal(String amount) {
+    return 'Totaal: €$amount';
+  }
+
+  @override
+  String get drugsPurchaseCompleted => 'Aankoop voltooid';
+
+  @override
+  String get drugsPurchaseFailed => 'Aankoop mislukt';
+
+  @override
+  String get drugsServiceErrorGeneric => 'Fout';
+
+  @override
+  String get drugsApiFailedBuyMaterial => 'Materiaal kopen mislukt';
+
+  @override
+  String get drugsApiFailedStartProduction => 'Productie starten mislukt';
+
+  @override
+  String get drugsApiFailedCollect => 'Productie oogsten mislukt';
+
+  @override
+  String get drugsApiFailedSell => 'Drugs verkopen mislukt';
+
+  @override
+  String get drugsApiFailedCut => 'Drugs snijden mislukt';
+
+  @override
+  String get drugsApiFailedShipment => 'Zending versturen mislukt';
+
+  @override
+  String get drugsApiFailedClaim => 'Depotzendingen claimen mislukt';
 }

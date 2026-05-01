@@ -17913,6 +17913,971 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error: {detail}'**
   String cryptoClientErrorPrefix(String detail);
+
+  /// No description provided for @drugsClientErrorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while loading: {error}'**
+  String drugsClientErrorLoading(String error);
+
+  /// No description provided for @drugsFacilitiesErrorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while loading facilities: {error}'**
+  String drugsFacilitiesErrorLoading(String error);
+
+  /// No description provided for @drugsInvTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Inventory'**
+  String get drugsInvTitle;
+
+  /// No description provided for @drugsInvKpiGramsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'inventory'**
+  String get drugsInvKpiGramsLabel;
+
+  /// No description provided for @drugsCutQualityDCannotCut.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality D cannot be cut further.'**
+  String get drugsCutQualityDCannotCut;
+
+  /// No description provided for @drugsCutFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cutting failed'**
+  String get drugsCutFailed;
+
+  /// No description provided for @drugsSellFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale failed'**
+  String get drugsSellFailed;
+
+  /// No description provided for @drugsSellDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell {name}'**
+  String drugsSellDialogTitle(String name);
+
+  /// No description provided for @drugsInvAvailableQty.
+  ///
+  /// In en, this message translates to:
+  /// **'Available: {qty} g'**
+  String drugsInvAvailableQty(String qty);
+
+  /// No description provided for @drugsQualityWithGrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality: {grade}'**
+  String drugsQualityWithGrade(String grade);
+
+  /// No description provided for @drugsCurrentPricePerGram.
+  ///
+  /// In en, this message translates to:
+  /// **'Current price: €{price} per gram'**
+  String drugsCurrentPricePerGram(String price);
+
+  /// No description provided for @drugsPricesByCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Prices by country:'**
+  String get drugsPricesByCountry;
+
+  /// No description provided for @drugsQuantityGramsField.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity (grams)'**
+  String get drugsQuantityGramsField;
+
+  /// No description provided for @drugsInvTotalLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: €{amount}'**
+  String drugsInvTotalLine(String amount);
+
+  /// No description provided for @drugsInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid quantity'**
+  String get drugsInvalidQuantity;
+
+  /// No description provided for @drugsSellAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell'**
+  String get drugsSellAction;
+
+  /// No description provided for @drugsInvEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No drugs in inventory'**
+  String get drugsInvEmptyTitle;
+
+  /// No description provided for @drugsInvEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start production to create drugs'**
+  String get drugsInvEmptySubtitle;
+
+  /// No description provided for @drugsInvSectionHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory & distribution'**
+  String get drugsInvSectionHeader;
+
+  /// No description provided for @drugsInvSectionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell drugs by quality and use price differences between countries.'**
+  String get drugsInvSectionBody;
+
+  /// No description provided for @drugsInvCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current location: {place}'**
+  String drugsInvCurrentLocation(String place);
+
+  /// No description provided for @drugsInvStockLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory: {qty} g'**
+  String drugsInvStockLine(String qty);
+
+  /// No description provided for @drugsInvCurrentValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Current value: €{amount}'**
+  String drugsInvCurrentValue(String amount);
+
+  /// No description provided for @drugsInvMarketLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Market: {emoji} {pct}%'**
+  String drugsInvMarketLine(String emoji, String pct);
+
+  /// No description provided for @drugsCutDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cut drugs'**
+  String get drugsCutDialogTitle;
+
+  /// No description provided for @drugsCutQualityBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality {fromQ} → {toQ}: +{pct}% more units'**
+  String drugsCutQualityBanner(String fromQ, String toQ, String pct);
+
+  /// No description provided for @drugsCutResultLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Result: {qty} g {qFrom} → {result} g {qTo}'**
+  String drugsCutResultLine(
+    String qty,
+    String qFrom,
+    String result,
+    String qTo,
+  );
+
+  /// No description provided for @drugsCutAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Cut'**
+  String get drugsCutAction;
+
+  /// No description provided for @drugsSlotsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'slots'**
+  String get drugsSlotsLabel;
+
+  /// No description provided for @drugsFacilitiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Facilities'**
+  String get drugsFacilitiesTitle;
+
+  /// No description provided for @drugsFacilitiesHeroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your drug facilities'**
+  String get drugsFacilitiesHeroTitle;
+
+  /// No description provided for @drugsFacilitiesHeroBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Facilities such as greenhouse, mushroom farm, drug lab, crack kitchen and darkweb storefront determine which drugs you can produce, how many slots you have and how strong your quality, yield and speed are.'**
+  String get drugsFacilitiesHeroBody;
+
+  /// No description provided for @drugsFacCurrentProductions.
+  ///
+  /// In en, this message translates to:
+  /// **'Current productions'**
+  String get drugsFacCurrentProductions;
+
+  /// No description provided for @drugsFacUnknownFacility.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown facility'**
+  String get drugsFacUnknownFacility;
+
+  /// No description provided for @drugsFacUnknownMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown message'**
+  String get drugsFacUnknownMessage;
+
+  /// No description provided for @drugsFacUpgradeLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🔒 Drug upgrade locked'**
+  String get drugsFacUpgradeLockedTitle;
+
+  /// No description provided for @drugsFacUpgradeLockedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You first need the right Narcotics education levels and certifications.'**
+  String get drugsFacUpgradeLockedBody;
+
+  /// No description provided for @drugsFacEquipLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🔒 Equipment upgrade locked'**
+  String get drugsFacEquipLockedTitle;
+
+  /// No description provided for @drugsFacEquipLockedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Train your Narcotics track first to unlock the next upgrade level.'**
+  String get drugsFacEquipLockedBody;
+
+  /// No description provided for @drugsFacBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get drugsFacBuy;
+
+  /// No description provided for @drugsFacOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned'**
+  String get drugsFacOwned;
+
+  /// No description provided for @drugsFacPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get drugsFacPrice;
+
+  /// No description provided for @drugsFacRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get drugsFacRank;
+
+  /// No description provided for @drugsFacDrugTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get drugsFacDrugTypes;
+
+  /// No description provided for @drugsFacSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Slots'**
+  String get drugsFacSlots;
+
+  /// No description provided for @drugsFacQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality'**
+  String get drugsFacQuality;
+
+  /// No description provided for @drugsFacYield.
+  ///
+  /// In en, this message translates to:
+  /// **'Yield'**
+  String get drugsFacYield;
+
+  /// No description provided for @drugsFacSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get drugsFacSpeed;
+
+  /// No description provided for @drugsFacMaxSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Max slots'**
+  String get drugsFacMaxSlots;
+
+  /// No description provided for @drugsFacUpgradeSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade slots (€{cost})'**
+  String drugsFacUpgradeSlots(String cost);
+
+  /// No description provided for @drugsFacEquipmentUpgrades.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment upgrades'**
+  String get drugsFacEquipmentUpgrades;
+
+  /// No description provided for @drugsFacMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get drugsFacMax;
+
+  /// No description provided for @drugsFacLvlPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Lvl {level} (€{price})'**
+  String drugsFacLvlPrice(String level, String price);
+
+  /// No description provided for @drugsHubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Environment'**
+  String get drugsHubTitle;
+
+  /// No description provided for @drugsSubviewProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Production'**
+  String get drugsSubviewProduction;
+
+  /// No description provided for @drugsSubviewFacilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Facilities'**
+  String get drugsSubviewFacilities;
+
+  /// No description provided for @drugsSubviewInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Inventory'**
+  String get drugsSubviewInventory;
+
+  /// No description provided for @drugsTagUndergroundOps.
+  ///
+  /// In en, this message translates to:
+  /// **'Underground Operations'**
+  String get drugsTagUndergroundOps;
+
+  /// No description provided for @drugsTagMobileOptimized.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Optimized'**
+  String get drugsTagMobileOptimized;
+
+  /// No description provided for @drugsTagQualityDriven.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality Driven'**
+  String get drugsTagQualityDriven;
+
+  /// No description provided for @drugsEmpireTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Empire'**
+  String get drugsEmpireTitle;
+
+  /// No description provided for @drugsHubIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage production, facilities and inventory here. Buy materials on the Black Market while the rest runs in your own drug environment.'**
+  String get drugsHubIntro;
+
+  /// No description provided for @drugsStatMaterialFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Material flow'**
+  String get drugsStatMaterialFlow;
+
+  /// No description provided for @drugsStatBlackMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Black Market'**
+  String get drugsStatBlackMarket;
+
+  /// No description provided for @drugsStatProductionChain.
+  ///
+  /// In en, this message translates to:
+  /// **'Production chain'**
+  String get drugsStatProductionChain;
+
+  /// No description provided for @drugsStatProductionChainValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Greenhouse + Lab + Kitchen + Darkweb'**
+  String get drugsStatProductionChainValue;
+
+  /// No description provided for @drugsStatSalesModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales model'**
+  String get drugsStatSalesModel;
+
+  /// No description provided for @drugsStatPerQuality.
+  ///
+  /// In en, this message translates to:
+  /// **'Per quality'**
+  String get drugsStatPerQuality;
+
+  /// No description provided for @drugsMetricActiveBatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Active batches'**
+  String get drugsMetricActiveBatches;
+
+  /// No description provided for @drugsMetricSlotUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Slot usage'**
+  String get drugsMetricSlotUsage;
+
+  /// No description provided for @drugsMetricInventoryValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory value'**
+  String get drugsMetricInventoryValue;
+
+  /// No description provided for @drugsMetricInventoryGrams.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory grams'**
+  String get drugsMetricInventoryGrams;
+
+  /// No description provided for @drugsMetricEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Efficiency'**
+  String get drugsMetricEfficiency;
+
+  /// No description provided for @drugsMetricPoliceHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Police Heat'**
+  String get drugsMetricPoliceHeat;
+
+  /// No description provided for @drugsSectionOperations.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations'**
+  String get drugsSectionOperations;
+
+  /// No description provided for @drugsSectionOperationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a branch of your drug empire'**
+  String get drugsSectionOperationsSubtitle;
+
+  /// No description provided for @drugsCardFacilitiesEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Infrastructure'**
+  String get drugsCardFacilitiesEyebrow;
+
+  /// No description provided for @drugsCardFacilitiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Facilities'**
+  String get drugsCardFacilitiesTitle;
+
+  /// No description provided for @drugsCardFacilitiesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy and upgrade greenhouse, drug lab, crack kitchen and darkweb storefront for more slots, speed and quality.'**
+  String get drugsCardFacilitiesBody;
+
+  /// No description provided for @drugsCardProductionEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pipeline'**
+  String get drugsCardProductionEyebrow;
+
+  /// No description provided for @drugsCardProductionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Production'**
+  String get drugsCardProductionTitle;
+
+  /// No description provided for @drugsCardProductionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Start batches, track timers and collect output with quality rolls.'**
+  String get drugsCardProductionBody;
+
+  /// No description provided for @drugsCardInventoryEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Distribution'**
+  String get drugsCardInventoryEyebrow;
+
+  /// No description provided for @drugsCardInventoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get drugsCardInventoryTitle;
+
+  /// No description provided for @drugsCardInventoryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'View stacks by quality and sell at the best market value.'**
+  String get drugsCardInventoryBody;
+
+  /// No description provided for @drugsQualityDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality distribution'**
+  String get drugsQualityDistribution;
+
+  /// No description provided for @drugsQualityGradeSuperior.
+  ///
+  /// In en, this message translates to:
+  /// **'Superior'**
+  String get drugsQualityGradeSuperior;
+
+  /// No description provided for @drugsQualityGradeHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get drugsQualityGradeHigh;
+
+  /// No description provided for @drugsQualityGradeStandardPlus.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard+'**
+  String get drugsQualityGradeStandardPlus;
+
+  /// No description provided for @drugsQualityGradeStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get drugsQualityGradeStandard;
+
+  /// No description provided for @drugsQualityGradeLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get drugsQualityGradeLow;
+
+  /// No description provided for @drugsHeatLevelLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get drugsHeatLevelLow;
+
+  /// No description provided for @drugsHeatLevelMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get drugsHeatLevelMedium;
+
+  /// No description provided for @drugsHeatLevelHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get drugsHeatLevelHigh;
+
+  /// No description provided for @drugsHeatLevelCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get drugsHeatLevelCritical;
+
+  /// No description provided for @drugsProdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Production'**
+  String get drugsProdTitle;
+
+  /// No description provided for @drugsProdLineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Production line'**
+  String get drugsProdLineTitle;
+
+  /// No description provided for @drugsProdLineSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start batches, monitor slot capacity and tune quality via greenhouse and lab upgrades.'**
+  String get drugsProdLineSubtitle;
+
+  /// No description provided for @drugsProdActiveProductions.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Productions'**
+  String get drugsProdActiveProductions;
+
+  /// No description provided for @drugsProdIncidentLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Incident legend'**
+  String get drugsProdIncidentLegend;
+
+  /// No description provided for @drugsProdHide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get drugsProdHide;
+
+  /// No description provided for @drugsProdShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get drugsProdShow;
+
+  /// No description provided for @drugsProdLegendDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Delay'**
+  String get drugsProdLegendDelay;
+
+  /// No description provided for @drugsProdLegendContamination.
+  ///
+  /// In en, this message translates to:
+  /// **'Contamination'**
+  String get drugsProdLegendContamination;
+
+  /// No description provided for @drugsProdLegendYieldLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Yield loss'**
+  String get drugsProdLegendYieldLoss;
+
+  /// No description provided for @drugsProdLegendInstability.
+  ///
+  /// In en, this message translates to:
+  /// **'Instability'**
+  String get drugsProdLegendInstability;
+
+  /// No description provided for @drugsProdLegendCombined.
+  ///
+  /// In en, this message translates to:
+  /// **'Combined issue'**
+  String get drugsProdLegendCombined;
+
+  /// No description provided for @drugsProdCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect'**
+  String get drugsProdCollect;
+
+  /// No description provided for @drugsProdAvailableDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Drugs'**
+  String get drugsProdAvailableDrugs;
+
+  /// No description provided for @drugsProdNoDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'No drugs available'**
+  String get drugsProdNoDrugs;
+
+  /// No description provided for @drugsProdAutoCollectOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-collect on (VIP)'**
+  String get drugsProdAutoCollectOn;
+
+  /// No description provided for @drugsProdAutoCollectOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-collect off (VIP)'**
+  String get drugsProdAutoCollectOff;
+
+  /// No description provided for @drugsProdVipMaterialsOk.
+  ///
+  /// In en, this message translates to:
+  /// **'All materials available'**
+  String get drugsProdVipMaterialsOk;
+
+  /// No description provided for @drugsProdVipBuyMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP: buy missing materials in one click'**
+  String get drugsProdVipBuyMissing;
+
+  /// No description provided for @drugsProdTimeYieldLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Time: {time} | Yield: {yield}g'**
+  String drugsProdTimeYieldLine(String time, String yield);
+
+  /// No description provided for @drugsProdSlotsUsedLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{facility}: {used}/{total} slots used'**
+  String drugsProdSlotsUsedLine(String facility, String used, String total);
+
+  /// No description provided for @drugsProdFacilityRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'{facility} required'**
+  String drugsProdFacilityRequired(String facility);
+
+  /// No description provided for @drugsProdRankRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank {rank} required'**
+  String drugsProdRankRequired(String rank);
+
+  /// No description provided for @drugsProdNoFreeSlot.
+  ///
+  /// In en, this message translates to:
+  /// **'No free production slot available'**
+  String get drugsProdNoFreeSlot;
+
+  /// No description provided for @drugsProdOpenFacilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Open facilities'**
+  String get drugsProdOpenFacilities;
+
+  /// No description provided for @drugsProdStartProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Start production'**
+  String get drugsProdStartProduction;
+
+  /// No description provided for @drugsProdAutoCollectUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-collect updated'**
+  String get drugsProdAutoCollectUpdated;
+
+  /// No description provided for @drugsProdKpiActive.
+  ///
+  /// In en, this message translates to:
+  /// **'active'**
+  String get drugsProdKpiActive;
+
+  /// No description provided for @drugsProdKpiReady.
+  ///
+  /// In en, this message translates to:
+  /// **'ready'**
+  String get drugsProdKpiReady;
+
+  /// No description provided for @drugsProdYieldGrams.
+  ///
+  /// In en, this message translates to:
+  /// **'Yield: {qty} grams'**
+  String drugsProdYieldGrams(String qty);
+
+  /// No description provided for @drugsTimeMinSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get drugsTimeMinSuffix;
+
+  /// No description provided for @drugsFmtMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String drugsFmtMinutes(String minutes);
+
+  /// No description provided for @drugsFmtHoursOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hr'**
+  String drugsFmtHoursOnly(String hours);
+
+  /// No description provided for @drugsFmtHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hr {minutes} min'**
+  String drugsFmtHoursMinutes(String hours, String minutes);
+
+  /// No description provided for @drugsTimeHourEn.
+  ///
+  /// In en, this message translates to:
+  /// **'hr'**
+  String get drugsTimeHourEn;
+
+  /// No description provided for @drugsProdConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get drugsProdConfirmTitle;
+
+  /// No description provided for @drugsProdConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Start {drugName} production?'**
+  String drugsProdConfirmBody(String drugName);
+
+  /// No description provided for @drugsProdTimeLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Time: {time}'**
+  String drugsProdTimeLine(String time);
+
+  /// No description provided for @drugsProdYieldLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Yield: {yield} grams'**
+  String drugsProdYieldLine(String yield);
+
+  /// No description provided for @drugsProdRiskNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Production can sometimes suffer setbacks. Better upgrades lower the risk, high drug heat increases it.'**
+  String get drugsProdRiskNote;
+
+  /// No description provided for @drugsProdRequiredMaterialsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Required materials:'**
+  String get drugsProdRequiredMaterialsHeader;
+
+  /// No description provided for @drugsProdStartProductionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Production'**
+  String get drugsProdStartProductionButton;
+
+  /// No description provided for @drugsProdFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Production failed'**
+  String get drugsProdFailed;
+
+  /// No description provided for @drugsProdCollectFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect failed'**
+  String get drugsProdCollectFailed;
+
+  /// No description provided for @drugsProdNeedRank.
+  ///
+  /// In en, this message translates to:
+  /// **'You need rank {rank}'**
+  String drugsProdNeedRank(String rank);
+
+  /// No description provided for @drugsProdMissingPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get drugsProdMissingPrefix;
+
+  /// No description provided for @drugsFacilityGreenhouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Greenhouse'**
+  String get drugsFacilityGreenhouse;
+
+  /// No description provided for @drugsFacilityCrackKitchen.
+  ///
+  /// In en, this message translates to:
+  /// **'Crack Kitchen'**
+  String get drugsFacilityCrackKitchen;
+
+  /// No description provided for @drugsFacilityDarkweb.
+  ///
+  /// In en, this message translates to:
+  /// **'Darkweb Storefront'**
+  String get drugsFacilityDarkweb;
+
+  /// No description provided for @drugsFacilityMushroomFarm.
+  ///
+  /// In en, this message translates to:
+  /// **'Mushroom Farm'**
+  String get drugsFacilityMushroomFarm;
+
+  /// No description provided for @drugsFacilityDrugLab.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Lab'**
+  String get drugsFacilityDrugLab;
+
+  /// No description provided for @drugsVipQuickBuyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP quick purchase'**
+  String get drugsVipQuickBuyTitle;
+
+  /// No description provided for @drugsVipAlreadyEnough.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have enough materials for {name}'**
+  String drugsVipAlreadyEnough(String name);
+
+  /// No description provided for @drugsVipBuyPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy all missing materials for {name} in one click?'**
+  String drugsVipBuyPrompt(String name);
+
+  /// No description provided for @drugsVipTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: €{amount}'**
+  String drugsVipTotal(String amount);
+
+  /// No description provided for @drugsPurchaseCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase completed'**
+  String get drugsPurchaseCompleted;
+
+  /// No description provided for @drugsPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed'**
+  String get drugsPurchaseFailed;
+
+  /// No description provided for @drugsServiceErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get drugsServiceErrorGeneric;
+
+  /// No description provided for @drugsApiFailedBuyMaterial.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to buy material'**
+  String get drugsApiFailedBuyMaterial;
+
+  /// No description provided for @drugsApiFailedStartProduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start production'**
+  String get drugsApiFailedStartProduction;
+
+  /// No description provided for @drugsApiFailedCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to collect production'**
+  String get drugsApiFailedCollect;
+
+  /// No description provided for @drugsApiFailedSell.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to sell drugs'**
+  String get drugsApiFailedSell;
+
+  /// No description provided for @drugsApiFailedCut.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to cut drugs'**
+  String get drugsApiFailedCut;
+
+  /// No description provided for @drugsApiFailedShipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send shipment'**
+  String get drugsApiFailedShipment;
+
+  /// No description provided for @drugsApiFailedClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to claim depot shipments'**
+  String get drugsApiFailedClaim;
 }
 
 class _AppLocalizationsDelegate

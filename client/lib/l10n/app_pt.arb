@@ -5983,7 +5983,7 @@
       }
     }
   },
-  "nightclubErrorLoading": "Error loading nightclub: {error}",
+  "nightclubErrorLoading": "Erro ao carregar boate: {error}",
   "@nightclubErrorLoading": {
     "placeholders": {
       "error": {
@@ -5991,10 +5991,10 @@
       }
     }
   },
-  "nightclubServiceErrorStats": "Could not load nightclub stats",
-  "nightclubServiceErrorLeaderboard": "Could not load leaderboard",
-  "nightclubServiceErrorSeason": "Could not load season ranking",
-  "nightclubErrorWithDetail": "Error: {detail}",
+  "nightclubServiceErrorStats": "Não foi possível carregar as estatísticas da boate",
+  "nightclubServiceErrorLeaderboard": "Não foi possível carregar o placar",
+  "nightclubServiceErrorSeason": "Não foi possível carregar a classificação da temporada",
+  "nightclubErrorWithDetail": "Erro: {detail}",
   "@nightclubErrorWithDetail": {
     "placeholders": {
       "detail": {
@@ -6002,20 +6002,20 @@
       }
     }
   },
-  "nightclubResidentDjContractFailed": "Resident DJ contract failed",
-  "nightclubScheduleEventFailed": "Failed to schedule event",
-  "nightclubMarketingUpgradeFailed": "Marketing upgrade failed",
-  "nightclubUpgradeFailed": "Upgrade failed",
-  "nightclubIncidentResponseFailed": "Incident response failed",
-  "nightclubRivalActionFailed": "Rival action failed",
-  "nightclubSupplierContractFailed": "Supplier contract failed",
-  "nightclubPromoterFailed": "Promoter failed",
-  "nightclubHeatCooldownFailed": "Heat cooldown failed",
-  "nightclubSmugglingFailed": "Smuggling failed",
-  "nightclubCounterIntelFailed": "Counter-intel failed",
-  "nightclubHospitalityStockFailed": "Hospitality stock failed",
-  "nightclubHospitalityPricingFailed": "Hospitality pricing failed",
-  "nightclubCurrentVisitorsPct": "Current visitors: {pct}%",
+  "nightclubResidentDjContractFailed": "Contrato de DJ residente falhou",
+  "nightclubScheduleEventFailed": "Falha ao agendar evento",
+  "nightclubMarketingUpgradeFailed": "Falha na atualização de marketing",
+  "nightclubUpgradeFailed": "Falha na atualização",
+  "nightclubIncidentResponseFailed": "Falha na resposta ao incidente",
+  "nightclubRivalActionFailed": "Ação rival falhou",
+  "nightclubSupplierContractFailed": "Contrato do fornecedor falhou",
+  "nightclubPromoterFailed": "Falha no promotor",
+  "nightclubHeatCooldownFailed": "Falha no resfriamento do calor",
+  "nightclubSmugglingFailed": "Contrabando falhou",
+  "nightclubCounterIntelFailed": "Contra-inteligência falhou",
+  "nightclubHospitalityStockFailed": "O estoque de hospitalidade falhou",
+  "nightclubHospitalityPricingFailed": "Falha no preço de hospitalidade",
+  "nightclubCurrentVisitorsPct": "Visitantes atuais: {pct}%",
   "@nightclubCurrentVisitorsPct": {
     "placeholders": {
       "pct": {
@@ -6023,12 +6023,12 @@
       }
     }
   },
-  "nightclubCommandDeckTitle": "Nightclub Command Deck",
-  "nightclubOpsDeckRevenueToday": "Revenue today",
-  "nightclubStockValueLabel": "Stock value",
-  "nightclubCrewOccupancy": "Crew occupancy",
-  "nightclubOperationalRisk": "Operational risk",
-  "nightclubIncidents24h": "{count} incidents (24h)",
+  "nightclubCommandDeckTitle": "Deck de comando da boate",
+  "nightclubOpsDeckRevenueToday": "Receita hoje",
+  "nightclubStockValueLabel": "Valor das ações",
+  "nightclubCrewOccupancy": "Ocupação da Crew",
+  "nightclubOperationalRisk": "Risco operacional",
+  "nightclubIncidents24h": "{count} incidentes (24h)",
   "@nightclubIncidents24h": {
     "placeholders": {
       "count": {
@@ -6036,13 +6036,13 @@
       }
     }
   },
-  "nightclubActiveCrewShifts": "Active crew shifts",
-  "nightclubRecentCrewHistory": "Recent crew history",
+  "nightclubActiveCrewShifts": "Turnos ativos da Crew",
+  "nightclubRecentCrewHistory": "História recente da Crew",
   "nightclubBadgeVip": "VIP",
-  "nightclubBadgeStandard": "STANDARD",
-  "nightclubActiveDj": "Active DJ",
-  "nightclubActiveDjNone": "Active DJ: none",
-  "nightclubUntilTime": "until {time}",
+  "nightclubBadgeStandard": "PADRÃO",
+  "nightclubActiveDj": "DJ ativo",
+  "nightclubActiveDjNone": "DJ ativo: nenhum",
+  "nightclubUntilTime": "até {time}",
   "@nightclubUntilTime": {
     "placeholders": {
       "time": {
@@ -6050,21 +6050,21 @@
       }
     }
   },
-  "nightclubActiveSecurity": "Active security",
-  "nightclubActiveSecurityNone": "Active security: none",
-  "nightclubNoDjsLoaded": "No DJs loaded. Refresh the screen.",
-  "nightclubNoSecurityLoaded": "No security loaded. Refresh the screen.",
-  "nightclubCrowdBoost": "Crowd boost",
-  "nightclubCostPerHour": "Cost",
-  "nightclubReputationLabel": "Reputation",
-  "nightclubSpecialtyLabel": "Specialty",
-  "nightclubTheftReduction": "Theft reduction",
-  "nightclubShiftCost": "Shift cost",
-  "nightclubSelectedStock": "Selected",
-  "nightclubAvailableGrams": "Available",
-  "nightclubMaxChip": "MAX",
-  "nightclubStoredInNightclub": "Stored in nightclub",
-  "nightclubCurrentStockGrams": "Current stock: {grams}g",
+  "nightclubActiveSecurity": "Segurança ativa",
+  "nightclubActiveSecurityNone": "Segurança ativa: nenhuma",
+  "nightclubNoDjsLoaded": "Nenhum DJ carregado. Atualize a tela.",
+  "nightclubNoSecurityLoaded": "Nenhuma segurança carregada. Atualize a tela.",
+  "nightclubCrowdBoost": "Aumento de multidão",
+  "nightclubCostPerHour": "Custo",
+  "nightclubReputationLabel": "Reputação",
+  "nightclubSpecialtyLabel": "Especialidade",
+  "nightclubTheftReduction": "Redução de roubo",
+  "nightclubShiftCost": "Custo de turno",
+  "nightclubSelectedStock": "Selecionada",
+  "nightclubAvailableGrams": "Disponível",
+  "nightclubMaxChip": "MÁX.",
+  "nightclubStoredInNightclub": "Armazenado em boate",
+  "nightclubCurrentStockGrams": "Estoque atual: {grams}g",
   "@nightclubCurrentStockGrams": {
     "placeholders": {
       "grams": {
@@ -6072,9 +6072,9 @@
       }
     }
   },
-  "nightclubNoStoredDrugs": "No stored drugs yet.",
-  "nightclubStockZeroSoldOut": "Current stock is 0g (everything has been sold).",
-  "nightclubQualityWithValue": "Quality: {value}",
+  "nightclubNoStoredDrugs": "Ainda não há medicamentos armazenados.",
+  "nightclubStockZeroSoldOut": "O estoque atual é de 0g (tudo foi vendido).",
+  "nightclubQualityWithValue": "Qualidade: {value}",
   "@nightclubQualityWithValue": {
     "placeholders": {
       "value": {
@@ -6082,7 +6082,7 @@
       }
     }
   },
-  "nightclubGramsStock": "{grams}g stock",
+  "nightclubGramsStock": "{grams}g estoque",
   "@nightclubGramsStock": {
     "placeholders": {
       "grams": {
@@ -6090,10 +6090,10 @@
       }
     }
   },
-  "nightclubOperationsLabTitle": "Operations Lab (11 systems)",
-  "nightclubSectionResidentDjContract": "1) Resident DJ contract",
-  "nightclubContractDiscount": "Contract discount",
-  "nightclubContractDuration": "Contract duration",
+  "nightclubOperationsLabTitle": "Laboratório de Operações (11 sistemas)",
+  "nightclubSectionResidentDjContract": "1) Contrato de DJ residente",
+  "nightclubContractDiscount": "Desconto de contrato",
+  "nightclubContractDuration": "Duração do contrato",
   "nightclubContractDays": "{count, plural, one{{count} day} other{{count} days}}",
   "@nightclubContractDays": {
     "placeholders": {
@@ -6102,16 +6102,16 @@
       }
     }
   },
-  "nightclubStartResidentContract": "Start resident contract",
-  "nightclubSectionEventCalendar": "2) Dynamic event calendar",
-  "nightclubRecommendedToday": "Recommended today",
-  "nightclubEventTemplate": "Event template",
-  "nightclubScheduleEventFiveMin": "Schedule event (+5 min)",
-  "nightclubUpcomingEvents": "Upcoming events",
-  "nightclubSectionUpgradeTree": "3) Upgrade tree",
-  "nightclubUpgradeSoundRig": "Sound rig",
-  "nightclubUpgradeVipLounge": "VIP lounge",
-  "nightclubUpgradeSurveillance": "Surveillance",
+  "nightclubStartResidentContract": "Iniciar contrato de residente",
+  "nightclubSectionEventCalendar": "2) Calendário de eventos dinâmico",
+  "nightclubRecommendedToday": "Recomendado hoje",
+  "nightclubEventTemplate": "Modelo de evento",
+  "nightclubScheduleEventFiveMin": "Agendar evento (+5 min)",
+  "nightclubUpcomingEvents": "Próximos eventos",
+  "nightclubSectionUpgradeTree": "3) Árvore de atualização",
+  "nightclubUpgradeSoundRig": "Equipamento de som",
+  "nightclubUpgradeVipLounge": "Sala VIP",
+  "nightclubUpgradeSurveillance": "Vigilância",
   "nightclubUpgradeWithCost": "{name} ({cost})",
   "@nightclubUpgradeWithCost": {
     "placeholders": {
@@ -6123,39 +6123,39 @@
       }
     }
   },
-  "nightclubChooseUpgrade": "Choose upgrade",
-  "nightclubUpgradeAlreadyMaxMessage": "This upgrade is already max level.",
-  "nightclubUpgradeAlreadyMaxed": "Upgrade already maxed",
-  "nightclubUpgradeNow": "Upgrade now",
-  "nightclubMarketingInvestment": "Marketing investment",
-  "nightclubInvestMarketing": "Invest in marketing",
-  "nightclubSectionPoliceHeat": "4) Police heat & incidents",
-  "nightclubHeatLabel": "Heat",
-  "nightclubRaidRisk": "Raid risk",
-  "nightclubCooldownLabel": "Cooldown",
-  "nightclubStartHeatCooldown": "Start heat cooldown",
-  "nightclubBribe": "Bribe",
-  "nightclubLockdown": "Lockdown",
-  "nightclubCounterIntelShort": "Counter-intel",
-  "nightclubSectionStaffMorale": "5) Staff fatigue & morale",
-  "nightclubMorale": "Morale",
-  "nightclubFatigue": "Fatigue",
-  "nightclubStaffing": "Staffing",
-  "nightclubSectionSupplierPromoter": "6) Supplier & promoter",
-  "nightclubSupplierContract": "Supplier contract",
-  "nightclubActivateSupplier": "Activate supplier",
-  "nightclubPromoterProfile": "Promoter profile",
-  "nightclubHirePromoter": "Hire promoter",
-  "nightclubSectionVipClientele": "7) VIP clientele & staff traits",
-  "nightclubVipShare": "VIP share",
-  "nightclubSpendMultiplier": "Spend x",
-  "nightclubTier": "Tier",
-  "nightclubSectionSmugglingRoutes": "8) Smuggling routes",
-  "nightclubReady": "Ready",
-  "nightclubRoute": "Route",
-  "nightclubStartRoute": "Start route",
-  "nightclubLastRoute": "Last route",
-  "nightclubRouteLockUntil": "Route lock active until {date}",
+  "nightclubChooseUpgrade": "Escolha a atualização",
+  "nightclubUpgradeAlreadyMaxMessage": "Esta atualização já está no nível máximo.",
+  "nightclubUpgradeAlreadyMaxed": "A atualização já atingiu o limite máximo",
+  "nightclubUpgradeNow": "Atualize agora",
+  "nightclubMarketingInvestment": "Investimento em marketing",
+  "nightclubInvestMarketing": "Invista em marketing",
+  "nightclubSectionPoliceHeat": "4) Calor e incidentes policiais",
+  "nightclubHeatLabel": "Aquecer",
+  "nightclubRaidRisk": "Risco de ataque",
+  "nightclubCooldownLabel": "Esfriar",
+  "nightclubStartHeatCooldown": "Iniciar o resfriamento do calor",
+  "nightclubBribe": "Suborno",
+  "nightclubLockdown": "Confinamento",
+  "nightclubCounterIntelShort": "Contra-inteligência",
+  "nightclubSectionStaffMorale": "5) Fadiga e moral da equipe",
+  "nightclubMorale": "Moral",
+  "nightclubFatigue": "Fadiga",
+  "nightclubStaffing": "Pessoal",
+  "nightclubSectionSupplierPromoter": "6) Fornecedor e promotor",
+  "nightclubSupplierContract": "Contrato do fornecedor",
+  "nightclubActivateSupplier": "Ativar fornecedor",
+  "nightclubPromoterProfile": "Perfil do promotor",
+  "nightclubHirePromoter": "Contratar promotor",
+  "nightclubSectionVipClientele": "7) Clientela VIP e características da equipe",
+  "nightclubVipShare": "Compartilhamento VIP",
+  "nightclubSpendMultiplier": "Gaste x",
+  "nightclubTier": "Nível",
+  "nightclubSectionSmugglingRoutes": "8) Rotas de contrabando",
+  "nightclubReady": "Preparar",
+  "nightclubRoute": "Rota",
+  "nightclubStartRoute": "Iniciar rota",
+  "nightclubLastRoute": "Última rota",
+  "nightclubRouteLockUntil": "Bloqueio de rota ativo até {date}",
   "@nightclubRouteLockUntil": {
     "placeholders": {
       "date": {
@@ -6163,18 +6163,18 @@
       }
     }
   },
-  "nightclubSectionBarKitchen": "9) Bar & Kitchen management",
-  "nightclubServiceLevel": "Service level",
-  "nightclubStockStatus": "Stock status",
-  "nightclubSpoilageRisk": "Spoilage risk",
-  "nightclubDrinksFoodStock": "Drinks/Food stock",
-  "nightclubBuyStock": "Buy stock",
-  "nightclubMenuPricingMode": "Menu pricing mode",
-  "nightclubApplyPricing": "Apply pricing",
-  "nightclubSectionRivals": "10) Rival clubs + counter-intel",
-  "nightclubSearchPlayerName": "Search player name",
-  "nightclubTargetName": "Target (name)",
-  "nightclubRivalCrowdLine": "{name} • {country} • crowd {pct}%",
+  "nightclubSectionBarKitchen": "9) Gestão de bar e cozinha",
+  "nightclubServiceLevel": "Nível de serviço",
+  "nightclubStockStatus": "Status do estoque",
+  "nightclubSpoilageRisk": "Risco de deterioração",
+  "nightclubDrinksFoodStock": "Bebidas/estoque de alimentos",
+  "nightclubBuyStock": "Comprar ações",
+  "nightclubMenuPricingMode": "Modo de preço do menu",
+  "nightclubApplyPricing": "Aplicar preços",
+  "nightclubSectionRivals": "10) Clubes rivais + contra-inteligência",
+  "nightclubSearchPlayerName": "Pesquisar nome do jogador",
+  "nightclubTargetName": "Alvo (nome)",
+  "nightclubRivalCrowdLine": "{name} • {country} • multidão {pct}%",
   "@nightclubRivalCrowdLine": {
     "placeholders": {
       "name": {
@@ -6188,25 +6188,25 @@
       }
     }
   },
-  "nightclubSabotage": "Sabotage",
-  "nightclubPromoWar": "Promo war",
-  "nightclubCounterIntelSweep": "Counter-intel sweep",
-  "nightclubMitigation": "Mitigation",
-  "nightclubSectionTimeline": "11) Operations timeline",
-  "nightclubNoTimelineEvents": "No timeline events.",
-  "nightclubOperationsAlerts": "Operations alerts",
-  "nightclubNoCriticalAlerts": "No critical alerts.",
-  "nightclubQuickAction": "Quick action",
-  "nightclubMgmtCrewTitle": "Crew & shifts",
-  "nightclubMgmtCrewSubtitle": "Staffing, performance and shift history.",
-  "nightclubMgmtDrugsTitle": "Drug storage",
-  "nightclubMgmtDrugsSubtitle": "Manage and transfer inventory in grams.",
-  "nightclubMgmtDjTitle": "DJ command",
-  "nightclubMgmtDjSubtitle": "Choose DJ, shift length and live crowd boost.",
-  "nightclubMgmtSecurityTitle": "Security unit",
-  "nightclubMgmtSecuritySubtitle": "Theft reduction, costs and active security.",
-  "nightclubMgmtOpsLabTitle": "Ops Lab",
-  "nightclubMgmtOpsLabSubtitleAlert": "Live alerts: {alerts} | Smuggling: {smuggling}",
+  "nightclubSabotage": "Sabotar",
+  "nightclubPromoWar": "Guerra promocional",
+  "nightclubCounterIntelSweep": "Varredura contra-inteligência",
+  "nightclubMitigation": "Mitigação",
+  "nightclubSectionTimeline": "11) Cronograma de operações",
+  "nightclubNoTimelineEvents": "Nenhum evento na linha do tempo.",
+  "nightclubOperationsAlerts": "Alertas de operações",
+  "nightclubNoCriticalAlerts": "Sem alertas críticos.",
+  "nightclubQuickAction": "Ação rápida",
+  "nightclubMgmtCrewTitle": "Crew e turnos",
+  "nightclubMgmtCrewSubtitle": "Pessoal, desempenho e histórico de turnos.",
+  "nightclubMgmtDrugsTitle": "Armazenamento de medicamentos",
+  "nightclubMgmtDrugsSubtitle": "Gerencie e transfira estoque em gramas.",
+  "nightclubMgmtDjTitle": "Comando DJ",
+  "nightclubMgmtDjSubtitle": "Escolha o DJ, a duração do turno e o aumento da multidão ao vivo.",
+  "nightclubMgmtSecurityTitle": "Unidade de segurança",
+  "nightclubMgmtSecuritySubtitle": "Redução de roubos, custos e segurança ativa.",
+  "nightclubMgmtOpsLabTitle": "Laboratório de operações",
+  "nightclubMgmtOpsLabSubtitleAlert": "Alertas ao vivo: {alerts} | Contrabando: {smuggling}",
   "@nightclubMgmtOpsLabSubtitleAlert": {
     "placeholders": {
       "alerts": {
@@ -6217,17 +6217,17 @@
       }
     }
   },
-  "nightclubMgmtOpsLabSubtitleDefault": "11 systems for events, upgrades, routes and rivals.",
-  "nightclubManagementPanelTitle": "Nightclub management",
-  "nightclubChooseZoneHint": "Choose a management zone and control everything without nested inner-scroll.",
-  "nightclubChipCrew": "Crew",
-  "nightclubChipStorage": "Storage",
-  "nightclubChipDjShift": "DJ shift",
-  "nightclubChipSecurity": "Security",
-  "nightclubChipOpsAlerts": "Ops alerts",
-  "nightclubNone": "None",
-  "nightclubIntelligenceCardTitle": "Nightclub Intelligence",
-  "nightclubSeasonStatus": "Season status",
+  "nightclubMgmtOpsLabSubtitleDefault": "11 sistemas para eventos, atualizações, rotas e rivais.",
+  "nightclubManagementPanelTitle": "Gestão de boate",
+  "nightclubChooseZoneHint": "Escolha uma zona de gerenciamento e controle tudo sem rolagem interna aninhada.",
+  "nightclubChipCrew": "Equipe",
+  "nightclubChipStorage": "Armazenar",
+  "nightclubChipDjShift": "Mudança de DJ",
+  "nightclubChipSecurity": "Segurança",
+  "nightclubChipOpsAlerts": "Alertas de operações",
+  "nightclubNone": "Nenhum",
+  "nightclubIntelligenceCardTitle": "Inteligência de boate",
+  "nightclubSeasonStatus": "Situação da temporada",
   "nightclubSeasonCountdown": "{days}d {hours}h {minutes}m",
   "@nightclubSeasonCountdown": {
     "placeholders": {
@@ -6242,7 +6242,7 @@
       }
     }
   },
-  "nightclubShiftHours": "{hours} h",
+  "nightclubShiftHours": "{hours}h",
   "@nightclubShiftHours": {
     "placeholders": {
       "hours": {
@@ -6250,7 +6250,7 @@
       }
     }
   },
-  "nightclubTimeMinutes": "{minutes} min",
+  "nightclubTimeMinutes": "{minutes} minutos",
   "@nightclubTimeMinutes": {
     "placeholders": {
       "minutes": {
@@ -6276,5 +6276,408 @@
         "type": "String"
       }
     }
-  }
+  },
+  "drugsClientErrorLoading": "Erro ao carregar: {error}",
+  "@drugsClientErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFacilitiesErrorLoading": "Erro ao carregar recursos: {error}",
+  "@drugsFacilitiesErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvTitle": "Inventário de Medicamentos",
+  "drugsInvKpiGramsLabel": "inventário",
+  "drugsCutQualityDCannotCut": "A qualidade D não pode ser mais reduzida.",
+  "drugsCutFailed": "Falha no corte",
+  "drugsSellFailed": "Falha na venda",
+  "drugsSellDialogTitle": "Vender {name}",
+  "@drugsSellDialogTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvAvailableQty": "Disponível: {qty} g",
+  "@drugsInvAvailableQty": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsQualityWithGrade": "Qualidade: {grade}",
+  "@drugsQualityWithGrade": {
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCurrentPricePerGram": "Preço atual: €{price} por grama",
+  "@drugsCurrentPricePerGram": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsPricesByCountry": "Preços por país:",
+  "drugsQuantityGramsField": "Quantidade (gramas)",
+  "drugsInvTotalLine": "Total: €{amount}",
+  "@drugsInvTotalLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvalidQuantity": "Quantidade inválida",
+  "drugsSellAction": "Vender",
+  "drugsInvEmptyTitle": "Não há medicamentos em estoque",
+  "drugsInvEmptySubtitle": "Inicie a produção para criar medicamentos",
+  "drugsInvSectionHeader": "Estoque e distribuição",
+  "drugsInvSectionBody": "Vender medicamentos por qualidade e usar diferenças de preços entre países.",
+  "drugsInvCurrentLocation": "Localização atual: {place}",
+  "@drugsInvCurrentLocation": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvStockLine": "Inventário: {qty}g",
+  "@drugsInvStockLine": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvCurrentValue": "Valor atual: €{amount}",
+  "@drugsInvCurrentValue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsInvMarketLine": "Mercado: {emoji} {pct}%",
+  "@drugsInvMarketLine": {
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCutDialogTitle": "Cortar drogas",
+  "drugsCutQualityBanner": "Qualidade {fromQ} → {toQ}: +{pct}% mais unidades",
+  "@drugsCutQualityBanner": {
+    "placeholders": {
+      "fromQ": {
+        "type": "String"
+      },
+      "toQ": {
+        "type": "String"
+      },
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCutResultLine": "Resultado: {qty}g {qFrom} → {result}g {qTo}",
+  "@drugsCutResultLine": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      },
+      "qFrom": {
+        "type": "String"
+      },
+      "result": {
+        "type": "String"
+      },
+      "qTo": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsCutAction": "Corte",
+  "drugsSlotsLabel": "slots",
+  "drugsFacilitiesTitle": "Instalações de drogas",
+  "drugsFacilitiesHeroTitle": "Gerencie suas instalações de medicamentos",
+  "drugsFacilitiesHeroBody": "Instalações como estufa, fazenda de cogumelos, laboratório de drogas, cozinha de crack e loja darkweb determinam quais drogas você pode produzir, quantos slots você tem e quão forte é sua qualidade, rendimento e velocidade.",
+  "drugsFacCurrentProductions": "Produções atuais",
+  "drugsFacUnknownFacility": "Instalação desconhecida",
+  "drugsFacUnknownMessage": "Mensagem desconhecida",
+  "drugsFacUpgradeLockedTitle": "🔒 Atualização de medicamento bloqueada",
+  "drugsFacUpgradeLockedBody": "Primeiro, você precisa dos níveis e certificações corretos de educação em Narcóticos.",
+  "drugsFacEquipLockedTitle": "🔒 Atualização de equipamento bloqueada",
+  "drugsFacEquipLockedBody": "Treine primeiro sua trilha de Narcóticos para desbloquear o próximo nível de atualização.",
+  "drugsFacBuy": "Comprar",
+  "drugsFacOwned": "Controlada",
+  "drugsFacPrice": "Preço",
+  "drugsFacRank": "Classificação",
+  "drugsFacDrugTypes": "Drogas",
+  "drugsFacSlots": "Caça-níqueis",
+  "drugsFacQuality": "Qualidade",
+  "drugsFacYield": "Colheita",
+  "drugsFacSpeed": "Velocidade",
+  "drugsFacMaxSlots": "Slots máximos",
+  "drugsFacUpgradeSlots": "Slots de atualização (€{cost})",
+  "@drugsFacUpgradeSlots": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFacEquipmentUpgrades": "Atualizações de equipamentos",
+  "drugsFacMax": "Máx.",
+  "drugsFacLvlPrice": "Nível {level} (€{price})",
+  "@drugsFacLvlPrice": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsHubTitle": "Ambiente de drogas",
+  "drugsSubviewProduction": "Produção de Medicamentos",
+  "drugsSubviewFacilities": "Instalações de drogas",
+  "drugsSubviewInventory": "Inventário de Medicamentos",
+  "drugsTagUndergroundOps": "Operações Subterrâneas",
+  "drugsTagMobileOptimized": "Otimizado para celular",
+  "drugsTagQualityDriven": "Orientado para a qualidade",
+  "drugsEmpireTitle": "Império das Drogas",
+  "drugsHubIntro": "Gerencie produção, instalações e estoque aqui. Compre materiais no Mercado Negro enquanto o resto funciona em seu próprio ambiente de drogas.",
+  "drugsStatMaterialFlow": "Fluxo de materiais",
+  "drugsStatBlackMarket": "Mercado negro",
+  "drugsStatProductionChain": "Cadeia produtiva",
+  "drugsStatProductionChainValue": "Estufa + Laboratório + Cozinha + Darkweb",
+  "drugsStatSalesModel": "Modelo de vendas",
+  "drugsStatPerQuality": "Por qualidade",
+  "drugsMetricActiveBatches": "Lotes ativos",
+  "drugsMetricSlotUsage": "Uso de slots",
+  "drugsMetricInventoryValue": "Valor do estoque",
+  "drugsMetricInventoryGrams": "Gramas de estoque",
+  "drugsMetricEfficiency": "Eficiência",
+  "drugsMetricPoliceHeat": "Calor Policial",
+  "drugsSectionOperations": "Operações",
+  "drugsSectionOperationsSubtitle": "Escolha um ramo do seu império das drogas",
+  "drugsCardFacilitiesEyebrow": "Infraestrutura",
+  "drugsCardFacilitiesTitle": "Instalações",
+  "drugsCardFacilitiesBody": "Compre e atualize estufa, laboratório de drogas, cozinha de crack e loja darkweb para obter mais slots, velocidade e qualidade.",
+  "drugsCardProductionEyebrow": "Gasoduto",
+  "drugsCardProductionTitle": "Produção",
+  "drugsCardProductionBody": "Inicie lotes, monitore cronômetros e colete resultados com rolos de qualidade.",
+  "drugsCardInventoryEyebrow": "Distribuição",
+  "drugsCardInventoryTitle": "Inventário",
+  "drugsCardInventoryBody": "Visualize as pilhas por qualidade e venda pelo melhor valor de mercado.",
+  "drugsQualityDistribution": "Distribuição de qualidade",
+  "drugsQualityGradeSuperior": "Superiora",
+  "drugsQualityGradeHigh": "Alta",
+  "drugsQualityGradeStandardPlus": "Padrão+",
+  "drugsQualityGradeStandard": "Padrão",
+  "drugsQualityGradeLow": "Baixo",
+  "drugsHeatLevelLow": "Baixo",
+  "drugsHeatLevelMedium": "Média",
+  "drugsHeatLevelHigh": "Alta",
+  "drugsHeatLevelCritical": "Crítica",
+  "drugsProdTitle": "Produção de Medicamentos",
+  "drugsProdLineTitle": "Linha de produção",
+  "drugsProdLineSubtitle": "Inicie lotes, monitore a capacidade dos slots e ajuste a qualidade por meio de atualizações de estufas e laboratórios.",
+  "drugsProdActiveProductions": "Produções Ativas",
+  "drugsProdIncidentLegend": "Legenda do incidente",
+  "drugsProdHide": "Esconder",
+  "drugsProdShow": "Mostrar",
+  "drugsProdLegendDelay": "Atraso",
+  "drugsProdLegendContamination": "Contaminação",
+  "drugsProdLegendYieldLoss": "Perda de rendimento",
+  "drugsProdLegendInstability": "Instabilidade",
+  "drugsProdLegendCombined": "Problema combinado",
+  "drugsProdCollect": "Coletar",
+  "drugsProdAvailableDrugs": "Medicamentos Disponíveis",
+  "drugsProdNoDrugs": "Não há medicamentos disponíveis",
+  "drugsProdAutoCollectOn": "Coleta automática ativada (VIP)",
+  "drugsProdAutoCollectOff": "Coleta automática desativada (VIP)",
+  "drugsProdVipMaterialsOk": "Todos os materiais disponíveis",
+  "drugsProdVipBuyMissing": "VIP: compre materiais que faltam com um clique",
+  "drugsProdTimeYieldLine": "Horário: {time} | Rendimento: {yield}g",
+  "@drugsProdTimeYieldLine": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "yield": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdSlotsUsedLine": "{facility}: {used}/{total} slots usados",
+  "@drugsProdSlotsUsedLine": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      },
+      "used": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdFacilityRequired": "{facility} obrigatório",
+  "@drugsProdFacilityRequired": {
+    "placeholders": {
+      "facility": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdRankRequired": "Classificação {rank} necessária",
+  "@drugsProdRankRequired": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdNoFreeSlot": "Nenhum slot de produção gratuito disponível",
+  "drugsProdOpenFacilities": "Instalações abertas",
+  "drugsProdStartProduction": "Iniciar produção",
+  "drugsProdAutoCollectUpdated": "Coleta automática atualizada",
+  "drugsProdKpiActive": "ativa",
+  "drugsProdKpiReady": "preparar",
+  "drugsProdYieldGrams": "Rendimento: {qty} gramas",
+  "@drugsProdYieldGrams": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsTimeMinSuffix": "min",
+  "drugsFmtMinutes": "{minutes} minutos",
+  "@drugsFmtMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFmtHoursOnly": "{hours} horas",
+  "@drugsFmtHoursOnly": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsFmtHoursMinutes": "{hours}h {minutes}min",
+  "@drugsFmtHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsTimeHourEn": "horas",
+  "drugsProdConfirmTitle": "Tem certeza?",
+  "drugsProdConfirmBody": "Iniciar {drugName} produção?",
+  "@drugsProdConfirmBody": {
+    "placeholders": {
+      "drugName": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdTimeLine": "Horário: {time}",
+  "@drugsProdTimeLine": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdYieldLine": "Rendimento: {yield} gramas",
+  "@drugsProdYieldLine": {
+    "placeholders": {
+      "yield": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdRiskNote": "A produção às vezes pode sofrer contratempos. Melhores atualizações reduzem o risco, o alto calor da droga aumenta-o.",
+  "drugsProdRequiredMaterialsHeader": "Materiais necessários:",
+  "drugsProdStartProductionButton": "Iniciar produção",
+  "drugsProdFailed": "Falha na produção",
+  "drugsProdCollectFailed": "Falha na coleta",
+  "drugsProdNeedRank": "Você precisa de classificação {rank}",
+  "@drugsProdNeedRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsProdMissingPrefix": "Ausente",
+  "drugsFacilityGreenhouse": "Estufa",
+  "drugsFacilityCrackKitchen": "Cozinha Rachadura",
+  "drugsFacilityDarkweb": "Vitrine Darkweb",
+  "drugsFacilityMushroomFarm": "Fazenda de Cogumelos",
+  "drugsFacilityDrugLab": "Laboratório de Drogas",
+  "drugsVipQuickBuyTitle": "Compra rápida VIP",
+  "drugsVipAlreadyEnough": "Você já tem materiais suficientes para {name}",
+  "@drugsVipAlreadyEnough": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsVipBuyPrompt": "Comprar todos os materiais que faltam por {name} com um clique?",
+  "@drugsVipBuyPrompt": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsVipTotal": "Total: €{amount}",
+  "@drugsVipTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "drugsPurchaseCompleted": "Compra concluída",
+  "drugsPurchaseFailed": "Falha na compra",
+  "drugsServiceErrorGeneric": "Erro",
+  "drugsApiFailedBuyMaterial": "Não consegui comprar material",
+  "drugsApiFailedStartProduction": "Falha ao iniciar a produção",
+  "drugsApiFailedCollect": "Falha ao coletar a produção",
+  "drugsApiFailedSell": "Não conseguiu vender drogas",
+  "drugsApiFailedCut": "Não conseguiu cortar as drogas",
+  "drugsApiFailedShipment": "Falha ao enviar remessa",
+  "drugsApiFailedClaim": "Falha ao reivindicar remessas de depósito"
 }
