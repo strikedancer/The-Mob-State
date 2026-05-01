@@ -260,7 +260,14 @@ String _supportModuleLabel(AppLocalizations l10n, String value) {
 }
 
 class SupportTicketsScreen extends StatefulWidget {
-  const SupportTicketsScreen({super.key, this.onSeenSnapshotChanged});
+  /// When true (e.g. web dashboard panel), no [AppBar] — parent provides chrome.
+  final bool embedded;
+
+  const SupportTicketsScreen({
+    super.key,
+    this.embedded = false,
+    this.onSeenSnapshotChanged,
+  });
 
   final VoidCallback? onSeenSnapshotChanged;
 
@@ -354,15 +361,14 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
       if (nextSelectedId != null) {
         await _loadTicketDetail(nextSelectedId);
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('_loadTickets failed: $e\n$st');
       if (!mounted) return;
       final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            '${l10n.supportLoadTicketsFailed}: $e',
-          ),
+          content: Text(l10n.supportLoadTicketsFailed),
           backgroundColor: Colors.red,
         ),
       );
@@ -445,15 +451,14 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
         _attachmentName = file.name;
         _attachmentMimeType = file.mimeType ?? 'image/jpeg';
       });
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('_pickAttachment failed: $e\n$st');
       if (!mounted) return;
       final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            '${l10n.supportPickImageFailed}: $e',
-          ),
+          content: Text(l10n.supportPickImageFailed),
           backgroundColor: Colors.red,
         ),
       );
@@ -547,14 +552,13 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
           ),
         );
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('_createTicket failed: $e\n$st');
       if (mounted) {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(
-              '${l10n.supportCreateTicketFailed}: $e',
-            ),
+            content: Text(l10n.supportCreateTicketFailed),
             backgroundColor: Colors.red,
           ),
         );
@@ -592,14 +596,13 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
           backgroundColor: Colors.green,
         ),
       );
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('_sendReply failed: $e\n$st');
       if (!mounted) return;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            '${l10n.supportReplySendFailed}: $e',
-          ),
+          content: Text(l10n.supportReplySendFailed),
           backgroundColor: Colors.red,
         ),
       );
@@ -857,7 +860,7 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                Text('${_tickets.length}'),
+                Text(l10n.supportTicketsCountInList(_tickets.length.toString())),
               ],
             ),
             const SizedBox(height: 8),
@@ -1241,7 +1244,9 @@ class _SupportTicketsScreenState extends State<SupportTicketsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.supportTicketsScreenTitle)),
+      appBar: widget.embedded
+          ? null
+          : AppBar(title: Text(l10n.supportTicketsScreenTitle)),
       body: RefreshIndicator(
         onRefresh: _refreshScreen,
         child: ListView(

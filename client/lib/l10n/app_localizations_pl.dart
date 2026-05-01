@@ -10401,6 +10401,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get supportMyTickets => 'Moje bilety';
 
   @override
+  String supportTicketsCountInList(String count) {
+    return '$count';
+  }
+
+  @override
   String get supportMyTicketsIntro =>
       'Wsparcie odpowiada teraz bezpośrednio na tym ekranie. Nadal możesz opcjonalnie otrzymać powiadomienie push, gdy Twój bilet zostanie zaktualizowany.';
 

@@ -5810,6 +5810,14 @@
   "supportSenderYou": "You",
   "supportImageLoadFailed": "Failed to load image.",
   "supportMyTickets": "My tickets",
+  "supportTicketsCountInList": "{count}",
+  "@supportTicketsCountInList": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "supportMyTicketsIntro": "Support now replies directly inside this screen. You can still optionally receive a push notification when your ticket gets an update.",
   "supportNoTicketsYet": "You do not have any tickets yet. Create a new report below.",
   "supportSelectTicketPrompt": "Select a ticket to open the conversation.",

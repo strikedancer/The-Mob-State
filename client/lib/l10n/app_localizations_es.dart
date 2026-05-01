@@ -10433,6 +10433,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportMyTickets => 'Mis tickets';
 
   @override
+  String supportTicketsCountInList(String count) {
+    return '$count';
+  }
+
+  @override
   String get supportMyTicketsIntro =>
       'El soporte responde ahora directamente en esta pantalla. Opcionalmente puedes seguir recibiendo una notificación push cuando tu ticket se actualice.';
 

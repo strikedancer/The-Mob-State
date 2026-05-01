@@ -1664,6 +1664,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     switch (_selectedWebSection) {
       case _WebSection.support:
         return SupportTicketsScreen(
+          embedded: true,
           onSeenSnapshotChanged: _loadSupportBadgeCount,
         );
       case _WebSection.dashboard:

@@ -7947,5 +7947,13 @@
     }
   },
   "crimeCommitUnexpectedError": "Algo deu errado. Por favor, tente novamente.",
-  "gameScreenDash": "-"
+  "gameScreenDash": "-",
+  "supportTicketsCountInList": "{count}",
+  "@supportTicketsCountInList": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

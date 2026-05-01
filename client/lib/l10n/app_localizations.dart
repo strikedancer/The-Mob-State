@@ -18408,6 +18408,12 @@ abstract class AppLocalizations {
   /// **'My tickets'**
   String get supportMyTickets;
 
+  /// No description provided for @supportTicketsCountInList.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}'**
+  String supportTicketsCountInList(String count);
+
   /// No description provided for @supportMyTicketsIntro.
   ///
   /// In en, this message translates to:
