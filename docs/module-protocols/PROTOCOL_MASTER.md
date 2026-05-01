@@ -304,6 +304,21 @@ Zie ook: `docs/game-systems/CREW_MISSIONS_EXPANSION_2026-04-26.md` (paden + uitl
 - Zelfde PowerShell-aanroep kan vanuit de agent **als** Pageant op die machine draait en netwerk/proxy het toelaten.
 - **`docker compose … config`** schrijft resolved env naar stdout — **deel die log-output niet** (bevat secrets). Bij twijfel alleen `logs --tail` delen of lokaal bekijken.
 
+### Plesk Docker-extensie: „No such container” / stopped backend / „image bestaat niet”
+
+De Plesk **Docker**-module houdt soms een **eigen administratie** bij die **niet synchroon** loopt met de echte Docker Engine (bijv. na `docker compose down`, `docker rm`, prune, of wijzigingen via Portainer/CLI). Symptomen:
+
+- Rode melding **No such container:** gevolgd door een **64-teken hex-ID** (Plesk probeert nog een **verwijderde** container te openen of te starten).
+- **`mafia_game-backend-1` op Stopped** terwijl je net deployed hebt, of Plesk beweert dat een **image niet bestaat** terwijl Compose die lokaal wél bouwt.
+
+**Leidend is altijd SSH + Compose** (zelfde commando’s als het PuTTY-blok hierboven), niet de Plesk-UI-knop „Start” op een spook-ID.
+
+**Herstel (kies één pad):**
+
+1. **Standaard (aanbevolen):** vanaf je PC `.\scripts\vps_pull_and_build.ps1` (of handmatig het bash-blok: `git pull origin main`, `docker compose … config`, `docker compose … up -d --build --no-deps backend`). Daarna op de server: `docker ps -a --filter name=mafia_game-backend` — container hoort **Up** te zijn.
+2. **Plesk-UI:** pagina **verversen** (F5). Als de toast blijft: in Docker-module het **project/stack** opnieuw koppelen of de extensie-cache laten verversen (Plesk-versie-afhankelijk); **niet** blijven klikken op een container-ID die Docker al weg heeft.
+3. **Als Compose klaagt over ontbrekende image:** in de projectmap opnieuw **`docker compose --env-file .env.plesk -f docker-compose.plesk.yml build backend`** en daarna **`up -d --no-deps backend`**.
+
 ### Live Online Test Workflow (Verplicht Bij VPS-Only QA)
 
 Als de actuele bron van waarheid online/VPS is en niet lokaal, dan hoort de agent na relevante codewijzigingen niet te stoppen bij alleen lokale edits of een commit.
