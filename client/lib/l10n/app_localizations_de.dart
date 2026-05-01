@@ -2811,6 +2811,947 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get crewUiAppCrews => 'Besatzungen';
+
+  @override
+  String get crewUiTabMyCrew => 'Überblick';
+
+  @override
+  String get crewUiTabCrewHq => 'Hauptquartier und Upgrades';
+
+  @override
+  String get crewUiTabStorageHub => 'Lagerung';
+
+  @override
+  String get crewUiTabMembers => 'Mitglieder';
+
+  @override
+  String get crewUiTabWarRoom => 'Kriegsraum';
+
+  @override
+  String get crewUiTabCrewMissions => 'Crew-Missionen';
+
+  @override
+  String get crewUiTabCarStorage => 'Auto-/Motorradaufbewahrung';
+
+  @override
+  String get crewUiTabBoatStorage => 'Bootslagerung';
+
+  @override
+  String get crewUiTabWeaponStorage => 'Waffenlagerung';
+
+  @override
+  String get crewUiTabAmmoStorage => 'Munitionslager';
+
+  @override
+  String get crewUiTabDrugStorage => 'Arzneimittellagerung';
+
+  @override
+  String get crewUiTabCashStorage => 'Bargeldaufbewahrung';
+
+  @override
+  String get crewUiTabAllCrews => 'Besatzungen';
+
+  @override
+  String get crewUiTabChat => 'Chatten';
+
+  @override
+  String get crewUiActionCreateCrewShort => 'Crew erstellen (50.000 €)';
+
+  @override
+  String get crewUiStateNotInCrewYet => 'Du bist noch nicht in einer Crew';
+
+  @override
+  String get crewUiActionCreateCrew => 'Crew erstellen (50.000 €)';
+
+  @override
+  String get crewUiLabelCrewBank => 'Crew-Bank:';
+
+  @override
+  String get crewUiLabelDeposit => 'Kaution';
+
+  @override
+  String get crewUiLabelWithdraw => 'Zurückziehen';
+
+  @override
+  String get crewUiLabelMyTrustScore => 'Mein Vertrauenswert:';
+
+  @override
+  String get crewUiActionDeleteCrew => 'Crew löschen';
+
+  @override
+  String get crewUiLabelCrewStats => 'Besatzungsstatistiken:';
+
+  @override
+  String get crewUiActionLeaveCrew => 'Verlassen Sie die Crew';
+
+  @override
+  String get crewUiSectionBuildings => 'Hauptquartier und Upgrades';
+
+  @override
+  String get crewUiHintBuildingsTabs =>
+      'Öffnen Sie „HQ & Upgrades“, um das Hauptquartier und alle Mannschaftsgebäude von einem Ort aus zu verwalten.';
+
+  @override
+  String get crewUiSectionCrewStorage => 'Mannschaftslager';
+
+  @override
+  String get crewUiStateNoStorageData => 'Keine Speicherdaten geladen';
+
+  @override
+  String get crewUiActionAddCar => 'Auto/Motorrad hinzufügen';
+
+  @override
+  String get crewUiActionAddBoat => 'Boot hinzufügen';
+
+  @override
+  String get crewUiActionAddWeapon => 'Waffe hinzufügen';
+
+  @override
+  String get crewUiActionAddAmmo => 'Munition hinzufügen';
+
+  @override
+  String get crewUiActionAddDrugs => 'Medikamente hinzufügen';
+
+  @override
+  String get crewUiSectionMembersOverview => 'Mitgliederübersicht';
+
+  @override
+  String get crewUiHintMembersTab =>
+      'Öffnen Sie oben die Registerkarte „Mitglieder“, um eine Mitgliederliste und Beitrittsanfragen anzuzeigen.';
+
+  @override
+  String get crewUiActionGoToMembers => 'Gehen Sie zu Mitglieder';
+
+  @override
+  String get crewUiLabelCrewHq => 'Mannschaftshauptquartier';
+
+  @override
+  String get crewUiActionGoToCrewHq => 'Gehen Sie zum Crew-Hauptquartier';
+
+  @override
+  String get crewUiActionGoToStorage => 'Gehen Sie zu Speicher';
+
+  @override
+  String get crewUiStateJoinCrewFirst =>
+      'Erstellen Sie zunächst eine Crew oder treten Sie einer bei';
+
+  @override
+  String get crewUiStateJoinRequests => 'Beitrittsanfragen';
+
+  @override
+  String get crewUiStateNoJoinRequests => 'Keine ausstehenden Anfragen';
+
+  @override
+  String get crewUiStateNoCrewsFound => 'Keine Besatzungen gefunden';
+
+  @override
+  String get crewUiLabelMemberCount => 'Mitglieder';
+
+  @override
+  String get crewUiBadgeMyCrew => 'Meine Crew';
+
+  @override
+  String get crewUiActionJoin => 'Verbinden';
+
+  @override
+  String get crewUiStateNotInCrew => 'Du bist nicht Teil einer Crew';
+
+  @override
+  String get crewUiHintChatJoinCrew =>
+      'Erstellen Sie eine Crew oder treten Sie einer bei, um zu chatten!';
+
+  @override
+  String get crewUiStatusNotOwned => 'Nicht im Besitz';
+
+  @override
+  String get crewUiLabelLevel => 'Ebene';
+
+  @override
+  String get crewUiLabelCapacity => 'Kapazität';
+
+  @override
+  String get crewUiLabelMemberCap => 'Mitgliederobergrenze';
+
+  @override
+  String get crewUiLabelParking => 'Parken';
+
+  @override
+  String get crewUiActionPurchase => 'Kaufen';
+
+  @override
+  String get crewUiActionUpgrade => 'Upgrade';
+
+  @override
+  String get crewUiActionDetails => 'Einzelheiten';
+
+  @override
+  String get crewUiHelpCapsTitle => 'Levelübersicht';
+
+  @override
+  String get crewUiHelpLevel => 'Ebene';
+
+  @override
+  String get crewUiHelpCapacity => 'Kappe';
+
+  @override
+  String get crewUiHelpUpgradeCost => 'Kosten';
+
+  @override
+  String get crewUiHelpClose => 'Schließen';
+
+  @override
+  String get crewUiHelpShowCaps => 'Kappen anzeigen';
+
+  @override
+  String get crewUiSectionUpgradeHub => 'Hauptquartier und Upgrades';
+
+  @override
+  String get crewUiSectionStorageHub => 'Speicher-Hub';
+
+  @override
+  String get crewUiHintStorageTab =>
+      'Verwenden Sie die Registerkarte „Speicher“ für Einzahlungen, Salden und schnelle Speicheraktionen.';
+
+  @override
+  String get crewUiHintUpgradeHub =>
+      'Verwalten Sie hier das Hauptquartier und alle Crew-Upgrades von einem Ort aus.';
+
+  @override
+  String get crewUiSectionCrewMissions => 'Crew-Missionen';
+
+  @override
+  String get crewUiStateCrewMissionsEmpty =>
+      'Noch keine Crew-Missionen verfügbar';
+
+  @override
+  String get crewUiStateCrewMissionNoCrew =>
+      'Treten Sie einer Crew bei oder erstellen Sie eine, um Missionen zu starten.';
+
+  @override
+  String get crewUiActionStartMission => 'Mission starten';
+
+  @override
+  String get crewUiActionConfigureAndStartMission => 'Konfigurieren & starten';
+
+  @override
+  String get crewUiActionResolveMission => 'Mission lösen';
+
+  @override
+  String get crewUiActionClaimRewards => 'Fordern Sie Prämien an';
+
+  @override
+  String get crewUiActionSpeedupCooldown => 'Beschleunigen Sie die Abklingzeit';
+
+  @override
+  String get crewUiActionConfirmSpeedupCooldown =>
+      'Bestätigen Sie die Beschleunigung';
+
+  @override
+  String get crewUiLabelActiveMission => 'Aktive Mission';
+
+  @override
+  String get crewUiLabelRecentMissions => 'Aktuelle Missionen';
+
+  @override
+  String get crewUiLabelMissionDuration => 'Dauer';
+
+  @override
+  String get crewUiLabelMissionCooldown => 'Abklingzeit';
+
+  @override
+  String get crewUiLabelMissionTier => 'Stufe';
+
+  @override
+  String get crewUiLabelMissionRewards => 'Belohnungen';
+
+  @override
+  String get crewUiLabelCrewMissionProgress =>
+      'Fortschritt der Besatzungsmission';
+
+  @override
+  String get crewUiLabelCrewMissionXp => 'Besatzungsmission XP';
+
+  @override
+  String get crewUiLabelCrewMissionLevelBonus => 'Bargeldbonus für die Crew';
+
+  @override
+  String get crewUiLabelCrewMissionNextLevelBonus => 'Bonus der nächsten Stufe';
+
+  @override
+  String get crewUiLabelMissionStatus => 'Status';
+
+  @override
+  String get crewUiLabelCooldownActive => 'Abklingzeit aktiv';
+
+  @override
+  String get crewUiLabelRoleContributions => 'Rollenbeiträge';
+
+  @override
+  String get crewUiLabelContribution => 'Beitrag';
+
+  @override
+  String get crewUiLabelMultiplier => 'Multiplikator';
+
+  @override
+  String get crewUiStatusMissionLocked => 'Gesperrt';
+
+  @override
+  String get crewUiStatusInProgress => 'Im Gange';
+
+  @override
+  String get crewUiStatusCompleted => 'Vollendet';
+
+  @override
+  String get crewUiStatusReady => 'Bereit';
+
+  @override
+  String get crewUiStatusRewardsClaimed => 'Belohnungen beansprucht';
+
+  @override
+  String get crewUiStateMissionActionBusy => 'Aktion wird bearbeitet...';
+
+  @override
+  String get crewUiHintMissionLeaderOnly =>
+      'Nur der Anführer/Co-Anführer kann Missionen starten und lösen.';
+
+  @override
+  String get crewUiDialogRoleAssignTitle => 'Rollen zuweisen';
+
+  @override
+  String get crewUiDialogRoleAssignSubtitle =>
+      'Wählen Sie eine Missionsrolle pro Besatzungsmitglied.';
+
+  @override
+  String get crewUiLabelRoleNone => 'Nicht zugewiesen';
+
+  @override
+  String get crewUiLabelRolePlanner => 'Planerin';
+
+  @override
+  String get crewUiLabelRoleEnforcer => 'Vollstrecker';
+
+  @override
+  String get crewUiLabelRoleLogistics => 'Logistik';
+
+  @override
+  String get crewUiLabelRoleTech => 'Techn';
+
+  @override
+  String get crewUiHintRoleBonus =>
+      'Jede einzigartige Rolle: +3 % Erfolgschance, -2 % Dauer (maximal +12 % / -8 %).';
+
+  @override
+  String get crewUiStateRoleAssignNoMembers =>
+      'Keine Besatzungsmitglieder gefunden.';
+
+  @override
+  String get crewUiStateRoleAssignPickOne =>
+      'Wählen Sie mindestens eine Rolle aus.';
+
+  @override
+  String get crewUiHintMissionLockedTier2 =>
+      'Stufe 2 erfordert HQ 5+ und 2+ Mitglieder.';
+
+  @override
+  String get crewUiHintMissionLockedTier3 =>
+      'Stufe 3 erfordert HQ 9+ und 3+ Mitglieder.';
+
+  @override
+  String get crewUiHintMissionLockedDefault =>
+      'Die Mission ist immer noch gesperrt.';
+
+  @override
+  String get crewUiMessageMissionOverviewLoadFailed =>
+      'Crew-Missionen konnten nicht geladen werden.';
+
+  @override
+  String get crewUiMessageMissionStarted => 'Mission gestartet';
+
+  @override
+  String get crewUiMessageMissionResolved => 'Mission gelöst';
+
+  @override
+  String get crewUiMessageMissionRewardsClaimed => 'Belohnungen beansprucht';
+
+  @override
+  String get crewUiMessageMissionCooldownSpedUp =>
+      'Die Abklingzeit wurde beschleunigt';
+
+  @override
+  String get crewUiMessageMissionSpeedupQuoteFailed =>
+      'Beschleunigungspreis konnte nicht geladen werden.';
+
+  @override
+  String get crewUiDialogSpeedupTitle => 'Abklingzeit beschleunigen?';
+
+  @override
+  String crewUiDialogSpeedupBody(String credits, String minutes) {
+    return 'Der sofortige Abschluss kostet $credits Credits (verbleibende $minutes Minute).';
+  }
+
+  @override
+  String get crewUiLabelCredits => 'Credits';
+
+  @override
+  String get crewUiStateLoadingPrice => 'Preis wird geladen...';
+
+  @override
+  String get crewUiActionCancel => 'Stornieren';
+
+  @override
+  String crewUiHqUpgradeSideBuildingsMessage(String level, String missing) {
+    return 'Verbessere zuerst alle Nebengebäude auf mindestens Level $level. \n\nFehlt: \n$missing';
+  }
+
+  @override
+  String get crewUiFormatRemainingUnderOneMinute => '<1 Min';
+
+  @override
+  String crewUiFormatRemainingMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get crewUiMissionNoHistory => 'Noch keine Geschichte.';
+
+  @override
+  String get crewUiBuildingHq => 'Mannschaftshauptquartier';
+
+  @override
+  String get crewUiBuildingCarStorage => 'Auto-/Motorradaufbewahrung';
+
+  @override
+  String get crewUiBuildingBoatStorage => 'Bootslagerung';
+
+  @override
+  String get crewUiBuildingWeaponStorage => 'Waffenlagerung';
+
+  @override
+  String get crewUiBuildingAmmoStorage => 'Munitionslager';
+
+  @override
+  String get crewUiBuildingDrugStorage => 'Arzneimittellagerung';
+
+  @override
+  String get crewUiBuildingCashStorage => 'Bargeldaufbewahrung';
+
+  @override
+  String get crewUiWarActionKill => 'Töten';
+
+  @override
+  String get crewUiWarActionMug => 'Becher';
+
+  @override
+  String get crewUiWarActionSabotage => 'Sabotage';
+
+  @override
+  String get crewUiWarActionIntel => 'Intel';
+
+  @override
+  String get crewUiWarActionRaid => 'Überfall';
+
+  @override
+  String get crewUiWarActionShield => 'Schild';
+
+  @override
+  String get crewUiWarActionBoost => 'Schub';
+
+  @override
+  String get crewUiWarActionTerritory => 'Gebiet';
+
+  @override
+  String crewUiWarTargetCrewSubtitle(String name, int count) {
+    return '$name ($count Mitglieder)';
+  }
+
+  @override
+  String crewChatErrorLoadingMessages(String error) {
+    return 'Error loading messages: $error';
+  }
+
+  @override
+  String get crewChatMessageTooLong => 'Message too long (max 500 characters)';
+
+  @override
+  String crewChatErrorSending(String error) {
+    return 'Error sending message: $error';
+  }
+
+  @override
+  String crewChatErrorDelete(String error) {
+    return 'Could not delete message: $error';
+  }
+
+  @override
+  String get crewChatDeleteTitle => 'Delete message?';
+
+  @override
+  String get crewChatDeleteBody => 'This message will be permanently deleted.';
+
+  @override
+  String get crewChatCancel => 'Cancel';
+
+  @override
+  String get crewChatDelete => 'Delete';
+
+  @override
+  String get crewChatNoMessages => 'No messages yet';
+
+  @override
+  String get crewChatEmptyHint => 'Send the first message to your crew!';
+
+  @override
+  String get crewUiTr0 => 'HQ-Upgrade-Anforderungen';
+
+  @override
+  String get crewUiTr1 =>
+      'Verbessere deinen aktuellen HQ-Stil auf die maximale Stufe, um den nächsten Stil freizuschalten';
+
+  @override
+  String get crewUiTr2 => 'Endgültiger HQ-Stil erreicht';
+
+  @override
+  String get crewUiTr3 => 'VIP-Hauptquartier für Level 11–15 erforderlich';
+
+  @override
+  String get crewUiTr4 =>
+      'Werte zunächst alle Nebengebäude auf das erforderliche Level für diesen HQ-Stil auf';
+
+  @override
+  String get crewUiTr5 => 'Gebäude bereits im Besitz';
+
+  @override
+  String get crewUiTr6 => 'Unzureichende Mittel der Mannschaftsbank';
+
+  @override
+  String get crewUiTr7 =>
+      'Der HQ-Fortschritt ist für dieses Upgrade zu niedrig';
+
+  @override
+  String get crewUiTr8 => 'Crew-VIP erforderlich für Level 11+';
+
+  @override
+  String get crewUiTr9 =>
+      'Startguthaben erreicht. Kaufen Sie zuerst einen Bargeldspeicher, um mehr Platz in der Mannschaftsbank freizuschalten.';
+
+  @override
+  String get crewUiTr10 => 'Aktion fehlgeschlagen';
+
+  @override
+  String get crewUiTr11 => 'Es gibt bereits eine aktive Crew-Mission.';
+
+  @override
+  String get crewUiTr12 =>
+      'Die Abklingzeit einer Mission ist noch aktiv. Warten Sie, bis es fertig ist, oder beschleunigen Sie es mit Credits.';
+
+  @override
+  String get crewUiTr13 => 'Mission nicht gefunden.';
+
+  @override
+  String get crewUiTr14 => 'Diese Stufe ist noch gesperrt.';
+
+  @override
+  String get crewUiTr15 => 'Missionslauf nicht gefunden.';
+
+  @override
+  String get crewUiTr16 => 'Mission ist bereits gelöst.';
+
+  @override
+  String get crewUiTr17 => 'Die Mission ist noch nicht abgeschlossen.';
+
+  @override
+  String get crewUiTr18 => 'Keine aktive Abklingzeit.';
+
+  @override
+  String get crewUiTr19 => 'Unzureichende Credits.';
+
+  @override
+  String get crewUiTr20 => 'Mission konnte nicht gestartet werden.';
+
+  @override
+  String get crewUiTr21 => 'Mission konnte nicht gelöst werden.';
+
+  @override
+  String get crewUiTr22 => 'Prämien konnten nicht eingefordert werden.';
+
+  @override
+  String get crewUiTr23 => 'Die Abklingzeit konnte nicht beschleunigt werden.';
+
+  @override
+  String get crewUiTr24 => 'Du bist nicht Teil einer Crew.';
+
+  @override
+  String get crewUiTr25 => 'Dies kann nur der Mannschaftsführer tun.';
+
+  @override
+  String get crewUiTr26 => 'Zielmannschaft nicht gefunden.';
+
+  @override
+  String get crewUiTr27 => 'Diese Crew befindet sich bereits in einem Krieg.';
+
+  @override
+  String get crewUiTr28 =>
+      'Es sind mindestens 3 Besatzungsmitglieder erforderlich.';
+
+  @override
+  String get crewUiTr29 => 'Krieg nicht gefunden.';
+
+  @override
+  String get crewUiTr30 => 'Dieser Krieg ist nicht aktiv.';
+
+  @override
+  String get crewUiTr31 => 'Sie können diesem Krieg im Moment nicht beitreten.';
+
+  @override
+  String get crewUiTr32 => 'Für diese Aktion ist ein Zielspieler erforderlich.';
+
+  @override
+  String get crewUiTr33 => 'Anti-Farm-Block: Wählen Sie ein anderes Ziel.';
+
+  @override
+  String get crewUiTr34 => 'Für diese Aktion ist ein VIP-Spieler erforderlich.';
+
+  @override
+  String get crewUiTr35 => 'Für diese Aktion ist eine VIP-Crew erforderlich.';
+
+  @override
+  String get crewUiTr36 => 'Aktionslimit vorerst erreicht.';
+
+  @override
+  String crewUiTr37(String remaining) {
+    return 'Abklingzeit aktiv: $remaining weitere Minuten warten.';
+  }
+
+  @override
+  String get crewUiTr38 => 'Ungültiges Gebiet ausgewählt.';
+
+  @override
+  String get crewUiTr39 => 'Die Kriegsaktion der Crew scheiterte.';
+
+  @override
+  String get crewUiTr40 => 'Zielspieler';
+
+  @override
+  String get crewUiTr41 => 'Tötet';
+
+  @override
+  String get crewUiTr42 => 'Todesfälle';
+
+  @override
+  String get crewUiTr43 => 'Stornieren';
+
+  @override
+  String get crewUiTr44 => 'Bestätigen';
+
+  @override
+  String get crewUiTr45 => 'Führerin';
+
+  @override
+  String get crewUiTr46 => 'Co-Leiter';
+
+  @override
+  String get crewUiTr47 => 'Mitglied';
+
+  @override
+  String get crewUiTr48 => 'Hauptstadt';
+
+  @override
+  String get crewUiTr49 => 'Hafen';
+
+  @override
+  String get crewUiTr50 => 'Industrie';
+
+  @override
+  String get crewUiTr51 => 'Grenze';
+
+  @override
+  String get crewUiTr52 => 'Logistik';
+
+  @override
+  String get crewUiTr53 => 'Beanspruchen';
+
+  @override
+  String get crewUiTr54 => 'Tick';
+
+  @override
+  String get crewUiTr55 => 'Gebiet auswählen';
+
+  @override
+  String get crewUiTr56 => 'Wählen Sie zunächst eine Zielmannschaft aus.';
+
+  @override
+  String get crewUiTr57 => 'Besatzungskrieg erklärt.';
+
+  @override
+  String get crewUiTr58 =>
+      'Es ist fehlgeschlagen, der Crew den Krieg zu erklären.';
+
+  @override
+  String get crewUiTr59 => 'Du bist dem Krieg beigetreten.';
+
+  @override
+  String get crewUiTr60 => 'Es gelang ihm nicht, sich dem Krieg anzuschließen.';
+
+  @override
+  String get crewUiTr61 => 'Die Kriegsaktion der Crew ist abgeschlossen.';
+
+  @override
+  String get crewUiTr62 => 'Krieg töten';
+
+  @override
+  String get crewUiTr63 => 'Wirtschaftskrieg';
+
+  @override
+  String get crewUiTr64 => 'Territorialkrieg';
+
+  @override
+  String get crewUiTr65 => 'Totaler Krieg';
+
+  @override
+  String get crewUiTr66 => 'Vorbereiten';
+
+  @override
+  String get crewUiTr67 => 'Aktiv';
+
+  @override
+  String get crewUiTr68 => 'Sperrung';
+
+  @override
+  String get crewUiTr69 => 'Gelöst';
+
+  @override
+  String get crewUiTr70 => 'Archiviert';
+
+  @override
+  String get crewUiTr71 => 'Abgesagt';
+
+  @override
+  String get crewUiTr72 => 'Crew-VIP';
+
+  @override
+  String get crewUiTr73 => '9,99 €/Monat';
+
+  @override
+  String get crewUiTr74 => '4,99 €/Monat';
+
+  @override
+  String get crewUiTr75 => 'Einmalige Einkäufe';
+
+  @override
+  String get crewUiTr76 => 'Nur der Anführer kann Crew-VIP kaufen';
+
+  @override
+  String get crewUiTr77 => 'Ungültiges Produkt';
+
+  @override
+  String get crewUiTr78 => 'Fehler beim Öffnen der Zahlungsseite';
+
+  @override
+  String get crewUiTr79 => 'Bist du sicher?';
+
+  @override
+  String get crewUiTr80 => 'Verlassen Sie die Crew';
+
+  @override
+  String get crewUiTr81 =>
+      'Sind Sie sicher, dass Sie die Crew verlassen möchten?';
+
+  @override
+  String get crewUiTr82 => 'Verlassen';
+
+  @override
+  String get crewUiTr83 => 'Linke Crew';
+
+  @override
+  String get crewUiTr84 => 'Einzahlung auf die Mannschaftsbank';
+
+  @override
+  String get crewUiTr85 => 'Aus der Mannschaftsbank zurückziehen';
+
+  @override
+  String get crewUiTr86 => 'Menge';
+
+  @override
+  String get crewUiTr87 => 'Ungültiger Betrag';
+
+  @override
+  String get crewUiTr88 => 'Nicht genügend Bargeld vorhanden';
+
+  @override
+  String get crewUiTr89 =>
+      'Kaufen Sie zunächst einen Bargeldspeicher für die Mannschaftsbank';
+
+  @override
+  String get crewUiTr90 => 'Der Bargeldspeicher der Crew ist voll';
+
+  @override
+  String get crewUiTr91 => 'Crew löschen';
+
+  @override
+  String get crewUiTr92 =>
+      'Sind Sie sicher, dass Sie diese Crew löschen möchten? Dies kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get crewUiTr93 => 'Löschen';
+
+  @override
+  String get crewUiTr94 => 'Nächstes Level';
+
+  @override
+  String get crewUiTr95 => 'Kosten';
+
+  @override
+  String get crewUiTr96 => 'Maximales Level erreicht';
+
+  @override
+  String get crewUiTr97 => 'Gebäude nicht im Besitz';
+
+  @override
+  String get crewUiTr98 => 'Auto/Motorrad hinzufügen';
+
+  @override
+  String get crewUiTr99 => 'Boot hinzufügen';
+
+  @override
+  String get crewUiTr100 => 'Motorrad';
+
+  @override
+  String get crewUiTr101 => 'Boot';
+
+  @override
+  String get crewUiTr102 => 'Auto';
+
+  @override
+  String get crewUiTr103 => 'Wählen';
+
+  @override
+  String get crewUiTr104 => 'Hinzufügen';
+
+  @override
+  String get crewUiTr105 => 'Waffe hinzufügen';
+
+  @override
+  String get crewUiTr106 => 'Waffe';
+
+  @override
+  String get crewUiTr107 => 'Menge';
+
+  @override
+  String get crewUiTr108 => 'Munition hinzufügen';
+
+  @override
+  String get crewUiTr109 => 'Munitionstyp';
+
+  @override
+  String get crewUiTr110 => 'Waren hinzufügen';
+
+  @override
+  String get crewUiTr111 => 'Warenart';
+
+  @override
+  String get crewUiTr112 =>
+      'Treten Sie zunächst einer Crew bei, um Crew Wars nutzen zu können.';
+
+  @override
+  String get crewUiTr113 =>
+      'Es stehen keine gegnerischen Besatzungsmitglieder zum Zielen zur Verfügung.';
+
+  @override
+  String get crewUiTr114 => 'Zielspieler auswählen';
+
+  @override
+  String get crewUiTr115 => 'Saisonübersicht';
+
+  @override
+  String get crewUiTr116 => 'Aktive Saison';
+
+  @override
+  String get crewUiTr117 => 'Meine Rolle';
+
+  @override
+  String get crewUiTr118 => 'Die Crew kann sich anmelden';
+
+  @override
+  String get crewUiTr119 => 'Ja';
+
+  @override
+  String get crewUiTr120 => 'NEIN';
+
+  @override
+  String get crewUiTr121 => 'Erkläre einen neuen Krieg';
+
+  @override
+  String get crewUiTr122 => 'Zielmannschaft';
+
+  @override
+  String get crewUiTr123 => 'Kriegstyp';
+
+  @override
+  String get crewUiTr124 => 'Erklären Sie den Krieg';
+
+  @override
+  String get crewUiTr125 => 'Kriegsgebiete';
+
+  @override
+  String get crewUiTr126 => 'Neutral';
+
+  @override
+  String get crewUiTr127 => 'Gegnerische Crew';
+
+  @override
+  String get crewUiTr128 => 'Aktiv von';
+
+  @override
+  String get crewUiTr129 => 'Schließe dich dem Krieg an';
+
+  @override
+  String get crewUiTr130 => 'Rangliste';
+
+  @override
+  String get crewUiTr131 => 'Gebiete';
+
+  @override
+  String get crewUiTr132 => 'Aktuelle Aktionen';
+
+  @override
+  String get crewUiTr133 => 'Noch keine Kriegshandlungen.';
+
+  @override
+  String get crewUiTr134 => 'vs';
+
+  @override
+  String get crewUiTr135 => 'Saison-Rangliste';
+
+  @override
+  String get crewUiTr136 => 'Noch keine Saisonpunkte.';
+
+  @override
+  String get crewUiTr137 => 'Beute';
+
+  @override
+  String get crewUiTr138 => 'Aktuelle Kriege';
+
+  @override
+  String get crewUiTr139 => 'Noch keine aktuellen Kriege.';
+
+  @override
+  String get crewUiTr140 => 'Nur der Anführer kann kaufen oder upgraden';
+
+  @override
+  String get crewUiTr141 =>
+      'HQ-Upgrade blockiert: Nebengebäude zuerst auf L\$requiredSideLevel';
+
+  @override
+  String get crewUiTr142 => 'Nächstes Upgrade noch nicht verfügbar';
+
+  @override
+  String get crewUiTr143 => 'HQ-Fortschritt zu niedrig';
+
+  @override
+  String get crewUiTr144 => 'HQ-Level zu niedrig für das nächste Upgrade';
+
+  @override
   String get premiumUiLoadError =>
       'Premium-Daten konnten nicht geladen werden.';
 

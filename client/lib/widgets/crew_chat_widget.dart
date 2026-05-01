@@ -9,6 +9,7 @@ import '../models/crew_message.dart';
 import 'message_bubble.dart';
 import '../utils/top_right_notification.dart';
 import 'responsive_modal.dart';
+import '../l10n/app_localizations.dart';
 
 class CrewChatWidget extends StatefulWidget {
   final int crewId;
@@ -117,7 +118,9 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('${_tr('Fout bij laden berichten', 'Error loading messages')}: $e'),
+            content: Text(
+              AppLocalizations.of(context)!.crewChatErrorLoadingMessages('$e'),
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -168,7 +171,9 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('${_tr('Fout bij verzenden', 'Error sending message')}: $e'),
+            content: Text(
+              AppLocalizations.of(context)!.crewChatErrorSending('$e'),
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -192,7 +197,9 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
       if (mounted) {
         showTopRightFromSnackBar(context, 
           SnackBar(
-            content: Text('${_tr('Kon bericht niet verwijderen', 'Could not delete message')}: $e'),
+            content: Text(
+              AppLocalizations.of(context)!.crewChatErrorDelete('$e'),
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -215,12 +222,13 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
   }
 
   Future<void> _confirmDeleteMessage(int messageId) async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF2A2A2A),
         title: Text(
-          _tr('Bericht verwijderen?', 'Delete message?'),
+          l10n.crewChatDeleteTitle,
           style: const TextStyle(color: Colors.white),
         ),
         content: ResponsiveDialogContent(
@@ -228,22 +236,19 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
           tabletMaxWidth: 380,
           desktopMaxWidth: 420,
           child: Text(
-            _tr(
-              'Dit bericht wordt permanent verwijderd.',
-              'This message will be permanently deleted.',
-            ),
+            l10n.crewChatDeleteBody,
             style: const TextStyle(color: Colors.grey),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.crewChatCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
-              _tr('Verwijderen', 'Delete'),
+              l10n.crewChatDelete,
               style: TextStyle(color: Colors.red),
             ),
           ),
@@ -258,6 +263,7 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final currentPlayerId = authProvider.currentPlayer?.id ?? 0;
 
@@ -284,7 +290,7 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        _tr('Nog geen berichten', 'No messages yet'),
+                        l10n.crewChatNoMessages,
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey[600],
@@ -292,10 +298,7 @@ class _CrewChatWidgetState extends State<CrewChatWidget> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        _tr(
-                          'Stuur het eerste bericht naar je crew!',
-                          'Send the first message to your crew!',
-                        ),
+                        l10n.crewChatEmptyHint,
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                     ],

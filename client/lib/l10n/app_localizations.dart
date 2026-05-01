@@ -5013,6 +5013,1788 @@ abstract class AppLocalizations {
   /// **'Crew: {name}'**
   String friendsUiLineCrew(String name);
 
+  /// No description provided for @crewUiAppCrews.
+  ///
+  /// In en, this message translates to:
+  /// **'Crews'**
+  String get crewUiAppCrews;
+
+  /// No description provided for @crewUiTabMyCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get crewUiTabMyCrew;
+
+  /// No description provided for @crewUiTabCrewHq.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ & Upgrades'**
+  String get crewUiTabCrewHq;
+
+  /// No description provided for @crewUiTabStorageHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get crewUiTabStorageHub;
+
+  /// No description provided for @crewUiTabMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get crewUiTabMembers;
+
+  /// No description provided for @crewUiTabWarRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'War Room'**
+  String get crewUiTabWarRoom;
+
+  /// No description provided for @crewUiTabCrewMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Missions'**
+  String get crewUiTabCrewMissions;
+
+  /// No description provided for @crewUiTabCarStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Car/Motorcycle Storage'**
+  String get crewUiTabCarStorage;
+
+  /// No description provided for @crewUiTabBoatStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat Storage'**
+  String get crewUiTabBoatStorage;
+
+  /// No description provided for @crewUiTabWeaponStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon Storage'**
+  String get crewUiTabWeaponStorage;
+
+  /// No description provided for @crewUiTabAmmoStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo Storage'**
+  String get crewUiTabAmmoStorage;
+
+  /// No description provided for @crewUiTabDrugStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Storage'**
+  String get crewUiTabDrugStorage;
+
+  /// No description provided for @crewUiTabCashStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash Storage'**
+  String get crewUiTabCashStorage;
+
+  /// No description provided for @crewUiTabAllCrews.
+  ///
+  /// In en, this message translates to:
+  /// **'Crews'**
+  String get crewUiTabAllCrews;
+
+  /// No description provided for @crewUiTabChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get crewUiTabChat;
+
+  /// No description provided for @crewUiActionCreateCrewShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Crew (€50k)'**
+  String get crewUiActionCreateCrewShort;
+
+  /// No description provided for @crewUiStateNotInCrewYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not in a crew yet'**
+  String get crewUiStateNotInCrewYet;
+
+  /// No description provided for @crewUiActionCreateCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Crew (€50,000)'**
+  String get crewUiActionCreateCrew;
+
+  /// No description provided for @crewUiLabelCrewBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Bank:'**
+  String get crewUiLabelCrewBank;
+
+  /// No description provided for @crewUiLabelDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit'**
+  String get crewUiLabelDeposit;
+
+  /// No description provided for @crewUiLabelWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get crewUiLabelWithdraw;
+
+  /// No description provided for @crewUiLabelMyTrustScore.
+  ///
+  /// In en, this message translates to:
+  /// **'My Trust Score:'**
+  String get crewUiLabelMyTrustScore;
+
+  /// No description provided for @crewUiActionDeleteCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete crew'**
+  String get crewUiActionDeleteCrew;
+
+  /// No description provided for @crewUiLabelCrewStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Stats:'**
+  String get crewUiLabelCrewStats;
+
+  /// No description provided for @crewUiActionLeaveCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Crew'**
+  String get crewUiActionLeaveCrew;
+
+  /// No description provided for @crewUiSectionBuildings.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ & Upgrades'**
+  String get crewUiSectionBuildings;
+
+  /// No description provided for @crewUiHintBuildingsTabs.
+  ///
+  /// In en, this message translates to:
+  /// **'Open HQ & Upgrades to manage HQ and all crew buildings from one place.'**
+  String get crewUiHintBuildingsTabs;
+
+  /// No description provided for @crewUiSectionCrewStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Storage'**
+  String get crewUiSectionCrewStorage;
+
+  /// No description provided for @crewUiStateNoStorageData.
+  ///
+  /// In en, this message translates to:
+  /// **'No storage data loaded'**
+  String get crewUiStateNoStorageData;
+
+  /// No description provided for @crewUiActionAddCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Add car/motorcycle'**
+  String get crewUiActionAddCar;
+
+  /// No description provided for @crewUiActionAddBoat.
+  ///
+  /// In en, this message translates to:
+  /// **'Add boat'**
+  String get crewUiActionAddBoat;
+
+  /// No description provided for @crewUiActionAddWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Add weapon'**
+  String get crewUiActionAddWeapon;
+
+  /// No description provided for @crewUiActionAddAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add ammo'**
+  String get crewUiActionAddAmmo;
+
+  /// No description provided for @crewUiActionAddDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Add drugs'**
+  String get crewUiActionAddDrugs;
+
+  /// No description provided for @crewUiSectionMembersOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Members overview'**
+  String get crewUiSectionMembersOverview;
+
+  /// No description provided for @crewUiHintMembersTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Members tab above for member list and join requests.'**
+  String get crewUiHintMembersTab;
+
+  /// No description provided for @crewUiActionGoToMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Members'**
+  String get crewUiActionGoToMembers;
+
+  /// No description provided for @crewUiLabelCrewHq.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew HQ'**
+  String get crewUiLabelCrewHq;
+
+  /// No description provided for @crewUiActionGoToCrewHq.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Crew HQ'**
+  String get crewUiActionGoToCrewHq;
+
+  /// No description provided for @crewUiActionGoToStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Storage'**
+  String get crewUiActionGoToStorage;
+
+  /// No description provided for @crewUiStateJoinCrewFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or join a crew first'**
+  String get crewUiStateJoinCrewFirst;
+
+  /// No description provided for @crewUiStateJoinRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Requests'**
+  String get crewUiStateJoinRequests;
+
+  /// No description provided for @crewUiStateNoJoinRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending requests'**
+  String get crewUiStateNoJoinRequests;
+
+  /// No description provided for @crewUiStateNoCrewsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No crews found'**
+  String get crewUiStateNoCrewsFound;
+
+  /// No description provided for @crewUiLabelMemberCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get crewUiLabelMemberCount;
+
+  /// No description provided for @crewUiBadgeMyCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'My Crew'**
+  String get crewUiBadgeMyCrew;
+
+  /// No description provided for @crewUiActionJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get crewUiActionJoin;
+
+  /// No description provided for @crewUiStateNotInCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not in a crew'**
+  String get crewUiStateNotInCrew;
+
+  /// No description provided for @crewUiHintChatJoinCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or join a crew to chat!'**
+  String get crewUiHintChatJoinCrew;
+
+  /// No description provided for @crewUiStatusNotOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Not owned'**
+  String get crewUiStatusNotOwned;
+
+  /// No description provided for @crewUiLabelLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get crewUiLabelLevel;
+
+  /// No description provided for @crewUiLabelCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity'**
+  String get crewUiLabelCapacity;
+
+  /// No description provided for @crewUiLabelMemberCap.
+  ///
+  /// In en, this message translates to:
+  /// **'Member cap'**
+  String get crewUiLabelMemberCap;
+
+  /// No description provided for @crewUiLabelParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking'**
+  String get crewUiLabelParking;
+
+  /// No description provided for @crewUiActionPurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get crewUiActionPurchase;
+
+  /// No description provided for @crewUiActionUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get crewUiActionUpgrade;
+
+  /// No description provided for @crewUiActionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get crewUiActionDetails;
+
+  /// No description provided for @crewUiHelpCapsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Level overview'**
+  String get crewUiHelpCapsTitle;
+
+  /// No description provided for @crewUiHelpLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get crewUiHelpLevel;
+
+  /// No description provided for @crewUiHelpCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Cap'**
+  String get crewUiHelpCapacity;
+
+  /// No description provided for @crewUiHelpUpgradeCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get crewUiHelpUpgradeCost;
+
+  /// No description provided for @crewUiHelpClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get crewUiHelpClose;
+
+  /// No description provided for @crewUiHelpShowCaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Show caps'**
+  String get crewUiHelpShowCaps;
+
+  /// No description provided for @crewUiSectionUpgradeHub.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ & Upgrades'**
+  String get crewUiSectionUpgradeHub;
+
+  /// No description provided for @crewUiSectionStorageHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage Hub'**
+  String get crewUiSectionStorageHub;
+
+  /// No description provided for @crewUiHintStorageTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the Storage tab for deposits, balances and quick storage actions.'**
+  String get crewUiHintStorageTab;
+
+  /// No description provided for @crewUiHintUpgradeHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage HQ and all crew upgrades from one place here.'**
+  String get crewUiHintUpgradeHub;
+
+  /// No description provided for @crewUiSectionCrewMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew Missions'**
+  String get crewUiSectionCrewMissions;
+
+  /// No description provided for @crewUiStateCrewMissionsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No crew missions available yet'**
+  String get crewUiStateCrewMissionsEmpty;
+
+  /// No description provided for @crewUiStateCrewMissionNoCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Join or create a crew to start missions.'**
+  String get crewUiStateCrewMissionNoCrew;
+
+  /// No description provided for @crewUiActionStartMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Start mission'**
+  String get crewUiActionStartMission;
+
+  /// No description provided for @crewUiActionConfigureAndStartMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure & start'**
+  String get crewUiActionConfigureAndStartMission;
+
+  /// No description provided for @crewUiActionResolveMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolve mission'**
+  String get crewUiActionResolveMission;
+
+  /// No description provided for @crewUiActionClaimRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim rewards'**
+  String get crewUiActionClaimRewards;
+
+  /// No description provided for @crewUiActionSpeedupCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up cooldown'**
+  String get crewUiActionSpeedupCooldown;
+
+  /// No description provided for @crewUiActionConfirmSpeedupCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm speed up'**
+  String get crewUiActionConfirmSpeedupCooldown;
+
+  /// No description provided for @crewUiLabelActiveMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Active mission'**
+  String get crewUiLabelActiveMission;
+
+  /// No description provided for @crewUiLabelRecentMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent missions'**
+  String get crewUiLabelRecentMissions;
+
+  /// No description provided for @crewUiLabelMissionDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get crewUiLabelMissionDuration;
+
+  /// No description provided for @crewUiLabelMissionCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown'**
+  String get crewUiLabelMissionCooldown;
+
+  /// No description provided for @crewUiLabelMissionTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier'**
+  String get crewUiLabelMissionTier;
+
+  /// No description provided for @crewUiLabelMissionRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards'**
+  String get crewUiLabelMissionRewards;
+
+  /// No description provided for @crewUiLabelCrewMissionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew mission progression'**
+  String get crewUiLabelCrewMissionProgress;
+
+  /// No description provided for @crewUiLabelCrewMissionXp.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew mission XP'**
+  String get crewUiLabelCrewMissionXp;
+
+  /// No description provided for @crewUiLabelCrewMissionLevelBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew cash bonus'**
+  String get crewUiLabelCrewMissionLevelBonus;
+
+  /// No description provided for @crewUiLabelCrewMissionNextLevelBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Next level bonus'**
+  String get crewUiLabelCrewMissionNextLevelBonus;
+
+  /// No description provided for @crewUiLabelMissionStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get crewUiLabelMissionStatus;
+
+  /// No description provided for @crewUiLabelCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown active'**
+  String get crewUiLabelCooldownActive;
+
+  /// No description provided for @crewUiLabelRoleContributions.
+  ///
+  /// In en, this message translates to:
+  /// **'Role contributions'**
+  String get crewUiLabelRoleContributions;
+
+  /// No description provided for @crewUiLabelContribution.
+  ///
+  /// In en, this message translates to:
+  /// **'contribution'**
+  String get crewUiLabelContribution;
+
+  /// No description provided for @crewUiLabelMultiplier.
+  ///
+  /// In en, this message translates to:
+  /// **'multiplier'**
+  String get crewUiLabelMultiplier;
+
+  /// No description provided for @crewUiStatusMissionLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get crewUiStatusMissionLocked;
+
+  /// No description provided for @crewUiStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get crewUiStatusInProgress;
+
+  /// No description provided for @crewUiStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get crewUiStatusCompleted;
+
+  /// No description provided for @crewUiStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get crewUiStatusReady;
+
+  /// No description provided for @crewUiStatusRewardsClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards claimed'**
+  String get crewUiStatusRewardsClaimed;
+
+  /// No description provided for @crewUiStateMissionActionBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Action is being processed...'**
+  String get crewUiStateMissionActionBusy;
+
+  /// No description provided for @crewUiHintMissionLeaderOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only leader/co-leader can start and resolve missions.'**
+  String get crewUiHintMissionLeaderOnly;
+
+  /// No description provided for @crewUiDialogRoleAssignTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign roles'**
+  String get crewUiDialogRoleAssignTitle;
+
+  /// No description provided for @crewUiDialogRoleAssignSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a mission role per crew member.'**
+  String get crewUiDialogRoleAssignSubtitle;
+
+  /// No description provided for @crewUiLabelRoleNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get crewUiLabelRoleNone;
+
+  /// No description provided for @crewUiLabelRolePlanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Planner'**
+  String get crewUiLabelRolePlanner;
+
+  /// No description provided for @crewUiLabelRoleEnforcer.
+  ///
+  /// In en, this message translates to:
+  /// **'Enforcer'**
+  String get crewUiLabelRoleEnforcer;
+
+  /// No description provided for @crewUiLabelRoleLogistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics'**
+  String get crewUiLabelRoleLogistics;
+
+  /// No description provided for @crewUiLabelRoleTech.
+  ///
+  /// In en, this message translates to:
+  /// **'Tech'**
+  String get crewUiLabelRoleTech;
+
+  /// No description provided for @crewUiHintRoleBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Each unique role: +3% success chance, -2% duration (max +12% / -8%).'**
+  String get crewUiHintRoleBonus;
+
+  /// No description provided for @crewUiStateRoleAssignNoMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'No crew members found.'**
+  String get crewUiStateRoleAssignNoMembers;
+
+  /// No description provided for @crewUiStateRoleAssignPickOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least 1 role.'**
+  String get crewUiStateRoleAssignPickOne;
+
+  /// No description provided for @crewUiHintMissionLockedTier2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier 2 requires HQ 5+ and 2+ members.'**
+  String get crewUiHintMissionLockedTier2;
+
+  /// No description provided for @crewUiHintMissionLockedTier3.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier 3 requires HQ 9+ and 3+ members.'**
+  String get crewUiHintMissionLockedTier3;
+
+  /// No description provided for @crewUiHintMissionLockedDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission is still locked.'**
+  String get crewUiHintMissionLockedDefault;
+
+  /// No description provided for @crewUiMessageMissionOverviewLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load crew missions.'**
+  String get crewUiMessageMissionOverviewLoadFailed;
+
+  /// No description provided for @crewUiMessageMissionStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission started'**
+  String get crewUiMessageMissionStarted;
+
+  /// No description provided for @crewUiMessageMissionResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission resolved'**
+  String get crewUiMessageMissionResolved;
+
+  /// No description provided for @crewUiMessageMissionRewardsClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards claimed'**
+  String get crewUiMessageMissionRewardsClaimed;
+
+  /// No description provided for @crewUiMessageMissionCooldownSpedUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown sped up'**
+  String get crewUiMessageMissionCooldownSpedUp;
+
+  /// No description provided for @crewUiMessageMissionSpeedupQuoteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load speedup price.'**
+  String get crewUiMessageMissionSpeedupQuoteFailed;
+
+  /// No description provided for @crewUiDialogSpeedupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed up cooldown?'**
+  String get crewUiDialogSpeedupTitle;
+
+  /// No description provided for @crewUiDialogSpeedupBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant finish costs {credits} credits ({minutes} min remaining).'**
+  String crewUiDialogSpeedupBody(String credits, String minutes);
+
+  /// No description provided for @crewUiLabelCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'credits'**
+  String get crewUiLabelCredits;
+
+  /// No description provided for @crewUiStateLoadingPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading price...'**
+  String get crewUiStateLoadingPrice;
+
+  /// No description provided for @crewUiActionCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get crewUiActionCancel;
+
+  /// No description provided for @crewUiHqUpgradeSideBuildingsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade all side buildings to at least level {level} first.\n\nMissing:\n{missing}'**
+  String crewUiHqUpgradeSideBuildingsMessage(String level, String missing);
+
+  /// No description provided for @crewUiFormatRemainingUnderOneMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'<1 min'**
+  String get crewUiFormatRemainingUnderOneMinute;
+
+  /// No description provided for @crewUiFormatRemainingMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String crewUiFormatRemainingMinutes(int minutes);
+
+  /// No description provided for @crewUiMissionNoHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No history yet.'**
+  String get crewUiMissionNoHistory;
+
+  /// No description provided for @crewUiBuildingHq.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew HQ'**
+  String get crewUiBuildingHq;
+
+  /// No description provided for @crewUiBuildingCarStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Car/Motorcycle Storage'**
+  String get crewUiBuildingCarStorage;
+
+  /// No description provided for @crewUiBuildingBoatStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat Storage'**
+  String get crewUiBuildingBoatStorage;
+
+  /// No description provided for @crewUiBuildingWeaponStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon Storage'**
+  String get crewUiBuildingWeaponStorage;
+
+  /// No description provided for @crewUiBuildingAmmoStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo Storage'**
+  String get crewUiBuildingAmmoStorage;
+
+  /// No description provided for @crewUiBuildingDrugStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug Storage'**
+  String get crewUiBuildingDrugStorage;
+
+  /// No description provided for @crewUiBuildingCashStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash Storage'**
+  String get crewUiBuildingCashStorage;
+
+  /// No description provided for @crewUiWarActionKill.
+  ///
+  /// In en, this message translates to:
+  /// **'Kill'**
+  String get crewUiWarActionKill;
+
+  /// No description provided for @crewUiWarActionMug.
+  ///
+  /// In en, this message translates to:
+  /// **'Mug'**
+  String get crewUiWarActionMug;
+
+  /// No description provided for @crewUiWarActionSabotage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sabotage'**
+  String get crewUiWarActionSabotage;
+
+  /// No description provided for @crewUiWarActionIntel.
+  ///
+  /// In en, this message translates to:
+  /// **'Intel'**
+  String get crewUiWarActionIntel;
+
+  /// No description provided for @crewUiWarActionRaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Raid'**
+  String get crewUiWarActionRaid;
+
+  /// No description provided for @crewUiWarActionShield.
+  ///
+  /// In en, this message translates to:
+  /// **'Shield'**
+  String get crewUiWarActionShield;
+
+  /// No description provided for @crewUiWarActionBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'Boost'**
+  String get crewUiWarActionBoost;
+
+  /// No description provided for @crewUiWarActionTerritory.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory'**
+  String get crewUiWarActionTerritory;
+
+  /// No description provided for @crewUiWarTargetCrewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ({count} members)'**
+  String crewUiWarTargetCrewSubtitle(String name, int count);
+
+  /// No description provided for @crewChatErrorLoadingMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading messages: {error}'**
+  String crewChatErrorLoadingMessages(String error);
+
+  /// No description provided for @crewChatMessageTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Message too long (max 500 characters)'**
+  String get crewChatMessageTooLong;
+
+  /// No description provided for @crewChatErrorSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Error sending message: {error}'**
+  String crewChatErrorSending(String error);
+
+  /// No description provided for @crewChatErrorDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete message: {error}'**
+  String crewChatErrorDelete(String error);
+
+  /// No description provided for @crewChatDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete message?'**
+  String get crewChatDeleteTitle;
+
+  /// No description provided for @crewChatDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This message will be permanently deleted.'**
+  String get crewChatDeleteBody;
+
+  /// No description provided for @crewChatCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get crewChatCancel;
+
+  /// No description provided for @crewChatDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get crewChatDelete;
+
+  /// No description provided for @crewChatNoMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet'**
+  String get crewChatNoMessages;
+
+  /// No description provided for @crewChatEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the first message to your crew!'**
+  String get crewChatEmptyHint;
+
+  /// No description provided for @crewUiTr0.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ upgrade requirements'**
+  String get crewUiTr0;
+
+  /// No description provided for @crewUiTr1.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade your current HQ style to max level to unlock the next style'**
+  String get crewUiTr1;
+
+  /// No description provided for @crewUiTr2.
+  ///
+  /// In en, this message translates to:
+  /// **'Final HQ style reached'**
+  String get crewUiTr2;
+
+  /// No description provided for @crewUiTr3.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP HQ required for level 11-15'**
+  String get crewUiTr3;
+
+  /// No description provided for @crewUiTr4.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade all side buildings to the required level for this HQ style first'**
+  String get crewUiTr4;
+
+  /// No description provided for @crewUiTr5.
+  ///
+  /// In en, this message translates to:
+  /// **'Building already owned'**
+  String get crewUiTr5;
+
+  /// No description provided for @crewUiTr6.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient crew bank funds'**
+  String get crewUiTr6;
+
+  /// No description provided for @crewUiTr7.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ progression is too low for this upgrade'**
+  String get crewUiTr7;
+
+  /// No description provided for @crewUiTr8.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP required for level 11+'**
+  String get crewUiTr8;
+
+  /// No description provided for @crewUiTr9.
+  ///
+  /// In en, this message translates to:
+  /// **'Starter deposit reached. Purchase cash storage first to unlock more crew bank space.'**
+  String get crewUiTr9;
+
+  /// No description provided for @crewUiTr10.
+  ///
+  /// In en, this message translates to:
+  /// **'Action failed'**
+  String get crewUiTr10;
+
+  /// No description provided for @crewUiTr11.
+  ///
+  /// In en, this message translates to:
+  /// **'There is already an active crew mission.'**
+  String get crewUiTr11;
+
+  /// No description provided for @crewUiTr12.
+  ///
+  /// In en, this message translates to:
+  /// **'A mission cooldown is still active. Wait for it to finish or speed it up with credits.'**
+  String get crewUiTr12;
+
+  /// No description provided for @crewUiTr13.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission not found.'**
+  String get crewUiTr13;
+
+  /// No description provided for @crewUiTr14.
+  ///
+  /// In en, this message translates to:
+  /// **'This tier is still locked.'**
+  String get crewUiTr14;
+
+  /// No description provided for @crewUiTr15.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission run not found.'**
+  String get crewUiTr15;
+
+  /// No description provided for @crewUiTr16.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission is already resolved.'**
+  String get crewUiTr16;
+
+  /// No description provided for @crewUiTr17.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission is not completed yet.'**
+  String get crewUiTr17;
+
+  /// No description provided for @crewUiTr18.
+  ///
+  /// In en, this message translates to:
+  /// **'No active cooldown.'**
+  String get crewUiTr18;
+
+  /// No description provided for @crewUiTr19.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient credits.'**
+  String get crewUiTr19;
+
+  /// No description provided for @crewUiTr20.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start mission.'**
+  String get crewUiTr20;
+
+  /// No description provided for @crewUiTr21.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to resolve mission.'**
+  String get crewUiTr21;
+
+  /// No description provided for @crewUiTr22.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to claim rewards.'**
+  String get crewUiTr22;
+
+  /// No description provided for @crewUiTr23.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to speed up cooldown.'**
+  String get crewUiTr23;
+
+  /// No description provided for @crewUiTr24.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not in a crew.'**
+  String get crewUiTr24;
+
+  /// No description provided for @crewUiTr25.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the crew leader can do this.'**
+  String get crewUiTr25;
+
+  /// No description provided for @crewUiTr26.
+  ///
+  /// In en, this message translates to:
+  /// **'Target crew not found.'**
+  String get crewUiTr26;
+
+  /// No description provided for @crewUiTr27.
+  ///
+  /// In en, this message translates to:
+  /// **'This crew is already in a war.'**
+  String get crewUiTr27;
+
+  /// No description provided for @crewUiTr28.
+  ///
+  /// In en, this message translates to:
+  /// **'At least 3 crew members are required.'**
+  String get crewUiTr28;
+
+  /// No description provided for @crewUiTr29.
+  ///
+  /// In en, this message translates to:
+  /// **'War not found.'**
+  String get crewUiTr29;
+
+  /// No description provided for @crewUiTr30.
+  ///
+  /// In en, this message translates to:
+  /// **'This war is not active.'**
+  String get crewUiTr30;
+
+  /// No description provided for @crewUiTr31.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot join this war right now.'**
+  String get crewUiTr31;
+
+  /// No description provided for @crewUiTr32.
+  ///
+  /// In en, this message translates to:
+  /// **'This action requires a target player.'**
+  String get crewUiTr32;
+
+  /// No description provided for @crewUiTr33.
+  ///
+  /// In en, this message translates to:
+  /// **'Anti-farm block: pick another target.'**
+  String get crewUiTr33;
+
+  /// No description provided for @crewUiTr34.
+  ///
+  /// In en, this message translates to:
+  /// **'A VIP player is required for this action.'**
+  String get crewUiTr34;
+
+  /// No description provided for @crewUiTr35.
+  ///
+  /// In en, this message translates to:
+  /// **'A VIP crew is required for this action.'**
+  String get crewUiTr35;
+
+  /// No description provided for @crewUiTr36.
+  ///
+  /// In en, this message translates to:
+  /// **'Action limit reached for now.'**
+  String get crewUiTr36;
+
+  /// No description provided for @crewUiTr37.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown active: wait {remaining} more minutes.'**
+  String crewUiTr37(String remaining);
+
+  /// No description provided for @crewUiTr38.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid territory selected.'**
+  String get crewUiTr38;
+
+  /// No description provided for @crewUiTr39.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war action failed.'**
+  String get crewUiTr39;
+
+  /// No description provided for @crewUiTr40.
+  ///
+  /// In en, this message translates to:
+  /// **'Target player'**
+  String get crewUiTr40;
+
+  /// No description provided for @crewUiTr41.
+  ///
+  /// In en, this message translates to:
+  /// **'Kills'**
+  String get crewUiTr41;
+
+  /// No description provided for @crewUiTr42.
+  ///
+  /// In en, this message translates to:
+  /// **'Deaths'**
+  String get crewUiTr42;
+
+  /// No description provided for @crewUiTr43.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get crewUiTr43;
+
+  /// No description provided for @crewUiTr44.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get crewUiTr44;
+
+  /// No description provided for @crewUiTr45.
+  ///
+  /// In en, this message translates to:
+  /// **'Leader'**
+  String get crewUiTr45;
+
+  /// No description provided for @crewUiTr46.
+  ///
+  /// In en, this message translates to:
+  /// **'Co-leader'**
+  String get crewUiTr46;
+
+  /// No description provided for @crewUiTr47.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get crewUiTr47;
+
+  /// No description provided for @crewUiTr48.
+  ///
+  /// In en, this message translates to:
+  /// **'Capital'**
+  String get crewUiTr48;
+
+  /// No description provided for @crewUiTr49.
+  ///
+  /// In en, this message translates to:
+  /// **'Harbor'**
+  String get crewUiTr49;
+
+  /// No description provided for @crewUiTr50.
+  ///
+  /// In en, this message translates to:
+  /// **'Industry'**
+  String get crewUiTr50;
+
+  /// No description provided for @crewUiTr51.
+  ///
+  /// In en, this message translates to:
+  /// **'Border'**
+  String get crewUiTr51;
+
+  /// No description provided for @crewUiTr52.
+  ///
+  /// In en, this message translates to:
+  /// **'Logistics'**
+  String get crewUiTr52;
+
+  /// No description provided for @crewUiTr53.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim'**
+  String get crewUiTr53;
+
+  /// No description provided for @crewUiTr54.
+  ///
+  /// In en, this message translates to:
+  /// **'Tick'**
+  String get crewUiTr54;
+
+  /// No description provided for @crewUiTr55.
+  ///
+  /// In en, this message translates to:
+  /// **'Select territory'**
+  String get crewUiTr55;
+
+  /// No description provided for @crewUiTr56.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a target crew first.'**
+  String get crewUiTr56;
+
+  /// No description provided for @crewUiTr57.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war declared.'**
+  String get crewUiTr57;
+
+  /// No description provided for @crewUiTr58.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to declare crew war.'**
+  String get crewUiTr58;
+
+  /// No description provided for @crewUiTr59.
+  ///
+  /// In en, this message translates to:
+  /// **'You joined the war.'**
+  String get crewUiTr59;
+
+  /// No description provided for @crewUiTr60.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to join the war.'**
+  String get crewUiTr60;
+
+  /// No description provided for @crewUiTr61.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew war action completed.'**
+  String get crewUiTr61;
+
+  /// No description provided for @crewUiTr62.
+  ///
+  /// In en, this message translates to:
+  /// **'Kill War'**
+  String get crewUiTr62;
+
+  /// No description provided for @crewUiTr63.
+  ///
+  /// In en, this message translates to:
+  /// **'Economy War'**
+  String get crewUiTr63;
+
+  /// No description provided for @crewUiTr64.
+  ///
+  /// In en, this message translates to:
+  /// **'Territory War'**
+  String get crewUiTr64;
+
+  /// No description provided for @crewUiTr65.
+  ///
+  /// In en, this message translates to:
+  /// **'Total War'**
+  String get crewUiTr65;
+
+  /// No description provided for @crewUiTr66.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing'**
+  String get crewUiTr66;
+
+  /// No description provided for @crewUiTr67.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get crewUiTr67;
+
+  /// No description provided for @crewUiTr68.
+  ///
+  /// In en, this message translates to:
+  /// **'Lockdown'**
+  String get crewUiTr68;
+
+  /// No description provided for @crewUiTr69.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get crewUiTr69;
+
+  /// No description provided for @crewUiTr70.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get crewUiTr70;
+
+  /// No description provided for @crewUiTr71.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get crewUiTr71;
+
+  /// No description provided for @crewUiTr72.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP'**
+  String get crewUiTr72;
+
+  /// No description provided for @crewUiTr73.
+  ///
+  /// In en, this message translates to:
+  /// **'€9.99/mo'**
+  String get crewUiTr73;
+
+  /// No description provided for @crewUiTr74.
+  ///
+  /// In en, this message translates to:
+  /// **'€4.99/mo'**
+  String get crewUiTr74;
+
+  /// No description provided for @crewUiTr75.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time purchases'**
+  String get crewUiTr75;
+
+  /// No description provided for @crewUiTr76.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the leader can buy crew VIP'**
+  String get crewUiTr76;
+
+  /// No description provided for @crewUiTr77.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid product'**
+  String get crewUiTr77;
+
+  /// No description provided for @crewUiTr78.
+  ///
+  /// In en, this message translates to:
+  /// **'Error opening payment page'**
+  String get crewUiTr78;
+
+  /// No description provided for @crewUiTr79.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get crewUiTr79;
+
+  /// No description provided for @crewUiTr80.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave crew'**
+  String get crewUiTr80;
+
+  /// No description provided for @crewUiTr81.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave the crew?'**
+  String get crewUiTr81;
+
+  /// No description provided for @crewUiTr82.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get crewUiTr82;
+
+  /// No description provided for @crewUiTr83.
+  ///
+  /// In en, this message translates to:
+  /// **'Left crew'**
+  String get crewUiTr83;
+
+  /// No description provided for @crewUiTr84.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit to crew bank'**
+  String get crewUiTr84;
+
+  /// No description provided for @crewUiTr85.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw from crew bank'**
+  String get crewUiTr85;
+
+  /// No description provided for @crewUiTr86.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get crewUiTr86;
+
+  /// No description provided for @crewUiTr87.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid amount'**
+  String get crewUiTr87;
+
+  /// No description provided for @crewUiTr88.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough cash on hand'**
+  String get crewUiTr88;
+
+  /// No description provided for @crewUiTr89.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase cash storage first for the crew bank'**
+  String get crewUiTr89;
+
+  /// No description provided for @crewUiTr90.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew cash storage is full'**
+  String get crewUiTr90;
+
+  /// No description provided for @crewUiTr91.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete crew'**
+  String get crewUiTr91;
+
+  /// No description provided for @crewUiTr92.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this crew? This cannot be undone.'**
+  String get crewUiTr92;
+
+  /// No description provided for @crewUiTr93.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get crewUiTr93;
+
+  /// No description provided for @crewUiTr94.
+  ///
+  /// In en, this message translates to:
+  /// **'Next level'**
+  String get crewUiTr94;
+
+  /// No description provided for @crewUiTr95.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get crewUiTr95;
+
+  /// No description provided for @crewUiTr96.
+  ///
+  /// In en, this message translates to:
+  /// **'Max level reached'**
+  String get crewUiTr96;
+
+  /// No description provided for @crewUiTr97.
+  ///
+  /// In en, this message translates to:
+  /// **'Building not owned'**
+  String get crewUiTr97;
+
+  /// No description provided for @crewUiTr98.
+  ///
+  /// In en, this message translates to:
+  /// **'Add car/motorcycle'**
+  String get crewUiTr98;
+
+  /// No description provided for @crewUiTr99.
+  ///
+  /// In en, this message translates to:
+  /// **'Add boat'**
+  String get crewUiTr99;
+
+  /// No description provided for @crewUiTr100.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle'**
+  String get crewUiTr100;
+
+  /// No description provided for @crewUiTr101.
+  ///
+  /// In en, this message translates to:
+  /// **'Boat'**
+  String get crewUiTr101;
+
+  /// No description provided for @crewUiTr102.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get crewUiTr102;
+
+  /// No description provided for @crewUiTr103.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get crewUiTr103;
+
+  /// No description provided for @crewUiTr104.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get crewUiTr104;
+
+  /// No description provided for @crewUiTr105.
+  ///
+  /// In en, this message translates to:
+  /// **'Add weapon'**
+  String get crewUiTr105;
+
+  /// No description provided for @crewUiTr106.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon'**
+  String get crewUiTr106;
+
+  /// No description provided for @crewUiTr107.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get crewUiTr107;
+
+  /// No description provided for @crewUiTr108.
+  ///
+  /// In en, this message translates to:
+  /// **'Add ammo'**
+  String get crewUiTr108;
+
+  /// No description provided for @crewUiTr109.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo type'**
+  String get crewUiTr109;
+
+  /// No description provided for @crewUiTr110.
+  ///
+  /// In en, this message translates to:
+  /// **'Add goods'**
+  String get crewUiTr110;
+
+  /// No description provided for @crewUiTr111.
+  ///
+  /// In en, this message translates to:
+  /// **'Goods type'**
+  String get crewUiTr111;
+
+  /// No description provided for @crewUiTr112.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a crew first to use Crew Wars.'**
+  String get crewUiTr112;
+
+  /// No description provided for @crewUiTr113.
+  ///
+  /// In en, this message translates to:
+  /// **'No opponent crew members are available to target.'**
+  String get crewUiTr113;
+
+  /// No description provided for @crewUiTr114.
+  ///
+  /// In en, this message translates to:
+  /// **'Select target player'**
+  String get crewUiTr114;
+
+  /// No description provided for @crewUiTr115.
+  ///
+  /// In en, this message translates to:
+  /// **'Season overview'**
+  String get crewUiTr115;
+
+  /// No description provided for @crewUiTr116.
+  ///
+  /// In en, this message translates to:
+  /// **'Active season'**
+  String get crewUiTr116;
+
+  /// No description provided for @crewUiTr117.
+  ///
+  /// In en, this message translates to:
+  /// **'My role'**
+  String get crewUiTr117;
+
+  /// No description provided for @crewUiTr118.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew can declare'**
+  String get crewUiTr118;
+
+  /// No description provided for @crewUiTr119.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get crewUiTr119;
+
+  /// No description provided for @crewUiTr120.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get crewUiTr120;
+
+  /// No description provided for @crewUiTr121.
+  ///
+  /// In en, this message translates to:
+  /// **'Declare new war'**
+  String get crewUiTr121;
+
+  /// No description provided for @crewUiTr122.
+  ///
+  /// In en, this message translates to:
+  /// **'Target crew'**
+  String get crewUiTr122;
+
+  /// No description provided for @crewUiTr123.
+  ///
+  /// In en, this message translates to:
+  /// **'War type'**
+  String get crewUiTr123;
+
+  /// No description provided for @crewUiTr124.
+  ///
+  /// In en, this message translates to:
+  /// **'Declare war'**
+  String get crewUiTr124;
+
+  /// No description provided for @crewUiTr125.
+  ///
+  /// In en, this message translates to:
+  /// **'War territories'**
+  String get crewUiTr125;
+
+  /// No description provided for @crewUiTr126.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get crewUiTr126;
+
+  /// No description provided for @crewUiTr127.
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent crew'**
+  String get crewUiTr127;
+
+  /// No description provided for @crewUiTr128.
+  ///
+  /// In en, this message translates to:
+  /// **'Active from'**
+  String get crewUiTr128;
+
+  /// No description provided for @crewUiTr129.
+  ///
+  /// In en, this message translates to:
+  /// **'Join war'**
+  String get crewUiTr129;
+
+  /// No description provided for @crewUiTr130.
+  ///
+  /// In en, this message translates to:
+  /// **'Standings'**
+  String get crewUiTr130;
+
+  /// No description provided for @crewUiTr131.
+  ///
+  /// In en, this message translates to:
+  /// **'Territories'**
+  String get crewUiTr131;
+
+  /// No description provided for @crewUiTr132.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent actions'**
+  String get crewUiTr132;
+
+  /// No description provided for @crewUiTr133.
+  ///
+  /// In en, this message translates to:
+  /// **'No war actions yet.'**
+  String get crewUiTr133;
+
+  /// No description provided for @crewUiTr134.
+  ///
+  /// In en, this message translates to:
+  /// **'vs'**
+  String get crewUiTr134;
+
+  /// No description provided for @crewUiTr135.
+  ///
+  /// In en, this message translates to:
+  /// **'Season leaderboard'**
+  String get crewUiTr135;
+
+  /// No description provided for @crewUiTr136.
+  ///
+  /// In en, this message translates to:
+  /// **'No season points yet.'**
+  String get crewUiTr136;
+
+  /// No description provided for @crewUiTr137.
+  ///
+  /// In en, this message translates to:
+  /// **'Loot'**
+  String get crewUiTr137;
+
+  /// No description provided for @crewUiTr138.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent wars'**
+  String get crewUiTr138;
+
+  /// No description provided for @crewUiTr139.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent wars yet.'**
+  String get crewUiTr139;
+
+  /// No description provided for @crewUiTr140.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the leader can purchase or upgrade'**
+  String get crewUiTr140;
+
+  /// No description provided for @crewUiTr141.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ upgrade blocked: side buildings first to L\$requiredSideLevel'**
+  String get crewUiTr141;
+
+  /// No description provided for @crewUiTr142.
+  ///
+  /// In en, this message translates to:
+  /// **'Next upgrade not available yet'**
+  String get crewUiTr142;
+
+  /// No description provided for @crewUiTr143.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ progression too low'**
+  String get crewUiTr143;
+
+  /// No description provided for @crewUiTr144.
+  ///
+  /// In en, this message translates to:
+  /// **'HQ level too low for next upgrade'**
+  String get crewUiTr144;
+
   /// No description provided for @premiumUiLoadError.
   ///
   /// In en, this message translates to:

@@ -12,6 +12,7 @@ import 'player_profile_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/formatters.dart';
 import '../utils/web_asset_helper.dart';
+import '../l10n/app_localizations.dart';
 
 class CrewScreen extends StatefulWidget {
   const CrewScreen({super.key});
@@ -83,6 +84,8 @@ class _CrewScreenState extends State<CrewScreen>
   String _selectedWarType = 'kill_war';
   int? _selectedWarTargetCrewId;
 
+  AppLocalizations get l10n => AppLocalizations.of(context)!;
+
   void _openPlayerProfile(int playerId, String username) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -92,255 +95,138 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  static const Map<String, Map<String, String>> _crewI18n = {
-    'app.crews': {'nl': 'Crews', 'en': 'Crews'},
-    'tab.myCrew': {'nl': 'Overzicht', 'en': 'Overview'},
-    'tab.crewHq': {'nl': 'HQ & Upgrades', 'en': 'HQ & Upgrades'},
-    'tab.storageHub': {'nl': 'Opslag', 'en': 'Storage'},
-    'tab.members': {'nl': 'Leden', 'en': 'Members'},
-    'tab.warRoom': {'nl': 'War Room', 'en': 'War Room'},
-    'tab.crewMissions': {'nl': 'Crew Missies', 'en': 'Crew Missions'},
-    'tab.carStorage': {
-      'nl': 'Auto/motor opslag',
-      'en': 'Car/Motorcycle Storage',
-    },
-    'tab.boatStorage': {'nl': 'Haven', 'en': 'Boat Storage'},
-    'tab.weaponStorage': {'nl': 'Wapen opslag', 'en': 'Weapon Storage'},
-    'tab.ammoStorage': {'nl': 'Munitie opslag', 'en': 'Ammo Storage'},
-    'tab.drugStorage': {'nl': 'Drugs opslag', 'en': 'Drug Storage'},
-    'tab.cashStorage': {'nl': 'Cash opslag', 'en': 'Cash Storage'},
-    'tab.allCrews': {'nl': 'Crews', 'en': 'Crews'},
-    'tab.chat': {'nl': 'Chat', 'en': 'Chat'},
-    'action.createCrewShort': {
-      'nl': 'Crew Maken (€50k)',
-      'en': 'Create Crew (€50k)',
-    },
-    'state.notInCrewYet': {
-      'nl': 'Je zit nog niet in een crew',
-      'en': 'You are not in a crew yet',
-    },
-    'action.createCrew': {
-      'nl': 'Crew Maken (€50,000)',
-      'en': 'Create Crew (€50,000)',
-    },
-    'label.crewBank': {'nl': 'Crew Bank:', 'en': 'Crew Bank:'},
-    'label.deposit': {'nl': 'Storten', 'en': 'Deposit'},
-    'label.withdraw': {'nl': 'Opnemen', 'en': 'Withdraw'},
-    'label.myTrustScore': {'nl': 'Mijn Trust Score:', 'en': 'My Trust Score:'},
-    'action.deleteCrew': {'nl': 'Crew verwijderen', 'en': 'Delete crew'},
-    'label.crewStats': {'nl': 'Crew Stats:', 'en': 'Crew Stats:'},
-    'action.leaveCrew': {'nl': 'Crew Verlaten', 'en': 'Leave Crew'},
-    'section.buildings': {'nl': 'HQ & Upgrades', 'en': 'HQ & Upgrades'},
-    'hint.buildingsTabs': {
-      'nl':
-          'Open HQ & Upgrades om het HQ en alle crew-gebouwen centraal te beheren.',
-      'en':
-          'Open HQ & Upgrades to manage HQ and all crew buildings from one place.',
-    },
-    'section.crewStorage': {'nl': 'Crew Opslag', 'en': 'Crew Storage'},
-    'state.noStorageData': {
-      'nl': 'Geen opslagdata geladen',
-      'en': 'No storage data loaded',
-    },
-    'action.addCar': {'nl': 'Auto/motor toevoegen', 'en': 'Add car/motorcycle'},
-    'action.addBoat': {'nl': 'Boot toevoegen', 'en': 'Add boat'},
-    'action.addWeapon': {'nl': 'Wapen toevoegen', 'en': 'Add weapon'},
-    'action.addAmmo': {'nl': 'Munitie toevoegen', 'en': 'Add ammo'},
-    'action.addDrugs': {'nl': 'Drugs toevoegen', 'en': 'Add drugs'},
-    'section.membersOverview': {
-      'nl': 'Leden overzicht',
-      'en': 'Members overview',
-    },
-    'hint.membersTab': {
-      'nl': 'Open de tab Leden bovenaan voor de ledenlijst en join requests.',
-      'en': 'Open the Members tab above for member list and join requests.',
-    },
-    'action.goToMembers': {'nl': 'Ga naar Leden', 'en': 'Go to Members'},
-    'label.crewHq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
-    'action.goToCrewHq': {'nl': 'Ga naar Crew HQ', 'en': 'Go to Crew HQ'},
-    'action.goToStorage': {'nl': 'Ga naar Opslag', 'en': 'Go to Storage'},
-    'state.joinCrewFirst': {
-      'nl': 'Maak of join eerst een crew',
-      'en': 'Create or join a crew first',
-    },
-    'state.joinRequests': {'nl': 'Join Requests', 'en': 'Join Requests'},
-    'state.noJoinRequests': {
-      'nl': 'Geen open verzoeken',
-      'en': 'No pending requests',
-    },
-    'state.noCrewsFound': {'nl': 'Geen crews gevonden', 'en': 'No crews found'},
-    'label.memberCount': {'nl': 'Leden', 'en': 'Members'},
-    'badge.myCrew': {'nl': 'Mijn Crew', 'en': 'My Crew'},
-    'action.join': {'nl': 'Joinen', 'en': 'Join'},
-    'state.notInCrew': {
-      'nl': 'Je zit niet in een crew',
-      'en': 'You are not in a crew',
-    },
-    'hint.chatJoinCrew': {
-      'nl': 'Maak of join een crew om te chatten!',
-      'en': 'Create or join a crew to chat!',
-    },
-    'status.notOwned': {'nl': 'Niet gekocht', 'en': 'Not owned'},
-    'label.level': {'nl': 'Level', 'en': 'Level'},
-    'label.capacity': {'nl': 'Capaciteit', 'en': 'Capacity'},
-    'label.memberCap': {'nl': 'Leden cap', 'en': 'Member cap'},
-    'label.parking': {'nl': 'Parkeerplekken', 'en': 'Parking'},
-    'action.purchase': {'nl': 'Kopen', 'en': 'Purchase'},
-    'action.upgrade': {'nl': 'Upgrade', 'en': 'Upgrade'},
-    'action.details': {'nl': 'Details', 'en': 'Details'},
-    'help.capsTitle': {'nl': 'Level overzicht', 'en': 'Level overview'},
-    'help.level': {'nl': 'Level', 'en': 'Level'},
-    'help.capacity': {'nl': 'Cap', 'en': 'Cap'},
-    'help.upgradeCost': {'nl': 'Kosten', 'en': 'Cost'},
-    'help.close': {'nl': 'Sluiten', 'en': 'Close'},
-    'help.showCaps': {'nl': 'Toon caps', 'en': 'Show caps'},
-    'section.upgradeHub': {'nl': 'HQ & Upgrades', 'en': 'HQ & Upgrades'},
-    'section.storageHub': {'nl': 'Opslag Hub', 'en': 'Storage Hub'},
-    'hint.storageTab': {
-      'nl':
-          'Gebruik de opslag-tab voor stortingen, saldo en snelle opslagacties.',
-      'en':
-          'Use the Storage tab for deposits, balances and quick storage actions.',
-    },
-    'hint.upgradeHub': {
-      'nl': 'Beheer hier het HQ en alle crew-upgrades op 1 plek.',
-      'en': 'Manage HQ and all crew upgrades from one place here.',
-    },
-    'section.crewMissions': {'nl': 'Crew Missies', 'en': 'Crew Missions'},
-    'state.crewMissionsEmpty': {
-      'nl': 'Nog geen crew missies beschikbaar',
-      'en': 'No crew missions available yet',
-    },
-    'state.crewMissionNoCrew': {
-      'nl': 'Join of maak een crew om missies te starten.',
-      'en': 'Join or create a crew to start missions.',
-    },
-    'action.startMission': {'nl': 'Start missie', 'en': 'Start mission'},
-    'action.configureAndStartMission': {
-      'nl': 'Configureer & start',
-      'en': 'Configure & start',
-    },
-    'action.resolveMission': {'nl': 'Rond missie af', 'en': 'Resolve mission'},
-    'action.claimRewards': {'nl': 'Claim rewards', 'en': 'Claim rewards'},
-    'action.speedupCooldown': {
-      'nl': 'Cooldown versnellen',
-      'en': 'Speed up cooldown',
-    },
-    'action.confirmSpeedupCooldown': {
-      'nl': 'Bevestig versnellen',
-      'en': 'Confirm speed up',
-    },
-    'label.activeMission': {'nl': 'Actieve missie', 'en': 'Active mission'},
-    'label.recentMissions': {'nl': 'Recente missies', 'en': 'Recent missions'},
-    'label.missionDuration': {'nl': 'Duur', 'en': 'Duration'},
-    'label.missionCooldown': {'nl': 'Cooldown', 'en': 'Cooldown'},
-    'label.missionTier': {'nl': 'Tier', 'en': 'Tier'},
-    'label.missionRewards': {'nl': 'Rewards', 'en': 'Rewards'},
-    'label.crewMissionProgress': {
-      'nl': 'Crew missieprogressie',
-      'en': 'Crew mission progression',
-    },
-    'label.crewMissionXp': {'nl': 'Crew missie XP', 'en': 'Crew mission XP'},
-    'label.crewMissionLevelBonus': {
-      'nl': 'Crew cash bonus',
-      'en': 'Crew cash bonus',
-    },
-    'label.crewMissionNextLevelBonus': {
-      'nl': 'Volgende level bonus',
-      'en': 'Next level bonus',
-    },
-    'label.missionStatus': {'nl': 'Status', 'en': 'Status'},
-    'label.cooldownActive': {'nl': 'Cooldown actief', 'en': 'Cooldown active'},
-    'label.roleContributions': {
-      'nl': 'Rolbijdragen',
-      'en': 'Role contributions',
-    },
-    'label.contribution': {'nl': 'bijdrage', 'en': 'contribution'},
-    'label.multiplier': {'nl': 'multiplier', 'en': 'multiplier'},
-    'status.missionLocked': {'nl': 'Vergrendeld', 'en': 'Locked'},
-    'status.inProgress': {'nl': 'Bezig', 'en': 'In progress'},
-    'status.completed': {'nl': 'Voltooid', 'en': 'Completed'},
-    'status.ready': {'nl': 'Klaar', 'en': 'Ready'},
-    'status.rewardsClaimed': {
-      'nl': 'Rewards geclaimd',
-      'en': 'Rewards claimed',
-    },
-    'state.missionActionBusy': {
-      'nl': 'Actie wordt verwerkt...',
-      'en': 'Action is being processed...',
-    },
-    'hint.missionLeaderOnly': {
-      'nl': 'Alleen leader/co-leader kan missies starten en resolven.',
-      'en': 'Only leader/co-leader can start and resolve missions.',
-    },
-    'dialog.roleAssignTitle': {'nl': 'Rollen toewijzen', 'en': 'Assign roles'},
-    'dialog.roleAssignSubtitle': {
-      'nl': 'Kies per crewlid een rol voor deze missie.',
-      'en': 'Choose a mission role per crew member.',
-    },
-    'label.roleNone': {'nl': 'Niet meedoen', 'en': 'Not assigned'},
-    'label.rolePlanner': {'nl': 'Planner', 'en': 'Planner'},
-    'label.roleEnforcer': {'nl': 'Enforcer', 'en': 'Enforcer'},
-    'label.roleLogistics': {'nl': 'Logistics', 'en': 'Logistics'},
-    'label.roleTech': {'nl': 'Tech', 'en': 'Tech'},
-    'hint.roleBonus': {
-      'nl': 'Elke unieke rol: +3% success chance, -2% duur (max +12% / -8%).',
-      'en':
-          'Each unique role: +3% success chance, -2% duration (max +12% / -8%).',
-    },
-    'state.roleAssignNoMembers': {
-      'nl': 'Geen crewleden gevonden.',
-      'en': 'No crew members found.',
-    },
-    'state.roleAssignPickOne': {
-      'nl': 'Kies minimaal 1 rol.',
-      'en': 'Select at least 1 role.',
-    },
-    'hint.missionLockedTier2': {
-      'nl': 'Tier 2 vereist HQ 5+ en 2+ leden.',
-      'en': 'Tier 2 requires HQ 5+ and 2+ members.',
-    },
-    'hint.missionLockedTier3': {
-      'nl': 'Tier 3 vereist HQ 9+ en 3+ leden.',
-      'en': 'Tier 3 requires HQ 9+ and 3+ members.',
-    },
-    'hint.missionLockedDefault': {
-      'nl': 'Missie nog vergrendeld.',
-      'en': 'Mission is still locked.',
-    },
-    'message.missionOverviewLoadFailed': {
-      'nl': 'Crew missies laden mislukt.',
-      'en': 'Failed to load crew missions.',
-    },
-    'message.missionStarted': {'nl': 'Missie gestart', 'en': 'Mission started'},
-    'message.missionResolved': {
-      'nl': 'Missie afgerond',
-      'en': 'Mission resolved',
-    },
-    'message.missionRewardsClaimed': {
-      'nl': 'Rewards geclaimd',
-      'en': 'Rewards claimed',
-    },
-    'message.missionCooldownSpedUp': {
-      'nl': 'Cooldown versneld',
-      'en': 'Cooldown sped up',
-    },
-    'message.missionSpeedupQuoteFailed': {
-      'nl': 'Kon speedup-prijs niet ophalen.',
-      'en': 'Could not load speedup price.',
-    },
-    'dialog.speedupTitle': {
-      'nl': 'Cooldown versnellen?',
-      'en': 'Speed up cooldown?',
-    },
-    'dialog.speedupBody': {
-      'nl': 'Direct afronden kost {credits} credits ({minutes} min resterend).',
-      'en': 'Instant finish costs {credits} credits ({minutes} min remaining).',
-    },
-    'label.credits': {'nl': 'credits', 'en': 'credits'},
-    'state.loadingPrice': {'nl': 'Prijs laden...', 'en': 'Loading price...'},
-    'action.cancel': {'nl': 'Annuleren', 'en': 'Cancel'},
-  };
+  String _crewMapLookup(AppLocalizations l10n, String key, [Map<String, String>? params]) {
+      switch (key) {
+        case 'app.crews': return l10n.crewUiAppCrews;
+        case 'tab.myCrew': return l10n.crewUiTabMyCrew;
+        case 'tab.crewHq': return l10n.crewUiTabCrewHq;
+        case 'tab.storageHub': return l10n.crewUiTabStorageHub;
+        case 'tab.members': return l10n.crewUiTabMembers;
+        case 'tab.warRoom': return l10n.crewUiTabWarRoom;
+        case 'tab.crewMissions': return l10n.crewUiTabCrewMissions;
+        case 'tab.carStorage': return l10n.crewUiTabCarStorage;
+        case 'tab.boatStorage': return l10n.crewUiTabBoatStorage;
+        case 'tab.weaponStorage': return l10n.crewUiTabWeaponStorage;
+        case 'tab.ammoStorage': return l10n.crewUiTabAmmoStorage;
+        case 'tab.drugStorage': return l10n.crewUiTabDrugStorage;
+        case 'tab.cashStorage': return l10n.crewUiTabCashStorage;
+        case 'tab.allCrews': return l10n.crewUiTabAllCrews;
+        case 'tab.chat': return l10n.crewUiTabChat;
+        case 'action.createCrewShort': return l10n.crewUiActionCreateCrewShort;
+        case 'state.notInCrewYet': return l10n.crewUiStateNotInCrewYet;
+        case 'action.createCrew': return l10n.crewUiActionCreateCrew;
+        case 'label.crewBank': return l10n.crewUiLabelCrewBank;
+        case 'label.deposit': return l10n.crewUiLabelDeposit;
+        case 'label.withdraw': return l10n.crewUiLabelWithdraw;
+        case 'label.myTrustScore': return l10n.crewUiLabelMyTrustScore;
+        case 'action.deleteCrew': return l10n.crewUiActionDeleteCrew;
+        case 'label.crewStats': return l10n.crewUiLabelCrewStats;
+        case 'action.leaveCrew': return l10n.crewUiActionLeaveCrew;
+        case 'section.buildings': return l10n.crewUiSectionBuildings;
+        case 'hint.buildingsTabs': return l10n.crewUiHintBuildingsTabs;
+        case 'section.crewStorage': return l10n.crewUiSectionCrewStorage;
+        case 'state.noStorageData': return l10n.crewUiStateNoStorageData;
+        case 'action.addCar': return l10n.crewUiActionAddCar;
+        case 'action.addBoat': return l10n.crewUiActionAddBoat;
+        case 'action.addWeapon': return l10n.crewUiActionAddWeapon;
+        case 'action.addAmmo': return l10n.crewUiActionAddAmmo;
+        case 'action.addDrugs': return l10n.crewUiActionAddDrugs;
+        case 'section.membersOverview': return l10n.crewUiSectionMembersOverview;
+        case 'hint.membersTab': return l10n.crewUiHintMembersTab;
+        case 'action.goToMembers': return l10n.crewUiActionGoToMembers;
+        case 'label.crewHq': return l10n.crewUiLabelCrewHq;
+        case 'action.goToCrewHq': return l10n.crewUiActionGoToCrewHq;
+        case 'action.goToStorage': return l10n.crewUiActionGoToStorage;
+        case 'state.joinCrewFirst': return l10n.crewUiStateJoinCrewFirst;
+        case 'state.joinRequests': return l10n.crewUiStateJoinRequests;
+        case 'state.noJoinRequests': return l10n.crewUiStateNoJoinRequests;
+        case 'state.noCrewsFound': return l10n.crewUiStateNoCrewsFound;
+        case 'label.memberCount': return l10n.crewUiLabelMemberCount;
+        case 'badge.myCrew': return l10n.crewUiBadgeMyCrew;
+        case 'action.join': return l10n.crewUiActionJoin;
+        case 'state.notInCrew': return l10n.crewUiStateNotInCrew;
+        case 'hint.chatJoinCrew': return l10n.crewUiHintChatJoinCrew;
+        case 'status.notOwned': return l10n.crewUiStatusNotOwned;
+        case 'label.level': return l10n.crewUiLabelLevel;
+        case 'label.capacity': return l10n.crewUiLabelCapacity;
+        case 'label.memberCap': return l10n.crewUiLabelMemberCap;
+        case 'label.parking': return l10n.crewUiLabelParking;
+        case 'action.purchase': return l10n.crewUiActionPurchase;
+        case 'action.upgrade': return l10n.crewUiActionUpgrade;
+        case 'action.details': return l10n.crewUiActionDetails;
+        case 'help.capsTitle': return l10n.crewUiHelpCapsTitle;
+        case 'help.level': return l10n.crewUiHelpLevel;
+        case 'help.capacity': return l10n.crewUiHelpCapacity;
+        case 'help.upgradeCost': return l10n.crewUiHelpUpgradeCost;
+        case 'help.close': return l10n.crewUiHelpClose;
+        case 'help.showCaps': return l10n.crewUiHelpShowCaps;
+        case 'section.upgradeHub': return l10n.crewUiSectionUpgradeHub;
+        case 'section.storageHub': return l10n.crewUiSectionStorageHub;
+        case 'hint.storageTab': return l10n.crewUiHintStorageTab;
+        case 'hint.upgradeHub': return l10n.crewUiHintUpgradeHub;
+        case 'section.crewMissions': return l10n.crewUiSectionCrewMissions;
+        case 'state.crewMissionsEmpty': return l10n.crewUiStateCrewMissionsEmpty;
+        case 'state.crewMissionNoCrew': return l10n.crewUiStateCrewMissionNoCrew;
+        case 'action.startMission': return l10n.crewUiActionStartMission;
+        case 'action.configureAndStartMission': return l10n.crewUiActionConfigureAndStartMission;
+        case 'action.resolveMission': return l10n.crewUiActionResolveMission;
+        case 'action.claimRewards': return l10n.crewUiActionClaimRewards;
+        case 'action.speedupCooldown': return l10n.crewUiActionSpeedupCooldown;
+        case 'action.confirmSpeedupCooldown': return l10n.crewUiActionConfirmSpeedupCooldown;
+        case 'label.activeMission': return l10n.crewUiLabelActiveMission;
+        case 'label.recentMissions': return l10n.crewUiLabelRecentMissions;
+        case 'label.missionDuration': return l10n.crewUiLabelMissionDuration;
+        case 'label.missionCooldown': return l10n.crewUiLabelMissionCooldown;
+        case 'label.missionTier': return l10n.crewUiLabelMissionTier;
+        case 'label.missionRewards': return l10n.crewUiLabelMissionRewards;
+        case 'label.crewMissionProgress': return l10n.crewUiLabelCrewMissionProgress;
+        case 'label.crewMissionXp': return l10n.crewUiLabelCrewMissionXp;
+        case 'label.crewMissionLevelBonus': return l10n.crewUiLabelCrewMissionLevelBonus;
+        case 'label.crewMissionNextLevelBonus': return l10n.crewUiLabelCrewMissionNextLevelBonus;
+        case 'label.missionStatus': return l10n.crewUiLabelMissionStatus;
+        case 'label.cooldownActive': return l10n.crewUiLabelCooldownActive;
+        case 'label.roleContributions': return l10n.crewUiLabelRoleContributions;
+        case 'label.contribution': return l10n.crewUiLabelContribution;
+        case 'label.multiplier': return l10n.crewUiLabelMultiplier;
+        case 'status.missionLocked': return l10n.crewUiStatusMissionLocked;
+        case 'status.inProgress': return l10n.crewUiStatusInProgress;
+        case 'status.completed': return l10n.crewUiStatusCompleted;
+        case 'status.ready': return l10n.crewUiStatusReady;
+        case 'status.rewardsClaimed': return l10n.crewUiStatusRewardsClaimed;
+        case 'state.missionActionBusy': return l10n.crewUiStateMissionActionBusy;
+        case 'hint.missionLeaderOnly': return l10n.crewUiHintMissionLeaderOnly;
+        case 'dialog.roleAssignTitle': return l10n.crewUiDialogRoleAssignTitle;
+        case 'dialog.roleAssignSubtitle': return l10n.crewUiDialogRoleAssignSubtitle;
+        case 'label.roleNone': return l10n.crewUiLabelRoleNone;
+        case 'label.rolePlanner': return l10n.crewUiLabelRolePlanner;
+        case 'label.roleEnforcer': return l10n.crewUiLabelRoleEnforcer;
+        case 'label.roleLogistics': return l10n.crewUiLabelRoleLogistics;
+        case 'label.roleTech': return l10n.crewUiLabelRoleTech;
+        case 'hint.roleBonus': return l10n.crewUiHintRoleBonus;
+        case 'state.roleAssignNoMembers': return l10n.crewUiStateRoleAssignNoMembers;
+        case 'state.roleAssignPickOne': return l10n.crewUiStateRoleAssignPickOne;
+        case 'hint.missionLockedTier2': return l10n.crewUiHintMissionLockedTier2;
+        case 'hint.missionLockedTier3': return l10n.crewUiHintMissionLockedTier3;
+        case 'hint.missionLockedDefault': return l10n.crewUiHintMissionLockedDefault;
+        case 'message.missionOverviewLoadFailed': return l10n.crewUiMessageMissionOverviewLoadFailed;
+        case 'message.missionStarted': return l10n.crewUiMessageMissionStarted;
+        case 'message.missionResolved': return l10n.crewUiMessageMissionResolved;
+        case 'message.missionRewardsClaimed': return l10n.crewUiMessageMissionRewardsClaimed;
+        case 'message.missionCooldownSpedUp': return l10n.crewUiMessageMissionCooldownSpedUp;
+        case 'message.missionSpeedupQuoteFailed': return l10n.crewUiMessageMissionSpeedupQuoteFailed;
+        case 'dialog.speedupTitle': return l10n.crewUiDialogSpeedupTitle;
+        case 'dialog.speedupBody':
+          return l10n.crewUiDialogSpeedupBody(
+            params?['credits'] ?? '',
+            params?['minutes'] ?? '',
+          );
+        case 'label.credits': return l10n.crewUiLabelCredits;
+        case 'state.loadingPrice': return l10n.crewUiStateLoadingPrice;
+        case 'action.cancel': return l10n.crewUiActionCancel;
+        default: return key;
+      }
+    }
+
 
   static const Map<String, List<int>> _buildingCapacityByLevel = {
     'hq': [5, 10, 16, 24],
@@ -566,13 +452,10 @@ class _CrewScreenState extends State<CrewScreen>
     ],
   };
 
-  String _t(String locale, String key) {
-    final lang = locale == 'nl' ? 'nl' : 'en';
-    return _crewI18n[key]?[lang] ?? key;
-  }
+  String _t(AppLocalizations l10n, String key) => _crewMapLookup(l10n, key);
 
-  String _localizedHqStyleLabel(String locale, String style) {
-    final isNl = locale == 'nl';
+  String _localizedHqStyleLabel(AppLocalizations loc, String style) {
+    final isNl = loc.localeName.startsWith('nl');
     switch (style) {
       case 'camping':
         return isNl ? 'camping' : 'camping';
@@ -640,7 +523,7 @@ class _CrewScreenState extends State<CrewScreen>
 
   List<String> _getMissingSideBuildingsForHqUpgrade(
     int requiredLevel,
-    String locale,
+    AppLocalizations loc,
   ) {
     const sideTypes = [
       'car_storage',
@@ -659,7 +542,7 @@ class _CrewScreenState extends State<CrewScreen>
       );
       final sideLevel = sideBuilding['level'] as int?;
       if ((sideLevel ?? -1) < requiredLevel) {
-        final label = _getBuildingLabel(sideType, locale);
+        final label = _getBuildingLabel(sideType, loc);
         missing.add('$label L${sideLevel ?? 0}');
       }
     }
@@ -668,25 +551,27 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _showHqUpgradeRequirementsDialog(
-    String locale,
     int requiredSideLevel,
     List<String> missingSideBuildings,
   ) async {
-    final message = locale == 'nl'
-        ? 'Upgrade eerst alle bijgebouwen naar minimaal level $requiredSideLevel.\n\nOntbreekt:\n- ${missingSideBuildings.join('\n- ')}'
-        : 'Upgrade all side buildings to at least level $requiredSideLevel first.\n\nMissing:\n- ${missingSideBuildings.join('\n- ')}';
+    final message = l10n.crewUiHqUpgradeSideBuildingsMessage(
+      requiredSideLevel.toString(),
+      missingSideBuildings.isEmpty
+          ? '—'
+          : '- ${missingSideBuildings.join('\n- ')}',
+    );
 
     await showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          _tr(locale, 'HQ upgrade vereisten', 'HQ upgrade requirements'),
+          l10n.crewUiTr0,
         ),
         content: Text(message),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(_t(locale, 'help.close')),
+            child: Text(_t(l10n, 'help.close')),
           ),
         ],
       ),
@@ -694,7 +579,6 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _showBuildingCapsDialog(
-    String locale,
     String buildingType,
     String buildingLabel,
   ) async {
@@ -714,8 +598,8 @@ class _CrewScreenState extends State<CrewScreen>
     }
 
     final capLabel = buildingType == 'hq'
-        ? _t(locale, 'label.memberCap')
-        : _t(locale, 'help.capacity');
+        ? _t(l10n, 'label.memberCap')
+        : _t(l10n, 'help.capacity');
 
     const headerStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 12);
     const dataStyle = TextStyle(fontSize: 12);
@@ -723,7 +607,7 @@ class _CrewScreenState extends State<CrewScreen>
     await showDialog<void>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('${_t(locale, 'help.capsTitle')} - $buildingLabel'),
+        title: Text('${_t(l10n, 'help.capsTitle')} - $buildingLabel'),
         content: SizedBox(
           width: 380,
           child: ListView(
@@ -733,7 +617,7 @@ class _CrewScreenState extends State<CrewScreen>
                 children: [
                   SizedBox(
                     width: 36,
-                    child: Text(_t(locale, 'help.level'), style: headerStyle),
+                    child: Text(_t(l10n, 'help.level'), style: headerStyle),
                   ),
                   Expanded(
                     child: Text(
@@ -744,7 +628,7 @@ class _CrewScreenState extends State<CrewScreen>
                   ),
                   Expanded(
                     child: Text(
-                      _t(locale, 'help.upgradeCost'),
+                      _t(l10n, 'help.upgradeCost'),
                       style: headerStyle,
                       textAlign: TextAlign.right,
                     ),
@@ -757,7 +641,7 @@ class _CrewScreenState extends State<CrewScreen>
                     ? shortNum(costs[index])
                     : '-';
                 final levelLabel = buildingType == 'hq'
-                    ? 'L$index (${_localizedHqStyleLabel(locale, _hqStyleOrder[index ~/ 4])})'
+                    ? 'L$index (${_localizedHqStyleLabel(l10n, _hqStyleOrder[index ~/ 4])})'
                     : 'L$index';
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2),
@@ -791,16 +675,15 @@ class _CrewScreenState extends State<CrewScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(_t(locale, 'help.close')),
+            child: Text(_t(l10n, 'help.close')),
           ),
         ],
       ),
     );
   }
 
-  String _tr(String locale, String nl, String en) => locale == 'nl' ? nl : en;
-  String _tParam(String locale, String key, Map<String, String> params) {
-    var text = _t(locale, key);
+  String _tParam(AppLocalizations l10n, String key, Map<String, String> params) {
+    var text = _crewMapLookup(l10n, key, params);
     params.forEach((paramKey, paramValue) {
       text = text.replaceAll('{$paramKey}', paramValue);
     });
@@ -809,60 +692,28 @@ class _CrewScreenState extends State<CrewScreen>
 
   String _money(num amount) => formatCurrency(amount);
 
-  String _buildingActionErrorMessage(String locale, String? event) {
+  String _buildingActionErrorMessage(AppLocalizations l10n, String? event) {
     switch (event) {
       case 'error.hq_style_locked':
-        return _tr(
-          locale,
-          'Upgrade eerst je huidige HQ-stijl naar max level om de volgende stijl te ontgrendelen',
-          'Upgrade your current HQ style to max level to unlock the next style',
-        );
+        return l10n.crewUiTr1;
       case 'error.hq_style_max':
-        return _tr(
-          locale,
-          'Laatste HQ-stijl bereikt',
-          'Final HQ style reached',
-        );
+        return l10n.crewUiTr2;
       case 'error.hq_vip_required':
-        return _tr(
-          locale,
-          'VIP HQ vereist voor level 11-15',
-          'VIP HQ required for level 11-15',
-        );
+        return l10n.crewUiTr3;
       case 'error.hq_side_buildings_incomplete':
-        return _tr(
-          locale,
-          'Upgrade eerst alle bijgebouwen naar het vereiste level voor deze HQ-stijl',
-          'Upgrade all side buildings to the required level for this HQ style first',
-        );
+        return l10n.crewUiTr4;
       case 'error.building_already_owned':
-        return _tr(locale, 'Gebouw al gekocht', 'Building already owned');
+        return l10n.crewUiTr5;
       case 'error.insufficient_crew_funds':
-        return _tr(
-          locale,
-          'Onvoldoende saldo in crew bank',
-          'Insufficient crew bank funds',
-        );
+        return l10n.crewUiTr6;
       case 'error.hq_level_too_low':
-        return _tr(
-          locale,
-          'HQ progression te laag voor deze upgrade',
-          'HQ progression is too low for this upgrade',
-        );
+        return l10n.crewUiTr7;
       case 'error.building_vip_required':
-        return _tr(
-          locale,
-          'Crew VIP vereist voor level 11+',
-          'Crew VIP required for level 11+',
-        );
+        return l10n.crewUiTr8;
       case 'error.cash_bootstrap_limit_reached':
-        return _tr(
-          locale,
-          'Starterstorting bereikt. Koop nu eerst cash opslag voor extra crew bankruimte.',
-          'Starter deposit reached. Purchase cash storage first to unlock more crew bank space.',
-        );
+        return l10n.crewUiTr9;
       default:
-        return _tr(locale, 'Actie mislukt', 'Action failed');
+        return l10n.crewUiTr10;
     }
   }
 
@@ -874,69 +725,45 @@ class _CrewScreenState extends State<CrewScreen>
     return <String, dynamic>{};
   }
 
-  String _crewMissionErrorMessage(String locale, String? event) {
+  String _crewMissionErrorMessage(AppLocalizations l10n, String? event) {
     switch (event) {
       case 'error.not_in_crew':
-        return _t(locale, 'state.crewMissionNoCrew');
+        return _t(l10n, 'state.crewMissionNoCrew');
       case 'error.mission_permission_denied':
-        return _t(locale, 'hint.missionLeaderOnly');
+        return _t(l10n, 'hint.missionLeaderOnly');
       case 'error.mission_already_in_progress':
-        return _tr(
-          locale,
-          'Er is al een crew missie actief.',
-          'There is already an active crew mission.',
-        );
+        return l10n.crewUiTr11;
       case 'error.mission_cooldown_active':
-        return _tr(
-          locale,
-          'Er loopt nog een missie-cooldown. Wacht tot deze klaar is of versnel met credits.',
-          'A mission cooldown is still active. Wait for it to finish or speed it up with credits.',
-        );
+        return l10n.crewUiTr12;
       case 'error.mission_template_not_found':
-        return _tr(locale, 'Missie niet gevonden.', 'Mission not found.');
+        return l10n.crewUiTr13;
       case 'error.mission_tier_locked':
-        return _tr(
-          locale,
-          'Deze tier is nog vergrendeld.',
-          'This tier is still locked.',
-        );
+        return l10n.crewUiTr14;
       case 'error.mission_run_not_found':
-        return _tr(
-          locale,
-          'Missie run niet gevonden.',
-          'Mission run not found.',
-        );
+        return l10n.crewUiTr15;
       case 'error.mission_already_resolved':
-        return _tr(
-          locale,
-          'Missie is al afgerond.',
-          'Mission is already resolved.',
-        );
+        return l10n.crewUiTr16;
       case 'error.mission_not_completed':
-        return _tr(
-          locale,
-          'Missie is nog niet klaar.',
-          'Mission is not completed yet.',
-        );
+        return l10n.crewUiTr17;
       case 'error.mission_rewards_already_claimed':
-        return _t(locale, 'status.rewardsClaimed');
+        return _t(l10n, 'status.rewardsClaimed');
       case 'error.mission_cooldown_not_active':
-        return _tr(locale, 'Geen actieve cooldown.', 'No active cooldown.');
+        return l10n.crewUiTr18;
       case 'error.insufficient_credits':
-        return _tr(locale, 'Onvoldoende credits.', 'Insufficient credits.');
+        return l10n.crewUiTr19;
       default:
-        return _tr(locale, 'Actie mislukt', 'Action failed');
+        return l10n.crewUiTr10;
     }
   }
 
-  String _crewMissionLockedReason(String locale, String? reason) {
+  String _crewMissionLockedReason(AppLocalizations loc, String? reason) {
     switch (reason) {
       case 'TIER2_REQUIRES_HQ5_AND_2_MEMBERS':
-        return _t(locale, 'hint.missionLockedTier2');
+        return _t(loc, 'hint.missionLockedTier2');
       case 'TIER3_REQUIRES_HQ9_AND_3_MEMBERS':
-        return _t(locale, 'hint.missionLockedTier3');
+        return _t(loc, 'hint.missionLockedTier3');
       default:
-        return _t(locale, 'hint.missionLockedDefault');
+        return _t(loc, 'hint.missionLockedDefault');
     }
   }
 
@@ -952,12 +779,12 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  String _formatRemaining(int seconds, String locale) {
+  String _formatRemaining(int seconds, AppLocalizations loc) {
     final mins = (seconds / 60).ceil();
     if (mins < 1) {
-      return locale == 'nl' ? '<1 min' : '<1 min';
+      return loc.crewUiFormatRemainingUnderOneMinute;
     }
-    return locale == 'nl' ? '$mins min' : '$mins min';
+    return loc.crewUiFormatRemainingMinutes(mins);
   }
 
   Future<void> _loadCrewMissionsOverview({bool silent = false}) async {
@@ -989,22 +816,20 @@ class _CrewScreenState extends State<CrewScreen>
           });
         }
       } else if (!silent && mounted) {
-        final locale = Localizations.localeOf(context).languageCode;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_t(locale, 'message.missionOverviewLoadFailed')),
+            content: Text(_t(l10n, 'message.missionOverviewLoadFailed')),
             backgroundColor: Colors.red,
           ),
         );
       }
     } catch (_) {
       if (!silent && mounted) {
-        final locale = Localizations.localeOf(context).languageCode;
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_t(locale, 'message.missionOverviewLoadFailed')),
+            content: Text(_t(l10n, 'message.missionOverviewLoadFailed')),
             backgroundColor: Colors.red,
           ),
         );
@@ -1016,18 +841,18 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  String _crewRoleLabel(String locale, String roleKey) {
+  String _crewRoleLabel(AppLocalizations loc, String roleKey) {
     switch (roleKey) {
       case 'planner':
-        return _t(locale, 'label.rolePlanner');
+        return _t(loc, 'label.rolePlanner');
       case 'enforcer':
-        return _t(locale, 'label.roleEnforcer');
+        return _t(loc, 'label.roleEnforcer');
       case 'logistics':
-        return _t(locale, 'label.roleLogistics');
+        return _t(loc, 'label.roleLogistics');
       case 'tech':
-        return _t(locale, 'label.roleTech');
+        return _t(loc, 'label.roleTech');
       default:
-        return _t(locale, 'label.roleNone');
+        return _t(loc, 'label.roleNone');
     }
   }
 
@@ -1089,14 +914,13 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _openCrewMissionRoleAssignDialog(String missionKey) async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_myCrew == null) return;
     final members = _myCrew!.members;
     if (members.isEmpty) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_t(locale, 'state.roleAssignNoMembers')),
+          content: Text(_t(l10n, 'state.roleAssignNoMembers')),
           backgroundColor: Colors.red,
         ),
       );
@@ -1122,7 +946,7 @@ class _CrewScreenState extends State<CrewScreen>
                 .length;
 
             return AlertDialog(
-              title: Text(_t(locale, 'dialog.roleAssignTitle')),
+              title: Text(_t(l10n, 'dialog.roleAssignTitle')),
               content: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxWidth: 560,
@@ -1134,12 +958,12 @@ class _CrewScreenState extends State<CrewScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _t(locale, 'dialog.roleAssignSubtitle'),
+                        _t(l10n, 'dialog.roleAssignSubtitle'),
                         style: const TextStyle(color: Colors.grey),
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        _t(locale, 'hint.roleBonus'),
+                        _t(l10n, 'hint.roleBonus'),
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.orange,
@@ -1176,7 +1000,7 @@ class _CrewScreenState extends State<CrewScreen>
                                       return DropdownMenuItem<String>(
                                         value: role,
                                         child: Text(
-                                          _crewRoleLabel(locale, role),
+                                          _crewRoleLabel(l10n, role),
                                         ),
                                       );
                                     }).toList(),
@@ -1195,7 +1019,7 @@ class _CrewScreenState extends State<CrewScreen>
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Text(
-                            _t(locale, 'state.roleAssignPickOne'),
+                            _t(l10n, 'state.roleAssignPickOne'),
                             style: const TextStyle(color: Colors.red),
                           ),
                         ),
@@ -1206,13 +1030,13 @@ class _CrewScreenState extends State<CrewScreen>
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(_t(locale, 'action.cancel')),
+                  child: Text(_t(l10n, 'action.cancel')),
                 ),
                 ElevatedButton(
                   onPressed: selectedCount == 0
                       ? null
                       : () => Navigator.of(context).pop(true),
-                  child: Text(_t(locale, 'action.configureAndStartMission')),
+                  child: Text(_t(l10n, 'action.configureAndStartMission')),
                 ),
               ],
             );
@@ -1236,7 +1060,6 @@ class _CrewScreenState extends State<CrewScreen>
     String missionKey,
     List<Map<String, dynamic>> assignments,
   ) async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_crewMissionActionLoading) return;
     setState(() => _crewMissionActionLoading = true);
     try {
@@ -1251,7 +1074,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_t(locale, 'message.missionStarted')),
+            content: Text(_t(l10n, 'message.missionStarted')),
             backgroundColor: Colors.green,
           ),
         );
@@ -1264,7 +1087,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_crewMissionErrorMessage(locale, event)),
+            content: Text(_crewMissionErrorMessage(l10n, event)),
             backgroundColor: Colors.red,
           ),
         );
@@ -1275,11 +1098,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                locale,
-                'Missie starten mislukt.',
-                'Failed to start mission.',
-              ),
+              l10n.crewUiTr20,
             ),
             backgroundColor: Colors.red,
           ),
@@ -1293,7 +1112,6 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _resolveCrewMission(int runId) async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_crewMissionActionLoading) return;
     setState(() => _crewMissionActionLoading = true);
     try {
@@ -1308,7 +1126,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_t(locale, 'message.missionResolved')),
+            content: Text(_t(l10n, 'message.missionResolved')),
             backgroundColor: Colors.green,
           ),
         );
@@ -1321,7 +1139,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_crewMissionErrorMessage(locale, event)),
+            content: Text(_crewMissionErrorMessage(l10n, event)),
             backgroundColor: Colors.red,
           ),
         );
@@ -1332,11 +1150,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                locale,
-                'Missie afronden mislukt.',
-                'Failed to resolve mission.',
-              ),
+              l10n.crewUiTr21,
             ),
             backgroundColor: Colors.red,
           ),
@@ -1350,7 +1164,6 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _claimCrewMissionRewards(int runId) async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_crewMissionActionLoading) return;
     setState(() => _crewMissionActionLoading = true);
     try {
@@ -1364,7 +1177,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_t(locale, 'message.missionRewardsClaimed')),
+            content: Text(_t(l10n, 'message.missionRewardsClaimed')),
             backgroundColor: Colors.green,
           ),
         );
@@ -1378,7 +1191,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_crewMissionErrorMessage(locale, event)),
+            content: Text(_crewMissionErrorMessage(l10n, event)),
             backgroundColor: Colors.red,
           ),
         );
@@ -1389,11 +1202,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                locale,
-                'Rewards claimen mislukt.',
-                'Failed to claim rewards.',
-              ),
+              l10n.crewUiTr22,
             ),
             backgroundColor: Colors.red,
           ),
@@ -1410,7 +1219,6 @@ class _CrewScreenState extends State<CrewScreen>
     int runId, {
     bool silent = true,
   }) async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_crewMissionSpeedupQuoteLoading.contains(runId)) {
       return _crewMissionSpeedupQuotes[runId];
     }
@@ -1440,7 +1248,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_crewMissionErrorMessage(locale, event)),
+            content: Text(_crewMissionErrorMessage(l10n, event)),
             backgroundColor: Colors.red,
           ),
         );
@@ -1451,7 +1259,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_t(locale, 'message.missionSpeedupQuoteFailed')),
+            content: Text(_t(l10n, 'message.missionSpeedupQuoteFailed')),
             backgroundColor: Colors.red,
           ),
         );
@@ -1466,7 +1274,6 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _confirmSpeedupCrewMissionCooldown(int runId) async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_crewMissionActionLoading) return;
 
     final quote = await _loadCrewMissionSpeedupQuote(runId, silent: false);
@@ -1477,9 +1284,9 @@ class _CrewScreenState extends State<CrewScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_t(locale, 'dialog.speedupTitle')),
+        title: Text(_t(l10n, 'dialog.speedupTitle')),
         content: Text(
-          _tParam(locale, 'dialog.speedupBody', {
+          _tParam(l10n, 'dialog.speedupBody', {
             'credits': credits.toString(),
             'minutes': remainingMinutes.toString(),
           }),
@@ -1487,11 +1294,11 @@ class _CrewScreenState extends State<CrewScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text(_t(locale, 'action.cancel')),
+            child: Text(_t(l10n, 'action.cancel')),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text(_t(locale, 'action.confirmSpeedupCooldown')),
+            child: Text(_t(l10n, 'action.confirmSpeedupCooldown')),
           ),
         ],
       ),
@@ -1503,7 +1310,6 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _speedupCrewMissionCooldown(int runId) async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_crewMissionActionLoading) return;
     setState(() => _crewMissionActionLoading = true);
     try {
@@ -1517,7 +1323,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_t(locale, 'message.missionCooldownSpedUp')),
+            content: Text(_t(l10n, 'message.missionCooldownSpedUp')),
             backgroundColor: Colors.green,
           ),
         );
@@ -1530,7 +1336,7 @@ class _CrewScreenState extends State<CrewScreen>
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text(_crewMissionErrorMessage(locale, event)),
+            content: Text(_crewMissionErrorMessage(l10n, event)),
             backgroundColor: Colors.red,
           ),
         );
@@ -1541,11 +1347,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                locale,
-                'Cooldown versnellen mislukt.',
-                'Failed to speed up cooldown.',
-              ),
+              l10n.crewUiTr23,
             ),
             backgroundColor: Colors.red,
           ),
@@ -1798,105 +1600,49 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   String _crewWarErrorMessage(
-    String locale,
+    AppLocalizations loc,
     String? event,
     Map<String, dynamic>? params,
   ) {
     switch (event) {
       case 'error.not_in_crew':
-        return _tr(
-          locale,
-          'Je zit niet in een crew.',
-          'You are not in a crew.',
-        );
+        return loc.crewUiTr24;
       case 'error.not_crew_leader':
-        return _tr(
-          locale,
-          'Alleen de crew leader kan dit doen.',
-          'Only the crew leader can do this.',
-        );
+        return loc.crewUiTr25;
       case 'error.target_crew_not_found':
-        return _tr(locale, 'Doelcrew niet gevonden.', 'Target crew not found.');
+        return loc.crewUiTr26;
       case 'error.crew_already_in_war':
-        return _tr(
-          locale,
-          'Deze crew zit al in een war.',
-          'This crew is already in a war.',
-        );
+        return loc.crewUiTr27;
       case 'error.not_enough_crew_members':
-        return _tr(
-          locale,
-          'Minimaal 3 crewleden vereist.',
-          'At least 3 crew members are required.',
-        );
+        return loc.crewUiTr28;
       case 'error.war_not_found':
-        return _tr(locale, 'War niet gevonden.', 'War not found.');
+        return loc.crewUiTr29;
       case 'error.war_not_active':
-        return _tr(
-          locale,
-          'Deze war is niet actief.',
-          'This war is not active.',
-        );
+        return loc.crewUiTr30;
       case 'error.war_not_joinable':
-        return _tr(
-          locale,
-          'Je kunt deze war nu niet joinen.',
-          'You cannot join this war right now.',
-        );
+        return loc.crewUiTr31;
       case 'error.war_target_required':
-        return _tr(
-          locale,
-          'Deze actie vereist een doelspeler.',
-          'This action requires a target player.',
-        );
+        return loc.crewUiTr32;
       case 'error.war_repeated_target_blocked':
-        return _tr(
-          locale,
-          'Anti-farm blokkade: kies een ander doelwit.',
-          'Anti-farm block: pick another target.',
-        );
+        return loc.crewUiTr33;
       case 'error.vip_player_required':
-        return _tr(
-          locale,
-          'Hiervoor is een VIP-speler vereist.',
-          'A VIP player is required for this action.',
-        );
+        return loc.crewUiTr34;
       case 'error.vip_crew_required':
-        return _tr(
-          locale,
-          'Hiervoor is een VIP-crew vereist.',
-          'A VIP crew is required for this action.',
-        );
+        return loc.crewUiTr35;
       case 'error.war_action_limit_reached':
-        return _tr(
-          locale,
-          'Actielimiet bereikt voor nu.',
-          'Action limit reached for now.',
-        );
+        return loc.crewUiTr36;
       case 'error.war_action_cooldown':
         final remaining = params?['remainingMinutes'] ?? 0;
-        return _tr(
-          locale,
-          'Cooldown actief: wacht nog $remaining minuten.',
-          'Cooldown active: wait $remaining more minutes.',
-        );
+        return loc.crewUiTr37(remaining.toString());
       case 'error.invalid_war_territory':
-        return _tr(
-          locale,
-          'Ongeldig gebied gekozen.',
-          'Invalid territory selected.',
-        );
+        return loc.crewUiTr38;
       default:
-        return _tr(
-          locale,
-          'Crew war actie mislukt.',
-          'Crew war action failed.',
-        );
+        return loc.crewUiTr39;
     }
   }
 
   Future<int?> _promptWarTargetPlayer(
-    String locale,
+    AppLocalizations loc,
     String title,
     List<Map<String, dynamic>> opponents,
   ) async {
@@ -1910,7 +1656,7 @@ class _CrewScreenState extends State<CrewScreen>
           content: DropdownButtonFormField<int>(
             value: selectedPlayerId,
             decoration: InputDecoration(
-              labelText: _tr(locale, 'Doelspeler', 'Target player'),
+              labelText: loc.crewUiTr40,
             ),
             items: opponents.map((opponent) {
               final player = (opponent['player'] as Map?)
@@ -1925,7 +1671,7 @@ class _CrewScreenState extends State<CrewScreen>
               return DropdownMenuItem<int>(
                 value: playerId,
                 child: Text(
-                  '$username • ${_formatCrewWarRole(locale, role)} (#$playerId) • ${_tr(locale, 'Kills', 'Kills')}: $kills • ${_tr(locale, 'Deaths', 'Deaths')}: $deaths',
+                  '$username • ${_formatCrewWarRole(loc, role)} (#$playerId) • ${loc.crewUiTr41}: $kills • ${loc.crewUiTr42}: $deaths',
                 ),
               );
             }).toList(),
@@ -1937,12 +1683,12 @@ class _CrewScreenState extends State<CrewScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+              child: Text(loc.crewUiTr43),
             ),
             ElevatedButton(
               onPressed: () =>
                   Navigator.of(dialogContext).pop(selectedPlayerId),
-              child: Text(_tr(locale, 'Bevestigen', 'Confirm')),
+              child: Text(loc.crewUiTr44),
             ),
           ],
         ),
@@ -1950,23 +1696,25 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  String _formatCrewWarRole(String locale, String role) {
+  String _formatCrewWarRole(AppLocalizations loc, String role) {
     switch (role) {
       case 'leader':
-        return _tr(locale, 'Leader', 'Leader');
+        return loc.crewUiTr45;
       case 'co_leader':
-        return _tr(locale, 'Co-leader', 'Co-leader');
+        return loc.crewUiTr46;
       default:
-        return _tr(locale, 'Lid', 'Member');
+        return loc.crewUiTr47;
     }
   }
 
   String _formatWarTerritoryOptionLabel(
-    String locale,
+    AppLocalizations loc,
     Map<String, dynamic> territory,
   ) {
     final name =
-        ((locale == 'nl' ? territory['nameNl'] : territory['nameEn']) ??
+        ((loc.localeName.startsWith('nl')
+                ? territory['nameNl']
+                : territory['nameEn']) ??
                 territory['regionKey'] ??
                 '-')
             .toString();
@@ -1985,37 +1733,37 @@ class _CrewScreenState extends State<CrewScreen>
     return '$name (${suffixParts.join(' • ')})';
   }
 
-  String _formatWarTerritoryTagLabel(String locale, String tag) {
+  String _formatWarTerritoryTagLabel(AppLocalizations loc, String tag) {
     switch (tag.toLowerCase()) {
       case 'capital':
-        return _tr(locale, 'Hoofdstad', 'Capital');
+        return loc.crewUiTr48;
       case 'harbor':
-        return _tr(locale, 'Haven', 'Harbor');
+        return loc.crewUiTr49;
       case 'industry':
-        return _tr(locale, 'Industrie', 'Industry');
+        return loc.crewUiTr50;
       case 'border':
-        return _tr(locale, 'Grens', 'Border');
+        return loc.crewUiTr51;
       case 'logistics':
-        return _tr(locale, 'Logistiek', 'Logistics');
+        return loc.crewUiTr52;
       default:
         return tag;
     }
   }
 
   String _formatWarTerritoryBonusSummary(
-    String locale,
+    AppLocalizations loc,
     Map<String, dynamic> territory,
   ) {
     final claimBonus = (territory['claimBonusPoints'] as num?)?.toInt() ?? 0;
     final tickPoints = (territory['tickPoints'] as num?)?.toInt() ?? 4;
     final strategicTags =
         (territory['strategicTags'] as List<dynamic>? ?? const [])
-            .map((tag) => _formatWarTerritoryTagLabel(locale, tag.toString()))
+            .map((tag) => _formatWarTerritoryTagLabel(loc, tag.toString()))
             .where((tag) => tag.trim().isNotEmpty)
             .toList();
     final bonusParts = <String>[
-      '${_tr(locale, 'Claim', 'Claim')} +$claimBonus',
-      '${_tr(locale, 'Tick', 'Tick')} $tickPoints',
+      '${loc.crewUiTr53} +$claimBonus',
+      '${loc.crewUiTr54} $tickPoints',
     ];
     if (strategicTags.isNotEmpty) {
       bonusParts.add(strategicTags.join('/'));
@@ -2024,7 +1772,7 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<String?> _promptWarTerritory(
-    String locale,
+    AppLocalizations loc,
     List<Map<String, dynamic>> territories,
   ) async {
     if (territories.isEmpty) return null;
@@ -2033,7 +1781,7 @@ class _CrewScreenState extends State<CrewScreen>
       context: context,
       builder: (dialogContext) => StatefulBuilder(
         builder: (context, setLocalState) => AlertDialog(
-          title: Text(_tr(locale, 'Kies gebied', 'Select territory')),
+          title: Text(loc.crewUiTr55),
           content: DropdownButtonFormField<String>(
             value: selected,
             items: territories
@@ -2041,7 +1789,7 @@ class _CrewScreenState extends State<CrewScreen>
                   (territory) => DropdownMenuItem<String>(
                     value: (territory['regionKey'] ?? '').toString(),
                     child: Text(
-                      '${_formatWarTerritoryOptionLabel(locale, territory)} • ${_formatWarTerritoryBonusSummary(locale, territory)}',
+                      '${_formatWarTerritoryOptionLabel(loc, territory)} • ${_formatWarTerritoryBonusSummary(loc, territory)}',
                     ),
                   ),
                 )
@@ -2054,11 +1802,11 @@ class _CrewScreenState extends State<CrewScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+              child: Text(loc.crewUiTr43),
             ),
             ElevatedButton(
               onPressed: () => Navigator.of(dialogContext).pop(selected),
-              child: Text(_tr(locale, 'Claim', 'Claim')),
+              child: Text(loc.crewUiTr53),
             ),
           ],
         ),
@@ -2067,17 +1815,12 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _declareCrewWar() async {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_selectedWarTargetCrewId == null) {
       showTopRightFromSnackBar(
         context,
         SnackBar(
           content: Text(
-            _tr(
-              locale,
-              'Kies eerst een doelcrew.',
-              'Select a target crew first.',
-            ),
+            l10n.crewUiTr56,
           ),
           backgroundColor: Colors.red,
         ),
@@ -2099,7 +1842,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(locale, 'Crew war gedeclareerd.', 'Crew war declared.'),
+              l10n.crewUiTr57,
             ),
             backgroundColor: Colors.green,
           ),
@@ -2114,7 +1857,7 @@ class _CrewScreenState extends State<CrewScreen>
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_crewWarErrorMessage(locale, event, params)),
+          content: Text(_crewWarErrorMessage(l10n, event, params)),
           backgroundColor: Colors.red,
         ),
       );
@@ -2124,11 +1867,7 @@ class _CrewScreenState extends State<CrewScreen>
         context,
         SnackBar(
           content: Text(
-            _tr(
-              locale,
-              'Crew war declareren mislukt.',
-              'Failed to declare crew war.',
-            ),
+            l10n.crewUiTr58,
           ),
           backgroundColor: Colors.red,
         ),
@@ -2137,7 +1876,6 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _joinCrewWar(int warId) async {
-    final locale = Localizations.localeOf(context).languageCode;
     try {
       final apiClient = AuthService().apiClient;
       final response = await apiClient.post('/crew-wars/$warId/join', {});
@@ -2148,11 +1886,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                locale,
-                'Je bent toegetreden tot de war.',
-                'You joined the war.',
-              ),
+              l10n.crewUiTr59,
             ),
             backgroundColor: Colors.green,
           ),
@@ -2167,7 +1901,7 @@ class _CrewScreenState extends State<CrewScreen>
         SnackBar(
           content: Text(
             _crewWarErrorMessage(
-              locale,
+              l10n,
               data['event'] as String?,
               (data['params'] as Map?)?.cast<String, dynamic>(),
             ),
@@ -2181,7 +1915,7 @@ class _CrewScreenState extends State<CrewScreen>
         context,
         SnackBar(
           content: Text(
-            _tr(locale, 'Joinen van war mislukt.', 'Failed to join the war.'),
+            l10n.crewUiTr60,
           ),
           backgroundColor: Colors.red,
         ),
@@ -2195,7 +1929,6 @@ class _CrewScreenState extends State<CrewScreen>
     int? targetPlayerId,
     String? territoryKey,
   }) async {
-    final locale = Localizations.localeOf(context).languageCode;
     try {
       final apiClient = AuthService().apiClient;
       final payload = <String, dynamic>{'actionType': actionType};
@@ -2217,11 +1950,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                locale,
-                'Crew war actie verwerkt.',
-                'Crew war action completed.',
-              ),
+              l10n.crewUiTr61,
             ),
             backgroundColor: Colors.green,
           ),
@@ -2236,7 +1965,7 @@ class _CrewScreenState extends State<CrewScreen>
         SnackBar(
           content: Text(
             _crewWarErrorMessage(
-              locale,
+              l10n,
               data['event'] as String?,
               (data['params'] as Map?)?.cast<String, dynamic>(),
             ),
@@ -2250,7 +1979,7 @@ class _CrewScreenState extends State<CrewScreen>
         context,
         SnackBar(
           content: Text(
-            _tr(locale, 'Crew war actie mislukt.', 'Crew war action failed.'),
+            l10n.crewUiTr39,
           ),
           backgroundColor: Colors.red,
         ),
@@ -2258,35 +1987,35 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  String _formatCrewWarType(String locale, String? warType) {
+  String _formatCrewWarType(AppLocalizations loc, String? warType) {
     switch (warType) {
       case 'kill_war':
-        return _tr(locale, 'Kill War', 'Kill War');
+        return loc.crewUiTr62;
       case 'economy_war':
-        return _tr(locale, 'Economy War', 'Economy War');
+        return loc.crewUiTr63;
       case 'territory_war':
-        return _tr(locale, 'Territory War', 'Territory War');
+        return loc.crewUiTr64;
       case 'total_war':
-        return _tr(locale, 'Total War', 'Total War');
+        return loc.crewUiTr65;
       default:
         return warType ?? '-';
     }
   }
 
-  String _formatCrewWarStatus(String locale, String? status) {
+  String _formatCrewWarStatus(AppLocalizations loc, String? status) {
     switch (status) {
       case 'preparing':
-        return _tr(locale, 'Voorbereiding', 'Preparing');
+        return loc.crewUiTr66;
       case 'active':
-        return _tr(locale, 'Actief', 'Active');
+        return loc.crewUiTr67;
       case 'lockdown':
-        return _tr(locale, 'Lockdown', 'Lockdown');
+        return loc.crewUiTr68;
       case 'resolved':
-        return _tr(locale, 'Afgerond', 'Resolved');
+        return loc.crewUiTr69;
       case 'archived':
-        return _tr(locale, 'Gearchiveerd', 'Archived');
+        return loc.crewUiTr70;
       case 'cancelled':
-        return _tr(locale, 'Geannuleerd', 'Cancelled');
+        return loc.crewUiTr71;
       default:
         return status ?? '-';
     }
@@ -2437,9 +2166,9 @@ class _CrewScreenState extends State<CrewScreen>
     }
   }
 
-  Widget _buildVipStatusCard(String locale) {
+  Widget _buildVipStatusCard(AppLocalizations loc) {
     final crewVip = _myCrew!.isVip;
-    final isNl = locale == 'nl';
+    final isNl = loc.localeName.startsWith('nl');
     String crewExpiry = '';
     if (crewVip && _myCrew!.vipExpiresAt != null) {
       try {
@@ -2494,7 +2223,7 @@ class _CrewScreenState extends State<CrewScreen>
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            _tr(locale, 'Crew VIP', 'Crew VIP'),
+                            loc.crewUiTr72,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           if (crewVip) ...[
@@ -2522,7 +2251,7 @@ class _CrewScreenState extends State<CrewScreen>
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      _tr(locale, '€9,99/mnd', '€9.99/mo'),
+                      loc.crewUiTr73,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.purple[700],
@@ -2590,7 +2319,7 @@ class _CrewScreenState extends State<CrewScreen>
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      _tr(locale, '€4,99/mnd', '€4.99/mo'),
+                      loc.crewUiTr74,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.amber[700],
@@ -2620,7 +2349,7 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             const Divider(height: 20),
             Text(
-              _tr(locale, 'Eenmalige aankopen', 'One-time purchases'),
+              loc.crewUiTr75,
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -2629,14 +2358,14 @@ class _CrewScreenState extends State<CrewScreen>
               runSpacing: 8,
               children: _oneTimeProducts.map((product) {
                 final key = (product['key'] ?? '').toString();
-                final title = locale == 'nl'
+                final title = isNl
                     ? (product['titleNl'] ?? key).toString()
                     : (product['titleEn'] ?? key).toString();
                 final imageUrl = (product['imageUrl'] ?? '').toString();
                 final price = (product['priceEur'] ?? '0.00').toString();
 
                 String rewardLabel = '';
-                final rewardSummary = locale == 'nl'
+                final rewardSummary = isNl
                     ? (product['rewardSummaryNl'] ?? '').toString()
                     : (product['rewardSummaryEn'] ?? '').toString();
                 final reward = product['reward'];
@@ -2712,7 +2441,6 @@ class _CrewScreenState extends State<CrewScreen>
   );
 
   Future<void> _startCheckout(String type, {String? productKey}) async {
-    final locale = Localizations.localeOf(context).languageCode;
     try {
       final apiClient = AuthService().apiClient;
       final String endpoint;
@@ -2745,14 +2473,10 @@ class _CrewScreenState extends State<CrewScreen>
             : null;
         final code = errData?['event'] as String? ?? 'unknown';
         final message = code == 'error.not_crew_leader'
-            ? _tr(
-                locale,
-                'Alleen de leider kan crew VIP kopen',
-                'Only the leader can buy crew VIP',
-              )
+            ? l10n.crewUiTr76
             : code == 'error.invalid_product_key'
-            ? _tr(locale, 'Ongeldig product', 'Invalid product')
-            : _tr(locale, 'Actie mislukt', 'Action failed');
+            ? l10n.crewUiTr77
+            : l10n.crewUiTr10;
         showTopRightFromSnackBar(
           context,
           SnackBar(content: Text(message), backgroundColor: Colors.red),
@@ -2764,11 +2488,7 @@ class _CrewScreenState extends State<CrewScreen>
           context,
           SnackBar(
             content: Text(
-              _tr(
-                locale,
-                'Fout bij openen betaalpagina',
-                'Error opening payment page',
-              ),
+              l10n.crewUiTr78,
             ),
             backgroundColor: Colors.red,
           ),
@@ -2778,37 +2498,32 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Future<void> _leaveCrew() async {
-    final locale = Localizations.localeOf(context).languageCode;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr(locale, 'Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.crewUiTr79),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              _tr(locale, 'Crew verlaten', 'Leave crew'),
+              l10n.crewUiTr80,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                locale,
-                'Weet je zeker dat je de crew wilt verlaten?',
-                'Are you sure you want to leave the crew?',
-              ),
+              l10n.crewUiTr81,
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+            child: Text(l10n.crewUiTr43),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(_tr(locale, 'Verlaten', 'Leave')),
+            child: Text(l10n.crewUiTr82),
           ),
         ],
       ),
@@ -2824,7 +2539,7 @@ class _CrewScreenState extends State<CrewScreen>
             showTopRightFromSnackBar(
               context,
               SnackBar(
-                content: Text(_tr(locale, 'Crew verlaten', 'Left crew')),
+                content: Text(l10n.crewUiTr83),
                 backgroundColor: Colors.orange,
               ),
             );
@@ -3066,18 +2781,14 @@ class _CrewScreenState extends State<CrewScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr(locale, 'Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.crewUiTr79),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               deposit
-                  ? _tr(locale, 'Storten in crew bank', 'Deposit to crew bank')
-                  : _tr(
-                      locale,
-                      'Opnemen uit crew bank',
-                      'Withdraw from crew bank',
-                    ),
+                  ? l10n.crewUiTr84
+                  : l10n.crewUiTr85,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
@@ -3085,7 +2796,7 @@ class _CrewScreenState extends State<CrewScreen>
               controller: controller,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: _tr(locale, 'Bedrag', 'Amount'),
+                labelText: l10n.crewUiTr86,
                 prefixText: '€',
               ),
             ),
@@ -3094,12 +2805,12 @@ class _CrewScreenState extends State<CrewScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+            child: Text(l10n.crewUiTr43),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(_tr(locale, 'Bevestigen', 'Confirm')),
+            child: Text(l10n.crewUiTr44),
           ),
         ],
       ),
@@ -3153,44 +2864,28 @@ class _CrewScreenState extends State<CrewScreen>
       }
 
       if (mounted) {
-        String message = _tr(locale, 'Actie mislukt', 'Action failed');
+        String message = l10n.crewUiTr10;
         try {
           final data = jsonDecode(response.body) as Map<String, dynamic>;
           final event = data['event'] as String?;
           switch (event) {
             case 'error.invalid_amount':
-              message = _tr(locale, 'Ongeldig bedrag', 'Invalid amount');
+              message = l10n.crewUiTr87;
               break;
             case 'error.insufficient_funds':
-              message = _tr(
-                locale,
-                'Onvoldoende contant geld',
-                'Not enough cash on hand',
-              );
+              message = l10n.crewUiTr88;
               break;
             case 'error.cash_storage_not_owned':
-              message = _tr(
-                locale,
-                'Koop eerst cash opslag voor de crew bank',
-                'Purchase cash storage first for the crew bank',
-              );
+              message = l10n.crewUiTr89;
               break;
             case 'error.cash_bootstrap_limit_reached':
-              message = _buildingActionErrorMessage(locale, event);
+              message = _buildingActionErrorMessage(l10n, event);
               break;
             case 'error.cash_storage_full':
-              message = _tr(
-                locale,
-                'Crew cash opslag zit vol',
-                'Crew cash storage is full',
-              );
+              message = l10n.crewUiTr90;
               break;
             case 'error.insufficient_crew_funds':
-              message = _tr(
-                locale,
-                'Onvoldoende saldo in crew bank',
-                'Insufficient crew bank funds',
-              );
+              message = l10n.crewUiTr6;
               break;
           }
         } catch (_) {
@@ -3221,32 +2916,28 @@ class _CrewScreenState extends State<CrewScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr(locale, 'Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.crewUiTr79),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              _tr(locale, 'Crew verwijderen', 'Delete crew'),
+              l10n.crewUiTr91,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                locale,
-                'Weet je zeker dat je de crew wilt verwijderen? Dit kan niet ongedaan worden.',
-                'Are you sure you want to delete this crew? This cannot be undone.',
-              ),
+              l10n.crewUiTr92,
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+            child: Text(l10n.crewUiTr43),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(_tr(locale, 'Verwijderen', 'Delete')),
+            child: Text(l10n.crewUiTr93),
           ),
         ],
       ),
@@ -3289,7 +2980,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
     final isHq = type == 'hq';
-    final localizedLabel = _getBuildingLabel(type, locale);
+    final localizedLabel = _getBuildingLabel(type, l10n);
     final purchaseLevel = isHq ? 0 : 1;
     final building = _crewBuildings.firstWhere(
       (b) => (b['type'] as String?) == type,
@@ -3331,7 +3022,7 @@ class _CrewScreenState extends State<CrewScreen>
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setStateDialog) => AlertDialog(
-          title: Text(_tr(locale, 'Weet je het zeker?', 'Are you sure?')),
+          title: Text(l10n.crewUiTr79),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -3342,13 +3033,13 @@ class _CrewScreenState extends State<CrewScreen>
               const SizedBox(height: 8),
               if (isHq)
                 Text(
-                  '${_tr(locale, 'Volgend level', 'Next level')}: L$targetDisplayLevel',
+                  '${l10n.crewUiTr94}: L$targetDisplayLevel',
                 )
               else
-                Text('${_t(locale, 'label.level')}: $purchaseLevel'),
+                Text('${_t(l10n, 'label.level')}: $purchaseLevel'),
               if (nextCost != null) ...[
                 const SizedBox(height: 8),
-                Text('${_tr(locale, 'Kosten', 'Cost')}: ${_money(nextCost)}'),
+                Text('${l10n.crewUiTr95}: ${_money(nextCost)}'),
               ],
               if (isHq)
                 DropdownButtonFormField<String>(
@@ -3357,7 +3048,7 @@ class _CrewScreenState extends State<CrewScreen>
                       .map(
                         (style) => DropdownMenuItem(
                           value: style,
-                          child: Text(_localizedHqStyleLabel(locale, style)),
+                          child: Text(_localizedHqStyleLabel(l10n, style)),
                         ),
                       )
                       .toList(),
@@ -3382,7 +3073,7 @@ class _CrewScreenState extends State<CrewScreen>
               onPressed: () => Navigator.pop(context, true),
               child: Text(
                 isHq && hqCurrentLevel != null
-                    ? _t(locale, 'action.upgrade')
+                    ? _t(l10n, 'action.upgrade')
                     : (locale == 'nl' ? 'Kopen' : 'Purchase'),
               ),
             ),
@@ -3414,13 +3105,13 @@ class _CrewScreenState extends State<CrewScreen>
       }
 
       if (mounted) {
-        String message = _tr(locale, 'Actie mislukt', 'Action failed');
+        String message = l10n.crewUiTr10;
         Color color = Colors.red;
 
         try {
           final data = jsonDecode(response.body) as Map<String, dynamic>;
           final event = data['event'] as String?;
-          message = _buildingActionErrorMessage(locale, event);
+          message = _buildingActionErrorMessage(l10n, event);
           if (event == 'error.hq_style_locked' ||
               event == 'error.hq_style_max' ||
               event == 'error.hq_vip_required' ||
@@ -3454,7 +3145,7 @@ class _CrewScreenState extends State<CrewScreen>
   Future<void> _upgradeBuilding(String type) async {
     if (_myCrew == null) return;
     final locale = Localizations.localeOf(context).languageCode;
-    final localizedLabel = _getBuildingLabel(type, locale);
+    final localizedLabel = _getBuildingLabel(type, l10n);
     final currentBuilding = _crewBuildings.firstWhere(
       (b) => (b['type'] as String?) == type,
       orElse: () => {'level': 0},
@@ -3465,7 +3156,7 @@ class _CrewScreenState extends State<CrewScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr(locale, 'Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.crewUiTr79),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -3474,10 +3165,10 @@ class _CrewScreenState extends State<CrewScreen>
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('${_t(locale, 'label.level')}: $currentLevel → $nextLevel'),
+            Text('${_t(l10n, 'label.level')}: $currentLevel → $nextLevel'),
             if (nextCost != null) ...[
               const SizedBox(height: 8),
-              Text('${_tr(locale, 'Kosten', 'Cost')}: ${_money(nextCost)}'),
+              Text('${l10n.crewUiTr95}: ${_money(nextCost)}'),
             ],
           ],
         ),
@@ -3518,32 +3209,28 @@ class _CrewScreenState extends State<CrewScreen>
       }
 
       if (mounted) {
-        String message = _tr(locale, 'Actie mislukt', 'Action failed');
+        String message = l10n.crewUiTr10;
         Color color = Colors.red;
 
         try {
           final data = jsonDecode(response.body) as Map<String, dynamic>;
           final event = data['event'] as String?;
           if (event == 'error.building_max_level') {
-            message = _tr(locale, 'Max level bereikt', 'Max level reached');
+            message = l10n.crewUiTr96;
             color = Colors.orange;
           } else if (event == 'error.building_not_owned') {
-            message = _tr(locale, 'Gebouw niet gekocht', 'Building not owned');
+            message = l10n.crewUiTr97;
           } else if (event == 'error.insufficient_crew_funds') {
-            message = _tr(
-              locale,
-              'Onvoldoende saldo in crew bank',
-              'Insufficient crew bank funds',
-            );
+            message = l10n.crewUiTr6;
           } else if (event == 'error.hq_level_too_low' ||
               event == 'error.hq_vip_required') {
-            message = _buildingActionErrorMessage(locale, event);
+            message = _buildingActionErrorMessage(l10n, event);
             color = Colors.orange;
           } else if (event == 'error.hq_side_buildings_incomplete') {
-            message = _buildingActionErrorMessage(locale, event);
+            message = _buildingActionErrorMessage(l10n, event);
             color = Colors.orange;
           } else if (event == 'error.building_vip_required') {
-            message = _buildingActionErrorMessage(locale, event);
+            message = _buildingActionErrorMessage(l10n, event);
             color = Colors.orange;
           }
         } catch (_) {
@@ -3609,8 +3296,8 @@ class _CrewScreenState extends State<CrewScreen>
           builder: (context, setStateDialog) => AlertDialog(
             title: Text(
               vehicleType == 'car'
-                  ? _tr(locale, 'Auto/motor toevoegen', 'Add car/motorcycle')
-                  : _tr(locale, 'Boot toevoegen', 'Add boat'),
+                  ? l10n.crewUiTr98
+                  : l10n.crewUiTr99,
             ),
             content: DropdownButtonFormField<int>(
               initialValue: selectedId,
@@ -3619,7 +3306,7 @@ class _CrewScreenState extends State<CrewScreen>
                     (vehicle) => DropdownMenuItem<int>(
                       value: vehicle['id'] as int,
                       child: Text(
-                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} • ${((vehicle['vehicleType'] ?? '').toString() == 'motorcycle') ? _tr(locale, 'Motor', 'Motorcycle') : ((vehicle['vehicleType'] ?? '').toString() == 'boat' ? _tr(locale, 'Boot', 'Boat') : _tr(locale, 'Auto', 'Car'))} (#${vehicle['id']})',
+                        '${vehicle['definition']?['name'] ?? vehicle['vehicleId']} • ${((vehicle['vehicleType'] ?? '').toString() == 'motorcycle') ? l10n.crewUiTr100 : ((vehicle['vehicleType'] ?? '').toString() == 'boat' ? l10n.crewUiTr101 : l10n.crewUiTr102)} (#${vehicle['id']})',
                       ),
                     ),
                   )
@@ -3630,18 +3317,18 @@ class _CrewScreenState extends State<CrewScreen>
                 });
               },
               decoration: InputDecoration(
-                labelText: _tr(locale, 'Selecteer', 'Select'),
+                labelText: l10n.crewUiTr103,
               ),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+                child: Text(l10n.crewUiTr43),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context, true),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(_tr(locale, 'Toevoegen', 'Add')),
+                child: Text(l10n.crewUiTr104),
               ),
             ],
           ),
@@ -3715,7 +3402,7 @@ class _CrewScreenState extends State<CrewScreen>
         context: context,
         builder: (context) => StatefulBuilder(
           builder: (context, setStateDialog) => AlertDialog(
-            title: Text(_tr(locale, 'Wapen toevoegen', 'Add weapon')),
+            title: Text(l10n.crewUiTr105),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -3737,7 +3424,7 @@ class _CrewScreenState extends State<CrewScreen>
                     });
                   },
                   decoration: InputDecoration(
-                    labelText: _tr(locale, 'Wapen', 'Weapon'),
+                    labelText: l10n.crewUiTr106,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -3745,7 +3432,7 @@ class _CrewScreenState extends State<CrewScreen>
                   controller: qtyController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: _tr(locale, 'Aantal', 'Quantity'),
+                    labelText: l10n.crewUiTr107,
                   ),
                 ),
               ],
@@ -3753,12 +3440,12 @@ class _CrewScreenState extends State<CrewScreen>
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+                child: Text(l10n.crewUiTr43),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context, true),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(_tr(locale, 'Toevoegen', 'Add')),
+                child: Text(l10n.crewUiTr104),
               ),
             ],
           ),
@@ -3831,7 +3518,7 @@ class _CrewScreenState extends State<CrewScreen>
         context: context,
         builder: (context) => StatefulBuilder(
           builder: (context, setStateDialog) => AlertDialog(
-            title: Text(_tr(locale, 'Munitie toevoegen', 'Add ammo')),
+            title: Text(l10n.crewUiTr108),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -3853,7 +3540,7 @@ class _CrewScreenState extends State<CrewScreen>
                     });
                   },
                   decoration: InputDecoration(
-                    labelText: _tr(locale, 'Munitie type', 'Ammo type'),
+                    labelText: l10n.crewUiTr109,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -3861,7 +3548,7 @@ class _CrewScreenState extends State<CrewScreen>
                   controller: qtyController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: _tr(locale, 'Aantal', 'Quantity'),
+                    labelText: l10n.crewUiTr107,
                   ),
                 ),
               ],
@@ -3869,12 +3556,12 @@ class _CrewScreenState extends State<CrewScreen>
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+                child: Text(l10n.crewUiTr43),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context, true),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(_tr(locale, 'Toevoegen', 'Add')),
+                child: Text(l10n.crewUiTr104),
               ),
             ],
           ),
@@ -3947,7 +3634,7 @@ class _CrewScreenState extends State<CrewScreen>
         context: context,
         builder: (context) => StatefulBuilder(
           builder: (context, setStateDialog) => AlertDialog(
-            title: Text(_tr(locale, 'Goederen toevoegen', 'Add goods')),
+            title: Text(l10n.crewUiTr110),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -3969,7 +3656,7 @@ class _CrewScreenState extends State<CrewScreen>
                     });
                   },
                   decoration: InputDecoration(
-                    labelText: _tr(locale, 'Goederensoort', 'Goods type'),
+                    labelText: l10n.crewUiTr111,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -3977,7 +3664,7 @@ class _CrewScreenState extends State<CrewScreen>
                   controller: qtyController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: _tr(locale, 'Aantal', 'Quantity'),
+                    labelText: l10n.crewUiTr107,
                   ),
                 ),
               ],
@@ -3985,12 +3672,12 @@ class _CrewScreenState extends State<CrewScreen>
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text(_tr(locale, 'Annuleren', 'Cancel')),
+                child: Text(l10n.crewUiTr43),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context, true),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text(_tr(locale, 'Toevoegen', 'Add')),
+                child: Text(l10n.crewUiTr104),
               ),
             ],
           ),
@@ -4133,23 +3820,21 @@ class _CrewScreenState extends State<CrewScreen>
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context).languageCode;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(_t(locale, 'app.crews')),
+        title: Text(_t(l10n, 'app.crews')),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
           tabs: [
-            Tab(text: _t(locale, 'tab.myCrew')),
-            Tab(text: _t(locale, 'tab.crewHq')),
-            Tab(text: _t(locale, 'tab.storageHub')),
-            Tab(text: _t(locale, 'tab.members')),
-            Tab(text: _t(locale, 'tab.warRoom')),
-            Tab(text: _t(locale, 'tab.crewMissions')),
-            Tab(text: _t(locale, 'tab.allCrews')),
-            Tab(icon: const Icon(Icons.chat), text: _t(locale, 'tab.chat')),
+            Tab(text: _t(l10n, 'tab.myCrew')),
+            Tab(text: _t(l10n, 'tab.crewHq')),
+            Tab(text: _t(l10n, 'tab.storageHub')),
+            Tab(text: _t(l10n, 'tab.members')),
+            Tab(text: _t(l10n, 'tab.warRoom')),
+            Tab(text: _t(l10n, 'tab.crewMissions')),
+            Tab(text: _t(l10n, 'tab.allCrews')),
+            Tab(icon: const Icon(Icons.chat), text: _t(l10n, 'tab.chat')),
           ],
         ),
       ),
@@ -4172,7 +3857,7 @@ class _CrewScreenState extends State<CrewScreen>
           ? FloatingActionButton.extended(
               onPressed: _createCrew,
               icon: const Icon(Icons.add),
-              label: Text(_t(locale, 'action.createCrewShort')),
+              label: Text(_t(l10n, 'action.createCrewShort')),
             )
           : null,
     );
@@ -4187,10 +3872,7 @@ class _CrewScreenState extends State<CrewScreen>
             const Icon(Icons.group_off, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
-              _t(
-                Localizations.localeOf(context).languageCode,
-                'state.notInCrewYet',
-              ),
+              _t(l10n, 'state.notInCrewYet'),
               style: const TextStyle(fontSize: 18, color: Colors.grey),
             ),
             const SizedBox(height: 24),
@@ -4198,10 +3880,7 @@ class _CrewScreenState extends State<CrewScreen>
               onPressed: _createCrew,
               icon: const Icon(Icons.add),
               label: Text(
-                _t(
-                  Localizations.localeOf(context).languageCode,
-                  'action.createCrew',
-                ),
+                _t(l10n, 'action.createCrew'),
               ),
             ),
           ],
@@ -4289,16 +3968,16 @@ class _CrewScreenState extends State<CrewScreen>
                         Card(
                           child: ListTile(
                             leading: const Icon(Icons.business),
-                            title: Text(_t(locale, 'label.crewHq')),
+                            title: Text(_t(l10n, 'label.crewHq')),
                             subtitle: Text(
                               _myCrew!.hqStyle != null &&
                                       _myCrew!.hqLevel != null
-                                  ? '${(_myCrew!.hqStyle ?? 'camping').toUpperCase()}  •  ${_t(locale, 'label.level')} ${_myCrew!.hqLevel}'
-                                  : _t(locale, 'status.notOwned'),
+                                  ? '${(_myCrew!.hqStyle ?? 'camping').toUpperCase()}  •  ${_t(l10n, 'label.level')} ${_myCrew!.hqLevel}'
+                                  : _t(l10n, 'status.notOwned'),
                             ),
                             trailing: TextButton(
                               onPressed: () => _tabController.animateTo(1),
-                              child: Text(_t(locale, 'action.goToCrewHq')),
+                              child: Text(_t(l10n, 'action.goToCrewHq')),
                             ),
                           ),
                         ),
@@ -4311,7 +3990,7 @@ class _CrewScreenState extends State<CrewScreen>
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              _t(locale, 'label.crewBank'),
+                              _t(l10n, 'label.crewBank'),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -4352,7 +4031,7 @@ class _CrewScreenState extends State<CrewScreen>
                                     ? () => _handleBankAction(deposit: true)
                                     : null,
                                 icon: const Icon(Icons.savings),
-                                label: Text(_t(locale, 'label.deposit')),
+                                label: Text(_t(l10n, 'label.deposit')),
                               ),
                             ),
                             if (isLeader) ...[
@@ -4363,7 +4042,7 @@ class _CrewScreenState extends State<CrewScreen>
                                       ? () => _handleBankAction(deposit: false)
                                       : null,
                                   icon: const Icon(Icons.payments_outlined),
-                                  label: Text(_t(locale, 'label.withdraw')),
+                                  label: Text(_t(l10n, 'label.withdraw')),
                                 ),
                               ),
                             ],
@@ -4375,7 +4054,7 @@ class _CrewScreenState extends State<CrewScreen>
                             const Icon(Icons.security, color: Colors.blue),
                             const SizedBox(width: 8),
                             Text(
-                              _t(locale, 'label.myTrustScore'),
+                              _t(l10n, 'label.myTrustScore'),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -4400,7 +4079,7 @@ class _CrewScreenState extends State<CrewScreen>
                               color: Colors.red,
                             ),
                             label: Text(
-                              _t(locale, 'action.deleteCrew'),
+                              _t(l10n, 'action.deleteCrew'),
                               style: const TextStyle(color: Colors.red),
                             ),
                             style: OutlinedButton.styleFrom(
@@ -4415,7 +4094,7 @@ class _CrewScreenState extends State<CrewScreen>
                               const Icon(Icons.analytics, color: Colors.orange),
                               const SizedBox(width: 8),
                               Text(
-                                _t(locale, 'label.crewStats'),
+                                _t(l10n, 'label.crewStats'),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -4437,7 +4116,7 @@ class _CrewScreenState extends State<CrewScreen>
                             child: OutlinedButton.icon(
                               onPressed: _leaveCrew,
                               icon: const Icon(Icons.exit_to_app),
-                              label: Text(_t(locale, 'action.leaveCrew')),
+                              label: Text(_t(l10n, 'action.leaveCrew')),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.red,
                                 side: const BorderSide(color: Colors.red),
@@ -4447,7 +4126,7 @@ class _CrewScreenState extends State<CrewScreen>
                         ],
                         if (isLeader) ...[
                           const SizedBox(height: 16),
-                          _buildVipStatusCard(locale),
+                          _buildVipStatusCard(l10n),
                         ],
                       ],
                     ),
@@ -4458,8 +4137,8 @@ class _CrewScreenState extends State<CrewScreen>
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.warehouse),
-                    title: Text(_t(locale, 'section.buildings')),
-                    subtitle: Text(_t(locale, 'hint.buildingsTabs')),
+                    title: Text(_t(l10n, 'section.buildings')),
+                    subtitle: Text(_t(l10n, 'hint.buildingsTabs')),
                     trailing: const Icon(Icons.arrow_forward),
                     onTap: () => _tabController.animateTo(1),
                   ),
@@ -4468,11 +4147,11 @@ class _CrewScreenState extends State<CrewScreen>
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.inventory_2),
-                    title: Text(_t(locale, 'section.storageHub')),
-                    subtitle: Text(_t(locale, 'hint.storageTab')),
+                    title: Text(_t(l10n, 'section.storageHub')),
+                    subtitle: Text(_t(l10n, 'hint.storageTab')),
                     trailing: TextButton(
                       onPressed: () => _tabController.animateTo(2),
-                      child: Text(_t(locale, 'action.goToStorage')),
+                      child: Text(_t(l10n, 'action.goToStorage')),
                     ),
                   ),
                 ),
@@ -4485,7 +4164,7 @@ class _CrewScreenState extends State<CrewScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _t(locale, 'section.crewStorage'),
+                          _t(l10n, 'section.crewStorage'),
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -4494,7 +4173,7 @@ class _CrewScreenState extends State<CrewScreen>
                         const SizedBox(height: 12),
                         if (_crewStorage == null)
                           Text(
-                            _t(locale, 'state.noStorageData'),
+                            _t(l10n, 'state.noStorageData'),
                             style: const TextStyle(color: Colors.grey),
                           )
                         else ...[
@@ -4540,31 +4219,31 @@ class _CrewScreenState extends State<CrewScreen>
                                 onPressed: carStorageOwned
                                     ? () => _depositVehicle(vehicleType: 'car')
                                     : null,
-                                child: Text(_t(locale, 'action.addCar')),
+                                child: Text(_t(l10n, 'action.addCar')),
                               ),
                               OutlinedButton(
                                 onPressed: boatStorageOwned
                                     ? () => _depositVehicle(vehicleType: 'boat')
                                     : null,
-                                child: Text(_t(locale, 'action.addBoat')),
+                                child: Text(_t(l10n, 'action.addBoat')),
                               ),
                               OutlinedButton(
                                 onPressed: weaponStorageOwned
                                     ? _depositWeapon
                                     : null,
-                                child: Text(_t(locale, 'action.addWeapon')),
+                                child: Text(_t(l10n, 'action.addWeapon')),
                               ),
                               OutlinedButton(
                                 onPressed: ammoStorageOwned
                                     ? _depositAmmo
                                     : null,
-                                child: Text(_t(locale, 'action.addAmmo')),
+                                child: Text(_t(l10n, 'action.addAmmo')),
                               ),
                               OutlinedButton(
                                 onPressed: drugStorageOwned
                                     ? _depositDrugs
                                     : null,
-                                child: Text(_t(locale, 'action.addDrugs')),
+                                child: Text(_t(l10n, 'action.addDrugs')),
                               ),
                             ],
                           ),
@@ -4582,11 +4261,11 @@ class _CrewScreenState extends State<CrewScreen>
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.groups),
-                    title: Text(_t(locale, 'section.membersOverview')),
-                    subtitle: Text(_t(locale, 'hint.membersTab')),
+                    title: Text(_t(l10n, 'section.membersOverview')),
+                    subtitle: Text(_t(l10n, 'hint.membersTab')),
                     trailing: TextButton(
                       onPressed: () => _tabController.animateTo(3),
-                      child: Text(_t(locale, 'action.goToMembers')),
+                      child: Text(_t(l10n, 'action.goToMembers')),
                     ),
                   ),
                 ),
@@ -4599,11 +4278,10 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Widget _buildHqManagementTab() {
-    final locale = Localizations.localeOf(context).languageCode;
     if (_myCrew == null) {
       return Center(
         child: Text(
-          _t(locale, 'state.joinCrewFirst'),
+          _t(l10n, 'state.joinCrewFirst'),
           style: const TextStyle(color: Colors.grey, fontSize: 16),
         ),
       );
@@ -4633,19 +4311,19 @@ class _CrewScreenState extends State<CrewScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _t(locale, 'section.upgradeHub'),
+              _t(l10n, 'section.upgradeHub'),
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              _t(locale, 'hint.upgradeHub'),
+              _t(l10n, 'hint.upgradeHub'),
               style: const TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 16),
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: _buildSingleBuildingCard('hq', locale, isLeader),
+                child: _buildSingleBuildingCard('hq', isLeader),
               ),
             ),
             const SizedBox(height: 16),
@@ -4672,7 +4350,6 @@ class _CrewScreenState extends State<CrewScreen>
                               padding: const EdgeInsets.all(16),
                               child: _buildSingleBuildingCard(
                                 type,
-                                locale,
                                 isLeader,
                               ),
                             ),
@@ -4694,7 +4371,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (_myCrew == null) {
       return Center(
         child: Text(
-          _t(locale, 'state.joinCrewFirst'),
+          _t(l10n, 'state.joinCrewFirst'),
           style: const TextStyle(color: Colors.grey, fontSize: 16),
         ),
       );
@@ -4745,12 +4422,12 @@ class _CrewScreenState extends State<CrewScreen>
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            _t(locale, 'section.storageHub'),
+            _t(l10n, 'section.storageHub'),
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            _t(locale, 'hint.storageTab'),
+            _t(l10n, 'hint.storageTab'),
             style: const TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 16),
@@ -4761,7 +4438,7 @@ class _CrewScreenState extends State<CrewScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _t(locale, 'section.crewStorage'),
+                    _t(l10n, 'section.crewStorage'),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -4875,7 +4552,7 @@ class _CrewScreenState extends State<CrewScreen>
             child: TextButton.icon(
               onPressed: () => _tabController.animateTo(1),
               icon: const Icon(Icons.upgrade),
-              label: Text(_t(locale, 'section.upgradeHub')),
+              label: Text(_t(l10n, 'section.upgradeHub')),
             ),
           ),
         ],
@@ -4888,7 +4565,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (_myCrew == null) {
       return Center(
         child: Text(
-          _t(locale, 'state.joinCrewFirst'),
+          _t(l10n, 'state.joinCrewFirst'),
           style: const TextStyle(color: Colors.grey, fontSize: 16),
         ),
       );
@@ -4913,7 +4590,7 @@ class _CrewScreenState extends State<CrewScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _t(locale, 'tab.members'),
+              _t(l10n, 'tab.members'),
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -5047,7 +4724,7 @@ class _CrewScreenState extends State<CrewScreen>
             if (isLeader) ...[
               const SizedBox(height: 16),
               Text(
-                _t(locale, 'state.joinRequests'),
+                _t(l10n, 'state.joinRequests'),
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -5056,7 +4733,7 @@ class _CrewScreenState extends State<CrewScreen>
               const SizedBox(height: 8),
               if (_joinRequests.isEmpty)
                 Text(
-                  _t(locale, 'state.noJoinRequests'),
+                  _t(l10n, 'state.noJoinRequests'),
                   style: const TextStyle(color: Colors.grey),
                 )
               else
@@ -5122,16 +4799,10 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Widget _buildCrewWarTab() {
-    final locale = Localizations.localeOf(context).languageCode;
-
     if (_myCrew == null) {
       return Center(
         child: Text(
-          _tr(
-            locale,
-            'Join eerst een crew om Crew Wars te gebruiken.',
-            'Join a crew first to use Crew Wars.',
-          ),
+          l10n.crewUiTr112,
           style: const TextStyle(color: Colors.grey, fontSize: 16),
           textAlign: TextAlign.center,
         ),
@@ -5208,11 +4879,7 @@ class _CrewScreenState extends State<CrewScreen>
             context,
             SnackBar(
               content: Text(
-                _tr(
-                  locale,
-                  'Geen spelers van de tegencrew beschikbaar om te kiezen.',
-                  'No opponent crew members are available to target.',
-                ),
+                l10n.crewUiTr113,
               ),
               backgroundColor: Colors.red,
             ),
@@ -5220,15 +4887,15 @@ class _CrewScreenState extends State<CrewScreen>
           return;
         }
         targetPlayerId = await _promptWarTargetPlayer(
-          locale,
-          _tr(locale, 'Kies doelspeler', 'Select target player'),
+          l10n,
+          l10n.crewUiTr114,
           opponentMembers,
         );
         if (targetPlayerId == null || targetPlayerId <= 0) return;
       }
 
       if (actionType == 'territory_claim') {
-        territoryKey = await _promptWarTerritory(locale, territories);
+        territoryKey = await _promptWarTerritory(l10n, territories);
         if (territoryKey == null || territoryKey.isEmpty) return;
       }
 
@@ -5252,7 +4919,7 @@ class _CrewScreenState extends State<CrewScreen>
               children: [
                 Expanded(
                   child: Text(
-                    _t(locale, 'tab.warRoom'),
+                    _t(l10n, 'tab.warRoom'),
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -5279,7 +4946,7 @@ class _CrewScreenState extends State<CrewScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr(locale, 'Seizoensoverzicht', 'Season overview'),
+                      l10n.crewUiTr115,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -5287,13 +4954,13 @@ class _CrewScreenState extends State<CrewScreen>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '${_tr(locale, 'Actief seizoen', 'Active season')}: ${hub['season'] is Map ? ((hub['season'] as Map)['seasonKey'] ?? '-') : '-'}',
+                      '${l10n.crewUiTr116}: ${hub['season'] is Map ? ((hub['season'] as Map)['seasonKey'] ?? '-') : '-'}',
                     ),
                     Text(
-                      '${_tr(locale, 'Mijn rol', 'My role')}: ${hub['myRole'] ?? '-'}',
+                      '${l10n.crewUiTr117}: ${hub['myRole'] ?? '-'}',
                     ),
                     Text(
-                      '${_tr(locale, 'Crew kan declareren', 'Crew can declare')}: ${(hub['canDeclare'] == true) ? _tr(locale, 'Ja', 'Yes') : _tr(locale, 'Nee', 'No')}',
+                      '${l10n.crewUiTr118}: ${(hub['canDeclare'] == true) ? l10n.crewUiTr119 : l10n.crewUiTr120}',
                     ),
                   ],
                 ),
@@ -5308,11 +4975,7 @@ class _CrewScreenState extends State<CrewScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _tr(
-                          locale,
-                          'Nieuwe oorlog declareren',
-                          'Declare new war',
-                        ),
+                        l10n.crewUiTr121,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -5322,14 +4985,17 @@ class _CrewScreenState extends State<CrewScreen>
                       DropdownButtonFormField<int>(
                         value: _selectedWarTargetCrewId,
                         decoration: InputDecoration(
-                          labelText: _tr(locale, 'Doelcrew', 'Target crew'),
+                          labelText: l10n.crewUiTr122,
                         ),
                         items: availableTargets
                             .map(
                               (target) => DropdownMenuItem<int>(
                                 value: target['id'] as int,
                                 child: Text(
-                                  '${target['name']} (${target['memberCount']} leden)',
+                                  l10n.crewUiWarTargetCrewSubtitle(
+                                    (target['name'] ?? '').toString(),
+                                    (target['memberCount'] as num?)?.toInt() ?? 0,
+                                  ),
                                 ),
                               ),
                             )
@@ -5342,24 +5008,24 @@ class _CrewScreenState extends State<CrewScreen>
                       DropdownButtonFormField<String>(
                         value: _selectedWarType,
                         decoration: InputDecoration(
-                          labelText: _tr(locale, 'War type', 'War type'),
+                          labelText: l10n.crewUiTr123,
                         ),
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             value: 'kill_war',
-                            child: Text('Kill War'),
+                            child: Text(l10n.crewUiTr62),
                           ),
                           DropdownMenuItem(
                             value: 'economy_war',
-                            child: Text('Economy War'),
+                            child: Text(l10n.crewUiTr63),
                           ),
                           DropdownMenuItem(
                             value: 'territory_war',
-                            child: Text('Territory War'),
+                            child: Text(l10n.crewUiTr64),
                           ),
                           DropdownMenuItem(
                             value: 'total_war',
-                            child: Text('Total War'),
+                            child: Text(l10n.crewUiTr65),
                           ),
                         ],
                         onChanged: (value) {
@@ -5374,7 +5040,7 @@ class _CrewScreenState extends State<CrewScreen>
                           onPressed: _crewWarLoading ? null : _declareCrewWar,
                           icon: const Icon(Icons.gavel),
                           label: Text(
-                            _tr(locale, 'Declareer oorlog', 'Declare war'),
+                            l10n.crewUiTr124,
                           ),
                         ),
                       ),
@@ -5401,14 +5067,14 @@ class _CrewScreenState extends State<CrewScreen>
                             ),
                           ),
                           Chip(
-                            label: Text(_formatCrewWarStatus(locale, status)),
+                            label: Text(_formatCrewWarStatus(l10n, status)),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       Text(
                         _formatCrewWarType(
-                          locale,
+                          l10n,
                           currentWar['warType'] as String?,
                         ),
                       ),
@@ -5418,7 +5084,7 @@ class _CrewScreenState extends State<CrewScreen>
                               'total_war') ...[
                         const SizedBox(height: 12),
                         Text(
-                          _tr(locale, 'War-gebieden', 'War territories'),
+                          l10n.crewUiTr125,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 8),
@@ -5439,14 +5105,14 @@ class _CrewScreenState extends State<CrewScreen>
                                 ? ((currentWar['defenderCrew'] as Map?)?['name']
                                           ?.toString() ??
                                       '#${currentWar['defenderCrewId']}')
-                                : _tr(locale, 'Neutraal', 'Neutral');
+                                : l10n.crewUiTr126;
                             return Chip(
                               avatar: const Icon(
                                 Icons.place_outlined,
                                 size: 18,
                               ),
                               label: Text(
-                                '${_formatWarTerritoryOptionLabel(locale, territory)} • $holderLabel • ${_formatWarTerritoryBonusSummary(locale, territory)}',
+                                '${_formatWarTerritoryOptionLabel(l10n, territory)} • $holderLabel • ${_formatWarTerritoryBonusSummary(l10n, territory)}',
                               ),
                             );
                           }).toList(),
@@ -5455,7 +5121,7 @@ class _CrewScreenState extends State<CrewScreen>
                       if (opponentMembers.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Text(
-                          '${_tr(locale, 'Tegencrew', 'Opponent crew')}: ${currentWar['opponentCrew'] is Map ? ((currentWar['opponentCrew'] as Map)['name'] ?? '-') : '-'}',
+                          '${l10n.crewUiTr127}: ${currentWar['opponentCrew'] is Map ? ((currentWar['opponentCrew'] as Map)['name'] ?? '-') : '-'}',
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 8),
@@ -5473,7 +5139,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 (player?['username'] ?? '#$playerId')
                                     .toString();
                             final role = _formatCrewWarRole(
-                              locale,
+                              l10n,
                               (member['role'] ?? 'member').toString(),
                             );
                             final kills =
@@ -5490,7 +5156,7 @@ class _CrewScreenState extends State<CrewScreen>
                         ),
                       ],
                       Text(
-                        '${_tr(locale, 'Actief vanaf', 'Active from')}: ${currentWar['activeFrom'] ?? '-'}',
+                        '${l10n.crewUiTr128}: ${currentWar['activeFrom'] ?? '-'}',
                       ),
                       if (myParticipant == null)
                         Padding(
@@ -5500,7 +5166,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 ? null
                                 : () => _joinCrewWar(currentWar['id'] as int),
                             icon: const Icon(Icons.login),
-                            label: Text(_tr(locale, 'Join war', 'Join war')),
+                            label: Text(l10n.crewUiTr129),
                           ),
                         )
                       else
@@ -5511,57 +5177,49 @@ class _CrewScreenState extends State<CrewScreen>
                             runSpacing: 8,
                             children: [
                               _buildWarActionButton(
-                                locale,
-                                'Kill',
+                                l10n.crewUiWarActionKill,
                                 Icons.close,
                                 canAct,
                                 () => handleAction('attack_kill'),
                               ),
                               _buildWarActionButton(
-                                locale,
-                                'Mug',
+                                l10n.crewUiWarActionMug,
                                 Icons.paid,
                                 canAct,
                                 () => handleAction('attack_mug'),
                               ),
                               _buildWarActionButton(
-                                locale,
-                                'Sabotage',
+                                l10n.crewUiWarActionSabotage,
                                 Icons.construction,
                                 canAct,
                                 () => handleAction('attack_sabotage'),
                               ),
                               _buildWarActionButton(
-                                locale,
-                                'Intel',
+                                l10n.crewUiWarActionIntel,
                                 Icons.search,
                                 canAct,
                                 () => handleAction('intel_scan'),
                               ),
                               _buildWarActionButton(
-                                locale,
-                                'Raid',
+                                l10n.crewUiWarActionRaid,
                                 Icons.local_fire_department,
                                 canAct,
                                 () => handleAction('raid'),
                               ),
                               _buildWarActionButton(
-                                locale,
-                                'Shield',
+                                l10n.crewUiWarActionShield,
                                 Icons.shield,
                                 canAct,
                                 () => handleAction('crew_shield'),
                               ),
                               _buildWarActionButton(
-                                locale,
-                                'Boost',
+                                l10n.crewUiWarActionBoost,
                                 Icons.bolt,
                                 canAct,
                                 () => handleAction('war_boost'),
                               ),
                               _buildWarActionButton(
-                                locale,
-                                'Territory',
+                                l10n.crewUiWarActionTerritory,
                                 Icons.flag,
                                 canAct,
                                 () => handleAction('territory_claim'),
@@ -5581,7 +5239,7 @@ class _CrewScreenState extends State<CrewScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _tr(locale, 'Standings', 'Standings'),
+                        l10n.crewUiTr130,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -5602,7 +5260,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 : '#${standing['crewId']}',
                           ),
                           subtitle: Text(
-                            '${_tr(locale, 'Kills', 'Kills')}: ${standing['totalKills'] ?? 0} • ${_tr(locale, 'Deaths', 'Deaths')}: ${standing['totalDeaths'] ?? 0} • ${_tr(locale, 'Gebieden', 'Territories')}: ${standing['territoriesHeld'] ?? 0}',
+                            '${l10n.crewUiTr41}: ${standing['totalKills'] ?? 0} • ${l10n.crewUiTr42}: ${standing['totalDeaths'] ?? 0} • ${l10n.crewUiTr131}: ${standing['territoriesHeld'] ?? 0}',
                           ),
                           trailing: Text('${standing['totalPoints'] ?? 0} pt'),
                         ),
@@ -5619,7 +5277,7 @@ class _CrewScreenState extends State<CrewScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _tr(locale, 'Laatste acties', 'Recent actions'),
+                        l10n.crewUiTr132,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -5628,11 +5286,7 @@ class _CrewScreenState extends State<CrewScreen>
                       const SizedBox(height: 8),
                       if (recentActions.isEmpty)
                         Text(
-                          _tr(
-                            locale,
-                            'Nog geen war-acties.',
-                            'No war actions yet.',
-                          ),
+                          l10n.crewUiTr133,
                         ),
                       ...recentActions
                           .take(10)
@@ -5645,7 +5299,7 @@ class _CrewScreenState extends State<CrewScreen>
                                 '${action['actionType']} • +${action['pointsAwarded'] ?? 0} pt',
                               ),
                               subtitle: Text(
-                                '${action['actor'] is Map ? ((action['actor'] as Map)['username'] ?? '#${action['actorId']}') : '#${action['actorId']}'} ${_tr(locale, 'tegen', 'vs')} ${action['target'] is Map ? ((action['target'] as Map)['username'] ?? '-') : '-'}',
+                                '${action['actor'] is Map ? ((action['actor'] as Map)['username'] ?? '#${action['actorId']}') : '#${action['actorId']}'} ${l10n.crewUiTr134} ${action['target'] is Map ? ((action['target'] as Map)['username'] ?? '-') : '-'}',
                               ),
                             ),
                           ),
@@ -5662,7 +5316,7 @@ class _CrewScreenState extends State<CrewScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr(locale, 'Seizoensleaderboard', 'Season leaderboard'),
+                      l10n.crewUiTr135,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -5671,11 +5325,7 @@ class _CrewScreenState extends State<CrewScreen>
                     const SizedBox(height: 8),
                     if (seasonLeaderboard.isEmpty)
                       Text(
-                        _tr(
-                          locale,
-                          'Nog geen seizoenspunten.',
-                          'No season points yet.',
-                        ),
+                        l10n.crewUiTr136,
                       ),
                     ...seasonLeaderboard.map(
                       (entry) => ListTile(
@@ -5691,7 +5341,7 @@ class _CrewScreenState extends State<CrewScreen>
                               : '#${entry['crewId']}',
                         ),
                         subtitle: Text(
-                          '${_tr(locale, 'Kills', 'Kills')}: ${entry['totalKills'] ?? 0} • ${_tr(locale, 'Loot', 'Loot')}: €${entry['totalLoot'] ?? 0}',
+                          '${l10n.crewUiTr41}: ${entry['totalKills'] ?? 0} • ${l10n.crewUiTr137}: €${entry['totalLoot'] ?? 0}',
                         ),
                         trailing: Text('${entry['totalPoints'] ?? 0} pt'),
                       ),
@@ -5708,7 +5358,7 @@ class _CrewScreenState extends State<CrewScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr(locale, 'Recente wars', 'Recent wars'),
+                      l10n.crewUiTr138,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -5717,11 +5367,7 @@ class _CrewScreenState extends State<CrewScreen>
                     const SizedBox(height: 8),
                     if (recentWars.isEmpty)
                       Text(
-                        _tr(
-                          locale,
-                          'Nog geen recente wars.',
-                          'No recent wars yet.',
-                        ),
+                        l10n.crewUiTr139,
                       ),
                     ...recentWars.map(
                       (war) => ListTile(
@@ -5729,7 +5375,7 @@ class _CrewScreenState extends State<CrewScreen>
                         contentPadding: EdgeInsets.zero,
                         leading: const Icon(Icons.history),
                         title: Text(
-                          '${_formatCrewWarType(locale, war['warType'] as String?)} • ${_formatCrewWarStatus(locale, war['status'] as String?)}',
+                          '${_formatCrewWarType(l10n, war['warType'] as String?)} • ${_formatCrewWarStatus(l10n, war['status'] as String?)}',
                         ),
                         subtitle: Text(
                           '#${war['attackerCrewId']} vs #${war['defenderCrewId']}',
@@ -5747,7 +5393,6 @@ class _CrewScreenState extends State<CrewScreen>
   }
 
   Widget _buildWarActionButton(
-    String locale,
     String label,
     IconData icon,
     bool enabled,
@@ -5756,20 +5401,19 @@ class _CrewScreenState extends State<CrewScreen>
     return ElevatedButton.icon(
       onPressed: enabled ? onPressed : null,
       icon: Icon(icon, size: 18),
-      label: Text(locale == 'nl' ? label : label),
+      label: Text(label),
     );
   }
 
   Widget _buildSingleBuildingCard(
     String buildingType,
-    String locale,
     bool isLeader,
   ) {
     final building = _crewBuildings.firstWhere(
       (b) => (b['type'] as String?) == buildingType,
       orElse: () => {
         'type': buildingType,
-        'label': _getBuildingLabel(buildingType, locale),
+        'label': _getBuildingLabel(buildingType, l10n),
         'level': null,
       },
     );
@@ -5784,7 +5428,7 @@ class _CrewScreenState extends State<CrewScreen>
     final level = building['level'] as int?;
     final maxLevel = building['maxLevel'] as int? ?? 0;
     final label = building['label'] as String? ?? 'Building';
-    final localizedLabel = _getBuildingLabel(type ?? buildingType, locale);
+    final localizedLabel = _getBuildingLabel(type ?? buildingType, l10n);
     final imagePath = _getCrewBuildingImagePath(type, hqStyle, level);
     final capacity = building['capacity'] as int?;
     final memberCap = building['memberCap'] as int?;
@@ -5794,8 +5438,8 @@ class _CrewScreenState extends State<CrewScreen>
     final allowedLevelByHq = building['allowedLevelByHq'] as int? ?? 0;
 
     final status = level == null
-        ? _t(locale, 'status.notOwned')
-        : '${_t(locale, 'label.level')} $level/$maxLevel';
+        ? _t(l10n, 'status.notOwned')
+        : '${_t(l10n, 'label.level')} $level/$maxLevel';
 
     if (type == 'hq') {
       final displayLevel = _getHqGlobalLevel(
@@ -5813,7 +5457,7 @@ class _CrewScreenState extends State<CrewScreen>
       final missingSideBuildings =
           (level != null &&
               ((level < maxLevel && nextCost != null) || canUnlockNextStyle))
-          ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, locale)
+          ? _getMissingSideBuildingsForHqUpgrade(requiredSideLevel, l10n)
           : <String>[];
       final hqUpgradeBlockedBySideBuildings = missingSideBuildings.isNotEmpty;
 
@@ -5988,20 +5632,20 @@ class _CrewScreenState extends State<CrewScreen>
                           : null,
                       child: Text(
                         (level == null)
-                            ? '${_t(locale, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
+                            ? '${_t(l10n, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
                             : (level < maxLevel && nextCost != null)
-                            ? '${_t(locale, 'action.upgrade')} (${_money(nextCost)})'
+                            ? '${_t(l10n, 'action.upgrade')} (${_money(nextCost)})'
                             : canUnlockNextStyle
-                            ? '${_t(locale, 'action.upgrade')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
+                            ? '${_t(l10n, 'action.upgrade')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
                             : status,
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
                   IconButton(
-                    tooltip: _t(locale, 'help.showCaps'),
+                    tooltip: _t(l10n, 'help.showCaps'),
                     onPressed: () =>
-                        _showBuildingCapsDialog(locale, type ?? '', label),
+                        _showBuildingCapsDialog(type ?? '', label),
                     icon: const Icon(Icons.info_outline),
                   ),
                 ],
@@ -6013,11 +5657,7 @@ class _CrewScreenState extends State<CrewScreen>
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    _tr(
-                      locale,
-                      'Alleen de leader kan kopen of upgraden',
-                      'Only the leader can purchase or upgrade',
-                    ),
+                    l10n.crewUiTr140,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -6029,29 +5669,27 @@ class _CrewScreenState extends State<CrewScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _tr(
-                                locale,
-                                'HQ upgrade geblokkeerd: bijgebouwen eerst naar L$requiredSideLevel',
-                                'HQ upgrade blocked: side buildings first to L$requiredSideLevel',
-                              ),
+                              l10n.crewUiTr141,
                               style: const TextStyle(color: Colors.orange),
                             ),
                             const SizedBox(height: 4),
                             TextButton.icon(
                               onPressed: () => _showHqUpgradeRequirementsDialog(
-                                locale,
                                 requiredSideLevel,
                                 missingSideBuildings,
                               ),
                               icon: const Icon(Icons.info_outline, size: 16),
-                              label: Text(_t(locale, 'action.details')),
+                              label: Text(_t(l10n, 'action.details')),
                             ),
                           ],
                         )
                       : Text(
-                          locale == 'nl'
-                              ? 'Upgrade eerst alle bijgebouwen naar minimaal level $requiredSideLevel. Ontbreekt: ${missingSideBuildings.join(', ')}'
-                              : 'Upgrade all side buildings to at least level $requiredSideLevel first. Missing: ${missingSideBuildings.join(', ')}',
+                          l10n.crewUiHqUpgradeSideBuildingsMessage(
+                            requiredSideLevel.toString(),
+                            missingSideBuildings.isEmpty
+                                ? '—'
+                                : '- ${missingSideBuildings.join('\n- ')}',
+                          ),
                           style: const TextStyle(color: Colors.orange),
                         ),
                 ),
@@ -6062,11 +5700,7 @@ class _CrewScreenState extends State<CrewScreen>
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    _tr(
-                      locale,
-                      'Volgende upgrade nog niet beschikbaar',
-                      'Next upgrade not available yet',
-                    ),
+                    l10n.crewUiTr142,
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -6247,18 +5881,18 @@ class _CrewScreenState extends State<CrewScreen>
                         : null,
                     child: Text(
                       (level == null)
-                          ? '${_t(locale, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
+                          ? '${_t(l10n, 'action.purchase')}${nextCost != null ? ' (${_money(nextCost)})' : ''}'
                           : (level < maxLevel && nextCost != null)
-                          ? '${_t(locale, 'action.upgrade')} (${_money(nextCost)})'
+                          ? '${_t(l10n, 'action.upgrade')} (${_money(nextCost)})'
                           : status,
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  tooltip: _t(locale, 'help.showCaps'),
+                  tooltip: _t(l10n, 'help.showCaps'),
                   onPressed: () =>
-                      _showBuildingCapsDialog(locale, type ?? '', label),
+                      _showBuildingCapsDialog(type ?? '', label),
                   icon: const Icon(Icons.info_outline),
                 ),
               ],
@@ -6268,11 +5902,7 @@ class _CrewScreenState extends State<CrewScreen>
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  _tr(
-                    locale,
-                    'Alleen de leader kan kopen of upgraden',
-                    'Only the leader can purchase or upgrade',
-                  ),
+                  l10n.crewUiTr140,
                   style: const TextStyle(color: Colors.grey),
                 ),
               ),
@@ -6280,11 +5910,7 @@ class _CrewScreenState extends State<CrewScreen>
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  _tr(
-                    locale,
-                    'HQ progression te laag',
-                    'HQ progression too low',
-                  ),
+                  l10n.crewUiTr143,
                   style: const TextStyle(color: Colors.orange),
                 ),
               ),
@@ -6296,16 +5922,8 @@ class _CrewScreenState extends State<CrewScreen>
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   level >= 10 && crewVip && hqStyle != 'vip'
-                      ? _tr(
-                          locale,
-                          'VIP HQ vereist voor level 11-15',
-                          'VIP HQ required for level 11-15',
-                        )
-                      : _tr(
-                          locale,
-                          'HQ-level te laag voor volgende upgrade',
-                          'HQ level too low for next upgrade',
-                        ),
+                      ? l10n.crewUiTr3
+                      : l10n.crewUiTr144,
                   style: const TextStyle(color: Colors.grey),
                 ),
               ),
@@ -6315,26 +5933,28 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  String _getBuildingLabel(String buildingType, String locale) {
-    const labels = {
-      'hq': {'nl': 'Crew HQ', 'en': 'Crew HQ'},
-      'car_storage': {
-        'nl': 'Auto/motor opslag',
-        'en': 'Car/Motorcycle Storage',
-      },
-      'boat_storage': {'nl': 'Haven', 'en': 'Boat Storage'},
-      'weapon_storage': {'nl': 'Wapen opslag', 'en': 'Weapon Storage'},
-      'ammo_storage': {'nl': 'Munitie opslag', 'en': 'Ammo Storage'},
-      'drug_storage': {'nl': 'Drugs opslag', 'en': 'Drug Storage'},
-      'cash_storage': {'nl': 'Cash opslag', 'en': 'Cash Storage'},
-    };
-    final lang = locale == 'nl' ? 'nl' : 'en';
-    return labels[buildingType]?[lang] ?? buildingType;
+  String _getBuildingLabel(String buildingType, AppLocalizations loc) {
+    switch (buildingType) {
+      case 'hq':
+        return loc.crewUiBuildingHq;
+      case 'car_storage':
+        return loc.crewUiBuildingCarStorage;
+      case 'boat_storage':
+        return loc.crewUiBuildingBoatStorage;
+      case 'weapon_storage':
+        return loc.crewUiBuildingWeaponStorage;
+      case 'ammo_storage':
+        return loc.crewUiBuildingAmmoStorage;
+      case 'drug_storage':
+        return loc.crewUiBuildingDrugStorage;
+      case 'cash_storage':
+        return loc.crewUiBuildingCashStorage;
+      default:
+        return buildingType;
+    }
   }
 
   Widget _buildCrewMissionsTab() {
-    final locale = Localizations.localeOf(context).languageCode;
-
     if (_myCrew == null) {
       return Center(
         child: Column(
@@ -6343,7 +5963,7 @@ class _CrewScreenState extends State<CrewScreen>
             const Icon(Icons.flag_outlined, size: 56, color: Colors.grey),
             const SizedBox(height: 12),
             Text(
-              _t(locale, 'state.crewMissionNoCrew'),
+              _t(l10n, 'state.crewMissionNoCrew'),
               style: const TextStyle(color: Colors.grey, fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -6387,7 +6007,7 @@ class _CrewScreenState extends State<CrewScreen>
                 Row(
                   children: [
                     Text(
-                      _t(locale, 'section.crewMissions'),
+                      _t(l10n, 'section.crewMissions'),
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -6405,7 +6025,7 @@ class _CrewScreenState extends State<CrewScreen>
                 if (!canManage) ...[
                   const SizedBox(height: 8),
                   Text(
-                    _t(locale, 'hint.missionLeaderOnly'),
+                    _t(l10n, 'hint.missionLeaderOnly'),
                     style: const TextStyle(color: Colors.orange),
                   ),
                 ],
@@ -6414,31 +6034,31 @@ class _CrewScreenState extends State<CrewScreen>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Text(
-                      _t(locale, 'state.missionActionBusy'),
+                      _t(l10n, 'state.missionActionBusy'),
                       style: const TextStyle(color: Colors.grey),
                     ),
                   ),
                 if (crewProgress != null) ...[
-                  _buildCrewMissionProgressCard(crewProgress, locale),
+                  _buildCrewMissionProgressCard(crewProgress, l10n),
                   const SizedBox(height: 16),
                 ],
                 if (activeRun != null) ...[
                   Text(
-                    _t(locale, 'label.activeMission'),
+                    _t(l10n, 'label.activeMission'),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _buildActiveCrewMissionCard(activeRun, canManage, locale),
+                  _buildActiveCrewMissionCard(activeRun, canManage, l10n),
                   const SizedBox(height: 16),
                 ],
                 if (templates.isEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Text(
-                      _t(locale, 'state.crewMissionsEmpty'),
+                      _t(l10n, 'state.crewMissionsEmpty'),
                       style: const TextStyle(color: Colors.grey),
                     ),
                   )
@@ -6452,7 +6072,7 @@ class _CrewScreenState extends State<CrewScreen>
                             width: 340,
                             child: _buildCrewMissionTemplateCard(
                               template,
-                              locale: locale,
+                              loc: l10n,
                               canManage: canManage,
                               hasActiveRun: activeRun != null,
                             ),
@@ -6462,7 +6082,7 @@ class _CrewScreenState extends State<CrewScreen>
                   ),
                 const SizedBox(height: 18),
                 Text(
-                  _t(locale, 'label.recentMissions'),
+                  _t(l10n, 'label.recentMissions'),
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -6471,13 +6091,13 @@ class _CrewScreenState extends State<CrewScreen>
                 const SizedBox(height: 8),
                 if (recentRuns.isEmpty)
                   Text(
-                    locale == 'nl' ? 'Nog geen historie.' : 'No history yet.',
+                    l10n.crewUiMissionNoHistory,
                     style: const TextStyle(color: Colors.grey),
                   )
                 else
                   ...recentRuns
                       .take(6)
-                      .map((run) => _buildCrewMissionRunRow(run, locale)),
+                      .map((run) => _buildCrewMissionRunRow(run, l10n)),
               ],
             ),
           ),
@@ -6488,7 +6108,7 @@ class _CrewScreenState extends State<CrewScreen>
 
   Widget _buildCrewMissionProgressCard(
     Map<String, dynamic> crewProgress,
-    String locale,
+    AppLocalizations loc,
   ) {
     final level = (crewProgress['level'] as num?)?.toInt() ?? 1;
     final totalXp = (crewProgress['totalXp'] as num?)?.toInt() ?? 0;
@@ -6510,7 +6130,7 @@ class _CrewScreenState extends State<CrewScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _t(locale, 'label.crewMissionProgress'),
+              _t(loc, 'label.crewMissionProgress'),
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),
@@ -6518,13 +6138,13 @@ class _CrewScreenState extends State<CrewScreen>
               spacing: 12,
               runSpacing: 6,
               children: [
-                Text('${_t(locale, 'label.level')}: $level'),
-                Text('${_t(locale, 'label.crewMissionXp')}: $totalXp'),
+                Text('${_t(loc, 'label.level')}: $level'),
+                Text('${_t(loc, 'label.crewMissionXp')}: $totalXp'),
                 Text(
-                  '${_t(locale, 'label.crewMissionLevelBonus')}: +${cashRewardBonusPct.toStringAsFixed(cashRewardBonusPct % 1 == 0 ? 0 : 1)}%',
+                  '${_t(loc, 'label.crewMissionLevelBonus')}: +${cashRewardBonusPct.toStringAsFixed(cashRewardBonusPct % 1 == 0 ? 0 : 1)}%',
                 ),
                 Text(
-                  '${_t(locale, 'label.crewMissionNextLevelBonus')}: +${nextLevelCashRewardBonusPct.toStringAsFixed(nextLevelCashRewardBonusPct % 1 == 0 ? 0 : 1)}%',
+                  '${_t(loc, 'label.crewMissionNextLevelBonus')}: +${nextLevelCashRewardBonusPct.toStringAsFixed(nextLevelCashRewardBonusPct % 1 == 0 ? 0 : 1)}%',
                 ),
               ],
             ),
@@ -6548,14 +6168,15 @@ class _CrewScreenState extends State<CrewScreen>
 
   Widget _buildCrewMissionTemplateCard(
     Map<String, dynamic> template, {
-    required String locale,
+    required AppLocalizations loc,
     required bool canManage,
     required bool hasActiveRun,
   }) {
-    final title = locale == 'nl'
+    final isNl = loc.localeName.startsWith('nl');
+    final title = isNl
         ? (template['titleNl'] ?? template['missionKey'] ?? '').toString()
         : (template['titleEn'] ?? template['missionKey'] ?? '').toString();
-    final description = locale == 'nl'
+    final description = isNl
         ? (template['descriptionNl'] ?? '').toString()
         : (template['descriptionEn'] ?? '').toString();
     final tier = (template['tier'] as num?)?.toInt() ?? 1;
@@ -6630,7 +6251,7 @@ class _CrewScreenState extends State<CrewScreen>
                         color: Colors.black12,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text('${_t(locale, 'label.missionTier')} $tier'),
+                      child: Text('${_t(loc, 'label.missionTier')} $tier'),
                     ),
                   ],
                 ),
@@ -6644,18 +6265,18 @@ class _CrewScreenState extends State<CrewScreen>
                 ],
                 const SizedBox(height: 8),
                 Text(
-                  '${_t(locale, 'label.missionDuration')}: ${_formatRemaining(durationSeconds, locale)}',
+                  '${_t(loc, 'label.missionDuration')}: ${_formatRemaining(durationSeconds, loc)}',
                 ),
                 Text(
-                  '${_t(locale, 'label.missionCooldown')}: ${_formatRemaining(cooldownSeconds, locale)}',
+                  '${_t(loc, 'label.missionCooldown')}: ${_formatRemaining(cooldownSeconds, loc)}',
                 ),
                 Text(
-                  '${_t(locale, 'label.missionRewards')}: ${_money(rewardCashMin)} - ${_money(rewardCashMax)} + $rewardCrewXp XP',
+                  '${_t(loc, 'label.missionRewards')}: ${_money(rewardCashMin)} - ${_money(rewardCashMax)} + $rewardCrewXp XP',
                 ),
                 if (!unlocked) ...[
                   const SizedBox(height: 8),
                   Text(
-                    '${_t(locale, 'status.missionLocked')}: ${_crewMissionLockedReason(locale, lockedReason)}',
+                    '${_t(loc, 'status.missionLocked')}: ${_crewMissionLockedReason(loc, lockedReason)}',
                     style: const TextStyle(color: Colors.orange),
                   ),
                 ],
@@ -6671,7 +6292,7 @@ class _CrewScreenState extends State<CrewScreen>
                             _crewMissionActionLoading)
                         ? null
                         : () => _openCrewMissionRoleAssignDialog(missionKey),
-                    child: Text(_t(locale, 'action.startMission')),
+                    child: Text(_t(loc, 'action.startMission')),
                   ),
                 ),
               ],
@@ -6685,10 +6306,11 @@ class _CrewScreenState extends State<CrewScreen>
   Widget _buildActiveCrewMissionCard(
     Map<String, dynamic> activeRun,
     bool canManage,
-    String locale,
+    AppLocalizations loc,
   ) {
     final runId = (activeRun['id'] as num?)?.toInt();
-    final title = locale == 'nl'
+    final isNl = loc.localeName.startsWith('nl');
+    final title = isNl
         ? (activeRun['titleNl'] ?? activeRun['missionKey'] ?? '').toString()
         : (activeRun['titleEn'] ?? activeRun['missionKey'] ?? '').toString();
     final status = (activeRun['status'] ?? '').toString();
@@ -6737,23 +6359,23 @@ class _CrewScreenState extends State<CrewScreen>
             ),
             const SizedBox(height: 8),
             Text(
-              '${_t(locale, 'label.missionStatus')}: ${status == 'completed' ? _t(locale, 'status.completed') : _t(locale, 'status.inProgress')}',
+              '${_t(loc, 'label.missionStatus')}: ${status == 'completed' ? _t(loc, 'status.completed') : _t(loc, 'status.inProgress')}',
             ),
-            Text('${_t(locale, 'label.level')}: ${activeRun['tier'] ?? '-'}'),
+            Text('${_t(loc, 'label.level')}: ${activeRun['tier'] ?? '-'}'),
             Text(
-              '${_t(locale, 'label.missionDuration')}: ${endedInSeconds > 0 ? _formatRemaining(endedInSeconds, locale) : _t(locale, 'status.ready')}',
+              '${_t(loc, 'label.missionDuration')}: ${endedInSeconds > 0 ? _formatRemaining(endedInSeconds, loc) : _t(loc, 'status.ready')}',
             ),
             if (status == 'completed') ...[
               Text('Outcome: ${outcome.isEmpty ? '-' : outcome}'),
               Text(
-                '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} | Crew XP $rewardCrewXp | XP $rewardPersonalXp',
+                '${_t(loc, 'label.missionRewards')}: ${_money(rewardCrewCash)} | Crew XP $rewardCrewXp | XP $rewardPersonalXp',
               ),
               Text('Progress: $progressPct%'),
             ],
             if (missionContributions.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
-                _t(locale, 'label.roleContributions'),
+                _t(loc, 'label.roleContributions'),
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
@@ -6772,7 +6394,7 @@ class _CrewScreenState extends State<CrewScreen>
                       ? username
                       : '#${playerId ?? 0}';
                   final chipText =
-                      '$chipTitle • ${_crewRoleLabel(locale, roleKey)} • ${_t(locale, 'label.contribution')} ${_formatContributionValue(contributionScore)}${payoutMultiplier != null && (payoutMultiplier - 1).abs() > 0.01 ? ' • ${_t(locale, 'label.multiplier')} x${_formatContributionValue(payoutMultiplier)}' : ''}';
+                      '$chipTitle • ${_crewRoleLabel(loc, roleKey)} • ${_t(loc, 'label.contribution')} ${_formatContributionValue(contributionScore)}${payoutMultiplier != null && (payoutMultiplier - 1).abs() > 0.01 ? ' • ${_t(loc, 'label.multiplier')} x${_formatContributionValue(payoutMultiplier)}' : ''}';
                   return Chip(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: VisualDensity.compact,
@@ -6783,7 +6405,7 @@ class _CrewScreenState extends State<CrewScreen>
             ],
             if (cooldownInSeconds > 0)
               Text(
-                '${_t(locale, 'label.cooldownActive')}: ${_formatRemaining(cooldownInSeconds, locale)}',
+                '${_t(loc, 'label.cooldownActive')}: ${_formatRemaining(cooldownInSeconds, loc)}',
               ),
             const SizedBox(height: 10),
             Wrap(
@@ -6795,14 +6417,14 @@ class _CrewScreenState extends State<CrewScreen>
                     onPressed: _crewMissionActionLoading
                         ? null
                         : () => _resolveCrewMission(runId),
-                    child: Text(_t(locale, 'action.resolveMission')),
+                    child: Text(_t(loc, 'action.resolveMission')),
                   ),
                 if (canClaim)
                   ElevatedButton(
                     onPressed: _crewMissionActionLoading
                         ? null
                         : () => _claimCrewMissionRewards(runId),
-                    child: Text(_t(locale, 'action.claimRewards')),
+                    child: Text(_t(loc, 'action.claimRewards')),
                   ),
                 if (canSpeedup)
                   OutlinedButton.icon(
@@ -6812,14 +6434,14 @@ class _CrewScreenState extends State<CrewScreen>
                     icon: const Icon(Icons.bolt),
                     label: Text(
                       speedupLoading
-                          ? _t(locale, 'state.loadingPrice')
+                          ? _t(loc, 'state.loadingPrice')
                           : speedupCredits == null
-                          ? _t(locale, 'action.speedupCooldown')
-                          : '${_t(locale, 'action.speedupCooldown')} ($speedupCredits ${_t(locale, 'label.credits')}${speedupMinutes != null ? ', ${speedupMinutes}m' : ''})',
+                          ? _t(loc, 'action.speedupCooldown')
+                          : '${_t(loc, 'action.speedupCooldown')} ($speedupCredits ${_t(loc, 'label.credits')}${speedupMinutes != null ? ', ${speedupMinutes}m' : ''})',
                     ),
                   ),
                 if (rewardsClaimedAt != null)
-                  Chip(label: Text(_t(locale, 'status.rewardsClaimed'))),
+                  Chip(label: Text(_t(loc, 'status.rewardsClaimed'))),
               ],
             ),
           ],
@@ -6828,8 +6450,9 @@ class _CrewScreenState extends State<CrewScreen>
     );
   }
 
-  Widget _buildCrewMissionRunRow(Map<String, dynamic> run, String locale) {
-    final title = locale == 'nl'
+  Widget _buildCrewMissionRunRow(Map<String, dynamic> run, AppLocalizations loc) {
+    final isNl = loc.localeName.startsWith('nl');
+    final title = isNl
         ? (run['titleNl'] ?? run['missionKey'] ?? '').toString()
         : (run['titleEn'] ?? run['missionKey'] ?? '').toString();
     final outcome = (run['outcome'] ?? '-').toString();
@@ -6848,7 +6471,7 @@ class _CrewScreenState extends State<CrewScreen>
           final displayName = username.isNotEmpty
               ? username
               : '#${playerId ?? 0}';
-          return '$displayName (${_crewRoleLabel(locale, roleKey)} ${_formatContributionValue(contributionScore)})';
+          return '$displayName (${_crewRoleLabel(loc, roleKey)} ${_formatContributionValue(contributionScore)})';
         })
         .join(' • ');
 
@@ -6857,18 +6480,18 @@ class _CrewScreenState extends State<CrewScreen>
         title: Text(title),
         subtitle: Text(
           missionContributions.isEmpty
-              ? '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome'
-              : '${_t(locale, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome\n${_t(locale, 'label.roleContributions')}: $contributionsPreview',
+              ? '${_t(loc, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome'
+              : '${_t(loc, 'label.missionRewards')}: ${_money(rewardCrewCash)} - Outcome: $outcome\n${_t(loc, 'label.roleContributions')}: $contributionsPreview',
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),
         trailing: hasCooldown
             ? Text(
-                '${_t(locale, 'label.missionCooldown')}: ${_formatRemaining(cooldownInSeconds, locale)}',
+                '${_t(loc, 'label.missionCooldown')}: ${_formatRemaining(cooldownInSeconds, loc)}',
                 style: const TextStyle(fontSize: 12),
               )
             : Text(
-                _t(locale, 'status.ready'),
+                _t(loc, 'status.ready'),
                 style: const TextStyle(fontSize: 12, color: Colors.green),
               ),
       ),
@@ -6881,7 +6504,7 @@ class _CrewScreenState extends State<CrewScreen>
     if (_allCrews.isEmpty) {
       return Center(
         child: Text(
-          _t(locale, 'state.noCrewsFound'),
+          _t(l10n, 'state.noCrewsFound'),
           style: const TextStyle(color: Colors.grey, fontSize: 16),
         ),
       );
@@ -6907,7 +6530,7 @@ class _CrewScreenState extends State<CrewScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${_t(locale, 'label.memberCount')}: ${crew.memberCount}',
+                    '${_t(l10n, 'label.memberCount')}: ${crew.memberCount}',
                   ),
                   Text(
                     '${locale == 'nl' ? 'Leader' : 'Leader'}: ${crew.leader?.playerInfo?.username ?? 'Unknown'}',
@@ -6942,7 +6565,7 @@ class _CrewScreenState extends State<CrewScreen>
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        _t(locale, 'badge.myCrew'),
+                        _t(l10n, 'badge.myCrew'),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -6953,7 +6576,7 @@ class _CrewScreenState extends State<CrewScreen>
                   ? null
                   : ElevatedButton(
                       onPressed: () => _joinCrew(crew.id),
-                      child: Text(_t(locale, 'action.join')),
+                      child: Text(_t(l10n, 'action.join')),
                     ),
             ),
           );
@@ -6970,7 +6593,6 @@ class _CrewScreenState extends State<CrewScreen>
 
   Widget _buildChatTab() {
     if (_myCrew == null) {
-      final locale = Localizations.localeOf(context).languageCode;
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -6978,12 +6600,12 @@ class _CrewScreenState extends State<CrewScreen>
             Icon(Icons.chat_bubble_outline, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              _t(locale, 'state.notInCrew'),
+              _t(l10n, 'state.notInCrew'),
               style: TextStyle(fontSize: 18, color: Colors.grey[600]),
             ),
             const SizedBox(height: 8),
             Text(
-              _t(locale, 'hint.chatJoinCrew'),
+              _t(l10n, 'hint.chatJoinCrew'),
               style: TextStyle(color: Colors.grey[500]),
             ),
           ],
