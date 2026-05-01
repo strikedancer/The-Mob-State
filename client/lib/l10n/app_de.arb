@@ -5263,5 +5263,177 @@
         "type": "String"
       }
     }
-  }
+  },
+  "courtLoadFailed": "Gerichtsdaten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+  "courtAppealDialogIntro": "Möchten Sie gegen diese Verurteilung Berufung einlegen?",
+  "courtCostLine": "Kosten: {amount}",
+  "@courtCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtJudgeNamed": "Richter: {name}",
+  "@courtJudgeNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "courtCorruptibilityPercent": "Verderblichkeit: {percent} %",
+  "@courtCorruptibilityPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealSuccessHint": "Bei Erfolg: ca. 20–40 % Strafminderung",
+  "courtAppealGrantedMinutes": "Berufung stattgegeben. Neuer Satz: {minutes} Minuten.",
+  "@courtAppealGrantedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealDenied": "Berufung abgelehnt.",
+  "courtBribeOfferIntro": "Bieten Sie einen Betrag an. Der Betrag wird immer abgezogen, auch bei Scheitern.",
+  "courtBribeAmountFormatted": "Bestechungsbetrag: {amount}",
+  "@courtBribeAmountFormatted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSliderLabel": "{thousands}Tsd. €",
+  "@courtBribeSliderLabel": {
+    "placeholders": {
+      "thousands": {
+        "type": "String"
+      }
+    }
+  },
+  "courtEstimatedSuccessChance": "Geschätzte Erfolgschance: ~{percent}%",
+  "@courtEstimatedSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSuccessReleased": "Richter bestochen. Sie werden sofort freigelassen.",
+  "courtBribeFailedDebited": "Bestechung gescheitert. Betrag wurde trotzdem abgezogen.",
+  "courtRecordActive": "Aktiv",
+  "courtRecordServed": "Serviert",
+  "courtHistoryAppealGranted": "Der Berufung stattgegeben: {fromMinutes} → {toMinutes} Minuten",
+  "@courtHistoryAppealGranted": {
+    "placeholders": {
+      "fromMinutes": {
+        "type": "String"
+      },
+      "toMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryAppealDenied": "Einspruch abgelehnt: Es verbleiben noch {minutes} Minuten",
+  "@courtHistoryAppealDenied": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryBribeFailedPaid": "Bestechung fehlgeschlagen: {amount} bezahlt",
+  "@courtHistoryBribeFailedPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryConvictedMinutes": "Verurteilt zu {minutes} Minuten",
+  "@courtHistoryConvictedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPartialLoadWarning": "Achtung: Ein Teil der Gerichtsdaten konnte nicht geladen werden. Zum Aktualisieren ziehen und erneut versuchen.",
+  "courtNoActiveSentence": "Kein aktiver Satz",
+  "courtNotJailedHint": "Sie sind derzeit nicht im Gefängnis. Ihr Strafregister bleibt unten sichtbar.",
+  "courtActiveSentenceTitle": "Aktiver Satz",
+  "courtDelictLabel": "Verbrechen",
+  "courtTotalSentenceMinutes": "Gesamtsatz: {minutes} Minuten",
+  "@courtTotalSentenceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRemainingMinutes": "Verbleibend: {minutes} Minuten",
+  "@courtRemainingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealCostCurrent": "Aktuelle Berufungskosten: {amount}",
+  "@courtAppealCostCurrent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtButtonAppeal": "Appellieren",
+  "courtButtonBribeJudge": "Bestechungsrichter",
+  "courtUnknownCrime": "Unbekannt",
+  "courtSentenceMinutesOnly": "Satz: {minutes} Minuten",
+  "@courtSentenceMinutesOnly": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtSentenceReducedMinutes": "Satz: {original} → {reduced} Minuten",
+  "@courtSentenceReducedMinutes": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reduced": {
+        "type": "String"
+      }
+    }
+  },
+  "courtDateLabeled": "Datum: {datetime}",
+  "@courtDateLabeled": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryHeading": "Gerichtsgeschichte",
+  "courtAppealSubmitted": "Berufung eingereicht",
+  "courtCriminalRecordTitle": "Strafregister",
+  "courtTotalConvictions": "Gesamtzahl der Verurteilungen: {count}",
+  "@courtTotalConvictions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordBribeNote": "Vergangene Überzeugungen bleiben sichtbar. Eine erfolgreiche Richterbestechung klärt nur diesen einen aktiven Fall.",
+  "courtNoConvictionsYet": "Es liegen noch keine Verurteilungen vor."
 }

@@ -3265,6 +3265,171 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bribe => 'Suborno';
 
   @override
+  String get courtLoadFailed =>
+      'Não foi possível carregar os dados do tribunal. Por favor, tente novamente.';
+
+  @override
+  String get courtAppealDialogIntro =>
+      'Deseja apresentar recurso desta condenação?';
+
+  @override
+  String courtCostLine(String amount) {
+    return 'Custo: $amount';
+  }
+
+  @override
+  String courtJudgeNamed(String name) {
+    return 'Juiz: $name';
+  }
+
+  @override
+  String courtCorruptibilityPercent(String percent) {
+    return 'Corruptibilidade: $percent%';
+  }
+
+  @override
+  String get courtAppealSuccessHint =>
+      'Em caso de sucesso: cerca de 20-40% de redução de sentença';
+
+  @override
+  String courtAppealGrantedMinutes(String minutes) {
+    return 'Recurso concedido. Nova frase: $minutes minutos.';
+  }
+
+  @override
+  String get courtAppealDenied => 'Recurso negado.';
+
+  @override
+  String get courtBribeOfferIntro =>
+      'Ofereça uma quantia. O valor é sempre descontado, mesmo em caso de falha.';
+
+  @override
+  String courtBribeAmountFormatted(String amount) {
+    return 'Valor do suborno: $amount';
+  }
+
+  @override
+  String courtBribeSliderLabel(String thousands) {
+    return '€${thousands}k';
+  }
+
+  @override
+  String courtEstimatedSuccessChance(String percent) {
+    return 'Chance de sucesso estimada: ~$percent%';
+  }
+
+  @override
+  String get courtBribeSuccessReleased =>
+      'Juiz subornado. Você é liberado imediatamente.';
+
+  @override
+  String get courtBribeFailedDebited =>
+      'O suborno falhou. O valor ainda foi deduzido.';
+
+  @override
+  String get courtRecordActive => 'Ativa';
+
+  @override
+  String get courtRecordServed => 'Servida';
+
+  @override
+  String courtHistoryAppealGranted(String fromMinutes, String toMinutes) {
+    return 'Recurso deferido: $fromMinutes → $toMinutes minutos';
+  }
+
+  @override
+  String courtHistoryAppealDenied(String minutes) {
+    return 'Recurso negado: $minutes minutos restantes';
+  }
+
+  @override
+  String courtHistoryBribeFailedPaid(String amount) {
+    return 'Suborno falhou: $amount pago';
+  }
+
+  @override
+  String courtHistoryConvictedMinutes(String minutes) {
+    return 'Condenado a $minutes minutos';
+  }
+
+  @override
+  String get courtPartialLoadWarning =>
+      'Atenção: não foi possível carregar parte dos dados do tribunal. Puxe para atualizar para tentar novamente.';
+
+  @override
+  String get courtNoActiveSentence => 'Nenhuma sentença ativa';
+
+  @override
+  String get courtNotJailedHint =>
+      'Você não está preso no momento. Seu registro criminal permanece visível abaixo.';
+
+  @override
+  String get courtActiveSentenceTitle => 'Sentença ativa';
+
+  @override
+  String get courtDelictLabel => 'Crime';
+
+  @override
+  String courtTotalSentenceMinutes(String minutes) {
+    return 'Frase total: $minutes minutos';
+  }
+
+  @override
+  String courtRemainingMinutes(String minutes) {
+    return 'Restante: $minutes minutos';
+  }
+
+  @override
+  String courtAppealCostCurrent(String amount) {
+    return 'Custo atual do recurso: $amount';
+  }
+
+  @override
+  String get courtButtonAppeal => 'Apelo';
+
+  @override
+  String get courtButtonBribeJudge => 'Juiz de suborno';
+
+  @override
+  String get courtUnknownCrime => 'Desconhecida';
+
+  @override
+  String courtSentenceMinutesOnly(String minutes) {
+    return 'Sentença: $minutes minutos';
+  }
+
+  @override
+  String courtSentenceReducedMinutes(String original, String reduced) {
+    return 'Frase: $original → $reduced minutos';
+  }
+
+  @override
+  String courtDateLabeled(String datetime) {
+    return 'Data: $datetime';
+  }
+
+  @override
+  String get courtHistoryHeading => 'História do tribunal';
+
+  @override
+  String get courtAppealSubmitted => 'Recurso submetido';
+
+  @override
+  String get courtCriminalRecordTitle => 'Registo criminal';
+
+  @override
+  String courtTotalConvictions(String count) {
+    return 'Total de condenações: $count';
+  }
+
+  @override
+  String get courtRecordBribeNote =>
+      'As convicções passadas permanecem visíveis. Um suborno de juiz bem-sucedido resolve apenas aquele caso ativo.';
+
+  @override
+  String get courtNoConvictionsYet => 'Nenhuma condenação registrada ainda.';
+
+  @override
   String get treated => 'Tratada!';
 
   @override

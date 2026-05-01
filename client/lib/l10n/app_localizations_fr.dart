@@ -3294,6 +3294,172 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bribe => 'Pot-de-vin';
 
   @override
+  String get courtLoadFailed =>
+      'Impossible de charger les données du tribunal. Veuillez réessayer.';
+
+  @override
+  String get courtAppealDialogIntro =>
+      'Souhaitez-vous faire appel de cette condamnation ?';
+
+  @override
+  String courtCostLine(String amount) {
+    return 'Coût : $amount';
+  }
+
+  @override
+  String courtJudgeNamed(String name) {
+    return 'Juge : $name';
+  }
+
+  @override
+  String courtCorruptibilityPercent(String percent) {
+    return 'Corruptibilité : $percent%';
+  }
+
+  @override
+  String get courtAppealSuccessHint =>
+      'En cas de réussite : réduction de peine d\'environ 20 à 40 %';
+
+  @override
+  String courtAppealGrantedMinutes(String minutes) {
+    return 'Appel accueilli. Nouvelle phrase : $minutes minutes.';
+  }
+
+  @override
+  String get courtAppealDenied => 'Appel rejeté.';
+
+  @override
+  String get courtBribeOfferIntro =>
+      'Offrez un montant. Le montant est toujours déduit, même en cas d\'échec.';
+
+  @override
+  String courtBribeAmountFormatted(String amount) {
+    return 'Montant du pot-de-vin : $amount';
+  }
+
+  @override
+  String courtBribeSliderLabel(String thousands) {
+    return '0⟧k€';
+  }
+
+  @override
+  String courtEstimatedSuccessChance(String percent) {
+    return 'Chances de réussite estimées : ~$percent%';
+  }
+
+  @override
+  String get courtBribeSuccessReleased =>
+      'Le juge a soudoyé. Vous êtes libéré immédiatement.';
+
+  @override
+  String get courtBribeFailedDebited =>
+      'Le pot-de-vin a échoué. Le montant a quand même été déduit.';
+
+  @override
+  String get courtRecordActive => 'Active';
+
+  @override
+  String get courtRecordServed => 'Servie';
+
+  @override
+  String courtHistoryAppealGranted(String fromMinutes, String toMinutes) {
+    return 'Appel accueilli : $fromMinutes → $toMinutes minutes';
+  }
+
+  @override
+  String courtHistoryAppealDenied(String minutes) {
+    return 'Appel refusé : $minutes minutes restantes';
+  }
+
+  @override
+  String courtHistoryBribeFailedPaid(String amount) {
+    return 'Pot-de-vin échoué : $amount payé';
+  }
+
+  @override
+  String courtHistoryConvictedMinutes(String minutes) {
+    return 'Condamné à $minutes minutes';
+  }
+
+  @override
+  String get courtPartialLoadWarning =>
+      'Attention : une partie des données du tribunal n\'a pas pu être chargée. Tirez pour actualiser pour réessayer.';
+
+  @override
+  String get courtNoActiveSentence => 'Aucune phrase active';
+
+  @override
+  String get courtNotJailedHint =>
+      'Vous n\'êtes actuellement pas emprisonné. Votre casier judiciaire reste visible ci-dessous.';
+
+  @override
+  String get courtActiveSentenceTitle => 'Phrase active';
+
+  @override
+  String get courtDelictLabel => 'Crime';
+
+  @override
+  String courtTotalSentenceMinutes(String minutes) {
+    return 'Phrase totale : $minutes minutes';
+  }
+
+  @override
+  String courtRemainingMinutes(String minutes) {
+    return 'Restant : $minutes minutes';
+  }
+
+  @override
+  String courtAppealCostCurrent(String amount) {
+    return 'Coût d\'appel actuel : $amount';
+  }
+
+  @override
+  String get courtButtonAppeal => 'Appel';
+
+  @override
+  String get courtButtonBribeJudge => 'Juge des pots-de-vin';
+
+  @override
+  String get courtUnknownCrime => 'Inconnue';
+
+  @override
+  String courtSentenceMinutesOnly(String minutes) {
+    return 'Phrase : $minutes minutes';
+  }
+
+  @override
+  String courtSentenceReducedMinutes(String original, String reduced) {
+    return 'Phrase : $original → $reduced minutes';
+  }
+
+  @override
+  String courtDateLabeled(String datetime) {
+    return 'Date : $datetime';
+  }
+
+  @override
+  String get courtHistoryHeading => 'Histoire de la Cour';
+
+  @override
+  String get courtAppealSubmitted => 'Appel déposé';
+
+  @override
+  String get courtCriminalRecordTitle => 'Casier judiciaire';
+
+  @override
+  String courtTotalConvictions(String count) {
+    return 'Total des condamnations : $count';
+  }
+
+  @override
+  String get courtRecordBribeNote =>
+      'Les convictions passées restent visibles. Un pot-de-vin réussi ne règle que cette seule affaire active.';
+
+  @override
+  String get courtNoConvictionsYet =>
+      'Aucune condamnation enregistrée pour l’instant.';
+
+  @override
   String get treated => 'Traité !';
 
   @override

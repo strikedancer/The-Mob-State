@@ -3287,6 +3287,171 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bribe => 'Bestechen';
 
   @override
+  String get courtLoadFailed =>
+      'Gerichtsdaten konnten nicht geladen werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get courtAppealDialogIntro =>
+      'Möchten Sie gegen diese Verurteilung Berufung einlegen?';
+
+  @override
+  String courtCostLine(String amount) {
+    return 'Kosten: $amount';
+  }
+
+  @override
+  String courtJudgeNamed(String name) {
+    return 'Richter: $name';
+  }
+
+  @override
+  String courtCorruptibilityPercent(String percent) {
+    return 'Verderblichkeit: $percent %';
+  }
+
+  @override
+  String get courtAppealSuccessHint => 'Bei Erfolg: ca. 20–40 % Strafminderung';
+
+  @override
+  String courtAppealGrantedMinutes(String minutes) {
+    return 'Berufung stattgegeben. Neuer Satz: $minutes Minuten.';
+  }
+
+  @override
+  String get courtAppealDenied => 'Berufung abgelehnt.';
+
+  @override
+  String get courtBribeOfferIntro =>
+      'Bieten Sie einen Betrag an. Der Betrag wird immer abgezogen, auch bei Scheitern.';
+
+  @override
+  String courtBribeAmountFormatted(String amount) {
+    return 'Bestechungsbetrag: $amount';
+  }
+
+  @override
+  String courtBribeSliderLabel(String thousands) {
+    return '${thousands}Tsd. €';
+  }
+
+  @override
+  String courtEstimatedSuccessChance(String percent) {
+    return 'Geschätzte Erfolgschance: ~$percent%';
+  }
+
+  @override
+  String get courtBribeSuccessReleased =>
+      'Richter bestochen. Sie werden sofort freigelassen.';
+
+  @override
+  String get courtBribeFailedDebited =>
+      'Bestechung gescheitert. Betrag wurde trotzdem abgezogen.';
+
+  @override
+  String get courtRecordActive => 'Aktiv';
+
+  @override
+  String get courtRecordServed => 'Serviert';
+
+  @override
+  String courtHistoryAppealGranted(String fromMinutes, String toMinutes) {
+    return 'Der Berufung stattgegeben: $fromMinutes → $toMinutes Minuten';
+  }
+
+  @override
+  String courtHistoryAppealDenied(String minutes) {
+    return 'Einspruch abgelehnt: Es verbleiben noch $minutes Minuten';
+  }
+
+  @override
+  String courtHistoryBribeFailedPaid(String amount) {
+    return 'Bestechung fehlgeschlagen: $amount bezahlt';
+  }
+
+  @override
+  String courtHistoryConvictedMinutes(String minutes) {
+    return 'Verurteilt zu $minutes Minuten';
+  }
+
+  @override
+  String get courtPartialLoadWarning =>
+      'Achtung: Ein Teil der Gerichtsdaten konnte nicht geladen werden. Zum Aktualisieren ziehen und erneut versuchen.';
+
+  @override
+  String get courtNoActiveSentence => 'Kein aktiver Satz';
+
+  @override
+  String get courtNotJailedHint =>
+      'Sie sind derzeit nicht im Gefängnis. Ihr Strafregister bleibt unten sichtbar.';
+
+  @override
+  String get courtActiveSentenceTitle => 'Aktiver Satz';
+
+  @override
+  String get courtDelictLabel => 'Verbrechen';
+
+  @override
+  String courtTotalSentenceMinutes(String minutes) {
+    return 'Gesamtsatz: $minutes Minuten';
+  }
+
+  @override
+  String courtRemainingMinutes(String minutes) {
+    return 'Verbleibend: $minutes Minuten';
+  }
+
+  @override
+  String courtAppealCostCurrent(String amount) {
+    return 'Aktuelle Berufungskosten: $amount';
+  }
+
+  @override
+  String get courtButtonAppeal => 'Appellieren';
+
+  @override
+  String get courtButtonBribeJudge => 'Bestechungsrichter';
+
+  @override
+  String get courtUnknownCrime => 'Unbekannt';
+
+  @override
+  String courtSentenceMinutesOnly(String minutes) {
+    return 'Satz: $minutes Minuten';
+  }
+
+  @override
+  String courtSentenceReducedMinutes(String original, String reduced) {
+    return 'Satz: $original → $reduced Minuten';
+  }
+
+  @override
+  String courtDateLabeled(String datetime) {
+    return 'Datum: $datetime';
+  }
+
+  @override
+  String get courtHistoryHeading => 'Gerichtsgeschichte';
+
+  @override
+  String get courtAppealSubmitted => 'Berufung eingereicht';
+
+  @override
+  String get courtCriminalRecordTitle => 'Strafregister';
+
+  @override
+  String courtTotalConvictions(String count) {
+    return 'Gesamtzahl der Verurteilungen: $count';
+  }
+
+  @override
+  String get courtRecordBribeNote =>
+      'Vergangene Überzeugungen bleiben sichtbar. Eine erfolgreiche Richterbestechung klärt nur diesen einen aktiven Fall.';
+
+  @override
+  String get courtNoConvictionsYet =>
+      'Es liegen noch keine Verurteilungen vor.';
+
+  @override
   String get treated => 'Behandelt!';
 
   @override

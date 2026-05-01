@@ -3252,6 +3252,171 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bribe => 'Omkopen';
 
   @override
+  String get courtLoadFailed =>
+      'Kon rechtbankgegevens niet laden. Probeer opnieuw.';
+
+  @override
+  String get courtAppealDialogIntro =>
+      'Wil je hoger beroep indienen voor deze veroordeling?';
+
+  @override
+  String courtCostLine(String amount) {
+    return 'Kosten: $amount';
+  }
+
+  @override
+  String courtJudgeNamed(String name) {
+    return 'Rechter: $name';
+  }
+
+  @override
+  String courtCorruptibilityPercent(String percent) {
+    return 'Corruptibiliteit: $percent%';
+  }
+
+  @override
+  String get courtAppealSuccessHint =>
+      'Bij succes: ongeveer 20-40% strafvermindering';
+
+  @override
+  String courtAppealGrantedMinutes(String minutes) {
+    return 'Hoger beroep geslaagd. Nieuwe straf: $minutes minuten.';
+  }
+
+  @override
+  String get courtAppealDenied => 'Hoger beroep afgewezen.';
+
+  @override
+  String get courtBribeOfferIntro =>
+      'Bied een bedrag aan. Het bedrag wordt altijd afgeschreven, ook bij mislukking.';
+
+  @override
+  String courtBribeAmountFormatted(String amount) {
+    return 'Omkoopsom: $amount';
+  }
+
+  @override
+  String courtBribeSliderLabel(String thousands) {
+    return '€${thousands}k';
+  }
+
+  @override
+  String courtEstimatedSuccessChance(String percent) {
+    return 'Geschatte slagingskans: ~$percent%';
+  }
+
+  @override
+  String get courtBribeSuccessReleased =>
+      'Rechter omgekocht. Je bent direct vrij.';
+
+  @override
+  String get courtBribeFailedDebited =>
+      'Omkoping mislukt. Bedrag is wel afgeschreven.';
+
+  @override
+  String get courtRecordActive => 'Actief';
+
+  @override
+  String get courtRecordServed => 'Afgerond';
+
+  @override
+  String courtHistoryAppealGranted(String fromMinutes, String toMinutes) {
+    return 'Hoger beroep toegekend: $fromMinutes → $toMinutes minuten';
+  }
+
+  @override
+  String courtHistoryAppealDenied(String minutes) {
+    return 'Hoger beroep afgewezen: $minutes minuten bleef staan';
+  }
+
+  @override
+  String courtHistoryBribeFailedPaid(String amount) {
+    return 'Omkoping mislukt: $amount betaald';
+  }
+
+  @override
+  String courtHistoryConvictedMinutes(String minutes) {
+    return 'Veroordeeld tot $minutes minuten';
+  }
+
+  @override
+  String get courtPartialLoadWarning =>
+      'Let op: een deel van de rechtbankdata kon niet laden. Trek omlaag om opnieuw te proberen.';
+
+  @override
+  String get courtNoActiveSentence => 'Geen actieve straf';
+
+  @override
+  String get courtNotJailedHint =>
+      'Je zit momenteel niet vast. Je strafblad blijft hieronder zichtbaar.';
+
+  @override
+  String get courtActiveSentenceTitle => 'Actieve veroordeling';
+
+  @override
+  String get courtDelictLabel => 'Delict';
+
+  @override
+  String courtTotalSentenceMinutes(String minutes) {
+    return 'Totale straf: $minutes minuten';
+  }
+
+  @override
+  String courtRemainingMinutes(String minutes) {
+    return 'Resterend: $minutes minuten';
+  }
+
+  @override
+  String courtAppealCostCurrent(String amount) {
+    return 'Beroepskosten nu: $amount';
+  }
+
+  @override
+  String get courtButtonAppeal => 'Hoger beroep';
+
+  @override
+  String get courtButtonBribeJudge => 'Rechter omkopen';
+
+  @override
+  String get courtUnknownCrime => 'Onbekend';
+
+  @override
+  String courtSentenceMinutesOnly(String minutes) {
+    return 'Straf: $minutes minuten';
+  }
+
+  @override
+  String courtSentenceReducedMinutes(String original, String reduced) {
+    return 'Straf: $original → $reduced minuten';
+  }
+
+  @override
+  String courtDateLabeled(String datetime) {
+    return 'Datum: $datetime';
+  }
+
+  @override
+  String get courtHistoryHeading => 'Rechtbankhistorie';
+
+  @override
+  String get courtAppealSubmitted => 'Beroep ingediend';
+
+  @override
+  String get courtCriminalRecordTitle => 'Strafblad';
+
+  @override
+  String courtTotalConvictions(String count) {
+    return 'Totaal aantal veroordelingen: $count';
+  }
+
+  @override
+  String get courtRecordBribeNote =>
+      'Vorige veroordelingen blijven zichtbaar. Een geslaagde rechteromkoping wist alleen die ene actuele zaak.';
+
+  @override
+  String get courtNoConvictionsYet => 'Nog geen veroordelingen geregistreerd.';
+
+  @override
   String get treated => 'Behandeld!';
 
   @override

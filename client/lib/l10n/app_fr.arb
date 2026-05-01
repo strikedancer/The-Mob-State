@@ -5263,5 +5263,177 @@
         "type": "String"
       }
     }
-  }
+  },
+  "courtLoadFailed": "Impossible de charger les données du tribunal. Veuillez réessayer.",
+  "courtAppealDialogIntro": "Souhaitez-vous faire appel de cette condamnation ?",
+  "courtCostLine": "Coût : {amount}",
+  "@courtCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtJudgeNamed": "Juge : {name}",
+  "@courtJudgeNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "courtCorruptibilityPercent": "Corruptibilité : {percent}%",
+  "@courtCorruptibilityPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealSuccessHint": "En cas de réussite : réduction de peine d'environ 20 à 40 %",
+  "courtAppealGrantedMinutes": "Appel accueilli. Nouvelle phrase : {minutes} minutes.",
+  "@courtAppealGrantedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealDenied": "Appel rejeté.",
+  "courtBribeOfferIntro": "Offrez un montant. Le montant est toujours déduit, même en cas d'échec.",
+  "courtBribeAmountFormatted": "Montant du pot-de-vin : {amount}",
+  "@courtBribeAmountFormatted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSliderLabel": "0⟧k€",
+  "@courtBribeSliderLabel": {
+    "placeholders": {
+      "thousands": {
+        "type": "String"
+      }
+    }
+  },
+  "courtEstimatedSuccessChance": "Chances de réussite estimées : ~{percent}%",
+  "@courtEstimatedSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSuccessReleased": "Le juge a soudoyé. Vous êtes libéré immédiatement.",
+  "courtBribeFailedDebited": "Le pot-de-vin a échoué. Le montant a quand même été déduit.",
+  "courtRecordActive": "Active",
+  "courtRecordServed": "Servie",
+  "courtHistoryAppealGranted": "Appel accueilli : {fromMinutes} → {toMinutes} minutes",
+  "@courtHistoryAppealGranted": {
+    "placeholders": {
+      "fromMinutes": {
+        "type": "String"
+      },
+      "toMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryAppealDenied": "Appel refusé : {minutes} minutes restantes",
+  "@courtHistoryAppealDenied": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryBribeFailedPaid": "Pot-de-vin échoué : {amount} payé",
+  "@courtHistoryBribeFailedPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryConvictedMinutes": "Condamné à {minutes} minutes",
+  "@courtHistoryConvictedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPartialLoadWarning": "Attention : une partie des données du tribunal n'a pas pu être chargée. Tirez pour actualiser pour réessayer.",
+  "courtNoActiveSentence": "Aucune phrase active",
+  "courtNotJailedHint": "Vous n'êtes actuellement pas emprisonné. Votre casier judiciaire reste visible ci-dessous.",
+  "courtActiveSentenceTitle": "Phrase active",
+  "courtDelictLabel": "Crime",
+  "courtTotalSentenceMinutes": "Phrase totale : {minutes} minutes",
+  "@courtTotalSentenceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRemainingMinutes": "Restant : {minutes} minutes",
+  "@courtRemainingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealCostCurrent": "Coût d'appel actuel : {amount}",
+  "@courtAppealCostCurrent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtButtonAppeal": "Appel",
+  "courtButtonBribeJudge": "Juge des pots-de-vin",
+  "courtUnknownCrime": "Inconnue",
+  "courtSentenceMinutesOnly": "Phrase : {minutes} minutes",
+  "@courtSentenceMinutesOnly": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtSentenceReducedMinutes": "Phrase : {original} → {reduced} minutes",
+  "@courtSentenceReducedMinutes": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reduced": {
+        "type": "String"
+      }
+    }
+  },
+  "courtDateLabeled": "Date : {datetime}",
+  "@courtDateLabeled": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryHeading": "Histoire de la Cour",
+  "courtAppealSubmitted": "Appel déposé",
+  "courtCriminalRecordTitle": "Casier judiciaire",
+  "courtTotalConvictions": "Total des condamnations : {count}",
+  "@courtTotalConvictions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordBribeNote": "Les convictions passées restent visibles. Un pot-de-vin réussi ne règle que cette seule affaire active.",
+  "courtNoConvictionsYet": "Aucune condamnation enregistrée pour l’instant."
 }

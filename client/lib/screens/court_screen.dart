@@ -6,6 +6,7 @@ import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/formatters.dart';
 
 class CourtScreen extends StatefulWidget {
   const CourtScreen({super.key});
@@ -30,9 +31,6 @@ class _CourtScreenState extends State<CourtScreen> {
   List<Map<String, dynamic>> _recentCrimes = [];
   String? _error;
   bool _isProcessing = false;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -80,6 +78,9 @@ class _CourtScreenState extends State<CourtScreen> {
       debugPrint('[CourtScreen] Failed loading /trial/record: $e');
     }
 
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+
     setState(() {
       _currentSentence = sentence;
       _totalConvictions = totalConvictions;
@@ -87,10 +88,7 @@ class _CourtScreenState extends State<CourtScreen> {
       _isLoading = false;
 
       if (_sentenceFailed && _recordFailed) {
-        _error = _tr(
-          'Kon rechtbankgegevens niet laden. Probeer opnieuw.',
-          'Could not load court data. Please try again.',
-        );
+        _error = l10n.courtLoadFailed;
       }
     });
   }
@@ -106,87 +104,78 @@ class _CourtScreenState extends State<CourtScreen> {
     if (_currentSentence == null) return;
 
     final appealCost = _calculateAppealCost(_currentSentence!.sentenceMinutes);
+    final l10nRoot = AppLocalizations.of(context)!;
 
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.appeal,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      builder: (context) {
+        final l10n = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(l10n.confirmAction),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.appeal,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.courtAppealDialogIntro,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.courtCostLine(formatCurrency(appealCost)),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.courtJudgeNamed(_currentSentence!.judge.name),
+                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+              ),
+              Text(
+                l10n.courtCorruptibilityPercent(
+                  _currentSentence!.judge.corruptibility.toString(),
+                ),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: _currentSentence!.judge.corruptibilityColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.courtAppealSuccessHint,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.green,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n.cancel),
             ),
-            const SizedBox(height: 8),
-            Text(
-              _tr(
-                'Wil je hoger beroep indienen voor deze veroordeling?',
-                'Do you want to submit an appeal for this conviction?',
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2A4E7F),
+                foregroundColor: Colors.white,
               ),
-              style: const TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              _tr(
-                'Kosten: €${_formatMoney(appealCost)}',
-                'Cost: €${_formatMoney(appealCost)}',
-              ),
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[700],
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _tr(
-                'Rechter: ${_currentSentence!.judge.name}',
-                'Judge: ${_currentSentence!.judge.name}',
-              ),
-              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-            ),
-            Text(
-              _tr(
-                'Corruptibiliteit: ${_currentSentence!.judge.corruptibility}%',
-                'Corruptibility: ${_currentSentence!.judge.corruptibility}%',
-              ),
-              style: TextStyle(
-                fontSize: 14,
-                color: _currentSentence!.judge.corruptibilityColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _tr(
-                'Bij succes: ongeveer 20-40% strafvermindering',
-                'On success: roughly 20-40% sentence reduction',
-              ),
-              style: const TextStyle(
-                fontSize: 13,
-                color: Colors.green,
-                fontStyle: FontStyle.italic,
-              ),
+              child: Text(l10n.submitAppeal),
             ),
           ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr('Annuleren', 'Cancel')),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2A4E7F),
-              foregroundColor: Colors.white,
-            ),
-            child: Text(AppLocalizations.of(context)!.submitAppeal),
-          ),
-        ],
-      ),
+        );
+      },
     );
 
     if (confirmed != true) return;
@@ -210,11 +199,10 @@ class _CourtScreenState extends State<CourtScreen> {
           SnackBar(
             content: Text(
               success
-                  ? _tr(
-                      'Hoger beroep geslaagd. Nieuwe straf: $newSentence minuten.',
-                      'Appeal granted. New sentence: $newSentence minutes.',
+                  ? l10nRoot.courtAppealGrantedMinutes(
+                      '${newSentence ?? 0}',
                     )
-                  : _tr('Hoger beroep afgewezen.', 'Appeal denied.'),
+                  : l10nRoot.courtAppealDenied,
             ),
             backgroundColor: success ? Colors.green : Colors.red,
             duration: const Duration(seconds: 4),
@@ -233,7 +221,7 @@ class _CourtScreenState extends State<CourtScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('${_tr('Fout', 'Error')}: $e'),
+            content: Text(l10nRoot.hitError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -249,90 +237,85 @@ class _CourtScreenState extends State<CourtScreen> {
     if (_currentSentence == null) return;
 
     int bribeAmount = 50000;
+    final l10nRoot = AppLocalizations.of(context)!;
+
     final confirmed = await showDialog<int>(
       context: context,
       builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          title: Text(AppLocalizations.of(context)!.bribeJudge),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                _tr(
-                  'Bied een bedrag aan. Het bedrag wordt altijd afgeschreven, ook bij mislukking.',
-                  'Offer an amount. The amount is always deducted, even on failure.',
+        builder: (context, setDialogState) {
+          final l10n = AppLocalizations.of(context)!;
+          return AlertDialog(
+            title: Text(l10n.bribeJudge),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.courtBribeOfferIntro,
+                  style: TextStyle(fontSize: 15, color: Colors.grey[800]),
                 ),
-                style: TextStyle(fontSize: 15, color: Colors.grey[800]),
+                const SizedBox(height: 12),
+                Text(
+                  l10n.courtJudgeNamed(_currentSentence!.judge.name),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                ),
+                Text(
+                  l10n.courtCorruptibilityPercent(
+                    _currentSentence!.judge.corruptibility.toString(),
+                  ),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _currentSentence!.judge.corruptibilityColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  l10n.courtBribeAmountFormatted(formatCurrency(bribeAmount)),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Slider(
+                  value: bribeAmount.toDouble(),
+                  min: 50000,
+                  max: 200000,
+                  divisions: 30,
+                  label: l10n.courtBribeSliderLabel('${bribeAmount ~/ 1000}'),
+                  onChanged: (value) {
+                    setDialogState(() {
+                      bribeAmount = value.toInt();
+                    });
+                  },
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _getSuccessChanceText(bribeAmount, l10n),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: _getSuccessChanceColor(bribeAmount),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, null),
+                child: Text(l10n.cancel),
               ),
-              const SizedBox(height: 12),
-              Text(
-                _tr(
-                  'Rechter: ${_currentSentence!.judge.name}',
-                  'Judge: ${_currentSentence!.judge.name}',
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, bribeAmount),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF8A2121),
+                  foregroundColor: Colors.white,
                 ),
-                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-              ),
-              Text(
-                _tr(
-                  'Corruptibiliteit: ${_currentSentence!.judge.corruptibility}%',
-                  'Corruptibility: ${_currentSentence!.judge.corruptibility}%',
-                ),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: _currentSentence!.judge.corruptibilityColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                _tr(
-                  'Omkoopsom: €${_formatMoney(bribeAmount)}',
-                  'Bribe amount: €${_formatMoney(bribeAmount)}',
-                ),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Slider(
-                value: bribeAmount.toDouble(),
-                min: 50000,
-                max: 200000,
-                divisions: 30,
-                label: '€${bribeAmount ~/ 1000}k',
-                onChanged: (value) {
-                  setDialogState(() {
-                    bribeAmount = value.toInt();
-                  });
-                },
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _getSuccessChanceText(bribeAmount),
-                style: TextStyle(
-                  fontSize: 13,
-                  color: _getSuccessChanceColor(bribeAmount),
-                  fontStyle: FontStyle.italic,
-                ),
+                child: Text(l10n.bribe),
               ),
             ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, null),
-              child: Text(_tr('Annuleren', 'Cancel')),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, bribeAmount),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8A2121),
-                foregroundColor: Colors.white,
-              ),
-              child: Text(AppLocalizations.of(context)!.bribe),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
 
@@ -355,14 +338,8 @@ class _CourtScreenState extends State<CourtScreen> {
           SnackBar(
             content: Text(
               success
-                  ? _tr(
-                      'Rechter omgekocht. Je bent direct vrij.',
-                      'Judge bribed. You are released immediately.',
-                    )
-                  : _tr(
-                      'Omkoping mislukt. Bedrag is wel afgeschreven.',
-                      'Bribe failed. Amount was still deducted.',
-                    ),
+                  ? l10nRoot.courtBribeSuccessReleased
+                  : l10nRoot.courtBribeFailedDebited,
             ),
             backgroundColor: success ? Colors.green : Colors.red,
             duration: const Duration(seconds: 4),
@@ -381,7 +358,7 @@ class _CourtScreenState extends State<CourtScreen> {
         showTopRightFromSnackBar(
           context,
           SnackBar(
-            content: Text('${_tr('Fout', 'Error')}: $e'),
+            content: Text(l10nRoot.hitError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -393,17 +370,14 @@ class _CourtScreenState extends State<CourtScreen> {
     }
   }
 
-  String _getSuccessChanceText(int bribeAmount) {
+  String _getSuccessChanceText(int bribeAmount, AppLocalizations l10n) {
     if (_currentSentence == null) return '';
 
     final baseChance = _currentSentence!.judge.corruptibility;
     final bribeBonus = ((bribeAmount - 50000) / 150000 * 40).toInt();
     final totalChance = (baseChance + bribeBonus).clamp(0, 90);
 
-    return _tr(
-      'Geschatte slagingskans: ~$totalChance%',
-      'Estimated success chance: ~$totalChance%',
-    );
+    return l10n.courtEstimatedSuccessChance(totalChance.toString());
   }
 
   Color _getSuccessChanceColor(int bribeAmount) {
@@ -418,23 +392,16 @@ class _CourtScreenState extends State<CourtScreen> {
     return Colors.green.shade300;
   }
 
-  String _formatMoney(int amount) {
-    return amount.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (m) => '${m[1]},',
-    );
-  }
-
   String _formatDateTime(DateTime dateTime) {
     return '${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 
-  String _recordStatusLabel(String status) {
+  String _recordStatusLabel(String status, AppLocalizations l10n) {
     switch (status) {
       case 'active':
-        return _tr('Actief', 'Active');
+        return l10n.courtRecordActive;
       default:
-        return _tr('Afgerond', 'Served');
+        return l10n.courtRecordServed;
     }
   }
 
@@ -460,7 +427,7 @@ class _CourtScreenState extends State<CourtScreen> {
     }
   }
 
-  String _historyLabel(Map<String, dynamic> entry) {
+  String _historyLabel(Map<String, dynamic> entry, AppLocalizations l10n) {
     final type = entry['type'] as String? ?? 'conviction';
     final originalSentence = (entry['originalSentence'] as num?)?.toInt();
     final newSentence = (entry['newSentence'] as num?)?.toInt();
@@ -468,29 +435,22 @@ class _CourtScreenState extends State<CourtScreen> {
 
     switch (type) {
       case 'appeal_granted':
-        return _tr(
-          'Hoger beroep toegekend: ${originalSentence ?? 0} -> ${newSentence ?? 0} minuten',
-          'Appeal granted: ${originalSentence ?? 0} -> ${newSentence ?? 0} minutes',
+        return l10n.courtHistoryAppealGranted(
+          '${originalSentence ?? 0}',
+          '${newSentence ?? 0}',
         );
       case 'appeal_denied':
-        return _tr(
-          'Hoger beroep afgewezen: ${originalSentence ?? 0} minuten bleef staan',
-          'Appeal denied: ${originalSentence ?? 0} minutes remained',
-        );
+        return l10n.courtHistoryAppealDenied('${originalSentence ?? 0}');
       case 'bribe_failed':
-        return _tr(
-          'Omkoping mislukt: €${_formatMoney(amount ?? 0)} betaald',
-          'Bribe failed: paid €${_formatMoney(amount ?? 0)}',
+        return l10n.courtHistoryBribeFailedPaid(
+          formatCurrency(amount ?? 0),
         );
       default:
-        return _tr(
-          'Veroordeeld tot ${originalSentence ?? 0} minuten',
-          'Convicted to ${originalSentence ?? 0} minutes',
-        );
+        return l10n.courtHistoryConvictedMinutes('${originalSentence ?? 0}');
     }
   }
 
-  Widget _buildHistoryEntry(Map<String, dynamic> entry) {
+  Widget _buildHistoryEntry(Map<String, dynamic> entry, AppLocalizations l10n) {
     final type = entry['type'] as String? ?? 'conviction';
     final createdAtRaw = entry['createdAt'] as String?;
     final createdAt = createdAtRaw == null
@@ -517,12 +477,12 @@ class _CourtScreenState extends State<CourtScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _historyLabel(entry),
+                  _historyLabel(entry, l10n),
                   style: const TextStyle(fontSize: 12.5, color: Colors.white),
                 ),
                 if (createdAt != null)
                   Text(
-                    _formatDateTime(createdAt),
+                    l10n.courtDateLabeled(_formatDateTime(createdAt)),
                     style: TextStyle(fontSize: 11.5, color: Colors.grey[500]),
                   ),
               ],
@@ -533,15 +493,10 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
-  Widget _buildLoadWarning() {
+  Widget _buildLoadWarning(AppLocalizations l10n) {
     if (!_sentenceFailed && !_recordFailed) {
       return const SizedBox.shrink();
     }
-
-    final warning = _tr(
-      'Let op: een deel van de rechtbankdata kon niet laden. Vernieuw om opnieuw te proberen.',
-      'Heads up: part of the court data could not be loaded. Pull to refresh to retry.',
-    );
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -560,7 +515,7 @@ class _CourtScreenState extends State<CourtScreen> {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              warning,
+              l10n.courtPartialLoadWarning,
               style: const TextStyle(color: Colors.white, fontSize: 13.5),
             ),
           ),
@@ -591,14 +546,14 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
-  Widget _buildCurrentSentenceCard() {
+  Widget _buildCurrentSentenceCard(AppLocalizations l10n) {
     if (_currentSentence == null) {
       return _buildPanel(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _tr('Geen actieve straf', 'No active sentence'),
+              l10n.courtNoActiveSentence,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
@@ -607,10 +562,7 @@ class _CourtScreenState extends State<CourtScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Je zit momenteel niet vast. Je strafblad blijft hieronder zichtbaar.',
-                'You are currently not jailed. Your criminal record remains visible below.',
-              ),
+              l10n.courtNotJailedHint,
               style: TextStyle(color: Colors.grey[200]),
             ),
           ],
@@ -630,7 +582,7 @@ class _CourtScreenState extends State<CourtScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  _tr('Actieve veroordeling', 'Active sentence'),
+                  l10n.courtActiveSentenceTitle,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -642,15 +594,19 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            '${_tr('Delict', 'Crime')}: ${_currentSentence!.crime}',
+            '${l10n.courtDelictLabel}: ${_currentSentence!.crime}',
             style: TextStyle(color: Colors.grey[100]),
           ),
           Text(
-            '${_tr('Totale straf', 'Total sentence')}: ${_currentSentence!.sentenceMinutes} ${_tr('minuten', 'minutes')}',
+            l10n.courtTotalSentenceMinutes(
+              _currentSentence!.sentenceMinutes.toString(),
+            ),
             style: TextStyle(color: Colors.grey[100]),
           ),
           Text(
-            '${_tr('Resterend', 'Remaining')}: ${_currentSentence!.remainingMinutes} ${_tr('minuten', 'minutes')}',
+            l10n.courtRemainingMinutes(
+              _currentSentence!.remainingMinutes.toString(),
+            ),
             style: const TextStyle(
               fontWeight: FontWeight.w700,
               color: Color(0xFFFFD27A),
@@ -658,11 +614,13 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${_tr('Rechter', 'Judge')}: ${_currentSentence!.judge.name}',
+            l10n.courtJudgeNamed(_currentSentence!.judge.name),
             style: TextStyle(color: Colors.grey[100]),
           ),
           Text(
-            '${_tr('Corruptibiliteit', 'Corruptibility')}: ${_currentSentence!.judge.corruptibility}%',
+            l10n.courtCorruptibilityPercent(
+              _currentSentence!.judge.corruptibility.toString(),
+            ),
             style: TextStyle(
               color: _currentSentence!.judge.corruptibilityColor,
               fontWeight: FontWeight.w600,
@@ -670,10 +628,7 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            _tr(
-              'Beroepskosten nu: €${_formatMoney(appealCost)}',
-              'Current appeal cost: €${_formatMoney(appealCost)}',
-            ),
+            l10n.courtAppealCostCurrent(formatCurrency(appealCost)),
             style: TextStyle(color: Colors.grey[300], fontSize: 13),
           ),
           const SizedBox(height: 14),
@@ -688,7 +643,7 @@ class _CourtScreenState extends State<CourtScreen> {
                   foregroundColor: Colors.white,
                 ),
                 icon: const Icon(Icons.rule),
-                label: Text(_tr('Hoger beroep', 'Appeal')),
+                label: Text(l10n.courtButtonAppeal),
               ),
               ElevatedButton.icon(
                 onPressed: _isProcessing ? null : _bribeJudge,
@@ -697,7 +652,7 @@ class _CourtScreenState extends State<CourtScreen> {
                   foregroundColor: Colors.white,
                 ),
                 icon: const Icon(Icons.payments),
-                label: Text(_tr('Rechter omkopen', 'Bribe judge')),
+                label: Text(l10n.courtButtonBribeJudge),
               ),
             ],
           ),
@@ -706,10 +661,10 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
-  Widget _buildRecordItem(Map<String, dynamic> crime) {
+  Widget _buildRecordItem(Map<String, dynamic> crime, AppLocalizations l10n) {
     final crimeName =
         crime['crimeName'] as String? ??
-        (crime['crimeId'] as String? ?? _tr('Onbekend', 'Unknown'));
+        (crime['crimeId'] as String? ?? l10n.courtUnknownCrime);
     final jailTime = (crime['jailTime'] as num?)?.toInt() ?? 0;
     final originalJailTime =
         (crime['originalJailTime'] as num?)?.toInt() ?? jailTime;
@@ -757,7 +712,7 @@ class _CourtScreenState extends State<CourtScreen> {
                   ),
                 ),
                 child: Text(
-                  _recordStatusLabel(status),
+                  _recordStatusLabel(status, l10n),
                   style: TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.w700,
@@ -769,29 +724,32 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           Text(
             originalJailTime == jailTime
-                ? '${_tr('Straf', 'Sentence')}: $jailTime ${_tr('minuten', 'minutes')}'
-                : '${_tr('Straf', 'Sentence')}: $originalJailTime -> $jailTime ${_tr('minuten', 'minutes')}',
+                ? l10n.courtSentenceMinutesOnly(jailTime.toString())
+                : l10n.courtSentenceReducedMinutes(
+                    originalJailTime.toString(),
+                    jailTime.toString(),
+                  ),
             style: TextStyle(color: Colors.grey[200]),
           ),
           if (createdAt != null)
             Text(
-              '${_tr('Datum', 'Date')}: ${_formatDateTime(createdAt)}',
+              l10n.courtDateLabeled(_formatDateTime(createdAt)),
               style: TextStyle(fontSize: 12, color: Colors.grey[400]),
             ),
           if (history.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
-              _tr('Rechtbankhistorie', 'Court history'),
+              l10n.courtHistoryHeading,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: Colors.grey[300],
               ),
             ),
-            ...history.map(_buildHistoryEntry),
+            ...history.map((e) => _buildHistoryEntry(e, l10n)),
           ] else if (appealed)
             Text(
-              _tr('Beroep ingediend', 'Appeal submitted'),
+              l10n.courtAppealSubmitted,
               style: const TextStyle(fontSize: 12, color: Color(0xFF8AB4F8)),
             ),
         ],
@@ -799,13 +757,13 @@ class _CourtScreenState extends State<CourtScreen> {
     );
   }
 
-  Widget _buildRecordCard() {
+  Widget _buildRecordCard(AppLocalizations l10n) {
     return _buildPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr('Strafblad', 'Criminal record'),
+            l10n.courtCriminalRecordTitle,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -814,31 +772,22 @@ class _CourtScreenState extends State<CourtScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            _tr(
-              'Totaal aantal veroordelingen: $_totalConvictions',
-              'Total convictions: $_totalConvictions',
-            ),
+            l10n.courtTotalConvictions(_totalConvictions.toString()),
             style: TextStyle(color: Colors.grey[100]),
           ),
           const SizedBox(height: 4),
           Text(
-            _tr(
-              'Vorige veroordelingen blijven zichtbaar. Een geslaagde rechteromkoping wist alleen die ene actuele zaak.',
-              'Past convictions stay visible. A successful judge bribe clears only that one active case.',
-            ),
+            l10n.courtRecordBribeNote,
             style: TextStyle(fontSize: 12.5, color: Colors.grey[400]),
           ),
           const SizedBox(height: 12),
           if (_recentCrimes.isEmpty)
             Text(
-              _tr(
-                'Nog geen veroordelingen geregistreerd.',
-                'No convictions recorded yet.',
-              ),
+              l10n.courtNoConvictionsYet,
               style: TextStyle(color: Colors.grey[300]),
             )
           else
-            ..._recentCrimes.take(8).map(_buildRecordItem),
+            ..._recentCrimes.take(8).map((c) => _buildRecordItem(c, l10n)),
         ],
       ),
     );
@@ -896,9 +845,11 @@ class _CourtScreenState extends State<CourtScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.court),
+        title: Text(l10n.court),
         backgroundColor: const Color(0xFF2E2A24),
         foregroundColor: Colors.white,
       ),
@@ -943,10 +894,10 @@ class _CourtScreenState extends State<CourtScreen> {
                                   ),
                                 )
                               else ...[
-                                _buildLoadWarning(),
-                                _buildCurrentSentenceCard(),
+                                _buildLoadWarning(l10n),
+                                _buildCurrentSentenceCard(l10n),
                                 const SizedBox(height: 12),
-                                _buildRecordCard(),
+                                _buildRecordCard(l10n),
                               ],
                             ],
                           ),

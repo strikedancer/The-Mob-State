@@ -5883,6 +5883,246 @@ abstract class AppLocalizations {
   /// **'Bribe'**
   String get bribe;
 
+  /// No description provided for @courtLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load court data. Please try again.'**
+  String get courtLoadFailed;
+
+  /// No description provided for @courtAppealDialogIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to submit an appeal for this conviction?'**
+  String get courtAppealDialogIntro;
+
+  /// No description provided for @courtCostLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost: {amount}'**
+  String courtCostLine(String amount);
+
+  /// No description provided for @courtJudgeNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Judge: {name}'**
+  String courtJudgeNamed(String name);
+
+  /// No description provided for @courtCorruptibilityPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Corruptibility: {percent}%'**
+  String courtCorruptibilityPercent(String percent);
+
+  /// No description provided for @courtAppealSuccessHint.
+  ///
+  /// In en, this message translates to:
+  /// **'On success: roughly 20-40% sentence reduction'**
+  String get courtAppealSuccessHint;
+
+  /// No description provided for @courtAppealGrantedMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal granted. New sentence: {minutes} minutes.'**
+  String courtAppealGrantedMinutes(String minutes);
+
+  /// No description provided for @courtAppealDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal denied.'**
+  String get courtAppealDenied;
+
+  /// No description provided for @courtBribeOfferIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer an amount. The amount is always deducted, even on failure.'**
+  String get courtBribeOfferIntro;
+
+  /// No description provided for @courtBribeAmountFormatted.
+  ///
+  /// In en, this message translates to:
+  /// **'Bribe amount: {amount}'**
+  String courtBribeAmountFormatted(String amount);
+
+  /// No description provided for @courtBribeSliderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'€{thousands}k'**
+  String courtBribeSliderLabel(String thousands);
+
+  /// No description provided for @courtEstimatedSuccessChance.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated success chance: ~{percent}%'**
+  String courtEstimatedSuccessChance(String percent);
+
+  /// No description provided for @courtBribeSuccessReleased.
+  ///
+  /// In en, this message translates to:
+  /// **'Judge bribed. You are released immediately.'**
+  String get courtBribeSuccessReleased;
+
+  /// No description provided for @courtBribeFailedDebited.
+  ///
+  /// In en, this message translates to:
+  /// **'Bribe failed. Amount was still deducted.'**
+  String get courtBribeFailedDebited;
+
+  /// No description provided for @courtRecordActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get courtRecordActive;
+
+  /// No description provided for @courtRecordServed.
+  ///
+  /// In en, this message translates to:
+  /// **'Served'**
+  String get courtRecordServed;
+
+  /// No description provided for @courtHistoryAppealGranted.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal granted: {fromMinutes} → {toMinutes} minutes'**
+  String courtHistoryAppealGranted(String fromMinutes, String toMinutes);
+
+  /// No description provided for @courtHistoryAppealDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal denied: {minutes} minutes remained'**
+  String courtHistoryAppealDenied(String minutes);
+
+  /// No description provided for @courtHistoryBribeFailedPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Bribe failed: {amount} paid'**
+  String courtHistoryBribeFailedPaid(String amount);
+
+  /// No description provided for @courtHistoryConvictedMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Convicted to {minutes} minutes'**
+  String courtHistoryConvictedMinutes(String minutes);
+
+  /// No description provided for @courtPartialLoadWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Heads up: part of the court data could not be loaded. Pull to refresh to retry.'**
+  String get courtPartialLoadWarning;
+
+  /// No description provided for @courtNoActiveSentence.
+  ///
+  /// In en, this message translates to:
+  /// **'No active sentence'**
+  String get courtNoActiveSentence;
+
+  /// No description provided for @courtNotJailedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You are currently not jailed. Your criminal record remains visible below.'**
+  String get courtNotJailedHint;
+
+  /// No description provided for @courtActiveSentenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active sentence'**
+  String get courtActiveSentenceTitle;
+
+  /// No description provided for @courtDelictLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Crime'**
+  String get courtDelictLabel;
+
+  /// No description provided for @courtTotalSentenceMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Total sentence: {minutes} minutes'**
+  String courtTotalSentenceMinutes(String minutes);
+
+  /// No description provided for @courtRemainingMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining: {minutes} minutes'**
+  String courtRemainingMinutes(String minutes);
+
+  /// No description provided for @courtAppealCostCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current appeal cost: {amount}'**
+  String courtAppealCostCurrent(String amount);
+
+  /// No description provided for @courtButtonAppeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal'**
+  String get courtButtonAppeal;
+
+  /// No description provided for @courtButtonBribeJudge.
+  ///
+  /// In en, this message translates to:
+  /// **'Bribe judge'**
+  String get courtButtonBribeJudge;
+
+  /// No description provided for @courtUnknownCrime.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get courtUnknownCrime;
+
+  /// No description provided for @courtSentenceMinutesOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Sentence: {minutes} minutes'**
+  String courtSentenceMinutesOnly(String minutes);
+
+  /// No description provided for @courtSentenceReducedMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Sentence: {original} → {reduced} minutes'**
+  String courtSentenceReducedMinutes(String original, String reduced);
+
+  /// No description provided for @courtDateLabeled.
+  ///
+  /// In en, this message translates to:
+  /// **'Date: {datetime}'**
+  String courtDateLabeled(String datetime);
+
+  /// No description provided for @courtHistoryHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Court history'**
+  String get courtHistoryHeading;
+
+  /// No description provided for @courtAppealSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal submitted'**
+  String get courtAppealSubmitted;
+
+  /// No description provided for @courtCriminalRecordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Criminal record'**
+  String get courtCriminalRecordTitle;
+
+  /// No description provided for @courtTotalConvictions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total convictions: {count}'**
+  String courtTotalConvictions(String count);
+
+  /// No description provided for @courtRecordBribeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Past convictions stay visible. A successful judge bribe clears only that one active case.'**
+  String get courtRecordBribeNote;
+
+  /// No description provided for @courtNoConvictionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No convictions recorded yet.'**
+  String get courtNoConvictionsYet;
+
   /// No description provided for @treated.
   ///
   /// In en, this message translates to:

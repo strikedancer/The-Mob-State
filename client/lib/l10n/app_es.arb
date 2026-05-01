@@ -5263,5 +5263,177 @@
         "type": "String"
       }
     }
-  }
+  },
+  "courtLoadFailed": "No se pudieron cargar los datos del tribunal. Por favor inténtalo de nuevo.",
+  "courtAppealDialogIntro": "¿Quiere presentar un recurso de apelación por esta condena?",
+  "courtCostLine": "Costo: {amount}",
+  "@courtCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtJudgeNamed": "Juez: {name}",
+  "@courtJudgeNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "courtCorruptibilityPercent": "Corruptibilidad: {percent}%",
+  "@courtCorruptibilityPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealSuccessHint": "En caso de éxito: aproximadamente entre un 20% y un 40% de reducción de la sentencia",
+  "courtAppealGrantedMinutes": "Recurso concedido. Nueva frase: {minutes} minutos.",
+  "@courtAppealGrantedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealDenied": "Apelación denegada.",
+  "courtBribeOfferIntro": "Ofrezca una cantidad. El importe siempre se deduce, incluso en caso de fallo.",
+  "courtBribeAmountFormatted": "Monto del soborno: {amount}",
+  "@courtBribeAmountFormatted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSliderLabel": "€{thousands}k",
+  "@courtBribeSliderLabel": {
+    "placeholders": {
+      "thousands": {
+        "type": "String"
+      }
+    }
+  },
+  "courtEstimatedSuccessChance": "Probabilidad de éxito estimada: ~{percent}%",
+  "@courtEstimatedSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSuccessReleased": "Juez sobornado. Eres liberado inmediatamente.",
+  "courtBribeFailedDebited": "El soborno fracasó. Aún se dedujo el importe.",
+  "courtRecordActive": "Activa",
+  "courtRecordServed": "Servida",
+  "courtHistoryAppealGranted": "Recurso concedido: {fromMinutes} → {toMinutes} minutos",
+  "@courtHistoryAppealGranted": {
+    "placeholders": {
+      "fromMinutes": {
+        "type": "String"
+      },
+      "toMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryAppealDenied": "Apelación denegada: quedaban {minutes} minutos",
+  "@courtHistoryAppealDenied": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryBribeFailedPaid": "Soborno fallido: {amount} pagado",
+  "@courtHistoryBribeFailedPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryConvictedMinutes": "Condenada a {minutes} minutos",
+  "@courtHistoryConvictedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPartialLoadWarning": "Aviso: no se pudo cargar parte de los datos de la cancha. Tira para actualizar y vuelve a intentarlo.",
+  "courtNoActiveSentence": "Sin oración activa",
+  "courtNotJailedHint": "Actualmente no estás encarcelado. Sus antecedentes penales permanecen visibles a continuación.",
+  "courtActiveSentenceTitle": "oración activa",
+  "courtDelictLabel": "Delito",
+  "courtTotalSentenceMinutes": "Frase total: {minutes} minutos",
+  "@courtTotalSentenceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRemainingMinutes": "Restante: {minutes} minutos",
+  "@courtRemainingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealCostCurrent": "Costo de apelación actual: {amount}",
+  "@courtAppealCostCurrent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtButtonAppeal": "Apelar",
+  "courtButtonBribeJudge": "juez de sobornos",
+  "courtUnknownCrime": "Desconocida",
+  "courtSentenceMinutesOnly": "Oración: {minutes} minutos",
+  "@courtSentenceMinutesOnly": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtSentenceReducedMinutes": "Oración: {original} → {reduced} minutos",
+  "@courtSentenceReducedMinutes": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reduced": {
+        "type": "String"
+      }
+    }
+  },
+  "courtDateLabeled": "Fecha: {datetime}",
+  "@courtDateLabeled": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryHeading": "Historia de la corte",
+  "courtAppealSubmitted": "Apelación presentada",
+  "courtCriminalRecordTitle": "antecedentes penales",
+  "courtTotalConvictions": "Condenas totales: {count}",
+  "@courtTotalConvictions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordBribeNote": "Las condenas pasadas siguen siendo visibles. Un soborno exitoso a un juez aclara sólo ese caso activo.",
+  "courtNoConvictionsYet": "Aún no se han registrado condenas."
 }

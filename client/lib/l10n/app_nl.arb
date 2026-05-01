@@ -522,6 +522,178 @@
   "submitAppeal": "Beroep indienen",
   "bribeJudge": "Rechter omkopen",
   "bribe": "Omkopen",
+  "courtLoadFailed": "Kon rechtbankgegevens niet laden. Probeer opnieuw.",
+  "courtAppealDialogIntro": "Wil je hoger beroep indienen voor deze veroordeling?",
+  "courtCostLine": "Kosten: {amount}",
+  "@courtCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtJudgeNamed": "Rechter: {name}",
+  "@courtJudgeNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "courtCorruptibilityPercent": "Corruptibiliteit: {percent}%",
+  "@courtCorruptibilityPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealSuccessHint": "Bij succes: ongeveer 20-40% strafvermindering",
+  "courtAppealGrantedMinutes": "Hoger beroep geslaagd. Nieuwe straf: {minutes} minuten.",
+  "@courtAppealGrantedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealDenied": "Hoger beroep afgewezen.",
+  "courtBribeOfferIntro": "Bied een bedrag aan. Het bedrag wordt altijd afgeschreven, ook bij mislukking.",
+  "courtBribeAmountFormatted": "Omkoopsom: {amount}",
+  "@courtBribeAmountFormatted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSliderLabel": "€{thousands}k",
+  "@courtBribeSliderLabel": {
+    "placeholders": {
+      "thousands": {
+        "type": "String"
+      }
+    }
+  },
+  "courtEstimatedSuccessChance": "Geschatte slagingskans: ~{percent}%",
+  "@courtEstimatedSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSuccessReleased": "Rechter omgekocht. Je bent direct vrij.",
+  "courtBribeFailedDebited": "Omkoping mislukt. Bedrag is wel afgeschreven.",
+  "courtRecordActive": "Actief",
+  "courtRecordServed": "Afgerond",
+  "courtHistoryAppealGranted": "Hoger beroep toegekend: {fromMinutes} → {toMinutes} minuten",
+  "@courtHistoryAppealGranted": {
+    "placeholders": {
+      "fromMinutes": {
+        "type": "String"
+      },
+      "toMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryAppealDenied": "Hoger beroep afgewezen: {minutes} minuten bleef staan",
+  "@courtHistoryAppealDenied": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryBribeFailedPaid": "Omkoping mislukt: {amount} betaald",
+  "@courtHistoryBribeFailedPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryConvictedMinutes": "Veroordeeld tot {minutes} minuten",
+  "@courtHistoryConvictedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPartialLoadWarning": "Let op: een deel van de rechtbankdata kon niet laden. Trek omlaag om opnieuw te proberen.",
+  "courtNoActiveSentence": "Geen actieve straf",
+  "courtNotJailedHint": "Je zit momenteel niet vast. Je strafblad blijft hieronder zichtbaar.",
+  "courtActiveSentenceTitle": "Actieve veroordeling",
+  "courtDelictLabel": "Delict",
+  "courtTotalSentenceMinutes": "Totale straf: {minutes} minuten",
+  "@courtTotalSentenceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRemainingMinutes": "Resterend: {minutes} minuten",
+  "@courtRemainingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealCostCurrent": "Beroepskosten nu: {amount}",
+  "@courtAppealCostCurrent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtButtonAppeal": "Hoger beroep",
+  "courtButtonBribeJudge": "Rechter omkopen",
+  "courtUnknownCrime": "Onbekend",
+  "courtSentenceMinutesOnly": "Straf: {minutes} minuten",
+  "@courtSentenceMinutesOnly": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtSentenceReducedMinutes": "Straf: {original} → {reduced} minuten",
+  "@courtSentenceReducedMinutes": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reduced": {
+        "type": "String"
+      }
+    }
+  },
+  "courtDateLabeled": "Datum: {datetime}",
+  "@courtDateLabeled": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryHeading": "Rechtbankhistorie",
+  "courtAppealSubmitted": "Beroep ingediend",
+  "courtCriminalRecordTitle": "Strafblad",
+  "courtTotalConvictions": "Totaal aantal veroordelingen: {count}",
+  "@courtTotalConvictions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordBribeNote": "Vorige veroordelingen blijven zichtbaar. Een geslaagde rechteromkoping wist alleen die ene actuele zaak.",
+  "courtNoConvictionsYet": "Nog geen veroordelingen geregistreerd.",
   "treated": "Behandeld!",
   "healthRestored": "+{hp} HP voor €{cost}",
   "treatmentOptions": "Behandelopties",

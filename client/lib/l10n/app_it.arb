@@ -5263,5 +5263,177 @@
         "type": "String"
       }
     }
-  }
+  },
+  "courtLoadFailed": "Impossibile caricare i dati del tribunale. Per favore riprova.",
+  "courtAppealDialogIntro": "Vuoi presentare ricorso per questa condanna?",
+  "courtCostLine": "Costo: {amount}",
+  "@courtCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtJudgeNamed": "Giudice: {name}",
+  "@courtJudgeNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "courtCorruptibilityPercent": "Corruttibilità: {percent}%",
+  "@courtCorruptibilityPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealSuccessHint": "In caso di successo: riduzione della pena di circa il 20-40%.",
+  "courtAppealGrantedMinutes": "Ricorso accolto. Nuova frase: {minutes} minuti.",
+  "@courtAppealGrantedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealDenied": "Ricorso respinto.",
+  "courtBribeOfferIntro": "Offri un importo. L'importo viene sempre detratto, anche in caso di fallimento.",
+  "courtBribeAmountFormatted": "Importo della tangente: {amount}",
+  "@courtBribeAmountFormatted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSliderLabel": "€{thousands}k",
+  "@courtBribeSliderLabel": {
+    "placeholders": {
+      "thousands": {
+        "type": "String"
+      }
+    }
+  },
+  "courtEstimatedSuccessChance": "Probabilità di successo stimata: ~{percent}%",
+  "@courtEstimatedSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSuccessReleased": "Giudice corrotto. Verrai rilasciato immediatamente.",
+  "courtBribeFailedDebited": "La tangente è fallita. L'importo è stato comunque detratto.",
+  "courtRecordActive": "Attiva",
+  "courtRecordServed": "Servito",
+  "courtHistoryAppealGranted": "Ricorso accolto: {fromMinutes} → {toMinutes} minuti",
+  "@courtHistoryAppealGranted": {
+    "placeholders": {
+      "fromMinutes": {
+        "type": "String"
+      },
+      "toMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryAppealDenied": "Ricorso respinto: {minutes} minuti rimasti",
+  "@courtHistoryAppealDenied": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryBribeFailedPaid": "Tangente fallita: {amount} pagata",
+  "@courtHistoryBribeFailedPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryConvictedMinutes": "Condannato a {minutes} minuti",
+  "@courtHistoryConvictedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPartialLoadWarning": "Attenzione: non è stato possibile caricare parte dei dati del tribunale. Tirare per aggiornare e riprovare.",
+  "courtNoActiveSentence": "Nessuna frase attiva",
+  "courtNotJailedHint": "Al momento non sei in prigione. La tua fedina penale rimane visibile di seguito.",
+  "courtActiveSentenceTitle": "Frase attiva",
+  "courtDelictLabel": "Crimine",
+  "courtTotalSentenceMinutes": "Frase totale: {minutes} minuti",
+  "@courtTotalSentenceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRemainingMinutes": "Rimanente: {minutes} minuti",
+  "@courtRemainingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealCostCurrent": "Costo attuale del ricorso: {amount}",
+  "@courtAppealCostCurrent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtButtonAppeal": "Appello",
+  "courtButtonBribeJudge": "Corrompere il giudice",
+  "courtUnknownCrime": "Sconosciuta",
+  "courtSentenceMinutesOnly": "Frase: {minutes} minuti",
+  "@courtSentenceMinutesOnly": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtSentenceReducedMinutes": "Frase: {original} → {reduced} minuti",
+  "@courtSentenceReducedMinutes": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reduced": {
+        "type": "String"
+      }
+    }
+  },
+  "courtDateLabeled": "Data: {datetime}",
+  "@courtDateLabeled": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryHeading": "Storia della corte",
+  "courtAppealSubmitted": "Ricorso presentato",
+  "courtCriminalRecordTitle": "Fedina penale",
+  "courtTotalConvictions": "Condanne totali: {count}",
+  "@courtTotalConvictions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordBribeNote": "Le convinzioni passate restano visibili. Una tangente di un giudice che riesce a risolvere solo un caso attivo.",
+  "courtNoConvictionsYet": "Nessuna condanna ancora registrata."
 }

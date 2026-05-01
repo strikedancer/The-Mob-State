@@ -1933,6 +1933,178 @@
   "submitAppeal": "Submit Appeal",
   "bribeJudge": "Bribe Judge",
   "bribe": "Bribe",
+  "courtLoadFailed": "Could not load court data. Please try again.",
+  "courtAppealDialogIntro": "Do you want to submit an appeal for this conviction?",
+  "courtCostLine": "Cost: {amount}",
+  "@courtCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtJudgeNamed": "Judge: {name}",
+  "@courtJudgeNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "courtCorruptibilityPercent": "Corruptibility: {percent}%",
+  "@courtCorruptibilityPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealSuccessHint": "On success: roughly 20-40% sentence reduction",
+  "courtAppealGrantedMinutes": "Appeal granted. New sentence: {minutes} minutes.",
+  "@courtAppealGrantedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealDenied": "Appeal denied.",
+  "courtBribeOfferIntro": "Offer an amount. The amount is always deducted, even on failure.",
+  "courtBribeAmountFormatted": "Bribe amount: {amount}",
+  "@courtBribeAmountFormatted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSliderLabel": "€{thousands}k",
+  "@courtBribeSliderLabel": {
+    "placeholders": {
+      "thousands": {
+        "type": "String"
+      }
+    }
+  },
+  "courtEstimatedSuccessChance": "Estimated success chance: ~{percent}%",
+  "@courtEstimatedSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSuccessReleased": "Judge bribed. You are released immediately.",
+  "courtBribeFailedDebited": "Bribe failed. Amount was still deducted.",
+  "courtRecordActive": "Active",
+  "courtRecordServed": "Served",
+  "courtHistoryAppealGranted": "Appeal granted: {fromMinutes} → {toMinutes} minutes",
+  "@courtHistoryAppealGranted": {
+    "placeholders": {
+      "fromMinutes": {
+        "type": "String"
+      },
+      "toMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryAppealDenied": "Appeal denied: {minutes} minutes remained",
+  "@courtHistoryAppealDenied": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryBribeFailedPaid": "Bribe failed: {amount} paid",
+  "@courtHistoryBribeFailedPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryConvictedMinutes": "Convicted to {minutes} minutes",
+  "@courtHistoryConvictedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPartialLoadWarning": "Heads up: part of the court data could not be loaded. Pull to refresh to retry.",
+  "courtNoActiveSentence": "No active sentence",
+  "courtNotJailedHint": "You are currently not jailed. Your criminal record remains visible below.",
+  "courtActiveSentenceTitle": "Active sentence",
+  "courtDelictLabel": "Crime",
+  "courtTotalSentenceMinutes": "Total sentence: {minutes} minutes",
+  "@courtTotalSentenceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRemainingMinutes": "Remaining: {minutes} minutes",
+  "@courtRemainingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealCostCurrent": "Current appeal cost: {amount}",
+  "@courtAppealCostCurrent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtButtonAppeal": "Appeal",
+  "courtButtonBribeJudge": "Bribe judge",
+  "courtUnknownCrime": "Unknown",
+  "courtSentenceMinutesOnly": "Sentence: {minutes} minutes",
+  "@courtSentenceMinutesOnly": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtSentenceReducedMinutes": "Sentence: {original} → {reduced} minutes",
+  "@courtSentenceReducedMinutes": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reduced": {
+        "type": "String"
+      }
+    }
+  },
+  "courtDateLabeled": "Date: {datetime}",
+  "@courtDateLabeled": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryHeading": "Court history",
+  "courtAppealSubmitted": "Appeal submitted",
+  "courtCriminalRecordTitle": "Criminal record",
+  "courtTotalConvictions": "Total convictions: {count}",
+  "@courtTotalConvictions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordBribeNote": "Past convictions stay visible. A successful judge bribe clears only that one active case.",
+  "courtNoConvictionsYet": "No convictions recorded yet.",
   "treated": "Treated!",
   "healthRestored": "+{hp} HP for €{cost}",
   "@healthRestored": {

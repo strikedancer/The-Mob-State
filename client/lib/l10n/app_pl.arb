@@ -5263,5 +5263,177 @@
         "type": "String"
       }
     }
-  }
+  },
+  "courtLoadFailed": "Nie udało się załadować danych sądowych. Spróbuj ponownie.",
+  "courtAppealDialogIntro": "Czy chcesz złożyć apelację od tego wyroku?",
+  "courtCostLine": "Koszt: {amount}",
+  "@courtCostLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtJudgeNamed": "Sędzia: {name}",
+  "@courtJudgeNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "courtCorruptibilityPercent": "Zepsucie: {percent}%",
+  "@courtCorruptibilityPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealSuccessHint": "W przypadku powodzenia: redukcja wyroku o około 20–40%.",
+  "courtAppealGrantedMinutes": "Odwołanie uznane. Nowe zdanie: {minutes} minut.",
+  "@courtAppealGrantedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealDenied": "Odwołanie odrzucone.",
+  "courtBribeOfferIntro": "Zaproponuj kwotę. Kwota jest zawsze potrącana, nawet w przypadku niepowodzenia.",
+  "courtBribeAmountFormatted": "Kwota łapówki: {amount}",
+  "@courtBribeAmountFormatted": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSliderLabel": "€{thousands} tys",
+  "@courtBribeSliderLabel": {
+    "placeholders": {
+      "thousands": {
+        "type": "String"
+      }
+    }
+  },
+  "courtEstimatedSuccessChance": "Szacowana szansa na sukces: ~{percent}%",
+  "@courtEstimatedSuccessChance": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "courtBribeSuccessReleased": "Sędzia przekupiony. Jesteś natychmiast zwolniony.",
+  "courtBribeFailedDebited": "Przekupstwo nie powiodło się. Kwota została w dalszym ciągu odliczona.",
+  "courtRecordActive": "Aktywny",
+  "courtRecordServed": "Podawane",
+  "courtHistoryAppealGranted": "Apelacja uwzględniona: {fromMinutes} → {toMinutes} minut",
+  "@courtHistoryAppealGranted": {
+    "placeholders": {
+      "fromMinutes": {
+        "type": "String"
+      },
+      "toMinutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryAppealDenied": "Odwołanie odrzucone: pozostało {minutes} minut",
+  "@courtHistoryAppealDenied": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryBribeFailedPaid": "Łapówka nie powiodła się: {amount} zapłacono",
+  "@courtHistoryBribeFailedPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryConvictedMinutes": "Skazany na {minutes} minut",
+  "@courtHistoryConvictedMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtPartialLoadWarning": "Uwaga: nie udało się załadować części danych sądowych. Pociągnij, aby odświeżyć i spróbować ponownie.",
+  "courtNoActiveSentence": "Brak aktywnego zdania",
+  "courtNotJailedHint": "Obecnie nie przebywasz w więzieniu. Twoja przeszłość kryminalna pozostaje widoczna poniżej.",
+  "courtActiveSentenceTitle": "Aktywne zdanie",
+  "courtDelictLabel": "Przestępczość",
+  "courtTotalSentenceMinutes": "Łączne zdanie: {minutes} minut",
+  "@courtTotalSentenceMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRemainingMinutes": "Pozostało: {minutes} minut",
+  "@courtRemainingMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtAppealCostCurrent": "Aktualny koszt odwołania: {amount}",
+  "@courtAppealCostCurrent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "courtButtonAppeal": "Odwołanie",
+  "courtButtonBribeJudge": "Łapówka sędzia",
+  "courtUnknownCrime": "Nieznany",
+  "courtSentenceMinutesOnly": "Zdanie: {minutes} minut",
+  "@courtSentenceMinutesOnly": {
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "courtSentenceReducedMinutes": "Zdanie: {original} → {reduced} minut",
+  "@courtSentenceReducedMinutes": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reduced": {
+        "type": "String"
+      }
+    }
+  },
+  "courtDateLabeled": "Data: {datetime}",
+  "@courtDateLabeled": {
+    "placeholders": {
+      "datetime": {
+        "type": "String"
+      }
+    }
+  },
+  "courtHistoryHeading": "Historia sądu",
+  "courtAppealSubmitted": "Odwołanie złożone",
+  "courtCriminalRecordTitle": "Rejestr karny",
+  "courtTotalConvictions": "Całkowita liczba wyroków skazujących: {count}",
+  "@courtTotalConvictions": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "courtRecordBribeNote": "Przeszłe przekonania pozostają widoczne. Skuteczna łapówka dla sędziego rozwiązuje tylko jedną aktywną sprawę.",
+  "courtNoConvictionsYet": "Nie odnotowano jeszcze żadnych wyroków skazujących."
 }

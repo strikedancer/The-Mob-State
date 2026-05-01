@@ -3238,6 +3238,170 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bribe => 'Bribe';
 
   @override
+  String get courtLoadFailed => 'Could not load court data. Please try again.';
+
+  @override
+  String get courtAppealDialogIntro =>
+      'Do you want to submit an appeal for this conviction?';
+
+  @override
+  String courtCostLine(String amount) {
+    return 'Cost: $amount';
+  }
+
+  @override
+  String courtJudgeNamed(String name) {
+    return 'Judge: $name';
+  }
+
+  @override
+  String courtCorruptibilityPercent(String percent) {
+    return 'Corruptibility: $percent%';
+  }
+
+  @override
+  String get courtAppealSuccessHint =>
+      'On success: roughly 20-40% sentence reduction';
+
+  @override
+  String courtAppealGrantedMinutes(String minutes) {
+    return 'Appeal granted. New sentence: $minutes minutes.';
+  }
+
+  @override
+  String get courtAppealDenied => 'Appeal denied.';
+
+  @override
+  String get courtBribeOfferIntro =>
+      'Offer an amount. The amount is always deducted, even on failure.';
+
+  @override
+  String courtBribeAmountFormatted(String amount) {
+    return 'Bribe amount: $amount';
+  }
+
+  @override
+  String courtBribeSliderLabel(String thousands) {
+    return '€${thousands}k';
+  }
+
+  @override
+  String courtEstimatedSuccessChance(String percent) {
+    return 'Estimated success chance: ~$percent%';
+  }
+
+  @override
+  String get courtBribeSuccessReleased =>
+      'Judge bribed. You are released immediately.';
+
+  @override
+  String get courtBribeFailedDebited =>
+      'Bribe failed. Amount was still deducted.';
+
+  @override
+  String get courtRecordActive => 'Active';
+
+  @override
+  String get courtRecordServed => 'Served';
+
+  @override
+  String courtHistoryAppealGranted(String fromMinutes, String toMinutes) {
+    return 'Appeal granted: $fromMinutes → $toMinutes minutes';
+  }
+
+  @override
+  String courtHistoryAppealDenied(String minutes) {
+    return 'Appeal denied: $minutes minutes remained';
+  }
+
+  @override
+  String courtHistoryBribeFailedPaid(String amount) {
+    return 'Bribe failed: $amount paid';
+  }
+
+  @override
+  String courtHistoryConvictedMinutes(String minutes) {
+    return 'Convicted to $minutes minutes';
+  }
+
+  @override
+  String get courtPartialLoadWarning =>
+      'Heads up: part of the court data could not be loaded. Pull to refresh to retry.';
+
+  @override
+  String get courtNoActiveSentence => 'No active sentence';
+
+  @override
+  String get courtNotJailedHint =>
+      'You are currently not jailed. Your criminal record remains visible below.';
+
+  @override
+  String get courtActiveSentenceTitle => 'Active sentence';
+
+  @override
+  String get courtDelictLabel => 'Crime';
+
+  @override
+  String courtTotalSentenceMinutes(String minutes) {
+    return 'Total sentence: $minutes minutes';
+  }
+
+  @override
+  String courtRemainingMinutes(String minutes) {
+    return 'Remaining: $minutes minutes';
+  }
+
+  @override
+  String courtAppealCostCurrent(String amount) {
+    return 'Current appeal cost: $amount';
+  }
+
+  @override
+  String get courtButtonAppeal => 'Appeal';
+
+  @override
+  String get courtButtonBribeJudge => 'Bribe judge';
+
+  @override
+  String get courtUnknownCrime => 'Unknown';
+
+  @override
+  String courtSentenceMinutesOnly(String minutes) {
+    return 'Sentence: $minutes minutes';
+  }
+
+  @override
+  String courtSentenceReducedMinutes(String original, String reduced) {
+    return 'Sentence: $original → $reduced minutes';
+  }
+
+  @override
+  String courtDateLabeled(String datetime) {
+    return 'Date: $datetime';
+  }
+
+  @override
+  String get courtHistoryHeading => 'Court history';
+
+  @override
+  String get courtAppealSubmitted => 'Appeal submitted';
+
+  @override
+  String get courtCriminalRecordTitle => 'Criminal record';
+
+  @override
+  String courtTotalConvictions(String count) {
+    return 'Total convictions: $count';
+  }
+
+  @override
+  String get courtRecordBribeNote =>
+      'Past convictions stay visible. A successful judge bribe clears only that one active case.';
+
+  @override
+  String get courtNoConvictionsYet => 'No convictions recorded yet.';
+
+  @override
   String get treated => 'Treated!';
 
   @override

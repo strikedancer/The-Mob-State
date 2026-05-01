@@ -3267,6 +3267,172 @@ class AppLocalizationsPl extends AppLocalizations {
   String get bribe => 'Przekupić';
 
   @override
+  String get courtLoadFailed =>
+      'Nie udało się załadować danych sądowych. Spróbuj ponownie.';
+
+  @override
+  String get courtAppealDialogIntro =>
+      'Czy chcesz złożyć apelację od tego wyroku?';
+
+  @override
+  String courtCostLine(String amount) {
+    return 'Koszt: $amount';
+  }
+
+  @override
+  String courtJudgeNamed(String name) {
+    return 'Sędzia: $name';
+  }
+
+  @override
+  String courtCorruptibilityPercent(String percent) {
+    return 'Zepsucie: $percent%';
+  }
+
+  @override
+  String get courtAppealSuccessHint =>
+      'W przypadku powodzenia: redukcja wyroku o około 20–40%.';
+
+  @override
+  String courtAppealGrantedMinutes(String minutes) {
+    return 'Odwołanie uznane. Nowe zdanie: $minutes minut.';
+  }
+
+  @override
+  String get courtAppealDenied => 'Odwołanie odrzucone.';
+
+  @override
+  String get courtBribeOfferIntro =>
+      'Zaproponuj kwotę. Kwota jest zawsze potrącana, nawet w przypadku niepowodzenia.';
+
+  @override
+  String courtBribeAmountFormatted(String amount) {
+    return 'Kwota łapówki: $amount';
+  }
+
+  @override
+  String courtBribeSliderLabel(String thousands) {
+    return '€$thousands tys';
+  }
+
+  @override
+  String courtEstimatedSuccessChance(String percent) {
+    return 'Szacowana szansa na sukces: ~$percent%';
+  }
+
+  @override
+  String get courtBribeSuccessReleased =>
+      'Sędzia przekupiony. Jesteś natychmiast zwolniony.';
+
+  @override
+  String get courtBribeFailedDebited =>
+      'Przekupstwo nie powiodło się. Kwota została w dalszym ciągu odliczona.';
+
+  @override
+  String get courtRecordActive => 'Aktywny';
+
+  @override
+  String get courtRecordServed => 'Podawane';
+
+  @override
+  String courtHistoryAppealGranted(String fromMinutes, String toMinutes) {
+    return 'Apelacja uwzględniona: $fromMinutes → $toMinutes minut';
+  }
+
+  @override
+  String courtHistoryAppealDenied(String minutes) {
+    return 'Odwołanie odrzucone: pozostało $minutes minut';
+  }
+
+  @override
+  String courtHistoryBribeFailedPaid(String amount) {
+    return 'Łapówka nie powiodła się: $amount zapłacono';
+  }
+
+  @override
+  String courtHistoryConvictedMinutes(String minutes) {
+    return 'Skazany na $minutes minut';
+  }
+
+  @override
+  String get courtPartialLoadWarning =>
+      'Uwaga: nie udało się załadować części danych sądowych. Pociągnij, aby odświeżyć i spróbować ponownie.';
+
+  @override
+  String get courtNoActiveSentence => 'Brak aktywnego zdania';
+
+  @override
+  String get courtNotJailedHint =>
+      'Obecnie nie przebywasz w więzieniu. Twoja przeszłość kryminalna pozostaje widoczna poniżej.';
+
+  @override
+  String get courtActiveSentenceTitle => 'Aktywne zdanie';
+
+  @override
+  String get courtDelictLabel => 'Przestępczość';
+
+  @override
+  String courtTotalSentenceMinutes(String minutes) {
+    return 'Łączne zdanie: $minutes minut';
+  }
+
+  @override
+  String courtRemainingMinutes(String minutes) {
+    return 'Pozostało: $minutes minut';
+  }
+
+  @override
+  String courtAppealCostCurrent(String amount) {
+    return 'Aktualny koszt odwołania: $amount';
+  }
+
+  @override
+  String get courtButtonAppeal => 'Odwołanie';
+
+  @override
+  String get courtButtonBribeJudge => 'Łapówka sędzia';
+
+  @override
+  String get courtUnknownCrime => 'Nieznany';
+
+  @override
+  String courtSentenceMinutesOnly(String minutes) {
+    return 'Zdanie: $minutes minut';
+  }
+
+  @override
+  String courtSentenceReducedMinutes(String original, String reduced) {
+    return 'Zdanie: $original → $reduced minut';
+  }
+
+  @override
+  String courtDateLabeled(String datetime) {
+    return 'Data: $datetime';
+  }
+
+  @override
+  String get courtHistoryHeading => 'Historia sądu';
+
+  @override
+  String get courtAppealSubmitted => 'Odwołanie złożone';
+
+  @override
+  String get courtCriminalRecordTitle => 'Rejestr karny';
+
+  @override
+  String courtTotalConvictions(String count) {
+    return 'Całkowita liczba wyroków skazujących: $count';
+  }
+
+  @override
+  String get courtRecordBribeNote =>
+      'Przeszłe przekonania pozostają widoczne. Skuteczna łapówka dla sędziego rozwiązuje tylko jedną aktywną sprawę.';
+
+  @override
+  String get courtNoConvictionsYet =>
+      'Nie odnotowano jeszcze żadnych wyroków skazujących.';
+
+  @override
   String get treated => 'Leczony!';
 
   @override
