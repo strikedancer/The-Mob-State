@@ -7,6 +7,7 @@ import '../models/backpack.dart';
 import '../utils/formatters.dart';
 import '../utils/top_right_notification.dart';
 import '../widgets/responsive_modal.dart';
+import '../l10n/app_localizations.dart';
 
 class BackpackShopScreen extends StatefulWidget {
   final bool isTab;
@@ -21,10 +22,13 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
   late BackpackService _backpackService;
   bool _isLoading = true;
   AvailableBackpacksResponse? _backpacks;
-  String? _error;
+  bool _loadFailed = false;
 
-  String _tr(String nl, String en) {
-    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
+  static int _asInt(dynamic v) {
+    if (v == null) return 0;
+    if (v is int) return v;
+    if (v is double) return v.floor();
+    return int.tryParse(v.toString()) ?? 0;
   }
 
   @override
@@ -41,7 +45,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
     print('[BackpackShopScreen] _loadBackpacks called');
     setState(() {
       _isLoading = true;
-      _error = null;
+      _loadFailed = false;
     });
 
     try {
@@ -57,116 +61,95 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
     } catch (e) {
       print('[BackpackShopScreen] ERROR loading backpacks: $e');
       setState(() {
-        _error = 'Er is een fout opgetreden';
+        _loadFailed = true;
         _isLoading = false;
       });
     }
   }
 
-  String _getEventMessage(String eventKey, Map<String, dynamic> params) {
+  String _getEventMessage(
+    AppLocalizations l10n,
+    String eventKey,
+    Map<String, dynamic> params,
+  ) {
     switch (eventKey) {
-      // Purchase success
       case 'backpack.purchased':
-        return _tr(
-          'Je hebt ${params['name']} gekocht! +${params['slots']} slots.',
-          'You bought ${params['name']}! +${params['slots']} slots.',
+        return l10n.backpackPurchasedEvent(
+          '${params['name'] ?? ''}',
+          _asInt(params['slots']),
         );
 
-      // Purchase failures
       case 'backpack.purchase_failed':
-        final reason = params['reason'];
+        final reason = params['reason']?.toString();
         switch (reason) {
           case 'not_found':
-            return _tr('Rugzak niet gevonden', 'Backpack not found');
+            return l10n.backpackPurchaseFailedNotFound;
           case 'already_has':
-            return _tr(
-              'Je hebt al een rugzak. Je kunt maar één tegelijk gebruiken.',
-              'You already have a backpack. You can only use one at a time.',
-            );
+            return l10n.backpackPurchaseFailedAlready;
           case 'insufficient_rank':
-            return _tr(
-              'Je hebt rank ${params['required']} nodig (je bent rank ${params['current']})',
-              'You need rank ${params['required']} (you are rank ${params['current']})',
+            return l10n.backpackPurchaseFailedRank(
+              _asInt(params['current']),
+              _asInt(params['required']),
             );
           case 'insufficient_funds':
-            return _tr(
-              'Je hebt €${params['needed']} nodig. Je hebt €${params['have']}',
-              'You need €${params['needed']}. You have €${params['have']}',
+            return l10n.backpackPurchaseFailedFunds(
+              _asInt(params['have']),
+              _asInt(params['needed']),
             );
           case 'vip_only':
-            return _tr(
-              'Deze rugzak is alleen voor VIP leden',
-              'This backpack is VIP only',
-            );
+            return l10n.backpackPurchaseFailedVip;
           case 'player_not_found':
-            return _tr('Speler niet gevonden', 'Player not found');
+            return l10n.playerNotFound;
           default:
-            return _tr(
-              'Fout bij kopen van rugzak',
-              'Error while buying backpack',
-            );
+            return l10n.backpackPurchaseFailedGeneric;
         }
 
-      // Upgrade success
       case 'backpack.upgraded':
-        return _tr(
-          'Geupgrade naar ${params['newName']}! +${params['upgradeSlots']} extra slots.',
-          'Upgraded to ${params['newName']}! +${params['upgradeSlots']} extra slots.',
+        return l10n.backpackUpgradedEvent(
+          '${params['newName'] ?? ''}',
+          _asInt(params['upgradeSlots']),
         );
 
-      // Upgrade failures
       case 'backpack.upgrade_failed':
-        final reason = params['reason'];
+        final reason = params['reason']?.toString();
         switch (reason) {
           case 'not_found':
-            return _tr('Rugzak niet gevonden', 'Backpack not found');
+            return l10n.backpackPurchaseFailedNotFound;
           case 'no_backpack':
-            return _tr(
-              'Je hebt geen rugzak om te upgraden',
-              'You have no backpack to upgrade',
-            );
+            return l10n.backpackUpgradeFailedNo;
           case 'not_an_upgrade':
-            return _tr(
-              'Dit is geen upgrade. Kies een grotere rugzak.',
-              'This is not an upgrade. Choose a larger backpack.',
-            );
+            return l10n.backpackUpgradeFailedNotUpgrade;
           case 'insufficient_rank':
-            return _tr(
-              'Je hebt rank ${params['required']} nodig (je bent rank ${params['current']})',
-              'You need rank ${params['required']} (you are rank ${params['current']})',
+            return l10n.backpackUpgradeFailedRank(
+              _asInt(params['current']),
+              _asInt(params['required']),
             );
           case 'insufficient_funds':
-            return _tr(
-              'Je hebt €${params['needed']} nodig. Je hebt €${params['have']}',
-              'You need €${params['needed']}. You have €${params['have']}',
+            return l10n.backpackUpgradeFailedFunds(
+              _asInt(params['have']),
+              _asInt(params['needed']),
             );
           case 'vip_only':
-            return _tr(
-              'Deze rugzak is alleen voor VIP leden',
-              'This backpack is VIP only',
-            );
+            return l10n.backpackUpgradeFailedVip;
           case 'player_not_found':
-            return _tr('Speler niet gevonden', 'Player not found');
+            return l10n.playerNotFound;
           default:
-            return _tr(
-              'Fout bij upgraden van rugzak',
-              'Error while upgrading backpack',
-            );
+            return l10n.backpackUpgradeFailedGeneric;
         }
 
       default:
-        return _tr('Onbekende actie', 'Unknown action');
+        return l10n.backpackUnknownEvent;
     }
   }
 
   Future<void> _purchaseBackpack(Backpack backpack) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final l10n = AppLocalizations.of(context)!;
 
-    // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.confirmAction),
         content: ResponsiveDialogContent(
           phoneMaxWidth: 340,
           tabletMaxWidth: 420,
@@ -182,21 +165,23 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
               const SizedBox(height: 8),
               Text(backpack.description),
               const SizedBox(height: 16),
-              Text('${_tr('Prijs', 'Price')}: ${formatCurrency(backpack.price)}'),
-              Text('${_tr('Extra slots', 'Extra slots')}: +${backpack.slots}'),
-              Text('${_tr('Totaal', 'Total')}: ${5 + backpack.slots} slots'),
+              Text('${l10n.price}: ${formatCurrency(backpack.price)}'),
+              Text('${l10n.extraSlots}: +${backpack.slots}'),
+              Text(
+                l10n.backpackDialogTotalCapacity(5 + backpack.slots),
+              ),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(_tr('Kopen', 'Buy')),
+            child: Text(l10n.buyBackpack),
           ),
         ],
       ),
@@ -209,12 +194,18 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
 
       if (!mounted) return;
 
+      final l10nMsg = AppLocalizations.of(context)!;
+      final rawParams = result['params'];
+      final params = rawParams is Map
+          ? Map<String, dynamic>.from(rawParams)
+          : <String, dynamic>{};
       final message = _getEventMessage(
-        result['event'] ?? '',
-        result['params'] ?? {},
+        l10nMsg,
+        result['event']?.toString() ?? '',
+        params,
       );
 
-      if (result['success']) {
+      if (result['success'] == true) {
         showTopRightFromSnackBar(
           context,
           SnackBar(content: Text(message), backgroundColor: Colors.green),
@@ -229,10 +220,11 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
       }
     } catch (e) {
       if (!mounted) return;
+      final errL10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Fout: $e', 'Error: $e')),
+          content: Text(errL10n.hitError(e.toString())),
           backgroundColor: Colors.red,
         ),
       );
@@ -241,19 +233,18 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
 
   Future<void> _upgradeBackpack(Backpack backpack) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final l10n = AppLocalizations.of(context)!;
 
-    // Calculate trade-in value
     final owned = _backpacks?.owned;
     if (owned == null) return;
 
     final tradeInValue = (owned.price * 0.5).floor();
     final upgradeCost = backpack.price - tradeInValue;
 
-    // Show confirmation dialog
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.confirmAction),
         content: ResponsiveDialogContent(
           phoneMaxWidth: 340,
           tabletMaxWidth: 420,
@@ -268,22 +259,24 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                '${_tr('Huidige', 'Current')}: ${owned.name} (+${owned.slots} slots)',
+                l10n.backpackDialogCurrentLine(owned.name, owned.slots),
               ),
               Text(
-                '${_tr('Nieuw', 'New')}: ${backpack.name} (+${backpack.slots} slots)',
+                l10n.backpackDialogNewLine(backpack.name, backpack.slots),
               ),
               const SizedBox(height: 16),
               Text(
-                '${_tr('Upgrade', 'Upgrade')}: +${backpack.slots - owned.slots} slots',
+                l10n.backpackDialogUpgradeDelta(
+                  backpack.slots - owned.slots,
+                ),
               ),
               const Divider(),
-              Text('${_tr('Prijs', 'Price')}: ${formatCurrency(backpack.price)}'),
+              Text('${l10n.price}: ${formatCurrency(backpack.price)}'),
               Text(
-                '${_tr('Inruilwaarde', 'Trade-in value')}: ${formatCurrency(tradeInValue)}',
+                '${l10n.tradeInValue}: ${formatCurrency(tradeInValue)}',
               ),
               Text(
-                '${_tr('Upgrade kosten', 'Upgrade cost')}: ${formatCurrency(upgradeCost)}',
+                '${l10n.upgradeCost}: ${formatCurrency(upgradeCost)}',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
@@ -292,12 +285,12 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(_tr('Upgraden', 'Upgrade')),
+            child: Text(l10n.upgradeBackpack),
           ),
         ],
       ),
@@ -310,12 +303,18 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
 
       if (!mounted) return;
 
+      final l10nMsg = AppLocalizations.of(context)!;
+      final rawParams = result['params'];
+      final params = rawParams is Map
+          ? Map<String, dynamic>.from(rawParams)
+          : <String, dynamic>{};
       final message = _getEventMessage(
-        result['event'] ?? '',
-        result['params'] ?? {},
+        l10nMsg,
+        result['event']?.toString() ?? '',
+        params,
       );
 
-      if (result['success']) {
+      if (result['success'] == true) {
         showTopRightFromSnackBar(
           context,
           SnackBar(content: Text(message), backgroundColor: Colors.green),
@@ -330,10 +329,11 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
       }
     } catch (e) {
       if (!mounted) return;
+      final errL10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Fout: $e', 'Error: $e')),
+          content: Text(errL10n.hitError(e.toString())),
           backgroundColor: Colors.red,
         ),
       );
@@ -345,6 +345,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
     bool isOwned = false,
     bool canUpgrade = false,
   }) {
+    final l10n = AppLocalizations.of(context)!;
     final authProvider = Provider.of<AuthProvider>(context);
     final player = authProvider.currentPlayer;
 
@@ -391,7 +392,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
                               padding: const EdgeInsets.only(left: 8),
                               child: Chip(
                                 label: Text(
-                                  _tr('Eigendom', 'Owned'),
+                                  l10n.backpackOwnedBadge,
                                   style: const TextStyle(fontSize: 12),
                                 ),
                                 backgroundColor: Colors.green,
@@ -419,7 +420,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
               children: [
                 const Icon(Icons.inventory_2, size: 16),
                 const SizedBox(width: 4),
-                Text('+${backpack.slots} ${_tr('slots', 'slots')}'),
+                Text('+${backpack.slots} ${l10n.slots}'),
                 const Spacer(),
                 Text(
                   formatCurrency(backpack.price),
@@ -434,12 +435,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
             const SizedBox(height: 8),
             Row(
               children: [
-                Text(
-                  _tr(
-                    'Rank ${backpack.requiredRank} vereist',
-                    'Rank ${backpack.requiredRank} required',
-                  ),
-                ),
+                Text(l10n.rankRequired(backpack.requiredRank)),
                 if (!meetsRank)
                   const Padding(
                     padding: EdgeInsets.only(left: 8),
@@ -461,9 +457,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
                     backgroundColor: canUpgrade ? Colors.blue : Colors.green,
                   ),
                   child: Text(
-                    canUpgrade
-                        ? _tr('Upgraden', 'Upgrade')
-                        : _tr('Kopen', 'Buy'),
+                    canUpgrade ? l10n.upgradeBackpack : l10n.buyBackpack,
                   ),
                 ),
               ),
@@ -471,7 +465,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
                 Padding(
                   padding: EdgeInsets.only(top: 8),
                   child: Text(
-                    _tr('Niet genoeg geld', 'Not enough money'),
+                    l10n.tuneShopErrorInsufficientFunds,
                     style: const TextStyle(color: Colors.red, fontSize: 12),
                   ),
                 ),
@@ -488,17 +482,18 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
   }
 
   Widget _buildContent(BuildContext context, {bool isStandalone = false}) {
+    final l10n = AppLocalizations.of(context)!;
     final body = _isLoading
         ? const Center(child: CircularProgressIndicator())
-        : _error != null
+        : _loadFailed
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(_tr('Fout: $_error', 'Error: $_error')),
+                Text(l10n.backpackLoadFailedGeneric),
                 ElevatedButton(
                   onPressed: _loadBackpacks,
-                  child: Text(_tr('Opnieuw proberen', 'Retry')),
+                  child: Text(l10n.retryAgain),
                 ),
               ],
             ),
@@ -510,7 +505,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
               children: [
                 if (_backpacks?.owned != null) ...[
                   Text(
-                    _tr('Je rugzak', 'Your backpack'),
+                    l10n.yourBackpack,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
@@ -519,7 +514,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
                 ],
                 if (_backpacks?.canUpgradeTo.isNotEmpty ?? false) ...[
                   Text(
-                    _tr('Upgrades beschikbaar', 'Upgrades available'),
+                    l10n.availableUpgrades,
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
@@ -534,8 +529,8 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
                 if (_backpacks?.available.isNotEmpty ?? false) ...[
                   Text(
                     _backpacks?.owned == null
-                        ? _tr('Beschikbare rugzakken', 'Available backpacks')
-                        : _tr('Andere rugzakken', 'Other backpacks'),
+                        ? l10n.availableBackpacks
+                        : l10n.otherBackpacks,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -566,10 +561,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            _tr(
-                              'Je hebt de beste rugzak!',
-                              'You already have the best backpack!',
-                            ),
+                            l10n.youHaveBestBackpack,
                             style: const TextStyle(fontSize: 18),
                             textAlign: TextAlign.center,
                           ),
@@ -585,7 +577,7 @@ class _BackpackShopScreenState extends State<BackpackShopScreen> {
     if (isStandalone) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(_tr('🎒 Rugzak Shop', '🎒 Backpack Shop')),
+          title: Text('🎒 ${l10n.backpackShop}'),
           actions: [
             IconButton(
               icon: const Icon(Icons.refresh),

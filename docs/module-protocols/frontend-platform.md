@@ -29,6 +29,7 @@ Gedeelde Flutter web/mobile/PWA shellregels, asset routing, embedded scrollgedra
 - Voor kleine dialog-buttons/CTA’s in dashboard (bv. `Close`, `View offer`): voeg ook ARB keys toe i.p.v. inline tekst.
 - Bij `showDialog(builder: (ctx) => ...)` hoort l10n uit `ctx` te komen (dus `AppLocalizations.of(ctx)`), anders kan de build breken.
 - Ook de **dashboard center cards** (stats/economy/ops/notifications panels) moeten volledig via ARB keys; vermijd NL/EN literals zoals “Statistieken”, “Ops Overview”, “Gross income”, enz.
+- **Trade / zwarte markt / rugzak-shop / munitiefabriek:** zichtbare tablabels, foutteksten (bijv. niet-ingelogd + token-opslaghint) en shop-UI moeten via ARB lopen (`trade_screen.dart`, `black_market_screen.dart`, `backpack_shop_screen.dart`, `ammo_factory_screen.dart`).
 - Voor dynamische templates (zoals `daily-goals` uit backend): geef voorkeur aan **client-side mapping op goal keys** (`crime_3`, `weekly_job_10`, …) naar ARB-strings, zodat alle EU-locales consistente vertalingen krijgen zonder server-side `titleNl/titleEn` leakage.
 - Vehicle Ops labels/chips (Heat/Rep/Hotspot/Crew/Blacklist etc.) horen ook via ARB keys zodat dashboard geen Engels lekt in EU-locales.
 - Instellingen (`settings_screen.dart`) bevat veel platform/permission tekst (push status, crypto push/in-app toggles). Ook die moet via ARB keys om EU-locales volledig te ondersteunen.

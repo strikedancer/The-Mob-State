@@ -519,8 +519,8 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
     );
   }
 
-  Widget _buildBlackMarketNotice(AppLocalizations? l10n) {
-    final isNl = Localizations.localeOf(context).languageCode == 'nl';
+  Widget _buildBlackMarketNotice(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -532,20 +532,16 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            isNl ? 'Kogels te koop' : 'Ammo for sale',
+            l10n.ammoFactoryBlackMarketTitle,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           ),
           const SizedBox(height: 6),
-          Text(
-            isNl
-                ? 'De munitiefabriek verkoopt geen kogels direct vanuit dit scherm. Voor koop en verkoop van munitie ga je via de Zwarte Markt.'
-                : 'The ammo factory does not sell bullets directly from this screen. Use the Black Market for buying and selling ammo.',
-          ),
+          Text(l10n.ammoFactoryBlackMarketBody),
           const SizedBox(height: 10),
           OutlinedButton.icon(
             onPressed: _openBlackMarketAmmo,
             icon: const Icon(Icons.open_in_new),
-            label: Text(l10n?.blackMarket ?? 'Black Market'),
+            label: Text(l10n.blackMarket),
           ),
         ],
       ),
@@ -666,7 +662,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                               child: Text(l10n?.factoryBuy ?? 'Buy'),
                             )
                           else
-                            _buildBlackMarketNotice(l10n),
+                            _buildBlackMarketNotice(context),
                         ],
                       )
                     // If I own it
@@ -830,7 +826,7 @@ class _AmmoFactoryScreenState extends State<AmmoFactoryScreen> {
                             ],
                           ),
                           const SizedBox(height: 12),
-                          _buildBlackMarketNotice(l10n),
+                          _buildBlackMarketNotice(context),
                         ],
                       ),
                   ],

@@ -57,10 +57,6 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     await vehicleProvider.fetchMarketListings(country: currentCountry);
   }
 
-  String _tr(String nl, String en) {
-    return Localizations.localeOf(context).languageCode == 'nl' ? nl : en;
-  }
-
   List<MarketListing> _getFilteredListings(List<MarketListing> listings) {
     return listings.where((listing) {
       // Filter by country
@@ -132,6 +128,8 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Widget _buildMarketListings(VehicleProvider provider) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (provider.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -141,9 +139,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('${_tr('Fout', 'Error')}: ${provider.error}'),
+            Text(l10n.hitError(provider.error!)),
             const SizedBox(height: 16),
-            ElevatedButton(onPressed: _loadData, child: Text(_tr('Opnieuw proberen', 'Retry'))),
+            ElevatedButton(
+              onPressed: _loadData,
+              child: Text(l10n.retryAgain),
+            ),
           ],
         ),
       );
@@ -159,12 +160,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             Icon(Icons.storefront, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
-              _tr('Geen voertuigen beschikbaar', 'No vehicles available'),
+              l10n.noVehiclesAvailable,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             Text(
-              _tr('Probeer je filters aan te passen', 'Try adjusting your filters'),
+              l10n.bmHubAdjustFiltersHint,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -186,6 +187,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Widget _buildMyListings(VehicleProvider provider) {
+    final l10n = AppLocalizations.of(context)!;
     final myListings = provider.inventory
         .where((vehicle) => vehicle.marketListing)
         .toList();
@@ -198,12 +200,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             Icon(Icons.list_alt, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
-              _tr('Geen actieve listings', 'No active listings'),
+              l10n.noListings,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             Text(
-              _tr('Ga naar Garage of Marina om voertuigen te plaatsen', 'Go to Garage or Marina to list vehicles'),
+              l10n.bmHubEmptyMyListingsHint,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
@@ -222,6 +224,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Widget _buildMarketListingCard(MarketListing listing) {
+    final l10n = AppLocalizations.of(context)!;
     final vehicle = listing.vehicle;
     final selectedImage = vehicle.conditionImage;
     final askingPrice = vehicle.askingPrice ?? 0;
@@ -285,13 +288,13 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        vehicle.definition?.name ?? _tr('Onbekend voertuig', 'Unknown vehicle'),
+                        vehicle.definition?.name ?? l10n.unknown,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${_tr('Verkoper', 'Seller')}: ${listing.sellerUsername}',
+                        '${l10n.bmHubSellerLabel}: ${listing.sellerUsername}',
                         style: Theme.of(
                           context,
                         ).textTheme.bodySmall?.copyWith(color: Colors.grey),
@@ -302,7 +305,8 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                           Icon(Icons.location_on, size: 14, color: Colors.grey),
                           const SizedBox(width: 4),
                           Text(
-                            vehicle.currentLocation?.toUpperCase() ?? _tr('ONBEKEND', 'UNKNOWN'),
+                            vehicle.currentLocation?.toUpperCase() ??
+                                l10n.bmHubLocationUnknown,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                           const SizedBox(width: 12),
@@ -337,7 +341,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr('Vraagprijs', 'Asking Price'),
+                      l10n.bmHubAskingPriceLabel,
                       style: Theme.of(
                         context,
                       ).textTheme.bodySmall?.copyWith(color: Colors.grey),
@@ -355,7 +359,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      _tr('Marktwaarde', 'Market Value'),
+                      l10n.bmHubMarketValueShort,
                       style: Theme.of(
                         context,
                       ).textTheme.bodySmall?.copyWith(color: Colors.grey),
@@ -386,7 +390,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
               child: ElevatedButton.icon(
                 onPressed: () => _buyVehicle(listing),
                 icon: const Icon(Icons.shopping_cart),
-                label: Text(_tr('Nu kopen', 'Buy now')),
+                label: Text(l10n.bmHubBuyNow),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
@@ -401,6 +405,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Widget _buildMyListingCard(VehicleInventoryItem vehicle) {
+    final l10n = AppLocalizations.of(context)!;
     final selectedImage = vehicle.conditionImage;
     final askingPrice = vehicle.askingPrice ?? 0;
     final marketValue = vehicle.getMarketValue();
@@ -456,21 +461,21 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        vehicle.definition?.name ?? _tr('Onbekend voertuig', 'Unknown vehicle'),
+                        vehicle.definition?.name ?? l10n.unknown,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${_tr('Geplaatst voor', 'Listed for')}: €${askingPrice.toStringAsFixed(0)}',
+                        '${l10n.bmHubListedFor}: €${askingPrice.toStringAsFixed(0)}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '${_tr('Marktwaarde', 'Market value')}: €${marketValue.toStringAsFixed(0)}',
+                        '${l10n.bmHubMarketValueShort}: €${marketValue.toStringAsFixed(0)}',
                         style: Theme.of(
                           context,
                         ).textTheme.bodySmall?.copyWith(color: Colors.grey),
@@ -489,7 +494,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   child: OutlinedButton.icon(
                     onPressed: () => _editPrice(vehicle),
                     icon: const Icon(Icons.edit, size: 18),
-                    label: Text(_tr('Prijs aanpassen', 'Edit price')),
+                    label: Text(l10n.bmHubEditPrice),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -497,7 +502,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   child: ElevatedButton.icon(
                     onPressed: () => _delistVehicle(vehicle),
                     icon: const Icon(Icons.remove_circle, size: 18),
-                    label: Text(_tr('Verwijderen', 'Delist')),
+                    label: Text(l10n.bmHubDelist),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
@@ -520,9 +525,11 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
 
     final result = await showDialog<bool>(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: Text(_tr('Listings filteren', 'Filter listings')),
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+          title: Text(l10n.bmHubFilterListingsTitle),
           content: ResponsiveDialogContent(
             phoneMaxWidth: 340,
             tabletMaxWidth: 420,
@@ -532,11 +539,11 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
               children: [
                 DropdownButtonFormField<String?>(
                   initialValue: tempCountry,
-                  decoration: InputDecoration(labelText: _tr('Land', 'Country')),
+                  decoration: InputDecoration(labelText: l10n.bmHubLabelCountry),
                   items: [
                     DropdownMenuItem(
                       value: null,
-                      child: Text(_tr('Alle landen', 'All countries')),
+                      child: Text(l10n.bmHubAllCountries),
                     ),
                     ...[
                       'netherlands',
@@ -563,11 +570,11 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String?>(
                   initialValue: tempVehicleType,
-                  decoration: InputDecoration(labelText: _tr('Voertuigtype', 'Vehicle type')),
+                  decoration: InputDecoration(labelText: l10n.bmHubLabelVehicleType),
                   items: [
-                    DropdownMenuItem(value: null, child: Text(_tr('Alle types', 'All types'))),
-                    DropdownMenuItem(value: 'car', child: Text(_tr('Auto\'s', 'Cars'))),
-                    DropdownMenuItem(value: 'boat', child: Text(_tr('Boten', 'Boats'))),
+                    DropdownMenuItem(value: null, child: Text(l10n.bmHubAllTypes)),
+                    DropdownMenuItem(value: 'car', child: Text(l10n.bmHubCars)),
+                    DropdownMenuItem(value: 'boat', child: Text(l10n.bmHubBoats)),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -577,7 +584,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  '${_tr('Prijsbereik', 'Price range')}: €${tempMinPrice.toInt()} - €${tempMaxPrice.toInt()}',
+                  '${l10n.bmHubPriceRange}: €${tempMinPrice.toInt()} - €${tempMaxPrice.toInt()}',
                 ),
                 RangeSlider(
                   values: RangeValues(tempMinPrice, tempMaxPrice),
@@ -608,19 +615,20 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
                   tempMaxPrice = 1000000;
                 });
               },
-              child: Text(_tr('Filters wissen', 'Clear filters')),
+              child: Text(l10n.bmHubClearFilters),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text(_tr('Annuleren', 'Cancel')),
+              child: Text(l10n.cancel),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text(_tr('Toepassen', 'Apply')),
+              child: Text(l10n.bmHubApply),
             ),
           ],
-        ),
-      ),
+          ),
+        );
+      },
     );
 
     if (result == true) {
@@ -634,6 +642,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Future<void> _buyVehicle(MarketListing listing) async {
+    final l10n = AppLocalizations.of(context)!;
     final vehicleProvider = Provider.of<VehicleProvider>(
       context,
       listen: false,
@@ -645,17 +654,21 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     if (playerMoney < askingPrice) {
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(_tr('Onvoldoende geld', 'Insufficient funds')),
+          content: Text(l10n.tuneShopErrorInsufficientFunds),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
+    final name =
+        listing.vehicle.definition?.name ?? l10n.vehicleHeistGenericVehicle;
+    final priceStr = '€${askingPrice.toStringAsFixed(0)}';
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.confirmAction),
         content: ResponsiveDialogContent(
           phoneMaxWidth: 320,
           tabletMaxWidth: 380,
@@ -665,15 +678,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _tr('Voertuig kopen', 'Buy vehicle'),
+                l10n.bmHubBuyVehicleTitle,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                _tr(
-                  'Koop ${listing.vehicle.definition?.name ?? 'voertuig'} voor €${askingPrice.toStringAsFixed(0)}?',
-                  'Buy ${listing.vehicle.definition?.name ?? 'vehicle'} for €${askingPrice.toStringAsFixed(0)}?',
-                ),
+                l10n.bmHubBuyVehicleForConfirm(name, priceStr),
               ),
             ],
           ),
@@ -681,12 +691,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: Text(_tr('Kopen', 'Buy')),
+            child: Text(l10n.buy),
           ),
         ],
       ),
@@ -701,14 +711,16 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     if (success) {
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(_tr('Voertuig succesvol gekocht!', 'Vehicle purchased successfully!')),
+          content: Text(l10n.bmHubVehiclePurchased),
           backgroundColor: Colors.green,
         ),
       );
     } else {
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(vehicleProvider.error ?? _tr('Voertuig kopen mislukt', 'Failed to buy vehicle')),
+          content: Text(
+            vehicleProvider.error ?? l10n.bmHubVehiclePurchaseFailed,
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -716,6 +728,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Future<void> _editPrice(VehicleInventoryItem vehicle) async {
+    final l10n = AppLocalizations.of(context)!;
     final priceController = TextEditingController(
       text: vehicle.askingPrice?.toString() ?? '',
     );
@@ -723,7 +736,7 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     final newPrice = await showDialog<int>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr('Prijs aanpassen', 'Edit price')),
+        title: Text(l10n.bmHubEditPrice),
         content: ResponsiveDialogContent(
           phoneMaxWidth: 320,
           tabletMaxWidth: 380,
@@ -732,15 +745,15 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '${_tr('Huidige prijs', 'Current price')}: €${vehicle.askingPrice?.toStringAsFixed(0) ?? '0'}',
+                '${l10n.bmHubCurrentPrice}: €${vehicle.askingPrice?.toStringAsFixed(0) ?? '0'}',
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: _tr('Nieuwe prijs (€)', 'New price (€)'),
-                  hintText: _tr('Vul nieuwe prijs in', 'Enter new price'),
+                  labelText: l10n.bmHubNewPriceEuro,
+                  hintText: l10n.bmHubEnterNewPriceHint,
                 ),
               ),
             ],
@@ -749,14 +762,14 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () {
               final price = int.tryParse(priceController.text);
               Navigator.pop(context, price);
             },
-            child: Text(_tr('Bijwerken', 'Update')),
+            child: Text(l10n.bmHubUpdateButton),
           ),
         ],
       ),
@@ -780,14 +793,16 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     if (success) {
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(_tr('Prijs succesvol aangepast!', 'Price updated successfully!')),
+          content: Text(l10n.bmHubPriceUpdated),
           backgroundColor: Colors.green,
         ),
       );
     } else {
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(vehicleProvider.error ?? _tr('Prijs aanpassen mislukt', 'Failed to update price')),
+          content: Text(
+            vehicleProvider.error ?? l10n.bmHubPriceUpdateFailed,
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -795,10 +810,14 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
   }
 
   Future<void> _delistVehicle(VehicleInventoryItem vehicle) async {
+    final l10n = AppLocalizations.of(context)!;
+    final removeName =
+        vehicle.definition?.name ?? l10n.vehicleHeistGenericVehicle;
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(_tr('Weet je het zeker?', 'Are you sure?')),
+        title: Text(l10n.confirmAction),
         content: ResponsiveDialogContent(
           phoneMaxWidth: 320,
           tabletMaxWidth: 380,
@@ -808,15 +827,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _tr('Voertuig van markt halen', 'Delist vehicle'),
+                l10n.bmHubDelistVehicleTitle,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                _tr(
-                  'Verwijder ${vehicle.definition?.name ?? 'voertuig'} van de markt?',
-                  'Remove ${vehicle.definition?.name ?? 'vehicle'} from the market?',
-                ),
+                l10n.bmHubRemoveFromMarketConfirm(removeName),
               ),
             ],
           ),
@@ -824,12 +840,12 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(_tr('Annuleren', 'Cancel')),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(_tr('Verwijderen', 'Delist')),
+            child: Text(l10n.bmHubDelist),
           ),
         ],
       ),
@@ -848,14 +864,16 @@ class _BlackMarketScreenState extends State<BlackMarketScreen>
     if (success) {
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(_tr('Voertuig succesvol van de markt gehaald!', 'Vehicle delisted successfully!')),
+          content: Text(l10n.bmHubVehicleDelisted),
           backgroundColor: Colors.green,
         ),
       );
     } else {
       showTopRightFromSnackBar(context, 
         SnackBar(
-          content: Text(vehicleProvider.error ?? _tr('Voertuig verwijderen mislukt', 'Failed to delist vehicle')),
+          content: Text(
+            vehicleProvider.error ?? l10n.bmHubDelistFailed,
+          ),
           backgroundColor: Colors.red,
         ),
       );

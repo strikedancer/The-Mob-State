@@ -87,7 +87,7 @@ class _TradeScreenState extends State<TradeScreen>
         final l10n = AppLocalizations.of(context)!;
         setState(() {
           _errorMessage =
-              '${l10n.notLoggedIn} (storage issue - try logging in again)';
+              '${l10n.notLoggedIn} ${l10n.notLoggedInTokenStorageHint}';
           _isLoading = false;
         });
         return;
@@ -269,7 +269,10 @@ class _TradeScreenState extends State<TradeScreen>
               text: AppLocalizations.of(context)!.inventory,
               icon: const Icon(Icons.inventory),
             ),
-            Tab(text: 'Rugzakken', icon: const Icon(Icons.backpack)),
+            Tab(
+              text: AppLocalizations.of(context)!.blackMarketTabBackpacks,
+              icon: const Icon(Icons.backpack),
+            ),
           ],
         ),
       ),
