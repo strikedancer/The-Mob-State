@@ -41,6 +41,12 @@ Bij stap 3 blokkeert de pre-commit hook de commit totdat je ook een doc hebt bij
 
 Daarna opnieuw `git add .` en dan werkt de commit wel.
 
+## ARB / meertaligheid (pre-commit + CI)
+
+- Als je **`client/lib/l10n/app_en.arb`** staged, vult de hook automatisch ontbrekende keys in alle andere `app_<taal>.arb`-bestanden (zelfde waarde als EN) en staged die mee; daarna wordt **key-pariteit** gecontroleerd (`verify_arb_parity.mjs`). Zonder `app_en.arb` in de index draait alleen die parity-check.
+- Om die **auto-merge** stap over te slaan (bijv. experiment): `ARB_MERGE_ON_COMMIT=0 git commit ...`
+- Op **GitHub** draait op elke PR `i18n-arb-verify.yml` (zelfde parity-check). Zorg dat `core.hooksPath` naar `.githooks` wijst (`git config core.hooksPath .githooks`), anders draait de lokale hook niet.
+
 ## Welk protocol hoort bij welk onderdeel?
 
 | Onderdeel             | Protocol bestand                              |

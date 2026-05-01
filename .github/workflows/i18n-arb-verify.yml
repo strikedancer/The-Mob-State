@@ -1,0 +1,24 @@
+name: i18n ARB parity
+
+# Runs on every PR so missing locale keys are never merged by accident (cheap Node check).
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  arb-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify ARB key parity (app_en.arb vs all locales)
+        run: node scripts/verify_arb_parity.mjs

@@ -2,9 +2,22 @@
 
 set -e
 
-if command -v node >/dev/null 2>&1; then
-  node tools/doc_sync_guard.js
-else
-  echo "[doc-sync] Node.js is required for doc sync guard."
+if ! command -v node >/dev/null 2>&1; then
+  echo "[hooks] Node.js is required for pre-commit (doc-sync + ARB checks)."
   exit 2
 fi
+
+node tools/doc_sync_guard.js
+
+# When app_en.arb is part of the commit, propagate missing keys to every locale ARB
+# (same values as EN as placeholders) and re-stage those files so the commit stays consistent.
+if [ "${ARB_MERGE_ON_COMMIT:-1}" = "1" ]; then
+  if git diff --cached --name-only | grep -Fxq "client/lib/l10n/app_en.arb"; then
+    echo "[arb] Staged app_en.arb: running merge_arb_missing_all_from_en.mjs"
+    node scripts/merge_arb_missing_all_from_en.mjs
+    git add client/lib/l10n/app_*.arb
+  fi
+fi
+
+echo "[arb] Verifying ARB key parity..."
+node scripts/verify_arb_parity.mjs
