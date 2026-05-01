@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/carried_tool.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/tool_display_name.dart';
+import '../utils/localized_crime_name.dart';
 import 'responsive_modal.dart';
 
 class ToolCard extends StatelessWidget {
@@ -273,10 +274,12 @@ class ToolCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                ...tool.requiredFor.map((crime) => Text(
-                  '• $crime',
-                  style: const TextStyle(color: Colors.white70, fontSize: 13),
-                )),
+                ...tool.requiredFor.map(
+                  (crime) => Text(
+                    '• ${localizedCrimeName(l10n, crime)}',
+                    style: const TextStyle(color: Colors.white70, fontSize: 13),
+                  ),
+                ),
               ],
             ],
           ),
