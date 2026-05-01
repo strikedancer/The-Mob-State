@@ -9421,6 +9421,54 @@ abstract class AppLocalizations {
   /// **'REPAIR'**
   String get toolsBadgeRepair;
 
+  /// No description provided for @toolsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load tools: {error}'**
+  String toolsLoadError(String error);
+
+  /// No description provided for @toolsErrToolNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Tool not found.'**
+  String get toolsErrToolNotFound;
+
+  /// No description provided for @toolsErrInventoryFullBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Your inventory is full. Store some tools or upgrade capacity.'**
+  String get toolsErrInventoryFullBuy;
+
+  /// No description provided for @toolsErrPurchaseServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Tool purchase failed due to a server issue.'**
+  String get toolsErrPurchaseServer;
+
+  /// No description provided for @toolsErrToolNotOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t own this tool.'**
+  String get toolsErrToolNotOwned;
+
+  /// No description provided for @toolsErrAlreadyMaxDurability.
+  ///
+  /// In en, this message translates to:
+  /// **'Tool is already at maximum durability.'**
+  String get toolsErrAlreadyMaxDurability;
+
+  /// No description provided for @toolsErrRepairServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Tool repair failed due to a server issue.'**
+  String get toolsErrRepairServer;
+
+  /// No description provided for @toolsNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error: {error}'**
+  String toolsNetworkError(String error);
+
   /// No description provided for @crimeOutcomeSuccess.
   ///
   /// In en, this message translates to:

@@ -3195,6 +3195,28 @@
   "toolsBadgeInventoryFull": "FULL",
   "toolsBadgeBroken": "BROKEN",
   "toolsBadgeRepair": "REPAIR",
+  "toolsLoadError": "Could not load tools: {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Tool not found.",
+  "toolsErrInventoryFullBuy": "Your inventory is full. Store some tools or upgrade capacity.",
+  "toolsErrPurchaseServer": "Tool purchase failed due to a server issue.",
+  "toolsErrToolNotOwned": "You don't own this tool.",
+  "toolsErrAlreadyMaxDurability": "Tool is already at maximum durability.",
+  "toolsErrRepairServer": "Tool repair failed due to a server issue.",
+  "toolsNetworkError": "Network error: {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "crimeOutcomeSuccess": "Crime successful!",
   "crimeOutcomeCaught": "Caught by police",
   "crimeOutcomeVehicleBreakdownBefore": "Your vehicle broke down before reaching the crime scene",

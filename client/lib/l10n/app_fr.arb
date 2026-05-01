@@ -5435,5 +5435,27 @@
     }
   },
   "courtRecordBribeNote": "Les convictions passées restent visibles. Un pot-de-vin réussi ne règle que cette seule affaire active.",
-  "courtNoConvictionsYet": "Aucune condamnation enregistrée pour l’instant."
+  "courtNoConvictionsYet": "Aucune condamnation enregistrée pour l’instant.",
+  "toolsLoadError": "Impossible de charger les outils : {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Outil introuvable.",
+  "toolsErrInventoryFullBuy": "Votre inventaire est plein. Stockez des outils ou améliorez la capacité.",
+  "toolsErrPurchaseServer": "L'achat de l'outil a échoué en raison d'un problème de serveur.",
+  "toolsErrToolNotOwned": "Vous ne possédez pas cet outil.",
+  "toolsErrAlreadyMaxDurability": "L'outil a déjà atteint sa durabilité maximale.",
+  "toolsErrRepairServer": "La réparation de l'outil a échoué en raison d'un problème de serveur.",
+  "toolsNetworkError": "Erreur réseau : {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

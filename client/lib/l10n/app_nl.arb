@@ -4891,6 +4891,28 @@
   "toolsBadgeInventoryFull": "VOL",
   "toolsBadgeBroken": "KAPOT",
   "toolsBadgeRepair": "REPAREER",
+  "toolsLoadError": "Gereedschap laden mislukt: {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Gereedschap niet gevonden.",
+  "toolsErrInventoryFullBuy": "Je inventaris is vol. Berg gereedschap op of vergroot capaciteit.",
+  "toolsErrPurchaseServer": "Aankoop mislukt door een serverprobleem.",
+  "toolsErrToolNotOwned": "Je bezit dit gereedschap niet.",
+  "toolsErrAlreadyMaxDurability": "Gereedschap heeft al maximale duurzaamheid.",
+  "toolsErrRepairServer": "Reparatie mislukt door een serverprobleem.",
+  "toolsNetworkError": "Netwerkfout: {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "countryPortugal": "Portugal",
   "countryIreland": "Ierland",
   "countryLuxembourg": "Luxemburg",

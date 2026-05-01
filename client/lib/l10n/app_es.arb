@@ -5435,5 +5435,27 @@
     }
   },
   "courtRecordBribeNote": "Las condenas pasadas siguen siendo visibles. Un soborno exitoso a un juez aclara sólo ese caso activo.",
-  "courtNoConvictionsYet": "Aún no se han registrado condenas."
+  "courtNoConvictionsYet": "Aún no se han registrado condenas.",
+  "toolsLoadError": "No se pudieron cargar herramientas: {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Herramienta no encontrada.",
+  "toolsErrInventoryFullBuy": "Tu inventario está lleno. Almacene algunas herramientas o actualice la capacidad.",
+  "toolsErrPurchaseServer": "La compra de herramientas falló debido a un problema con el servidor.",
+  "toolsErrToolNotOwned": "No eres dueño de esta herramienta.",
+  "toolsErrAlreadyMaxDurability": "La herramienta ya tiene su máxima durabilidad.",
+  "toolsErrRepairServer": "La reparación de la herramienta falló debido a un problema del servidor.",
+  "toolsNetworkError": "Error de red: {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

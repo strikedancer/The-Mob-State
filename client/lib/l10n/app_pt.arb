@@ -5435,5 +5435,27 @@
     }
   },
   "courtRecordBribeNote": "As convicções passadas permanecem visíveis. Um suborno de juiz bem-sucedido resolve apenas aquele caso ativo.",
-  "courtNoConvictionsYet": "Nenhuma condenação registrada ainda."
+  "courtNoConvictionsYet": "Nenhuma condenação registrada ainda.",
+  "toolsLoadError": "Não foi possível carregar as ferramentas: {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Ferramenta não encontrada.",
+  "toolsErrInventoryFullBuy": "Seu inventário está cheio. Armazene algumas ferramentas ou atualize a capacidade.",
+  "toolsErrPurchaseServer": "A compra da ferramenta falhou devido a um problema no servidor.",
+  "toolsErrToolNotOwned": "Você não possui esta ferramenta.",
+  "toolsErrAlreadyMaxDurability": "A ferramenta já está com durabilidade máxima.",
+  "toolsErrRepairServer": "O reparo da ferramenta falhou devido a um problema no servidor.",
+  "toolsNetworkError": "Erro de rede: {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

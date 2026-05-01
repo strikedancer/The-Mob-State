@@ -5435,5 +5435,27 @@
     }
   },
   "courtRecordBribeNote": "Vergangene Überzeugungen bleiben sichtbar. Eine erfolgreiche Richterbestechung klärt nur diesen einen aktiven Fall.",
-  "courtNoConvictionsYet": "Es liegen noch keine Verurteilungen vor."
+  "courtNoConvictionsYet": "Es liegen noch keine Verurteilungen vor.",
+  "toolsLoadError": "Werkzeuge konnten nicht geladen werden: {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Werkzeug nicht gefunden.",
+  "toolsErrInventoryFullBuy": "Ihr Inventar ist voll. Lagern Sie einige Werkzeuge oder erweitern Sie die Kapazität.",
+  "toolsErrPurchaseServer": "Der Kauf des Tools ist aufgrund eines Serverproblems fehlgeschlagen.",
+  "toolsErrToolNotOwned": "Sie besitzen dieses Tool nicht.",
+  "toolsErrAlreadyMaxDurability": "Das Werkzeug hat bereits die maximale Haltbarkeit erreicht.",
+  "toolsErrRepairServer": "Die Reparatur des Tools ist aufgrund eines Serverproblems fehlgeschlagen.",
+  "toolsNetworkError": "Netzwerkfehler: {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -12,6 +12,48 @@ import '../widgets/inventory_tool_card.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/tool_display_name.dart';
 
+String _toolsPurchaseErrorMessage(
+  ToolPurchaseResult result,
+  AppLocalizations l10n,
+) {
+  switch (result.errorCode) {
+    case 'TOOL_NOT_FOUND':
+      return l10n.toolsErrToolNotFound;
+    case 'INSUFFICIENT_MONEY':
+      return l10n.toolsNotEnoughMoney;
+    case 'INVENTORY_FULL':
+      return l10n.toolsErrInventoryFullBuy;
+    case 'DATABASE_ERROR':
+      return l10n.toolsErrPurchaseServer;
+    case 'NETWORK':
+      return l10n.toolsNetworkError(result.error ?? '');
+    default:
+      return result.error ?? l10n.toolsBuyError;
+  }
+}
+
+String _toolsRepairErrorMessage(
+  ToolRepairResult result,
+  AppLocalizations l10n,
+) {
+  switch (result.errorCode) {
+    case 'TOOL_NOT_FOUND':
+      return l10n.toolsErrToolNotFound;
+    case 'TOOL_NOT_OWNED':
+      return l10n.toolsErrToolNotOwned;
+    case 'TOOL_ALREADY_MAX':
+      return l10n.toolsErrAlreadyMaxDurability;
+    case 'INSUFFICIENT_MONEY':
+      return l10n.toolsNotEnoughMoneyRepair;
+    case 'DATABASE_ERROR':
+      return l10n.toolsErrRepairServer;
+    case 'NETWORK':
+      return l10n.toolsNetworkError(result.error ?? '');
+    default:
+      return result.error ?? l10n.toolsRepairError;
+  }
+}
+
 class ToolsScreen extends StatefulWidget {
   const ToolsScreen({super.key});
 
@@ -71,8 +113,10 @@ class _ToolsScreenState extends State<ToolsScreen>
         _isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       setState(() {
-        _error = e.toString();
+        _error = l10n.toolsLoadError(e.toString());
         _isLoading = false;
       });
     }
@@ -139,7 +183,9 @@ class _ToolsScreenState extends State<ToolsScreen>
       setState(() => _isLoading = false);
       if (mounted) {
         showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(result.error ?? l10n.toolsBuyError)),
+          SnackBar(
+            content: Text(_toolsPurchaseErrorMessage(result, l10n)),
+          ),
         );
       }
     }
@@ -187,7 +233,9 @@ class _ToolsScreenState extends State<ToolsScreen>
       setState(() => _isLoading = false);
       if (mounted) {
         showTopRightFromSnackBar(context, 
-          SnackBar(content: Text(result.error ?? l10n.toolsRepairError)),
+          SnackBar(
+            content: Text(_toolsRepairErrorMessage(result, l10n)),
+          ),
         );
       }
     }
@@ -234,7 +282,11 @@ class _ToolsScreenState extends State<ToolsScreen>
           ],
         ),
         actions: [
-          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: l10n.refresh,
+            onPressed: _loadData,
+          ),
         ],
       ),
       body: TabBarView(
@@ -257,7 +309,7 @@ class _ToolsScreenState extends State<ToolsScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(l10n.error(_error!)),
+            Text(_error!),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadData,

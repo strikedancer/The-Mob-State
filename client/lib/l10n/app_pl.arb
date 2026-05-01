@@ -5435,5 +5435,27 @@
     }
   },
   "courtRecordBribeNote": "Przeszłe przekonania pozostają widoczne. Skuteczna łapówka dla sędziego rozwiązuje tylko jedną aktywną sprawę.",
-  "courtNoConvictionsYet": "Nie odnotowano jeszcze żadnych wyroków skazujących."
+  "courtNoConvictionsYet": "Nie odnotowano jeszcze żadnych wyroków skazujących.",
+  "toolsLoadError": "Nie można załadować narzędzi: {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Nie znaleziono narzędzia.",
+  "toolsErrInventoryFullBuy": "Twój ekwipunek jest pełny. Przechowuj trochę narzędzi lub zwiększ pojemność.",
+  "toolsErrPurchaseServer": "Zakup narzędzia nie powiódł się z powodu problemu z serwerem.",
+  "toolsErrToolNotOwned": "Nie jesteś właścicielem tego narzędzia.",
+  "toolsErrAlreadyMaxDurability": "Narzędzie ma już maksymalną trwałość.",
+  "toolsErrRepairServer": "Naprawa narzędzia nie powiodła się z powodu problemu z serwerem.",
+  "toolsNetworkError": "Błąd sieci: {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

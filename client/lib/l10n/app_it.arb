@@ -5435,5 +5435,27 @@
     }
   },
   "courtRecordBribeNote": "Le convinzioni passate restano visibili. Una tangente di un giudice che riesce a risolvere solo un caso attivo.",
-  "courtNoConvictionsYet": "Nessuna condanna ancora registrata."
+  "courtNoConvictionsYet": "Nessuna condanna ancora registrata.",
+  "toolsLoadError": "Impossibile caricare gli strumenti: {error}",
+  "@toolsLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "toolsErrToolNotFound": "Strumento non trovato.",
+  "toolsErrInventoryFullBuy": "Il tuo inventario è pieno. Conserva alcuni strumenti o aggiorna la capacità.",
+  "toolsErrPurchaseServer": "L'acquisto dello strumento non è riuscito a causa di un problema con il server.",
+  "toolsErrToolNotOwned": "Non possiedi questo strumento.",
+  "toolsErrAlreadyMaxDurability": "Lo strumento è già alla massima durata.",
+  "toolsErrRepairServer": "La riparazione dello strumento non è riuscita a causa di un problema del server.",
+  "toolsNetworkError": "Errore di rete: {error}",
+  "@toolsNetworkError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

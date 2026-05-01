@@ -59,21 +59,30 @@ class ToolService {
           tool: tool,
         );
       } else {
+        final params = data['params'];
         String errorMessage = 'Could not buy tool';
-        if (data['params'] != null && data['params']['message'] != null) {
-          errorMessage = data['params']['message'];
+        String? errorCode;
+        if (params is Map) {
+          if (params['message'] != null) {
+            errorMessage = params['message'].toString();
+          }
+          if (params['reason'] != null) {
+            errorCode = params['reason'].toString();
+          }
         }
 
         return ToolPurchaseResult(
           success: false,
           error: errorMessage,
+          errorCode: errorCode,
         );
       }
     } catch (e) {
       print('[ToolService] Error buying tool: $e');
       return ToolPurchaseResult(
         success: false,
-        error: 'Network error: $e',
+        errorCode: 'NETWORK',
+        error: e.toString(),
       );
     }
   }
@@ -92,21 +101,30 @@ class ToolService {
           cost: cost,
         );
       } else {
+        final params = data['params'];
         String errorMessage = 'Could not repair tool';
-        if (data['params'] != null && data['params']['message'] != null) {
-          errorMessage = data['params']['message'];
+        String? errorCode;
+        if (params is Map) {
+          if (params['message'] != null) {
+            errorMessage = params['message'].toString();
+          }
+          if (params['reason'] != null) {
+            errorCode = params['reason'].toString();
+          }
         }
 
         return ToolRepairResult(
           success: false,
           error: errorMessage,
+          errorCode: errorCode,
         );
       }
     } catch (e) {
       print('[ToolService] Error repairing tool: $e');
       return ToolRepairResult(
         success: false,
-        error: 'Network error: $e',
+        errorCode: 'NETWORK',
+        error: e.toString(),
       );
     }
   }
@@ -116,11 +134,14 @@ class ToolPurchaseResult {
   final bool success;
   final PlayerTool? tool;
   final String? error;
+  /// Backend `params.reason` when purchase fails (e.g. `INSUFFICIENT_MONEY`).
+  final String? errorCode;
 
   ToolPurchaseResult({
     required this.success,
     this.tool,
     this.error,
+    this.errorCode,
   });
 }
 
@@ -128,10 +149,13 @@ class ToolRepairResult {
   final bool success;
   final int? cost;
   final String? error;
+  /// Backend `params.reason` when repair fails.
+  final String? errorCode;
 
   ToolRepairResult({
     required this.success,
     this.cost,
     this.error,
+    this.errorCode,
   });
 }

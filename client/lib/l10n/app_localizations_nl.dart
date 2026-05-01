@@ -5287,6 +5287,38 @@ class AppLocalizationsNl extends AppLocalizations {
   String get toolsBadgeRepair => 'REPAREER';
 
   @override
+  String toolsLoadError(String error) {
+    return 'Gereedschap laden mislukt: $error';
+  }
+
+  @override
+  String get toolsErrToolNotFound => 'Gereedschap niet gevonden.';
+
+  @override
+  String get toolsErrInventoryFullBuy =>
+      'Je inventaris is vol. Berg gereedschap op of vergroot capaciteit.';
+
+  @override
+  String get toolsErrPurchaseServer =>
+      'Aankoop mislukt door een serverprobleem.';
+
+  @override
+  String get toolsErrToolNotOwned => 'Je bezit dit gereedschap niet.';
+
+  @override
+  String get toolsErrAlreadyMaxDurability =>
+      'Gereedschap heeft al maximale duurzaamheid.';
+
+  @override
+  String get toolsErrRepairServer =>
+      'Reparatie mislukt door een serverprobleem.';
+
+  @override
+  String toolsNetworkError(String error) {
+    return 'Netwerkfout: $error';
+  }
+
+  @override
   String get crimeOutcomeSuccess => 'Misdaad geslaagd!';
 
   @override

@@ -5267,6 +5267,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toolsBadgeRepair => 'REPAIR';
 
   @override
+  String toolsLoadError(String error) {
+    return 'Could not load tools: $error';
+  }
+
+  @override
+  String get toolsErrToolNotFound => 'Tool not found.';
+
+  @override
+  String get toolsErrInventoryFullBuy =>
+      'Your inventory is full. Store some tools or upgrade capacity.';
+
+  @override
+  String get toolsErrPurchaseServer =>
+      'Tool purchase failed due to a server issue.';
+
+  @override
+  String get toolsErrToolNotOwned => 'You don\'t own this tool.';
+
+  @override
+  String get toolsErrAlreadyMaxDurability =>
+      'Tool is already at maximum durability.';
+
+  @override
+  String get toolsErrRepairServer =>
+      'Tool repair failed due to a server issue.';
+
+  @override
+  String toolsNetworkError(String error) {
+    return 'Network error: $error';
+  }
+
+  @override
   String get crimeOutcomeSuccess => 'Crime successful!';
 
   @override

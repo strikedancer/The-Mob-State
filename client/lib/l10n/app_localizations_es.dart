@@ -5325,6 +5325,38 @@ class AppLocalizationsEs extends AppLocalizations {
   String get toolsBadgeRepair => 'REPARAR';
 
   @override
+  String toolsLoadError(String error) {
+    return 'No se pudieron cargar herramientas: $error';
+  }
+
+  @override
+  String get toolsErrToolNotFound => 'Herramienta no encontrada.';
+
+  @override
+  String get toolsErrInventoryFullBuy =>
+      'Tu inventario está lleno. Almacene algunas herramientas o actualice la capacidad.';
+
+  @override
+  String get toolsErrPurchaseServer =>
+      'La compra de herramientas falló debido a un problema con el servidor.';
+
+  @override
+  String get toolsErrToolNotOwned => 'No eres dueño de esta herramienta.';
+
+  @override
+  String get toolsErrAlreadyMaxDurability =>
+      'La herramienta ya tiene su máxima durabilidad.';
+
+  @override
+  String get toolsErrRepairServer =>
+      'La reparación de la herramienta falló debido a un problema del servidor.';
+
+  @override
+  String toolsNetworkError(String error) {
+    return 'Error de red: $error';
+  }
+
+  @override
   String get crimeOutcomeSuccess => '¡Crimen exitoso!';
 
   @override
