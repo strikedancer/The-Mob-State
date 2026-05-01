@@ -20,3 +20,4 @@ Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top
 ## QA (kort)
 - Deep link `/privacy` laadt juridisch scherm; gasttaal wisselt mee.
 - Zonder token: `/public/home` retourneert JSON; geen e-mail of andere PII in het payload.
+- Cross-origin van `themobstate.com` → `api.themobstate.com`: backend **CORS** moet de shell-origin reflecteren (`ALLOWED_ORIGINS` in `.env`, of productie-default in `config/index.ts` wanneer die variabele leeg is).

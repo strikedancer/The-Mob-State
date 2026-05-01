@@ -53,7 +53,25 @@ const config: Config = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   appBaseUrl: process.env.APP_BASE_URL || 'http://localhost:5173',
   apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3000',
-  allowedOrigins: process.env.ALLOWED_ORIGINS?.split(',') || [],
+  allowedOrigins: (() => {
+    const fromEnv =
+      process.env.ALLOWED_ORIGINS?.split(',')
+        .map((s) => s.trim())
+        .filter(Boolean) ?? [];
+    if (fromEnv.length > 0) {
+      return fromEnv;
+    }
+    // Production: empty ALLOWED_ORIGINS breaks browser calls from the Flutter shell
+    // (e.g. landing GET https://api…/public/home). Keep in sync with real web + admin hosts.
+    if (process.env.NODE_ENV === 'production') {
+      return [
+        'https://themobstate.com',
+        'https://www.themobstate.com',
+        'https://admin.themobstate.com',
+      ];
+    }
+    return [];
+  })(),
   tickIntervalMinutes: parseFloat(process.env.TICK_INTERVAL_MINUTES || '5'),
   hospitalHealCost: parseInt(process.env.HOSPITAL_HEAL_COST || '10000', 10),
   hospitalHealAmount: parseInt(process.env.HOSPITAL_HEAL_AMOUNT || '30', 10),
