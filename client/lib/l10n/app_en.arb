@@ -1676,6 +1676,115 @@
       "name": {"type": "String"}
     }
   },
+  "premiumUiLoadError": "Premium data could not be loaded.",
+  "premiumUiRedirectPaidOneTime": "Purchase received. Refreshing your credits and premium overview.",
+  "premiumUiRedirectPaidCrewVip": "Crew VIP payment received. Refreshing your premium overview.",
+  "premiumUiRedirectPaidVip": "VIP payment received. Refreshing your premium overview.",
+  "premiumUiRedirectCancelledOneTime": "Purchase cancelled.",
+  "premiumUiRedirectCancelledSubscription": "Payment cancelled.",
+  "premiumUiRedirectFailedOneTime": "Purchase failed or expired.",
+  "premiumUiRedirectFailedSubscription": "Payment failed or expired.",
+  "premiumUiCheckoutOpenFailed": "Failed to open the payment page.",
+  "premiumUiRedeemNeedsVehicle": "This item requires a vehicle selection and will be redeemed from the vehicle screen.",
+  "premiumUiRedeemSuccessDefault": "Credits redeemed.",
+  "premiumUiRedeemFailed": "Failed to redeem credits.",
+  "premiumUiPerMonthShort": "mo",
+  "premiumUiCreditThemeCashBoost": "Cash boost",
+  "premiumUiCreditThemeSecurity": "Security",
+  "premiumUiCreditThemeGarage": "Garage",
+  "premiumUiCreditThemeTuneShop": "Tune Shop",
+  "premiumUiCreditThemeCooldown": "Cooldown: {actionType}",
+  "@premiumUiCreditThemeCooldown": {
+    "placeholders": {
+      "actionType": {"type": "String"}
+    }
+  },
+  "premiumUiCreditThemeCooldownReset": "Cooldown reset",
+  "premiumUiCreditThemeEvents": "Events",
+  "premiumUiCreditThemePremium": "Premium",
+  "premiumUiKpiPlayerVip": "Player VIP",
+  "premiumUiKpiCrewVip": "Crew VIP",
+  "premiumUiCreditsLabel": "Credits",
+  "premiumUiStatusActive": "Active",
+  "premiumUiStatusInactive": "Inactive",
+  "premiumUiNoCrew": "No crew",
+  "premiumUiSectionVipTitle": "VIP subscriptions",
+  "premiumUiSectionVipSubtitle": "Professional VIP tiles with clear pricing, status and benefits.",
+  "premiumUiPlayerVipSubtitle": "Exclusive account perks, avatar unlocks and premium QoL.",
+  "premiumUiActiveUntil": "Active until {date}",
+  "@premiumUiActiveUntil": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "premiumUiBadgeVip": "VIP",
+  "premiumUiExtendVip": "Extend VIP",
+  "premiumUiBuyVip": "Buy VIP",
+  "premiumUiPlayerVipBenefitsTitle": "Player VIP benefits",
+  "premiumUiPlayerVipBenefitsBody": "Player VIP benefits:\n- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n- In Drug Production, you get a VIP lightning button on each production card to buy missing materials in one click (after cost confirmation).\n- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n- Your rank is halved instead of a full reset.\n- Education progress and unlocked achievements are preserved.\n- Bank balance and crypto are preserved.\n- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n- Drug progress and drug stock are reset.\n- You receive 100 premium credits weekly while VIP is active.",
+  "premiumUiCrewVipSubtitleNoCrew": "You must be in a crew before you can activate Crew VIP.",
+  "premiumUiCrewVipSubtitleInCrew": "For crew upgrades, side buildings level 11-15 and shared perks.",
+  "premiumUiBadgeCrewNeeded": "Crew needed",
+  "premiumUiBadgeCrewVipLabel": "Crew VIP",
+  "premiumUiCtaCrewRequired": "Crew required",
+  "premiumUiExtendCrewVip": "Extend Crew VIP",
+  "premiumUiBuyCrewVip": "Buy Crew VIP",
+  "premiumUiCrewVipBenefitsTitle": "Crew VIP benefits",
+  "premiumUiCrewVipBenefitsNoCrewBody": "You must join a crew before buying Crew VIP. Crew VIP unlocks crew-focused perks and higher upgrade progression.",
+  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP grants access to extra crew upgrades and shared premium perks for your crew flow. After purchase, active status and expiry are updated immediately.",
+  "premiumUiSectionBuyCreditsTitle": "Buy credits",
+  "premiumUiSectionBuyCreditsSubtitle": "Pick a bundle via visual tiles. Popular 1000-credit option gets its own spotlight.",
+  "premiumUiNoCreditBundles": "There are no active credit bundles right now.",
+  "premiumUiCreditBundleFallbackTitle": "Credit bundle",
+  "premiumUiCreditBundleFallbackDescription": "Instant credits for your premium wallet.",
+  "premiumUiBuyCredits": "Buy {amount} credits",
+  "@premiumUiBuyCredits": {
+    "placeholders": {
+      "amount": {"type": "int"}
+    }
+  },
+  "premiumUiCreditsCount": "{count} credits",
+  "@premiumUiCreditsCount": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "premiumUiBadgeUltraDeal": "Ultra deal",
+  "premiumUiBadgeTopDeal": "Top deal",
+  "premiumUiBadgeCredits": "Credits",
+  "premiumUiCreditOfferInfo": "{buyLine} for {price}.\n\n{description}",
+  "@premiumUiCreditOfferInfo": {
+    "placeholders": {
+      "buyLine": {"type": "String"},
+      "price": {"type": "String"},
+      "description": {"type": "String"}
+    }
+  },
+  "premiumUiSectionShopTitle": "Credit shop",
+  "premiumUiSectionShopSubtitle": "Each item uses a themed tile based on the effect you are buying.",
+  "premiumUiShopItemFallbackTitle": "Premium item",
+  "premiumUiShopItemFallbackDescription": "Direct premium perk.",
+  "premiumUiShopNoActiveCooldown": "No active cooldown",
+  "premiumUiShopNotEnoughCredits": "Not enough credits",
+  "premiumUiShopRedeem": "Redeem",
+  "premiumUiShopItemInfo": "{description}\n\nTheme: {theme}\nCost: {cost} credits",
+  "@premiumUiShopItemInfo": {
+    "placeholders": {
+      "description": {"type": "String"},
+      "theme": {"type": "String"},
+      "cost": {"type": "int"}
+    }
+  },
+  "premiumUiBadgeShop": "Shop",
+  "premiumUiActiveEffectsTitle": "Active premium effects",
+  "premiumUiIntroSubtitle": "Players manage VIP subscriptions, credit bundles and credit shop items here.",
+  "premiumUiEntitlementChip": "{key} - {date}",
+  "@premiumUiEntitlementChip": {
+    "placeholders": {
+      "key": {"type": "String"},
+      "date": {"type": "String"}
+    }
+  },
   "propertiesAvailable": "Available",
   "myProperties": "My Properties",
   "errorLoadingMyProperties": "Error loading my properties",

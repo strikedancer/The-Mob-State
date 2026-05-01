@@ -5013,6 +5013,424 @@ abstract class AppLocalizations {
   /// **'Crew: {name}'**
   String friendsUiLineCrew(String name);
 
+  /// No description provided for @premiumUiLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium data could not be loaded.'**
+  String get premiumUiLoadError;
+
+  /// No description provided for @premiumUiRedirectPaidOneTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase received. Refreshing your credits and premium overview.'**
+  String get premiumUiRedirectPaidOneTime;
+
+  /// No description provided for @premiumUiRedirectPaidCrewVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP payment received. Refreshing your premium overview.'**
+  String get premiumUiRedirectPaidCrewVip;
+
+  /// No description provided for @premiumUiRedirectPaidVip.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP payment received. Refreshing your premium overview.'**
+  String get premiumUiRedirectPaidVip;
+
+  /// No description provided for @premiumUiRedirectCancelledOneTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase cancelled.'**
+  String get premiumUiRedirectCancelledOneTime;
+
+  /// No description provided for @premiumUiRedirectCancelledSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment cancelled.'**
+  String get premiumUiRedirectCancelledSubscription;
+
+  /// No description provided for @premiumUiRedirectFailedOneTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed or expired.'**
+  String get premiumUiRedirectFailedOneTime;
+
+  /// No description provided for @premiumUiRedirectFailedSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed or expired.'**
+  String get premiumUiRedirectFailedSubscription;
+
+  /// No description provided for @premiumUiCheckoutOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to open the payment page.'**
+  String get premiumUiCheckoutOpenFailed;
+
+  /// No description provided for @premiumUiRedeemNeedsVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'This item requires a vehicle selection and will be redeemed from the vehicle screen.'**
+  String get premiumUiRedeemNeedsVehicle;
+
+  /// No description provided for @premiumUiRedeemSuccessDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Credits redeemed.'**
+  String get premiumUiRedeemSuccessDefault;
+
+  /// No description provided for @premiumUiRedeemFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to redeem credits.'**
+  String get premiumUiRedeemFailed;
+
+  /// No description provided for @premiumUiPerMonthShort.
+  ///
+  /// In en, this message translates to:
+  /// **'mo'**
+  String get premiumUiPerMonthShort;
+
+  /// No description provided for @premiumUiCreditThemeCashBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash boost'**
+  String get premiumUiCreditThemeCashBoost;
+
+  /// No description provided for @premiumUiCreditThemeSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get premiumUiCreditThemeSecurity;
+
+  /// No description provided for @premiumUiCreditThemeGarage.
+  ///
+  /// In en, this message translates to:
+  /// **'Garage'**
+  String get premiumUiCreditThemeGarage;
+
+  /// No description provided for @premiumUiCreditThemeTuneShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Tune Shop'**
+  String get premiumUiCreditThemeTuneShop;
+
+  /// No description provided for @premiumUiCreditThemeCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown: {actionType}'**
+  String premiumUiCreditThemeCooldown(String actionType);
+
+  /// No description provided for @premiumUiCreditThemeCooldownReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown reset'**
+  String get premiumUiCreditThemeCooldownReset;
+
+  /// No description provided for @premiumUiCreditThemeEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get premiumUiCreditThemeEvents;
+
+  /// No description provided for @premiumUiCreditThemePremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premiumUiCreditThemePremium;
+
+  /// No description provided for @premiumUiKpiPlayerVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Player VIP'**
+  String get premiumUiKpiPlayerVip;
+
+  /// No description provided for @premiumUiKpiCrewVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP'**
+  String get premiumUiKpiCrewVip;
+
+  /// No description provided for @premiumUiCreditsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Credits'**
+  String get premiumUiCreditsLabel;
+
+  /// No description provided for @premiumUiStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get premiumUiStatusActive;
+
+  /// No description provided for @premiumUiStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get premiumUiStatusInactive;
+
+  /// No description provided for @premiumUiNoCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'No crew'**
+  String get premiumUiNoCrew;
+
+  /// No description provided for @premiumUiSectionVipTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP subscriptions'**
+  String get premiumUiSectionVipTitle;
+
+  /// No description provided for @premiumUiSectionVipSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional VIP tiles with clear pricing, status and benefits.'**
+  String get premiumUiSectionVipSubtitle;
+
+  /// No description provided for @premiumUiPlayerVipSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclusive account perks, avatar unlocks and premium QoL.'**
+  String get premiumUiPlayerVipSubtitle;
+
+  /// No description provided for @premiumUiActiveUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Active until {date}'**
+  String premiumUiActiveUntil(String date);
+
+  /// No description provided for @premiumUiBadgeVip.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP'**
+  String get premiumUiBadgeVip;
+
+  /// No description provided for @premiumUiExtendVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Extend VIP'**
+  String get premiumUiExtendVip;
+
+  /// No description provided for @premiumUiBuyVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy VIP'**
+  String get premiumUiBuyVip;
+
+  /// No description provided for @premiumUiPlayerVipBenefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Player VIP benefits'**
+  String get premiumUiPlayerVipBenefitsTitle;
+
+  /// No description provided for @premiumUiPlayerVipBenefitsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Player VIP benefits:\n- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n- In Drug Production, you get a VIP lightning button on each production card to buy missing materials in one click (after cost confirmation).\n- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n- Your rank is halved instead of a full reset.\n- Education progress and unlocked achievements are preserved.\n- Bank balance and crypto are preserved.\n- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n- Drug progress and drug stock are reset.\n- You receive 100 premium credits weekly while VIP is active.'**
+  String get premiumUiPlayerVipBenefitsBody;
+
+  /// No description provided for @premiumUiCrewVipSubtitleNoCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be in a crew before you can activate Crew VIP.'**
+  String get premiumUiCrewVipSubtitleNoCrew;
+
+  /// No description provided for @premiumUiCrewVipSubtitleInCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'For crew upgrades, side buildings level 11-15 and shared perks.'**
+  String get premiumUiCrewVipSubtitleInCrew;
+
+  /// No description provided for @premiumUiBadgeCrewNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew needed'**
+  String get premiumUiBadgeCrewNeeded;
+
+  /// No description provided for @premiumUiBadgeCrewVipLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP'**
+  String get premiumUiBadgeCrewVipLabel;
+
+  /// No description provided for @premiumUiCtaCrewRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew required'**
+  String get premiumUiCtaCrewRequired;
+
+  /// No description provided for @premiumUiExtendCrewVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Extend Crew VIP'**
+  String get premiumUiExtendCrewVip;
+
+  /// No description provided for @premiumUiBuyCrewVip.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Crew VIP'**
+  String get premiumUiBuyCrewVip;
+
+  /// No description provided for @premiumUiCrewVipBenefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP benefits'**
+  String get premiumUiCrewVipBenefitsTitle;
+
+  /// No description provided for @premiumUiCrewVipBenefitsNoCrewBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You must join a crew before buying Crew VIP. Crew VIP unlocks crew-focused perks and higher upgrade progression.'**
+  String get premiumUiCrewVipBenefitsNoCrewBody;
+
+  /// No description provided for @premiumUiCrewVipBenefitsInCrewBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew VIP grants access to extra crew upgrades and shared premium perks for your crew flow. After purchase, active status and expiry are updated immediately.'**
+  String get premiumUiCrewVipBenefitsInCrewBody;
+
+  /// No description provided for @premiumUiSectionBuyCreditsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy credits'**
+  String get premiumUiSectionBuyCreditsTitle;
+
+  /// No description provided for @premiumUiSectionBuyCreditsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a bundle via visual tiles. Popular 1000-credit option gets its own spotlight.'**
+  String get premiumUiSectionBuyCreditsSubtitle;
+
+  /// No description provided for @premiumUiNoCreditBundles.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no active credit bundles right now.'**
+  String get premiumUiNoCreditBundles;
+
+  /// No description provided for @premiumUiCreditBundleFallbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit bundle'**
+  String get premiumUiCreditBundleFallbackTitle;
+
+  /// No description provided for @premiumUiCreditBundleFallbackDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant credits for your premium wallet.'**
+  String get premiumUiCreditBundleFallbackDescription;
+
+  /// No description provided for @premiumUiBuyCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {amount} credits'**
+  String premiumUiBuyCredits(int amount);
+
+  /// No description provided for @premiumUiCreditsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} credits'**
+  String premiumUiCreditsCount(int count);
+
+  /// No description provided for @premiumUiBadgeUltraDeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Ultra deal'**
+  String get premiumUiBadgeUltraDeal;
+
+  /// No description provided for @premiumUiBadgeTopDeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Top deal'**
+  String get premiumUiBadgeTopDeal;
+
+  /// No description provided for @premiumUiBadgeCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Credits'**
+  String get premiumUiBadgeCredits;
+
+  /// No description provided for @premiumUiCreditOfferInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'{buyLine} for {price}.\n\n{description}'**
+  String premiumUiCreditOfferInfo(
+    String buyLine,
+    String price,
+    String description,
+  );
+
+  /// No description provided for @premiumUiSectionShopTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit shop'**
+  String get premiumUiSectionShopTitle;
+
+  /// No description provided for @premiumUiSectionShopSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Each item uses a themed tile based on the effect you are buying.'**
+  String get premiumUiSectionShopSubtitle;
+
+  /// No description provided for @premiumUiShopItemFallbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium item'**
+  String get premiumUiShopItemFallbackTitle;
+
+  /// No description provided for @premiumUiShopItemFallbackDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct premium perk.'**
+  String get premiumUiShopItemFallbackDescription;
+
+  /// No description provided for @premiumUiShopNoActiveCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'No active cooldown'**
+  String get premiumUiShopNoActiveCooldown;
+
+  /// No description provided for @premiumUiShopNotEnoughCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough credits'**
+  String get premiumUiShopNotEnoughCredits;
+
+  /// No description provided for @premiumUiShopRedeem.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem'**
+  String get premiumUiShopRedeem;
+
+  /// No description provided for @premiumUiShopItemInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'{description}\n\nTheme: {theme}\nCost: {cost} credits'**
+  String premiumUiShopItemInfo(String description, String theme, int cost);
+
+  /// No description provided for @premiumUiBadgeShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get premiumUiBadgeShop;
+
+  /// No description provided for @premiumUiActiveEffectsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active premium effects'**
+  String get premiumUiActiveEffectsTitle;
+
+  /// No description provided for @premiumUiIntroSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Players manage VIP subscriptions, credit bundles and credit shop items here.'**
+  String get premiumUiIntroSubtitle;
+
+  /// No description provided for @premiumUiEntitlementChip.
+  ///
+  /// In en, this message translates to:
+  /// **'{key} - {date}'**
+  String premiumUiEntitlementChip(String key, String date);
+
   /// No description provided for @propertiesAvailable.
   ///
   /// In en, this message translates to:

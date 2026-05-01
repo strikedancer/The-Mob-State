@@ -33,7 +33,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
   List<Map<String, dynamic>> _entitlements = const [];
   int _creditBalance = 0;
 
-  bool get _isNl => (AppLocalizations.of(context)?.localeName ?? 'en') == 'nl';
+  /// Catalog fields from API are provided as Dutch + English only.
+  bool _useNlCatalogCopy(BuildContext context) =>
+      Localizations.localeOf(context).languageCode == 'nl';
 
   void _showTopRightMessage(String message, Color backgroundColor) {
     showTopRightFromSnackBar(
@@ -61,8 +63,6 @@ class _PremiumScreenState extends State<PremiumScreen> {
       (_) => _showRedirectFeedback(),
     );
   }
-
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   Future<void> _loadData() async {
     setState(() {
@@ -114,11 +114,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
         _creditBalance = (creditData['balance'] as num?)?.toInt() ?? 0;
       });
     } catch (_) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       setState(() {
-        _error = _tr(
-          'Premiumgegevens konden niet worden geladen.',
-          'Premium data could not be loaded.',
-        );
+        _error = l10n.premiumUiLoadError;
       });
     } finally {
       if (mounted) {
@@ -129,6 +128,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   void _showRedirectFeedback() {
     if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
     final status = Uri.base.queryParameters['status'];
     final purchase = Uri.base.queryParameters['purchase'];
     if (status == null || status.isEmpty) return;
@@ -137,39 +137,24 @@ class _PremiumScreenState extends State<PremiumScreen> {
     Color color = Colors.green;
     if (status == 'paid' || status == 'success') {
       if (purchase == 'one_time') {
-        message = _tr(
-          'Aankoop ontvangen. Je credits en premium-overzicht worden ververst.',
-          'Purchase received. Refreshing your credits and premium overview.',
-        );
+        message = l10n.premiumUiRedirectPaidOneTime;
       } else if (purchase == 'crew_vip') {
-        message = _tr(
-          'Crew VIP betaling ontvangen. Je premium-overzicht wordt ververst.',
-          'Crew VIP payment received. Refreshing your premium overview.',
-        );
+        message = l10n.premiumUiRedirectPaidCrewVip;
       } else {
-        message = _tr(
-          'VIP betaling ontvangen. Je premium-overzicht wordt ververst.',
-          'VIP payment received. Refreshing your premium overview.',
-        );
+        message = l10n.premiumUiRedirectPaidVip;
       }
     } else if (status == 'cancelled') {
       if (purchase == 'one_time') {
-        message = _tr('Aankoop geannuleerd.', 'Purchase cancelled.');
+        message = l10n.premiumUiRedirectCancelledOneTime;
       } else {
-        message = _tr('Betaling geannuleerd.', 'Payment cancelled.');
+        message = l10n.premiumUiRedirectCancelledSubscription;
       }
       color = Colors.orange;
     } else if (status == 'failed' || status == 'expired') {
       if (purchase == 'one_time') {
-        message = _tr(
-          'Aankoop mislukt of verlopen.',
-          'Purchase failed or expired.',
-        );
+        message = l10n.premiumUiRedirectFailedOneTime;
       } else {
-        message = _tr(
-          'Betaling mislukt of verlopen.',
-          'Payment failed or expired.',
-        );
+        message = l10n.premiumUiRedirectFailedSubscription;
       }
       color = Colors.red;
     }
@@ -209,11 +194,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
       await _openCheckoutUrl(checkoutUrl);
     } catch (_) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       _showTopRightMessage(
-        _tr(
-          'Openen van de betaalpagina mislukt.',
-          'Failed to open the payment page.',
-        ),
+        l10n.premiumUiCheckoutOpenFailed,
         Colors.red,
       );
     } finally {
@@ -227,11 +210,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
     final effectType = (item['effectType'] ?? '').toString();
     if (effectType == 'VEHICLE_REPAIR_FINISH' ||
         effectType == 'VEHICLE_TUNE_RESET') {
+      final l10n = AppLocalizations.of(context)!;
       _showTopRightMessage(
-        _tr(
-          'Dit item vereist een voertuigkeuze en wordt straks vanuit het voertuigen-scherm ingewisseld.',
-          'This item requires a vehicle selection and will be redeemed from the vehicle screen.',
-        ),
+        l10n.premiumUiRedeemNeedsVehicle,
         Colors.orange,
       );
       return;
@@ -254,16 +235,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
       }
 
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       _showTopRightMessage(
-        (payload['message'] ?? _tr('Credits ingewisseld.', 'Credits redeemed.'))
-            .toString(),
+        (payload['message'] ?? l10n.premiumUiRedeemSuccessDefault).toString(),
         Colors.green,
       );
       await _loadData();
     } catch (_) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       _showTopRightMessage(
-        _tr('Credits inwisselen mislukt.', 'Failed to redeem credits.'),
+        l10n.premiumUiRedeemFailed,
         Colors.red,
       );
     } finally {
@@ -273,9 +255,9 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
-  String _priceLabel(dynamic raw) {
+  String _priceLabel(dynamic raw, AppLocalizations l10n) {
     final value = (raw ?? '0.00').toString();
-    return '\u20AC$value/${_tr('mnd', 'mo')}';
+    return '\u20AC$value/${l10n.premiumUiPerMonthShort}';
   }
 
   String _oneTimePriceLabel(dynamic raw) =>
@@ -357,27 +339,27 @@ class _PremiumScreenState extends State<PremiumScreen> {
     }
   }
 
-  String _creditItemThemeLabel(Map<String, dynamic> item) {
+  String _creditItemThemeLabel(Map<String, dynamic> item, AppLocalizations l10n) {
     final effectType = (item['effectType'] ?? '').toString();
     final actionType = (item['actionType'] ?? '').toString();
     switch (effectType) {
       case 'CASH_BUNDLE':
-        return _tr('Cash boost', 'Cash boost');
+        return l10n.premiumUiCreditThemeCashBoost;
       case 'HIT_PROTECTION':
-        return _tr('Security', 'Security');
+        return l10n.premiumUiCreditThemeSecurity;
       case 'VEHICLE_REPAIR_FINISH':
-        return _tr('Garage', 'Garage');
+        return l10n.premiumUiCreditThemeGarage;
       case 'VEHICLE_TUNE_RESET':
-        return _tr('Tune Shop', 'Tune Shop');
+        return l10n.premiumUiCreditThemeTuneShop;
       case 'ACTION_COOLDOWN_RESET':
         if (actionType.isNotEmpty) {
-          return _tr('Cooldown: $actionType', 'Cooldown: $actionType');
+          return l10n.premiumUiCreditThemeCooldown(actionType);
         }
-        return _tr('Cooldown reset', 'Cooldown reset');
+        return l10n.premiumUiCreditThemeCooldownReset;
       case 'EVENT_BOOST':
-        return _tr('Events', 'Events');
+        return l10n.premiumUiCreditThemeEvents;
       default:
-        return _tr('Premium', 'Premium');
+        return l10n.premiumUiCreditThemePremium;
     }
   }
 
@@ -398,6 +380,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     await showDialog<void>(
       context: context,
       builder: (dialogContext) {
+        final dlgL10n = AppLocalizations.of(dialogContext)!;
         final colorScheme = Theme.of(dialogContext).colorScheme;
         return Dialog(
           insetPadding: const EdgeInsets.symmetric(
@@ -427,7 +410,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                           ),
                         ),
                         IconButton(
-                          tooltip: _tr('Sluiten', 'Close'),
+                          tooltip: dlgL10n.close,
                           onPressed: () => Navigator.of(dialogContext).pop(),
                           icon: const Icon(Icons.close),
                         ),
@@ -447,7 +430,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       alignment: Alignment.centerRight,
                       child: FilledButton(
                         onPressed: () => Navigator.of(dialogContext).pop(),
-                        child: Text(_tr('Sluiten', 'Close')),
+                        child: Text(dlgL10n.close),
                       ),
                     ),
                   ],
@@ -853,7 +836,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 
-  Widget _buildStatusStrip() {
+  Widget _buildStatusStrip(AppLocalizations l10n) {
     final playerVip =
         (_status?['playerVip'] as Map?)?.cast<String, dynamic>() ?? const {};
     final crewVip = (_status?['crewVip'] as Map?)?.cast<String, dynamic>();
@@ -863,25 +846,25 @@ class _PremiumScreenState extends State<PremiumScreen> {
       maxColumns: 3,
       children: [
         _buildKpiCard(
-          _tr('Speler VIP', 'Player VIP'),
+          l10n.premiumUiKpiPlayerVip,
           playerVip['isVip'] == true
-              ? _tr('Actief', 'Active')
-              : _tr('Inactief', 'Inactive'),
+              ? l10n.premiumUiStatusActive
+              : l10n.premiumUiStatusInactive,
           Icons.workspace_premium,
           accent: Colors.amber.shade700,
         ),
         _buildKpiCard(
-          _tr('Crew VIP', 'Crew VIP'),
+          l10n.premiumUiKpiCrewVip,
           crewVip == null
-              ? _tr('Geen crew', 'No crew')
+              ? l10n.premiumUiNoCrew
               : (crewVip['isVip'] == true
-                    ? _tr('Actief', 'Active')
-                    : _tr('Inactief', 'Inactive')),
+                    ? l10n.premiumUiStatusActive
+                    : l10n.premiumUiStatusInactive),
           Icons.groups,
           accent: Colors.indigo.shade600,
         ),
         _buildKpiCard(
-          _tr('Credits', 'Credits'),
+          l10n.premiumUiCreditsLabel,
           _creditBalance.toString(),
           Icons.token,
           accent: Colors.teal.shade600,
@@ -933,7 +916,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 
-  Widget _buildVipPlans() {
+  Widget _buildVipPlans(AppLocalizations l10n) {
     final playerVip =
         (_status?['playerVip'] as Map?)?.cast<String, dynamic>() ?? const {};
     final crewVip = (_status?['crewVip'] as Map?)?.cast<String, dynamic>();
@@ -942,11 +925,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionHeader(
-          title: _tr('VIP abonnementen', 'VIP subscriptions'),
-          subtitle: _tr(
-            'Professionele VIP-tiles met duidelijke prijzen, status en benefits.',
-            'Professional VIP tiles with clear pricing, status and benefits.',
-          ),
+          title: l10n.premiumUiSectionVipTitle,
+          subtitle: l10n.premiumUiSectionVipSubtitle,
           icon: Icons.workspace_premium,
           accent: Colors.amber.shade700,
         ),
@@ -956,99 +936,57 @@ class _PremiumScreenState extends State<PremiumScreen> {
           maxColumns: 2,
           children: [
             _buildVisualTile(
-              title: _tr('Speler VIP', 'Player VIP'),
-              subtitle: _tr(
-                'Exclusieve accountvoordelen, avatar unlocks en premium QoL.',
-                'Exclusive account perks, avatar unlocks and premium QoL.',
-              ),
+              title: l10n.premiumUiKpiPlayerVip,
+              subtitle: l10n.premiumUiPlayerVipSubtitle,
               imagePath: '$_premiumTilesBasePath/player_vip.png',
               accent: Colors.amber.shade700,
               icon: Icons.person,
-              primaryValue: _priceLabel(playerVip['monthlyPriceEur']),
+              primaryValue: _priceLabel(playerVip['monthlyPriceEur'], l10n),
               secondaryValue: playerVip['expiresAt'] == null
                   ? null
-                  : _tr(
-                      'Actief tot ${_formatDate(playerVip['expiresAt'])}',
-                      'Active until ${_formatDate(playerVip['expiresAt'])}',
+                  : l10n.premiumUiActiveUntil(
+                      _formatDate(playerVip['expiresAt']),
                     ),
               badgeLabel: playerVip['isVip'] == true
-                  ? _tr('Actief', 'Active')
-                  : _tr('VIP', 'VIP'),
+                  ? l10n.premiumUiStatusActive
+                  : l10n.premiumUiBadgeVip,
               actionLabel: playerVip['isVip'] == true
-                  ? _tr('Verleng VIP', 'Extend VIP')
-                  : _tr('Koop VIP', 'Buy VIP'),
-              infoTitle: _tr('Speler VIP voordelen', 'Player VIP benefits'),
-              infoBody: _tr(
-                'Player VIP voordelen:\n'
-                    '- 10% kortere timeout/cooldowns op acties (gevangenistijd blijft gelijk).\n'
-                    '- In Drugs Productie krijg je een VIP bliksemknop op de productiekaart om ontbrekende materialen in 1 klik te kopen (na kostenbevestiging).\n'
-                    '- Bij moord verlies je contant geld, maar je herstart met EUR 500.000 cash.\n'
-                    '- Je rank wordt gehalveerd in plaats van volledige reset.\n'
-                    '- Opleidingen en vrijgespeelde achievements blijven behouden.\n'
-                    '- Banksaldo en crypto blijven behouden.\n'
-                    '- Eigendommen, voertuigen, prostituees, gedragen inventaris en opgeslagen items worden wel verwijderd.\n'
-                    '- Drugsprogress en drugsvoorraad worden gereset.\n'
-                    '- Je ontvangt wekelijks 100 premium credits zolang VIP actief is.',
-                'Player VIP benefits:\n'
-                    '- 10% shorter action timeouts/cooldowns (jail time stays unchanged).\n'
-                    '- In Drug Production, you get a VIP lightning button on each production card to buy missing materials in one click (after cost confirmation).\n'
-                    '- On death, you lose on-hand cash but restart with EUR 500,000 cash.\n'
-                    '- Your rank is halved instead of a full reset.\n'
-                    '- Education progress and unlocked achievements are preserved.\n'
-                    '- Bank balance and crypto are preserved.\n'
-                    '- Properties, vehicles, prostitutes, carried inventory and stored items are removed.\n'
-                    '- Drug progress and drug stock are reset.\n'
-                    '- You receive 100 premium credits weekly while VIP is active.',
-              ),
+                  ? l10n.premiumUiExtendVip
+                  : l10n.premiumUiBuyVip,
+              infoTitle: l10n.premiumUiPlayerVipBenefitsTitle,
+              infoBody: l10n.premiumUiPlayerVipBenefitsBody,
               onPressed: _processingCheckout
                   ? null
                   : () => _startCheckout('player_vip'),
             ),
             _buildVisualTile(
-              title: _tr('Crew VIP', 'Crew VIP'),
+              title: l10n.premiumUiKpiCrewVip,
               subtitle: crewVip == null
-                  ? _tr(
-                      'Je moet eerst in een crew zitten om Crew VIP te activeren.',
-                      'You must be in a crew before you can activate Crew VIP.',
-                    )
-                  : _tr(
-                      'Voor crew-upgrades, side buildings level 11-15 en gedeelde perks.',
-                      'For crew upgrades, side buildings level 11-15 and shared perks.',
-                    ),
+                  ? l10n.premiumUiCrewVipSubtitleNoCrew
+                  : l10n.premiumUiCrewVipSubtitleInCrew,
               imagePath: '$_premiumTilesBasePath/crew_vip.png',
               accent: Colors.indigo.shade600,
               icon: Icons.groups,
-              primaryValue: _priceLabel(crewVip?['monthlyPriceEur']),
+              primaryValue: _priceLabel(crewVip?['monthlyPriceEur'], l10n),
               secondaryValue: crewVip?['expiresAt'] == null
                   ? null
-                  : _tr(
-                      'Actief tot ${_formatDate(crewVip?['expiresAt'])}',
-                      'Active until ${_formatDate(crewVip?['expiresAt'])}',
+                  : l10n.premiumUiActiveUntil(
+                      _formatDate(crewVip?['expiresAt']),
                     ),
               badgeLabel: crewVip == null
-                  ? _tr('Crew nodig', 'Crew needed')
+                  ? l10n.premiumUiBadgeCrewNeeded
                   : (crewVip['isVip'] == true
-                        ? _tr('Actief', 'Active')
-                        : _tr('Crew VIP', 'Crew VIP')),
+                        ? l10n.premiumUiStatusActive
+                        : l10n.premiumUiBadgeCrewVipLabel),
               actionLabel: crewVip == null
-                  ? _tr('Crew vereist', 'Crew required')
+                  ? l10n.premiumUiCtaCrewRequired
                   : (crewVip['isVip'] == true
-                        ? _tr('Verleng Crew VIP', 'Extend Crew VIP')
-                        : _tr('Koop Crew VIP', 'Buy Crew VIP')),
-              infoTitle: _tr('Crew VIP voordelen', 'Crew VIP benefits'),
+                        ? l10n.premiumUiExtendCrewVip
+                        : l10n.premiumUiBuyCrewVip),
+              infoTitle: l10n.premiumUiCrewVipBenefitsTitle,
               infoBody: crewVip == null
-                  ? _tr(
-                      'Je moet eerst lid zijn van een crew om Crew VIP te kopen. '
-                          'Crew VIP unlockt crew-gerichte voordelen en hogere upgrade-progressie.',
-                      'You must join a crew before buying Crew VIP. '
-                          'Crew VIP unlocks crew-focused perks and higher upgrade progression.',
-                    )
-                  : _tr(
-                      'Crew VIP geeft toegang tot extra crew-upgrades en gedeelde premium voordelen voor je crewflow. '
-                          'Na aankoop wordt de actieve status en vervaldatum direct bijgewerkt.',
-                      'Crew VIP grants access to extra crew upgrades and shared premium perks for your crew flow. '
-                          'After purchase, active status and expiry are updated immediately.',
-                    ),
+                  ? l10n.premiumUiCrewVipBenefitsNoCrewBody
+                  : l10n.premiumUiCrewVipBenefitsInCrewBody,
               onPressed: crewVip == null || _processingCheckout
                   ? null
                   : () => _startCheckout('crew_vip'),
@@ -1059,45 +997,43 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 
-  Widget _buildCreditPurchases() {
+  Widget _buildCreditPurchases(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionHeader(
-          title: _tr('Credits kopen', 'Buy credits'),
-          subtitle: _tr(
-            'Kies een bundel in tegelvorm. Populaire 1000-credit optie krijgt een eigen spotlight.',
-            'Pick a bundle via visual tiles. Popular 1000-credit option gets its own spotlight.',
-          ),
+          title: l10n.premiumUiSectionBuyCreditsTitle,
+          subtitle: l10n.premiumUiSectionBuyCreditsSubtitle,
           icon: Icons.payments,
           accent: Colors.teal.shade600,
         ),
         const SizedBox(height: 8),
         if (_creditPurchaseOffers.isEmpty)
           Text(
-            _tr(
-              'Er zijn nu geen creditbundels actief.',
-              'There are no active credit bundles right now.',
-            ),
+            l10n.premiumUiNoCreditBundles,
           )
         else
           _buildResponsiveTileGrid(
             minTileWidth: 230,
             maxColumns: 4,
             children: _creditPurchaseOffers
-                .map((product) => _buildCreditOfferCard(product))
+                .map((product) => _buildCreditOfferCard(product, l10n))
                 .toList(),
           ),
       ],
     );
   }
 
-  Widget _buildCreditOfferCard(Map<String, dynamic> product) {
+  Widget _buildCreditOfferCard(
+    Map<String, dynamic> product,
+    AppLocalizations l10n,
+  ) {
     final amount = _creditAmountFromProduct(product);
-    final title = _isNl
+    final useNl = _useNlCatalogCopy(context);
+    final title = useNl
         ? (product['titleNl'] ?? '')
         : (product['titleEn'] ?? '');
-    final description = _isNl
+    final description = useNl
         ? (product['descriptionNl'] ?? '')
         : (product['descriptionEn'] ?? '');
     final accent = _offerAccentColor(amount);
@@ -1107,15 +1043,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
         : _offerImagePath(amount);
     final isLargeOffer = amount >= 1000;
     final resolvedTitle = title.toString().trim().isEmpty
-        ? _tr('Creditbundel', 'Credit bundle')
+        ? l10n.premiumUiCreditBundleFallbackTitle
         : title.toString();
     final resolvedDescription = description.toString().trim().isEmpty
-        ? _tr(
-            'Direct credits voor je premium wallet.',
-            'Instant credits for your premium wallet.',
-          )
+        ? l10n.premiumUiCreditBundleFallbackDescription
         : description.toString();
-    final bundleCta = _tr('Koop $amount credits', 'Buy $amount credits');
+    final bundleCta = l10n.premiumUiBuyCredits(amount);
     final bundlePrice = _oneTimePriceLabel(product['priceEur']);
 
     return _buildVisualTile(
@@ -1124,18 +1057,19 @@ class _PremiumScreenState extends State<PremiumScreen> {
       imagePath: imagePath,
       accent: accent,
       icon: Icons.token,
-      primaryValue: _tr('$amount credits', '$amount credits'),
+      primaryValue: l10n.premiumUiCreditsCount(amount),
       secondaryValue: bundlePrice,
       badgeLabel: amount >= 2500
-          ? _tr('Ultra deal', 'Ultra deal')
+          ? l10n.premiumUiBadgeUltraDeal
           : (isLargeOffer
-                ? _tr('Top deal', 'Top deal')
-                : _tr('Credits', 'Credits')),
+                ? l10n.premiumUiBadgeTopDeal
+                : l10n.premiumUiBadgeCredits),
       actionLabel: bundleCta,
       infoTitle: resolvedTitle,
-      infoBody: _tr(
-        '$bundleCta voor $bundlePrice.\n\n$resolvedDescription',
-        '$bundleCta for $bundlePrice.\n\n$resolvedDescription',
+      infoBody: l10n.premiumUiCreditOfferInfo(
+        bundleCta,
+        bundlePrice,
+        resolvedDescription,
       ),
       onPressed: _processingCheckout
           ? null
@@ -1146,16 +1080,13 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 
-  Widget _buildCreditShop() {
+  Widget _buildCreditShop(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionHeader(
-          title: _tr('Credit shop', 'Credit shop'),
-          subtitle: _tr(
-            'Per item een themategel op basis van het effect dat je koopt.',
-            'Each item uses a themed tile based on the effect you are buying.',
-          ),
+          title: l10n.premiumUiSectionShopTitle,
+          subtitle: l10n.premiumUiSectionShopSubtitle,
           icon: Icons.local_mall,
           accent: Colors.purple.shade500,
         ),
@@ -1171,10 +1102,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
             final unavailableReason = (item['unavailableReason'] ?? '')
                 .toString()
                 .trim();
-            final title = _isNl
+            final useNl = _useNlCatalogCopy(context);
+            final title = useNl
                 ? (item['titleNl'] ?? '')
                 : (item['titleEn'] ?? '');
-            final description = _isNl
+            final description = useNl
                 ? (item['descriptionNl'] ?? '')
                 : (item['descriptionEn'] ?? '');
             final disabled =
@@ -1184,18 +1116,19 @@ class _PremiumScreenState extends State<PremiumScreen> {
             final effectType = (item['effectType'] ?? '').toString();
             final accent = _creditItemAccentColor(effectType);
             final resolvedTitle = title.toString().trim().isEmpty
-                ? _tr('Premium item', 'Premium item')
+                ? l10n.premiumUiShopItemFallbackTitle
                 : title.toString();
             final resolvedDescription = description.toString().trim().isEmpty
-                ? _tr('Direct premium voordeel.', 'Direct premium perk.')
+                ? l10n.premiumUiShopItemFallbackDescription
                 : description.toString();
+            final themeLabel = _creditItemThemeLabel(item, l10n);
             final actionLabel =
                 !canRedeemNow &&
                     unavailableReason == 'ACTION_COOLDOWN_NOT_ACTIVE'
-                ? _tr('Geen actieve cooldown', 'No active cooldown')
+                ? l10n.premiumUiShopNoActiveCooldown
                 : (_creditBalance < effectiveCost
-                      ? _tr('Niet genoeg credits', 'Not enough credits')
-                      : _tr('Inwisselen', 'Redeem'));
+                      ? l10n.premiumUiShopNotEnoughCredits
+                      : l10n.premiumUiShopRedeem);
 
             return _buildVisualTile(
               title: resolvedTitle,
@@ -1203,17 +1136,15 @@ class _PremiumScreenState extends State<PremiumScreen> {
               imagePath: _creditItemImagePath(item),
               accent: accent,
               icon: Icons.auto_awesome,
-              primaryValue: _tr(
-                '$effectiveCost credits',
-                '$effectiveCost credits',
-              ),
-              secondaryValue: _creditItemThemeLabel(item),
-              badgeLabel: _tr('Shop', 'Shop'),
+              primaryValue: l10n.premiumUiCreditsCount(effectiveCost),
+              secondaryValue: themeLabel,
+              badgeLabel: l10n.premiumUiBadgeShop,
               actionLabel: actionLabel,
               infoTitle: resolvedTitle,
-              infoBody: _tr(
-                '$resolvedDescription\n\nThema: ${_creditItemThemeLabel(item)}\nKosten: $effectiveCost credits',
-                '$resolvedDescription\n\nTheme: ${_creditItemThemeLabel(item)}\nCost: $effectiveCost credits',
+              infoBody: l10n.premiumUiShopItemInfo(
+                resolvedDescription,
+                themeLabel,
+                effectiveCost,
               ),
               onPressed: disabled ? null : () => _redeemCreditItem(item),
             );
@@ -1222,7 +1153,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
         if (_entitlements.isNotEmpty) ...[
           const SizedBox(height: 16),
           Text(
-            _tr('Actieve premium effecten', 'Active premium effects'),
+            l10n.premiumUiActiveEffectsTitle,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
@@ -1234,7 +1165,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
               final expiresAt = entitlement['expiresAt'];
               return Chip(
                 label: Text(
-                  expiresAt == null ? key : '$key - ${_formatDate(expiresAt)}',
+                  expiresAt == null
+                      ? key
+                      : l10n.premiumUiEntitlementChip(
+                          key,
+                          _formatDate(expiresAt),
+                        ),
                 ),
               );
             }).toList(),
@@ -1245,6 +1181,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
   }
 
   Widget _buildBody() {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -1258,7 +1196,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
             const SizedBox(height: 12),
             FilledButton(
               onPressed: _loadData,
-              child: Text(_tr('Opnieuw proberen', 'Retry')),
+              child: Text(l10n.retry),
             ),
           ],
         ),
@@ -1271,26 +1209,23 @@ class _PremiumScreenState extends State<PremiumScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            _tr('Premium & Credits', 'Premium & Credits'),
+            l10n.premiumAndCredits,
             style: Theme.of(
               context,
             ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            _tr(
-              'Hier beheren spelers hun VIP abonnementen, creditbundels en credit-shop items.',
-              'Players manage VIP subscriptions, credit bundles and credit shop items here.',
-            ),
+            l10n.premiumUiIntroSubtitle,
           ),
           const SizedBox(height: 16),
-          _buildStatusStrip(),
+          _buildStatusStrip(l10n),
           const SizedBox(height: 24),
-          _buildVipPlans(),
+          _buildVipPlans(l10n),
           const SizedBox(height: 24),
-          _buildCreditPurchases(),
+          _buildCreditPurchases(l10n),
           const SizedBox(height: 24),
-          _buildCreditShop(),
+          _buildCreditShop(l10n),
         ],
       ),
     );
@@ -1302,9 +1237,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
       return _buildBody();
     }
 
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(_tr('Premium & Credits', 'Premium & Credits')),
+        title: Text(l10n.premiumAndCredits),
       ),
       body: _buildBody(),
     );

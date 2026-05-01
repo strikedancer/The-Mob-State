@@ -7337,5 +7337,138 @@
       }
     }
   },
-  "friendsUiReject": "Rejeter"
+  "friendsUiReject": "Rejeter",
+  "premiumUiLoadError": "Les données Premium n'ont pas pu être chargées.",
+  "premiumUiRedirectPaidOneTime": "Achat reçu. Actualisation de vos crédits et de votre aperçu des primes.",
+  "premiumUiRedirectPaidCrewVip": "Paiement VIP de l'équipage reçu. Actualisation de votre aperçu premium.",
+  "premiumUiRedirectPaidVip": "Paiement VIP reçu. Actualisation de votre aperçu premium.",
+  "premiumUiRedirectCancelledOneTime": "Achat annulé.",
+  "premiumUiRedirectCancelledSubscription": "Paiement annulé.",
+  "premiumUiRedirectFailedOneTime": "L'achat a échoué ou a expiré.",
+  "premiumUiRedirectFailedSubscription": "Le paiement a échoué ou a expiré.",
+  "premiumUiCheckoutOpenFailed": "Échec de l'ouverture de la page de paiement.",
+  "premiumUiRedeemNeedsVehicle": "Cet objet nécessite une sélection de véhicule et sera utilisé à partir de l'écran du véhicule.",
+  "premiumUiRedeemSuccessDefault": "Crédits échangés.",
+  "premiumUiRedeemFailed": "Échec de l'utilisation des crédits.",
+  "premiumUiPerMonthShort": "mo",
+  "premiumUiCreditThemeCashBoost": "Augmentation de la trésorerie",
+  "premiumUiCreditThemeSecurity": "Sécurité",
+  "premiumUiCreditThemeGarage": "Garage",
+  "premiumUiCreditThemeTuneShop": "Boutique de mélodies",
+  "premiumUiCreditThemeCooldown": "Temps de recharge : {actionType}",
+  "@premiumUiCreditThemeCooldown": {
+    "placeholders": {
+      "actionType": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiCreditThemeCooldownReset": "Réinitialisation du temps de recharge",
+  "premiumUiCreditThemeEvents": "Événements",
+  "premiumUiCreditThemePremium": "Prime",
+  "premiumUiKpiPlayerVip": "Joueur VIP",
+  "premiumUiKpiCrewVip": "Équipage VIP",
+  "premiumUiCreditsLabel": "Crédits",
+  "premiumUiStatusActive": "Active",
+  "premiumUiStatusInactive": "Inactive",
+  "premiumUiNoCrew": "Pas d'équipage",
+  "premiumUiSectionVipTitle": "Abonnements VIP",
+  "premiumUiSectionVipSubtitle": "Tuiles VIP professionnelles avec des prix, un statut et des avantages clairs.",
+  "premiumUiPlayerVipSubtitle": "Avantages de compte exclusifs, déblocages d'avatar et qualité de vie premium.",
+  "premiumUiActiveUntil": "Actif jusqu'à {date}",
+  "@premiumUiActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiBadgeVip": "VIP",
+  "premiumUiExtendVip": "Prolonger VIP",
+  "premiumUiBuyVip": "Acheter VIP",
+  "premiumUiPlayerVipBenefitsTitle": "Avantages VIP pour les joueurs",
+  "premiumUiPlayerVipBenefitsBody": "Avantages VIP des joueurs : \n- Délais d'action/temps de recharge 10 % plus courts (le temps de prison reste inchangé). \n- Dans Drug Production, vous obtenez un bouton éclair VIP sur chaque carte de production pour acheter les matériaux manquants en un clic (après confirmation du coût). \n- Au décès, vous perdez vos liquidités mais repartez avec 500 000 euros de liquidités. \n- Votre rang est réduit de moitié au lieu d'une réinitialisation complète. \n- Les progrès éducatifs et les réalisations débloquées sont préservés. \n- Le solde bancaire et la crypto sont préservés. \n- Les propriétés, véhicules, prostituées, l'inventaire transporté et les objets stockés sont supprimés. \n- La progression des médicaments et le stock de médicaments sont réinitialisés. \n- Vous recevez 100 crédits premium par semaine pendant que VIP est actif.",
+  "premiumUiCrewVipSubtitleNoCrew": "Vous devez faire partie d'un équipage avant de pouvoir activer Crew VIP.",
+  "premiumUiCrewVipSubtitleInCrew": "Pour les améliorations d'équipage, les bâtiments secondaires de niveau 11 à 15 et les avantages partagés.",
+  "premiumUiBadgeCrewNeeded": "Equipage nécessaire",
+  "premiumUiBadgeCrewVipLabel": "Équipage VIP",
+  "premiumUiCtaCrewRequired": "Équipage requis",
+  "premiumUiExtendCrewVip": "Prolonger le statut VIP de l'équipage",
+  "premiumUiBuyCrewVip": "Acheter Crew VIP",
+  "premiumUiCrewVipBenefitsTitle": "Avantages VIP de l'équipage",
+  "premiumUiCrewVipBenefitsNoCrewBody": "Vous devez rejoindre un équipage avant d'acheter Crew VIP. Crew VIP débloque des avantages axés sur l’équipage et une progression de mise à niveau plus élevée.",
+  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP donne accès à des améliorations d’équipage supplémentaires et à des avantages premium partagés pour votre flux d’équipage. Après l'achat, le statut actif et l'expiration sont immédiatement mis à jour.",
+  "premiumUiSectionBuyCreditsTitle": "Acheter des crédits",
+  "premiumUiSectionBuyCreditsSubtitle": "Choisissez un lot via des vignettes visuelles. L'option populaire de 1 000 crédits bénéficie de son propre intérêt.",
+  "premiumUiNoCreditBundles": "Il n’y a aucun forfait de crédit actif pour le moment.",
+  "premiumUiCreditBundleFallbackTitle": "Forfait de crédit",
+  "premiumUiCreditBundleFallbackDescription": "Crédits instantanés pour votre portefeuille premium.",
+  "premiumUiBuyCredits": "Achetez {amount} crédits",
+  "@premiumUiBuyCredits": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiCreditsCount": "{count} crédits",
+  "@premiumUiCreditsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiBadgeUltraDeal": "Offre ultra",
+  "premiumUiBadgeTopDeal": "Meilleure offre",
+  "premiumUiBadgeCredits": "Crédits",
+  "premiumUiCreditOfferInfo": "{buyLine} pour {price}. \n\n{description}",
+  "@premiumUiCreditOfferInfo": {
+    "placeholders": {
+      "buyLine": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiSectionShopTitle": "Boutique de crédit",
+  "premiumUiSectionShopSubtitle": "Chaque article utilise une tuile thématique basée sur l'effet que vous achetez.",
+  "premiumUiShopItemFallbackTitle": "Article haut de gamme",
+  "premiumUiShopItemFallbackDescription": "Avantage premium direct.",
+  "premiumUiShopNoActiveCooldown": "Aucun temps de recharge actif",
+  "premiumUiShopNotEnoughCredits": "Pas assez de crédits",
+  "premiumUiShopRedeem": "Racheter",
+  "premiumUiShopItemInfo": "{description} \n\nThème : {theme} \nCoût : {cost} crédits",
+  "@premiumUiShopItemInfo": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      },
+      "theme": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiBadgeShop": "Boutique",
+  "premiumUiActiveEffectsTitle": "Effets de prime actifs",
+  "premiumUiIntroSubtitle": "Les joueurs gèrent ici les abonnements VIP, les lots de crédits et les articles de la boutique de crédits.",
+  "premiumUiEntitlementChip": "{key} - {date}",
+  "@premiumUiEntitlementChip": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

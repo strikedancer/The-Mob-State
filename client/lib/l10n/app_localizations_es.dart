@@ -2806,6 +2806,250 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get premiumUiLoadError => 'No se pudieron cargar los datos premium.';
+
+  @override
+  String get premiumUiRedirectPaidOneTime =>
+      'Compra recibida. Actualización de sus créditos y descripción general de las primas.';
+
+  @override
+  String get premiumUiRedirectPaidCrewVip =>
+      'Pago VIP de la Crew recibido. Actualizando su descripción general premium.';
+
+  @override
+  String get premiumUiRedirectPaidVip =>
+      'Pago VIP recibido. Actualizando su descripción general premium.';
+
+  @override
+  String get premiumUiRedirectCancelledOneTime => 'Compra cancelada.';
+
+  @override
+  String get premiumUiRedirectCancelledSubscription => 'Pago cancelado.';
+
+  @override
+  String get premiumUiRedirectFailedOneTime => 'Compra fallida o caducada.';
+
+  @override
+  String get premiumUiRedirectFailedSubscription => 'El pago falló o expiró.';
+
+  @override
+  String get premiumUiCheckoutOpenFailed =>
+      'No se pudo abrir la página de pago.';
+
+  @override
+  String get premiumUiRedeemNeedsVehicle =>
+      'Este artículo requiere una selección de vehículo y se canjeará desde la pantalla del vehículo.';
+
+  @override
+  String get premiumUiRedeemSuccessDefault => 'Créditos canjeados.';
+
+  @override
+  String get premiumUiRedeemFailed => 'No se pudieron canjear los créditos.';
+
+  @override
+  String get premiumUiPerMonthShort => 'mes';
+
+  @override
+  String get premiumUiCreditThemeCashBoost => 'Aumento de efectivo';
+
+  @override
+  String get premiumUiCreditThemeSecurity => 'Seguridad';
+
+  @override
+  String get premiumUiCreditThemeGarage => 'Cochera';
+
+  @override
+  String get premiumUiCreditThemeTuneShop => 'Tienda de melodías';
+
+  @override
+  String premiumUiCreditThemeCooldown(String actionType) {
+    return 'Enfriamiento: $actionType';
+  }
+
+  @override
+  String get premiumUiCreditThemeCooldownReset => 'Reinicio de enfriamiento';
+
+  @override
+  String get premiumUiCreditThemeEvents => 'Eventos';
+
+  @override
+  String get premiumUiCreditThemePremium => 'De primera calidad';
+
+  @override
+  String get premiumUiKpiPlayerVip => 'Jugadora VIP';
+
+  @override
+  String get premiumUiKpiCrewVip => 'Crew VIP';
+
+  @override
+  String get premiumUiCreditsLabel => 'Créditos';
+
+  @override
+  String get premiumUiStatusActive => 'Activa';
+
+  @override
+  String get premiumUiStatusInactive => 'Inactiva';
+
+  @override
+  String get premiumUiNoCrew => 'Sin Crew';
+
+  @override
+  String get premiumUiSectionVipTitle => 'Suscripciones VIP';
+
+  @override
+  String get premiumUiSectionVipSubtitle =>
+      'Mosaicos VIP profesionales con precios, estados y beneficios claros.';
+
+  @override
+  String get premiumUiPlayerVipSubtitle =>
+      'Beneficios de cuenta exclusivos, desbloqueos de avatar y calidad de vida premium.';
+
+  @override
+  String premiumUiActiveUntil(String date) {
+    return 'Activa hasta $date';
+  }
+
+  @override
+  String get premiumUiBadgeVip => 'personaje';
+
+  @override
+  String get premiumUiExtendVip => 'Ampliar VIP';
+
+  @override
+  String get premiumUiBuyVip => 'Comprar VIP';
+
+  @override
+  String get premiumUiPlayerVipBenefitsTitle => 'Beneficios VIP para jugadores';
+
+  @override
+  String get premiumUiPlayerVipBenefitsBody =>
+      'Beneficios VIP para jugadores: \n- Tiempos de espera/enfriamiento de acción un 10% más cortos (el tiempo de cárcel permanece sin cambios). \n- En Drug Production, obtienes un botón de relámpago VIP en cada tarjeta de producción para comprar los materiales que faltan con un solo clic (después de la confirmación del costo). \n- Al fallecer, pierde efectivo disponible pero reinicia con 500.000 EUR en efectivo. \n- Tu rango se reduce a la mitad en lugar de reiniciarse por completo. \n- Se conservan el progreso educativo y los logros desbloqueados. \n- Se conservan el saldo bancario y las criptomonedas. \n- Se retiran propiedades, vehículos, prostitutas, inventario llevado y artículos almacenados. \n- Se restablecen el progreso y el stock de medicamentos. \n- Recibes 100 créditos premium semanalmente mientras VIP esté activo.';
+
+  @override
+  String get premiumUiCrewVipSubtitleNoCrew =>
+      'Debes estar en una Crew antes de poder activar Crew VIP.';
+
+  @override
+  String get premiumUiCrewVipSubtitleInCrew =>
+      'Para mejoras de Crew, edificios secundarios de nivel 11-15 y ventajas compartidas.';
+
+  @override
+  String get premiumUiBadgeCrewNeeded => 'Se necesita Crew';
+
+  @override
+  String get premiumUiBadgeCrewVipLabel => 'Crew VIP';
+
+  @override
+  String get premiumUiCtaCrewRequired => 'Se requiere Crew';
+
+  @override
+  String get premiumUiExtendCrewVip => 'Ampliar Crew VIP';
+
+  @override
+  String get premiumUiBuyCrewVip => 'Comprar Crew VIP';
+
+  @override
+  String get premiumUiCrewVipBenefitsTitle => 'Beneficios VIP para la Crew';
+
+  @override
+  String get premiumUiCrewVipBenefitsNoCrewBody =>
+      'Debes unirte a un equipo antes de comprar Crew VIP. Crew VIP desbloquea ventajas centradas en la Crew y una mayor progresión de mejoras.';
+
+  @override
+  String get premiumUiCrewVipBenefitsInCrewBody =>
+      'Crew VIP otorga acceso a mejoras adicionales para la Crew y ventajas premium compartidas para el flujo de tu Crew. Después de la compra, el estado activo y el vencimiento se actualizan inmediatamente.';
+
+  @override
+  String get premiumUiSectionBuyCreditsTitle => 'Comprar créditos';
+
+  @override
+  String get premiumUiSectionBuyCreditsSubtitle =>
+      'Elija un paquete a través de mosaicos visuales. La popular opción de 1.000 créditos recibe su propia atención.';
+
+  @override
+  String get premiumUiNoCreditBundles =>
+      'No hay paquetes de crédito activos en este momento.';
+
+  @override
+  String get premiumUiCreditBundleFallbackTitle => 'Paquete de crédito';
+
+  @override
+  String get premiumUiCreditBundleFallbackDescription =>
+      'Créditos instantáneos para tu billetera premium.';
+
+  @override
+  String premiumUiBuyCredits(int amount) {
+    return 'Comprar $amount créditos';
+  }
+
+  @override
+  String premiumUiCreditsCount(int count) {
+    return '$count créditos';
+  }
+
+  @override
+  String get premiumUiBadgeUltraDeal => 'Ultra oferta';
+
+  @override
+  String get premiumUiBadgeTopDeal => 'Oferta superior';
+
+  @override
+  String get premiumUiBadgeCredits => 'Créditos';
+
+  @override
+  String premiumUiCreditOfferInfo(
+    String buyLine,
+    String price,
+    String description,
+  ) {
+    return '$buyLine para $price. \n\n$description';
+  }
+
+  @override
+  String get premiumUiSectionShopTitle => 'tienda de credito';
+
+  @override
+  String get premiumUiSectionShopSubtitle =>
+      'Cada artículo utiliza un mosaico temático según el efecto que estás comprando.';
+
+  @override
+  String get premiumUiShopItemFallbackTitle => 'Artículo premium';
+
+  @override
+  String get premiumUiShopItemFallbackDescription =>
+      'Beneficio premium directo.';
+
+  @override
+  String get premiumUiShopNoActiveCooldown =>
+      'Sin tiempo de reutilización activo';
+
+  @override
+  String get premiumUiShopNotEnoughCredits => 'No hay suficientes créditos';
+
+  @override
+  String get premiumUiShopRedeem => 'Canjear';
+
+  @override
+  String premiumUiShopItemInfo(String description, String theme, int cost) {
+    return '$description \n\nTema: $theme \nCosto: $cost créditos';
+  }
+
+  @override
+  String get premiumUiBadgeShop => 'Comercio';
+
+  @override
+  String get premiumUiActiveEffectsTitle => 'Efectos premium activos';
+
+  @override
+  String get premiumUiIntroSubtitle =>
+      'Los jugadores administran aquí suscripciones VIP, paquetes de crédito y artículos de la tienda de crédito.';
+
+  @override
+  String premiumUiEntitlementChip(String key, String date) {
+    return '$key - $date';
+  }
+
+  @override
   String get propertiesAvailable => 'Disponible';
 
   @override

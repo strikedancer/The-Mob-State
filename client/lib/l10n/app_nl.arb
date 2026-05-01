@@ -7337,5 +7337,138 @@
       }
     }
   },
-  "friendsUiReject": "Afwijzen"
+  "friendsUiReject": "Afwijzen",
+  "premiumUiLoadError": "Premiumgegevens konden niet worden geladen.",
+  "premiumUiRedirectPaidOneTime": "Aankoop ontvangen. Je credits en premium-overzicht worden ververst.",
+  "premiumUiRedirectPaidCrewVip": "Crew VIP-betaling ontvangen. Je premium-overzicht wordt ververst.",
+  "premiumUiRedirectPaidVip": "VIP-betaling ontvangen. Je premium-overzicht wordt ververst.",
+  "premiumUiRedirectCancelledOneTime": "Aankoop geannuleerd.",
+  "premiumUiRedirectCancelledSubscription": "Betaling geannuleerd.",
+  "premiumUiRedirectFailedOneTime": "Aankoop mislukt of verlopen.",
+  "premiumUiRedirectFailedSubscription": "Betaling mislukt of verlopen.",
+  "premiumUiCheckoutOpenFailed": "Kan de betalingspagina niet openen.",
+  "premiumUiRedeemNeedsVehicle": "Voor dit item is een voertuigselectie vereist en het wordt ingewisseld via het voertuigscherm.",
+  "premiumUiRedeemSuccessDefault": "Credits ingewisseld.",
+  "premiumUiRedeemFailed": "Kan tegoeden niet inwisselen.",
+  "premiumUiPerMonthShort": "mnd",
+  "premiumUiCreditThemeCashBoost": "Geldboost",
+  "premiumUiCreditThemeSecurity": "Beveiliging",
+  "premiumUiCreditThemeGarage": "Garage",
+  "premiumUiCreditThemeTuneShop": "Tune winkel",
+  "premiumUiCreditThemeCooldown": "Afkoelperiode: {actionType}",
+  "@premiumUiCreditThemeCooldown": {
+    "placeholders": {
+      "actionType": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiCreditThemeCooldownReset": "Cooldown-reset",
+  "premiumUiCreditThemeEvents": "Evenementen",
+  "premiumUiCreditThemePremium": "Premium",
+  "premiumUiKpiPlayerVip": "Speler VIP",
+  "premiumUiKpiCrewVip": "Crew VIP",
+  "premiumUiCreditsLabel": "Credits",
+  "premiumUiStatusActive": "Actief",
+  "premiumUiStatusInactive": "Inactief",
+  "premiumUiNoCrew": "Geen crew",
+  "premiumUiSectionVipTitle": "VIP-abonnementen",
+  "premiumUiSectionVipSubtitle": "Professionele VIP-tegels met duidelijke prijzen, status en voordelen.",
+  "premiumUiPlayerVipSubtitle": "Exclusieve accountvoordelen, avatar-ontgrendelingen en premium QoL.",
+  "premiumUiActiveUntil": "Actief tot {date}",
+  "@premiumUiActiveUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiBadgeVip": "VIP",
+  "premiumUiExtendVip": "VIP verlengen",
+  "premiumUiBuyVip": "Koop VIP",
+  "premiumUiPlayerVipBenefitsTitle": "Speler VIP-voordelen",
+  "premiumUiPlayerVipBenefitsBody": "Speler VIP-voordelen:\n- 10% kortere timeout/cooldowns op acties (gevangenistijd blijft gelijk).\n- In Drugs Productie krijg je een VIP bliksemknop op de productiekaart om ontbrekende materialen in 1 klik te kopen (na kostenbevestiging).\n- Bij moord verlies je contant geld, maar je herstart met EUR 500.000 cash.\n- Je rank wordt gehalveerd in plaats van volledige reset.\n- Opleidingen en vrijgespeelde achievements blijven behouden.\n- Banksaldo en crypto blijven behouden.\n- Eigendommen, voertuigen, prostituees, gedragen inventaris en opgeslagen items worden wel verwijderd.\n- Drugsprogress en drugsvoorraad worden gereset.\n- Je ontvangt wekelijks 100 premium credits zolang VIP actief is.",
+  "premiumUiCrewVipSubtitleNoCrew": "Je moet deel uitmaken van een crew voordat je Crew VIP kunt activeren.",
+  "premiumUiCrewVipSubtitleInCrew": "Voor crew-upgrades, side buildings level 11-15 en gedeelde perks.",
+  "premiumUiBadgeCrewNeeded": "Crew nodig",
+  "premiumUiBadgeCrewVipLabel": "Crew VIP",
+  "premiumUiCtaCrewRequired": "Crew vereist",
+  "premiumUiExtendCrewVip": "Verleng Crew VIP",
+  "premiumUiBuyCrewVip": "Koop Crew VIP",
+  "premiumUiCrewVipBenefitsTitle": "Crew VIP-voordelen",
+  "premiumUiCrewVipBenefitsNoCrewBody": "Je moet eerst lid zijn van een crew om Crew VIP te kopen. Crew VIP unlockt crew-gerichte voordelen en hogere upgrade-progressie.",
+  "premiumUiCrewVipBenefitsInCrewBody": "Crew VIP geeft toegang tot extra crew-upgrades en gedeelde premium voordelen voor je crewflow. Na aankoop wordt de actieve status en vervaldatum direct bijgewerkt.",
+  "premiumUiSectionBuyCreditsTitle": "Credits kopen",
+  "premiumUiSectionBuyCreditsSubtitle": "Kies een bundel via visuele tegels. Populaire optie met 1000 credits krijgt zijn eigen spotlight.",
+  "premiumUiNoCreditBundles": "Er zijn nu geen creditbundels actief.",
+  "premiumUiCreditBundleFallbackTitle": "Creditbundel",
+  "premiumUiCreditBundleFallbackDescription": "Direct credits voor je premium wallet.",
+  "premiumUiBuyCredits": "Koop {amount} credits",
+  "@premiumUiBuyCredits": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiCreditsCount": "{count} credits",
+  "@premiumUiCreditsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiBadgeUltraDeal": "Ultra-deal",
+  "premiumUiBadgeTopDeal": "Topdeal",
+  "premiumUiBadgeCredits": "Credits",
+  "premiumUiCreditOfferInfo": "{buyLine} voor {price}. \n\n{description}",
+  "@premiumUiCreditOfferInfo": {
+    "placeholders": {
+      "buyLine": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      },
+      "description": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumUiSectionShopTitle": "Credit shop",
+  "premiumUiSectionShopSubtitle": "Bij elk item wordt een themategel gebruikt, gebaseerd op het effect dat je koopt.",
+  "premiumUiShopItemFallbackTitle": "Premium-artikel",
+  "premiumUiShopItemFallbackDescription": "Direct premievoordeel.",
+  "premiumUiShopNoActiveCooldown": "Geen actieve cooldown",
+  "premiumUiShopNotEnoughCredits": "Niet genoeg credits",
+  "premiumUiShopRedeem": "Inwisselen",
+  "premiumUiShopItemInfo": "{description}\n\nThema: {theme}\nKosten: {cost} credits",
+  "@premiumUiShopItemInfo": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      },
+      "theme": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "premiumUiBadgeShop": "Winkel",
+  "premiumUiActiveEffectsTitle": "Actieve premiumeffecten",
+  "premiumUiIntroSubtitle": "Hier beheren spelers hun VIP abonnementen, creditbundels en credit-shop items.",
+  "premiumUiEntitlementChip": "{key} - {date}",
+  "@premiumUiEntitlementChip": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -2784,6 +2784,250 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get premiumUiLoadError =>
+      'Premiumgegevens konden niet worden geladen.';
+
+  @override
+  String get premiumUiRedirectPaidOneTime =>
+      'Aankoop ontvangen. Je credits en premium-overzicht worden ververst.';
+
+  @override
+  String get premiumUiRedirectPaidCrewVip =>
+      'Crew VIP-betaling ontvangen. Je premium-overzicht wordt ververst.';
+
+  @override
+  String get premiumUiRedirectPaidVip =>
+      'VIP-betaling ontvangen. Je premium-overzicht wordt ververst.';
+
+  @override
+  String get premiumUiRedirectCancelledOneTime => 'Aankoop geannuleerd.';
+
+  @override
+  String get premiumUiRedirectCancelledSubscription => 'Betaling geannuleerd.';
+
+  @override
+  String get premiumUiRedirectFailedOneTime => 'Aankoop mislukt of verlopen.';
+
+  @override
+  String get premiumUiRedirectFailedSubscription =>
+      'Betaling mislukt of verlopen.';
+
+  @override
+  String get premiumUiCheckoutOpenFailed =>
+      'Kan de betalingspagina niet openen.';
+
+  @override
+  String get premiumUiRedeemNeedsVehicle =>
+      'Voor dit item is een voertuigselectie vereist en het wordt ingewisseld via het voertuigscherm.';
+
+  @override
+  String get premiumUiRedeemSuccessDefault => 'Credits ingewisseld.';
+
+  @override
+  String get premiumUiRedeemFailed => 'Kan tegoeden niet inwisselen.';
+
+  @override
+  String get premiumUiPerMonthShort => 'mnd';
+
+  @override
+  String get premiumUiCreditThemeCashBoost => 'Geldboost';
+
+  @override
+  String get premiumUiCreditThemeSecurity => 'Beveiliging';
+
+  @override
+  String get premiumUiCreditThemeGarage => 'Garage';
+
+  @override
+  String get premiumUiCreditThemeTuneShop => 'Tune winkel';
+
+  @override
+  String premiumUiCreditThemeCooldown(String actionType) {
+    return 'Afkoelperiode: $actionType';
+  }
+
+  @override
+  String get premiumUiCreditThemeCooldownReset => 'Cooldown-reset';
+
+  @override
+  String get premiumUiCreditThemeEvents => 'Evenementen';
+
+  @override
+  String get premiumUiCreditThemePremium => 'Premium';
+
+  @override
+  String get premiumUiKpiPlayerVip => 'Speler VIP';
+
+  @override
+  String get premiumUiKpiCrewVip => 'Crew VIP';
+
+  @override
+  String get premiumUiCreditsLabel => 'Credits';
+
+  @override
+  String get premiumUiStatusActive => 'Actief';
+
+  @override
+  String get premiumUiStatusInactive => 'Inactief';
+
+  @override
+  String get premiumUiNoCrew => 'Geen crew';
+
+  @override
+  String get premiumUiSectionVipTitle => 'VIP-abonnementen';
+
+  @override
+  String get premiumUiSectionVipSubtitle =>
+      'Professionele VIP-tegels met duidelijke prijzen, status en voordelen.';
+
+  @override
+  String get premiumUiPlayerVipSubtitle =>
+      'Exclusieve accountvoordelen, avatar-ontgrendelingen en premium QoL.';
+
+  @override
+  String premiumUiActiveUntil(String date) {
+    return 'Actief tot $date';
+  }
+
+  @override
+  String get premiumUiBadgeVip => 'VIP';
+
+  @override
+  String get premiumUiExtendVip => 'VIP verlengen';
+
+  @override
+  String get premiumUiBuyVip => 'Koop VIP';
+
+  @override
+  String get premiumUiPlayerVipBenefitsTitle => 'Speler VIP-voordelen';
+
+  @override
+  String get premiumUiPlayerVipBenefitsBody =>
+      'Speler VIP-voordelen:\n- 10% kortere timeout/cooldowns op acties (gevangenistijd blijft gelijk).\n- In Drugs Productie krijg je een VIP bliksemknop op de productiekaart om ontbrekende materialen in 1 klik te kopen (na kostenbevestiging).\n- Bij moord verlies je contant geld, maar je herstart met EUR 500.000 cash.\n- Je rank wordt gehalveerd in plaats van volledige reset.\n- Opleidingen en vrijgespeelde achievements blijven behouden.\n- Banksaldo en crypto blijven behouden.\n- Eigendommen, voertuigen, prostituees, gedragen inventaris en opgeslagen items worden wel verwijderd.\n- Drugsprogress en drugsvoorraad worden gereset.\n- Je ontvangt wekelijks 100 premium credits zolang VIP actief is.';
+
+  @override
+  String get premiumUiCrewVipSubtitleNoCrew =>
+      'Je moet deel uitmaken van een crew voordat je Crew VIP kunt activeren.';
+
+  @override
+  String get premiumUiCrewVipSubtitleInCrew =>
+      'Voor crew-upgrades, side buildings level 11-15 en gedeelde perks.';
+
+  @override
+  String get premiumUiBadgeCrewNeeded => 'Crew nodig';
+
+  @override
+  String get premiumUiBadgeCrewVipLabel => 'Crew VIP';
+
+  @override
+  String get premiumUiCtaCrewRequired => 'Crew vereist';
+
+  @override
+  String get premiumUiExtendCrewVip => 'Verleng Crew VIP';
+
+  @override
+  String get premiumUiBuyCrewVip => 'Koop Crew VIP';
+
+  @override
+  String get premiumUiCrewVipBenefitsTitle => 'Crew VIP-voordelen';
+
+  @override
+  String get premiumUiCrewVipBenefitsNoCrewBody =>
+      'Je moet eerst lid zijn van een crew om Crew VIP te kopen. Crew VIP unlockt crew-gerichte voordelen en hogere upgrade-progressie.';
+
+  @override
+  String get premiumUiCrewVipBenefitsInCrewBody =>
+      'Crew VIP geeft toegang tot extra crew-upgrades en gedeelde premium voordelen voor je crewflow. Na aankoop wordt de actieve status en vervaldatum direct bijgewerkt.';
+
+  @override
+  String get premiumUiSectionBuyCreditsTitle => 'Credits kopen';
+
+  @override
+  String get premiumUiSectionBuyCreditsSubtitle =>
+      'Kies een bundel via visuele tegels. Populaire optie met 1000 credits krijgt zijn eigen spotlight.';
+
+  @override
+  String get premiumUiNoCreditBundles =>
+      'Er zijn nu geen creditbundels actief.';
+
+  @override
+  String get premiumUiCreditBundleFallbackTitle => 'Creditbundel';
+
+  @override
+  String get premiumUiCreditBundleFallbackDescription =>
+      'Direct credits voor je premium wallet.';
+
+  @override
+  String premiumUiBuyCredits(int amount) {
+    return 'Koop $amount credits';
+  }
+
+  @override
+  String premiumUiCreditsCount(int count) {
+    return '$count credits';
+  }
+
+  @override
+  String get premiumUiBadgeUltraDeal => 'Ultra-deal';
+
+  @override
+  String get premiumUiBadgeTopDeal => 'Topdeal';
+
+  @override
+  String get premiumUiBadgeCredits => 'Credits';
+
+  @override
+  String premiumUiCreditOfferInfo(
+    String buyLine,
+    String price,
+    String description,
+  ) {
+    return '$buyLine voor $price. \n\n$description';
+  }
+
+  @override
+  String get premiumUiSectionShopTitle => 'Credit shop';
+
+  @override
+  String get premiumUiSectionShopSubtitle =>
+      'Bij elk item wordt een themategel gebruikt, gebaseerd op het effect dat je koopt.';
+
+  @override
+  String get premiumUiShopItemFallbackTitle => 'Premium-artikel';
+
+  @override
+  String get premiumUiShopItemFallbackDescription => 'Direct premievoordeel.';
+
+  @override
+  String get premiumUiShopNoActiveCooldown => 'Geen actieve cooldown';
+
+  @override
+  String get premiumUiShopNotEnoughCredits => 'Niet genoeg credits';
+
+  @override
+  String get premiumUiShopRedeem => 'Inwisselen';
+
+  @override
+  String premiumUiShopItemInfo(String description, String theme, int cost) {
+    return '$description\n\nThema: $theme\nKosten: $cost credits';
+  }
+
+  @override
+  String get premiumUiBadgeShop => 'Winkel';
+
+  @override
+  String get premiumUiActiveEffectsTitle => 'Actieve premiumeffecten';
+
+  @override
+  String get premiumUiIntroSubtitle =>
+      'Hier beheren spelers hun VIP abonnementen, creditbundels en credit-shop items.';
+
+  @override
+  String premiumUiEntitlementChip(String key, String date) {
+    return '$key - $date';
+  }
+
+  @override
   String get propertiesAvailable => 'Beschikbaar';
 
   @override
