@@ -9445,4 +9445,391 @@ class AppLocalizationsPt extends AppLocalizations {
   String smugglingClientErrorPrefix(String detail) {
     return 'Erro: $detail';
   }
+
+  @override
+  String get cryptoMarketNoData =>
+      'Nenhum dado de mercado criptográfico disponível';
+
+  @override
+  String get cryptoMarketTitle => 'Mercado criptográfico';
+
+  @override
+  String cryptoMarketOpenOrdersCount(int count) {
+    return 'Pedidos abertos: $count';
+  }
+
+  @override
+  String get cryptoRegimeBull => 'Mercado em alta';
+
+  @override
+  String get cryptoRegimeBear => 'Mercado baixista';
+
+  @override
+  String get cryptoRegimeSideways => 'Lateralmente';
+
+  @override
+  String cryptoOwnedAmountLine(String amount) {
+    return 'Propriedade: $amount';
+  }
+
+  @override
+  String get cryptoPortfolioTitle => 'Portfólio';
+
+  @override
+  String get cryptoLabelValue => 'Valor';
+
+  @override
+  String get cryptoLabelCostBasis => 'Base de custo';
+
+  @override
+  String get cryptoLabelUnrealized => 'Não realizado';
+
+  @override
+  String get cryptoLabelRealized => 'Percebeu';
+
+  @override
+  String get cryptoNoPositionsYet => 'Ainda não há vagas';
+
+  @override
+  String get cryptoChartDataUnavailable => 'Dados do gráfico indisponíveis';
+
+  @override
+  String get cryptoUnknownTime => 'Desconhecida';
+
+  @override
+  String get cryptoOrderTypeStopLoss => 'Stop Loss';
+
+  @override
+  String get cryptoOrderTypeTakeProfit => 'Obter lucro';
+
+  @override
+  String get cryptoOrderTypeLimit => 'Limite';
+
+  @override
+  String get cryptoSideBuy => 'Comprar';
+
+  @override
+  String get cryptoSideSell => 'Vender';
+
+  @override
+  String get cryptoInvalidQuantity => 'Quantidade inválida';
+
+  @override
+  String get cryptoPurchaseCompleted => 'Compra concluída';
+
+  @override
+  String get cryptoSaleCompleted => 'Venda concluída';
+
+  @override
+  String get cryptoActionProcessed => 'Ação processada';
+
+  @override
+  String get cryptoInvalidTargetPrice => 'Preço alvo inválido';
+
+  @override
+  String get cryptoCannotSellMoreThanOwned =>
+      'Você não pode vender mais do que possui.';
+
+  @override
+  String get cryptoOpenOrderPlaced => 'Pedido aberto feito';
+
+  @override
+  String get cryptoOpenOrderFailed => 'Falha ao fazer o pedido';
+
+  @override
+  String get cryptoOrderCancelled => 'Pedido cancelado';
+
+  @override
+  String get cryptoCancelOrderFailed => 'Falha ao cancelar pedido';
+
+  @override
+  String get cryptoDirectTradeTitle => 'Comércio direto';
+
+  @override
+  String get cryptoLabelQuantity => 'Quantidade';
+
+  @override
+  String cryptoDirectTradeHelperWithAvgAndAll(
+    String currentPrice,
+    String avgBuy,
+  ) {
+    return 'Preço atual: $currentPrice€ • Compra média: $avgBuy€ \nUse ALL para vender sua posição completa instantaneamente.';
+  }
+
+  @override
+  String cryptoDirectTradeHelperWithAvgOnly(
+    String currentPrice,
+    String avgBuy,
+  ) {
+    return 'Preço atual: $currentPrice€ • Compra média: $avgBuy€';
+  }
+
+  @override
+  String cryptoDirectTradeHelperPriceAndAll(String currentPrice) {
+    return 'Preço atual: €$currentPrice \nUse ALL para vender sua posição completa instantaneamente.';
+  }
+
+  @override
+  String cryptoDirectTradeHelperPriceOnly(String currentPrice) {
+    return 'Preço atual: €$currentPrice';
+  }
+
+  @override
+  String cryptoYourHistoryForSymbol(String symbol) {
+    return 'Sua história para $symbol';
+  }
+
+  @override
+  String get cryptoLabelAvgBuy => 'Média de compra';
+
+  @override
+  String get cryptoLabelLastBuy => 'Última compra';
+
+  @override
+  String get cryptoLabelBuyVolume => 'Volume de compra';
+
+  @override
+  String get cryptoLabelSellVolume => 'Volume de vendas';
+
+  @override
+  String cryptoLastBuyAt(String when) {
+    return 'Última compra em $when';
+  }
+
+  @override
+  String get cryptoNoTradesForCoinYet =>
+      'Nenhuma negociação para esta moeda ainda.';
+
+  @override
+  String cryptoOpenOrdersForSymbol(String symbol) {
+    return 'Pedidos abertos para $symbol';
+  }
+
+  @override
+  String get cryptoOpenOrdersSectionHint =>
+      'Pedidos abertos usam sua própria quantidade abaixo. Preencha a quantidade e o preço alvo nesta seção.';
+
+  @override
+  String get cryptoLabelOrderType => 'Tipo de pedido';
+
+  @override
+  String get cryptoLabelSide => 'Lado';
+
+  @override
+  String get cryptoLabelOrderQuantity => 'Quantidade do pedido';
+
+  @override
+  String cryptoOrderQtyHelperOwned(String quantity) {
+    return 'Esta ordem é vendida a partir da sua posição atual. Propriedade: $quantity';
+  }
+
+  @override
+  String get cryptoOrderQtyHelperStandalone =>
+      'Esta quantidade é separada do comércio direto acima.';
+
+  @override
+  String get cryptoLabelTargetPrice => 'Preço alvo';
+
+  @override
+  String get cryptoTargetPriceHelperLimit =>
+      'Limite a compra abaixo do preço, limite a venda acima do preço';
+
+  @override
+  String get cryptoTargetPriceHelperStopLoss =>
+      'Executa quando o preço cai para este nível';
+
+  @override
+  String get cryptoTargetPriceHelperTakeProfit =>
+      'Executa quando o preço sobe para este nível';
+
+  @override
+  String get cryptoPlaceOpenOrder => 'Fazer pedido aberto';
+
+  @override
+  String get cryptoNoOpenOrdersYet =>
+      'Você ainda não tem nenhum pedido aberto para esta moeda.';
+
+  @override
+  String get cryptoLabelCancel => 'Cancelar';
+
+  @override
+  String cryptoDetailsTitleWithSymbol(String symbol) {
+    return 'Detalhes da criptografia • $symbol';
+  }
+
+  @override
+  String get cryptoLabelCoin => 'Moeda';
+
+  @override
+  String get cryptoLabelPrice => 'Preço';
+
+  @override
+  String get cryptoLabelOwned => 'Controlada';
+
+  @override
+  String get cryptoLabelOpenOrders => 'Pedidos abertos';
+
+  @override
+  String get cryptoNotEnoughHistory => 'Ainda não há história suficiente';
+
+  @override
+  String get cryptoChartPointsWord => 'pontos';
+
+  @override
+  String get cryptoChartHourAbbrev => 'h';
+
+  @override
+  String cryptoChartDataCaptionFullHistory(int count, String points) {
+    return '$count $points • histórico completo';
+  }
+
+  @override
+  String cryptoChartDataCaptionHours(int count, String points, String hours) {
+    return '$count $points • $hours';
+  }
+
+  @override
+  String get cryptoChartRange1h => '1h';
+
+  @override
+  String get cryptoChartRange4h => '4h';
+
+  @override
+  String get cryptoChartRange8h => '8h';
+
+  @override
+  String get cryptoChartRange24h => '24h';
+
+  @override
+  String get cryptoChartRange7d => '7d';
+
+  @override
+  String get cryptoChartRange30d => '30d';
+
+  @override
+  String get cryptoChartRangeAll => 'Todos';
+
+  @override
+  String get cryptoChartLive1h => 'Ao vivo • última 1h';
+
+  @override
+  String get cryptoChartLive4h => 'Ao vivo • últimas 4h';
+
+  @override
+  String get cryptoChartLive8h => 'Ao vivo • últimas 8h';
+
+  @override
+  String get cryptoChartLive24h => 'Ao vivo • últimas 24h';
+
+  @override
+  String get cryptoChartLive7d => 'Ao vivo • últimos 7 dias';
+
+  @override
+  String get cryptoChartLive30d => 'Ao vivo • últimos 30 dias';
+
+  @override
+  String get cryptoChartLiveAll => 'Ao vivo • histórico completo';
+
+  @override
+  String get cryptoLabelTotal => 'Total';
+
+  @override
+  String get cryptoApiCouldNotLoadMarket =>
+      'Não foi possível carregar o mercado criptográfico.';
+
+  @override
+  String get cryptoApiAssetNotFound => 'Criptografia não encontrada.';
+
+  @override
+  String get cryptoApiCouldNotLoadChart =>
+      'Não foi possível carregar os dados do gráfico criptográfico.';
+
+  @override
+  String get cryptoApiNotLoggedIn => 'Não logado.';
+
+  @override
+  String get cryptoApiCouldNotLoadPortfolio =>
+      'Não foi possível carregar o portfólio.';
+
+  @override
+  String get cryptoApiCouldNotLoadTransactions =>
+      'Não foi possível carregar o histórico de transações criptográficas.';
+
+  @override
+  String get cryptoApiInvalidQuantity => 'Quantidade inválida.';
+
+  @override
+  String get cryptoApiInsufficientFunds => 'Não há dinheiro suficiente.';
+
+  @override
+  String get cryptoApiPurchaseFailed => 'A compra falhou.';
+
+  @override
+  String get cryptoApiNotEnoughCrypto => 'Não há criptografia suficiente.';
+
+  @override
+  String get cryptoApiSellFailed => 'A venda falhou.';
+
+  @override
+  String get cryptoApiCouldNotLoadOrders =>
+      'Não foi possível carregar pedidos criptográficos.';
+
+  @override
+  String get cryptoApiInvalidTargetPrice => 'Preço alvo inválido.';
+
+  @override
+  String get cryptoApiInvalidOrderType => 'Tipo de pedido inválido.';
+
+  @override
+  String get cryptoApiInvalidOrderSide => 'Lado do pedido inválido.';
+
+  @override
+  String get cryptoApiInvalidOrderCombination =>
+      'Este tipo de pedido e combinação de lados não são permitidos.';
+
+  @override
+  String get cryptoApiPlaceOrderFailed => 'Falha ao fazer o pedido.';
+
+  @override
+  String get cryptoApiPlayerNotFound => 'Jogador não encontrado.';
+
+  @override
+  String get cryptoApiInvalidOrderId => 'ID de pedido inválido.';
+
+  @override
+  String get cryptoApiOrderNotFoundOrClosed =>
+      'Pedido não encontrado ou não está mais ativo.';
+
+  @override
+  String get cryptoApiCancelOrderFailed => 'Falha ao cancelar o pedido.';
+
+  @override
+  String cryptoApiBuySuccess(String quantity, String symbol, String total) {
+    return 'Você comprou $quantity $symbol por €$total.';
+  }
+
+  @override
+  String cryptoApiSellSuccess(String quantity, String symbol, String total) {
+    return 'Você vendeu $quantity $symbol por €$total.';
+  }
+
+  @override
+  String cryptoApiOrderPlaced(
+    String side,
+    String quantity,
+    String symbol,
+    String price,
+  ) {
+    return 'Pedido realizado: $side $quantity $symbol @ $price.';
+  }
+
+  @override
+  String cryptoApiOrderCancelledDetail(int orderId) {
+    return 'Pedido $orderId cancelado.';
+  }
+
+  @override
+  String cryptoClientErrorPrefix(String detail) {
+    return 'Erro: $detail';
+  }
 }

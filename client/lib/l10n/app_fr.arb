@@ -5712,5 +5712,275 @@
         "type": "String"
       }
     }
+  },
+  "cryptoMarketNoData": "Aucune donnée disponible sur le marché de la cryptographie",
+  "cryptoMarketTitle": "Marché de la cryptographie",
+  "cryptoMarketOpenOrdersCount": "Commandes ouvertes : {count}",
+  "@cryptoMarketOpenOrdersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cryptoRegimeBull": "Marché haussier",
+  "cryptoRegimeBear": "Marché baissier",
+  "cryptoRegimeSideways": "De côté",
+  "cryptoOwnedAmountLine": "Possédé : {amount}",
+  "@cryptoOwnedAmountLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoPortfolioTitle": "Portefeuille",
+  "cryptoLabelValue": "Valeur",
+  "cryptoLabelCostBasis": "Base de coût",
+  "cryptoLabelUnrealized": "Non réalisé",
+  "cryptoLabelRealized": "Réalisé",
+  "cryptoNoPositionsYet": "Aucun poste pour l'instant",
+  "cryptoChartDataUnavailable": "Données graphiques indisponibles",
+  "cryptoUnknownTime": "Inconnue",
+  "cryptoOrderTypeStopLoss": "Stop-loss",
+  "cryptoOrderTypeTakeProfit": "Profiter",
+  "cryptoOrderTypeLimit": "Limite",
+  "cryptoSideBuy": "Acheter",
+  "cryptoSideSell": "Vendre",
+  "cryptoInvalidQuantity": "Quantité invalide",
+  "cryptoPurchaseCompleted": "Achat terminé",
+  "cryptoSaleCompleted": "Vente terminée",
+  "cryptoActionProcessed": "Action traitée",
+  "cryptoInvalidTargetPrice": "Prix ​​indicatif invalide",
+  "cryptoCannotSellMoreThanOwned": "Vous ne pouvez pas vendre plus que ce que vous possédez.",
+  "cryptoOpenOrderPlaced": "Commande ouverte passée",
+  "cryptoOpenOrderFailed": "Échec de la commande",
+  "cryptoOrderCancelled": "Commande annulée",
+  "cryptoCancelOrderFailed": "Échec de l'annulation de la commande",
+  "cryptoDirectTradeTitle": "Commerce direct",
+  "cryptoLabelQuantity": "Quantité",
+  "cryptoDirectTradeHelperWithAvgAndAll": "Prix actuel : {currentPrice}€ • Achat moy : {avgBuy}€ \nUtilisez TOUS pour vendre instantanément l’intégralité de votre position.",
+  "@cryptoDirectTradeHelperWithAvgAndAll": {
+    "placeholders": {
+      "currentPrice": {
+        "type": "String"
+      },
+      "avgBuy": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoDirectTradeHelperWithAvgOnly": "Prix ​​actuel : {currentPrice}€ • Achat moy : {avgBuy}€",
+  "@cryptoDirectTradeHelperWithAvgOnly": {
+    "placeholders": {
+      "currentPrice": {
+        "type": "String"
+      },
+      "avgBuy": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoDirectTradeHelperPriceAndAll": "Prix actuel : {currentPrice}€ \nUtilisez TOUS pour vendre instantanément l’intégralité de votre position.",
+  "@cryptoDirectTradeHelperPriceAndAll": {
+    "placeholders": {
+      "currentPrice": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoDirectTradeHelperPriceOnly": "Prix ​​actuel : {currentPrice}€",
+  "@cryptoDirectTradeHelperPriceOnly": {
+    "placeholders": {
+      "currentPrice": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoYourHistoryForSymbol": "Votre historique pour {symbol}",
+  "@cryptoYourHistoryForSymbol": {
+    "placeholders": {
+      "symbol": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoLabelAvgBuy": "Achat moyen",
+  "cryptoLabelLastBuy": "Dernier achat",
+  "cryptoLabelBuyVolume": "Acheter du volume",
+  "cryptoLabelSellVolume": "Volume de vente",
+  "cryptoLastBuyAt": "Dernier achat à {when}",
+  "@cryptoLastBuyAt": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoNoTradesForCoinYet": "Aucun échange pour cette pièce pour l'instant.",
+  "cryptoOpenOrdersForSymbol": "Commandes ouvertes pour {symbol}",
+  "@cryptoOpenOrdersForSymbol": {
+    "placeholders": {
+      "symbol": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoOpenOrdersSectionHint": "Les commandes ouvertes utilisent leur propre quantité ci-dessous. Remplissez la quantité et le prix indicatif dans cette section.",
+  "cryptoLabelOrderType": "Type de commande",
+  "cryptoLabelSide": "Côté",
+  "cryptoLabelOrderQuantity": "Quantité commandée",
+  "cryptoOrderQtyHelperOwned": "Cet ordre se vend à partir de votre position actuelle. Possédé : {quantity}",
+  "@cryptoOrderQtyHelperOwned": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoOrderQtyHelperStandalone": "Cette quantité est distincte du commerce direct ci-dessus.",
+  "cryptoLabelTargetPrice": "Prix ​​indicatif",
+  "cryptoTargetPriceHelperLimit": "Limiter l'achat en dessous du prix, limiter la vente au-dessus du prix",
+  "cryptoTargetPriceHelperStopLoss": "S'exécute lorsque le prix tombe à ce niveau",
+  "cryptoTargetPriceHelperTakeProfit": "S'exécute lorsque le prix atteint ce niveau",
+  "cryptoPlaceOpenOrder": "Passer une commande ouverte",
+  "cryptoNoOpenOrdersYet": "Vous n'avez pas encore de commandes ouvertes pour cette pièce.",
+  "cryptoLabelCancel": "Annuler",
+  "cryptoDetailsTitleWithSymbol": "Détails de la cryptographie • {symbol}",
+  "@cryptoDetailsTitleWithSymbol": {
+    "placeholders": {
+      "symbol": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoLabelCoin": "Pièce de monnaie",
+  "cryptoLabelPrice": "Prix",
+  "cryptoLabelOwned": "Possédée",
+  "cryptoLabelOpenOrders": "Commandes ouvertes",
+  "cryptoNotEnoughHistory": "Pas encore assez d'histoire",
+  "cryptoChartPointsWord": "points",
+  "cryptoChartHourAbbrev": "h",
+  "cryptoChartDataCaptionFullHistory": "{count} {points} • historique complet",
+  "@cryptoChartDataCaptionFullHistory": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoChartDataCaptionHours": "{count} {points} • {hours}",
+  "@cryptoChartDataCaptionHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "points": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoChartRange1h": "1h",
+  "cryptoChartRange4h": "4h",
+  "cryptoChartRange8h": "8h",
+  "cryptoChartRange24h": "24h",
+  "cryptoChartRange7d": "7j",
+  "cryptoChartRange30d": "30j",
+  "cryptoChartRangeAll": "Toute",
+  "cryptoChartLive1h": "En direct • dernière 1h",
+  "cryptoChartLive4h": "En direct • dernières 4h",
+  "cryptoChartLive8h": "En direct • dernières 8h",
+  "cryptoChartLive24h": "En direct • dernières 24h",
+  "cryptoChartLive7d": "En direct • les 7 derniers jours",
+  "cryptoChartLive30d": "En direct • 30 derniers jours",
+  "cryptoChartLiveAll": "En direct • historique complet",
+  "cryptoLabelTotal": "Totale",
+  "cryptoApiCouldNotLoadMarket": "Impossible de charger le marché des cryptomonnaies.",
+  "cryptoApiAssetNotFound": "Crypto introuvable.",
+  "cryptoApiCouldNotLoadChart": "Impossible de charger les données du graphique cryptographique.",
+  "cryptoApiNotLoggedIn": "Non connecté.",
+  "cryptoApiCouldNotLoadPortfolio": "Impossible de charger le portefeuille.",
+  "cryptoApiCouldNotLoadTransactions": "Impossible de charger l'historique des transactions cryptographiques.",
+  "cryptoApiInvalidQuantity": "Quantité invalide.",
+  "cryptoApiInsufficientFunds": "Pas assez d'argent.",
+  "cryptoApiPurchaseFailed": "L'achat a échoué.",
+  "cryptoApiNotEnoughCrypto": "Pas assez de crypto-monnaies détenues.",
+  "cryptoApiSellFailed": "La vente a échoué.",
+  "cryptoApiCouldNotLoadOrders": "Impossible de charger les commandes cryptographiques.",
+  "cryptoApiInvalidTargetPrice": "Prix ​​indicatif invalide.",
+  "cryptoApiInvalidOrderType": "Type de commande invalide.",
+  "cryptoApiInvalidOrderSide": "Côté commande invalide.",
+  "cryptoApiInvalidOrderCombination": "Ce type de commande et cette combinaison latérale ne sont pas autorisés.",
+  "cryptoApiPlaceOrderFailed": "Échec de la commande.",
+  "cryptoApiPlayerNotFound": "Joueur introuvable.",
+  "cryptoApiInvalidOrderId": "Identifiant de commande invalide.",
+  "cryptoApiOrderNotFoundOrClosed": "Commande introuvable ou n'est plus active.",
+  "cryptoApiCancelOrderFailed": "Échec de l'annulation de la commande.",
+  "cryptoApiBuySuccess": "Vous avez acheté {quantity} {symbol} pour {total}€.",
+  "@cryptoApiBuySuccess": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoApiSellSuccess": "Vous avez vendu {quantity} {symbol} pour {total}€.",
+  "@cryptoApiSellSuccess": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoApiOrderPlaced": "Commande passée : {side} {quantity} {symbol} @ {price}.",
+  "@cryptoApiOrderPlaced": {
+    "placeholders": {
+      "side": {
+        "type": "String"
+      },
+      "quantity": {
+        "type": "String"
+      },
+      "symbol": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "cryptoApiOrderCancelledDetail": "Commande {orderId} annulée.",
+  "@cryptoApiOrderCancelledDetail": {
+    "placeholders": {
+      "orderId": {
+        "type": "int"
+      }
+    }
+  },
+  "cryptoClientErrorPrefix": "Erreur : {detail}",
+  "@cryptoClientErrorPrefix": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -16375,6 +16375,662 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error: {detail}'**
   String smugglingClientErrorPrefix(String detail);
+
+  /// No description provided for @cryptoMarketNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No crypto market data available'**
+  String get cryptoMarketNoData;
+
+  /// No description provided for @cryptoMarketTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto market'**
+  String get cryptoMarketTitle;
+
+  /// No description provided for @cryptoMarketOpenOrdersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Open orders: {count}'**
+  String cryptoMarketOpenOrdersCount(int count);
+
+  /// No description provided for @cryptoRegimeBull.
+  ///
+  /// In en, this message translates to:
+  /// **'Bull market'**
+  String get cryptoRegimeBull;
+
+  /// No description provided for @cryptoRegimeBear.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear market'**
+  String get cryptoRegimeBear;
+
+  /// No description provided for @cryptoRegimeSideways.
+  ///
+  /// In en, this message translates to:
+  /// **'Sideways'**
+  String get cryptoRegimeSideways;
+
+  /// No description provided for @cryptoOwnedAmountLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned: {amount}'**
+  String cryptoOwnedAmountLine(String amount);
+
+  /// No description provided for @cryptoPortfolioTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Portfolio'**
+  String get cryptoPortfolioTitle;
+
+  /// No description provided for @cryptoLabelValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get cryptoLabelValue;
+
+  /// No description provided for @cryptoLabelCostBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost basis'**
+  String get cryptoLabelCostBasis;
+
+  /// No description provided for @cryptoLabelUnrealized.
+  ///
+  /// In en, this message translates to:
+  /// **'Unrealized'**
+  String get cryptoLabelUnrealized;
+
+  /// No description provided for @cryptoLabelRealized.
+  ///
+  /// In en, this message translates to:
+  /// **'Realized'**
+  String get cryptoLabelRealized;
+
+  /// No description provided for @cryptoNoPositionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No positions yet'**
+  String get cryptoNoPositionsYet;
+
+  /// No description provided for @cryptoChartDataUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Chart data unavailable'**
+  String get cryptoChartDataUnavailable;
+
+  /// No description provided for @cryptoUnknownTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get cryptoUnknownTime;
+
+  /// No description provided for @cryptoOrderTypeStopLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop-loss'**
+  String get cryptoOrderTypeStopLoss;
+
+  /// No description provided for @cryptoOrderTypeTakeProfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Take-profit'**
+  String get cryptoOrderTypeTakeProfit;
+
+  /// No description provided for @cryptoOrderTypeLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit'**
+  String get cryptoOrderTypeLimit;
+
+  /// No description provided for @cryptoSideBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get cryptoSideBuy;
+
+  /// No description provided for @cryptoSideSell.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell'**
+  String get cryptoSideSell;
+
+  /// No description provided for @cryptoInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid quantity'**
+  String get cryptoInvalidQuantity;
+
+  /// No description provided for @cryptoPurchaseCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase completed'**
+  String get cryptoPurchaseCompleted;
+
+  /// No description provided for @cryptoSaleCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale completed'**
+  String get cryptoSaleCompleted;
+
+  /// No description provided for @cryptoActionProcessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Action processed'**
+  String get cryptoActionProcessed;
+
+  /// No description provided for @cryptoInvalidTargetPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid target price'**
+  String get cryptoInvalidTargetPrice;
+
+  /// No description provided for @cryptoCannotSellMoreThanOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot sell more than you own.'**
+  String get cryptoCannotSellMoreThanOwned;
+
+  /// No description provided for @cryptoOpenOrderPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Open order placed'**
+  String get cryptoOpenOrderPlaced;
+
+  /// No description provided for @cryptoOpenOrderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to place order'**
+  String get cryptoOpenOrderFailed;
+
+  /// No description provided for @cryptoOrderCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Order cancelled'**
+  String get cryptoOrderCancelled;
+
+  /// No description provided for @cryptoCancelOrderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to cancel order'**
+  String get cryptoCancelOrderFailed;
+
+  /// No description provided for @cryptoDirectTradeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct trade'**
+  String get cryptoDirectTradeTitle;
+
+  /// No description provided for @cryptoLabelQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get cryptoLabelQuantity;
+
+  /// No description provided for @cryptoDirectTradeHelperWithAvgAndAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Current price: €{currentPrice} • Avg buy: €{avgBuy}\nUse ALL to sell your full position instantly.'**
+  String cryptoDirectTradeHelperWithAvgAndAll(
+    String currentPrice,
+    String avgBuy,
+  );
+
+  /// No description provided for @cryptoDirectTradeHelperWithAvgOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Current price: €{currentPrice} • Avg buy: €{avgBuy}'**
+  String cryptoDirectTradeHelperWithAvgOnly(String currentPrice, String avgBuy);
+
+  /// No description provided for @cryptoDirectTradeHelperPriceAndAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Current price: €{currentPrice}\nUse ALL to sell your full position instantly.'**
+  String cryptoDirectTradeHelperPriceAndAll(String currentPrice);
+
+  /// No description provided for @cryptoDirectTradeHelperPriceOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Current price: €{currentPrice}'**
+  String cryptoDirectTradeHelperPriceOnly(String currentPrice);
+
+  /// No description provided for @cryptoYourHistoryForSymbol.
+  ///
+  /// In en, this message translates to:
+  /// **'Your history for {symbol}'**
+  String cryptoYourHistoryForSymbol(String symbol);
+
+  /// No description provided for @cryptoLabelAvgBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg buy'**
+  String get cryptoLabelAvgBuy;
+
+  /// No description provided for @cryptoLabelLastBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Last buy'**
+  String get cryptoLabelLastBuy;
+
+  /// No description provided for @cryptoLabelBuyVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy volume'**
+  String get cryptoLabelBuyVolume;
+
+  /// No description provided for @cryptoLabelSellVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Sell volume'**
+  String get cryptoLabelSellVolume;
+
+  /// No description provided for @cryptoLastBuyAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Last buy at {when}'**
+  String cryptoLastBuyAt(String when);
+
+  /// No description provided for @cryptoNoTradesForCoinYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No trades for this coin yet.'**
+  String get cryptoNoTradesForCoinYet;
+
+  /// No description provided for @cryptoOpenOrdersForSymbol.
+  ///
+  /// In en, this message translates to:
+  /// **'Open orders for {symbol}'**
+  String cryptoOpenOrdersForSymbol(String symbol);
+
+  /// No description provided for @cryptoOpenOrdersSectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open orders use their own quantity below. Fill in both quantity and target price in this section.'**
+  String get cryptoOpenOrdersSectionHint;
+
+  /// No description provided for @cryptoLabelOrderType.
+  ///
+  /// In en, this message translates to:
+  /// **'Order type'**
+  String get cryptoLabelOrderType;
+
+  /// No description provided for @cryptoLabelSide.
+  ///
+  /// In en, this message translates to:
+  /// **'Side'**
+  String get cryptoLabelSide;
+
+  /// No description provided for @cryptoLabelOrderQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Order quantity'**
+  String get cryptoLabelOrderQuantity;
+
+  /// No description provided for @cryptoOrderQtyHelperOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'This order sells from your current position. Owned: {quantity}'**
+  String cryptoOrderQtyHelperOwned(String quantity);
+
+  /// No description provided for @cryptoOrderQtyHelperStandalone.
+  ///
+  /// In en, this message translates to:
+  /// **'This quantity is separate from the direct trade above.'**
+  String get cryptoOrderQtyHelperStandalone;
+
+  /// No description provided for @cryptoLabelTargetPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Target price'**
+  String get cryptoLabelTargetPrice;
+
+  /// No description provided for @cryptoTargetPriceHelperLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit buy below price, limit sell above price'**
+  String get cryptoTargetPriceHelperLimit;
+
+  /// No description provided for @cryptoTargetPriceHelperStopLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Executes when price falls to this level'**
+  String get cryptoTargetPriceHelperStopLoss;
+
+  /// No description provided for @cryptoTargetPriceHelperTakeProfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Executes when price rises to this level'**
+  String get cryptoTargetPriceHelperTakeProfit;
+
+  /// No description provided for @cryptoPlaceOpenOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Place open order'**
+  String get cryptoPlaceOpenOrder;
+
+  /// No description provided for @cryptoNoOpenOrdersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have any open orders for this coin yet.'**
+  String get cryptoNoOpenOrdersYet;
+
+  /// No description provided for @cryptoLabelCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cryptoLabelCancel;
+
+  /// No description provided for @cryptoDetailsTitleWithSymbol.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto details • {symbol}'**
+  String cryptoDetailsTitleWithSymbol(String symbol);
+
+  /// No description provided for @cryptoLabelCoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Coin'**
+  String get cryptoLabelCoin;
+
+  /// No description provided for @cryptoLabelPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get cryptoLabelPrice;
+
+  /// No description provided for @cryptoLabelOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned'**
+  String get cryptoLabelOwned;
+
+  /// No description provided for @cryptoLabelOpenOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Open orders'**
+  String get cryptoLabelOpenOrders;
+
+  /// No description provided for @cryptoNotEnoughHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough history yet'**
+  String get cryptoNotEnoughHistory;
+
+  /// No description provided for @cryptoChartPointsWord.
+  ///
+  /// In en, this message translates to:
+  /// **'points'**
+  String get cryptoChartPointsWord;
+
+  /// No description provided for @cryptoChartHourAbbrev.
+  ///
+  /// In en, this message translates to:
+  /// **'h'**
+  String get cryptoChartHourAbbrev;
+
+  /// No description provided for @cryptoChartDataCaptionFullHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {points} • full history'**
+  String cryptoChartDataCaptionFullHistory(int count, String points);
+
+  /// No description provided for @cryptoChartDataCaptionHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {points} • {hours}'**
+  String cryptoChartDataCaptionHours(int count, String points, String hours);
+
+  /// No description provided for @cryptoChartRange1h.
+  ///
+  /// In en, this message translates to:
+  /// **'1h'**
+  String get cryptoChartRange1h;
+
+  /// No description provided for @cryptoChartRange4h.
+  ///
+  /// In en, this message translates to:
+  /// **'4h'**
+  String get cryptoChartRange4h;
+
+  /// No description provided for @cryptoChartRange8h.
+  ///
+  /// In en, this message translates to:
+  /// **'8h'**
+  String get cryptoChartRange8h;
+
+  /// No description provided for @cryptoChartRange24h.
+  ///
+  /// In en, this message translates to:
+  /// **'24h'**
+  String get cryptoChartRange24h;
+
+  /// No description provided for @cryptoChartRange7d.
+  ///
+  /// In en, this message translates to:
+  /// **'7d'**
+  String get cryptoChartRange7d;
+
+  /// No description provided for @cryptoChartRange30d.
+  ///
+  /// In en, this message translates to:
+  /// **'30d'**
+  String get cryptoChartRange30d;
+
+  /// No description provided for @cryptoChartRangeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get cryptoChartRangeAll;
+
+  /// No description provided for @cryptoChartLive1h.
+  ///
+  /// In en, this message translates to:
+  /// **'Live • last 1h'**
+  String get cryptoChartLive1h;
+
+  /// No description provided for @cryptoChartLive4h.
+  ///
+  /// In en, this message translates to:
+  /// **'Live • last 4h'**
+  String get cryptoChartLive4h;
+
+  /// No description provided for @cryptoChartLive8h.
+  ///
+  /// In en, this message translates to:
+  /// **'Live • last 8h'**
+  String get cryptoChartLive8h;
+
+  /// No description provided for @cryptoChartLive24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Live • last 24h'**
+  String get cryptoChartLive24h;
+
+  /// No description provided for @cryptoChartLive7d.
+  ///
+  /// In en, this message translates to:
+  /// **'Live • last 7 days'**
+  String get cryptoChartLive7d;
+
+  /// No description provided for @cryptoChartLive30d.
+  ///
+  /// In en, this message translates to:
+  /// **'Live • last 30 days'**
+  String get cryptoChartLive30d;
+
+  /// No description provided for @cryptoChartLiveAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Live • full history'**
+  String get cryptoChartLiveAll;
+
+  /// No description provided for @cryptoLabelTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get cryptoLabelTotal;
+
+  /// No description provided for @cryptoApiCouldNotLoadMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load crypto market.'**
+  String get cryptoApiCouldNotLoadMarket;
+
+  /// No description provided for @cryptoApiAssetNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Crypto not found.'**
+  String get cryptoApiAssetNotFound;
+
+  /// No description provided for @cryptoApiCouldNotLoadChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load crypto chart data.'**
+  String get cryptoApiCouldNotLoadChart;
+
+  /// No description provided for @cryptoApiNotLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Not logged in.'**
+  String get cryptoApiNotLoggedIn;
+
+  /// No description provided for @cryptoApiCouldNotLoadPortfolio.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load portfolio.'**
+  String get cryptoApiCouldNotLoadPortfolio;
+
+  /// No description provided for @cryptoApiCouldNotLoadTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load crypto transaction history.'**
+  String get cryptoApiCouldNotLoadTransactions;
+
+  /// No description provided for @cryptoApiInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid quantity.'**
+  String get cryptoApiInvalidQuantity;
+
+  /// No description provided for @cryptoApiInsufficientFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money.'**
+  String get cryptoApiInsufficientFunds;
+
+  /// No description provided for @cryptoApiPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed.'**
+  String get cryptoApiPurchaseFailed;
+
+  /// No description provided for @cryptoApiNotEnoughCrypto.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough crypto held.'**
+  String get cryptoApiNotEnoughCrypto;
+
+  /// No description provided for @cryptoApiSellFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sale failed.'**
+  String get cryptoApiSellFailed;
+
+  /// No description provided for @cryptoApiCouldNotLoadOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load crypto orders.'**
+  String get cryptoApiCouldNotLoadOrders;
+
+  /// No description provided for @cryptoApiInvalidTargetPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid target price.'**
+  String get cryptoApiInvalidTargetPrice;
+
+  /// No description provided for @cryptoApiInvalidOrderType.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid order type.'**
+  String get cryptoApiInvalidOrderType;
+
+  /// No description provided for @cryptoApiInvalidOrderSide.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid order side.'**
+  String get cryptoApiInvalidOrderSide;
+
+  /// No description provided for @cryptoApiInvalidOrderCombination.
+  ///
+  /// In en, this message translates to:
+  /// **'This order type and side combination is not allowed.'**
+  String get cryptoApiInvalidOrderCombination;
+
+  /// No description provided for @cryptoApiPlaceOrderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to place order.'**
+  String get cryptoApiPlaceOrderFailed;
+
+  /// No description provided for @cryptoApiPlayerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Player not found.'**
+  String get cryptoApiPlayerNotFound;
+
+  /// No description provided for @cryptoApiInvalidOrderId.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid order id.'**
+  String get cryptoApiInvalidOrderId;
+
+  /// No description provided for @cryptoApiOrderNotFoundOrClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Order not found or no longer active.'**
+  String get cryptoApiOrderNotFoundOrClosed;
+
+  /// No description provided for @cryptoApiCancelOrderFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to cancel order.'**
+  String get cryptoApiCancelOrderFailed;
+
+  /// No description provided for @cryptoApiBuySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You bought {quantity} {symbol} for €{total}.'**
+  String cryptoApiBuySuccess(String quantity, String symbol, String total);
+
+  /// No description provided for @cryptoApiSellSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You sold {quantity} {symbol} for €{total}.'**
+  String cryptoApiSellSuccess(String quantity, String symbol, String total);
+
+  /// No description provided for @cryptoApiOrderPlaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Order placed: {side} {quantity} {symbol} @ {price}.'**
+  String cryptoApiOrderPlaced(
+    String side,
+    String quantity,
+    String symbol,
+    String price,
+  );
+
+  /// No description provided for @cryptoApiOrderCancelledDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Order {orderId} cancelled.'**
+  String cryptoApiOrderCancelledDetail(int orderId);
+
+  /// No description provided for @cryptoClientErrorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {detail}'**
+  String cryptoClientErrorPrefix(String detail);
 }
 
 class _AppLocalizationsDelegate

@@ -3,10 +3,115 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/achievement.dart';
 import '../services/crypto_service.dart';
 import '../utils/achievement_notifier.dart';
 import '../utils/top_right_notification.dart';
+
+String _localizeCryptoApiMessage(AppLocalizations l10n, String? raw) {
+  if (raw == null || raw.trim().isEmpty) {
+    return l10n.cryptoActionProcessed;
+  }
+  final s = raw.trim();
+  if (s.startsWith('Error: ')) {
+    return l10n.cryptoClientErrorPrefix(s.substring(7));
+  }
+
+  final buyM = RegExp(r'^Je kocht ([\d.]+) (\w+) voor €([\d.]+)\.$').firstMatch(s);
+  if (buyM != null) {
+    return l10n.cryptoApiBuySuccess(buyM.group(1)!, buyM.group(2)!, buyM.group(3)!);
+  }
+  final sellM = RegExp(r'^Je verkocht ([\d.]+) (\w+) voor €([\d.]+)\.$').firstMatch(s);
+  if (sellM != null) {
+    return l10n.cryptoApiSellSuccess(sellM.group(1)!, sellM.group(2)!, sellM.group(3)!);
+  }
+  final orderPlaced = RegExp(
+    r'^Order geplaatst: (BUY|SELL) ([\d.]+) (\w+) @ ([\d.]+)\.$',
+  ).firstMatch(s);
+  if (orderPlaced != null) {
+    final sideCode = orderPlaced.group(1)!;
+    final sideLabel =
+        sideCode == 'SELL' ? l10n.cryptoSideSell : l10n.cryptoSideBuy;
+    return l10n.cryptoApiOrderPlaced(
+      sideLabel,
+      orderPlaced.group(2)!,
+      orderPlaced.group(3)!,
+      orderPlaced.group(4)!,
+    );
+  }
+  final cancelM = RegExp(r'^Order (\d+) geannuleerd\.$').firstMatch(s);
+  if (cancelM != null) {
+    return l10n.cryptoApiOrderCancelledDetail(int.parse(cancelM.group(1)!));
+  }
+
+  switch (s) {
+    case 'Kon crypto markt niet laden.':
+      return l10n.cryptoApiCouldNotLoadMarket;
+    case 'Crypto niet gevonden.':
+      return l10n.cryptoApiAssetNotFound;
+    case 'Kon crypto grafiekdata niet laden.':
+      return l10n.cryptoApiCouldNotLoadChart;
+    case 'Niet ingelogd.':
+      return l10n.cryptoApiNotLoggedIn;
+    case 'Kon portfolio niet laden.':
+      return l10n.cryptoApiCouldNotLoadPortfolio;
+    case 'Kon crypto transactiehistorie niet laden.':
+      return l10n.cryptoApiCouldNotLoadTransactions;
+    case 'Ongeldige hoeveelheid.':
+      return l10n.cryptoApiInvalidQuantity;
+    case 'Niet genoeg geld.':
+      return l10n.cryptoApiInsufficientFunds;
+    case 'Aankoop mislukt.':
+      return l10n.cryptoApiPurchaseFailed;
+    case 'Niet genoeg crypto in bezit.':
+      return l10n.cryptoApiNotEnoughCrypto;
+    case 'Verkoop mislukt.':
+      return l10n.cryptoApiSellFailed;
+    case 'Kon crypto orders niet laden.':
+      return l10n.cryptoApiCouldNotLoadOrders;
+    case 'Ongeldige doelprijs.':
+      return l10n.cryptoApiInvalidTargetPrice;
+    case 'Ongeldig ordertype.':
+      return l10n.cryptoApiInvalidOrderType;
+    case 'Ongeldige orderrichting.':
+      return l10n.cryptoApiInvalidOrderSide;
+    case 'Deze combinatie van ordertype en richting is niet toegestaan.':
+      return l10n.cryptoApiInvalidOrderCombination;
+    case 'Order plaatsen mislukt.':
+      return l10n.cryptoApiPlaceOrderFailed;
+    case 'Speler niet gevonden.':
+      return l10n.cryptoApiPlayerNotFound;
+    case 'Ongeldig order-id.':
+      return l10n.cryptoApiInvalidOrderId;
+    case 'Order niet gevonden of niet meer actief.':
+      return l10n.cryptoApiOrderNotFoundOrClosed;
+    case 'Order annuleren mislukt.':
+      return l10n.cryptoApiCancelOrderFailed;
+    default:
+      return s;
+  }
+}
+
+String _tradeSuccessSnackMessage(
+  AppLocalizations l10n,
+  bool buy,
+  String? rawMessage,
+) {
+  if (rawMessage == null || rawMessage.trim().isEmpty) {
+    return buy ? l10n.cryptoPurchaseCompleted : l10n.cryptoSaleCompleted;
+  }
+  final s = rawMessage.trim();
+  final buyM = RegExp(r'^Je kocht ([\d.]+) (\w+) voor €([\d.]+)\.$').firstMatch(s);
+  if (buyM != null) {
+    return l10n.cryptoApiBuySuccess(buyM.group(1)!, buyM.group(2)!, buyM.group(3)!);
+  }
+  final sellM = RegExp(r'^Je verkocht ([\d.]+) (\w+) voor €([\d.]+)\.$').firstMatch(s);
+  if (sellM != null) {
+    return l10n.cryptoApiSellSuccess(sellM.group(1)!, sellM.group(2)!, sellM.group(3)!);
+  }
+  return buy ? l10n.cryptoPurchaseCompleted : l10n.cryptoSaleCompleted;
+}
 
 List<Achievement> _parseAchievementsPayload(dynamic payload) {
   if (payload is! List) {
@@ -38,9 +143,6 @@ class _CryptoScreenState extends State<CryptoScreen> {
   int _openOrdersCount = 0;
   String? _selectedSymbol;
   Timer? _refreshTimer;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -145,7 +247,6 @@ class _CryptoScreenState extends State<CryptoScreen> {
       builder: (dialogContext) => _CryptoHistoryDialog(
         symbol: symbol,
         service: _cryptoService,
-        isNl: _isNl,
         coinName: selectedMarketRow?['name']?.toString() ?? symbol,
       ),
     );
@@ -153,14 +254,14 @@ class _CryptoScreenState extends State<CryptoScreen> {
     await _loadAll(silent: true);
   }
 
-  String _regimeLabel(String regime) {
+  String _regimeLabel(AppLocalizations l10n, String regime) {
     switch (regime) {
       case 'BULL':
-        return _tr('Bull Markt', 'Bull Market');
+        return l10n.cryptoRegimeBull;
       case 'BEAR':
-        return _tr('Bear Markt', 'Bear Market');
+        return l10n.cryptoRegimeBear;
       default:
-        return _tr('Zijwaarts', 'Sideways');
+        return l10n.cryptoRegimeSideways;
     }
   }
 
@@ -176,13 +277,11 @@ class _CryptoScreenState extends State<CryptoScreen> {
   }
 
   Widget _buildMarketCard() {
+    final l10n = AppLocalizations.of(context)!;
     if (_market.isEmpty) {
       return Center(
         child: Text(
-          _tr(
-            'Geen crypto marktdata beschikbaar',
-            'No crypto market data available',
-          ),
+          l10n.cryptoMarketNoData,
           style: const TextStyle(color: Colors.white70),
         ),
       );
@@ -192,7 +291,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          _tr('Crypto Markt', 'Crypto Market'),
+          l10n.cryptoMarketTitle,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -223,7 +322,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
                     border: Border.all(color: color.withOpacity(0.55)),
                   ),
                   child: Text(
-                    '${_regimeLabel(regime)} (${movePct >= 0 ? '+' : ''}${movePct.toStringAsFixed(2)}%)',
+                    '${_regimeLabel(l10n, regime)} (${movePct >= 0 ? '+' : ''}${movePct.toStringAsFixed(2)}%)',
                     style: TextStyle(
                       color: color,
                       fontWeight: FontWeight.w700,
@@ -241,10 +340,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
                 border: Border.all(color: Colors.white24),
               ),
               child: Text(
-                _tr(
-                  'Open orders: $_openOrdersCount',
-                  'Open orders: $_openOrdersCount',
-                ),
+                l10n.cryptoMarketOpenOrdersCount(_openOrdersCount),
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -328,7 +424,9 @@ class _CryptoScreenState extends State<CryptoScreen> {
                             ),
                             if (ownedQuantity > 0)
                               Text(
-                                '${_tr('In bezit', 'Owned')}: ${ownedQuantity.toStringAsFixed(6)}',
+                                l10n.cryptoOwnedAmountLine(
+                                  ownedQuantity.toStringAsFixed(6),
+                                ),
                                 style: const TextStyle(
                                   color: Colors.greenAccent,
                                   fontSize: 11,
@@ -371,6 +469,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
   }
 
   Widget _buildPortfolioCard() {
+    final l10n = AppLocalizations.of(context)!;
     final marketValue = (_totals['marketValue'] as num?)?.toDouble() ?? 0;
     final costBasis = (_totals['costBasis'] as num?)?.toDouble() ?? 0;
     final unrealized = (_totals['unrealizedProfit'] as num?)?.toDouble() ?? 0;
@@ -387,7 +486,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr('Portfolio', 'Portfolio'),
+            l10n.cryptoPortfolioTitle,
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -396,22 +495,22 @@ class _CryptoScreenState extends State<CryptoScreen> {
           ),
           const SizedBox(height: 10),
           _infoRow(
-            _tr('Waarde', 'Value'),
+            l10n.cryptoLabelValue,
             '€${marketValue.toStringAsFixed(2)}',
             Colors.white,
           ),
           _infoRow(
-            _tr('Inleg', 'Cost basis'),
+            l10n.cryptoLabelCostBasis,
             '€${costBasis.toStringAsFixed(2)}',
             Colors.white70,
           ),
           _infoRow(
-            _tr('Ongerealiseerd', 'Unrealized'),
+            l10n.cryptoLabelUnrealized,
             '€${unrealized.toStringAsFixed(2)}',
             unrealized >= 0 ? Colors.greenAccent : Colors.redAccent,
           ),
           _infoRow(
-            _tr('Gerealiseerd', 'Realized'),
+            l10n.cryptoLabelRealized,
             '€${realized.toStringAsFixed(2)}',
             realized >= 0 ? Colors.greenAccent : Colors.redAccent,
           ),
@@ -422,7 +521,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
             child: _holdings.isEmpty
                 ? Center(
                     child: Text(
-                      _tr('Nog geen posities', 'No positions yet'),
+                      l10n.cryptoNoPositionsYet,
                       style: const TextStyle(color: Colors.white70),
                     ),
                   )
@@ -559,13 +658,11 @@ class _CryptoHistoryDialog extends StatefulWidget {
   const _CryptoHistoryDialog({
     required this.symbol,
     required this.service,
-    required this.isNl,
     required this.coinName,
   });
 
   final String symbol;
   final CryptoService service;
-  final bool isNl;
   final String coinName;
 
   @override
@@ -598,7 +695,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
   String _selectedOrderType = 'LIMIT';
   String _selectedOrderSide = 'BUY';
 
-  String _tr(String nl, String en) => widget.isNl ? nl : en;
+  AppLocalizations get _l10n => AppLocalizations.of(context)!;
 
   @override
   void initState() {
@@ -641,8 +738,9 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
       _stats = Map<String, dynamic>.from(result['stats'] as Map? ?? const {});
       _loading = false;
       _error = result['success'] == false
-          ? (result['message']?.toString() ??
-                _tr('Grafiekdata niet beschikbaar', 'Chart data unavailable'))
+          ? (result['message']?.toString().trim().isNotEmpty == true
+                ? result['message']!.toString()
+                : '')
           : null;
     });
   }
@@ -731,7 +829,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
 
   String _formatDateTime(String isoValue) {
     if (isoValue.isEmpty) {
-      return _tr('Onbekend', 'Unknown');
+      return _l10n.cryptoUnknownTime;
     }
 
     final parsed = DateTime.tryParse(isoValue)?.toLocal();
@@ -749,16 +847,16 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
   String _orderTypeLabel(String type) {
     switch (type) {
       case 'STOP_LOSS':
-        return _tr('Stop-loss', 'Stop-loss');
+        return _l10n.cryptoOrderTypeStopLoss;
       case 'TAKE_PROFIT':
-        return _tr('Take-profit', 'Take-profit');
+        return _l10n.cryptoOrderTypeTakeProfit;
       default:
-        return _tr('Limit', 'Limit');
+        return _l10n.cryptoOrderTypeLimit;
     }
   }
 
   String _orderSideLabel(String side) {
-    return side == 'SELL' ? _tr('Verkoop', 'Sell') : _tr('Koop', 'Buy');
+    return side == 'SELL' ? _l10n.cryptoSideSell : _l10n.cryptoSideBuy;
   }
 
   bool get _orderUsesOwnedPosition =>
@@ -809,7 +907,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Ongeldige hoeveelheid', 'Invalid quantity')),
+          content: Text(_l10n.cryptoInvalidQuantity),
         ),
       );
       return;
@@ -828,13 +926,16 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
     setState(() => _processing = false);
 
     final success = result['success'] == true;
-    final localizedSuccess = buy
-        ? _tr('Aankoop voltooid', 'Purchase completed')
-        : _tr('Verkoop voltooid', 'Sale completed');
     final message = success
-        ? localizedSuccess
-        : (result['message']?.toString() ??
-              _tr('Actie verwerkt', 'Action processed'));
+        ? _tradeSuccessSnackMessage(
+            _l10n,
+            buy,
+            result['message']?.toString(),
+          )
+        : _localizeCryptoApiMessage(
+            _l10n,
+            result['message']?.toString(),
+          );
 
     showTopRightFromSnackBar(
       context,
@@ -871,7 +972,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Ongeldige hoeveelheid', 'Invalid quantity')),
+          content: Text(_l10n.cryptoInvalidQuantity),
         ),
       );
       return;
@@ -881,7 +982,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(_tr('Ongeldige doelprijs', 'Invalid target price')),
+          content: Text(_l10n.cryptoInvalidTargetPrice),
         ),
       );
       return;
@@ -892,10 +993,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
         context,
         SnackBar(
           content: Text(
-            _tr(
-              'Je kunt niet meer verkopen dan je bezit.',
-              'You cannot sell more than you own.',
-            ),
+            _l10n.cryptoCannotSellMoreThanOwned,
           ),
         ),
       );
@@ -919,15 +1017,18 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
     setState(() => _processing = false);
 
     final success = result['success'] == true;
+    final rawMsg = result['message']?.toString() ?? '';
+    final snackText = success
+        ? (rawMsg.trim().isNotEmpty
+              ? _localizeCryptoApiMessage(_l10n, rawMsg)
+              : _l10n.cryptoOpenOrderPlaced)
+        : (rawMsg.trim().isNotEmpty
+              ? _localizeCryptoApiMessage(_l10n, rawMsg)
+              : _l10n.cryptoOpenOrderFailed);
     showTopRightFromSnackBar(
       context,
       SnackBar(
-        content: Text(
-          success
-              ? _tr('Open order geplaatst', 'Open order placed')
-              : (result['message']?.toString() ??
-                    _tr('Order plaatsen mislukt', 'Failed to place order')),
-        ),
+        content: Text(snackText),
         backgroundColor: success ? Colors.green : Colors.red,
       ),
     );
@@ -953,15 +1054,18 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
     setState(() => _processing = false);
 
     final success = result['success'] == true;
+    final cancelRaw = result['message']?.toString() ?? '';
+    final cancelSnack = success
+        ? (cancelRaw.trim().isNotEmpty
+              ? _localizeCryptoApiMessage(_l10n, cancelRaw)
+              : _l10n.cryptoOrderCancelled)
+        : (cancelRaw.trim().isNotEmpty
+              ? _localizeCryptoApiMessage(_l10n, cancelRaw)
+              : _l10n.cryptoCancelOrderFailed);
     showTopRightFromSnackBar(
       context,
       SnackBar(
-        content: Text(
-          success
-              ? _tr('Order geannuleerd', 'Order cancelled')
-              : (result['message']?.toString() ??
-                    _tr('Order annuleren mislukt', 'Failed to cancel order')),
-        ),
+        content: Text(cancelSnack),
         backgroundColor: success ? Colors.green : Colors.red,
       ),
     );
@@ -972,6 +1076,19 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
   }
 
   Widget _buildTradeSection() {
+    final cp = _currentPrice.toStringAsFixed(6);
+    final ab = _avgBuyPrice.toStringAsFixed(6);
+    final String helperText;
+    if (_avgBuyPrice > 0) {
+      helperText = _ownedQuantity > 0
+          ? _l10n.cryptoDirectTradeHelperWithAvgAndAll(cp, ab)
+          : _l10n.cryptoDirectTradeHelperWithAvgOnly(cp, ab);
+    } else {
+      helperText = _ownedQuantity > 0
+          ? _l10n.cryptoDirectTradeHelperPriceAndAll(cp)
+          : _l10n.cryptoDirectTradeHelperPriceOnly(cp);
+    }
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -983,7 +1100,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr('Direct handelen', 'Direct trade'),
+            _l10n.cryptoDirectTradeTitle,
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -995,16 +1112,8 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              labelText: _tr('Hoeveelheid', 'Quantity'),
-              helperText: _avgBuyPrice > 0
-                  ? _tr(
-                      'Huidige prijs: €${_currentPrice.toStringAsFixed(6)} • Gem. gekocht: €${_avgBuyPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nGebruik ALL om je volledige positie direct te verkopen.' : ''}',
-                      'Current price: €${_currentPrice.toStringAsFixed(6)} • Avg buy: €${_avgBuyPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nUse ALL to sell your full position instantly.' : ''}',
-                    )
-                  : _tr(
-                      'Huidige prijs: €${_currentPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nGebruik ALL om je volledige positie direct te verkopen.' : ''}',
-                      'Current price: €${_currentPrice.toStringAsFixed(6)}${_ownedQuantity > 0 ? '\nUse ALL to sell your full position instantly.' : ''}',
-                    ),
+              labelText: _l10n.cryptoLabelQuantity,
+              helperText: helperText,
               helperStyle: const TextStyle(color: Colors.white54),
               labelStyle: const TextStyle(color: Colors.white70),
               filled: true,
@@ -1040,7 +1149,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                       ? null
                       : () => _executeTrade(buy: true),
                   icon: const Icon(Icons.add_shopping_cart),
-                  label: Text(_tr('Koop', 'Buy')),
+                  label: Text(_l10n.cryptoSideBuy),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green.shade700,
                   ),
@@ -1053,7 +1162,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                       ? null
                       : () => _executeTrade(buy: false),
                   icon: const Icon(Icons.sell),
-                  label: Text(_tr('Verkoop', 'Sell')),
+                  label: Text(_l10n.cryptoSideSell),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red.shade700,
                   ),
@@ -1086,10 +1195,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr(
-              'Jouw historie voor ${widget.symbol}',
-              'Your history for ${widget.symbol}',
-            ),
+            _l10n.cryptoYourHistoryForSymbol(widget.symbol),
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -1101,26 +1207,26 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             runSpacing: 8,
             children: [
               _buildInfoChip(
-                label: _tr('Gem. gekocht', 'Avg buy'),
+                label: _l10n.cryptoLabelAvgBuy,
                 value: _avgBuyPrice > 0
                     ? '€${_avgBuyPrice.toStringAsFixed(6)}'
                     : '-',
                 color: Colors.amber.shade200,
               ),
               _buildInfoChip(
-                label: _tr('Laatste koop', 'Last buy'),
+                label: _l10n.cryptoLabelLastBuy,
                 value: latestBuyPrice > 0
                     ? '€${latestBuyPrice.toStringAsFixed(6)}'
                     : '-',
                 color: Colors.lightBlueAccent,
               ),
               _buildInfoChip(
-                label: _tr('Koopvolume', 'Buy volume'),
+                label: _l10n.cryptoLabelBuyVolume,
                 value: '€${totalBuySpent.toStringAsFixed(2)}',
                 color: Colors.greenAccent,
               ),
               _buildInfoChip(
-                label: _tr('Verkoopvolume', 'Sell volume'),
+                label: _l10n.cryptoLabelSellVolume,
                 value: '€${totalSellValue.toStringAsFixed(2)}',
                 color: Colors.redAccent,
               ),
@@ -1129,10 +1235,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
           if (latestBuyAt.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
-              _tr(
-                'Laatste koop op ${_formatDateTime(latestBuyAt)}',
-                'Last buy at ${_formatDateTime(latestBuyAt)}',
-              ),
+              _l10n.cryptoLastBuyAt(_formatDateTime(latestBuyAt)),
               style: const TextStyle(color: Colors.white60, fontSize: 12),
             ),
           ],
@@ -1144,10 +1247,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             )
           else if (_transactions.isEmpty)
             Text(
-              _tr(
-                'Nog geen trades voor deze coin.',
-                'No trades for this coin yet.',
-              ),
+              _l10n.cryptoNoTradesForCoinYet,
               style: const TextStyle(color: Colors.white70, fontSize: 12),
             )
           else
@@ -1197,7 +1297,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${isBuy ? _tr('Koop', 'Buy') : _tr('Verkoop', 'Sell')} • ${quantity.toStringAsFixed(6)}',
+                              '${isBuy ? _l10n.cryptoSideBuy : _l10n.cryptoSideSell} • ${quantity.toStringAsFixed(6)}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -1205,7 +1305,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '${_tr('Prijs', 'Price')}: €${price.toStringAsFixed(6)} • ${_tr('Totaal', 'Total')}: €${totalValue.toStringAsFixed(2)}',
+                              '${_l10n.cryptoLabelPrice}: €${price.toStringAsFixed(6)} • ${_l10n.cryptoLabelTotal}: €${totalValue.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 12,
@@ -1254,10 +1354,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _tr(
-              'Open orders voor ${widget.symbol}',
-              'Open orders for ${widget.symbol}',
-            ),
+            _l10n.cryptoOpenOrdersForSymbol(widget.symbol),
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
@@ -1265,10 +1362,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
           ),
           const SizedBox(height: 10),
           Text(
-            _tr(
-              'Open orders gebruiken hun eigen hoeveelheid hieronder. Vul in deze sectie zowel hoeveelheid als doelprijs in.',
-              'Open orders use their own quantity below. Fill in both quantity and target price in this section.',
-            ),
+            _l10n.cryptoOpenOrdersSectionHint,
             style: const TextStyle(color: Colors.white60, fontSize: 12),
           ),
           const SizedBox(height: 10),
@@ -1280,7 +1374,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                   dropdownColor: const Color(0xFF1B2330),
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    labelText: _tr('Ordertype', 'Order type'),
+                    labelText: _l10n.cryptoLabelOrderType,
                     labelStyle: const TextStyle(color: Colors.white70),
                     filled: true,
                     fillColor: Colors.white.withOpacity(0.08),
@@ -1293,15 +1387,18 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'LIMIT', child: Text('Limit')),
+                  items: [
+                    DropdownMenuItem(
+                      value: 'LIMIT',
+                      child: Text(_l10n.cryptoOrderTypeLimit),
+                    ),
                     DropdownMenuItem(
                       value: 'STOP_LOSS',
-                      child: Text('Stop-loss'),
+                      child: Text(_l10n.cryptoOrderTypeStopLoss),
                     ),
                     DropdownMenuItem(
                       value: 'TAKE_PROFIT',
-                      child: Text('Take-profit'),
+                      child: Text(_l10n.cryptoOrderTypeTakeProfit),
                     ),
                   ],
                   onChanged: _processing
@@ -1326,7 +1423,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                   dropdownColor: const Color(0xFF1B2330),
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    labelText: _tr('Richting', 'Side'),
+                    labelText: _l10n.cryptoLabelSide,
                     labelStyle: const TextStyle(color: Colors.white70),
                     filled: true,
                     fillColor: Colors.white.withOpacity(0.08),
@@ -1342,11 +1439,11 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                   items: [
                     DropdownMenuItem(
                       value: 'BUY',
-                      child: Text(_tr('Koop', 'Buy')),
+                      child: Text(_l10n.cryptoSideBuy),
                     ),
                     DropdownMenuItem(
                       value: 'SELL',
-                      child: Text(_tr('Verkoop', 'Sell')),
+                      child: Text(_l10n.cryptoSideSell),
                     ),
                   ],
                   onChanged: (_processing || _selectedOrderType != 'LIMIT')
@@ -1367,16 +1464,12 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              labelText: _tr('Order hoeveelheid', 'Order quantity'),
+              labelText: _l10n.cryptoLabelOrderQuantity,
               helperText: _orderUsesOwnedPosition
-                  ? _tr(
-                      'Voor deze order verkoop je vanuit je huidige positie. In bezit: ${_ownedQuantity.toStringAsFixed(6)}',
-                      'This order sells from your current position. Owned: ${_ownedQuantity.toStringAsFixed(6)}',
+                  ? _l10n.cryptoOrderQtyHelperOwned(
+                      _ownedQuantity.toStringAsFixed(6),
                     )
-                  : _tr(
-                      'Deze hoeveelheid staat los van direct handelen hierboven.',
-                      'This quantity is separate from the direct trade above.',
-                    ),
+                  : _l10n.cryptoOrderQtyHelperStandalone,
               helperStyle: const TextStyle(color: Colors.white54),
               labelStyle: const TextStyle(color: Colors.white70),
               filled: true,
@@ -1409,26 +1502,17 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              labelText: _tr('Doelprijs', 'Target price'),
+              labelText: _l10n.cryptoLabelTargetPrice,
               prefixText: '€ ',
               prefixStyle: const TextStyle(color: Colors.white70),
               labelStyle: const TextStyle(color: Colors.white70),
               filled: true,
               fillColor: Colors.white.withOpacity(0.08),
               helperText: _selectedOrderType == 'LIMIT'
-                  ? _tr(
-                      'Limit buy onder prijs, limit sell boven prijs',
-                      'Limit buy below price, limit sell above price',
-                    )
+                  ? _l10n.cryptoTargetPriceHelperLimit
                   : _selectedOrderType == 'STOP_LOSS'
-                  ? _tr(
-                      'Wordt uitgevoerd als prijs daalt tot dit niveau',
-                      'Executes when price falls to this level',
-                    )
-                  : _tr(
-                      'Wordt uitgevoerd als prijs stijgt tot dit niveau',
-                      'Executes when price rises to this level',
-                    ),
+                  ? _l10n.cryptoTargetPriceHelperStopLoss
+                  : _l10n.cryptoTargetPriceHelperTakeProfit,
               helperStyle: const TextStyle(color: Colors.white54),
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white30),
@@ -1446,7 +1530,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             child: OutlinedButton.icon(
               onPressed: _processing ? null : _placeOpenOrder,
               icon: const Icon(Icons.pending_actions),
-              label: Text(_tr('Plaats open order', 'Place open order')),
+              label: Text(_l10n.cryptoPlaceOpenOrder),
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.amber.shade200,
                 side: BorderSide(color: Colors.amber.shade300),
@@ -1462,10 +1546,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
             )
           else if (_openOrders.isEmpty)
             Text(
-              _tr(
-                'Je hebt nog geen open orders voor deze coin.',
-                'You do not have any open orders for this coin yet.',
-              ),
+              _l10n.cryptoNoOpenOrdersYet,
               style: const TextStyle(color: Colors.white70, fontSize: 12),
             )
           else
@@ -1506,14 +1587,14 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '${_tr('Hoeveelheid', 'Quantity')}: ${quantity.toStringAsFixed(6)}',
+                              '${_l10n.cryptoLabelQuantity}: ${quantity.toStringAsFixed(6)}',
                               style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 12,
                               ),
                             ),
                             Text(
-                              '${_tr('Doelprijs', 'Target price')}: €${targetPrice.toStringAsFixed(6)}',
+                              '${_l10n.cryptoLabelTargetPrice}: €${targetPrice.toStringAsFixed(6)}',
                               style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 12,
@@ -1526,7 +1607,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                         onPressed: (_processing || orderId <= 0)
                             ? null
                             : () => _cancelOpenOrder(orderId),
-                        child: Text(_tr('Annuleer', 'Cancel')),
+                        child: Text(_l10n.cryptoLabelCancel),
                       ),
                     ],
                   ),
@@ -1563,7 +1644,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                   children: [
                     Expanded(
                       child: Text(
-                        '${_tr('Crypto details', 'Crypto details')} • ${widget.symbol}',
+                        _l10n.cryptoDetailsTitleWithSymbol(widget.symbol),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -1582,7 +1663,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                         border: Border.all(color: Colors.white24),
                       ),
                       child: Text(
-                        _range.liveLabel(_tr),
+                        _range.liveBanner(_l10n),
                         style: const TextStyle(
                           color: Colors.greenAccent,
                           fontWeight: FontWeight.w600,
@@ -1603,29 +1684,29 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                   runSpacing: 8,
                   children: [
                     _buildInfoChip(
-                      label: _tr('Coin', 'Coin'),
+                      label: _l10n.cryptoLabelCoin,
                       value: widget.coinName,
                       color: Colors.white,
                     ),
                     _buildInfoChip(
-                      label: _tr('Prijs', 'Price'),
+                      label: _l10n.cryptoLabelPrice,
                       value: '€${_currentPrice.toStringAsFixed(6)}',
                       color: Colors.amber.shade200,
                     ),
                     _buildInfoChip(
-                      label: _tr('In bezit', 'Owned'),
+                      label: _l10n.cryptoLabelOwned,
                       value: _ownedQuantity.toStringAsFixed(6),
                       color: Colors.greenAccent,
                     ),
                     _buildInfoChip(
-                      label: _tr('Gem. gekocht', 'Avg buy'),
+                      label: _l10n.cryptoLabelAvgBuy,
                       value: _avgBuyPrice > 0
                           ? '€${_avgBuyPrice.toStringAsFixed(6)}'
                           : '-',
                       color: Colors.amberAccent,
                     ),
                     _buildInfoChip(
-                      label: _tr('Open orders', 'Open orders'),
+                      label: _l10n.cryptoLabelOpenOrders,
                       value: _openOrders.length.toString(),
                       color: Colors.lightBlueAccent,
                     ),
@@ -1639,7 +1720,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                       .map((range) {
                         final selected = range == _range;
                         return ChoiceChip(
-                          label: Text(range.label(_tr)),
+                          label: Text(range.shortLabel(_l10n)),
                           selected: selected,
                           onSelected: (_) => _changeRange(range),
                           selectedColor: Colors.amber.withOpacity(0.22),
@@ -1675,7 +1756,9 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                     padding: const EdgeInsets.symmetric(vertical: 60),
                     child: Center(
                       child: Text(
-                        _error!,
+                        _error!.isEmpty
+                            ? _l10n.cryptoChartDataUnavailable
+                            : _localizeCryptoApiMessage(_l10n, _error),
                         style: const TextStyle(
                           color: Colors.redAccent,
                           fontSize: 12,
@@ -1689,10 +1772,7 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                     padding: const EdgeInsets.symmetric(vertical: 60),
                     child: Center(
                       child: Text(
-                        _tr(
-                          'Nog te weinig historiek',
-                          'Not enough history yet',
-                        ),
+                        _l10n.cryptoNotEnoughHistory,
                         style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 12,
@@ -1762,8 +1842,15 @@ class _CryptoHistoryDialogState extends State<_CryptoHistoryDialog> {
                       const Spacer(),
                       Text(
                         windowHours == null
-                            ? '${_points.length} ${_tr('punten', 'points')} • ${_tr('volledige historie', 'full history')}'
-                            : '${_points.length} ${_tr('punten', 'points')} • $windowHours${_tr('u', 'h')}',
+                            ? _l10n.cryptoChartDataCaptionFullHistory(
+                                _points.length,
+                                _l10n.cryptoChartPointsWord,
+                              )
+                            : _l10n.cryptoChartDataCaptionHours(
+                                _points.length,
+                                _l10n.cryptoChartPointsWord,
+                                '$windowHours${_l10n.cryptoChartHourAbbrev}',
+                              ),
                         style: const TextStyle(
                           color: Colors.white60,
                           fontSize: 11,
@@ -1827,42 +1914,44 @@ enum _ChartRange {
 
   final int hours;
   final int points;
+}
 
-  String label(String Function(String nl, String en) tr) {
+extension _ChartRangeL10n on _ChartRange {
+  String shortLabel(AppLocalizations l10n) {
     switch (this) {
       case _ChartRange.hour:
-        return tr('1u', '1h');
+        return l10n.cryptoChartRange1h;
       case _ChartRange.fourHours:
-        return tr('4u', '4h');
+        return l10n.cryptoChartRange4h;
       case _ChartRange.eightHours:
-        return tr('8u', '8h');
+        return l10n.cryptoChartRange8h;
       case _ChartRange.day:
-        return tr('24u', '24h');
+        return l10n.cryptoChartRange24h;
       case _ChartRange.week:
-        return tr('7d', '7d');
+        return l10n.cryptoChartRange7d;
       case _ChartRange.month:
-        return tr('30d', '30d');
+        return l10n.cryptoChartRange30d;
       case _ChartRange.all:
-        return tr('Alles', 'All');
+        return l10n.cryptoChartRangeAll;
     }
   }
 
-  String liveLabel(String Function(String nl, String en) tr) {
+  String liveBanner(AppLocalizations l10n) {
     switch (this) {
       case _ChartRange.hour:
-        return tr('Live • laatste 1u', 'Live • last 1h');
+        return l10n.cryptoChartLive1h;
       case _ChartRange.fourHours:
-        return tr('Live • laatste 4u', 'Live • last 4h');
+        return l10n.cryptoChartLive4h;
       case _ChartRange.eightHours:
-        return tr('Live • laatste 8u', 'Live • last 8h');
+        return l10n.cryptoChartLive8h;
       case _ChartRange.day:
-        return tr('Live • laatste 24u', 'Live • last 24h');
+        return l10n.cryptoChartLive24h;
       case _ChartRange.week:
-        return tr('Live • laatste 7 dagen', 'Live • last 7 days');
+        return l10n.cryptoChartLive7d;
       case _ChartRange.month:
-        return tr('Live • laatste 30 dagen', 'Live • last 30 days');
+        return l10n.cryptoChartLive30d;
       case _ChartRange.all:
-        return tr('Live • volledige historie', 'Live • full history');
+        return l10n.cryptoChartLiveAll;
     }
   }
 }
