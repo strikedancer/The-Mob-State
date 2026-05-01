@@ -7209,6 +7209,244 @@ abstract class AppLocalizations {
   /// **'You must be in the same country as the target'**
   String get hitDifferentCountry;
 
+  /// No description provided for @hitlistErrMissingBounty.
+  ///
+  /// In en, this message translates to:
+  /// **'Bounty amount is required'**
+  String get hitlistErrMissingBounty;
+
+  /// No description provided for @hitlistErrBountyTooLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum bounty is €50,000'**
+  String get hitlistErrBountyTooLow;
+
+  /// No description provided for @hitlistErrCannotHitYourself.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot place a hit on yourself'**
+  String get hitlistErrCannotHitYourself;
+
+  /// No description provided for @hitlistErrHitAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have an active hit on this player'**
+  String get hitlistErrHitAlreadyExists;
+
+  /// No description provided for @hitlistErrInsufficientMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have enough money'**
+  String get hitlistErrInsufficientMoney;
+
+  /// No description provided for @hitlistErrMissingCounterBounty.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-bounty amount is required'**
+  String get hitlistErrMissingCounterBounty;
+
+  /// No description provided for @hitlistErrHitNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit not found'**
+  String get hitlistErrHitNotFound;
+
+  /// No description provided for @hitlistErrNotTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the target can place a counter-bid'**
+  String get hitlistErrNotTarget;
+
+  /// No description provided for @hitlistErrHitNotActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit is not active'**
+  String get hitlistErrHitNotActive;
+
+  /// No description provided for @hitlistErrCounterBountyMustBeHigher.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-bounty must be higher than the original bounty'**
+  String get hitlistErrCounterBountyMustBeHigher;
+
+  /// No description provided for @hitlistErrMissingWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon is required'**
+  String get hitlistErrMissingWeapon;
+
+  /// No description provided for @hitlistErrWeaponNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapon not found'**
+  String get hitlistErrWeaponNotFound;
+
+  /// No description provided for @hitlistErrWeaponNotOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not own this weapon or it is broken'**
+  String get hitlistErrWeaponNotOwned;
+
+  /// No description provided for @hitlistErrWeaponBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'Your selected weapon is broken. Repair it first.'**
+  String get hitlistErrWeaponBroken;
+
+  /// No description provided for @hitlistErrInsufficientAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have enough ammunition'**
+  String get hitlistErrInsufficientAmmo;
+
+  /// No description provided for @hitlistErrInvalidAmmoHit.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid ammunition quantity'**
+  String get hitlistErrInvalidAmmoHit;
+
+  /// No description provided for @hitlistErrTargetUnderHitProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'Target has active hit protection'**
+  String get hitlistErrTargetUnderHitProtection;
+
+  /// No description provided for @hitlistErrInvalidInvestigationTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid investigation type'**
+  String get hitlistErrInvalidInvestigationTier;
+
+  /// No description provided for @hitlistErrInvestigationAlreadyPending.
+  ///
+  /// In en, this message translates to:
+  /// **'An investigation is already pending for this hit. Wait for your detective message.'**
+  String get hitlistErrInvestigationAlreadyPending;
+
+  /// No description provided for @hitlistErrInvalidCaseId.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid case file number'**
+  String get hitlistErrInvalidCaseId;
+
+  /// No description provided for @hitlistErrMurderCaseNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Case file not found'**
+  String get hitlistErrMurderCaseNotFound;
+
+  /// No description provided for @hitlistErrMurderCaseExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation window expired (24 hours)'**
+  String get hitlistErrMurderCaseExpired;
+
+  /// No description provided for @hitlistErrMurderCaseAlreadyRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation for this case has already been started'**
+  String get hitlistErrMurderCaseAlreadyRequested;
+
+  /// No description provided for @hitlistErrNotPlacer.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the placer can cancel the hit'**
+  String get hitlistErrNotPlacer;
+
+  /// No description provided for @hitlistInvestigationOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation options'**
+  String get hitlistInvestigationOptions;
+
+  /// No description provided for @hitlistInvestigationChooseSpeedPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose speed and price:'**
+  String get hitlistInvestigationChooseSpeedPrice;
+
+  /// No description provided for @hitlistInvestigationQuick.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick investigation (€1,000,000 • 1 hour)'**
+  String get hitlistInvestigationQuick;
+
+  /// No description provided for @hitlistInvestigationStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard investigation (€500,000 • 6 hours)'**
+  String get hitlistInvestigationStandard;
+
+  /// No description provided for @hitlistInvestigationSlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow investigation (€250,000 • 24 hours)'**
+  String get hitlistInvestigationSlow;
+
+  /// No description provided for @hitlistInvestigationQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation queued. Cost {cost}. ETA: {etaMinutes} min. Report will arrive via Detective Bureau messages (around {resolveAt}).'**
+  String hitlistInvestigationQueued(
+    String cost,
+    String etaMinutes,
+    String resolveAt,
+  );
+
+  /// No description provided for @hitlistInvestigationFailedGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation failed'**
+  String get hitlistInvestigationFailedGeneric;
+
+  /// No description provided for @hitlistInvestigationCouldNotComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigation could not be completed'**
+  String get hitlistInvestigationCouldNotComplete;
+
+  /// No description provided for @hitlistHitSuccessWithLoot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit successful! Bounty and loot received: cash {cash}, carried items {items}.'**
+  String hitlistHitSuccessWithLoot(String cash, String items);
+
+  /// No description provided for @hitlistAttemptTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Hit attempt timed out. Please try again.'**
+  String get hitlistAttemptTimeout;
+
+  /// No description provided for @hitlistNoUsableWeapons.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no usable weapons in your inventory. Buy or repair a weapon first.'**
+  String get hitlistNoUsableWeapons;
+
+  /// No description provided for @hitlistWeaponsInventoryLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading weapons: {error}'**
+  String hitlistWeaponsInventoryLoadError(String error);
+
+  /// No description provided for @hitlistPlayersLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading players: {error}'**
+  String hitlistPlayersLoadError(String error);
+
+  /// No description provided for @hitlistRelativeOneDayAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day ago'**
+  String get hitlistRelativeOneDayAgo;
+
+  /// No description provided for @hitlistRelativeDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String hitlistRelativeDaysAgo(String count);
+
   /// No description provided for @counterBountyTitle.
   ///
   /// In en, this message translates to:

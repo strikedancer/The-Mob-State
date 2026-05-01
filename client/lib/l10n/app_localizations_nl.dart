@@ -4016,6 +4016,151 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je moet in hetzelfde land zijn als het doelwit';
 
   @override
+  String get hitlistErrMissingBounty => 'Bountybedrag is verplicht';
+
+  @override
+  String get hitlistErrBountyTooLow => 'Minimale bounty is €50.000';
+
+  @override
+  String get hitlistErrCannotHitYourself =>
+      'Je kunt jezelf niet op de moordlijst zetten';
+
+  @override
+  String get hitlistErrHitAlreadyExists =>
+      'Je hebt al een actieve hit op deze speler';
+
+  @override
+  String get hitlistErrInsufficientMoney => 'Je hebt niet genoeg geld';
+
+  @override
+  String get hitlistErrMissingCounterBounty => 'Tegen-bod bedrag is verplicht';
+
+  @override
+  String get hitlistErrHitNotFound => 'Hit niet gevonden';
+
+  @override
+  String get hitlistErrNotTarget =>
+      'Alleen het doelwit kan een tegen-bod plaatsen';
+
+  @override
+  String get hitlistErrHitNotActive => 'Hit is niet actief';
+
+  @override
+  String get hitlistErrCounterBountyMustBeHigher =>
+      'Tegen-bod moet hoger zijn dan de originele bounty';
+
+  @override
+  String get hitlistErrMissingWeapon => 'Wapen is vereist';
+
+  @override
+  String get hitlistErrWeaponNotFound => 'Wapen niet gevonden';
+
+  @override
+  String get hitlistErrWeaponNotOwned =>
+      'Je bezit dit wapen niet of het is kapot';
+
+  @override
+  String get hitlistErrWeaponBroken =>
+      'Je geselecteerde wapen is kapot. Repareer het eerst.';
+
+  @override
+  String get hitlistErrInsufficientAmmo => 'Je hebt niet genoeg munitie';
+
+  @override
+  String get hitlistErrInvalidAmmoHit => 'Ongeldige hoeveelheid munitie';
+
+  @override
+  String get hitlistErrTargetUnderHitProtection =>
+      'Doelwit heeft actieve moordbescherming';
+
+  @override
+  String get hitlistErrInvalidInvestigationTier => 'Ongeldig onderzoekstype';
+
+  @override
+  String get hitlistErrInvestigationAlreadyPending =>
+      'Er loopt al een onderzoek voor deze hit. Wacht op je detectivebericht.';
+
+  @override
+  String get hitlistErrInvalidCaseId => 'Ongeldig dossiernummer';
+
+  @override
+  String get hitlistErrMurderCaseNotFound => 'Dossier niet gevonden';
+
+  @override
+  String get hitlistErrMurderCaseExpired =>
+      'Onderzoeksvenster verlopen (24 uur)';
+
+  @override
+  String get hitlistErrMurderCaseAlreadyRequested =>
+      'Onderzoek voor dit dossier is al gestart';
+
+  @override
+  String get hitlistErrNotPlacer => 'Alleen de plaatser kan de hit annuleren';
+
+  @override
+  String get hitlistInvestigationOptions => 'Onderzoek opties';
+
+  @override
+  String get hitlistInvestigationChooseSpeedPrice => 'Kies snelheid en prijs:';
+
+  @override
+  String get hitlistInvestigationQuick => 'Snel onderzoek (€1.000.000 • 1 uur)';
+
+  @override
+  String get hitlistInvestigationStandard =>
+      'Gemiddeld onderzoek (€500.000 • 6 uur)';
+
+  @override
+  String get hitlistInvestigationSlow =>
+      'Langzaam onderzoek (€250.000 • 24 uur)';
+
+  @override
+  String hitlistInvestigationQueued(
+    String cost,
+    String etaMinutes,
+    String resolveAt,
+  ) {
+    return 'Onderzoek gestart. Kosten $cost. ETA: $etaMinutes min. Rapport komt via Detective Bureau berichten (rond $resolveAt).';
+  }
+
+  @override
+  String get hitlistInvestigationFailedGeneric => 'Onderzoek mislukt';
+
+  @override
+  String get hitlistInvestigationCouldNotComplete =>
+      'Onderzoek kon niet worden uitgevoerd';
+
+  @override
+  String hitlistHitSuccessWithLoot(String cash, String items) {
+    return 'Moord gelukt! Bounty en buit ontvangen: cash $cash, gedragen items $items.';
+  }
+
+  @override
+  String get hitlistAttemptTimeout => 'Moordpoging timeout. Probeer opnieuw.';
+
+  @override
+  String get hitlistNoUsableWeapons =>
+      'Je hebt geen bruikbare wapens in je inventaris. Koop of repareer eerst een wapen.';
+
+  @override
+  String hitlistWeaponsInventoryLoadError(String error) {
+    return 'Fout bij laden wapens: $error';
+  }
+
+  @override
+  String hitlistPlayersLoadError(String error) {
+    return 'Fout bij laden spelers: $error';
+  }
+
+  @override
+  String get hitlistRelativeOneDayAgo => '1 dag geleden';
+
+  @override
+  String hitlistRelativeDaysAgo(String count) {
+    return '$count dagen geleden';
+  }
+
+  @override
   String get counterBountyTitle => 'Tegen-bod plaatsen';
 
   @override

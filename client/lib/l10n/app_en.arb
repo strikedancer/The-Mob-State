@@ -2396,6 +2396,89 @@
     }
   },
   "hitDifferentCountry": "You must be in the same country as the target",
+  "hitlistErrMissingBounty": "Bounty amount is required",
+  "hitlistErrBountyTooLow": "Minimum bounty is €50,000",
+  "hitlistErrCannotHitYourself": "You cannot place a hit on yourself",
+  "hitlistErrHitAlreadyExists": "You already have an active hit on this player",
+  "hitlistErrInsufficientMoney": "You don't have enough money",
+  "hitlistErrMissingCounterBounty": "Counter-bounty amount is required",
+  "hitlistErrHitNotFound": "Hit not found",
+  "hitlistErrNotTarget": "Only the target can place a counter-bid",
+  "hitlistErrHitNotActive": "Hit is not active",
+  "hitlistErrCounterBountyMustBeHigher": "Counter-bounty must be higher than the original bounty",
+  "hitlistErrMissingWeapon": "Weapon is required",
+  "hitlistErrWeaponNotFound": "Weapon not found",
+  "hitlistErrWeaponNotOwned": "You do not own this weapon or it is broken",
+  "hitlistErrWeaponBroken": "Your selected weapon is broken. Repair it first.",
+  "hitlistErrInsufficientAmmo": "You do not have enough ammunition",
+  "hitlistErrInvalidAmmoHit": "Invalid ammunition quantity",
+  "hitlistErrTargetUnderHitProtection": "Target has active hit protection",
+  "hitlistErrInvalidInvestigationTier": "Invalid investigation type",
+  "hitlistErrInvestigationAlreadyPending": "An investigation is already pending for this hit. Wait for your detective message.",
+  "hitlistErrInvalidCaseId": "Invalid case file number",
+  "hitlistErrMurderCaseNotFound": "Case file not found",
+  "hitlistErrMurderCaseExpired": "Investigation window expired (24 hours)",
+  "hitlistErrMurderCaseAlreadyRequested": "Investigation for this case has already been started",
+  "hitlistErrNotPlacer": "Only the placer can cancel the hit",
+  "hitlistInvestigationOptions": "Investigation options",
+  "hitlistInvestigationChooseSpeedPrice": "Choose speed and price:",
+  "hitlistInvestigationQuick": "Quick investigation (€1,000,000 • 1 hour)",
+  "hitlistInvestigationStandard": "Standard investigation (€500,000 • 6 hours)",
+  "hitlistInvestigationSlow": "Slow investigation (€250,000 • 24 hours)",
+  "hitlistInvestigationQueued": "Investigation queued. Cost {cost}. ETA: {etaMinutes} min. Report will arrive via Detective Bureau messages (around {resolveAt}).",
+  "@hitlistInvestigationQueued": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "String"
+      },
+      "resolveAt": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistInvestigationFailedGeneric": "Investigation failed",
+  "hitlistInvestigationCouldNotComplete": "Investigation could not be completed",
+  "hitlistHitSuccessWithLoot": "Hit successful! Bounty and loot received: cash {cash}, carried items {items}.",
+  "@hitlistHitSuccessWithLoot": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistAttemptTimeout": "Hit attempt timed out. Please try again.",
+  "hitlistNoUsableWeapons": "You have no usable weapons in your inventory. Buy or repair a weapon first.",
+  "hitlistWeaponsInventoryLoadError": "Error loading weapons: {error}",
+  "@hitlistWeaponsInventoryLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistPlayersLoadError": "Error loading players: {error}",
+  "@hitlistPlayersLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistRelativeOneDayAgo": "1 day ago",
+  "hitlistRelativeDaysAgo": "{count} days ago",
+  "@hitlistRelativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "counterBountyTitle": "Place Counter-Bounty",
   "minimumAmount": "Minimum amount: €{amount}",
   "@minimumAmount": {

@@ -3997,6 +3997,153 @@ class AppLocalizationsEn extends AppLocalizations {
       'You must be in the same country as the target';
 
   @override
+  String get hitlistErrMissingBounty => 'Bounty amount is required';
+
+  @override
+  String get hitlistErrBountyTooLow => 'Minimum bounty is €50,000';
+
+  @override
+  String get hitlistErrCannotHitYourself =>
+      'You cannot place a hit on yourself';
+
+  @override
+  String get hitlistErrHitAlreadyExists =>
+      'You already have an active hit on this player';
+
+  @override
+  String get hitlistErrInsufficientMoney => 'You don\'t have enough money';
+
+  @override
+  String get hitlistErrMissingCounterBounty =>
+      'Counter-bounty amount is required';
+
+  @override
+  String get hitlistErrHitNotFound => 'Hit not found';
+
+  @override
+  String get hitlistErrNotTarget => 'Only the target can place a counter-bid';
+
+  @override
+  String get hitlistErrHitNotActive => 'Hit is not active';
+
+  @override
+  String get hitlistErrCounterBountyMustBeHigher =>
+      'Counter-bounty must be higher than the original bounty';
+
+  @override
+  String get hitlistErrMissingWeapon => 'Weapon is required';
+
+  @override
+  String get hitlistErrWeaponNotFound => 'Weapon not found';
+
+  @override
+  String get hitlistErrWeaponNotOwned =>
+      'You do not own this weapon or it is broken';
+
+  @override
+  String get hitlistErrWeaponBroken =>
+      'Your selected weapon is broken. Repair it first.';
+
+  @override
+  String get hitlistErrInsufficientAmmo => 'You do not have enough ammunition';
+
+  @override
+  String get hitlistErrInvalidAmmoHit => 'Invalid ammunition quantity';
+
+  @override
+  String get hitlistErrTargetUnderHitProtection =>
+      'Target has active hit protection';
+
+  @override
+  String get hitlistErrInvalidInvestigationTier => 'Invalid investigation type';
+
+  @override
+  String get hitlistErrInvestigationAlreadyPending =>
+      'An investigation is already pending for this hit. Wait for your detective message.';
+
+  @override
+  String get hitlistErrInvalidCaseId => 'Invalid case file number';
+
+  @override
+  String get hitlistErrMurderCaseNotFound => 'Case file not found';
+
+  @override
+  String get hitlistErrMurderCaseExpired =>
+      'Investigation window expired (24 hours)';
+
+  @override
+  String get hitlistErrMurderCaseAlreadyRequested =>
+      'Investigation for this case has already been started';
+
+  @override
+  String get hitlistErrNotPlacer => 'Only the placer can cancel the hit';
+
+  @override
+  String get hitlistInvestigationOptions => 'Investigation options';
+
+  @override
+  String get hitlistInvestigationChooseSpeedPrice => 'Choose speed and price:';
+
+  @override
+  String get hitlistInvestigationQuick =>
+      'Quick investigation (€1,000,000 • 1 hour)';
+
+  @override
+  String get hitlistInvestigationStandard =>
+      'Standard investigation (€500,000 • 6 hours)';
+
+  @override
+  String get hitlistInvestigationSlow =>
+      'Slow investigation (€250,000 • 24 hours)';
+
+  @override
+  String hitlistInvestigationQueued(
+    String cost,
+    String etaMinutes,
+    String resolveAt,
+  ) {
+    return 'Investigation queued. Cost $cost. ETA: $etaMinutes min. Report will arrive via Detective Bureau messages (around $resolveAt).';
+  }
+
+  @override
+  String get hitlistInvestigationFailedGeneric => 'Investigation failed';
+
+  @override
+  String get hitlistInvestigationCouldNotComplete =>
+      'Investigation could not be completed';
+
+  @override
+  String hitlistHitSuccessWithLoot(String cash, String items) {
+    return 'Hit successful! Bounty and loot received: cash $cash, carried items $items.';
+  }
+
+  @override
+  String get hitlistAttemptTimeout =>
+      'Hit attempt timed out. Please try again.';
+
+  @override
+  String get hitlistNoUsableWeapons =>
+      'You have no usable weapons in your inventory. Buy or repair a weapon first.';
+
+  @override
+  String hitlistWeaponsInventoryLoadError(String error) {
+    return 'Error loading weapons: $error';
+  }
+
+  @override
+  String hitlistPlayersLoadError(String error) {
+    return 'Error loading players: $error';
+  }
+
+  @override
+  String get hitlistRelativeOneDayAgo => '1 day ago';
+
+  @override
+  String hitlistRelativeDaysAgo(String count) {
+    return '$count days ago';
+  }
+
+  @override
   String get counterBountyTitle => 'Place Counter-Bounty';
 
   @override

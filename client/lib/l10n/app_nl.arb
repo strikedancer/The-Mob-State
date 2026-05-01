@@ -879,6 +879,89 @@
   "hitPlaced": "Moord geplaatst voor €{amount}",
   "hitError": "Fout: {error}",
   "hitDifferentCountry": "Je moet in hetzelfde land zijn als het doelwit",
+  "hitlistErrMissingBounty": "Bountybedrag is verplicht",
+  "hitlistErrBountyTooLow": "Minimale bounty is €50.000",
+  "hitlistErrCannotHitYourself": "Je kunt jezelf niet op de moordlijst zetten",
+  "hitlistErrHitAlreadyExists": "Je hebt al een actieve hit op deze speler",
+  "hitlistErrInsufficientMoney": "Je hebt niet genoeg geld",
+  "hitlistErrMissingCounterBounty": "Tegen-bod bedrag is verplicht",
+  "hitlistErrHitNotFound": "Hit niet gevonden",
+  "hitlistErrNotTarget": "Alleen het doelwit kan een tegen-bod plaatsen",
+  "hitlistErrHitNotActive": "Hit is niet actief",
+  "hitlistErrCounterBountyMustBeHigher": "Tegen-bod moet hoger zijn dan de originele bounty",
+  "hitlistErrMissingWeapon": "Wapen is vereist",
+  "hitlistErrWeaponNotFound": "Wapen niet gevonden",
+  "hitlistErrWeaponNotOwned": "Je bezit dit wapen niet of het is kapot",
+  "hitlistErrWeaponBroken": "Je geselecteerde wapen is kapot. Repareer het eerst.",
+  "hitlistErrInsufficientAmmo": "Je hebt niet genoeg munitie",
+  "hitlistErrInvalidAmmoHit": "Ongeldige hoeveelheid munitie",
+  "hitlistErrTargetUnderHitProtection": "Doelwit heeft actieve moordbescherming",
+  "hitlistErrInvalidInvestigationTier": "Ongeldig onderzoekstype",
+  "hitlistErrInvestigationAlreadyPending": "Er loopt al een onderzoek voor deze hit. Wacht op je detectivebericht.",
+  "hitlistErrInvalidCaseId": "Ongeldig dossiernummer",
+  "hitlistErrMurderCaseNotFound": "Dossier niet gevonden",
+  "hitlistErrMurderCaseExpired": "Onderzoeksvenster verlopen (24 uur)",
+  "hitlistErrMurderCaseAlreadyRequested": "Onderzoek voor dit dossier is al gestart",
+  "hitlistErrNotPlacer": "Alleen de plaatser kan de hit annuleren",
+  "hitlistInvestigationOptions": "Onderzoek opties",
+  "hitlistInvestigationChooseSpeedPrice": "Kies snelheid en prijs:",
+  "hitlistInvestigationQuick": "Snel onderzoek (€1.000.000 • 1 uur)",
+  "hitlistInvestigationStandard": "Gemiddeld onderzoek (€500.000 • 6 uur)",
+  "hitlistInvestigationSlow": "Langzaam onderzoek (€250.000 • 24 uur)",
+  "hitlistInvestigationQueued": "Onderzoek gestart. Kosten {cost}. ETA: {etaMinutes} min. Rapport komt via Detective Bureau berichten (rond {resolveAt}).",
+  "@hitlistInvestigationQueued": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "String"
+      },
+      "resolveAt": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistInvestigationFailedGeneric": "Onderzoek mislukt",
+  "hitlistInvestigationCouldNotComplete": "Onderzoek kon niet worden uitgevoerd",
+  "hitlistHitSuccessWithLoot": "Moord gelukt! Bounty en buit ontvangen: cash {cash}, gedragen items {items}.",
+  "@hitlistHitSuccessWithLoot": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistAttemptTimeout": "Moordpoging timeout. Probeer opnieuw.",
+  "hitlistNoUsableWeapons": "Je hebt geen bruikbare wapens in je inventaris. Koop of repareer eerst een wapen.",
+  "hitlistWeaponsInventoryLoadError": "Fout bij laden wapens: {error}",
+  "@hitlistWeaponsInventoryLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistPlayersLoadError": "Fout bij laden spelers: {error}",
+  "@hitlistPlayersLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistRelativeOneDayAgo": "1 dag geleden",
+  "hitlistRelativeDaysAgo": "{count} dagen geleden",
+  "@hitlistRelativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
   "counterBountyTitle": "Tegen-bod plaatsen",
   "minimumAmount": "Minimaal bedrag: €{amount}",
   "counterBountyAmount": "Tegen-bod bedrag",

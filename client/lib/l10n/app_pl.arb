@@ -5180,5 +5180,88 @@
   "couldNotBuyArmor": "Nie można było kupić zbroi",
   "armorAlreadyEquippedLong": "Już nosisz tę zbroję. Możesz nosić tylko 1 zbroję na raz.",
   "securityErrorArmorNotFound": "Nie znaleziono zbroi",
-  "securityErrorMinQuantity": "Ilość musi wynosić co najmniej 1"
+  "securityErrorMinQuantity": "Ilość musi wynosić co najmniej 1",
+  "hitlistErrMissingBounty": "Wymagana jest kwota nagrody",
+  "hitlistErrBountyTooLow": "Minimalna nagroda wynosi 50 000 euro",
+  "hitlistErrCannotHitYourself": "Nie możesz zadać sobie ciosu",
+  "hitlistErrHitAlreadyExists": "Masz już aktywne trafienie na tego gracza",
+  "hitlistErrInsufficientMoney": "Nie masz dość pieniędzy",
+  "hitlistErrMissingCounterBounty": "Wymagana jest kwota przeciwnej nagrody",
+  "hitlistErrHitNotFound": "Nie znaleziono trafienia",
+  "hitlistErrNotTarget": "Tylko cel może złożyć kontrofertę",
+  "hitlistErrHitNotActive": "Hit nie jest aktywny",
+  "hitlistErrCounterBountyMustBeHigher": "Nagroda za kontr-nagrodę musi być wyższa niż pierwotna nagroda",
+  "hitlistErrMissingWeapon": "Wymagana jest broń",
+  "hitlistErrWeaponNotFound": "Nie znaleziono broni",
+  "hitlistErrWeaponNotOwned": "Nie jesteś właścicielem tej broni lub jest ona uszkodzona",
+  "hitlistErrWeaponBroken": "Wybrana przez Ciebie broń jest uszkodzona. Najpierw to napraw.",
+  "hitlistErrInsufficientAmmo": "Nie masz wystarczającej ilości amunicji",
+  "hitlistErrInvalidAmmoHit": "Nieprawidłowa ilość amunicji",
+  "hitlistErrTargetUnderHitProtection": "Cel ma aktywną ochronę przed trafieniem",
+  "hitlistErrInvalidInvestigationTier": "Nieprawidłowy typ dochodzenia",
+  "hitlistErrInvestigationAlreadyPending": "W sprawie tego trafienia toczy się już śledztwo. Poczekaj na wiadomość detektywistyczną.",
+  "hitlistErrInvalidCaseId": "Nieprawidłowy numer akt sprawy",
+  "hitlistErrMurderCaseNotFound": "Nie znaleziono akt sprawy",
+  "hitlistErrMurderCaseExpired": "Upłynął okres dochodzenia (24 godziny)",
+  "hitlistErrMurderCaseAlreadyRequested": "Dochodzenie w tej sprawie zostało już rozpoczęte",
+  "hitlistErrNotPlacer": "Tylko umieszczający może anulować trafienie",
+  "hitlistInvestigationOptions": "Opcje dochodzenia",
+  "hitlistInvestigationChooseSpeedPrice": "Wybierz prędkość i cenę:",
+  "hitlistInvestigationQuick": "Szybkie dochodzenie (1 000 000 EUR • 1 godzina)",
+  "hitlistInvestigationStandard": "Dochodzenie standardowe (500 000 euro • 6 godzin)",
+  "hitlistInvestigationSlow": "Powolne dochodzenie (250 000 euro • 24 godziny)",
+  "hitlistInvestigationQueued": "Śledztwo w kolejce. Koszt {cost}. ETA: {etaMinutes} min. Raport zostanie przesłany za pośrednictwem wiadomości z Biura Detektywistycznego (około ⟦ 2⟧).",
+  "@hitlistInvestigationQueued": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "String"
+      },
+      "resolveAt": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistInvestigationFailedGeneric": "Dochodzenie nie powiodło się",
+  "hitlistInvestigationCouldNotComplete": "Dochodzenie nie mogło zostać ukończone",
+  "hitlistHitSuccessWithLoot": "Hit udany! Otrzymane nagrody i łupy: gotówka {cash}, przenoszone przedmioty {items}.",
+  "@hitlistHitSuccessWithLoot": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistAttemptTimeout": "Upłynął limit czasu próby trafienia. Spróbuj ponownie.",
+  "hitlistNoUsableWeapons": "Nie masz w ekwipunku żadnej użytecznej broni. Najpierw kup lub napraw broń.",
+  "hitlistWeaponsInventoryLoadError": "Błąd ładowania broni: {error}",
+  "@hitlistWeaponsInventoryLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistPlayersLoadError": "Błąd ładowania graczy: {error}",
+  "@hitlistPlayersLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistRelativeOneDayAgo": "1 dzień temu",
+  "hitlistRelativeDaysAgo": "{count} dni temu",
+  "@hitlistRelativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

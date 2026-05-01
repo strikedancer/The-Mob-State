@@ -5180,5 +5180,88 @@
   "couldNotBuyArmor": "Rüstung konnte nicht gekauft werden",
   "armorAlreadyEquippedLong": "Du trägst diese Rüstung bereits. Du kannst jeweils nur 1 Rüstung tragen.",
   "securityErrorArmorNotFound": "Rüstung nicht gefunden",
-  "securityErrorMinQuantity": "Die Menge muss mindestens 1 betragen"
+  "securityErrorMinQuantity": "Die Menge muss mindestens 1 betragen",
+  "hitlistErrMissingBounty": "Es ist ein Kopfgeldbetrag erforderlich",
+  "hitlistErrBountyTooLow": "Das Mindestprämie beträgt 50.000 €",
+  "hitlistErrCannotHitYourself": "Sie können sich selbst keinen Schlag versetzen",
+  "hitlistErrHitAlreadyExists": "Sie haben bereits einen aktiven Zugriff auf diesen Spieler",
+  "hitlistErrInsufficientMoney": "Du hast nicht genug Geld",
+  "hitlistErrMissingCounterBounty": "Gegenprämienbetrag ist erforderlich",
+  "hitlistErrHitNotFound": "Treffer nicht gefunden",
+  "hitlistErrNotTarget": "Nur das Ziel kann ein Gegengebot abgeben",
+  "hitlistErrHitNotActive": "Hit ist nicht aktiv",
+  "hitlistErrCounterBountyMustBeHigher": "Die Gegenprämie muss höher sein als die ursprüngliche Prämie",
+  "hitlistErrMissingWeapon": "Waffe ist erforderlich",
+  "hitlistErrWeaponNotFound": "Waffe nicht gefunden",
+  "hitlistErrWeaponNotOwned": "Sie besitzen diese Waffe nicht oder sie ist kaputt",
+  "hitlistErrWeaponBroken": "Ihre ausgewählte Waffe ist kaputt. Repariere es zuerst.",
+  "hitlistErrInsufficientAmmo": "Sie haben nicht genug Munition",
+  "hitlistErrInvalidAmmoHit": "Ungültige Munitionsmenge",
+  "hitlistErrTargetUnderHitProtection": "Das Ziel verfügt über einen aktiven Trefferschutz",
+  "hitlistErrInvalidInvestigationTier": "Ungültiger Untersuchungstyp",
+  "hitlistErrInvestigationAlreadyPending": "Zu diesem Treffer läuft bereits eine Untersuchung. Warten Sie auf Ihre Detektivnachricht.",
+  "hitlistErrInvalidCaseId": "Ungültige Fallaktennummer",
+  "hitlistErrMurderCaseNotFound": "Falldatei nicht gefunden",
+  "hitlistErrMurderCaseExpired": "Untersuchungsfenster abgelaufen (24 Stunden)",
+  "hitlistErrMurderCaseAlreadyRequested": "Die Ermittlungen zu diesem Fall wurden bereits eingeleitet",
+  "hitlistErrNotPlacer": "Nur der Placer kann den Treffer annullieren",
+  "hitlistInvestigationOptions": "Untersuchungsmöglichkeiten",
+  "hitlistInvestigationChooseSpeedPrice": "Wählen Sie Geschwindigkeit und Preis:",
+  "hitlistInvestigationQuick": "Schnelle Untersuchung (1.000.000 € • 1 Stunde)",
+  "hitlistInvestigationStandard": "Standarduntersuchung (500.000 € • 6 Stunden)",
+  "hitlistInvestigationSlow": "Langsame Untersuchung (250.000 € • 24 Stunden)",
+  "hitlistInvestigationQueued": "Die Ermittlungen sind in der Warteschlange. Kosten {cost}. voraussichtliche Ankunftszeit: {etaMinutes} min. Der Bericht wird über Nachrichten des Detektivbüros eingehen (ca. {resolveAt}).",
+  "@hitlistInvestigationQueued": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "String"
+      },
+      "resolveAt": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistInvestigationFailedGeneric": "Die Ermittlungen scheiterten",
+  "hitlistInvestigationCouldNotComplete": "Die Untersuchung konnte nicht abgeschlossen werden",
+  "hitlistHitSuccessWithLoot": "Erfolgreich getroffen! Erhaltenes Kopfgeld und Beute: Bargeld {cash}, getragene Gegenstände {items}.",
+  "@hitlistHitSuccessWithLoot": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistAttemptTimeout": "Zeitüberschreitung beim Trefferversuch. Bitte versuchen Sie es erneut.",
+  "hitlistNoUsableWeapons": "Sie haben keine verwendbaren Waffen in Ihrem Inventar. Kaufen oder reparieren Sie zuerst eine Waffe.",
+  "hitlistWeaponsInventoryLoadError": "Fehler beim Laden der Waffen: {error}",
+  "@hitlistWeaponsInventoryLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistPlayersLoadError": "Fehler beim Laden der Spieler: {error}",
+  "@hitlistPlayersLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistRelativeOneDayAgo": "Vor 1 Tag",
+  "hitlistRelativeDaysAgo": "Vor {count} Tagen",
+  "@hitlistRelativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

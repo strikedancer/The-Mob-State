@@ -4066,6 +4066,156 @@ class AppLocalizationsFr extends AppLocalizations {
       'Vous devez être dans le même pays que la cible';
 
   @override
+  String get hitlistErrMissingBounty => 'Le montant de la prime est requis';
+
+  @override
+  String get hitlistErrBountyTooLow => 'La prime minimale est de 50 000 €';
+
+  @override
+  String get hitlistErrCannotHitYourself =>
+      'Vous ne pouvez pas vous frapper vous-même';
+
+  @override
+  String get hitlistErrHitAlreadyExists =>
+      'Vous avez déjà un hit actif sur ce joueur';
+
+  @override
+  String get hitlistErrInsufficientMoney => 'Tu n\'as pas assez d\'argent';
+
+  @override
+  String get hitlistErrMissingCounterBounty =>
+      'Le montant de la contre-prime est requis';
+
+  @override
+  String get hitlistErrHitNotFound => 'Coup introuvable';
+
+  @override
+  String get hitlistErrNotTarget =>
+      'Seule la cible peut faire une contre-offre';
+
+  @override
+  String get hitlistErrHitNotActive => 'Le coup n\'est pas actif';
+
+  @override
+  String get hitlistErrCounterBountyMustBeHigher =>
+      'La contre-prime doit être supérieure à la prime initiale';
+
+  @override
+  String get hitlistErrMissingWeapon => 'Une arme est requise';
+
+  @override
+  String get hitlistErrWeaponNotFound => 'Arme introuvable';
+
+  @override
+  String get hitlistErrWeaponNotOwned =>
+      'Vous ne possédez pas cette arme ou elle est cassée';
+
+  @override
+  String get hitlistErrWeaponBroken =>
+      'L\'arme que vous avez sélectionnée est cassée. Réparez-le d’abord.';
+
+  @override
+  String get hitlistErrInsufficientAmmo =>
+      'Vous n\'avez pas assez de munitions';
+
+  @override
+  String get hitlistErrInvalidAmmoHit => 'Quantité de munitions invalide';
+
+  @override
+  String get hitlistErrTargetUnderHitProtection =>
+      'La cible a une protection active contre les coups';
+
+  @override
+  String get hitlistErrInvalidInvestigationTier => 'Type d\'enquête non valide';
+
+  @override
+  String get hitlistErrInvestigationAlreadyPending =>
+      'Une enquête est déjà en cours pour ce coup. Attendez votre message de détective.';
+
+  @override
+  String get hitlistErrInvalidCaseId => 'Numéro de dossier invalide';
+
+  @override
+  String get hitlistErrMurderCaseNotFound => 'Dossier introuvable';
+
+  @override
+  String get hitlistErrMurderCaseExpired =>
+      'Fenêtre d\'enquête expirée (24 heures)';
+
+  @override
+  String get hitlistErrMurderCaseAlreadyRequested =>
+      'L\'enquête sur cette affaire a déjà commencé';
+
+  @override
+  String get hitlistErrNotPlacer => 'Seul le placeur peut annuler le coup';
+
+  @override
+  String get hitlistInvestigationOptions => 'Options d\'enquête';
+
+  @override
+  String get hitlistInvestigationChooseSpeedPrice =>
+      'Choisissez la vitesse et le prix :';
+
+  @override
+  String get hitlistInvestigationQuick =>
+      'Enquête rapide (1 000 000 € • 1 heure)';
+
+  @override
+  String get hitlistInvestigationStandard =>
+      'Enquête standard (500 000 € • 6 heures)';
+
+  @override
+  String get hitlistInvestigationSlow =>
+      'Enquête lente (250 000 € • 24 heures)';
+
+  @override
+  String hitlistInvestigationQueued(
+    String cost,
+    String etaMinutes,
+    String resolveAt,
+  ) {
+    return 'L\'enquête est en attente. Coût $cost. ETA : $etaMinutes min. Le rapport arrivera via les messages du Detective Bureau (vers $resolveAt).';
+  }
+
+  @override
+  String get hitlistInvestigationFailedGeneric => 'L\'enquête a échoué';
+
+  @override
+  String get hitlistInvestigationCouldNotComplete =>
+      'L\'enquête n\'a pas pu être complétée';
+
+  @override
+  String hitlistHitSuccessWithLoot(String cash, String items) {
+    return 'Frappe réussie ! Prime et butin reçus : espèces $cash, objets transportés $items.';
+  }
+
+  @override
+  String get hitlistAttemptTimeout =>
+      'La tentative de frappe a expiré. Veuillez réessayer.';
+
+  @override
+  String get hitlistNoUsableWeapons =>
+      'Vous n\'avez aucune arme utilisable dans votre inventaire. Achetez ou réparez d’abord une arme.';
+
+  @override
+  String hitlistWeaponsInventoryLoadError(String error) {
+    return 'Erreur de chargement des armes : $error';
+  }
+
+  @override
+  String hitlistPlayersLoadError(String error) {
+    return 'Erreur de chargement des joueurs : $error';
+  }
+
+  @override
+  String get hitlistRelativeOneDayAgo => 'il y a 1 jour';
+
+  @override
+  String hitlistRelativeDaysAgo(String count) {
+    return 'il y a $count jours';
+  }
+
+  @override
   String get counterBountyTitle => 'Placer une contre-bounty';
 
   @override

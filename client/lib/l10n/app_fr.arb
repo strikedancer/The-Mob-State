@@ -5180,5 +5180,88 @@
   "couldNotBuyArmor": "Impossible d'acheter une armure",
   "armorAlreadyEquippedLong": "Vous portez déjà cette armure. Vous ne pouvez porter qu’une seule armure à la fois.",
   "securityErrorArmorNotFound": "Armure introuvable",
-  "securityErrorMinQuantity": "La quantité doit être d'au moins 1"
+  "securityErrorMinQuantity": "La quantité doit être d'au moins 1",
+  "hitlistErrMissingBounty": "Le montant de la prime est requis",
+  "hitlistErrBountyTooLow": "La prime minimale est de 50 000 €",
+  "hitlistErrCannotHitYourself": "Vous ne pouvez pas vous frapper vous-même",
+  "hitlistErrHitAlreadyExists": "Vous avez déjà un hit actif sur ce joueur",
+  "hitlistErrInsufficientMoney": "Tu n'as pas assez d'argent",
+  "hitlistErrMissingCounterBounty": "Le montant de la contre-prime est requis",
+  "hitlistErrHitNotFound": "Coup introuvable",
+  "hitlistErrNotTarget": "Seule la cible peut faire une contre-offre",
+  "hitlistErrHitNotActive": "Le coup n'est pas actif",
+  "hitlistErrCounterBountyMustBeHigher": "La contre-prime doit être supérieure à la prime initiale",
+  "hitlistErrMissingWeapon": "Une arme est requise",
+  "hitlistErrWeaponNotFound": "Arme introuvable",
+  "hitlistErrWeaponNotOwned": "Vous ne possédez pas cette arme ou elle est cassée",
+  "hitlistErrWeaponBroken": "L'arme que vous avez sélectionnée est cassée. Réparez-le d’abord.",
+  "hitlistErrInsufficientAmmo": "Vous n'avez pas assez de munitions",
+  "hitlistErrInvalidAmmoHit": "Quantité de munitions invalide",
+  "hitlistErrTargetUnderHitProtection": "La cible a une protection active contre les coups",
+  "hitlistErrInvalidInvestigationTier": "Type d'enquête non valide",
+  "hitlistErrInvestigationAlreadyPending": "Une enquête est déjà en cours pour ce coup. Attendez votre message de détective.",
+  "hitlistErrInvalidCaseId": "Numéro de dossier invalide",
+  "hitlistErrMurderCaseNotFound": "Dossier introuvable",
+  "hitlistErrMurderCaseExpired": "Fenêtre d'enquête expirée (24 heures)",
+  "hitlistErrMurderCaseAlreadyRequested": "L'enquête sur cette affaire a déjà commencé",
+  "hitlistErrNotPlacer": "Seul le placeur peut annuler le coup",
+  "hitlistInvestigationOptions": "Options d'enquête",
+  "hitlistInvestigationChooseSpeedPrice": "Choisissez la vitesse et le prix :",
+  "hitlistInvestigationQuick": "Enquête rapide (1 000 000 € • 1 heure)",
+  "hitlistInvestigationStandard": "Enquête standard (500 000 € • 6 heures)",
+  "hitlistInvestigationSlow": "Enquête lente (250 000 € • 24 heures)",
+  "hitlistInvestigationQueued": "L'enquête est en attente. Coût {cost}. ETA : {etaMinutes} min. Le rapport arrivera via les messages du Detective Bureau (vers {resolveAt}).",
+  "@hitlistInvestigationQueued": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "String"
+      },
+      "resolveAt": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistInvestigationFailedGeneric": "L'enquête a échoué",
+  "hitlistInvestigationCouldNotComplete": "L'enquête n'a pas pu être complétée",
+  "hitlistHitSuccessWithLoot": "Frappe réussie ! Prime et butin reçus : espèces {cash}, objets transportés {items}.",
+  "@hitlistHitSuccessWithLoot": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistAttemptTimeout": "La tentative de frappe a expiré. Veuillez réessayer.",
+  "hitlistNoUsableWeapons": "Vous n'avez aucune arme utilisable dans votre inventaire. Achetez ou réparez d’abord une arme.",
+  "hitlistWeaponsInventoryLoadError": "Erreur de chargement des armes : {error}",
+  "@hitlistWeaponsInventoryLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistPlayersLoadError": "Erreur de chargement des joueurs : {error}",
+  "@hitlistPlayersLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistRelativeOneDayAgo": "il y a 1 jour",
+  "hitlistRelativeDaysAgo": "il y a {count} jours",
+  "@hitlistRelativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

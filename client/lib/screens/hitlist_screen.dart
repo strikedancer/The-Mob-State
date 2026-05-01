@@ -6,14 +6,67 @@ import '../widgets/hit_card.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/top_right_notification.dart';
 import 'player_profile_screen.dart';
+import '../utils/formatters.dart';
 
 String _resolveHitErrorMessage(dynamic data, AppLocalizations l10n) {
-  final code = data is Map ? data['error']?.toString() : null;
-  if (code == 'DIFFERENT_COUNTRY') {
-    return l10n.hitDifferentCountry;
+  final map = data is Map ? data : null;
+  final code = map?['error']?.toString();
+  switch (code) {
+    case 'DIFFERENT_COUNTRY':
+      return l10n.hitDifferentCountry;
+    case 'MISSING_BOUNTY':
+      return l10n.hitlistErrMissingBounty;
+    case 'BOUNTY_TOO_LOW':
+      return l10n.hitlistErrBountyTooLow;
+    case 'CANNOT_HIT_YOURSELF':
+      return l10n.hitlistErrCannotHitYourself;
+    case 'HIT_ALREADY_EXISTS':
+      return l10n.hitlistErrHitAlreadyExists;
+    case 'INSUFFICIENT_MONEY':
+      return l10n.hitlistErrInsufficientMoney;
+    case 'MISSING_COUNTER_BOUNTY':
+      return l10n.hitlistErrMissingCounterBounty;
+    case 'HIT_NOT_FOUND':
+      return l10n.hitlistErrHitNotFound;
+    case 'NOT_TARGET':
+      return l10n.hitlistErrNotTarget;
+    case 'HIT_NOT_ACTIVE':
+      return l10n.hitlistErrHitNotActive;
+    case 'COUNTER_BOUNTY_MUST_BE_HIGHER':
+      return l10n.hitlistErrCounterBountyMustBeHigher;
+    case 'MISSING_WEAPON':
+      return l10n.hitlistErrMissingWeapon;
+    case 'WEAPON_NOT_FOUND':
+      return l10n.hitlistErrWeaponNotFound;
+    case 'WEAPON_NOT_OWNED':
+      return l10n.hitlistErrWeaponNotOwned;
+    case 'WEAPON_BROKEN':
+      return l10n.hitlistErrWeaponBroken;
+    case 'INSUFFICIENT_AMMO':
+      return l10n.hitlistErrInsufficientAmmo;
+    case 'INVALID_AMMO':
+      return l10n.hitlistErrInvalidAmmoHit;
+    case 'TARGET_UNDER_HIT_PROTECTION':
+      return l10n.hitlistErrTargetUnderHitProtection;
+    case 'INVALID_INVESTIGATION_TIER':
+      return l10n.hitlistErrInvalidInvestigationTier;
+    case 'INVESTIGATION_ALREADY_PENDING':
+      return l10n.hitlistErrInvestigationAlreadyPending;
+    case 'INVALID_CASE_ID':
+      return l10n.hitlistErrInvalidCaseId;
+    case 'MURDER_CASE_NOT_FOUND':
+      return l10n.hitlistErrMurderCaseNotFound;
+    case 'MURDER_CASE_EXPIRED':
+      return l10n.hitlistErrMurderCaseExpired;
+    case 'MURDER_CASE_ALREADY_REQUESTED':
+      return l10n.hitlistErrMurderCaseAlreadyRequested;
+    case 'NOT_PLACER':
+      return l10n.hitlistErrNotPlacer;
+    default:
+      break;
   }
 
-  final message = data is Map ? data['message']?.toString() : null;
+  final message = map?['message']?.toString();
   if (message != null && message.isNotEmpty) {
     return message;
   }
@@ -40,6 +93,11 @@ class _HitlistScreenState extends State<HitlistScreen> {
   void initState() {
     super.initState();
     _loadActiveHits();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _checkSecurityStatus();
+      }
+    });
   }
 
   Future<void> _loadActiveHits() async {
@@ -51,6 +109,7 @@ class _HitlistScreenState extends State<HitlistScreen> {
         setState(() {
           _activeHits = data['hits'] ?? [];
         });
+        await _checkSecurityStatus();
       }
     } catch (e) {
       if (mounted) {
@@ -133,8 +192,11 @@ class _HitlistScreenState extends State<HitlistScreen> {
                   Text(l10n.noActiveHits),
                   const SizedBox(height: 32),
                   ElevatedButton(
-                    onPressed: _checkSecurityStatus,
-                    child: Text(l10n.refresh),
+                    onPressed: () async {
+                      await _loadActiveHits();
+                      await _checkSecurityStatus();
+                    },
+                    child: Text(l10n.retry),
                   ),
                 ],
               ),
@@ -313,7 +375,13 @@ class _SelectTargetDialogState extends State<_SelectTargetDialog> {
         });
       }
     } catch (e) {
-      // Handle error
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        showTopRightFromSnackBar(
+          context,
+          SnackBar(content: Text(l10n.hitlistPlayersLoadError(e.toString()))),
+        );
+      }
     } finally {
       setState(() => _isLoading = false);
     }
@@ -608,11 +676,6 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
   final _ammoController = TextEditingController();
   bool _isExecuting = false;
 
-  String _tr(String nl, String en) {
-    final code = Localizations.localeOf(context).languageCode;
-    return code == 'nl' ? nl : en;
-  }
-
   int _asInt(dynamic value, {required int fallback}) {
     if (value is int) return value;
     if (value is num) return value.toInt();
@@ -722,7 +785,9 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
         final l10n = AppLocalizations.of(context)!;
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text(l10n.hitlistLoadError(e.toString()))),
+          SnackBar(
+            content: Text(l10n.hitlistWeaponsInventoryLoadError(e.toString())),
+          ),
         );
       }
     }
@@ -730,8 +795,6 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
 
   Future<void> _attemptHit() async {
     final l10n = AppLocalizations.of(context)!;
-    final localeCode = Localizations.localeOf(context).languageCode;
-    String t(String nl, String en) => localeCode == 'nl' ? nl : en;
     final selectedWeaponId = _selectedWeaponId?.trim();
     if (selectedWeaponId == null || selectedWeaponId.isEmpty) {
       showTopRightFromSnackBar(
@@ -767,9 +830,9 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
             final loot = data['loot'] as Map;
             final cashAwarded = _asInt(loot['cashAwarded'], fallback: 0);
             final itemsAwarded = _asInt(loot['itemsAwarded'], fallback: 0);
-            msg = t(
-              'Moord succesvol! Bounty + buit ontvangen: cash €$cashAwarded, gedragen items $itemsAwarded.',
-              'Hit successful! Bounty + loot received: cash €$cashAwarded, carried items $itemsAwarded.',
+            msg = l10n.hitlistHitSuccessWithLoot(
+              formatCurrency(cashAwarded),
+              itemsAwarded.toString(),
             );
           }
           showTopRightFromSnackBar(context, SnackBar(content: Text(msg)));
@@ -783,14 +846,7 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(
-            content: Text(
-              t(
-                'Moordpoging timeout. Probeer opnieuw.',
-                'Hit attempt timed out. Please try again.',
-              ),
-            ),
-          ),
+          SnackBar(content: Text(l10n.hitlistAttemptTimeout)),
         );
       }
     } catch (e) {
@@ -825,12 +881,7 @@ class _AttemptHitDialogState extends State<_AttemptHitDialog> {
     if (weaponItems.isEmpty) {
       return AlertDialog(
         title: Text(l10n.executeHit),
-        content: Text(
-          _tr(
-            'Je hebt geen bruikbare wapens in je inventaris. Koop of repareer eerst een wapen.',
-            'You have no usable weapons in your inventory. Buy or repair a weapon first.',
-          ),
-        ),
+        content: Text(l10n.hitlistNoUsableWeapons),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -1015,11 +1066,6 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
   final ApiClient _apiClient = ApiClient();
   bool _isLoading = false;
 
-  String _tr(String nl, String en) {
-    final code = Localizations.localeOf(context).languageCode;
-    return code == 'nl' ? nl : en;
-  }
-
   Future<void> _runInvestigation(String tier) async {
     if (_isLoading) return;
 
@@ -1033,9 +1079,14 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
 
       if (!mounted) return;
 
+      final l10n = AppLocalizations.of(context)!;
+
       if (data['success'] == true && data['queue'] is Map) {
         final queue = data['queue'] as Map;
-        final cost = queue['cost']?.toString() ?? '0';
+        final costVal = queue['cost'];
+        final costStr = costVal is num
+            ? formatCurrency(costVal)
+            : formatCurrency(num.tryParse(costVal?.toString() ?? '') ?? 0);
         final etaMinutes = queue['etaMinutes']?.toString() ?? '?';
         final resolveAt = queue['resolveAt']?.toString() ?? '-';
 
@@ -1043,31 +1094,23 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
           context,
           SnackBar(
             content: Text(
-              _tr(
-                'Onderzoek gestart. Kosten €$cost. ETA: $etaMinutes min. Rapport komt via Detective Bureau berichten (rond $resolveAt).',
-                'Investigation queued. Cost €$cost. ETA: $etaMinutes min. Report will arrive via Detective Bureau messages (around $resolveAt).',
-              ),
+              l10n.hitlistInvestigationQueued(costStr, etaMinutes, resolveAt),
             ),
           ),
         );
         Navigator.pop(context);
       } else {
         final message =
-            data['message']?.toString() ??
-            _tr('Onderzoek mislukt', 'Investigation failed');
+            data['message']?.toString() ?? l10n.hitlistInvestigationFailedGeneric;
         showTopRightFromSnackBar(context, SnackBar(content: Text(message)));
       }
     } catch (_) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       showTopRightFromSnackBar(
         context,
         SnackBar(
-          content: Text(
-            _tr(
-              'Onderzoek kon niet worden uitgevoerd',
-              'Investigation could not be completed',
-            ),
-          ),
+          content: Text(l10n.hitlistInvestigationCouldNotComplete),
         ),
       );
     } finally {
@@ -1079,42 +1122,28 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: Text(_tr('Onderzoek opties', 'Investigation options')),
+      title: Text(l10n.hitlistInvestigationOptions),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(_tr('Kies snelheid en prijs:', 'Choose speed and price:')),
+          Text(l10n.hitlistInvestigationChooseSpeedPrice),
           const SizedBox(height: 12),
           ElevatedButton(
             onPressed: _isLoading ? null : () => _runInvestigation('quick'),
-            child: Text(
-              _tr(
-                'Snel onderzoek (€1.000.000 • 1 uur)',
-                'Quick investigation (€1,000,000 • 1 hour)',
-              ),
-            ),
+            child: Text(l10n.hitlistInvestigationQuick),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: _isLoading ? null : () => _runInvestigation('standard'),
-            child: Text(
-              _tr(
-                'Gemiddeld onderzoek (€500.000 • 6 uur)',
-                'Standard investigation (€500,000 • 6 hours)',
-              ),
-            ),
+            child: Text(l10n.hitlistInvestigationStandard),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: _isLoading ? null : () => _runInvestigation('deep'),
-            child: Text(
-              _tr(
-                'Langzaam onderzoek (€250.000 • 24 uur)',
-                'Slow investigation (€250,000 • 24 hours)',
-              ),
-            ),
+            child: Text(l10n.hitlistInvestigationSlow),
           ),
           if (_isLoading) ...[
             const SizedBox(height: 12),
@@ -1125,7 +1154,7 @@ class _InvestigateHitDialogState extends State<_InvestigateHitDialog> {
       actions: [
         TextButton(
           onPressed: _isLoading ? null : () => Navigator.pop(context),
-          child: Text(_tr('Sluiten', 'Close')),
+          child: Text(l10n.close),
         ),
       ],
     );

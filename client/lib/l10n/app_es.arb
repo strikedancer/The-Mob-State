@@ -5180,5 +5180,88 @@
   "couldNotBuyArmor": "No se pudo comprar armadura",
   "armorAlreadyEquippedLong": "Ya llevas esta armadura. Sólo puedes usar 1 armadura a la vez.",
   "securityErrorArmorNotFound": "Armadura no encontrada",
-  "securityErrorMinQuantity": "La cantidad debe ser al menos 1"
+  "securityErrorMinQuantity": "La cantidad debe ser al menos 1",
+  "hitlistErrMissingBounty": "Se requiere el monto de la recompensa",
+  "hitlistErrBountyTooLow": "La recompensa mínima es de 50.000 €.",
+  "hitlistErrCannotHitYourself": "No puedes darte un golpe a ti mismo",
+  "hitlistErrHitAlreadyExists": "Ya tienes un hit activo en este jugador.",
+  "hitlistErrInsufficientMoney": "No tienes suficiente dinero",
+  "hitlistErrMissingCounterBounty": "Se requiere el monto de la contrarecompensa",
+  "hitlistErrHitNotFound": "Golpe no encontrado",
+  "hitlistErrNotTarget": "Sólo el objetivo puede realizar una contraoferta.",
+  "hitlistErrHitNotActive": "Golpe no está activa",
+  "hitlistErrCounterBountyMustBeHigher": "La contrarecompensa debe ser mayor que la recompensa original.",
+  "hitlistErrMissingWeapon": "Se requiere arma",
+  "hitlistErrWeaponNotFound": "Arma no encontrada",
+  "hitlistErrWeaponNotOwned": "No eres dueño de esta arma o está rota.",
+  "hitlistErrWeaponBroken": "Tu arma seleccionada está rota. Repárelo primero.",
+  "hitlistErrInsufficientAmmo": "No tienes suficiente munición",
+  "hitlistErrInvalidAmmoHit": "Cantidad de munición no válida",
+  "hitlistErrTargetUnderHitProtection": "El objetivo tiene protección activa contra impactos.",
+  "hitlistErrInvalidInvestigationTier": "Tipo de investigación no válido",
+  "hitlistErrInvestigationAlreadyPending": "Ya hay una investigación pendiente por este golpe. Espere su mensaje de detective.",
+  "hitlistErrInvalidCaseId": "Número de expediente no válido",
+  "hitlistErrMurderCaseNotFound": "Expediente no encontrado",
+  "hitlistErrMurderCaseExpired": "La ventana de investigación expiró (24 horas)",
+  "hitlistErrMurderCaseAlreadyRequested": "Ya se inició la investigación por este caso",
+  "hitlistErrNotPlacer": "Solo la placer puede cancelar el golpe.",
+  "hitlistInvestigationOptions": "Opciones de investigación",
+  "hitlistInvestigationChooseSpeedPrice": "Elige velocidad y precio:",
+  "hitlistInvestigationQuick": "Investigación rápida (1.000.000€ • 1 hora)",
+  "hitlistInvestigationStandard": "Investigación estándar (500.000€ • 6 horas)",
+  "hitlistInvestigationSlow": "Investigación lenta (250.000€ • 24 horas)",
+  "hitlistInvestigationQueued": "La investigación está en cola. Costo {cost}. ETA: {etaMinutes} min. El informe llegará a través de mensajes de la Oficina de Detectives (alrededor de las {resolveAt}).",
+  "@hitlistInvestigationQueued": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "String"
+      },
+      "resolveAt": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistInvestigationFailedGeneric": "La investigación falló",
+  "hitlistInvestigationCouldNotComplete": "La investigación no pudo completarse",
+  "hitlistHitSuccessWithLoot": "¡Golpea con éxito! Recompensa y botín recibido: efectivo {cash}, artículos llevados {items}.",
+  "@hitlistHitSuccessWithLoot": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "items": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistAttemptTimeout": "Se agotó el tiempo de intento de golpe. Por favor inténtalo de nuevo.",
+  "hitlistNoUsableWeapons": "No tienes armas utilizables en tu inventario. Compra o repara un arma primero.",
+  "hitlistWeaponsInventoryLoadError": "Error al cargar armas: {error}",
+  "@hitlistWeaponsInventoryLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistPlayersLoadError": "Error al cargar jugadores: {error}",
+  "@hitlistPlayersLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "hitlistRelativeOneDayAgo": "Hace 1 día",
+  "hitlistRelativeDaysAgo": "{count} hace días",
+  "@hitlistRelativeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  }
 }

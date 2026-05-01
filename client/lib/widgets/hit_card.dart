@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/avatar_helper.dart';
+import '../utils/formatters.dart';
 
 class HitCard extends StatelessWidget {
   final dynamic hit;
@@ -21,15 +21,11 @@ class HitCard extends StatelessWidget {
     required this.onCancelHit,
   });
 
-  String _t(BuildContext context, String nl, String en) {
-    final code = Localizations.localeOf(context).languageCode;
-    return code == 'nl' ? nl : en;
-  }
-
   String _formatMoney(dynamic amount) {
-    if (amount == null) return '€0';
-    final formatted = NumberFormat('#,##0', 'nl_NL').format(amount);
-    return '€$formatted';
+    if (amount == null) return formatCurrency(0);
+    if (amount is num) return formatCurrency(amount);
+    final parsed = num.tryParse(amount.toString());
+    return formatCurrency(parsed ?? 0);
   }
 
   String _getTimeAgo(DateTime dateTime, AppLocalizations l10n) {
@@ -37,8 +33,11 @@ class HitCard extends StatelessWidget {
     final difference = now.difference(dateTime);
 
     if (difference.inDays > 0) {
-      final plural = difference.inDays > 1 ? 'en' : '';
-      return l10n.daysAgo((difference.inDays.toString()), plural);
+      final days = difference.inDays;
+      if (days == 1) {
+        return l10n.hitlistRelativeOneDayAgo;
+      }
+      return l10n.hitlistRelativeDaysAgo(days.toString());
     } else if (difference.inHours > 0) {
       return l10n.hoursAgo(difference.inHours.toString());
     } else if (difference.inMinutes > 0) {
@@ -286,11 +285,7 @@ class HitCard extends StatelessWidget {
                           onPressed: onInvestigate,
                           icon: const Icon(Icons.search),
                           label: Text(
-                            _t(
-                              context,
-                              'Onderzoek opties',
-                              'Investigation options',
-                            ),
+                            l10n.hitlistInvestigationOptions,
                           ),
                         ),
                         const SizedBox(height: 8),
