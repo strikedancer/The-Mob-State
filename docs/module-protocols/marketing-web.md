@@ -4,7 +4,8 @@
 Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top-spelers/top-crews en links naar privacy- en digital-goods-beleid. Juridische volledige teksten leven in ARB (git-versiebeheer), entiteit in copy: **The Mob State**.
 
 ## Client
-- `client/lib/screens/landing_screen.dart` — hero, CTA’s, `GET ${AppConfig.apiBaseUrl}/public/home`, footer (privacy, digital goods, taal).
+- `client/lib/screens/landing_screen.dart` — hero met **logo** (`assets/images/logo.png`, web-fallbacks), **ondertitel direct onder het logo**, **Inloggen / Account** rechtsboven, scrollbare middenkolom (about + rankings), **footer vast onderaan** (privacy, digital goods, taal, copyright; niet in de scroll).
+- Publieke rankings: `GET /public/home` (client: `AppConfig.apiBaseUrl`).
 - `client/lib/main.dart` — `_resolveHome` + `routes` voor `/`, `/login`, `/register`, `/privacy`, `/digital-goods`; `AuthWrapper` toont `LandingScreen` zonder sessie.
 - `client/lib/providers/locale_provider.dart` — `initGuestLocale`, `persistGuestLocale` (geen `PUT /player/language` voor gasten).
 

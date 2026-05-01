@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -415,6 +416,130 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
+  static const String _logoAsset = 'assets/images/logo.png';
+
+  Widget _buildHeroLogo(BuildContext context, AppLocalizations l10n, double maxHeight) {
+    final maxW = math.min(560.0, MediaQuery.sizeOf(context).width - 32);
+    final networkPrimary = WebAssetHelper.toPublicUrl('assets/assets/images/logo.png');
+    final networkAlt = WebAssetHelper.toPublicUrl('images/logo.png');
+
+    Widget fallbackTitle() => Text(
+          l10n.landingHeroTitle,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 36,
+            fontWeight: FontWeight.w800,
+            shadows: [Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2))],
+          ),
+        );
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxHeight, maxWidth: maxW),
+        child: Image.asset(
+          _logoAsset,
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.network(
+              networkPrimary,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.network(
+                  networkAlt,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => fallbackTitle(),
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopRightCtas(BuildContext context, AppLocalizations l10n, bool compact) {
+    final pad = compact
+        ? const EdgeInsets.symmetric(horizontal: 14, vertical: 10)
+        : const EdgeInsets.symmetric(horizontal: 22, vertical: 12);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _landingGold,
+            foregroundColor: Colors.black,
+            padding: pad,
+            minimumSize: compact ? const Size(120, 40) : const Size(140, 44),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () => Navigator.of(context).pushNamed('/login'),
+          child: Text(l10n.landingCtaLogin),
+        ),
+        SizedBox(height: compact ? 8 : 10),
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: _landingGold,
+            side: const BorderSide(color: _landingGold, width: 1.5),
+            padding: pad,
+            minimumSize: compact ? const Size(120, 40) : const Size(140, 44),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          onPressed: () => Navigator.of(context).pushNamed('/register'),
+          child: Text(l10n.landingCtaRegister),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStickyFooter(BuildContext context, AppLocalizations l10n, int year) {
+    return Material(
+      color: Colors.black.withOpacity(0.88),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: Colors.amber.shade800.withOpacity(0.45))),
+        ),
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 4,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
+                  onPressed: () => Navigator.of(context).pushNamed('/privacy'),
+                  child: Text(l10n.landingFooterPrivacy, style: const TextStyle(color: _landingGold, fontSize: 13)),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
+                  onPressed: () => Navigator.of(context).pushNamed('/digital-goods'),
+                  child: Text(l10n.landingFooterDigitalGoods, style: const TextStyle(color: _landingGold, fontSize: 13)),
+                ),
+                TextButton.icon(
+                  style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
+                  onPressed: () => _showGuestLanguageDialog(l10n),
+                  icon: const Icon(Icons.language, color: _landingGold, size: 18),
+                  label: Text(l10n.landingFooterLanguage, style: const TextStyle(color: _landingGold, fontSize: 13)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              l10n.landingCopyright(year),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white38, fontSize: 11),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -422,6 +547,7 @@ class _LandingScreenState extends State<LandingScreen> {
     final isPortrait = size.height > size.width;
     final isMobile = size.width < 600;
     final year = DateTime.now().year;
+    final logoMaxH = isMobile ? 100.0 : 140.0;
 
     return Scaffold(
       body: Stack(
@@ -431,107 +557,63 @@ class _LandingScreenState extends State<LandingScreen> {
           Positioned.fill(child: _buildBackground(isPortrait)),
           Container(color: Colors.black.withOpacity(isMobile ? 0.45 : 0.38)),
           SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 32, vertical: 20),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 960),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(isMobile ? 8 : 16, 4, isMobile ? 8 : 16, 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        l10n.landingHeroTitle,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: isMobile ? 32 : 42,
-                          fontWeight: FontWeight.w800,
-                          shadows: const [
-                            Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2)),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        l10n.landingHeroSubtitle,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white70, fontSize: 16, height: 1.4),
-                      ),
-                      const SizedBox(height: 28),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 12,
-                        runSpacing: 12,
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: _landingGold,
-                              foregroundColor: Colors.black,
-                              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                            onPressed: () => Navigator.of(context).pushNamed('/login'),
-                            child: Text(l10n.landingCtaLogin),
-                          ),
-                          OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: _landingGold,
-                              side: const BorderSide(color: _landingGold, width: 1.5),
-                              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                            onPressed: () => Navigator.of(context).pushNamed('/register'),
-                            child: Text(l10n.landingCtaRegister),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 36),
-                      Text(
-                        l10n.landingAboutTitle,
-                        style: const TextStyle(color: _landingGold, fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        l10n.landingAboutBody,
-                        style: const TextStyle(color: Colors.white70, height: 1.45, fontSize: 15),
-                      ),
-                      const SizedBox(height: 32),
-                      _rankingsPanel(l10n),
-                      const SizedBox(height: 40),
-                      const Divider(color: Colors.white24),
-                      const SizedBox(height: 16),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 8,
-                        runSpacing: 8,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pushNamed('/privacy'),
-                            child: Text(l10n.landingFooterPrivacy, style: const TextStyle(color: _landingGold)),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pushNamed('/digital-goods'),
-                            child: Text(l10n.landingFooterDigitalGoods, style: const TextStyle(color: _landingGold)),
-                          ),
-                          TextButton.icon(
-                            onPressed: () => _showGuestLanguageDialog(l10n),
-                            icon: const Icon(Icons.language, color: _landingGold, size: 20),
-                            label: Text(l10n.landingFooterLanguage, style: const TextStyle(color: _landingGold)),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        l10n.landingCopyright(year),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white38, fontSize: 12),
-                      ),
-                      const SizedBox(height: 16),
+                      const Spacer(),
+                      _buildTopRightCtas(context, l10n, isMobile),
                     ],
                   ),
                 ),
-              ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.fromLTRB(isMobile ? 16 : 32, 12, isMobile ? 16 : 32, 24),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 960),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _buildHeroLogo(context, l10n, logoMaxH),
+                            const SizedBox(height: 16),
+                            Text(
+                              l10n.landingHeroSubtitle,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.88),
+                                fontSize: isMobile ? 15 : 17,
+                                height: 1.45,
+                                shadows: const [Shadow(blurRadius: 8, color: Colors.black87, offset: Offset(0, 1))],
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            Text(
+                              l10n.landingAboutTitle,
+                              style: const TextStyle(color: _landingGold, fontSize: 22, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              l10n.landingAboutBody,
+                              style: const TextStyle(color: Colors.white70, height: 1.45, fontSize: 15),
+                            ),
+                            const SizedBox(height: 32),
+                            _rankingsPanel(l10n),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SafeArea(
+                  top: false,
+                  child: _buildStickyFooter(context, l10n, year),
+                ),
+              ],
             ),
           ),
         ],
