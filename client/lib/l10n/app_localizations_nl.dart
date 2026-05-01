@@ -1951,7 +1951,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardTrendVsPrevious => 'Trend t.o.v. vorige';
 
   @override
-  String get dashboardActivity7d => 'Activiteit 7d';
+  String get dashboardActivity7d => 'Activiteit (7 dagen)';
 
   @override
   String get dashboardVehicleThefts => 'Voertuig diefstallen';
@@ -2012,7 +2012,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardStatusLabel => 'Status';
 
   @override
-  String get dashboardCanDeclare => 'Kan verklaren';
+  String get dashboardCanDeclare => 'Kan oorlog verklaren';
 
   @override
   String get dashboardTypeLabel => 'Type';
@@ -2062,16 +2062,28 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dashboardCrewWarStatusNone => 'Geen actieve oorlog';
 
   @override
-  String get dashboardCrewWarTypeKill => 'Dood de oorlog';
+  String get dashboardCrewWarTypeKill => 'Eliminatieoorlog';
 
   @override
-  String get dashboardCrewWarTypeEconomy => 'Economie Oorlog';
+  String get dashboardCrewWarTypeEconomy => 'Economische oorlog';
 
   @override
   String get dashboardCrewWarTypeTerritory => 'Territoriumoorlog';
 
   @override
   String get dashboardCrewWarTypeTotal => 'Totale oorlog';
+
+  @override
+  String get dashboardClicks => 'Klikken';
+
+  @override
+  String get dashboardValueNotAvailable => '—';
+
+  @override
+  String get dashboardPremiumOfferDefaultTitle => 'Speciale aanbieding';
+
+  @override
+  String get dashboardCrewWarTypeUnknown => '—';
 
   @override
   String get dashboardTerritoryIncomeNotConfigured => 'niet geconfigureerd';
@@ -2081,8 +2093,8 @@ class AppLocalizationsNl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: 'every $hours hours',
-      one: 'every hour',
+      other: 'elke $hours uur',
+      one: 'elk uur',
     );
     return '$_temp0';
   }

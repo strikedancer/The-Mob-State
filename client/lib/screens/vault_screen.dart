@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../services/api_client.dart';
 import '../utils/web_asset_helper.dart';
+import '../utils/localized_api_message.dart';
 import '../utils/top_right_notification.dart';
 
 class VaultScreen extends StatefulWidget {
@@ -43,27 +44,8 @@ class _VaultScreenState extends State<VaultScreen> {
     );
   }
 
-  /// Picks server-provided copy for the active UI language, then common fallbacks.
-  String? _vaultMessageFromData(Map<String, dynamic> data) {
-    final code = Localizations.localeOf(context).languageCode.toLowerCase();
-    final suffix = code.isEmpty
-        ? 'En'
-        : '${code[0].toUpperCase()}${code.length > 1 ? code.substring(1) : ''}';
-    String? pick(String key) {
-      final raw = data[key]?.toString().trim();
-      return (raw == null || raw.isEmpty) ? null : raw;
-    }
-
-    return pick('message$suffix') ??
-        pick('messageEn') ??
-        pick('messageNl') ??
-        pick('messageDe') ??
-        pick('messageEs') ??
-        pick('messageFr') ??
-        pick('messageIt') ??
-        pick('messagePl') ??
-        pick('messagePt');
-  }
+  String? _vaultMessageFromData(Map<String, dynamic> data) =>
+      localizedApiMessage(context, data);
 
   @override
   void initState() {

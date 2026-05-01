@@ -3759,6 +3759,30 @@ abstract class AppLocalizations {
   /// **'Total War'**
   String get dashboardCrewWarTypeTotal;
 
+  /// No description provided for @dashboardClicks.
+  ///
+  /// In en, this message translates to:
+  /// **'Clicks'**
+  String get dashboardClicks;
+
+  /// No description provided for @dashboardValueNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get dashboardValueNotAvailable;
+
+  /// No description provided for @dashboardPremiumOfferDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special offer'**
+  String get dashboardPremiumOfferDefaultTitle;
+
+  /// No description provided for @dashboardCrewWarTypeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get dashboardCrewWarTypeUnknown;
+
   /// No description provided for @dashboardTerritoryIncomeNotConfigured.
   ///
   /// In en, this message translates to:

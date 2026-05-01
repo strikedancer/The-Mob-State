@@ -19,6 +19,7 @@ import '../widgets/event_feed.dart';
 import '../widgets/icu_overlay.dart';
 import '../utils/localized_game_event_template.dart';
 import '../utils/top_right_notification.dart';
+import '../utils/localized_api_message.dart';
 import '../services/event_renderer.dart';
 import 'crime_screen.dart';
 import 'jobs_screen.dart';
@@ -432,7 +433,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (popup == null) return;
 
       final productKey = (popup['key'] ?? '').toString();
-      final title = (popup['title'] ?? 'Special offer').toString();
+      final titleRaw = (popup['title'] ?? '').toString().trim();
       final price = (popup['priceEur'] ?? '0.00').toString();
       final reward = (popup['reward'] ?? '').toString();
       final imageUrl = (popup['imageUrl'] ?? '').toString();
@@ -442,7 +443,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         builder: (ctx) {
           final l10n = AppLocalizations.of(ctx)!;
           return AlertDialog(
-            title: Text(title),
+            title: Text(
+              titleRaw.isEmpty
+                  ? l10n.dashboardPremiumOfferDefaultTitle
+                  : titleRaw,
+            ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2860,13 +2865,9 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
         return;
       }
       final params = (decoded['params'] as Map<String, dynamic>?) ?? const {};
-      final lang = (AppLocalizations.of(context)?.localeName ?? 'en').toLowerCase();
-      final isNl = lang.startsWith('nl');
-      final msg = isNl ? (params['messageNl'] ?? '') : (params['messageEn'] ?? '');
       final l10n = AppLocalizations.of(context)!;
-      final text = msg.toString().trim().isNotEmpty
-          ? msg.toString()
-          : l10n.failed;
+      final fromApi = localizedApiMessage(context, params);
+      final text = fromApi ?? l10n.failed;
       showTopRightFromSnackBar(
         context,
         SnackBar(
@@ -3474,8 +3475,12 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
                       '${_stats?.totalAmmo ?? 0}',
                       Colors.white,
                     ),
-                    _buildInfoRow('XP', '${player.xp}', Colors.white),
-                    _buildInfoRow('Clicks', '-', Colors.white),
+                    _buildInfoRow(l10n.xp, '${player.xp}', Colors.white),
+                    _buildInfoRow(
+                      l10n.dashboardClicks,
+                      l10n.dashboardValueNotAvailable,
+                      Colors.white,
+                    ),
                     _buildInfoRow(
                       l10n.countryLabel,
                       '${CountryHelper.getCountryFlag(player.currentCountry)} $countryName',
@@ -4443,7 +4448,7 @@ class _WebDashboardHomeContentState extends State<_WebDashboardHomeContent> {
       case 'total_war':
         return l10n.dashboardCrewWarTypeTotal;
       default:
-        return '-';
+        return l10n.dashboardCrewWarTypeUnknown;
     }
   }
 

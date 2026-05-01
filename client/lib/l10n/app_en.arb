@@ -1321,6 +1321,10 @@
   "dashboardCrewWarTypeEconomy": "Economy War",
   "dashboardCrewWarTypeTerritory": "Territory War",
   "dashboardCrewWarTypeTotal": "Total War",
+  "dashboardClicks": "Clicks",
+  "dashboardValueNotAvailable": "—",
+  "dashboardPremiumOfferDefaultTitle": "Special offer",
+  "dashboardCrewWarTypeUnknown": "—",
   "dashboardTerritoryIncomeNotConfigured": "not configured",
   "dashboardTerritoryIncomeEveryHours": "{hours, plural, one{every hour} other{every {hours} hours}}",
   "@dashboardTerritoryIncomeEveryHours": {

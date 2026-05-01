@@ -133,7 +133,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardTimeoutGym => 'Salle de sport';
 
   @override
-  String get dashboardInfoDrugsGrams => 'Médicaments (grammes)';
+  String get dashboardInfoDrugsGrams => 'Drogues (grammes)';
 
   @override
   String get dashboardInfoNightclubs => 'Boîtes de nuit';
@@ -1956,7 +1956,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get crewBank => 'Banque d\'équipage';
 
   @override
-  String get dashboardEconomy24h => 'Économie 24h';
+  String get dashboardEconomy24h => 'Économie 24 h';
 
   @override
   String get dashboardGrossIncome => 'Revenu brut';
@@ -1968,42 +1968,41 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardNetCashflow => 'Flux de trésorerie net';
 
   @override
-  String get dashboardTrendVsPrevious => 'Tendance par rapport au précédent';
+  String get dashboardTrendVsPrevious => 'Tendance vs période précédente';
 
   @override
-  String get dashboardActivity7d => 'Activité 7j';
+  String get dashboardActivity7d => 'Activité (7 jours)';
 
   @override
   String get dashboardVehicleThefts => 'Vols de véhicules';
 
   @override
-  String get dashboardOpsOverview => 'Présentation des opérations';
+  String get dashboardOpsOverview => 'Vue d’ensemble des opérations';
 
   @override
   String get dashboardActiveCooldowns => 'Temps de recharge actifs';
 
   @override
-  String get dashboardLongestTimer => 'Minuterie la plus longue';
+  String get dashboardLongestTimer => 'Compte à rebours le plus long';
 
   @override
   String get dashboardActiveProduction => 'Production active';
 
   @override
-  String get dashboardProductionReadyIn => 'Production prête à';
+  String get dashboardProductionReadyIn => 'Production prête dans';
 
   @override
-  String get dashboardNightclubEvents => 'Événements en Nightclub';
+  String get dashboardNightclubEvents => 'Événements en boîte de nuit';
 
   @override
-  String get dashboardNextEventStartsIn =>
-      'Le prochain événement commence dans';
+  String get dashboardNextEventStartsIn => 'Prochain événement dans';
 
   @override
   String get dashboardVehiclesActiveListedTransit =>
-      'Véhicules actifs/répertoriés/en transit';
+      'Véhicules actifs/en vente/en transit';
 
   @override
-  String get dashboardLivePlayerEvents => 'Événements de joueurs en direct';
+  String get dashboardLivePlayerEvents => 'Événements joueurs en direct';
 
   @override
   String get dashboardOpenEvents => 'Événements ouverts';
@@ -2012,13 +2011,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardNotificationsAndRisk => 'Notifications et risques';
 
   @override
-  String get dashboardUnreadDm => 'DM non lu';
+  String get dashboardUnreadDm => 'MP non lus';
 
   @override
-  String get dashboardSupportWaitingOnYou => 'Un soutien qui vous attend';
+  String get dashboardSupportWaitingOnYou => 'Le support vous attend';
 
   @override
-  String get dashboardEventsLast24h => 'Événements dernières 24h';
+  String get dashboardEventsLast24h => 'Événements (24 dernières h)';
 
   @override
   String get dashboardRiskScore => 'Score de risque';
@@ -2027,22 +2026,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardRecruitProstitute => 'Recruter une prostituée';
 
   @override
-  String get dashboardCrewWars => 'Guerres d\'équipage';
+  String get dashboardCrewWars => 'Guerres de crew';
 
   @override
   String get dashboardStatusLabel => 'Statut';
 
   @override
-  String get dashboardCanDeclare => 'Peut déclarer';
+  String get dashboardCanDeclare => 'Peut déclarer la guerre';
 
   @override
-  String get dashboardTypeLabel => 'Taper';
+  String get dashboardTypeLabel => 'Type';
 
   @override
   String get dashboardOpponent => 'Adversaire';
 
   @override
-  String get dashboardCrewPoints => 'Points d\'équipage';
+  String get dashboardCrewPoints => 'Points crew';
 
   @override
   String get dashboardWarRank => 'Rang de guerre';
@@ -2054,7 +2053,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardOpenTargets => 'Cibles ouvertes';
 
   @override
-  String get dashboardPhaseEndsIn => 'La phase se termine dans';
+  String get dashboardPhaseEndsIn => 'Fin de phase dans';
 
   @override
   String dashboardJailStatusIn(String duration) {
@@ -2065,25 +2064,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardCrewWarStatusPreparing => 'Préparation';
 
   @override
-  String get dashboardCrewWarStatusActive => 'Active';
+  String get dashboardCrewWarStatusActive => 'En cours';
 
   @override
   String get dashboardCrewWarStatusLockdown => 'Confinement';
 
   @override
-  String get dashboardCrewWarStatusResolved => 'Résolue';
+  String get dashboardCrewWarStatusResolved => 'Terminée';
 
   @override
-  String get dashboardCrewWarStatusArchived => 'Archivé';
+  String get dashboardCrewWarStatusArchived => 'Archivée';
 
   @override
-  String get dashboardCrewWarStatusCancelled => 'Annulé';
+  String get dashboardCrewWarStatusCancelled => 'Annulée';
 
   @override
   String get dashboardCrewWarStatusNone => 'Pas de guerre active';
 
   @override
-  String get dashboardCrewWarTypeKill => 'Tuer la guerre';
+  String get dashboardCrewWarTypeKill => 'Guerre d’élimination';
 
   @override
   String get dashboardCrewWarTypeEconomy => 'Guerre économique';
@@ -2095,6 +2094,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardCrewWarTypeTotal => 'Guerre totale';
 
   @override
+  String get dashboardClicks => 'Clics';
+
+  @override
+  String get dashboardValueNotAvailable => '—';
+
+  @override
+  String get dashboardPremiumOfferDefaultTitle => 'Offre spéciale';
+
+  @override
+  String get dashboardCrewWarTypeUnknown => '—';
+
+  @override
   String get dashboardTerritoryIncomeNotConfigured => 'non configuré';
 
   @override
@@ -2102,8 +2113,8 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: 'every $hours hours',
-      one: 'every hour',
+      other: 'toutes les $hours heures',
+      one: 'chaque heure',
     );
     return '$_temp0';
   }
@@ -2114,7 +2125,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get dashboardCrewTerritory => 'Territoire de l\'équipage';
+  String get dashboardCrewTerritory => 'Territoire crew';
 
   @override
   String get dashboardRegions => 'Régions';
@@ -2126,19 +2137,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardPayout => 'Paiement';
 
   @override
-  String get dashboardEarningPerHour => 'Gagner maintenant par heure';
+  String get dashboardEarningPerHour => 'Gains actuels / heure';
 
   @override
-  String get dashboardEarningPerDay => 'Gagner maintenant par jour';
+  String get dashboardEarningPerDay => 'Gains actuels / jour';
 
   @override
   String get dashboardTotalEarned => 'Total gagné';
 
   @override
-  String get dashboardVehicleOps => 'Opérations de véhicules';
+  String get dashboardVehicleOps => 'Opérations véhicules';
 
   @override
-  String get dashboardKillProgress => 'Tuer le progrès';
+  String get dashboardKillProgress => 'Progression éliminations';
 
   @override
   String get vehicleOpsHeat => 'Chaleur';

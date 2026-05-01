@@ -2062,6 +2062,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardCrewWarTypeTotal => 'Total War';
 
   @override
+  String get dashboardClicks => 'Clicks';
+
+  @override
+  String get dashboardValueNotAvailable => '—';
+
+  @override
+  String get dashboardPremiumOfferDefaultTitle => 'Special offer';
+
+  @override
+  String get dashboardCrewWarTypeUnknown => '—';
+
+  @override
   String get dashboardTerritoryIncomeNotConfigured => 'not configured';
 
   @override

@@ -4,6 +4,28 @@ import { dailyGoalsService } from '../services/dailyGoalsService';
 
 const router = express.Router();
 
+function dailyGoalI18n(s: {
+  nl: string;
+  en: string;
+  es: string;
+  de: string;
+  fr: string;
+  it: string;
+  pl: string;
+  pt: string;
+}) {
+  return {
+    messageNl: s.nl,
+    messageEn: s.en,
+    messageEs: s.es,
+    messageDe: s.de,
+    messageFr: s.fr,
+    messageIt: s.it,
+    messagePl: s.pl,
+    messagePt: s.pt,
+  };
+}
+
 router.get('/daily', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const playerId = req.player!.id;
@@ -55,30 +77,48 @@ router.post('/daily/claim', authenticate, async (req: AuthRequest, res: Response
       return res.status(400).json({
         success: false,
         event: 'daily_goal.not_complete',
-        params: {
-          messageNl: 'Dit doel is nog niet voltooid.',
-          messageEn: 'This goal is not complete yet.',
-        },
+        params: dailyGoalI18n({
+          nl: 'Dit doel is nog niet voltooid.',
+          en: 'This goal is not complete yet.',
+          es: 'Este objetivo aún no está completo.',
+          de: 'Dieses Ziel ist noch nicht abgeschlossen.',
+          fr: "Cet objectif n'est pas encore terminé.",
+          it: 'Questo obiettivo non è ancora completato.',
+          pl: 'Ten cel nie jest jeszcze ukończony.',
+          pt: 'Este objetivo ainda não está concluído.',
+        }),
       });
     }
     if (code === 'ALREADY_CLAIMED') {
       return res.status(400).json({
         success: false,
         event: 'daily_goal.already_claimed',
-        params: {
-          messageNl: 'Dit doel is al geclaimd.',
-          messageEn: 'This goal was already claimed.',
-        },
+        params: dailyGoalI18n({
+          nl: 'Dit doel is al geclaimd.',
+          en: 'This goal was already claimed.',
+          es: 'Este objetivo ya fue reclamado.',
+          de: 'Dieses Ziel wurde bereits eingelöst.',
+          fr: 'Cet objectif a déjà été réclamé.',
+          it: 'Questo obiettivo è stato già riscattato.',
+          pl: 'Ten cel został już odebrany.',
+          pt: 'Este objetivo já foi resgatado.',
+        }),
       });
     }
     if (code === 'INVALID_GOAL') {
       return res.status(400).json({
         success: false,
         event: 'daily_goal.invalid',
-        params: {
-          messageNl: 'Ongeldig dagdoel.',
-          messageEn: 'Invalid daily goal.',
-        },
+        params: dailyGoalI18n({
+          nl: 'Ongeldig dagdoel.',
+          en: 'Invalid daily goal.',
+          es: 'Objetivo diario no válido.',
+          de: 'Ungültiges Tagesziel.',
+          fr: 'Objectif quotidien invalide.',
+          it: 'Obiettivo giornaliero non valido.',
+          pl: 'Nieprawidłowy cel dzienny.',
+          pt: 'Objetivo diário inválido.',
+        }),
       });
     }
 

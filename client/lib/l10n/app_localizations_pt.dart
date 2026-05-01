@@ -120,7 +120,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dashboardTimeoutNightclubSeason => 'Temporada de boates';
 
   @override
-  String get dashboardTimeoutAmmo => 'Compre balas';
+  String get dashboardTimeoutAmmo => 'Comprar munição';
 
   @override
   String get dashboardTimeoutShootingRange => 'Campo de tiro';
@@ -2043,16 +2043,16 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get dashboardCrewWarStatusPreparing => 'Preparando';
+  String get dashboardCrewWarStatusPreparing => 'Em preparação';
 
   @override
   String get dashboardCrewWarStatusActive => 'Ativa';
 
   @override
-  String get dashboardCrewWarStatusLockdown => 'Confinamento';
+  String get dashboardCrewWarStatusLockdown => 'Lockdown';
 
   @override
-  String get dashboardCrewWarStatusResolved => 'Resolvida';
+  String get dashboardCrewWarStatusResolved => 'Encerrada';
 
   @override
   String get dashboardCrewWarStatusArchived => 'Arquivada';
@@ -2064,16 +2064,28 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dashboardCrewWarStatusNone => 'Nenhuma guerra ativa';
 
   @override
-  String get dashboardCrewWarTypeKill => 'Matar a guerra';
+  String get dashboardCrewWarTypeKill => 'Guerra de eliminação';
 
   @override
-  String get dashboardCrewWarTypeEconomy => 'Guerra Econômica';
+  String get dashboardCrewWarTypeEconomy => 'Guerra econômica';
 
   @override
-  String get dashboardCrewWarTypeTerritory => 'Guerra Territorial';
+  String get dashboardCrewWarTypeTerritory => 'Guerra territorial';
 
   @override
   String get dashboardCrewWarTypeTotal => 'Guerra total';
+
+  @override
+  String get dashboardClicks => 'Cliques';
+
+  @override
+  String get dashboardValueNotAvailable => '—';
+
+  @override
+  String get dashboardPremiumOfferDefaultTitle => 'Oferta especial';
+
+  @override
+  String get dashboardCrewWarTypeUnknown => '—';
 
   @override
   String get dashboardTerritoryIncomeNotConfigured => 'não configurado';
@@ -2083,8 +2095,8 @@ class AppLocalizationsPt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       hours,
       locale: localeName,
-      other: 'every $hours hours',
-      one: 'every hour',
+      other: 'a cada $hours horas',
+      one: 'a cada hora',
     );
     return '$_temp0';
   }
