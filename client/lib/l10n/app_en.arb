@@ -5468,5 +5468,260 @@
         "type": "int"
       }
     }
+  },
+  "smugglingHubTitle": "Smuggling Hub",
+  "smugglingHubSubtitle": "One system for drugs, trade goods, vehicles, weapons and ammo. Travel empty and claim safely from depot.",
+  "smugglingClaimPersonal": "Claim personal",
+  "smugglingClaimCrew": "Claim crew",
+  "smugglingNewShipment": "New shipment",
+  "smugglingCategoryDrug": "Drugs",
+  "smugglingCategoryTrade": "Trade goods",
+  "smugglingCategoryVehicle": "Vehicles",
+  "smugglingCategoryWeapon": "Weapons",
+  "smugglingCategoryAmmo": "Ammo",
+  "smugglingNoItemsInCategory": "No available items in this category.",
+  "smugglingFieldItem": "Item",
+  "smugglingFieldDestination": "Destination",
+  "smugglingTransport": "Transport",
+  "smugglingCommercialChannel": "Commercial channel",
+  "smugglingOwnedVehicleAircraft": "Owned vehicle / aircraft",
+  "smugglingNoOwnedTransportInCountry": "You do not have an owned vehicle or aircraft available for smuggling in this country.",
+  "smugglingOwnedTransportFieldLabel": "Owned transport",
+  "smugglingOwnedTransportCapacityLine": "Capacity: {slots} slots • Confiscation on failure: {percent}%",
+  "@smugglingOwnedTransportCapacityLine": {
+    "placeholders": {
+      "slots": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingOwnedTransportDropdownRow": "{label} • {slots} slots • -{riskReduction}%",
+  "@smugglingOwnedTransportDropdownRow": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      },
+      "riskReduction": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingNetwork": "Network",
+  "smugglingPersonal": "Personal",
+  "smugglingCrew": "Crew",
+  "smugglingChannelField": "Smuggling channel",
+  "smugglingQuantity": "Quantity",
+  "smugglingVehiclesOneByOne": "Vehicles are shipped one by one",
+  "smugglingMaxQuantity": "Max: {max}",
+  "@smugglingMaxQuantity": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingStartSmuggling": "Start smuggling",
+  "smugglingSelectItemDestination": "Select item and destination",
+  "smugglingCrewTradeNotAvailable": "Crew smuggling for trade goods is not available yet",
+  "smugglingSelectOwnedTransportFirst": "Select an owned vehicle or aircraft first",
+  "smugglingInvalidQuantity": "Invalid quantity",
+  "smugglingActionProcessed": "Action processed",
+  "smugglingQuoteSummaryLine": "€{fee} • {etaMinutes} min • {risk}% risk",
+  "@smugglingQuoteSummaryLine": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "int"
+      },
+      "risk": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingSeizureRiskPercent": "{percent}% risk",
+  "@smugglingSeizureRiskPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingQuotePrompt": "Select item and destination for a live quote.",
+  "smugglingQuoteLiveTitle": "Live quote",
+  "smugglingOwnedTransportCaption": "Owned transport: {label}",
+  "@smugglingOwnedTransportCaption": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCargoSlotsLine": "Cargo slots: {required} / {available}",
+  "@smugglingCargoSlotsLine": {
+    "placeholders": {
+      "required": {
+        "type": "int"
+      },
+      "available": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingCooldownActive": "Cooldown active: {duration}",
+  "@smugglingCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingRecommendedChannel": "Recommended channel: {channel}",
+  "@smugglingRecommendedChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingInsufficientCash": "Insufficient cash for this shipment",
+  "smugglingDepotsTitle": "Country depots",
+  "smugglingDepotsEmpty": "No packages ready in depots.",
+  "smugglingDepotLine": "{packages} packages • {totalQuantity} units",
+  "@smugglingDepotLine": {
+    "placeholders": {
+      "packages": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingClaimHere": "Claim here",
+  "smugglingStatusTitle": "Smuggling status",
+  "smugglingNoShipmentsYet": "No shipments yet.",
+  "smugglingStatusInTransit": "In transit",
+  "smugglingStatusReady": "Ready",
+  "smugglingStatusSeized": "Seized",
+  "smugglingStatusClaimed": "Claimed",
+  "smugglingStatusUnknown": "Unknown",
+  "smugglingChannelPackage": "Package",
+  "smugglingChannelCourier": "Courier",
+  "smugglingChannelContainer": "Container",
+  "smugglingChannelOwned": "Owned transport",
+  "smugglingHintOwnedTransport": "Owned transport lowers cost and risk, but it can be confiscated on a failed run.",
+  "smugglingHintVehiclesChannel": "Tip: vehicles work best with Courier or Container.",
+  "smugglingHintWeaponsChannel": "Tip: larger weapon loads are better via Container.",
+  "smugglingHintAmmoChannel": "Tip: bulk ammo via Container for lower risk.",
+  "smugglingHintDrugsChannel": "Tip: small batches via Package, bulk via Container.",
+  "smugglingHintCompareChannels": "Tip: compare channels with the live quote.",
+  "smugglingQuoteBoatCannotFit": "A boat cannot fit in an aircraft.",
+  "smugglingQuoteCargoOverflow": "Your owned transport cargo capacity is too small.",
+  "smugglingQuoteUnavailable": "Quote unavailable",
+  "smugglingApiInvalidChannel": "Invalid smuggling channel",
+  "smugglingApiInvalidNetwork": "Invalid network choice",
+  "smugglingApiInvalidQuantity": "Invalid quantity",
+  "smugglingApiInvalidDestination": "Destination country does not exist",
+  "smugglingApiPlayerNotFound": "Player not found",
+  "smugglingApiSameCountryInventory": "Use local inventory for the same country",
+  "smugglingApiNotInCrew": "You are not in a crew",
+  "smugglingApiCrewTradeUnavailable": "Crew smuggling for trade goods is not available yet",
+  "smugglingApiOwnedVehiclesPersonalOnly": "Owned vehicles only work for personal smuggling",
+  "smugglingApiChooseOwnedTransport": "Choose an owned vehicle or aircraft",
+  "smugglingApiChosenOwnedTransportUnavailable": "Selected owned vehicle is not available",
+  "smugglingApiSameVehicleCargoConflict": "You cannot use the same vehicle as both cargo and transport",
+  "smugglingApiCarCannotCarryOtherVehicle": "A car or motorcycle cannot carry another vehicle",
+  "smugglingApiVehiclesCannotUsePackageChannel": "Vehicles cannot use the package channel",
+  "smugglingApiBoatCannotFit": "A boat cannot fit in an aircraft.",
+  "smugglingApiCargoOverflow": "Your owned transport cargo capacity is too small.",
+  "smugglingApiCooldownWait": "Wait {seconds}s before another {channel} shipment",
+  "@smugglingApiCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      },
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiInsufficientMoney": "Not enough money for smuggling fees",
+  "smugglingApiInsufficientDrugsCrew": "Not enough drugs in crew inventory",
+  "smugglingApiInsufficientDrugs": "Not enough drugs in inventory",
+  "smugglingApiInsufficientTradeGoods": "Not enough trade goods in inventory",
+  "smugglingApiInsufficientWeaponsCrew": "Not enough weapons in crew inventory",
+  "smugglingApiInsufficientWeapons": "Not enough weapons in inventory",
+  "smugglingApiInsufficientAmmoCrew": "Not enough ammo in crew inventory",
+  "smugglingApiInsufficientAmmo": "Not enough ammo in inventory",
+  "smugglingApiInvalidCrewVehicle": "Invalid crew vehicle",
+  "smugglingApiCrewBoatUnavailable": "Crew boat not available for smuggling",
+  "smugglingApiCrewMotorcycleUnavailable": "Crew motorcycle not available for smuggling",
+  "smugglingApiCrewCarUnavailable": "Crew car not available for smuggling",
+  "smugglingApiInvalidVehicleKey": "Invalid vehicle",
+  "smugglingApiVehicleUnavailableForSmuggling": "Vehicle not available for smuggling",
+  "smugglingApiInsufficientStockForShipment": "Insufficient stock for this shipment",
+  "smugglingApiDepotNoShipmentsReady": "No shipments ready at this country depot",
+  "smugglingApiQuantityTooHighForChannel": "Quantity too high for {channel}. Max: {max}",
+  "@smugglingApiQuantityTooHighForChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingApiShipmentStarted": "Smuggling shipment ({channel}) to {destination} started",
+  "@smugglingApiShipmentStarted": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiClaimedPersonal": "Picked up {count} shipment(s) in {country}",
+  "@smugglingApiClaimedPersonal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiClaimedCrew": "Picked up {count} crew shipment(s) in {country}",
+  "@smugglingApiClaimedCrew": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingClientShipmentFailed": "Shipment failed",
+  "smugglingClientQuoteFailed": "Quote failed",
+  "smugglingClientClaimFailed": "Claim failed",
+  "smugglingClientErrorPrefix": "Error: {detail}",
+  "@smugglingClientErrorPrefix": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -5457,5 +5457,260 @@
         "type": "String"
       }
     }
+  },
+  "smugglingHubTitle": "Centrum przemytu",
+  "smugglingHubSubtitle": "Jeden system dla narkotyków, towarów handlowych, pojazdów, broni i amunicji. Podróżuj pusty i odbieraj bezpiecznie z magazynu.",
+  "smugglingClaimPersonal": "Roszczenie osobiste",
+  "smugglingClaimCrew": "Zgłoś załogę",
+  "smugglingNewShipment": "Nowa dostawa",
+  "smugglingCategoryDrug": "Narkotyki",
+  "smugglingCategoryTrade": "Towary handlowe",
+  "smugglingCategoryVehicle": "Pojazdy",
+  "smugglingCategoryWeapon": "Broń",
+  "smugglingCategoryAmmo": "Amunicja",
+  "smugglingNoItemsInCategory": "Brak dostępnych pozycji w tej kategorii.",
+  "smugglingFieldItem": "Przedmiot",
+  "smugglingFieldDestination": "Miejsce docelowe",
+  "smugglingTransport": "Transport",
+  "smugglingCommercialChannel": "Kanał komercyjny",
+  "smugglingOwnedVehicleAircraft": "Posiadany pojazd/samolot",
+  "smugglingNoOwnedTransportInCountry": "Nie posiadasz własnego pojazdu ani samolotu, który mógłby zostać przemycony w tym kraju.",
+  "smugglingOwnedTransportFieldLabel": "Własny transport",
+  "smugglingOwnedTransportCapacityLine": "Pojemność: {slots} miejsc • Konfiskata w przypadku niepowodzenia: {percent}%",
+  "@smugglingOwnedTransportCapacityLine": {
+    "placeholders": {
+      "slots": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingOwnedTransportDropdownRow": "{label} • {slots} slotów • -{riskReduction}%",
+  "@smugglingOwnedTransportDropdownRow": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      },
+      "riskReduction": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingNetwork": "Sieć",
+  "smugglingPersonal": "Osobisty",
+  "smugglingCrew": "Załoga",
+  "smugglingChannelField": "Kanał przemytniczy",
+  "smugglingQuantity": "Ilość",
+  "smugglingVehiclesOneByOne": "Pojazdy wysyłane są pojedynczo",
+  "smugglingMaxQuantity": "Maks.: {max}",
+  "@smugglingMaxQuantity": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingStartSmuggling": "Rozpocznij przemyt",
+  "smugglingSelectItemDestination": "Wybierz element i miejsce docelowe",
+  "smugglingCrewTradeNotAvailable": "Przemyt załogi w celu zdobycia towarów handlowych nie jest jeszcze dostępny",
+  "smugglingSelectOwnedTransportFirst": "Najpierw wybierz posiadany pojazd lub samolot",
+  "smugglingInvalidQuantity": "Nieprawidłowa ilość",
+  "smugglingActionProcessed": "Akcja przetworzona",
+  "smugglingQuoteSummaryLine": "€{fee} • {etaMinutes} min • {risk}% ryzyka",
+  "@smugglingQuoteSummaryLine": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "int"
+      },
+      "risk": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingQuotePrompt": "Wybierz przedmiot i miejsce docelowe wyceny na żywo.",
+  "smugglingQuoteLiveTitle": "Cytat na żywo",
+  "smugglingOwnedTransportCaption": "Posiadany transport: {label}",
+  "@smugglingOwnedTransportCaption": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCargoSlotsLine": "Miejsca na ładunki: {required} / {available}",
+  "@smugglingCargoSlotsLine": {
+    "placeholders": {
+      "required": {
+        "type": "int"
+      },
+      "available": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingCooldownActive": "Aktywny czas odnowienia: {duration}",
+  "@smugglingCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingRecommendedChannel": "Polecany kanał: {channel}",
+  "@smugglingRecommendedChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingInsufficientCash": "Niewystarczająca ilość gotówki na tę przesyłkę",
+  "smugglingDepotsTitle": "Składy krajowe",
+  "smugglingDepotsEmpty": "Brak gotowych paczek w magazynach.",
+  "smugglingDepotLine": "{packages} pakiety • {totalQuantity} jednostki",
+  "@smugglingDepotLine": {
+    "placeholders": {
+      "packages": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingClaimHere": "Złóż wniosek tutaj",
+  "smugglingStatusTitle": "Stan przemytu",
+  "smugglingNoShipmentsYet": "Nie ma jeszcze żadnych przesyłek.",
+  "smugglingStatusInTransit": "W transporcie",
+  "smugglingStatusReady": "Gotowy",
+  "smugglingStatusSeized": "Schwytany",
+  "smugglingStatusClaimed": "Zgłoszono",
+  "smugglingStatusUnknown": "Nieznany",
+  "smugglingChannelPackage": "Pakiet",
+  "smugglingChannelCourier": "Kurier",
+  "smugglingChannelContainer": "Pojemnik",
+  "smugglingChannelOwned": "Własny transport",
+  "smugglingHintOwnedTransport": "Własny transport obniża koszty i ryzyko, ale może zostać skonfiskowany w przypadku nieudanego przejazdu.",
+  "smugglingHintVehiclesChannel": "Wskazówka: pojazdy najlepiej współpracują z firmą kurierską lub kontenerową.",
+  "smugglingHintWeaponsChannel": "Wskazówka: większe ładunki broni są lepsze w kontenerze.",
+  "smugglingHintAmmoChannel": "Wskazówka: amunicja zbiorcza w kontenerze, aby zmniejszyć ryzyko.",
+  "smugglingHintDrugsChannel": "Wskazówka: małe partie w pakiecie, luzem w kontenerze.",
+  "smugglingHintCompareChannels": "Wskazówka: porównaj kanały z wyceną na żywo.",
+  "smugglingQuoteBoatCannotFit": "Łódź nie może zmieścić się w samolocie.",
+  "smugglingQuoteCargoOverflow": "Posiadany przez Ciebie ładunek transportowy jest za mały.",
+  "smugglingQuoteUnavailable": "Cytat niedostępny",
+  "smugglingApiInvalidChannel": "Nieprawidłowy kanał przemytu",
+  "smugglingApiInvalidNetwork": "Nieprawidłowy wybór sieci",
+  "smugglingApiInvalidQuantity": "Nieprawidłowa ilość",
+  "smugglingApiInvalidDestination": "Kraj docelowy nie istnieje",
+  "smugglingApiPlayerNotFound": "Nie znaleziono gracza",
+  "smugglingApiSameCountryInventory": "Użyj lokalnego asortymentu dla tego samego kraju",
+  "smugglingApiNotInCrew": "Nie jesteś w załodze",
+  "smugglingApiCrewTradeUnavailable": "Przemyt załogi w celu zdobycia towarów handlowych nie jest jeszcze dostępny",
+  "smugglingApiOwnedVehiclesPersonalOnly": "Posiadane pojazdy służą wyłącznie do przemytu osobistego",
+  "smugglingApiChooseOwnedTransport": "Wybierz posiadany pojazd lub samolot",
+  "smugglingApiChosenOwnedTransportUnavailable": "Wybrany posiadany pojazd jest niedostępny",
+  "smugglingApiSameVehicleCargoConflict": "Nie można używać tego samego pojazdu jako ładunku i środka transportu",
+  "smugglingApiCarCannotCarryOtherVehicle": "Samochód lub motocykl nie może przewozić innego pojazdu",
+  "smugglingApiVehiclesCannotUsePackageChannel": "Pojazdy nie mogą korzystać z kanału pakietowego",
+  "smugglingApiBoatCannotFit": "Łódź nie może zmieścić się w samolocie.",
+  "smugglingApiCargoOverflow": "Posiadany przez Ciebie ładunek transportowy jest za mały.",
+  "smugglingApiCooldownWait": "Poczekaj {seconds} s przed kolejną {channel} wysyłką",
+  "@smugglingApiCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      },
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiInsufficientMoney": "Za mało pieniędzy na opłaty za przemyt",
+  "smugglingApiInsufficientDrugsCrew": "Za mało narkotyków w ekwipunku załogi",
+  "smugglingApiInsufficientDrugs": "Za mało leków w magazynie",
+  "smugglingApiInsufficientTradeGoods": "Za mało towarów handlowych w ekwipunku",
+  "smugglingApiInsufficientWeaponsCrew": "Za mało broni w ekwipunku załogi",
+  "smugglingApiInsufficientWeapons": "Za mało broni w ekwipunku",
+  "smugglingApiInsufficientAmmoCrew": "Za mało amunicji w ekwipunku załogi",
+  "smugglingApiInsufficientAmmo": "Za mało amunicji w ekwipunku",
+  "smugglingApiInvalidCrewVehicle": "Nieprawidłowy pojazd załogi",
+  "smugglingApiCrewBoatUnavailable": "Łódź załogowa nie nadaje się do przemytu",
+  "smugglingApiCrewMotorcycleUnavailable": "Motocykl załogi nie nadaje się do przemytu",
+  "smugglingApiCrewCarUnavailable": "Samochód załogowy niedostępny do przemytu",
+  "smugglingApiInvalidVehicleKey": "Nieprawidłowy pojazd",
+  "smugglingApiVehicleUnavailableForSmuggling": "Pojazd niedostępny do przemytu",
+  "smugglingApiInsufficientStockForShipment": "Za mało towaru dla tej przesyłki",
+  "smugglingApiDepotNoShipmentsReady": "Brak gotowych przesyłek w magazynie w tym kraju",
+  "smugglingApiQuantityTooHighForChannel": "Ilość za duża dla {channel}. Maks.: {max}",
+  "@smugglingApiQuantityTooHighForChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingApiShipmentStarted": "Rozpoczęto przemyt ({channel}) do {destination}",
+  "@smugglingApiShipmentStarted": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiClaimedPersonal": "Odebrano {count} przesyłek w {country}",
+  "@smugglingApiClaimedPersonal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiClaimedCrew": "Odebrano {count} przesyłek załogi w {country}",
+  "@smugglingApiClaimedCrew": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingClientShipmentFailed": "Wysyłka nie powiodła się",
+  "smugglingClientQuoteFailed": "Cytat nie powiódł się",
+  "smugglingClientClaimFailed": "Reklamacja nie powiodła się",
+  "smugglingClientErrorPrefix": "Błąd: {detail}",
+  "@smugglingClientErrorPrefix": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingSeizureRiskPercent": "{percent}% ryzyka",
+  "@smugglingSeizureRiskPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
   }
 }

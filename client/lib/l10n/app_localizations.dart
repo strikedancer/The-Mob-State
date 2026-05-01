@@ -15729,6 +15729,652 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label} (requires HQ {level})'**
   String territoryHqButtonLocked(String label, int level);
+
+  /// No description provided for @smugglingHubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling Hub'**
+  String get smugglingHubTitle;
+
+  /// No description provided for @smugglingHubSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One system for drugs, trade goods, vehicles, weapons and ammo. Travel empty and claim safely from depot.'**
+  String get smugglingHubSubtitle;
+
+  /// No description provided for @smugglingClaimPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim personal'**
+  String get smugglingClaimPersonal;
+
+  /// No description provided for @smugglingClaimCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim crew'**
+  String get smugglingClaimCrew;
+
+  /// No description provided for @smugglingNewShipment.
+  ///
+  /// In en, this message translates to:
+  /// **'New shipment'**
+  String get smugglingNewShipment;
+
+  /// No description provided for @smugglingCategoryDrug.
+  ///
+  /// In en, this message translates to:
+  /// **'Drugs'**
+  String get smugglingCategoryDrug;
+
+  /// No description provided for @smugglingCategoryTrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade goods'**
+  String get smugglingCategoryTrade;
+
+  /// No description provided for @smugglingCategoryVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles'**
+  String get smugglingCategoryVehicle;
+
+  /// No description provided for @smugglingCategoryWeapon.
+  ///
+  /// In en, this message translates to:
+  /// **'Weapons'**
+  String get smugglingCategoryWeapon;
+
+  /// No description provided for @smugglingCategoryAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Ammo'**
+  String get smugglingCategoryAmmo;
+
+  /// No description provided for @smugglingNoItemsInCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'No available items in this category.'**
+  String get smugglingNoItemsInCategory;
+
+  /// No description provided for @smugglingFieldItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get smugglingFieldItem;
+
+  /// No description provided for @smugglingFieldDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get smugglingFieldDestination;
+
+  /// No description provided for @smugglingTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get smugglingTransport;
+
+  /// No description provided for @smugglingCommercialChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial channel'**
+  String get smugglingCommercialChannel;
+
+  /// No description provided for @smugglingOwnedVehicleAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned vehicle / aircraft'**
+  String get smugglingOwnedVehicleAircraft;
+
+  /// No description provided for @smugglingNoOwnedTransportInCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have an owned vehicle or aircraft available for smuggling in this country.'**
+  String get smugglingNoOwnedTransportInCountry;
+
+  /// No description provided for @smugglingOwnedTransportFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned transport'**
+  String get smugglingOwnedTransportFieldLabel;
+
+  /// No description provided for @smugglingOwnedTransportCapacityLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Capacity: {slots} slots • Confiscation on failure: {percent}%'**
+  String smugglingOwnedTransportCapacityLine(int slots, String percent);
+
+  /// No description provided for @smugglingOwnedTransportDropdownRow.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} • {slots} slots • -{riskReduction}%'**
+  String smugglingOwnedTransportDropdownRow(
+    String label,
+    int slots,
+    String riskReduction,
+  );
+
+  /// No description provided for @smugglingNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network'**
+  String get smugglingNetwork;
+
+  /// No description provided for @smugglingPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get smugglingPersonal;
+
+  /// No description provided for @smugglingCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew'**
+  String get smugglingCrew;
+
+  /// No description provided for @smugglingChannelField.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling channel'**
+  String get smugglingChannelField;
+
+  /// No description provided for @smugglingQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get smugglingQuantity;
+
+  /// No description provided for @smugglingVehiclesOneByOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles are shipped one by one'**
+  String get smugglingVehiclesOneByOne;
+
+  /// No description provided for @smugglingMaxQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Max: {max}'**
+  String smugglingMaxQuantity(int max);
+
+  /// No description provided for @smugglingStartSmuggling.
+  ///
+  /// In en, this message translates to:
+  /// **'Start smuggling'**
+  String get smugglingStartSmuggling;
+
+  /// No description provided for @smugglingSelectItemDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Select item and destination'**
+  String get smugglingSelectItemDestination;
+
+  /// No description provided for @smugglingCrewTradeNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew smuggling for trade goods is not available yet'**
+  String get smugglingCrewTradeNotAvailable;
+
+  /// No description provided for @smugglingSelectOwnedTransportFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an owned vehicle or aircraft first'**
+  String get smugglingSelectOwnedTransportFirst;
+
+  /// No description provided for @smugglingInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid quantity'**
+  String get smugglingInvalidQuantity;
+
+  /// No description provided for @smugglingActionProcessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Action processed'**
+  String get smugglingActionProcessed;
+
+  /// No description provided for @smugglingQuoteSummaryLine.
+  ///
+  /// In en, this message translates to:
+  /// **'€{fee} • {etaMinutes} min • {risk}% risk'**
+  String smugglingQuoteSummaryLine(String fee, int etaMinutes, String risk);
+
+  /// No description provided for @smugglingSeizureRiskPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% risk'**
+  String smugglingSeizureRiskPercent(String percent);
+
+  /// No description provided for @smugglingQuotePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Select item and destination for a live quote.'**
+  String get smugglingQuotePrompt;
+
+  /// No description provided for @smugglingQuoteLiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Live quote'**
+  String get smugglingQuoteLiveTitle;
+
+  /// No description provided for @smugglingOwnedTransportCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned transport: {label}'**
+  String smugglingOwnedTransportCaption(String label);
+
+  /// No description provided for @smugglingCargoSlotsLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo slots: {required} / {available}'**
+  String smugglingCargoSlotsLine(int required, int available);
+
+  /// No description provided for @smugglingCooldownActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Cooldown active: {duration}'**
+  String smugglingCooldownActive(String duration);
+
+  /// No description provided for @smugglingRecommendedChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended channel: {channel}'**
+  String smugglingRecommendedChannel(String channel);
+
+  /// No description provided for @smugglingInsufficientCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient cash for this shipment'**
+  String get smugglingInsufficientCash;
+
+  /// No description provided for @smugglingDepotsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Country depots'**
+  String get smugglingDepotsTitle;
+
+  /// No description provided for @smugglingDepotsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No packages ready in depots.'**
+  String get smugglingDepotsEmpty;
+
+  /// No description provided for @smugglingDepotLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{packages} packages • {totalQuantity} units'**
+  String smugglingDepotLine(int packages, int totalQuantity);
+
+  /// No description provided for @smugglingClaimHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim here'**
+  String get smugglingClaimHere;
+
+  /// No description provided for @smugglingStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling status'**
+  String get smugglingStatusTitle;
+
+  /// No description provided for @smugglingNoShipmentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No shipments yet.'**
+  String get smugglingNoShipmentsYet;
+
+  /// No description provided for @smugglingStatusInTransit.
+  ///
+  /// In en, this message translates to:
+  /// **'In transit'**
+  String get smugglingStatusInTransit;
+
+  /// No description provided for @smugglingStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get smugglingStatusReady;
+
+  /// No description provided for @smugglingStatusSeized.
+  ///
+  /// In en, this message translates to:
+  /// **'Seized'**
+  String get smugglingStatusSeized;
+
+  /// No description provided for @smugglingStatusClaimed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claimed'**
+  String get smugglingStatusClaimed;
+
+  /// No description provided for @smugglingStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get smugglingStatusUnknown;
+
+  /// No description provided for @smugglingChannelPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Package'**
+  String get smugglingChannelPackage;
+
+  /// No description provided for @smugglingChannelCourier.
+  ///
+  /// In en, this message translates to:
+  /// **'Courier'**
+  String get smugglingChannelCourier;
+
+  /// No description provided for @smugglingChannelContainer.
+  ///
+  /// In en, this message translates to:
+  /// **'Container'**
+  String get smugglingChannelContainer;
+
+  /// No description provided for @smugglingChannelOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned transport'**
+  String get smugglingChannelOwned;
+
+  /// No description provided for @smugglingHintOwnedTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned transport lowers cost and risk, but it can be confiscated on a failed run.'**
+  String get smugglingHintOwnedTransport;
+
+  /// No description provided for @smugglingHintVehiclesChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: vehicles work best with Courier or Container.'**
+  String get smugglingHintVehiclesChannel;
+
+  /// No description provided for @smugglingHintWeaponsChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: larger weapon loads are better via Container.'**
+  String get smugglingHintWeaponsChannel;
+
+  /// No description provided for @smugglingHintAmmoChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: bulk ammo via Container for lower risk.'**
+  String get smugglingHintAmmoChannel;
+
+  /// No description provided for @smugglingHintDrugsChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: small batches via Package, bulk via Container.'**
+  String get smugglingHintDrugsChannel;
+
+  /// No description provided for @smugglingHintCompareChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: compare channels with the live quote.'**
+  String get smugglingHintCompareChannels;
+
+  /// No description provided for @smugglingQuoteBoatCannotFit.
+  ///
+  /// In en, this message translates to:
+  /// **'A boat cannot fit in an aircraft.'**
+  String get smugglingQuoteBoatCannotFit;
+
+  /// No description provided for @smugglingQuoteCargoOverflow.
+  ///
+  /// In en, this message translates to:
+  /// **'Your owned transport cargo capacity is too small.'**
+  String get smugglingQuoteCargoOverflow;
+
+  /// No description provided for @smugglingQuoteUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Quote unavailable'**
+  String get smugglingQuoteUnavailable;
+
+  /// No description provided for @smugglingApiInvalidChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid smuggling channel'**
+  String get smugglingApiInvalidChannel;
+
+  /// No description provided for @smugglingApiInvalidNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid network choice'**
+  String get smugglingApiInvalidNetwork;
+
+  /// No description provided for @smugglingApiInvalidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid quantity'**
+  String get smugglingApiInvalidQuantity;
+
+  /// No description provided for @smugglingApiInvalidDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination country does not exist'**
+  String get smugglingApiInvalidDestination;
+
+  /// No description provided for @smugglingApiPlayerNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Player not found'**
+  String get smugglingApiPlayerNotFound;
+
+  /// No description provided for @smugglingApiSameCountryInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Use local inventory for the same country'**
+  String get smugglingApiSameCountryInventory;
+
+  /// No description provided for @smugglingApiNotInCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'You are not in a crew'**
+  String get smugglingApiNotInCrew;
+
+  /// No description provided for @smugglingApiCrewTradeUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew smuggling for trade goods is not available yet'**
+  String get smugglingApiCrewTradeUnavailable;
+
+  /// No description provided for @smugglingApiOwnedVehiclesPersonalOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned vehicles only work for personal smuggling'**
+  String get smugglingApiOwnedVehiclesPersonalOnly;
+
+  /// No description provided for @smugglingApiChooseOwnedTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an owned vehicle or aircraft'**
+  String get smugglingApiChooseOwnedTransport;
+
+  /// No description provided for @smugglingApiChosenOwnedTransportUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected owned vehicle is not available'**
+  String get smugglingApiChosenOwnedTransportUnavailable;
+
+  /// No description provided for @smugglingApiSameVehicleCargoConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot use the same vehicle as both cargo and transport'**
+  String get smugglingApiSameVehicleCargoConflict;
+
+  /// No description provided for @smugglingApiCarCannotCarryOtherVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'A car or motorcycle cannot carry another vehicle'**
+  String get smugglingApiCarCannotCarryOtherVehicle;
+
+  /// No description provided for @smugglingApiVehiclesCannotUsePackageChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles cannot use the package channel'**
+  String get smugglingApiVehiclesCannotUsePackageChannel;
+
+  /// No description provided for @smugglingApiBoatCannotFit.
+  ///
+  /// In en, this message translates to:
+  /// **'A boat cannot fit in an aircraft.'**
+  String get smugglingApiBoatCannotFit;
+
+  /// No description provided for @smugglingApiCargoOverflow.
+  ///
+  /// In en, this message translates to:
+  /// **'Your owned transport cargo capacity is too small.'**
+  String get smugglingApiCargoOverflow;
+
+  /// No description provided for @smugglingApiCooldownWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait {seconds}s before another {channel} shipment'**
+  String smugglingApiCooldownWait(int seconds, String channel);
+
+  /// No description provided for @smugglingApiInsufficientMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money for smuggling fees'**
+  String get smugglingApiInsufficientMoney;
+
+  /// No description provided for @smugglingApiInsufficientDrugsCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough drugs in crew inventory'**
+  String get smugglingApiInsufficientDrugsCrew;
+
+  /// No description provided for @smugglingApiInsufficientDrugs.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough drugs in inventory'**
+  String get smugglingApiInsufficientDrugs;
+
+  /// No description provided for @smugglingApiInsufficientTradeGoods.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough trade goods in inventory'**
+  String get smugglingApiInsufficientTradeGoods;
+
+  /// No description provided for @smugglingApiInsufficientWeaponsCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough weapons in crew inventory'**
+  String get smugglingApiInsufficientWeaponsCrew;
+
+  /// No description provided for @smugglingApiInsufficientWeapons.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough weapons in inventory'**
+  String get smugglingApiInsufficientWeapons;
+
+  /// No description provided for @smugglingApiInsufficientAmmoCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough ammo in crew inventory'**
+  String get smugglingApiInsufficientAmmoCrew;
+
+  /// No description provided for @smugglingApiInsufficientAmmo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough ammo in inventory'**
+  String get smugglingApiInsufficientAmmo;
+
+  /// No description provided for @smugglingApiInvalidCrewVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid crew vehicle'**
+  String get smugglingApiInvalidCrewVehicle;
+
+  /// No description provided for @smugglingApiCrewBoatUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew boat not available for smuggling'**
+  String get smugglingApiCrewBoatUnavailable;
+
+  /// No description provided for @smugglingApiCrewMotorcycleUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew motorcycle not available for smuggling'**
+  String get smugglingApiCrewMotorcycleUnavailable;
+
+  /// No description provided for @smugglingApiCrewCarUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Crew car not available for smuggling'**
+  String get smugglingApiCrewCarUnavailable;
+
+  /// No description provided for @smugglingApiInvalidVehicleKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid vehicle'**
+  String get smugglingApiInvalidVehicleKey;
+
+  /// No description provided for @smugglingApiVehicleUnavailableForSmuggling.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle not available for smuggling'**
+  String get smugglingApiVehicleUnavailableForSmuggling;
+
+  /// No description provided for @smugglingApiInsufficientStockForShipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient stock for this shipment'**
+  String get smugglingApiInsufficientStockForShipment;
+
+  /// No description provided for @smugglingApiDepotNoShipmentsReady.
+  ///
+  /// In en, this message translates to:
+  /// **'No shipments ready at this country depot'**
+  String get smugglingApiDepotNoShipmentsReady;
+
+  /// No description provided for @smugglingApiQuantityTooHighForChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity too high for {channel}. Max: {max}'**
+  String smugglingApiQuantityTooHighForChannel(String channel, int max);
+
+  /// No description provided for @smugglingApiShipmentStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Smuggling shipment ({channel}) to {destination} started'**
+  String smugglingApiShipmentStarted(String channel, String destination);
+
+  /// No description provided for @smugglingApiClaimedPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up {count} shipment(s) in {country}'**
+  String smugglingApiClaimedPersonal(int count, String country);
+
+  /// No description provided for @smugglingApiClaimedCrew.
+  ///
+  /// In en, this message translates to:
+  /// **'Picked up {count} crew shipment(s) in {country}'**
+  String smugglingApiClaimedCrew(int count, String country);
+
+  /// No description provided for @smugglingClientShipmentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipment failed'**
+  String get smugglingClientShipmentFailed;
+
+  /// No description provided for @smugglingClientQuoteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Quote failed'**
+  String get smugglingClientQuoteFailed;
+
+  /// No description provided for @smugglingClientClaimFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim failed'**
+  String get smugglingClientClaimFailed;
+
+  /// No description provided for @smugglingClientErrorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {detail}'**
+  String smugglingClientErrorPrefix(String detail);
 }
 
 class _AppLocalizationsDelegate

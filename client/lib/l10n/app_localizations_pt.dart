@@ -9050,4 +9050,399 @@ class AppLocalizationsPt extends AppLocalizations {
   String territoryHqButtonLocked(String label, int level) {
     return '$label (requer QG $level)';
   }
+
+  @override
+  String get smugglingHubTitle => 'Centro de contrabando';
+
+  @override
+  String get smugglingHubSubtitle =>
+      'Um sistema para drogas, mercadorias comerciais, veículos, armas e munições. Viaje vazio e recupere com segurança no depósito.';
+
+  @override
+  String get smugglingClaimPersonal => 'Reivindicar pessoal';
+
+  @override
+  String get smugglingClaimCrew => 'Equipe de reivindicação';
+
+  @override
+  String get smugglingNewShipment => 'Nova remessa';
+
+  @override
+  String get smugglingCategoryDrug => 'Drogas';
+
+  @override
+  String get smugglingCategoryTrade => 'Mercadorias comerciais';
+
+  @override
+  String get smugglingCategoryVehicle => 'Veículos';
+
+  @override
+  String get smugglingCategoryWeapon => 'Armas';
+
+  @override
+  String get smugglingCategoryAmmo => 'Munição';
+
+  @override
+  String get smugglingNoItemsInCategory =>
+      'Não há itens disponíveis nesta categoria.';
+
+  @override
+  String get smugglingFieldItem => 'Item';
+
+  @override
+  String get smugglingFieldDestination => 'Destino';
+
+  @override
+  String get smugglingTransport => 'Transporte';
+
+  @override
+  String get smugglingCommercialChannel => 'Canal comercial';
+
+  @override
+  String get smugglingOwnedVehicleAircraft => 'Veículo/aeronave de propriedade';
+
+  @override
+  String get smugglingNoOwnedTransportInCountry =>
+      'Você não possui um veículo ou aeronave própria disponível para contrabando neste país.';
+
+  @override
+  String get smugglingOwnedTransportFieldLabel => 'Transporte próprio';
+
+  @override
+  String smugglingOwnedTransportCapacityLine(int slots, String percent) {
+    return 'Capacidade: $slots slots • Confisco em caso de falha: $percent%';
+  }
+
+  @override
+  String smugglingOwnedTransportDropdownRow(
+    String label,
+    int slots,
+    String riskReduction,
+  ) {
+    return '$label • $slots vagas • -$riskReduction%';
+  }
+
+  @override
+  String get smugglingNetwork => 'Rede';
+
+  @override
+  String get smugglingPersonal => 'Pessoal';
+
+  @override
+  String get smugglingCrew => 'Equipe';
+
+  @override
+  String get smugglingChannelField => 'Canal de contrabando';
+
+  @override
+  String get smugglingQuantity => 'Quantidade';
+
+  @override
+  String get smugglingVehiclesOneByOne => 'Os veículos são enviados um por um';
+
+  @override
+  String smugglingMaxQuantity(int max) {
+    return 'Máx.: $max';
+  }
+
+  @override
+  String get smugglingStartSmuggling => 'Comece o contrabando';
+
+  @override
+  String get smugglingSelectItemDestination => 'Selecione o item e o destino';
+
+  @override
+  String get smugglingCrewTradeNotAvailable =>
+      'O contrabando de Crew para mercadorias comerciais ainda não está disponível';
+
+  @override
+  String get smugglingSelectOwnedTransportFirst =>
+      'Selecione primeiro um veículo ou aeronave própria';
+
+  @override
+  String get smugglingInvalidQuantity => 'Quantidade inválida';
+
+  @override
+  String get smugglingActionProcessed => 'Ação processada';
+
+  @override
+  String smugglingQuoteSummaryLine(String fee, int etaMinutes, String risk) {
+    return '€$fee • $etaMinutes min • $risk% de risco';
+  }
+
+  @override
+  String smugglingSeizureRiskPercent(String percent) {
+    return '$percent% de risco';
+  }
+
+  @override
+  String get smugglingQuotePrompt =>
+      'Selecione o item e o destino para uma cotação ao vivo.';
+
+  @override
+  String get smugglingQuoteLiveTitle => 'Citação ao vivo';
+
+  @override
+  String smugglingOwnedTransportCaption(String label) {
+    return 'Transporte próprio: $label';
+  }
+
+  @override
+  String smugglingCargoSlotsLine(int required, int available) {
+    return 'Slots de carga: $required / $available';
+  }
+
+  @override
+  String smugglingCooldownActive(String duration) {
+    return 'Tempo de espera ativo: $duration';
+  }
+
+  @override
+  String smugglingRecommendedChannel(String channel) {
+    return 'Canal recomendado: $channel';
+  }
+
+  @override
+  String get smugglingInsufficientCash =>
+      'Dinheiro insuficiente para esta remessa';
+
+  @override
+  String get smugglingDepotsTitle => 'Depósitos de países';
+
+  @override
+  String get smugglingDepotsEmpty => 'Nenhum pacote pronto nos depósitos.';
+
+  @override
+  String smugglingDepotLine(int packages, int totalQuantity) {
+    return '$packages pacotes • $totalQuantity unidades';
+  }
+
+  @override
+  String get smugglingClaimHere => 'Reivindique aqui';
+
+  @override
+  String get smugglingStatusTitle => 'Situação de contrabando';
+
+  @override
+  String get smugglingNoShipmentsYet => 'Ainda não há remessas.';
+
+  @override
+  String get smugglingStatusInTransit => 'Em trânsito';
+
+  @override
+  String get smugglingStatusReady => 'Preparar';
+
+  @override
+  String get smugglingStatusSeized => 'Apreendida';
+
+  @override
+  String get smugglingStatusClaimed => 'Reivindicada';
+
+  @override
+  String get smugglingStatusUnknown => 'Desconhecida';
+
+  @override
+  String get smugglingChannelPackage => 'Pacote';
+
+  @override
+  String get smugglingChannelCourier => 'Correio';
+
+  @override
+  String get smugglingChannelContainer => 'Recipiente';
+
+  @override
+  String get smugglingChannelOwned => 'Transporte próprio';
+
+  @override
+  String get smugglingHintOwnedTransport =>
+      'O transporte próprio reduz custos e riscos, mas pode ser confiscado em caso de falha na operação.';
+
+  @override
+  String get smugglingHintVehiclesChannel =>
+      'Dica: os veículos funcionam melhor com Courier ou Container.';
+
+  @override
+  String get smugglingHintWeaponsChannel =>
+      'Dica: cargas maiores de armas são melhores via Container.';
+
+  @override
+  String get smugglingHintAmmoChannel =>
+      'Dica: munição a granel via Container para menor risco.';
+
+  @override
+  String get smugglingHintDrugsChannel =>
+      'Dica: pequenos lotes via Package, a granel via Container.';
+
+  @override
+  String get smugglingHintCompareChannels =>
+      'Dica: compare os canais com a cotação ao vivo.';
+
+  @override
+  String get smugglingQuoteBoatCannotFit =>
+      'Um barco não cabe em uma aeronave.';
+
+  @override
+  String get smugglingQuoteCargoOverflow =>
+      'A capacidade de carga de transporte de sua propriedade é muito pequena.';
+
+  @override
+  String get smugglingQuoteUnavailable => 'Cotação indisponível';
+
+  @override
+  String get smugglingApiInvalidChannel => 'Canal de contrabando inválido';
+
+  @override
+  String get smugglingApiInvalidNetwork => 'Escolha de rede inválida';
+
+  @override
+  String get smugglingApiInvalidQuantity => 'Quantidade inválida';
+
+  @override
+  String get smugglingApiInvalidDestination => 'O país de destino não existe';
+
+  @override
+  String get smugglingApiPlayerNotFound => 'Jogador não encontrado';
+
+  @override
+  String get smugglingApiSameCountryInventory =>
+      'Use o inventário local para o mesmo país';
+
+  @override
+  String get smugglingApiNotInCrew => 'Você não está em uma Crew';
+
+  @override
+  String get smugglingApiCrewTradeUnavailable =>
+      'O contrabando de Crew para mercadorias comerciais ainda não está disponível';
+
+  @override
+  String get smugglingApiOwnedVehiclesPersonalOnly =>
+      'Veículos próprios só funcionam para contrabando pessoal';
+
+  @override
+  String get smugglingApiChooseOwnedTransport =>
+      'Escolha um veículo ou aeronave própria';
+
+  @override
+  String get smugglingApiChosenOwnedTransportUnavailable =>
+      'O veículo de propriedade selecionado não está disponível';
+
+  @override
+  String get smugglingApiSameVehicleCargoConflict =>
+      'Você não pode usar o mesmo veículo como carga e transporte';
+
+  @override
+  String get smugglingApiCarCannotCarryOtherVehicle =>
+      'Um carro ou moto não pode transportar outro veículo';
+
+  @override
+  String get smugglingApiVehiclesCannotUsePackageChannel =>
+      'Veículos não podem usar o canal de pacotes';
+
+  @override
+  String get smugglingApiBoatCannotFit => 'Um barco não cabe em uma aeronave.';
+
+  @override
+  String get smugglingApiCargoOverflow =>
+      'A capacidade de carga de transporte de sua propriedade é muito pequena.';
+
+  @override
+  String smugglingApiCooldownWait(int seconds, String channel) {
+    return 'Aguarde ${seconds}s antes de outra remessa de $channel';
+  }
+
+  @override
+  String get smugglingApiInsufficientMoney =>
+      'Não há dinheiro suficiente para taxas de contrabando';
+
+  @override
+  String get smugglingApiInsufficientDrugsCrew =>
+      'Não há medicamentos suficientes no inventário da Crew';
+
+  @override
+  String get smugglingApiInsufficientDrugs =>
+      'Não há medicamentos suficientes no estoque';
+
+  @override
+  String get smugglingApiInsufficientTradeGoods =>
+      'Não há bens comerciais suficientes no estoque';
+
+  @override
+  String get smugglingApiInsufficientWeaponsCrew =>
+      'Armas insuficientes no inventário da Crew';
+
+  @override
+  String get smugglingApiInsufficientWeapons =>
+      'Armas insuficientes no inventário';
+
+  @override
+  String get smugglingApiInsufficientAmmoCrew =>
+      'Munição insuficiente no inventário da Crew';
+
+  @override
+  String get smugglingApiInsufficientAmmo =>
+      'Munição insuficiente no inventário';
+
+  @override
+  String get smugglingApiInvalidCrewVehicle => 'Veículo de Crew inválido';
+
+  @override
+  String get smugglingApiCrewBoatUnavailable =>
+      'Barco da Crew não está disponível para contrabando';
+
+  @override
+  String get smugglingApiCrewMotorcycleUnavailable =>
+      'Motocicleta da Crew não está disponível para contrabando';
+
+  @override
+  String get smugglingApiCrewCarUnavailable =>
+      'Carro da Crew não está disponível para contrabando';
+
+  @override
+  String get smugglingApiInvalidVehicleKey => 'Veículo inválido';
+
+  @override
+  String get smugglingApiVehicleUnavailableForSmuggling =>
+      'Veículo não disponível para contrabando';
+
+  @override
+  String get smugglingApiInsufficientStockForShipment =>
+      'Estoque insuficiente para esta remessa';
+
+  @override
+  String get smugglingApiDepotNoShipmentsReady =>
+      'Nenhuma remessa pronta neste depósito nacional';
+
+  @override
+  String smugglingApiQuantityTooHighForChannel(String channel, int max) {
+    return 'Quantidade muito alta para $channel. Máx.: $max';
+  }
+
+  @override
+  String smugglingApiShipmentStarted(String channel, String destination) {
+    return 'Remessa de contrabando ($channel) para $destination iniciada';
+  }
+
+  @override
+  String smugglingApiClaimedPersonal(int count, String country) {
+    return 'Recolhidas $count remessa(s) em $country';
+  }
+
+  @override
+  String smugglingApiClaimedCrew(int count, String country) {
+    return 'Recolheu $count remessa(s) de Crew em $country';
+  }
+
+  @override
+  String get smugglingClientShipmentFailed => 'Falha no envio';
+
+  @override
+  String get smugglingClientQuoteFailed => 'Falha na cotação';
+
+  @override
+  String get smugglingClientClaimFailed => 'Falha na reivindicação';
+
+  @override
+  String smugglingClientErrorPrefix(String detail) {
+    return 'Erro: $detail';
+  }
 }

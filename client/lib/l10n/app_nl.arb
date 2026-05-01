@@ -5457,5 +5457,260 @@
   "ammoFactoryErrInsufficientMoneyUpgrade": "Niet genoeg geld om te upgraden",
   "ammoFactoryErrMaxLevel": "Fabriek heeft al het maximale niveau",
   "ammoFactoryErrInvalidUpgradeType": "Upgrade-type moet output of quality zijn",
-  "ammoFactoryErrEducationNotMet": "Opleidingseisen niet voldaan"
+  "ammoFactoryErrEducationNotMet": "Opleidingseisen niet voldaan",
+  "smugglingHubTitle": "Smokkel Hub",
+  "smugglingHubSubtitle": "Eén systeem voor drugs, handelswaar, voertuigen, wapens en munitie. Reis leeg en claim veilig uit depot.",
+  "smugglingClaimPersonal": "Claim persoonlijk",
+  "smugglingClaimCrew": "Claim crew",
+  "smugglingNewShipment": "Nieuwe zending",
+  "smugglingCategoryDrug": "Drugs",
+  "smugglingCategoryTrade": "Handelswaar",
+  "smugglingCategoryVehicle": "Voertuigen",
+  "smugglingCategoryWeapon": "Wapens",
+  "smugglingCategoryAmmo": "Munitie",
+  "smugglingNoItemsInCategory": "Geen beschikbare items in deze categorie.",
+  "smugglingFieldItem": "Item",
+  "smugglingFieldDestination": "Bestemming",
+  "smugglingTransport": "Transport",
+  "smugglingCommercialChannel": "Commercieel kanaal",
+  "smugglingOwnedVehicleAircraft": "Eigen voertuig / vliegtuig",
+  "smugglingNoOwnedTransportInCountry": "Je hebt in dit land geen eigen voertuig of vliegtuig beschikbaar voor smokkel.",
+  "smugglingOwnedTransportFieldLabel": "Eigen transport",
+  "smugglingOwnedTransportCapacityLine": "Capaciteit: {slots} slots • Inbeslagname bij mislukking: {percent}%",
+  "smugglingOwnedTransportDropdownRow": "{label} • {slots} slots • -{riskReduction}%",
+  "smugglingNetwork": "Netwerk",
+  "smugglingPersonal": "Persoonlijk",
+  "smugglingCrew": "Crew",
+  "smugglingChannelField": "Smokkelkanaal",
+  "smugglingQuantity": "Hoeveelheid",
+  "smugglingVehiclesOneByOne": "Voertuigen gaan per stuk",
+  "smugglingMaxQuantity": "Max: {max}",
+  "smugglingStartSmuggling": "Start smokkel",
+  "smugglingSelectItemDestination": "Selecteer item en bestemming",
+  "smugglingCrewTradeNotAvailable": "Crew-smokkel voor handelswaar is nog niet beschikbaar",
+  "smugglingSelectOwnedTransportFirst": "Kies eerst een eigen voertuig of vliegtuig",
+  "smugglingInvalidQuantity": "Ongeldige hoeveelheid",
+  "smugglingActionProcessed": "Actie verwerkt",
+  "smugglingQuoteSummaryLine": "€{fee} • {etaMinutes} min • {risk}% risico",
+  "smugglingSeizureRiskPercent": "{percent}% risico",
+  "smugglingQuotePrompt": "Selecteer item en bestemming voor een live quote.",
+  "smugglingQuoteLiveTitle": "Live quote",
+  "smugglingOwnedTransportCaption": "Eigen transport: {label}",
+  "smugglingCargoSlotsLine": "Cargo-slots: {required} / {available}",
+  "smugglingCooldownActive": "Cooldown actief: {duration}",
+  "smugglingRecommendedChannel": "Aanbevolen kanaal: {channel}",
+  "smugglingInsufficientCash": "Onvoldoende cash voor deze zending",
+  "smugglingDepotsTitle": "Depots per land",
+  "smugglingDepotsEmpty": "Geen pakketten klaar in depots.",
+  "smugglingDepotLine": "{packages} pakketten • {totalQuantity} eenheden",
+  "smugglingClaimHere": "Hier ophalen",
+  "smugglingStatusTitle": "Smokkelstatus",
+  "smugglingNoShipmentsYet": "Nog geen zendingen.",
+  "smugglingStatusInTransit": "Onderweg",
+  "smugglingStatusReady": "Klaar",
+  "smugglingStatusSeized": "In beslag",
+  "smugglingStatusClaimed": "Opgehaald",
+  "smugglingStatusUnknown": "Onbekend",
+  "smugglingChannelPackage": "Pakket",
+  "smugglingChannelCourier": "Koerier",
+  "smugglingChannelContainer": "Container",
+  "smugglingChannelOwned": "Eigen transport",
+  "smugglingHintOwnedTransport": "Eigen transport verlaagt de kosten en het risico, maar kan bij mislukking in beslag genomen worden.",
+  "smugglingHintVehiclesChannel": "Tip: voertuigen werken het best met Koerier of Container.",
+  "smugglingHintWeaponsChannel": "Tip: grote wapenladingen beter via Container.",
+  "smugglingHintAmmoChannel": "Tip: veel munitie via Container voor lager risico.",
+  "smugglingHintDrugsChannel": "Tip: kleine batches via Pakket, bulk via Container.",
+  "smugglingHintCompareChannels": "Tip: test kanaalkeuze met live quote.",
+  "smugglingQuoteBoatCannotFit": "Een boot past niet in een vliegtuig.",
+  "smugglingQuoteCargoOverflow": "De cargo-capaciteit van je eigen transport is te klein.",
+  "smugglingQuoteUnavailable": "Quote niet beschikbaar",
+  "smugglingApiInvalidChannel": "Ongeldig smokkelkanaal",
+  "smugglingApiInvalidNetwork": "Ongeldige netwerkkeuze",
+  "smugglingApiInvalidQuantity": "Ongeldige hoeveelheid",
+  "smugglingApiInvalidDestination": "Bestemmingsland bestaat niet",
+  "smugglingApiPlayerNotFound": "Speler niet gevonden",
+  "smugglingApiSameCountryInventory": "Gebruik lokale inventory voor hetzelfde land",
+  "smugglingApiNotInCrew": "Je zit niet in een crew",
+  "smugglingApiCrewTradeUnavailable": "Crew-smokkel voor handelswaar is nog niet beschikbaar",
+  "smugglingApiOwnedVehiclesPersonalOnly": "Eigen voertuigen werken alleen voor persoonlijke smokkel",
+  "smugglingApiChooseOwnedTransport": "Kies een eigen voertuig of vliegtuig",
+  "smugglingApiChosenOwnedTransportUnavailable": "Gekozen eigen voertuig is niet beschikbaar",
+  "smugglingApiSameVehicleCargoConflict": "Je kunt hetzelfde voertuig niet als vracht en transport gebruiken",
+  "smugglingApiCarCannotCarryOtherVehicle": "Auto of motor kan geen ander voertuig vervoeren",
+  "smugglingApiVehiclesCannotUsePackageChannel": "Voertuigen kunnen niet via pakketkanaal",
+  "smugglingApiBoatCannotFit": "Een boot past niet in een vliegtuig.",
+  "smugglingApiCargoOverflow": "De cargo-capaciteit van je eigen transport is te klein.",
+  "smugglingApiCooldownWait": "Wacht {seconds}s voor een nieuwe {channel}-zending",
+  "smugglingApiInsufficientMoney": "Niet genoeg geld voor smokkelkosten",
+  "smugglingApiInsufficientDrugsCrew": "Niet genoeg drugs in crew inventory",
+  "smugglingApiInsufficientDrugs": "Niet genoeg drugs in inventory",
+  "smugglingApiInsufficientTradeGoods": "Niet genoeg handelswaar in inventory",
+  "smugglingApiInsufficientWeaponsCrew": "Niet genoeg wapens in crew inventory",
+  "smugglingApiInsufficientWeapons": "Niet genoeg wapens in inventory",
+  "smugglingApiInsufficientAmmoCrew": "Niet genoeg munitie in crew inventory",
+  "smugglingApiInsufficientAmmo": "Niet genoeg munitie in inventory",
+  "smugglingApiInvalidCrewVehicle": "Ongeldig crew-voertuig",
+  "smugglingApiCrewBoatUnavailable": "Crew-boot niet beschikbaar voor smokkel",
+  "smugglingApiCrewMotorcycleUnavailable": "Crew-motor niet beschikbaar voor smokkel",
+  "smugglingApiCrewCarUnavailable": "Crew-auto niet beschikbaar voor smokkel",
+  "smugglingApiInvalidVehicleKey": "Ongeldig voertuig",
+  "smugglingApiVehicleUnavailableForSmuggling": "Voertuig niet beschikbaar voor smokkel",
+  "smugglingApiInsufficientStockForShipment": "Onvoldoende voorraad voor deze zending",
+  "smugglingApiDepotNoShipmentsReady": "Geen zendingen klaar in dit landdepot",
+  "smugglingApiQuantityTooHighForChannel": "Hoeveelheid te hoog voor {channel}. Max: {max}",
+  "smugglingApiShipmentStarted": "Smokkelzending ({channel}) naar {destination} gestart",
+  "smugglingApiClaimedPersonal": "{count} zending(en) opgehaald in {country}",
+  "smugglingApiClaimedCrew": "{count} crew-zending(en) opgehaald in {country}",
+  "smugglingClientShipmentFailed": "Zending mislukt",
+  "smugglingClientQuoteFailed": "Quote mislukt",
+  "smugglingClientClaimFailed": "Ophalen mislukt",
+  "smugglingClientErrorPrefix": "Fout: {detail}",
+  "@smugglingOwnedTransportCapacityLine": {
+    "placeholders": {
+      "slots": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingOwnedTransportDropdownRow": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      },
+      "riskReduction": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingMaxQuantity": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@smugglingQuoteSummaryLine": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "int"
+      },
+      "risk": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingOwnedTransportCaption": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingCargoSlotsLine": {
+    "placeholders": {
+      "required": {
+        "type": "int"
+      },
+      "available": {
+        "type": "int"
+      }
+    }
+  },
+  "@smugglingCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingRecommendedChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingDepotLine": {
+    "placeholders": {
+      "packages": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
+    }
+  },
+  "@smugglingApiCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      },
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingApiQuantityTooHighForChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@smugglingApiShipmentStarted": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingApiClaimedPersonal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingApiClaimedCrew": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingClientErrorPrefix": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@smugglingSeizureRiskPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  }
 }

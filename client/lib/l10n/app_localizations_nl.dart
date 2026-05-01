@@ -8979,4 +8979,397 @@ class AppLocalizationsNl extends AppLocalizations {
   String territoryHqButtonLocked(String label, int level) {
     return '$label (vereist HQ $level)';
   }
+
+  @override
+  String get smugglingHubTitle => 'Smokkel Hub';
+
+  @override
+  String get smugglingHubSubtitle =>
+      'Eén systeem voor drugs, handelswaar, voertuigen, wapens en munitie. Reis leeg en claim veilig uit depot.';
+
+  @override
+  String get smugglingClaimPersonal => 'Claim persoonlijk';
+
+  @override
+  String get smugglingClaimCrew => 'Claim crew';
+
+  @override
+  String get smugglingNewShipment => 'Nieuwe zending';
+
+  @override
+  String get smugglingCategoryDrug => 'Drugs';
+
+  @override
+  String get smugglingCategoryTrade => 'Handelswaar';
+
+  @override
+  String get smugglingCategoryVehicle => 'Voertuigen';
+
+  @override
+  String get smugglingCategoryWeapon => 'Wapens';
+
+  @override
+  String get smugglingCategoryAmmo => 'Munitie';
+
+  @override
+  String get smugglingNoItemsInCategory =>
+      'Geen beschikbare items in deze categorie.';
+
+  @override
+  String get smugglingFieldItem => 'Item';
+
+  @override
+  String get smugglingFieldDestination => 'Bestemming';
+
+  @override
+  String get smugglingTransport => 'Transport';
+
+  @override
+  String get smugglingCommercialChannel => 'Commercieel kanaal';
+
+  @override
+  String get smugglingOwnedVehicleAircraft => 'Eigen voertuig / vliegtuig';
+
+  @override
+  String get smugglingNoOwnedTransportInCountry =>
+      'Je hebt in dit land geen eigen voertuig of vliegtuig beschikbaar voor smokkel.';
+
+  @override
+  String get smugglingOwnedTransportFieldLabel => 'Eigen transport';
+
+  @override
+  String smugglingOwnedTransportCapacityLine(int slots, String percent) {
+    return 'Capaciteit: $slots slots • Inbeslagname bij mislukking: $percent%';
+  }
+
+  @override
+  String smugglingOwnedTransportDropdownRow(
+    String label,
+    int slots,
+    String riskReduction,
+  ) {
+    return '$label • $slots slots • -$riskReduction%';
+  }
+
+  @override
+  String get smugglingNetwork => 'Netwerk';
+
+  @override
+  String get smugglingPersonal => 'Persoonlijk';
+
+  @override
+  String get smugglingCrew => 'Crew';
+
+  @override
+  String get smugglingChannelField => 'Smokkelkanaal';
+
+  @override
+  String get smugglingQuantity => 'Hoeveelheid';
+
+  @override
+  String get smugglingVehiclesOneByOne => 'Voertuigen gaan per stuk';
+
+  @override
+  String smugglingMaxQuantity(int max) {
+    return 'Max: $max';
+  }
+
+  @override
+  String get smugglingStartSmuggling => 'Start smokkel';
+
+  @override
+  String get smugglingSelectItemDestination => 'Selecteer item en bestemming';
+
+  @override
+  String get smugglingCrewTradeNotAvailable =>
+      'Crew-smokkel voor handelswaar is nog niet beschikbaar';
+
+  @override
+  String get smugglingSelectOwnedTransportFirst =>
+      'Kies eerst een eigen voertuig of vliegtuig';
+
+  @override
+  String get smugglingInvalidQuantity => 'Ongeldige hoeveelheid';
+
+  @override
+  String get smugglingActionProcessed => 'Actie verwerkt';
+
+  @override
+  String smugglingQuoteSummaryLine(String fee, int etaMinutes, String risk) {
+    return '€$fee • $etaMinutes min • $risk% risico';
+  }
+
+  @override
+  String smugglingSeizureRiskPercent(String percent) {
+    return '$percent% risico';
+  }
+
+  @override
+  String get smugglingQuotePrompt =>
+      'Selecteer item en bestemming voor een live quote.';
+
+  @override
+  String get smugglingQuoteLiveTitle => 'Live quote';
+
+  @override
+  String smugglingOwnedTransportCaption(String label) {
+    return 'Eigen transport: $label';
+  }
+
+  @override
+  String smugglingCargoSlotsLine(int required, int available) {
+    return 'Cargo-slots: $required / $available';
+  }
+
+  @override
+  String smugglingCooldownActive(String duration) {
+    return 'Cooldown actief: $duration';
+  }
+
+  @override
+  String smugglingRecommendedChannel(String channel) {
+    return 'Aanbevolen kanaal: $channel';
+  }
+
+  @override
+  String get smugglingInsufficientCash => 'Onvoldoende cash voor deze zending';
+
+  @override
+  String get smugglingDepotsTitle => 'Depots per land';
+
+  @override
+  String get smugglingDepotsEmpty => 'Geen pakketten klaar in depots.';
+
+  @override
+  String smugglingDepotLine(int packages, int totalQuantity) {
+    return '$packages pakketten • $totalQuantity eenheden';
+  }
+
+  @override
+  String get smugglingClaimHere => 'Hier ophalen';
+
+  @override
+  String get smugglingStatusTitle => 'Smokkelstatus';
+
+  @override
+  String get smugglingNoShipmentsYet => 'Nog geen zendingen.';
+
+  @override
+  String get smugglingStatusInTransit => 'Onderweg';
+
+  @override
+  String get smugglingStatusReady => 'Klaar';
+
+  @override
+  String get smugglingStatusSeized => 'In beslag';
+
+  @override
+  String get smugglingStatusClaimed => 'Opgehaald';
+
+  @override
+  String get smugglingStatusUnknown => 'Onbekend';
+
+  @override
+  String get smugglingChannelPackage => 'Pakket';
+
+  @override
+  String get smugglingChannelCourier => 'Koerier';
+
+  @override
+  String get smugglingChannelContainer => 'Container';
+
+  @override
+  String get smugglingChannelOwned => 'Eigen transport';
+
+  @override
+  String get smugglingHintOwnedTransport =>
+      'Eigen transport verlaagt de kosten en het risico, maar kan bij mislukking in beslag genomen worden.';
+
+  @override
+  String get smugglingHintVehiclesChannel =>
+      'Tip: voertuigen werken het best met Koerier of Container.';
+
+  @override
+  String get smugglingHintWeaponsChannel =>
+      'Tip: grote wapenladingen beter via Container.';
+
+  @override
+  String get smugglingHintAmmoChannel =>
+      'Tip: veel munitie via Container voor lager risico.';
+
+  @override
+  String get smugglingHintDrugsChannel =>
+      'Tip: kleine batches via Pakket, bulk via Container.';
+
+  @override
+  String get smugglingHintCompareChannels =>
+      'Tip: test kanaalkeuze met live quote.';
+
+  @override
+  String get smugglingQuoteBoatCannotFit =>
+      'Een boot past niet in een vliegtuig.';
+
+  @override
+  String get smugglingQuoteCargoOverflow =>
+      'De cargo-capaciteit van je eigen transport is te klein.';
+
+  @override
+  String get smugglingQuoteUnavailable => 'Quote niet beschikbaar';
+
+  @override
+  String get smugglingApiInvalidChannel => 'Ongeldig smokkelkanaal';
+
+  @override
+  String get smugglingApiInvalidNetwork => 'Ongeldige netwerkkeuze';
+
+  @override
+  String get smugglingApiInvalidQuantity => 'Ongeldige hoeveelheid';
+
+  @override
+  String get smugglingApiInvalidDestination => 'Bestemmingsland bestaat niet';
+
+  @override
+  String get smugglingApiPlayerNotFound => 'Speler niet gevonden';
+
+  @override
+  String get smugglingApiSameCountryInventory =>
+      'Gebruik lokale inventory voor hetzelfde land';
+
+  @override
+  String get smugglingApiNotInCrew => 'Je zit niet in een crew';
+
+  @override
+  String get smugglingApiCrewTradeUnavailable =>
+      'Crew-smokkel voor handelswaar is nog niet beschikbaar';
+
+  @override
+  String get smugglingApiOwnedVehiclesPersonalOnly =>
+      'Eigen voertuigen werken alleen voor persoonlijke smokkel';
+
+  @override
+  String get smugglingApiChooseOwnedTransport =>
+      'Kies een eigen voertuig of vliegtuig';
+
+  @override
+  String get smugglingApiChosenOwnedTransportUnavailable =>
+      'Gekozen eigen voertuig is niet beschikbaar';
+
+  @override
+  String get smugglingApiSameVehicleCargoConflict =>
+      'Je kunt hetzelfde voertuig niet als vracht en transport gebruiken';
+
+  @override
+  String get smugglingApiCarCannotCarryOtherVehicle =>
+      'Auto of motor kan geen ander voertuig vervoeren';
+
+  @override
+  String get smugglingApiVehiclesCannotUsePackageChannel =>
+      'Voertuigen kunnen niet via pakketkanaal';
+
+  @override
+  String get smugglingApiBoatCannotFit =>
+      'Een boot past niet in een vliegtuig.';
+
+  @override
+  String get smugglingApiCargoOverflow =>
+      'De cargo-capaciteit van je eigen transport is te klein.';
+
+  @override
+  String smugglingApiCooldownWait(int seconds, String channel) {
+    return 'Wacht ${seconds}s voor een nieuwe $channel-zending';
+  }
+
+  @override
+  String get smugglingApiInsufficientMoney =>
+      'Niet genoeg geld voor smokkelkosten';
+
+  @override
+  String get smugglingApiInsufficientDrugsCrew =>
+      'Niet genoeg drugs in crew inventory';
+
+  @override
+  String get smugglingApiInsufficientDrugs => 'Niet genoeg drugs in inventory';
+
+  @override
+  String get smugglingApiInsufficientTradeGoods =>
+      'Niet genoeg handelswaar in inventory';
+
+  @override
+  String get smugglingApiInsufficientWeaponsCrew =>
+      'Niet genoeg wapens in crew inventory';
+
+  @override
+  String get smugglingApiInsufficientWeapons =>
+      'Niet genoeg wapens in inventory';
+
+  @override
+  String get smugglingApiInsufficientAmmoCrew =>
+      'Niet genoeg munitie in crew inventory';
+
+  @override
+  String get smugglingApiInsufficientAmmo => 'Niet genoeg munitie in inventory';
+
+  @override
+  String get smugglingApiInvalidCrewVehicle => 'Ongeldig crew-voertuig';
+
+  @override
+  String get smugglingApiCrewBoatUnavailable =>
+      'Crew-boot niet beschikbaar voor smokkel';
+
+  @override
+  String get smugglingApiCrewMotorcycleUnavailable =>
+      'Crew-motor niet beschikbaar voor smokkel';
+
+  @override
+  String get smugglingApiCrewCarUnavailable =>
+      'Crew-auto niet beschikbaar voor smokkel';
+
+  @override
+  String get smugglingApiInvalidVehicleKey => 'Ongeldig voertuig';
+
+  @override
+  String get smugglingApiVehicleUnavailableForSmuggling =>
+      'Voertuig niet beschikbaar voor smokkel';
+
+  @override
+  String get smugglingApiInsufficientStockForShipment =>
+      'Onvoldoende voorraad voor deze zending';
+
+  @override
+  String get smugglingApiDepotNoShipmentsReady =>
+      'Geen zendingen klaar in dit landdepot';
+
+  @override
+  String smugglingApiQuantityTooHighForChannel(String channel, int max) {
+    return 'Hoeveelheid te hoog voor $channel. Max: $max';
+  }
+
+  @override
+  String smugglingApiShipmentStarted(String channel, String destination) {
+    return 'Smokkelzending ($channel) naar $destination gestart';
+  }
+
+  @override
+  String smugglingApiClaimedPersonal(int count, String country) {
+    return '$count zending(en) opgehaald in $country';
+  }
+
+  @override
+  String smugglingApiClaimedCrew(int count, String country) {
+    return '$count crew-zending(en) opgehaald in $country';
+  }
+
+  @override
+  String get smugglingClientShipmentFailed => 'Zending mislukt';
+
+  @override
+  String get smugglingClientQuoteFailed => 'Quote mislukt';
+
+  @override
+  String get smugglingClientClaimFailed => 'Ophalen mislukt';
+
+  @override
+  String smugglingClientErrorPrefix(String detail) {
+    return 'Fout: $detail';
+  }
 }

@@ -5457,5 +5457,260 @@
         "type": "String"
       }
     }
+  },
+  "smugglingHubTitle": "Centro de contrabando",
+  "smugglingHubSubtitle": "Um sistema para drogas, mercadorias comerciais, veículos, armas e munições. Viaje vazio e recupere com segurança no depósito.",
+  "smugglingClaimPersonal": "Reivindicar pessoal",
+  "smugglingClaimCrew": "Equipe de reivindicação",
+  "smugglingNewShipment": "Nova remessa",
+  "smugglingCategoryDrug": "Drogas",
+  "smugglingCategoryTrade": "Mercadorias comerciais",
+  "smugglingCategoryVehicle": "Veículos",
+  "smugglingCategoryWeapon": "Armas",
+  "smugglingCategoryAmmo": "Munição",
+  "smugglingNoItemsInCategory": "Não há itens disponíveis nesta categoria.",
+  "smugglingFieldItem": "Item",
+  "smugglingFieldDestination": "Destino",
+  "smugglingTransport": "Transporte",
+  "smugglingCommercialChannel": "Canal comercial",
+  "smugglingOwnedVehicleAircraft": "Veículo/aeronave de propriedade",
+  "smugglingNoOwnedTransportInCountry": "Você não possui um veículo ou aeronave própria disponível para contrabando neste país.",
+  "smugglingOwnedTransportFieldLabel": "Transporte próprio",
+  "smugglingOwnedTransportCapacityLine": "Capacidade: {slots} slots • Confisco em caso de falha: {percent}%",
+  "@smugglingOwnedTransportCapacityLine": {
+    "placeholders": {
+      "slots": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingOwnedTransportDropdownRow": "{label} • {slots} vagas • -{riskReduction}%",
+  "@smugglingOwnedTransportDropdownRow": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      },
+      "riskReduction": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingNetwork": "Rede",
+  "smugglingPersonal": "Pessoal",
+  "smugglingCrew": "Equipe",
+  "smugglingChannelField": "Canal de contrabando",
+  "smugglingQuantity": "Quantidade",
+  "smugglingVehiclesOneByOne": "Os veículos são enviados um por um",
+  "smugglingMaxQuantity": "Máx.: {max}",
+  "@smugglingMaxQuantity": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingStartSmuggling": "Comece o contrabando",
+  "smugglingSelectItemDestination": "Selecione o item e o destino",
+  "smugglingCrewTradeNotAvailable": "O contrabando de Crew para mercadorias comerciais ainda não está disponível",
+  "smugglingSelectOwnedTransportFirst": "Selecione primeiro um veículo ou aeronave própria",
+  "smugglingInvalidQuantity": "Quantidade inválida",
+  "smugglingActionProcessed": "Ação processada",
+  "smugglingQuoteSummaryLine": "€{fee} • {etaMinutes} min • {risk}% de risco",
+  "@smugglingQuoteSummaryLine": {
+    "placeholders": {
+      "fee": {
+        "type": "String"
+      },
+      "etaMinutes": {
+        "type": "int"
+      },
+      "risk": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingQuotePrompt": "Selecione o item e o destino para uma cotação ao vivo.",
+  "smugglingQuoteLiveTitle": "Citação ao vivo",
+  "smugglingOwnedTransportCaption": "Transporte próprio: {label}",
+  "@smugglingOwnedTransportCaption": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingCargoSlotsLine": "Slots de carga: {required} / {available}",
+  "@smugglingCargoSlotsLine": {
+    "placeholders": {
+      "required": {
+        "type": "int"
+      },
+      "available": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingCooldownActive": "Tempo de espera ativo: {duration}",
+  "@smugglingCooldownActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingRecommendedChannel": "Canal recomendado: {channel}",
+  "@smugglingRecommendedChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingInsufficientCash": "Dinheiro insuficiente para esta remessa",
+  "smugglingDepotsTitle": "Depósitos de países",
+  "smugglingDepotsEmpty": "Nenhum pacote pronto nos depósitos.",
+  "smugglingDepotLine": "{packages} pacotes • {totalQuantity} unidades",
+  "@smugglingDepotLine": {
+    "placeholders": {
+      "packages": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingClaimHere": "Reivindique aqui",
+  "smugglingStatusTitle": "Situação de contrabando",
+  "smugglingNoShipmentsYet": "Ainda não há remessas.",
+  "smugglingStatusInTransit": "Em trânsito",
+  "smugglingStatusReady": "Preparar",
+  "smugglingStatusSeized": "Apreendida",
+  "smugglingStatusClaimed": "Reivindicada",
+  "smugglingStatusUnknown": "Desconhecida",
+  "smugglingChannelPackage": "Pacote",
+  "smugglingChannelCourier": "Correio",
+  "smugglingChannelContainer": "Recipiente",
+  "smugglingChannelOwned": "Transporte próprio",
+  "smugglingHintOwnedTransport": "O transporte próprio reduz custos e riscos, mas pode ser confiscado em caso de falha na operação.",
+  "smugglingHintVehiclesChannel": "Dica: os veículos funcionam melhor com Courier ou Container.",
+  "smugglingHintWeaponsChannel": "Dica: cargas maiores de armas são melhores via Container.",
+  "smugglingHintAmmoChannel": "Dica: munição a granel via Container para menor risco.",
+  "smugglingHintDrugsChannel": "Dica: pequenos lotes via Package, a granel via Container.",
+  "smugglingHintCompareChannels": "Dica: compare os canais com a cotação ao vivo.",
+  "smugglingQuoteBoatCannotFit": "Um barco não cabe em uma aeronave.",
+  "smugglingQuoteCargoOverflow": "A capacidade de carga de transporte de sua propriedade é muito pequena.",
+  "smugglingQuoteUnavailable": "Cotação indisponível",
+  "smugglingApiInvalidChannel": "Canal de contrabando inválido",
+  "smugglingApiInvalidNetwork": "Escolha de rede inválida",
+  "smugglingApiInvalidQuantity": "Quantidade inválida",
+  "smugglingApiInvalidDestination": "O país de destino não existe",
+  "smugglingApiPlayerNotFound": "Jogador não encontrado",
+  "smugglingApiSameCountryInventory": "Use o inventário local para o mesmo país",
+  "smugglingApiNotInCrew": "Você não está em uma Crew",
+  "smugglingApiCrewTradeUnavailable": "O contrabando de Crew para mercadorias comerciais ainda não está disponível",
+  "smugglingApiOwnedVehiclesPersonalOnly": "Veículos próprios só funcionam para contrabando pessoal",
+  "smugglingApiChooseOwnedTransport": "Escolha um veículo ou aeronave própria",
+  "smugglingApiChosenOwnedTransportUnavailable": "O veículo de propriedade selecionado não está disponível",
+  "smugglingApiSameVehicleCargoConflict": "Você não pode usar o mesmo veículo como carga e transporte",
+  "smugglingApiCarCannotCarryOtherVehicle": "Um carro ou moto não pode transportar outro veículo",
+  "smugglingApiVehiclesCannotUsePackageChannel": "Veículos não podem usar o canal de pacotes",
+  "smugglingApiBoatCannotFit": "Um barco não cabe em uma aeronave.",
+  "smugglingApiCargoOverflow": "A capacidade de carga de transporte de sua propriedade é muito pequena.",
+  "smugglingApiCooldownWait": "Aguarde {seconds}s antes de outra remessa de {channel}",
+  "@smugglingApiCooldownWait": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      },
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiInsufficientMoney": "Não há dinheiro suficiente para taxas de contrabando",
+  "smugglingApiInsufficientDrugsCrew": "Não há medicamentos suficientes no inventário da Crew",
+  "smugglingApiInsufficientDrugs": "Não há medicamentos suficientes no estoque",
+  "smugglingApiInsufficientTradeGoods": "Não há bens comerciais suficientes no estoque",
+  "smugglingApiInsufficientWeaponsCrew": "Armas insuficientes no inventário da Crew",
+  "smugglingApiInsufficientWeapons": "Armas insuficientes no inventário",
+  "smugglingApiInsufficientAmmoCrew": "Munição insuficiente no inventário da Crew",
+  "smugglingApiInsufficientAmmo": "Munição insuficiente no inventário",
+  "smugglingApiInvalidCrewVehicle": "Veículo de Crew inválido",
+  "smugglingApiCrewBoatUnavailable": "Barco da Crew não está disponível para contrabando",
+  "smugglingApiCrewMotorcycleUnavailable": "Motocicleta da Crew não está disponível para contrabando",
+  "smugglingApiCrewCarUnavailable": "Carro da Crew não está disponível para contrabando",
+  "smugglingApiInvalidVehicleKey": "Veículo inválido",
+  "smugglingApiVehicleUnavailableForSmuggling": "Veículo não disponível para contrabando",
+  "smugglingApiInsufficientStockForShipment": "Estoque insuficiente para esta remessa",
+  "smugglingApiDepotNoShipmentsReady": "Nenhuma remessa pronta neste depósito nacional",
+  "smugglingApiQuantityTooHighForChannel": "Quantidade muito alta para {channel}. Máx.: {max}",
+  "@smugglingApiQuantityTooHighForChannel": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "smugglingApiShipmentStarted": "Remessa de contrabando ({channel}) para {destination} iniciada",
+  "@smugglingApiShipmentStarted": {
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      },
+      "destination": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiClaimedPersonal": "Recolhidas {count} remessa(s) em {country}",
+  "@smugglingApiClaimedPersonal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingApiClaimedCrew": "Recolheu {count} remessa(s) de Crew em {country}",
+  "@smugglingApiClaimedCrew": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingClientShipmentFailed": "Falha no envio",
+  "smugglingClientQuoteFailed": "Falha na cotação",
+  "smugglingClientClaimFailed": "Falha na reivindicação",
+  "smugglingClientErrorPrefix": "Erro: {detail}",
+  "@smugglingClientErrorPrefix": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "smugglingSeizureRiskPercent": "{percent}% de risco",
+  "@smugglingSeizureRiskPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
   }
 }
