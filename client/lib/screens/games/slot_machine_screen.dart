@@ -7,6 +7,7 @@ import '../../services/api_client.dart';
 import '../../models/casino_game.dart';
 import '../../utils/formatters.dart';
 import '../../utils/top_right_notification.dart';
+import '../../utils/casino_play_l10n.dart';
 
 class SlotMachineScreen extends StatefulWidget {
   final CasinoGame game;
@@ -65,6 +66,8 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
       });
     });
 
+    final l10n = AppLocalizations.of(context)!;
+
     // Call backend
     try {
       final response = await _apiClient.post('/casino/slots/spin', {
@@ -83,16 +86,14 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
           setState(() {
             _isSpinning = false;
           });
-          String errorReason = data['params']['reason'] ?? 'Fout bij gokken';
-          if (errorReason == 'CASINO_NOT_FOUND') {
-            errorReason =
-                'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
-          } else if (errorReason == 'INSUFFICIENT_FUNDS') {
-            errorReason = 'Niet genoeg geld';
-          } else if (errorReason == 'INSUFFICIENT_BANKROLL') {
-            errorReason = 'Casino kas te laag voor deze uitbetaling';
-          }
-          _showError(errorReason);
+          final raw = data['params']?['reason']?.toString();
+          _showError(
+            mapCasinoPlayError(
+              l10n,
+              raw,
+              fallback: l10n.casinoErrGambleFailed,
+            ),
+          );
           return;
         }
 
@@ -137,22 +138,31 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
         setState(() {
           _isSpinning = false;
         });
-        _showError(data['params']?['reason'] ?? 'Fout bij gokken');
+        _showError(
+          mapCasinoPlayError(
+            l10n,
+            data['params']?['reason']?.toString(),
+            fallback: l10n.casinoErrGambleFailed,
+          ),
+        );
       }
     } catch (e) {
       _spinTimer?.cancel();
       setState(() {
         _isSpinning = false;
       });
-      _showError('Netwerkfout: $e');
+      _showError(l10n.casinoErrNetwork(e.toString()));
     }
   }
 
   void _showResultDialog(bool won, int payout, int profit) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(won ? '🎉 Gewonnen!' : 'Verloren'),
+        title: Text(
+          won ? l10n.casinoResultYouWonCelebrate : l10n.casinoResultYouLost,
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -172,14 +182,16 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
             SizedBox(height: 16),
             Text(
               won
-                  ? 'Je hebt €${formatCompactNumber(payout)} gewonnen!'
-                  : 'Je hebt €${formatCompactNumber(_betAmount)} verloren',
+                  ? l10n.casinoWonEuroAmount(formatCompactNumber(payout))
+                  : l10n.casinoLostEuroAmount(
+                      formatCompactNumber(_betAmount),
+                    ),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 8),
             Text(
-              '${profit >= 0 ? AppLocalizations.of(context)!.profit : AppLocalizations.of(context)!.loss}: €${formatCompactNumber(profit.abs())}',
+              '${profit >= 0 ? l10n.profit : l10n.loss}: €${formatCompactNumber(profit.abs())}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -191,14 +203,14 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: Text(l10n.ok),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _spin();
             },
-            child: Text('Opnieuw'),
+            child: Text(l10n.casinoAgain),
           ),
         ],
       ),
@@ -213,11 +225,15 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
   }
 
   void _showBankruptcyDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('Casino Failliet!', style: TextStyle(color: Colors.red)),
+        title: Text(
+          l10n.casinoBankruptTitle,
+          style: TextStyle(color: Colors.red),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -245,7 +261,7 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
               Navigator.of(context).pop(); // Return to casino screen
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-            child: Text('Terug naar Casino'),
+            child: Text(l10n.casinoBackToCasino),
           ),
         ],
       ),
@@ -254,9 +270,10 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text('🎰 ${widget.game.name}'),
+        title: Text('🎰 ${localizedCasinoGameName(l10n, widget.game.id)}'),
         backgroundColor: Colors.purple[900],
         foregroundColor: Colors.white,
       ),
@@ -295,11 +312,11 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
                     children: [
                       _buildSlotMachine(),
                       const SizedBox(height: 20),
-                      _buildBetControls(),
+                      _buildBetControls(l10n),
                       const SizedBox(height: 14),
-                      _buildSpinButton(),
+                      _buildSpinButton(l10n),
                       const SizedBox(height: 14),
-                      _buildPaytable(),
+                      _buildPaytable(l10n),
                     ],
                   ),
                 ),
@@ -444,7 +461,7 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
     );
   }
 
-  Widget _buildBetControls() {
+  Widget _buildBetControls(AppLocalizations l10n) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       padding: EdgeInsets.all(16),
@@ -454,7 +471,10 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
       ),
       child: Column(
         children: [
-          Text('Inzet', style: TextStyle(color: Colors.white70, fontSize: 14)),
+          Text(
+            l10n.casinoBetLabel,
+            style: TextStyle(color: Colors.white70, fontSize: 14),
+          ),
           SizedBox(height: 8),
           Text(
             '€${formatCompactNumber(_betAmount)}',
@@ -535,7 +555,7 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
     }).toList();
   }
 
-  Widget _buildSpinButton() {
+  Widget _buildSpinButton(AppLocalizations l10n) {
     return SizedBox(
       width: 200,
       height: 60,
@@ -559,14 +579,14 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
                 ),
               )
             : Text(
-                'SPIN!',
+                l10n.casinoSlotSpinButton,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
       ),
     );
   }
 
-  Widget _buildPaytable() {
+  Widget _buildPaytable(AppLocalizations l10n) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       padding: EdgeInsets.all(12),
@@ -577,7 +597,7 @@ class _SlotMachineScreenState extends State<SlotMachineScreen>
       child: Column(
         children: [
           Text(
-            'Uitbetalingstabel',
+            l10n.casinoSlotPayoutTableTitle,
             style: TextStyle(
               color: Colors.white,
               fontSize: 14,

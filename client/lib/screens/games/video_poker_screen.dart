@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 
 import '../../models/casino_game.dart';
 import '../../services/api_client.dart';
+import '../../l10n/app_localizations.dart';
 import '../../utils/formatters.dart';
 import '../../utils/top_right_notification.dart';
+import '../../utils/casino_play_l10n.dart';
 
 class VideoPokerScreen extends StatefulWidget {
   final CasinoGame game;
@@ -30,13 +32,6 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
     super.initState();
     _betAmount = widget.game.minBet;
     _cards = List.generate(5, (_) => {'rank': 0, 'suit': 'spades'});
-  }
-
-  String _t(String nl, String en) {
-    final isNl = Localizations.localeOf(
-      context,
-    ).languageCode.toLowerCase().startsWith('nl');
-    return isNl ? nl : en;
   }
 
   String _mapSuit(String suit) {
@@ -67,28 +62,28 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
     }
   }
 
-  String _labelForHandRank(String rank) {
+  String _labelForHandRank(AppLocalizations l10n, String rank) {
     switch (rank) {
       case 'royal_flush':
-        return _t('Royal Flush', 'Royal Flush');
+        return l10n.casinoVideoPokerRoyalFlush;
       case 'straight_flush':
-        return _t('Straight Flush', 'Straight Flush');
+        return l10n.casinoVideoPokerStraightFlush;
       case 'four_kind':
-        return _t('Four of a Kind', 'Four of a Kind');
+        return l10n.casinoVideoPokerFourKind;
       case 'full_house':
-        return _t('Full House', 'Full House');
+        return l10n.casinoVideoPokerFullHouse;
       case 'flush':
-        return _t('Flush', 'Flush');
+        return l10n.casinoVideoPokerFlush;
       case 'straight':
-        return _t('Straight', 'Straight');
+        return l10n.casinoVideoPokerStraight;
       case 'three_kind':
-        return _t('Three of a Kind', 'Three of a Kind');
+        return l10n.casinoVideoPokerThreeKind;
       case 'two_pair':
-        return _t('Two Pair', 'Two Pair');
+        return l10n.casinoVideoPokerTwoPair;
       case 'jacks_or_better':
-        return _t('Jacks or Better', 'Jacks or Better');
+        return l10n.casinoVideoPokerJacksOrBetter;
       default:
-        return _t('Geen winnende hand', 'No winning hand');
+        return l10n.casinoVideoPokerNoWinningHand;
     }
   }
 
@@ -116,6 +111,8 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
       });
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     try {
       final response = await _apiClient.post('/casino/video-poker/play', {
         'betAmount': _betAmount,
@@ -124,7 +121,13 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
 
       if (data['event'] == 'casino.error') {
         setState(() => _isDrawing = false);
-        _showError(_mapError(data['params']?['reason']));
+        _showError(
+          mapCasinoPlayError(
+            l10n,
+            data['params']?['reason']?.toString(),
+            fallback: l10n.casinoErrBetFailed,
+          ),
+        );
         return;
       }
 
@@ -141,7 +144,7 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
       });
 
       if ((params['casinoBankrupt'] ?? false) == true) {
-        _showError(_t('Casino is failliet gegaan', 'The casino went bankrupt'));
+        _showError(l10n.casinoBankruptTitle);
         if (mounted) Navigator.pop(context);
         return;
       }
@@ -149,21 +152,8 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
       _showResultDialog(won, payout, profit, _handRank);
     } catch (e) {
       setState(() => _isDrawing = false);
-      _showError('Netwerkfout: $e');
+      _showError(l10n.casinoErrNetwork(e.toString()));
     }
-  }
-
-  String _mapError(dynamic reason) {
-    final value = reason?.toString() ?? '';
-    if (value == 'INSUFFICIENT_FUNDS') {
-      return _t('Niet genoeg geld', 'Not enough money');
-    }
-    if (value == 'INSUFFICIENT_BANKROLL') {
-      return _t('Casino kas te laag', 'Casino bankroll too low');
-    }
-    return value.isNotEmpty
-        ? value
-        : _t('Er ging iets mis', 'Something went wrong');
   }
 
   void _showError(String message) {
@@ -174,26 +164,27 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
   }
 
   void _showResultDialog(bool won, int payout, int profit, String handRank) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(won ? _t('Gewonnen!', 'You won!') : _t('Verloren', 'Lost')),
+        title: Text(won ? l10n.casinoResultYouWon : l10n.casinoResultYouLost),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              _labelForHandRank(handRank),
+              _labelForHandRank(l10n, handRank),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(
               won
-                  ? '${_t('Uitbetaling', 'Payout')}: €${formatCompactNumber(payout)}'
-                  : _t('Geen uitbetaling', 'No payout'),
+                  ? l10n.casinoPayoutEuro(formatCompactNumber(payout))
+                  : l10n.casinoNoPayout,
             ),
             const SizedBox(height: 8),
             Text(
-              '${_t('Resultaat', 'Result')}: €${formatCompactNumber(profit.abs())}',
+              l10n.casinoResultEuro(formatCompactNumber(profit.abs())),
               style: TextStyle(
                 color: profit >= 0 ? Colors.green : Colors.red,
                 fontWeight: FontWeight.bold,
@@ -204,14 +195,14 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text(l10n.ok),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _draw();
             },
-            child: Text(_t('Opnieuw', 'Again')),
+            child: Text(l10n.casinoAgain),
           ),
         ],
       ),
@@ -283,6 +274,7 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final bg = isPortrait
@@ -291,7 +283,9 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('🃍 ${_t('Video Poker', 'Video Poker')}'),
+        title: Text(
+          '🃍 ${localizedCasinoGameName(l10n, widget.game.id)}',
+        ),
         backgroundColor: const Color(0xFF123158),
       ),
       body: Stack(
@@ -330,8 +324,8 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
                         children: [
                           Text(
                             _handRank.isEmpty
-                                ? _t('Trek je hand', 'Draw your hand')
-                                : _labelForHandRank(_handRank),
+                                ? l10n.casinoVideoPokerDrawHint
+                                : _labelForHandRank(l10n, _handRank),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -359,7 +353,7 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
                       child: Column(
                         children: [
                           Text(
-                            '${_t('Inzet', 'Bet')}: €${formatCompactNumber(_betAmount)}',
+                            '${l10n.casinoBetLabel}: €${formatCompactNumber(_betAmount)}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -403,8 +397,8 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
                         ),
                         child: Text(
                           _isDrawing
-                              ? _t('Delen...', 'Dealing...')
-                              : _t('TREK KAARTEN', 'DRAW CARDS'),
+                              ? l10n.casinoDealing
+                              : l10n.casinoVideoPokerDrawCards,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 17,
@@ -421,10 +415,7 @@ class _VideoPokerScreenState extends State<VideoPokerScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        _t(
-                          'Uitbetalingstabel: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x',
-                          'Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x',
-                        ),
+                        l10n.casinoVideoPokerPayoutTableLong,
                         style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 12,

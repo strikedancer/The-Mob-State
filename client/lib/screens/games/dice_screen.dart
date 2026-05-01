@@ -7,6 +7,7 @@ import '../../services/api_client.dart';
 import '../../models/casino_game.dart';
 import '../../utils/formatters.dart';
 import '../../utils/top_right_notification.dart';
+import '../../utils/casino_play_l10n.dart';
 
 class DiceScreen extends StatefulWidget {
   final CasinoGame game;
@@ -53,6 +54,8 @@ class _DiceScreenState extends State<DiceScreen> {
         _dice2 = Random().nextInt(6) + 1;
       });
     });
+
+    final l10n = AppLocalizations.of(context)!;
 
     try {
       final response = await _apiClient.post('/casino/dice/roll', {
@@ -110,22 +113,31 @@ class _DiceScreenState extends State<DiceScreen> {
         setState(() {
           _isRolling = false;
         });
-        _showError(data['params']?['reason'] ?? 'Fout bij gooien');
+        _showError(
+          mapCasinoPlayError(
+            l10n,
+            data['params']?['reason']?.toString(),
+            fallback: l10n.casinoErrThrowFailed,
+          ),
+        );
       }
     } catch (e) {
       _rollTimer?.cancel();
       setState(() {
         _isRolling = false;
       });
-      _showError('Netwerkfout: $e');
+      _showError(l10n.casinoErrNetwork(e.toString()));
     }
   }
 
   void _showResultDialog(bool won, int payout, int profit, int total) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(won ? '🎉 Gewonnen!' : 'Verloren'),
+        title: Text(
+          won ? l10n.casinoResultYouWonCelebrate : l10n.casinoResultYouLost,
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -144,20 +156,22 @@ class _DiceScreenState extends State<DiceScreen> {
             ),
             SizedBox(height: 16),
             Text(
-              'Totaal: $total',
+              l10n.casinoDiceTotalShowing('$total'),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
             Text(
               won
-                  ? 'Je hebt €${formatCompactNumber(payout)} gewonnen!'
-                  : 'Je hebt €${formatCompactNumber(_betAmount)} verloren',
+                  ? l10n.casinoWonEuroAmount(formatCompactNumber(payout))
+                  : l10n.casinoLostEuroAmount(
+                      formatCompactNumber(_betAmount),
+                    ),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 8),
             Text(
-              '${profit >= 0 ? AppLocalizations.of(context)!.profit : AppLocalizations.of(context)!.loss}: €${formatCompactNumber(profit.abs())}',
+              '${profit >= 0 ? l10n.profit : l10n.loss}: €${formatCompactNumber(profit.abs())}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -169,14 +183,14 @@ class _DiceScreenState extends State<DiceScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: Text(l10n.ok),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _roll();
             },
-            child: Text('Opnieuw'),
+            child: Text(l10n.casinoAgain),
           ),
         ],
       ),
@@ -191,11 +205,15 @@ class _DiceScreenState extends State<DiceScreen> {
   }
 
   void _showBankruptcyDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('Casino Failliet!', style: TextStyle(color: Colors.red)),
+        title: Text(
+          l10n.casinoBankruptTitle,
+          style: TextStyle(color: Colors.red),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -209,9 +227,7 @@ class _DiceScreenState extends State<DiceScreen> {
             ),
             SizedBox(height: 16),
             Text(
-              '🎰 Het casino is failliet gegaan!\n\n'
-              'De eigenaar had niet genoeg geld in de kas om alle uitbetalingen te dekken.\n\n'
-              'Het casino is nu gesloten en kan opnieuw gekocht worden.',
+              l10n.casinoBankruptBody,
               textAlign: TextAlign.center,
             ),
           ],
@@ -223,7 +239,7 @@ class _DiceScreenState extends State<DiceScreen> {
               Navigator.of(context).pop();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-            child: Text('Terug naar Casino'),
+            child: Text(l10n.casinoBackToCasino),
           ),
         ],
       ),
@@ -232,9 +248,11 @@ class _DiceScreenState extends State<DiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('🎲 ${widget.game.name}'),
+        title: Text('🎲 ${localizedCasinoGameName(l10n, widget.game.id)}'),
         backgroundColor: Colors.blue[900],
         foregroundColor: Colors.white,
       ),
@@ -279,7 +297,7 @@ class _DiceScreenState extends State<DiceScreen> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Totaal: ${_dice1 + _dice2}',
+                      l10n.casinoDiceTotalShowing('${_dice1 + _dice2}'),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 28,
@@ -308,13 +326,13 @@ class _DiceScreenState extends State<DiceScreen> {
                             spacing: 10,
                             runSpacing: 10,
                             children: [
-                              _buildPredictionButton('Laag (2-6)', 'low'),
-                              _buildPredictionButton('Hoog (8-12)', 'high'),
+                              _buildPredictionButton(l10n.casinoDiceLowLabel, 'low'),
+                              _buildPredictionButton(l10n.casinoDiceHighLabel, 'high'),
                             ],
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Laag/Hoog betaalt 2x • Exacte score betaalt 6x',
+                            l10n.casinoDiceOddsHint,
                             style: TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
@@ -336,7 +354,7 @@ class _DiceScreenState extends State<DiceScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'Inzet',
+                            l10n.casinoBetLabel,
                             style: TextStyle(
                               color: Colors.white70,
                               fontSize: 16,
@@ -384,7 +402,7 @@ class _DiceScreenState extends State<DiceScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : Text(
-                              'GOOI!',
+                              l10n.casinoDiceRollButton,
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,

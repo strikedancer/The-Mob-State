@@ -6679,5 +6679,271 @@
   "drugsApiFailedSell": "No se pudo vender drogas",
   "drugsApiFailedCut": "No se pudo cortar las drogas",
   "drugsApiFailedShipment": "No se pudo enviar el envío",
-  "drugsApiFailedClaim": "No se pudieron reclamar los envíos del depósito"
+  "drugsApiFailedClaim": "No se pudieron reclamar los envíos del depósito",
+  "backpackPurchaseFailedGeneric": "No se pudo completar la compra.",
+  "backpackUpgradeFailedGeneric": "No se pudo completar la actualización.",
+  "backpackUnknownEvent": "Acción desconocida",
+  "backpackLoadFailedGeneric": "algo salió mal",
+  "backpackOwnedBadge": "Propiedad",
+  "availableBackpacks": "Mochilas disponibles",
+  "backpackDialogCurrentLine": "Actual: {name} (+{slots} espacios)",
+  "@backpackDialogCurrentLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      }
+    }
+  },
+  "backpackDialogNewLine": "Nuevo: {name} (+{slots} espacios)",
+  "@backpackDialogNewLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      }
+    }
+  },
+  "backpackDialogUpgradeDelta": "Actualización: +{delta} espacios",
+  "@backpackDialogUpgradeDelta": {
+    "placeholders": {
+      "delta": {
+        "type": "int"
+      }
+    }
+  },
+  "backpackDialogTotalCapacity": "Total: {totalSlots} espacios",
+  "@backpackDialogTotalCapacity": {
+    "placeholders": {
+      "totalSlots": {
+        "type": "int"
+      }
+    }
+  },
+  "notLoggedInTokenStorageHint": "(problema de almacenamiento; intenta iniciar sesión nuevamente)",
+  "blackMarketTabBackpacks": "Mochilas",
+  "bmHubAdjustFiltersHint": "Intenta ajustar tus filtros",
+  "bmHubEmptyMyListingsHint": "Vaya a Garaje o Marina para listar vehículos",
+  "bmHubSellerLabel": "Vendedora",
+  "bmHubAskingPriceLabel": "precio de venta",
+  "bmHubMarketValueShort": "Valor comercial",
+  "bmHubBuyNow": "Comprar ahora",
+  "bmHubListedFor": "Listado para",
+  "bmHubEditPrice": "Editar precio",
+  "bmHubDelist": "Eliminar de la lista",
+  "bmHubFilterListingsTitle": "Filtrar listados",
+  "bmHubLabelCountry": "País",
+  "bmHubAllCountries": "Todos los paises",
+  "bmHubLabelVehicleType": "tipo de vehículo",
+  "bmHubAllTypes": "Todos los tipos",
+  "bmHubCars": "Coches",
+  "bmHubBoats": "Barcos",
+  "bmHubPriceRange": "Gama de precios",
+  "bmHubClearFilters": "Limpiar filtros",
+  "bmHubApply": "Aplicar",
+  "bmHubBuyVehicleTitle": "Comprar vehículo",
+  "bmHubBuyVehicleForConfirm": "¿Comprar {name} por {price}?",
+  "@bmHubBuyVehicleForConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubVehiclePurchased": "¡Vehículo comprado exitosamente!",
+  "bmHubVehiclePurchaseFailed": "No se pudo comprar el vehículo",
+  "bmHubNewPriceEuro": "Nuevo precio (€)",
+  "bmHubEnterNewPriceHint": "Introduzca nuevo precio",
+  "bmHubCurrentPrice": "Precio actual",
+  "bmHubPriceUpdated": "¡Precio actualizado exitosamente!",
+  "bmHubPriceUpdateFailed": "No se pudo actualizar el precio",
+  "bmHubUpdateButton": "Actualizar",
+  "bmHubDelistVehicleTitle": "Eliminar vehículo de la lista",
+  "bmHubRemoveFromMarketConfirm": "¿Quitar {name} del mercado?",
+  "@bmHubRemoveFromMarketConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubVehicleDelisted": "¡Vehículo eliminado de la lista con éxito!",
+  "bmHubDelistFailed": "No se ha podido eliminar el vehículo de la lista",
+  "bmHubLocationUnknown": "DESCONOCIDA",
+  "casinoHubChooseGameHint": "Elige un juego y haz tu apuesta.",
+  "casinoPlayButton": "Jugar",
+  "casinoGameBaccaratName": "Bacará",
+  "casinoGameBaccaratDesc": "Apueste al jugador, a la banca o empate con probabilidades estratégicas.",
+  "casinoGameVideoPokerName": "Vídeo póquer",
+  "casinoGameVideoPokerDesc": "Roba 5 cartas y haz combos hasta la Escalera Real.",
+  "casinoBuyCasinoLockedTitle": "Comprar casino (bloqueado)",
+  "casinoErrGenericPlay": "algo salió mal",
+  "casinoErrSpinFailed": "Error al girar",
+  "casinoErrBetFailed": "Error al apostar",
+  "casinoErrGambleFailed": "Error al jugar",
+  "casinoErrThrowFailed": "Error al rodar",
+  "casinoErrCasinoNotFound": "Casino no encontrado. Asegúrese de que el casino se haya comprado en este país.",
+  "casinoErrInsufficientFunds": "Hace falta dinero",
+  "casinoErrInsufficientBankrollPayout": "Los fondos del casino son demasiado bajos para este pago",
+  "casinoErrNetwork": "Error de red: {error}",
+  "@casinoErrNetwork": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoResultYouWon": "¡Ganaste!",
+  "casinoResultYouLost": "Perdida",
+  "casinoResultYouWonCelebrate": "🎉 ¡Ganaste!",
+  "casinoWonEuroAmount": "¡Ganaste €{amount}!",
+  "@casinoWonEuroAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoLostEuroAmount": "Perdiste €{amount}",
+  "@casinoLostEuroAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoYouLostPlain": "perdiste",
+  "casinoBlackjackWinAmount": "¡Ganaste €{amount}!",
+  "@casinoBlackjackWinAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoBlackjackCelebrate": "¡VEINTIUNA! €{amount}",
+  "@casinoBlackjackCelebrate": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoAgain": "De nuevo",
+  "casinoBankruptTitle": "¡Casino en quiebra!",
+  "casinoBankruptBody": "¡El casino quebró! \n\nEl propietario no tenía suficiente efectivo en sus fondos para cubrir todos los pagos. \n\nEl casino ya está cerrado y se puede volver a comprar.",
+  "casinoBackToCasino": "Volver a Casino",
+  "casinoRouletteNumberColor": "Número: {number} ({color})",
+  "@casinoRouletteNumberColor": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoColorGreen": "verde",
+  "casinoColorRed": "roja",
+  "casinoColorBlack": "negra",
+  "casinoRoulettePickBet": "Elige tu apuesta",
+  "casinoRouletteBetRed": "Roja",
+  "casinoRouletteBetBlack": "Negra",
+  "casinoRouletteBetEven": "Incluso",
+  "casinoRouletteBetOdd": "Extraña",
+  "casinoRouletteSpinButton": "¡GIRAR!",
+  "casinoRouletteLastResult": "Último resultado: {number}",
+  "@casinoRouletteLastResult": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoBetLabel": "Apuesta",
+  "casinoBlackjackPlayButton": "¡JUGAR!",
+  "casinoSlotSpinButton": "¡GIRAR!",
+  "casinoDiceRollButton": "¡ROLLO!",
+  "casinoBlackjackYourCards": "Tus cartas",
+  "casinoBlackjackDealerCards": "Tarjetas de distribuidor",
+  "casinoBlackjackDealerTotal": "Distribuidor: {total}",
+  "@casinoBlackjackDealerTotal": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoBlackjackYouTotal": "Tú: {total}",
+  "@casinoBlackjackYouTotal": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoDiceTotalShowing": "Total: {total}",
+  "@casinoDiceTotalShowing": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoDicePredictTitle": "Predecir",
+  "casinoDiceLowLabel": "Bajo (2-6)",
+  "casinoDiceHighLabel": "Alto (8-12)",
+  "casinoDiceOddsHint": "Bajo/Alto paga 2x • El total exacto paga 6x",
+  "casinoSlotPayoutTableTitle": "tabla de pagos",
+  "casinoBaccaratPlayer": "Jugadora",
+  "casinoBaccaratBanker": "Banquera",
+  "casinoBaccaratTieBet": "Atar",
+  "casinoWinnerPrefix": "Ganadora: {who}",
+  "@casinoWinnerPrefix": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoPayoutEuro": "Pago: €{amount}",
+  "@casinoPayoutEuro": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoNoPayout": "Sin pago",
+  "casinoResultEuro": "Resultado: €{amount}",
+  "@casinoResultEuro": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoDealing": "Relación comercial…",
+  "casinoDealCaps": "TRATO",
+  "casinoVideoPokerDrawCards": "TARJETAS PARA SACAR",
+  "casinoVideoPokerDrawHint": "dibuja tu mano",
+  "casinoVideoPokerRoyalFlush": "Escalera Real",
+  "casinoVideoPokerStraightFlush": "Escalera de color",
+  "casinoVideoPokerFourKind": "cuatro iguales",
+  "casinoVideoPokerFullHouse": "Casa llena",
+  "casinoVideoPokerFlush": "Enjuagar",
+  "casinoVideoPokerStraight": "Derecha",
+  "casinoVideoPokerThreeKind": "tres iguales",
+  "casinoVideoPokerTwoPair": "dos pares",
+  "casinoVideoPokerJacksOrBetter": "Jotas o mejor",
+  "casinoVideoPokerNoWinningHand": "No hay mano ganadora",
+  "casinoVideoPokerPayoutTableLong": "Tabla de pagos: Jotas+ 1x • Dos pares 2x • Trips 3x • Escalera de color 4x • Color 6x • Full 9x • Cuatro 25x • Escalera de color 50x • Royal 250x"
 }

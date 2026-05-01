@@ -3008,6 +3008,265 @@ class AppLocalizationsNl extends AppLocalizations {
       '• Je kunt op elk moment geld storten of opnemen';
 
   @override
+  String get casinoHubChooseGameHint => 'Kies een spel en plaats je inzet';
+
+  @override
+  String get casinoPlayButton => 'Spelen';
+
+  @override
+  String get casinoGameBaccaratName => 'Baccarat';
+
+  @override
+  String get casinoGameBaccaratDesc =>
+      'Zet in op speler, bankier of gelijkspel met strategische odds.';
+
+  @override
+  String get casinoGameVideoPokerName => 'Video Poker';
+
+  @override
+  String get casinoGameVideoPokerDesc =>
+      'Trek 5 kaarten en maak combinaties tot Royal Flush.';
+
+  @override
+  String get casinoBuyCasinoLockedTitle =>
+      'Casino kopen (vereisten niet gehaald)';
+
+  @override
+  String get casinoErrGenericPlay => 'Er ging iets mis';
+
+  @override
+  String get casinoErrSpinFailed => 'Fout bij draaien';
+
+  @override
+  String get casinoErrBetFailed => 'Fout bij inzet';
+
+  @override
+  String get casinoErrGambleFailed => 'Fout bij gokken';
+
+  @override
+  String get casinoErrThrowFailed => 'Fout bij gooien';
+
+  @override
+  String get casinoErrCasinoNotFound =>
+      'Casino niet gevonden. Zorg dat het casino in dit land is gekocht.';
+
+  @override
+  String get casinoErrInsufficientFunds => 'Niet genoeg geld';
+
+  @override
+  String get casinoErrInsufficientBankrollPayout =>
+      'Casino kas te laag voor deze uitbetaling';
+
+  @override
+  String casinoErrNetwork(String error) {
+    return 'Netwerkfout: $error';
+  }
+
+  @override
+  String get casinoResultYouWon => 'Gewonnen!';
+
+  @override
+  String get casinoResultYouLost => 'Verloren';
+
+  @override
+  String get casinoResultYouWonCelebrate => '🎉 Gewonnen!';
+
+  @override
+  String casinoWonEuroAmount(String amount) {
+    return 'Je hebt €$amount gewonnen!';
+  }
+
+  @override
+  String casinoLostEuroAmount(String amount) {
+    return 'Je hebt €$amount verloren';
+  }
+
+  @override
+  String get casinoYouLostPlain => 'Je hebt verloren';
+
+  @override
+  String casinoBlackjackWinAmount(String amount) {
+    return 'Je hebt €$amount gewonnen!';
+  }
+
+  @override
+  String casinoBlackjackCelebrate(String amount) {
+    return 'BLACKJACK! €$amount';
+  }
+
+  @override
+  String get casinoAgain => 'Opnieuw';
+
+  @override
+  String get casinoBankruptTitle => 'Casino failliet!';
+
+  @override
+  String get casinoBankruptBody =>
+      'Het casino is failliet gegaan!\n\nDe eigenaar had niet genoeg geld in de kas om alle uitbetalingen te dekken.\n\nHet casino is nu gesloten en kan opnieuw gekocht worden.';
+
+  @override
+  String get casinoBackToCasino => 'Terug naar casino';
+
+  @override
+  String casinoRouletteNumberColor(String number, String color) {
+    return 'Nummer: $number ($color)';
+  }
+
+  @override
+  String get casinoColorGreen => 'groen';
+
+  @override
+  String get casinoColorRed => 'rood';
+
+  @override
+  String get casinoColorBlack => 'zwart';
+
+  @override
+  String get casinoRoulettePickBet => 'Kies je inzet';
+
+  @override
+  String get casinoRouletteBetRed => 'Rood';
+
+  @override
+  String get casinoRouletteBetBlack => 'Zwart';
+
+  @override
+  String get casinoRouletteBetEven => 'Even';
+
+  @override
+  String get casinoRouletteBetOdd => 'Oneven';
+
+  @override
+  String get casinoRouletteSpinButton => 'DRAAI!';
+
+  @override
+  String casinoRouletteLastResult(String number) {
+    return 'Laatste resultaat: $number';
+  }
+
+  @override
+  String get casinoBetLabel => 'Inzet';
+
+  @override
+  String get casinoBlackjackPlayButton => 'SPELEN!';
+
+  @override
+  String get casinoSlotSpinButton => 'SPIN!';
+
+  @override
+  String get casinoDiceRollButton => 'GOOI!';
+
+  @override
+  String get casinoBlackjackYourCards => 'Jouw kaarten';
+
+  @override
+  String get casinoBlackjackDealerCards => 'Dealer kaarten';
+
+  @override
+  String casinoBlackjackDealerTotal(String total) {
+    return 'Dealer: $total';
+  }
+
+  @override
+  String casinoBlackjackYouTotal(String total) {
+    return 'Jij: $total';
+  }
+
+  @override
+  String casinoDiceTotalShowing(String total) {
+    return 'Totaal: $total';
+  }
+
+  @override
+  String get casinoDicePredictTitle => 'Voorspel';
+
+  @override
+  String get casinoDiceLowLabel => 'Laag (2-6)';
+
+  @override
+  String get casinoDiceHighLabel => 'Hoog (8-12)';
+
+  @override
+  String get casinoDiceOddsHint =>
+      'Laag/Hoog betaalt 2x • Exacte score betaalt 6x';
+
+  @override
+  String get casinoSlotPayoutTableTitle => 'Uitbetalingstabel';
+
+  @override
+  String get casinoBaccaratPlayer => 'Speler';
+
+  @override
+  String get casinoBaccaratBanker => 'Bankier';
+
+  @override
+  String get casinoBaccaratTieBet => 'Gelijk';
+
+  @override
+  String casinoWinnerPrefix(String who) {
+    return 'Winnaar: $who';
+  }
+
+  @override
+  String casinoPayoutEuro(String amount) {
+    return 'Uitbetaling: €$amount';
+  }
+
+  @override
+  String get casinoNoPayout => 'Geen uitbetaling';
+
+  @override
+  String casinoResultEuro(String amount) {
+    return 'Resultaat: €$amount';
+  }
+
+  @override
+  String get casinoDealing => 'Delen…';
+
+  @override
+  String get casinoDealCaps => 'DEAL';
+
+  @override
+  String get casinoVideoPokerDrawCards => 'TREK KAARTEN';
+
+  @override
+  String get casinoVideoPokerDrawHint => 'Trek je hand';
+
+  @override
+  String get casinoVideoPokerRoyalFlush => 'Royal Flush';
+
+  @override
+  String get casinoVideoPokerStraightFlush => 'Straight Flush';
+
+  @override
+  String get casinoVideoPokerFourKind => 'Four of a Kind';
+
+  @override
+  String get casinoVideoPokerFullHouse => 'Full House';
+
+  @override
+  String get casinoVideoPokerFlush => 'Flush';
+
+  @override
+  String get casinoVideoPokerStraight => 'Straight';
+
+  @override
+  String get casinoVideoPokerThreeKind => 'Three of a Kind';
+
+  @override
+  String get casinoVideoPokerTwoPair => 'Two Pair';
+
+  @override
+  String get casinoVideoPokerJacksOrBetter => 'Jacks or Better';
+
+  @override
+  String get casinoVideoPokerNoWinningHand => 'Geen winnende hand';
+
+  @override
+  String get casinoVideoPokerPayoutTableLong =>
+      'Uitbetalingstabel: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x';
+
+  @override
   String get retry => 'Opnieuw proberen';
 
   @override
@@ -4109,6 +4368,158 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get backpackUpgradeFailedVip => 'Deze rugzak is alleen voor VIP leden';
+
+  @override
+  String get backpackPurchaseFailedGeneric => 'Aankoop is niet gelukt.';
+
+  @override
+  String get backpackUpgradeFailedGeneric => 'Upgrade is niet gelukt.';
+
+  @override
+  String get backpackUnknownEvent => 'Onbekende actie';
+
+  @override
+  String get backpackLoadFailedGeneric => 'Er is iets misgegaan';
+
+  @override
+  String get backpackOwnedBadge => 'Bezit';
+
+  @override
+  String get availableBackpacks => 'Beschikbare rugzakken';
+
+  @override
+  String backpackDialogCurrentLine(String name, int slots) {
+    return 'Huidig: $name (+$slots slots)';
+  }
+
+  @override
+  String backpackDialogNewLine(String name, int slots) {
+    return 'Nieuw: $name (+$slots slots)';
+  }
+
+  @override
+  String backpackDialogUpgradeDelta(int delta) {
+    return 'Upgrade: +$delta slots';
+  }
+
+  @override
+  String backpackDialogTotalCapacity(int totalSlots) {
+    return 'Totaal: $totalSlots slots';
+  }
+
+  @override
+  String get notLoggedInTokenStorageHint =>
+      '(opslagprobleem — probeer opnieuw in te loggen)';
+
+  @override
+  String get blackMarketTabBackpacks => 'Rugzakken';
+
+  @override
+  String get bmHubAdjustFiltersHint => 'Try adjusting your filters';
+
+  @override
+  String get bmHubEmptyMyListingsHint =>
+      'Go to Garage or Marina to list vehicles';
+
+  @override
+  String get bmHubSellerLabel => 'Seller';
+
+  @override
+  String get bmHubAskingPriceLabel => 'Asking price';
+
+  @override
+  String get bmHubMarketValueShort => 'Market value';
+
+  @override
+  String get bmHubBuyNow => 'Buy now';
+
+  @override
+  String get bmHubListedFor => 'Listed for';
+
+  @override
+  String get bmHubEditPrice => 'Edit price';
+
+  @override
+  String get bmHubDelist => 'Delist';
+
+  @override
+  String get bmHubFilterListingsTitle => 'Filter listings';
+
+  @override
+  String get bmHubLabelCountry => 'Country';
+
+  @override
+  String get bmHubAllCountries => 'All countries';
+
+  @override
+  String get bmHubLabelVehicleType => 'Vehicle type';
+
+  @override
+  String get bmHubAllTypes => 'All types';
+
+  @override
+  String get bmHubCars => 'Cars';
+
+  @override
+  String get bmHubBoats => 'Boats';
+
+  @override
+  String get bmHubPriceRange => 'Price range';
+
+  @override
+  String get bmHubClearFilters => 'Clear filters';
+
+  @override
+  String get bmHubApply => 'Apply';
+
+  @override
+  String get bmHubBuyVehicleTitle => 'Buy vehicle';
+
+  @override
+  String bmHubBuyVehicleForConfirm(String name, String price) {
+    return 'Buy $name for $price?';
+  }
+
+  @override
+  String get bmHubVehiclePurchased => 'Vehicle purchased successfully!';
+
+  @override
+  String get bmHubVehiclePurchaseFailed => 'Failed to buy vehicle';
+
+  @override
+  String get bmHubNewPriceEuro => 'New price (€)';
+
+  @override
+  String get bmHubEnterNewPriceHint => 'Enter new price';
+
+  @override
+  String get bmHubCurrentPrice => 'Current price';
+
+  @override
+  String get bmHubPriceUpdated => 'Price updated successfully!';
+
+  @override
+  String get bmHubPriceUpdateFailed => 'Failed to update price';
+
+  @override
+  String get bmHubUpdateButton => 'Update';
+
+  @override
+  String get bmHubDelistVehicleTitle => 'Delist vehicle';
+
+  @override
+  String bmHubRemoveFromMarketConfirm(String name) {
+    return 'Remove $name from the market?';
+  }
+
+  @override
+  String get bmHubVehicleDelisted => 'Vehicle delisted successfully!';
+
+  @override
+  String get bmHubDelistFailed => 'Failed to delist vehicle';
+
+  @override
+  String get bmHubLocationUnknown => 'UNKNOWN';
 
   @override
   String get arrested => 'Gearresteerd!';

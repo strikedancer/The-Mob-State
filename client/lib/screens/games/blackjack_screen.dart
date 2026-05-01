@@ -6,6 +6,7 @@ import '../../services/api_client.dart';
 import '../../models/casino_game.dart';
 import '../../utils/formatters.dart';
 import '../../utils/top_right_notification.dart';
+import '../../utils/casino_play_l10n.dart';
 
 class BlackjackScreen extends StatefulWidget {
   final CasinoGame game;
@@ -43,6 +44,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       _dealerTotal = 0;
     });
 
+    final l10n = AppLocalizations.of(context)!;
+
     try {
       final response = await _apiClient.post('/casino/blackjack/play', {
         'betAmount': _betAmount,
@@ -55,16 +58,10 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           setState(() {
             _isPlaying = false;
           });
-          String errorReason = data['params']['reason'] ?? 'Fout bij spelen';
-          if (errorReason == 'CASINO_NOT_FOUND') {
-            errorReason =
-                'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
-          } else if (errorReason == 'INSUFFICIENT_FUNDS') {
-            errorReason = 'Niet genoeg geld';
-          } else if (errorReason == 'INSUFFICIENT_BANKROLL') {
-            errorReason = 'Casino kas te laag voor deze uitbetaling';
-          }
-          _showError(errorReason);
+          final raw = data['params']?['reason']?.toString();
+          _showError(
+            mapCasinoPlayError(l10n, raw, fallback: l10n.casinoErrBetFailed),
+          );
           return;
         }
 
@@ -108,13 +105,19 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
         setState(() {
           _isPlaying = false;
         });
-        _showError(data['params']?['reason'] ?? 'Fout bij spelen');
+        _showError(
+          mapCasinoPlayError(
+            l10n,
+            data['params']?['reason']?.toString(),
+            fallback: l10n.casinoErrBetFailed,
+          ),
+        );
       }
     } catch (e) {
       setState(() {
         _isPlaying = false;
       });
-      _showError('Netwerkfout: $e');
+      _showError(l10n.casinoErrNetwork(e.toString()));
     }
   }
 
@@ -183,7 +186,12 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     return 'assets/images/casino/cards/$suit/${filename}_$suit.png';
   }
 
-  Widget _buildCardRow(List<int> cards, String label, int total) {
+  Widget _buildCardRow(
+    AppLocalizations l10n,
+    List<int> cards,
+    String label,
+    int total,
+  ) {
     return Column(
       children: [
         Text(
@@ -222,7 +230,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
               .toList(),
         ),
         const SizedBox(height: 4),
-        Text('Totaal: $total', style: const TextStyle(fontSize: 12)),
+        Text('${l10n.total}: $total', style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -234,18 +242,19 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     int playerTotal,
     int dealerTotal,
   ) {
+    final l10n = AppLocalizations.of(context)!;
     String message = won
-        ? 'Je hebt €${formatCompactNumber(payout)} gewonnen!'
-        : 'Je hebt verloren';
+        ? l10n.casinoBlackjackWinAmount(formatCompactNumber(payout))
+        : l10n.casinoYouLostPlain;
 
     if (playerTotal == 21) {
-      message = 'BLACKJACK! €${formatCompactNumber(payout)}';
+      message = l10n.casinoBlackjackCelebrate(formatCompactNumber(payout));
     }
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(won ? 'Gewonnen!' : 'Verloren'),
+        title: Text(won ? l10n.casinoResultYouWon : l10n.casinoResultYouLost),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -263,9 +272,19 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            _buildCardRow(_playerCards, 'Jouw kaarten', playerTotal),
+            _buildCardRow(
+              l10n,
+              _playerCards,
+              l10n.casinoBlackjackYourCards,
+              playerTotal,
+            ),
             const SizedBox(height: 12),
-            _buildCardRow(_dealerCards, 'Dealer kaarten', dealerTotal),
+            _buildCardRow(
+              l10n,
+              _dealerCards,
+              l10n.casinoBlackjackDealerCards,
+              dealerTotal,
+            ),
             const SizedBox(height: 16),
             Text(
               message,
@@ -274,7 +293,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              '${profit >= 0 ? AppLocalizations.of(context)!.profit : AppLocalizations.of(context)!.loss}: €${formatCompactNumber(profit.abs())}',
+              '${profit >= 0 ? l10n.profit : l10n.loss}: €${formatCompactNumber(profit.abs())}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -286,14 +305,14 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text(l10n.ok),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _play();
             },
-            child: const Text('Opnieuw'),
+            child: Text(l10n.casinoAgain),
           ),
         ],
       ),
@@ -308,13 +327,14 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
   }
 
   void _showBankruptcyDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text(
-          'Casino Failliet!',
-          style: TextStyle(color: Colors.red),
+        title: Text(
+          l10n.casinoBankruptTitle,
+          style: const TextStyle(color: Colors.red),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -328,10 +348,8 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
                   const Icon(Icons.warning, color: Colors.red, size: 100),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Het casino is failliet gegaan!\n\n'
-              'De eigenaar had niet genoeg geld in de kas om alle uitbetalingen te dekken.\n\n'
-              'Het casino is nu gesloten en kan opnieuw gekocht worden.',
+            Text(
+              l10n.casinoBankruptBody,
               textAlign: TextAlign.center,
             ),
           ],
@@ -343,7 +361,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
               Navigator.of(context).pop();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-            child: const Text('Terug naar Casino'),
+            child: Text(l10n.casinoBackToCasino),
           ),
         ],
       ),
@@ -352,9 +370,11 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.game.name),
+        title: Text(localizedCasinoGameName(l10n, widget.game.id)),
         backgroundColor: Colors.green[900],
         foregroundColor: Colors.white,
       ),
@@ -390,7 +410,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildBlackjackTable(),
+                    _buildBlackjackTable(l10n),
                     const SizedBox(height: 24),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -401,9 +421,9 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
                       ),
                       child: Column(
                         children: [
-                          const Text(
-                            'Inzet',
-                            style: TextStyle(
+                          Text(
+                            l10n.casinoBetLabel,
+                            style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 16,
                             ),
@@ -447,9 +467,9 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
                               height: 24,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : const Text(
-                              'SPELEN!',
-                              style: TextStyle(
+                          : Text(
+                              l10n.casinoBlackjackPlayButton,
+                              style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -482,7 +502,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
     );
   }
 
-  Widget _buildBlackjackTable() {
+  Widget _buildBlackjackTable(AppLocalizations l10n) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
@@ -505,7 +525,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
       child: Column(
         children: [
           Text(
-            'Dealer: $_dealerTotal',
+            l10n.casinoBlackjackDealerTotal('$_dealerTotal'),
             style: const TextStyle(color: Colors.white, fontSize: 20),
           ),
           const SizedBox(height: 10),
@@ -521,7 +541,7 @@ class _BlackjackScreenState extends State<BlackjackScreen> {
           ),
           const SizedBox(height: 24),
           Text(
-            'Jij: $_playerTotal',
+            l10n.casinoBlackjackYouTotal('$_playerTotal'),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 20,

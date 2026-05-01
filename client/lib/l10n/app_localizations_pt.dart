@@ -3022,6 +3022,263 @@ class AppLocalizationsPt extends AppLocalizations {
       '• Você pode depositar ou sacar dinheiro a qualquer momento';
 
   @override
+  String get casinoHubChooseGameHint => 'Choose a game and place your bet';
+
+  @override
+  String get casinoPlayButton => 'Play';
+
+  @override
+  String get casinoGameBaccaratName => 'Baccarat';
+
+  @override
+  String get casinoGameBaccaratDesc =>
+      'Bet on player, banker, or tie with strategic odds.';
+
+  @override
+  String get casinoGameVideoPokerName => 'Video Poker';
+
+  @override
+  String get casinoGameVideoPokerDesc =>
+      'Draw 5 cards and hit combos up to Royal Flush.';
+
+  @override
+  String get casinoBuyCasinoLockedTitle => 'Buy casino (locked)';
+
+  @override
+  String get casinoErrGenericPlay => 'Something went wrong';
+
+  @override
+  String get casinoErrSpinFailed => 'Error while spinning';
+
+  @override
+  String get casinoErrBetFailed => 'Error while betting';
+
+  @override
+  String get casinoErrGambleFailed => 'Error while gambling';
+
+  @override
+  String get casinoErrThrowFailed => 'Error while rolling';
+
+  @override
+  String get casinoErrCasinoNotFound =>
+      'Casino not found. Make sure the casino is purchased in this country.';
+
+  @override
+  String get casinoErrInsufficientFunds => 'Not enough money';
+
+  @override
+  String get casinoErrInsufficientBankrollPayout =>
+      'Casino bankroll too low for this payout';
+
+  @override
+  String casinoErrNetwork(String error) {
+    return 'Network error: $error';
+  }
+
+  @override
+  String get casinoResultYouWon => 'You won!';
+
+  @override
+  String get casinoResultYouLost => 'Lost';
+
+  @override
+  String get casinoResultYouWonCelebrate => '🎉 You won!';
+
+  @override
+  String casinoWonEuroAmount(String amount) {
+    return 'You won €$amount!';
+  }
+
+  @override
+  String casinoLostEuroAmount(String amount) {
+    return 'You lost €$amount';
+  }
+
+  @override
+  String get casinoYouLostPlain => 'You lost';
+
+  @override
+  String casinoBlackjackWinAmount(String amount) {
+    return 'You won €$amount!';
+  }
+
+  @override
+  String casinoBlackjackCelebrate(String amount) {
+    return 'BLACKJACK! €$amount';
+  }
+
+  @override
+  String get casinoAgain => 'Again';
+
+  @override
+  String get casinoBankruptTitle => 'Casino bankrupt!';
+
+  @override
+  String get casinoBankruptBody =>
+      'The casino went bankrupt!\n\nThe owner did not have enough cash in the bankroll to cover all payouts.\n\nThe casino is now closed and can be purchased again.';
+
+  @override
+  String get casinoBackToCasino => 'Back to Casino';
+
+  @override
+  String casinoRouletteNumberColor(String number, String color) {
+    return 'Number: $number ($color)';
+  }
+
+  @override
+  String get casinoColorGreen => 'green';
+
+  @override
+  String get casinoColorRed => 'red';
+
+  @override
+  String get casinoColorBlack => 'black';
+
+  @override
+  String get casinoRoulettePickBet => 'Choose your bet';
+
+  @override
+  String get casinoRouletteBetRed => 'Red';
+
+  @override
+  String get casinoRouletteBetBlack => 'Black';
+
+  @override
+  String get casinoRouletteBetEven => 'Even';
+
+  @override
+  String get casinoRouletteBetOdd => 'Odd';
+
+  @override
+  String get casinoRouletteSpinButton => 'SPIN!';
+
+  @override
+  String casinoRouletteLastResult(String number) {
+    return 'Last result: $number';
+  }
+
+  @override
+  String get casinoBetLabel => 'Bet';
+
+  @override
+  String get casinoBlackjackPlayButton => 'PLAY!';
+
+  @override
+  String get casinoSlotSpinButton => 'SPIN!';
+
+  @override
+  String get casinoDiceRollButton => 'ROLL!';
+
+  @override
+  String get casinoBlackjackYourCards => 'Your cards';
+
+  @override
+  String get casinoBlackjackDealerCards => 'Dealer cards';
+
+  @override
+  String casinoBlackjackDealerTotal(String total) {
+    return 'Dealer: $total';
+  }
+
+  @override
+  String casinoBlackjackYouTotal(String total) {
+    return 'You: $total';
+  }
+
+  @override
+  String casinoDiceTotalShowing(String total) {
+    return 'Total: $total';
+  }
+
+  @override
+  String get casinoDicePredictTitle => 'Predict';
+
+  @override
+  String get casinoDiceLowLabel => 'Low (2-6)';
+
+  @override
+  String get casinoDiceHighLabel => 'High (8-12)';
+
+  @override
+  String get casinoDiceOddsHint => 'Low/High pays 2x • Exact total pays 6x';
+
+  @override
+  String get casinoSlotPayoutTableTitle => 'Payout table';
+
+  @override
+  String get casinoBaccaratPlayer => 'Player';
+
+  @override
+  String get casinoBaccaratBanker => 'Banker';
+
+  @override
+  String get casinoBaccaratTieBet => 'Tie';
+
+  @override
+  String casinoWinnerPrefix(String who) {
+    return 'Winner: $who';
+  }
+
+  @override
+  String casinoPayoutEuro(String amount) {
+    return 'Payout: €$amount';
+  }
+
+  @override
+  String get casinoNoPayout => 'No payout';
+
+  @override
+  String casinoResultEuro(String amount) {
+    return 'Result: €$amount';
+  }
+
+  @override
+  String get casinoDealing => 'Dealing…';
+
+  @override
+  String get casinoDealCaps => 'DEAL';
+
+  @override
+  String get casinoVideoPokerDrawCards => 'DRAW CARDS';
+
+  @override
+  String get casinoVideoPokerDrawHint => 'Draw your hand';
+
+  @override
+  String get casinoVideoPokerRoyalFlush => 'Royal Flush';
+
+  @override
+  String get casinoVideoPokerStraightFlush => 'Straight Flush';
+
+  @override
+  String get casinoVideoPokerFourKind => 'Four of a Kind';
+
+  @override
+  String get casinoVideoPokerFullHouse => 'Full House';
+
+  @override
+  String get casinoVideoPokerFlush => 'Flush';
+
+  @override
+  String get casinoVideoPokerStraight => 'Straight';
+
+  @override
+  String get casinoVideoPokerThreeKind => 'Three of a Kind';
+
+  @override
+  String get casinoVideoPokerTwoPair => 'Two Pair';
+
+  @override
+  String get casinoVideoPokerJacksOrBetter => 'Jacks or Better';
+
+  @override
+  String get casinoVideoPokerNoWinningHand => 'No winning hand';
+
+  @override
+  String get casinoVideoPokerPayoutTableLong =>
+      'Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x';
+
+  @override
   String get retry => 'Tentar novamente';
 
   @override
@@ -4121,6 +4378,160 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get backpackUpgradeFailedVip =>
       'Esta mochila é apenas para membros VIP';
+
+  @override
+  String get backpackPurchaseFailedGeneric =>
+      'Não foi possível concluir a compra.';
+
+  @override
+  String get backpackUpgradeFailedGeneric =>
+      'Não foi possível concluir a atualização.';
+
+  @override
+  String get backpackUnknownEvent => 'Ação desconhecida';
+
+  @override
+  String get backpackLoadFailedGeneric => 'Algo deu errado';
+
+  @override
+  String get backpackOwnedBadge => 'Controlada';
+
+  @override
+  String get availableBackpacks => 'Mochilas disponíveis';
+
+  @override
+  String backpackDialogCurrentLine(String name, int slots) {
+    return 'Atual: $name (+$slots slots)';
+  }
+
+  @override
+  String backpackDialogNewLine(String name, int slots) {
+    return 'Novo: $name (+$slots slots)';
+  }
+
+  @override
+  String backpackDialogUpgradeDelta(int delta) {
+    return 'Atualização: +$delta slots';
+  }
+
+  @override
+  String backpackDialogTotalCapacity(int totalSlots) {
+    return 'Total: $totalSlots vagas';
+  }
+
+  @override
+  String get notLoggedInTokenStorageHint =>
+      '(problema de armazenamento – tente fazer login novamente)';
+
+  @override
+  String get blackMarketTabBackpacks => 'Mochilas';
+
+  @override
+  String get bmHubAdjustFiltersHint => 'Tente ajustar seus filtros';
+
+  @override
+  String get bmHubEmptyMyListingsHint =>
+      'Vá para Garagem ou Marina para listar veículos';
+
+  @override
+  String get bmHubSellerLabel => 'Vendedora';
+
+  @override
+  String get bmHubAskingPriceLabel => 'Perguntando preço';
+
+  @override
+  String get bmHubMarketValueShort => 'Valor de mercado';
+
+  @override
+  String get bmHubBuyNow => 'Comprar agora';
+
+  @override
+  String get bmHubListedFor => 'Listado para';
+
+  @override
+  String get bmHubEditPrice => 'Editar preço';
+
+  @override
+  String get bmHubDelist => 'Remover lista';
+
+  @override
+  String get bmHubFilterListingsTitle => 'Filtrar listagens';
+
+  @override
+  String get bmHubLabelCountry => 'País';
+
+  @override
+  String get bmHubAllCountries => 'Todos os países';
+
+  @override
+  String get bmHubLabelVehicleType => 'Tipo de veículo';
+
+  @override
+  String get bmHubAllTypes => 'Todos os tipos';
+
+  @override
+  String get bmHubCars => 'Carros';
+
+  @override
+  String get bmHubBoats => 'Barcos';
+
+  @override
+  String get bmHubPriceRange => 'Faixa de preço';
+
+  @override
+  String get bmHubClearFilters => 'Limpar filtros';
+
+  @override
+  String get bmHubApply => 'Aplicar';
+
+  @override
+  String get bmHubBuyVehicleTitle => 'Comprar veículo';
+
+  @override
+  String bmHubBuyVehicleForConfirm(String name, String price) {
+    return 'Comprar $name por $price?';
+  }
+
+  @override
+  String get bmHubVehiclePurchased => 'Veículo adquirido com sucesso!';
+
+  @override
+  String get bmHubVehiclePurchaseFailed => 'Falha ao comprar veículo';
+
+  @override
+  String get bmHubNewPriceEuro => 'Novo preço (€)';
+
+  @override
+  String get bmHubEnterNewPriceHint => 'Insira o novo preço';
+
+  @override
+  String get bmHubCurrentPrice => 'Preço atual';
+
+  @override
+  String get bmHubPriceUpdated => 'Preço atualizado com sucesso!';
+
+  @override
+  String get bmHubPriceUpdateFailed => 'Falha ao atualizar o preço';
+
+  @override
+  String get bmHubUpdateButton => 'Atualizar';
+
+  @override
+  String get bmHubDelistVehicleTitle => 'Remover veículo';
+
+  @override
+  String bmHubRemoveFromMarketConfirm(String name) {
+    return 'Remover $name do mercado?';
+  }
+
+  @override
+  String get bmHubVehicleDelisted => 'Veículo removido da lista com sucesso!';
+
+  @override
+  String get bmHubDelistFailed => 'Falha ao remover veículo';
+
+  @override
+  String get bmHubLocationUnknown => 'DESCONHECIDA';
 
   @override
   String get arrested => 'Presa!';

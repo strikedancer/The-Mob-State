@@ -6,6 +6,7 @@ import '../../services/api_client.dart';
 import '../../models/casino_game.dart';
 import '../../utils/formatters.dart';
 import '../../utils/top_right_notification.dart';
+import '../../utils/casino_play_l10n.dart';
 
 class RouletteScreen extends StatefulWidget {
   final CasinoGame game;
@@ -80,6 +81,8 @@ class _RouletteScreenState extends State<RouletteScreen>
     _spinController.reset();
     _spinController.forward();
 
+    final l10n = AppLocalizations.of(context)!;
+
     try {
       final response = await _apiClient.post('/casino/roulette/spin', {
         'betAmount': _betAmount,
@@ -95,16 +98,10 @@ class _RouletteScreenState extends State<RouletteScreen>
           setState(() {
             _isSpinning = false;
           });
-          String errorReason = data['params']['reason'] ?? 'Fout bij draaien';
-          if (errorReason == 'CASINO_NOT_FOUND') {
-            errorReason =
-                'Casino niet gevonden. Zorg dat het casino gekocht is in dit land.';
-          } else if (errorReason == 'INSUFFICIENT_FUNDS') {
-            errorReason = 'Niet genoeg geld';
-          } else if (errorReason == 'INSUFFICIENT_BANKROLL') {
-            errorReason = 'Casino kas te laag voor deze uitbetaling';
-          }
-          _showError(errorReason);
+          final raw = data['params']?['reason']?.toString();
+          _showError(
+            mapCasinoPlayError(l10n, raw, fallback: l10n.casinoErrSpinFailed),
+          );
           return;
         }
 
@@ -133,24 +130,33 @@ class _RouletteScreenState extends State<RouletteScreen>
         setState(() {
           _isSpinning = false;
         });
-        _showError(data['params']?['reason'] ?? 'Fout bij draaien');
+        _showError(
+          mapCasinoPlayError(
+            l10n,
+            data['params']?['reason']?.toString(),
+            fallback: l10n.casinoErrSpinFailed,
+          ),
+        );
       }
     } catch (e) {
       setState(() {
         _isSpinning = false;
       });
-      _showError('Netwerkfout: $e');
+      _showError(l10n.casinoErrNetwork(e.toString()));
     }
   }
 
   void _showResultDialog(bool won, int payout, int profit, int result) {
+    final l10n = AppLocalizations.of(context)!;
     final isRed = _redNumbers.contains(result);
-    final color = result == 0 ? 'groen' : (isRed ? 'rood' : 'zwart');
+    final colorName = result == 0
+        ? l10n.casinoColorGreen
+        : (isRed ? l10n.casinoColorRed : l10n.casinoColorBlack);
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(won ? 'Gewonnen!' : 'Verloren'),
+        title: Text(won ? l10n.casinoResultYouWon : l10n.casinoResultYouLost),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -169,20 +175,22 @@ class _RouletteScreenState extends State<RouletteScreen>
             ),
             const SizedBox(height: 16),
             Text(
-              'Nummer: $result ($color)',
+              l10n.casinoRouletteNumberColor('$result', colorName),
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Text(
               won
-                  ? 'Je hebt EUR ${formatCompactNumber(payout)} gewonnen!'
-                  : 'Je hebt EUR ${formatCompactNumber(_betAmount)} verloren',
+                  ? l10n.casinoWonEuroAmount(formatCompactNumber(payout))
+                  : l10n.casinoLostEuroAmount(
+                      formatCompactNumber(_betAmount),
+                    ),
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 8),
             Text(
-              '${profit >= 0 ? AppLocalizations.of(context)!.profit : AppLocalizations.of(context)!.loss}: EUR ${formatCompactNumber(profit.abs())}',
+              '${profit >= 0 ? l10n.profit : l10n.loss}: €${formatCompactNumber(profit.abs())}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -194,14 +202,14 @@ class _RouletteScreenState extends State<RouletteScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text(l10n.ok),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _spin();
             },
-            child: const Text('Opnieuw'),
+            child: Text(l10n.casinoAgain),
           ),
         ],
       ),
@@ -216,13 +224,14 @@ class _RouletteScreenState extends State<RouletteScreen>
   }
 
   void _showBankruptcyDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text(
-          'Casino Failliet!',
-          style: TextStyle(color: Colors.red),
+        title: Text(
+          l10n.casinoBankruptTitle,
+          style: const TextStyle(color: Colors.red),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -236,10 +245,8 @@ class _RouletteScreenState extends State<RouletteScreen>
                   const Icon(Icons.warning, color: Colors.red, size: 100),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Het casino is failliet gegaan!\n\n'
-              'De eigenaar had niet genoeg geld in de kas om alle uitbetalingen te dekken.\n\n'
-              'Het casino is nu gesloten en kan opnieuw gekocht worden.',
+            Text(
+              l10n.casinoBankruptBody,
               textAlign: TextAlign.center,
             ),
           ],
@@ -251,7 +258,7 @@ class _RouletteScreenState extends State<RouletteScreen>
               Navigator.of(context).pop();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-            child: const Text('Terug naar Casino'),
+            child: Text(l10n.casinoBackToCasino),
           ),
         ],
       ),
@@ -260,9 +267,12 @@ class _RouletteScreenState extends State<RouletteScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final titleName = localizedCasinoGameName(l10n, widget.game.id);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.game.name),
+        title: Text(titleName),
         backgroundColor: Colors.red[900],
         foregroundColor: Colors.white,
       ),
@@ -303,9 +313,9 @@ class _RouletteScreenState extends State<RouletteScreen>
                       ),
                       child: Column(
                         children: [
-                          const Text(
-                            'Kies je inzet',
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          Text(
+                            l10n.casinoRoulettePickBet,
+                            style: const TextStyle(color: Colors.white, fontSize: 18),
                           ),
                           const SizedBox(height: 10),
                           Wrap(
@@ -313,15 +323,23 @@ class _RouletteScreenState extends State<RouletteScreen>
                             runSpacing: 8,
                             alignment: WrapAlignment.center,
                             children: [
-                              _buildBetTypeButton('Rood', 'red', Colors.red),
                               _buildBetTypeButton(
-                                'Zwart',
+                                l10n.casinoRouletteBetRed,
+                                'red',
+                                Colors.red,
+                              ),
+                              _buildBetTypeButton(
+                                l10n.casinoRouletteBetBlack,
                                 'black',
                                 Colors.black,
                               ),
-                              _buildBetTypeButton('Even', 'even', Colors.blue),
                               _buildBetTypeButton(
-                                'Oneven',
+                                l10n.casinoRouletteBetEven,
+                                'even',
+                                Colors.blue,
+                              ),
+                              _buildBetTypeButton(
+                                l10n.casinoRouletteBetOdd,
                                 'odd',
                                 Colors.orange,
                               ),
@@ -341,9 +359,9 @@ class _RouletteScreenState extends State<RouletteScreen>
                       ),
                       child: Column(
                         children: [
-                          const Text(
-                            'Inzet',
-                            style: TextStyle(
+                          Text(
+                            l10n.casinoBetLabel,
+                            style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 15,
                             ),
@@ -388,9 +406,9 @@ class _RouletteScreenState extends State<RouletteScreen>
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text(
-                                'DRAAI!',
-                                style: TextStyle(
+                            : Text(
+                                l10n.casinoRouletteSpinButton,
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -400,7 +418,7 @@ class _RouletteScreenState extends State<RouletteScreen>
                     const SizedBox(height: 8),
                     if (_result != 0 && !_isSpinning)
                       Text(
-                        'Laatste resultaat: $_result',
+                        l10n.casinoRouletteLastResult('$_result'),
                         style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 13,

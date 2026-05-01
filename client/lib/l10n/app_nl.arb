@@ -6679,5 +6679,271 @@
         "type": "String"
       }
     }
-  }
+  },
+  "backpackPurchaseFailedGeneric": "Aankoop is niet gelukt.",
+  "backpackUpgradeFailedGeneric": "Upgrade is niet gelukt.",
+  "backpackUnknownEvent": "Onbekende actie",
+  "backpackLoadFailedGeneric": "Er is iets misgegaan",
+  "backpackOwnedBadge": "Bezit",
+  "availableBackpacks": "Beschikbare rugzakken",
+  "backpackDialogCurrentLine": "Huidig: {name} (+{slots} slots)",
+  "@backpackDialogCurrentLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      }
+    }
+  },
+  "backpackDialogNewLine": "Nieuw: {name} (+{slots} slots)",
+  "@backpackDialogNewLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "slots": {
+        "type": "int"
+      }
+    }
+  },
+  "backpackDialogUpgradeDelta": "Upgrade: +{delta} slots",
+  "@backpackDialogUpgradeDelta": {
+    "placeholders": {
+      "delta": {
+        "type": "int"
+      }
+    }
+  },
+  "backpackDialogTotalCapacity": "Totaal: {totalSlots} slots",
+  "@backpackDialogTotalCapacity": {
+    "placeholders": {
+      "totalSlots": {
+        "type": "int"
+      }
+    }
+  },
+  "notLoggedInTokenStorageHint": "(opslagprobleem — probeer opnieuw in te loggen)",
+  "blackMarketTabBackpacks": "Rugzakken",
+  "bmHubAdjustFiltersHint": "Try adjusting your filters",
+  "bmHubEmptyMyListingsHint": "Go to Garage or Marina to list vehicles",
+  "bmHubSellerLabel": "Seller",
+  "bmHubAskingPriceLabel": "Asking price",
+  "bmHubMarketValueShort": "Market value",
+  "bmHubBuyNow": "Buy now",
+  "bmHubListedFor": "Listed for",
+  "bmHubEditPrice": "Edit price",
+  "bmHubDelist": "Delist",
+  "bmHubFilterListingsTitle": "Filter listings",
+  "bmHubLabelCountry": "Country",
+  "bmHubAllCountries": "All countries",
+  "bmHubLabelVehicleType": "Vehicle type",
+  "bmHubAllTypes": "All types",
+  "bmHubCars": "Cars",
+  "bmHubBoats": "Boats",
+  "bmHubPriceRange": "Price range",
+  "bmHubClearFilters": "Clear filters",
+  "bmHubApply": "Apply",
+  "bmHubBuyVehicleTitle": "Buy vehicle",
+  "bmHubBuyVehicleForConfirm": "Buy {name} for {price}?",
+  "@bmHubBuyVehicleForConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubVehiclePurchased": "Vehicle purchased successfully!",
+  "bmHubVehiclePurchaseFailed": "Failed to buy vehicle",
+  "bmHubNewPriceEuro": "New price (€)",
+  "bmHubEnterNewPriceHint": "Enter new price",
+  "bmHubCurrentPrice": "Current price",
+  "bmHubPriceUpdated": "Price updated successfully!",
+  "bmHubPriceUpdateFailed": "Failed to update price",
+  "bmHubUpdateButton": "Update",
+  "bmHubDelistVehicleTitle": "Delist vehicle",
+  "bmHubRemoveFromMarketConfirm": "Remove {name} from the market?",
+  "@bmHubRemoveFromMarketConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "bmHubVehicleDelisted": "Vehicle delisted successfully!",
+  "bmHubDelistFailed": "Failed to delist vehicle",
+  "bmHubLocationUnknown": "UNKNOWN",
+  "casinoHubChooseGameHint": "Kies een spel en plaats je inzet",
+  "casinoPlayButton": "Spelen",
+  "casinoGameBaccaratName": "Baccarat",
+  "casinoGameBaccaratDesc": "Zet in op speler, bankier of gelijkspel met strategische odds.",
+  "casinoGameVideoPokerName": "Video Poker",
+  "casinoGameVideoPokerDesc": "Trek 5 kaarten en maak combinaties tot Royal Flush.",
+  "casinoBuyCasinoLockedTitle": "Casino kopen (vereisten niet gehaald)",
+  "casinoErrGenericPlay": "Er ging iets mis",
+  "casinoErrSpinFailed": "Fout bij draaien",
+  "casinoErrBetFailed": "Fout bij inzet",
+  "casinoErrGambleFailed": "Fout bij gokken",
+  "casinoErrThrowFailed": "Fout bij gooien",
+  "casinoErrCasinoNotFound": "Casino niet gevonden. Zorg dat het casino in dit land is gekocht.",
+  "casinoErrInsufficientFunds": "Niet genoeg geld",
+  "casinoErrInsufficientBankrollPayout": "Casino kas te laag voor deze uitbetaling",
+  "casinoErrNetwork": "Netwerkfout: {error}",
+  "@casinoErrNetwork": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoResultYouWon": "Gewonnen!",
+  "casinoResultYouLost": "Verloren",
+  "casinoResultYouWonCelebrate": "🎉 Gewonnen!",
+  "casinoWonEuroAmount": "Je hebt €{amount} gewonnen!",
+  "@casinoWonEuroAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoLostEuroAmount": "Je hebt €{amount} verloren",
+  "@casinoLostEuroAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoYouLostPlain": "Je hebt verloren",
+  "casinoBlackjackWinAmount": "Je hebt €{amount} gewonnen!",
+  "@casinoBlackjackWinAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoBlackjackCelebrate": "BLACKJACK! €{amount}",
+  "@casinoBlackjackCelebrate": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoAgain": "Opnieuw",
+  "casinoBankruptTitle": "Casino failliet!",
+  "casinoBankruptBody": "Het casino is failliet gegaan!\n\nDe eigenaar had niet genoeg geld in de kas om alle uitbetalingen te dekken.\n\nHet casino is nu gesloten en kan opnieuw gekocht worden.",
+  "casinoBackToCasino": "Terug naar casino",
+  "casinoRouletteNumberColor": "Nummer: {number} ({color})",
+  "@casinoRouletteNumberColor": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoColorGreen": "groen",
+  "casinoColorRed": "rood",
+  "casinoColorBlack": "zwart",
+  "casinoRoulettePickBet": "Kies je inzet",
+  "casinoRouletteBetRed": "Rood",
+  "casinoRouletteBetBlack": "Zwart",
+  "casinoRouletteBetEven": "Even",
+  "casinoRouletteBetOdd": "Oneven",
+  "casinoRouletteSpinButton": "DRAAI!",
+  "casinoRouletteLastResult": "Laatste resultaat: {number}",
+  "@casinoRouletteLastResult": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoBetLabel": "Inzet",
+  "casinoBlackjackPlayButton": "SPELEN!",
+  "casinoSlotSpinButton": "SPIN!",
+  "casinoDiceRollButton": "GOOI!",
+  "casinoBlackjackYourCards": "Jouw kaarten",
+  "casinoBlackjackDealerCards": "Dealer kaarten",
+  "casinoBlackjackDealerTotal": "Dealer: {total}",
+  "@casinoBlackjackDealerTotal": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoBlackjackYouTotal": "Jij: {total}",
+  "@casinoBlackjackYouTotal": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoDiceTotalShowing": "Totaal: {total}",
+  "@casinoDiceTotalShowing": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoDicePredictTitle": "Voorspel",
+  "casinoDiceLowLabel": "Laag (2-6)",
+  "casinoDiceHighLabel": "Hoog (8-12)",
+  "casinoDiceOddsHint": "Laag/Hoog betaalt 2x • Exacte score betaalt 6x",
+  "casinoSlotPayoutTableTitle": "Uitbetalingstabel",
+  "casinoBaccaratPlayer": "Speler",
+  "casinoBaccaratBanker": "Bankier",
+  "casinoBaccaratTieBet": "Gelijk",
+  "casinoWinnerPrefix": "Winnaar: {who}",
+  "@casinoWinnerPrefix": {
+    "placeholders": {
+      "who": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoPayoutEuro": "Uitbetaling: €{amount}",
+  "@casinoPayoutEuro": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoNoPayout": "Geen uitbetaling",
+  "casinoResultEuro": "Resultaat: €{amount}",
+  "@casinoResultEuro": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "casinoDealing": "Delen…",
+  "casinoDealCaps": "DEAL",
+  "casinoVideoPokerDrawCards": "TREK KAARTEN",
+  "casinoVideoPokerDrawHint": "Trek je hand",
+  "casinoVideoPokerRoyalFlush": "Royal Flush",
+  "casinoVideoPokerStraightFlush": "Straight Flush",
+  "casinoVideoPokerFourKind": "Four of a Kind",
+  "casinoVideoPokerFullHouse": "Full House",
+  "casinoVideoPokerFlush": "Flush",
+  "casinoVideoPokerStraight": "Straight",
+  "casinoVideoPokerThreeKind": "Three of a Kind",
+  "casinoVideoPokerTwoPair": "Two Pair",
+  "casinoVideoPokerJacksOrBetter": "Jacks or Better",
+  "casinoVideoPokerNoWinningHand": "Geen winnende hand",
+  "casinoVideoPokerPayoutTableLong": "Uitbetalingstabel: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x"
 }

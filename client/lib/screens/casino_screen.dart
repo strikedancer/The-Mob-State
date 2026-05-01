@@ -344,8 +344,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
         if (mounted && isEducationLocked) {
           await EducationRequirementsDialog.show(
             context,
-            title:
-                '🔒 ${l10n.buyCasino} ${l10n.achievementLocked.toLowerCase()}',
+            title: '🔒 ${l10n.casinoBuyCasinoLockedTitle}',
             subtitle: params['reason']?.toString(),
             missingRequirements: missing,
           );
@@ -745,11 +744,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                Localizations.localeOf(context).languageCode
-                                        .toLowerCase()
-                                        .startsWith('nl')
-                                    ? 'Kies een spel en plaats je inzet'
-                                    : 'Choose a game and place your bet',
+                                l10n.casinoHubChooseGameHint,
                                 style: TextStyle(
                                   color: Colors.white.withOpacity(0.8),
                                   fontSize: 13,
@@ -901,13 +896,7 @@ class _CasinoScreenState extends State<CasinoScreen> {
                 child: ElevatedButton.icon(
                   onPressed: () => _playGame(game),
                   icon: const Icon(Icons.play_arrow),
-                  label: Text(
-                    Localizations.localeOf(
-                          context,
-                        ).languageCode.toLowerCase().startsWith('nl')
-                        ? 'Spelen'
-                        : 'Play',
-                  ),
+                  label: Text(l10n.casinoPlayButton),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber.shade700,
                     foregroundColor: Colors.black,
@@ -981,17 +970,9 @@ class _CasinoScreenState extends State<CasinoScreen> {
       case 'dice':
         return l10n.casinoGameDiceName;
       case 'baccarat':
-        return Localizations.localeOf(
-              context,
-            ).languageCode.toLowerCase().startsWith('nl')
-            ? 'Baccarat'
-            : 'Baccarat';
+        return l10n.casinoGameBaccaratName;
       case 'video_poker':
-        return Localizations.localeOf(
-              context,
-            ).languageCode.toLowerCase().startsWith('nl')
-            ? 'Video Poker'
-            : 'Video Poker';
+        return l10n.casinoGameVideoPokerName;
       default:
         return null;
     }
@@ -1008,17 +989,9 @@ class _CasinoScreenState extends State<CasinoScreen> {
       case 'dice':
         return l10n.casinoGameDiceDesc;
       case 'baccarat':
-        return Localizations.localeOf(
-              context,
-            ).languageCode.toLowerCase().startsWith('nl')
-            ? 'Zet in op speler, bankier of gelijkspel met strategische odds.'
-            : 'Bet on player, banker, or tie with strategic odds.';
+        return l10n.casinoGameBaccaratDesc;
       case 'video_poker':
-        return Localizations.localeOf(
-              context,
-            ).languageCode.toLowerCase().startsWith('nl')
-            ? 'Trek 5 kaarten en scoor combo’s tot Royal Flush.'
-            : 'Draw 5 cards and hit combos up to Royal Flush.';
+        return l10n.casinoGameVideoPokerDesc;
       default:
         return null;
     }

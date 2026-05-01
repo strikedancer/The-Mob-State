@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 
 import '../../models/casino_game.dart';
 import '../../services/api_client.dart';
+import '../../l10n/app_localizations.dart';
 import '../../utils/formatters.dart';
 import '../../utils/top_right_notification.dart';
+import '../../utils/casino_play_l10n.dart';
 
 class BaccaratScreen extends StatefulWidget {
   final CasinoGame game;
@@ -66,6 +68,8 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
       });
     });
 
+    final l10n = AppLocalizations.of(context)!;
+
     try {
       final response = await _apiClient.post('/casino/baccarat/play', {
         'betAmount': _betAmount,
@@ -78,7 +82,13 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
 
       if (data['event'] == 'casino.error') {
         setState(() => _isDealing = false);
-        _showError(_mapError(data['params']?['reason']));
+        _showError(
+          mapCasinoPlayError(
+            l10n,
+            data['params']?['reason']?.toString(),
+            fallback: l10n.casinoErrBetFailed,
+          ),
+        );
         return;
       }
 
@@ -98,13 +108,7 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
       });
 
       if ((params['casinoBankrupt'] ?? false) == true) {
-        _showError(
-          _t(
-            'casinoBankrupt',
-            'Casino is failliet gegaan',
-            'The casino went bankrupt',
-          ),
-        );
+        _showError(l10n.casinoBankruptTitle);
         if (mounted) Navigator.pop(context);
         return;
       }
@@ -113,62 +117,46 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
     } catch (e) {
       _dealTimer?.cancel();
       setState(() => _isDealing = false);
-      _showError('Netwerkfout: $e');
+      _showError(l10n.casinoErrNetwork(e.toString()));
     }
   }
 
-  String _mapError(dynamic reason) {
-    final value = reason?.toString() ?? '';
-    if (value == 'INSUFFICIENT_FUNDS') {
-      return _t('insufficientFunds', 'Niet genoeg geld', 'Not enough money');
+  String _baccaratWinnerLabel(AppLocalizations l10n, String winner) {
+    switch (winner) {
+      case 'player':
+        return l10n.casinoBaccaratPlayer;
+      case 'banker':
+        return l10n.casinoBaccaratBanker;
+      default:
+        return l10n.casinoBaccaratTieBet;
     }
-    if (value == 'INSUFFICIENT_BANKROLL') {
-      return _t(
-        'insufficientBankroll',
-        'Casino kas te laag',
-        'Casino bankroll too low',
-      );
-    }
-    return value.isNotEmpty
-        ? value
-        : _t('genericError', 'Er ging iets mis', 'Something went wrong');
-  }
-
-  String _t(String _, String nl, String en) {
-    final isNl = Localizations.localeOf(
-      context,
-    ).languageCode.toLowerCase().startsWith('nl');
-    return isNl ? nl : en;
   }
 
   void _showResultDialog(bool won, int payout, int profit, String winner) {
+    final l10n = AppLocalizations.of(context)!;
+    final who = _baccaratWinnerLabel(l10n, winner);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          won ? _t('', 'Gewonnen!', 'You won!') : _t('', 'Verloren', 'Lost'),
+          won ? l10n.casinoResultYouWon : l10n.casinoResultYouLost,
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              _t('', 'Winnaar: ', 'Winner: ') +
-                  (winner == 'player'
-                      ? _t('', 'Speler', 'Player')
-                      : winner == 'banker'
-                      ? _t('', 'Bankier', 'Banker')
-                      : _t('', 'Gelijkspel', 'Tie')),
+              l10n.casinoWinnerPrefix(who),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(
               won
-                  ? '${_t('', 'Uitbetaling', 'Payout')}: €${formatCompactNumber(payout)}'
-                  : _t('', 'Geen uitbetaling', 'No payout'),
+                  ? l10n.casinoPayoutEuro(formatCompactNumber(payout))
+                  : l10n.casinoNoPayout,
             ),
             const SizedBox(height: 8),
             Text(
-              '${_t('', 'Resultaat', 'Result')}: €${formatCompactNumber(profit.abs())}',
+              l10n.casinoResultEuro(formatCompactNumber(profit.abs())),
               style: TextStyle(
                 color: profit >= 0 ? Colors.green : Colors.red,
                 fontWeight: FontWeight.bold,
@@ -179,14 +167,14 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text(l10n.ok),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _play();
             },
-            child: Text(_t('', 'Opnieuw', 'Again')),
+            child: Text(l10n.casinoAgain),
           ),
         ],
       ),
@@ -221,7 +209,12 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
     );
   }
 
-  Widget _buildCardsRow(String title, List<int> cards, int total) {
+  Widget _buildCardsRow(
+    AppLocalizations l10n,
+    String title,
+    List<int> cards,
+    int total,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
@@ -234,7 +227,7 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '$title • ${_t('', 'Totaal', 'Total')}: $total',
+            '$title • ${l10n.total}: $total',
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -302,6 +295,7 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final bg = isPortrait
@@ -310,7 +304,9 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('🃁 ${_t('', 'Baccarat', 'Baccarat')}'),
+        title: Text(
+          '🃁 ${localizedCasinoGameName(l10n, widget.game.id)}',
+        ),
         backgroundColor: const Color(0xFF7A120F),
       ),
       body: Stack(
@@ -336,13 +332,15 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildCardsRow(
-                      _t('', 'Speler', 'Player'),
+                      l10n,
+                      l10n.casinoBaccaratPlayer,
                       _playerCards,
                       _playerTotal,
                     ),
                     const SizedBox(height: 14),
                     _buildCardsRow(
-                      _t('', 'Bankier', 'Banker'),
+                      l10n,
+                      l10n.casinoBaccaratBanker,
                       _bankerCards,
                       _bankerTotal,
                     ),
@@ -351,15 +349,15 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
                       children: [
                         _buildBetTypeButton(
                           'player',
-                          _t('', 'Speler', 'Player'),
+                          l10n.casinoBaccaratPlayer,
                         ),
                         const SizedBox(width: 8),
                         _buildBetTypeButton(
                           'banker',
-                          _t('', 'Bankier', 'Banker'),
+                          l10n.casinoBaccaratBanker,
                         ),
                         const SizedBox(width: 8),
-                        _buildBetTypeButton('tie', _t('', 'Gelijk', 'Tie')),
+                        _buildBetTypeButton('tie', l10n.casinoBaccaratTieBet),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -372,7 +370,7 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
                       child: Column(
                         children: [
                           Text(
-                            '${_t('', 'Inzet', 'Bet')}: €${formatCompactNumber(_betAmount)}',
+                            '${l10n.casinoBetLabel}: €${formatCompactNumber(_betAmount)}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -416,8 +414,8 @@ class _BaccaratScreenState extends State<BaccaratScreen> {
                         ),
                         child: Text(
                           _isDealing
-                              ? _t('', 'Delen...', 'Dealing...')
-                              : _t('', 'DEAL', 'DEAL'),
+                              ? l10n.casinoDealing
+                              : l10n.casinoDealCaps,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,

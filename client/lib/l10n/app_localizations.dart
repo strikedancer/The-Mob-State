@@ -5427,6 +5427,456 @@ abstract class AppLocalizations {
   /// **'• You can deposit or withdraw money at any time'**
   String get casinoManagementInfo5;
 
+  /// No description provided for @casinoHubChooseGameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a game and place your bet'**
+  String get casinoHubChooseGameHint;
+
+  /// No description provided for @casinoPlayButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get casinoPlayButton;
+
+  /// No description provided for @casinoGameBaccaratName.
+  ///
+  /// In en, this message translates to:
+  /// **'Baccarat'**
+  String get casinoGameBaccaratName;
+
+  /// No description provided for @casinoGameBaccaratDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Bet on player, banker, or tie with strategic odds.'**
+  String get casinoGameBaccaratDesc;
+
+  /// No description provided for @casinoGameVideoPokerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Video Poker'**
+  String get casinoGameVideoPokerName;
+
+  /// No description provided for @casinoGameVideoPokerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw 5 cards and hit combos up to Royal Flush.'**
+  String get casinoGameVideoPokerDesc;
+
+  /// No description provided for @casinoBuyCasinoLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy casino (locked)'**
+  String get casinoBuyCasinoLockedTitle;
+
+  /// No description provided for @casinoErrGenericPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get casinoErrGenericPlay;
+
+  /// No description provided for @casinoErrSpinFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while spinning'**
+  String get casinoErrSpinFailed;
+
+  /// No description provided for @casinoErrBetFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while betting'**
+  String get casinoErrBetFailed;
+
+  /// No description provided for @casinoErrGambleFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while gambling'**
+  String get casinoErrGambleFailed;
+
+  /// No description provided for @casinoErrThrowFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while rolling'**
+  String get casinoErrThrowFailed;
+
+  /// No description provided for @casinoErrCasinoNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Casino not found. Make sure the casino is purchased in this country.'**
+  String get casinoErrCasinoNotFound;
+
+  /// No description provided for @casinoErrInsufficientFunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough money'**
+  String get casinoErrInsufficientFunds;
+
+  /// No description provided for @casinoErrInsufficientBankrollPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'Casino bankroll too low for this payout'**
+  String get casinoErrInsufficientBankrollPayout;
+
+  /// No description provided for @casinoErrNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error: {error}'**
+  String casinoErrNetwork(String error);
+
+  /// No description provided for @casinoResultYouWon.
+  ///
+  /// In en, this message translates to:
+  /// **'You won!'**
+  String get casinoResultYouWon;
+
+  /// No description provided for @casinoResultYouLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get casinoResultYouLost;
+
+  /// No description provided for @casinoResultYouWonCelebrate.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 You won!'**
+  String get casinoResultYouWonCelebrate;
+
+  /// No description provided for @casinoWonEuroAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'You won €{amount}!'**
+  String casinoWonEuroAmount(String amount);
+
+  /// No description provided for @casinoLostEuroAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'You lost €{amount}'**
+  String casinoLostEuroAmount(String amount);
+
+  /// No description provided for @casinoYouLostPlain.
+  ///
+  /// In en, this message translates to:
+  /// **'You lost'**
+  String get casinoYouLostPlain;
+
+  /// No description provided for @casinoBlackjackWinAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'You won €{amount}!'**
+  String casinoBlackjackWinAmount(String amount);
+
+  /// No description provided for @casinoBlackjackCelebrate.
+  ///
+  /// In en, this message translates to:
+  /// **'BLACKJACK! €{amount}'**
+  String casinoBlackjackCelebrate(String amount);
+
+  /// No description provided for @casinoAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Again'**
+  String get casinoAgain;
+
+  /// No description provided for @casinoBankruptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Casino bankrupt!'**
+  String get casinoBankruptTitle;
+
+  /// No description provided for @casinoBankruptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The casino went bankrupt!\n\nThe owner did not have enough cash in the bankroll to cover all payouts.\n\nThe casino is now closed and can be purchased again.'**
+  String get casinoBankruptBody;
+
+  /// No description provided for @casinoBackToCasino.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Casino'**
+  String get casinoBackToCasino;
+
+  /// No description provided for @casinoRouletteNumberColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Number: {number} ({color})'**
+  String casinoRouletteNumberColor(String number, String color);
+
+  /// No description provided for @casinoColorGreen.
+  ///
+  /// In en, this message translates to:
+  /// **'green'**
+  String get casinoColorGreen;
+
+  /// No description provided for @casinoColorRed.
+  ///
+  /// In en, this message translates to:
+  /// **'red'**
+  String get casinoColorRed;
+
+  /// No description provided for @casinoColorBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'black'**
+  String get casinoColorBlack;
+
+  /// No description provided for @casinoRoulettePickBet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your bet'**
+  String get casinoRoulettePickBet;
+
+  /// No description provided for @casinoRouletteBetRed.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get casinoRouletteBetRed;
+
+  /// No description provided for @casinoRouletteBetBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get casinoRouletteBetBlack;
+
+  /// No description provided for @casinoRouletteBetEven.
+  ///
+  /// In en, this message translates to:
+  /// **'Even'**
+  String get casinoRouletteBetEven;
+
+  /// No description provided for @casinoRouletteBetOdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Odd'**
+  String get casinoRouletteBetOdd;
+
+  /// No description provided for @casinoRouletteSpinButton.
+  ///
+  /// In en, this message translates to:
+  /// **'SPIN!'**
+  String get casinoRouletteSpinButton;
+
+  /// No description provided for @casinoRouletteLastResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Last result: {number}'**
+  String casinoRouletteLastResult(String number);
+
+  /// No description provided for @casinoBetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bet'**
+  String get casinoBetLabel;
+
+  /// No description provided for @casinoBlackjackPlayButton.
+  ///
+  /// In en, this message translates to:
+  /// **'PLAY!'**
+  String get casinoBlackjackPlayButton;
+
+  /// No description provided for @casinoSlotSpinButton.
+  ///
+  /// In en, this message translates to:
+  /// **'SPIN!'**
+  String get casinoSlotSpinButton;
+
+  /// No description provided for @casinoDiceRollButton.
+  ///
+  /// In en, this message translates to:
+  /// **'ROLL!'**
+  String get casinoDiceRollButton;
+
+  /// No description provided for @casinoBlackjackYourCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cards'**
+  String get casinoBlackjackYourCards;
+
+  /// No description provided for @casinoBlackjackDealerCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer cards'**
+  String get casinoBlackjackDealerCards;
+
+  /// No description provided for @casinoBlackjackDealerTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealer: {total}'**
+  String casinoBlackjackDealerTotal(String total);
+
+  /// No description provided for @casinoBlackjackYouTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'You: {total}'**
+  String casinoBlackjackYouTotal(String total);
+
+  /// No description provided for @casinoDiceTotalShowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {total}'**
+  String casinoDiceTotalShowing(String total);
+
+  /// No description provided for @casinoDicePredictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Predict'**
+  String get casinoDicePredictTitle;
+
+  /// No description provided for @casinoDiceLowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Low (2-6)'**
+  String get casinoDiceLowLabel;
+
+  /// No description provided for @casinoDiceHighLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'High (8-12)'**
+  String get casinoDiceHighLabel;
+
+  /// No description provided for @casinoDiceOddsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Low/High pays 2x • Exact total pays 6x'**
+  String get casinoDiceOddsHint;
+
+  /// No description provided for @casinoSlotPayoutTableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout table'**
+  String get casinoSlotPayoutTableTitle;
+
+  /// No description provided for @casinoBaccaratPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Player'**
+  String get casinoBaccaratPlayer;
+
+  /// No description provided for @casinoBaccaratBanker.
+  ///
+  /// In en, this message translates to:
+  /// **'Banker'**
+  String get casinoBaccaratBanker;
+
+  /// No description provided for @casinoBaccaratTieBet.
+  ///
+  /// In en, this message translates to:
+  /// **'Tie'**
+  String get casinoBaccaratTieBet;
+
+  /// No description provided for @casinoWinnerPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Winner: {who}'**
+  String casinoWinnerPrefix(String who);
+
+  /// No description provided for @casinoPayoutEuro.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout: €{amount}'**
+  String casinoPayoutEuro(String amount);
+
+  /// No description provided for @casinoNoPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'No payout'**
+  String get casinoNoPayout;
+
+  /// No description provided for @casinoResultEuro.
+  ///
+  /// In en, this message translates to:
+  /// **'Result: €{amount}'**
+  String casinoResultEuro(String amount);
+
+  /// No description provided for @casinoDealing.
+  ///
+  /// In en, this message translates to:
+  /// **'Dealing…'**
+  String get casinoDealing;
+
+  /// No description provided for @casinoDealCaps.
+  ///
+  /// In en, this message translates to:
+  /// **'DEAL'**
+  String get casinoDealCaps;
+
+  /// No description provided for @casinoVideoPokerDrawCards.
+  ///
+  /// In en, this message translates to:
+  /// **'DRAW CARDS'**
+  String get casinoVideoPokerDrawCards;
+
+  /// No description provided for @casinoVideoPokerDrawHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw your hand'**
+  String get casinoVideoPokerDrawHint;
+
+  /// No description provided for @casinoVideoPokerRoyalFlush.
+  ///
+  /// In en, this message translates to:
+  /// **'Royal Flush'**
+  String get casinoVideoPokerRoyalFlush;
+
+  /// No description provided for @casinoVideoPokerStraightFlush.
+  ///
+  /// In en, this message translates to:
+  /// **'Straight Flush'**
+  String get casinoVideoPokerStraightFlush;
+
+  /// No description provided for @casinoVideoPokerFourKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Four of a Kind'**
+  String get casinoVideoPokerFourKind;
+
+  /// No description provided for @casinoVideoPokerFullHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Full House'**
+  String get casinoVideoPokerFullHouse;
+
+  /// No description provided for @casinoVideoPokerFlush.
+  ///
+  /// In en, this message translates to:
+  /// **'Flush'**
+  String get casinoVideoPokerFlush;
+
+  /// No description provided for @casinoVideoPokerStraight.
+  ///
+  /// In en, this message translates to:
+  /// **'Straight'**
+  String get casinoVideoPokerStraight;
+
+  /// No description provided for @casinoVideoPokerThreeKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Three of a Kind'**
+  String get casinoVideoPokerThreeKind;
+
+  /// No description provided for @casinoVideoPokerTwoPair.
+  ///
+  /// In en, this message translates to:
+  /// **'Two Pair'**
+  String get casinoVideoPokerTwoPair;
+
+  /// No description provided for @casinoVideoPokerJacksOrBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Jacks or Better'**
+  String get casinoVideoPokerJacksOrBetter;
+
+  /// No description provided for @casinoVideoPokerNoWinningHand.
+  ///
+  /// In en, this message translates to:
+  /// **'No winning hand'**
+  String get casinoVideoPokerNoWinningHand;
+
+  /// No description provided for @casinoVideoPokerPayoutTableLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x'**
+  String get casinoVideoPokerPayoutTableLong;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:
@@ -7328,6 +7778,282 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This backpack is for VIP members only'**
   String get backpackUpgradeFailedVip;
+
+  /// No description provided for @backpackPurchaseFailedGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete the purchase.'**
+  String get backpackPurchaseFailedGeneric;
+
+  /// No description provided for @backpackUpgradeFailedGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not complete the upgrade.'**
+  String get backpackUpgradeFailedGeneric;
+
+  /// No description provided for @backpackUnknownEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown action'**
+  String get backpackUnknownEvent;
+
+  /// No description provided for @backpackLoadFailedGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get backpackLoadFailedGeneric;
+
+  /// No description provided for @backpackOwnedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Owned'**
+  String get backpackOwnedBadge;
+
+  /// No description provided for @availableBackpacks.
+  ///
+  /// In en, this message translates to:
+  /// **'Available backpacks'**
+  String get availableBackpacks;
+
+  /// No description provided for @backpackDialogCurrentLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Current: {name} (+{slots} slots)'**
+  String backpackDialogCurrentLine(String name, int slots);
+
+  /// No description provided for @backpackDialogNewLine.
+  ///
+  /// In en, this message translates to:
+  /// **'New: {name} (+{slots} slots)'**
+  String backpackDialogNewLine(String name, int slots);
+
+  /// No description provided for @backpackDialogUpgradeDelta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade: +{delta} slots'**
+  String backpackDialogUpgradeDelta(int delta);
+
+  /// No description provided for @backpackDialogTotalCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {totalSlots} slots'**
+  String backpackDialogTotalCapacity(int totalSlots);
+
+  /// No description provided for @notLoggedInTokenStorageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'(storage issue — try signing in again)'**
+  String get notLoggedInTokenStorageHint;
+
+  /// No description provided for @blackMarketTabBackpacks.
+  ///
+  /// In en, this message translates to:
+  /// **'Backpacks'**
+  String get blackMarketTabBackpacks;
+
+  /// No description provided for @bmHubAdjustFiltersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your filters'**
+  String get bmHubAdjustFiltersHint;
+
+  /// No description provided for @bmHubEmptyMyListingsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Garage or Marina to list vehicles'**
+  String get bmHubEmptyMyListingsHint;
+
+  /// No description provided for @bmHubSellerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get bmHubSellerLabel;
+
+  /// No description provided for @bmHubAskingPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Asking price'**
+  String get bmHubAskingPriceLabel;
+
+  /// No description provided for @bmHubMarketValueShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Market value'**
+  String get bmHubMarketValueShort;
+
+  /// No description provided for @bmHubBuyNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy now'**
+  String get bmHubBuyNow;
+
+  /// No description provided for @bmHubListedFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Listed for'**
+  String get bmHubListedFor;
+
+  /// No description provided for @bmHubEditPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit price'**
+  String get bmHubEditPrice;
+
+  /// No description provided for @bmHubDelist.
+  ///
+  /// In en, this message translates to:
+  /// **'Delist'**
+  String get bmHubDelist;
+
+  /// No description provided for @bmHubFilterListingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter listings'**
+  String get bmHubFilterListingsTitle;
+
+  /// No description provided for @bmHubLabelCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get bmHubLabelCountry;
+
+  /// No description provided for @bmHubAllCountries.
+  ///
+  /// In en, this message translates to:
+  /// **'All countries'**
+  String get bmHubAllCountries;
+
+  /// No description provided for @bmHubLabelVehicleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle type'**
+  String get bmHubLabelVehicleType;
+
+  /// No description provided for @bmHubAllTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'All types'**
+  String get bmHubAllTypes;
+
+  /// No description provided for @bmHubCars.
+  ///
+  /// In en, this message translates to:
+  /// **'Cars'**
+  String get bmHubCars;
+
+  /// No description provided for @bmHubBoats.
+  ///
+  /// In en, this message translates to:
+  /// **'Boats'**
+  String get bmHubBoats;
+
+  /// No description provided for @bmHubPriceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price range'**
+  String get bmHubPriceRange;
+
+  /// No description provided for @bmHubClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get bmHubClearFilters;
+
+  /// No description provided for @bmHubApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get bmHubApply;
+
+  /// No description provided for @bmHubBuyVehicleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy vehicle'**
+  String get bmHubBuyVehicleTitle;
+
+  /// No description provided for @bmHubBuyVehicleForConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {name} for {price}?'**
+  String bmHubBuyVehicleForConfirm(String name, String price);
+
+  /// No description provided for @bmHubVehiclePurchased.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle purchased successfully!'**
+  String get bmHubVehiclePurchased;
+
+  /// No description provided for @bmHubVehiclePurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to buy vehicle'**
+  String get bmHubVehiclePurchaseFailed;
+
+  /// No description provided for @bmHubNewPriceEuro.
+  ///
+  /// In en, this message translates to:
+  /// **'New price (€)'**
+  String get bmHubNewPriceEuro;
+
+  /// No description provided for @bmHubEnterNewPriceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new price'**
+  String get bmHubEnterNewPriceHint;
+
+  /// No description provided for @bmHubCurrentPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Current price'**
+  String get bmHubCurrentPrice;
+
+  /// No description provided for @bmHubPriceUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Price updated successfully!'**
+  String get bmHubPriceUpdated;
+
+  /// No description provided for @bmHubPriceUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update price'**
+  String get bmHubPriceUpdateFailed;
+
+  /// No description provided for @bmHubUpdateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get bmHubUpdateButton;
+
+  /// No description provided for @bmHubDelistVehicleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delist vehicle'**
+  String get bmHubDelistVehicleTitle;
+
+  /// No description provided for @bmHubRemoveFromMarketConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the market?'**
+  String bmHubRemoveFromMarketConfirm(String name);
+
+  /// No description provided for @bmHubVehicleDelisted.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle delisted successfully!'**
+  String get bmHubVehicleDelisted;
+
+  /// No description provided for @bmHubDelistFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delist vehicle'**
+  String get bmHubDelistFailed;
+
+  /// No description provided for @bmHubLocationUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'UNKNOWN'**
+  String get bmHubLocationUnknown;
 
   /// No description provided for @arrested.
   ///

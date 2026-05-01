@@ -1822,6 +1822,147 @@
   },
   "casinoManagementInfoTitle": "Casino Management Info",
   "casinoManagementInfo5": "• You can deposit or withdraw money at any time",
+  "casinoHubChooseGameHint": "Choose a game and place your bet",
+  "casinoPlayButton": "Play",
+  "casinoGameBaccaratName": "Baccarat",
+  "casinoGameBaccaratDesc": "Bet on player, banker, or tie with strategic odds.",
+  "casinoGameVideoPokerName": "Video Poker",
+  "casinoGameVideoPokerDesc": "Draw 5 cards and hit combos up to Royal Flush.",
+  "casinoBuyCasinoLockedTitle": "Buy casino (locked)",
+  "casinoErrGenericPlay": "Something went wrong",
+  "casinoErrSpinFailed": "Error while spinning",
+  "casinoErrBetFailed": "Error while betting",
+  "casinoErrGambleFailed": "Error while gambling",
+  "casinoErrThrowFailed": "Error while rolling",
+  "casinoErrCasinoNotFound": "Casino not found. Make sure the casino is purchased in this country.",
+  "casinoErrInsufficientFunds": "Not enough money",
+  "casinoErrInsufficientBankrollPayout": "Casino bankroll too low for this payout",
+  "casinoErrNetwork": "Network error: {error}",
+  "@casinoErrNetwork": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "casinoResultYouWon": "You won!",
+  "casinoResultYouLost": "Lost",
+  "casinoResultYouWonCelebrate": "🎉 You won!",
+  "casinoWonEuroAmount": "You won €{amount}!",
+  "@casinoWonEuroAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "casinoLostEuroAmount": "You lost €{amount}",
+  "@casinoLostEuroAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "casinoYouLostPlain": "You lost",
+  "casinoBlackjackWinAmount": "You won €{amount}!",
+  "@casinoBlackjackWinAmount": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "casinoBlackjackCelebrate": "BLACKJACK! €{amount}",
+  "@casinoBlackjackCelebrate": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "casinoAgain": "Again",
+  "casinoBankruptTitle": "Casino bankrupt!",
+  "casinoBankruptBody": "The casino went bankrupt!\n\nThe owner did not have enough cash in the bankroll to cover all payouts.\n\nThe casino is now closed and can be purchased again.",
+  "casinoBackToCasino": "Back to Casino",
+  "casinoRouletteNumberColor": "Number: {number} ({color})",
+  "@casinoRouletteNumberColor": {
+    "placeholders": {
+      "number": {"type": "String"},
+      "color": {"type": "String"}
+    }
+  },
+  "casinoColorGreen": "green",
+  "casinoColorRed": "red",
+  "casinoColorBlack": "black",
+  "casinoRoulettePickBet": "Choose your bet",
+  "casinoRouletteBetRed": "Red",
+  "casinoRouletteBetBlack": "Black",
+  "casinoRouletteBetEven": "Even",
+  "casinoRouletteBetOdd": "Odd",
+  "casinoRouletteSpinButton": "SPIN!",
+  "casinoRouletteLastResult": "Last result: {number}",
+  "@casinoRouletteLastResult": {
+    "placeholders": {
+      "number": {"type": "String"}
+    }
+  },
+  "casinoBetLabel": "Bet",
+  "casinoBlackjackPlayButton": "PLAY!",
+  "casinoSlotSpinButton": "SPIN!",
+  "casinoDiceRollButton": "ROLL!",
+  "casinoBlackjackYourCards": "Your cards",
+  "casinoBlackjackDealerCards": "Dealer cards",
+  "casinoBlackjackDealerTotal": "Dealer: {total}",
+  "@casinoBlackjackDealerTotal": {
+    "placeholders": {
+      "total": {"type": "String"}
+    }
+  },
+  "casinoBlackjackYouTotal": "You: {total}",
+  "@casinoBlackjackYouTotal": {
+    "placeholders": {
+      "total": {"type": "String"}
+    }
+  },
+  "casinoDiceTotalShowing": "Total: {total}",
+  "@casinoDiceTotalShowing": {
+    "placeholders": {
+      "total": {"type": "String"}
+    }
+  },
+  "casinoDicePredictTitle": "Predict",
+  "casinoDiceLowLabel": "Low (2-6)",
+  "casinoDiceHighLabel": "High (8-12)",
+  "casinoDiceOddsHint": "Low/High pays 2x • Exact total pays 6x",
+  "casinoSlotPayoutTableTitle": "Payout table",
+  "casinoBaccaratPlayer": "Player",
+  "casinoBaccaratBanker": "Banker",
+  "casinoBaccaratTieBet": "Tie",
+  "casinoWinnerPrefix": "Winner: {who}",
+  "@casinoWinnerPrefix": {
+    "placeholders": {
+      "who": {"type": "String"}
+    }
+  },
+  "casinoPayoutEuro": "Payout: €{amount}",
+  "@casinoPayoutEuro": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "casinoNoPayout": "No payout",
+  "casinoResultEuro": "Result: €{amount}",
+  "@casinoResultEuro": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "casinoDealing": "Dealing…",
+  "casinoDealCaps": "DEAL",
+  "casinoVideoPokerDrawCards": "DRAW CARDS",
+  "casinoVideoPokerDrawHint": "Draw your hand",
+  "casinoVideoPokerRoyalFlush": "Royal Flush",
+  "casinoVideoPokerStraightFlush": "Straight Flush",
+  "casinoVideoPokerFourKind": "Four of a Kind",
+  "casinoVideoPokerFullHouse": "Full House",
+  "casinoVideoPokerFlush": "Flush",
+  "casinoVideoPokerStraight": "Straight",
+  "casinoVideoPokerThreeKind": "Three of a Kind",
+  "casinoVideoPokerTwoPair": "Two Pair",
+  "casinoVideoPokerJacksOrBetter": "Jacks or Better",
+  "casinoVideoPokerNoWinningHand": "No winning hand",
+  "casinoVideoPokerPayoutTableLong": "Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x",
   "retry": "Retry",
   "doAction": "Do",
   "pay": "Pay",
@@ -2527,6 +2668,85 @@
   "backpackUpgradeFailedRank": "You need rank {required} (you are rank {current})",
   "backpackUpgradeFailedFunds": "You need €{needed}. You have €{have}",
   "backpackUpgradeFailedVip": "This backpack is for VIP members only",
+  "backpackPurchaseFailedGeneric": "Could not complete the purchase.",
+  "backpackUpgradeFailedGeneric": "Could not complete the upgrade.",
+  "backpackUnknownEvent": "Unknown action",
+  "backpackLoadFailedGeneric": "Something went wrong",
+  "backpackOwnedBadge": "Owned",
+  "availableBackpacks": "Available backpacks",
+  "backpackDialogCurrentLine": "Current: {name} (+{slots} slots)",
+  "@backpackDialogCurrentLine": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "slots": {"type": "int"}
+    }
+  },
+  "backpackDialogNewLine": "New: {name} (+{slots} slots)",
+  "@backpackDialogNewLine": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "slots": {"type": "int"}
+    }
+  },
+  "backpackDialogUpgradeDelta": "Upgrade: +{delta} slots",
+  "@backpackDialogUpgradeDelta": {
+    "placeholders": {
+      "delta": {"type": "int"}
+    }
+  },
+  "backpackDialogTotalCapacity": "Total: {totalSlots} slots",
+  "@backpackDialogTotalCapacity": {
+    "placeholders": {
+      "totalSlots": {"type": "int"}
+    }
+  },
+  "notLoggedInTokenStorageHint": "(storage issue — try signing in again)",
+  "blackMarketTabBackpacks": "Backpacks",
+  "bmHubAdjustFiltersHint": "Try adjusting your filters",
+  "bmHubEmptyMyListingsHint": "Go to Garage or Marina to list vehicles",
+  "bmHubSellerLabel": "Seller",
+  "bmHubAskingPriceLabel": "Asking price",
+  "bmHubMarketValueShort": "Market value",
+  "bmHubBuyNow": "Buy now",
+  "bmHubListedFor": "Listed for",
+  "bmHubEditPrice": "Edit price",
+  "bmHubDelist": "Delist",
+  "bmHubFilterListingsTitle": "Filter listings",
+  "bmHubLabelCountry": "Country",
+  "bmHubAllCountries": "All countries",
+  "bmHubLabelVehicleType": "Vehicle type",
+  "bmHubAllTypes": "All types",
+  "bmHubCars": "Cars",
+  "bmHubBoats": "Boats",
+  "bmHubPriceRange": "Price range",
+  "bmHubClearFilters": "Clear filters",
+  "bmHubApply": "Apply",
+  "bmHubBuyVehicleTitle": "Buy vehicle",
+  "bmHubBuyVehicleForConfirm": "Buy {name} for {price}?",
+  "@bmHubBuyVehicleForConfirm": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "price": {"type": "String"}
+    }
+  },
+  "bmHubVehiclePurchased": "Vehicle purchased successfully!",
+  "bmHubVehiclePurchaseFailed": "Failed to buy vehicle",
+  "bmHubNewPriceEuro": "New price (€)",
+  "bmHubEnterNewPriceHint": "Enter new price",
+  "bmHubCurrentPrice": "Current price",
+  "bmHubPriceUpdated": "Price updated successfully!",
+  "bmHubPriceUpdateFailed": "Failed to update price",
+  "bmHubUpdateButton": "Update",
+  "bmHubDelistVehicleTitle": "Delist vehicle",
+  "bmHubRemoveFromMarketConfirm": "Remove {name} from the market?",
+  "@bmHubRemoveFromMarketConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "bmHubVehicleDelisted": "Vehicle delisted successfully!",
+  "bmHubDelistFailed": "Failed to delist vehicle",
+  "bmHubLocationUnknown": "UNKNOWN",
   "arrested": "Arrested!",
   "jailMessage": "You were arrested during your journey and all goods were confiscated!",
   "confirmAction": "Are you sure?",
