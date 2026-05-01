@@ -4,8 +4,8 @@
 Publieke, game-styled entry voor niet-ingelogde bezoekers (Flutter web), met top-spelers/top-crews en links naar privacy- en digital-goods-beleid. Juridische volledige teksten leven in ARB (git-versiebeheer), entiteit in copy: **The Mob State**.
 
 ## Client
-- `client/lib/screens/landing_screen.dart` — hero = **ARB-titel** (`landingHeroTitle`) + **ondertitel** (`landingHeroSubtitle`, gecentreerd); **Inloggen / Account** rechtsboven **naast elkaar** (`FittedBox` i.v.m. smalle breedte); scrollbare middenkolom (about + rankings); **footer vast onderaan** (privacy, digital goods, taal, copyright; niet in de scroll). Geen apart logo-image in de hero (achtergrond blijft de visuele branding).
-- Publieke rankings: `GET /public/home` (client: `AppConfig.apiBaseUrl`).
+- `client/lib/screens/landing_screen.dart` — hero = **ARB-titel** + **ondertitel** (tekst gecentreerd in een **smalle kolom** die op brede schermen **naar rechts inspringt**, zodat copy niet over de grote titel in de achtergrond valt); op smalle breedte een **semi-transparant paneel** rond de copy voor leesbaarheid. **Inloggen / Account** rechtsboven naast elkaar (`FittedBox`). **footer vast onderaan**. Geen Flutter-logo-image in de hero.
+- **Publieke rankings:** `GET /public/home` met basis-URL `AppConfig.apiBaseUrl` (apex `themobstate.com` → `api.themobstate.com` zonder dart-define; zie `app_config.dart` + Docker `WEB_API_BASE_URL`).
 - `client/lib/main.dart` — `_resolveHome` + `routes` voor `/`, `/login`, `/register`, `/privacy`, `/digital-goods`; `AuthWrapper` toont `LandingScreen` zonder sessie.
 - `client/lib/providers/locale_provider.dart` — `initGuestLocale`, `persistGuestLocale` (geen `PUT /player/language` voor gasten).
 

@@ -7,9 +7,16 @@ class AppConfig {
     if (kIsWeb) {
       const webApiOverride = String.fromEnvironment('WEB_API_BASE_URL');
       if (webApiOverride.isNotEmpty) {
-        return webApiOverride;
+        return webApiOverride.trim().replaceAll(RegExp(r'/+$'), '');
       }
       final base = Uri.base;
+      final host = base.host.toLowerCase();
+      // Production site serves the Flutter shell from the apex domain; API lives on a
+      // dedicated host (see client Dockerfile WEB_API_BASE_URL). Without a dart-define,
+      // falling back to :3000 on the page host breaks public calls (e.g. landing rankings).
+      if (host == 'themobstate.com' || host == 'www.themobstate.com') {
+        return '${base.scheme}://api.themobstate.com';
+      }
       return '${base.scheme}://${base.host}:3000';
     } else if (Platform.isAndroid) {
       return 'http://10.0.2.2:3000';

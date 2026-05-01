@@ -1120,7 +1120,7 @@ healing = 5 HP (if health > 0 && health < 100)
 
 - Spelers **zonder sessie** zien op `/` een marketing-landing (Flutter web) met pitch, call-to-actions naar inloggen/registreren, en een beperkte **publieke** toplijst (spelers + crews via read-only `GET /public/home`, geen auth).
 - Juridische pagina’s: `/privacy` en `/digital-goods` (teksten volledig uit de client-ARB’s). Gast-taal volgt browser/voorkeur tot login; daarna gelden account-taalinstellingen zoals elders.
-- Layout: hero-titel + pitch in het midden (scroll), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan** het scherm.
+- Layout: hero-titel + pitch in een leesbare kolom (op desktop visueel meer naar het midden-rechts t.o.v. de achtergrond-titel), acties **Inloggen / registreren rechtsboven naast elkaar**, footer **sticky onderaan**. Ranglijsten: `GET /public/home` via dezelfde API-basis als de rest van de client (`AppConfig.apiBaseUrl`).
 - Technische details, SPA-fallback en QA: `docs/module-protocols/marketing-web.md` en `frontend-platform.md`.
 
 ---

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -453,6 +454,14 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
+  /// Pushes copy out from the left so it does not sit on top of the artwork title on the background.
+  double _contentLeadingInset(double width) {
+    if (width >= 1100) return width * 0.42;
+    if (width >= 840) return width * 0.36;
+    if (width >= 640) return width * 0.20;
+    return 0;
+  }
+
   Widget _buildStickyFooter(BuildContext context, AppLocalizations l10n, int year) {
     return Material(
       color: Colors.black.withOpacity(0.88),
@@ -507,7 +516,6 @@ class _LandingScreenState extends State<LandingScreen> {
     final isPortrait = size.height > size.width;
     final isMobile = size.width < 600;
     final year = DateTime.now().year;
-
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -530,53 +538,83 @@ class _LandingScreenState extends State<LandingScreen> {
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.fromLTRB(isMobile ? 16 : 32, 12, isMobile ? 16 : 32, 24),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 960),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              l10n.landingHeroTitle,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: isMobile ? 30 : 40,
-                                fontWeight: FontWeight.w800,
-                                shadows: const [
-                                  Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2)),
-                                ],
-                              ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final innerW = constraints.maxWidth;
+                      final innerLead = _contentLeadingInset(innerW);
+                      final innerMax = math
+                          .min(560.0, innerW - innerLead - (innerW < 600 ? 20 : 40))
+                          .clamp(260.0, 560.0);
+                      final panel = innerW < 640;
+                      Widget copyColumn = Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            l10n.landingHeroTitle,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: isMobile ? 30 : 40,
+                              fontWeight: FontWeight.w800,
+                              shadows: const [
+                                Shadow(blurRadius: 12, color: Colors.black87, offset: Offset(0, 2)),
+                              ],
                             ),
-                            const SizedBox(height: 14),
-                            Text(
-                              l10n.landingHeroSubtitle,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.88),
-                                fontSize: isMobile ? 15 : 17,
-                                height: 1.45,
-                                shadows: const [Shadow(blurRadius: 8, color: Colors.black87, offset: Offset(0, 1))],
-                              ),
+                          ),
+                          const SizedBox(height: 14),
+                          Text(
+                            l10n.landingHeroSubtitle,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.88),
+                              fontSize: isMobile ? 15 : 17,
+                              height: 1.45,
+                              shadows: const [Shadow(blurRadius: 8, color: Colors.black87, offset: Offset(0, 1))],
                             ),
-                            const SizedBox(height: 32),
-                            Text(
-                              l10n.landingAboutTitle,
-                              style: const TextStyle(color: _landingGold, fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 32),
+                          Text(
+                            l10n.landingAboutTitle,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: _landingGold, fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            l10n.landingAboutBody,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.white70, height: 1.45, fontSize: 15),
+                          ),
+                          const SizedBox(height: 32),
+                          _rankingsPanel(l10n),
+                        ],
+                      );
+                      if (panel) {
+                        copyColumn = DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.58),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: Colors.amber.shade800.withOpacity(0.35)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+                            child: copyColumn,
+                          ),
+                        );
+                      }
+                      return SingleChildScrollView(
+                        padding: EdgeInsets.fromLTRB(isMobile ? 12 : 24, 12, isMobile ? 12 : 24, 24),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: innerLead),
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: innerMax),
+                              child: copyColumn,
                             ),
-                            const SizedBox(height: 10),
-                            Text(
-                              l10n.landingAboutBody,
-                              style: const TextStyle(color: Colors.white70, height: 1.45, fontSize: 15),
-                            ),
-                            const SizedBox(height: 32),
-                            _rankingsPanel(l10n),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
                 SafeArea(
