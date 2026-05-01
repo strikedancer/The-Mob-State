@@ -230,6 +230,8 @@ Verplicht:
 - Zet de echte waarde in een server-side env-bestand dat niet in git staat, bij voorkeur `.env.plesk`, en gebruik dat bestand expliciet via `docker compose --env-file .env.plesk -f docker-compose.plesk.yml ...`.
 - Productiesecrets of service-account payloads mogen nooit inline in een getrackte `docker-compose.plesk.yml` blijven staan; tracked compose-files zijn alleen voor placeholders en variabeleverwijzingen.
 
+**Starter avatars (`default_1` / `default_2`):** optioneel verversen met Leonardo — `backend/scripts/generate_default_avatars_leonardo.py` (schrijft naar `client/assets/images/avatars/` + `client/images/avatars/`).
+
 One-shot runbook (volgende keer in 1 keer uitvoeren):
 1. `git pull origin main`
 2. Verifieer key aanwezigheid: `docker compose config | Select-String LEONARDO_API_KEY`

@@ -14,6 +14,8 @@ class Player {
   final int? fbiHeat;
   final String? currentCountry;
   final String? avatar;
+  /// `male` | `female` from server; null for legacy accounts.
+  final String? gender;
   final bool? isVip;
   final String? preferredLanguage;
   final String? wealthStatus;
@@ -33,6 +35,7 @@ class Player {
     this.fbiHeat,
     this.currentCountry,
     this.avatar,
+    this.gender,
     this.isVip,
     this.preferredLanguage,
     this.wealthStatus,

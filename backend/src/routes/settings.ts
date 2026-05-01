@@ -23,6 +23,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
     
     return res.status(200).json({
       avatar: player.avatar,
+      gender: player.gender,
       allowMessages: player.allowMessages,
       preferredLanguage: player.preferredLanguage,
       lastAvatarChange: player.lastAvatarChange,

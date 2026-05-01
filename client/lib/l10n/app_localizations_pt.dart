@@ -63,6 +63,22 @@ class AppLocalizationsPt extends AppLocalizations {
   String get registrationSuccessful => 'Cadastro realizado com sucesso!';
 
   @override
+  String get registerGenderTitle => 'Your character';
+
+  @override
+  String get registerGenderSubtitle =>
+      'Tap a portrait — this sets your starter look and is saved to your account.';
+
+  @override
+  String get registerGenderMale => 'Male gangster';
+
+  @override
+  String get registerGenderFemale => 'Female gangster';
+
+  @override
+  String get genderRequired => 'Choose male or female to continue.';
+
+  @override
   String get loginFailed => 'falha no login';
 
   @override
@@ -13819,215 +13835,217 @@ class AppLocalizationsPt extends AppLocalizations {
       'Verifique seu saldo de crédito e prazo de validade antes de comprar novamente; estender geralmente é melhor do que empilhar às cegas. \nUse créditos principalmente em reforços ou proteção urgentes, não automaticamente em cada pequeno atalho. \nSe você ainda não faz parte de uma equipe, comece com Player VIP ou um pacote de créditos antes de Crew VIP.';
 
   @override
-  String get landingHeroTitle => 'The Mob State';
+  String get landingHeroTitle => 'O Estado da Máfia';
 
   @override
   String get landingHeroSubtitle =>
-      'A deep text-based crime strategy game in your browser. Build your empire, run crews, trade, fight for territory — and climb the ranks.';
+      'Um jogo de estratégia criminal baseado em texto profundo no seu navegador. Construa seu império, administre equipes, negocie, lute por território – e suba na hierarquia.';
 
   @override
-  String get landingAboutTitle => 'What awaits you';
+  String get landingAboutTitle => 'O que espera por você';
 
   @override
   String get landingAboutBody =>
-      'Manage businesses, execute jobs and heists, develop your character through school certificates, compete in live events, and coordinate with your crew on the world map. Fair competitive rules, long-term progression, and regular content updates.';
+      'Gerencie negócios, execute trabalhos e assaltos, desenvolva seu personagem por meio de certificados escolares, compita em eventos ao vivo e coordene-se com sua equipe no mapa mundial. Regras competitivas justas, progressão a longo prazo e atualizações regulares de conteúdo.';
 
   @override
-  String get landingTopPlayersTitle => 'Top players';
+  String get landingTopPlayersTitle => 'Melhores jogadores';
 
   @override
-  String get landingTopCrewsTitle => 'Top crews (territory)';
+  String get landingTopCrewsTitle => 'Principais equipes (território)';
 
   @override
-  String get landingRankLabel => 'Rank';
+  String get landingRankLabel => 'Classificação';
 
   @override
-  String get landingRegionsLabel => 'Regions';
+  String get landingRegionsLabel => 'Regiões';
 
   @override
-  String get landingLoadError => 'Could not load rankings right now.';
+  String get landingLoadError =>
+      'Não foi possível carregar as classificações no momento.';
 
   @override
-  String get landingEmptyLeaderboard => 'No entries yet.';
+  String get landingEmptyLeaderboard => 'Nenhuma entrada ainda.';
 
   @override
-  String get landingCtaLogin => 'Log in';
+  String get landingCtaLogin => 'Conecte-se';
 
   @override
-  String get landingCtaRegister => 'Create account';
+  String get landingCtaRegister => 'Criar uma conta';
 
   @override
-  String get landingFooterPrivacy => 'Privacy Policy';
+  String get landingFooterPrivacy => 'política de Privacidade';
 
   @override
-  String get landingFooterDigitalGoods => 'Purchase of Digital Goods';
+  String get landingFooterDigitalGoods => 'Compra de bens digitais';
 
   @override
-  String get landingFooterLanguage => 'Language';
+  String get landingFooterLanguage => 'Linguagem';
 
   @override
   String landingCopyright(int year) {
-    return '© $year The Mob State. All rights reserved.';
+    return '© $year O Estado da Máfia. Todos os direitos reservados.';
   }
 
   @override
-  String get legalPrivacyTitle => 'Privacy Policy';
+  String get legalPrivacyTitle => 'política de Privacidade';
 
   @override
-  String get legalPrivacyLastUpdated => 'Last updated: May 2026';
+  String get legalPrivacyLastUpdated => 'Última atualização: maio de 2026';
 
   @override
   String get legalPrivacyIntro =>
-      'This Privacy Policy explains how The Mob State (\"we\", \"us\") handles personal data when you use our website, web game and related services. By playing or browsing you agree to this policy where applicable law allows.';
+      'Esta Política de Privacidade explica como The Mob State (\"nós\", \"nos\") trata os dados pessoais quando você usa nosso site, jogos na web e serviços relacionados. Ao jogar ou navegar, você concorda com esta política onde a lei aplicável permitir.';
 
   @override
-  String get legalPrivacySection01Title => 'Who we are';
+  String get legalPrivacySection01Title => 'Quem somos';
 
   @override
   String get legalPrivacySection01Body =>
-      'The Mob State is an online game operated as a digital service. For privacy requests you can contact us through the in-game support ticket system after registration, or via the official website contact channels if published.';
+      'The Mob State é um jogo online operado como um serviço digital. Para solicitações de privacidade, você pode entrar em contato conosco através do sistema de tickets de suporte do jogo após o registro ou através dos canais de contato do site oficial, se publicado.';
 
   @override
-  String get legalPrivacySection02Title => 'Data we collect';
+  String get legalPrivacySection02Title => 'Dados que coletamos';
 
   @override
   String get legalPrivacySection02Body =>
-      'We may process account data (username, email if provided, hashed password), gameplay and progression data, technical logs (IP address, device/browser type, timestamps), payment-related references from our payment providers (we do not store full card numbers), and communications you send to support.';
+      'Podemos processar dados da conta (nome de usuário, e-mail, se fornecido, senha com hash), dados de jogo e progressão, registros técnicos (endereço IP, tipo de dispositivo/navegador, carimbos de data/hora), referências relacionadas a pagamentos de nossos provedores de pagamento (não armazenamos números completos de cartão) e comunicações que você envia ao suporte.';
 
   @override
-  String get legalPrivacySection03Title => 'Purposes';
+  String get legalPrivacySection03Title => 'Finalidades';
 
   @override
   String get legalPrivacySection03Body =>
-      'We use data to provide the game, secure accounts, prevent abuse and fraud, process purchases, improve performance, communicate service messages, and comply with legal obligations.';
+      'Usamos dados para fornecer o jogo, proteger contas, prevenir abusos e fraudes, processar compras, melhorar o desempenho, comunicar mensagens de serviço e cumprir obrigações legais.';
 
   @override
-  String get legalPrivacySection04Title => 'Legal bases (EEA/UK)';
+  String get legalPrivacySection04Title => 'Bases jurídicas (EEE/Reino Unido)';
 
   @override
   String get legalPrivacySection04Body =>
-      'Where GDPR applies we rely on performance of a contract (providing the game), legitimate interests (security, analytics, product improvement balanced against your rights), consent where required (e.g. certain marketing cookies or optional communications), and legal obligations.';
+      'Quando o GDPR se aplica, contamos com a execução de um contrato (fornecimento do jogo), interesses legítimos (segurança, análise, melhoria do produto equilibrada com os seus direitos), consentimento quando necessário (por exemplo, determinados cookies de marketing ou comunicações opcionais) e obrigações legais.';
 
   @override
-  String get legalPrivacySection05Title => 'Cookies and local storage';
+  String get legalPrivacySection05Title => 'Cookies e armazenamento local';
 
   @override
   String get legalPrivacySection05Body =>
-      'We use cookies and similar technologies to keep you signed in, remember preferences, measure basic usage, and deliver essential functionality. You can control many cookies through your browser settings.';
+      'Usamos cookies e tecnologias semelhantes para mantê-lo conectado, lembrar preferências, medir o uso básico e fornecer funcionalidades essenciais. Você pode controlar muitos cookies através das configurações do seu navegador.';
 
   @override
-  String get legalPrivacySection06Title => 'Retention';
+  String get legalPrivacySection06Title => 'Retenção';
 
   @override
   String get legalPrivacySection06Body =>
-      'We retain information as long as needed to operate the service and meet legal, tax, and accounting requirements. Some logs may be kept for a limited security window. When data is no longer needed we delete or anonymise it where feasible.';
+      'Retemos informações pelo tempo necessário para operar o serviço e atender aos requisitos legais, fiscais e contábeis. Alguns registros podem ser mantidos por um período de segurança limitado. Quando os dados não são mais necessários, nós os excluímos ou anonimizamos sempre que possível.';
 
   @override
-  String get legalPrivacySection07Title => 'Sharing';
+  String get legalPrivacySection07Title => 'Compartilhamento';
 
   @override
   String get legalPrivacySection07Body =>
-      'We share data with infrastructure and payment processors strictly as needed to run the service, under appropriate agreements. We do not sell your personal data. We may disclose information if required by law or to protect rights and safety.';
+      'Compartilhamos dados com infraestrutura e processadores de pagamento estritamente conforme necessário para executar o serviço, sob acordos apropriados. Não vendemos os seus dados pessoais. Poderemos divulgar informações se exigido por lei ou para proteger direitos e segurança.';
 
   @override
-  String get legalPrivacySection08Title => 'International transfers';
+  String get legalPrivacySection08Title => 'Transferências internacionais';
 
   @override
   String get legalPrivacySection08Body =>
-      'Your data may be processed in the European Economic Area and/or other regions where we or our providers operate. We use safeguards such as standard contractual clauses where required.';
+      'Os seus dados podem ser processados ​​no Espaço Económico Europeu e/ou outras regiões onde nós ou os nossos fornecedores operamos. Utilizamos salvaguardas, como cláusulas contratuais padrão, quando necessário.';
 
   @override
-  String get legalPrivacySection09Title => 'Your rights';
+  String get legalPrivacySection09Title => 'Seus direitos';
 
   @override
   String get legalPrivacySection09Body =>
-      'Depending on your location you may have rights to access, rectify, erase, restrict or object to certain processing, and to data portability. You may lodge a complaint with a supervisory authority. Contact us via support to exercise rights; we may need to verify your identity.';
+      'Dependendo da sua localização, poderá ter direitos de acesso, retificação, apagamento, restrição ou oposição a determinados tratamentos e à portabilidade de dados. Você pode apresentar uma reclamação a uma autoridade supervisora. Contate-nos via suporte para exercício de direitos; podemos precisar verificar sua identidade.';
 
   @override
-  String get legalPrivacySection10Title => 'Children';
+  String get legalPrivacySection10Title => 'Crianças';
 
   @override
   String get legalPrivacySection10Body =>
-      'The game is not directed to children under the age where parental consent is required for processing in your region. If you believe a child provided data improperly, contact us and we will take appropriate steps.';
+      'O jogo não é direcionado a crianças menores de idade onde o consentimento dos pais é necessário para o processamento em sua região. Se você acredita que uma criança forneceu dados indevidamente, entre em contato conosco e tomaremos as medidas adequadas.';
 
   @override
-  String get legalDigitalGoodsTitle => 'Purchase of Digital Goods';
+  String get legalDigitalGoodsTitle => 'Compra de bens digitais';
 
   @override
-  String get legalDigitalGoodsLastUpdated => 'Last updated: May 2026';
+  String get legalDigitalGoodsLastUpdated => 'Última atualização: maio de 2026';
 
   @override
   String get legalDigitalGoodsIntro =>
-      'This policy describes purchases of digital content and services in The Mob State (for example premium credits, VIP time, or other virtual items). By completing a purchase you agree to these terms together with any checkout terms shown at payment.';
+      'Esta política descreve compras de conteúdo e serviços digitais no The Mob State (por exemplo, créditos premium, tempo VIP ou outros itens virtuais). Ao concluir uma compra, você concorda com estes termos, juntamente com quaisquer termos de finalização da compra mostrados no momento do pagamento.';
 
   @override
-  String get legalDigitalGoodsSection01Title => 'Nature of digital purchases';
+  String get legalDigitalGoodsSection01Title => 'Natureza das compras digitais';
 
   @override
   String get legalDigitalGoodsSection01Body =>
-      'All purchases are payments for access to additional online features and virtual items within The Mob State. They are delivered digitally in-game and have no physical form.';
+      'Todas as compras são pagamentos para acesso a recursos online adicionais e itens virtuais dentro do The Mob State. Eles são entregues digitalmente no jogo e não possuem forma física.';
 
   @override
   String get legalDigitalGoodsSection02Title =>
-      'Immediate delivery and withdrawal (UK/EU)';
+      'Entrega e retirada imediata (Reino Unido/UE)';
 
   @override
   String get legalDigitalGoodsSection02Body =>
-      'Where the Consumer Contracts Regulations 2013 (UK) or equivalent EU rules apply, you acknowledge that digital content is supplied immediately after purchase and, where the law permits, you may lose the statutory 14-day right of withdrawal once delivery has begun with your prior express consent.';
+      'Quando se aplicarem os Regulamentos de Contratos do Consumidor de 2013 (Reino Unido) ou regras equivalentes da UE, você reconhece que o conteúdo digital é fornecido imediatamente após a compra e, quando a lei permitir, você poderá perder o direito legal de rescisão de 14 dias após o início da entrega com seu consentimento prévio e expresso.';
 
   @override
-  String get legalDigitalGoodsSection03Title => 'Refunds and chargebacks';
+  String get legalDigitalGoodsSection03Title => 'Reembolsos e estornos';
 
   @override
   String get legalDigitalGoodsSection03Body =>
-      'Digital goods are generally non-refundable once delivered except where mandatory consumer law requires otherwise. Chargebacks or payment disputes after delivery may lead to suspension or termination of related accounts; please contact support first so we can help resolve billing issues.';
+      'Os bens digitais geralmente não são reembolsáveis ​​depois de entregues, exceto quando a legislação do consumidor exigir o contrário. Estornos ou disputas de pagamento após a entrega podem levar à suspensão ou encerramento de contas relacionadas; entre em contato com o suporte primeiro para que possamos ajudar a resolver problemas de faturamento.';
 
   @override
-  String get legalDigitalGoodsSection04Title => 'Permission and age';
+  String get legalDigitalGoodsSection04Title => 'Permissão e idade';
 
   @override
   String get legalDigitalGoodsSection04Body =>
-      'You must be authorised to use the chosen payment method. If you are under 18, you need permission from a parent or guardian to make purchases or use paid services.';
+      'Você deve estar autorizado a usar o método de pagamento escolhido. Se você tiver menos de 18 anos, precisará da permissão dos pais ou responsável para fazer compras ou usar serviços pagos.';
 
   @override
-  String get legalDigitalGoodsSection05Title => 'Payment channels and fees';
+  String get legalDigitalGoodsSection05Title => 'Canais de pagamento e taxas';
 
   @override
   String get legalDigitalGoodsSection05Body =>
-      'Prices may be shown in euros or your provider currency. Mobile carriers or payment platforms may add their own fees; check with your provider before confirming carrier or wallet payments.';
+      'Os preços podem ser apresentados em euros ou na moeda do seu fornecedor. As operadoras móveis ou plataformas de pagamento podem adicionar suas próprias taxas; verifique com seu provedor antes de confirmar pagamentos de operadora ou carteira.';
 
   @override
-  String get legalDigitalGoodsSection06Title => 'Availability';
+  String get legalDigitalGoodsSection06Title => 'Disponibilidade';
 
   @override
   String get legalDigitalGoodsSection06Body =>
-      'Paid features are delivered virtually through our servers and may change over time. We may adjust, suspend or retire specific items, bundles, or pricing to balance the game or for technical reasons.';
+      'Os recursos pagos são entregues virtualmente por meio de nossos servidores e podem mudar com o tempo. Podemos ajustar, suspender ou retirar itens, pacotes ou preços específicos para equilibrar o jogo ou por motivos técnicos.';
 
   @override
-  String get legalDigitalGoodsSection07Title => 'No real-world cash value';
+  String get legalDigitalGoodsSection07Title =>
+      'Nenhum valor em dinheiro no mundo real';
 
   @override
   String get legalDigitalGoodsSection07Body =>
-      'Virtual items and currencies have no monetary value outside the game, are non-transferable for real money, and may be altered or removed as part of updates, account enforcement, or service discontinuation except where law requires compensation.';
+      'Itens e moedas virtuais não têm valor monetário fora do jogo, não são transferíveis por dinheiro real e podem ser alterados ou removidos como parte de atualizações, aplicação de conta ou descontinuação de serviço, exceto quando a lei exigir compensação.';
 
   @override
-  String get legalDigitalGoodsSection08Title => 'Prohibited commercial use';
+  String get legalDigitalGoodsSection08Title => 'Uso comercial proibido';
 
   @override
   String get legalDigitalGoodsSection08Body =>
-      'You may not use The Mob State to operate unauthorised real-money trading, including buying or selling accounts, in-game currency, codes, or virtual assets for cash or external services outside our official payment flows.';
+      'Você não pode usar o The Mob State para operar negociações não autorizadas com dinheiro real, incluindo compra ou venda de contas, moeda do jogo, códigos ou ativos virtuais por dinheiro ou serviços externos fora de nossos fluxos de pagamento oficiais.';
 
   @override
-  String get legalDigitalGoodsSection09Title => 'Service changes';
+  String get legalDigitalGoodsSection09Title => 'Mudanças de serviço';
 
   @override
   String get legalDigitalGoodsSection09Body =>
-      'We may update this policy and in-game purchase descriptions. Continued use after changes constitutes acceptance of the revised terms where permitted by law.';
+      'Poderemos atualizar esta política e as descrições de compras no jogo. O uso continuado após as alterações constitui aceitação dos termos revisados ​​quando permitido por lei.';
 
   @override
-  String get legalDigitalGoodsSection10Title => 'Governing law';
+  String get legalDigitalGoodsSection10Title => 'Lei aplicável';
 
   @override
   String get legalDigitalGoodsSection10Body =>
-      'Unless mandatory local law provides otherwise, this policy is governed by the laws of England and Wales and disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.';
+      'A menos que a lei local obrigatória estabeleça o contrário, esta política é regida pelas leis da Inglaterra e do País de Gales e as disputas estarão sujeitas à jurisdição exclusiva dos tribunais da Inglaterra e do País de Gales.';
 }

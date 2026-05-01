@@ -127,6 +127,7 @@ class AuthService {
   Future<AuthResult> register(
     String username,
     String password, {
+    required String gender,
     String? email,
     String? language,
   }) async {
@@ -134,10 +135,11 @@ class AuthService {
       // Use provided language or detect device language
       final selectedLanguage = language ?? _getDeviceLanguage();
 
-      final body = {
+      final body = <String, dynamic>{
         'username': username,
         'password': password,
         'preferredLanguage': selectedLanguage,
+        'gender': gender,
       };
       if (email != null && email.isNotEmpty) {
         body['email'] = email;
@@ -199,6 +201,8 @@ class AuthService {
           final reason = data['params']['reason'] as String?;
           if (reason == 'USERNAME_TAKEN') {
             errorMessage = 'Deze gebruikersnaam is al in gebruik';
+          } else if (reason == 'GENDER_REQUIRED') {
+            errorMessage = 'GENDER_REQUIRED';
           } else if (reason == 'INVALID_CREDENTIALS') {
             errorMessage = 'Ongeldige gegevens';
           } else {

@@ -9,6 +9,7 @@ import '../providers/locale_provider.dart';
 import 'forgot_password_screen.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
+import '../utils/avatar_helper.dart';
 import '../services/notification_service.dart';
 import '../config/supported_languages.dart';
 
@@ -30,6 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late bool _isLogin;
   bool _obscurePassword = true;
   String _selectedLanguage = 'nl'; // Default to Dutch
+  /// `male` | `female` during registration.
+  String? _selectedGender;
 
   @override
   void initState() {
@@ -67,6 +70,10 @@ class _LoginScreenState extends State<LoginScreen> {
         normalized == 'Gebruikersnaam is al in gebruik' ||
         normalized == 'Deze gebruikersnaam is al in gebruik') {
       return l10n.usernameTaken;
+    }
+
+    if (normalized == 'GENDER_REQUIRED') {
+      return l10n.genderRequired;
     }
 
     return normalized;
@@ -203,6 +210,18 @@ class _LoginScreenState extends State<LoginScreen> {
       '[LoginScreen] Starting ${_isLogin ? 'login' : 'register'} for: $username',
     );
 
+    if (!_isLogin && (_selectedGender == null || _selectedGender!.isEmpty)) {
+      showTopRightFromSnackBar(
+        context,
+        SnackBar(
+          content: Text(l10n.genderRequired),
+          backgroundColor: Colors.orange.shade900,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
     bool success;
     if (_isLogin) {
       success = await authProvider.login(username, password);
@@ -210,6 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
       success = await authProvider.register(
         username,
         password,
+        gender: _selectedGender!,
         email: email,
         language: _selectedLanguage,
       );
@@ -443,6 +463,62 @@ class _LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                           ),
+
+                          // Gender + starter portrait (registration only)
+                          if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
+                          if (!_isLogin)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.registerGenderTitle,
+                                  style: TextStyle(
+                                    color: Color(0xFFD4A574),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: isMobile ? 14 : 15,
+                                  ),
+                                ),
+                                SizedBox(height: isMobile ? 6 : 8),
+                                Text(
+                                  l10n.registerGenderSubtitle,
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: isMobile ? 12 : 13,
+                                    height: 1.35,
+                                  ),
+                                ),
+                                SizedBox(height: isMobile ? 12 : 14),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _GenderPickCard(
+                                        label: l10n.registerGenderMale,
+                                        assetPath:
+                                            AvatarHelper.getAvatarPath('default_1'),
+                                        selected: _selectedGender == 'male',
+                                        onTap: () {
+                                          _clearAuthError();
+                                          setState(() => _selectedGender = 'male');
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(width: isMobile ? 12 : 16),
+                                    Expanded(
+                                      child: _GenderPickCard(
+                                        label: l10n.registerGenderFemale,
+                                        assetPath:
+                                            AvatarHelper.getAvatarPath('default_2'),
+                                        selected: _selectedGender == 'female',
+                                        onTap: () {
+                                          _clearAuthError();
+                                          setState(() => _selectedGender = 'female');
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
 
                           // Email field (only for registration)
                           if (!_isLogin) SizedBox(height: isMobile ? 16 : 20),
@@ -687,6 +763,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _clearAuthError();
                                   setState(() {
                                     _isLogin = !_isLogin;
+                                    _selectedGender = null;
                                   });
                                 },
                                 child: Text(
@@ -726,6 +803,88 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _GenderPickCard extends StatelessWidget {
+  const _GenderPickCard({
+    required this.label,
+    required this.assetPath,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final String assetPath;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: selected ? const Color(0xFFD4A574) : Colors.white24,
+              width: selected ? 2.5 : 1,
+            ),
+            color: Colors.black.withOpacity(selected ? 0.45 : 0.28),
+            boxShadow: selected
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFFD4A574).withOpacity(0.25),
+                      blurRadius: 10,
+                      spreadRadius: 0.5,
+                    ),
+                  ]
+                : null,
+          ),
+          child: Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 0.82,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.asset(
+                    assetPath,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.network(
+                        WebAssetHelper.toPublicUrl(assetPath),
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.black45,
+                          alignment: Alignment.center,
+                          child: const Icon(Icons.person, color: Colors.white38, size: 40),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Color(0xFFD4A574),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

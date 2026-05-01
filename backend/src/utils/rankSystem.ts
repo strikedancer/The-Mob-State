@@ -130,8 +130,9 @@ export const AVATARS = {
     'female_middle_eastern_elegant',
     'female_middle_eastern_business',
     
-    // Default
+    // Default starter avatars (male / female gangster); see registration + Leonardo script
     'default_1',
+    'default_2',
   ],
   
   vip: [

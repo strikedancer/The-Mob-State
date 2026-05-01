@@ -218,6 +218,36 @@ abstract class AppLocalizations {
   /// **'Registration successful!'**
   String get registrationSuccessful;
 
+  /// No description provided for @registerGenderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your character'**
+  String get registerGenderTitle;
+
+  /// No description provided for @registerGenderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a portrait — this sets your starter look and is saved to your account.'**
+  String get registerGenderSubtitle;
+
+  /// No description provided for @registerGenderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male gangster'**
+  String get registerGenderMale;
+
+  /// No description provided for @registerGenderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female gangster'**
+  String get registerGenderFemale;
+
+  /// No description provided for @genderRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose male or female to continue.'**
+  String get genderRequired;
+
   /// No description provided for @loginFailed.
   ///
   /// In en, this message translates to:

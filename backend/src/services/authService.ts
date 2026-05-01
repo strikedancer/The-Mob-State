@@ -9,11 +9,19 @@ import { normalizePlayerLanguage } from '../config/supportedLanguages';
 
 const SALT_ROUNDS = 10;
 
+type PlayerGender = 'male' | 'female';
+
+function defaultAvatarForGender(gender: PlayerGender): string {
+  return gender === 'female' ? 'default_2' : 'default_1';
+}
+
 interface RegisterInput {
   username: string;
   password: string;
   email?: string;
   preferredLanguage?: string;
+  /** Required on new registration; stored with default avatar by gender. */
+  gender: PlayerGender;
 }
 
 interface LoginInput {
@@ -32,6 +40,8 @@ interface AuthResponse {
     xp: number;
     currentCountry: string;
     preferredLanguage: string;
+    avatar: string | null;
+    gender: string | null;
   };
   requiresEmailVerification?: boolean;
   message?: string;
@@ -39,11 +49,15 @@ interface AuthResponse {
 
 export const authService = {
   async register(input: RegisterInput): Promise<AuthResponse> {
-    const { username, password, email, preferredLanguage } = input;
+    const { username, password, email, preferredLanguage, gender } = input;
 
     // Validation
     if (!username || username.length < 3 || username.length > 50) {
       throw new Error('USERNAME_INVALID');
+    }
+
+    if (gender !== 'male' && gender !== 'female') {
+      throw new Error('GENDER_REQUIRED');
     }
 
     if (!password || password.length < 6) {
@@ -86,6 +100,8 @@ export const authService = {
 
     // Create player with optional email and verification token
     let player;
+    const starterAvatar = defaultAvatarForGender(gender);
+
     try {
       player = await prisma.player.create({
         data: {
@@ -93,6 +109,8 @@ export const authService = {
           passwordHash,
           preferredLanguage: normalizedLanguage,
           currentCountry: randomCountry.id,
+          gender,
+          avatar: starterAvatar,
           ...(email && {
             email,
             verificationToken,
@@ -149,6 +167,8 @@ export const authService = {
         xp: player.xp,
         currentCountry: player.currentCountry,
         preferredLanguage: player.preferredLanguage,
+        avatar: player.avatar,
+        gender: player.gender,
       },
     };
   },
@@ -228,6 +248,8 @@ export const authService = {
         xp: player.xp,
         currentCountry: player.currentCountry,
         preferredLanguage: player.preferredLanguage,
+        avatar: player.avatar,
+        gender: player.gender,
       },
     };
   },

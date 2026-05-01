@@ -63,6 +63,23 @@ class AppLocalizationsNl extends AppLocalizations {
   String get registrationSuccessful => 'Registratie gelukt!';
 
   @override
+  String get registerGenderTitle => 'Jouw personage';
+
+  @override
+  String get registerGenderSubtitle =>
+      'Tik op een portret — dit bepaalt je startlook en wordt opgeslagen op je account.';
+
+  @override
+  String get registerGenderMale => 'Mannelijke gangster';
+
+  @override
+  String get registerGenderFemale => 'Vrouwelijke gangster';
+
+  @override
+  String get genderRequired =>
+      'Kies mannelijk of vrouwelijk om verder te gaan.';
+
+  @override
   String get loginFailed => 'Inloggen mislukt';
 
   @override

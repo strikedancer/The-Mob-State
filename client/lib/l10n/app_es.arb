@@ -8227,5 +8227,10 @@
   "legalDigitalGoodsSection09Title": "Cambios de servicio",
   "legalDigitalGoodsSection09Body": "Es posible que actualicemos esta política y las descripciones de compras en el juego. El uso continuado después de los cambios constituye la aceptación de los términos revisados ​​cuando lo permita la ley.",
   "legalDigitalGoodsSection10Title": "Ley aplicable",
-  "legalDigitalGoodsSection10Body": "A menos que la ley local obligatoria disponga lo contrario, esta política se rige por las leyes de Inglaterra y Gales y las disputas estarán sujetas a la jurisdicción exclusiva de los tribunales de Inglaterra y Gales."
+  "legalDigitalGoodsSection10Body": "A menos que la ley local obligatoria disponga lo contrario, esta política se rige por las leyes de Inglaterra y Gales y las disputas estarán sujetas a la jurisdicción exclusiva de los tribunales de Inglaterra y Gales.",
+  "registerGenderTitle": "Your character",
+  "registerGenderSubtitle": "Tap a portrait — this sets your starter look and is saved to your account.",
+  "registerGenderMale": "Male gangster",
+  "registerGenderFemale": "Female gangster",
+  "genderRequired": "Choose male or female to continue."
 }

@@ -9,9 +9,15 @@ const router = Router();
 
 router.post('/register', async (req: Request, res: Response) => {
   try {
-    const { username, password, email, preferredLanguage } = req.body;
+    const { username, password, email, preferredLanguage, gender } = req.body;
 
-    const result = await authService.register({ username, password, email, preferredLanguage });
+    const result = await authService.register({
+      username,
+      password,
+      email,
+      preferredLanguage,
+      gender,
+    });
 
     if (result.requiresEmailVerification) {
       return res.status(201).json({
@@ -57,6 +63,13 @@ router.post('/register', async (req: Request, res: Response) => {
         return res.status(400).json({
           event: 'auth.error',
           params: { reason: 'EMAIL_INVALID' },
+        });
+      }
+
+      if (error.message === 'GENDER_REQUIRED') {
+        return res.status(400).json({
+          event: 'auth.error',
+          params: { reason: 'GENDER_REQUIRED' },
         });
       }
     }

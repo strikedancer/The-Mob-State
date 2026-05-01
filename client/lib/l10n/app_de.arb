@@ -8227,5 +8227,10 @@
   "legalDigitalGoodsSection09Title": "Serviceänderungen",
   "legalDigitalGoodsSection09Body": "Wir können diese Richtlinie und Beschreibungen für In-Game-Käufe aktualisieren. Die fortgesetzte Nutzung nach Änderungen stellt die Annahme der überarbeiteten Bedingungen dar, sofern dies gesetzlich zulässig ist.",
   "legalDigitalGoodsSection10Title": "Geltendes Recht",
-  "legalDigitalGoodsSection10Body": "Sofern nicht zwingendes lokales Recht etwas anderes vorsieht, unterliegt diese Richtlinie den Gesetzen von England und Wales und Streitigkeiten unterliegen der ausschließlichen Zuständigkeit der Gerichte von England und Wales."
+  "legalDigitalGoodsSection10Body": "Sofern nicht zwingendes lokales Recht etwas anderes vorsieht, unterliegt diese Richtlinie den Gesetzen von England und Wales und Streitigkeiten unterliegen der ausschließlichen Zuständigkeit der Gerichte von England und Wales.",
+  "registerGenderTitle": "Your character",
+  "registerGenderSubtitle": "Tap a portrait — this sets your starter look and is saved to your account.",
+  "registerGenderMale": "Male gangster",
+  "registerGenderFemale": "Female gangster",
+  "genderRequired": "Choose male or female to continue."
 }

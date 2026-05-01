@@ -63,6 +63,22 @@ class AppLocalizationsPl extends AppLocalizations {
   String get registrationSuccessful => 'Rejestracja pomyślna!';
 
   @override
+  String get registerGenderTitle => 'Your character';
+
+  @override
+  String get registerGenderSubtitle =>
+      'Tap a portrait — this sets your starter look and is saved to your account.';
+
+  @override
+  String get registerGenderMale => 'Male gangster';
+
+  @override
+  String get registerGenderFemale => 'Female gangster';
+
+  @override
+  String get genderRequired => 'Choose male or female to continue.';
+
+  @override
   String get loginFailed => 'Logowanie nie powiodło się';
 
   @override

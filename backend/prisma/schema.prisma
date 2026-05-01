@@ -33,6 +33,8 @@ model Player {
   hitCount                        Int                              @default(0)
   allowMessages                   Boolean                          @default(true)
   avatar                          String?                          @default("default_1") @db.VarChar(100)
+  /// Registration: `male` | `female`. Legacy rows may be null.
+  gender                          String?                          @db.VarChar(10)
   banReason                       String?                          @db.Text
   bannedUntil                     DateTime?
   email                           String?                          @db.VarChar(255)
