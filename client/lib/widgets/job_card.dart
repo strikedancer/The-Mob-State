@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/job.dart';
+import '../utils/job_localization.dart';
 import '../utils/web_asset_helper.dart';
 
 class JobCard extends StatefulWidget {
@@ -147,7 +148,11 @@ class _JobCardState extends State<JobCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                widget.job.name,
+                                JobLocalization.name(
+                                  widget.job.id,
+                                  l10n,
+                                  fallback: widget.job.name,
+                                ),
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w700,
@@ -192,7 +197,9 @@ class _JobCardState extends State<JobCard> {
                           children: [
                             // Left: Success percentage (jobs are 85% success rate)
                             Text(
-                              '$successChance% kans',
+                              l10n.jobSuccessChancePercent(
+                                successChance.toString(),
+                              ),
                               style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,
@@ -206,7 +213,10 @@ class _JobCardState extends State<JobCard> {
                                 if (widget.job.minPay > 0 ||
                                     widget.job.maxPay > 0)
                                   Text(
-                                    '\$${widget.job.minPay}-${widget.job.maxPay}',
+                                    l10n.jobPayRangeEuro(
+                                      widget.job.minPay.toString(),
+                                      widget.job.maxPay.toString(),
+                                    ),
                                     style: TextStyle(
                                       fontSize: 9,
                                       fontWeight: FontWeight.w600,
@@ -215,7 +225,9 @@ class _JobCardState extends State<JobCard> {
                                   ),
                                 if (widget.job.xpReward > 0)
                                   Text(
-                                    '+${widget.job.xpReward} XP',
+                                    l10n.jobXpRewardShort(
+                                      widget.job.xpReward.toString(),
+                                    ),
                                     style: TextStyle(
                                       fontSize: 9,
                                       fontWeight: FontWeight.w600,

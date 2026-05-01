@@ -1190,6 +1190,24 @@ abstract class AppLocalizations {
   /// **'Fly passenger airplanes'**
   String get jobAirlinePilotDesc;
 
+  /// No description provided for @jobSuccessChancePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% chance'**
+  String jobSuccessChancePercent(String percent);
+
+  /// No description provided for @jobXpRewardShort.
+  ///
+  /// In en, this message translates to:
+  /// **'+{xp} XP'**
+  String jobXpRewardShort(String xp);
+
+  /// No description provided for @jobPayRangeEuro.
+  ///
+  /// In en, this message translates to:
+  /// **'€{min}-€{max}'**
+  String jobPayRangeEuro(String min, String max);
+
   /// No description provided for @travel.
   ///
   /// In en, this message translates to:

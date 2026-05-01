@@ -224,6 +224,33 @@
   "jobDoctorDesc": "Treat patients at the hospital",
   "jobAirlinePilotName": "Pilot",
   "jobAirlinePilotDesc": "Fly passenger airplanes",
+  "jobSuccessChancePercent": "{percent}% chance",
+  "@jobSuccessChancePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "jobXpRewardShort": "+{xp} XP",
+  "@jobXpRewardShort": {
+    "placeholders": {
+      "xp": {
+        "type": "String"
+      }
+    }
+  },
+  "jobPayRangeEuro": "€{min}-€{max}",
+  "@jobPayRangeEuro": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  },
   "travel": "Travel",
   "errorLoadingCountries": "Failed to load countries",
   "currentLocation": "Current Location",

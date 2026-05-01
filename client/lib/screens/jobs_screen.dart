@@ -11,6 +11,7 @@ import '../widgets/jail_screen.dart';
 import '../widgets/cooldown_overlay.dart';
 import '../widgets/job_card.dart';
 import '../widgets/education_requirements_dialog.dart';
+import '../utils/job_localization.dart';
 import '../utils/top_right_notification.dart';
 import '../utils/web_asset_helper.dart';
 
@@ -84,9 +85,10 @@ class _JobsScreenState extends State<JobsScreen> {
         });
       }
     } catch (e) {
+      if (!mounted) return;
+      final loc = AppLocalizations.of(context)!;
       setState(() {
-        final l10n = AppLocalizations.of(context)!;
-        _error = l10n.connectionError(e.toString());
+        _error = loc.connectionErrorGeneric;
         _isLoading = false;
       });
     }
@@ -121,9 +123,10 @@ class _JobsScreenState extends State<JobsScreen> {
         });
       }
     } catch (e) {
+      if (!mounted) return;
+      final loc = AppLocalizations.of(context)!;
       setState(() {
-        final l10n = AppLocalizations.of(context)!;
-        _error = l10n.connectionError(e.toString());
+        _error = loc.connectionErrorGeneric;
         _isLoading = false;
       });
     }
@@ -131,16 +134,26 @@ class _JobsScreenState extends State<JobsScreen> {
 
   Future<void> _showLockedJobDetails(Map<String, dynamic> job) async {
     final l10n = AppLocalizations.of(context)!;
+    final jobId = job['id']?.toString() ?? '';
+    final rawName = job['name']?.toString() ?? l10n.jobs;
+    final rawDesc = job['description']?.toString() ?? '';
+    final locName = JobLocalization.name(jobId, l10n, fallback: rawName);
+    final locDesc = JobLocalization.description(jobId, l10n, fallback: rawDesc);
     await EducationRequirementsDialog.show(
       context,
-      title: '🔒 ${job['name'] ?? l10n.jobs}',
-      subtitle: job['description']?.toString(),
+      title: '🔒 $locName',
+      subtitle: locDesc.isNotEmpty ? locDesc : null,
       missingRequirements: (job['educationMissing'] as List?) ?? const [],
     );
   }
 
   Widget _buildLockedJobTile(Map<String, dynamic> job) {
     final l10n = AppLocalizations.of(context)!;
+    final jobId = job['id']?.toString() ?? '';
+    final rawName = job['name']?.toString() ?? l10n.jobs;
+    final rawDesc = job['description']?.toString() ?? '';
+    final locName = JobLocalization.name(jobId, l10n, fallback: rawName);
+    final locDesc = JobLocalization.description(jobId, l10n, fallback: rawDesc);
     final imageAsset = 'assets/images/jobs/${job['id']}_job.png';
 
     return Card(
@@ -218,7 +231,7 @@ class _JobsScreenState extends State<JobsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      (job['name'] ?? l10n.jobs).toString(),
+                      locName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -229,7 +242,7 @@ class _JobsScreenState extends State<JobsScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      (job['description'] ?? '').toString(),
+                      locDesc,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 9, color: Colors.grey[300]),
@@ -532,7 +545,26 @@ class _JobsScreenState extends State<JobsScreen> {
           ? const Center(child: CircularProgressIndicator())
           : _error != null
           ? Center(
-              child: Text(_error!, style: const TextStyle(color: Colors.red)),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _error!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed:
+                          _isWorking ? null : _checkJailStatusAndLoadJobs,
+                      icon: const Icon(Icons.refresh),
+                      label: Text(l10n.retry),
+                    ),
+                  ],
+                ),
+              ),
             )
           : ListView(
               padding: const EdgeInsets.all(8),

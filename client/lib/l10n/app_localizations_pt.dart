@@ -570,6 +570,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get jobAirlinePilotDesc => 'Voe em aviões de passageiros';
 
   @override
+  String jobSuccessChancePercent(String percent) {
+    return '$percent% de chance';
+  }
+
+  @override
+  String jobXpRewardShort(String xp) {
+    return '+$xp XP';
+  }
+
+  @override
+  String jobPayRangeEuro(String min, String max) {
+    return '€$min-€$max';
+  }
+
+  @override
   String get travel => 'Viagem';
 
   @override

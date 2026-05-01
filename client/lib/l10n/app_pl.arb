@@ -7904,5 +7904,32 @@
       }
     }
   },
-  "travelNotInTransit": "Nie jesteś w podróży."
+  "travelNotInTransit": "Nie jesteś w podróży.",
+  "jobSuccessChancePercent": "{percent}% szans",
+  "@jobSuccessChancePercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "jobXpRewardShort": "+{xp} PD",
+  "@jobXpRewardShort": {
+    "placeholders": {
+      "xp": {
+        "type": "String"
+      }
+    }
+  },
+  "jobPayRangeEuro": "€{min}-€{max}",
+  "@jobPayRangeEuro": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      },
+      "max": {
+        "type": "String"
+      }
+    }
+  }
 }
