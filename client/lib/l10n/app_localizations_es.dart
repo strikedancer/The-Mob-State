@@ -1571,7 +1571,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vaultCodeLabel => 'Código';
 
   @override
-  String get vaultSubmitStake => 'Enviar apuesta';
+  String get vaultSubmitStake => 'Apostar';
 
   @override
   String get vaultWrongCodesTitle => 'Códigos erróneos (este mes)';

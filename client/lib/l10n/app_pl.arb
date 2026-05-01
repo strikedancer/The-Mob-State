@@ -474,14 +474,14 @@
   "vaultCodeLabel": "Kod",
   "vaultSubmitStake": "Prześlij stawkę",
   "vaultWrongCodesTitle": "Błędne kody (w tym miesiącu)",
-  "vaultShowWrongCodes": "Pokazywać",
-  "vaultHideWrongCodes": "Ukrywać",
+  "vaultShowWrongCodes": "Pokaż",
+  "vaultHideWrongCodes": "Ukryj",
   "vaultNoWrongCodesYet": "Nie zapisano jeszcze żadnych błędnych kodów.",
   "couldNotLoadVaultStatus": "Nie udało się wczytać stanu.",
   "vaultEnterFourDigitCode": "Wprowadź 4-cyfrowy kod.",
   "vaultAttemptSuccessGeneric": "Sukces.",
-  "vaultAttemptFailedGeneric": "Przegrany.",
-  "vaultAttemptFailedRetry": "Przegrany. Spróbuj ponownie.",
+  "vaultAttemptFailedGeneric": "Niepowodzenie.",
+  "vaultAttemptFailedRetry": "Niepowodzenie. Spróbuj ponownie.",
   "dashboardNewMessagesCount": "{count} nowe wiadomości",
   "@dashboardNewMessagesCount": {
     "placeholders": {

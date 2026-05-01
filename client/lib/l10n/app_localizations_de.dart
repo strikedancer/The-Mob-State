@@ -1574,16 +1574,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get vaultCodeLabel => 'Code';
 
   @override
-  String get vaultSubmitStake => 'Einsatz einreichen';
+  String get vaultSubmitStake => 'Einsatz setzen';
 
   @override
   String get vaultWrongCodesTitle => 'Falsche Codes (diesen Monat)';
 
   @override
-  String get vaultShowWrongCodes => 'Zeigen';
+  String get vaultShowWrongCodes => 'Anzeigen';
 
   @override
-  String get vaultHideWrongCodes => 'Verstecken';
+  String get vaultHideWrongCodes => 'Ausblenden';
 
   @override
   String get vaultNoWrongCodesYet =>

@@ -463,7 +463,7 @@
       }
     }
   },
-  "vaultExpectedPrize": "Prix ​​attendu : +{reward} crédits",
+  "vaultExpectedPrize": "Prix attendu : +{reward} crédits",
   "@vaultExpectedPrize": {
     "placeholders": {
       "reward": {
@@ -472,10 +472,10 @@
     }
   },
   "vaultCodeLabel": "Code",
-  "vaultSubmitStake": "Soumettre la mise",
+  "vaultSubmitStake": "Valider la mise",
   "vaultWrongCodesTitle": "Mauvais codes (ce mois-ci)",
-  "vaultShowWrongCodes": "Montrer",
-  "vaultHideWrongCodes": "Cacher",
+  "vaultShowWrongCodes": "Afficher",
+  "vaultHideWrongCodes": "Masquer",
   "vaultNoWrongCodesYet": "Aucun code erroné n'a encore été enregistré.",
   "couldNotLoadVaultStatus": "Impossible de charger le statut.",
   "vaultEnterFourDigitCode": "Entrez un code à 4 chiffres.",

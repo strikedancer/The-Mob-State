@@ -1566,10 +1566,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get vaultWrongCodesTitle => 'Błędne kody (w tym miesiącu)';
 
   @override
-  String get vaultShowWrongCodes => 'Pokazywać';
+  String get vaultShowWrongCodes => 'Pokaż';
 
   @override
-  String get vaultHideWrongCodes => 'Ukrywać';
+  String get vaultHideWrongCodes => 'Ukryj';
 
   @override
   String get vaultNoWrongCodesYet =>
@@ -1585,10 +1585,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get vaultAttemptSuccessGeneric => 'Sukces.';
 
   @override
-  String get vaultAttemptFailedGeneric => 'Przegrany.';
+  String get vaultAttemptFailedGeneric => 'Niepowodzenie.';
 
   @override
-  String get vaultAttemptFailedRetry => 'Przegrany. Spróbuj ponownie.';
+  String get vaultAttemptFailedRetry => 'Niepowodzenie. Spróbuj ponownie.';
 
   @override
   String dashboardNewMessagesCount(int count) {

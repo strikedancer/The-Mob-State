@@ -409,7 +409,7 @@
   "vaultStakeCredits": "{stake, plural, one{{stake} crédito} other{{stake} créditos}}",
   "vaultExpectedPrize": "Premio esperado: +{reward} créditos",
   "vaultCodeLabel": "Código",
-  "vaultSubmitStake": "Enviar apuesta",
+  "vaultSubmitStake": "Apostar",
   "vaultWrongCodesTitle": "Códigos erróneos (este mes)",
   "vaultShowWrongCodes": "Mostrar",
   "vaultHideWrongCodes": "Ocultar",

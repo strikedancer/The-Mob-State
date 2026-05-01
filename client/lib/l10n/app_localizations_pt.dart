@@ -1559,7 +1559,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vaultCodeLabel => 'Código';
 
   @override
-  String get vaultSubmitStake => 'Enviar aposta';
+  String get vaultSubmitStake => 'Apostar';
 
   @override
   String get vaultWrongCodesTitle => 'Códigos errados (este mês)';
@@ -1568,7 +1568,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vaultShowWrongCodes => 'Mostrar';
 
   @override
-  String get vaultHideWrongCodes => 'Esconder';
+  String get vaultHideWrongCodes => 'Ocultar';
 
   @override
   String get vaultNoWrongCodesYet => 'Nenhum código errado salvo ainda.';
@@ -1583,11 +1583,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get vaultAttemptSuccessGeneric => 'Sucesso.';
 
   @override
-  String get vaultAttemptFailedGeneric => 'Fracassada.';
+  String get vaultAttemptFailedGeneric => 'Falhou.';
 
   @override
-  String get vaultAttemptFailedRetry =>
-      'Fracassado. Por favor, tente novamente.';
+  String get vaultAttemptFailedRetry => 'Falhou. Tente novamente.';
 
   @override
   String dashboardNewMessagesCount(int count) {

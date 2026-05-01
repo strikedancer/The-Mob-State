@@ -472,10 +472,10 @@
     }
   },
   "vaultCodeLabel": "Code",
-  "vaultSubmitStake": "Einsatz einreichen",
+  "vaultSubmitStake": "Einsatz setzen",
   "vaultWrongCodesTitle": "Falsche Codes (diesen Monat)",
-  "vaultShowWrongCodes": "Zeigen",
-  "vaultHideWrongCodes": "Verstecken",
+  "vaultShowWrongCodes": "Anzeigen",
+  "vaultHideWrongCodes": "Ausblenden",
   "vaultNoWrongCodesYet": "Es wurden noch keine falschen Codes gespeichert.",
   "couldNotLoadVaultStatus": "Status konnte nicht geladen werden.",
   "vaultEnterFourDigitCode": "Geben Sie einen 4-stelligen Code ein.",

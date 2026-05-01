@@ -42,6 +42,11 @@ router.post('/attempt', authenticate, vaultRateLimiter, async (req: AuthRequest,
           messageNl: result.messageNl,
           messageEn: result.messageEn,
           messageEs: result.messageEs,
+          messageDe: result.messageDe,
+          messageFr: result.messageFr,
+          messageIt: result.messageIt,
+          messagePl: result.messagePl,
+          messagePt: result.messagePt,
         },
       });
     }

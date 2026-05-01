@@ -43,19 +43,26 @@ class _VaultScreenState extends State<VaultScreen> {
     );
   }
 
-  /// Picks server-provided copy for the active UI language (nl / es / en + fallbacks).
+  /// Picks server-provided copy for the active UI language, then common fallbacks.
   String? _vaultMessageFromData(Map<String, dynamic> data) {
-    final code = Localizations.localeOf(context).languageCode;
-    String? raw;
-    if (code == 'nl') {
-      raw = data['messageNl']?.toString();
-    } else if (code == 'es') {
-      raw = data['messageEs']?.toString() ?? data['messageEn']?.toString();
-    } else {
-      raw = data['messageEn']?.toString() ?? data['messageNl']?.toString();
+    final code = Localizations.localeOf(context).languageCode.toLowerCase();
+    final suffix = code.isEmpty
+        ? 'En'
+        : '${code[0].toUpperCase()}${code.length > 1 ? code.substring(1) : ''}';
+    String? pick(String key) {
+      final raw = data[key]?.toString().trim();
+      return (raw == null || raw.isEmpty) ? null : raw;
     }
-    final t = raw?.trim();
-    return (t == null || t.isEmpty) ? null : t;
+
+    return pick('message$suffix') ??
+        pick('messageEn') ??
+        pick('messageNl') ??
+        pick('messageDe') ??
+        pick('messageEs') ??
+        pick('messageFr') ??
+        pick('messageIt') ??
+        pick('messagePl') ??
+        pick('messagePt');
   }
 
   @override
@@ -176,9 +183,15 @@ class _VaultScreenState extends State<VaultScreen> {
         });
         await _loadStatus();
       } else {
+        final event = decoded['event']?.toString();
         final params = (decoded['params'] as Map<String, dynamic>?) ?? const {};
-        final fromApi = _vaultMessageFromData(params);
-        final text = fromApi ?? l10n.vaultAttemptFailedGeneric;
+        final String text;
+        if (event == 'error.insufficient_credits') {
+          text = l10n.crewUiTr19;
+        } else {
+          final fromApi = _vaultMessageFromData(params);
+          text = fromApi ?? l10n.vaultAttemptFailedGeneric;
+        }
         _showTopMessage(text, success: false);
         setState(() {
           _message = text;

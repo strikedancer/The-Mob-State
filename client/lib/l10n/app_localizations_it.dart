@@ -1571,10 +1571,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get vaultWrongCodesTitle => 'Codici errati (questo mese)';
 
   @override
-  String get vaultShowWrongCodes => 'Spettacolo';
+  String get vaultShowWrongCodes => 'Mostra';
 
   @override
-  String get vaultHideWrongCodes => 'Nascondere';
+  String get vaultHideWrongCodes => 'Nascondi';
 
   @override
   String get vaultNoWrongCodesYet => 'Nessun codice errato ancora salvato.';

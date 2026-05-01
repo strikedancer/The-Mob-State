@@ -20,14 +20,45 @@ type VaultStatus = {
   };
 };
 
+type VaultI18n = {
+  messageNl: string;
+  messageEn: string;
+  messageEs: string;
+  messageDe: string;
+  messageFr: string;
+  messageIt: string;
+  messagePl: string;
+  messagePt: string;
+};
+
+function vaultMessages(s: {
+  nl: string;
+  en: string;
+  es: string;
+  de: string;
+  fr: string;
+  it: string;
+  pl: string;
+  pt: string;
+}): VaultI18n {
+  return {
+    messageNl: s.nl,
+    messageEn: s.en,
+    messageEs: s.es,
+    messageDe: s.de,
+    messageFr: s.fr,
+    messageIt: s.it,
+    messagePl: s.pl,
+    messagePt: s.pt,
+  };
+}
+
 type AttemptResult = {
   success: boolean;
   correct: boolean;
   seasonKey: string;
   balance: number;
-  messageNl: string;
-  messageEn: string;
-  messageEs: string;
+} & VaultI18n & {
   prize?: {
     type: 'CREDITS' | 'VIP_30D';
     credits?: number;
@@ -228,9 +259,16 @@ export const vaultService = {
         correct: false,
         seasonKey: getSeasonKey(new Date()),
         balance: 0,
-        messageNl: 'Voer een 4-cijferige code in.',
-        messageEn: 'Enter a 4-digit code.',
-        messageEs: 'Introduce un código de 4 dígitos.',
+        ...vaultMessages({
+          nl: 'Voer een 4-cijferige code in.',
+          en: 'Enter a 4-digit code.',
+          es: 'Introduce un código de 4 dígitos.',
+          de: 'Geben Sie einen 4-stelligen Code ein.',
+          fr: 'Entrez un code à 4 chiffres.',
+          it: 'Inserisci un codice di 4 cifre.',
+          pl: 'Wprowadź 4-cyfrowy kod.',
+          pt: 'Insira um código de 4 dígitos.',
+        }),
         wrongGuesses: [],
       };
     }
@@ -258,9 +296,16 @@ export const vaultService = {
         correct: false,
         seasonKey: status.seasonKey,
         balance: status.player.premiumCredits,
-        messageNl: 'Kraak de Kluis is nu niet actief.',
-        messageEn: 'Crack the Vault is not active right now.',
-        messageEs: 'Romper la caja fuerte no está activo ahora.',
+        ...vaultMessages({
+          nl: 'Kraak de Kluis is nu niet actief.',
+          en: 'Crack the Vault is not active right now.',
+          es: 'La bóveda no está activa en este momento.',
+          de: 'Knacke den Tresor ist gerade nicht aktiv.',
+          fr: 'Le coffre-fort n’est pas disponible pour le moment.',
+          it: 'Scassina il caveau non è attivo al momento.',
+          pl: 'Złam skarbiec nie jest teraz aktywny.',
+          pt: 'Quebrar o cofre não está ativo no momento.',
+        }),
         wrongGuesses: status.player.wrongGuesses,
       };
     }
@@ -340,9 +385,16 @@ export const vaultService = {
           correct: true,
           seasonKey: season.seasonKey,
           balance: result.balance,
-          messageNl: 'Code gekraakt! Je hebt 1 maand VIP gewonnen.',
-          messageEn: 'Vault cracked! You won 1 month of VIP.',
-          messageEs: '¡Código forzado! Has ganado 1 mes de VIP.',
+          ...vaultMessages({
+            nl: 'Code gekraakt! Je hebt 1 maand VIP gewonnen.',
+            en: 'Vault cracked! You won 1 month of VIP.',
+            es: '¡Código acertado! Has ganado 1 mes de VIP.',
+            de: 'Code geknackt! Du hast 1 Monat VIP gewonnen.',
+            fr: 'Code trouvé ! Vous avez gagné 1 mois de VIP.',
+            it: 'Codice forzato! Hai vinto 1 mese di VIP.',
+            pl: 'Kod złamany! Otrzymujesz 1 miesiąc VIP.',
+            pt: 'Código acertado! Ganhou 1 mês de VIP.',
+          }),
           prize,
           wrongGuesses,
         };
@@ -365,9 +417,16 @@ export const vaultService = {
       correct: false,
       seasonKey: season.seasonKey,
       balance: result.balance,
-      messageNl: 'Fout! Deze code staat nu in je lijst.',
-      messageEn: 'Wrong! This code has been added to your list.',
-      messageEs: '¡Incorrecto! Este código se ha añadido a tu lista.',
+      ...vaultMessages({
+        nl: 'Fout! Deze code staat nu in je lijst.',
+        en: 'Wrong! This code has been added to your list.',
+        es: '¡Incorrecto! Este código se ha añadido a tu lista.',
+        de: 'Falsch! Dieser Code wurde deiner Liste hinzugefügt.',
+        fr: 'Raté ! Ce code a été ajouté à votre liste.',
+        it: 'Sbagliato! Questo codice è stato aggiunto alla lista.',
+        pl: 'Źle! Ten kod został dodany do listy.',
+        pt: 'Errado! Este código foi adicionado à sua lista.',
+      }),
       wrongGuesses,
     };
   },

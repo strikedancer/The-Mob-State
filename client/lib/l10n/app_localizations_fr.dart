@@ -1567,23 +1567,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String vaultExpectedPrize(int reward) {
-    return 'Prix ​​attendu : +$reward crédits';
+    return 'Prix attendu : +$reward crédits';
   }
 
   @override
   String get vaultCodeLabel => 'Code';
 
   @override
-  String get vaultSubmitStake => 'Soumettre la mise';
+  String get vaultSubmitStake => 'Valider la mise';
 
   @override
   String get vaultWrongCodesTitle => 'Mauvais codes (ce mois-ci)';
 
   @override
-  String get vaultShowWrongCodes => 'Montrer';
+  String get vaultShowWrongCodes => 'Afficher';
 
   @override
-  String get vaultHideWrongCodes => 'Cacher';
+  String get vaultHideWrongCodes => 'Masquer';
 
   @override
   String get vaultNoWrongCodesYet =>

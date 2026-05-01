@@ -472,16 +472,16 @@
     }
   },
   "vaultCodeLabel": "Código",
-  "vaultSubmitStake": "Enviar aposta",
+  "vaultSubmitStake": "Apostar",
   "vaultWrongCodesTitle": "Códigos errados (este mês)",
   "vaultShowWrongCodes": "Mostrar",
-  "vaultHideWrongCodes": "Esconder",
+  "vaultHideWrongCodes": "Ocultar",
   "vaultNoWrongCodesYet": "Nenhum código errado salvo ainda.",
   "couldNotLoadVaultStatus": "Não foi possível carregar o status.",
   "vaultEnterFourDigitCode": "Digite um código de 4 dígitos.",
   "vaultAttemptSuccessGeneric": "Sucesso.",
-  "vaultAttemptFailedGeneric": "Fracassada.",
-  "vaultAttemptFailedRetry": "Fracassado. Por favor, tente novamente.",
+  "vaultAttemptFailedGeneric": "Falhou.",
+  "vaultAttemptFailedRetry": "Falhou. Tente novamente.",
   "dashboardNewMessagesCount": "{count} novas mensagens",
   "@dashboardNewMessagesCount": {
     "placeholders": {
