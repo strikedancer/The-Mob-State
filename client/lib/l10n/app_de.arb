@@ -6945,5 +6945,117 @@
   "casinoVideoPokerTwoPair": "Zwei Paar",
   "casinoVideoPokerJacksOrBetter": "Jacks or Better",
   "casinoVideoPokerNoWinningHand": "Keine gewinnende Hand",
-  "casinoVideoPokerPayoutTableLong": "Auszahlungstabelle: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x"
+  "casinoVideoPokerPayoutTableLong": "Auszahlungstabelle: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x",
+  "bankScreenLoadFailed": "Bank konnte nicht geladen werden",
+  "bankScreenErrNetwork": "Netzwerkfehler: {details}",
+  "@bankScreenErrNetwork": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyTo": "An: {username}",
+  "@bankScreenCounterpartyTo": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyFrom": "Von: {username}",
+  "@bankScreenCounterpartyFrom": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDepositSuccess": "Einzahlung erfolgreich",
+  "bankScreenDepositFailed": "Die Einzahlung ist fehlgeschlagen",
+  "bankScreenWithdrawSuccess": "Auszahlung erfolgreich",
+  "bankScreenWithdrawFailed": "Die Auszahlung ist fehlgeschlagen",
+  "bankScreenTransferSuccess": "{amount} € überwiesen auf {recipient}",
+  "@bankScreenTransferSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenTransferFailed": "Die Übertragung ist fehlgeschlagen",
+  "bankScreenErrRecipientNotFound": "Spieler nicht gefunden",
+  "bankScreenErrCannotTransferToSelf": "Sie können nicht auf sich selbst übertragen",
+  "bankScreenErrInsufficientBalance": "Unzureichendes Bankguthaben",
+  "bankScreenErrInvalidAmount": "Ungültiger Betrag",
+  "bankScreenTryAgain": "Versuchen Sie es erneut",
+  "bankScreenWorldwideSubtitle": "Bank (weltweit erreichbar)",
+  "bankScreenCashOnHand": "Kassenbestand: {amount}",
+  "@bankScreenCashOnHand": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenBalanceLine": "Bankguthaben: {amount}",
+  "@bankScreenBalanceLine": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenAmountLabel": "Menge",
+  "bankScreenDescriptionOptional": "Beschreibung (optional)",
+  "bankScreenDescriptionDepositHint": "Wird zusammen mit Ihrer Ein- oder Auszahlung bei Transaktionen gespeichert.",
+  "bankScreenDepositButton": "Kaution",
+  "bankScreenWithdrawButton": "Zurückziehen",
+  "bankScreenTransferSectionTitle": "Transfer zum Spieler",
+  "bankScreenRecipientUsername": "Benutzername des Empfängers",
+  "bankScreenRecentRecipients": "Aktuelle Empfänger",
+  "bankScreenDescriptionTransferHint": "Diese Beschreibung wird dem Empfänger auch in Transaktionen angezeigt.",
+  "bankScreenTransferButton": "Überweisen",
+  "bankScreenTransactionsTitle": "Transaktionen",
+  "bankScreenTransactionsTotal": "{count} insgesamt",
+  "@bankScreenTransactionsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenSummaryDeposits": "Einlagen",
+  "bankScreenSummaryWithdrawals": "Auszahlungen",
+  "bankScreenSummarySent": "Gesendet",
+  "bankScreenSummaryReceived": "Erhalten",
+  "bankScreenNoTransactions": "Noch keine Transaktionen",
+  "bankScreenTxnDeposit": "Kaution",
+  "bankScreenTxnWithdraw": "Rückzug",
+  "bankScreenTxnTransferSent": "Überweisung gesendet",
+  "bankScreenTxnTransferReceived": "Überweisung erhalten",
+  "bankScreenPrevious": "Vorherige",
+  "bankScreenNext": "Nächste",
+  "bankScreenPageOf": "Seite {current} von {total}",
+  "@bankScreenPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenRankLabel": "Rang {rank}",
+  "@bankScreenRankLabel": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  }
 }

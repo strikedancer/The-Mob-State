@@ -3310,6 +3310,158 @@ class AppLocalizationsFr extends AppLocalizations {
       'Tableau des gains : Valets+ 1x • Deux paires 2x • Trips 3x • Quinte 4x • Flush 6x • Full House 9x • Quatre 25x • Quinte Flush 50x • Royal 250x';
 
   @override
+  String get bankScreenLoadFailed => 'Échec du chargement de la banque';
+
+  @override
+  String bankScreenErrNetwork(String details) {
+    return 'Erreur réseau : $details';
+  }
+
+  @override
+  String bankScreenCounterpartyTo(String username) {
+    return 'À : $username';
+  }
+
+  @override
+  String bankScreenCounterpartyFrom(String username) {
+    return 'De : $username';
+  }
+
+  @override
+  String get bankScreenDepositSuccess => 'Dépôt réussi';
+
+  @override
+  String get bankScreenDepositFailed => 'Échec du dépôt';
+
+  @override
+  String get bankScreenWithdrawSuccess => 'Retrait réussi';
+
+  @override
+  String get bankScreenWithdrawFailed => 'Échec du retrait';
+
+  @override
+  String bankScreenTransferSuccess(String amount, String recipient) {
+    return '$amount€ transféré à $recipient';
+  }
+
+  @override
+  String get bankScreenTransferFailed => 'Le transfert a échoué';
+
+  @override
+  String get bankScreenErrRecipientNotFound => 'Joueur introuvable';
+
+  @override
+  String get bankScreenErrCannotTransferToSelf =>
+      'Vous ne pouvez pas vous transférer';
+
+  @override
+  String get bankScreenErrInsufficientBalance => 'Solde bancaire insuffisant';
+
+  @override
+  String get bankScreenErrInvalidAmount => 'Montant invalide';
+
+  @override
+  String get bankScreenTryAgain => 'Essayer à nouveau';
+
+  @override
+  String get bankScreenWorldwideSubtitle =>
+      'Banque (accessible dans le monde entier)';
+
+  @override
+  String bankScreenCashOnHand(int amount) {
+    return 'Trésorerie : $amount€';
+  }
+
+  @override
+  String bankScreenBalanceLine(int amount) {
+    return 'Solde bancaire : $amount€';
+  }
+
+  @override
+  String get bankScreenAmountLabel => 'Montante';
+
+  @override
+  String get bankScreenDescriptionOptional => 'Description (facultatif)';
+
+  @override
+  String get bankScreenDescriptionDepositHint =>
+      'Sera stocké avec votre dépôt ou retrait dans les transactions.';
+
+  @override
+  String get bankScreenDepositButton => 'Dépôt';
+
+  @override
+  String get bankScreenWithdrawButton => 'Retirer';
+
+  @override
+  String get bankScreenTransferSectionTitle => 'Transfert au joueur';
+
+  @override
+  String get bankScreenRecipientUsername =>
+      'Nom d\'utilisateur du destinataire';
+
+  @override
+  String get bankScreenRecentRecipients => 'Destinataires récents';
+
+  @override
+  String get bankScreenDescriptionTransferHint =>
+      'Le destinataire verra également cette description dans les transactions.';
+
+  @override
+  String get bankScreenTransferButton => 'Transfert';
+
+  @override
+  String get bankScreenTransactionsTitle => 'Transactions';
+
+  @override
+  String bankScreenTransactionsTotal(int count) {
+    return '$count total';
+  }
+
+  @override
+  String get bankScreenSummaryDeposits => 'Dépôts';
+
+  @override
+  String get bankScreenSummaryWithdrawals => 'Retraits';
+
+  @override
+  String get bankScreenSummarySent => 'Envoyée';
+
+  @override
+  String get bankScreenSummaryReceived => 'Reçue';
+
+  @override
+  String get bankScreenNoTransactions => 'Aucune transaction pour l\'instant';
+
+  @override
+  String get bankScreenTxnDeposit => 'Dépôt';
+
+  @override
+  String get bankScreenTxnWithdraw => 'Retrait';
+
+  @override
+  String get bankScreenTxnTransferSent => 'Virement envoyé';
+
+  @override
+  String get bankScreenTxnTransferReceived => 'Virement reçu';
+
+  @override
+  String get bankScreenPrevious => 'Précédente';
+
+  @override
+  String get bankScreenNext => 'Suivante';
+
+  @override
+  String bankScreenPageOf(int current, int total) {
+    return 'Page $current de $total';
+  }
+
+  @override
+  String bankScreenRankLabel(String rank) {
+    return 'Rang $rank';
+  }
+
+  @override
   String get retry => 'Réessayer';
 
   @override

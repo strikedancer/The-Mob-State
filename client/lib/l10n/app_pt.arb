@@ -6777,22 +6777,22 @@
   "bmHubVehicleDelisted": "Veículo removido da lista com sucesso!",
   "bmHubDelistFailed": "Falha ao remover veículo",
   "bmHubLocationUnknown": "DESCONHECIDA",
-  "casinoHubChooseGameHint": "Choose a game and place your bet",
-  "casinoPlayButton": "Play",
-  "casinoGameBaccaratName": "Baccarat",
-  "casinoGameBaccaratDesc": "Bet on player, banker, or tie with strategic odds.",
-  "casinoGameVideoPokerName": "Video Poker",
-  "casinoGameVideoPokerDesc": "Draw 5 cards and hit combos up to Royal Flush.",
-  "casinoBuyCasinoLockedTitle": "Buy casino (locked)",
-  "casinoErrGenericPlay": "Something went wrong",
-  "casinoErrSpinFailed": "Error while spinning",
-  "casinoErrBetFailed": "Error while betting",
-  "casinoErrGambleFailed": "Error while gambling",
-  "casinoErrThrowFailed": "Error while rolling",
-  "casinoErrCasinoNotFound": "Casino not found. Make sure the casino is purchased in this country.",
-  "casinoErrInsufficientFunds": "Not enough money",
-  "casinoErrInsufficientBankrollPayout": "Casino bankroll too low for this payout",
-  "casinoErrNetwork": "Network error: {error}",
+  "casinoHubChooseGameHint": "Escolha um jogo e faça sua aposta",
+  "casinoPlayButton": "Jogar",
+  "casinoGameBaccaratName": "Bacará",
+  "casinoGameBaccaratDesc": "Aposte no jogador, na banca ou empata com probabilidades estratégicas.",
+  "casinoGameVideoPokerName": "Vídeo pôquer",
+  "casinoGameVideoPokerDesc": "Compre 5 cartas e acerte combos até Royal Flush.",
+  "casinoBuyCasinoLockedTitle": "Comprar cassino (bloqueado)",
+  "casinoErrGenericPlay": "Algo deu errado",
+  "casinoErrSpinFailed": "Erro ao girar",
+  "casinoErrBetFailed": "Erro ao apostar",
+  "casinoErrGambleFailed": "Erro ao jogar",
+  "casinoErrThrowFailed": "Erro ao rolar",
+  "casinoErrCasinoNotFound": "Cassino não encontrado. Certifique-se de que o cassino foi comprado neste país.",
+  "casinoErrInsufficientFunds": "Não há dinheiro suficiente",
+  "casinoErrInsufficientBankrollPayout": "Bankroll do cassino muito baixo para este pagamento",
+  "casinoErrNetwork": "Erro de rede: {error}",
   "@casinoErrNetwork": {
     "placeholders": {
       "error": {
@@ -6800,10 +6800,10 @@
       }
     }
   },
-  "casinoResultYouWon": "You won!",
-  "casinoResultYouLost": "Lost",
-  "casinoResultYouWonCelebrate": "🎉 You won!",
-  "casinoWonEuroAmount": "You won €{amount}!",
+  "casinoResultYouWon": "Você venceu!",
+  "casinoResultYouLost": "Perdida",
+  "casinoResultYouWonCelebrate": "🎉 Você venceu!",
+  "casinoWonEuroAmount": "Você ganhou €{amount}!",
   "@casinoWonEuroAmount": {
     "placeholders": {
       "amount": {
@@ -6811,7 +6811,7 @@
       }
     }
   },
-  "casinoLostEuroAmount": "You lost €{amount}",
+  "casinoLostEuroAmount": "Você perdeu €{amount}",
   "@casinoLostEuroAmount": {
     "placeholders": {
       "amount": {
@@ -6819,8 +6819,8 @@
       }
     }
   },
-  "casinoYouLostPlain": "You lost",
-  "casinoBlackjackWinAmount": "You won €{amount}!",
+  "casinoYouLostPlain": "Você perdeu",
+  "casinoBlackjackWinAmount": "Você ganhou €{amount}!",
   "@casinoBlackjackWinAmount": {
     "placeholders": {
       "amount": {
@@ -6836,11 +6836,11 @@
       }
     }
   },
-  "casinoAgain": "Again",
-  "casinoBankruptTitle": "Casino bankrupt!",
-  "casinoBankruptBody": "The casino went bankrupt!\n\nThe owner did not have enough cash in the bankroll to cover all payouts.\n\nThe casino is now closed and can be purchased again.",
-  "casinoBackToCasino": "Back to Casino",
-  "casinoRouletteNumberColor": "Number: {number} ({color})",
+  "casinoAgain": "De novo",
+  "casinoBankruptTitle": "Cassino falido!",
+  "casinoBankruptBody": "O cassino faliu! \n\nO proprietário não tinha dinheiro suficiente na banca para cobrir todos os pagamentos. \n\nO cassino está fechado e pode ser comprado novamente.",
+  "casinoBackToCasino": "Voltar ao Cassino",
+  "casinoRouletteNumberColor": "Número: {number} ({color})",
   "@casinoRouletteNumberColor": {
     "placeholders": {
       "number": {
@@ -6851,16 +6851,16 @@
       }
     }
   },
-  "casinoColorGreen": "green",
-  "casinoColorRed": "red",
-  "casinoColorBlack": "black",
-  "casinoRoulettePickBet": "Choose your bet",
-  "casinoRouletteBetRed": "Red",
-  "casinoRouletteBetBlack": "Black",
-  "casinoRouletteBetEven": "Even",
-  "casinoRouletteBetOdd": "Odd",
-  "casinoRouletteSpinButton": "SPIN!",
-  "casinoRouletteLastResult": "Last result: {number}",
+  "casinoColorGreen": "verde",
+  "casinoColorRed": "vermelha",
+  "casinoColorBlack": "preta",
+  "casinoRoulettePickBet": "Escolha sua aposta",
+  "casinoRouletteBetRed": "Vermelha",
+  "casinoRouletteBetBlack": "Preta",
+  "casinoRouletteBetEven": "Até",
+  "casinoRouletteBetOdd": "Chance",
+  "casinoRouletteSpinButton": "RODAR!",
+  "casinoRouletteLastResult": "Último resultado: {number}",
   "@casinoRouletteLastResult": {
     "placeholders": {
       "number": {
@@ -6868,13 +6868,13 @@
       }
     }
   },
-  "casinoBetLabel": "Bet",
-  "casinoBlackjackPlayButton": "PLAY!",
-  "casinoSlotSpinButton": "SPIN!",
-  "casinoDiceRollButton": "ROLL!",
-  "casinoBlackjackYourCards": "Your cards",
-  "casinoBlackjackDealerCards": "Dealer cards",
-  "casinoBlackjackDealerTotal": "Dealer: {total}",
+  "casinoBetLabel": "Aposta",
+  "casinoBlackjackPlayButton": "JOGAR!",
+  "casinoSlotSpinButton": "RODAR!",
+  "casinoDiceRollButton": "ROLAR!",
+  "casinoBlackjackYourCards": "Suas cartas",
+  "casinoBlackjackDealerCards": "Cartas de dealer",
+  "casinoBlackjackDealerTotal": "Revendedor: {total}",
   "@casinoBlackjackDealerTotal": {
     "placeholders": {
       "total": {
@@ -6882,7 +6882,7 @@
       }
     }
   },
-  "casinoBlackjackYouTotal": "You: {total}",
+  "casinoBlackjackYouTotal": "Você: {total}",
   "@casinoBlackjackYouTotal": {
     "placeholders": {
       "total": {
@@ -6898,15 +6898,15 @@
       }
     }
   },
-  "casinoDicePredictTitle": "Predict",
-  "casinoDiceLowLabel": "Low (2-6)",
-  "casinoDiceHighLabel": "High (8-12)",
-  "casinoDiceOddsHint": "Low/High pays 2x • Exact total pays 6x",
-  "casinoSlotPayoutTableTitle": "Payout table",
-  "casinoBaccaratPlayer": "Player",
-  "casinoBaccaratBanker": "Banker",
-  "casinoBaccaratTieBet": "Tie",
-  "casinoWinnerPrefix": "Winner: {who}",
+  "casinoDicePredictTitle": "Prever",
+  "casinoDiceLowLabel": "Baixo (2-6)",
+  "casinoDiceHighLabel": "Alto (8-12)",
+  "casinoDiceOddsHint": "Baixo/Alto paga 2x • O total exato paga 6x",
+  "casinoSlotPayoutTableTitle": "Tabela de pagamentos",
+  "casinoBaccaratPlayer": "Jogadora",
+  "casinoBaccaratBanker": "Banqueira",
+  "casinoBaccaratTieBet": "Gravata",
+  "casinoWinnerPrefix": "Vencedor: {who}",
   "@casinoWinnerPrefix": {
     "placeholders": {
       "who": {
@@ -6914,7 +6914,7 @@
       }
     }
   },
-  "casinoPayoutEuro": "Payout: €{amount}",
+  "casinoPayoutEuro": "Pagamento: €{amount}",
   "@casinoPayoutEuro": {
     "placeholders": {
       "amount": {
@@ -6922,8 +6922,8 @@
       }
     }
   },
-  "casinoNoPayout": "No payout",
-  "casinoResultEuro": "Result: €{amount}",
+  "casinoNoPayout": "Sem pagamento",
+  "casinoResultEuro": "Resultado: €{amount}",
   "@casinoResultEuro": {
     "placeholders": {
       "amount": {
@@ -6931,19 +6931,131 @@
       }
     }
   },
-  "casinoDealing": "Dealing…",
-  "casinoDealCaps": "DEAL",
-  "casinoVideoPokerDrawCards": "DRAW CARDS",
-  "casinoVideoPokerDrawHint": "Draw your hand",
-  "casinoVideoPokerRoyalFlush": "Royal Flush",
-  "casinoVideoPokerStraightFlush": "Straight Flush",
-  "casinoVideoPokerFourKind": "Four of a Kind",
-  "casinoVideoPokerFullHouse": "Full House",
-  "casinoVideoPokerFlush": "Flush",
-  "casinoVideoPokerStraight": "Straight",
-  "casinoVideoPokerThreeKind": "Three of a Kind",
-  "casinoVideoPokerTwoPair": "Two Pair",
-  "casinoVideoPokerJacksOrBetter": "Jacks or Better",
-  "casinoVideoPokerNoWinningHand": "No winning hand",
-  "casinoVideoPokerPayoutTableLong": "Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x"
+  "casinoDealing": "Tratativa…",
+  "casinoDealCaps": "NEGÓCIO",
+  "casinoVideoPokerDrawCards": "COMPRAR CARTAS",
+  "casinoVideoPokerDrawHint": "Desenhe sua mão",
+  "casinoVideoPokerRoyalFlush": "Rubor Real",
+  "casinoVideoPokerStraightFlush": "Flush direto",
+  "casinoVideoPokerFourKind": "Quatro do mesmo tipo",
+  "casinoVideoPokerFullHouse": "Casa cheia",
+  "casinoVideoPokerFlush": "Lavar",
+  "casinoVideoPokerStraight": "Direta",
+  "casinoVideoPokerThreeKind": "Três iguais",
+  "casinoVideoPokerTwoPair": "Dois pares",
+  "casinoVideoPokerJacksOrBetter": "Valetes ou melhor",
+  "casinoVideoPokerNoWinningHand": "Nenhuma mão vencedora",
+  "casinoVideoPokerPayoutTableLong": "Tabela de pagamentos: Valetes+ 1x • Dois pares 2x • Trincas 3x • Straight 4x • Flush 6x • Full House 9x • Quatro 25x • Straight Flush 50x • Royal 250x",
+  "bankScreenLoadFailed": "Falha ao carregar banco",
+  "bankScreenErrNetwork": "Erro de rede: {details}",
+  "@bankScreenErrNetwork": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyTo": "Para: {username}",
+  "@bankScreenCounterpartyTo": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyFrom": "De: {username}",
+  "@bankScreenCounterpartyFrom": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDepositSuccess": "Depósito bem sucedido",
+  "bankScreenDepositFailed": "Falha no depósito",
+  "bankScreenWithdrawSuccess": "Retirada bem-sucedida",
+  "bankScreenWithdrawFailed": "Falha na retirada",
+  "bankScreenTransferSuccess": "€{amount} transferidos para {recipient}",
+  "@bankScreenTransferSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenTransferFailed": "Falha na transferência",
+  "bankScreenErrRecipientNotFound": "Jogador não encontrado",
+  "bankScreenErrCannotTransferToSelf": "Você não pode transferir para si mesmo",
+  "bankScreenErrInsufficientBalance": "Saldo bancário insuficiente",
+  "bankScreenErrInvalidAmount": "Valor inválido",
+  "bankScreenTryAgain": "Tente novamente",
+  "bankScreenWorldwideSubtitle": "Banco (acessível em todo o mundo)",
+  "bankScreenCashOnHand": "Dinheiro disponível: €{amount}",
+  "@bankScreenCashOnHand": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenBalanceLine": "Saldo bancário: €{amount}",
+  "@bankScreenBalanceLine": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenAmountLabel": "Quantia",
+  "bankScreenDescriptionOptional": "Descrição (opcional)",
+  "bankScreenDescriptionDepositHint": "Será armazenado com seu depósito ou retirada nas transações.",
+  "bankScreenDepositButton": "Depósito",
+  "bankScreenWithdrawButton": "Retirar",
+  "bankScreenTransferSectionTitle": "Transferir para o jogador",
+  "bankScreenRecipientUsername": "Nome de usuário do destinatário",
+  "bankScreenRecentRecipients": "Destinatários recentes",
+  "bankScreenDescriptionTransferHint": "O destinatário também verá esta descrição nas transações.",
+  "bankScreenTransferButton": "Transferir",
+  "bankScreenTransactionsTitle": "Transações",
+  "bankScreenTransactionsTotal": "{count} total",
+  "@bankScreenTransactionsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenSummaryDeposits": "Depósitos",
+  "bankScreenSummaryWithdrawals": "Retiradas",
+  "bankScreenSummarySent": "Enviado",
+  "bankScreenSummaryReceived": "Recebida",
+  "bankScreenNoTransactions": "Nenhuma transação ainda",
+  "bankScreenTxnDeposit": "Depósito",
+  "bankScreenTxnWithdraw": "Cancelamento",
+  "bankScreenTxnTransferSent": "Transferência enviada",
+  "bankScreenTxnTransferReceived": "Transferência recebida",
+  "bankScreenPrevious": "Anterior",
+  "bankScreenNext": "Próxima",
+  "bankScreenPageOf": "Página {current} de {total}",
+  "@bankScreenPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenRankLabel": "Classificação {rank}",
+  "@bankScreenRankLabel": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  }
 }

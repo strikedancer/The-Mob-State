@@ -6945,5 +6945,117 @@
   "casinoVideoPokerTwoPair": "Deux paires",
   "casinoVideoPokerJacksOrBetter": "Jacks ou mieux",
   "casinoVideoPokerNoWinningHand": "Pas de main gagnante",
-  "casinoVideoPokerPayoutTableLong": "Tableau des gains : Valets+ 1x • Deux paires 2x • Trips 3x • Quinte 4x • Flush 6x • Full House 9x • Quatre 25x • Quinte Flush 50x • Royal 250x"
+  "casinoVideoPokerPayoutTableLong": "Tableau des gains : Valets+ 1x • Deux paires 2x • Trips 3x • Quinte 4x • Flush 6x • Full House 9x • Quatre 25x • Quinte Flush 50x • Royal 250x",
+  "bankScreenLoadFailed": "Échec du chargement de la banque",
+  "bankScreenErrNetwork": "Erreur réseau : {details}",
+  "@bankScreenErrNetwork": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyTo": "À : {username}",
+  "@bankScreenCounterpartyTo": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyFrom": "De : {username}",
+  "@bankScreenCounterpartyFrom": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDepositSuccess": "Dépôt réussi",
+  "bankScreenDepositFailed": "Échec du dépôt",
+  "bankScreenWithdrawSuccess": "Retrait réussi",
+  "bankScreenWithdrawFailed": "Échec du retrait",
+  "bankScreenTransferSuccess": "{amount}€ transféré à {recipient}",
+  "@bankScreenTransferSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenTransferFailed": "Le transfert a échoué",
+  "bankScreenErrRecipientNotFound": "Joueur introuvable",
+  "bankScreenErrCannotTransferToSelf": "Vous ne pouvez pas vous transférer",
+  "bankScreenErrInsufficientBalance": "Solde bancaire insuffisant",
+  "bankScreenErrInvalidAmount": "Montant invalide",
+  "bankScreenTryAgain": "Essayer à nouveau",
+  "bankScreenWorldwideSubtitle": "Banque (accessible dans le monde entier)",
+  "bankScreenCashOnHand": "Trésorerie : {amount}€",
+  "@bankScreenCashOnHand": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenBalanceLine": "Solde bancaire : {amount}€",
+  "@bankScreenBalanceLine": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenAmountLabel": "Montante",
+  "bankScreenDescriptionOptional": "Description (facultatif)",
+  "bankScreenDescriptionDepositHint": "Sera stocké avec votre dépôt ou retrait dans les transactions.",
+  "bankScreenDepositButton": "Dépôt",
+  "bankScreenWithdrawButton": "Retirer",
+  "bankScreenTransferSectionTitle": "Transfert au joueur",
+  "bankScreenRecipientUsername": "Nom d'utilisateur du destinataire",
+  "bankScreenRecentRecipients": "Destinataires récents",
+  "bankScreenDescriptionTransferHint": "Le destinataire verra également cette description dans les transactions.",
+  "bankScreenTransferButton": "Transfert",
+  "bankScreenTransactionsTitle": "Transactions",
+  "bankScreenTransactionsTotal": "{count} total",
+  "@bankScreenTransactionsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenSummaryDeposits": "Dépôts",
+  "bankScreenSummaryWithdrawals": "Retraits",
+  "bankScreenSummarySent": "Envoyée",
+  "bankScreenSummaryReceived": "Reçue",
+  "bankScreenNoTransactions": "Aucune transaction pour l'instant",
+  "bankScreenTxnDeposit": "Dépôt",
+  "bankScreenTxnWithdraw": "Retrait",
+  "bankScreenTxnTransferSent": "Virement envoyé",
+  "bankScreenTxnTransferReceived": "Virement reçu",
+  "bankScreenPrevious": "Précédente",
+  "bankScreenNext": "Suivante",
+  "bankScreenPageOf": "Page {current} de {total}",
+  "@bankScreenPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenRankLabel": "Rang {rank}",
+  "@bankScreenRankLabel": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  }
 }

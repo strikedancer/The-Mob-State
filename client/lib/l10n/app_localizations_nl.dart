@@ -3267,6 +3267,156 @@ class AppLocalizationsNl extends AppLocalizations {
       'Uitbetalingstabel: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x';
 
   @override
+  String get bankScreenLoadFailed => 'Bank laden mislukt';
+
+  @override
+  String bankScreenErrNetwork(String details) {
+    return 'Netwerkfout: $details';
+  }
+
+  @override
+  String bankScreenCounterpartyTo(String username) {
+    return 'Naar: $username';
+  }
+
+  @override
+  String bankScreenCounterpartyFrom(String username) {
+    return 'Van: $username';
+  }
+
+  @override
+  String get bankScreenDepositSuccess => 'Storting gelukt';
+
+  @override
+  String get bankScreenDepositFailed => 'Storting mislukt';
+
+  @override
+  String get bankScreenWithdrawSuccess => 'Opname gelukt';
+
+  @override
+  String get bankScreenWithdrawFailed => 'Opname mislukt';
+
+  @override
+  String bankScreenTransferSuccess(String amount, String recipient) {
+    return '€$amount overgemaakt naar $recipient';
+  }
+
+  @override
+  String get bankScreenTransferFailed => 'Overmaken mislukt';
+
+  @override
+  String get bankScreenErrRecipientNotFound => 'Speler niet gevonden';
+
+  @override
+  String get bankScreenErrCannotTransferToSelf =>
+      'Je kunt niet naar jezelf overmaken';
+
+  @override
+  String get bankScreenErrInsufficientBalance => 'Onvoldoende banksaldo';
+
+  @override
+  String get bankScreenErrInvalidAmount => 'Ongeldig bedrag';
+
+  @override
+  String get bankScreenTryAgain => 'Opnieuw proberen';
+
+  @override
+  String get bankScreenWorldwideSubtitle => 'Bank (wereldwijd toegankelijk)';
+
+  @override
+  String bankScreenCashOnHand(int amount) {
+    return 'Contant op zak: €$amount';
+  }
+
+  @override
+  String bankScreenBalanceLine(int amount) {
+    return 'Bank saldo: €$amount';
+  }
+
+  @override
+  String get bankScreenAmountLabel => 'Bedrag';
+
+  @override
+  String get bankScreenDescriptionOptional => 'Omschrijving (optioneel)';
+
+  @override
+  String get bankScreenDescriptionDepositHint =>
+      'Wordt opgeslagen bij je storting of opname in transacties.';
+
+  @override
+  String get bankScreenDepositButton => 'Storten';
+
+  @override
+  String get bankScreenWithdrawButton => 'Opnemen';
+
+  @override
+  String get bankScreenTransferSectionTitle => 'Overmaken naar speler';
+
+  @override
+  String get bankScreenRecipientUsername => 'Gebruikersnaam ontvanger';
+
+  @override
+  String get bankScreenRecentRecipients => 'Recente ontvangers';
+
+  @override
+  String get bankScreenDescriptionTransferHint =>
+      'De ontvanger ziet deze omschrijving ook terug in transacties.';
+
+  @override
+  String get bankScreenTransferButton => 'Overmaken';
+
+  @override
+  String get bankScreenTransactionsTitle => 'Transacties';
+
+  @override
+  String bankScreenTransactionsTotal(int count) {
+    return '$count totaal';
+  }
+
+  @override
+  String get bankScreenSummaryDeposits => 'Stortingen';
+
+  @override
+  String get bankScreenSummaryWithdrawals => 'Opnames';
+
+  @override
+  String get bankScreenSummarySent => 'Verzonden';
+
+  @override
+  String get bankScreenSummaryReceived => 'Ontvangen';
+
+  @override
+  String get bankScreenNoTransactions => 'Nog geen transacties';
+
+  @override
+  String get bankScreenTxnDeposit => 'Storting';
+
+  @override
+  String get bankScreenTxnWithdraw => 'Opname';
+
+  @override
+  String get bankScreenTxnTransferSent => 'Overboeking verzonden';
+
+  @override
+  String get bankScreenTxnTransferReceived => 'Overboeking ontvangen';
+
+  @override
+  String get bankScreenPrevious => 'Vorige';
+
+  @override
+  String get bankScreenNext => 'Volgende';
+
+  @override
+  String bankScreenPageOf(int current, int total) {
+    return 'Pagina $current van $total';
+  }
+
+  @override
+  String bankScreenRankLabel(String rank) {
+    return 'Rang $rank';
+  }
+
+  @override
   String get retry => 'Opnieuw proberen';
 
   @override

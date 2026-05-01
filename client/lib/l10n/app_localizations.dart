@@ -5877,6 +5877,264 @@ abstract class AppLocalizations {
   /// **'Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x'**
   String get casinoVideoPokerPayoutTableLong;
 
+  /// No description provided for @bankScreenLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load bank'**
+  String get bankScreenLoadFailed;
+
+  /// No description provided for @bankScreenErrNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error: {details}'**
+  String bankScreenErrNetwork(String details);
+
+  /// No description provided for @bankScreenCounterpartyTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To: {username}'**
+  String bankScreenCounterpartyTo(String username);
+
+  /// No description provided for @bankScreenCounterpartyFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From: {username}'**
+  String bankScreenCounterpartyFrom(String username);
+
+  /// No description provided for @bankScreenDepositSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit successful'**
+  String get bankScreenDepositSuccess;
+
+  /// No description provided for @bankScreenDepositFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit failed'**
+  String get bankScreenDepositFailed;
+
+  /// No description provided for @bankScreenWithdrawSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal successful'**
+  String get bankScreenWithdrawSuccess;
+
+  /// No description provided for @bankScreenWithdrawFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal failed'**
+  String get bankScreenWithdrawFailed;
+
+  /// No description provided for @bankScreenTransferSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'€{amount} transferred to {recipient}'**
+  String bankScreenTransferSuccess(String amount, String recipient);
+
+  /// No description provided for @bankScreenTransferFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer failed'**
+  String get bankScreenTransferFailed;
+
+  /// No description provided for @bankScreenErrRecipientNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Player not found'**
+  String get bankScreenErrRecipientNotFound;
+
+  /// No description provided for @bankScreenErrCannotTransferToSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot transfer to yourself'**
+  String get bankScreenErrCannotTransferToSelf;
+
+  /// No description provided for @bankScreenErrInsufficientBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient bank balance'**
+  String get bankScreenErrInsufficientBalance;
+
+  /// No description provided for @bankScreenErrInvalidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid amount'**
+  String get bankScreenErrInvalidAmount;
+
+  /// No description provided for @bankScreenTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get bankScreenTryAgain;
+
+  /// No description provided for @bankScreenWorldwideSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank (worldwide accessible)'**
+  String get bankScreenWorldwideSubtitle;
+
+  /// No description provided for @bankScreenCashOnHand.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash on hand: €{amount}'**
+  String bankScreenCashOnHand(int amount);
+
+  /// No description provided for @bankScreenBalanceLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank balance: €{amount}'**
+  String bankScreenBalanceLine(int amount);
+
+  /// No description provided for @bankScreenAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get bankScreenAmountLabel;
+
+  /// No description provided for @bankScreenDescriptionOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get bankScreenDescriptionOptional;
+
+  /// No description provided for @bankScreenDescriptionDepositHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be stored with your deposit or withdrawal in transactions.'**
+  String get bankScreenDescriptionDepositHint;
+
+  /// No description provided for @bankScreenDepositButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit'**
+  String get bankScreenDepositButton;
+
+  /// No description provided for @bankScreenWithdrawButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get bankScreenWithdrawButton;
+
+  /// No description provided for @bankScreenTransferSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer to player'**
+  String get bankScreenTransferSectionTitle;
+
+  /// No description provided for @bankScreenRecipientUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient username'**
+  String get bankScreenRecipientUsername;
+
+  /// No description provided for @bankScreenRecentRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent recipients'**
+  String get bankScreenRecentRecipients;
+
+  /// No description provided for @bankScreenDescriptionTransferHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The recipient will also see this description in transactions.'**
+  String get bankScreenDescriptionTransferHint;
+
+  /// No description provided for @bankScreenTransferButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get bankScreenTransferButton;
+
+  /// No description provided for @bankScreenTransactionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get bankScreenTransactionsTitle;
+
+  /// No description provided for @bankScreenTransactionsTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} total'**
+  String bankScreenTransactionsTotal(int count);
+
+  /// No description provided for @bankScreenSummaryDeposits.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposits'**
+  String get bankScreenSummaryDeposits;
+
+  /// No description provided for @bankScreenSummaryWithdrawals.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawals'**
+  String get bankScreenSummaryWithdrawals;
+
+  /// No description provided for @bankScreenSummarySent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get bankScreenSummarySent;
+
+  /// No description provided for @bankScreenSummaryReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get bankScreenSummaryReceived;
+
+  /// No description provided for @bankScreenNoTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get bankScreenNoTransactions;
+
+  /// No description provided for @bankScreenTxnDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit'**
+  String get bankScreenTxnDeposit;
+
+  /// No description provided for @bankScreenTxnWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal'**
+  String get bankScreenTxnWithdraw;
+
+  /// No description provided for @bankScreenTxnTransferSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer sent'**
+  String get bankScreenTxnTransferSent;
+
+  /// No description provided for @bankScreenTxnTransferReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer received'**
+  String get bankScreenTxnTransferReceived;
+
+  /// No description provided for @bankScreenPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get bankScreenPrevious;
+
+  /// No description provided for @bankScreenNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get bankScreenNext;
+
+  /// No description provided for @bankScreenPageOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {current} of {total}'**
+  String bankScreenPageOf(int current, int total);
+
+  /// No description provided for @bankScreenRankLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank {rank}'**
+  String bankScreenRankLabel(String rank);
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:

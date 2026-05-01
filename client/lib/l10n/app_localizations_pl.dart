@@ -3024,158 +3024,158 @@ class AppLocalizationsPl extends AppLocalizations {
       '• Możesz wpłacić lub wypłacić pieniądze w dowolnym momencie';
 
   @override
-  String get casinoHubChooseGameHint => 'Choose a game and place your bet';
+  String get casinoHubChooseGameHint => 'Wybierz grę i postaw zakład';
 
   @override
-  String get casinoPlayButton => 'Play';
+  String get casinoPlayButton => 'Grać';
 
   @override
-  String get casinoGameBaccaratName => 'Baccarat';
+  String get casinoGameBaccaratName => 'Bakarat';
 
   @override
   String get casinoGameBaccaratDesc =>
-      'Bet on player, banker, or tie with strategic odds.';
+      'Postaw zakład na gracza, bankiera lub remis ze strategicznymi kursami.';
 
   @override
-  String get casinoGameVideoPokerName => 'Video Poker';
+  String get casinoGameVideoPokerName => 'Wideopoker';
 
   @override
   String get casinoGameVideoPokerDesc =>
-      'Draw 5 cards and hit combos up to Royal Flush.';
+      'Dobierz 5 kart i uderzaj kombinacjami aż do pokera królewskiego.';
 
   @override
-  String get casinoBuyCasinoLockedTitle => 'Buy casino (locked)';
+  String get casinoBuyCasinoLockedTitle => 'Kup kasyno (zablokowane)';
 
   @override
-  String get casinoErrGenericPlay => 'Something went wrong';
+  String get casinoErrGenericPlay => 'Coś poszło nie tak';
 
   @override
-  String get casinoErrSpinFailed => 'Error while spinning';
+  String get casinoErrSpinFailed => 'Błąd podczas wirowania';
 
   @override
-  String get casinoErrBetFailed => 'Error while betting';
+  String get casinoErrBetFailed => 'Błąd podczas obstawiania';
 
   @override
-  String get casinoErrGambleFailed => 'Error while gambling';
+  String get casinoErrGambleFailed => 'Błąd podczas gry';
 
   @override
-  String get casinoErrThrowFailed => 'Error while rolling';
+  String get casinoErrThrowFailed => 'Błąd podczas toczenia';
 
   @override
   String get casinoErrCasinoNotFound =>
-      'Casino not found. Make sure the casino is purchased in this country.';
+      'Nie znaleziono kasyna. Upewnij się, że kasyno zostało zakupione w tym kraju.';
 
   @override
-  String get casinoErrInsufficientFunds => 'Not enough money';
+  String get casinoErrInsufficientFunds => 'Za mało pieniędzy';
 
   @override
   String get casinoErrInsufficientBankrollPayout =>
-      'Casino bankroll too low for this payout';
+      'Bankroll kasyna jest zbyt niski dla tej wypłaty';
 
   @override
   String casinoErrNetwork(String error) {
-    return 'Network error: $error';
+    return 'Błąd sieci: $error';
   }
 
   @override
-  String get casinoResultYouWon => 'You won!';
+  String get casinoResultYouWon => 'Wygrałeś!';
 
   @override
-  String get casinoResultYouLost => 'Lost';
+  String get casinoResultYouLost => 'Zaginiony';
 
   @override
-  String get casinoResultYouWonCelebrate => '🎉 You won!';
+  String get casinoResultYouWonCelebrate => '🎉 Wygrałeś!';
 
   @override
   String casinoWonEuroAmount(String amount) {
-    return 'You won €$amount!';
+    return 'Wygrałeś $amount €!';
   }
 
   @override
   String casinoLostEuroAmount(String amount) {
-    return 'You lost €$amount';
+    return 'Straciłeś $amount €';
   }
 
   @override
-  String get casinoYouLostPlain => 'You lost';
+  String get casinoYouLostPlain => 'Przegrałeś';
 
   @override
   String casinoBlackjackWinAmount(String amount) {
-    return 'You won €$amount!';
+    return 'Wygrałeś $amount €!';
   }
 
   @override
   String casinoBlackjackCelebrate(String amount) {
-    return 'BLACKJACK! €$amount';
+    return 'MACZUGA! €$amount';
   }
 
   @override
-  String get casinoAgain => 'Again';
+  String get casinoAgain => 'Ponownie';
 
   @override
-  String get casinoBankruptTitle => 'Casino bankrupt!';
+  String get casinoBankruptTitle => 'Kasyno upadłe!';
 
   @override
   String get casinoBankruptBody =>
-      'The casino went bankrupt!\n\nThe owner did not have enough cash in the bankroll to cover all payouts.\n\nThe casino is now closed and can be purchased again.';
+      'Kasyno zbankrutowało! \n\nWłaściciel nie miał wystarczającej ilości gotówki na koncie, aby pokryć wszystkie wypłaty. \n\nKasyno jest teraz zamknięte i można je kupić ponownie.';
 
   @override
-  String get casinoBackToCasino => 'Back to Casino';
+  String get casinoBackToCasino => 'Powrót do kasyna';
 
   @override
   String casinoRouletteNumberColor(String number, String color) {
-    return 'Number: $number ($color)';
+    return 'Liczba: $number ($color)';
   }
 
   @override
-  String get casinoColorGreen => 'green';
+  String get casinoColorGreen => 'zielony';
 
   @override
-  String get casinoColorRed => 'red';
+  String get casinoColorRed => 'czerwony';
 
   @override
-  String get casinoColorBlack => 'black';
+  String get casinoColorBlack => 'czarny';
 
   @override
-  String get casinoRoulettePickBet => 'Choose your bet';
+  String get casinoRoulettePickBet => 'Wybierz swój zakład';
 
   @override
-  String get casinoRouletteBetRed => 'Red';
+  String get casinoRouletteBetRed => 'Czerwony';
 
   @override
-  String get casinoRouletteBetBlack => 'Black';
+  String get casinoRouletteBetBlack => 'Czarny';
 
   @override
-  String get casinoRouletteBetEven => 'Even';
+  String get casinoRouletteBetEven => 'Nawet';
 
   @override
-  String get casinoRouletteBetOdd => 'Odd';
+  String get casinoRouletteBetOdd => 'Dziwne';
 
   @override
-  String get casinoRouletteSpinButton => 'SPIN!';
+  String get casinoRouletteSpinButton => 'KRĘCIĆ SIĘ!';
 
   @override
   String casinoRouletteLastResult(String number) {
-    return 'Last result: $number';
+    return 'Ostatni wynik: $number';
   }
 
   @override
-  String get casinoBetLabel => 'Bet';
+  String get casinoBetLabel => 'Zakład';
 
   @override
-  String get casinoBlackjackPlayButton => 'PLAY!';
+  String get casinoBlackjackPlayButton => 'GRAĆ!';
 
   @override
-  String get casinoSlotSpinButton => 'SPIN!';
+  String get casinoSlotSpinButton => 'KRĘCIĆ SIĘ!';
 
   @override
-  String get casinoDiceRollButton => 'ROLL!';
+  String get casinoDiceRollButton => 'ROLKA!';
 
   @override
-  String get casinoBlackjackYourCards => 'Your cards';
+  String get casinoBlackjackYourCards => 'Twoje karty';
 
   @override
-  String get casinoBlackjackDealerCards => 'Dealer cards';
+  String get casinoBlackjackDealerCards => 'Karty dealera';
 
   @override
   String casinoBlackjackDealerTotal(String total) {
@@ -3184,101 +3184,253 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String casinoBlackjackYouTotal(String total) {
-    return 'You: $total';
+    return 'Ty: $total';
   }
 
   @override
   String casinoDiceTotalShowing(String total) {
-    return 'Total: $total';
+    return 'Razem: $total';
   }
 
   @override
-  String get casinoDicePredictTitle => 'Predict';
+  String get casinoDicePredictTitle => 'Przewidywać';
 
   @override
-  String get casinoDiceLowLabel => 'Low (2-6)';
+  String get casinoDiceLowLabel => 'Niski (2-6)';
 
   @override
-  String get casinoDiceHighLabel => 'High (8-12)';
+  String get casinoDiceHighLabel => 'Wysoka (8-12)';
 
   @override
-  String get casinoDiceOddsHint => 'Low/High pays 2x • Exact total pays 6x';
+  String get casinoDiceOddsHint =>
+      'Niski/Wysoki płaci 2x • Dokładna suma płaci 6x';
 
   @override
-  String get casinoSlotPayoutTableTitle => 'Payout table';
+  String get casinoSlotPayoutTableTitle => 'Tabela wypłat';
 
   @override
-  String get casinoBaccaratPlayer => 'Player';
+  String get casinoBaccaratPlayer => 'Odtwarzacz';
 
   @override
-  String get casinoBaccaratBanker => 'Banker';
+  String get casinoBaccaratBanker => 'Bankier';
 
   @override
-  String get casinoBaccaratTieBet => 'Tie';
+  String get casinoBaccaratTieBet => 'Krawat';
 
   @override
   String casinoWinnerPrefix(String who) {
-    return 'Winner: $who';
+    return 'Zwycięzca: $who';
   }
 
   @override
   String casinoPayoutEuro(String amount) {
-    return 'Payout: €$amount';
+    return 'Wypłata: €$amount';
   }
 
   @override
-  String get casinoNoPayout => 'No payout';
+  String get casinoNoPayout => 'Brak wypłaty';
 
   @override
   String casinoResultEuro(String amount) {
-    return 'Result: €$amount';
+    return 'Wynik: $amount €';
   }
 
   @override
-  String get casinoDealing => 'Dealing…';
+  String get casinoDealing => 'Postępowanie…';
 
   @override
-  String get casinoDealCaps => 'DEAL';
+  String get casinoDealCaps => 'UMOWA';
 
   @override
-  String get casinoVideoPokerDrawCards => 'DRAW CARDS';
+  String get casinoVideoPokerDrawCards => 'DOBIERZ KARTY';
 
   @override
-  String get casinoVideoPokerDrawHint => 'Draw your hand';
+  String get casinoVideoPokerDrawHint => 'Narysuj rękę';
 
   @override
-  String get casinoVideoPokerRoyalFlush => 'Royal Flush';
+  String get casinoVideoPokerRoyalFlush => 'Poker królewski';
 
   @override
-  String get casinoVideoPokerStraightFlush => 'Straight Flush';
+  String get casinoVideoPokerStraightFlush => 'Poker';
 
   @override
-  String get casinoVideoPokerFourKind => 'Four of a Kind';
+  String get casinoVideoPokerFourKind => 'Czwórka';
 
   @override
-  String get casinoVideoPokerFullHouse => 'Full House';
+  String get casinoVideoPokerFullHouse => 'Pełna sala';
 
   @override
-  String get casinoVideoPokerFlush => 'Flush';
+  String get casinoVideoPokerFlush => 'Spłukać';
 
   @override
-  String get casinoVideoPokerStraight => 'Straight';
+  String get casinoVideoPokerStraight => 'Prosty';
 
   @override
-  String get casinoVideoPokerThreeKind => 'Three of a Kind';
+  String get casinoVideoPokerThreeKind => 'Trójka w swoim rodzaju';
 
   @override
-  String get casinoVideoPokerTwoPair => 'Two Pair';
+  String get casinoVideoPokerTwoPair => 'Dwie pary';
 
   @override
   String get casinoVideoPokerJacksOrBetter => 'Jacks or Better';
 
   @override
-  String get casinoVideoPokerNoWinningHand => 'No winning hand';
+  String get casinoVideoPokerNoWinningHand => 'Żadnej zwycięskiej ręki';
 
   @override
   String get casinoVideoPokerPayoutTableLong =>
-      'Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x';
+      'Tabela wypłat: Walety+ 1x • Dwie pary 2x • Tripy 3x • Strój 4x • Kolor 6x • Full House 9x • Cztery 25x • Poker prosty 50x • Królewski 250x';
+
+  @override
+  String get bankScreenLoadFailed => 'Nie udało się załadować banku';
+
+  @override
+  String bankScreenErrNetwork(String details) {
+    return 'Błąd sieci: $details';
+  }
+
+  @override
+  String bankScreenCounterpartyTo(String username) {
+    return 'Do: $username';
+  }
+
+  @override
+  String bankScreenCounterpartyFrom(String username) {
+    return 'Od: $username';
+  }
+
+  @override
+  String get bankScreenDepositSuccess => 'Wpłata pomyślna';
+
+  @override
+  String get bankScreenDepositFailed => 'Wpłata nie powiodła się';
+
+  @override
+  String get bankScreenWithdrawSuccess => 'Wypłata powiodła się';
+
+  @override
+  String get bankScreenWithdrawFailed => 'Wypłata nie powiodła się';
+
+  @override
+  String bankScreenTransferSuccess(String amount, String recipient) {
+    return '€$amount przeniesione do $recipient';
+  }
+
+  @override
+  String get bankScreenTransferFailed => 'Transfer nie powiódł się';
+
+  @override
+  String get bankScreenErrRecipientNotFound => 'Nie znaleziono gracza';
+
+  @override
+  String get bankScreenErrCannotTransferToSelf =>
+      'Nie możesz przenieść się do siebie';
+
+  @override
+  String get bankScreenErrInsufficientBalance =>
+      'Niewystarczające saldo bankowe';
+
+  @override
+  String get bankScreenErrInvalidAmount => 'Nieprawidłowa kwota';
+
+  @override
+  String get bankScreenTryAgain => 'Spróbuj ponownie';
+
+  @override
+  String get bankScreenWorldwideSubtitle => 'Bank (dostępny na całym świecie)';
+
+  @override
+  String bankScreenCashOnHand(int amount) {
+    return 'Gotówka w kasie: €$amount';
+  }
+
+  @override
+  String bankScreenBalanceLine(int amount) {
+    return 'Saldo bankowe: €$amount';
+  }
+
+  @override
+  String get bankScreenAmountLabel => 'Kwota';
+
+  @override
+  String get bankScreenDescriptionOptional => 'Opis (opcjonalnie)';
+
+  @override
+  String get bankScreenDescriptionDepositHint =>
+      'Będą przechowywane wraz z Twoim depozytem lub wypłatą w transakcjach.';
+
+  @override
+  String get bankScreenDepositButton => 'Depozyt';
+
+  @override
+  String get bankScreenWithdrawButton => 'Wycofać';
+
+  @override
+  String get bankScreenTransferSectionTitle => 'Transfer do gracza';
+
+  @override
+  String get bankScreenRecipientUsername => 'Nazwa użytkownika odbiorcy';
+
+  @override
+  String get bankScreenRecentRecipients => 'Niedawni odbiorcy';
+
+  @override
+  String get bankScreenDescriptionTransferHint =>
+      'Odbiorca zobaczy ten opis także w transakcjach.';
+
+  @override
+  String get bankScreenTransferButton => 'Przenosić';
+
+  @override
+  String get bankScreenTransactionsTitle => 'Transakcje';
+
+  @override
+  String bankScreenTransactionsTotal(int count) {
+    return '$count łącznie';
+  }
+
+  @override
+  String get bankScreenSummaryDeposits => 'Depozyty';
+
+  @override
+  String get bankScreenSummaryWithdrawals => 'Wypłaty';
+
+  @override
+  String get bankScreenSummarySent => 'Wysłano';
+
+  @override
+  String get bankScreenSummaryReceived => 'Otrzymane';
+
+  @override
+  String get bankScreenNoTransactions => 'Nie ma jeszcze żadnych transakcji';
+
+  @override
+  String get bankScreenTxnDeposit => 'Depozyt';
+
+  @override
+  String get bankScreenTxnWithdraw => 'Wycofanie';
+
+  @override
+  String get bankScreenTxnTransferSent => 'Przelew wysłany';
+
+  @override
+  String get bankScreenTxnTransferReceived => 'Przelew otrzymany';
+
+  @override
+  String get bankScreenPrevious => 'Poprzedni';
+
+  @override
+  String get bankScreenNext => 'Następny';
+
+  @override
+  String bankScreenPageOf(int current, int total) {
+    return 'Strona $current z $total';
+  }
+
+  @override
+  String bankScreenRankLabel(String rank) {
+    return 'Ranga $rank';
+  }
 
   @override
   String get retry => 'Spróbować ponownie';

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../services/api_client.dart';
 import '../utils/top_right_notification.dart';
+import '../l10n/app_localizations.dart';
 
 class BankScreen extends StatefulWidget {
   const BankScreen({super.key});
@@ -46,9 +47,6 @@ class _BankScreenState extends State<BankScreen> {
   List<Map<String, dynamic>> _transferSuggestions = const [];
   List<Map<String, dynamic>> _recentRecipients = const [];
   String? _error;
-
-  bool get _isNl => Localizations.localeOf(context).languageCode == 'nl';
-  String _tr(String nl, String en) => _isNl ? nl : en;
 
   @override
   void initState() {
@@ -104,6 +102,7 @@ class _BankScreenState extends State<BankScreen> {
   }
 
   Future<void> _loadBankAccount() async {
+    final l10n = AppLocalizations.of(context)!;
     setState(() {
       _isLoading = true;
       _error = null;
@@ -124,13 +123,13 @@ class _BankScreenState extends State<BankScreen> {
         setState(() {
           _error =
               data['params']?['reason']?.toString() ??
-              _tr('Bank laden mislukt', 'Failed to load bank');
+              l10n.bankScreenLoadFailed;
           _isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _error = _tr('Netwerkfout: $e', 'Network error: $e');
+        _error = l10n.bankScreenErrNetwork(e.toString());
         _isLoading = false;
       });
     }
@@ -205,7 +204,10 @@ class _BankScreenState extends State<BankScreen> {
     return List<int>.generate(end - start + 1, (index) => start + index);
   }
 
-  String? _transactionCounterpartyLabel(Map<String, dynamic> transaction) {
+  String? _transactionCounterpartyLabel(
+    AppLocalizations l10n,
+    Map<String, dynamic> transaction,
+  ) {
     final type = (transaction['type']?.toString() ?? '').toLowerCase();
     final username = transaction['counterpartyUsername']?.toString().trim();
     if (username == null || username.isEmpty) {
@@ -213,11 +215,11 @@ class _BankScreenState extends State<BankScreen> {
     }
 
     if (type == 'transfer_sent') {
-      return _tr('Naar: $username', 'To: $username');
+      return l10n.bankScreenCounterpartyTo(username);
     }
 
     if (type == 'transfer_received') {
-      return _tr('Van: $username', 'From: $username');
+      return l10n.bankScreenCounterpartyFrom(username);
     }
 
     return null;
@@ -259,6 +261,7 @@ class _BankScreenState extends State<BankScreen> {
   }
 
   Future<void> _deposit() async {
+    final l10n = AppLocalizations.of(context)!;
     final amount = int.tryParse(_amountController.text.trim()) ?? 0;
     final description = _amountDescriptionController.text.trim();
     if (amount <= 0) return;
@@ -288,7 +291,7 @@ class _BankScreenState extends State<BankScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(_tr('Storting gelukt', 'Deposit successful')),
+              content: Text(l10n.bankScreenDepositSuccess),
             ),
           );
         }
@@ -299,7 +302,7 @@ class _BankScreenState extends State<BankScreen> {
             SnackBar(
               content: Text(
                 data['params']?['reason']?.toString() ??
-                    _tr('Storting mislukt', 'Deposit failed'),
+                    l10n.bankScreenDepositFailed,
               ),
             ),
           );
@@ -309,7 +312,9 @@ class _BankScreenState extends State<BankScreen> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))),
+          SnackBar(
+            content: Text(l10n.bankScreenErrNetwork(e.toString())),
+          ),
         );
       }
     } finally {
@@ -320,6 +325,7 @@ class _BankScreenState extends State<BankScreen> {
   }
 
   Future<void> _withdraw() async {
+    final l10n = AppLocalizations.of(context)!;
     final amount = int.tryParse(_amountController.text.trim()) ?? 0;
     final description = _amountDescriptionController.text.trim();
     if (amount <= 0) return;
@@ -349,7 +355,7 @@ class _BankScreenState extends State<BankScreen> {
           showTopRightFromSnackBar(
             context,
             SnackBar(
-              content: Text(_tr('Opname gelukt', 'Withdrawal successful')),
+              content: Text(l10n.bankScreenWithdrawSuccess),
             ),
           );
         }
@@ -360,7 +366,7 @@ class _BankScreenState extends State<BankScreen> {
             SnackBar(
               content: Text(
                 data['params']?['reason']?.toString() ??
-                    _tr('Opname mislukt', 'Withdrawal failed'),
+                    l10n.bankScreenWithdrawFailed,
               ),
             ),
           );
@@ -370,7 +376,9 @@ class _BankScreenState extends State<BankScreen> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))),
+          SnackBar(
+            content: Text(l10n.bankScreenErrNetwork(e.toString())),
+          ),
         );
       }
     } finally {
@@ -381,6 +389,7 @@ class _BankScreenState extends State<BankScreen> {
   }
 
   Future<void> _transfer() async {
+    final l10n = AppLocalizations.of(context)!;
     final recipientUsername = _transferUsernameController.text.trim();
     final amount = int.tryParse(_transferAmountController.text.trim()) ?? 0;
     final description = _transferDescriptionController.text.trim();
@@ -411,28 +420,25 @@ class _BankScreenState extends State<BankScreen> {
             context,
             SnackBar(
               content: Text(
-                _tr(
-                  '€$amount overgemaakt naar $recipientUsername',
-                  '€$amount transferred to $recipientUsername',
+                l10n.bankScreenTransferSuccess(
+                  amount.toString(),
+                  recipientUsername,
                 ),
               ),
             ),
           );
         }
       } else {
-        String message = _tr('Overmaken mislukt', 'Transfer failed');
+        String message = l10n.bankScreenTransferFailed;
         final event = data['event']?.toString();
         if (event == 'error.recipient_not_found') {
-          message = _tr('Speler niet gevonden', 'Player not found');
+          message = l10n.bankScreenErrRecipientNotFound;
         } else if (event == 'error.cannot_transfer_to_self') {
-          message = _tr(
-            'Je kunt niet naar jezelf overmaken',
-            'You cannot transfer to yourself',
-          );
+          message = l10n.bankScreenErrCannotTransferToSelf;
         } else if (event == 'error.insufficient_balance') {
-          message = _tr('Onvoldoende banksaldo', 'Insufficient bank balance');
+          message = l10n.bankScreenErrInsufficientBalance;
         } else if (event == 'error.invalid_amount') {
-          message = _tr('Ongeldig bedrag', 'Invalid amount');
+          message = l10n.bankScreenErrInvalidAmount;
         }
 
         if (mounted) {
@@ -443,7 +449,9 @@ class _BankScreenState extends State<BankScreen> {
       if (mounted) {
         showTopRightFromSnackBar(
           context,
-          SnackBar(content: Text(_tr('Netwerkfout: $e', 'Network error: $e'))),
+          SnackBar(
+            content: Text(l10n.bankScreenErrNetwork(e.toString())),
+          ),
         );
       }
     } finally {
@@ -523,6 +531,7 @@ class _BankScreenState extends State<BankScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final cash = Provider.of<AuthProvider>(context).currentPlayer?.money ?? 0;
     final screenWidth = MediaQuery.of(context).size.width;
     final transactionsListHeight = screenWidth < 600
@@ -550,7 +559,7 @@ class _BankScreenState extends State<BankScreen> {
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: _refreshAll,
-                child: Text(_tr('Opnieuw proberen', 'Try again')),
+                child: Text(l10n.bankScreenTryAgain),
               ),
             ],
           ),
@@ -568,9 +577,9 @@ class _BankScreenState extends State<BankScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Bank',
-                  style: TextStyle(
+                Text(
+                  l10n.bank,
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -592,10 +601,7 @@ class _BankScreenState extends State<BankScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr(
-                        'Bank (wereldwijd toegankelijk)',
-                        'Bank (worldwide accessible)',
-                      ),
+                      l10n.bankScreenWorldwideSubtitle,
                       style: const TextStyle(
                         color: Color(0xFFD4AF37),
                         fontWeight: FontWeight.bold,
@@ -604,12 +610,12 @@ class _BankScreenState extends State<BankScreen> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      _tr('Contant op zak: €$cash', 'Cash on hand: €$cash'),
+                      l10n.bankScreenCashOnHand(cash),
                       style: const TextStyle(color: Colors.white70),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      _tr('Bank saldo: €$_balance', 'Bank balance: €$_balance'),
+                      l10n.bankScreenBalanceLine(_balance),
                       style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ],
@@ -622,7 +628,7 @@ class _BankScreenState extends State<BankScreen> {
               keyboardType: TextInputType.number,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: _tr('Bedrag', 'Amount'),
+                labelText: l10n.bankScreenAmountLabel,
                 labelStyle: TextStyle(color: Colors.grey.shade300),
                 filled: true,
                 fillColor: Colors.grey.shade900,
@@ -637,14 +643,8 @@ class _BankScreenState extends State<BankScreen> {
               maxLength: 160,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                labelText: _tr(
-                  'Omschrijving (optioneel)',
-                  'Description (optional)',
-                ),
-                helperText: _tr(
-                  'Wordt opgeslagen bij je storting of opname in transacties.',
-                  'Will be stored with your deposit or withdrawal in transactions.',
-                ),
+                labelText: l10n.bankScreenDescriptionOptional,
+                helperText: l10n.bankScreenDescriptionDepositHint,
                 helperStyle: TextStyle(color: Colors.grey.shade500),
                 labelStyle: TextStyle(color: Colors.grey.shade300),
                 filled: true,
@@ -661,7 +661,7 @@ class _BankScreenState extends State<BankScreen> {
                   child: ElevatedButton.icon(
                     onPressed: _isSubmitting ? null : _deposit,
                     icon: const Icon(Icons.arrow_downward),
-                    label: Text(_tr('Storten', 'Deposit')),
+                    label: Text(l10n.bankScreenDepositButton),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -669,7 +669,7 @@ class _BankScreenState extends State<BankScreen> {
                   child: ElevatedButton.icon(
                     onPressed: _isSubmitting ? null : _withdraw,
                     icon: const Icon(Icons.arrow_upward),
-                    label: Text(_tr('Opnemen', 'Withdraw')),
+                    label: Text(l10n.bankScreenWithdrawButton),
                   ),
                 ),
               ],
@@ -683,7 +683,7 @@ class _BankScreenState extends State<BankScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _tr('Overmaken naar speler', 'Transfer to player'),
+                      l10n.bankScreenTransferSectionTitle,
                       style: const TextStyle(
                         color: Color(0xFFD4AF37),
                         fontWeight: FontWeight.bold,
@@ -696,10 +696,7 @@ class _BankScreenState extends State<BankScreen> {
                       onChanged: _onTransferUsernameChanged,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        labelText: _tr(
-                          'Gebruikersnaam ontvanger',
-                          'Recipient username',
-                        ),
+                        labelText: l10n.bankScreenRecipientUsername,
                         labelStyle: TextStyle(color: Colors.grey.shade300),
                         filled: true,
                         fillColor: Colors.grey.shade800,
@@ -725,7 +722,7 @@ class _BankScreenState extends State<BankScreen> {
                         _recentRecipients.isNotEmpty) ...[
                       const SizedBox(height: 8),
                       Text(
-                        _tr('Recente ontvangers', 'Recent recipients'),
+                        l10n.bankScreenRecentRecipients,
                         style: const TextStyle(
                           color: Color(0xFFD4AF37),
                           fontSize: 12,
@@ -838,7 +835,7 @@ class _BankScreenState extends State<BankScreen> {
                               ),
                               subtitle: rank != null
                                   ? Text(
-                                      'Rank $rank',
+                                      l10n.bankScreenRankLabel(rank),
                                       style: const TextStyle(
                                         color: Colors.white60,
                                         fontSize: 12,
@@ -862,7 +859,7 @@ class _BankScreenState extends State<BankScreen> {
                       keyboardType: TextInputType.number,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        labelText: _tr('Bedrag', 'Amount'),
+                        labelText: l10n.bankScreenAmountLabel,
                         labelStyle: TextStyle(color: Colors.grey.shade300),
                         filled: true,
                         fillColor: Colors.grey.shade800,
@@ -877,14 +874,8 @@ class _BankScreenState extends State<BankScreen> {
                       maxLength: 160,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                        labelText: _tr(
-                          'Omschrijving (optioneel)',
-                          'Description (optional)',
-                        ),
-                        helperText: _tr(
-                          'De ontvanger ziet deze omschrijving ook terug in transacties.',
-                          'The recipient will also see this description in transactions.',
-                        ),
+                        labelText: l10n.bankScreenDescriptionOptional,
+                        helperText: l10n.bankScreenDescriptionTransferHint,
                         helperStyle: TextStyle(color: Colors.grey.shade500),
                         labelStyle: TextStyle(color: Colors.grey.shade300),
                         filled: true,
@@ -900,7 +891,7 @@ class _BankScreenState extends State<BankScreen> {
                       child: ElevatedButton.icon(
                         onPressed: _isSubmitting ? null : _transfer,
                         icon: const Icon(Icons.swap_horiz),
-                        label: Text(_tr('Overmaken', 'Transfer')),
+                        label: Text(l10n.bankScreenTransferButton),
                       ),
                     ),
                   ],
@@ -919,7 +910,7 @@ class _BankScreenState extends State<BankScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _tr('Transacties', 'Transactions'),
+                          l10n.bankScreenTransactionsTitle,
                           style: const TextStyle(
                             color: Color(0xFFD4AF37),
                             fontWeight: FontWeight.bold,
@@ -927,10 +918,7 @@ class _BankScreenState extends State<BankScreen> {
                           ),
                         ),
                         Text(
-                          _tr(
-                            '$_totalTransactions totaal',
-                            '$_totalTransactions total',
-                          ),
+                          l10n.bankScreenTransactionsTotal(_totalTransactions),
                           style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 12,
@@ -944,22 +932,22 @@ class _BankScreenState extends State<BankScreen> {
                       runSpacing: 8,
                       children: [
                         _buildTransactionSummaryChip(
-                          label: _tr('Stortingen', 'Deposits'),
+                          label: l10n.bankScreenSummaryDeposits,
                           value: _transactionSummary['deposits'] ?? 0,
                           color: Colors.greenAccent,
                         ),
                         _buildTransactionSummaryChip(
-                          label: _tr('Opnames', 'Withdrawals'),
+                          label: l10n.bankScreenSummaryWithdrawals,
                           value: _transactionSummary['withdrawals'] ?? 0,
                           color: Colors.redAccent,
                         ),
                         _buildTransactionSummaryChip(
-                          label: _tr('Verzonden', 'Sent'),
+                          label: l10n.bankScreenSummarySent,
                           value: _transactionSummary['transfersSent'] ?? 0,
                           color: const Color(0xFFD4AF37),
                         ),
                         _buildTransactionSummaryChip(
-                          label: _tr('Ontvangen', 'Received'),
+                          label: l10n.bankScreenSummaryReceived,
                           value: _transactionSummary['transfersReceived'] ?? 0,
                           color: Colors.lightBlueAccent,
                         ),
@@ -980,10 +968,7 @@ class _BankScreenState extends State<BankScreen> {
                           : _transactions.isEmpty
                           ? Center(
                               child: Text(
-                                _tr(
-                                  'Nog geen transacties',
-                                  'No transactions yet',
-                                ),
+                                l10n.bankScreenNoTransactions,
                                 style: const TextStyle(color: Colors.white70),
                               ),
                             )
@@ -1003,7 +988,10 @@ class _BankScreenState extends State<BankScreen> {
                                     (transaction['amount'] as num?)?.toInt() ??
                                     0;
                                 final counterpartyLabel =
-                                    _transactionCounterpartyLabel(transaction);
+                                    _transactionCounterpartyLabel(
+                                  l10n,
+                                  transaction,
+                                );
                                 final description = _transactionDescription(
                                   transaction,
                                 );
@@ -1041,18 +1029,13 @@ class _BankScreenState extends State<BankScreen> {
                                           children: [
                                             Text(
                                               isDeposit
-                                                  ? _tr('Storting', 'Deposit')
+                                                  ? l10n.bankScreenTxnDeposit
                                                   : isWithdraw
-                                                  ? _tr('Opname', 'Withdrawal')
+                                                  ? l10n.bankScreenTxnWithdraw
                                                   : isTransferSent
-                                                  ? _tr(
-                                                      'Overboeking verzonden',
-                                                      'Transfer sent',
-                                                    )
-                                                  : _tr(
-                                                      'Overboeking ontvangen',
-                                                      'Transfer received',
-                                                    ),
+                                                  ? l10n.bankScreenTxnTransferSent
+                                                  : l10n
+                                                        .bankScreenTxnTransferReceived,
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600,
@@ -1131,7 +1114,7 @@ class _BankScreenState extends State<BankScreen> {
                                   ),
                                   foregroundColor: const Color(0xFFD4AF37),
                                 ),
-                                child: Text(_tr('Vorige', 'Previous')),
+                                child: Text(l10n.bankScreenPrevious),
                               ),
                               if (_visiblePages().first > 1) ...[
                                 _pageButton(1),
@@ -1174,16 +1157,13 @@ class _BankScreenState extends State<BankScreen> {
                                   ),
                                   foregroundColor: const Color(0xFFD4AF37),
                                 ),
-                                child: Text(_tr('Volgende', 'Next')),
+                                child: Text(l10n.bankScreenNext),
                               ),
                             ],
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            _tr(
-                              'Pagina $_currentPage van $_totalPages',
-                              'Page $_currentPage of $_totalPages',
-                            ),
+                            l10n.bankScreenPageOf(_currentPage, _totalPages),
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,

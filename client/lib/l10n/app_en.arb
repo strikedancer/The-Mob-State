@@ -1963,6 +1963,96 @@
   "casinoVideoPokerJacksOrBetter": "Jacks or Better",
   "casinoVideoPokerNoWinningHand": "No winning hand",
   "casinoVideoPokerPayoutTableLong": "Payout table: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x",
+  "bankScreenLoadFailed": "Failed to load bank",
+  "bankScreenErrNetwork": "Network error: {details}",
+  "@bankScreenErrNetwork": {
+    "placeholders": {
+      "details": {"type": "String"}
+    }
+  },
+  "bankScreenCounterpartyTo": "To: {username}",
+  "@bankScreenCounterpartyTo": {
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
+  "bankScreenCounterpartyFrom": "From: {username}",
+  "@bankScreenCounterpartyFrom": {
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
+  "bankScreenDepositSuccess": "Deposit successful",
+  "bankScreenDepositFailed": "Deposit failed",
+  "bankScreenWithdrawSuccess": "Withdrawal successful",
+  "bankScreenWithdrawFailed": "Withdrawal failed",
+  "bankScreenTransferSuccess": "€{amount} transferred to {recipient}",
+  "@bankScreenTransferSuccess": {
+    "placeholders": {
+      "amount": {"type": "String"},
+      "recipient": {"type": "String"}
+    }
+  },
+  "bankScreenTransferFailed": "Transfer failed",
+  "bankScreenErrRecipientNotFound": "Player not found",
+  "bankScreenErrCannotTransferToSelf": "You cannot transfer to yourself",
+  "bankScreenErrInsufficientBalance": "Insufficient bank balance",
+  "bankScreenErrInvalidAmount": "Invalid amount",
+  "bankScreenTryAgain": "Try again",
+  "bankScreenWorldwideSubtitle": "Bank (worldwide accessible)",
+  "bankScreenCashOnHand": "Cash on hand: €{amount}",
+  "@bankScreenCashOnHand": {
+    "placeholders": {
+      "amount": {"type": "int"}
+    }
+  },
+  "bankScreenBalanceLine": "Bank balance: €{amount}",
+  "@bankScreenBalanceLine": {
+    "placeholders": {
+      "amount": {"type": "int"}
+    }
+  },
+  "bankScreenAmountLabel": "Amount",
+  "bankScreenDescriptionOptional": "Description (optional)",
+  "bankScreenDescriptionDepositHint": "Will be stored with your deposit or withdrawal in transactions.",
+  "bankScreenDepositButton": "Deposit",
+  "bankScreenWithdrawButton": "Withdraw",
+  "bankScreenTransferSectionTitle": "Transfer to player",
+  "bankScreenRecipientUsername": "Recipient username",
+  "bankScreenRecentRecipients": "Recent recipients",
+  "bankScreenDescriptionTransferHint": "The recipient will also see this description in transactions.",
+  "bankScreenTransferButton": "Transfer",
+  "bankScreenTransactionsTitle": "Transactions",
+  "bankScreenTransactionsTotal": "{count} total",
+  "@bankScreenTransactionsTotal": {
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+  "bankScreenSummaryDeposits": "Deposits",
+  "bankScreenSummaryWithdrawals": "Withdrawals",
+  "bankScreenSummarySent": "Sent",
+  "bankScreenSummaryReceived": "Received",
+  "bankScreenNoTransactions": "No transactions yet",
+  "bankScreenTxnDeposit": "Deposit",
+  "bankScreenTxnWithdraw": "Withdrawal",
+  "bankScreenTxnTransferSent": "Transfer sent",
+  "bankScreenTxnTransferReceived": "Transfer received",
+  "bankScreenPrevious": "Previous",
+  "bankScreenNext": "Next",
+  "bankScreenPageOf": "Page {current} of {total}",
+  "@bankScreenPageOf": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "bankScreenRankLabel": "Rank {rank}",
+  "@bankScreenRankLabel": {
+    "placeholders": {
+      "rank": {"type": "String"}
+    }
+  },
   "retry": "Retry",
   "doAction": "Do",
   "pay": "Pay",

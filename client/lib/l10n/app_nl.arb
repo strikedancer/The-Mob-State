@@ -6945,5 +6945,117 @@
   "casinoVideoPokerTwoPair": "Two Pair",
   "casinoVideoPokerJacksOrBetter": "Jacks or Better",
   "casinoVideoPokerNoWinningHand": "Geen winnende hand",
-  "casinoVideoPokerPayoutTableLong": "Uitbetalingstabel: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x"
+  "casinoVideoPokerPayoutTableLong": "Uitbetalingstabel: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x",
+  "bankScreenLoadFailed": "Bank laden mislukt",
+  "bankScreenErrNetwork": "Netwerkfout: {details}",
+  "@bankScreenErrNetwork": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyTo": "Naar: {username}",
+  "@bankScreenCounterpartyTo": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyFrom": "Van: {username}",
+  "@bankScreenCounterpartyFrom": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDepositSuccess": "Storting gelukt",
+  "bankScreenDepositFailed": "Storting mislukt",
+  "bankScreenWithdrawSuccess": "Opname gelukt",
+  "bankScreenWithdrawFailed": "Opname mislukt",
+  "bankScreenTransferSuccess": "€{amount} overgemaakt naar {recipient}",
+  "@bankScreenTransferSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenTransferFailed": "Overmaken mislukt",
+  "bankScreenErrRecipientNotFound": "Speler niet gevonden",
+  "bankScreenErrCannotTransferToSelf": "Je kunt niet naar jezelf overmaken",
+  "bankScreenErrInsufficientBalance": "Onvoldoende banksaldo",
+  "bankScreenErrInvalidAmount": "Ongeldig bedrag",
+  "bankScreenTryAgain": "Opnieuw proberen",
+  "bankScreenWorldwideSubtitle": "Bank (wereldwijd toegankelijk)",
+  "bankScreenCashOnHand": "Contant op zak: €{amount}",
+  "@bankScreenCashOnHand": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenBalanceLine": "Bank saldo: €{amount}",
+  "@bankScreenBalanceLine": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenAmountLabel": "Bedrag",
+  "bankScreenDescriptionOptional": "Omschrijving (optioneel)",
+  "bankScreenDescriptionDepositHint": "Wordt opgeslagen bij je storting of opname in transacties.",
+  "bankScreenDepositButton": "Storten",
+  "bankScreenWithdrawButton": "Opnemen",
+  "bankScreenTransferSectionTitle": "Overmaken naar speler",
+  "bankScreenRecipientUsername": "Gebruikersnaam ontvanger",
+  "bankScreenRecentRecipients": "Recente ontvangers",
+  "bankScreenDescriptionTransferHint": "De ontvanger ziet deze omschrijving ook terug in transacties.",
+  "bankScreenTransferButton": "Overmaken",
+  "bankScreenTransactionsTitle": "Transacties",
+  "bankScreenTransactionsTotal": "{count} totaal",
+  "@bankScreenTransactionsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenSummaryDeposits": "Stortingen",
+  "bankScreenSummaryWithdrawals": "Opnames",
+  "bankScreenSummarySent": "Verzonden",
+  "bankScreenSummaryReceived": "Ontvangen",
+  "bankScreenNoTransactions": "Nog geen transacties",
+  "bankScreenTxnDeposit": "Storting",
+  "bankScreenTxnWithdraw": "Opname",
+  "bankScreenTxnTransferSent": "Overboeking verzonden",
+  "bankScreenTxnTransferReceived": "Overboeking ontvangen",
+  "bankScreenPrevious": "Vorige",
+  "bankScreenNext": "Volgende",
+  "bankScreenPageOf": "Pagina {current} van {total}",
+  "@bankScreenPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenRankLabel": "Rang {rank}",
+  "@bankScreenRankLabel": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  }
 }

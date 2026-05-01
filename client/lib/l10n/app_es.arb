@@ -6945,5 +6945,117 @@
   "casinoVideoPokerTwoPair": "dos pares",
   "casinoVideoPokerJacksOrBetter": "Jotas o mejor",
   "casinoVideoPokerNoWinningHand": "No hay mano ganadora",
-  "casinoVideoPokerPayoutTableLong": "Tabla de pagos: Jotas+ 1x • Dos pares 2x • Trips 3x • Escalera de color 4x • Color 6x • Full 9x • Cuatro 25x • Escalera de color 50x • Royal 250x"
+  "casinoVideoPokerPayoutTableLong": "Tabla de pagos: Jotas+ 1x • Dos pares 2x • Trips 3x • Escalera de color 4x • Color 6x • Full 9x • Cuatro 25x • Escalera de color 50x • Royal 250x",
+  "bankScreenLoadFailed": "No se pudo cargar el banco",
+  "bankScreenErrNetwork": "Error de red: {details}",
+  "@bankScreenErrNetwork": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyTo": "Para: {username}",
+  "@bankScreenCounterpartyTo": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyFrom": "De: {username}",
+  "@bankScreenCounterpartyFrom": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDepositSuccess": "Depósito exitosa",
+  "bankScreenDepositFailed": "El depósito falló",
+  "bankScreenWithdrawSuccess": "Retiro exitoso",
+  "bankScreenWithdrawFailed": "Retiro fallido",
+  "bankScreenTransferSuccess": "€{amount} transferido a {recipient}",
+  "@bankScreenTransferSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenTransferFailed": "Transferencia fallida",
+  "bankScreenErrRecipientNotFound": "Jugadora no encontrada",
+  "bankScreenErrCannotTransferToSelf": "No puedes transferirte a ti mismo",
+  "bankScreenErrInsufficientBalance": "Saldo bancario insuficiente",
+  "bankScreenErrInvalidAmount": "Cantidad no válida",
+  "bankScreenTryAgain": "Intentar otra vez",
+  "bankScreenWorldwideSubtitle": "Banco (accesible en todo el mundo)",
+  "bankScreenCashOnHand": "Efectivo en caja: €{amount}",
+  "@bankScreenCashOnHand": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenBalanceLine": "Saldo bancario: €{amount}",
+  "@bankScreenBalanceLine": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenAmountLabel": "Cantidad",
+  "bankScreenDescriptionOptional": "Descripción (opcional)",
+  "bankScreenDescriptionDepositHint": "Se almacenará con su depósito o retiro en las transacciones.",
+  "bankScreenDepositButton": "Depósito",
+  "bankScreenWithdrawButton": "Retirar",
+  "bankScreenTransferSectionTitle": "Transferencia a la jugadora",
+  "bankScreenRecipientUsername": "Nombre de usuario del destinatario",
+  "bankScreenRecentRecipients": "Destinatarias recientes",
+  "bankScreenDescriptionTransferHint": "El destinatario también verá esta descripción en las transacciones.",
+  "bankScreenTransferButton": "Transferir",
+  "bankScreenTransactionsTitle": "Actas",
+  "bankScreenTransactionsTotal": "{count} total",
+  "@bankScreenTransactionsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenSummaryDeposits": "Depósitos",
+  "bankScreenSummaryWithdrawals": "Retiros",
+  "bankScreenSummarySent": "Enviada",
+  "bankScreenSummaryReceived": "Recibida",
+  "bankScreenNoTransactions": "Aún no hay transacciones",
+  "bankScreenTxnDeposit": "Depósito",
+  "bankScreenTxnWithdraw": "Retiro",
+  "bankScreenTxnTransferSent": "Transferencia enviada",
+  "bankScreenTxnTransferReceived": "Transferencia recibida",
+  "bankScreenPrevious": "Previa",
+  "bankScreenNext": "Próxima",
+  "bankScreenPageOf": "Página {current} de {total}",
+  "@bankScreenPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenRankLabel": "Clasificación {rank}",
+  "@bankScreenRankLabel": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  }
 }

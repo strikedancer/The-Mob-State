@@ -3300,6 +3300,156 @@ class AppLocalizationsDe extends AppLocalizations {
       'Auszahlungstabelle: Jacks+ 1x • Two Pair 2x • Trips 3x • Straight 4x • Flush 6x • Full House 9x • Four 25x • Straight Flush 50x • Royal 250x';
 
   @override
+  String get bankScreenLoadFailed => 'Bank konnte nicht geladen werden';
+
+  @override
+  String bankScreenErrNetwork(String details) {
+    return 'Netzwerkfehler: $details';
+  }
+
+  @override
+  String bankScreenCounterpartyTo(String username) {
+    return 'An: $username';
+  }
+
+  @override
+  String bankScreenCounterpartyFrom(String username) {
+    return 'Von: $username';
+  }
+
+  @override
+  String get bankScreenDepositSuccess => 'Einzahlung erfolgreich';
+
+  @override
+  String get bankScreenDepositFailed => 'Die Einzahlung ist fehlgeschlagen';
+
+  @override
+  String get bankScreenWithdrawSuccess => 'Auszahlung erfolgreich';
+
+  @override
+  String get bankScreenWithdrawFailed => 'Die Auszahlung ist fehlgeschlagen';
+
+  @override
+  String bankScreenTransferSuccess(String amount, String recipient) {
+    return '$amount € überwiesen auf $recipient';
+  }
+
+  @override
+  String get bankScreenTransferFailed => 'Die Übertragung ist fehlgeschlagen';
+
+  @override
+  String get bankScreenErrRecipientNotFound => 'Spieler nicht gefunden';
+
+  @override
+  String get bankScreenErrCannotTransferToSelf =>
+      'Sie können nicht auf sich selbst übertragen';
+
+  @override
+  String get bankScreenErrInsufficientBalance => 'Unzureichendes Bankguthaben';
+
+  @override
+  String get bankScreenErrInvalidAmount => 'Ungültiger Betrag';
+
+  @override
+  String get bankScreenTryAgain => 'Versuchen Sie es erneut';
+
+  @override
+  String get bankScreenWorldwideSubtitle => 'Bank (weltweit erreichbar)';
+
+  @override
+  String bankScreenCashOnHand(int amount) {
+    return 'Kassenbestand: $amount';
+  }
+
+  @override
+  String bankScreenBalanceLine(int amount) {
+    return 'Bankguthaben: $amount';
+  }
+
+  @override
+  String get bankScreenAmountLabel => 'Menge';
+
+  @override
+  String get bankScreenDescriptionOptional => 'Beschreibung (optional)';
+
+  @override
+  String get bankScreenDescriptionDepositHint =>
+      'Wird zusammen mit Ihrer Ein- oder Auszahlung bei Transaktionen gespeichert.';
+
+  @override
+  String get bankScreenDepositButton => 'Kaution';
+
+  @override
+  String get bankScreenWithdrawButton => 'Zurückziehen';
+
+  @override
+  String get bankScreenTransferSectionTitle => 'Transfer zum Spieler';
+
+  @override
+  String get bankScreenRecipientUsername => 'Benutzername des Empfängers';
+
+  @override
+  String get bankScreenRecentRecipients => 'Aktuelle Empfänger';
+
+  @override
+  String get bankScreenDescriptionTransferHint =>
+      'Diese Beschreibung wird dem Empfänger auch in Transaktionen angezeigt.';
+
+  @override
+  String get bankScreenTransferButton => 'Überweisen';
+
+  @override
+  String get bankScreenTransactionsTitle => 'Transaktionen';
+
+  @override
+  String bankScreenTransactionsTotal(int count) {
+    return '$count insgesamt';
+  }
+
+  @override
+  String get bankScreenSummaryDeposits => 'Einlagen';
+
+  @override
+  String get bankScreenSummaryWithdrawals => 'Auszahlungen';
+
+  @override
+  String get bankScreenSummarySent => 'Gesendet';
+
+  @override
+  String get bankScreenSummaryReceived => 'Erhalten';
+
+  @override
+  String get bankScreenNoTransactions => 'Noch keine Transaktionen';
+
+  @override
+  String get bankScreenTxnDeposit => 'Kaution';
+
+  @override
+  String get bankScreenTxnWithdraw => 'Rückzug';
+
+  @override
+  String get bankScreenTxnTransferSent => 'Überweisung gesendet';
+
+  @override
+  String get bankScreenTxnTransferReceived => 'Überweisung erhalten';
+
+  @override
+  String get bankScreenPrevious => 'Vorherige';
+
+  @override
+  String get bankScreenNext => 'Nächste';
+
+  @override
+  String bankScreenPageOf(int current, int total) {
+    return 'Seite $current von $total';
+  }
+
+  @override
+  String bankScreenRankLabel(String rank) {
+    return 'Rang $rank';
+  }
+
+  @override
   String get retry => 'Wiederholen';
 
   @override

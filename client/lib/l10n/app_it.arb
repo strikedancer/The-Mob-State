@@ -6945,5 +6945,117 @@
   "casinoVideoPokerTwoPair": "Doppia Coppia",
   "casinoVideoPokerJacksOrBetter": "Jack o meglio",
   "casinoVideoPokerNoWinningHand": "Nessuna mano vincente",
-  "casinoVideoPokerPayoutTableLong": "Tabella dei pagamenti: Jack+ 1x • Doppia Coppia 2x • Tris 3x • Scala 4x • Colore 6x • Full 9x • Quattro 25x • Scala Colore 50x • Reale 250x"
+  "casinoVideoPokerPayoutTableLong": "Tabella dei pagamenti: Jack+ 1x • Doppia Coppia 2x • Tris 3x • Scala 4x • Colore 6x • Full 9x • Quattro 25x • Scala Colore 50x • Reale 250x",
+  "bankScreenLoadFailed": "Impossibile caricare il bank",
+  "bankScreenErrNetwork": "Errore di rete: {details}",
+  "@bankScreenErrNetwork": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyTo": "A: {username}",
+  "@bankScreenCounterpartyTo": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenCounterpartyFrom": "Da: {username}",
+  "@bankScreenCounterpartyFrom": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenDepositSuccess": "Deposito riuscito",
+  "bankScreenDepositFailed": "Deposito non riuscito",
+  "bankScreenWithdrawSuccess": "Ritiro riuscito",
+  "bankScreenWithdrawFailed": "Ritiro fallito",
+  "bankScreenTransferSuccess": "€{amount} trasferito a {recipient}",
+  "@bankScreenTransferSuccess": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "recipient": {
+        "type": "String"
+      }
+    }
+  },
+  "bankScreenTransferFailed": "Trasferimento non riuscito",
+  "bankScreenErrRecipientNotFound": "Giocatore non trovato",
+  "bankScreenErrCannotTransferToSelf": "Non puoi trasferire a te stesso",
+  "bankScreenErrInsufficientBalance": "Saldo bancario insufficiente",
+  "bankScreenErrInvalidAmount": "Importo non valido",
+  "bankScreenTryAgain": "Riprova",
+  "bankScreenWorldwideSubtitle": "Banca (accessibile in tutto il mondo)",
+  "bankScreenCashOnHand": "Contanti in cassa: €{amount}",
+  "@bankScreenCashOnHand": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenBalanceLine": "Saldo bancario: €{amount}",
+  "@bankScreenBalanceLine": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenAmountLabel": "Quantità",
+  "bankScreenDescriptionOptional": "Descrizione (facoltativa)",
+  "bankScreenDescriptionDepositHint": "Verranno archiviati con il tuo deposito o prelievo nelle transazioni.",
+  "bankScreenDepositButton": "Depositare",
+  "bankScreenWithdrawButton": "Ritirare",
+  "bankScreenTransferSectionTitle": "Trasferimento al giocatore",
+  "bankScreenRecipientUsername": "Nome utente del destinatario",
+  "bankScreenRecentRecipients": "Destinatari recenti",
+  "bankScreenDescriptionTransferHint": "Il destinatario vedrà questa descrizione anche nelle transazioni.",
+  "bankScreenTransferButton": "Trasferire",
+  "bankScreenTransactionsTitle": "Transazioni",
+  "bankScreenTransactionsTotal": "{count} totale",
+  "@bankScreenTransactionsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenSummaryDeposits": "Depositi",
+  "bankScreenSummaryWithdrawals": "Prelievi",
+  "bankScreenSummarySent": "Inviata",
+  "bankScreenSummaryReceived": "Ricevuto",
+  "bankScreenNoTransactions": "Nessuna transazione ancora",
+  "bankScreenTxnDeposit": "Depositare",
+  "bankScreenTxnWithdraw": "Ritiro",
+  "bankScreenTxnTransferSent": "Trasferimento inviato",
+  "bankScreenTxnTransferReceived": "Bonifico ricevuto",
+  "bankScreenPrevious": "Precedente",
+  "bankScreenNext": "Prossima",
+  "bankScreenPageOf": "Pagina {current} di {total}",
+  "@bankScreenPageOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bankScreenRankLabel": "Classifica {rank}",
+  "@bankScreenRankLabel": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  }
 }
